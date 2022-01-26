@@ -188,15 +188,15 @@
                           </td>
                           <td>
                             {{ invOrder.finalAmount | number: "1.2-2" }}
-                            {{ invOrder.currency }}
+                            {{ invOrder.recAmountCur }}
                           </td>
                           <td>
                             {{ invOrder.amountReceived | number: "1.2-2" }}
-                            {{ invOrder.currency }}
+                            {{ invOrder.recAmountCur }}
                           </td>
                           <td>
                             {{ invOrder.balance | number: "1.2-2" }}
-                            {{ invOrder.currency }}
+                            {{ invOrder.recAmountCur }}
                           </td>
                           <td>
                             <span class="badge badge-dark p-1">{{
@@ -329,7 +329,7 @@
                         >
                           <td>{{ data.charge }}</td>
                           <td>{{ data.desc }}</td>
-                          <td>{{ data.amount }} {{ receiptData.currency }}</td>
+                          <td>{{ data.amount }} {{ receiptData.recAmountCur }}</td>
                           <td>
                             <span
                               class="badge badge-dark p-2"
@@ -444,7 +444,7 @@
                         >
                           <td>{{ data.charge }}</td>
                           <td>{{ data.desc }}</td>
-                          <td>{{ data.amount }} {{ receiptData.currency }}</td>
+                          <td>{{ data.amount }} {{ receiptData.recAmountCur }}</td>
                           <td>
                             <span
                               class="badge badge-dark p-2"
@@ -562,7 +562,7 @@
                           </div>
                           <!-- <div class="col-lg-6">
                             <input type="text" class="form-control"
-                              [ngModel]="receiptData.currency"
+                              [ngModel]="receiptData.recAmountCur"
                               name="totalCur" disabled>
                           </div> -->
                         </div>
@@ -584,7 +584,7 @@
                           </div>
                           <!-- <div class="col-lg-6">
                             <input type="text" class="form-control"
-                              [ngModel]="receiptData.currency"
+                              [ngModel]="receiptData.recAmountCur"
                               name="totalCur" disabled>
                           </div> -->
                         </div>
@@ -634,7 +634,7 @@
                         <div
                           class="row"
                           *ngIf="
-                            receiptData.currency !== receiptData.recAmountCur
+                            receiptData.recAmountCur !== receiptData.recAmountCur
                           "
                         >
                           <div class="col-lg-12">
@@ -703,7 +703,7 @@
                                 <span *ngIf="data.type !== 'credit'">
                                   0.00
                                 </span>
-                                {{ receiptData.currency }}
+                                {{ receiptData.recAmountCur }}
                               </td>
                               <td>
                                 <span *ngIf="data.type === 'debit'">
@@ -712,7 +712,7 @@
                                 <span *ngIf="data.type !== 'debit'">
                                   0.00
                                 </span>
-                                {{ receiptData.currency }}
+                                {{ receiptData.recAmountCur }}
                               </td>
                             </tr>
                           </tbody>

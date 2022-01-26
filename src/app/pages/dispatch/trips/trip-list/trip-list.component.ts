@@ -173,7 +173,7 @@ export class TripListComponent implements OnInit {
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     private dashboardUtilityService: DashboardUtilityService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.initDataTable();
@@ -360,8 +360,8 @@ export class TripListComponent implements OnInit {
           `trips/delete/${eventData.tripID}/${eventData.tripNo}/${eventData.settlmnt}/${eventData.tripStatus}`
         )
         .subscribe({
-          complete: () => {},
-          error: () => {},
+          complete: () => { },
+          error: () => { },
           next: (result: any) => {
             this.trips = [];
             this.confirmedTrips = [];
@@ -633,15 +633,15 @@ export class TripListComponent implements OnInit {
       this.apiService
         .getData(
           "trips/fetch/records/all?searchValue=" +
-            this.tripsFiltr.searchValue +
-            "&startDate=" +
-            this.tripsFiltr.start +
-            "&endDate=" +
-            this.tripsFiltr.end +
-            "&category=" +
-            this.tripsFiltr.category +
-            "&lastKey=" +
-            this.lastEvaluatedKey
+          this.tripsFiltr.searchValue +
+          "&startDate=" +
+          this.tripsFiltr.start +
+          "&endDate=" +
+          this.tripsFiltr.end +
+          "&category=" +
+          this.tripsFiltr.category +
+          "&lastKey=" +
+          this.lastEvaluatedKey
         )
         .subscribe(
           (result: any) => {
@@ -868,6 +868,11 @@ export class TripListComponent implements OnInit {
 
   onScroll() {
     if (this.loaded) {
+      this.tripsFiltr.searchValue = "";
+      this.tripsFiltr.startDate = "";
+      this.tripsFiltr.endDate = "";
+      this.tripsFiltr.category = null;
+
       this.isLoad = true;
       this.isLoadText = "Loading";
       this.initDataTable();

@@ -45,6 +45,7 @@ export class SalesOrderListComponent implements OnInit {
       value: 'voided'
     }
   ];
+  emailDisabled = false;
 
   constructor(public accountService: AccountService, private toaster: ToastrService, public apiService: ApiService) { }
 
@@ -85,18 +86,20 @@ export class SalesOrderListComponent implements OnInit {
   }
 
   async fetchSales(refresh?: boolean) {
+    let searchParam = null;
     if (refresh === true) {
       this.lastItemSK = '';
       this.allSales = [];
     }
     if (this.lastItemSK !== 'end') {
-      if (this.filterData.category) {
-        this.filterData.category = encodeURIComponent(`"${this.filterData.category}"`);
+      if (
+        this.filterData.unit !== null &&
+        this.filterData.unit !== ""
+      ) {
+        searchParam = this.filterData.category === 'saleOrder' ? encodeURIComponent(`"${this.filterData.unit}"`) : `${this.filterData.unit}`;
       }
-      if (this.filterData.unit) {
-        this.filterData.unit = encodeURIComponent(`"${this.filterData.unit}"`);
-      }
-      this.accountService.getData(`sales-orders/paging?category=${this.filterData.category}&unit=${this.filterData.unit}&status=${this.filterData.status}&startDate=${this.filterData.startDate}&endDate=${this.filterData.endDate}&lastKey=${this.lastItemSK}`)
+
+      this.accountService.getData(`sales-orders/paging?category=${this.filterData.category}&unit=${searchParam}&status=${this.filterData.status}&startDate=${this.filterData.startDate}&endDate=${this.filterData.endDate}&lastKey=${this.lastItemSK}`)
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.isSearch = false;
@@ -173,5 +176,19 @@ export class SalesOrderListComponent implements OnInit {
       this.fetchSales();
     }
     this.loaded = false;
+  }
+
+  async sendConfirmationEmail(i: any, saleID: any) {
+    this.emailDisabled = true;
+    let result: any = await this.accountService
+      .getData(`sales-orders/send/confirmation-email/${saleID}`)
+      .toPromise();
+    this.emailDisabled = false;
+    if (result) {
+      this.allSales[i].status = 'sent';
+      this.toaster.success("Email sent successfully");
+    } else {
+      this.toaster.error("Something went wrong.");
+    }
   }
 }

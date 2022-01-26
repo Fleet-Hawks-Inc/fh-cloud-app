@@ -106,7 +106,7 @@ export class CompanyDocumentsComponent implements OnInit {
       });
     }
   }, 800);
-    loaded: any = false;
+  loaded: any = false;
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
@@ -259,6 +259,7 @@ export class CompanyDocumentsComponent implements OnInit {
             // this.documentData.documentName = '';
             this.documentData.description = '';
             this.lastEvaluatedKey = '';
+            this.documents = [];
             this.fetchDocumentsCount();
             this.submitDisabled = false;
           }
@@ -303,7 +304,20 @@ export class CompanyDocumentsComponent implements OnInit {
     this.ifEdit = true;
     this.modalTitle = 'Edit';
     this.newDoc = [];
-    
+    this.documentData = {
+      categoryType: 'company',
+      tripID: null,
+      documentNumber: '',
+      docType: null,
+      // documentName: '',
+      description: '',
+      uploadedDocs: [],
+      dateCreated: moment().format('YYYY-MM-DD')
+    };
+    this.documentData.documentNumber = '';
+    this.documentData.docType = null;
+    this.documentData.description = '';
+    this.documentData.uploadedDocs = [];
     this.apiService
       .getData(`documents/${this.currentID}`)
       .subscribe((result: any) => {
@@ -324,7 +338,7 @@ export class CompanyDocumentsComponent implements OnInit {
         this.documentData.dateCreated = result.dateCreated;
         this.documentData.uploadedDocs = result.uploadedDocs;
         // this.uploadeddoc = result.uploadedDocs;
-                if (
+        if (
           result.uploadedDocs !== undefined &&
           result.uploadedDocs.length > 0
         ) {
@@ -354,36 +368,36 @@ export class CompanyDocumentsComponent implements OnInit {
             }
           });
         }
-        
-/*
-        if (result.uploadedDocs.length > 0) {
-          result.uploadedDocs.forEach((x: any) => {
-            let obj: any = {};
-            if (
-              x.storedName.split(".")[1] === "jpg" ||
-              x.storedName.split(".")[1] === "png" ||
-              x.storedName.split(".")[1] === "jpeg"
-            ) {
-              obj = {
-                imgPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
-                docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
-                displayName: x.displayName,
-                name: x.storedName,
-                ext: x.storedName.split(".")[1],
-              };
-            } else {
-              obj = {
-                imgPath: "assets/img/icon-pdf.png",
-                docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
-                displayName: x.displayName,
-                name: x.storedName,
-                ext: x.storedName.split(".")[1],
-              };
-            }
-            this.newDoc.push(obj);
-          });
-        }
-*/
+
+        /*
+                if (result.uploadedDocs.length > 0) {
+                  result.uploadedDocs.forEach((x: any) => {
+                    let obj: any = {};
+                    if (
+                      x.storedName.split(".")[1] === "jpg" ||
+                      x.storedName.split(".")[1] === "png" ||
+                      x.storedName.split(".")[1] === "jpeg"
+                    ) {
+                      obj = {
+                        imgPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+                        docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+                        displayName: x.displayName,
+                        name: x.storedName,
+                        ext: x.storedName.split(".")[1],
+                      };
+                    } else {
+                      obj = {
+                        imgPath: "assets/img/icon-pdf.png",
+                        docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+                        displayName: x.displayName,
+                        name: x.storedName,
+                        ext: x.storedName.split(".")[1],
+                      };
+                    }
+                    this.newDoc.push(obj);
+                  });
+                }
+        */
       });
     $('#addDocumentModal').modal('show');
   }
@@ -466,36 +480,44 @@ export class CompanyDocumentsComponent implements OnInit {
     }
   }
 
-  async initDataTable() {
-    if (this.lastEvaluatedKey !== 'end'){
-    this.apiService.getData(`documents/fetch/records?categoryType=company&searchValue=${this.filterValues.searchValue}&from=${this.filterValues.start}&to=${this.filterValues.end}&lastKey=${this.lastEvaluatedKey}`)
-      .subscribe((result: any) => {
-        if (result.Items.length == 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-        if (result.Items.length > 0) {
-                if (result.LastEvaluatedKey !== undefined) {
-                    this.lastEvaluatedKey = encodeURIComponent(result.LastEvaluatedKey.docSK);
-                }
-                else {
-                    this.lastEvaluatedKey = 'end'
-                }
-                this.documents = this.documents.concat(result.Items);
-                this.loaded = true;
+  async initDataTable(refresh?: boolean) {
+    if (refresh === true) {
+      this.lastEvaluatedKey = "";
+      this.documents = [];
+    }
+    if (this.lastEvaluatedKey !== 'end') {
+      this.apiService.getData(`documents/fetch/records?categoryType=company&searchValue=${this.filterValues.searchValue}&from=${this.filterValues.start}&to=${this.filterValues.end}&lastKey=${this.lastEvaluatedKey}`)
+        .subscribe((result: any) => {
+          if (result.Items.length == 0) {
+            this.dataMessage = Constants.NO_RECORDS_FOUND;
+          }
+          if (result.Items.length > 0) {
+            if (result.LastEvaluatedKey !== undefined) {
+              this.lastEvaluatedKey = encodeURIComponent(result.LastEvaluatedKey.docSK);
             }
-        // this.suggestions = [];
-        // this.getStartandEndVal();
-        // this.documents = result['Items'];
-    });
+            else {
+              this.lastEvaluatedKey = 'end'
+            }
+            for (let i = 0; i < result.Items.length; i++) {
+              const element = result.Items[i];
+              this.documents.push(element)
+            }
+            // this.documents = this.documents.concat(result.Items);
+            this.loaded = true;
+          }
+          // this.suggestions = [];
+          // this.getStartandEndVal();
+          // this.documents = result['Items'];
+        });
     }
   }
-  
-    onScroll() {
-        if (this.loaded) {
-            this.initDataTable();
-        }
-        this.loaded = false;
-      }
+
+  onScroll() {
+    if (this.loaded) {
+      this.initDataTable();
+    }
+    this.loaded = false;
+  }
 
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
