@@ -1,8 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import Constants from "../../../fleet/constants";
 import { AccountService, AccountUtilityService } from "./../../../../services";
 import * as html2pdf from "html2pdf.js";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 @Component({
   selector: "app-receipt-detail",
   templateUrl: "./receipt-detail.component.html",
@@ -10,6 +11,8 @@ import * as html2pdf from "html2pdf.js";
 })
 export class ReceiptDetailComponent implements OnInit {
   dataMessage = Constants.NO_RECORDS_FOUND;
+  @ViewChild("recptDetail", { static: true })
+  modalContent: TemplateRef<any>;
   public recID: string;
   accountsObjects = {};
   accountsIntObjects: any = {};
@@ -42,7 +45,8 @@ export class ReceiptDetailComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private route: ActivatedRoute,
-    private accountUtility: AccountUtilityService
+    private accountUtility: AccountUtilityService,
+    private modalService: NgbModal,
   ) {}
 
   async ngOnInit() {
@@ -110,5 +114,19 @@ export class ReceiptDetailComponent implements OnInit {
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     });
     localStorage.setItem("downloadDisabled", "false");
+  }
+
+  showPreview() {
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: "static",
+      keyboard: false,
+      windowClass: "paymentPdfSection-prog__main",
+    };
+    this.modalService
+      .open(this.modalContent, ngbModalOptions)
+      .result.then(
+        (result) => {},
+        (reason) => {}
+      );
   }
 }

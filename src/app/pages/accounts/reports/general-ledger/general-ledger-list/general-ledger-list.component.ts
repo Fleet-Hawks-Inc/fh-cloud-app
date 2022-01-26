@@ -18,7 +18,11 @@ export class GeneralLedgerListComponent implements OnInit {
   filter = {
     actType: null,
     actName: null,
+    startDate: null,
+    endDate: null
   };
+  start = null;
+  end = null;
   constructor(private accountService: AccountService,
   ) { }
 
@@ -27,8 +31,10 @@ export class GeneralLedgerListComponent implements OnInit {
   }
 
   searchAccounts() {
-    if (this.filter.actType !== '' || this.filter.actType !== null || this.filter.actName !== null || this.filter.actName !== '') {
+    if (this.filter.actType !== '' || this.filter.actType !== null || this.filter.actName !== null || this.filter.actName !== '' ||  this.filter.startDate !== null ||  this.filter.endDate !== null) {
       this.disableSearch = true;
+      this.start = this.filter.startDate;
+      this.end = this.filter.endDate;
       this.accounts = [];
       this.lastItemSK = '';
       this.dataMessage = Constants.FETCHING_DATA;
@@ -42,6 +48,8 @@ export class GeneralLedgerListComponent implements OnInit {
     this.filter = {
       actType: null,
       actName: null,
+      startDate: null,
+      endDate: null
     };
     this.lastItemSK = '';
     this.accounts = [];
@@ -64,7 +72,7 @@ export class GeneralLedgerListComponent implements OnInit {
         }
         this.dataMessage = Constants.FETCHING_DATA;
       }
-      this.accountService.getData(`chartAc/ledger/report/paging?actName=${name}&actType=${type}&lastKey=${this.lastItemSK}`)
+      this.accountService.getData(`chartAc/ledger/report/paging?actName=${name}&actType=${type}&lastKey=${this.lastItemSK}&start=${this.start}&end=${this.end}`)
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.disableSearch = false;

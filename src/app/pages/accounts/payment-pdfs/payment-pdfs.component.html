@@ -1,14 +1,13 @@
-<div class="modal fade" id="chequeModal2" role="dialog" tabindex="-1">
-  <div class="modal-dialog" role="document" style="max-width: 750px">
+<ng-template #driverPaymentDetail let-modal>
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Payment</h4>
-        <button type="button" class="close">&times;</button>
+        <button type="button" class="close" (click)="modal.dismiss()">&times;</button>
       </div>
       <form>
         <div class="modal-body">
           <!-- driver pdf -->
-          <section class="cheque-wrapper" id="driver_pay_pdf">
+          <section class="cheque-wrapper" id="driver_pay_pdf" *ngIf="paymentData.paymentTo === 'driver' || paymentData.paymentTo === 'employee'">
             <table
               width="90%"
               border="0"
@@ -258,7 +257,7 @@
                             </p>
                           </td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                           <td class="pl-3 pt-2">
                             <p class="text-3 text-dark mb-2">
                               Critical Workers Benefit
@@ -279,7 +278,7 @@
                               }}
                             </p>
                           </td>
-                        </tr>
+                        </tr> -->
                         <tr>
                           <td class="pl-3 pt-2">
                             <p class="text-3 text-dark mb-2">
@@ -593,7 +592,7 @@
           </section>
 
           <!-- owner operator pdf -->
-          <section class="cheque-wrapper" id="ownerOperator_pay_pdf">
+          <section class="cheque-wrapper" id="ownerOperator_pay_pdf" *ngIf="this.paymentData.paymentTo === 'owner_operator' || this.paymentData.paymentTo === 'carrier'">
             <table
               width="90%"
               border="0"
@@ -1209,7 +1208,14 @@
             </table>
           </section>
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="modal.dismiss()">
+            Close
+          </button>
+          <button type="button" class="btn btn-success" (click)="generatePaymentPDF()">
+            Download PDF
+          </button>
+        </div>
       </form>
     </div>
-  </div>
-</div>
+</ng-template>
