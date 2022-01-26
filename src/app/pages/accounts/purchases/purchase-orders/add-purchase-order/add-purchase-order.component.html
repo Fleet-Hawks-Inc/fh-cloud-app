@@ -566,25 +566,34 @@
                               let td = index
                             "
                           >
-                            <div class="col-lg-12 bordtop pt-1">
-                              <p class="text-right">
-                                {{ taxD.amount | number: "1.2-2" }}
-                              </p>
+                            <div class="col-lg-12 pt-1">
+                              <div class="bordtop">
+                                <p class="text-right">
+                                  {{ taxD.amount | number: "1.2-2" }}
+                                </p>
+                              </div>
                             </div>
                           </div>
                         </div>
+
                         <div class="row">
-                          <div class="col-lg-9 bordtop pt-1">
-                            <h5
-                              class="text-right font-weight-semibold text-4 text-dark"
-                            >
-                              Total Amount
-                            </h5>
+                          <div class="col-lg-9 pr-0 pt-1">
+                            <div class="bordtop">
+                              <h5
+                                class="text-right font-weight-semibold text-4 text-dark"
+                              >
+                                Total Amount
+                              </h5>
+                            </div>
                           </div>
-                          <div class="col-lg-3 bordtop pt-1">
-                            <p class="text-right">
-                              {{ orderData.total.finalTotal | number: "1.2-2" }}
-                            </p>
+                          <div class="col-lg-3 pl-0 pt-1">
+                            <div class="bordtop">
+                              <p class="text-right">
+                                {{
+                                  orderData.total.finalTotal | number: "1.2-2"
+                                }}
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
