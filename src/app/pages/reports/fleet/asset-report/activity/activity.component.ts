@@ -73,7 +73,8 @@ export class ActivityComponent implements OnInit {
           this.lastItemSK = 'end';
         }
         this.loaded = true;
-                 for (let ast of result.Items) {
+                 for (let ast of result.Items) 
+                 {
                     let dataa = ast
                     ast.miles = 0
                     for (let element of dataa.tripPlanning) {
@@ -86,6 +87,7 @@ export class ActivityComponent implements OnInit {
              });
     }
   }
+  
   searchFilter() {
     if (this.start != null && this.end != null) {
       if (this.start != null && this.end == null) {
@@ -108,6 +110,7 @@ export class ActivityComponent implements OnInit {
       return false;
     }
   }
+  
   fetchFullExport() {
     this.apiService.getData(`trips/fetch/assetActivity/list?asset=${this.astId}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.exportData = this.allData;
@@ -121,6 +124,7 @@ export class ActivityComponent implements OnInit {
       this.generateCSV();
     });
   }
+  
   generateCSV() {
     if (this.exportData.length > 0) {
       let dataObject = []
@@ -157,13 +161,15 @@ export class ActivityComponent implements OnInit {
         obj["Asset"] = element.assetName.replace(/, /g, ' &');;
         obj["Trip#"] = element.tripNo;
         obj["Order#"] = element.orderName.replace(/, /g, ' &');
+        obj["Vehicle#"] = element.vehicle.replace(/, /g, ' &');
+        obj["Driver Name"] = element.driverName;
         obj["location"] = location;
         obj["	Date"] = date;
         obj["Province(US)"] = usState;
-        obj["US Province Miles"] = usMiles;
+        obj["US Miles"] = usMiles;
         obj["US(Total)"] = element.usMiles;
         obj["Province(Canada)"] = canState;
-        obj["Canada Province Miles"] = canMiles;
+        obj["Canada Miles"] = canMiles;
         obj["Canada(Total)"] = element.canMiles;
         obj["Total Miles"] = element.miles;
         dataObject.push(obj)

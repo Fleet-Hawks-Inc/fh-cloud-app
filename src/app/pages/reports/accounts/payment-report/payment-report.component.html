@@ -1,0 +1,135 @@
+<style>
+    .extra {
+        display: none;
+    }
+</style>
+<section class="body">
+
+    <div class="inner-wrapper">
+
+        <section role="main" class="content-body pl-1 pt-0 pr-0">
+            <header class="page-header pr19 pl11">
+                <form class="form-horizontal" method="get">
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-md-10 col-lg-10 pr-1 d-flex">
+                            
+                            <div class="col-md-3 col-lg-3 pr-0">
+                                <ng-select [(ngModel)]="filter.type" name="type" placeholder="Select type">
+                                    <ng-option *ngFor="let payment of paymentType" [value]="payment.type">{{payment.name}}</ng-option>
+                                </ng-select>
+                              </div>
+                              <div class="col-md-3 col-lg-3 pr-0">
+                                <ng-select [(ngModel)]="filter.mode" name="type" placeholder="Select mode">
+                                    <ng-option *ngFor="let payment of paymentMode" [value]="payment.type">{{payment.name}}</ng-option>
+                                </ng-select>
+                              </div>
+                              <div class="col-lg-3 col-md-3 pr-0">
+                                <div class="input-daterange input-group" data-plugin-datepicker>
+                                  <span class="input-group-prepend">
+                                    <span class="input-group-text">
+                                      <i class="fas fa-calendar-alt"></i>
+                                    </span>
+                                  </span>
+                                  <input [(ngModel)]="filter.startDate" name="startDate" type="text" placeholder="yyyy/mm/dd"
+                                    (click)="startDate.toggle()" ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                                  <span class="
+                                      input-group-text
+                                      border-left-0 border-right-0
+                                      rounded-0
+                                    ">
+                                    to
+                                  </span>
+                                  <input [(ngModel)]="filter.endDate" name="endDate" type="text" placeholder="yyyy/mm/dd"
+                                    (click)="endDate.toggle()" ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                                </div>
+                              </div>
+                              <div class="col-md-2 col-lg-2">
+                                <button type="submit" (click)="searchFilter()" class="btn btn-sm
+                      btn-success mr-3">Search</button>
+                                <button type="button" (click)="resetFilter()" class="btn btn-sm
+                      btn-success">Reset</button>
+                            </div>
+                        </div>
+
+                        
+                        <div class="col-md-2 col-lg-2 text-right pr-1">
+                            <a routerLink="" class="btn btn-sm btn-success">Export
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </header>
+
+            <section class="m-2">
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                            [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                            <div class="bg-white p-3 text-dark">
+                                <div class="form-group row pt-3">
+                                    <div class="col-lg-12">
+                                        <div class="table-responsive">
+                                            <table id="diverTbl" class="row-border hover table
+                                                             table-bordered table-striped mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th id="" class="col1 minWidth200">Date</th>
+                                                        <!-- <th id="" class="col2 minWidth120">Duty Status</th> -->
+                                                        <th id="" class="minWidth120">Payment Mode</th>
+                                                        <th id="" class="minWidth120">Type Of Payment</th>
+                                                        <th id="" class="minWidth120">Vendor</th>
+                                                        <th id="" class="minWidth120">Currency</th>
+                                                        <th id="" class="minWidth120">Amount</th>
+                                                        
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngIf="allPayments.length == 0" class="text-center">
+                                                        <td colspan="14">{{dataMessage}}</td>
+                                                    </tr>
+                                                    <tr *ngFor="let element of allPayments">
+                                                        <td>
+                                                            {{element.payModeDate}}
+                                                        </td>
+                                                        <td>
+                                                            {{element.payMode}}
+                                                        </td>
+                                                        <td>
+                                                            {{element.type}}
+                                                        </td>
+                                                        <td>
+                                                            {{element.paymentTo}} : {{element.entityName | titlecase}}
+                                                        </td>
+                                                      
+                                                        <td>
+                                                            {{element.currency}}
+                                                        </td>
+                                                        <td>
+                                                            {{element.amount}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </section>
+
+        </section>
+        <div class="col-lg-12 mt-3 text-center" *ngIf="lastAdvanceSK != 'end' && lastDriverSK!='end' && lastEmployeeSK!='end' && lastExpenceSK!= 'end' && allPayments.length !== 0">
+            <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">Load
+                More..</button>
+        </div>
+    </div>
+</section>

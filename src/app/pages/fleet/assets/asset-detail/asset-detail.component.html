@@ -593,16 +593,19 @@
                                                             <td colspan="2">{{ noRecordMsg }}</td>
                                                         </tr>
                                                         <tr *ngFor="let data of lDocs; let i = index">
-                                                            <td width="80%">Document {{ i + 1 }}</td>
+                                                        <td width="80%">
+                                                      <a href="{{data.path}}">Document {{ i + 1 }}</a>
+                                                        </td>
+                                                 <!--   <a href="{{ data.path }}">Document {{ i+1}}</a> -->
                                                             <td width="20%">
                                                                 <a href="javascript:;"
                                                                     class="btn btn-deafault pull-right btn-xs"
                                                                     (click)="deleteDocument('loan', data.name)"><i
                                                                         class="fas fa-trash-alt"></i></a>
                                                                 <a class="btn btn-deafault pull-right btn-xs"
-                                                                    href="{{ data.path }}" target="_blank"><i
+                                                                     target="_blank"><i
                                                                         class="fas fa-download"></i></a>
-                                                                <a href="javascript:;"
+                                                                <a href="{{ data.path }}"
                                                                     class="btn btn-deafault pull-right btn-xs"
                                                                     (click)="setPDFSrc(data.path)" data-toggle="modal"
                                                                     data-target="#viewDocModal"><i
@@ -829,7 +832,9 @@
                                                             <td colspan="2">{{ noRecordMsg }}</td>
                                                         </tr>
                                                         <tr *ngFor="let data of pDocs; let i = index">
-                                                            <td width="80%">Document {{ i + 1 }}</td>
+                                                         <td width="80%">
+                                                      <a href="{{data.path}}">Document {{ i + 1 }}</a>
+                                                        </td>
                                                             <td width="20%">
                                                                 <a href="javascript:;"
                                                                     class="btn btn-deafault pull-right btn-xs" (click)="
@@ -900,7 +905,7 @@
                                                 <hr class="solid mt-3" />
                                                 <div class="row mb-1" *ngFor="let doc of assetsDocs; let d = index">
                                                     <div class="col-lg-9">
-                                                        <a href="javascript:;" data-toggle="modal"
+                                                        <a href="{{ doc.path }}" data-toggle="modal"
                                                             data-target="#viewDocModal"
                                                             (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
                                                     </div>
@@ -911,6 +916,11 @@
                                                         <a href="javascript:;" (click)="deleteDocument('doc', doc.name)"
                                                             class="modal-with-form">
                                                             <em class="fas fa-times text-danger"></em></a>
+                                                              <a href="{{ doc.path }}"
+                                                                    class="btn btn-deafault pull-right btn-xs"
+                                                                    (click)="setPDFSrc(doc.path)" data-toggle="modal"
+                                                                    data-target="#viewDocModal"><i
+                                                                        class="fas fa-eye"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
