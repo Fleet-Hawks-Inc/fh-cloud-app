@@ -52,9 +52,15 @@ export class PurchaseOrdersListComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.vendors = await this.dashboardUtilityService.getVendors();
+    await this.fetchVendor();
     await this.fetchPurchases();
 
+  }
+  async fetchVendor() {
+    let result: any = await this.apiService
+      .getData(`contacts/get/list/vendor`)
+      .toPromise();
+    this.vendors = result;
   }
 
   resetUnit() {
@@ -62,19 +68,18 @@ export class PurchaseOrdersListComponent implements OnInit {
   }
 
   async fetchPurchases() {
-    console.log('filter', this.filter)
     if (this.lastItemSK !== "end") {
       let category = null;
       let unit = null;
       if (this.filter.category) {
-        category = encodeURIComponent(`"${this.filter.category}"`);
+        category = `${this.filter.category}`;
       }
       if (this.filter.unit) {
         unit = encodeURIComponent(`"${this.filter.unit}"`);
       }
       let result: any = await this.accountService
         .getData(
-          `purchase-orders/paging?category=${category}&unit=${unit}&status=${this.filter.status}&start=${this.filter.startDate}&end=${this.filter.endDate}&lastKey=`
+          `purchase-orders/paging?category=${category}&unit=${unit}&status=${this.filter.status}&start=${this.filter.startDate}&end=${this.filter.endDate}&lastKey=${this.lastItemSK}`
         )
         .toPromise();
       this.disableSearch = false;

@@ -125,15 +125,13 @@ export class SettlementsDetailComponent implements OnInit {
       .getData(`settlement/detail/${this.settlementID}`)
       .subscribe((result: any) => {
         this.settlementData = result[0];
-<<<<<<< HEAD
         if (!this.settlementData.prStart && !this.settlementData.prEnd) {
           this.settlementData.prStart = this.settlementData.fromDate;
           this.settlementData.prEnd = this.settlementData.toDate;
-=======
+        }
         if (!this.settlementData.isFeatEnabled) {
           this.fetchAccountsByIDs();
           this.fetchAccountsByInternalIDs();
->>>>>>> master
         }
         this.settlementData.transactionLog.map((v: any) => {
           v.type = v.type.replace("_", " ");

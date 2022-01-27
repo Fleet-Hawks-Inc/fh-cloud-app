@@ -684,7 +684,7 @@
                             <td>{{ expense.txnDate | date: "yyyy/MM/dd" }}</td>
                             <td>{{ expense.catName }}</td>
                             <td>Other Expense</td>
-                            <td>{{ expense.amount }} {{ expense.currency }}</td>
+                            <td>{{ expense.finalTotal | number: "1.2-2"  }} {{ expense.currency }}</td> 
                           </tr>
                         </tbody>
                         <tfoot *ngIf="expenses.length> 0">
@@ -692,7 +692,7 @@
                             <td></td>
                             <td></td>
                             <td class="font-weight-bold">Total Amount</td>
-                            <td class="font-weight-bold">{{ totalExp }}</td>
+                            <td class="font-weight-bold">{{ totalExp | number: "1.2-2"  }}</td>
                           </tr>
                         </tfoot>
                       </table>
