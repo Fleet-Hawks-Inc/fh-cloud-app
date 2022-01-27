@@ -111,7 +111,8 @@
                         <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
                           }}">
-                          <span class="badge badge-dark p-1 text-uppercase">{{
+                          <span *ngIf="item.payStatus && item.payStatus != ''"
+                            [ngClass]="{'badge badge-dark p-1 text-uppercase': item.payStatus && item.payStatus != ''}">{{
                             item.payStatus
                             }}</span>
                         </td>
@@ -130,11 +131,14 @@
                         </td>
                         <td>
                           <div class="btn-group flex-wrap">
-                            <button type="button" [disabled]="item.status != 'open'" class="m-0 p-0 btn"
-                              data-toggle="dropdown">
+                            <button type="button" [disabled]="item.status == 'voided' || item.status == 'closed'"
+                              class="m-0 p-0 btn" data-toggle="dropdown">
                               <i class="fas fa-ellipsis-v"></i>
                             </button>
                             <div class="dropdown-menu" role="menu">
+                              <button [disabled]="emailDisabled" class="dropdown-item" *ngIf="item.status === 'open'"
+                                href="javascript:;" (click)="sendConfirmationEmail(i, item.saleID)">Send email to
+                                customer</button>
                               <a routerLink="/accounts/sales/invoices/edit/{{
                                 item.saleID
                                 }}" class="dropdown-item text-1" href="javascript:;">Edit</a>

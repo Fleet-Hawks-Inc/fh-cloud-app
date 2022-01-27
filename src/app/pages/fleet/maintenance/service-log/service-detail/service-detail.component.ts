@@ -39,7 +39,7 @@ export class ServiceDetailComponent implements OnInit {
   taskTaxAmount: number;
   taskTaxPercent: number;
   taskTotal: number;
-  
+
   partsSubTotal: number;
   partsQuantity: number;
   partsDiscountAmount: number;
@@ -56,13 +56,13 @@ export class ServiceDetailComponent implements OnInit {
   logImages = []
   logDocs = [];
 
-  pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   constructor(
-      private spinner: NgxSpinnerService,
-      private apiService: ApiService,
-      private route: ActivatedRoute,
-      private domSanitizer: DomSanitizer,
+    private spinner: NgxSpinnerService,
+    private apiService: ApiService,
+    private route: ActivatedRoute,
+    private domSanitizer: DomSanitizer,
   ) { }
 
   ngOnInit() {
@@ -78,14 +78,14 @@ export class ServiceDetailComponent implements OnInit {
   fetchProgramByID() {
     this.spinner.show(); // loader init
     this.apiService.getData(`serviceLogs/${this.logID}`).subscribe({
-      complete: () => {},
-      error: () => {},
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.logsData = result.Items[0];
-        
+
 
         this.fetchSelectedIssues(this.logsData.selectedIssues);
-       
+
         result = result.Items[0];
         this.vehicle = result.unitID;
         this.assetID = result.unitID;
@@ -114,9 +114,9 @@ export class ServiceDetailComponent implements OnInit {
         this.partsTotal = result.allServiceParts.total;
 
         this.currency = result.allServiceParts.currency;
-          this.logImages = result.uploadedPics;
-          this.logDocs = result.uploadDocument;
-        
+        this.logImages = result.uploadedPics;
+        this.logDocs = result.uploadDocument;
+
         /*
        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
           this.logImages = result.uploadedPhotos.map(x => ({
@@ -129,14 +129,14 @@ export class ServiceDetailComponent implements OnInit {
           this.logDocs = result.uploadedDocs.map(x => ({path: `${this.logurl}/${result.carrierID}/${x}`, name: x}));
         }
         */
-        
+
         this.spinner.hide(); // loader init
       },
     });
-    
+
   }
 
- fetchAllVehiclesIDs() {
+  fetchAllVehiclesIDs() {
     this.apiService.getData('vehicles/get/list')
       .subscribe((result: any) => {
         this.vehiclesObject = result;
@@ -146,25 +146,24 @@ export class ServiceDetailComponent implements OnInit {
   fetchAllVendorsIDs() {
     this.apiService.getData('contacts/get/list/vendor')
       .subscribe((result: any) => {
-        console.log('result vendor', result)
-        this.vendorsObject = result; 
+        this.vendorsObject = result;
       });
   }
 
   fetchSelectedIssues(issueIDs) {
-    if(issueIDs.length > 0) {
+    if (issueIDs.length > 0) {
       issueIDs = JSON.stringify(issueIDs);
-      this.apiService.getData('issues/fetch/selected?issueIds='+issueIDs)
-      .subscribe((result: any) => {
-        this.issuesObject = result;
-      });
+      this.apiService.getData('issues/fetch/selected?issueIds=' + issueIDs)
+        .subscribe((result: any) => {
+          this.issuesObject = result;
+        });
     }
   }
 
-  fetchUsers(){
+  fetchUsers() {
     this.apiService.getData('users/get/list').subscribe((result: any) => {
       this.users = result;
-      
+
     });
   }
 
@@ -176,22 +175,22 @@ export class ServiceDetailComponent implements OnInit {
   }
 
   // delete uploaded images and documents
-  delete(type: string, name: string, index:any) {
+  delete(type: string, name: string, index: any) {
     this.apiService.deleteData(`serviceLogs/uploadDelete/${this.logID}/${type}/${name}`).subscribe((result: any) => {
-      if(type === 'image') {
+      if (type === 'image') {
         this.logImages.splice(index, 1);
       } else {
-        this.logDocs.splice(index,1);
+        this.logDocs.splice(index, 1);
       }
     });
   }
 
   setPDFSrc(val) {
     let pieces = val.split(/[\s.]+/);
-    let ext = pieces[pieces.length-1];
+    let ext = pieces[pieces.length - 1];
     this.pdfSrc = '';
-    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
-      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+    if (ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }

@@ -13,7 +13,7 @@ export class AccountUtilityService {
     var size = Object.keys(this.predefinedAccounts).length;
     if (size === 0) {
       const result = await this.accountService
-        .getData("chartAc/get/internalID/list/all")
+        .getData("chartAc/get/all/list")
         .toPromise();
       this.predefinedAccounts = result;
     }

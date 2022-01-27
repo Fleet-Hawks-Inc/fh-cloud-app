@@ -149,7 +149,8 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     );
 
     this.periodVarianceCAD = Math.abs(
-      Number(this.account.opnBalCAD) - Number(this.account.closingAmtCAD)
+      Math.abs(Number(this.account.opnBalCAD)) -
+        Math.abs(Number(this.account.closingAmtCAD))
     );
     // if (this.account.closingAmtCAD > this.account.opnBalCAD) {
     //   this.periodVarianceCAD = +(
@@ -188,7 +189,8 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     // }
 
     this.periodVarianceUSD = Math.abs(
-      Number(this.account.opnBalUSD) - Number(this.account.closingAmtUSD)
+      Math.abs(Number(this.account.opnBalUSD)) -
+        Math.abs(Number(this.account.closingAmtUSD))
     );
     // if (this.account.closingAmtUSD > this.account.opnBalUSD) {
     //   this.periodVarianceUSD = +(
