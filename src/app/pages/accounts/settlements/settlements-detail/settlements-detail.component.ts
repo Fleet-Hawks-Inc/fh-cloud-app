@@ -21,6 +21,7 @@ export class SettlementsDetailComponent implements OnInit {
   settlementData = {
     type: null,
     entityId: null,
+    entityName: "",
     setNo: "",
     txnDate: "",
     fromDate: null,
@@ -28,6 +29,7 @@ export class SettlementsDetailComponent implements OnInit {
     prStart: null,
     prEnd: null,
     tripIds: [],
+    tripNames: [],
     trpData: [],
     miles: {
       tripsTotal: 0,
@@ -83,6 +85,7 @@ export class SettlementsDetailComponent implements OnInit {
     fuelIds: [],
     fuelData: [],
     transactionLog: [],
+    isFeatEnabled: false,
   };
   expenses = [];
   tripsObj = [];
@@ -111,9 +114,9 @@ export class SettlementsDetailComponent implements OnInit {
   ngOnInit() {
     this.settlementID = this.route.snapshot.params[`settlementID`];
     this.fetchSettlementDetail();
-    this.fetchTrips();
-    this.fetchAccountsByIDs();
-    this.fetchAccountsByInternalIDs();
+    // this.fetchTrips();
+    // this.fetchAccountsByIDs();
+    // this.fetchAccountsByInternalIDs();
     this.fetchPayments();
   }
 
@@ -126,42 +129,20 @@ export class SettlementsDetailComponent implements OnInit {
           this.settlementData.prStart = this.settlementData.fromDate;
           this.settlementData.prEnd = this.settlementData.toDate;
         }
+        if (!this.settlementData.isFeatEnabled) {
+          this.fetchAccountsByIDs();
+          this.fetchAccountsByInternalIDs();
+        }
         this.settlementData.transactionLog.map((v: any) => {
           v.type = v.type.replace("_", " ");
         });
         if (this.settlementData.paymentInfo) {
           this.entityPaymentType = this.settlementData.paymentInfo.pType;
         }
-        if (this.settlementData.type === "driver") {
-          this.fetchDriverDetail(this.settlementData.entityId);
-        } else {
-          this.fetchContact(this.settlementData.entityId);
-        }
+        this.entityName = this.settlementData.entityName;
         this.fetchSelectedFuelExpenses();
         this.carrierID = result[0].pk;
       });
-  }
-
-  fetchDriverDetail(driverID) {
-    this.apiService.getData(`drivers/${driverID}`).subscribe((result: any) => {
-      this.driverDetail = result.Items[0];
-      this.entityName = `${this.driverDetail.firstName} ${this.driverDetail.lastName} `;
-    });
-  }
-
-  fetchContact(contactID) {
-    this.apiService
-      .getData(`contacts/detail/${contactID}`)
-      .subscribe((result: any) => {
-        this.operatorDetail = result.Items[0];
-        this.entityName = this.operatorDetail.cName;
-      });
-  }
-
-  fetchTrips() {
-    this.apiService.getData(`trips/get/list`).subscribe((result: any) => {
-      this.tripsObj = result;
-    });
   }
 
   fetchAccountsByIDs() {

@@ -172,7 +172,7 @@ export class TripDetailComponent implements OnInit {
       this.expenses = result;
 
       for (const element of this.expenses) {
-        this.totalExp = this.totalExp + element.amount;
+        this.totalExp = this.totalExp + element.finalTotal;
       }
     });
   }
