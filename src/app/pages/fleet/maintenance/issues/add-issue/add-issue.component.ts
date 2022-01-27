@@ -69,7 +69,7 @@ export class AddIssueComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-
+  cloneID: any;
   // date: {year: number, month: number};
   constructor(
     private apiService: ApiService,
@@ -99,6 +99,12 @@ export class AddIssueComponent implements OnInit {
     }
     await this.fetchVehicles();
     await this.fetchAssets();
+    this.route.queryParams.subscribe((params) => {
+      this.cloneID = params.cloneID;
+      if (this.cloneID != undefined && this.cloneID != "") {
+        this.cloneIssue(this.cloneID);
+      }
+    });
   }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
@@ -400,4 +406,37 @@ export class AddIssueComponent implements OnInit {
         this.toaster.success(alertmsg + " Deleted Successfully");
       });
   }
+
+async cloneIssue(id:any){
+  this.apiService.getData("issues/" + id).subscribe(async (result: any) => {
+    result = result[0];
+    this.issueID = this.issueID;
+    this.issueName = result.issueName;
+    this.unitID = result.unitID;
+    this.fetchedUnitID = result.unitID;
+    this.fetchedUnitType = result.unitType;
+    this.unitType = result.unitType;
+    this.currentStatus = 'open';
+    this.reportedDate = result.reportedDate;
+    this.description = result.description;
+    this.odometer = result.odometer;
+    this.reportedBy = result.reportedBy;
+    this.assignedTo = result.assignedTo;
+    this.existingPhotos = result.uploadedPhotos;
+    this.existingDocs = result.uploadedDocs;
+    if (
+      result.uploadedPhotos !== undefined &&
+      result.uploadedPhotos.length > 0
+    ) {
+      this.issueImages = result.uploadedPics;
+    }
+
+    if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
+      this.issueDocs = result.uploadDocument;
+    }
+  })
+}
+
+
+
 }
