@@ -57,7 +57,7 @@
         "country-state-city": "3.0.1",
         "cssnano": "5.0.8",
 
-        "csv-file-validator": "^1.13.1",
+        "csv-file-validator": "1.13.1",
 
 
         "express": "4.17.1",
