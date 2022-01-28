@@ -15,6 +15,7 @@
                   <ng-option value="vendor">Vendor</ng-option>
                 </ng-select>
               </div>
+
               <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'paymentNo'">
                 <div class="input-group input-group-md mb-3">
                   <input type="text" class="form-control" placeholder="Search by payment number" name="paymentNo"
@@ -59,6 +60,12 @@
                     data of vendors | keyvalue"> {{
                     data.value }}
                   </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-md-2 col-lg-2 pr-0">
+                <ng-select [(ngModel)]="filter.payType" name="type" placeholder="Select payment type">
+                  <ng-option value="expense">Expense</ng-option>
+                  <ng-option value="payroll">Payroll</ng-option>
                 </ng-select>
               </div>
               <div class="col-lg-3 col-md-3 pr-0">
