@@ -56,7 +56,7 @@ const routes: Routes = [
     SafetySettingComponent,
     CustomerSettingComponent,
     ImportOverviewComponent,
-    VehImportComponent],
+    VehImportComponent,
     DoverviewComponent,
     ImportDriversComponent],
   imports: [
