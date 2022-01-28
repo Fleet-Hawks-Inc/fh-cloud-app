@@ -61,6 +61,32 @@
                   </div>
               </form>
           </header>
+          <section class="m-2">
+            <div class="row mb-3">
+                <div class="col-12 mb-4 ">
+                    <div class="bg-white p-3">
+                        <div class="row text-dark col-lg-3">
+                            <div class="col">
+                                <div class="maindriverbox" style="box-shadow: 3px 3px 5px;">
+                                    <div class="col-8">
+
+                                        <div>
+                                            <h4 class="mt-1 mb-0 font-weight-bold">Fuel</h4>
+                                            <h3><span
+                                                    *ngFor="let element of fuel"><span
+                                                    *ngFor="let item of element.data">{{item.qty}}</span></span>
+                                            </h3>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
           <div class="row text-dark">
               <div class="col pr-0">
                   <div class="card">

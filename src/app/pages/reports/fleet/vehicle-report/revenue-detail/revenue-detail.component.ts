@@ -18,7 +18,7 @@ export class RevenueDetailComponent implements OnInit {
   vehicleData = [];
   lastItemSK = ''
   datee = ''
-  data = []
+  fuel = []
   dataMessage = Constants.FETCHING_DATA;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -35,7 +35,7 @@ export class RevenueDetailComponent implements OnInit {
 
     this.vehicleId = this.route.snapshot.params[`vehicleId`];
     this.fetchRevenueData()
-    this.fuelQuery()
+    this.fetchFuel()
     // this.fetchVehicleName()
     // console.log(' this.vehicleId', this.vehicleId)
   }
@@ -85,6 +85,7 @@ export class RevenueDetailComponent implements OnInit {
     if (this.loaded) {
 
       this.fetchRevenueData();
+      this.fetchFuel();
       // this.fetchVehicleName();
     }
     this.loaded = false;
@@ -112,15 +113,30 @@ export class RevenueDetailComponent implements OnInit {
       return false;
     }
   }
-  fuelQuery() {
-    let veh = encodeURIComponent(JSON.stringify(this.vehicleId));
-    // console.log('veh', veh)
-    this.apiService.getData(`fuelEntries/get/vehicle/enteries?vehicle=${veh}&start=${this.start}&end=${this.end}`).subscribe((result: any) => {
+  // fuelQuery() {
+  //   let veh = encodeURIComponent(JSON.stringify(this.vehicleId));
+  //   // console.log('veh', veh)
+  //   this.apiService.getData(`fuelEntries/get/vehicle/enteries?vehicle=${veh}&start=${this.start}&end=${this.end}`).subscribe((result: any) => {
 
-      this.data = result
-      // console.log('data', this.data)
+  //     this.data = result
+  //     console.log('data', this.data)
 
-    })
+  //   })
+  // }
+
+  fetchFuel() {
+    this.apiService.getData(`fuelEntries/getBy/vehicle/trips/${this.vehicleId}?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
+      this.fuel = result.Items;
+      // for (let element of this.fuel) {
+      //   let fuelData = element
+      //   element.abc = 0
+      //   for (let fuel of fuelData.data) {
+      //     element.abc += Number(fuel.qty);
+      //     console.log(' fuel', fuel)
+      //   }
+      // }
+      console.log('fuel', this.fuel)
+    });
   }
 
 }
