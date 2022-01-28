@@ -101,7 +101,7 @@ export class DetailPdfComponent implements OnInit {
     private apiService: ApiService,
     private modalService: NgbModal,
     private accountService: AccountService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // settlmentDetailSection
@@ -134,8 +134,8 @@ export class DetailPdfComponent implements OnInit {
           this.modalService
             .open(this.modalContent, ngbModalOptions)
             .result.then(
-              (result) => {},
-              (reason) => {}
+              (result) => { },
+              (reason) => { }
             );
         }
       }
@@ -212,14 +212,11 @@ export class DetailPdfComponent implements OnInit {
             this.settlementData.entityId === plan.coDriverID ||
             this.settlementData.entityId === plan.carrierID
           ) {
-            element.pickupLocation += `${pickCount}) <strong>${
-              plan.type
-            }</strong>: ${plan.location} <br>
-            <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${
-              plan.type === "Pickup" ? "Pickup" : "Drop"
-            } Time</u>: ${
-              plan.type === "Pickup" ? plan.pickupTime : plan.dropTime
-            } <br>`;
+            element.pickupLocation += `${pickCount}) <strong>${plan.type
+              }</strong>: ${plan.location} <br>
+            <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${plan.type === "Pickup" ? "Pickup" : "Drop"
+              } Time</u>: ${plan.type === "Pickup" ? plan.pickupTime : plan.dropTime
+              } <br>`;
             pickCount++;
             element.entityMiles += Number(plan.miles);
 
@@ -256,14 +253,11 @@ export class DetailPdfComponent implements OnInit {
             this.operatorDriversList.includes(plan.driverID) ||
             this.operatorDriversList.includes(plan.coDriverID)
           ) {
-            element.pickupLocation += `${pickCount}) <strong>${
-              plan.type
-            }</strong>: ${plan.location} <br>
-              <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${
-              plan.type === "Pickup" ? "Pickup" : "Drop"
-            } Time</u>: ${
-              plan.type === "Pickup" ? plan.pickupTime : plan.dropTime
-            } <br>`;
+            element.pickupLocation += `${pickCount}) <strong>${plan.type
+              }</strong>: ${plan.location} <br>
+              <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${plan.type === "Pickup" ? "Pickup" : "Drop"
+              } Time</u>: ${plan.type === "Pickup" ? plan.pickupTime : plan.dropTime
+              } <br>`;
             pickCount++;
             element.entityMiles += Number(plan.miles);
 

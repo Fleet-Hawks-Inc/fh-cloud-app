@@ -259,9 +259,12 @@
                                 account.closingAmtCAD
                                 | absoluteValue
                                 | number: "1.2-2"
-                                }}&nbsp;
+                                }}&nbsp;CAD
 
-                                {{ account.closingAmtCAD > 0 ? 'Dr' : 'Cr'}}
+                                <span *ngIf="account.isFeatEnabled">
+                                  {{ account.closingAmtCAD > 0 ? 'Dr' : 'Cr'}}
+                                </span>
+                                
                               </td>
                               <!-- <td></td> -->
                             </tr>
@@ -381,29 +384,33 @@
                                   trx.trxRunTotal
                                   | absoluteValue
                                   | number: "1.2-2"
-                                  }}&nbsp; <span>{{ trx.runTotalType }}</span>
+                                  }}&nbsp; <span>{{ trx.runTotalType }} {{ trx.trxType === 'debit' ? 'Dr' : 'Cr' }} </span>
                                 </td>
                               </tr>
                             </ng-container>
                             <tr>
-                              <td colspan="5" class="text-right font-weight-bold">
+                              <td colspan="7" class="text-right font-weight-bold">
                                 Closing Balance
                               </td>
-                              <td></td>
+                              <!-- <td></td> -->
                               <td>
                                 {{
                                 account.closingAmtUSD
                                 | absoluteValue
                                 | number: "1.2-2"
                                 }}&nbsp;USD
+
+                                <span *ngIf="account.isFeatEnabled">
+                                  {{ account.closingAmtUSD > 0 ? 'Dr' : 'Cr'}}
+                                </span>
                               </td>
-                              <td></td>
+                              <!-- <td></td> -->
                             </tr>
                             <tr>
-                              <td colspan="5" class="text-right font-weight-bold">
+                              <td colspan="7" class="text-right font-weight-bold">
                                 Period Variance
                               </td>
-                              <td></td>
+                              <!-- <td></td> -->
                               <td>
                                 {{
                                 periodVarianceUSD
@@ -411,7 +418,7 @@
                                 | number: "1.2-2"
                                 }}&nbsp;USD
                               </td>
-                              <td></td>
+                              <!-- <td></td> -->
                             </tr>
                           </tbody>
                         </table>

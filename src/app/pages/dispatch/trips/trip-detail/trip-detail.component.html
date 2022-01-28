@@ -228,7 +228,7 @@
                             </div>
                             <div class="col-lg-7">
                               <input type="file" id="bolUpload" class="p-0
-                                form-control border-0 mb-2"  (change)="selectDocuments($event)" multiple />
+                                form-control border-0 mb-2" (change)="selectDocuments($event)" multiple />
                             </div>
                           </div>
                           <div class="row" *ngIf="uploadedDocSrc.length > 0" style="max-height: 170px; overflow:
@@ -684,7 +684,7 @@
                             <td>{{ expense.txnDate | date: "yyyy/MM/dd" }}</td>
                             <td>{{ expense.catName }}</td>
                             <td>Other Expense</td>
-                            <td>{{ expense.finalTotal | number: "1.2-2"  }} {{ expense.currency }}</td> 
+                            <td>{{ expense.finalTotal | number: "1.2-2" }} {{ expense.currency }}</td>
                           </tr>
                         </tbody>
                         <tfoot *ngIf="expenses.length> 0">
@@ -692,7 +692,7 @@
                             <td></td>
                             <td></td>
                             <td class="font-weight-bold">Total Amount</td>
-                            <td class="font-weight-bold">{{ totalExp | number: "1.2-2"  }}</td>
+                            <td class="font-weight-bold">{{ totalExp | number: "1.2-2" }}</td>
                           </tr>
                         </tfoot>
                       </table>
@@ -951,7 +951,7 @@
       <tbody>
         <tr>
           <td width="50%">
-            <h1 style="font-size: 26px; color: #000;margin: 0;">Driver Information Sheet</h1>
+            <h1 style="font-size: 22px; color: #000;margin: 0;">Driver Information Sheet</h1>
           </td>
           <td width="50%" align="right" valign="middle">
             <img crossorigin="anonymous" [src]="companyLogoSrc" alt="logo" style="max-width: 100px;">
@@ -965,9 +965,9 @@
         </tr>
         <tr>
           <td valign="top" class="text-dark">
-            <h2 style="font-size: 20px; margin-bottom: 0px"><strong>Trip#</strong>
+            <h2 style="font-size: 14px; line-height: 34px;margin-bottom: 0px"><strong>Trip#</strong>
               {{ tripData.tripNo }}</h2>
-            <p class="text-dark" style="font-size: 13px; margin-bottom: 15px;
+            <p class="text-dark" style="font-size: 12px; margin-bottom: 15px;
               margin-top: 0px;
               display: inline-block;">
               <strong>Trip Type:</strong> {{orderType}}
@@ -975,7 +975,7 @@
 
           </td>
           <td valign="top" class="text-dark" align="right">
-            <h2 style="font-size: 20px; margin-bottom: 10px">
+            <h2 style="font-size: 14px; margin-bottom: 10px">
               <strong> Trip Date# </strong>{{
               tripData.dateCreated | date: "yyyy/MM/dd"
               }}
@@ -992,10 +992,10 @@
               <tbody>
                 <tr>
                   <td valign="top">
-                    <h2 class="m-0" style="font-size: 16px"><strong>Customer:
+                    <h2 class="m-0" style="font-size: 14px"><strong>Customer:
                       </strong> <span class="text-capitalize text-dark">{{item.cName}}</span></h2>
                   </td>
-                  <td valign="top" align="right" style="line-height: 42px;"><strong>Order(s)#:</strong>
+                  <td valign="top" align="right" style="line-height: 42px;font-size: 14px"><strong>Order(s)#:</strong>
                     <span *ngFor="let ord of item.orderNo; last as isLast">
                       {{ord}} <span *ngIf="!isLast">,</span>
                     </span>
@@ -1004,7 +1004,7 @@
                 <tr>
                   <td colspan="2" valign="top">
                     <table width="100%" style="border: 1px solid #adadad;
-                      font-size: 13px;
+                      font-size: 12px;
                       margin-bottom: 10px;" cellpadding="0" cellspacing="0" bordercolor="#adadad">
                       <tbody>
                         <tr>
@@ -1051,7 +1051,7 @@
         </tr>
         <tr class="text-dark">
           <td colspan="2">
-            <table class="table table-sm table-bordered table-striped">
+            <table style="font-size: 12px;" class="table table-sm table-bordered table-striped">
               <tbody>
                 <tr>
                   <td valign="top" style="width: 33.33%;">
@@ -1084,7 +1084,7 @@
 
         <tr>
           <td colspan="2">
-            <table class="table table-sm table-bordered
+            <table style="font-size: 12px;" class="table table-sm table-bordered
               table-striped text-capitalize" id="locationTable">
               <thead>
                 <tr>
@@ -1194,7 +1194,7 @@
         </tr>
 
         <tr *ngIf="driverTerms != ''">
-          <td colspan="2" class="text-dark">
+          <td style="font-size: 12px;" colspan="2" class="text-dark">
             <strong>Dispatch Notes For Driver: </strong> {{ driverTerms }}
           </td>
         </tr>
@@ -1202,7 +1202,7 @@
           <td colspan="2">&nbsp;</td>
         </tr>
         <tr *ngIf="dispatchTerms != ''">
-          <td colspan="2" class="text-dark">
+          <td style="font-size: 12px;" colspan="2" class="text-dark">
             <strong>Terms and Conditions For Truck Dispatch: </strong>{{ dispatchTerms }}
           </td>
         </tr>
@@ -1215,21 +1215,21 @@
               <tbody>
                 <tr>
                   <td width="10%">
-                    <p style="font-size: 13px" class="text-dark m-0">
+                    <p style="font-size: 12px" class="text-dark m-0">
                       <strong>Accepted By: </strong>
                     </p>
                   </td>
                   <td width="23%" style="border-bottom: solid 1px #999">
                     &nbsp;
                   </td>
-                  <td width="10%" style="font-size: 13px" class="text-center text-dark m-0">
+                  <td width="10%" style="font-size: 12px" class="text-center text-dark m-0">
                     <strong>Date:</strong>
                   </td>
                   <td width="23%" style="border-bottom: solid 1px #999">
                     &nbsp;
                   </td>
                   <td width="10%">
-                    <p style="font-size: 13px" class="text-dark text-center m-0"><strong>Signature</strong></p>
+                    <p style="font-size: 12px" class="text-dark text-center m-0"><strong>Signature</strong></p>
                   </td>
                   <td style="border-bottom: solid 1px #999">&nbsp;</td>
                 </tr>
