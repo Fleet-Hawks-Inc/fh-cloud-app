@@ -322,7 +322,7 @@
                           #uem="ngModel"
                           required
                           [ngClass]="{ error: uForm1.submitted && uem.invalid }"
-                          pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$"
+                          pattern="^[a-zA-Z0-9_.+-]+@[a-z]+.com"
                         />
                         <div
                           *ngIf="uem.invalid && uForm1.submitted"
