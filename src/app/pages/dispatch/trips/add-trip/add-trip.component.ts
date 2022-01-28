@@ -2944,26 +2944,25 @@ export class AddTripComponent implements OnInit {
   }
 
   async getStateWiseMiles() {
-    let vehicleIDs = [];
-    let vehicleData = [];
+    let unitIDs = [];
+    let unitData = [];
 
     for (const plan of this.trips) {
       if (plan.vehicleID !== undefined && plan.vehicleID !== "") {
-        if (!vehicleIDs.includes(plan.vehicleID)) {
-          vehicleIDs.push(plan.vehicleID);
+        if (!unitIDs.includes(plan.vehicleID)) {
+          unitIDs.push(plan.vehicleID);
           let obj = {
             vehicleID: plan.vehicleID,
             assetID: "",
             locations: [],
-            ifta: [],
           };
           if (plan.lng && plan.lat) {
             let endingPoint = plan.lng + "," + plan.lat;
             obj.locations.push(endingPoint);
           }
-          vehicleData.push(obj);
+          unitData.push(obj);
         } else {
-          vehicleData.map((v) => {
+          unitData.map((v) => {
             if (v.vehicleID === plan.vehicleID) {
               let endingPoint = plan.lng + "," + plan.lat;
               v.locations.push(endingPoint);
@@ -2978,22 +2977,21 @@ export class AddTripComponent implements OnInit {
         plan.trailerID.length > 0
       ) {
         for (const asset of plan.trailerID) {
-          if (!vehicleIDs.includes(asset)) {
-            vehicleIDs.push(asset);
+          if (!unitIDs.includes(asset)) {
+            unitIDs.push(asset);
 
             let obj = {
               assetID: asset,
               vehicleID: "",
               locations: [],
-              ifta: [],
             };
             if (plan.lng && plan.lat) {
               let endingPoint = plan.lng + "," + plan.lat;
               obj.locations.push(endingPoint);
             }
-            vehicleData.push(obj);
+            unitData.push(obj);
           } else {
-            vehicleData.map((v) => {
+            unitData.map((v) => {
               if (v.assetID === asset) {
                 let endingPoint = plan.lng + "," + plan.lat;
                 v.locations.push(endingPoint);
@@ -3006,7 +3004,7 @@ export class AddTripComponent implements OnInit {
 
     let tripIfta = [];
     tripIfta[0] = [];
-    for (const vehicle of vehicleData) {
+    for (const vehicle of unitData) {
       if (vehicle.locations.length > 1) {
         try {
           let newsMiles = JSON.stringify(vehicle.locations);
