@@ -20,13 +20,15 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CustomerSettingComponent } from './customer-setting/customer-setting.component';
 import { ImportOverviewComponent } from './settings-overview/import-overview/import-overview.component';
 import { VehImportComponent } from './veh-import/veh-import.component';
-
+import { DoverviewComponent } from './settings-overview/doverview/doverview.component';
+import { ImportDriversComponent } from './import-drivers/import-drivers.component';
 const routes: Routes = [
-
   { path: 'overview', component: SettingsOverviewComponent },
+  { path: 'doverview', component: DoverviewComponent},
   { path: 'general', component: GeneralSettingsComponent },
   { path: 'myaccount', component: MyAccountComponent },
   { path: 'driver', component: DriverSettingComponent },
+  { path: 'import', component: ImportDriversComponent},
   { path: 'vehicle', component: VehicleSettingComponent },
   { path: 'asset', component: AssetsSettingComponent },
   { path: 'fuel', component: FuelSettingComponent },
@@ -38,9 +40,7 @@ const routes: Routes = [
   { path: 'customer', component: CustomerSettingComponent },
   { path: 'importoverview', component: ImportOverviewComponent },
   { path: 'vehimport', component: VehImportComponent },
-
 ]
-
 @NgModule({
   declarations: [SettingsOverviewComponent,
     GeneralSettingsComponent,
@@ -57,6 +57,8 @@ const routes: Routes = [
     CustomerSettingComponent,
     ImportOverviewComponent,
     VehImportComponent],
+    DoverviewComponent,
+    ImportDriversComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

@@ -1,0 +1,341 @@
+<style>
+    .extra {
+        display: none;
+    }
+</style>
+<section class="body">
+
+    <div class="inner-wrapper">
+
+        <section role="main" class="content-body pl-1 pt-0 pr-0">
+            <header class="page-header pr19 pl11">
+                <form class="form-horizontal" method="get">
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-md-10 col-lg-10 pr-1 d-flex">
+                            
+                            <div class="col-md-3 col-lg-3 pr-0">
+                                <ng-select [(ngModel)]="filter.type" name="type" placeholder="Select type">
+                                    <ng-option *ngFor="let payment of paymentType" [value]="payment.type">{{payment.name}}</ng-option>
+                                </ng-select>
+                              </div>
+                              <div class="col-md-3 col-lg-3 pr-0">
+                                <ng-select [(ngModel)]="filter.mode" name="type" placeholder="Select mode">
+                                    <ng-option *ngFor="let payment of paymentMode" [value]="payment.type">{{payment.name}}</ng-option>
+                                </ng-select>
+                              </div>
+                              <div class="col-lg-3 col-md-3 pr-0">
+                                <div class="input-daterange input-group" data-plugin-datepicker>
+                                  <span class="input-group-prepend">
+                                    <span class="input-group-text">
+                                      <i class="fas fa-calendar-alt"></i>
+                                    </span>
+                                  </span>
+                                  <input [(ngModel)]="filter.startDate" name="startDate" type="text" placeholder="yyyy/mm/dd"
+                                    (click)="startDate.toggle()" ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                                  <span class="
+                                      input-group-text
+                                      border-left-0 border-right-0
+                                      rounded-0
+                                    ">
+                                    to
+                                  </span>
+                                  <input [(ngModel)]="filter.endDate" name="endDate" type="text" placeholder="yyyy/mm/dd"
+                                    (click)="endDate.toggle()" ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                                </div>
+                              </div>
+                              <div class="col-md-2 col-lg-2">
+                                <button *ngIf="searching" class="btn btn-success btn-sm" type="button" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                  Searching...
+                                  </button>
+                                <button type="submit" *ngIf="!searching" (click)="searchFilter()" class="btn btn-sm
+                      btn-success mr-3">Search</button>
+                                <button type="button" (click)="resetFilter()" class="btn btn-sm
+                      btn-success">Reset</button>
+                            </div>
+                        </div>
+
+                        
+                        <div class="col-md-2 col-lg-2 text-right pr-1">
+                            <button *ngIf="exporting" class="btn btn-success btn-sm" type="button" disabled>
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                              Exporting...
+                              </button>
+                            <button *ngIf="!exporting" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown"
+                            aria-expanded="false">Export<span class="caret"></span>
+                            </button>
+                            <div *ngIf="!exporting" class="dropdown-menu" role="menu" x-placement="bottom-start" style="
+                                        position: absolute;
+                                        will-change: transform;
+                                        top: 0px;
+                                        left: 0px;
+                                        transform: translate3d(0px, 38px, 0px);
+                                        ">
+                <a class="dropdown-item text-1" (click)="showPDF()">PDF</a>
+                <!-- <a *ngIf="customer!=''" class="dropdown-item text-1" (click)="showReport(); isModalShow= true">PDF</a> -->
+
+              </div>
+                        </div>
+                    </div>
+                </form>
+            </header>
+
+            <section class="m-2">
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                            [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                            <div class="bg-white p-3 text-dark">
+                                <div class="form-group row pt-3">
+                                    <div class="col-lg-12">
+                                        <div class="table-responsive">
+                                            <table id="diverTbl" class="row-border hover table
+                                                             table-bordered table-striped mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th id="" class="col1 minWidth200">Date</th>
+                                                        <!-- <th id="" class="col2 minWidth120">Duty Status</th> -->
+                                                        <th id="" class="minWidth120">Payment Mode</th>
+                                                        <th id="" class="minWidth120">Type Of Payment</th>
+                                                        <th id="" class="minWidth120">Vendor</th>
+                                                        <th id="" class="minWidth120">Currency</th>
+                                                        <th id="" class="minWidth120">Amount</th>
+                                                        
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngIf="allPayments.length == 0" class="text-center">
+                                                        <td colspan="14">{{dataMessage}}</td>
+                                                    </tr>
+                                                    <tr *ngFor="let element of allPayments">
+                                                        <td>
+                                                            {{element.payModeDate|date:'MMM dd'}}
+                                                        </td>
+                                                        <td>
+                                                            {{element.payMode}}
+                                                        </td>
+                                                        <td>
+                                                            {{element.type}}
+                                                        </td>
+                                                        <td>
+                                                            {{element.paymentTo}} : {{element.entityName | titlecase}}
+                                                        </td>
+                                                      
+                                                        <td>
+                                                            {{element.currency}}
+                                                        </td>
+                                                        <td>
+                                                            {{element.amount}}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </section>
+
+        </section>
+        <div class="col-lg-12 mt-3 text-center" *ngIf="lastAdvanceSK != 'end' && lastDriverSK!='end' && lastEmployeeSK!='end' && lastExpenceSK!= 'end' && allPayments.length !== 0">
+            <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">Load
+                More..</button>
+        </div>
+    </div>
+</section>
+
+<ng-template #previewModal let-modal>
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <section class="report-wrapper p-2" style="background-color: #fff; color:
+          #000" id="print_wrap">
+          <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td colspan="2">
+                  <h1 style="font-size:26px;text-align: center;">Payment Report</h1>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" style="height:2px" bgcolor="#bbbbbb"></td>
+              </tr>
+              <tr>
+                <!-- <td width="50%">
+                  <span style="font-size:20px;">Type of Payment</span>
+                  <span style="font-size:15px;"> <span *ngIf="filter.type"><strong>{{filter.type|titlecase}}</strong></span>
+                  <span *ngIf="!filter.type"><strong>{{filter.type|titlecase}}</strong></span>
+                  </span  >
+                </td> -->
+                <!-- <td align="right">
+                  <p style="font-size:13px;"> <strong>Payment Mode:</strong> {{filter.mode | titlecase}}<br>
+                    <strong>Email:</strong> {{printData.workEmail}}<br>
+                  </p>
+                </td> -->
+              </tr>
+              <tr>
+                <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tbody>
+                      <tr>
+                        <td width="40%">
+                          <table width="80%" border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p style="font-size:16px;"><strong>Type Of Payment</strong>
+                                    <span *ngIf="filter.type">
+                                        {{filter.type|titlecase}}
+                                    </span>
+                                    <span *ngIf="!filter.type">
+                                        All
+                                    </span>
+                                </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                        <td width="33%">
+                          <table width="90%" border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p style="font-size:16px;"><strong>Payment Mode:</strong>
+                                    <span *ngIf="filter.mode">
+                                        {{filter.mode|titlecase}}
+                                    </span>
+                                    <span *ngIf="!filter.mode">
+                                        All
+                                    </span>
+                                    </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                        <td>
+                          <table width="90%" border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p style="font-size:16px;"><strong>Date Range</strong>
+                                    {{filter.startDate}}-{{filter.endDate}}</p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
+              </tr>
+              
+              <tr valign="top">
+                <td colspan="2">
+                  <table width="100%" border="0" style="border:1px solid #000000; font-size:13px;" cellspacing="0"
+                    cellpadding="0">
+                    <tbody>
+                      <tr bgcolor="#f3f3f3">
+                        <td width="8%"
+                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                          <p style="font-weight:600;">Date</p>
+                        </td>
+                        <td width="8%"
+                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                          <p style="font-weight:600;">Payment Mode</p>
+                        </td>
+                        <td width="8%"
+                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                          <p style="font-weight:600;">Type Of Payment</p>
+                        </td>
+                        <td width="8%"
+                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                          <p style="font-weight:600;">Vendor</p>
+                        </td>
+                        <td width="6%"
+                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                          <p style="font-weight:600;">Currency</p>
+                        </td>
+                        <td width="6%"
+                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                          <p style="font-weight:600;">Amount</p>
+                        </td>
+                      </tr>
+                      <tr *ngIf="allExportData.length == 0" class="text-center">
+                        <td colspan="7">No Records Found</td>
+                      </tr>
+                      <tr *ngFor="let element of allExportData">
+                        <td height="25"
+                          style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
+                          <p style="margin-top:0px; margin-bottom:0px;"> {{element.payModeDate|date:'MMM dd'}}</p>
+                        </td>
+                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
+                          <p style="margin-top:0px; margin-bottom:0px;">{{element.payMode}}</p>
+                        </td>
+                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
+                          <p style="margin-top:0px; margin-bottom:0px;">{{ element.type }}</p>
+                        </td>
+                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
+                          <p style="margin-top:0px; margin-bottom:0px;">{{element.paymentTo}} : {{element.entityName | titlecase}}</p>
+                        </td>
+                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
+                          <p style="margin-top:0px; margin-bottom:0px;">{{element.currency}}</p>
+                        </td>
+                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
+                          <p style="margin-top:0px; margin-bottom:0px;">{{element.amount}}</p>
+                        </td>
+                      </tr>
+  
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <table border="0" align="center" cellpadding="0" cellspacing="0">
+                    <tbody>
+                      <tr>
+                        <td align="center">
+                          <h2 style="font-size:13px;">Powered
+                            By</h2>
+                          <img src="assets/img/logo.png" width="207" height="28">
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" (click)="modal.dismiss('Cross click')">
+          Cancel
+        </button>
+        <button *ngIf="printing" class="btn btn-success btn-sm" type="button" disabled>
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Printing...
+          </button>
+        <button *ngIf="!printing" class="btn btn-success" (click)="generatePDF()">Print</button>
+        <!-- <button class="btn btn-success" (click)="generatePDF()">Email</button> -->
+      </div>
+    </div>
+  </ng-template>

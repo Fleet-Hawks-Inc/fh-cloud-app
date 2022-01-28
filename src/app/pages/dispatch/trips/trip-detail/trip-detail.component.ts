@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild,} from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild, } from "@angular/core";
 import { AccountService, ApiService } from "../../../../services";
 import { ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -172,7 +172,7 @@ export class TripDetailComponent implements OnInit {
       this.expenses = result;
 
       for (const element of this.expenses) {
-        this.totalExp = this.totalExp + element.amount;
+        this.totalExp = this.totalExp + element.finalTotal;
       }
     });
   }
@@ -229,18 +229,15 @@ export class TripDetailComponent implements OnInit {
               this.routeName = result.Items[0].routeName;
             });
         }
-//Presigned URL using AWS s3
-           if (result.documents !== undefined && result.documents.length > 0) 
-           {
-          result.documents.forEach((x: any) => 
-          {
+        //Presigned URL using AWS s3
+        if (result.documents !== undefined && result.documents.length > 0) {
+          result.documents.forEach((x: any) => {
             if (
               x.storedName.split(".")[1] === "jpg" ||
               x.storedName.split(".")[1] === "png" ||
               x.storedName.split(".")[1] === "jpeg"
-            ) 
-            {
-              const obj = 
+            ) {
+              const obj =
               {
                 imgPath: `${x.urlPath}`,
                 docPath: `${x.urlPath}`,
@@ -249,9 +246,8 @@ export class TripDetailComponent implements OnInit {
                 ext: x.storedName.split(".")[1],
               };
               this.uploadedDocSrc.push(obj);
-            } else
-            {
-              const obj = 
+            } else {
+              const obj =
               {
                 imgPath: 'assets/img/icon-pdf.png',
                 docPath: `${x.urlPath}`,
@@ -316,7 +312,7 @@ export class TripDetailComponent implements OnInit {
         }
 
         let documents = result.tripDocs;
-        
+
         if (documents.length > 0) {
           documents.forEach((el) => {
             if (
@@ -350,9 +346,9 @@ export class TripDetailComponent implements OnInit {
               }
             }
           });
-          
+
         }
-        
+
 
         if (result.split) {
           result.split.map((x, cind) => {
@@ -578,7 +574,7 @@ export class TripDetailComponent implements OnInit {
     let totalCount = this.tripData.documents.length + files.length;
 
     if (totalCount > 4) {
-    this.uploadedDocs = [];
+      this.uploadedDocs = [];
       $("#bolUpload").val("");
       this.toastr.error("Only 4 documents can be uploaded");
       return false;
@@ -595,21 +591,21 @@ export class TripDetailComponent implements OnInit {
         }
       }
 
-     for (let i = 0; i < files.length; i++) {
+      for (let i = 0; i < files.length; i++) {
         this.uploadedDocs.push(files[i]);
       }
       // create form data instance
       const formData = new FormData();
 
-   //   for (let i = 0; i < files.length; i++) {
-    //   const element = files[i];
-    //   this.uploadedDocs.push(element);
-    // }
+      //   for (let i = 0; i < files.length; i++) {
+      //   const element = files[i];
+      //   this.uploadedDocs.push(element);
+      // }
 
       //append docs if any
       for (let j = 0; j < this.uploadedDocs.length; j++) {
-       // let file = this.uploadedDocs[j];
-      //  formData.append(`uploadedDocs-${j}`, file);
+        // let file = this.uploadedDocs[j];
+        //  formData.append(`uploadedDocs-${j}`, file);
         formData.append("uploadedDocs", this.uploadedDocs[j]);
       }
       formData.append("data", JSON.stringify(this.tripData.documents));
@@ -671,8 +667,8 @@ export class TripDetailComponent implements OnInit {
                 this.uploadedDocSrc.push(obj);
               }
             }
-              this.toastr.success('BOL/POD uploaded successfully');
-              this.fetchTripDetail();
+            this.toastr.success('BOL/POD uploaded successfully');
+            this.fetchTripDetail();
           },
         });
     }
@@ -694,7 +690,7 @@ export class TripDetailComponent implements OnInit {
   async generate() {
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
-      margin: 0.5,
+      margin: 0.3,
       pagebreak: { mode: 'avoid-all', before: "print_wrap" },
       filename: "trip-information.pdf",
       image: { type: "jpeg", quality: 1 },

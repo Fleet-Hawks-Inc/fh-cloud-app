@@ -128,14 +128,13 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
       this.transactionLogCAD = res.transactionLogCAD;
       this.transactionLogUSD = res.transactionLogUSD;
       for (const element of this.account.transactionLogCAD) {
-        element.type = element.type.replace("_", " "); // replacing _ with white space in trx type
+        element.type = element.type.replace(/_/g, " ");
       }
       for (const element of this.account.transactionLogUSD) {
-        element.type = element.type.replace("_", " "); // replacing _ with white space in trx type
+        element.type = element.type.replace(/_/g, " ");
       }
-    } else {
-      // this.transactionLogCAD = res.transactionLogCAD;
     }
+
     this.closingAmountCad = res.closingAmtCAD;
     this.closingAmountUsd = res.closingAmtUSD;
     // -----
@@ -152,81 +151,11 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
       Math.abs(Number(this.account.opnBalCAD)) -
         Math.abs(Number(this.account.closingAmtCAD))
     );
-    // if (this.account.closingAmtCAD > this.account.opnBalCAD) {
-    //   this.periodVarianceCAD = +(
-    //     this.account.closingAmtCAD - this.account.opnBalCAD
-    //   ).toFixed(2);
-    // } else if (
-    //   this.account.opnBalCAD > this.account.closingAmtCAD &&
-    //   this.account.closingAmtCAD === 0
-    // ) {
-    //   this.periodVarianceCAD = +(
-    //     this.account.opnBalCAD - this.account.closingAmtCAD
-    //   ).toFixed(2);
-    // } else if (
-    //   this.account.opnBalCAD > this.account.closingAmtCAD &&
-    //   this.account.closingAmtCAD > 0
-    // ) {
-    //   this.periodVarianceCAD = +(
-    //     this.account.opnBalCAD - this.account.closingAmtCAD
-    //   ).toFixed(2);
-    // } else if (this.account.opnBalCAD === this.account.closingAmtCAD) {
-    //   this.periodVarianceCAD = +(
-    //     this.account.closingAmtCAD - this.account.opnBalCAD
-    //   ).toFixed(2);
-    // } else if (
-    //   this.account.closingAmtCAD < 0 &&
-    //   this.account.opnBalCAD > 0
-    // ) {
-    //   this.periodVarianceCAD = +(
-    //     this.account.opnBalCAD + this.account.closingAmtCAD
-    //   ).toFixed(2);
-    // } else if (
-    //   this.account.opnBalCAD === 0 &&
-    //   this.account.closingAmtCAD < 0
-    // ) {
-    //   this.periodVarianceCAD = -1 * +this.account.closingAmtCAD.toFixed(2);
-    // }
 
     this.periodVarianceUSD = Math.abs(
       Math.abs(Number(this.account.opnBalUSD)) -
         Math.abs(Number(this.account.closingAmtUSD))
     );
-    // if (this.account.closingAmtUSD > this.account.opnBalUSD) {
-    //   this.periodVarianceUSD = +(
-    //     this.account.closingAmtUSD - this.account.opnBalUSD
-    //   ).toFixed(2);
-    // } else if (
-    //   this.account.opnBalUSD > this.account.closingAmtUSD &&
-    //   this.account.closingAmtUSD === 0
-    // ) {
-    //   this.periodVarianceUSD = +(
-    //     this.account.opnBalUSD - this.account.closingAmtUSD
-    //   ).toFixed(2);
-    // } else if (
-    //   this.account.opnBalUSD > this.account.closingAmtUSD &&
-    //   this.account.closingAmtUSD > 0
-    // ) {
-    //   this.periodVarianceUSD = +(
-    //     this.account.opnBalUSD - this.account.closingAmtUSD
-    //   ).toFixed(2);
-    // } else if (this.account.opnBalUSD === this.account.closingAmtUSD) {
-    //   this.periodVarianceUSD = +(
-    //     this.account.closingAmtUSD - this.account.opnBalUSD
-    //   ).toFixed(2);
-    // } else if (
-    //   this.account.closingAmtUSD < 0 &&
-    //   this.account.opnBalUSD > 0
-    // ) {
-    //   this.periodVarianceUSD = +(
-    //     this.account.opnBalUSD + this.account.closingAmtUSD
-    //   ).toFixed(2);
-    // } else if (
-    //   this.account.opnBalUSD === 0 &&
-    //   this.account.closingAmtUSD < 0
-    // ) {
-    //   this.periodVarianceUSD = -1 * +this.account.closingAmtUSD.toFixed(2);
-    // }
   }
 
   async logsCADPaging() {
@@ -251,8 +180,8 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
         }
       }
       res.map((v) => {
-        v.entityType = v.entityType.replace("_", " ");
-        v.desc = v.desc.replace("_", " ");
+        v.entityType = v.entityType.replace(/_/g, " ");
+        v.desc = v.desc.replace(/_/g, " ");
       });
       this.loaded = true;
       this.transactionLogCAD = this.transactionLogCAD.concat(res);
@@ -289,7 +218,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
             }
           }
           res.map((v) => {
-            v.entityType = v.entityType.replace("_", " ");
+            v.entityType = v.entityType.replace(/_/g, " ");
           });
           this.loaded = true;
           this.transactionLogUSD = this.transactionLogUSD.concat(res);
@@ -307,8 +236,6 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   }
 
   searchFilter() {
-    // this.periodVarianceUSD = 0;
-    // this.periodVarianceCAD = 0;
     if (this.filter.endDate !== null || this.filter.startDate !== null) {
       if (this.filter.startDate !== "" && this.filter.endDate === "") {
         this.toaster.error("Please select both start and end dates.");
@@ -430,7 +357,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
         this.account = result[0];
         this.periodVarianceCAD = 0;
         for (const element of this.account.transactionLogCAD) {
-          element.type = element.type.replace("_", " "); // replacing _ with white space in trx type
+          element.type = element.type.replace(/_/g, " ");
         }
         if (this.account.closingAmtCAD > this.account.opnBalCAD) {
           this.periodVarianceCAD = +(
@@ -470,7 +397,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
 
         this.periodVarianceUSD = 0;
         for (const element of this.account.transactionLogUSD) {
-          element.type = element.type.replace("_", " "); // replacing _ with white space in trx type
+          element.type = element.type.replace(/_/g, " ");
         }
         if (this.account.closingAmtUSD > this.account.opnBalUSD) {
           this.periodVarianceUSD = +(
@@ -582,100 +509,4 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
       Number(this.account.opnBalUSD) - Number(this.account.closingAmtUSD)
     );
   }
-
-  // fetchAccount() {
-  //   this.accountService
-  //     .getData(`chartAc/account/${this.actID}`)
-  //     .subscribe((res) => {
-  //       this.account = res;
-  //       if(!this.account.isFeatEnabled) {
-  //         this.fetchAccountClassByIDs();
-  //       }
-  //       this.account[`first`] = this.account.actName.substring(
-  //         0,
-  //         this.account.actName.indexOf(" ")
-  //       );
-  //       this.account[`last`] = this.account.actName.substring(
-  //         this.account.actName.indexOf(" ") + 1,
-  //         this.account.actName.length
-  //       );
-  //       for (const element of this.account.transactionLogCAD) {
-  //         element.type = element.type.replace("_", " "); // replacing _ with white space in trx type
-  //       }
-  //       for (const element of this.account.transactionLogUSD) {
-  //         element.type = element.type.replace("_", " "); // replacing _ with white space in trx type
-  //       }
-  //       if (this.account.closingAmtCAD > this.account.opnBalCAD) {
-  //         this.periodVarianceCAD = +(
-  //           this.account.closingAmtCAD - this.account.opnBalCAD
-  //         ).toFixed(2);
-  //       } else if (
-  //         this.account.opnBalCAD > this.account.closingAmtCAD &&
-  //         this.account.closingAmtCAD === 0
-  //       ) {
-  //         this.periodVarianceCAD = +(
-  //           this.account.opnBalCAD - this.account.closingAmtCAD
-  //         ).toFixed(2);
-  //       } else if (
-  //         this.account.opnBalCAD > this.account.closingAmtCAD &&
-  //         this.account.closingAmtCAD > 0
-  //       ) {
-  //         this.periodVarianceCAD = +(
-  //           this.account.opnBalCAD - this.account.closingAmtCAD
-  //         ).toFixed(2);
-  //       } else if (this.account.opnBalCAD === this.account.closingAmtCAD) {
-  //         this.periodVarianceCAD = +(
-  //           this.account.closingAmtCAD - this.account.opnBalCAD
-  //         ).toFixed(2);
-  //       } else if (
-  //         this.account.closingAmtCAD < 0 &&
-  //         this.account.opnBalCAD > 0
-  //       ) {
-  //         this.periodVarianceCAD = +(
-  //           this.account.opnBalCAD + this.account.closingAmtCAD
-  //         ).toFixed(2);
-  //       } else if (
-  //         this.account.opnBalCAD === 0 &&
-  //         this.account.closingAmtCAD < 0
-  //       ) {
-  //         this.periodVarianceCAD = -1 * +this.account.closingAmtCAD.toFixed(2);
-  //       }
-
-  //       if (this.account.closingAmtUSD > this.account.opnBalUSD) {
-  //         this.periodVarianceUSD = +(
-  //           this.account.closingAmtUSD - this.account.opnBalUSD
-  //         ).toFixed(2);
-  //       } else if (
-  //         this.account.opnBalUSD > this.account.closingAmtUSD &&
-  //         this.account.closingAmtUSD === 0
-  //       ) {
-  //         this.periodVarianceUSD = +(
-  //           this.account.opnBalUSD - this.account.closingAmtUSD
-  //         ).toFixed(2);
-  //       } else if (
-  //         this.account.opnBalUSD > this.account.closingAmtUSD &&
-  //         this.account.closingAmtUSD > 0
-  //       ) {
-  //         this.periodVarianceUSD = +(
-  //           this.account.opnBalUSD - this.account.closingAmtUSD
-  //         ).toFixed(2);
-  //       } else if (this.account.opnBalUSD === this.account.closingAmtUSD) {
-  //         this.periodVarianceUSD = +(
-  //           this.account.closingAmtUSD - this.account.opnBalUSD
-  //         ).toFixed(2);
-  //       } else if (
-  //         this.account.closingAmtUSD < 0 &&
-  //         this.account.opnBalUSD > 0
-  //       ) {
-  //         this.periodVarianceUSD = +(
-  //           this.account.opnBalUSD + this.account.closingAmtUSD
-  //         ).toFixed(2);
-  //       } else if (
-  //         this.account.opnBalUSD === 0 &&
-  //         this.account.closingAmtUSD < 0
-  //       ) {
-  //         this.periodVarianceUSD = -1 * +this.account.closingAmtUSD.toFixed(2);
-  //       }
-  //     });
-  // }
 }

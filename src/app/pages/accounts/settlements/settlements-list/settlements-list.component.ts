@@ -110,11 +110,11 @@ export class SettlementsListComponent implements OnInit {
       this.filter.startDate !== null
     ) {
       this.disableSearch = true;
-      if (this.filter.type != '' && (this.filter.searchValue == null || this.filter.searchValue == '')) {
-        this.toaster.error("Please select any value");
-        this.disableSearch = false;
-        return false;
-      }
+      // if (this.filter.type != '' && (this.filter.searchValue == null || this.filter.searchValue == '')) {
+      //   this.toaster.error("Please select any value");
+      //   this.disableSearch = false;
+      //   return false;
+      // }
       if (this.filter.startDate != "" && this.filter.endDate == "") {
         this.toaster.error("Please select both start and end dates.");
         this.disableSearch = false;
@@ -165,6 +165,12 @@ export class SettlementsListComponent implements OnInit {
 
   onScroll() {
     if (this.loaded) {
+      this.filter = {
+        searchValue: null,
+        startDate: null,
+        endDate: null,
+        type: null,
+      };
       this.fetchSettlements();
     }
     this.loaded = false;
