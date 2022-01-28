@@ -546,15 +546,15 @@
                                                             <th width="6%">Trip#</th>
                                                             <th width="6%">Date</th>
                                                             <th width="6%">Order#</th>
-                                                            <th width="35%">Locations</th>
+                                                            <th width="28%">Locations</th>
                                                             <th width="6%">Miles</th>
                                                             <th width="11%">Driver</th>
                                                             <th width="7%">Vehicle</th>
                                                             <th width="7%">Assets</th>
                                                             <th width="8%">Carrier</th>
-                                                            <!-- <th width="5%">Flat
-                                                                Rate</th> -->
                                                             <th width="5%">Status</th>
+                                                            <th width="5%">Flat
+                                                                Rate</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -667,6 +667,14 @@
                                                                 <td><span class="badge
                                                                         badge-dark
                                                                         p-1">DELIVERED</span></td>
+                                                                <td>
+                                                                    <input type="checkbox" [(ngModel)]="trp.flat"
+                                                                        name="flat{{t}}">
+
+                                                                    <span *ngIf="trp.flat">
+                                                                        <input type="text" class="form-control"/>
+                                                                    </span>
+                                                                </td>
                                                             </tr>
 
                                                             <ng-container *ngFor="let splt
