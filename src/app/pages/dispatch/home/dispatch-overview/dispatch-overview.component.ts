@@ -7,6 +7,7 @@ declare var $: any;
 import * as moment from "moment";
 import { textChangeRangeIsUnchanged } from "typescript";
 import { Router } from "@angular/router";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 
 @Component({
   selector: "app-dispatch-overview",
@@ -123,8 +124,9 @@ export class DispatchOverviewComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private router: Router,
-    private spinner: NgxSpinnerService
-  ) {}
+    private spinner: NgxSpinnerService,
+    private routeManagement: RouteManagementServiceService
+  ) { }
 
   ngOnInit() {
     this.fetchActivitiesCount();
@@ -679,5 +681,12 @@ export class DispatchOverviewComponent implements OnInit {
     this.tomorrowsPickCount = result.tommPick;
     this.tommDeliverCount = result.tommDeliver;
     this.todayDeliverCount = result.todayDeliver;
+  }
+
+
+  // Managing Route sessions for performance
+
+  generateTripSessionID() {
+    return this.routeManagement.tripUpdateSessionID;
   }
 }

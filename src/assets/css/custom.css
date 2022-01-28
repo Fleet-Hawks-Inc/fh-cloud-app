@@ -2630,6 +2630,10 @@ td.loadid a {
   padding-right: 123px !important;
 }
 
+.pr133 {
+  padding-right: 133px !important;
+}
+
 /* padding bottom */
 .pb2 {
   padding-bottom: 2px !important;
@@ -3915,4 +3919,30 @@ input:checked + .sliderbtn:before {
 
 .light-backdrop {
   background-color: #dfdfdf4a;
+}
+
+/* Classes for reports main page 26.01.21*/
+
+.reportbox {
+  float: left;
+  width: 100%;
+}
+.reportbox a {
+  width: 100%;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  background: #ffffff;
+  border: solid 1px #e6e6e7;
+  border-radius: 8px;
+  font-size: 15px;
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  color: #333333;
+}
+.reportbox a:hover {
+  background: #f6f6f6;
+  display: block;
+  text-decoration: none;
+  color: #000000;
 }

@@ -225,7 +225,9 @@ export class AddExpensePaymentComponent implements OnInit {
   fetchExpenses(tripIDs) {
     this.dataMessageExp = Constants.FETCHING_DATA;
     this.accountService
-      .getData(`expense/getBy/trips/${tripIDs}`)
+      .getData(
+        `expense/getBy/trips/${tripIDs}?curr=${this.paymentData.currency}`
+      )
       .subscribe((result: any) => {
         if (result.length === 0) {
           this.dataMessageExp = Constants.NO_RECORDS_FOUND;
@@ -274,6 +276,9 @@ export class AddExpensePaymentComponent implements OnInit {
         element.selected &&
         !this.paymentData.expIds.includes(element.expenseID)
       ) {
+        if (!element.paidAmount) {
+          element.paidAmount = 0;
+        }
         let status = "deducted";
         if (Number(element.paidAmount) < Number(element.balance)) {
           status = "partially_deducted";
@@ -385,7 +390,7 @@ export class AddExpensePaymentComponent implements OnInit {
       }
     }
 
-    if (this.paymentData.finalAmount <= 0) {
+    if (this.paymentData.finalAmount < 0) {
       return false;
     }
 

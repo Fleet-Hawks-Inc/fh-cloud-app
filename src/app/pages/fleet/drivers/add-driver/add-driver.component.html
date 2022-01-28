@@ -840,7 +840,7 @@
                           <hr class="solid mt-2" />
                           <div class="row mb-1" *ngFor="let item of absDocs; let d = index">
                             <div class="col-lg-9">
-                              <a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
+                              <a href="{{item.path}}" data-toggle="modal" data-target="#viewDocModal"
                                 (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
                             </div>
                             <div class="col-lg-3 text-right">
@@ -1251,7 +1251,7 @@
                           <hr class="solid mt-2" />
                           <div class="row mb-1" *ngFor="let doc of assetsDocs[i]; let d = index">
                             <div class="col-lg-9">
-                              <a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
+                              <a href={{doc.path}} data-toggle="modal" data-target="#viewDocModal"
                                 (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
                             </div>
                             <div class="col-lg-3 text-right">
@@ -2489,7 +2489,6 @@
     </div>
   </div>
 </div>
-
 <div class="modal fade" id="driverPicUploadedModal" tabindex="-1" role="dialog" aria-labelledby="driverPicUploadedModal"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document" style="width: 250px">

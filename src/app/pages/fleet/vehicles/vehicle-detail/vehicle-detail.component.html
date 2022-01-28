@@ -404,7 +404,9 @@
                                                         <td colspan="2">{{ noRecordMsg }}</td>
                                                     </tr>
                                                     <tr *ngFor="let data of docs; let i=index;">
-                                                        <td width="80%">Document {{ i+1}} </td>
+                                                     <td width="80%">
+                                                      <a href="{{data.path}}">Document {{ i + 1 }}</a>
+                                                        </td>
                                                         <td width="20%">
                                                             <a href="javascript:;"
                                                                 class="btn btn-deafault pull-right btn-xs"
@@ -413,7 +415,7 @@
                                                             <a class="btn btn-deafault pull-right btn-xs"
                                                                 href="{{ data.path }}" target="_blank"><i
                                                                     class="fas fa-download"></i></a>
-                                                            <a href="javascript:;"
+                                                            <a href="{{data.path}}"
                                                                 class="btn btn-deafault pull-right btn-xs"
                                                                 (click)="setPDFSrc(data.path)" data-toggle="modal"
                                                                 data-target="#viewDocModal"><i
@@ -858,7 +860,9 @@
                                                     <td colspan="2">{{ noRecordMsg }}</td>
                                                 </tr>
                                                 <tr *ngFor="let data of pDocs; let i=index;">
-                                                    <td width="80%">Document {{ i+1}} </td>
+                                                     <td width="80%">
+                                                      <a href="{{data.path}}">Document {{ i + 1 }}</a>
+                                                        </td>
                                                     <td width="20%">
                                                         <a href="javascript:;"
                                                             class="btn btn-deafault pull-right btn-xs"
@@ -968,7 +972,9 @@
                                                     <td colspan="2">{{ noRecordMsg }}</td>
                                                 </tr>
                                                 <tr *ngFor="let data of lDocs; let i=index;">
-                                                    <td width="80%">Document {{ i+1}} </td>
+                                                     <td width="80%">
+                                                      <a href="{{data.path}}">Document {{ i + 1 }}</a>
+                                                        </td>
                                                     <td width="20%">
                                                         <a href="javascript:;"
                                                             class="btn btn-deafault pull-right btn-xs"

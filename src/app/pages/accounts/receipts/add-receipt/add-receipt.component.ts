@@ -139,9 +139,10 @@ export class AddReceiptComponent implements OnInit {
 
   fetchAccounts() {
     this.accountService
-      .getData(`chartAc/get/all/list`)
+      .getData(`chartAc/get/list/all`)
       .subscribe((result: any) => {
         this.accounts = result;
+        console.log('this.accounts', this.accounts)
       });
   }
 
@@ -177,7 +178,7 @@ export class AddReceiptComponent implements OnInit {
       );
       this.accountService
         .getData(
-          `order-invoice/customer/${customerIDs}?currency=${this.receiptData.currency}`
+          `order-invoice/customer/${customerIDs}?currency=${this.receiptData.recAmountCur}`
         )
         .subscribe((res: any) => {
           if (res.length === 0) {
@@ -198,7 +199,7 @@ export class AddReceiptComponent implements OnInit {
         });
       this.accountService
         .getData(
-          `invoices/customer/${customerIDs}?currency=${this.receiptData.currency}`
+          `invoices/customer/${customerIDs}?currency=${this.receiptData.recAmountCur}`
         )
         .subscribe((result) => {
           this.searchDisabled = false;
@@ -241,7 +242,8 @@ export class AddReceiptComponent implements OnInit {
   }
 
   refreshAccount() {
-    this.listService.fetchChartAccounts();
+    // this.listService.fetchChartAccounts(); 
+    this.fetchAccounts()
   }
   fetchAdvancePayments() {
     this.dataMessageAdv = Constants.FETCHING_DATA;

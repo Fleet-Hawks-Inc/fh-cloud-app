@@ -10,9 +10,8 @@
             </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
-            <a
-              routerLink="/accounts/purchases/vendor-credit-notes/list"
-              class="btn btn-sm btn-default"><i class="fas fa-list"></i> All
+            <a routerLink="/accounts/purchases/vendor-credit-notes/list" class="btn btn-sm btn-default"><i
+                class="fas fa-list"></i> All
               Vendor Credits</a>
           </div>
         </div>
@@ -39,8 +38,7 @@
                       <div class="text-center p-4 cmaindiv">
                         <i class="fa fa-user text-7"></i>
                         <br />
-                        <p
-                          class="mb-0
+                        <p class="mb-0
                           text-5
                           font-weight-bold
                           text-dark text-capitalize">
@@ -77,9 +75,7 @@
                       <table class="table table-bordered table-responsive-lg">
                         <tbody>
                           <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold">
+                            <td width="40%" class="back-color-gray font-weight-bold">
                               Purchase Order#
                             </td>
                             <td width="60%">{{ purOrder ?
@@ -122,8 +118,7 @@
                             <td>{{ item.amount ? item.amount : "-" }}</td>
                             <td>{{ item.desc ? item.desc : "-" }}</td>
                           </tr>
-                          <tr *ngIf="crDetails?.length === 0"
-                            class="text-center">
+                          <tr *ngIf="crDetails?.length === 0" class="text-center">
                             <td colspan="5">No Data Found</td>
                           </tr>
                         </tbody>
@@ -144,8 +139,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr
-                            *ngIf="transactionLog.length
+                          <tr *ngIf="transactionLog.length
                             === 0" class="text-center">
                             <td colspan="3">
                               {{ dataMessage }}
@@ -182,6 +176,39 @@
                       </table>
                     </div>
                   </div>
+                </div>
+
+                <div class="col-6">
+                  <table class="table table-bordered">
+                    <thead>
+                      <th>Sr.</th>
+                      <th>Name</th>
+                      <th>Icon/Thumbnail</th>
+                      <th>Action</th>
+                    </thead>
+                    <tbody>
+                      <tr *ngIf="docs.length == 0">
+                        <td colspan="4">
+                          <span>No document found</span>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let doc of docs; let d= index">
+                        <td>{{ d + 1 }}</td>
+                        <td>{{ doc.displayName }}</td>
+                        <td>
+                          <a class="image-popup-no-margins" href="{{
+                            doc.docPath }}" target="_blank">
+                            <img class="img-fluid img_thumbnail" src="{{
+                              doc.imgPath }}" />
+                          </a>
+                        </td>
+                        <td class="cursorpoint text-center">
+                          <a href="javascript:;" (click)="deleteDocument(doc.displayName, d)" class="modal-with-form">
+                            <em class="fas fa-times text-danger"></em></a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
