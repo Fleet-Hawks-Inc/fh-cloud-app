@@ -58,6 +58,8 @@ export class AddIssueComponent implements OnInit {
   hasError = false;
   hasSuccess = false;
   submitDisabled = false;
+  clonePic = false;
+  // cloneDocs = false;
   Error = "";
   errors = {};
   Success = "";
@@ -91,6 +93,7 @@ export class AddIssueComponent implements OnInit {
   async ngOnInit() {
     this.fetchUsers();
     this.issueID = this.route.snapshot.params[`issueID`];
+    // if (this.issueID || this.cloneID) {
     if (this.issueID) {
       this.title = "Edit Issue";
       await this.fetchIssueByID();
@@ -101,7 +104,8 @@ export class AddIssueComponent implements OnInit {
     await this.fetchAssets();
     this.route.queryParams.subscribe((params) => {
       this.cloneID = params.cloneID;
-      if (this.cloneID != undefined && this.cloneID != "") {
+      if (this.cloneID != undefined
+        && this.cloneID != "") {
         this.cloneIssue(this.cloneID);
       }
     });
@@ -188,10 +192,10 @@ export class AddIssueComponent implements OnInit {
 
     // append other fields
     formData.append("data", JSON.stringify(data));
-
+    console.log('data', data)
     // this.apiService.postData('issues/', data).subscribe({
     this.apiService.postData("issues", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -208,7 +212,7 @@ export class AddIssueComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -225,12 +229,12 @@ export class AddIssueComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -362,7 +366,7 @@ export class AddIssueComponent implements OnInit {
     formData.append("data", JSON.stringify(data));
 
     this.apiService.putData(`issues/${this.issueID}`, formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -379,7 +383,7 @@ export class AddIssueComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -407,36 +411,49 @@ export class AddIssueComponent implements OnInit {
       });
   }
 
-async cloneIssue(id:any){
-  this.apiService.getData("issues/" + id).subscribe(async (result: any) => {
-    result = result[0];
-    this.issueID = this.issueID;
-    this.issueName = result.issueName;
-    this.unitID = result.unitID;
-    this.fetchedUnitID = result.unitID;
-    this.fetchedUnitType = result.unitType;
-    this.unitType = result.unitType;
-    this.currentStatus = 'open';
-    this.reportedDate = result.reportedDate;
-    this.description = result.description;
-    this.odometer = result.odometer;
-    this.reportedBy = result.reportedBy;
-    this.assignedTo = result.assignedTo;
-    this.existingPhotos = result.uploadedPhotos;
-    this.existingDocs = result.uploadedDocs;
-    if (
-      result.uploadedPhotos !== undefined &&
-      result.uploadedPhotos.length > 0
-    ) {
-      this.issueImages = result.uploadedPics;
-    }
+  /*
+   * If We CliCk Clone Button Then It Fetch Issue details 
+   */
 
-    if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
-      this.issueDocs = result.uploadDocument;
-    }
-  })
-}
+  async cloneIssue(id: any) {
+    this.apiService.getData("issues/" + id).subscribe(async (result: any) => {
+      result = result[0];
+      console.log('re=0', result)
+      this.clonePic = true;
+      console.log('this.clonePic', this.clonePic)
+      this.issueID = this.issueID;
+      this.issueName = result.issueName;
+      this.unitID = result.unitID;
+      this.fetchedUnitID = result.unitID;
+      this.fetchedUnitType = result.unitType;
+      // jehda bind kita aa 
+      this.unitType = result.unitType; // jehda pisho aanda aa data
+      this.currentStatus = 'open';
+      this.reportedDate = result.reportedDate;
+      this.description = result.description;
+      this.odometer = result.odometer;
+      this.reportedBy = result.reportedBy;
+      this.assignedTo = result.assignedTo;
+      this.existingPhotos = result.uploadedPhotos;
+      // this.uploadedPhotos = result.uploadedPhotos;
 
+      // console.log(' this.existingPhotos--', this.existingPhotos)
+      this.existingDocs = result.uploadedDocs;
+      // this.uploadedDocs = result.uploadedDocs;
 
+      // console.log(' this.existingDocs--', this.existingDocs)
+      if (
+        result.uploadedPhotos !== undefined &&
+        result.uploadedPhotos.length > 0
+      ) {
+        this.issueImages = result.uploadedPics;
+        // console.log(' this.issueImages--', this.issueImages)
+      }
 
+      if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
+        this.issueDocs = result.uploadDocument;
+        // console.log(' this.issueDocs--', this.issueDocs)
+      }
+    })
+  }
 }
