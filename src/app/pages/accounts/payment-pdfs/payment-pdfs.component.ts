@@ -1,10 +1,12 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import * as html2pdf from "html2pdf.js";
 import { Subscription } from "rxjs";
 import { ApiService } from "src/app/services/api.service";
 import { ListService } from "src/app/services/list.service";
 import { formatDate } from "@angular/common";
 import { AccountService } from "src/app/services/account.service";
+import { Auth } from "aws-amplify";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-payment-pdfs",
@@ -15,8 +17,11 @@ export class PaymentPdfsComponent implements OnInit {
   constructor(
     private listService: ListService,
     private apiService: ApiService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private modalService: NgbModal,
   ) {}
+  @ViewChild("driverPaymentDetail", { static: true })
+  modalContent: TemplateRef<any>;
   subscription: Subscription;
 
   pdfDetails = {
@@ -98,6 +103,9 @@ export class PaymentPdfsComponent implements OnInit {
   fuelAddTotal = 0;
   fuelDedTotal = 0;
   pdfTitle = "";
+  currentUser: any = "";
+  companyName: any = "";
+  companyLogo = "";
 
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
@@ -105,6 +113,7 @@ export class PaymentPdfsComponent implements OnInit {
         if (res.showModal && res.length != 0) {
           res.showModal = false;
           this.paymentData = res.data;
+
           this.paymentData.workerBenefit = 0;
           this.paymentData.incomeTax =
             Number(this.paymentData.taxdata.federalTax) +
@@ -113,11 +122,11 @@ export class PaymentPdfsComponent implements OnInit {
           this.paymentData.eiInsurable = this.paymentData.totalAmount;
 
           if (this.paymentData.paymentTo === "driver") {
-            this.pdfTitle = "Driver Payment Advance";
+            this.pdfTitle = "Driver Payment";
           } else if (this.paymentData.paymentTo === "employee") {
             this.pdfTitle = "Employee Payment";
           }
-
+          await this.getCurrentuser();
           this.pdfDetails.paymentNo = this.paymentData.paymentNo;
           if (this.paymentData.paymentTo === "driver") {
             this.fetchDriverDetails();
@@ -129,6 +138,20 @@ export class PaymentPdfsComponent implements OnInit {
             this.fetchCarrierDetails();
           }
 
+          // open payment pdf for preview
+          let ngbModalOptions: NgbModalOptions = {
+            backdrop: "static",
+            keyboard: false,
+            windowClass: "paymentPdfSection-prog__main",
+          };
+          res.showModal = false;
+          this.modalService
+            .open(this.modalContent, ngbModalOptions)
+            .result.then(
+              (result) => {},
+              (reason) => {}
+            );
+            
           if (this.paymentData.fromDate && this.paymentData.toDate) {
             this.pdfDetails.payYear = formatDate(
               this.paymentData.toDate,
@@ -174,7 +197,8 @@ export class PaymentPdfsComponent implements OnInit {
             }
           }
           await this.fetchAdvancePayments();
-          await this.generatePaymentPDF();
+          
+          // await this.generatePaymentPDF();
         }
       }
     );
@@ -414,4 +438,14 @@ export class PaymentPdfsComponent implements OnInit {
       });
     }
   }
+
+  getCurrentuser = async () => {
+    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+    const carrierID = this.currentUser.carrierID;
+    let result: any = await this.apiService
+      .getData(`carriers/detail/${carrierID}`)
+      .toPromise();
+    this.companyName = result.companyName;
+    this.companyLogo = result.logo;
+  };
 }

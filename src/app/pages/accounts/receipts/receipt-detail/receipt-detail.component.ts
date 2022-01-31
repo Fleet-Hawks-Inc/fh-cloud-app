@@ -1,8 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import Constants from "../../../fleet/constants";
 import { AccountService, AccountUtilityService } from "./../../../../services";
 import * as html2pdf from "html2pdf.js";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 @Component({
   selector: "app-receipt-detail",
   templateUrl: "./receipt-detail.component.html",
@@ -10,6 +11,8 @@ import * as html2pdf from "html2pdf.js";
 })
 export class ReceiptDetailComponent implements OnInit {
   dataMessage = Constants.NO_RECORDS_FOUND;
+  @ViewChild("recptDetail", { static: true })
+  modalContent: TemplateRef<any>;
   public recID: string;
   accountsObjects = {};
   accountsIntObjects: any = {};
@@ -35,13 +38,15 @@ export class ReceiptDetailComponent implements OnInit {
       addAccountID: null,
       dedAccountID: null,
     },
+    isFeatEnabled: false,
   };
   customerName = "";
   isLoaded = false;
   constructor(
     private accountService: AccountService,
     private route: ActivatedRoute,
-    private accountUtility: AccountUtilityService
+    private accountUtility: AccountUtilityService,
+    private modalService: NgbModal,
   ) {}
 
   async ngOnInit() {
@@ -49,14 +54,16 @@ export class ReceiptDetailComponent implements OnInit {
     if (this.recID) {
       this.fetchReceipt();
     }
-    this.accountsIntObjects = await this.accountUtility.getPreDefinedAccounts();
   }
 
   async fetchReceipt() {
     this.accountService
       .getData(`receipts/detail/${this.recID}`)
-      .subscribe((res: any) => {
+      .subscribe(async (res: any) => {
         this.receiptData = res[0];
+        if (!this.receiptData.isFeatEnabled) {
+          this.accountsIntObjects = await this.accountUtility.getPreDefinedAccounts();
+        }
         this.isLoaded = true;
         if (this.receiptData.custData) {
           for (let i = 0; i < this.receiptData.custData.length; i++) {
@@ -82,7 +89,10 @@ export class ReceiptDetailComponent implements OnInit {
           const element = this.receiptData.transactionLog[j];
           element.accName = "";
           element.type = element.type.replace("_", " ");
-          if (element.actIDType === "actID") {
+          if (
+            element.actIDType === "actID" &&
+            !this.receiptData.isFeatEnabled
+          ) {
             this.receiptData.fetchedInvoices.map((v) => {
               if (v._type === "Accounts" && v.actID === element.accountID) {
                 element.accName = v.actName;
@@ -104,5 +114,19 @@ export class ReceiptDetailComponent implements OnInit {
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     });
     localStorage.setItem("downloadDisabled", "false");
+  }
+
+  showPreview() {
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: "static",
+      keyboard: false,
+      windowClass: "paymentPdfSection-prog__main",
+    };
+    this.modalService
+      .open(this.modalContent, ngbModalOptions)
+      .result.then(
+        (result) => {},
+        (reason) => {}
+      );
   }
 }

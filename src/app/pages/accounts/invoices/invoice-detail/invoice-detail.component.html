@@ -210,7 +210,7 @@
                 <thead>
                   <tr>
                     <th>Account Name</th>
-                    <th>Name</th>
+                    <!-- <th>Name</th> -->
                     <th>Type</th>
                     <th>Debit</th>
                     <th>Credit</th>
@@ -218,15 +218,20 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let dt of invoice.transactionLog">
-                    <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
-                       <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
-                    <td>{{customersObjects[dt.name] | titlecase}}</td>
+                    <td *ngIf="invoice.isFeatEnabled">
+                      {{ dt.actName | titlecase}}
+                    </td>
+                    <td *ngIf="!invoice.isFeatEnabled">
+                      <span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
+                       <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span>
+                    </td>
+                    <!-- <td>{{customersObjects[dt.name] | titlecase}}</td> -->
                     <td>{{dt.type | titlecase}}</td>
                     <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
                     <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
                   </tr>
                   <tr>
-                    <td colspan="3" class="font-weight-bold text-right">Total</td>
+                    <td colspan="2" class="font-weight-bold text-right">Total</td>
                     <td>{{total | number : '1.2-2'}} {{invoice.invCur}}</td>
                     <td>{{total | number : '1.2-2'}} {{invoice.invCur}}</td>
                   </tr>

@@ -84,27 +84,31 @@
                                         <col style="width:1%">
                                         <col style="width:1%">
                                         <col style="width:1%">
-                                        <col style="width:4%">
-                                        <col style="width:3%">
-                                        <col style="width:2%">
-                                        <col style="width:3%">
-                                        <col style="width:3%">
                                         <col style="width:1%">
-                                        <col style="width:3%">
+                                        <col style="width:2%">
+                                        <col style="width:4%">
+                                        <col style="width:2%">
+                                        <col style="width:2%">
+                                        <col style="width:2%">
+                                        <col style="width:2%">
+                                        <col style="width:1%">
+                                        <col style="width:2%">
                                         <col style="width:1%">
                                         <col style="width:1%">
                                         <thead>
                                             <tr>
                                                 <th>Vehicle</th>
                                                 <th>Trip#</th>
-                                                <th>Order#</th>
+                                                <th>Order#</th> 
+                                                <th>Assets</th>
+                                                <th>Drivers</th>
                                                 <th>Location</th>
                                                 <th>Date</th>
                                                 <th>Province(US)</th>
-                                                <th>US Province Miles</th>
+                                                <th>US Miles</th>
                                                 <th>US(Total)</th>
                                                 <th>Province(Canada)</th>
-                                                <th>Canada Total Miles</th>
+                                                <th>Canada Miles</th>
                                                 <th>Canada(Total)</th>
                                                 <th>Total Miles</th>
                                             </tr>
@@ -118,6 +122,11 @@
                                                 </td>
                                                 <td>{{item.tripNo}}</td>
                                                 <td> {{item.orderName}}</td>
+                                                
+                                                <th>
+                                                    <span style="font-weight:normal">{{item.assetName}}</span></th>
+                                                
+                                                <td>{{item.driverName |titlecase}}</td>
                                                 <td>
                                                     <span title="Location" *ngFor="let data of item.tripPlanning">
                                                         <b>
@@ -126,7 +135,6 @@
                                                         {{ data.location}} <br>
                                                     </span>
                                                 </td>
-
                                                 <td>
                                                     <span title="Date" *ngFor="let data of item.tripPlanning">
                                                         <b>
@@ -135,7 +143,6 @@
                                                         {{ data.date}} <br>
                                                     </span>
                                                 </td>
-
                                                 <td>
                                                     <span *ngIf="item.provinceData.length === 0 ">-</span>
                                                     <span *ngFor="let item1 of item.provinceData">

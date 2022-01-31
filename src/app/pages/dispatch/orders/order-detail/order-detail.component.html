@@ -1741,7 +1741,8 @@
                                 </td>
                               </tr>
 
-                              <tr *ngIf="
+                              <tr *ngIf="invoiceData.charges
+                              .accessorialFeeInfo.accessorialFee.length > 0 &&
                                   invoiceData.charges.accessorialFeeInfo
                                     .accessorialFee[0].type != '' &&
                                   invoiceData.charges.accessorialFeeInfo
@@ -1767,7 +1768,9 @@
                                   </table>
                                 </td>
                               </tr>
-                              <tr *ngIf="
+                              <tr *ngIf="invoiceData.charges
+                              .accessorialDeductionInfo
+                              .accessorialDeduction.length > 0 &&
                                   invoiceData.charges.accessorialDeductionInfo
                                     .accessorialDeduction[0].type != '' &&
                                   invoiceData.charges.accessorialDeductionInfo
@@ -2475,7 +2478,9 @@
                                       </td>
                                     </tr>
 
-                                    <tr *ngIf="
+                                    <tr *ngIf="invoiceData.charges
+                                    .accessorialFeeInfo
+                                    .accessorialFee.length > 0 &&
                                         invoiceData.charges.accessorialFeeInfo
                                           .accessorialFee[0].type != '' &&
                                         invoiceData.charges.accessorialFeeInfo
@@ -2506,7 +2511,9 @@
                                         </table>
                                       </td>
                                     </tr>
-                                    <tr *ngIf="
+                                    <tr *ngIf="invoiceData.charges
+                                    .accessorialDeductionInfo
+                                    .accessorialDeduction.length > 0 &&
                                         invoiceData.charges
                                           .accessorialDeductionInfo
                                           .accessorialDeduction[0].type != '' &&

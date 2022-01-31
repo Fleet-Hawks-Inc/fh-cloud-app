@@ -9,8 +9,7 @@
                     <div class="row" style="padding-top:10px;">
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-sm mb-3">
-                                <ng-select [(ngModel)]="vehicleID"
-                                    name="vehicleID" style="width: 100%;"
+                                <ng-select [(ngModel)]="vehicleID" name="vehicleID" style="width: 100%;"
                                     placeholder="Search by vehicle">
                                     <ng-option *ngFor="let data of
                                         vehiclesObject | keyvalue" value="{{
@@ -21,8 +20,7 @@
                         </div>
                         <div class="col-md-2 col-lg-2 pl-0">
                             <div class="input-group input-group-sm mb-3">
-                                <ng-select [(ngModel)]="assetID" name="assetID"
-                                    style="width: 100%;"
+                                <ng-select [(ngModel)]="assetID" name="assetID" style="width: 100%;"
                                     placeholder="Search by asset">
                                     <ng-option *ngFor="let data of assetsObject
                                         | keyvalue" value="{{ data.key }}"> {{
@@ -32,12 +30,9 @@
                         </div>
 
                         <div class="col-md-2 col-lg-2 pl-0 pr-0">
-                            <ng-select placeholder="Select Task"
-                                class="form-control bgnone populate"
-                                name="taskID"
+                            <ng-select placeholder="Select Task" class="form-control bgnone populate" name="taskID"
                                 [(ngModel)]="taskID">
-                                <ng-option *ngFor="let item of tasks;"
-                                    value="{{item.taskID}}">
+                                <ng-option *ngFor="let item of tasks;" value="{{item.taskID}}">
                                     <div title="{{item.taskName}}">{{item.taskName}}</div>
                                 </ng-option>
                             </ng-select>
@@ -46,43 +41,32 @@
                         <div class="col-md-2 col-lg-2">
                             <button type="submit" (click)="searchFilter()"
                                 class="btn btn-sm btn-success mr-3">Search</button>
-                            <button type="button" (click)="resetFilter()"
-                                class="btn btn-sm btn-success">Reset</button>
+                            <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                         </div>
 
                         <div class="col-md-4 col-lg-4 text-right pr-1
                             text-right">
-                            <div class="btn-group flex-wrap mr-2"
-                                *ngIf="!environment">
+                            <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
 
                                 <button type="button" class="btn btn-success
-                                    btn-sm dropdown-toggle"
-                                    data-toggle="dropdown"
-                                    aria-expanded="false">Actions<span
+                                    btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span
                                         class="caret"></span></button>
-                                <div class="dropdown-menu" role="menu"
-                                    x-placement="bottom-start"
-                                    style="position: absolute; will-change:
+                                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change:
                                     transform; top: 0px; left: 0px; transform:
                                     translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1"
-                                        href="javascript:;">Import</a>
-                                    <a class="dropdown-item text-1"
-                                        href="javascript:;">Export</a>
+                                    <a class="dropdown-item text-1" href="javascript:;">Import</a>
+                                    <a class="dropdown-item text-1" href="javascript:;">Export</a>
                                 </div>
                             </div>
 
-                            <a href="javascript:;" (click)="refreshData()"
-                                data-toggle="tooltip" title="Refresh data"
+                            <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data"
                                 class="btn btn-success btn-sm modal-with-form
                                 mr-2">
                                 <i class="fas fa-sync"></i>
                             </a>
 
-                            <a
-                                routerLink="/fleet/maintenance/service-log/add-service"
-                                class="btn btn-success btn-sm ml-2"
-                                style="color:white;"><i class="fas fa-plus"></i>
+                            <a routerLink="/fleet/maintenance/service-log/add-service"
+                                class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i>
                                 Add
                                 Service Log</a>
                         </div>
@@ -93,54 +77,40 @@
             <section class="m-2">
                 <div class="row mb-3">
                     <div class="col-lg-12">
-                        <div infiniteScroll [infiniteScrollDistance]="1"
-                            [infiniteScrollUpDistance]="1"
-                            [infiniteScrollThrottle]="5"
-                            (scrolled)="onScroll()">
+                        <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                            [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
                             <div class="bg-white p-3 text-dark">
                                 <div class="form-group row pt-1">
                                     <div class="col-lg-12">
                                         <div class="mb-3 pb-1">
-                                            <ul class="nav nav-tabs top-tabs"
-                                                id="top-tabs" role="tablist">
+                                            <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                                                 <li class="nav-item">
                                                     <a class="nav-link active"
                                                         routerLink="/fleet/maintenance/service-log/list"
-                                                        id="service-log-tab"
-                                                        data-toggle="tab"
-                                                        href="#service-log"
-                                                        role="tab"
-                                                        aria-controls="open"
-                                                        aria-selected="true">Service
+                                                        id="service-log-tab" data-toggle="tab" href="#service-log"
+                                                        role="tab" aria-controls="open" aria-selected="true">Service
                                                         Log</a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link"
                                                         routerLink="/fleet/maintenance/service-program/list"
-                                                        id="service-prog-tab"
-                                                        data-toggle="tab"
-                                                        role="tab"
-                                                        aria-controls="overdue"
-                                                        aria-selected="false">Service
+                                                        id="service-prog-tab" data-toggle="tab" role="tab"
+                                                        aria-controls="overdue" aria-selected="false">Service
                                                         Program</a>
                                                 </li>
                                             </ul>
                                         </div>
                                         <div class="tab-content p-0 border-0
                                             shadow-none" id="myTabContent">
-                                            <div class="tab-pane show active"
-                                                id="service-log" role="tabpanel"
+                                            <div class="tab-pane show active" id="service-log" role="tabpanel"
                                                 aria-labelledby="service-log-tab">
                                                 <div class="row">
                                                     <div class="col pr-0">
                                                         <section class="card">
-                                                            <div
-                                                                class="card-body
+                                                            <div class="card-body
                                                                 p-0">
-                                                                <div
-                                                                    class="table-responsive">
-                                                                    <table
-                                                                        class="row-border
+                                                                <div class="table-responsive">
+                                                                    <table class="row-border
                                                                         hover
                                                                         table
                                                                         table-bordered
@@ -148,34 +118,24 @@
                                                                         mb-0">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th
-                                                                                    width="10%">Unit
+                                                                                <th width="10%">Unit
                                                                                     Type</th>
-                                                                                <th
-                                                                                    width="20%">Vehicle/Asset</th>
-                                                                                <th
-                                                                                    width="15%">Completion
+                                                                                <th width="20%">Vehicle/Asset</th>
+                                                                                <th width="15%">Completion
                                                                                     Date/Odometer
                                                                                 </th>
-                                                                                <th
-                                                                                    width="40%">Details</th>
-                                                                                <th
-                                                                                    width="15%">Total</th>
+                                                                                <th width="40%">Details</th>
+                                                                                <th width="15%">Total</th>
                                                                                 <th>Actions</th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                            <tr
-                                                                                *ngIf="logs.length
+                                                                            <tr *ngIf="logs.length
                                                                                 ==
-                                                                                0"
-                                                                                class="text-center">
-                                                                                <td
-                                                                                    colspan="6">{{dataMessage}}</td>
+                                                                                0" class="text-center">
+                                                                                <td colspan="6">{{dataMessage}}</td>
                                                                             </tr>
-                                                                            <tr
-                                                                                class="cursorpoint"
-                                                                                *ngFor="let
+                                                                            <tr class="cursorpoint" *ngFor="let
                                                                                 item
                                                                                 of
                                                                                 logs;
@@ -191,8 +151,7 @@
                                                                                     {{
                                                                                     item.unitName}}
                                                                                     <br>
-                                                                                    <span
-                                                                                        class="text-success"
+                                                                                    <span class="text-success"
                                                                                         [ngClass]="{'text-danger':
                                                                                         item.currentStatus
                                                                                         ==
@@ -221,10 +180,8 @@
                                                                                             class="font-weight-bold">Service
                                                                                             Task(s):
                                                                                         </span>
-                                                                                        <span
-                                                                                            title="Service
-                                                                                            Task"
-                                                                                            *ngFor="let
+                                                                                        <span title="Service
+                                                                                            Task" *ngFor="let
                                                                                             task
                                                                                             of
                                                                                             item.allServiceTasks.serviceTaskList;let
@@ -236,13 +193,11 @@
                                                                                             ?
                                                                                             task.taskName
                                                                                             :
-                                                                                            '-'}}<span
-                                                                                                *ngIf="!$last"
+                                                                                            '-'}}<span *ngIf="!$last"
                                                                                                 class="list-format">,
                                                                                             </span>
                                                                                         </span>
-                                                                                        <span
-                                                                                            *ngIf="item.allServiceTasks.serviceTaskList
+                                                                                        <span *ngIf="item.allServiceTasks.serviceTaskList
                                                                                             ==
                                                                                             0;">-
                                                                                         </span>
@@ -251,11 +206,8 @@
                                                                                         <span
                                                                                             class="font-weight-bold">Issue(s):
                                                                                         </span>
-                                                                                        <a
-                                                                                            title="Issue"
-                                                                                            class="text-info
-                                                                                            font-size-12"
-                                                                                            *ngFor="let
+                                                                                        <a title="Issue" class="text-info
+                                                                                            font-size-12" *ngFor="let
                                                                                             issue
                                                                                             of
                                                                                             item.selectedIssues;let
@@ -263,13 +215,11 @@
                                                                                             last">
                                                                                             <span
                                                                                                 (click)="gotoIssue(issue)">{{issuesObject[issue]}}</span>
-                                                                                            <span
-                                                                                                *ngIf="!$last"
+                                                                                            <span *ngIf="!$last"
                                                                                                 class="list-format">,
                                                                                             </span>
                                                                                         </a>
-                                                                                        <span
-                                                                                            *ngIf="item.selectedIssues.length
+                                                                                        <span *ngIf="item.selectedIssues.length
                                                                                             ==
                                                                                             0;">-
                                                                                         </span>
@@ -278,8 +228,7 @@
                                                                                         <span
                                                                                             class="font-weight-bold">Vendor:
                                                                                         </span>
-                                                                                        <a
-                                                                                            (click)="openComponent(item.vendorID)"
+                                                                                        <a (click)="openComponent(item.vendorID)"
                                                                                             class="text-info
                                                                                             font-size-12"
                                                                                             href="javascript:;"
@@ -298,29 +247,22 @@
                                                                                     {{item.allServiceParts.currency}}
                                                                                 </td>
                                                                                 <td>
-                                                                                    <div
-                                                                                        class="dropdown
+                                                                                    <div class="dropdown
                                                                                         dropright">
-                                                                                        <button
-                                                                                            class="bg-transparent
-                                                                                            border-0"
-                                                                                            type="button"
+                                                                                        <button class="bg-transparent
+                                                                                            border-0" type="button"
                                                                                             id="dropdownMenuButton-{{i}}"
                                                                                             data-toggle="dropdown"
                                                                                             aria-haspopup="true"
                                                                                             aria-expanded="false">
-                                                                                            <i
-                                                                                                class="fas
+                                                                                            <i class="fas
                                                                                                 fa-ellipsis-v"></i>
                                                                                         </button>
-                                                                                        <div
-                                                                                            class="dropdown-menu"
+                                                                                        <div class="dropdown-menu"
                                                                                             attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                                            <a
-                                                                                                class="dropdown-item"
+                                                                                            <a class="dropdown-item"
                                                                                                 routerLink="/fleet/maintenance/service-log/edit/{{item.logID}}">Edit</a>
-                                                                                            <a
-                                                                                                class="dropdown-item"
+                                                                                            <a class="dropdown-item"
                                                                                                 (click)="deleteProgram(item)"
                                                                                                 href="javascript:;">Delete</a>
                                                                                         </div>
@@ -350,40 +292,32 @@
 
             <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey !==
                 'end' && logs.length !== 0">
-                <button type="button" class="btn btn-success btn-sm text-light"
-                    (click)="initDataTable()">Load
+                <button type="button" class="btn btn-success btn-sm text-light" (click)="initDataTable()">Load
                     More..</button>
             </div>
         </section>
     </div>
 </section>
 
-<div class="modal fade" id="vendorDtlModal" tabindex="-1" role="dialog"
-    aria-labelledby="vendorDtlModal"
+<div class="modal fade" id="vendorDtlModal" tabindex="-1" role="dialog" aria-labelledby="vendorDtlModal"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 700px;"
-        role="document">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 700px;" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Vendor's Details</h5>
-                <button type="button" class="close" data-dismiss="modal"
-                    aria-label="Close">
-                    <em class="far fa-window-close modal-dismiss"
-                        style="font-size:25px;"> </em>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <em class="far fa-window-close modal-dismiss" style="font-size:25px;"> </em>
                 </button>
             </div>
             <div class="modal-body text-dark">
                 <div class="card-body text-dark p-0">
-                    <ul class="nav top-tabs nav-tabs wizard-steps mb-3"
-                        *ngIf="vendorsData">
-                        <li class="nav-item active"> <a href="#vndrBasicDetails"
-                                data-toggle="tab"
+                    <ul class="nav top-tabs nav-tabs wizard-steps mb-3" *ngIf="vendorsData">
+                        <li class="nav-item active"> <a href="#vndrBasicDetails" data-toggle="tab"
                                 class="nav-link text-center {{basicActive}}">
                                 Basic Details
                             </a>
                         </li>
-                        <li class="nav-item {{ addressActive }}"> <a
-                                href="#vndrAddressDetails" data-toggle="tab"
+                        <li class="nav-item {{ addressActive }}"> <a href="#vndrAddressDetails" data-toggle="tab"
                                 class="nav-link text-center">
                                 Address
                             </a>
@@ -394,40 +328,34 @@
                         <div *ngIf="vendorTextStatus">
                             {{dataMessageVendorDtl}}
                         </div>
-                        <div id="vndrBasicDetails" class="tab-pane active"
-                            *ngIf="!vendorTextStatus">
+                        <div id="vndrBasicDetails" class="tab-pane active" *ngIf="!vendorTextStatus">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="thumb-info text-center mb-3">
-                                        <img alt="" class="rounded img-fluid"
-                                            style="max-width: 200px;">
+                                        <img alt="" class="rounded img-fluid" style="max-width: 200px;">
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <table class="table table-bordered m-0">
                                         <tbody>
                                             <tr>
-                                                <th width="40%"
-                                                    class="back-color-gray">Company
+                                                <th width="40%" class="back-color-gray">Company
                                                     Name:</th>
                                                 <td>{{vendorsData.cName}}</td>
                                             </tr>
                                             <tr>
-                                                <th width="40%"
-                                                    class="back-color-gray">Account#:</th>
+                                                <th width="40%" class="back-color-gray">Account#:</th>
                                                 <td>{{vendorsData.accountNumber
                                                     ? vendorsData.accountNumber
                                                     : '-'}}</td>
                                             </tr>
                                             <tr>
-                                                <th width="40%"
-                                                    class="back-color-gray">
+                                                <th width="40%" class="back-color-gray">
                                                     Phone:</th>
                                                 <td>{{vendorsData.workPhone}}</td>
                                             </tr>
                                             <tr>
-                                                <th width="40%"
-                                                    class="back-color-gray">
+                                                <th width="40%" class="back-color-gray">
                                                     Email:</th>
                                                 <td>{{vendorsData.workEmail}}</td>
                                             </tr>
@@ -437,8 +365,7 @@
                             </div>
                         </div>
 
-                        <div id="vndrAddressDetails" class="tab-pane"
-                            *ngIf="!vendorTextStatus">
+                        <div id="vndrAddressDetails" class="tab-pane" *ngIf="!vendorTextStatus">
                             <table style="float: left;" class="table
                                 table-bordered mb-3 mt-1 pt-1">
                                 <tbody *ngFor="let item of vendorAddress;">
@@ -479,8 +406,7 @@
                         </div>
                         <div class="row mt-3 mb-1">
                             <div class="col-lg-12 text-right">
-                                <button type="button" data-dismiss="modal"
-                                    class="btn btn-default">Close</button>
+                                <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
                             </div>
                         </div>
                     </div>

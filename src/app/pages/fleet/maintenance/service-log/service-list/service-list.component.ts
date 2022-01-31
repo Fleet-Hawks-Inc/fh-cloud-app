@@ -57,7 +57,7 @@ export class ServiceListComponent implements OnInit {
     private router: Router,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.initDataTable();
@@ -143,13 +143,13 @@ export class ServiceListComponent implements OnInit {
       this.apiService
         .getData(
           "serviceLogs/fetch/records?vehicleID=" +
-            this.vehicleID +
-            "&taskID=" +
-            this.taskID +
-            "&asset=" +
-            this.assetID +
-            "&lastKey=" +
-            this.lastEvaluatedKey
+          this.vehicleID +
+          "&taskID=" +
+          this.taskID +
+          "&asset=" +
+          this.assetID +
+          "&lastKey=" +
+          this.lastEvaluatedKey
         )
         .subscribe((result: any) => {
           if (result.Items.length === 0) {

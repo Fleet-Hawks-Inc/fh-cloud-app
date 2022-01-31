@@ -48,6 +48,7 @@ export class InvoiceDetailComponent implements OnInit {
     amountReceived: 0,
     fullPayment: false,
     balance: 0,
+    isFeatEnabled: false,
   };
   customerName = "";
   customerAddress = "";
@@ -92,8 +93,8 @@ export class InvoiceDetailComponent implements OnInit {
     }
 
     this.fetchCustomersByIDs();
-    this.fetchAccountsByIDs();
-    this.fetchAccountsByInternalIDs();
+    // this.fetchAccountsByIDs();
+    // this.fetchAccountsByInternalIDs();
     this.fetchStatesByIDs();
   }
   fetchCarrier() {
@@ -129,6 +130,10 @@ export class InvoiceDetailComponent implements OnInit {
       .getData(`invoices/detail/${this.invID}`)
       .subscribe((res) => {
         this.invoice = res[0];
+        if (!this.invoice.isFeatEnabled) {
+          this.fetchAccountsByIDs();
+          this.fetchAccountsByInternalIDs();
+        }
         this.invoice.invStatus = this.invoice.invStatus.replace("_", " ");
         this.invoice.transactionLog.map((v: any) => {
           v.type = v.type.replace("_", " ");

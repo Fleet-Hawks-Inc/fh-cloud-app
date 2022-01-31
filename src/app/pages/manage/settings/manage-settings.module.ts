@@ -18,15 +18,22 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CustomerSettingComponent } from './customer-setting/customer-setting.component';
+
 import { AssetsOverviewComponent } from './assets-setting/assets-overview/assets-overview.component';
 import { ImportAssetsComponent } from './assets-setting/import-assets/import-assets.component';
+
+import { DoverviewComponent } from './settings-overview/doverview/doverview.component';
+import { ImportDriversComponent } from './import-drivers/import-drivers.component';
+
 
 const routes: Routes = [
 
   { path: 'overview', component: SettingsOverviewComponent },
+  { path: 'doverview', component: DoverviewComponent},
   { path: 'general', component: GeneralSettingsComponent },
   { path: 'myaccount', component: MyAccountComponent },
   { path: 'driver', component: DriverSettingComponent },
+  { path: 'import', component: ImportDriversComponent},
   { path: 'vehicle', component: VehicleSettingComponent },
   { path: 'asset', component: AssetsSettingComponent },
   { path: 'assetsoverview', component: AssetsOverviewComponent },
@@ -55,8 +62,13 @@ const routes: Routes = [
     ComplianceSettingComponent,
     SafetySettingComponent,
     CustomerSettingComponent,
+
     AssetsOverviewComponent,
-    ImportAssetsComponent,],
+    ImportAssetsComponent,
+
+    DoverviewComponent,
+    ImportDriversComponent],
+
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
