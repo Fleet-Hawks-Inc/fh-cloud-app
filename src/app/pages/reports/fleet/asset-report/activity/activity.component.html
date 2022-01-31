@@ -41,8 +41,7 @@
                                     Export<span class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" (click)="csv() ">CSV</a>
-
+                                    <a class="dropdown-item text-1" (click)="fetchFullExport() ">CSV</a>
                                 </div>
                             </div>
                         </div>
@@ -82,28 +81,37 @@
                         <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
                             [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
                             <div class="card-body">
-
                                 <section class="reports_div">
                                     <table width="70%" class="row-border hover table table-bordered table-striped mb-0"
                                         id="tonuTripsDT">
-                                        <col style="width:10%">
-                                        <col style="width:5%">
-                                        <col style="width:10%">
-                                        <col style="width:25%">
-                                        <col style="width:10%">
-                                        <col style="width:10%">
-
-
+                                        <col style="width:1%">
+                                        <col style="width:1%">
+                                        <col style="width:1%">
+                                        <col style="width:1%">
+                                        <col style="width:2%">
+                                        <col style="width:4%">
+                                        <col style="width:2%">
+                                        <col style="width:2%">
+                                        <col style="width:2%">
+                                        <col style="width:2%">
+                                        <col style="width:1%">
+                                        <col style="width:2%">
+                                        <col style="width:1%">
+                                        <col style="width:1%">
                                         <thead>
                                             <tr>
                                                 <th>Asset</th>
                                                 <th>Trip#</th>
                                                 <th>Order#</th>
+                                                <th>Vehicle</th>
+                                                <th>Driver</th>
                                                 <th>Location</th>
                                                 <th>Date</th>
                                                 <th>Province(US)</th>
+                                                <th>US Miles</th>
                                                 <th>US(Total)</th>
                                                 <th>Province(Canada)</th>
+                                                <th>Canada Miles</th>
                                                 <th>Canada(Total)</th>
                                                 <th>Total Miles</th>
                                             </tr>
@@ -116,6 +124,8 @@
                                                 <td>{{item.assetName}}
                                                 <td>{{item.tripNo}}</td>
                                                 <td> {{item.orderName}}</td>
+                                                <td>{{item.vehicle}}</td>
+                                                <td>{{item.driverName |titlecase}}</td>
                                                 <td>
                                                     <span title="Location" *ngFor="let data of item.tripPlanning">
                                                         <b>
@@ -133,25 +143,41 @@
                                                     </span>
                                                 </td>
                                                 <td>
+                                                     <span *ngIf="item.provinceData.length === 0 ">-</span>
                                                        <span *ngFor="let item1 of item.provinceData">
                                                      <span *ngFor="let item2 of item1.usProvince"> 
-                                                     {{item2.StCntry}} :-{{item2.Total}} <br>
+                                                     {{item2.StCntry}} <br>
                                                      </span>
                                                     </span>
                                                 </td>
-                                                <td>
-                                                         {{item.usMiles}} <br>
-                                                </td>
-                                                   <td>
+                                                    <td>
+                                                         <span *ngIf="item.provinceData.length === 0 ">-</span>
                                                        <span *ngFor="let item1 of item.provinceData">
-                                                     <span *ngFor="let item2 of item1.caProvince"> 
-                                                     {{item2.StCntry}} :-{{item2.Total}} <br>
+                                                     <span *ngFor="let item2 of item1.usProvince"> 
+                                                     {{item2.Total}} <br>
                                                      </span>
                                                     </span>
                                                 </td>
-                                                <td>{{item.canMiles}}</td>
+                                               <td>   {{item.usMiles | number : '1.2-2'}} <br></td> 
+                                                   <td>
+                                                        <span *ngIf="item.provinceData.length === 0 ">-</span>
+                                                       <span *ngFor="let item1 of item.provinceData">
+                                                     <span *ngFor="let item2 of item1.canProvince"> 
+                                                     {{item2.StCntry}} <br>
+                                                     </span>
+                                                    </span>
+                                                </td>
+                                                    <td>
+                                                         <span *ngIf="item.provinceData.length === 0 ">-</span>
+                                                       <span *ngFor="let item1 of item.provinceData">
+                                                     <span *ngFor="let item2 of item1.canProvince"> 
+                                                     {{item2.Total}} <br>
+                                                     </span>
+                                                    </span>
+                                                </td>
+                                                <td>{{item.canMiles | number : '1.2-2'}}</td> 
                                                 <td>
-                                                    {{ item.miles}}
+                                                    {{ item.miles | number : '1.2-2'}}
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -163,7 +189,6 @@
                                 <button type="button" class="btn btn-success btn-sm text-light"
                                     (click)="onScroll() ">Load
                                     More..</button>
-
                             </div>
                         </div>
                     </div>

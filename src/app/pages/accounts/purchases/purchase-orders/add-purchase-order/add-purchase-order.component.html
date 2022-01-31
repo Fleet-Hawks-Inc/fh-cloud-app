@@ -2,35 +2,41 @@
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header">
-        <div class="row" style="padding-top: 10px">
-          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-            Add Purchase Order
+        <div class="row">
+          <div class="col-md-4 col-lg-4">
+            <h4 class="text-4 mb-0 font-weight-bold text-dark">
+              {{ pageTitle }} Purchase Order
+            </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-3">
             <a
               routerLink="/accounts/purchases/orders/list"
-              class="btn btn-default btn-sm"><i class="fas fa-list"></i> All
-              Purchase Orders</a>
+              class="btn mt-2 btn-default btn-sm"
+              ><i class="fas fa-list"></i> All Purchase Orders</a
+            >
           </div>
         </div>
       </header>
 
       <section class="m-2">
-        <form class="form-horizontal form-bordered" method="get"
-          #purchaseForm="ngForm">
+        <form
+          class="form-horizontal form-bordered"
+          method="get"
+          #purchaseForm="ngForm"
+        >
           <div class="row mb-3">
             <div class="col-lg-12">
               <div class="bg-white p-3 text-dark">
                 <div class="form-group row adddriverpl pt-3">
-                  <div class="col-lg-5 mb-3">
+                  <div class="col-lg-6 mb-3">
                     <div class="row">
                       <div class="col-lg-10">
                         <label
-                          class="control-label
-                          font-weight-bold font-bold
-                          text-lg-right
-                          pt-2">Purchase Order Date
-                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                          class="control-label font-weight-bold font-bold text-lg-right pt-2"
+                          >Purchase Order Date
+                          <span class="mandfield text-2 ml-1"
+                            ><sup>*</sup></span
+                          >
                         </label>
                         <input
                           [(ngModel)]="orderData.txnDate"
@@ -45,31 +51,41 @@
                           [minDate]="dateMinLimit"
                           [maxDate]="futureDatesLimit"
                           #jDate="ngModel"
-                          required readonly
-                          />
+                          required
+                          readonly
+                        />
                       </div>
                     </div>
                     <div class="row pt-2">
                       <div class="col-lg-10">
                         <label
-                          class="control-label
-                          font-weight-bold font-bold
-                          text-lg-right
-                          pt-2">Vendor
-                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                          class="control-label font-weight-bold font-bold text-lg-right pt-2"
+                          >Vendor
+                          <span class="mandfield text-2 ml-1"
+                            ><sup>*</sup></span
+                          >
                         </label>
                         <ng-select
                           [(ngModel)]="orderData.vendorID"
                           name="vendorID"
                           placeholder="Select Vendor"
-                          #vendorID="ngModel" required>
-                          <ng-option value="{{ data.contactID }}" *ngFor="let
-                            data of vendors">{{ data.companyName }}</ng-option>
+                          #vendorID="ngModel"
+                          required
+                        >
+                          <ng-option
+                            value="{{ data.contactID }}"
+                            *ngFor="let data of vendors"
+                            >{{ data.companyName }}</ng-option
+                          >
                         </ng-select>
 
-                        <div *ngIf="vendorID.invalid &&
-                          (vendorID.dirty ||
-                          vendorID.touched)" class="text-danger">
+                        <div
+                          *ngIf="
+                            vendorID.invalid &&
+                            (vendorID.dirty || vendorID.touched)
+                          "
+                          class="text-danger"
+                        >
                           <div *ngIf="vendorID.errors.required">
                             Vendor is required.
                           </div>
@@ -79,20 +95,18 @@
                         <a
                           (click)="openModal('form')"
                           href="javascript:;"
-                          class="btn btn-sm btn-success modal-with-form"><i
-                            class="fas fa-plus"></i></a>
+                          class="btn btn-sm btn-success modal-with-form"
+                          ><i class="fas fa-plus"></i
+                        ></a>
                       </div>
-
                     </div>
                   </div>
-                  <div class="col-lg-5 offset-lg-1 mb-3">
+                  <div class="col-lg-6 mb-3">
                     <div class="row">
                       <div class="col-lg-10">
                         <label
-                          class="control-label
-                          font-weight-bold font-bold
-                          text-lg-right
-                          pt-2">
+                          class="control-label font-weight-bold font-bold text-lg-right pt-2"
+                        >
                           Reference#
                         </label>
                         <input
@@ -101,17 +115,17 @@
                           [(ngModel)]="orderData.refNo"
                           class="form-control"
                           placeholder="Enter Reference#"
-                          />
+                        />
                       </div>
                     </div>
                     <div class="row pt-2">
                       <div class="col-lg-5">
                         <label
-                          class="control-label
-                          font-weight-bold font-bold
-                          text-lg-right
-                          pt-2">Payment Currency
-                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                          class="control-label font-weight-bold font-bold text-lg-right pt-2"
+                          >Payment Currency
+                          <span class="mandfield text-2 ml-1"
+                            ><sup>*</sup></span
+                          >
                         </label>
                         <ng-select
                           [(ngModel)]="orderData.currency"
@@ -119,7 +133,8 @@
                           placeholder="Select currency"
                           #curr="ngModel"
                           [clearable]="false"
-                          required>
+                          required
+                        >
                           <ng-option value="CAD">CAD</ng-option>
                           <ng-option value="USD">USD</ng-option>
                         </ng-select>
@@ -127,11 +142,12 @@
 
                       <div class="col-lg-5">
                         <label
-                          class="control-label
-                          font-weight-bold font-bold
-                          text-lg-right
-                          pt-2"> Type
-                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                          class="control-label font-weight-bold font-bold text-lg-right pt-2"
+                        >
+                          Type
+                          <span class="mandfield text-2 ml-1"
+                            ><sup>*</sup></span
+                          >
                         </label>
                         <ng-select
                           [(ngModel)]="orderData.poType"
@@ -139,14 +155,18 @@
                           placeholder="Select type"
                           #poType="ngModel"
                           [clearable]="false"
-                          required>
+                          required
+                        >
                           <ng-option value="product">Product</ng-option>
                           <ng-option value="service">Service</ng-option>
                         </ng-select>
 
-                        <div *ngIf="poType.invalid &&
-                          (poType.dirty ||
-                          poType.touched)" class="text-danger">
+                        <div
+                          *ngIf="
+                            poType.invalid && (poType.dirty || poType.touched)
+                          "
+                          class="text-danger"
+                        >
                           <div *ngIf="poType.errors.required">
                             Type is required.
                           </div>
@@ -165,34 +185,53 @@
                 <div class="form-group row adddriverpl pt-3">
                   <div class="col-lg-10">
                     <label
-                      class="control-label
-                      font-weight-bold font-weight-bold
-                      text-lg-right text-5">Purchase Order Details</label>
+                      class="control-label font-weight-bold font-weight-bold text-lg-right text-5"
+                      >Purchase Order Details</label
+                    >
                   </div>
-                  <div class="col-lg-10">
-                    <div class="row pt-2">
+                  <div class="col-lg-11">
+                    <div class="pt-2">
                       <table class="table table-bordered">
                         <thead>
                           <tr>
-                            <th>Commodity<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
-                            <th>Quantity<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
-                            <th>Rate<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
-                            <th>Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
+                            <th>
+                              Commodity<span class="mandfield text-2 ml-1"
+                                ><sup>*</sup></span
+                              >
+                            </th>
+                            <th>
+                              Quantity<span class="mandfield text-2 ml-1"
+                                ><sup>*</sup></span
+                              >
+                            </th>
+                            <th>
+                              Rate<span class="mandfield text-2 ml-1"
+                                ><sup>*</sup></span
+                              >
+                            </th>
+                            <th>
+                              Amount<span class="mandfield text-2 ml-1"
+                                ><sup>*</sup></span
+                              >
+                            </th>
                             <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr
-                            *ngFor="let detail of orderData.detail;
-                            let idt= index">
+                            *ngFor="
+                              let detail of orderData.detail;
+                              let idt = index
+                            "
+                          >
                             <td>
                               <input
                                 type="text"
-                                name="comm{{idt}}"
+                                name="comm{{ idt }}"
                                 [(ngModel)]="detail.comm"
                                 class="form-control"
                                 placeholder="Enter commodity"
-                                />
+                              />
                             </td>
 
                             <td>
@@ -200,17 +239,21 @@
                                 <div class="col-lg-6 pr-0 mr-2">
                                   <input
                                     type="text"
-                                    name="qty{{idt}}"
+                                    name="qty{{ idt }}"
                                     [(ngModel)]="detail.qty"
                                     class="form-control"
                                     placeholder="Enter quantity"
                                     (input)="calcDetailAmount(idt)"
                                     pattern="^[1-9]\d*(\.\d+)?$"
                                     #qtyy="ngModel"
-                                    />
-                                  <div *ngIf="qtyy.invalid &&
-                                    (qtyy.dirty ||
-                                    qtyy.touched)" class="text-danger">
+                                  />
+                                  <div
+                                    *ngIf="
+                                      qtyy.invalid &&
+                                      (qtyy.dirty || qtyy.touched)
+                                    "
+                                    class="text-danger"
+                                  >
                                     <div *ngIf="qtyy.errors.required">
                                       Quantity is required.
                                     </div>
@@ -222,17 +265,21 @@
                                 <div class="col-lg-5 pl-0">
                                   <input
                                     type="text"
-                                    name="qtyTyp{{idt}}"
+                                    name="qtyTyp{{ idt }}"
                                     [(ngModel)]="detail.qtyTyp"
                                     class="form-control"
                                     placeholder="e.g. bag"
-                                    (input)="setQuanType($event,idt)"
+                                    (input)="setQuanType($event, idt)"
                                     #qtyType="ngModel"
-                                    />
+                                  />
 
-                                  <div *ngIf="qtyType.invalid &&
-                                    (qtyType.dirty ||
-                                    qtyType.touched)" class="text-danger">
+                                  <div
+                                    *ngIf="
+                                      qtyType.invalid &&
+                                      (qtyType.dirty || qtyType.touched)
+                                    "
+                                    class="text-danger"
+                                  >
                                     <div *ngIf="qtyType.errors.required">
                                       Quantity type is required.
                                     </div>
@@ -245,18 +292,22 @@
                                 <div class="col-lg-5 pr-0 mr-2">
                                   <input
                                     type="text"
-                                    name="rate{{idt}}"
+                                    name="rate{{ idt }}"
                                     [(ngModel)]="detail.rate"
                                     class="form-control"
                                     placeholder="Enter rate"
                                     (input)="calcDetailAmount(idt)"
                                     pattern="^[1-9]\d*(\.\d+)?$"
                                     #rateQ="ngModel"
-                                    />
+                                  />
 
-                                  <div *ngIf="rateQ.invalid &&
-                                    (rateQ.dirty ||
-                                    rateQ.touched)" class="text-danger">
+                                  <div
+                                    *ngIf="
+                                      rateQ.invalid &&
+                                      (rateQ.dirty || rateQ.touched)
+                                    "
+                                    class="text-danger"
+                                  >
                                     <div *ngIf="rateQ.errors.required">
                                       Rate is required.
                                     </div>
@@ -270,20 +321,23 @@
                                 </div>
 
                                 <div class="col-lg-5 pl-0">
-
                                   <input
                                     type="text"
-                                    name="rateTyp{{idt}}"
+                                    name="rateTyp{{ idt }}"
                                     [(ngModel)]="detail.rateTyp"
                                     class="form-control"
                                     placeholder="e.g. bag"
-                                    (input)="setQuanType($event,idt)"
+                                    (input)="setQuanType($event, idt)"
                                     #rateType="ngModel"
-                                    />
+                                  />
 
-                                  <div *ngIf="rateType.invalid &&
-                                    (rateType.dirty ||
-                                    rateType.touched)" class="text-danger">
+                                  <div
+                                    *ngIf="
+                                      rateType.invalid &&
+                                      (rateType.dirty || rateType.touched)
+                                    "
+                                    class="text-danger"
+                                  >
                                     <div *ngIf="rateType.errors.required">
                                       Rate type is required.
                                     </div>
@@ -299,7 +353,7 @@
                                 class="form-control"
                                 placeholder="Enter amount"
                                 readonly
-                                />
+                              />
                             </td>
                             <td>
                               <a href="javascript:;" (click)="delDetail(idt)">
@@ -310,9 +364,13 @@
                         </tbody>
                       </table>
                     </div>
-                    <button type="button" class="btn btn-success btn-sm"
-                      (click)="addDetail();"><i class="fas
-                        fa-plus"></i> Add Another Line</button>
+                    <button
+                      type="button"
+                      class="btn btn-success btn-sm"
+                      (click)="addDetail()"
+                    >
+                      <i class="fas fa-plus"></i> Add Another Line
+                    </button>
                   </div>
                 </div>
               </div>
@@ -323,205 +381,218 @@
             <div class="col-lg-12">
               <div class="bg-white p-3 text-dark">
                 <div class="form-group row adddriverpl pt-3">
-                  <div class="col-lg-10">
+                  <div class="col-lg-6">
+                    <div class="row">
+                      <div class="col-lg-10">
+                        <label
+                          class="control-label font-weight-bold text-4 text-dark"
+                          >Remarks</label
+                        >
+                        <textarea
+                          class="form-control h-auto"
+                          name="remarks"
+                          [(ngModel)]="orderData.charges.remarks"
+                          rows="14"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <h4 class="mt-0 text-dark font-weight-bold text-4">
+                      Charges
+                    </h4>
+                    <!-- <div class="row mt-3">
+                      <div class="col-lg-6">
+                        <label
+                          class="control-label
+                          font-weight-semibold
+                          text-3 text-dark">Adjustments</label>
+                      </div>
+                      <div class="col-lg-2"></div>
+                      <div class="col-lg-4 text-right">
+                        <label
+                          class="control-label
+                          font-weight-semibold
+                          text-3 text-dark">Total: </label> {{
+                        orderData.total.feeTotal }}
+                      </div>
+                    </div> -->
                     <div class="row mt-3">
-                      <div class="col-lg-5">
-                        <div class="col-lg-12 pl-0">
-                          <label
-                            class="control-label
-                            font-weight-bold
-                            text-4 text-dark">Remarks</label>
-                          <textarea
-                            class="form-control h-auto"
-                            name="remarks"
-                            [(ngModel)]="orderData.charges.remarks"
-                            rows="14"></textarea>
+                      <div class="col-lg-3">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <input
+                              type="text"
+                              name="cName"
+                              [(ngModel)]="orderData.charges.cName"
+                              class="form-control"
+                              placeholder="Enter name"
+                            />
+                          </div>
                         </div>
                       </div>
+                      <div class="col-lg-3">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <ng-select
+                              [(ngModel)]="orderData.charges.cType"
+                              name="cType"
+                              #cType="ngModel"
+                              [clearable]="false"
+                              (change)="accessorialFeeTotal()"
+                              required
+                            >
+                              <ng-option value="add">Add</ng-option>
+                              <ng-option value="ded">Deduct</ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 text-right">
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <input
+                              type="text"
+                              name="cAmount"
+                              [(ngModel)]="orderData.charges.cAmount"
+                              class="form-control"
+                              placeholder="Enter amount"
+                              (input)="accessorialFeeTotal()"
+                              pattern="^[0-9]\d*(\.\d+)?$"
+                              #accFeeam="ngModel"
+                            />
 
-                      <div class="col-lg-5 offset-lg-2">
-                        <h4 class="mt-0 text-dark font-weight-bold text-4">
-                          Charges
-                        </h4>
-                        <!-- <div class="row mt-3">
-                          <div class="col-lg-6">
-                            <label
-                              class="control-label
-                              font-weight-semibold
-                              text-3 text-dark">Adjustments</label>
-                          </div>
-                          <div class="col-lg-2"></div>
-                          <div class="col-lg-4 text-right">
-                            <label
-                              class="control-label
-                              font-weight-semibold
-                              text-3 text-dark">Total: </label> {{
-                            orderData.total.feeTotal }}
-                          </div>
-                        </div> -->
-                        <div
-                          class="row mt-3">
-                          <div class="col-lg-6">
-                            <div class="row">
-                              <div class="col-lg-10 pr-0">
-                                <input
-                                  type="text"
-                                  name="cName"
-                                  [(ngModel)]="orderData.charges.cName"
-                                  class="form-control"
-                                  placeholder="Enter name"
-                                  />
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-lg-3">
-                            <div class="row">
-                              <div class="col-lg-12 pr-0">
-                                <ng-select
-                                  [(ngModel)]="orderData.charges.cType"
-                                  name="cType"
-                                  #cType="ngModel"
-                                  [clearable]="false"
-                                  (change)="accessorialFeeTotal()"
-                                  required>
-                                  <ng-option value="add">Add</ng-option>
-                                  <ng-option value="ded">Deduct</ng-option>
-                                </ng-select>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-lg-3 text-right">
-                            <div class="row">
-                              <div class="col-lg-12 pr-0">
-                                <input
-                                  type="text"
-                                  name="cAmount"
-                                  [(ngModel)]="orderData.charges.cAmount"
-                                  class="form-control"
-                                  placeholder="Enter amount"
-                                  (input)="accessorialFeeTotal()"
-                                  pattern="^[0-9]\d*(\.\d+)?$"
-                                  #accFeeam="ngModel"
-                                  />
-
-                                <div *ngIf="accFeeam.errors?.pattern">
-                                  Please enter valid amount
-                                </div>
-                              </div>
+                            <div *ngIf="accFeeam.errors?.pattern">
+                              Please enter valid amount
                             </div>
                           </div>
                         </div>
+                      </div>
+                    </div>
 
-                        <div class="row mt-3">
-                          <div class="col-lg-6 pl-3 mb-2">
-                            <div class="checkbox-custom checkbox-default">
-                              <input type="checkbox" id="ZeroRated"
-                                name="exempt"
-                                [(ngModel)]="orderData.exempt"
-                                (change)="taxExempt()" />
-                              <label
-                                class="control-label
-                                font-weight-semibold
-                                labelmt
-                                text-3 text-dark" for="ZeroRated">Tax Exempt</label>
+                    <div class="row mt-3">
+                      <div class="col-lg-6 pl-3 mb-2">
+                        <div class="checkbox-custom checkbox-default">
+                          <input
+                            type="checkbox"
+                            id="ZeroRated"
+                            name="exempt"
+                            [(ngModel)]="orderData.exempt"
+                            (change)="taxExempt()"
+                          />
+                          <label
+                            class="control-label font-weight-semibold labelmt text-3 text-dark"
+                            for="ZeroRated"
+                            >Tax Exempt</label
+                          >
+                        </div>
+                      </div>
+                      <div class="col-lg-4 text-right mb-2">
+                        <label
+                          class="control-label font-weight-semibold labelmt text-3 text-dark text-right"
+                          for="subtotal"
+                          >Sub Total:
+                        </label>
+                        {{ orderData.total.subTotal }}
+                      </div>
+                      <div class="col-lg-10">
+                        <label
+                          class="control-label font-weight-bold text-3 text-dark"
+                          for="inputDefault"
+                          >Province/State</label
+                        >
+                      </div>
+                      <div class="col-lg-6" *ngIf="!orderData.exempt">
+                        <ng-select
+                          class="form-control populate"
+                          name="stateID"
+                          [(ngModel)]="orderData.stateID"
+                          placeholder="Select
+                          state"
+                          (change)="selecteProvince($event)"
+                        >
+                          <ng-option
+                            *ngFor="let data of stateTaxes"
+                            value="{{ data.stateTaxID }}"
+                            >{{ data.stateName }}</ng-option
+                          >
+                        </ng-select>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-8" *ngIf="orderData.exempt"></div>
+                      <div class="col-lg-6" *ngIf="!orderData.exempt">
+                        <!-- GST -->
+                        <div
+                          class="row mt-3"
+                          *ngFor="
+                            let taxD of orderData.charges.taxes;
+                            let td = index
+                          "
+                        >
+                          <div class="col-lg-6">
+                            <input
+                              type="text"
+                              disabled
+                              class="form-control"
+                              [(ngModel)]="taxD.name"
+                              name="taxName{{ td }}"
+                            />
+                          </div>
+
+                          <div class="col-lg-6 input-group">
+                            <input
+                              type="text"
+                              [(ngModel)]="taxD.tax"
+                              name="taxper{{ td }}"
+                              class="form-control"
+                              (input)="taxcalculation(td)"
+                            /><span class="input-group-append"
+                              ><span class="input-group-text pt-0 pb-0"
+                                >%</span
+                              ></span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div *ngIf="!orderData.exempt">
+                          <div
+                            class="row mt-3"
+                            *ngFor="
+                              let taxD of orderData.charges.taxes;
+                              let td = index
+                            "
+                          >
+                            <div class="col-lg-12 pt-1">
+                              <div class="bordtop">
+                                <p class="text-right">
+                                  {{ taxD.amount | number: "1.2-2" }}
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                          <div class="col-lg-6 pl-3 mb-2">
-                            <label
-                              class="control-label
-                              font-weight-semibold
-                              labelmt
-                              text-3 text-dark text-right" for="subtotal">Sub
-                              Total:
-                            </label> {{ orderData.total.subTotal }}
-                          </div>
-                          <div class="col-lg-12">
-                            <label
-                              class="control-label
-                              font-weight-bold
-                              text-3 text-dark" for="inputDefault">Province/State</label>
-                          </div>
-                          <div class="col-lg-9"
-                            *ngIf="!orderData.exempt">
-                            <ng-select
-                              class="form-control
-                              populate"
-                              name="stateID"
-                              [(ngModel)]="orderData.stateID"
-                              placeholder="Select
-                              state"
-                              (change)="selecteProvince($event)">
-                              <ng-option
-                                *ngFor="let data
-                                of stateTaxes"
-                                value="{{
-                                data.stateTaxID
-                                }}">{{
-                                data.stateName
-                                }}</ng-option>
-                            </ng-select>
                           </div>
                         </div>
 
                         <div class="row">
-                          <div class="col-lg-8"
-                            *ngIf="orderData.exempt">
-                          </div>
-                          <div class="col-lg-8"
-                            *ngIf="!orderData.exempt">
-                            <!-- GST -->
-                            <div class="row mt-3" *ngFor="let taxD of
-                              orderData.charges.taxes; let td= index;">
-                              <div class="col-lg-5 pr-0">
-                                <input
-                                  type="text"
-                                  disabled
-                                  class="form-control"
-                                  [(ngModel)]="taxD.name"
-                                  name="taxName{{td}}"
-                                  />
-                              </div>
-
-                              <div class="col-lg-5 pr-0 input-group">
-                                <input
-                                  type="text"
-                                  [(ngModel)]="taxD.tax"
-                                  name="taxper{{td}}"
-                                  class="form-control"
-                                  (input)="taxcalculation(td)"
-                                  /><span class="input-group-append"><span
-                                    class="input-group-text pt-0 pb-0">%</span></span>
-                              </div>
+                          <div class="col-lg-9 pr-0 pt-1">
+                            <div class="bordtop">
+                              <h5
+                                class="text-right font-weight-semibold text-4 text-dark"
+                              >
+                                Total Amount
+                              </h5>
                             </div>
-
                           </div>
-                          <div class="col-lg-4">
-                            <div
-                              *ngIf="!orderData.exempt">
-                              <div class="row mt-3" *ngFor="let taxD of
-                                orderData.charges.taxes; let td= index;">
-                                <div class="col-lg-12 bordtop pt-1">
-                                  <p class="text-right">{{ taxD.amount |
-                                    number
-                                    :
-                                    '1.2-2'}}</p>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-lg-9 bordtop pt-1">
-                                <h5
-                                  class="text-right
-                                  font-weight-semibold
-                                  text-4 text-dark">
-                                  Total Amount
-                                </h5>
-                              </div>
-                              <div class="col-lg-3 bordtop pt-1">
-                                <p class="text-right">{{
-                                  orderData.total.finalTotal | number :
-                                  '1.2-2'}}</p>
-                              </div>
+                          <div class="col-lg-3 pl-0 pt-1">
+                            <div class="bordtop">
+                              <p class="text-right">
+                                {{
+                                  orderData.total.finalTotal | number: "1.2-2"
+                                }}
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -531,26 +602,50 @@
                 </div>
 
                 <div class="form-group row mt-4">
-                  <div class="col-lg-11 pr-5 text-right">
-                    <button type="button" class="btn btn-default mr-2"
-                      routerLink="/accounts/purchases/orders/list">
+                  <div class="col-lg-11 pr-0 text-right">
+                    <button
+                      type="button"
+                      class="btn btn-default mr-2"
+                      routerLink="/accounts/purchases/orders/list"
+                    >
                       Cancel
                     </button>
-                    <button type="submit" *ngIf="!purchaseID"
-                      (click)="checkEmailStat('no');"
+                    <button
+                      type="submit"
+                      *ngIf="!purchaseID && !cloneID"
+                      (click)="checkEmailStat('no')"
                       [disabled]="!purchaseForm.form.valid || submitDisabled"
-                      class="btn
-                      btn-success mr-2">Save</button>
-                    <button type="submit" *ngIf="purchaseID"
-                      (click)="updateRecord();"
+                      class="btn btn-success mr-2"
+                    >
+                      Save
+                    </button>
+                    <button
+                      type="submit"
+                      *ngIf="cloneID"
+                      (click)="cloneOrder('no')"
                       [disabled]="!purchaseForm.form.valid || submitDisabled"
-                      class="btn
-                      btn-success mr-2">Update</button>
-                    <button type="button" *ngIf="!purchaseID" class="btn
-                      btn-success mr-2" (click)="checkEmailStat('yes');"
-                      [disabled]="!purchaseForm.form.valid || submitDisabled">Save
-                      &
-                      Send</button>
+                      class="btn btn-success mr-2"
+                    >
+                      Save
+                    </button>
+                    <button
+                      type="submit"
+                      *ngIf="purchaseID && !cloneID"
+                      (click)="updateRecord()"
+                      [disabled]="!purchaseForm.form.valid || submitDisabled"
+                      class="btn btn-success mr-2"
+                    >
+                      Update
+                    </button>
+                    <button
+                      type="button"
+                      *ngIf="!purchaseID || cloneID"
+                      class="btn btn-success"
+                      (click)="checkEmailStat('yes')"
+                      [disabled]="!purchaseForm.form.valid || submitDisabled"
+                    >
+                      Save & Send
+                    </button>
                   </div>
                 </div>
               </div>

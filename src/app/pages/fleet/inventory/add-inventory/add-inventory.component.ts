@@ -190,13 +190,15 @@ export class AddInventoryComponent implements OnInit {
         this.existingPhotos = result.uploadedPhotos;
       this.existingDocs = result.uploadedDocs;
       if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
+          this.inventoryImages = result.uploadedPics;
         // this.allImages = result.uploadedPhotos;
-        this.inventoryImages = result.uploadedPhotos.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
+        //this.inventoryImages = result.uploadedPhotos.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
       }
 
       if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
+         this.inventoryDocs = result.uploadDocument;
         // this.alldocs = result.uploadedDocs;
-        this.inventoryDocs = result.uploadedDocs.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
+        //this.inventoryDocs = result.uploadedDocs.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
       }
     });
   }

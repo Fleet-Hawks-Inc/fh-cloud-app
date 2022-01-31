@@ -61,7 +61,7 @@
                 <div class="col-lg-12">
                   <table class="table table-bordered table-striped mb-0 simple-table">
                     <thead>
-                      <tr class="bgcol2">
+                      <tr class="">
                         <th class="text-2">Date</th>
                         <th class="text-2">Customer Credit#</th>
                         <th class="text-2">Reference#</th>
@@ -96,7 +96,7 @@
                         <td routerLink="/accounts/sales/credit-notes/detail/{{
                             item.creditID
                           }}">
-                          {{ item.crRef ? item.crRef : '-' }}
+                          {{ item.crRef ? item.crRef : "-" }}
                         </td>
                         <!-- <td routerLink="/accounts/sales/credit-notes/detail/{{
                             item.creditID
@@ -135,11 +135,11 @@
                             <span *ngIf="item.status === 'open'">Open</span>
                             <span *ngIf="item.status === 'deducted'">Deducted</span>
                           </span>
-
                         </td>
                         <td class="cursorpoint">
                           <div class="btn-group flex-wrap">
-                            <button type="button" class="m-0 p-0 btn" data-toggle="dropdown" aria-expanded="false">
+                            <button type="button" class="m-0 p-0 btn" data-toggle="dropdown" aria-expanded="false"
+                              [disabled]="item.status != 'open'">
                               <i class="fas fa-ellipsis-v"></i>
                             </button>
                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="

@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
-import { AccountService } from "src/app/services";
+import { AccountService, DashboardUtilityService } from "src/app/services";
 import { ApiService } from "src/app/services/api.service";
 import Constants from "../../../fleet/constants";
 
@@ -11,57 +11,42 @@ import Constants from "../../../fleet/constants";
 })
 export class SettlementsListComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
-  drivers = [];
-  carriers = [];
-  ownerOperators = [];
+
   settlements = [];
-  tripsObj = [];
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   filter = {
+    searchValue: null,
     startDate: null,
     endDate: null,
     type: null,
-    settlementNo: "",
   };
   lastItemSK = "";
   loaded = false;
   disableSearch = false;
+
+  driversObject: any = {};
+  carriersObject: any = {};
+  ownerOpObjects: any = {};
+
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
-    private toaster: ToastrService
-  ) {}
+    private toaster: ToastrService,
+    private dashboardUtilityService: DashboardUtilityService
+  ) { }
 
-  ngOnInit() {
-    this.fetchDrivers();
-    this.fetchCarriers();
-    this.fetchOwnerOperators();
+  async ngOnInit() {
+
     this.fetchSettlements();
-    this.fetchTrips();
+    this.driversObject = await this.dashboardUtilityService.getDrivers();
+    this.carriersObject = await this.dashboardUtilityService.getContactsCarriers();
+    this.ownerOpObjects = await this.dashboardUtilityService.getOwnerOperators();
   }
 
-  fetchDrivers() {
-    this.apiService.getData(`drivers/get/list`).subscribe((result: any) => {
-      this.drivers = result;
-    });
-  }
-
-  fetchCarriers() {
-    this.apiService
-      .getData(`contacts/get/list/carrier`)
-      .subscribe((result: any) => {
-        this.carriers = result;
-      });
-  }
-
-  fetchOwnerOperators() {
-    this.apiService
-      .getData(`contacts/get/list/ownerOperator`)
-      .subscribe((result: any) => {
-        this.ownerOperators = result;
-      });
+  unitTypeChange() {
+    this.filter.searchValue = null;
   }
 
   fetchSettlements(refresh?: boolean) {
@@ -72,16 +57,16 @@ export class SettlementsListComponent implements OnInit {
     }
     if (this.lastItemSK !== "end") {
       if (
-        this.filter.settlementNo !== null &&
-        this.filter.settlementNo !== ""
+        this.filter.searchValue !== null &&
+        this.filter.searchValue !== ""
       ) {
-        searchParam = encodeURIComponent(`"${this.filter.settlementNo}"`);
+        searchParam = this.filter.type === 'settlementNo' ? encodeURIComponent(`"${this.filter.searchValue}"`) : `${this.filter.searchValue}`;
       } else {
         searchParam = null;
       }
       this.accountService
         .getData(
-          `settlement/paging?type=${this.filter.type}&settlementNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
+          `settlement/paging?type=${this.filter.type}&searchValue=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
         )
         .subscribe((result: any) => {
           if (result.length === 0) {
@@ -111,32 +96,36 @@ export class SettlementsListComponent implements OnInit {
             });
             this.loaded = true;
           }
+        }, err => {
+          this.disableSearch = false;
         });
     }
-  }
-
-  fetchTrips() {
-    this.apiService.getData(`trips/get/list`).subscribe((result: any) => {
-      this.tripsObj = result;
-    });
   }
 
   searchFilter() {
     if (
       this.filter.type !== null ||
-      this.filter.settlementNo !== null ||
+      this.filter.searchValue !== null ||
       this.filter.endDate !== null ||
       this.filter.startDate !== null
     ) {
       this.disableSearch = true;
+      // if (this.filter.type != '' && (this.filter.searchValue == null || this.filter.searchValue == '')) {
+      //   this.toaster.error("Please select any value");
+      //   this.disableSearch = false;
+      //   return false;
+      // }
       if (this.filter.startDate != "" && this.filter.endDate == "") {
         this.toaster.error("Please select both start and end dates.");
+        this.disableSearch = false;
         return false;
       } else if (this.filter.startDate == "" && this.filter.endDate != "") {
         this.toaster.error("Please select both start and end dates.");
+        this.disableSearch = false;
         return false;
       } else if (this.filter.startDate > this.filter.endDate) {
         this.toaster.error("Start date should be less then end date");
+        this.disableSearch = false;
         return false;
       } else {
         this.dataMessage = Constants.FETCHING_DATA;
@@ -151,10 +140,10 @@ export class SettlementsListComponent implements OnInit {
     this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
+      searchValue: null,
       startDate: null,
       endDate: null,
       type: null,
-      settlementNo: null,
     };
     this.settlements = [];
     this.lastItemSK = "";
@@ -176,6 +165,12 @@ export class SettlementsListComponent implements OnInit {
 
   onScroll() {
     if (this.loaded) {
+      this.filter = {
+        searchValue: null,
+        startDate: null,
+        endDate: null,
+        type: null,
+      };
       this.fetchSettlements();
     }
     this.loaded = false;
@@ -185,10 +180,10 @@ export class SettlementsListComponent implements OnInit {
     this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
+      searchValue: null,
       startDate: null,
       endDate: null,
       type: null,
-      settlementNo: null,
     };
     this.settlements = [];
     this.lastItemSK = "";

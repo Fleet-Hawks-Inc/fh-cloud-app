@@ -382,7 +382,7 @@ export class OrderDetailComponent implements OnInit {
         this.showInvBtn = true;
 
         this.reference = result.reference;
-        this.cusConfirmation = result.cusConfirmation;
+        this.cusConfirmation = result.cusConfirmation == 'NA' ? '' : result.cusConfirmation;
         this.createdDate = result.createdDate;
         this.createdTime = result.timeCreated;
         if (

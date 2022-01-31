@@ -14,7 +14,6 @@ export class ProvinceMilesComponent implements OnInit {
   allData: any = [];
   docCountries = [];
   states = [];
-  vehicleId = ''
   start = null;
   end = null;
   dataMessage = Constants.FETCHING_DATA;
@@ -31,6 +30,7 @@ export class ProvinceMilesComponent implements OnInit {
   element3: any;
   suggestedVehicles = [];
   vehicleIdentification = '';
+  vehicleId = '';
   constructor(private apiService: ApiService, private toastr: ToastrService, private countryStateCity: CountryStateCityService,) { }
   ngOnInit(): void {
 
@@ -83,14 +83,23 @@ export class ProvinceMilesComponent implements OnInit {
 
           let dataa = element
           element.miles = 0
-          if (element.recall === true) {
-            element.newStatus = `${element.tripStatus} (R)`;
+          if(element.stlLink === true) {
+            element.newStatus = "settled";
+         
           }
           else {
-            if (element.stlLink === true) {
-              element.newStatus = "settled";
+            if (element.recall === true) {
+              element.newStatus = `${element.tripStatus} (R)`;
             }
           }
+          // if (element.recall === true) {
+          //   element.newStatus = `${element.tripStatus} (R)`;
+          // }
+          // else {
+          //   if (element.stlLink === true) {
+          //     element.newStatus = "settled";
+          //   }
+          // }
           for (let element1 of dataa.tripPlanning) {
             element.miles += Number(element1.miles);
           }
@@ -130,6 +139,7 @@ export class ProvinceMilesComponent implements OnInit {
   }
   searchFilter() {
     if (this.vehicleIdentification !== '' || this.start != null && this.end != null) {
+      this.vehicleIdentification = this.vehicleIdentification.toLowerCase();
       if (this.vehicleId == '') {
         this.vehicleId = this.vehicleIdentification;
       }
@@ -156,8 +166,21 @@ export class ProvinceMilesComponent implements OnInit {
       return false;
     }
   }
+  reset() {
+    if (this.vehicleIdentification !== '') {
+      this.vehicleId = '';
+      this.suggestedVehicles = [];
+      this.vehicleIdentification = '';
+      this.lastItemSK = '';
+      this.allData = [];
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.fetchProvinceMilesData();
+    } else {
+      return false;
+    }
+  }
   fetchFullExport(type = '') {
-    this.apiService.getData(`vehicles/fetch/provinceMiles/report?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
+    this.apiService.getData(`vehicles/fetch/provinceMiles/report?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.exportData = result.Items;
       for (let veh of this.exportData) {
         let dataa = veh
@@ -216,6 +239,7 @@ export class ProvinceMilesComponent implements OnInit {
               obj["Vehicle"] = element.vehicle;
               obj["Trip#"] = element.tripNo;
               obj["Order#"] = element.orderName.replace(/, /g, ' &');
+              obj["Date"] = element.createdDate;
               if (type === 'US') {
                 obj["Province(US)"] = element2.usProvince[stateIndex].StCntry;
                 obj["US Province Miles"] = element2.usProvince[stateIndex].Total;
@@ -249,7 +273,13 @@ export class ProvinceMilesComponent implements OnInit {
       if (link.download !== undefined) {
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}provinceMiles-Report.csv`);
+        if(type === 'US'){
+          link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}US-ProvinceMiles-Report.csv`);
+        }
+        else{
+          link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}CAN-ProvinceMiles-Report.csv`);
+        }
+      
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();

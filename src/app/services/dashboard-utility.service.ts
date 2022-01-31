@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
+import { CountryStateCityService } from "src/app/services/country-state-city.service";
 
 @Injectable({
   providedIn: "root",
@@ -9,13 +10,22 @@ export class DashboardUtilityService {
   public refreshAssets = true;
   public refreshVehicles = true;
   public refreshContacts = true;
+  public refreshInternalCarriers = true;
+  public refreshOwnerOperators = true;
+  public refreshEmployees = true;
+  public refreshVendors = true;
+  public refreshCountries = true;
   carriers: any = {};
   drivers: any = {};
   assets: any = {};
   vehicles: any = {};
   contacts: any = {};
-
-  constructor(private apiService: ApiService) {}
+  internalCarriers: any = {};
+  ownerOperators: any = {};
+  employees: any = {};
+  vendors: any = {};
+  countries: any = {};
+  constructor(private apiService: ApiService, private countryStateCity: CountryStateCityService,) { }
 
   public getCarriers = async (): Promise<any[]> => {
     var size = Object.keys(this.carriers).length;
@@ -27,6 +37,14 @@ export class DashboardUtilityService {
     }
     return this.carriers;
   };
+  public fetchCountries = async (): Promise<any[]> => {
+    if (this.refreshCountries) {
+      const result = await this.countryStateCity.GetAllCountries();
+      this.countries = result;
+      this.refreshCountries = false;
+    }
+    return this.countries;
+  }
 
   public getDrivers = async (): Promise<any[]> => {
     if (this.refreshDrivers) {
@@ -70,5 +88,49 @@ export class DashboardUtilityService {
       this.refreshContacts = false;
     }
     return this.contacts;
+  };
+
+  public getContactsCarriers = async (): Promise<any[]> => {
+    if (this.refreshInternalCarriers) {
+      const result = await this.apiService
+        .getData("contacts/get/list/carrier")
+        .toPromise();
+      this.internalCarriers = result;
+      this.refreshInternalCarriers = false;
+    }
+    return this.internalCarriers;
+  };
+
+  public getOwnerOperators = async (): Promise<any[]> => {
+    if (this.refreshOwnerOperators) {
+      const result = await this.apiService
+        .getData("contacts/get/list/owner_operator")
+        .toPromise();
+      this.ownerOperators = result;
+      this.refreshOwnerOperators = false;
+    }
+    return this.ownerOperators;
+  };
+
+  public getVendors = async (): Promise<any[]> => {
+    if (this.refreshVendors) {
+      const result = await this.apiService
+        .getData("contacts/get/list/vendor")
+        .toPromise();
+      this.vendors = result;
+      this.refreshVendors = false;
+    }
+    return this.vendors;
+  };
+
+  public getEmployees = async (): Promise<any[]> => {
+    if (this.refreshEmployees) {
+      const result = await this.apiService
+        .getData("contacts/get/emp/list")
+        .toPromise();
+      this.employees = result;
+      this.refreshEmployees = false;
+    }
+    return this.employees;
   };
 }

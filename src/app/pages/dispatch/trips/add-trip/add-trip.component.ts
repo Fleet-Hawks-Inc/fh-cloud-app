@@ -255,9 +255,9 @@ export class AddTripComponent implements OnInit {
   lastFtLOrderSK = "";
   lastLtlOrderSK = "";
   dataMessage = "";
-  vehicleMessage = '';
-  assetMessage = '';
-  driverMessage = '';
+  vehicleMessage = "";
+  assetMessage = "";
+  driverMessage = "";
   loaded = false;
   readonly rowHeight = 60;
   readonly headerHeight = 50;
@@ -287,13 +287,12 @@ export class AddTripComponent implements OnInit {
     private countryStateCity: CountryStateCityService,
     private el: ElementRef, // public selectionType: SelectionType, // public columnMode: ColumnMode,
     private routeMnagementSvc: RouteManagementServiceService
-  ) { }
+  ) {}
 
   async ngOnInit() {
     this.tripID = this.route.snapshot.params["tripID"];
     if (this.tripID != undefined) {
       this.pageTitle = "Edit Trip";
-
     } else {
       this.pageTitle = "Add Trip";
     }
@@ -601,15 +600,14 @@ export class AddTripComponent implements OnInit {
     if (this.permanentRoutes.length === 0) {
       this.spinner.show();
       this.apiService.getData("routes").subscribe({
-        complete: () => { },
-        error: () => { },
+        complete: () => {},
+        error: () => {},
         next: (result: any) => {
           this.spinner.hide();
           this.permanentRoutes = result["Items"];
         },
       });
     }
-
   }
 
   mapShow() {
@@ -622,7 +620,10 @@ export class AddTripComponent implements OnInit {
       keyboard: true,
       windowClass: "trip-assignment--modal",
     };
-    this.orderModalRef = this.modalService.open(this.orderModal, ngbModalOptions)
+    this.orderModalRef = this.modalService.open(
+      this.orderModal,
+      ngbModalOptions
+    );
     this.fetchFTLOrders();
     this.fetchLTLOrders();
   }
@@ -1089,7 +1090,6 @@ export class AddTripComponent implements OnInit {
         }, {});
       });
     }
-
   }
 
   fetchAssets() {
@@ -1117,7 +1117,6 @@ export class AddTripComponent implements OnInit {
         }, {});
       });
     }
-
   }
 
   fetchDrivers() {
@@ -1142,7 +1141,6 @@ export class AddTripComponent implements OnInit {
           }, {});
         });
     }
-
   }
 
   fetchCoDriver(driverID) {
@@ -1352,7 +1350,6 @@ export class AddTripComponent implements OnInit {
   }
 
   assetsChange($event, type) {
-
     this.tempTextFieldValues.trailerName = "";
     if ($event === undefined) {
       $(".assetClass").removeClass("td_border");
@@ -1390,7 +1387,9 @@ export class AddTripComponent implements OnInit {
           id: $event.assetID,
           name: $event.assetIdentification,
         };
-        const exist = this.tempTextFieldValues.trailer.some(el => el.id === $event.assetID);
+        const exist = this.tempTextFieldValues.trailer.some(
+          (el) => el.id === $event.assetID
+        );
         if (!exist) this.tempTextFieldValues.trailer.push(objj);
         // this.tempTextFieldValues.trailer.push(objj);
         for (let i = 0; i < this.tempTextFieldValues.trailer.length; i++) {
@@ -1587,7 +1586,7 @@ export class AddTripComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.apiService.postData("trips", this.tripData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -1605,7 +1604,7 @@ export class AddTripComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -1624,12 +1623,12 @@ export class AddTripComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-          v +
-          '-error" class="error" for="' +
-          v +
-          '">' +
-          this.errors[v] +
-          "</label>"
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
         )
         .addClass("error");
     });
@@ -1797,7 +1796,6 @@ export class AddTripComponent implements OnInit {
     this.orderSearch = "";
     this.activeTab = "FTL";
     this.lastFtLOrderSK = "";
-
   }
   onFTLSelect({ selected }) {
     this.selectedLTL = [];
@@ -2249,8 +2247,7 @@ export class AddTripComponent implements OnInit {
         //     if(plann.location != undefined && plann.location != ''){
         //         locations.push(plann.location)
         //     }
-        // }  
-
+        // }
 
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
@@ -2261,12 +2258,8 @@ export class AddTripComponent implements OnInit {
             orderNo: "",
             planID: element.planID,
             carrierID: element.carrierID ? element.carrierID : null,
-            carrierName: element.carrierName
-              ? element.carrierName
-              : "",
-            coDriverName: element.coDriverName
-              ? element.coDriverName
-              : "",
+            carrierName: element.carrierName ? element.carrierName : "",
+            coDriverName: element.coDriverName ? element.coDriverName : "",
             coDriverUsername: element.codriverUsername
               ? element.codriverUsername
               : "",
@@ -2280,15 +2273,11 @@ export class AddTripComponent implements OnInit {
             actualDropTime: element.actualDropTime
               ? element.actualDropTime
               : "",
-            driverName: element.driverName
-              ? element.driverName
-              : "",
+            driverName: element.driverName ? element.driverName : "",
             driverUsername: element.driverUsername
               ? element.driverUsername
               : "",
-            driverStatus: element.driverStatus
-              ? element.driverStatus
-              : "",
+            driverStatus: element.driverStatus ? element.driverStatus : "",
             coDriverStatus: element.coDriverStatus
               ? element.coDriverStatus
               : "",
@@ -2303,9 +2292,7 @@ export class AddTripComponent implements OnInit {
             trailerID: element.assetID,
             type: element.type,
             vehicleID: element.vehicleID ? element.vehicleID : "",
-            vehicleName: element.vehicleName
-              ? element.vehicleName
-              : "",
+            vehicleName: element.vehicleName ? element.vehicleName : "",
             lat: element.lat,
             lng: element.lng,
             locMan: element.locMan,
@@ -2579,7 +2566,7 @@ export class AddTripComponent implements OnInit {
     }
 
     this.apiService.putData(url, this.tripData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -2597,7 +2584,7 @@ export class AddTripComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -2955,57 +2942,104 @@ export class AddTripComponent implements OnInit {
       }
     }, 1500);
   }
-  async getStateWiseMiles() {
-    let allLatLng = [];
-    let vehicleIDs = [];
 
-    for (let ij = 0; ij < this.trips.length; ij++) {
-      const element1 = this.trips[ij];
+  async getStateWiseMiles() {
+    let unitIDs = [];
+    let unitData = [];
+
+    for (const plan of this.trips) {
+      if (plan.vehicleID !== undefined && plan.vehicleID !== "") {
+        if (!unitIDs.includes(plan.vehicleID)) {
+          unitIDs.push(plan.vehicleID);
+          let obj = {
+            vehicleID: plan.vehicleID,
+            assetID: "",
+            locations: [],
+          };
+          if (plan.lng && plan.lat) {
+            let endingPoint = plan.lng + "," + plan.lat;
+            obj.locations.push(endingPoint);
+          }
+          unitData.push(obj);
+        } else {
+          unitData.map((v) => {
+            if (v.vehicleID === plan.vehicleID) {
+              let endingPoint = plan.lng + "," + plan.lat;
+              v.locations.push(endingPoint);
+            }
+          });
+        }
+      }
+
       if (
-        !vehicleIDs.includes(element1.vehicleID) &&
-        element1.vehicleID != undefined &&
-        element1.vehicleID != ""
+        plan.trailerID !== undefined &&
+        plan.trailerID !== "" &&
+        plan.trailerID.length > 0
       ) {
-        vehicleIDs.push(element1.vehicleID);
+        for (const asset of plan.trailerID) {
+          if (!unitIDs.includes(asset)) {
+            unitIDs.push(asset);
+
+            let obj = {
+              assetID: asset,
+              vehicleID: "",
+              locations: [],
+            };
+            if (plan.lng && plan.lat) {
+              let endingPoint = plan.lng + "," + plan.lat;
+              obj.locations.push(endingPoint);
+            }
+            unitData.push(obj);
+          } else {
+            unitData.map((v) => {
+              if (v.assetID === asset) {
+                let endingPoint = plan.lng + "," + plan.lat;
+                v.locations.push(endingPoint);
+              }
+            });
+          }
+        }
       }
     }
 
-    let tripData = [];
-    vehicleIDs.forEach((element) => {
-      allLatLng = [];
-      tripData[0] = [];
-      this.trips.map((k: any) => {
-        if (element == k.vehicleID) {
-          let endingPoint = k.lng + "," + k.lat;
-          allLatLng.push(endingPoint);
+    let tripIfta = [];
+    tripIfta[0] = [];
+    for (const vehicle of unitData) {
+      if (vehicle.locations.length > 1) {
+        try {
+          let newsMiles = JSON.stringify(vehicle.locations);
+          this.apiService
+            .getData(
+              "trips/calculate/pc/miles?type=stateReport&stops=" + newsMiles
+            )
+            .subscribe((result) => {
+              for (let m = 0; m < result.length; m++) {
+                const milesElement = result[m];
+                milesElement.distanceUnit = "miles";
+                delete milesElement.Empty;
+                delete milesElement.Energy;
+                delete milesElement.Ferry;
+              }
+
+              let data = {};
+              if (vehicle.vehicleID) {
+                data = {
+                  [vehicle.vehicleID]: result,
+                };
+              } else if (vehicle.assetID) {
+                data = {
+                  [vehicle.assetID]: result,
+                };
+              }
+
+              tripIfta[0].push(data);
+            });
+        } catch (error) {
+          return false;
         }
-      });
-      try {
-        let newsMiles = JSON.stringify(allLatLng);
-        this.apiService
-          .getData(
-            "trips/calculate/pc/miles?type=stateReport&stops=" + newsMiles
-          )
-          .subscribe((result) => {
-            for (let m = 0; m < result.length; m++) {
-              const milesElement = result[m];
-              milesElement.distanceUnit = "miles";
-              delete milesElement.Empty;
-              delete milesElement.Energy;
-              delete milesElement.Ferry;
-            }
-
-            const data = {
-              [element]: result,
-            };
-            tripData[0].push(data);
-          });
-      } catch (error) {
-        return false;
       }
-    });
-
-    this.tripData.iftaMiles = tripData;
+    }
+    this.tripData.iftaMiles = tripIfta;
   }
 
   showConfirmationPopup() {
@@ -3180,7 +3214,7 @@ export class AddTripComponent implements OnInit {
     this.apiService
       .postData("assets/addManualAsset", this.assetData)
       .subscribe({
-        complete: () => { },
+        complete: () => {},
         error: (err: any) => {
           this.submitDisabled = false;
           from(err.error)
@@ -3193,8 +3227,8 @@ export class AddTripComponent implements OnInit {
               complete: () => {
                 this.throwErrors();
               },
-              error: () => { },
-              next: () => { },
+              error: () => {},
+              next: () => {},
             });
         },
         next: (res) => {
@@ -3222,7 +3256,6 @@ export class AddTripComponent implements OnInit {
       this.assignAssetModel,
       ngbModalOptions
     );
-
   }
 
   copyRow(index) {

@@ -4,7 +4,7 @@
             <header class="page-header pr19 pl7">
                 <div class="row" style="padding-top:10px;">
                     <div class="col-md-2 col-lg-2">
-                        <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Settlement</h4>
+                        <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Settlement<span *ngIf="settlementData.setNo"># - {{settlementData.setNo}}</span>  </h4>
                     </div>
                     <div class="col-md-10 col-lg-10 pr-1 text-right">
                         <a routerLink="/accounts/settlements/list" class="btn btn-default btn-sm"><i class="fas
@@ -162,6 +162,50 @@
                                         </div>
 
                                         <div class="row mt-2">
+                                            
+                                            <div class="col-6" *ngIf="settlementData.type == 'owner_operator'">
+                                                <label class="control-label font-weight-bold pt-2">Filter By Unit</label>
+                                                <br>
+                                                <ng-select [(ngModel)]="ownerVehicleID" name="ownerVehicle" [multiple]="true" (change)="filterByUnit()"
+                                                    placeholder="Select Unit">
+                                                    <ng-option value="{{ veh.vehicleID }}" *ngFor="let veh of ownerVehicles;">{{ veh.vehicleIdentification }}</ng-option>
+                                                </ng-select>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                   <div class="col-6">
+                                        <div class="row">
+                                            <div class="col-lg-4" *ngIf="settlementData.type">
+                                                <label class="control-label
+                                                    font-weight-bold pt-2">Search Start Date<span
+                                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input [(ngModel)]="settlementData.fromDate" name="fromDate" type="text"
+                                                    placeholder="yyyy/mm/dd" (click)="fromDate.toggle()" ngbDatepicker
+                                                    #fromDate="ngbDatepicker" class="form-control" autocomplete="off"
+                                                    (dateSelect)="checkSearchDisable();" [minDate]="dateMinLimit"
+                                                    [maxDate]="futureDatesLimit" readonly [disabled]="editDisabled">
+                                            </div>
+                                            <div class="col-lg-4" *ngIf="settlementData.type">
+                                                <label class="control-label
+                                                    font-weight-bold pt-2">Search End Date<span
+                                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input [(ngModel)]="settlementData.toDate" name="toDate" type="text"
+                                                    placeholder="yyyy/mm/dd" (click)="toDate.toggle()" ngbDatepicker
+                                                    #toDate="ngbDatepicker" class="form-control" autocomplete="off"
+                                                    (dateSelect)="checkSearchDisable();" [minDate]="dateMinLimit"
+                                                    [maxDate]="futureDatesLimit" readonly [disabled]="editDisabled">
+                                            </div>
+                                            <div class="col-lg-2 text-right" *ngIf="settlementData.type &&
+                                            !editDisabled">
+                                                <button class="btn btn-success
+                                                    mar-top-37" (click)="searchFnc()"
+                                                    [disabled]="searchDisabled">Search</button>
+                                            </div>
+                                        </div>
+                                   </div>
+                                   <div class="col-6">
+                                        <div class="row">
                                             <div class="col-4">
                                                 <label class="control-label
                                                 font-weight-bold pt-2">Show Fuel</label>
@@ -173,42 +217,53 @@
                                                     <input type="radio" name="optradio" value="no" (change)="checkFuelVisibility($event)" [checked]="showFuel === 'no'"><span class="pl-1">No</span>
                                                 </label>
                                             </div>
-                                            <div class="col-6" *ngIf="settlementData.type == 'owner_operator'">
-                                                <label class="control-label font-weight-bold pt-2">Filter By Unit</label>
-                                                <br>
-                                                <ng-select [(ngModel)]="ownerVehicleID" name="ownerVehicle" [multiple]="true" (change)="filterByUnit()"
-                                                    placeholder="Select Unit">
-                                                    <ng-option value="{{ veh.vehicleID }}" *ngFor="let veh of ownerVehicles;">{{ veh.vehicleIdentification }}</ng-option>
-                                                </ng-select>
+                                        </div>
+                                   </div>
+                                   <div class="col-6">
+                                        <div class="row">
+                                            <div class="col-lg-5">
+                                                <label class="control-label
+                                                    font-weight-bold pt-2">Pay Period From<span
+                                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input [(ngModel)]="settlementData.prStart" name="prStart" type="text"
+                                                    placeholder="yyyy/mm/dd" (click)="prStart.toggle()" ngbDatepicker
+                                                    #prStart="ngbDatepicker" class="form-control" autocomplete="off"
+                                                    (dateSelect)="checkSearchDisable();" [minDate]="dateMinLimit"
+                                                    [maxDate]="futureDatesLimit" readonly #perriodFrom="ngModel">
+
+                                                <div *ngIf="perriodFrom.invalid &&
+                                                    (perriodFrom.dirty ||
+                                                    perriodFrom.touched)" class="text-danger">
+                                                    <div *ngIf="perriodFrom.errors.required">
+                                                        Pay period is
+                                                        required.
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <div class="col-lg-5">
+                                                <label class="control-label
+                                                    font-weight-bold pt-2">Pay Period To<span
+                                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input [(ngModel)]="settlementData.prEnd" name="prEnd" type="text"
+                                                    placeholder="yyyy/mm/dd" (click)="prEnd.toggle()" ngbDatepicker
+                                                    #prEnd="ngbDatepicker" class="form-control" autocomplete="off"
+                                                    (dateSelect)="checkSearchDisable();" [minDate]="dateMinLimit"
+                                                    [maxDate]="futureDatesLimit" readonly #perriodTo="ngModel">
+
+                                                <div *ngIf="perriodTo.invalid &&
+                                                    (perriodTo.dirty ||
+                                                    perriodTo.touched)" class="text-danger">
+                                                    <div *ngIf="perriodTo.errors.required">
+                                                        Pay period is
+                                                        required.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
                                         </div>
                                     </div>
-                                    <div class="col-lg-2" *ngIf="settlementData.type">
-                                        <label class="control-label
-                                            font-weight-bold pt-2">From Date<span
-                                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                        <input [(ngModel)]="settlementData.fromDate" name="fromDate" type="text"
-                                            placeholder="yyyy/mm/dd" (click)="fromDate.toggle()" ngbDatepicker
-                                            #fromDate="ngbDatepicker" class="form-control" autocomplete="off"
-                                            (dateSelect)="checkSearchDisable();" [minDate]="dateMinLimit"
-                                            [maxDate]="futureDatesLimit" readonly [disabled]="editDisabled">
-                                    </div>
-                                    <div class="col-lg-2" *ngIf="settlementData.type">
-                                        <label class="control-label
-                                            font-weight-bold pt-2">To Date<span
-                                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                        <input [(ngModel)]="settlementData.toDate" name="toDate" type="text"
-                                            placeholder="yyyy/mm/dd" (click)="toDate.toggle()" ngbDatepicker
-                                            #toDate="ngbDatepicker" class="form-control" autocomplete="off"
-                                            (dateSelect)="checkSearchDisable();" [minDate]="dateMinLimit"
-                                            [maxDate]="futureDatesLimit" readonly [disabled]="editDisabled">
-                                    </div>
-                                    <div class="col-lg-1 text-right" *ngIf="settlementData.type &&
-                                        !editDisabled">
-                                        <button class="btn btn-success
-                                            mar-top-37" (click)="searchFnc()"
-                                            [disabled]="searchDisabled">Search</button>
-                                    </div>
+                                    
+                                   
 
                                 </div>
                             </div>
@@ -1200,98 +1255,98 @@
                                         </div> -->
 
                                         <!-- settled fuel expense -->
-                                        <div class="row pt-2" *ngIf="settlementID &&
-                                            settlementData.type == 'driver' ||
-                                            settlementData.type ==
-                                            'owner_operator'">
-                                            <div class="col-lg-10">
-                                                <h4 class="font-weight-bold">Settled
-                                                    Fuel Expenses</h4>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <table class="table
-                                                    table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th></th>
-                                                            <th>Date</th>
-                                                            <th>Vehicle</th>
-                                                            <th>Location</th>
-                                                            <th>Card No.</th>
-                                                            <th>Type</th>
-                                                            <th>Quantity</th>
-                                                            <th>Amount</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr class="text-center" *ngIf="selectedFuelEnteries.length
-                                                            === 0">
-                                                            <td colspan="8">{{
-                                                                noRecordMsg }}</td>
-                                                        </tr>
-                                                        <tr *ngFor="let data of
-                                                            selectedFuelEnteries;
-                                                            let fe=index;">
-                                                            <td>
-                                                                <a href="javascript:;" title="Delete
-                                                                    Entry">
-                                                                    <i class="fa
-                                                                        fa-trash" (click)="delSelectedFuel(data.fuelID,
-                                                                        fe)"></i>
-                                                                </a>
-                                                            </td>
-                                                            <td>{{ data.fuelDate
-                                                                |
-                                                                date:"yyyy/MM/dd"
-                                                                }}</td>
-                                                            <td>{{
-                                                                data.unitNumber
-                                                                }}</td>
-                                                            <td>{{ data.cityName
-                                                                }}, {{
-                                                                data.locationCountry
-                                                                }}</td>
-                                                            <td>
-                                                                {{
-                                                                data.fuelCardNumber
-                                                                }}
-                                                            </td>
-                                                            <td>
-                                                                {{ data.type }}
-                                                                <span *ngIf="data.data.useType">
-                                                                    ({{data.data.useType}})
-                                                                </span>
-                                                            </td>
-                                                            <td>{{ data.quantity
-                                                                }} {{
-                                                                data.unitOfMeasure
-                                                                }}</td>
-                                                            <td>
-                                                                {{ data.subTotal
-                                                                | number :
-                                                                '1.2-2'
-                                                                }}
-                                                                {{ data.currency
-                                                                }}
-                                                                <span *ngIf="data.convert">
-                                                                    ({{data.total
+                                        <div *ngIf="settlementID">
+                                            <div class="row pt-2" *ngIf="settlementData.type == 'driver' ||
+                                                settlementData.type == 'owner_operator'">
+                                                <div class="col-lg-10">
+                                                    <h4 class="font-weight-bold">Settled
+                                                        Fuel Expenses</h4>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <table class="table
+                                                        table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th></th>
+                                                                <th>Date</th>
+                                                                <th>Vehicle</th>
+                                                                <th>Location</th>
+                                                                <th>Card No.</th>
+                                                                <th>Type</th>
+                                                                <th>Quantity</th>
+                                                                <th>Amount</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr class="text-center" *ngIf="selectedFuelEnteries.length
+                                                                === 0">
+                                                                <td colspan="8">{{
+                                                                    noRecordMsg }}</td>
+                                                            </tr>
+                                                            <tr *ngFor="let data of
+                                                                selectedFuelEnteries;
+                                                                let fe=index;">
+                                                                <td>
+                                                                    <a href="javascript:;" title="Delete
+                                                                        Entry">
+                                                                        <i class="fa
+                                                                            fa-trash" (click)="delSelectedFuel(data.fuelID,
+                                                                            fe)"></i>
+                                                                    </a>
+                                                                </td>
+                                                                <td>{{ data.fuelDate
+                                                                    |
+                                                                    date:"yyyy/MM/dd"
+                                                                    }}</td>
+                                                                <td>{{
+                                                                    data.unitNumber
+                                                                    }}</td>
+                                                                <td>{{ data.cityName
+                                                                    }}, {{
+                                                                    data.locationCountry
+                                                                    }}</td>
+                                                                <td>
+                                                                    {{
+                                                                    data.fuelCardNumber
+                                                                    }}
+                                                                </td>
+                                                                <td>
+                                                                    {{ data.type }}
+                                                                    <span *ngIf="data.data.useType">
+                                                                        ({{data.data.useType}})
+                                                                    </span>
+                                                                </td>
+                                                                <td>{{ data.quantity
+                                                                    }} {{
+                                                                    data.unitOfMeasure
+                                                                    }}</td>
+                                                                <td>
+                                                                    {{ data.subTotal
                                                                     | number :
-                                                                    '1.2-2' }}
-                                                                    {{data.billingCurrency}},
-                                                                    1
-                                                                    {{data.billingCurrency}}
-                                                                    =
-                                                                    {{data.convertRate
-                                                                    | number :
-                                                                    '1.2-2' }})
-                                                                </span>
-                                                            </td>
-                                                            <td>{{ data.action
-                                                                }}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                                    '1.2-2'
+                                                                    }}
+                                                                    {{ data.currency
+                                                                    }}
+                                                                    <span *ngIf="data.convert">
+                                                                        ({{data.total
+                                                                        | number :
+                                                                        '1.2-2' }}
+                                                                        {{data.billingCurrency}},
+                                                                        1
+                                                                        {{data.billingCurrency}}
+                                                                        =
+                                                                        {{data.convertRate
+                                                                        | number :
+                                                                        '1.2-2' }})
+                                                                    </span>
+                                                                </td>
+                                                                <td>{{ data.action
+                                                                    }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
 

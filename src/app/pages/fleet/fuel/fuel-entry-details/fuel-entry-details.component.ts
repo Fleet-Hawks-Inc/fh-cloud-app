@@ -332,7 +332,7 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData.site = result.data.site
 
         this.fuelData.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(result.data.country);
-        this.fuelData.stateName = result.data.city + "," + await this.countryStateCity.GetStateNameFromCode(result.data.state, result.data.country);
+        this.fuelData.stateName = result.data.city + ", " + await this.countryStateCity.GetStateNameFromCode(result.data.state, result.data.country);
         this.fuelData.cityName = result.data.city;
         this.fuelData.odometer = result.data.odometer;
         this.fuelData.quantity = result.data.qty;
