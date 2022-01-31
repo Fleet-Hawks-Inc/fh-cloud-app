@@ -243,6 +243,7 @@ export class DriverListComponent implements OnInit {
                     // this.driverDraw = 0;
                     this.dataMessage = Constants.FETCHING_DATA;
                     this.lastEvaluatedKey = "";
+                    this.initDataTable();
                     // this.fetchDriversCount();
                     this.toastr.success("Driver is deleted!");
                 });
