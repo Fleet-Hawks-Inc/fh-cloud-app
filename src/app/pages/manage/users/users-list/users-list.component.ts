@@ -202,17 +202,17 @@ data.forEach(element => {
     }
   }
 
-  deleteUser(contactID, firstName: string, lastName: string, userName: string) {
+  deleteUser(contactID, firstName: string, lastName: string) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
-        .deleteData(`contacts/delete/user/${contactID}/${firstName}/${lastName}/${userName}`)
+        .deleteData(`contacts/delete/user/${contactID}/${firstName}/${lastName}}`)
         .subscribe((result: any) => {
           this.toastr.success('User deleted successfully');
           this.users = [];
           this.userDraw = 0;
           this.dataMessage = Constants.FETCHING_DATA;
-          this.lastEvaluatedKey = '';
-          this.fetchUsers();
+          this.lastItemSK = '';
+          this.initDataTable();
         });
     }
   }
