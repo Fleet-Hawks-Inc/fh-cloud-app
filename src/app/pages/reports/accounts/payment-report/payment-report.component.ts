@@ -33,7 +33,8 @@ export class PaymentReportComponent implements OnInit {
     startDate: null,
     endDate: null,
     type: null,
-    mode:null
+    mode:null,
+    payModeNo:null
   };
 paymentType=[
     {name:"Employee Payment",type:"epp"},
@@ -69,7 +70,7 @@ async fetchAdvancePayments(refresh?: boolean){
     this.lastAdvanceSK="";
   }
   if (this.lastAdvanceSK !== "end") {
-    const result=await this.accountService.getData(`advance/report/paging?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&lastKey=${this.lastAdvanceSK}`).toPromise();
+    const result=await this.accountService.getData(`advance/report/paging?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&payModeNo=${this.filter.payModeNo}&lastKey=${this.lastAdvanceSK}`).toPromise();
     if(result && result.length===0){
       this.dataMessage= Constants.NO_RECORDS_FOUND
     }
@@ -94,7 +95,7 @@ async fetchDriverPayments(refresh?: boolean){
   if (this.lastAdvanceSK !== "end") {
     const result=await this.accountService
     .getData(
-      `driver-payments/report/paging?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&lastKey=${this.lastDriverSK}`
+      `driver-payments/report/paging?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&payModeNo=${this.filter.payModeNo}&lastKey=${this.lastDriverSK}`
     ).toPromise();
     if(result && result.length===0){
       this.dataMessage= Constants.NO_RECORDS_FOUND
@@ -121,7 +122,7 @@ async fetchEmployeePayments(refresh?: boolean){
     
     const result=await this.accountService
     .getData(
-      `employee-payments/report/paging?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&lastKey=${this.lastEmployeeSK}`
+      `employee-payments/report/paging?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&payModeNo=${this.filter.payModeNo}&lastKey=${this.lastEmployeeSK}`
     ).toPromise();
     if(result && result.length===0){
       this.dataMessage= Constants.NO_RECORDS_FOUND
@@ -149,7 +150,7 @@ async fetchExpencePayments(refresh?: boolean){
   if (this.lastExpenceSK !== "end") {
     const result: any = await this.accountService
         .getData(
-          `expense-payments/report/paging?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&lastKey=${this.lastExpenceSK}`
+          `expense-payments/report/paging?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&payModeNo=${this.filter.payModeNo}&lastKey=${this.lastExpenceSK}`
         )
         .toPromise();
     if(result && result.length===0){
@@ -214,7 +215,8 @@ async resetFilter(){
     startDate:null,
     endDate:null,
     mode:null,
-    type:null
+    type:null,
+    payModeNo:null
   }
   await this.init();
 }
@@ -242,22 +244,22 @@ async resetFilter(){
     if(this.filter.type){
       switch(this.filter.type){
         case "epp":{
-          const employeeData=await this.accountService.getData(`employee-payments/report/export?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}`).toPromise();
+          const employeeData=await this.accountService.getData(`employee-payments/report/export?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&payModeNo=${this.filter.payModeNo}`).toPromise();
           this.allExportData=this.allExportData.concat(employeeData)
           break;
         }
         case "exp":{
-          const expenseData = await this.accountService.getData(`expense-payments/report/export?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}`).toPromise();
+          const expenseData = await this.accountService.getData(`expense-payments/report/export?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&payModeNo=${this.filter.payModeNo}`).toPromise();
           this.allExportData=this.allExportData.concat(expenseData)
           break;
         }
         case "advp":{
-          const advanceData=await this.accountService.getData(`advance/report/export?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}`).toPromise();
+          const advanceData=await this.accountService.getData(`advance/report/export?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&payModeNo=${this.filter.payModeNo}`).toPromise();
           this.allExportData=this.allExportData.concat(advanceData)
           break;
         }
         case "drvp":{
-          const driverData=await this.accountService.getData(`driver-payments/report/export?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}`).toPromise();
+          const driverData=await this.accountService.getData(`driver-payments/report/export?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&payModeNo=${this.filter.payModeNo}`).toPromise();
           this.allExportData=this.allExportData.concat(driverData)
           break;
         }
@@ -292,18 +294,18 @@ async resetFilter(){
 this.printing=false;
   }
 async fetchAllPayment(){
-  const advanceData=await this.accountService.getData(`advance/report/export?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}`).toPromise();
+  const advanceData=await this.accountService.getData(`advance/report/export?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&payModeNo=${this.filter.payModeNo}`).toPromise();
     const driverData=await this.accountService
     .getData(
-      `driver-payments/report/export?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}`
+      `driver-payments/report/export?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&payModeNo=${this.filter.payModeNo}`
     ).toPromise();
     const employeeData=await this.accountService
     .getData(
-      `employee-payments/report/export?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}`
+      `employee-payments/report/export?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&payModeNo=${this.filter.payModeNo}`
     ).toPromise();
     const expenseData = await this.accountService
     .getData(
-      `expense-payments/report/export?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}`
+      `expense-payments/report/export?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&payModeNo=${this.filter.payModeNo}`
     )
     .toPromise();
     this.allExportData=this.allExportData.concat(advanceData)
