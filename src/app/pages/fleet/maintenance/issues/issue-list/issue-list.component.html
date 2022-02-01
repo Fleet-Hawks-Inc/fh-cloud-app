@@ -176,37 +176,17 @@
                                                             <span class="badge badge-dark p-1">
                                                                 {{issue.currentStatus | uppercase}}</span>
                                                         </td>
-                                                        <!-- <td>
-                                                            <div class="btn-group flex-wrap">
-                                                                <button type="button" class="mr-1 btn"
-                                                                    data-toggle="dropdown">
-                                                                    <i class="fas fa-ellipsis-v"></i>
-                                                                </button>
-                                                                <div class="dropdown-menu" role="menu">
-                                                                    <button *ngIf="issue.currentStatus != 'CLOSED'"
-                                                                        routerLink="/fleet/maintenance/issues/edit/{{issue.issueID}}"
-                                                                        class="dropdown-item text-1" [disabled]="issue.currentStatus === 'RESOLVED'">Edit</button>
-                                                                    <button *ngIf="issue.currentStatus == 'CLOSED'" (click)="cloneIssue(issue.issueID)" class="dropdown-item text-1">Clone</button>
-                                                                    <button *ngIf="issue.currentStatus != 'CLOSED'"
-                                                                        type="button" class="dropdown-item text-1"
-                                                                        (click)="deleteIssue(issue.issueID, issue.issueName)" [disabled]="issue.currentStatus === 'RESOLVED'">
-                                                                        Delete
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </td> -->
+
                                                         <td>
                                                             <div class="dropdown
                                                         dropright">
                                                                 <button class="bg-transparent
-                                                            border-0" type="button" id="dropdownMenuButton-{{i}}"
-                                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                                    aria-expanded="false"
+                                                            border-0" type="button" data-toggle="dropdown"
+                                                                    aria-haspopup="true" aria-expanded="false"
                                                                     [disabled]="issue.currentStatus === 'RESOLVED'">
                                                                     <i class="fas fa-ellipsis-v"></i>
                                                                 </button>
-                                                                <div class="dropdown-menu"
-                                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                                <div class="dropdown-menu">
                                                                     <a *ngIf="issue.currentStatus != 'CLOSED'"
                                                                         class="dropdown-item"
                                                                         routerLink="/fleet/maintenance/issues/edit/{{issue.issueID}}">Edit</a>
