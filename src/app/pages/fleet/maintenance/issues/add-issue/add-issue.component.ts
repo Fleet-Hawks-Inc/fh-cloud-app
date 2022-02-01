@@ -29,6 +29,7 @@ export class AddIssueComponent implements OnInit {
   /**
    * Issue Prop
    */
+clone = false;
   issueName = "";
   unitID = null;
   unitType = "vehicle";
@@ -58,8 +59,6 @@ export class AddIssueComponent implements OnInit {
   hasError = false;
   hasSuccess = false;
   submitDisabled = false;
-  clonePic = false;
-  // cloneDocs = false;
   Error = "";
   errors = {};
   Success = "";
@@ -177,6 +176,10 @@ export class AddIssueComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs,
     };
+    if(this.clone == true){
+      data.uploadedPhotos = this.existingPhotos
+      data.uploadedDocs = this.existingDocs
+    }
     // create form data instance
     const formData = new FormData();
 
@@ -192,7 +195,6 @@ export class AddIssueComponent implements OnInit {
 
     // append other fields
     formData.append("data", JSON.stringify(data));
-    console.log('data', data)
     // this.apiService.postData('issues/', data).subscribe({
     this.apiService.postData("issues", formData, true).subscribe({
       complete: () => { },
@@ -414,45 +416,34 @@ export class AddIssueComponent implements OnInit {
   /*
    * If We CliCk Clone Button Then It Fetch Issue details 
    */
-
+// let clone = false;
   async cloneIssue(id: any) {
     this.apiService.getData("issues/" + id).subscribe(async (result: any) => {
       result = result[0];
-      console.log('re=0', result)
-      this.clonePic = true;
-      console.log('this.clonePic', this.clonePic)
+      this.clone = true;
       this.issueID = this.issueID;
       this.issueName = result.issueName;
       this.unitID = result.unitID;
       this.fetchedUnitID = result.unitID;
       this.fetchedUnitType = result.unitType;
-      // jehda bind kita aa 
-      this.unitType = result.unitType; // jehda pisho aanda aa data
-      this.currentStatus = 'open';
+      this.unitType = result.unitType; 
+      this.currentStatus = 'OPEN';
       this.reportedDate = result.reportedDate;
       this.description = result.description;
       this.odometer = result.odometer;
       this.reportedBy = result.reportedBy;
       this.assignedTo = result.assignedTo;
       this.existingPhotos = result.uploadedPhotos;
-      // this.uploadedPhotos = result.uploadedPhotos;
-
-      // console.log(' this.existingPhotos--', this.existingPhotos)
       this.existingDocs = result.uploadedDocs;
-      // this.uploadedDocs = result.uploadedDocs;
-
-      // console.log(' this.existingDocs--', this.existingDocs)
       if (
         result.uploadedPhotos !== undefined &&
         result.uploadedPhotos.length > 0
       ) {
         this.issueImages = result.uploadedPics;
-        // console.log(' this.issueImages--', this.issueImages)
       }
 
       if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
         this.issueDocs = result.uploadDocument;
-        // console.log(' this.issueDocs--', this.issueDocs)
       }
     })
   }
