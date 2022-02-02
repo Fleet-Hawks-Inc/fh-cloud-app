@@ -81,7 +81,7 @@
                         </div>
                         <div class="col-md-2 col-lg-2">
                             <button type="button" class="btn btn-sm btn-success mr-3"
-                            (click)="searchFilter()">Search</button>
+                                (click)="searchFilter()">Search</button>
                             <button type="button" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
                         </div>
 
@@ -176,22 +176,27 @@
                                                             <span class="badge badge-dark p-1">
                                                                 {{issue.currentStatus | uppercase}}</span>
                                                         </td>
+
                                                         <td>
-                                                            <div class="btn-group flex-wrap">
-                                                                <button type="button" class="mr-1 btn"
-                                                                    data-toggle="dropdown">
+                                                            <div class="dropdown
+                                                        dropright">
+                                                                <button class="bg-transparent
+                                                            border-0" type="button" data-toggle="dropdown"
+                                                                    aria-haspopup="true" aria-expanded="false"
+                                                                    [disabled]="issue.currentStatus === 'RESOLVED'">
                                                                     <i class="fas fa-ellipsis-v"></i>
                                                                 </button>
-                                                                <div class="dropdown-menu" role="menu">
-                                                                    <button *ngIf="issue.currentStatus != 'CLOSED'"
-                                                                        routerLink="/fleet/maintenance/issues/edit/{{issue.issueID}}"
-                                                                        class="dropdown-item text-1">Edit</button>
-                                                                    <!-- <button *ngIf="issue.currentStatus == 'CLOSED'" (click)="cloneIssue(issue.issueID)" class="dropdown-item text-1">Clone</button> -->
-                                                                    <button *ngIf="issue.currentStatus != 'CLOSED'"
-                                                                        type="button" class="dropdown-item text-1"
-                                                                        (click)="deleteIssue(issue.issueID, issue.issueName)">
-                                                                        Delete
-                                                                    </button>
+                                                                <div class="dropdown-menu">
+                                                                    <a *ngIf="issue.currentStatus != 'CLOSED'"
+                                                                        class="dropdown-item"
+                                                                        routerLink="/fleet/maintenance/issues/edit/{{issue.issueID}}">Edit</a>
+                                                                    <a *ngIf="issue.currentStatus != 'CLOSED'"
+                                                                        class="dropdown-item" href="javascript:;"
+                                                                        (click)="deleteIssue(issue.issueID, issue.issueName)">Delete</a>
+                                                                    <a *ngIf="issue.currentStatus == 'CLOSED'"
+                                                                        class="dropdown-item"
+                                                                        [routerLink]="[ '/fleet', 'maintenance','issues', 'add' ]"
+                                                                        [queryParams]="{ cloneID: issue.issueID }">Clone</a>
                                                                 </div>
                                                             </div>
                                                         </td>
