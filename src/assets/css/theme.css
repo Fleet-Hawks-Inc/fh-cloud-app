@@ -6596,6 +6596,9 @@ h6 .inverted {
 .text-10 {
   font-size: 2.75em !important;
 }
+.text-11 {
+  font-size: 3em !important;
+}
 
 /* Line Height */
 .line-height-xs {
