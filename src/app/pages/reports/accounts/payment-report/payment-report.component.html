@@ -107,13 +107,12 @@
                                                 <thead>
                                                     <tr>
                                                         <th id="" class="col1 minWidth120">Transaction Date</th>
-                                                        <th id="" class="col1 minWidth120">Reference No.</th>
-                                                        <th id="" class="col1 minWidth120"> Cheque/Cash Date</th>
                                                         <th id="" class="col1 minWidth120">Payment ID</th>
                                                         <th id="" class="minWidth120">Payment Mode</th>
                                                         <th id="" class="minWidth120">Cheque/ Cash No.</th>
+                                                        <th id="" class="col1 minWidth120"> Cheque/Cash Date</th>
                                                         <th id="" class="minWidth120">Type Of Payment</th>
-                                                        <th id="" class="minWidth120">Vendor</th>
+                                                        <th id="" class="minWidth120">Receiver</th>
                                                         <th id="" class="minWidth120">Currency</th>
                                                         <th id="" class="minWidth120">Amount</th>
                                                         
@@ -128,22 +127,19 @@
                                                         {{element.txnDate|date:'YYYY-MM-dd'}}
                                                     </td>
                                                     <td>
-                                                      {{element.refNo}}
+                                                      {{element.paymentNo}}
                                                   </td>
+                                                  <td>
+                                                    {{element.payMode | titlecase}}
+                                                </td>
+                                                <td>
+                                                  {{element.payModeNo}}
+                                                </td>
                                                         <td>
                                                             {{element.payModeDate|date:'YYYY-MM-dd'}}
                                                         </td>
                                                         <td>
-                                                          {{element.paymentNo}}
-                                                      </td>
-                                                        <td>
-                                                            {{element.payMode | titlecase}}
-                                                        </td>
-                                                        <td>
-                                                          {{element.payModeNo}}
-                                                        </td>
-                                                        <td>
-                                                            {{element.type}} <span *ngIf="element.advType">: {{element.advType | titlecase}}</span>
+                                                            {{element.type | titlecase}} <span *ngIf="element.advType">: {{element.advType | titlecase}}</span>
                                                         </td>
                                                         <td>
                                                             {{element.paymentTo}} : {{element.entityName | titlecase}}
@@ -285,14 +281,6 @@
                         </td>
                         <td width="8%"
                           style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Ref. No</p>
-                        </td>
-                        <td width="8%"
-                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Cheque/ Cash Date</p>
-                        </td>
-                        <td width="8%"
-                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
                           <p style="font-weight:600;">Payment#</p>
                         </td>
                         <td width="8%"
@@ -301,11 +289,19 @@
                         </td>
                         <td width="8%"
                           style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                          <p style="font-weight:600;">Cheq/ Cash#</p>
+                        </td>
+                        <td width="8%"
+                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                          <p style="font-weight:600;">Cheq/ Cash Date</p>
+                        </td>
+                        <td width="8%"
+                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
                           <p style="font-weight:600;">Type Of Payment</p>
                         </td>
                         <td width="8%"
                           style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Vendor</p>
+                          <p style="font-weight:600;">Receiver</p>
                         </td>
                         <td width="6%"
                           style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
@@ -324,14 +320,6 @@
                           style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                           <p style="margin-top:0px; margin-bottom:0px;"> {{element.txnDate|date:'YYYY-MM-dd'}}</p>
                         </td>
-                        <td height="25"
-                          style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;"> {{element.refNo}}</p>
-                        </td>
-                        <td height="25"
-                          style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;"> {{element.payModeDate|date:'YYYY-MM-dd'}}</p>
-                        </td>
                         <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                           <p style="margin-top:0px; margin-bottom:0px;">{{element.paymentNo}}</p>
                         </td>
@@ -339,10 +327,17 @@
                           <p style="margin-top:0px; margin-bottom:0px;">{{element.payMode |titlecase}}</p>
                         </td>
                         <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{ element.type }}<span *ngIf="element.advType">: {{element.advType | titlecase}}</span></p>
+                          <p style="margin-top:0px; margin-bottom:0px;">{{element.payModeNo}}</p>
+                        </td>
+                        <td height="25"
+                          style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
+                          <p style="margin-top:0px; margin-bottom:0px;"> {{element.payModeDate|date:'YYYY-MM-dd'}}</p>
                         </td>
                         <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{element.paymentTo}} : {{element.entityName | titlecase}}</p>
+                          <p style="margin-top:0px; margin-bottom:0px;">{{ element.type | titlecase }}<span *ngIf="element.advType">: {{element.advType | titlecase}}</span></p>
+                        </td>
+                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
+                          <p style="margin-top:0px; margin-bottom:0px;">{{element.paymentTo |titlecase}} : {{element.entityName | titlecase}}</p>
                         </td>
                         <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                           <p style="margin-top:0px; margin-bottom:0px;">{{element.currency}}</p>

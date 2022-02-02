@@ -184,6 +184,7 @@ async searchFilter(){
   this.allPayments=[]
   this.searching=true
   this.resetVariables();
+  this.dataMessage=Constants.FETCHING_DATA
   if(this.filter.type){
   switch(this.filter.type){
     case "epp":{
