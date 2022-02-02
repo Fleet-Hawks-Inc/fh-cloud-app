@@ -341,17 +341,17 @@ export class AddUserComponent implements OnInit {
     }
   }
   deleteImage(type: string, name: string) {
-if (type === 'uploaded') {
-  this.profilePath = '';
-  this.uploadedPhotos = [];
-  this.imageText = 'Add';
-} else if (type === 'profile') {
-  this.userData.profileImg = '';
-  this.profilePath = '';
-  this.uploadedPhotos = [];
-  this.imageText = 'Add';
-  this.deletedUploads.push(name);
-}
+    if (type === 'uploaded') {
+      this.profilePath = '';
+      this.uploadedPhotos = [];
+      this.imageText = 'Add';
+    } else if (type === 'profile') {
+      this.userData.profileImg = '';
+      this.profilePath = '';
+      this.uploadedPhotos = [];
+      this.imageText = 'Add';
+      this.deletedUploads.push(name);
+    }
   }
   async newGeoCode(data: any) {
     let result = await this.apiService
@@ -590,36 +590,36 @@ if (type === 'uploaded') {
     this.submitDisabled = true;
     try {
       this.apiService.putData('contacts/user/update', formData, true).
-      subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                //  val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-                this.submitDisabled = false;
-              },
-              error: () => {
-                this.submitDisabled = false;
-              },
-              next: () => { },
-            });
-        },
-        next: (res) => {
-          // this.spinner.hide();
-          this.response = res;
-          this.submitDisabled = false;
-          this.hasSuccess = true;
-          this.location.back();
-          this.toastr.success('User is updated successfully');
-        }
-      });
+        subscribe({
+          complete: () => { },
+          error: (err: any) => {
+            from(err.error)
+              .pipe(
+                map((val: any) => {
+                  //  val.message = val.message.replace(/".*"/, 'This Field');
+                  this.errors[val.context.key] = val.message;
+                })
+              )
+              .subscribe({
+                complete: () => {
+                  this.throwErrors();
+                  this.submitDisabled = false;
+                },
+                error: () => {
+                  this.submitDisabled = false;
+                },
+                next: () => { },
+              });
+          },
+          next: (res) => {
+            // this.spinner.hide();
+            this.response = res;
+            this.submitDisabled = false;
+            this.hasSuccess = true;
+            this.location.back();
+            this.toastr.success('User is updated successfully');
+          }
+        });
     } catch (error) {
       this.submitDisabled = false;
     }
