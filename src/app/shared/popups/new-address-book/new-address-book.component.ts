@@ -176,7 +176,7 @@ export class NewAddressBookComponent implements OnInit {
 
   ngOnInit() {
     this.searchLocation();
-    this.fetchCountries();
+    // this.fetchCountries();
 
     this.modalSubscription = this.listService.addressList.subscribe((res: any) => {
       if (res === 'list') {
