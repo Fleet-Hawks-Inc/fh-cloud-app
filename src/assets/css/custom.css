@@ -3946,3 +3946,7 @@ input:checked + .sliderbtn:before {
   text-decoration: none;
   color: #000000;
 }
+
+.login-modal-outer .modal-dialog {
+  max-width: 800px !important;
+}

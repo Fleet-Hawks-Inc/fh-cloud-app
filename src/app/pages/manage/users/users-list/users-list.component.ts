@@ -35,12 +35,12 @@ export class UsersListComponent implements OnInit {
   userPrevEvauatedKeys = [''];
   userStartPoint = 1;
   userEndPoint = this.pageLength;
-  userRoles={};
+  userRoles = {};
   selectedUserData: any = '';
   newRoles = [];
-   searchValue = null;
-    lastItemSK = "";
-    loaded: boolean = false;
+  searchValue = null;
+  lastItemSK = "";
+  loaded: boolean = false;
 
   constructor(private apiService: ApiService, private toastr: ToastrService, private spinner: NgxSpinnerService, private httpClient: HttpClient) { }
 
@@ -49,7 +49,7 @@ export class UsersListComponent implements OnInit {
     this.fetchUsers();
   }
 
- 
+
   getSuggestions = _.debounce(function (value) {
     this.contactID = '';
     value = value.toLowerCase();
@@ -70,7 +70,7 @@ export class UsersListComponent implements OnInit {
     }
   }, 800);
 
-    setUser(contactID, firstName = "", lastName = "", middleName = "") {
+  setUser(contactID, firstName = "", lastName = "", middleName = "") {
     if (middleName !== "") {
       this.searchUserName = `${firstName} ${middleName} ${lastName}`;
       // this.contactID = contactID;
@@ -81,7 +81,7 @@ export class UsersListComponent implements OnInit {
     }
     this.suggestedUsers = [];
   }
-  
+
   fetchUsers() {
     this.apiService.getData('contacts/get/employee/count/?searchValue=' + this.contactID)
       .subscribe({
@@ -97,10 +97,10 @@ export class UsersListComponent implements OnInit {
       });
   }
   async fetchUserRoles() {
-    const data:any=await this.httpClient.get('assets/jsonFiles/user/userRoles.json').toPromise();
-data.forEach(element => {
-  this.userRoles[element.role]=element.name
-});
+    const data: any = await this.httpClient.get('assets/jsonFiles/user/userRoles.json').toPromise();
+    data.forEach(element => {
+      this.userRoles[element.role] = element.name
+    });
   }
 
   fetchRole(user: any) {
@@ -145,36 +145,35 @@ data.forEach(element => {
         }
       });
   }
-  
+
   initDataTable() {
-    if (this.lastItemSK !== 'end'){
-    this.apiService.getData(`contacts/fetch/employee/records?searchValue=${this.contactID}&lastKey=${this.lastItemSK}`)
-      .subscribe((result: any) => {
-        if (result.Items.length === 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-        if (result.Items.length > 0) {
-                if (result.LastEvaluatedKey !== undefined) {
-                    this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.contactSK);
-                }
-                else {
-                    this.lastItemSK = 'end'
-                }
-             this.users = this.users.concat(result.Items);
+    if (this.lastItemSK !== 'end') {
+      this.apiService.getData(`contacts/fetch/employee/records?searchValue=${this.contactID}&lastKey=${this.lastItemSK}`)
+        .subscribe((result: any) => {
+          if (result.Items.length === 0) {
+            this.dataMessage = Constants.NO_RECORDS_FOUND;
+          }
+          if (result.Items.length > 0) {
+            if (result.LastEvaluatedKey !== undefined) {
+              this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.contactSK);
+            }
+            else {
+              this.lastItemSK = 'end'
+            }
+            this.users = this.users.concat(result.Items);
             this.loaded = true;
-        }
-      })
+          }
+        })
     }
   }
-  
-   searchFilter() {
+
+  searchFilter() {
     if (this.searchValue !== null) {
-     this.searchValue = this.searchValue.toLowerCase();
-               if (this.contactID == '') 
-               {
-               this.contactID = this.searchValue;
-                }
-                
+      this.searchValue = this.searchValue.toLowerCase();
+      if (this.contactID == '') {
+        this.contactID = this.searchValue;
+      }
+
       this.users = [];
       this.lastItemSK = '';
       this.initDataTable();
@@ -182,7 +181,7 @@ data.forEach(element => {
       return false;
     }
   }
-  
+
   onScroll() {
     if (this.loaded) {
       this.initDataTable();
@@ -202,15 +201,16 @@ data.forEach(element => {
     }
   }
 
-  async deleteUser(contactID, firstName: string, lastName: string, userName: string) {
+  async deleteUser(contactID) {
     if (confirm('Are you sure you want to delete?') === true) {
       await this.apiService
-        .deleteData(`contacts / delete /user/${contactID} /${firstName}/${lastName} /${userName}`)
+        .deleteData(`contacts/delete/user/${contactID}`)
         .subscribe(async (result: any) => {
           this.userDraw = 0;
           this.lastEvaluatedKey = '';
           this.dataMessage = Constants.FETCHING_DATA;
           this.users = [];
+          this.lastItemSK = '';
           this.fetchUsers();
           this.toastr.success('User deleted successfully');
         });
