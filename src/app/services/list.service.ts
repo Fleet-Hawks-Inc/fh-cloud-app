@@ -90,7 +90,7 @@ export class ListService {
   otherModelDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   otherModelList = this.otherModelDataSource.asObservable();
 
-  paymentSaveDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  paymentSaveDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject(null);
   paymentSaveList = this.paymentSaveDataSource.asObservable();
 
   contactsObjectDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject(
@@ -316,6 +316,7 @@ export class ListService {
   }
 
   triggerPaymentSave(value) {
+    console.log('dff', value)
     this.paymentSaveDataSource.next(value);
   }
 

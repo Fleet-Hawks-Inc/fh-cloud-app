@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, SimpleChanges } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
 import * as moment from "moment";
@@ -103,7 +103,9 @@ export class AddDriverPaymentComponent implements OnInit {
     private location: Location,
     private countryStateCity: CountryStateCityService
   ) {
+    console.log(' this.listService.paymentSaveList',  this.listService.paymentSaveList)
     this.listService.paymentSaveList.subscribe((res: any) => {
+      console.log('res', res)
       if (res === "driver" || res === "carrier" || res === "owner_operator") {
         this.addRecord();
       }
@@ -111,6 +113,7 @@ export class AddDriverPaymentComponent implements OnInit {
   }
 
   async ngOnInit() {
+    console.log('triggered')
     this.paymentID = this.route.snapshot.params["paymentID"];
     if (this.paymentID) {
       this.fetchPaymentDetail();

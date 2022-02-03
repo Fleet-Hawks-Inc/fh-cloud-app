@@ -416,6 +416,7 @@ export class PaymentChequeComponent implements OnInit {
   saveDownload() {
     this.generatePDF();
     this.modalService.dismissAll();
+    console.log('(this.paydata.type', this.paydata.type);
     this.listService.triggerPaymentSave(this.paydata.type);
   }
 
