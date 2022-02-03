@@ -2,7 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DataStateChangeEvent, GridDataResult } from '@progress/kendo-angular-grid';
+
 import * as _ from 'lodash';
+import { SortDescriptor, orderBy, process, State } from '@progress/kendo-data-query';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
@@ -16,6 +19,8 @@ declare var $: any;
   styleUrls: ['./vehicle-list.component.css'],
 })
 export class VehicleListComponent implements OnInit {
+  loading = false;
+  public gridItems: GridDataResult;
   liveModalTimeout: any;
   liveStreamVehicle: string;
   environment = environment.isFeatureEnabled;
@@ -25,7 +30,7 @@ export class VehicleListComponent implements OnInit {
   vehicles = [];
   suggestedVehicles = [];
   vehicleID = '';
-  currentStatus = null;
+  public currentStatus = null;
   vehicleIdentification = '';
   allOptions: any = {};
   groupsList: any = {};
@@ -75,7 +80,18 @@ export class VehicleListComponent implements OnInit {
   vehicleEndPoint = this.pageLength;
   vehicleTypeObects: any = {};
   lastItemSK = ''
-  loaded = false
+  loaded = true;
+
+  // Kendo UI 
+  gridState: State = {
+    sort: [{
+      field: 'stateID',
+      dir: 'desc'
+    }],
+
+  }
+
+  public filterTerm: number = null;
 
   constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService,
     private onboard: OnboardDefaultService, protected _sanitizer: DomSanitizer, private modalService: NgbModal) {
@@ -188,10 +204,30 @@ export class VehicleListComponent implements OnInit {
     $('.buttons-excel').trigger('click');
   }
 
+  public handleSortChange(descriptor: SortDescriptor[]): void {
+    this.gridState.sort = descriptor;
+    this.gridItems = process(this.vehicles, this.gridState);
 
+  }
+
+
+  public dataStateChange(state: DataStateChangeEvent): void {
+    this.gridState = state;
+    this.gridItems = process(this.vehicles, state);
+  }
+
+
+  public statusList: Array<{ text: string; value: string }> = [
+    { value: "active", text: 'Active' },
+    { value: "inActive", text: 'In Active' },
+    { value: "outOfService", text: 'Out of Service' },
+    { value: "sold", text: 'Sold' },
+
+  ];
 
   initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
+      this.loaded = true;
       this.apiService.getData('vehicles/fetch/records?vehicle=' + this.vehicleID + '&status=' + this.currentStatus + '&lastKey=' + this.lastEvaluatedKey)
         .subscribe(async (result: any) => {
           this.dataMessage = Constants.FETCHING_DATA
@@ -212,20 +248,19 @@ export class VehicleListComponent implements OnInit {
               this.lastEvaluatedKey = 'end'
             }
             this.vehicles = this.vehicles.concat(result.Items)
+            console.log(this.vehicles)
+            this.gridItems = process(this.vehicles, this.gridState);
+            this.loaded = false;
 
-            this.loaded = true;
+
             await this.getDashCamConnection(this.vehicles);
             await this.getDashCamStatus(this.vehicles);
+
           }
         });
     }
   }
-  onScroll() {
-    if (this.loaded) {
-      this.initDataTable();
-    }
-    this.loaded = false;
-  }
+
 
   /**
    * Get device status dashCam Connection
@@ -262,6 +297,7 @@ export class VehicleListComponent implements OnInit {
   }
 
   searchFilter() {
+    console.log(this.currentStatus)
     if (this.vehicleIdentification !== '' || this.currentStatus !== null) {
       this.vehicleIdentification = this.vehicleIdentification.toLowerCase();
       if (this.vehicleID == '') {

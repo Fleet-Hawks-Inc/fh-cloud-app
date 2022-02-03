@@ -4,7 +4,9 @@ import {
   Inject,
   AfterContentChecked,
   ChangeDetectorRef,
+  ViewEncapsulation,
 } from "@angular/core";
+import { DrawerItem, DrawerSelectEvent } from "@progress/kendo-angular-layout";
 import {
   Router,
   Event,
@@ -21,6 +23,7 @@ declare var $: any;
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"],
+  encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent implements OnInit, AfterContentChecked {
   title = "fleethawks-dashboard";
@@ -133,5 +136,19 @@ export class AppComponent implements OnInit, AfterContentChecked {
 
   ngAfterContentChecked(): void {
     this.changeDetector.detectChanges();
+  }
+
+  public items: Array<DrawerItem> = [
+    { text: "Inbox", icon: "k-i-inbox", selected: true },
+    { separator: true },
+    { text: "Notifications", icon: "k-i-bell" },
+    { text: "Calendar", icon: "k-i-calendar" },
+    { separator: true },
+    { text: "Attachments", icon: "k-i-hyperlink-email" },
+    { text: "Favourites", icon: "k-i-star-outline" },
+  ];
+  selected;
+  public onSelect(ev: DrawerSelectEvent): void {
+    this.selected = ev.item.text;
   }
 }

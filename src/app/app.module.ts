@@ -54,6 +54,10 @@ import { SubscriptionOnboardComponent } from './entry/subscription-onboard/subsc
 import { NgOtpInputModule } from 'ng-otp-input';
 
 import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
+import { GridModule } from '@progress/kendo-angular-grid';
+import { LayoutModule } from "@progress/kendo-angular-layout";
+import { ProgressBarModule } from '@progress/kendo-angular-progressbar';
+
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
@@ -75,7 +79,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     AddAccountComponent,
     ForgotPasswordComponent,
     LocationShareComponent,
-    SubscriptionOnboardComponent
+    SubscriptionOnboardComponent,
+
   ],
   imports: [
     CommonModule,
@@ -99,7 +104,10 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NgxCaptchaModule,
     GoogleMapsModule,
     RxReactiveFormsModule,
-    NgOtpInputModule
+    NgOtpInputModule,
+    GridModule,
+    LayoutModule,
+    ProgressBarModule
 
 
 

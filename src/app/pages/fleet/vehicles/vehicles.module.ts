@@ -11,8 +11,12 @@ import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { VehicleDetailComponent } from './vehicle-detail/vehicle-detail.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-
+import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ExcelModule, GridModule, PDFModule } from '@progress/kendo-angular-grid';
+import { LabelModule } from "@progress/kendo-angular-label";
+import { InputsModule } from "@progress/kendo-angular-inputs";
+
 const routes: Routes = [
   { path: 'add', component: AddVehicleComponent },
   { path: 'edit/:vehicleID', component: AddVehicleComponent },
@@ -86,7 +90,10 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgbModule,
     NgSelectModule,
     SlickCarouselModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    GridModule,
+    ExcelModule, PDFModule
+    , InputsModule, DropDownsModule
   ],
   exports: [],
   providers: [{ provide: NgbDateAdapter, useClass: CustomAdapter },
