@@ -57,8 +57,9 @@ export class AdvancePaymentsListComponent implements OnInit {
       this.payments = [];
     }
     if (this.lastItemSK !== "end") {
+      
       if (this.filter.searchValue !== null && this.filter.searchValue !== "") {
-        searchParam = this.filter.searchValue === 'paymentNo' ? encodeURIComponent(`"${this.filter.searchValue}"`) : `${this.filter.searchValue}`;
+        searchParam = this.filter.type === 'paymentNo' ? encodeURIComponent(`"${this.filter.searchValue}"`) : `${this.filter.searchValue}`;
       } else {
         searchParam = null;
       }
@@ -95,6 +96,8 @@ export class AdvancePaymentsListComponent implements OnInit {
             });
             this.loaded = true;
           }
+        }, err => {
+          this.disableSearch = false;
         });
     }
   }
