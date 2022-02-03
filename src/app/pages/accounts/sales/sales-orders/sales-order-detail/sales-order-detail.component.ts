@@ -112,6 +112,7 @@ export class SalesOrderDetailComponent implements OnInit {
       .toPromise();
     this.emailDisabled = false;
     if (result) {
+      this.status = 'sent';
       this.toaster.success("Email sent successfully");
     } else {
       this.toaster.error("Something went wrong.");

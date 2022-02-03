@@ -20,7 +20,7 @@
                   <td colspan="2">&nbsp;</td>
                 </tr>
                 <tr>
-                  <td colspan="2" align="center">
+                  <td>
                     <h1
                       style="
                         font-size: 22px;
@@ -32,6 +32,15 @@
                     >
                       {{ pdfTitle }} 
                     </h1>
+                  </td>
+                  <td align="right">
+                    <img crossorigin="anonymous" *ngIf="companyLogo" [src]="companyLogo" alt="logo"
+                          style="max-width: 100px;">
+                        <p *ngIf="tagLine" class="mb-0 text-dark"
+                          style="font-size: 18px;
+                          margin-top: 10px;
+                          font-weight: 600;">{{ tagLine }}</p>
+                    
                   </td>
                 </tr>
                 <tr>

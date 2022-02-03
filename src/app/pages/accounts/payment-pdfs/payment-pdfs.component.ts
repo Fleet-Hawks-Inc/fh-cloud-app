@@ -106,6 +106,7 @@ export class PaymentPdfsComponent implements OnInit {
   currentUser: any = "";
   companyName: any = "";
   companyLogo = "";
+  tagLine = "";
 
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
@@ -447,5 +448,6 @@ export class PaymentPdfsComponent implements OnInit {
       .toPromise();
     this.companyName = result.companyName;
     this.companyLogo = result.logo;
+    this.tagLine = result.tagLine;
   };
 }

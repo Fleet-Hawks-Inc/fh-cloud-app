@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService, ListService } from '../../services';
 import { AuthService } from '../../services';
@@ -10,6 +10,7 @@ import { passwordStrength } from 'check-password-strength'
 import { map } from 'rxjs/operators'
 import { ToastrService } from 'ngx-toastr'
 import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 
 @Component({
@@ -18,6 +19,8 @@ declare var $: any;
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  @ViewChild("SignInModal", { static: true })
+  SignInModal: TemplateRef<any>;
 
   userName: string = null;
   errors = {};
@@ -57,13 +60,14 @@ export class LoginComponent implements OnInit {
   newEmail: any;
   findingWay: any;
   confirmPassword: any;
-
+  signInRef: any;
 
 
   constructor(private apiService: ApiService,
     private router: Router,
     private authService: AuthService,
     private toaster: ToastrService,
+    private modalService: NgbModal,
     private listService: ListService,
     private routMgmtService: RouteManagementServiceService) { }
 
@@ -350,5 +354,17 @@ export class LoginComponent implements OnInit {
           this.toaster.error(this.errors[v]);
         }
       });
+  }
+
+  openLogin() {
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "login-modal-outer",
+      size: 'lg',
+      centered: true
+    };
+    this.signInRef = this.modalService.open(this.SignInModal, ngbModalOptions)
+
   }
 }

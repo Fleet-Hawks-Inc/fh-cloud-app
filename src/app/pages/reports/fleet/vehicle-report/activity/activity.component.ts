@@ -71,7 +71,7 @@ export class ActivityComponent implements OnInit {
                 }
                 this.loaded = true;
 
-                for (let veh of this.allData) {
+                for (let veh of result.Items) {
                     let dataa = veh
                     veh.miles = 0
                     for (let element of dataa.tripPlanning) {
@@ -132,7 +132,6 @@ export class ActivityComponent implements OnInit {
             this.exportData.forEach(element => {
                 let location = ''
                 let date = ''
-                let Miles = 0
                 let usMiles = ''
                 let canMiles = ''
                 let usState = ''
