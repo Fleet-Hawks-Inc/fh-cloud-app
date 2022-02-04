@@ -476,6 +476,10 @@ export class FuelEntryListComponent implements OnInit {
 
       
     }
+    else{
+      this.error.hasError=true;
+      this.error.message="Unable to upload"
+    }
 
   }
   parseCSV(data:any){
@@ -488,9 +492,7 @@ export class FuelEntryListComponent implements OnInit {
   validateCSV(){
     const data=["Exchange Rate", "Card #", "Site City", "Site Name","Prov/St Abb.",'DEF AMT',"DEF QTY","Odometer","Unit #","UOM","Date","Time","Driver Id","Discount Rate","Reefer AMT","Tractor","Tractor AMT","Billed Price", "Reefer QTY","Retail Price"]
     let match=true
-    console.log(this.csvHeader)
     const parsedData:any=this.csvHeader.map(element=>element.includes('\r')?element.replace('\r',''):element)
-    console.log("parse",parsedData)
     if(parsedData && parsedData.length>0){
     data.forEach(element=>{
       if(!parsedData.includes(element)){
@@ -546,7 +548,13 @@ return match
   validatePetro(){
     const data=["Sales Date","Sales Time", "Card #", "City", "Province","Product","Volume","Net Unit Price","FET + FCT","Prov. TAX","GST/HST","PST","Amount","Odometer","Doc ID","Driver Name"]
     let match=true
-    const parseData:any=this.csvHeader.map(element=> JSON.parse(element))
+    try{
+    const parseData:any=this.csvHeader.map(element=>{
+      if(element){
+       return JSON.parse(element)}
+      else{
+        return element
+      }})
     if(parseData && parseData.length>0){
     data.forEach(element=>{
       if(!parseData.includes(element)){
@@ -559,13 +567,20 @@ return match
     match=false
   }
 return match
+    }
+    catch(err){
+      this.error.hasError=true
+      this.error.message="Unable to Parse"
+      this.reviewing=false
+    }
   }
   
-  postPetroDoc(){
+  async postPetroDoc(){
     this.reviewing=true;
     this.error.hasError=false
     this.error.message=''
-    if(this.validatePetro()){
+    const val=await this.validatePetro()
+    if(val){
     if (this.uploadedDocs.length > 0) {
       const formData = new FormData();
       for (let i = 0; i < this.uploadedDocs.length; i++) {

@@ -107,24 +107,29 @@ export class IncidentDetailComponent implements OnInit {
         if(result.location.cords != undefined) {
           await this.setMarker(result.location.cords);  
         }
-      
+        
+        
         if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
-        this.incidentImages = result.uploadPics;
+                this.incidentImages = result.uploadPics;
          // this.incidentImages = result.uploadedPhotos.map(x => ({
-         //    path: `${this.asseturl}/${result.pk}/${x}`,
+        //    path: `${this.asseturl}/${result.pk}/${x}`,
         //    name: x,
         //  }));
         }
+
         if(result.uploadedVideos != undefined && result.uploadedVideos.length > 0){
-        this.incidentVideos = result.uploadVideo;
-         // this.incidentVideos = result.uploadedVideos.map(x => ({path: `${this.asseturl}/${result.pk}/${x}`, name: x}));
+                this.incidentVideos = result.uploadVideo;
+       //   this.incidentVideos = result.uploadedVideos.map(x => ({path: `${this.asseturl}/${result.pk}/${x}`, name: x}));
         }
         if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
-        this.incidentDocs = result.uploadDocument;
-          //this.incidentDocs = result.uploadedDocs.map(x => ({path: `${this.asseturl}/${result.pk}/${x}`, name: x}));
+                this.incidentDocs = result.uploadDocument;
+         // this.incidentDocs = result.uploadedDocs.map(x => ({path: `${this.asseturl}/${result.pk}/${x}`, name: x}));
         }
+        
+        
         this.createdBy = result.createdBy;
         this.safetyNotes = result.safetyNotes;
+        
       })
   }
 

@@ -98,6 +98,7 @@ export class EventDetailComponent implements OnInit {
   async fetchEventDetail() {
     this.safetyService.getData('critical-events/detail/' + this.eventID)
       .subscribe(async (res: any) => {
+
         let result = res[0];
         this.deviceSerialNo = result.deviceSerialNo || 'NA';
         this.vehicle = result.vehicleID;
@@ -117,18 +118,17 @@ export class EventDetailComponent implements OnInit {
           await this.setMarker(result.location.cords);
         }
         this.safetyNotes = result.safetyNotes;
-        
         if (result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0) {
         this.eventImages = result.uploadPics;
-        // this.eventImages = result.uploadedPhotos.map(x => ({
+         // this.eventImages = result.uploadedPhotos.map(x => ({
         //    path: `${this.asseturl}/${result.pk}/${x}`,
         //    name: x,
         //  }));
         }
         if (result.uploadedVideos != undefined && result.uploadedVideos.length > 0) {
         this.eventVideos = result.uploadVideo;
-        //  this.eventVideos = result.uploadedVideos.map(x => ({
-        //    path: `${this.asseturl}/${result.pk}/${x}`,
+         // this.eventVideos = result.uploadedVideos.map(x => ({
+         //    path: `${this.asseturl}/${result.pk}/${x}`,
         //    name: x
         //  }));
         }
@@ -163,28 +163,22 @@ export class EventDetailComponent implements OnInit {
         const params = {
           lat: cords[0].trim(),
           lng: cords[1].trim()
-
         }
         const location = await this.hereMap.revGeoCode(params);
-
         if (location && location.items.length > 0) {
           return location.items[0].title;
         } else {
           this.showMap = false;
           return 'NA';
-
         }
       } else {
         this.showMap = false;
         return 'NA';
-
       }
     } catch (error) {
       this.showMap = false;
       return 'NA';
-
     }
-
   }
 
   setMarker = async (location: any) => {
@@ -216,22 +210,19 @@ export class EventDetailComponent implements OnInit {
         this.driversObject = result;
       });
   }
-
-
+  
   addNotes() {
     if (this.newNotes.trim().length > 0) {
       let data = {
         notes: this.newNotes,
         eventID: this.eventID,
       }
-
       this.safetyService.postData('critical-events/notes', data).subscribe(res => {
         this.fetchEventDetail();
         this.toastr.success('Notes added successfully');
         this.newNotes = '';
       });
     }
-
   }
 
   /**
@@ -250,26 +241,19 @@ export class EventDetailComponent implements OnInit {
         deviceEventId: this.deviceEventId
       }
       const response: any = await this.safetyService.postData('critical-events/fetchEvent', body).toPromise()
-
       if (response && response.alarmFiles && response.alarmFiles.length > 0) {
-
         for (const video of response.alarmFiles) {
           const params = {
             path: video.videoUrl,
             name: video.alarmType
-
           }
           this.eventVideos.push(params)
         }
-
       } else {
         this.toastr.error('Event Video not available. Please try again.')
       }
     } catch (error) {
-
       this.toastr.error('Unable to fetch evidence.')
     }
-
   }
-
 }

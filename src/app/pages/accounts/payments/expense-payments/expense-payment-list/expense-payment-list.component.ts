@@ -38,7 +38,7 @@ export class ExpensePaymentListComponent implements OnInit {
   async getList() {
     let searchParam = "";
     if (this.filter.searchValue !== null && this.filter.searchValue !== "") {
-      searchParam = this.filter.type === 'amount' ? encodeURIComponent(`"${this.filter.searchValue}"`) : `${this.filter.searchValue}`;
+      searchParam = (this.filter.type === 'amount' || this.filter.type === 'paymentNo') ? encodeURIComponent(`"${this.filter.searchValue}"`) : `${this.filter.searchValue}`;
     } else {
       searchParam = null;
     }

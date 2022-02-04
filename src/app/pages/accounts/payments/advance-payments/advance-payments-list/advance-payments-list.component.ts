@@ -16,6 +16,7 @@ export class AdvancePaymentsListComponent implements OnInit {
     startDate: null,
     endDate: null,
     type: null,
+    payType: null
   };
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -56,14 +57,15 @@ export class AdvancePaymentsListComponent implements OnInit {
       this.payments = [];
     }
     if (this.lastItemSK !== "end") {
+      
       if (this.filter.searchValue !== null && this.filter.searchValue !== "") {
-        searchParam = this.filter.searchValue === 'paymentNo' ? encodeURIComponent(`"${this.filter.searchValue}"`) : `${this.filter.searchValue}`;
+        searchParam = this.filter.type === 'paymentNo' ? encodeURIComponent(`"${this.filter.searchValue}"`) : `${this.filter.searchValue}`;
       } else {
         searchParam = null;
       }
       this.accountService
         .getData(
-          `advance/paging?type=${this.filter.type}&searchValue=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
+          `advance/paging?type=${this.filter.type}&searchValue=${searchParam}&payType=${this.filter.payType}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
         )
         .subscribe((result: any) => {
           if (result.length === 0) {
@@ -94,6 +96,8 @@ export class AdvancePaymentsListComponent implements OnInit {
             });
             this.loaded = true;
           }
+        }, err => {
+          this.disableSearch = false;
         });
     }
   }
@@ -117,6 +121,7 @@ export class AdvancePaymentsListComponent implements OnInit {
     if (
       this.filter.type !== null ||
       this.filter.searchValue !== null ||
+      this.filter.payType !== null ||
       this.filter.endDate !== null ||
       this.filter.startDate !== null
     ) {
@@ -146,6 +151,7 @@ export class AdvancePaymentsListComponent implements OnInit {
       startDate: null,
       endDate: null,
       type: null,
+      payType: null,
       searchValue: null,
     };
     this.payments = [];
@@ -168,6 +174,7 @@ export class AdvancePaymentsListComponent implements OnInit {
       startDate: null,
       endDate: null,
       type: null,
+      payType: null,
     };
     this.payments = [];
     this.lastItemSK = "";

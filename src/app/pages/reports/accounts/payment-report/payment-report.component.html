@@ -23,6 +23,17 @@
                                     <ng-option *ngFor="let payment of paymentMode" [value]="payment.type">{{payment.name}}</ng-option>
                                 </ng-select>
                               </div>
+                              <div class="col-md-2 col-lg-2 pr-0">
+                                <div class="input-group input-group-md mb-3">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Search by Cheque/ Cash No."
+                                    name="payModeNo"
+                                    [(ngModel)]="filter.payModeNo"
+                                  />
+                                </div>
+                              </div>
                               <div class="col-lg-3 col-md-3 pr-0">
                                 <div class="input-daterange input-group" data-plugin-datepicker>
                                   <span class="input-group-prepend">
@@ -95,11 +106,13 @@
                                                              table-bordered table-striped mb-0">
                                                 <thead>
                                                     <tr>
-                                                        <th id="" class="col1 minWidth200">Date</th>
-                                                        <!-- <th id="" class="col2 minWidth120">Duty Status</th> -->
+                                                        <th id="" class="col1 minWidth120">Transaction Date</th>
+                                                        <th id="" class="col1 minWidth120">Payment ID</th>
                                                         <th id="" class="minWidth120">Payment Mode</th>
+                                                        <th id="" class="minWidth120">Cheque/ Cash No.</th>
+                                                        <th id="" class="col1 minWidth120"> Cheque/Cash Date</th>
                                                         <th id="" class="minWidth120">Type Of Payment</th>
-                                                        <th id="" class="minWidth120">Vendor</th>
+                                                        <th id="" class="minWidth120">Receiver</th>
                                                         <th id="" class="minWidth120">Currency</th>
                                                         <th id="" class="minWidth120">Amount</th>
                                                         
@@ -110,14 +123,23 @@
                                                         <td colspan="14">{{dataMessage}}</td>
                                                     </tr>
                                                     <tr *ngFor="let element of allPayments">
+                                                      <td>
+                                                        {{element.txnDate|date:'YYYY-MM-dd'}}
+                                                    </td>
+                                                    <td>
+                                                      {{element.paymentNo}}
+                                                  </td>
+                                                  <td>
+                                                    {{element.payMode | titlecase}}
+                                                </td>
+                                                <td>
+                                                  {{element.payModeNo}}
+                                                </td>
                                                         <td>
-                                                            {{element.payModeDate|date:'MMM dd'}}
+                                                            {{element.payModeDate|date:'YYYY-MM-dd'}}
                                                         </td>
                                                         <td>
-                                                            {{element.payMode}}
-                                                        </td>
-                                                        <td>
-                                                            {{element.type}}
+                                                            {{element.type | titlecase}} <span *ngIf="element.advType">: {{element.advType | titlecase}}</span>
                                                         </td>
                                                         <td>
                                                             {{element.paymentTo}} : {{element.entityName | titlecase}}
@@ -255,7 +277,11 @@
                       <tr bgcolor="#f3f3f3">
                         <td width="8%"
                           style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Date</p>
+                          <p style="font-weight:600;">Trans. Date</p>
+                        </td>
+                        <td width="8%"
+                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                          <p style="font-weight:600;">Payment#</p>
                         </td>
                         <td width="8%"
                           style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
@@ -263,11 +289,19 @@
                         </td>
                         <td width="8%"
                           style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                          <p style="font-weight:600;">Cheq/ Cash#</p>
+                        </td>
+                        <td width="8%"
+                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                          <p style="font-weight:600;">Cheq/ Cash Date</p>
+                        </td>
+                        <td width="8%"
+                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
                           <p style="font-weight:600;">Type Of Payment</p>
                         </td>
                         <td width="8%"
                           style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Vendor</p>
+                          <p style="font-weight:600;">Receiver</p>
                         </td>
                         <td width="6%"
                           style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
@@ -284,16 +318,26 @@
                       <tr *ngFor="let element of allExportData">
                         <td height="25"
                           style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;"> {{element.payModeDate|date:'MMM dd'}}</p>
+                          <p style="margin-top:0px; margin-bottom:0px;"> {{element.txnDate|date:'YYYY-MM-dd'}}</p>
                         </td>
                         <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{element.payMode}}</p>
+                          <p style="margin-top:0px; margin-bottom:0px;">{{element.paymentNo}}</p>
                         </td>
                         <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{ element.type }}</p>
+                          <p style="margin-top:0px; margin-bottom:0px;">{{element.payMode |titlecase}}</p>
                         </td>
                         <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{element.paymentTo}} : {{element.entityName | titlecase}}</p>
+                          <p style="margin-top:0px; margin-bottom:0px;">{{element.payModeNo}}</p>
+                        </td>
+                        <td height="25"
+                          style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
+                          <p style="margin-top:0px; margin-bottom:0px;"> {{element.payModeDate|date:'YYYY-MM-dd'}}</p>
+                        </td>
+                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
+                          <p style="margin-top:0px; margin-bottom:0px;">{{ element.type | titlecase }}<span *ngIf="element.advType">: {{element.advType | titlecase}}</span></p>
+                        </td>
+                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
+                          <p style="margin-top:0px; margin-bottom:0px;">{{element.paymentTo |titlecase}} : {{element.entityName | titlecase}}</p>
                         </td>
                         <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                           <p style="margin-top:0px; margin-bottom:0px;">{{element.currency}}</p>
