@@ -222,17 +222,18 @@ export class UsersListComponent implements OnInit {
     }
   }
 
-  deleteUser(contactID, firstName: string, lastName: string) {
+   async deleteUser(contactID) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService
-        .deleteData(`contacts/delete/user/${contactID}/${firstName}/${lastName}}`)
-        .subscribe((result: any) => {
-          this.toastr.success('User deleted successfully');
-          this.users = [];
+      await this.apiService
+        .deleteData(`contacts/delete/user/${contactID}`)
+        .subscribe(async (result: any) => {
           this.userDraw = 0;
+          this.lastEvaluatedKey = '';
           this.dataMessage = Constants.FETCHING_DATA;
+          this.users = [];
           this.lastItemSK = '';
-          this.initDataTable();
+          this.fetchUsers();
+          this.toastr.success('User deleted successfully');
         });
     }
   }
