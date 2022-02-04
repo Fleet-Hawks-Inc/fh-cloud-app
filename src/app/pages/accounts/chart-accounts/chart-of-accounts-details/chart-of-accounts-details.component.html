@@ -10,28 +10,57 @@
                   <i class="fas fa-calendar-alt"></i>
                 </span>
               </span>
-              <input [(ngModel)]="filter.startDate" name="startDate" type="text" placeholder="yyyy/mm/dd"
-                (click)="startDate.toggle()" ngbDatepicker #startDate="ngbDatepicker" class="form-control"
-                autocomplete="off" />
-              <span class="input-group-text border-left-0 border-right-0 rounded-0">
+              <input
+                [(ngModel)]="filter.startDate"
+                name="startDate"
+                type="text"
+                placeholder="yyyy/mm/dd"
+                (click)="startDate.toggle()"
+                ngbDatepicker
+                #startDate="ngbDatepicker"
+                class="form-control"
+                autocomplete="off"
+              />
+              <span
+                class="input-group-text border-left-0 border-right-0 rounded-0"
+              >
                 to
               </span>
-              <input [(ngModel)]="filter.endDate" name="endDate" type="text" placeholder="yyyy/mm/dd"
-                (click)="endDate.toggle()" ngbDatepicker #endDate="ngbDatepicker" class="form-control"
-                autocomplete="off" />
+              <input
+                [(ngModel)]="filter.endDate"
+                name="endDate"
+                type="text"
+                placeholder="yyyy/mm/dd"
+                (click)="endDate.toggle()"
+                ngbDatepicker
+                #endDate="ngbDatepicker"
+                class="form-control"
+                autocomplete="off"
+              />
             </div>
           </div>
           <div class="col-md-2 col-lg-2">
-            <button type="button" class="btn btn-sm btn-success" (click)="searchFilter()">
+            <button
+              type="button"
+              class="btn btn-sm btn-success"
+              (click)="searchFilter()"
+            >
               Search
             </button>
-            <button type="button" class="btn btn-sm btn-success ml-2" (click)="resetFilter()">
+            <button
+              type="button"
+              class="btn btn-sm btn-success ml-2"
+              (click)="resetFilter()"
+            >
               Reset
             </button>
           </div>
           <div class="col-md-7 col-lg-7 text-right pr-1">
-            <a routerLink="/accounts/chart-accounts/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i>
-              Chart Of Accounts</a>
+            <a
+              routerLink="/accounts/chart-accounts/list"
+              class="btn btn-default btn-sm"
+              ><i class="fas fa-list"></i> Chart Of Accounts</a
+            >
           </div>
         </div>
       </header>
@@ -39,28 +68,34 @@
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark">
+            <div class="text-dark">
               <div class="form-group row">
                 <div class="col-lg-12">
                   <div class="row">
                     <div class="col">
-                      <div class="text-center p-4 cmaindiv detailbox">
+                      <div class="text-center p-4 bg-white detailbox">
                         <i class="fas fa-file-invoice-dollar text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark">
-                          <span *ngIf="
+                          <span
+                            *ngIf="
                               account.first === 'ei' || account.first === 'cpp'
-                            ">{{ account.first | uppercase }}</span>
-                          <span *ngIf="
+                            "
+                            >{{ account.first | uppercase }}</span
+                          >
+                          <span
+                            *ngIf="
                               account.first !== 'ei' && account.first !== 'cpp'
-                            ">{{ account.first | titlecase }}</span>
+                            "
+                            >{{ account.first | titlecase }}</span
+                          >
                           {{ account.last | titlecase }}
                         </p>
                         <p class="mb-0">Account Name</p>
                       </div>
                     </div>
                     <div class="col">
-                      <div class="text-center p-4 cmaindiv detailbox">
+                      <div class="text-center p-4 bg-white detailbox">
                         <i class="far fa-calendar-check text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark">
@@ -70,37 +105,48 @@
                       </div>
                     </div>
                     <div class="col">
-                      <div class="text-center p-4 cmaindiv detailbox">
+                      <div class="text-center p-4 bg-white detailbox">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark">
-                          <span *ngIf="account.actType === 'H'">Group Heading - H</span>
-                          <span *ngIf="account.actType === 'A'">Subgroup Account - A</span>
-                          <span *ngIf="account.actType === 'S'">Subgroup Total - S</span>
-                          <span *ngIf="account.actType === 'G'">Group Account - G</span>
-                          <span *ngIf="account.actType === 'T'">Group Total - T</span>
+                          <span *ngIf="account.actType === 'H'"
+                            >Group Heading - H</span
+                          >
+                          <span *ngIf="account.actType === 'A'"
+                            >Subgroup Account - A</span
+                          >
+                          <span *ngIf="account.actType === 'S'"
+                            >Subgroup Total - S</span
+                          >
+                          <span *ngIf="account.actType === 'G'"
+                            >Group Account - G</span
+                          >
+                          <span *ngIf="account.actType === 'T'"
+                            >Group Total - T</span
+                          >
                         </p>
                         <p class="mb-0">Account Type</p>
                       </div>
                     </div>
                     <div class="col">
-                      <div class="text-center p-4 cmaindiv detailbox">
+                      <div class="text-center p-4 bg-white detailbox">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br />
-                        <p class="mb-0 text-5 font-weight-bold text-dark text-capitalize">
+                        <p
+                          class="mb-0 text-5 font-weight-bold text-dark text-capitalize"
+                        >
                           <span *ngIf="account.isFeatEnabled">
-                            {{ account.className}}
+                            {{ account.className }}
                           </span>
                           <span *ngIf="!account.isFeatEnabled">
                             {{ accountsClassObjects[account.actClassID] }}
                           </span>
-                          
                         </p>
                         <p class="mb-0">Account Class</p>
                       </div>
                     </div>
                     <div class="col">
-                      <div class="text-center p-4 cmaindiv detailbox">
+                      <div class="text-center p-4 bg-white detailbox">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark">
@@ -120,11 +166,14 @@
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
               <div class="form-group row">
-                <div class="col-lg-12" *ngIf="
+                <div
+                  class="col-lg-12"
+                  *ngIf="
                     account.actDesc !== '' &&
                     account.actDesc !== null &&
                     account.actDesc !== undefined
-                  ">
+                  "
+                >
                   <table>
                     <tbody>
                       <tr>
@@ -136,24 +185,54 @@
                 </div>
                 <div class="col-lg-12">
                   <!-- Nav tabs -->
-                  <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                  <ul
+                    class="nav nav-tabs top-tabs"
+                    id="top-tabs"
+                    role="tablist"
+                  >
                     <li class="nav-item">
-                      <a class="nav-link" [ngClass]="{'active': currTab === 'CAD'}" id="CAD-tab" (click)="changeTab('CAD')">CAD Transactions</a>
+                      <a
+                        class="nav-link"
+                        [ngClass]="{ active: currTab === 'CAD' }"
+                        id="CAD-tab"
+                        (click)="changeTab('CAD')"
+                        >CAD Transactions</a
+                      >
                       <!-- <a class="nav-link active" id="CAD-tab" data-toggle="tab" href="#CAD" type="button" role="tab"
                         aria-controls="CAD" aria-selected="true">CAD Transactions</a> -->
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" [ngClass]="{'active': currTab === 'USD'}" id="USD-tab"(click)="changeTab('USD')">USD Transactions</a>
+                      <a
+                        class="nav-link"
+                        [ngClass]="{ active: currTab === 'USD' }"
+                        id="USD-tab"
+                        (click)="changeTab('USD')"
+                        >USD Transactions</a
+                      >
                       <!-- <a class="nav-link" id="USD-tab" data-toggle="tab" href="#USD" type="button" role="tab"
                         aria-controls="USD" aria-selected="false">USD Transactions</a> -->
                     </li>
                   </ul>
                   <!-- Tab panes -->
                   <div class="tab-content">
-                    <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                      [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
-                      <div class="tab-pane" [ngClass]="{'show active': currTab === 'CAD'}" id="CAD" role="tabpanel" aria-labelledby="CAD-tab" *ngIf="currTab === 'CAD'">
-                        <table class="table table-bordered table-hover table-responsive-lg table-striped simple-table">
+                    <div
+                      infiniteScroll
+                      [infiniteScrollDistance]="1"
+                      [infiniteScrollUpDistance]="1"
+                      [infiniteScrollThrottle]="5"
+                      (scrolled)="onScroll()"
+                    >
+                      <div
+                        class="tab-pane"
+                        [ngClass]="{ 'show active': currTab === 'CAD' }"
+                        id="CAD"
+                        role="tabpanel"
+                        aria-labelledby="CAD-tab"
+                        *ngIf="currTab === 'CAD'"
+                      >
+                        <table
+                          class="table table-bordered table-hover table-responsive-lg table-striped simple-table"
+                        >
                           <thead>
                             <tr class="">
                               <th class="text-2">Trx #</th>
@@ -168,50 +247,74 @@
                           </thead>
                           <tbody>
                             <tr>
-                              <td colspan="5" class="text-right font-weight-bold">
+                              <td
+                                colspan="5"
+                                class="text-right font-weight-bold"
+                              >
                                 Opening Balance
                               </td>
                               <td>
-                                <span *ngIf="account.opnBalTypeCAD === 'debit'">{{
-                                  account.opnBalCAD | number: "1.2-2"
-                                  }}&nbsp; CAD</span>
+                                <span *ngIf="account.opnBalTypeCAD === 'debit'"
+                                  >{{
+                                    account.opnBalCAD | number: "1.2-2"
+                                  }}&nbsp; CAD</span
+                                >
                               </td>
                               <td>
-                                <span *ngIf="account.opnBalTypeCAD === 'credit'">{{
-                                  account.opnBalCAD | number: "1.2-2"
-                                  }}&nbsp; CAD</span>
+                                <span *ngIf="account.opnBalTypeCAD === 'credit'"
+                                  >{{
+                                    account.opnBalCAD | number: "1.2-2"
+                                  }}&nbsp; CAD</span
+                                >
                               </td>
                               <td></td>
                             </tr>
                             <!-- old logs -->
                             <ng-container *ngIf="!account.isFeatEnabled">
-                              <tr *ngFor="let trx of transactionLogCAD; let i = index">
+                              <tr
+                                *ngFor="
+                                  let trx of transactionLogCAD;
+                                  let i = index
+                                "
+                              >
                                 <td>{{ i + 1 }}</td>
                                 <td>{{ trx.txnDate | date: "yyyy/MM/dd" }}</td>
                                 <td>
-                                  <span *ngIf="
-                                      trx.name !== undefined || trx.name !== null
-                                    ">{{ merged[trx.name] | titlecase }}</span>
+                                  <span
+                                    *ngIf="
+                                      trx.name !== undefined ||
+                                      trx.name !== null
+                                    "
+                                    >{{ merged[trx.name] | titlecase }}</span
+                                  >
 
-                                  <span *ngIf="
-                                      trx.name === undefined || trx.name === null
-                                    ">-</span>
+                                  <span
+                                    *ngIf="
+                                      trx.name === undefined ||
+                                      trx.name === null
+                                    "
+                                    >-</span
+                                  >
                                 </td>
                                 <td>{{ trx.type | titlecase }}</td>
                                 <td>{{ trx.desc | titlecase }}</td>
                                 <td>
-                                  <span *ngIf="trx.trxType === 'debit'">{{ trx.amount | number: "1.2-2" }}&nbsp;
-                                    {{ trx.currency }}</span>
+                                  <span *ngIf="trx.trxType === 'debit'"
+                                    >{{ trx.amount | number: "1.2-2" }}&nbsp;
+                                    {{ trx.currency }}</span
+                                  >
                                 </td>
                                 <td>
-                                  <span *ngIf="trx.trxType === 'credit'">{{ trx.amount | number: "1.2-2" }}&nbsp;
-                                    {{ trx.currency }}</span>
+                                  <span *ngIf="trx.trxType === 'credit'"
+                                    >{{ trx.amount | number: "1.2-2" }}&nbsp;
+                                    {{ trx.currency }}</span
+                                  >
                                 </td>
                                 <td>
                                   {{
-                                  trx.trxRunTotal
-                                  | absoluteValue
-                                  | number: "1.2-2"
+                                    trx.trxRunTotal
+                                      | absoluteValue
+                                      | number: "1.2-2"
                                   }}&nbsp; <span>{{ trx.runTotalType }}</span>
                                 </td>
                               </tr>
@@ -224,75 +327,115 @@
                                   {{ dataMsgCad }}
                                 </td>
                               </tr>
-                              <tr *ngFor="let trx of transactionLogCAD; let i = index">
+                              <tr
+                                *ngFor="
+                                  let trx of transactionLogCAD;
+                                  let i = index
+                                "
+                              >
                                 <td>{{ i + 1 }}</td>
-                                <td>{{ trx.trxCreated | date: "yyyy/MM/dd" }}</td>
+                                <td>
+                                  {{ trx.trxCreated | date: "yyyy/MM/dd" }}
+                                </td>
                                 <td class="text-capitalize">
-                                  {{ trx.uName ? trx.uName : '-' }}
+                                  {{ trx.uName ? trx.uName : "-" }}
                                 </td>
                                 <td>{{ trx.entityType | titlecase }}</td>
                                 <td>{{ trx.desc | titlecase }}</td>
                                 <td>
-                                  <span *ngIf="trx.trxType === 'debit'">{{ trx.amount | number: "1.2-2" }}&nbsp;
-                                    {{ trx.currency }}</span>
+                                  <span *ngIf="trx.trxType === 'debit'"
+                                    >{{ trx.amount | number: "1.2-2" }}&nbsp;
+                                    {{ trx.currency }}</span
+                                  >
                                 </td>
                                 <td>
-                                  <span *ngIf="trx.trxType === 'credit'">{{ trx.amount | number: "1.2-2" }}&nbsp;
-                                    {{ trx.currency }}</span>
+                                  <span *ngIf="trx.trxType === 'credit'"
+                                    >{{ trx.amount | number: "1.2-2" }}&nbsp;
+                                    {{ trx.currency }}</span
+                                  >
                                 </td>
                                 <td>
                                   {{
-                                  trx.trxRunTotal
-                                  | absoluteValue
-                                  | number: "1.2-2"
-                                  }}&nbsp; <span>{{ trx.runTotalType }} {{ trx.trxType === 'debit' ? 'Dr' : 'Cr' }} </span>
+                                    trx.trxRunTotal
+                                      | absoluteValue
+                                      | number: "1.2-2"
+                                  }}&nbsp;
+                                  <span
+                                    >{{ trx.runTotalType }}
+                                    {{ trx.trxType === "debit" ? "Dr" : "Cr" }}
+                                  </span>
                                 </td>
                               </tr>
                             </ng-container>
                             <tr>
-                              <td colspan="7" class="text-right font-weight-bold">
+                              <td
+                                colspan="7"
+                                class="text-right font-weight-bold"
+                              >
                                 Closing Balance
                               </td>
                               <!-- <td></td> -->
                               <td>
                                 {{
-                                account.closingAmtCAD
-                                | absoluteValue
-                                | number: "1.2-2"
+                                  account.closingAmtCAD
+                                    | absoluteValue
+                                    | number: "1.2-2"
                                 }}&nbsp;CAD
 
                                 <span *ngIf="account.isFeatEnabled">
-                                  {{ account.closingAmtCAD > 0 ? 'Dr' : 'Cr'}}
+                                  {{ account.closingAmtCAD > 0 ? "Dr" : "Cr" }}
                                 </span>
-                                
                               </td>
                               <!-- <td></td> -->
                             </tr>
                             <tr>
-                              <td colspan="7" class="text-right font-weight-bold">
+                              <td
+                                colspan="7"
+                                class="text-right font-weight-bold"
+                              >
                                 Period Variance
                               </td>
                               <!-- <td></td> -->
                               <td>
                                 {{
-                                periodVarianceCAD
-                                | absoluteValue
-                                | number: "1.2-2"
+                                  periodVarianceCAD
+                                    | absoluteValue
+                                    | number: "1.2-2"
                                 }}&nbsp;CAD
                               </td>
                               <!-- <td></td> -->
                             </tr>
                           </tbody>
                         </table>
-                        <div class="col-lg-12 mt-3 text-center" *ngIf="lastKey !=='end' && transactionLogCAD.length > 0 && currTab === 'CAD'">
-                            <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
-                              <i class="fa fa-spinner fa-spin" *ngIf="isLoad"></i> 
-                              {{isLoadText}}
-                            </button>
+                        <div
+                          class="col-lg-12 mt-3 text-center"
+                          *ngIf="
+                            lastKey !== 'end' &&
+                            transactionLogCAD.length > 0 &&
+                            currTab === 'CAD'
+                          "
+                        >
+                          <button
+                            type="button"
+                            class="btn btn-success btn-sm text-light"
+                            (click)="onScroll()"
+                          >
+                            <i class="fa fa-spinner fa-spin" *ngIf="isLoad"></i>
+                            {{ isLoadText }}
+                          </button>
                         </div>
                       </div>
-                      <div class="tab-pane" [ngClass]="{'show active': currTab === 'USD'}" id="USD" role="tabpanel" aria-labelledby="USD-tab" *ngIf="currTab === 'USD'">
-                        <table class="table table-bordered table-hover table-responsive-lg table-striped simple-table">
+                      <div
+                        class="tab-pane"
+                        [ngClass]="{ 'show active': currTab === 'USD' }"
+                        id="USD"
+                        role="tabpanel"
+                        aria-labelledby="USD-tab"
+                        *ngIf="currTab === 'USD'"
+                      >
+                        <table
+                          class="table table-bordered table-hover table-responsive-lg table-striped simple-table"
+                        >
                           <thead>
                             <tr class="">
                               <th class="text-2">Trx #</th>
@@ -307,52 +450,73 @@
                           </thead>
                           <tbody>
                             <tr>
-                              <td colspan="5" class="text-right font-weight-bold">
+                              <td
+                                colspan="5"
+                                class="text-right font-weight-bold"
+                              >
                                 Opening Balance
                               </td>
                               <td>
-                                <span *ngIf="account.opnBalTypeUSD === 'debit'">{{
-                                  account.opnBalUSD | number: "1.2-2"
-                                  }}&nbsp; USD</span>
+                                <span *ngIf="account.opnBalTypeUSD === 'debit'"
+                                  >{{
+                                    account.opnBalUSD | number: "1.2-2"
+                                  }}&nbsp; USD</span
+                                >
                               </td>
                               <td>
-                                <span *ngIf="account.opnBalTypeUSD === 'credit'">{{
-                                  account.opnBalUSD | number: "1.2-2"
-                                  }}&nbsp; USD</span>
+                                <span *ngIf="account.opnBalTypeUSD === 'credit'"
+                                  >{{
+                                    account.opnBalUSD | number: "1.2-2"
+                                  }}&nbsp; USD</span
+                                >
                               </td>
                               <td></td>
                             </tr>
                             <ng-container *ngIf="!account.isFeatEnabled">
-                              <tr *ngFor="
+                              <tr
+                                *ngFor="
                                   let trx of transactionLogUSD;
                                   let i = index
-                                ">
+                                "
+                              >
                                 <td>{{ i + 1 }}</td>
                                 <td>{{ trx.txnDate | date: "yyyy/MM/dd" }}</td>
                                 <td>
-                                  <span *ngIf="
-                                      trx.name !== undefined || trx.name !== null
-                                    ">{{ merged[trx.name] | titlecase }}</span>
+                                  <span
+                                    *ngIf="
+                                      trx.name !== undefined ||
+                                      trx.name !== null
+                                    "
+                                    >{{ merged[trx.name] | titlecase }}</span
+                                  >
 
-                                  <span *ngIf="
-                                      trx.name === undefined || trx.name === null
-                                    ">-</span>
+                                  <span
+                                    *ngIf="
+                                      trx.name === undefined ||
+                                      trx.name === null
+                                    "
+                                    >-</span
+                                  >
                                 </td>
                                 <td>{{ trx.type | titlecase }}</td>
                                 <td>{{ trx.desc | titlecase }}</td>
                                 <td>
-                                  <span *ngIf="trx.trxType === 'debit'">{{ trx.amount | number: "1.2-2" }}&nbsp;
-                                    {{ trx.currency }}</span>
+                                  <span *ngIf="trx.trxType === 'debit'"
+                                    >{{ trx.amount | number: "1.2-2" }}&nbsp;
+                                    {{ trx.currency }}</span
+                                  >
                                 </td>
                                 <td>
-                                  <span *ngIf="trx.trxType === 'credit'">{{ trx.amount | number: "1.2-2" }}&nbsp;
-                                    {{ trx.currency }}</span>
+                                  <span *ngIf="trx.trxType === 'credit'"
+                                    >{{ trx.amount | number: "1.2-2" }}&nbsp;
+                                    {{ trx.currency }}</span
+                                  >
                                 </td>
                                 <td>
                                   {{
-                                  trx.trxRunTotal
-                                  | absoluteValue
-                                  | number: "1.2-2"
+                                    trx.trxRunTotal
+                                      | absoluteValue
+                                      | number: "1.2-2"
                                   }}&nbsp; <span>{{ trx.runTotalType }}</span>
                                 </td>
                               </tr>
@@ -363,71 +527,103 @@
                                   {{ dataMsgUsd }}
                                 </td>
                               </tr>
-                              <tr *ngFor="let trx of transactionLogUSD; let i = index">
+                              <tr
+                                *ngFor="
+                                  let trx of transactionLogUSD;
+                                  let i = index
+                                "
+                              >
                                 <td>{{ i + 1 }}</td>
-                                <td>{{ trx.trxCreated | date: "yyyy/MM/dd" }}</td>
+                                <td>
+                                  {{ trx.trxCreated | date: "yyyy/MM/dd" }}
+                                </td>
                                 <td class="text-capitalize">
-                                  {{ trx.uName ? trx.uName : '-' }}
+                                  {{ trx.uName ? trx.uName : "-" }}
                                 </td>
                                 <td>{{ trx.entityType | titlecase }}</td>
                                 <td>{{ trx.desc | titlecase }}</td>
                                 <td>
-                                  <span *ngIf="trx.trxType === 'debit'">{{ trx.amount | number: "1.2-2" }}&nbsp;
-                                    {{ trx.currency }}</span>
+                                  <span *ngIf="trx.trxType === 'debit'"
+                                    >{{ trx.amount | number: "1.2-2" }}&nbsp;
+                                    {{ trx.currency }}</span
+                                  >
                                 </td>
                                 <td>
-                                  <span *ngIf="trx.trxType === 'credit'">{{ trx.amount | number: "1.2-2" }}&nbsp;
-                                    {{ trx.currency }}</span>
+                                  <span *ngIf="trx.trxType === 'credit'"
+                                    >{{ trx.amount | number: "1.2-2" }}&nbsp;
+                                    {{ trx.currency }}</span
+                                  >
                                 </td>
                                 <td>
                                   {{
-                                  trx.trxRunTotal
-                                  | absoluteValue
-                                  | number: "1.2-2"
-                                  }}&nbsp; <span>{{ trx.runTotalType }} {{ trx.trxType === 'debit' ? 'Dr' : 'Cr' }} </span>
+                                    trx.trxRunTotal
+                                      | absoluteValue
+                                      | number: "1.2-2"
+                                  }}&nbsp;
+                                  <span
+                                    >{{ trx.runTotalType }}
+                                    {{ trx.trxType === "debit" ? "Dr" : "Cr" }}
+                                  </span>
                                 </td>
                               </tr>
                             </ng-container>
                             <tr>
-                              <td colspan="7" class="text-right font-weight-bold">
+                              <td
+                                colspan="7"
+                                class="text-right font-weight-bold"
+                              >
                                 Closing Balance
                               </td>
                               <!-- <td></td> -->
                               <td>
                                 {{
-                                account.closingAmtUSD
-                                | absoluteValue
-                                | number: "1.2-2"
+                                  account.closingAmtUSD
+                                    | absoluteValue
+                                    | number: "1.2-2"
                                 }}&nbsp;USD
 
                                 <span *ngIf="account.isFeatEnabled">
-                                  {{ account.closingAmtUSD > 0 ? 'Dr' : 'Cr'}}
+                                  {{ account.closingAmtUSD > 0 ? "Dr" : "Cr" }}
                                 </span>
                               </td>
                               <!-- <td></td> -->
                             </tr>
                             <tr>
-                              <td colspan="7" class="text-right font-weight-bold">
+                              <td
+                                colspan="7"
+                                class="text-right font-weight-bold"
+                              >
                                 Period Variance
                               </td>
                               <!-- <td></td> -->
                               <td>
                                 {{
-                                periodVarianceUSD
-                                | absoluteValue
-                                | number: "1.2-2"
+                                  periodVarianceUSD
+                                    | absoluteValue
+                                    | number: "1.2-2"
                                 }}&nbsp;USD
                               </td>
                               <!-- <td></td> -->
                             </tr>
                           </tbody>
                         </table>
-                        <div class="col-lg-12 mt-3 text-center" *ngIf="lastKeyUsd !=='end' && transactionLogUSD.length > 0 && currTab === 'USD'">
-                          <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
-                            <i class="fa fa-spinner fa-spin" *ngIf="isLoad"></i> 
-                            {{isLoadText}}
+                        <div
+                          class="col-lg-12 mt-3 text-center"
+                          *ngIf="
+                            lastKeyUsd !== 'end' &&
+                            transactionLogUSD.length > 0 &&
+                            currTab === 'USD'
+                          "
+                        >
+                          <button
+                            type="button"
+                            class="btn btn-success btn-sm text-light"
+                            (click)="onScroll()"
+                          >
+                            <i class="fa fa-spinner fa-spin" *ngIf="isLoad"></i>
+                            {{ isLoadText }}
                           </button>
-                      </div>
+                        </div>
                       </div>
                     </div>
                   </div>
