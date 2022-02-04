@@ -371,6 +371,9 @@ export class OrderDetailComponent implements OnInit {
           this.hideEdit = true;
           this.isGenerate = false;
         }
+        if (result.orderStatus === 'delivered' || result.recall) {
+          this.hideEdit = false;
+        }
         this.orderStatus = result.orderStatus;
         this.cusAddressID = result.cusAddressID;
         this.customerAddress = result.customerAddress;
@@ -513,7 +516,9 @@ export class OrderDetailComponent implements OnInit {
             }
           });
         }
-
+        if (result.customerEmail && result.customerEmail != '') {
+          this.emailData.emails.push({ label: result.customerEmail });
+        }
         //this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
       },
 
@@ -563,7 +568,11 @@ export class OrderDetailComponent implements OnInit {
       this.toastr.success("Email send successfully!");
       this.isEmail = false;
       this.userEmails = [];
-      this.emailData.emails = [];
+      if (this.emailData.emails.length > 0) {
+        this.emailData.emails = [];
+        this.emailData.emails.push({ label: this.customerEmail });
+      }
+
       this.subject = `Invoice: ${this.orderMode} - ${this.orderNumber}`;
     } else {
       this.isEmail = false;
@@ -589,6 +598,8 @@ export class OrderDetailComponent implements OnInit {
       this.isEmail = false;
       return;
     }
+    console.log('this.emailData', this.emailData)
+
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.emailData.emails.forEach((elem) => {
