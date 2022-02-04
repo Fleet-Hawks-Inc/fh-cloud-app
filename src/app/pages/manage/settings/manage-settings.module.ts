@@ -56,7 +56,7 @@ const routes: Routes = [
     SafetySettingComponent,
     CustomerSettingComponent,
     AssetsOverviewComponent,
-    ImportAssetsComponent],
+    ImportAssetsComponent,],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
