@@ -5,22 +5,13 @@
         <div class="row" style="padding-top: 10px">
           <div class="col-md-2 col-lg-2 pr-0">
             <div class="input-group input-group-md mb-3">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Search by account name"
-                [(ngModel)]="filter.actName"
-                name="actName"
-              />
+              <input type="text" class="form-control" placeholder="Search by account name" [(ngModel)]="filter.actName"
+                name="actName" />
             </div>
           </div>
           <div class="col-lg-2 col-md-2 pr-0">
-            <ng-select
-              class="form-control pull-left form-control-sm mb-0"
-              placeholder="Search by account type"
-              [(ngModel)]="filter.actType"
-              name="actType"
-            >
+            <ng-select class="form-control pull-left form-control-sm mb-0" placeholder="Search by account type"
+              [(ngModel)]="filter.actType" name="actType">
               <ng-option value="H">Group Heading - H</ng-option>
               <ng-option value="A">Subgroup Account - A</ng-option>
               <ng-option value="S">Subgroup Total - S</ng-option>
@@ -30,50 +21,31 @@
           </div>
           <div class="col-lg-3 col-md-3 pr-1">
             <div class="input-daterange input-group">
-                <span class="input-group-prepend">
-                    <span class="input-group-text">
-                        <i class="fas fa-calendar-alt"></i>
-                    </span>
+              <span class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fas fa-calendar-alt"></i>
                 </span>
+              </span>
 
-                <input [(ngModel)]="filter.startDate"
-                    name="fromDate" type="text"
-                    placeholder="yyyy/mm/dd"
-                    (click)="from.toggle()" ngbDatepicker
-                    #from="ngbDatepicker"
-                    class="form-control" autocomplete="off"
-                    [minDate]="dateMinLimit"
-                    [maxDate]="futureDatesLimit">
-                <span class="input-group-text border-left-0
+              <input [(ngModel)]="filter.startDate" name="fromDate" type="text" placeholder="yyyy/mm/dd"
+                (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off"
+                [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+              <span class="input-group-text border-left-0
                     border-right-0 rounded-0">
-                    to
-                </span>
-                <input [(ngModel)]="filter.endDate"
-                    name="toDate" type="text"
-                    placeholder="yyyy/mm/dd"
-                    (click)="to.toggle()" ngbDatepicker
-                    #to="ngbDatepicker"
-                    class="form-control" autocomplete="off"
-                    [minDate]="dateMinLimit"
-                    [maxDate]="futureDatesLimit">
+                to
+              </span>
+              <input [(ngModel)]="filter.endDate" name="toDate" type="text" placeholder="yyyy/mm/dd"
+                (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off"
+                [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
 
             </div>
-        </div>
+          </div>
           <div class="col-md-2 col-lg-2">
-            <button
-              type="button"
-              class="btn btn-sm btn-success"
-              [disabled]="disableSearch"
-              (click)="searchAccounts()"
-            >
+            <button type="button" class="btn btn-sm btn-success" [disabled]="disableSearch" (click)="searchAccounts()">
               Search
             </button>
-            <button
-              type="button"
-              class="btn btn-sm btn-success ml-3"
-              [disabled]="disableSearch"
-              (click)="resetFilter()"
-            >
+            <button type="button" class="btn btn-sm btn-success ml-3" [disabled]="disableSearch"
+              (click)="resetFilter()">
               Reset
             </button>
           </div>
@@ -84,23 +56,16 @@
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
-            <div
-              infiniteScroll
-              [infiniteScrollDistance]="1"
-              [infiniteScrollUpDistance]="1"
-              [infiniteScrollThrottle]="5"
-              (scrolled)="onScroll()"
-            >
+            <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1" [infiniteScrollThrottle]="5"
+              (scrolled)="onScroll()">
               <div class="bg-white p-3 text-dark">
                 <div class="form-group row">
                   <div class="col-lg-12">
-                    <table
-                      class="
+                    <table class="
                         table table-bordered table-hover table-striped
                         mb-0
                         simple-table
-                      "
-                    >
+                      ">
                       <thead>
                         <tr class="">
                           <th class="text-2">Account Name</th>
@@ -121,105 +86,72 @@
                           <td colspan="12">{{ dataMessage }}</td>
                         </tr>
                         <tr *ngFor="let ac of accounts">
-                          <td
-                            class="cursorpoint"
-                            routerLink="/accounts/reports/general-ledger/detail/{{
+                          <td class="cursorpoint" routerLink="/accounts/reports/general-ledger/detail/{{
                               ac.actID
-                            }}"
-                          >
-                            <span
-                              *ngIf="ac.first === 'cpp' || ac.first === 'ei'"
-                              >{{ ac.first | uppercase }}</span
-                            >
-                            <span
-                              *ngIf="ac.first !== 'cpp' && ac.first !== 'ei'"
-                              >{{ ac.first | titlecase }}</span
-                            >&nbsp;{{ ac.last | titlecase }}
+                            }}">
+                            <span *ngIf="ac.first === 'cpp' || ac.first === 'ei'">{{ ac.first | uppercase }}</span>
+                            <span *ngIf="ac.first !== 'cpp' && ac.first !== 'ei'">{{ ac.first | titlecase
+                              }}</span>&nbsp;{{ ac.last | titlecase }}
                           </td>
                           <td class="cursorpoint">{{ ac.actNo }}</td>
                           <td class="cursorpoint">
-                            <span *ngIf="ac.actType === 'H'"
-                              >Group Heading - H</span
-                            >
-                            <span *ngIf="ac.actType === 'A'"
-                              >Subgroup Account - A</span
-                            >
-                            <span *ngIf="ac.actType === 'S'"
-                              >Subgroup Total - S</span
-                            >
-                            <span *ngIf="ac.actType === 'G'"
-                              >Group Account - G</span
-                            >
-                            <span *ngIf="ac.actType === 'T'"
-                              >Group Total - T</span
-                            >
+                            <span *ngIf="ac.actType === 'H'">Group Heading - H</span>
+                            <span *ngIf="ac.actType === 'A'">Subgroup Account - A</span>
+                            <span *ngIf="ac.actType === 'S'">Subgroup Total - S</span>
+                            <span *ngIf="ac.actType === 'G'">Group Account - G</span>
+                            <span *ngIf="ac.actType === 'T'">Group Total - T</span>
                           </td>
                           <td class="cursorpoint">
                             {{ ac.opnBalCAD | number: "1.2-2" }}&nbsp;
-                            <span *ngIf="ac.opnBalTypeCAD === 'credit'"
-                              >Cr</span
-                            >
+                            <span *ngIf="ac.opnBalTypeCAD === 'credit'">Cr</span>
                             <span *ngIf="ac.opnBalTypeCAD === 'debit'">Dr</span>
                           </td>
                           <td class="cursorpoint">
                             {{ ac.opnBalUSD | number: "1.2-2" }}&nbsp;
-                            <span *ngIf="ac.opnBalTypeUSD === 'credit'"
-                              >Cr</span
-                            >
+                            <span *ngIf="ac.opnBalTypeUSD === 'credit'">Cr</span>
                             <span *ngIf="ac.opnBalTypeUSD === 'debit'">Dr</span>
                           </td>
                           <td class="cursorpoint">
                             <span *ngIf="ac.totalDebitCAD">{{
                               ac.totalDebitCAD | number: "1.2-2"
-                            }}</span>
+                              }}</span>
                           </td>
                           <td class="cursorpoint">
                             <span *ngIf="ac.totalCreditCAD">{{
                               ac.totalCreditCAD | number: "1.2-2"
-                            }}</span>
+                              }}</span>
                           </td>
                           <td class="cursorpoint">
                             <span *ngIf="ac.totalDebitUSD">{{
                               ac.totalDebitUSD | number: "1.2-2"
-                            }}</span>
+                              }}</span>
                           </td>
                           <td class="cursorpoint">
                             <span *ngIf="ac.totalCreditUSD">{{
                               ac.totalCreditUSD | number: "1.2-2"
-                            }}</span>
+                              }}</span>
                           </td>
                           <td>
                             <span *ngIf="ac.closingAmtCAD !== 0">
                               {{ ac.closingAmtCAD }}&nbsp;{{
-                                ac.closingAmtTypeCAD
+                              ac.closingAmtTypeCAD
                               }}
                             </span>
                           </td>
                           <td>
-                            <span *ngIf="ac.closingAmtUSD !== 0"
-                              >{{ ac.closingAmtUSD }}&nbsp;{{
-                                ac.closingAmtTypeUSD
-                              }}</span
-                            >
+                            <span *ngIf="ac.closingAmtUSD !== 0">{{ ac.closingAmtUSD }}&nbsp;{{
+                              ac.closingAmtTypeUSD
+                              }}</span>
                           </td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
-                  <div
-                    class="col-lg-12 mt-3 text-center"
-                    *ngIf="lastItemSK !== 'end' && accounts.length !== 0"
-                  >
-                    <button
-                      type="button"
-                      class="btn btn-success btn-sm text-light"
-                      (click)="onScroll()"
-                    >
-                    <i
-                        class="fa
-                        fa-spinner fa-spin"
-                        *ngIf="isLoad">
-                    </i> {{isLoadText}}
+                  <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && accounts.length !== 0">
+                    <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
+                      <i class="fa
+                        fa-spinner fa-spin" *ngIf="isLoad">
+                      </i> {{isLoadText}}
                     </button>
                   </div>
                 </div>
