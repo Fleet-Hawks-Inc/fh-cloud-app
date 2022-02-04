@@ -167,6 +167,8 @@ export class ProvinceSummaryComponent implements OnInit {
       this.exportData.forEach(element => {
         let canMiles = ''
         let canState = ''
+        let us = ''
+        let can = ''
         let stateArr = [];
         if (type === 'CAN') {
           stateArr = element.canStates;
@@ -182,7 +184,12 @@ export class ProvinceSummaryComponent implements OnInit {
 
           //   }
           // }
-
+          // for (let data of element.usProvinces) {
+          //   for (let data1 of data) {
+          //     us += `"${data1.key}: ${data1.value}\n\"`;
+          //     console.log('us--', us)
+          //   }
+          // }
           // for (let i = 0; i < element.provinceData.length; i++) {
           //   const element2 = element.provinceData[i];
           //   for (let k = 0; k < element2.canProvince.length; k++) {
