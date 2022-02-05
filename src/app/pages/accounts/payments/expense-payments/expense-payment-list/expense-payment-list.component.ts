@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService } from "src/app/services/account.service";
 import { DashboardUtilityService } from "src/app/services/dashboard-utility.service";
@@ -26,7 +27,7 @@ export class ExpensePaymentListComponent implements OnInit {
   driversObject: any = {};
   carriersObject: any = {};
   ownerOpObjects: any = {};
-  constructor(private accountService: AccountService, private dashboardUtilityService: DashboardUtilityService) { }
+  constructor(private accountService: AccountService, private toaster: ToastrService, private dashboardUtilityService: DashboardUtilityService) { }
 
   async ngOnInit() {
     this.getList();
@@ -77,10 +78,16 @@ export class ExpensePaymentListComponent implements OnInit {
 
 
   searchFilter() {
+    if (this.filter.type != null && this.filter.searchValue == null) {
+      this.toaster.error('Please type value')
+      this.disableSearch = false;
+      return;
+    }
     if (
       this.filter.startDate !== null ||
       this.filter.endDate !== null || this.filter.searchValue !== null || this.filter.type !== null
     ) {
+
       this.disableSearch = true;
       this.dataMessage = Constants.FETCHING_DATA;
       this.payments = [];
