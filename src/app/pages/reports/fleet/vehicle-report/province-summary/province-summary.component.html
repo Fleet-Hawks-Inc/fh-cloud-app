@@ -4,9 +4,6 @@
             <header class="page-header pr19 pl11">
                 <form class="form-horizontal" method="get">
                     <div class="row" style="padding-top: 10px">
-
-
-
                         <div class="col-md-3 col-lg-3 pl-0 pr-0">
                             <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
                                 <span class="input-group-prepend">
@@ -25,7 +22,6 @@
                                     autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
                             </div>
                         </div>
-
                         <div class="col-md-2 col-lg-2 pl-2">
                             <button type="button" class="btn btn-sm btn-success mr-3" (click)="searchFilter()">
                                 Search
@@ -34,7 +30,6 @@
                                 Reset
                             </button>
                         </div>
-
                         <div class="col-md-7 col-lg-7 text-right pr-1">
                             <div class="btn-group flex-wrap ml-2">
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle"
@@ -101,20 +96,23 @@
                                                 <tr *ngFor="let item of allData">
                                                     <td>{{ item.vehicle ? item.vehicle : "-" }}</td>
                                                     <td>
+                                                        <span *ngIf="item.caProvinces.length === 0">-</span>
                                                         <span *ngFor="let item2 of item.caProvinces ">
                                                             <span *ngFor="let item3 of item2 | keyvalue">
                                                                 {{item3.key}} : {{item3.value}}<br>
                                                             </span>
                                                         </span>
                                                     </td>
-                                                    <td> <span *ngFor="let item2 of item.usProvinces">
+                                                    <td>
+                                                        <span *ngIf="item.usProvinces.length === 0">-</span>
+                                                        <span *ngFor="let item2 of item.usProvinces">
                                                             <span *ngFor='let item3 of item2 | keyvalue'>
                                                                 {{item3.key}} : {{ item3.value}}<br>
                                                             </span>
-                                                        </span></td>
+                                                        </span>
+                                                    </td>
                                                     <td> <span class="badge badge-dark p-1 text-capitalize">{{
                                                             item.newStatus }}</span></td>
-
                                                 </tr>
                                             </tbody>
                                         </table>
