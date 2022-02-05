@@ -3934,15 +3934,17 @@ input:checked + .sliderbtn:before {
   background: #ffffff;
   border: solid 1px #e6e6e7;
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 12px;
+  font-weight: 700;
   display: block;
   text-decoration: none;
   text-align: center;
-  color: #333333;
+  color: #000;
 }
 .reportbox a:hover {
   background: #f6f6f6;
   display: block;
+  border: solid 1px #c7c7c7;
   text-decoration: none;
   color: #000000;
 }
