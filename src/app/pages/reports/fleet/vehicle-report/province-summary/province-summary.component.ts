@@ -57,10 +57,8 @@ export class ProvinceSummaryComponent implements OnInit {
   fetchProvinceMilesData() {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`vehicles/fetch/provinceMiles?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
-        this.allData = this.allData.concat(result.summaryResult)
-        console.log('allData-', this.allData)
+        this.allData = this.allData.concat(result.summaryResult);
         if (result.Items.length == 0) {
-          console.log('result.Items.length-', result.Items.length)
           this.dataMessage = Constants.NO_RECORDS_FOUND
         }
         if (result.LastEvaluatedKey !== undefined) {
@@ -125,25 +123,23 @@ export class ProvinceSummaryComponent implements OnInit {
       return false;
     }
   }
-  reset() {
-    if (this.vehicleIdentification !== '') {
-      this.vehicleId = '';
-      // this.suggestedVehicles = [];
-      this.vehicleIdentification = '';
-      this.lastItemSK = '';
-      this.allData = [];
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchProvinceMilesData();
-    } else {
-      return false;
-    }
-  }
+  // reset() {
+  //   if (this.vehicleIdentification !== '') {
+  //     this.vehicleId = '';
+  //     // this.suggestedVehicles = [];
+  //     this.vehicleIdentification = '';
+  //     this.lastItemSK = '';
+  //     this.allData = [];
+  //     this.dataMessage = Constants.FETCHING_DATA;
+  //     this.fetchProvinceMilesData();
+  //   } else {
+  //     return false;
+  //   }
+  // }
   fetchFullExport(type = '') {
     this.apiService.getData(`vehicles/fetch/provinceMiles/report?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.exportData = result.summaryResult;
-      console.log('  this.exportData', this.exportData)
       for (let veh of this.exportData) {
-        console.log('veh--', veh)
         veh.newStatus = veh.status;
         if (veh.stlLink === true) {
           veh.newStatus = "settled";
@@ -171,10 +167,7 @@ export class ProvinceSummaryComponent implements OnInit {
       let dataObject = []
       let csvArray = []
       this.exportData.forEach(element => {
-        let canMiles = ''
-        let canState = ''
-        let us = ''
-        let can = ''
+
         let stateArr = [];
         if (type === 'CAN') {
           stateArr = element.canStates;
