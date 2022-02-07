@@ -4,47 +4,84 @@
       <header class="page-header pr19 pl7">
         <div id="other-expense-header">
           <form class="form-horizontal" method="get">
-            <div class="row" style="padding-top:10px;">
-
+            <div class="row" style="padding-top: 10px">
               <div class="col-10">
                 <div class="row">
                   <div class="col-md-2 col-lg-2 pr-0">
-                    <ng-select name="category" (change)="changeCategory()" placeholder="Search by category"
-                      [(ngModel)]="filter.category">
+                    <ng-select
+                      name="category"
+                      (change)="changeCategory()"
+                      placeholder="Search by category"
+                      [(ngModel)]="filter.category"
+                    >
                       <ng-option value="vehicle"> Vehicle </ng-option>
                       <ng-option value="asset"> Asset </ng-option>
                       <ng-option value="tripNo"> Trip Number </ng-option>
                     </ng-select>
                   </div>
-                  <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.category === 'vehicle'">
-                    <ng-select name="vehicle" [clearable]="false" placeholder="Search by vehicle"
-                      [(ngModel)]="filter.unitNumber">
-                      <ng-option *ngFor="let vehicle of vehicles | keyvalue" value="{{ vehicle.key }}"> {{
-                        vehicle.value
-                        }}
+                  <div
+                    class="col-md-2 col-lg-2 pr-0"
+                    *ngIf="filter.category === 'vehicle'"
+                  >
+                    <ng-select
+                      name="vehicle"
+                      [clearable]="false"
+                      placeholder="Search by vehicle"
+                      [(ngModel)]="filter.unitNumber"
+                    >
+                      <ng-option
+                        *ngFor="let vehicle of vehicles | keyvalue"
+                        value="{{ vehicle.key }}"
+                      >
+                        {{ vehicle.value }}
                       </ng-option>
                     </ng-select>
                   </div>
-                  <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.category === 'tripNo'">
-                    <ng-select name="trip" [clearable]="false" placeholder="Search by trip"
-                      [(ngModel)]="filter.unitNumber">
-                      <ng-option *ngFor="let trip of trips | keyvalue" value="{{ trip.key }}"> {{ trip.value
-                        }}
+                  <div
+                    class="col-md-2 col-lg-2 pr-0"
+                    *ngIf="filter.category === 'tripNo'"
+                  >
+                    <ng-select
+                      name="trip"
+                      [clearable]="false"
+                      placeholder="Search by trip"
+                      [(ngModel)]="filter.unitNumber"
+                    >
+                      <ng-option
+                        *ngFor="let trip of trips | keyvalue"
+                        value="{{ trip.key }}"
+                      >
+                        {{ trip.value }}
                       </ng-option>
                     </ng-select>
                   </div>
-                  <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.category === 'asset'">
-                    <ng-select name="asset" [clearable]="false" placeholder="Search by asset"
-                      [(ngModel)]="filter.unitNumber">
-                      <ng-option *ngFor="let asset of assets | keyvalue" value="{{ asset.key }}"> {{ asset.value
-                        }}
+                  <div
+                    class="col-md-2 col-lg-2 pr-0"
+                    *ngIf="filter.category === 'asset'"
+                  >
+                    <ng-select
+                      name="asset"
+                      [clearable]="false"
+                      placeholder="Search by asset"
+                      [(ngModel)]="filter.unitNumber"
+                    >
+                      <ng-option
+                        *ngFor="let asset of assets | keyvalue"
+                        value="{{ asset.key }}"
+                      >
+                        {{ asset.value }}
                       </ng-option>
                     </ng-select>
                   </div>
                   <div class="col-md-2 col-lg-2 pr-0">
                     <div class="input-group input-group-md mb-3">
-                      <input type="text" class="form-control" placeholder="Search by amount" name="amount"
-                        [(ngModel)]="filter.amount">
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Search by amount"
+                        name="amount"
+                        [(ngModel)]="filter.amount"
+                      />
                     </div>
                   </div>
                   <div class="col-lg-2 col-md-2 pr-0">
@@ -54,40 +91,90 @@
                           <i class="fas fa-calendar-alt"></i>
                         </span>
                       </span>
-                      <input [(ngModel)]="filter.startDate" name="startDate" type="text" placeholder="yyyy/mm/dd"
-                        (click)="startDate.toggle()" ngbDatepicker #startDate="ngbDatepicker" class="form-control"
-                        autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-                      <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                      <input
+                        [(ngModel)]="filter.startDate"
+                        name="startDate"
+                        type="text"
+                        placeholder="yyyy/mm/dd"
+                        (click)="startDate.toggle()"
+                        ngbDatepicker
+                        #startDate="ngbDatepicker"
+                        class="form-control"
+                        autocomplete="off"
+                        [minDate]="dateMinLimit"
+                        [maxDate]="futureDatesLimit"
+                      />
+                      <span
+                        class="input-group-text border-left-0 border-right-0 rounded-0"
+                      >
                         to
                       </span>
-                      <input [(ngModel)]="filter.endDate" name="endDate" type="text" placeholder="yyyy/mm/dd"
-                        (click)="endDate.toggle()" ngbDatepicker #endDate="ngbDatepicker" class="form-control"
-                        autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                      <input
+                        [(ngModel)]="filter.endDate"
+                        name="endDate"
+                        type="text"
+                        placeholder="yyyy/mm/dd"
+                        (click)="endDate.toggle()"
+                        ngbDatepicker
+                        #endDate="ngbDatepicker"
+                        class="form-control"
+                        autocomplete="off"
+                        [minDate]="dateMinLimit"
+                        [maxDate]="futureDatesLimit"
+                      />
                     </div>
                   </div>
                   <div class="col-md-2 col-lg-2 pr-0">
-                    <ng-select name="searchValue" placeholder="Search by expense type" [(ngModel)]="filter.typeId">
-                      <ng-option *ngFor="let data of categories | keyvalue" value="{{ data.key }}"> {{ data.value }}
+                    <ng-select
+                      name="searchValue"
+                      placeholder="Search by expense type"
+                      [(ngModel)]="filter.typeId"
+                    >
+                      <ng-option
+                        *ngFor="let data of categories | keyvalue"
+                        value="{{ data.key }}"
+                      >
+                        {{ data.value }}
                       </ng-option>
                     </ng-select>
                   </div>
                   <div class="col-md-2 col-lg-2">
-                    <button type="submit" class="btn btn-sm btn-success mr-3" [disabled]="disableSearch"
-                      (click)="searchFilter()">Search</button>
-                    <button type="submit" class="btn btn-sm btn-success" [disabled]="disableSearch"
-                      (click)="resetFilter()">Reset</button>
+                    <button
+                      type="submit"
+                      class="btn btn-sm btn-success mr-3"
+                      [disabled]="disableSearch"
+                      (click)="searchFilter()"
+                    >
+                      Search
+                    </button>
+                    <button
+                      type="submit"
+                      class="btn btn-sm btn-success"
+                      [disabled]="disableSearch"
+                      (click)="resetFilter()"
+                    >
+                      Reset
+                    </button>
                   </div>
                 </div>
               </div>
 
-
               <div class="col-md-2 col-lg-2 text-right pr-1">
-                <button (click)="refreshData()" [disabled]="disableSearch" data-toggle="tooltip" title="Refresh data"
-                  class="btn btn-success btn-sm mr-2">
+                <button
+                  (click)="refreshData()"
+                  [disabled]="disableSearch"
+                  data-toggle="tooltip"
+                  title="Refresh data"
+                  class="btn btn-success btn-sm mr-2"
+                >
                   <i class="fas fa-sync"></i>
                 </button>
-                <a routerLink="/accounts/expense/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i
-                    class="fas fa-plus"></i> Add Expense </a>
+                <a
+                  routerLink="/accounts/expense/add"
+                  class="btn btn-success btn-sm ml-2"
+                  style="color: white"
+                  ><i class="fas fa-plus"></i> Add Expense
+                </a>
               </div>
             </div>
           </form>
@@ -99,13 +186,20 @@
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
               <div class="main-panel">
-                <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                  [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                <div
+                  infiniteScroll
+                  [infiniteScrollDistance]="1"
+                  [infiniteScrollUpDistance]="1"
+                  [infiniteScrollThrottle]="5"
+                  (scrolled)="onScroll()"
+                >
                   <div class="" style="display: block">
                     <div class="main-panel">
                       <div class="row">
                         <div class="col-lg-12">
-                          <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
+                          <table
+                            class="table table-bordered table-responsive-lg table-striped mb-0 simple-table"
+                          >
                             <thead>
                               <tr>
                                 <th>Date</th>
@@ -119,49 +213,129 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr *ngIf="expenses.length === 0" class="text-center">
+                              <tr
+                                *ngIf="expenses.length === 0"
+                                class="text-center"
+                              >
                                 <td colspan="8">{{ dataMessage }}</td>
                               </tr>
-                              <tr *ngFor="let data of expenses;">
-                                <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">
-                                  {{ data.txnDate | date:'yyyy/MM/dd' }}
+                              <tr *ngFor="let data of expenses">
+                                <td
+                                  class="cursorpoint"
+                                  routerLink="/accounts/expense/detail/{{
+                                    data.expenseID
+                                  }}"
+                                >
+                                  {{ data.txnDate | date: "yyyy/MM/dd" }}
                                 </td>
-                                <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">{{
-                                  categories[data.categoryID] }}</td>
-                                <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">
-                                  {{ (data.vendorID != null) ? vendors[data.vendorID] : '-' }}</td>
+                                <td
+                                  class="cursorpoint"
+                                  routerLink="/accounts/expense/detail/{{
+                                    data.expenseID
+                                  }}"
+                                >
+                                  {{ categories[data.categoryID] }}
+                                </td>
+                                <td
+                                  class="cursorpoint"
+                                  routerLink="/accounts/expense/detail/{{
+                                    data.expenseID
+                                  }}"
+                                >
+                                  {{
+                                    data.vendorID != null
+                                      ? vendors[data.vendorID]
+                                      : "-"
+                                  }}
+                                </td>
                                 <td>
-                                  <strong> Trip No: </strong>{{ data.tripID ? trips[data.tripID] : 'NA'}}
+                                  <strong> Trip No: </strong
+                                  >{{ data.tripID ? trips[data.tripID] : "NA" }}
                                   <div>
-                                    <span *ngIf="data.unitType === 'vehicle'"><strong>Vehicle: </strong> {{ data.unitID
-                                      ?
-                                      vehicles[data.unitID]
-                                      :
-                                      'NA'}}</span>
-                                    <span *ngIf="data.unitType === 'asset'"><strong>Asset: </strong>{{ data.unitID ?
-                                      assets[data.unitID]
-                                      :
-                                      'NA'}}</span>
+                                    <span *ngIf="data.unitType === 'vehicle'"
+                                      ><strong>Vehicle: </strong>
+                                      {{
+                                        data.unitID
+                                          ? vehicles[data.unitID]
+                                          : "NA"
+                                      }}</span
+                                    >
+                                    <span *ngIf="data.unitType === 'asset'"
+                                      ><strong>Asset: </strong
+                                      >{{
+                                        data.unitID ? assets[data.unitID] : "NA"
+                                      }}</span
+                                    >
                                   </div>
                                 </td>
-                                <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">
-                                  <span *ngIf="data.recurring" class="text-lowercase">
-                                    {{ (data.recurring.status) ? data.recurring.interval : '-' }} </span>
+                                <td
+                                  class="cursorpoint"
+                                  routerLink="/accounts/expense/detail/{{
+                                    data.expenseID
+                                  }}"
+                                >
+                                  <span
+                                    *ngIf="data.recurring"
+                                    class="text-lowercase"
+                                  >
+                                    {{
+                                      data.recurring.status
+                                        ? data.recurring.interval
+                                        : "-"
+                                    }}
+                                  </span>
                                 </td>
-                                <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">{{
-                                  data.finalTotal | number : '1.2-2' }}
-                                  {{ data.currency }}</td>
-                                <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">
-                                  <span class="badge badge-dark p-1 text-uppercase">{{ data.newStatus ? data.newStatus : 'not deducted'}}</span>
+                                <td
+                                  class="cursorpoint"
+                                  routerLink="/accounts/expense/detail/{{
+                                    data.expenseID
+                                  }}"
+                                >
+                                  {{ data.finalTotal | number: "1.2-2" }}
+                                  {{ data.currency }}
                                 </td>
-                                <td>
+                                <td
+                                  class="cursorpoint"
+                                  routerLink="/accounts/expense/detail/{{
+                                    data.expenseID
+                                  }}"
+                                >
+                                  <span
+                                    class="badge badge-dark p-1 text-uppercase"
+                                    >{{
+                                      data.newStatus
+                                        ? data.newStatus
+                                        : "not deducted"
+                                    }}</span
+                                  >
+                                </td>
+                                <td class="">
                                   <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn p-0" data-toggle="dropdown"  [disabled]="data.disableEdit"><i
-                                        class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu" *ngIf="!data.disableEdit">
-                                      <a class="dropdown-item text-1"
-                                        routerLink="/accounts/expense/edit/{{ data.expenseID }}">Edit</a>
-                                      <a class="dropdown-item text-1" (click)="deleteExpense(data.expenseID)">Delete</a>
+                                    <button
+                                      type="button"
+                                      class="mb-1 mt-1 mr-1 btn p-0"
+                                      data-toggle="dropdown"
+                                      [disabled]="data.disableEdit"
+                                    >
+                                      <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <div
+                                      class="dropdown-menu"
+                                      role="menu"
+                                      *ngIf="!data.disableEdit"
+                                    >
+                                      <a
+                                        class="dropdown-item text-1"
+                                        routerLink="/accounts/expense/edit/{{
+                                          data.expenseID
+                                        }}"
+                                        >Edit</a
+                                      >
+                                      <a
+                                        class="dropdown-item text-1"
+                                        (click)="deleteExpense(data.expenseID)"
+                                        >Delete</a
+                                      >
                                     </div>
                                   </div>
                                 </td>
@@ -169,12 +343,19 @@
                             </tbody>
                           </table>
                         </div>
-                        <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && expenses.length !== 0">
-                          <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">Load
-                            More..</button>
+                        <div
+                          class="col-lg-12 mt-3 text-center"
+                          *ngIf="lastItemSK !== 'end' && expenses.length !== 0"
+                        >
+                          <button
+                            type="button"
+                            class="btn btn-success btn-sm text-light"
+                            (click)="onScroll()"
+                          >
+                            Load More..
+                          </button>
                         </div>
                       </div>
-
                     </div>
                   </div>
                 </div>
