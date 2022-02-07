@@ -63,8 +63,13 @@ export class PurchaseOrdersListComponent implements OnInit {
     this.vendors = result;
   }
 
-  resetUnit() {
-    this.filter.unit = '';
+  resetUnit(value) {
+    if (value === 'vendor') {
+      this.filter.unit = null;
+    } else {
+      this.filter.unit = '';
+    }
+
   }
 
   async fetchPurchases() {

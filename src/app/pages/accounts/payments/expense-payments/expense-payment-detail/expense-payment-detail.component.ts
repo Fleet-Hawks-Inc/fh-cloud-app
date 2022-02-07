@@ -1,8 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import * as moment from "moment";
 import { AccountService } from "src/app/services/account.service";
 import { ListService } from "src/app/services/list.service";
 import { ActivatedRoute, Router } from "@angular/router";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-expense-payment-detail",
@@ -10,6 +11,9 @@ import { ActivatedRoute, Router } from "@angular/router";
   styleUrls: ["./expense-payment-detail.component.css"],
 })
 export class ExpensePaymentDetailComponent implements OnInit {
+  @ViewChild("previewExpPayment", { static: true })
+  previewExpPayment: TemplateRef<any>;
+
   paymentData = {
     entityName: "",
     paymentTo: null,
@@ -37,12 +41,18 @@ export class ExpensePaymentDetailComponent implements OnInit {
   showModal = false;
   paymentID = "";
   accountsObjects = {};
+  expPayRef: any;
+  downloadDisabled = true;
+  companyLogo: string;
+  tagLine: string;
+  carrierName: string;
 
   constructor(
     private accountService: AccountService,
     private listService: ListService,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
     this.paymentID = this.route.snapshot.params["paymentID"];
@@ -74,6 +84,10 @@ export class ExpensePaymentDetailComponent implements OnInit {
       .getData(`expense-payments/detail/${this.paymentID}`)
       .toPromise();
     this.paymentData = result;
+    this.companyLogo = result.carrierDtl.logo;
+    this.tagLine = result.carrierDtl.tagLine;
+    this.carrierName = result.carrierDtl.carrierName;
+    this.downloadDisabled = false;
     if (!this.paymentData.isFeatEnabled) {
       this.fetchAccountsByIDs();
     }
@@ -83,5 +97,18 @@ export class ExpensePaymentDetailComponent implements OnInit {
     this.accountsObjects = await this.accountService
       .getData("chartAc/get/all/list")
       .toPromise();
+  }
+
+  openModal() {
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "preview-sale-order",
+    };
+    this.expPayRef = this.modalService.open(this.previewExpPayment, ngbModalOptions)
+  }
+
+  generatePaymentPDF() {
+
   }
 }

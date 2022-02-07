@@ -9,6 +9,7 @@
               <span class="badge badge-dark p-1 text-uppercase">{{
                 status
                 }}</span>
+              <span class="badge badge-success p-1 text-uppercase ml-1" *ngIf="status === 'sent'">Emailed</span>
             </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
