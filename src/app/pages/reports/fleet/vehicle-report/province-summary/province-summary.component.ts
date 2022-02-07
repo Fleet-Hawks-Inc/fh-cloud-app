@@ -183,7 +183,7 @@ export class ProvinceSummaryComponent implements OnInit {
           }
           else {
             obj["Canada States "] = element.canStates[stateIndex];
-            obj["CANADA States Miles"] = element.canStateMiles[stateIndex];
+            obj["Canada States Miles"] = element.canStateMiles[stateIndex];
           }
 
           obj["Trip Status"] = element.newStatus;
