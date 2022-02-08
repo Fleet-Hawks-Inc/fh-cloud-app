@@ -27,6 +27,7 @@ export class RevenueDetailComponent implements OnInit {
   vehicleIdentification = ''
   suggestedVehicles = [];
   public vehicleId;
+  totalQty = 0;
   constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -127,16 +128,13 @@ export class RevenueDetailComponent implements OnInit {
   fetchFuel() {
     this.apiService.getData(`fuelEntries/getBy/vehicle/trips/${this.vehicleId}?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.fuel = result.Items;
-      // for (let element of this.fuel) {
-      //   let fuelData = element
-      //   element.abc = 0
-      //   for (let fuel of fuelData.data) {
-      //     element.abc += Number(fuel.qty);
-      //     console.log(' fuel', fuel)
-      //   }
-      // }
-      console.log('fuel', this.fuel)
+      let total = 0;
+      for (let element of this.fuel) {
+        if (element.data && element.data.qty) {
+          total += parseFloat(element.data.qty)
+        }
+      }
+      this.totalQty = total;
     });
   }
-
 }

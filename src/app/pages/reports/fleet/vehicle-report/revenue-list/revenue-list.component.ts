@@ -27,7 +27,7 @@ export class RevenueListComponent implements OnInit {
   groupsList: any = {};
   vehicleModelList: any = {};
   vehicleManufacturersList: any = {};
-  serviceProgramsList: any = {};
+  // serviceProgramsList: any = {};
   driversList: any = {};
   vendorsList: any = {};
   currentView = 'list';
@@ -44,7 +44,7 @@ export class RevenueListComponent implements OnInit {
   ngOnInit() {
     this.fetchGroups();
     this.fetchDriversList();
-    this.fetchServiceProgramsList();
+    // this.fetchServiceProgramsList();
     this.fetchVendorList();
     this.initDataTable()
   }
@@ -81,11 +81,11 @@ export class RevenueListComponent implements OnInit {
   }
 
 
-  fetchServiceProgramsList() {
-    this.apiService.getData('servicePrograms/get/list').subscribe((result: any) => {
-      this.serviceProgramsList = result;
-    });
-  }
+  // fetchServiceProgramsList() {
+  //   this.apiService.getData('servicePrograms/get/list').subscribe((result: any) => {
+  //     this.serviceProgramsList = result;
+  //   });
+  // }
 
   fetchVendorList() {
     this.apiService.getData('contacts/get/list/vendor').subscribe((result: any) => {
