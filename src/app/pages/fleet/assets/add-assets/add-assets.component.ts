@@ -243,8 +243,7 @@ export class AddAssetsComponent implements OnInit {
     let operatorList = new Array<any>();
     this.getValidOperators(operatorList);
     this.ownOperators = operatorList;
-    
-    // >>>vivek
+   
     this.fetchGroupsList();
   }
 
