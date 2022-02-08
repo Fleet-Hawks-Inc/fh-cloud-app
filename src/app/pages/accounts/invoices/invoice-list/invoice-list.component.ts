@@ -1,5 +1,5 @@
 import { AccountService, ApiService } from "../../../../services";
-import { Component, OnInit, ViewChild,TemplateRef } from "@angular/core";
+import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import Constants from "../../../fleet/constants";
 import { Router } from "@angular/router";
@@ -13,7 +13,7 @@ declare var $: any;
   styleUrls: ["./invoice-list.component.css"],
 })
 export class InvoiceListComponent implements OnInit {
-  @ViewChild("previewInvoiceModal", { static: true }) previewInvoiceModal:TemplateRef<any>;
+  @ViewChild("previewInvoiceModal", { static: true }) previewInvoiceModal: TemplateRef<any>;
 
   dataMessage = Constants.NO_RECORDS_FOUND;
   invoices = [];
@@ -24,12 +24,12 @@ export class InvoiceListComponent implements OnInit {
   invID: string;
   totalCAD = 0;
   totalUSD = 0;
-  exportLoading=false;
+  exportLoading = false;
   openInvoices = [];
   openTotalCAD = 0;
   openTotalUSD = 0;
   paidInvoices = [];
-  unPaidInvoices=[];
+  unPaidInvoices = [];
   paidTotalCAD = 0;
   paidTotalUSD = 0;
   emailedInvoices = [];
@@ -41,13 +41,13 @@ export class InvoiceListComponent implements OnInit {
   voidedInvoices = [];
   voidedTotalCAD = 0;
   voidedTotalUSD = 0;
-  invoiceTypeObject={all: "all",open:"Open",paid:"paid",partially_paid:"Partial Paid",unpaid:"Unpaid"}
-  allData=[]
+  invoiceTypeObject = { all: "all", open: "Open", paid: "paid", partially_paid: "Partial Paid", unpaid: "Unpaid" }
+  allData = []
   // Order Invoice
   orderInvoices = [];
   openOrderInvoices = [];
   paidOrderInvoices = [];
-  unPaidOrderInvoices=[];
+  unPaidOrderInvoices = [];
   emailedOrderInvoices = [];
   partiallyPaidOrderInvoices = [];
   voidedOrderInvoices = [];
@@ -57,7 +57,7 @@ export class InvoiceListComponent implements OnInit {
     endDate: null,
     invNo: null,
     customer: null,
-    invType:null
+    invType: null
   };
   lastItemSK = "";
   lastItemOrderSK = "";
@@ -70,7 +70,7 @@ export class InvoiceListComponent implements OnInit {
   invoicesUSD = [];
   overdueTotalCAD = 0;
   overdueTotalUSD = 0;
-  preview:any;
+  preview: any;
 
   constructor(
     private accountService: AccountService,
@@ -78,7 +78,7 @@ export class InvoiceListComponent implements OnInit {
     private toaster: ToastrService,
     private router: Router,
     private modalService: NgbModal
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.lastItemSK = "";
@@ -247,7 +247,7 @@ export class InvoiceListComponent implements OnInit {
       this.emailedInvoices = [];
       this.partiallyPaidInvoices = [];
       this.voidedInvoices = [];
-      this.unPaidInvoices=[]
+      this.unPaidInvoices = []
     }
     if (this.lastItemSK !== "end") {
       if (this.filter.invNo !== null && this.filter.invNo !== "") {
@@ -319,7 +319,7 @@ export class InvoiceListComponent implements OnInit {
       this.orderInvoices = [];
       this.openOrderInvoices = [];
       this.paidOrderInvoices = [];
-      this.unPaidOrderInvoices=[]
+      this.unPaidOrderInvoices = []
       this.emailedOrderInvoices = [];
       this.partiallyPaidOrderInvoices = [];
       this.voidedOrderInvoices = [];
@@ -393,7 +393,7 @@ export class InvoiceListComponent implements OnInit {
     if (invoices.length > 0) {
       this.openOrderInvoices = [];
       this.paidOrderInvoices = [];
-      this.unPaidOrderInvoices=[];
+      this.unPaidOrderInvoices = [];
       this.emailedOrderInvoices = [];
       this.partiallyPaidOrderInvoices = [];
       this.voidedOrderInvoices = [];
@@ -415,7 +415,7 @@ export class InvoiceListComponent implements OnInit {
     } else {
       this.openOrderInvoices = [];
       this.paidOrderInvoices = [];
-      this.unPaidOrderInvoices=[];
+      this.unPaidOrderInvoices = [];
       this.emailedOrderInvoices = [];
       this.partiallyPaidOrderInvoices = [];
       this.voidedOrderInvoices = [];
@@ -425,7 +425,7 @@ export class InvoiceListComponent implements OnInit {
     if (invoices.length > 0) {
       this.openInvoices = [];
       this.paidInvoices = [];
-      this.unPaidInvoices=[];
+      this.unPaidInvoices = [];
       this.emailedInvoices = [];
       this.partiallyPaidInvoices = [];
       this.voidedInvoices = [];
@@ -452,7 +452,7 @@ export class InvoiceListComponent implements OnInit {
       this.emailedInvoices = [];
       this.partiallyPaidInvoices = [];
       this.voidedInvoices = [];
-      this.unPaidInvoices=[];
+      this.unPaidInvoices = [];
     }
   }
   findOverDueInvoice(invoices: any) {
@@ -493,7 +493,7 @@ export class InvoiceListComponent implements OnInit {
             this.openTotalCAD = 0;
             this.openTotalUSD = 0;
             this.paidInvoices = [];
-            this.unPaidInvoices=[];
+            this.unPaidInvoices = [];
             this.paidTotalCAD = 0;
             this.paidTotalUSD = 0;
             this.emailedInvoices = [];
@@ -510,7 +510,7 @@ export class InvoiceListComponent implements OnInit {
             this.orderInvoices = [];
             this.openOrderInvoices = [];
             this.paidOrderInvoices = [];
-            this.unPaidOrderInvoices=[];
+            this.unPaidOrderInvoices = [];
             this.emailedOrderInvoices = [];
             this.partiallyPaidOrderInvoices = [];
             this.voidedOrderInvoices = [];
@@ -561,7 +561,7 @@ export class InvoiceListComponent implements OnInit {
                 this.openTotalCAD = 0;
                 this.openTotalUSD = 0;
                 this.paidInvoices = [];
-                this.unPaidInvoices=[];
+                this.unPaidInvoices = [];
                 this.paidTotalCAD = 0;
                 this.paidTotalUSD = 0;
                 this.emailedInvoices = [];
@@ -578,7 +578,7 @@ export class InvoiceListComponent implements OnInit {
                 this.orderInvoices = [];
                 this.openOrderInvoices = [];
                 this.paidOrderInvoices = [];
-                this.unPaidOrderInvoices=[]
+                this.unPaidOrderInvoices = []
                 this.emailedOrderInvoices = [];
                 this.partiallyPaidOrderInvoices = [];
                 this.voidedOrderInvoices = [];
@@ -641,7 +641,7 @@ export class InvoiceListComponent implements OnInit {
       endDate: null,
       invNo: null,
       customer: null,
-      invType:null,
+      invType: null,
     };
     this.lastItemSK = "";
     this.lastItemOrderSK = "";
@@ -651,7 +651,7 @@ export class InvoiceListComponent implements OnInit {
     this.openTotalCAD = 0;
     this.openTotalUSD = 0;
     this.paidInvoices = [];
-    this.unPaidInvoices=[];
+    this.unPaidInvoices = [];
     this.paidTotalCAD = 0;
     this.paidTotalUSD = 0;
     this.emailedInvoices = [];
@@ -681,7 +681,7 @@ export class InvoiceListComponent implements OnInit {
       endDate: null,
       invNo: null,
       customer: null,
-      invType:null
+      invType: null
     };
     this.lastItemSK = "";
     this.lastItemOrderSK = "";
@@ -691,7 +691,7 @@ export class InvoiceListComponent implements OnInit {
     this.openTotalCAD = 0;
     this.openTotalUSD = 0;
     this.paidInvoices = [];
-    this.unPaidInvoices=[];
+    this.unPaidInvoices = [];
     this.paidTotalCAD = 0;
     this.paidTotalUSD = 0;
     this.emailedInvoices = [];
@@ -711,12 +711,12 @@ export class InvoiceListComponent implements OnInit {
     this.getInvoices();
   }
 
-  async getData(){
-    this.allData=[]
+  async getData() {
+    this.allData = []
     let searchParam = null;
-    let searchParamOrder=null
-    this.lastItemOrderSK=""
-    this.lastItemSK=""
+    let searchParamOrder = null
+    this.lastItemOrderSK = ""
+    this.lastItemSK = ""
     if (
       this.filter.invNo !== null &&
       this.filter.invNo !== "" &&
@@ -726,84 +726,84 @@ export class InvoiceListComponent implements OnInit {
     } else {
       searchParamOrder = null;
     }
-  if (this.filter.invNo !== null && this.filter.invNo !== "") {
-    searchParam =this.filter.invNo
-  } else {
-    searchParam = null;
-  }
-  let result: any = await this.accountService
+    if (this.filter.invNo !== null && this.filter.invNo !== "") {
+      searchParam = this.filter.invNo
+    } else {
+      searchParam = null;
+    }
+    let result: any = await this.accountService
       .getData(
         `invoices/export?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
       )
       .toPromise();
-      if(result && result.length>0){
-        this.allData=this.allData.concat(result)
-      }
-  let orderInvoice:any=await this.accountService
+    if (result && result.length > 0) {
+      this.allData = this.allData.concat(result)
+    }
+    let orderInvoice: any = await this.accountService
       .getData(
         `order-invoice/export?invNo=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
       ).toPromise();
-      if(orderInvoice && orderInvoice.length>0){
-        this.allData=this.allData.concat(orderInvoice)
-      }
+    if (orderInvoice && orderInvoice.length > 0) {
+      this.allData = this.allData.concat(orderInvoice)
+    }
   }
-  async generateCSV(){  
-      this.exportLoading=true;
-      let dataObject=[]
-      let csvArray=[]
+  async generateCSV() {
+    this.exportLoading = true;
+    let dataObject = []
+    let csvArray = []
 
-      try{
+    try {
       await this.getData();
-      
-      if(this.allData.length>0){
-        for(const element of this.allData){
-          let obj={}
-          obj["invoice#"]=element.invNo
-          obj["Date"]=element.txnDate
-          obj["Customer"]=this.customersObjects[element.customerID]
-          obj["Order#"]=element.invNo
-          obj["Freight Amount"]=(element.charges!==undefined)?element.charges.freightFee.amount:"-"
-          obj["Tax"]=(element.taxesAmt===undefined)?element.taxAmount:element.taxesAmt
-          obj["Total Amount"]=element.subTotal
-          obj["Amount Received"]=element.amountReceived
-          obj["Balance"]=element.balance
-          obj["Due Date"]=element.invDueDate
-          obj["Invoice Status"]=element.invStatus
+
+      if (this.allData.length > 0) {
+        for (const element of this.allData) {
+          let obj = {}
+          obj["invoice#"] = element.invNo
+          obj["Date"] = element.txnDate
+          obj["Customer"] = this.customersObjects[element.customerID]
+          obj["Order#"] = element.invNo
+          obj["Freight Amount"] = (element.charges !== undefined) ? element.charges.freightFee.amount : "-"
+          obj["Tax"] = (element.taxesAmt === undefined) ? element.taxAmount : element.taxesAmt
+          obj["Total Amount"] = element.subTotal
+          obj["Amount Received"] = element.amountReceived
+          obj["Balance"] = element.balance
+          obj["Due Date"] = element.invDueDate
+          obj["Invoice Status"] = element.invStatus
           dataObject.push(obj)
         }
         let headers = Object.keys(dataObject[0]).join(',')
         headers += '\n'
         csvArray.push(headers)
-        for(const element of dataObject){
-          let value=Object.values(element).join(',')
+        for (const element of dataObject) {
+          let value = Object.values(element).join(',')
           value += '\n'
           csvArray.push(value)
         }
         const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8' })
-    const link = document.createElement('a');
-    if (link.download !== undefined) {
+        const link = document.createElement('a');
+        if (link.download !== undefined) {
 
-      const url = URL.createObjectURL(blob);
-      link.setAttribute('href', url);
-      link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}-invoice.csv`);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-    this.exportLoading=false
+          const url = URL.createObjectURL(blob);
+          link.setAttribute('href', url);
+          link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}-invoice.csv`);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+        this.exportLoading = false
       }
-      else{
+      else {
         this.toaster.success("No Data Found")
-        this.exportLoading=false
+        this.exportLoading = false
       }
-    }catch(error){
-      this.exportLoading=false
+    } catch (error) {
+      this.exportLoading = false
     }
   }
 
-  async openPDFPreview(){
-    this.exportLoading=true
+  async openPDFPreview() {
+    this.exportLoading = true
     await this.getData();
     let ngbModalOptions: NgbModalOptions = {
       keyboard: true,
@@ -812,9 +812,9 @@ export class InvoiceListComponent implements OnInit {
     this.preview = this.modalService.open(this.previewInvoiceModal,
       ngbModalOptions
     )
-    this.exportLoading=false
+    this.exportLoading = false
   }
-  generatePDF(){
+  generatePDF() {
     let data = document.getElementById("print_wrap");
     html2pdf(data, {
       margin: 0,
