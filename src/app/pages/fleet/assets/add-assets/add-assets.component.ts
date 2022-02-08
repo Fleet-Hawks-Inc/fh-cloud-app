@@ -1142,8 +1142,6 @@ export class AddAssetsComponent implements OnInit {
     };
   }
   
-  // >>>vivek
-  
   fetchGroups() {
     this.apiService
       .getData(`groups/getGroup/${this.groupData.groupType}`)
