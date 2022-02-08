@@ -176,7 +176,7 @@ export class NewAddressBookComponent implements OnInit {
 
   ngOnInit() {
     this.searchLocation();
-    this.fetchCountries();
+    // this.fetchCountries();
 
     this.modalSubscription = this.listService.addressList.subscribe((res: any) => {
       if (res === 'list') {
@@ -915,8 +915,10 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   removeAddress(index) {
+    if (confirm("This address might be associated with order(s) and those will be affected. Do you want to delete it? If you want to update the address you can edit it.") === true) {
+      this.unitData.adrs.splice(index, 1);
+    }
 
-    this.unitData.adrs.splice(index, 1);
   }
 
   carrierWSIB(value) {

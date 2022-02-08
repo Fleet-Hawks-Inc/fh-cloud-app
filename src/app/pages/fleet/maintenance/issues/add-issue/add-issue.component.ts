@@ -29,6 +29,7 @@ export class AddIssueComponent implements OnInit {
   /**
    * Issue Prop
    */
+clone = false;
   issueName = "";
   unitID = null;
   unitType = "vehicle";
@@ -69,7 +70,7 @@ export class AddIssueComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-
+  cloneID: any;
   // date: {year: number, month: number};
   constructor(
     private apiService: ApiService,
@@ -91,6 +92,7 @@ export class AddIssueComponent implements OnInit {
   async ngOnInit() {
     this.fetchUsers();
     this.issueID = this.route.snapshot.params[`issueID`];
+    // if (this.issueID || this.cloneID) {
     if (this.issueID) {
       this.title = "Edit Issue";
       await this.fetchIssueByID();
@@ -99,6 +101,13 @@ export class AddIssueComponent implements OnInit {
     }
     await this.fetchVehicles();
     await this.fetchAssets();
+    this.route.queryParams.subscribe((params) => {
+      this.cloneID = params.cloneID;
+      if (this.cloneID != undefined
+        && this.cloneID != "") {
+        this.cloneIssue(this.cloneID);
+      }
+    });
   }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
@@ -167,6 +176,10 @@ export class AddIssueComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs,
     };
+    if(this.clone == true){
+      data.uploadedPhotos = this.existingPhotos
+      data.uploadedDocs = this.existingDocs
+    }
     // create form data instance
     const formData = new FormData();
 
@@ -182,10 +195,9 @@ export class AddIssueComponent implements OnInit {
 
     // append other fields
     formData.append("data", JSON.stringify(data));
-
     // this.apiService.postData('issues/', data).subscribe({
     this.apiService.postData("issues", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -202,7 +214,7 @@ export class AddIssueComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -219,12 +231,12 @@ export class AddIssueComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -356,7 +368,7 @@ export class AddIssueComponent implements OnInit {
     formData.append("data", JSON.stringify(data));
 
     this.apiService.putData(`issues/${this.issueID}`, formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -373,7 +385,7 @@ export class AddIssueComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -399,5 +411,40 @@ export class AddIssueComponent implements OnInit {
         }
         this.toaster.success(alertmsg + " Deleted Successfully");
       });
+  }
+
+  /*
+   * If We CliCk Clone Button Then It Fetch Issue details 
+   */
+// let clone = false;
+  async cloneIssue(id: any) {
+    this.apiService.getData("issues/" + id).subscribe(async (result: any) => {
+      result = result[0];
+      this.clone = true;
+      this.issueID = this.issueID;
+      this.issueName = result.issueName;
+      this.unitID = result.unitID;
+      this.fetchedUnitID = result.unitID;
+      this.fetchedUnitType = result.unitType;
+      this.unitType = result.unitType; 
+      this.currentStatus = 'OPEN';
+      this.reportedDate = result.reportedDate;
+      this.description = result.description;
+      this.odometer = result.odometer;
+      this.reportedBy = result.reportedBy;
+      this.assignedTo = result.assignedTo;
+      this.existingPhotos = result.uploadedPhotos;
+      this.existingDocs = result.uploadedDocs;
+      if (
+        result.uploadedPhotos !== undefined &&
+        result.uploadedPhotos.length > 0
+      ) {
+        this.issueImages = result.uploadedPics;
+      }
+
+      if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
+        this.issueDocs = result.uploadDocument;
+      }
+    })
   }
 }
