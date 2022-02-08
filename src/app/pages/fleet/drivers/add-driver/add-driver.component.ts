@@ -1781,7 +1781,6 @@ export class AddDriverComponent
     this.submitDisabled = false;
   }
   
-  // >>>vivek
   fetchGroupsList() {
     this.apiService.getData('groups/get/list/type?type=drivers').subscribe((result: any) => {
       this.groupsData = result;
