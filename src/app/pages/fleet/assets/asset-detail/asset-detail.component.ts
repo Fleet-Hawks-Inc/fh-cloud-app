@@ -357,7 +357,7 @@ export class AssetDetailComponent implements OnInit {
                     this.lDocs = result.loanDocsLinks;
                     this.assetsDocs = result.uploadedDocsLinks;
                     this.groupId = result.groupID;
-                    // console.log('result', result.groupID)
+
                     this.fetchGroups();
                     // if (
                     //   result.uploadedPhotos != undefined &&
