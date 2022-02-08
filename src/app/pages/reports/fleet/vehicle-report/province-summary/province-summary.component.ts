@@ -3,7 +3,6 @@ import { ApiService } from '../../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import Constants from 'src/app/pages/fleet/constants';
-import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import * as _ from 'lodash';
 
 @Component({
@@ -13,8 +12,6 @@ import * as _ from 'lodash';
 })
 export class ProvinceSummaryComponent implements OnInit {
   allData: any = [];
-  docCountries = [];
-  states = [];
   start = null;
   end = null;
   dataMessage = Constants.FETCHING_DATA;
@@ -28,7 +25,7 @@ export class ProvinceSummaryComponent implements OnInit {
   // suggestedVehicles = [];
   vehicleIdentification = '';
   vehicleId = '';
-  constructor(private apiService: ApiService, private toastr: ToastrService, private countryStateCity: CountryStateCityService,) { }
+  constructor(private apiService: ApiService, private toastr: ToastrService) { }
   ngOnInit(): void {
 
     this.end = moment().format("YYYY-MM-DD");
