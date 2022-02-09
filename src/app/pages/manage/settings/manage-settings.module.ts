@@ -66,4 +66,5 @@ const routes: Routes = [
     NgSelectModule,
   ]
 })
+
 export class ManageSettingsModule { }
