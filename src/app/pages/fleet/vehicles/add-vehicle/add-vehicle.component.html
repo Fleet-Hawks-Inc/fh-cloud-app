@@ -2798,40 +2798,6 @@
   </div>
 </section>
 
-<div id="quantumModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">
-          &times;
-        </button>
-        <!--<h4 class="modal-title">Assign Quantum</h4>-->
-      </div>
-      <div class="modal-body">
-        <h4 class="modal-title">Assign Quantum</h4>
-        <ng-select
-          data-plugin-selectTwo
-          class="form-control populate"
-          [(ngModel)]="quantumSelected"
-          name="quantum info"
-          (ngModelChange)="onChange($event)"
-        >
-          <ng-option label="-- Select option --" disabled></ng-option>
-          <ng-option *ngFor="let q of quantumsList" value="{{ q.deviceID }}">{{
-            q.sNo
-          }}</ng-option>
-        </ng-select>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- GROUP MODAL -->
 <div
   class="modal fade"
