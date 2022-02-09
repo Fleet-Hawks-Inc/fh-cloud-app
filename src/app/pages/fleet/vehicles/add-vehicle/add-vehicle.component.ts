@@ -319,10 +319,6 @@ export class AddVehicleComponent implements OnInit {
     } else {
       this.title = "Add Vehicle";
     }
-
-    this.apiService.getData("devices").subscribe((result: any) => {
-      this.quantumsList = result.Items;
-    });
     this.httpClient.get("assets/vehicleType.json").subscribe((data) => {
       this.vehicleTypeList = data;
     });
@@ -510,7 +506,8 @@ export class AddVehicleComponent implements OnInit {
     this.apiService
       .getData(`groups/getGroup/${this.groupData.groupType}`)
       .subscribe((result: any) => {
-        // this.groups = result.Items;
+        this.groups = result.Items;
+        console.log('this.groups',this.groups)
         result.Items.forEach((element) => {
           if (element.isDeleted === 0) {
             this.groups.push(element);
