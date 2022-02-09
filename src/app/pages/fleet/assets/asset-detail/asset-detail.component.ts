@@ -688,6 +688,7 @@ export class AssetDetailComponent implements OnInit {
             lat: parseFloat(cords[1]),
         });
     }
+  
     
    fetchGroups() {
        if(this.groupId !==''){

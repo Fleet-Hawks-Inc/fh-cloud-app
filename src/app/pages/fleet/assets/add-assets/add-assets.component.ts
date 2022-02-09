@@ -1147,7 +1147,6 @@ export class AddAssetsComponent implements OnInit {
       });
   }
 
-  
   fetchGroupsList() {
     this.apiService.getData('groups/get/list/type?type=assets').subscribe((result: any) => {
       this.groupsData = result;

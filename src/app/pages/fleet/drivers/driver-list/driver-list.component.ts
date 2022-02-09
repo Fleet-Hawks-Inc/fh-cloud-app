@@ -500,6 +500,7 @@ export class DriverListComponent implements OnInit {
 
     }
     
+    
     fetchGroups() {
         this.apiService.getData(`groups/get/driverlist?type=drivers`).subscribe((result: any) => {
             this.groupsObjects = result;
