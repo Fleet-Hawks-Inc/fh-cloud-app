@@ -692,6 +692,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`balance`] = this.totalCharges;
     this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
     this.invoiceData[`orderID`] = this.orderID;
+    this.invoiceData[`cusConfirmation`] = this.cusConfirmation;
 
     this.invoiceData[`zeroRated`] = this.zeroRated;
     this.invoiceData[`currency`] = this.brokerage.currency;

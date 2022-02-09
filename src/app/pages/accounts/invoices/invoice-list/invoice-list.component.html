@@ -5,7 +5,8 @@
         <form class="form-horizontal" method="get">
           <div class="row" style="padding-top: 10px">
             <div class="col-md-2 col-lg-2 pr-0">
-              <ng-select [(ngModel)]="filter.category" placeholder="Select category" name="category">
+              <ng-select [(ngModel)]="filter.category" (change)="resetValue()" placeholder="Select category"
+                name="category">
                 <ng-option value="invNo">Invoice Number</ng-option>
                 <ng-option value="customer">Customer</ng-option>
                 <ng-option value="cusConfirm">Customer Confirmation</ng-option>
@@ -18,8 +19,8 @@
               </div>
             </div>
             <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.category === 'cusConfirm'">
-              <input type="text" class="form-control" placeholder="Search by invoice#" [(ngModel)]="filter.searchValue"
-                name="invNo" />
+              <input type="text" class="form-control" placeholder="Search by customer confirmation"
+                [(ngModel)]="filter.searchValue" name="invNo" />
             </div>
             <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.category === 'customer'">
               <ng-select [(ngModel)]="filter.searchValue" placeholder="Select customer" name="customer">

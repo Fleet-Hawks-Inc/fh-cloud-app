@@ -58,8 +58,22 @@
                       " class="text-dark mb-0 text-capitalize">
                     {{ pdfDetails.name }}
                   </h2>
+                  <div class="text-dark" style="    font-size: 12px;
+                  margin-bottom: 2px;">
+                    <strong>Payment Type:</strong> {{paymentInfo.pType}} <br>
+                    <div class="text-dark" *ngIf="paymentInfo.pType === 'Pay Per Mile'">
+                      <strong>Loaded Miles: </strong>{{paymentInfo.lMiles}} {{currency}}, <span
+                        class="ml-2"><strong>Team
+                          Loaded Miles:</strong>
+                        {{paymentInfo.lMileTeam}} {{currency}}</span><br>
+                      <strong>Empty Miles:</strong> {{paymentInfo.eMiles}} {{currency}}, <span class="ml-2"><strong>Team
+                          Empty Miles:</strong>
+                        {{paymentInfo.eMileTeam}} {{currency}}</span>
+
+                    </div>
+                  </div>
                   <p class="text-dark" style="font-size: 12px; margin-bottom: 2px">
-                    {{ pdfDetails.address }}<br />
+                    <strong>Address:</strong> {{ pdfDetails.address ? pdfDetails.address : 'NA' }}<br />
                     <strong>Phone:</strong> {{ pdfDetails.phone }}<br />
                     <strong>Email:</strong> {{ pdfDetails.email }}
                   </p>
@@ -75,11 +89,9 @@
                                 margin-top: 1px;
                                 margin-bottom: 1px;
                               ">
-                            User ID
+                            User ID: {{ pdfDetails.userID }}
                           </h2>
-                          <p class="text-dark" style="font-size: 12px; margin-bottom: 2px">
-                            {{ pdfDetails.userID }}
-                          </p>
+
                         </td>
                       </tr>
                       <tr>

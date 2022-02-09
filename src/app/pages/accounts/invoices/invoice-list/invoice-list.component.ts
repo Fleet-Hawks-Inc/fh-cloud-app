@@ -55,6 +55,8 @@ export class InvoiceListComponent implements OnInit {
   filter = {
     startDate: null,
     endDate: null,
+    category: null,
+    searchValue: null,
     invNo: null,
     customer: null,
     invType: null
@@ -250,8 +252,8 @@ export class InvoiceListComponent implements OnInit {
       this.unPaidInvoices = []
     }
     if (this.lastItemSK !== "end") {
-      if (this.filter.invNo !== null && this.filter.invNo !== "") {
-        searchParam = encodeURIComponent(`"${this.filter.invNo}"`);
+      if (this.filter.category !== null && this.filter.category !== "") {
+        searchParam = (this.filter.category === 'invNo' || this.filter.category === 'cusConfirm') ? encodeURIComponent(`"${this.filter.searchValue}"`) : this.filter.searchValue;
         searchParam = searchParam.toUpperCase();
       } else {
         searchParam = null;
@@ -259,7 +261,7 @@ export class InvoiceListComponent implements OnInit {
 
       let result: any = await this.accountService
         .getData(
-          `invoices/paging?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
+          `invoices/paging?searchValue=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}&category=${this.filter.category}&invType=${this.filter.invType}`
         )
         .toPromise();
       // .subscribe(async (result: any) => {
@@ -313,6 +315,10 @@ export class InvoiceListComponent implements OnInit {
     this.invoicesCAD = [];
   }
 
+
+  resetValue() {
+    this.filter.searchValue = null
+  }
   private getOrderInvoices(refresh: boolean, searchParamOrder: any) {
     if (refresh === true) {
       this.lastItemOrderSK = "";
@@ -325,18 +331,17 @@ export class InvoiceListComponent implements OnInit {
       this.voidedOrderInvoices = [];
     }
     if (this.lastItemOrderSK !== "end") {
+
       if (
-        this.filter.invNo !== null &&
-        this.filter.invNo !== "" &&
-        this.filter.invNo !== "%22null%22"
+        this.filter.category !== null && this.filter.category !== ""
       ) {
-        searchParamOrder = encodeURIComponent(`"${this.filter.invNo}"`);
+        searchParamOrder = this.filter.category === 'invNo' || this.filter.category === 'cusConfirm' ? encodeURIComponent(`"${this.filter.searchValue}"`) : this.filter.searchValue;
       } else {
         searchParamOrder = null;
       }
       this.accountService
         .getData(
-          `order-invoice/paging?invNo=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
+          `order-invoice/paging?searchValue=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}&category=${this.filter.category}&invType=${this.filter.invType}`
         )
         .subscribe(async (result: any) => {
           if (result.length === 0) {
@@ -597,8 +602,8 @@ export class InvoiceListComponent implements OnInit {
     if (
       this.filter.endDate !== null ||
       this.filter.startDate !== null ||
-      this.filter.invNo !== null ||
-      this.filter.customer !== null ||
+      this.filter.searchValue !== null ||
+      this.filter.category !== null ||
       this.filter.invType !== null
     ) {
       // this.dataMessage = Constants.FETCHING_DATA;
@@ -639,6 +644,8 @@ export class InvoiceListComponent implements OnInit {
     this.filter = {
       startDate: null,
       endDate: null,
+      category: null,
+      searchValue: null,
       invNo: null,
       customer: null,
       invType: null,
@@ -679,6 +686,8 @@ export class InvoiceListComponent implements OnInit {
     this.filter = {
       startDate: null,
       endDate: null,
+      category: null,
+      searchValue: null,
       invNo: null,
       customer: null,
       invType: null
