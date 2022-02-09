@@ -315,7 +315,7 @@ export class AddDriverComponent
   uploadedPic = "";
   showUploadedPicModal = false;
   pageType = "add";
-    groupsData: any = [];
+  groupsData: any = [];
 
   constructor(
     private apiService: ApiService,
@@ -1777,7 +1777,7 @@ export class AddDriverComponent
     this.submitDisabled = false;
   }
   
-  // >>>vivek
+
   fetchGroupsList() {
     this.apiService.getData('groups/get/list/type?type=drivers').subscribe((result: any) => {
       this.groupsData = result;

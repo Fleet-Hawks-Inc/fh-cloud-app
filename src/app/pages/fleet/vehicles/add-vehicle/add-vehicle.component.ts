@@ -1555,7 +1555,7 @@ export class AddVehicleComponent implements OnInit {
   refreshOpData() {
     this.listService.fetchOwnerOperators();
   }
-  // >>>>vivek
+
   fetchGroupsList() {
     this.apiService.getData('groups/get/list/type?type=vehicles').subscribe((result: any) => {
       this.groupsData = result;

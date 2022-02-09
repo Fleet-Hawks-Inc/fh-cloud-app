@@ -596,7 +596,6 @@ export class VehicleDetailComponent implements OnInit {
                 
                 this.fetchGroups();
 
-
             });
     }
 
