@@ -44,7 +44,7 @@ export class AdvancePaymentsDetailComponent implements OnInit {
     private toaster: ToastrService,
     private route: ActivatedRoute,
     private listService: ListService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.paymentID = this.route.snapshot.params[`paymentID`];
