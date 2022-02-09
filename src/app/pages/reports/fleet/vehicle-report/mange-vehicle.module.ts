@@ -22,7 +22,7 @@ import { ActivityComponent } from './activity/activity.component';
 import { ProvinceMilesComponent } from './province-miles/province-miles.component';
 import { RevenueListComponent } from './revenue-list/revenue-list.component';
 import { RevenueDetailComponent } from './revenue-detail/revenue-detail.component';
-
+import { ProvinceSummaryComponent } from './province-summary/province-summary.component';
 const routes: Routes = [
   { path: 'overview', component: OverviewComponent },
   { path: 'summary', component: SummaryComponent },
@@ -35,6 +35,7 @@ const routes: Routes = [
   { path: 'province-miles', component: ProvinceMilesComponent },
   { path: 'revenue-list', component: RevenueListComponent },
   { path: 'revenue-detail/:vehicleId', component: RevenueDetailComponent },
+  { path: 'province-summary', component: ProvinceSummaryComponent },
 ];
 
 /**
@@ -101,7 +102,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     ActivityComponent,
     ProvinceMilesComponent,
     RevenueListComponent,
-    RevenueDetailComponent],
+    RevenueDetailComponent,
+    ProvinceSummaryComponent],
 
   imports: [
     CommonModule,

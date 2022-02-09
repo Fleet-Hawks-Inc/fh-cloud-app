@@ -66,6 +66,7 @@ export class RevenueDetailComponent implements OnInit {
   // }
 
   fetchRevenueData() {
+    console.log(' this.lastItemSK', this.lastItemSK)
     this.apiService.getData(`vehicles/fetch/revenue/report?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
       this.allData = this.allData.concat(result.Items)
       // console.log(' this.allData', this.allData)
@@ -73,8 +74,11 @@ export class RevenueDetailComponent implements OnInit {
         this.dataMessage = Constants.NO_RECORDS_FOUND
       }
       if (result.LastEvaluatedKey !== undefined) {
-        this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.tripSK);
-        this.datee = encodeURIComponent(result.LastEvaluatedKey.dateCreated)
+        console.log(' result.LastEvaluatedKey', result.LastEvaluatedKey)
+        console.log('  this.lastItemSK',  this.lastItemSK)
+        console.log('this.datee',this.datee)
+        this.lastItemSK = encodeURIComponent(result.Items.tripSK);
+        this.datee = encodeURIComponent(result.Items.dateCreated)
       }
       else {
         this.lastItemSK = 'end';
