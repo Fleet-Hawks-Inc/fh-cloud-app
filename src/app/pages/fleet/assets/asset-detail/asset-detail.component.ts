@@ -358,6 +358,7 @@ export class AssetDetailComponent implements OnInit {
                     this.assetsDocs = result.uploadedDocsLinks;
                     this.groupId = result.groupID;
                     this.fetchGroups();
+                    
                     // if (
                     //   result.uploadedPhotos != undefined &&
                     //   result.uploadedPhotos.length > 0
@@ -695,9 +696,4 @@ export class AssetDetailComponent implements OnInit {
         });
        }
     }
-    // fetchGroups() {
-    //     this.apiService.getData(`groups/get/list?type=assets&groupID=${this.groupID}`).subscribe((result: any) => {
-    //         this.groupsObjects = result;
-    //     });
-    // }
 }

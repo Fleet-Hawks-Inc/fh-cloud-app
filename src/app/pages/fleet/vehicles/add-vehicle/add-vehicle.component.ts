@@ -1556,6 +1556,7 @@ export class AddVehicleComponent implements OnInit {
     this.listService.fetchOwnerOperators();
   }
 
+
   fetchGroupsList() {
     this.apiService.getData('groups/get/list/type?type=vehicles').subscribe((result: any) => {
       this.groupsData = result;

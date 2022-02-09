@@ -170,7 +170,6 @@ export class DriverDetailComponent implements OnInit {
         this.fetchDriver();
 
         // this.fetchGroupsbyIDs();
-        
         this.fetchAllContacts();
         this.fetchDocuments();
         this.fetchDriverTrips();

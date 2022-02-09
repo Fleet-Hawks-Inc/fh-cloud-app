@@ -1778,6 +1778,7 @@ export class AddDriverComponent
   }
   
 
+
   fetchGroupsList() {
     this.apiService.getData('groups/get/list/type?type=drivers').subscribe((result: any) => {
       this.groupsData = result;

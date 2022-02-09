@@ -505,4 +505,4 @@ export class DriverListComponent implements OnInit {
             this.groupsObjects = result;
       });
      }
-    }
+}

@@ -595,7 +595,6 @@ export class VehicleDetailComponent implements OnInit {
                 this.docs = vehicleResult.uploadDocument;
                 
                 this.fetchGroups();
-
             });
     }
 
