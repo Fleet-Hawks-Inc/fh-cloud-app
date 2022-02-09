@@ -67,9 +67,15 @@ export class AddExpensePaymentComponent implements OnInit {
     private router: Router,
     private listService: ListService,
     private location: Location
-  ) {}
+  ) { }
 
   ngOnInit() {
+    this.listService.paymentSaveList.subscribe((res: any) => {
+      if (res === "expensePayment") {
+        this.addRecord();
+      }
+    });
+
     this.fetchAccounts();
   }
 
@@ -398,7 +404,7 @@ export class AddExpensePaymentComponent implements OnInit {
     this.accountService
       .postData("expense-payments", this.paymentData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -415,7 +421,7 @@ export class AddExpensePaymentComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {
