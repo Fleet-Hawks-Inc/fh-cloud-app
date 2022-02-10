@@ -305,7 +305,6 @@ export class AddVehicleComponent implements OnInit {
     this.getYears();
     this.currentYear = moment().format('YYYY');
     this.fetchInspectionForms();
-    this.fetchGroups();
     this.fetchVehicles();
     this.fetchManufacturers();
     this.listService.fetchVendors();
@@ -504,22 +503,8 @@ export class AddVehicleComponent implements OnInit {
     $("#addDriverModelVehicle").modal("show");
   }
 
-  fetchGroups() {
-    this.apiService
-      .getData(`groups/getGroup/${this.groupData.groupType}`)
-      .subscribe((result: any) => {
-        this.groups = result.Items;
-        console.log('this.groups',this.groups)
-        result.Items.forEach((element) => {
-          if (element.isDeleted === 0) {
-            this.groups.push(element);
-          }
-        });
-      });
-  }
-
   getGroups() {
-    this.fetchGroups();
+    this.fetchGroupsList();
   }
 
   openProgram(value) {
@@ -1428,10 +1413,10 @@ export class AddVehicleComponent implements OnInit {
         this.groupSubmitDisabled = false;
         this.response = res;
         this.hasSuccess = true;
-        this.fetchGroups();
+        this.fetchGroupsList();
         this.toastr.success("Group added successfully");
         $("#addGroupModal").modal("hide");
-        this.fetchGroups();
+        this.fetchGroupsList();
       },
     });
   }

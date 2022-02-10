@@ -428,7 +428,7 @@ export class AddDriverComponent
     } else {
       this.pageTitle = "Add Driver";
     }
-    this.fetchGroups(); // fetch groups
+    // this.fetchGroups(); // fetch groups
     this.docCountries = await this.dashboardUtilityService.fetchCountries();// fetch countries
     this.getToday(); // get today date on calender
     this.searchLocation(); // search location on keyup
@@ -588,15 +588,9 @@ export class AddDriverComponent
     });
   }
 
-  fetchGroups() {
-    this.apiService
-      .getData(`groups/getGroup/${this.groupData.groupType}`)
-      .subscribe((result: any) => {
-        this.groups = result.Items;
-      });
-  }
+
   refreshGroupsData() {
-    this.fetchGroups();
+    this.fetchGroupsList();
   }
   refreshVendorData() {
     this.listService.fetchVendors();
@@ -799,7 +793,7 @@ export class AddDriverComponent
         this.response = res;
         this.hasSuccess = true;
         this.groupSubmitDisabled = false;
-        this.fetchGroups();
+        this.fetchGroupsList();
         this.toastr.success("Group added successfully");
         $("#addDriverGroupModal").modal("hide");
         this.groupData = {

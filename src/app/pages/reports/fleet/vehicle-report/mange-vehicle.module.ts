@@ -19,6 +19,8 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ActivityListComponent } from './activity-list/activity-list.component';
 import { ActivityComponent } from './activity/activity.component';
+import { ExpenseListComponent } from './expense-list/expense-list.component';
+import { ExpenseComponent } from './expense/expense.component';
 import { ProvinceMilesComponent } from './province-miles/province-miles.component';
 import { ProvinceSummaryComponent } from './province-summary/province-summary.component';
 
@@ -31,6 +33,8 @@ const routes: Routes = [
   { path: 'maintenance', component: MaintenanceComponent },
   { path: 'activity/:vehicleId', component: ActivityComponent },
   { path: 'activity-list', component: ActivityListComponent },
+  { path: 'expense-list', component: ExpenseListComponent },
+  { path: 'expense/:vehicleId', component: ExpenseComponent },
   { path: 'province-miles', component: ProvinceMilesComponent },
   { path: 'province-summary', component: ProvinceSummaryComponent },
 ];
@@ -97,6 +101,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     MaintenanceComponent,
     ActivityListComponent,
     ActivityComponent,
+    ExpenseListComponent,
+    ExpenseComponent,
+    ExpenseComponent,
     ProvinceMilesComponent,
     ProvinceSummaryComponent],
 
