@@ -169,6 +169,7 @@ export class AddAssetsComponent implements OnInit {
   companyLabel = "";
 
   isEdit: boolean = false;
+  groupsData:any = [];
   
    retInterval = [
     {
@@ -241,6 +242,7 @@ export class AddAssetsComponent implements OnInit {
     let operatorList = new Array<any>();
     this.getValidOperators(operatorList);
     this.ownOperators = operatorList;
+    this.fetchGroupsList();
   }
 
   private getValidVendors(vendorList: any[]) {
@@ -1141,5 +1143,11 @@ export class AddAssetsComponent implements OnInit {
       description: "",
       groupMembers: [],
     };
+  }
+  
+  fetchGroupsList() {
+    this.apiService.getData('groups/get/list/type?type=assets').subscribe((result: any) => {
+      this.groupsData = result;
+    });
   }
 }
