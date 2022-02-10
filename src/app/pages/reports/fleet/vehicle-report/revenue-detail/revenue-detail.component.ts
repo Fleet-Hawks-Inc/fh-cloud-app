@@ -90,7 +90,8 @@ export class RevenueDetailComponent implements OnInit {
     if (this.loaded) {
 
       this.fetchRevenueData();
-      this.fetchFuel();
+      console.log('data99',this.fetchRevenueData())
+      // this.fetchFuel();
       // this.fetchVehicleName();
     }
     this.loaded = false;
@@ -118,17 +119,6 @@ export class RevenueDetailComponent implements OnInit {
       return false;
     }
   }
-  // fuelQuery() {
-  //   let veh = encodeURIComponent(JSON.stringify(this.vehicleId));
-  //   // console.log('veh', veh)
-  //   this.apiService.getData(`fuelEntries/get/vehicle/enteries?vehicle=${veh}&start=${this.start}&end=${this.end}`).subscribe((result: any) => {
-
-  //     this.data = result
-  //     console.log('data', this.data)
-
-  //   })
-  // }
-
   fetchFuel() {
     this.apiService.getData(`fuelEntries/getBy/vehicle/trips/${this.vehicleId}?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.fuel = result.Items;
