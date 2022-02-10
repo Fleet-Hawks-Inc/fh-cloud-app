@@ -7,10 +7,10 @@
                   Expense Payment# : {{ paymentData.paymentNo }}
                </div>
                <div class="col-md-8 col-lg-8 text-right">
-                  <button type="button" [disabled]="downloadDisabled" class="btn btn-success btn-sm mr-2"
+                  <!-- <button type="button" [disabled]="downloadDisabled" class="btn btn-success btn-sm mr-2"
                      (click)="openModal()">
                      Payment PDF
-                  </button>
+                  </button> -->
                   <button type="button" *ngIf="paymentData.payMode === 'cheque'" (click)="showCheque();" class="btn btn-success btn-sm
                       mr-3"><i class="fas fa-download"></i> Cheque</button>
                   <a routerLink="/accounts/payments/expense-payments/list" class="btn btn-sm btn-default"><i
