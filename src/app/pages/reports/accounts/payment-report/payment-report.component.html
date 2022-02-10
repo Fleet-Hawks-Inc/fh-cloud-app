@@ -13,17 +13,22 @@
                     <div class="row" style="padding-top:10px;">
                         <div class="col-md-10 col-lg-10 pr-1 d-flex">
                             
-                            <div class="col-md-3 col-lg-3 pr-0">
+                            <div class="col-md-2 col-lg-2 pr-0">
                                 <ng-select [(ngModel)]="filter.type" name="type" placeholder="Select type">
                                     <ng-option *ngFor="let payment of paymentType" [value]="payment.type">{{payment.name}}</ng-option>
                                 </ng-select>
                               </div>
-                              <div class="col-md-3 col-lg-3 pr-0">
+                              <div class="col-md-1 col-lg-1 pr-0">
                                 <ng-select [(ngModel)]="filter.mode" name="type" placeholder="Select mode">
                                     <ng-option *ngFor="let payment of paymentMode" [value]="payment.type">{{payment.name}}</ng-option>
                                 </ng-select>
                               </div>
-                              <div class="col-md-2 col-lg-2 pr-0">
+                              <div class="col-md-1 col-lg-1 pr-0">
+                                <ng-select [(ngModel)]="filter.searchType" name="searchBy" placeholder="Search By">
+                                    <ng-option *ngFor="let type of searchBy" [value]="type.value">{{type.name}}</ng-option>
+                                </ng-select>
+                              </div>
+                              <div *ngIf="filter.searchType=='chequeNo'" class="col-md-2 col-lg-2 pr-0">
                                 <div class="input-group input-group-md mb-3">
                                   <input
                                     type="text"
@@ -34,7 +39,57 @@
                                   />
                                 </div>
                               </div>
-                              <div class="col-lg-3 col-md-3 pr-0">
+
+                              <div *ngIf="filter.searchType=='receiver'" class="col-md-2 col-lg-2 pr-0">
+                                <ng-select [(ngModel)]="filter.receiverType" (change)="unitTypeChange()" name="receiverType" placeholder="Select Receiver Type">
+                                    <ng-option *ngFor="let type of receivers" [value]="type.value">{{type.name}}</ng-option>
+                                </ng-select>
+                              </div>
+
+                              
+                              <div *ngIf="filter.searchType=='receiver' && filter.receiverType" class="col-md-2 col-lg-2 pr-0">
+                                <div *ngIf="filter.receiverType === 'vendor'">
+                                  <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Employee">
+                                    <ng-option value="{{ data.key }}" *ngFor="let
+                                        data of vendors | keyvalue"> {{
+                                      data.value |titlecase }}
+                                    </ng-option>
+                                  </ng-select>
+                                </div>
+                                <div *ngIf="filter.receiverType === 'employee'">
+                                  <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Employee">
+                                    <ng-option value="{{ data.key }}" *ngFor="let
+                                        data of employees | keyvalue"> {{
+                                      data.value |titlecase }}
+                                    </ng-option>
+                                  </ng-select>
+                                </div>
+                                <div *ngIf="filter.receiverType === 'driver'">
+                                  <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Driver">
+                                    <ng-option value="{{ data.key }}" *ngFor="let
+                                        data of driversObject | keyvalue"> {{
+                                      data.value | titlecase }}
+                                    </ng-option>
+                                  </ng-select>
+                                </div>
+                                <div *ngIf="filter.receiverType === 'carrier'">
+                                  <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Carrier">
+                                    <ng-option value="{{ data.key }}" *ngFor="let
+                                        data of carriersObject | keyvalue"> {{
+                                      data.value |titlecase }}
+                                    </ng-option>
+                                  </ng-select>
+                                </div>
+                                <div *ngIf="filter.receiverType === 'ownerOperator'">
+                                  <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Owner Operator">
+                                    <ng-option value="{{ data.key }}" *ngFor="let
+                                        data of ownerOpObject | keyvalue"> {{
+                                      data.value |titlecase }}
+                                    </ng-option>
+                                  </ng-select>
+                                </div>
+                              </div>
+                              <div class="col-lg-2 col-md-2 pr-0">
                                 <div class="input-daterange input-group" data-plugin-datepicker>
                                   <span class="input-group-prepend">
                                     <span class="input-group-text">
@@ -66,29 +121,31 @@
                                 <button type="button" (click)="resetFilter()" class="btn btn-sm
                       btn-success">Reset</button>
                             </div>
+                            
+                        
                         </div>
+                        <div class="col-md-2 col-lg-2 text-right pr-1">
+                          <button *ngIf="exporting" class="btn btn-success btn-sm" type="button" disabled>
+                              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Exporting...
+                            </button>
+                          <button *ngIf="!exporting" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown"
+                          aria-expanded="false">Export<span class="caret"></span>
+                          </button>
+                          <div *ngIf="!exporting" class="dropdown-menu" role="menu" x-placement="bottom-start" style="
+                                      position: absolute;
+                                      will-change: transform;
+                                      top: 0px;
+                                      left: 0px;
+                                      transform: translate3d(0px, 38px, 0px);
+                                      ">
+              <a class="dropdown-item text-1" (click)="showPDF()">PDF</a>
+              <!-- <a *ngIf="customer!=''" class="dropdown-item text-1" (click)="showReport(); isModalShow= true">PDF</a> -->
+
+            </div>
+                      </div>
 
                         
-                        <div class="col-md-2 col-lg-2 text-right pr-1">
-                            <button *ngIf="exporting" class="btn btn-success btn-sm" type="button" disabled>
-                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                              Exporting...
-                              </button>
-                            <button *ngIf="!exporting" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown"
-                            aria-expanded="false">Export<span class="caret"></span>
-                            </button>
-                            <div *ngIf="!exporting" class="dropdown-menu" role="menu" x-placement="bottom-start" style="
-                                        position: absolute;
-                                        will-change: transform;
-                                        top: 0px;
-                                        left: 0px;
-                                        transform: translate3d(0px, 38px, 0px);
-                                        ">
-                <a class="dropdown-item text-1" (click)="showPDF()">PDF</a>
-                <!-- <a *ngIf="customer!=''" class="dropdown-item text-1" (click)="showReport(); isModalShow= true">PDF</a> -->
-
-              </div>
-                        </div>
                     </div>
                 </form>
             </header>
@@ -142,7 +199,7 @@
                                                             {{element.type | titlecase}} <span *ngIf="element.advType">: {{element.advType | titlecase}}</span>
                                                         </td>
                                                         <td>
-                                                            {{element.paymentTo}} : {{element.entityName | titlecase}}
+                                                            {{element.paymentTo | titlecase}} : {{element.entityName | titlecase}}
                                                         </td>
                                                       
                                                         <td>

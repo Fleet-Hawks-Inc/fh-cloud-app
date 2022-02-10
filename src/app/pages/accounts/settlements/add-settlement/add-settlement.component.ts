@@ -663,7 +663,6 @@ export class AddSettlementComponent implements OnInit {
     } else {
       this.settlementData.finalTotal = +this.settlementData.subTotal.toFixed(2);
     }
-
     if (this.settlementData.finalTotal == 0) {
       this.submitDisabled = true;
     } else {
@@ -796,6 +795,7 @@ export class AddSettlementComponent implements OnInit {
       this.subTrpStat(tripID);
     }
     this.paymentCalculation(this.trips, "trip");
+
     if (this.settledTrips.length > 0) {
       this.paymentCalculation(this.settledTrips, "settled");
     }
@@ -807,6 +807,7 @@ export class AddSettlementComponent implements OnInit {
     this.ownDelCouunt = 0;
     let subTripCount = 0;
     this.delvCount = 0;
+
     for (let i = 0; i < trips.length; i++) {
       const element = trips[i];
       subTripCount = 0;
@@ -852,7 +853,7 @@ export class AddSettlementComponent implements OnInit {
       }
     }
 
-    await this.fetchFuelExpenses();
+    // await this.fetchFuelExpenses();
     // await this.fetchTripExpenses();
   }
 
@@ -1269,7 +1270,6 @@ export class AddSettlementComponent implements OnInit {
       });
     }
     this.submitDisabled = true;
-    console.log("this.settlementData", this.settlementData);
     this.accountService.postData("settlement", this.settlementData).subscribe({
       complete: () => { },
       error: (err: any) => {

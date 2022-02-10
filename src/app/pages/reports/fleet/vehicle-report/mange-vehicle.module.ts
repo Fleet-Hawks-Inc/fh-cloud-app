@@ -23,6 +23,7 @@ import { ProvinceMilesComponent } from './province-miles/province-miles.componen
 import { RevenueListComponent } from './revenue-list/revenue-list.component';
 import { RevenueDetailComponent } from './revenue-detail/revenue-detail.component';
 import { ProvinceSummaryComponent } from './province-summary/province-summary.component';
+
 const routes: Routes = [
   { path: 'overview', component: OverviewComponent },
   { path: 'summary', component: SummaryComponent },
