@@ -80,6 +80,9 @@ export class DriverListComponent implements OnInit {
     //driverPrevEvauatedKeys = [""];
     //driverStartPoint = 1;
     //driverEndPoint = this.pageLength;
+    groupName: any = '';
+    groupId: any = '';
+    groupsObjects: any = {};
 
     constructor(
         private apiService: ApiService,
@@ -106,6 +109,7 @@ export class DriverListComponent implements OnInit {
                     .prependTo(".page-buttons");
             }, 1800);
         });
+        this.fetchGroups();
     }
     fetchAllDocumentsTypes() {
         this.httpClient
@@ -170,10 +174,15 @@ export class DriverListComponent implements OnInit {
         this.suggestedDrivers = [];
     }
     fetchAllGrorups() {
-        this.apiService.getData("groups/get/list").subscribe((result: any) => {
+        this.apiService.getData(`groups/get/list?type=drivers&groupId=${this.groupId}`).subscribe((result: any) => {
             this.groupssObject = result;
         });
     }
+    fetchGroups() {
+        this.apiService.getData(`groups/get/driverlist?type=drivers`).subscribe((result: any) => {
+            this.groupsObjects = result;
+      });
+     }
     fetchAllVendorsIDs() {
         this.apiService.getData('contacts/get/list/vendor')
             .subscribe((result: any) => {
