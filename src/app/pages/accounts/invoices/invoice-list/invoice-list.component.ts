@@ -241,6 +241,7 @@ export class InvoiceListComponent implements OnInit {
   async getInvoices(refresh?: boolean) {
     let searchParam = null;
     let searchParamOrder = null;
+    this.disableSearch = true;
     if (refresh === true) {
       this.lastItemSK = "";
       this.invoices = [];
@@ -253,8 +254,8 @@ export class InvoiceListComponent implements OnInit {
     }
     if (this.lastItemSK !== "end") {
       if (this.filter.category !== null && this.filter.category !== "") {
-        searchParam = (this.filter.category === 'invNo' || this.filter.category === 'cusConfirm') ? encodeURIComponent(`"${this.filter.searchValue}"`) : this.filter.searchValue;
-        searchParam = searchParam.toUpperCase();
+        searchParam = this.filter.category === 'invNo' || this.filter.category === 'cusConfirm' ? encodeURIComponent(`"${this.filter.searchValue}"`) : this.filter.searchValue;
+        // searchParam = searchParam.toUpperCase();
       } else {
         searchParam = null;
       }
@@ -598,7 +599,6 @@ export class InvoiceListComponent implements OnInit {
   }
 
   searchFilter() {
-    this.lastItemSK = "";
     if (
       this.filter.endDate !== null ||
       this.filter.startDate !== null ||
@@ -720,41 +720,44 @@ export class InvoiceListComponent implements OnInit {
     this.getInvoices();
   }
 
-  async getData() {
+  async getData(refresh?: boolean) {
     this.allData = []
     let searchParam = null;
     let searchParamOrder = null
-    this.lastItemOrderSK = ""
-    this.lastItemSK = ""
-    if (
-      this.filter.invNo !== null &&
-      this.filter.invNo !== "" &&
-      this.filter.invNo !== "%22null%22"
-    ) {
-      searchParamOrder = this.filter.invNo
-    } else {
-      searchParamOrder = null;
+    if (refresh == true) {
+      this.lastItemOrderSK = "";
+      this.lastItemSK = "";
     }
-    if (this.filter.invNo !== null && this.filter.invNo !== "") {
-      searchParam = this.filter.invNo
-    } else {
-      searchParam = null;
+    if (this.lastItemSK == "end" || this.lastItemOrderSK == "end") {
+      if (
+        this.filter.category !== null && this.filter.category !== ""
+      ) {
+        searchParamOrder = this.filter.category === 'invNo' || this.filter.category === 'cusConfirm' ? encodeURIComponent(`"${this.filter.searchValue}"`) : this.filter.searchValue;
+      } else {
+        searchParamOrder = null;
+      }
+      if (this.filter.category !== null && this.filter.category !== "") {
+        searchParam = this.filter.category === 'invNo' || this.filter.category === 'cusConfirm' ? encodeURIComponent(`"${this.filter.searchValue}"`) : this.filter.searchValue;
+      } else {
+        searchParam = null;
+      }
+      let result: any = await this.accountService
+        .getData(
+          `invoices/export?searchValue=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}&category=${this.filter.category}&invType=${this.filter.invType}`
+        )
+        .toPromise();
+      if (result && result.length > 0) {
+        this.allData = this.allData.concat(result)
+      }
+      let orderInvoice: any = await this.accountService
+        .getData(
+          `order-invoice/export?searchValue=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}&category=${this.filter.category}&invType=${this.filter.invType}`
+        ).toPromise();
+      if (orderInvoice && orderInvoice.length > 0) {
+        this.allData = this.allData.concat(orderInvoice)
+      }
     }
-    let result: any = await this.accountService
-      .getData(
-        `invoices/export?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
-      )
-      .toPromise();
-    if (result && result.length > 0) {
-      this.allData = this.allData.concat(result)
-    }
-    let orderInvoice: any = await this.accountService
-      .getData(
-        `order-invoice/export?invNo=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
-      ).toPromise();
-    if (orderInvoice && orderInvoice.length > 0) {
-      this.allData = this.allData.concat(orderInvoice)
-    }
+
   }
   async generateCSV() {
     this.exportLoading = true;
