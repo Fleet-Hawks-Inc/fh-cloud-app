@@ -45,7 +45,7 @@ export class AssetDetailComponent implements OnInit {
     licencePlateNumber: string;
     licenceStateName: string;
     licenceCountryName: string;
-    groupID: string;
+    public groupID: string;
     year: string;
     manufacturer: string;
     model: string;
@@ -216,6 +216,9 @@ export class AssetDetailComponent implements OnInit {
     assetLogs = [];
     manufacturersObjects: any = {};
     modelsObjects: any = {};
+    asset: any = '';
+    groupName: any = '';
+    groupId: any = '';
 
     constructor(
         private toastr: ToastrService,
@@ -270,7 +273,7 @@ export class AssetDetailComponent implements OnInit {
                     this.assetIdentification = result.assetIdentification;
                     this.VIN = result.VIN;
                     this.assetType = result.assetType;
-                    this.groupID = result.groupID;
+                    // this.groupID = result.groupID;
                     this.startDate = result.startDate;
                     this.currentStatus = result.currentStatus;
                     this.annualSafetyDate = result.assetDetails.annualSafetyDate;
@@ -352,6 +355,8 @@ export class AssetDetailComponent implements OnInit {
                     this.pDocs = result.purchaseDocsLinks;
                     this.lDocs = result.loanDocsLinks;
                     this.assetsDocs = result.uploadedDocsLinks;
+                    this.groupId = result.groupID;
+                    this.fetchGroups();
 
                     // if (
                     //   result.uploadedPhotos != undefined &&
@@ -407,10 +412,18 @@ export class AssetDetailComponent implements OnInit {
     }
 
 
+    // fetchGroups() {
+    //     this.apiService.getData("groups/get/list").subscribe((result: any) => {
+    //         this.groupsObjects = result;
+    //     });
+    // }
+    
     fetchGroups() {
-        this.apiService.getData("groups/get/list").subscribe((result: any) => {
+       if(this.groupId !==''){
+        this.apiService.getData(`groups/get/list?type=assets&groupId=${this.groupId}`).subscribe((result: any) => {
             this.groupsObjects = result;
         });
+       }
     }
 
     fetchAssetLogs() {
