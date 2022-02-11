@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService, ListService } from "src/app/services";
@@ -10,6 +11,9 @@ import { AccountService, ApiService, ListService } from "src/app/services";
   styleUrls: ["./advance-payments-detail.component.css"],
 })
 export class AdvancePaymentsDetailComponent implements OnInit {
+  @ViewChild("previewAdvPayment", { static: true })
+  previewAdvPayment: TemplateRef<any>;
+
   dataMessage: string = Constants.FETCHING_DATA;
   noRecordMsg = Constants.NO_RECORDS_FOUND;
   paymentData = {
@@ -38,11 +42,13 @@ export class AdvancePaymentsDetailComponent implements OnInit {
   accountsIntObjects: any = {};
   advancePayments = [];
   showModal = false;
+  advPayRef: any;
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
     private toaster: ToastrService,
     private route: ActivatedRoute,
+    private modalService: NgbModal,
     private listService: ListService
   ) { }
 
@@ -191,5 +197,15 @@ export class AdvancePaymentsDetailComponent implements OnInit {
       advType: this.paymentData.advType,
     };
     this.listService.openPaymentChequeModal(obj);
+  }
+
+
+  openModal() {
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "preview-adv-pay",
+    };
+    this.advPayRef = this.modalService.open(this.previewAdvPayment, ngbModalOptions)
   }
 }
