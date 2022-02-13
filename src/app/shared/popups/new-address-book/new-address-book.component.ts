@@ -323,8 +323,8 @@ export class NewAddressBookComponent implements OnInit {
       this.apiService
         .getData(`contacts/suggestion/${value}`)
         .subscribe((result) => {
-          this.actualSuggestions = result.Items;
-          this.suggestions = result.Items;
+          this.actualSuggestions = _.uniqBy(result.Items,'cName');
+          this.suggestions = _.uniqBy(result.Items,'cName');
         });
     }
   }, 800);
