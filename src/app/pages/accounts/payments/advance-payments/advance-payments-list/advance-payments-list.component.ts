@@ -57,7 +57,7 @@ export class AdvancePaymentsListComponent implements OnInit {
       this.payments = [];
     }
     if (this.lastItemSK !== "end") {
-      
+
       if (this.filter.searchValue !== null && this.filter.searchValue !== "") {
         searchParam = this.filter.type === 'paymentNo' ? encodeURIComponent(`"${this.filter.searchValue}"`) : `${this.filter.searchValue}`;
       } else {
@@ -118,6 +118,11 @@ export class AdvancePaymentsListComponent implements OnInit {
   }
 
   searchFilter() {
+    if (this.filter.type != null && this.filter.searchValue == null) {
+      this.toaster.error('Please type value')
+      this.disableSearch = false;
+      return;
+    }
     if (
       this.filter.type !== null ||
       this.filter.searchValue !== null ||

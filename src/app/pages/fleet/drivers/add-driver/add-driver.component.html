@@ -647,7 +647,7 @@
                         </label>
                         <ng-select class="form-control form-control-sm text-capitalize" [(ngModel)]="driverData.groupID"
                           name="groupID" placeholder="Select group of which driver will be part of">
-                          <ng-option *ngFor="let group of groups" value="{{ group.groupID }}">
+                          <ng-option *ngFor="let group of groupsData" value="{{ group.groupID }}">
                             {{ group.groupName }}</ng-option>
                         </ng-select>
                       </div>

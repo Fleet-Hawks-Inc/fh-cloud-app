@@ -1278,7 +1278,13 @@ export class AddOrdersComponent implements OnInit {
               if (elem.addressID === this.orderData.cusAddressID) {
                 elem.isChecked = true;
               }
+              // address id doesnot match when address deleted from address book of particular entry
+              if (this.customerSelected[0].adrs.length === 1 && elem.addressID != this.orderData.cusAddressID) {
+                this.orderData.cusAddressID = elem.addressID;
+              }
             });
+
+
           }
         }
       });

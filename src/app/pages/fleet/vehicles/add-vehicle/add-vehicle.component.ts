@@ -282,6 +282,7 @@ export class AddVehicleComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   editDisabled = false;
   currentYear = '';
+  groupsData: any = [];
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
@@ -304,7 +305,6 @@ export class AddVehicleComponent implements OnInit {
     this.getYears();
     this.currentYear = moment().format('YYYY');
     this.fetchInspectionForms();
-    this.fetchGroups();
     this.fetchVehicles();
     this.fetchManufacturers();
     this.listService.fetchVendors();
@@ -319,10 +319,6 @@ export class AddVehicleComponent implements OnInit {
     } else {
       this.title = "Add Vehicle";
     }
-
-    this.apiService.getData("devices").subscribe((result: any) => {
-      this.quantumsList = result.Items;
-    });
     this.httpClient.get("assets/vehicleType.json").subscribe((data) => {
       this.vehicleTypeList = data;
     });
@@ -349,6 +345,7 @@ export class AddVehicleComponent implements OnInit {
     let driverList = new Array<any>();
     this.getValidDrivers(driverList);
     this.drivers = driverList;
+    this.fetchGroupsList();
   }
   getYears() {
     var max = new Date().getFullYear() + 1,
@@ -506,21 +503,8 @@ export class AddVehicleComponent implements OnInit {
     $("#addDriverModelVehicle").modal("show");
   }
 
-  fetchGroups() {
-    this.apiService
-      .getData(`groups/getGroup/${this.groupData.groupType}`)
-      .subscribe((result: any) => {
-        // this.groups = result.Items;
-        result.Items.forEach((element) => {
-          if (element.isDeleted === 0) {
-            this.groups.push(element);
-          }
-        });
-      });
-  }
-
   getGroups() {
-    this.fetchGroups();
+    this.fetchGroupsList();
   }
 
   openProgram(value) {
@@ -1429,10 +1413,10 @@ export class AddVehicleComponent implements OnInit {
         this.groupSubmitDisabled = false;
         this.response = res;
         this.hasSuccess = true;
-        this.fetchGroups();
+        this.fetchGroupsList();
         this.toastr.success("Group added successfully");
         $("#addGroupModal").modal("hide");
-        this.fetchGroups();
+        this.fetchGroupsList();
       },
     });
   }
@@ -1555,5 +1539,12 @@ export class AddVehicleComponent implements OnInit {
 
   refreshOpData() {
     this.listService.fetchOwnerOperators();
+  }
+  
+  fetchGroupsList() {
+    this.apiService.getData('groups/get/list/type?type=vehicles').subscribe((result: any) => {
+      this.groupsData = result;
+      console.log('abc', result)
+    });
   }
 }
