@@ -6,7 +6,7 @@ import { ToastrService } from "ngx-toastr";
 import { AccountService } from "src/app/services/account.service";
 import { ApiService } from "src/app/services/api.service";
 import Constants from "../../../fleet/constants";
-
+import * as html2pdf from "html2pdf.js";
 @Component({
   selector: "app-expense-detail",
   templateUrl: "./expense-detail.component.html",
@@ -208,4 +208,22 @@ export class ExpenseDetailComponent implements OnInit {
     };
     this.expPayRef = this.modalService.open(this.previewExpTransaction, ngbModalOptions)
   }
+
+  generatePaymentPDF() {
+    let data = document.getElementById("print-exp-trans");
+    html2pdf(data, {
+      margin: 0.5,
+      pagebreak: { mode: "avoid-all", before: 'print-exp-trans' },
+      filename: `expense-transaction-.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        scale: 2, logging: true, dpi: 192, letterRendering: true, allowTaint: true,
+        useCORS: true,
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    });
+    this.expPayRef.close();
+    this.downloadDisabled = false;
+  }
+
 }

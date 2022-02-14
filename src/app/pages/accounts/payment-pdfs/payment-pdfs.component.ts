@@ -37,6 +37,7 @@ export class PaymentPdfsComponent implements OnInit {
   settlements = [];
   paymentInfo: any;
   currency: string;
+  payPeriod: string;
   paymentData = {
     paymentEnity: "",
     paymentTo: null,
@@ -112,7 +113,6 @@ export class PaymentPdfsComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
       async (res: any) => {
-        console.log('res', res);
         if (res.showModal && res.length != 0) {
           res.showModal = false;
           this.paymentData = res.data;
@@ -249,7 +249,20 @@ export class PaymentPdfsComponent implements OnInit {
     this.settlements = result;
     this.paymentInfo = result[0].paymentInfo;
     this.currency = result[0].currency;
-    console.log('this.paymentInfo', this.paymentInfo)
+    if (result[0].prStart && result[0].prStart != '' && result[0].prEnd && result[0].prEnd != '') {
+      let startDate = formatDate(
+        result[0].prStart,
+        "dd-MM-yyyy",
+        this.locale
+      );
+      let endDate = formatDate(
+        result[0].prEnd,
+        "dd-MM-yyyy",
+        this.locale
+      );
+      this.payPeriod = `${startDate} To ${endDate}`;
+    }
+
 
     for (let index = 0; index < this.settlements.length; index++) {
       const element = this.settlements[index];
