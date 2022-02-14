@@ -220,7 +220,7 @@
 <ng-template #previewAdvPayment let-modal>
    <div class="modal-content">
       <div class="modal-body text-dark">
-         <table width="98%" border="0" id="print-exp-pay" align="center" cellpadding="0" cellspacing="0">
+         <table width="98%" border="0" id="print-adv-pay" align="center" cellpadding="0" cellspacing="0">
             <tbody>
                <tr>
                   <td colspan="2">&nbsp;</td>
@@ -286,16 +286,23 @@
                         <thead>
                            <tr class="bgcol2">
                               <th width="20%">
-                                 Payment#
-                              </th>
-                              <th>
                                  Payment Date
                               </th>
-                              <th width="40%">
+                              <th width="20%">
+                                 Type
+                              </th>
+
+                              <th width="20%">
                                  Paid To
                               </th>
                               <th width="20%">
-                                 Amount
+                                 Advance Payment
+                              </th>
+                              <th width="20%">
+                                 Deducted Amount
+                              </th>
+                              <th width="20%">
+                                 Balance Amount
                               </th>
                            </tr>
                         </thead>
@@ -303,13 +310,15 @@
 
                            <tr>
                               <td>
-                                 {{ paymentData.paymentNo
-                                 }}
-                              </td>
-                              <td>
                                  {{paymentData.txnDate |
                                  date: "yyyy/MM/dd"}}
                               </td>
+                              <td>
+                                 {{
+                                 (paymentData.advType) ?
+                                 paymentData.advType : '-' }}
+                              </td>
+
                               <td>
                                  {{entityName}}
                               </td>
@@ -318,101 +327,25 @@
                                  paymentData.amount |
                                  number : '1.2-2' }} {{ paymentData.currency }}
                               </td>
+                              <td>
+                                 {{
+                                 deductedAmt |
+                                 number : '1.2-2' }} {{ paymentData.currency }}
+                              </td>
+                              <td>
+                                 {{
+                                 pendingAmt |
+                                 number : '1.2-2' }} {{ paymentData.currency }}
+                              </td>
                            </tr>
                         </tbody>
                      </table>
                   </td>
                </tr>
-               <!-- <tr>
+               <tr>
                   <td colspan="2">
                      <table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tbody>
-                           <tr>
-                              <td colspan="2">
-                                 <table border="0" cellpadding="0" cellspacing="0">
-                                    <tbody>
-                                       <tr>
-                                          <td>
-                                             <p style="font-size:16px;color: #212529;"><strong>Expense Detail</strong>
-                                             </p>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td colspan="2">
-                                 <table class="table table-bordered">
-                                    <thead>
-                                       <tr class="bgcol2">
-                                          <th>Expense Date</th>
-                                          <th>Expense Trip#</th>
-                                          <th>Expense Amount</th>
-                                          <th>Amount Paid</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody>
-                                       <tr class="text-center" *ngIf="paymentData.expData.length === 0">
-                                          <td colspan="5">No record found</td>
-                                       </tr>
-                                       <tr *ngFor="let data of paymentData.expData">
-                                          <td>
-                                             <a routerLink="/accounts/expense/detail/{{ data.expID }}">
-                                                {{ data.expDate | date:"yyyy/MM/dd"}}
-                                             </a>
-                                          </td>
-                                          <td>{{ data.tripNo }}</td>
-                                          <td>{{ data.expTotal | number : '1.2-2' }} {{ paymentData.currency }}</td>
-                                          <td>{{ data.amount | number : '1.2-2' }} {{ paymentData.currency }}</td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-
-                              </td>
-                           </tr>
-                           <tr>
-                              <td colspan="2">
-                                 <table border="0" cellpadding="0" cellspacing="0">
-                                    <tbody>
-                                       <tr>
-                                          <td>
-                                             <p style="font-size:16px;color: #212529;"><strong>Advance Payment</strong>
-                                             </p>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </td>
-                           </tr>
-                           <tr>
-                              <td colspan="2">
-                                 <table class="table table-bordered">
-                                    <thead>
-                                       <tr class="bgcol2">
-                                          <th>Payment#</th>
-                                          <th>Total Advance</th>
-                                          <th>Amount Paid</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody>
-                                       <tr class="text-center" *ngIf="paymentData.advData.length === 0">
-                                          <td colspan="5">No record found</td>
-                                       </tr>
-                                       <tr *ngFor="let data of paymentData.advData">
-                                          <td>
-                                             <a
-                                                routerLink="/accounts/payments/advance-payments/detail/{{data.paymentID}}">
-                                                {{ data.advPayNo }}
-                                             </a>
-                                          </td>
-                                          <td>{{ data.advTotal | number : '1.2-2' }} {{ paymentData.currency }}</td>
-                                          <td>{{ data.amount | number : '1.2-2' }} {{ paymentData.currency }}</td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </td>
-                           </tr>
                            <tr>
                               <td>
                                  <table border="0" cellpadding="0" cellspacing="0">
@@ -470,7 +403,7 @@
                         </tbody>
                      </table>
                   </td>
-               </tr> -->
+               </tr>
                <tr>
                   <td colspan="2">
                      <table border="0" align="center" cellpadding="0" cellspacing="0">
