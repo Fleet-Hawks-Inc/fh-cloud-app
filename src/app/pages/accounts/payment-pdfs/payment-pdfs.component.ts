@@ -37,7 +37,7 @@ export class PaymentPdfsComponent implements OnInit {
   settlements = [];
   paymentInfo: any;
   currency: string;
-  payPeriod: string;
+  payPeriod: any;
   paymentData = {
     paymentEnity: "",
     paymentTo: null,
@@ -110,9 +110,11 @@ export class PaymentPdfsComponent implements OnInit {
   companyLogo = "";
   tagLine = "";
   grandTotal = 0;
+  modelRef: any;
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
       async (res: any) => {
+        console.log('res', res);
         if (res.showModal && res.length != 0) {
           res.showModal = false;
           this.paymentData = res.data;
@@ -148,7 +150,7 @@ export class PaymentPdfsComponent implements OnInit {
             windowClass: "paymentPdfSection-prog__main",
           };
           res.showModal = false;
-          this.modalService
+          this.modelRef = this.modalService
             .open(this.modalContent, ngbModalOptions)
             .result.then(
               (result) => { },
@@ -229,10 +231,14 @@ export class PaymentPdfsComponent implements OnInit {
       pagebreak: { mode: "avoid-all", before: pdfId },
       filename: `${this.paymentData.paymentTo}-payment-${this.paymentData.paymentNo}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
+      html2canvas: {
+        scale: 2, logging: true, allowTaint: true,
+        useCORS: true, dpi: 192, letterRendering: true
+      },
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     });
     localStorage.setItem("downloadDisabled", "false");
+    this.modelRef.close()
   }
 
   ngOnDestroy() {
@@ -249,21 +255,7 @@ export class PaymentPdfsComponent implements OnInit {
     this.settlements = result;
     this.paymentInfo = result[0].paymentInfo;
     this.currency = result[0].currency;
-    if (result[0].prStart && result[0].prStart != '' && result[0].prEnd && result[0].prEnd != '') {
-      let startDate = formatDate(
-        result[0].prStart,
-        "dd-MM-yyyy",
-        this.locale
-      );
-      let endDate = formatDate(
-        result[0].prEnd,
-        "dd-MM-yyyy",
-        this.locale
-      );
-      this.payPeriod = `${startDate} To ${endDate}`;
-    }
-
-
+    let newDates = []
     for (let index = 0; index < this.settlements.length; index++) {
       const element = this.settlements[index];
 
@@ -292,7 +284,38 @@ export class PaymentPdfsComponent implements OnInit {
           });
         }
       });
+
+      if (element.prStart != undefined && element.prEnd != undefined) {
+
+        let startDate = formatDate(
+          element.prStart,
+          "dd-MM-yyyy",
+          this.locale
+        );
+        let endDate = formatDate(
+          element.prEnd,
+          "dd-MM-yyyy",
+          this.locale
+        );
+        newDates.push(`${startDate} To ${endDate}`);
+      }
+      else {
+        let startDate = formatDate(
+          element.fromDate,
+          "dd-MM-yyyy",
+          this.locale
+        );
+        let endDate = formatDate(
+          element.toDate,
+          "dd-MM-yyyy",
+          this.locale
+        );
+        newDates.push(`${startDate} To ${endDate}`);
+      }
+
+
     }
+    this.payPeriod = newDates.join(", ");
     await this.fetchTrips();
   }
 
