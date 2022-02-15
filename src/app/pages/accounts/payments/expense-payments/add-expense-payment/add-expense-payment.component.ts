@@ -71,7 +71,7 @@ export class AddExpensePaymentComponent implements OnInit {
 
   ngOnInit() {
     this.listService.paymentSaveList.subscribe((res: any) => {
-      if (res === "expensePayment") {
+      if (res.openFrom === "addForm") {
         this.addRecord();
       }
     });
@@ -448,6 +448,7 @@ export class AddExpensePaymentComponent implements OnInit {
       toDate: this.paymentData.toDate,
       finalAmount: this.paymentData.finalAmount,
       txnDate: this.paymentData.txnDate,
+      page: "addForm",
     };
     this.listService.openPaymentChequeModal(obj);
   }

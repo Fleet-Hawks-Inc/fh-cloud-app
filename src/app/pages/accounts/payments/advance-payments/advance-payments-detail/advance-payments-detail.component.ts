@@ -208,6 +208,7 @@ export class AdvancePaymentsDetailComponent implements OnInit {
       finalAmount: this.paymentData.amount,
       txnDate: this.paymentData.txnDate,
       advType: this.paymentData.advType,
+      page: 'detail'
     };
     this.listService.openPaymentChequeModal(obj);
   }

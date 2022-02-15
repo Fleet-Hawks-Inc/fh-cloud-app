@@ -108,8 +108,7 @@ export class AddDriverPaymentComponent implements OnInit {
 
   async ngOnInit() {
     this.listService.paymentSaveList.subscribe((res: any) => {
-
-      if (res === "driver" || res === "carrier" || res === "owner_operator") {
+      if (res.openFrom == 'addForm') {
         this.addRecord();
       }
     });
