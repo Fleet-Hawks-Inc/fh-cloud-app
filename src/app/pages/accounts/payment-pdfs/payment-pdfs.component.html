@@ -58,7 +58,7 @@
                       " class="text-dark mb-0 text-capitalize">
                     {{ pdfDetails.name }}
                   </h2>
-                  <div class="text-dark" style="    font-size: 12px;
+                  <div class="text-dark" *ngIf="paymentData.paymentTo === 'driver'" style="    font-size: 12px;
                   margin-bottom: 2px;">
                     <strong>Payment Type:</strong> {{paymentInfo.pType}} <br>
                     <div class="text-dark" *ngIf="paymentInfo.pType === 'Pay Per Mile'">
@@ -145,7 +145,7 @@
                                         margin-top: 4px;
                                       ">
                                     <strong>Pay Period:</strong>
-                                    {{ pdfDetails.payPeriod }}
+                                    {{ payPeriod ? payPeriod : 'NA'}}
                                   </p>
                                 </td>
                               </tr>
@@ -507,7 +507,7 @@
                           <p class="text-3 text-dark mb-2"><strong>Total</strong></p>
                         </td>
                         <td class="pl-3 pt-2">
-                          <p class="text-3 text-dark mb-2"><strong>{{data.totalMiles}}</strong></p>
+                          <p class="text-3 text-dark mb-2"><strong>{{data.totalMiles | number: "1.2-2"}}</strong></p>
                         </td>
                       </tr>
                     </tbody>
@@ -520,7 +520,8 @@
               <tr>
                 <td></td>
                 <td class="pl-3 pt-2">
-                  <p class="text-3 text-dark mb-2 text-right"><strong>Grand Total: {{grandTotal}}</strong></p>
+                  <p class="text-3 text-dark mb-2 text-right"><strong>Grand Total: {{grandTotal | number:
+                      "1.2-2"}}</strong></p>
                 </td>
               </tr>
               <tr>

@@ -190,6 +190,7 @@ export class OrderDetailComponent implements OnInit {
   assets = [];
   newInvoiceDocs: [];
   today: any;
+  txnDate: any;
   cusAddressID: string;
   isInvoiced: boolean = false;
   isModalShow: boolean = false;
@@ -310,6 +311,7 @@ export class OrderDetailComponent implements OnInit {
     private location: Location
   ) {
     this.today = new Date();
+    this.txnDate = new Date().toISOString().slice(0, 10);
   }
 
   ngOnInit() {
@@ -655,7 +657,17 @@ export class OrderDetailComponent implements OnInit {
   }
   async generatePDF() {
     this.isShow = true;
+
+
+    // await this.saveInvoice();
+    // await this.invoiceGenerated();
+    // await this.fetchOrder();
+    this.generateBtnDisabled = true;
     await this.saveInvoice();
+
+  }
+
+  downloadPdf() {
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
       margin: [0.5, 0.3, 0.5, 0.3],
@@ -670,9 +682,6 @@ export class OrderDetailComponent implements OnInit {
       },
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     });
-    // await this.saveInvoice();
-    // await this.invoiceGenerated();
-    // await this.fetchOrder();
     this.previewRef.close();
   }
 
@@ -681,7 +690,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   async saveInvoice() {
-    this.generateBtnDisabled = true;
+    // this.generateBtnDisabled = true;
     this.invoiceData[`transactionLog`] = [];
     this.invoiceData[`invNo`] = this.orderNumber;
     this.invoiceData[`invType`] = "orderInvoice";
@@ -690,7 +699,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`amountPaid`] = 0;
     this.invoiceData[`fullPayment`] = false;
     this.invoiceData[`balance`] = this.totalCharges;
-    this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
+    this.invoiceData[`txnDate`] = this.txnDate;
     this.invoiceData[`orderID`] = this.orderID;
     this.invoiceData[`cusConfirmation`] = this.cusConfirmation;
 
@@ -720,8 +729,9 @@ export class OrderDetailComponent implements OnInit {
       },
       next: (res) => {
         this.isInvoiced = true;
-        this.generateBtnDisabled = false;
         this.toastr.success("Invoice Added Successfully.");
+        this.downloadPdf();
+        this.isGenerate = false;
         $("#previewInvoiceModal").modal("hide");
       },
     });

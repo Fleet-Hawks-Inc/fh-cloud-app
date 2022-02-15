@@ -6,7 +6,7 @@
           <div class="col-md-4 col-lg-4">
             <h4 class="font-weight-bold text-4 text-dark">Add Bill</h4>
           </div>
-          
+
           <div class="col-md-8 col-lg-8 text-right pr-3">
             <a
               routerLink="/accounts/purchases/bills/list"
@@ -218,8 +218,7 @@
                           name="refNo"
                           [(ngModel)]="orderData.refNo"
                           class="form-control"
-                          placeholder="Enter
-                                                    Reference#"
+                          placeholder="Enter Reference#"
                         />
                       </div>
                     </div>
@@ -352,7 +351,7 @@
                       class="table table-bordered table-responsive-lg table-striped simple-table"
                     >
                       <thead>
-                        <tr class="bgcol2">
+                        <tr class="">
                           <th></th>
                           <th class="text-2">Credit#</th>
                           <th class="text-2">Payment Date</th>
@@ -669,7 +668,7 @@
                           class="form-control h-auto"
                           name="remarks"
                           [(ngModel)]="orderData.charges.remarks"
-                          rows="14"
+                          rows="10"
                         ></textarea>
                       </div>
                     </div>
@@ -694,8 +693,7 @@
                         <ng-select
                           name="chargeAccountID"
                           [(ngModel)]="orderData.charges.accountID"
-                          placeholder="Select
-                                                            account"
+                          placeholder="Select account"
                           #chargeAcc="ngModel"
                         >
                           <ng-option
@@ -753,8 +751,7 @@
                               name="addCH{{ aId }}"
                               [(ngModel)]="accAdd.name"
                               class="form-control"
-                              placeholder="Enter
-                                                                    name"
+                              placeholder="Enter name"
                             />
                           </div>
                         </div>
@@ -833,8 +830,7 @@
                               name="dedCH{{ bId }}"
                               [(ngModel)]="accDed.name"
                               class="form-control"
-                              placeholder="Enter
-                                                                    name"
+                              placeholder="Enter name"
                             />
                           </div>
                         </div>
@@ -1012,33 +1008,43 @@
                                                             </div>
                                                         </div> -->
                         <div class="row mt-3">
-                          <div class="col-lg-9 bordtop pt-1">
-                            <h5
-                              class="text-right font-weight-semibold text-4 text-dark"
-                            >
-                              Vendor Credit
-                            </h5>
+                          <div class="col-lg-9 pt-1 pr-0">
+                            <div class="bordtop">
+                              <h5
+                                class="text-right font-weight-semibold text-4 text-dark"
+                              >
+                                Vendor Credit
+                              </h5>
+                            </div>
                           </div>
-                          <div class="col-lg-3 bordtop pt-1">
-                            <p class="text-right">
-                              {{
-                                orderData.total.vendorCredit | number: "1.2-2"
-                              }}
-                            </p>
+                          <div class="col-lg-3 pt-1 pl-0">
+                            <div class="bordtop">
+                              <p class="text-right">
+                                {{
+                                  orderData.total.vendorCredit | number: "1.2-2"
+                                }}
+                              </p>
+                            </div>
                           </div>
                         </div>
                         <div class="row">
-                          <div class="col-lg-9 bordtop pt-1">
-                            <h5
-                              class="text-right font-weight-semibold text-4 text-dark"
-                            >
-                              Total Amount
-                            </h5>
+                          <div class="col-lg-9 pt-1 pr-0">
+                            <div class="bordtop">
+                              <h5
+                                class="text-right font-weight-semibold text-4 text-dark"
+                              >
+                                Total Amount
+                              </h5>
+                            </div>
                           </div>
-                          <div class="col-lg-3 bordtop pt-1">
-                            <p class="text-right">
-                              {{ orderData.total.finalTotal | number: "1.2-2" }}
-                            </p>
+                          <div class="col-lg-3 pt-1 pl-0">
+                            <div class="bordtop">
+                              <p class="text-right">
+                                {{
+                                  orderData.total.finalTotal | number: "1.2-2"
+                                }}
+                              </p>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1047,7 +1053,7 @@
                 </div>
 
                 <div class="form-group row mt-4">
-                  <div class="col-lg-11 pr-0 text-right">
+                  <div class="col-lg-11 pr-1 text-right">
                     <button
                       type="button"
                       class="btn btn-default mr-2"
