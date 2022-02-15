@@ -161,12 +161,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngIf="vehicle.length == 0" class="text-center">
+                                        <tr *ngIf="fuel.length == 0" class="text-center">
                                             <td colspan="15">{{dataMessage}}</td>
                                         </tr>
-                                        <tr *ngFor="let item of vehicle">
+                                        <tr *ngFor="let item of fuel">
                                             <td>{{item.vehicle}}</td>
-                                            <td>{{item.data.cardNo}}</td>
+                                            <td>{{item.data.cardNo ? item.data.cardNo: '-' }}</td>
                                             <td>{{item.data.type}}</td>
                                             <td>{{item.data.date |
                                                 date:"yyyy/MM/dd"}} {{item.data.time}}</td>

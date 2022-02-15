@@ -38,7 +38,7 @@ export class ExpenseComponent implements OnInit {
   allVehicles = []
   lastEvaluatedKey = ''
   unitName: string;
-  vehicle = []
+  fuel = []
   public unitID;
   assetUnitID = null;
   lastTimeCreated = ''
@@ -125,7 +125,7 @@ export class ExpenseComponent implements OnInit {
   }
   fetchFuelVehicles() { // all data in fuel detail
     this.apiService.getData(`fuelEntries/getBy/vehicle/trips/${this.vehicleId}?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
-      this.vehicle = result.Items;
+      this.fuel = result.Items;
     });
   }
 
@@ -187,7 +187,7 @@ export class ExpenseComponent implements OnInit {
         this.lastItemSK = '';
         this.lastEvaluatedKey = ''
         this.allData = []
-        this.vehicle = []
+        this.fuel = []
         this.fuelList = []
         this.serviceLogName = []
         this.payments = []
