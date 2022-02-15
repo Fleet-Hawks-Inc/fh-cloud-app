@@ -19,7 +19,7 @@ export class PaymentPdfsComponent implements OnInit {
     private apiService: ApiService,
     private accountService: AccountService,
     private modalService: NgbModal,
-  ) {}
+  ) { }
   @ViewChild("driverPaymentDetail", { static: true })
   modalContent: TemplateRef<any>;
   subscription: Subscription;
@@ -35,7 +35,9 @@ export class PaymentPdfsComponent implements OnInit {
     paymentNo: "",
   };
   settlements = [];
-
+  paymentInfo: any;
+  currency: string;
+  payPeriod: string;
   paymentData = {
     paymentEnity: "",
     paymentTo: null,
@@ -107,7 +109,7 @@ export class PaymentPdfsComponent implements OnInit {
   companyName: any = "";
   companyLogo = "";
   tagLine = "";
-
+  grandTotal = 0;
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
       async (res: any) => {
@@ -149,10 +151,10 @@ export class PaymentPdfsComponent implements OnInit {
           this.modalService
             .open(this.modalContent, ngbModalOptions)
             .result.then(
-              (result) => {},
-              (reason) => {}
+              (result) => { },
+              (reason) => { }
             );
-            
+
           if (this.paymentData.fromDate && this.paymentData.toDate) {
             this.pdfDetails.payYear = formatDate(
               this.paymentData.toDate,
@@ -198,7 +200,7 @@ export class PaymentPdfsComponent implements OnInit {
             }
           }
           await this.fetchAdvancePayments();
-          
+
           // await this.generatePaymentPDF();
         }
       }
@@ -245,6 +247,23 @@ export class PaymentPdfsComponent implements OnInit {
       .getData(`settlement/get/selected?entities=${ids}`)
       .toPromise();
     this.settlements = result;
+    this.paymentInfo = result[0].paymentInfo;
+    this.currency = result[0].currency;
+    if (result[0].prStart && result[0].prStart != '' && result[0].prEnd && result[0].prEnd != '') {
+      let startDate = formatDate(
+        result[0].prStart,
+        "dd-MM-yyyy",
+        this.locale
+      );
+      let endDate = formatDate(
+        result[0].prEnd,
+        "dd-MM-yyyy",
+        this.locale
+      );
+      this.payPeriod = `${startDate} To ${endDate}`;
+    }
+
+
     for (let index = 0; index < this.settlements.length; index++) {
       const element = this.settlements[index];
 
@@ -319,7 +338,7 @@ export class PaymentPdfsComponent implements OnInit {
             let obj = {
               tripNo: trip.tripNo,
               date: trip.dateCreated,
-              plans: [],
+              plans: []
             };
             if (v.plan.length > 0) {
               // if sub trip is settled
@@ -351,7 +370,18 @@ export class PaymentPdfsComponent implements OnInit {
           }
         });
       });
+
+
     });
+    this.grandTotal = 0;
+    for (const item of this.paymentTrips) {
+      item.totalMiles = 0;
+      for (const plan of item.plans) {
+        item.totalMiles += parseFloat(plan.miles);
+      }
+      this.grandTotal += item.totalMiles;
+    }
+
   }
 
   fetchDriverDetails() {

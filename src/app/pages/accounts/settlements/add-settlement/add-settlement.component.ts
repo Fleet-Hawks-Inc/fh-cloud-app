@@ -114,6 +114,7 @@ export class AddSettlementComponent implements OnInit {
   tripsObject = [];
   orders = [];
   driverDetail;
+  driverAdrs: string;
   driverId = "";
   errors = {};
   response: any = "";
@@ -165,7 +166,7 @@ export class AddSettlementComponent implements OnInit {
   pendingInfo = false;
   dummyDelEntry = [];
   allFuelsDumm = [];
-
+  isEntity: boolean;
   constructor(
     private listService: ListService,
     private route: ActivatedRoute,
@@ -207,6 +208,7 @@ export class AddSettlementComponent implements OnInit {
 
   fetchDriverDetail(driverID) {
     if (driverID != undefined) {
+      this.isEntity = false;
       this.driverId = driverID;
       this.apiService
         .getData(`drivers/${driverID}`)
@@ -225,12 +227,13 @@ export class AddSettlementComponent implements OnInit {
             this.settlementData.paymentInfo.eMiles = paymentInfo.emptyMiles
               ? paymentInfo.emptyMiles
               : 0;
-            this.settlementData.paymentInfo.rate = paymentInfo.rate
+            this.settlementData.paymentInfo.pRate = paymentInfo.rate
               ? paymentInfo.rate
               : 0;
             this.settlementData.paymentInfo.dRate = paymentInfo.deliveryRate
               ? paymentInfo.deliveryRate
               : 0;
+
             let payCurr = "CAD";
             if (paymentInfo.paymentType === "Pay Per Mile") {
               payCurr = paymentInfo.loadedMilesUnit;
@@ -253,6 +256,14 @@ export class AddSettlementComponent implements OnInit {
               this.showPaymentPopup();
             }
           }
+          if (this.driverDetail.address && this.driverDetail.address.length > 0) {
+            if (!this.driverDetail.address[0].manual) {
+              this.driverAdrs = this.driverDetail.address[0].userLocation;
+            } else {
+              this.driverAdrs = `${this.driverDetail.address[0].address1} ${this.driverDetail.address[0].address2} ${this.driverDetail.address[0].cityName} ${this.driverDetail.address[0].stateName} ${this.driverDetail.address[0].countryName + this.driverDetail.address[0].zipCode}`;
+            }
+          }
+          this.isEntity = true;
         });
     }
   }
@@ -1270,6 +1281,7 @@ export class AddSettlementComponent implements OnInit {
       });
     }
     this.submitDisabled = true;
+
     this.accountService.postData("settlement", this.settlementData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -1830,11 +1842,13 @@ export class AddSettlementComponent implements OnInit {
 
   fetchCarrierDetails(carrierID) {
     if (carrierID != undefined) {
+      this.isEntity = false;
       this.apiService
         .getData(`contacts/detail/${carrierID}`)
         .subscribe((result: any) => {
           result.Items[0].data.map((v) => {
             let curKey = Object.keys(v);
+
             if (this.settlementData.type === "carrier") {
               if (curKey[0] === "carrierData") {
                 this.contactDetail = v;
@@ -1917,6 +1931,7 @@ export class AddSettlementComponent implements OnInit {
                 if (!this.settlementData.currency || this.pendingInfo) {
                   this.showPaymentPopup();
                 }
+                this.isEntity = true;
               }
             }
           });
@@ -2070,6 +2085,8 @@ export class AddSettlementComponent implements OnInit {
     this.finalTripExpenses = [];
     this.tripExpenses = [];
     this.tripMsg = Constants.NO_RECORDS_FOUND;
+    this.isEntity = false;
+    this.driverAdrs = '';
   }
 
   calculateTaxes() {

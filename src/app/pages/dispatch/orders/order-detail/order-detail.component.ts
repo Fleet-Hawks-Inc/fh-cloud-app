@@ -190,6 +190,7 @@ export class OrderDetailComponent implements OnInit {
   assets = [];
   newInvoiceDocs: [];
   today: any;
+  txnDate: any;
   cusAddressID: string;
   isInvoiced: boolean = false;
   isModalShow: boolean = false;
@@ -310,6 +311,7 @@ export class OrderDetailComponent implements OnInit {
     private location: Location
   ) {
     this.today = new Date();
+    this.txnDate = new Date().toISOString().slice(0, 10);
   }
 
   ngOnInit() {
@@ -598,7 +600,6 @@ export class OrderDetailComponent implements OnInit {
       this.isEmail = false;
       return;
     }
-    console.log('this.emailData', this.emailData)
 
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -691,11 +692,12 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`amountPaid`] = 0;
     this.invoiceData[`fullPayment`] = false;
     this.invoiceData[`balance`] = this.totalCharges;
-    this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
+    this.invoiceData[`txnDate`] = this.txnDate;
     this.invoiceData[`orderID`] = this.orderID;
+    this.invoiceData[`cusConfirmation`] = this.cusConfirmation;
+
     this.invoiceData[`zeroRated`] = this.zeroRated;
     this.invoiceData[`currency`] = this.brokerage.currency;
-
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
       complete: () => { },
       error: (err: any) => {
