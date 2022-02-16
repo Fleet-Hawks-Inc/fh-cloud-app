@@ -12,9 +12,10 @@
         <form class="form-horizontal" method="get">
           <div class="row" style="padding-top:10px;">
             <div class="col-md-2 col-lg-2 pr-1">
-              <ng-select [items]="suggestedDrivers" bindLabel="fullName" autofocus bindValue="driverID"
-                placeholder="Search driver by name" [notFoundText]='loadMsg'
+              <ng-select autofocus placeholder="Search driver by name" [notFoundText]='loadMsg'
                 (input)="getSuggestions($event.target.value)" [(ngModel)]="driverName" (change)="setDriver($event)">
+                <ng-option *ngFor="let driver of suggestedDrivers" value="{{driver.driverID}}">{{driver.fullName}}
+                </ng-option>
               </ng-select>
 
             </div>

@@ -173,13 +173,10 @@ export class DriverListComponent implements OnInit {
         }
     }, 800);
 
-    setDriver(driverData: any) {
-        console.log('driverID', driverData)
-        if (driverData && driverData.driverID && driverData.driverID != '') {
-            this.driverID = driverData.driverID;
-            console.log('driverID', this.driverID)
+    setDriver(driverID: any) {
+        if (driverID != undefined && driverID != '') {
+            this.driverID = driverID;
         }
-        this.suggestedDrivers = [];
         this.loadMsg = Constants.NO_LOAD_DATA;
 
     }
@@ -269,7 +266,7 @@ export class DriverListComponent implements OnInit {
     }
     async initDataTable() {
         if (this.lastEvaluatedKey !== 'end') {
-            const result = await this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&type=${this.driverType}&lastKey=${this.lastEvaluatedKey}`).toPromise();
+            const result = await this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&type=${this.driverType}&lastKey=${this.lastEvaluatedKey}`).toPromise();
             if (result.Items.length === 0) {
                 this.dataMessage = Constants.NO_RECORDS_FOUND
             }
@@ -323,9 +320,9 @@ export class DriverListComponent implements OnInit {
     }
 
     searchFilter() {
-        console.log('search', this.driverID, this.dutyStatus, this.driverType)
         if (
             this.driverID !== '' ||
+            this.dutyStatus !== '' ||
             this.driverType !== null
         ) {
 
@@ -342,8 +339,8 @@ export class DriverListComponent implements OnInit {
     resetFilter() {
         if (
             this.driverID !== '' ||
-            this.driverType !== null
-        ) {
+            this.dutyStatus !== '' ||
+            this.driverType !== null) {
             this.driverID = '';
             this.dutyStatus = '';
             this.driverName = '';
