@@ -115,17 +115,26 @@ export class ExpenseComponent implements OnInit {
 
     this.apiService.getData(`serviceLogs/getBy/vehicle/name/trips/${this.vehicleId}?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.serviceLogName = result.Items
+      if (result.Items.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND
+      }
     })
   }
 
   fetchVehicleName() { //show vehicle name in tile
     this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
       this.vehicleData = result.Items;
+      if (result.Items.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND
+      }
     });
   }
   fetchFuelVehicles() { // all data in fuel detail
     this.apiService.getData(`fuelEntries/getBy/vehicle/trips/${this.vehicleId}?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.fuel = result.Items;
+      if (result.Items.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND
+      }
     });
   }
 
@@ -184,14 +193,14 @@ export class ExpenseComponent implements OnInit {
         return false;
       }
       else {
+        this.dataMessage = Constants.FETCHING_DATA;
         this.lastItemSK = '';
-        this.lastEvaluatedKey = ''
         this.allData = []
         this.fuel = []
         this.fuelList = []
         this.serviceLogName = []
         this.payments = []
-        this.dataMessage = Constants.FETCHING_DATA;
+        this.settlements = []
         this.fetchVehicleListing()
         this.fetchFuelVehicles()
         this.fetchServiceLogName()
