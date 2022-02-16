@@ -39,6 +39,7 @@ export class DriverListComponent implements OnInit {
     ownerOperatorsObject: any = {};
     driverID = '';
     driverName = '';
+    selectedDriver: any;
     dutyStatus = '';
     driverType = null;
     suggestedDrivers = [];
@@ -84,6 +85,8 @@ export class DriverListComponent implements OnInit {
     groupId: any = '';
     groupsObjects: any = {};
 
+    loadMsg: string = Constants.NO_LOAD_DATA;
+
     constructor(
         private apiService: ApiService,
         private router: Router,
@@ -96,7 +99,6 @@ export class DriverListComponent implements OnInit {
 
     ngOnInit(): void {
         this.fetchAllDocumentsTypes();
-        //this.fetchDriversCount();
         this.fetchAllVehiclesIDs();
         this.fetchAllGrorups();
         this.fetchAllVendorsIDs();
@@ -144,34 +146,42 @@ export class DriverListComponent implements OnInit {
         $(".buttons-excel").trigger("click");
     }
     getSuggestions = _.debounce(function (value) {
-        this.driverID = "";
         value = value.toLowerCase();
         if (value != "") {
+            this.loadMsg = Constants.LOAD_DATA;
             this.apiService
                 .getData(`drivers/get/suggestions/${value}`)
                 .subscribe((result) => {
-                    result.map((v) => {
-                        if (v.lastName == undefined) {
-                            v.lastName = "";
-                        }
-                        return v;
-                    });
-                    this.suggestedDrivers = result;
+                    if (result.length === 0) {
+                        this.loaded = Constants.NO_LOAD_FOUND;
+                    }
+                    if (result.length > 0) {
+                        result.map((v) => {
+                            if (v.middleName != undefined && v.middleName != '') {
+                                v.fullName = `${v.firstName} ${v.middleName} ${v.lastName}`;
+                            } else {
+                                v.fullName = `${v.firstName} ${v.lastName}`;
+                            }
+                            return v;
+                        });
+                        this.suggestedDrivers = result;
+                    }
+
                 });
         } else {
             this.suggestedDrivers = [];
         }
     }, 800);
-    setDriver(driverID, firstName = "", lastName = "", middleName = "") {
-        if (middleName !== "") {
-            this.driverName = `${firstName} ${middleName} ${lastName}`;
-            // this.driverID = driverID;
-            this.driverID = `${firstName}-${middleName}-${lastName}`;
-        } else {
-            this.driverName = `${firstName} ${lastName}`;
-            this.driverID = `${firstName}-${lastName}`;
+
+    setDriver(driverData: any) {
+        console.log('driverID', driverData)
+        if (driverData && driverData.driverID && driverData.driverID != '') {
+            this.driverID = driverData.driverID;
+            console.log('driverID', this.driverID)
         }
         this.suggestedDrivers = [];
+        this.loadMsg = Constants.NO_LOAD_DATA;
+
     }
     fetchAllGrorups() {
         this.apiService.getData(`groups/get/list?type=drivers&groupId=${this.groupId}`).subscribe((result: any) => {
@@ -181,8 +191,8 @@ export class DriverListComponent implements OnInit {
     fetchGroups() {
         this.apiService.getData(`groups/get/driverlist?type=drivers`).subscribe((result: any) => {
             this.groupsObjects = result;
-      });
-     }
+        });
+    }
     fetchAllVendorsIDs() {
         this.apiService.getData('contacts/get/list/vendor')
             .subscribe((result: any) => {
@@ -253,14 +263,13 @@ export class DriverListComponent implements OnInit {
                     this.dataMessage = Constants.FETCHING_DATA;
                     this.lastEvaluatedKey = "";
                     this.initDataTable();
-                    // this.fetchDriversCount();
                     this.toastr.success("Driver is deleted!");
                 });
         }
     }
     async initDataTable() {
         if (this.lastEvaluatedKey !== 'end') {
-            const result = await this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&type=${this.driverType}&lastKey=${this.lastEvaluatedKey}`).toPromise();
+            const result = await this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&type=${this.driverType}&lastKey=${this.lastEvaluatedKey}`).toPromise();
             if (result.Items.length === 0) {
                 this.dataMessage = Constants.NO_RECORDS_FOUND
             }
@@ -314,29 +323,25 @@ export class DriverListComponent implements OnInit {
     }
 
     searchFilter() {
+        console.log('search', this.driverID, this.dutyStatus, this.driverType)
         if (
-            this.driverName !== '' ||
-            this.dutyStatus !== '' ||
+            this.driverID !== '' ||
             this.driverType !== null
         ) {
-            this.driverName = this.driverName.toLowerCase();
-            if (this.driverID == '') {
-                this.driverID = this.driverName;
-            }
+
             this.drivers = [];
             this.dataMessage = Constants.FETCHING_DATA;
             this.lastEvaluatedKey = '';
             this.suggestedDrivers = [];
             this.initDataTable();
-            // this.fetchDriversCount();
+
         } else {
             return false;
         }
     }
     resetFilter() {
         if (
-            this.driverName !== '' ||
-            this.dutyStatus !== '' ||
+            this.driverID !== '' ||
             this.driverType !== null
         ) {
             this.driverID = '';
