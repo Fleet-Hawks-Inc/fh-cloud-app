@@ -190,6 +190,7 @@ export class OrderDetailComponent implements OnInit {
   assets = [];
   newInvoiceDocs: [];
   today: any;
+  txnDate: any;
   cusAddressID: string;
   isInvoiced: boolean = false;
   isModalShow: boolean = false;
@@ -310,6 +311,7 @@ export class OrderDetailComponent implements OnInit {
     private location: Location
   ) {
     this.today = new Date();
+    this.txnDate = new Date().toISOString().slice(0, 10);
   }
 
   ngOnInit() {
@@ -370,6 +372,9 @@ export class OrderDetailComponent implements OnInit {
         ) {
           this.hideEdit = true;
           this.isGenerate = false;
+        }
+        if (result.orderStatus === 'delivered' || result.recall) {
+          this.hideEdit = false;
         }
         this.orderStatus = result.orderStatus;
         this.cusAddressID = result.cusAddressID;
@@ -513,7 +518,9 @@ export class OrderDetailComponent implements OnInit {
             }
           });
         }
-
+        if (result.customerEmail && result.customerEmail != '') {
+          this.emailData.emails.push({ label: result.customerEmail });
+        }
         //this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
       },
 
@@ -563,7 +570,11 @@ export class OrderDetailComponent implements OnInit {
       this.toastr.success("Email send successfully!");
       this.isEmail = false;
       this.userEmails = [];
-      this.emailData.emails = [];
+      if (this.emailData.emails.length > 0) {
+        this.emailData.emails = [];
+        this.emailData.emails.push({ label: this.customerEmail });
+      }
+
       this.subject = `Invoice: ${this.orderMode} - ${this.orderNumber}`;
     } else {
       this.isEmail = false;
@@ -589,6 +600,7 @@ export class OrderDetailComponent implements OnInit {
       this.isEmail = false;
       return;
     }
+
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.emailData.emails.forEach((elem) => {
@@ -645,7 +657,17 @@ export class OrderDetailComponent implements OnInit {
   }
   async generatePDF() {
     this.isShow = true;
+
+
+    // await this.saveInvoice();
+    // await this.invoiceGenerated();
+    // await this.fetchOrder();
+    this.generateBtnDisabled = true;
     await this.saveInvoice();
+
+  }
+
+  downloadPdf() {
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
       margin: [0.5, 0.3, 0.5, 0.3],
@@ -660,9 +682,6 @@ export class OrderDetailComponent implements OnInit {
       },
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     });
-    // await this.saveInvoice();
-    // await this.invoiceGenerated();
-    // await this.fetchOrder();
     this.previewRef.close();
   }
 
@@ -671,7 +690,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   async saveInvoice() {
-    this.generateBtnDisabled = true;
+    // this.generateBtnDisabled = true;
     this.invoiceData[`transactionLog`] = [];
     this.invoiceData[`invNo`] = this.orderNumber;
     this.invoiceData[`invType`] = "orderInvoice";
@@ -680,11 +699,12 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`amountPaid`] = 0;
     this.invoiceData[`fullPayment`] = false;
     this.invoiceData[`balance`] = this.totalCharges;
-    this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
+    this.invoiceData[`txnDate`] = this.txnDate;
     this.invoiceData[`orderID`] = this.orderID;
+    this.invoiceData[`cusConfirmation`] = this.cusConfirmation;
+
     this.invoiceData[`zeroRated`] = this.zeroRated;
     this.invoiceData[`currency`] = this.brokerage.currency;
-
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -709,8 +729,9 @@ export class OrderDetailComponent implements OnInit {
       },
       next: (res) => {
         this.isInvoiced = true;
-        this.generateBtnDisabled = false;
         this.toastr.success("Invoice Added Successfully.");
+        this.downloadPdf();
+        this.isGenerate = false;
         $("#previewInvoiceModal").modal("hide");
       },
     });

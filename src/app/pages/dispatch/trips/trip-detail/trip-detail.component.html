@@ -1141,8 +1141,8 @@
                       }}</span>
                   </td>
                   <td>{{ trip.miles }}</td>
-                  <td>{{ trip.vehicleID ?
-                    vehiclesObject[trip.vehicleID] : '' }}</td>
+                  <td>{{ trip.vehicleName ?
+                    trip.vehicleName : '-' }}</td>
                   <td>
                     <span *ngFor="let asst of trip.assetNames">
                       {{ asst }}

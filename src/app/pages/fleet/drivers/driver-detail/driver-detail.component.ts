@@ -148,6 +148,8 @@ export class DriverDetailComponent implements OnInit {
     Error = '';
     Success = '';
     driverLogs = [];
+    groupName: any = '';
+    groupId: any = '';
 
     constructor(
         private hereMap: HereMapService,
@@ -167,7 +169,7 @@ export class DriverDetailComponent implements OnInit {
         this.driverID = this.route.snapshot.params[`driverID`]; // get asset Id from URL
         this.fetchDriver();
 
-        this.fetchGroupsbyIDs();
+        // this.fetchGroupsbyIDs();
         this.fetchAllContacts();
         this.fetchDocuments();
         this.fetchDriverTrips();
@@ -385,7 +387,9 @@ export class DriverDetailComponent implements OnInit {
                     this.fastExpiry = this.driverData.crossBorderDetails.fastExpiry;
                     this.citizenship = await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.citizenship);
                     this.csa = this.driverData.crossBorderDetails.csa;
-                    this.group = this.driverData.groupID;
+                    // this.group = this.driverData.groupID;
+                    this.groupId = this.driverData.groupID;
+                    this.groupName = this.fetchGroups(this.groupId)[0].groupName
                     this.assignedVehicle = this.driverData.assignedVehicle;
                     this.address = this.driverData.address;
                     let newDocuments = [];
@@ -490,11 +494,18 @@ export class DriverDetailComponent implements OnInit {
         })
     }
 
-    fetchGroupsbyIDs() {
-        this.apiService.getData('groups/get/list')
-            .subscribe((result: any) => {
-                this.groupsObjects = result;
-            });
+    // fetchGroupsbyIDs() {
+    //     this.apiService.getData('groups/get/list')
+    //         .subscribe((result: any) => {
+    //             this.groupsObjects = result;
+    //         });
+    // }
+    
+    fetchGroups(groupId) {
+        this.apiService.getData(`groups/get/list?type=drivers&groupId=${groupId}`).subscribe((result: any) => {
+            this.groupsObjects = result;
+            console.log('groupsObject', this.groupsObjects)
+        });
     }
 
     fetchAllContacts() {

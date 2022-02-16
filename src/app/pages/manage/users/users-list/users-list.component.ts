@@ -37,15 +37,28 @@ export class UsersListComponent implements OnInit {
   userEndPoint = this.pageLength;
   userRoles={};
   selectedUserData: any = '';
+  selectedUser = {
+    userID: '',
+    userRoles : {},
+  }
   newRoles = [];
    searchValue = null;
     lastItemSK = "";
     loaded: boolean = false;
+    roles: any = [];
+    response: any = '';
+    reminderID:any ;
+    
 
-  constructor(private apiService: ApiService, private toastr: ToastrService, private spinner: NgxSpinnerService, private httpClient: HttpClient) { }
+  constructor(private apiService: ApiService,
+  private toastr: ToastrService,
+  private spinner: NgxSpinnerService,
+  private httpClient: HttpClient,
+  ) { }
 
   ngOnInit() {
     this.fetchUserRoles();
+    this.fetchRoles();
     this.fetchUsers();
   }
 
@@ -98,9 +111,15 @@ export class UsersListComponent implements OnInit {
   }
   async fetchUserRoles() {
     const data:any=await this.httpClient.get('assets/jsonFiles/user/userRoles.json').toPromise();
-data.forEach(element => {
-  this.userRoles[element.role]=element.name
-});
+          data.forEach(element => {
+              this.userRoles[element.role]=element.name
+            });
+  }
+   
+  fetchRoles() {
+    this.httpClient.get('assets/jsonFiles/user/userRoles.json').subscribe((data: any) => {
+      this.roles = data;
+    });
   }
 
   fetchRole(user: any) {
@@ -108,40 +127,41 @@ data.forEach(element => {
     this.selectedUserData = user;
     this.setUsrName = user.userLoginData.userName;
     this.setRoles = user.userLoginData.userRoles;
-
+    this.selectedUser.userID = user.contactID;
   }
   cancel() {
     $('#assignrole').modal('hide');
-
   }
+  
   assignRole() {
-    this.selectedUserData.userLoginData.userRoles = this.setRoles;
-
-    this.apiService.putData('contacts/assignRole', this.selectedUserData).
+    this.selectedUser.userRoles = this.setRoles;
+    this.apiService.putData('contacts/assignRole', this.selectedUser).
       subscribe({
         complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
               map((val: any) => {
-                //  val.message = val.message.replace(/".*"/, 'This Field');
+                  val.message = val.message.replace(/".*"/, 'This Field');
               })
             )
             .subscribe({
               complete: () => {
-
               },
               error: () => {
-
               },
               next: () => { },
             });
         },
         next: (res) => {
-          // this.spinner.hide();
-          this.toastr.success('Role is updated successfully');
+          this.response = res;
+          this.toastr.success('Role is assigned successfully');
           $('#assignrole').modal('hide');
-          this.fetchUsers();
+          this.users = [];
+          // this.userDraw = 0;
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.lastItemSK = '';
+          this.initDataTable();
         }
       });
   }
@@ -149,7 +169,7 @@ data.forEach(element => {
   initDataTable() {
     if (this.lastItemSK !== 'end'){
     this.apiService.getData(`contacts/fetch/employee/records?searchValue=${this.contactID}&lastKey=${this.lastItemSK}`)
-      .subscribe((result: any) => {
+    .subscribe((result: any) => {
         if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
@@ -202,15 +222,16 @@ data.forEach(element => {
     }
   }
 
-  async deleteUser(contactID, firstName: string, lastName: string, userName: string) {
+   async deleteUser(contactID) {
     if (confirm('Are you sure you want to delete?') === true) {
       await this.apiService
-        .deleteData(`contacts / delete /user/${contactID} /${firstName}/${lastName} /${userName}`)
+        .deleteData(`contacts/delete/user/${contactID}`)
         .subscribe(async (result: any) => {
           this.userDraw = 0;
           this.lastEvaluatedKey = '';
           this.dataMessage = Constants.FETCHING_DATA;
           this.users = [];
+          this.lastItemSK = '';
           this.fetchUsers();
           this.toastr.success('User deleted successfully');
         });

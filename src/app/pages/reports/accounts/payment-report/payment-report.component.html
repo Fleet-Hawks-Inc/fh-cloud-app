@@ -13,17 +13,83 @@
                     <div class="row" style="padding-top:10px;">
                         <div class="col-md-10 col-lg-10 pr-1 d-flex">
                             
-                            <div class="col-md-3 col-lg-3 pr-0">
+                            <div class="col-md-2 col-lg-2 pr-0">
                                 <ng-select [(ngModel)]="filter.type" name="type" placeholder="Select type">
                                     <ng-option *ngFor="let payment of paymentType" [value]="payment.type">{{payment.name}}</ng-option>
                                 </ng-select>
                               </div>
-                              <div class="col-md-3 col-lg-3 pr-0">
+                              <div class="col-md-1 col-lg-1 pr-0">
                                 <ng-select [(ngModel)]="filter.mode" name="type" placeholder="Select mode">
                                     <ng-option *ngFor="let payment of paymentMode" [value]="payment.type">{{payment.name}}</ng-option>
                                 </ng-select>
                               </div>
-                              <div class="col-lg-3 col-md-3 pr-0">
+                              <div class="col-md-1 col-lg-1 pr-0">
+                                <ng-select [(ngModel)]="filter.searchType" name="searchBy" placeholder="Search By">
+                                    <ng-option *ngFor="let type of searchBy" [value]="type.value">{{type.name}}</ng-option>
+                                </ng-select>
+                              </div>
+                              <div *ngIf="filter.searchType=='chequeNo'" class="col-md-2 col-lg-2 pr-0">
+                                <div class="input-group input-group-md mb-3">
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Search by Cheque/ Cash No."
+                                    name="payModeNo"
+                                    [(ngModel)]="filter.payModeNo"
+                                  />
+                                </div>
+                              </div>
+
+                              <div *ngIf="filter.searchType=='receiver'" class="col-md-2 col-lg-2 pr-0">
+                                <ng-select [(ngModel)]="filter.receiverType" (change)="unitTypeChange()" name="receiverType" placeholder="Select Receiver Type">
+                                    <ng-option *ngFor="let type of receivers" [value]="type.value">{{type.name}}</ng-option>
+                                </ng-select>
+                              </div>
+
+                              
+                              <div *ngIf="filter.searchType=='receiver' && filter.receiverType" class="col-md-2 col-lg-2 pr-0">
+                                <div *ngIf="filter.receiverType === 'vendor'">
+                                  <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Employee">
+                                    <ng-option value="{{ data.key }}" *ngFor="let
+                                        data of vendors | keyvalue"> {{
+                                      data.value |titlecase }}
+                                    </ng-option>
+                                  </ng-select>
+                                </div>
+                                <div *ngIf="filter.receiverType === 'employee'">
+                                  <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Employee">
+                                    <ng-option value="{{ data.key }}" *ngFor="let
+                                        data of employees | keyvalue"> {{
+                                      data.value |titlecase }}
+                                    </ng-option>
+                                  </ng-select>
+                                </div>
+                                <div *ngIf="filter.receiverType === 'driver'">
+                                  <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Driver">
+                                    <ng-option value="{{ data.key }}" *ngFor="let
+                                        data of driversObject | keyvalue"> {{
+                                      data.value | titlecase }}
+                                    </ng-option>
+                                  </ng-select>
+                                </div>
+                                <div *ngIf="filter.receiverType === 'carrier'">
+                                  <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Carrier">
+                                    <ng-option value="{{ data.key }}" *ngFor="let
+                                        data of carriersObject | keyvalue"> {{
+                                      data.value |titlecase }}
+                                    </ng-option>
+                                  </ng-select>
+                                </div>
+                                <div *ngIf="filter.receiverType === 'ownerOperator'">
+                                  <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Owner Operator">
+                                    <ng-option value="{{ data.key }}" *ngFor="let
+                                        data of ownerOpObject | keyvalue"> {{
+                                      data.value |titlecase }}
+                                    </ng-option>
+                                  </ng-select>
+                                </div>
+                              </div>
+                              <div class="col-lg-2 col-md-2 pr-0">
                                 <div class="input-daterange input-group" data-plugin-datepicker>
                                   <span class="input-group-prepend">
                                     <span class="input-group-text">
@@ -55,29 +121,31 @@
                                 <button type="button" (click)="resetFilter()" class="btn btn-sm
                       btn-success">Reset</button>
                             </div>
+                            
+                        
                         </div>
+                        <div class="col-md-2 col-lg-2 text-right pr-1">
+                          <button *ngIf="exporting" class="btn btn-success btn-sm" type="button" disabled>
+                              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Exporting...
+                            </button>
+                          <button *ngIf="!exporting" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown"
+                          aria-expanded="false">Export<span class="caret"></span>
+                          </button>
+                          <div *ngIf="!exporting" class="dropdown-menu" role="menu" x-placement="bottom-start" style="
+                                      position: absolute;
+                                      will-change: transform;
+                                      top: 0px;
+                                      left: 0px;
+                                      transform: translate3d(0px, 38px, 0px);
+                                      ">
+              <a class="dropdown-item text-1" (click)="showPDF()">PDF</a>
+              <!-- <a *ngIf="customer!=''" class="dropdown-item text-1" (click)="showReport(); isModalShow= true">PDF</a> -->
+
+            </div>
+                      </div>
 
                         
-                        <div class="col-md-2 col-lg-2 text-right pr-1">
-                            <button *ngIf="exporting" class="btn btn-success btn-sm" type="button" disabled>
-                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                              Exporting...
-                              </button>
-                            <button *ngIf="!exporting" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown"
-                            aria-expanded="false">Export<span class="caret"></span>
-                            </button>
-                            <div *ngIf="!exporting" class="dropdown-menu" role="menu" x-placement="bottom-start" style="
-                                        position: absolute;
-                                        will-change: transform;
-                                        top: 0px;
-                                        left: 0px;
-                                        transform: translate3d(0px, 38px, 0px);
-                                        ">
-                <a class="dropdown-item text-1" (click)="showPDF()">PDF</a>
-                <!-- <a *ngIf="customer!=''" class="dropdown-item text-1" (click)="showReport(); isModalShow= true">PDF</a> -->
-
-              </div>
-                        </div>
                     </div>
                 </form>
             </header>
@@ -95,11 +163,13 @@
                                                              table-bordered table-striped mb-0">
                                                 <thead>
                                                     <tr>
-                                                        <th id="" class="col1 minWidth200">Date</th>
-                                                        <!-- <th id="" class="col2 minWidth120">Duty Status</th> -->
+                                                        <th id="" class="col1 minWidth120">Transaction Date</th>
+                                                        <th id="" class="col1 minWidth120">Payment ID</th>
                                                         <th id="" class="minWidth120">Payment Mode</th>
+                                                        <th id="" class="minWidth120">Cheque/ Cash No.</th>
+                                                        <th id="" class="col1 minWidth120"> Cheque/Cash Date</th>
                                                         <th id="" class="minWidth120">Type Of Payment</th>
-                                                        <th id="" class="minWidth120">Vendor</th>
+                                                        <th id="" class="minWidth120">Receiver</th>
                                                         <th id="" class="minWidth120">Currency</th>
                                                         <th id="" class="minWidth120">Amount</th>
                                                         
@@ -110,17 +180,26 @@
                                                         <td colspan="14">{{dataMessage}}</td>
                                                     </tr>
                                                     <tr *ngFor="let element of allPayments">
+                                                      <td>
+                                                        {{element.txnDate|date:'YYYY-MM-dd'}}
+                                                    </td>
+                                                    <td>
+                                                      {{element.paymentNo}}
+                                                  </td>
+                                                  <td>
+                                                    {{element.payMode | titlecase}}
+                                                </td>
+                                                <td>
+                                                  {{element.payModeNo}}
+                                                </td>
                                                         <td>
-                                                            {{element.payModeDate|date:'MMM dd'}}
+                                                            {{element.payModeDate|date:'YYYY-MM-dd'}}
                                                         </td>
                                                         <td>
-                                                            {{element.payMode}}
+                                                            {{element.type | titlecase}} <span *ngIf="element.advType">: {{element.advType | titlecase}}</span>
                                                         </td>
                                                         <td>
-                                                            {{element.type}}
-                                                        </td>
-                                                        <td>
-                                                            {{element.paymentTo}} : {{element.entityName | titlecase}}
+                                                            {{element.paymentTo | titlecase}} : {{element.entityName | titlecase}}
                                                         </td>
                                                       
                                                         <td>
@@ -255,7 +334,11 @@
                       <tr bgcolor="#f3f3f3">
                         <td width="8%"
                           style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Date</p>
+                          <p style="font-weight:600;">Trans. Date</p>
+                        </td>
+                        <td width="8%"
+                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                          <p style="font-weight:600;">Payment#</p>
                         </td>
                         <td width="8%"
                           style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
@@ -263,11 +346,19 @@
                         </td>
                         <td width="8%"
                           style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                          <p style="font-weight:600;">Cheq/ Cash#</p>
+                        </td>
+                        <td width="8%"
+                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                          <p style="font-weight:600;">Cheq/ Cash Date</p>
+                        </td>
+                        <td width="8%"
+                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
                           <p style="font-weight:600;">Type Of Payment</p>
                         </td>
                         <td width="8%"
                           style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Vendor</p>
+                          <p style="font-weight:600;">Receiver</p>
                         </td>
                         <td width="6%"
                           style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
@@ -284,16 +375,26 @@
                       <tr *ngFor="let element of allExportData">
                         <td height="25"
                           style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;"> {{element.payModeDate|date:'MMM dd'}}</p>
+                          <p style="margin-top:0px; margin-bottom:0px;"> {{element.txnDate|date:'YYYY-MM-dd'}}</p>
                         </td>
                         <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{element.payMode}}</p>
+                          <p style="margin-top:0px; margin-bottom:0px;">{{element.paymentNo}}</p>
                         </td>
                         <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{ element.type }}</p>
+                          <p style="margin-top:0px; margin-bottom:0px;">{{element.payMode |titlecase}}</p>
                         </td>
                         <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{element.paymentTo}} : {{element.entityName | titlecase}}</p>
+                          <p style="margin-top:0px; margin-bottom:0px;">{{element.payModeNo}}</p>
+                        </td>
+                        <td height="25"
+                          style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
+                          <p style="margin-top:0px; margin-bottom:0px;"> {{element.payModeDate|date:'YYYY-MM-dd'}}</p>
+                        </td>
+                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
+                          <p style="margin-top:0px; margin-bottom:0px;">{{ element.type | titlecase }}<span *ngIf="element.advType">: {{element.advType | titlecase}}</span></p>
+                        </td>
+                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
+                          <p style="margin-top:0px; margin-bottom:0px;">{{element.paymentTo |titlecase}} : {{element.entityName | titlecase}}</p>
                         </td>
                         <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                           <p style="margin-top:0px; margin-bottom:0px;">{{element.currency}}</p>

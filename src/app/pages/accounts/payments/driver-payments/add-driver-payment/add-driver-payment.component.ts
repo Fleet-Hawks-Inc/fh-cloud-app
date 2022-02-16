@@ -103,14 +103,15 @@ export class AddDriverPaymentComponent implements OnInit {
     private location: Location,
     private countryStateCity: CountryStateCityService
   ) {
-    this.listService.paymentSaveList.subscribe((res: any) => {
-      if (res === "driver" || res === "carrier" || res === "owner_operator") {
-        this.addRecord();
-      }
-    });
+
   }
 
   async ngOnInit() {
+    this.listService.paymentSaveList.subscribe((res: any) => {
+      if (res.openFrom == 'addForm') {
+        this.addRecord();
+      }
+    });
     this.paymentID = this.route.snapshot.params["paymentID"];
     if (this.paymentID) {
       this.fetchPaymentDetail();
@@ -210,25 +211,26 @@ export class AddDriverPaymentComponent implements OnInit {
     let label = "";
     if (type == "cash") {
       label = "Cash";
-      this.paymentData.payModeNo = null;
+      this.paymentData.payModeNo = "";
     } else if (type == "cheque") {
       label = "Cheque";
-      this.paymentData.payModeNo = null;
+      this.paymentData.payModeNo = "";
     } else if (type == "eft") {
       label = "EFT";
-      this.paymentData.payModeNo = null;
+      this.paymentData.payModeNo = "";
     } else if (type == "credit_card") {
       label = "Credit Card";
-      this.paymentData.payModeNo = null;
+      this.paymentData.payModeNo = "";
     } else if (type == "debit_card") {
       label = "Debit Card";
-      this.paymentData.payModeNo = null;
+      this.paymentData.payModeNo = "";
     } else if (type == "demand_draft") {
       label = "Demand Draft";
-      this.paymentData.payModeNo = null;
+      this.paymentData.payModeNo = "";
     }
     this.payModeLabel = label;
     this.paymentData.payModeDate = null;
+
   }
 
   resetEntityVal() {
@@ -444,7 +446,7 @@ export class AddDriverPaymentComponent implements OnInit {
     this.accountService
       .postData("driver-payments", this.paymentData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -461,7 +463,7 @@ export class AddDriverPaymentComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {
@@ -519,7 +521,7 @@ export class AddDriverPaymentComponent implements OnInit {
     this.accountService
       .putData(`driver-payments/${this.paymentID}`, this.paymentData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -536,7 +538,7 @@ export class AddDriverPaymentComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {
@@ -671,6 +673,7 @@ export class AddDriverPaymentComponent implements OnInit {
 
   showCheque() {
     this.showModal = true;
+
     let obj = {
       entityId: this.paymentData.entityId,
       chequeDate: this.paymentData.payModeDate,
@@ -692,6 +695,7 @@ export class AddDriverPaymentComponent implements OnInit {
       txnDate: this.paymentData.txnDate,
       page: "addForm",
     };
+
     this.listService.openPaymentChequeModal(obj);
   }
 

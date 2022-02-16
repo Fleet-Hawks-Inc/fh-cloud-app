@@ -2,21 +2,16 @@
    <div class="inner-wrapper">
       <section role="main" class="content-body pl-0 pr-0 pt-0">
          <header class="page-header">
-            <div class="row pr-5" style="padding-top:10px;">
+            <div class="row" style="padding-top:10px;">
                <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
                   Employee Payment #{{ paymentData.paymentNo }}
                </div>
-               <div class="col-md-8 col-lg-8 text-right pr-4">
-                  <button type="button" (click)="downloadPaymentPdf();"
-                     [disabled]="downloadDisabled" class="btn btn-success btn-sm
-                     mr-3"><i
-                        class="fas fa-download"></i> Payment PDF</button>
-                  <button type="button" (click)="showCheque();"
-                     [disabled]="downloadDisabled" class="btn btn-success btn-sm
-                     mr-3"><i
-                        class="fas fa-download"></i> Cheque</button>
-                  <a routerLink="/accounts/payments/employee-payments/list"
-                     class="btn btn-sm btn-default"><i
+               <div class="col-md-8 col-lg-8 text-right">
+                  <button type="button" (click)="downloadPaymentPdf();" [disabled]="downloadDisabled" class="btn btn-success btn-sm
+                     mr-3"><i class="fas fa-download"></i> Payment PDF</button>
+                  <button type="button" (click)="showCheque();" [disabled]="downloadDisabled" class="btn btn-success btn-sm
+                     mr-3"><i class="fas fa-download"></i> Cheque</button>
+                  <a routerLink="/accounts/payments/employee-payments/list" class="btn btn-sm btn-default"><i
                         class="fas fa-list"></i> Payment List</a>
                </div>
             </div>
@@ -146,8 +141,7 @@
                                        <tr>
                                           <td width="40%" class="back-color-gray
                                              font-weight-bold">Payment Mode</td>
-                                          <td width="60%"
-                                             class="text-capitalize">{{
+                                          <td width="60%" class="text-capitalize">{{
                                              paymentData.payMode }}</td>
                                        </tr>
                                        <tr *ngIf="paymentData.payMode">
@@ -251,8 +245,7 @@
                                        </tr>
                                     </thead>
                                     <tbody>
-                                       <tr
-                                          *ngIf="paymentData.transactionLog.length
+                                       <tr *ngIf="paymentData.transactionLog.length
                                           === 0" class="text-center">
                                           <td colspan="4">
                                              {{ dataMessage }}
@@ -260,10 +253,10 @@
                                        </tr>
                                        <tr *ngFor="let dt of
                                           paymentData.transactionLog">
-                                          <td *ngIf="paymentData.isFeatEnabled"> 
+                                          <td *ngIf="paymentData.isFeatEnabled">
                                              {{ dt.actName | titlecase}}
-                                         </td>
-                                         <td *ngIf="!paymentData.isFeatEnabled"> 
+                                          </td>
+                                          <td *ngIf="!paymentData.isFeatEnabled">
                                              <span *ngIf="dt.actIDType ===
                                                 'actID'">{{accountsObjects[dt.accountID]
                                                 | titlecase}}</span>

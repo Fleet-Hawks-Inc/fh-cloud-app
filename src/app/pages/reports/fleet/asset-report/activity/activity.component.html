@@ -158,7 +158,7 @@
                                                      </span>
                                                     </span>
                                                 </td>
-                                               <td>   {{item.usMiles}} <br></td> 
+                                               <td>   {{item.usMiles | number : '1.2-2'}} <br></td> 
                                                    <td>
                                                         <span *ngIf="item.provinceData.length === 0 ">-</span>
                                                        <span *ngFor="let item1 of item.provinceData">
@@ -175,9 +175,9 @@
                                                      </span>
                                                     </span>
                                                 </td>
-                                                <td>{{item.canMiles}}</td> 
+                                                <td>{{item.canMiles | number : '1.2-2'}}</td> 
                                                 <td>
-                                                    {{ item.miles}}
+                                                    {{ item.miles | number : '1.2-2'}}
                                                 </td>
                                             </tr>
                                         </tbody>

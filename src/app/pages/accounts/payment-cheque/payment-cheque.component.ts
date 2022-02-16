@@ -17,6 +17,7 @@ export class PaymentChequeComponent implements OnInit {
   @ViewChild("chekOptions", { static: true }) modalContent: TemplateRef<any>;
   @ViewChild("previewCheque", { static: true }) previewCheque: TemplateRef<any>;
 
+  openFrom: any;
   carriers = [];
   addresses = [];
   currCarrId = "";
@@ -96,6 +97,7 @@ export class PaymentChequeComponent implements OnInit {
   dummyAddress = "";
   vendorCompanyName = "";
   dummyEntity = "";
+  downloadTitle = "Download & Save";
   showIssue = false;
 
   subscription: Subscription;
@@ -106,13 +108,22 @@ export class PaymentChequeComponent implements OnInit {
     private apiService: ApiService,
     private modalService: NgbModal,
     private accountService: AccountService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.subscription = this.listService.paymentModelList.subscribe(
       (res: any) => {
+        console.log('cheque res', res);
         if (res.showModal && res.length != 0) {
           // empty fields
+          if (res.page && res.page == 'detail') {
+            this.downloadTitle = 'Download'
+            this.openFrom = res.page;
+          } else {
+            this.downloadTitle = 'Download & Save';
+            this.openFrom = 'addForm';
+          }
+
           this.showIssue = false;
           this.corporateDrver = false;
           this.cheqdata.entityName = "";
@@ -128,11 +139,12 @@ export class PaymentChequeComponent implements OnInit {
             this.locale
           );
           this.cheqdata.currency = this.paydata.currency;
+
           if (this.cheqdata.currency === "CAD") {
             this.cheqdata.currencyText = "Amount in Canadian Dollars";
           } else if (this.cheqdata.currency === "USD") {
             this.cheqdata.currencyText = "Amount in US Dollars";
-          } 
+          }
           if (
             this.paydata.type === "driver" ||
             this.paydata.type === "employee" ||
@@ -250,8 +262,8 @@ export class PaymentChequeComponent implements OnInit {
           this.modalService
             .open(this.modalContent, ngbModalOptions)
             .result.then(
-              (result) => {},
-              (reason) => {}
+              (result) => { },
+              (reason) => { }
             );
         }
       }
@@ -282,8 +294,8 @@ export class PaymentChequeComponent implements OnInit {
       windowClass: "peviewCheque-prog__main",
     };
     this.modalService.open(this.previewCheque, ngbModalOptions).result.then(
-      (result) => {},
-      (reason) => {}
+      (result) => { },
+      (reason) => { }
     );
   }
 
@@ -416,7 +428,11 @@ export class PaymentChequeComponent implements OnInit {
   saveDownload() {
     this.generatePDF();
     this.modalService.dismissAll();
-    this.listService.triggerPaymentSave(this.paydata.type);
+    let obj = {
+      type: this.paydata.type,
+      openFrom: this.openFrom
+    }
+    this.listService.triggerPaymentSave(obj);
   }
 
   ngOnDestroy() {

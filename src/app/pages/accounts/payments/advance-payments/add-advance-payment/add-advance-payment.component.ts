@@ -59,9 +59,14 @@ export class AddAdvancePaymentComponent implements OnInit {
     private accountService: AccountService,
     private apiService: ApiService,
     private location: Location
-  ) {}
+  ) { }
 
   ngOnInit() {
+    this.listService.paymentSaveList.subscribe((res: any) => {
+      if (res.openFrom === "addForm") {
+        this.addRecord();
+      }
+    });
     this.paymentID = this.route.snapshot.params["paymentID"];
     if (this.paymentID) {
       this.fetchPaymentDetails();
@@ -154,7 +159,7 @@ export class AddAdvancePaymentComponent implements OnInit {
   addRecord() {
     this.submitDisabled = true;
     this.accountService.postData("advance", this.paymentData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -171,7 +176,7 @@ export class AddAdvancePaymentComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -220,7 +225,7 @@ export class AddAdvancePaymentComponent implements OnInit {
     this.accountService
       .putData(`advance/${this.paymentID}`, this.paymentData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -237,7 +242,7 @@ export class AddAdvancePaymentComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {

@@ -32,12 +32,7 @@
                     <div class="row" id="settlementListDiv">
                       <div class="col-lg-5">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold font-bold text-lg-right pt-2"
                           >Advance Payment To<span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
                           >
@@ -72,12 +67,7 @@
                       </div>
                       <div class="col-lg-5">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold font-bold text-lg-right pt-2"
                           >Advance Type<span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
                           >
@@ -105,18 +95,13 @@
                         </div>
                       </div>
                     </div>
-                    <div class="row pt-2">
+                    <div class="row">
                       <div
                         class="col-lg-10"
                         *ngIf="paymentData.paymentTo === 'driver'"
                       >
                         <label
-                          class="
-                            control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold font-bold text-lg-right pt-2"
                           >Select Driver<span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
                           ></label
@@ -153,12 +138,7 @@
                         *ngIf="paymentData.paymentTo === 'carrier'"
                       >
                         <label
-                          class="
-                            control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold font-bold text-lg-right pt-2"
                           >Select Carrier<span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
                           ></label
@@ -195,12 +175,7 @@
                         *ngIf="paymentData.paymentTo === 'owner_operator'"
                       >
                         <label
-                          class="
-                            control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold font-bold text-lg-right pt-2"
                           >Select Owner Operator<span
                             class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
@@ -239,12 +214,7 @@
                         *ngIf="paymentData.paymentTo === 'employee'"
                       >
                         <label
-                          class="
-                            control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold font-bold text-lg-right pt-2"
                           >Select Employee<span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
                           ></label
@@ -281,12 +251,7 @@
                         *ngIf="paymentData.paymentTo === 'vendor'"
                       >
                         <label
-                          class="
-                            control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold font-bold text-lg-right pt-2"
                           >Select Vendor<span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
                           ></label
@@ -301,8 +266,8 @@
                           <ng-option
                             value="{{ data.contactID }}"
                             *ngFor="let data of vendors"
-                            >{{ data.companyName }}</ng-option
-                          >
+                            >{{ data.companyName }}
+                          </ng-option>
                         </ng-select>
 
                         <div
@@ -323,12 +288,7 @@
                         *ngIf="paymentData.paymentTo === 'customer'"
                       >
                         <label
-                          class="
-                            control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold font-bold text-lg-right pt-2"
                           >Select Customer<span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
                           ></label
@@ -364,12 +324,7 @@
                     <div class="row">
                       <div class="col-lg-12">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold font-bold text-lg-right pt-2"
                           >Amount<span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
                           ></label
@@ -450,11 +405,7 @@
                       </div>
                       <div class="col-lg-5">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                          "
+                          class="control-label font-weight-bold font-bold text-lg-right"
                           >Account
                           <span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
@@ -492,7 +443,7 @@
                           type="button"
                           data-target="#addAccountModal"
                           data-toggle="modal"
-                          class="btn btn-success btn-sm mr-1"
+                          class="btn btn-success btn-sm mr-3"
                           style="color: white"
                         >
                           <i class="fas fa-plus"></i>
@@ -586,12 +537,7 @@
                     <div class="row">
                       <div class="col-lg-10">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold font-bold text-lg-right pt-2"
                           >Payment Date<span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
                           >
@@ -627,12 +573,7 @@
                     <div class="row pt-2">
                       <div class="col-lg-10">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-lg-right"
                           >Reference#
                         </label>
                         <input
@@ -648,12 +589,7 @@
                     <div class="row">
                       <div class="col-lg-10">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold font-bold text-lg-right pt-2"
                           >Notes
                         </label>
                         <textarea
@@ -683,7 +619,7 @@
                 </div>
 
                 <div class="form-group row mt-4">
-                  <div class="col-lg-11 text-right">
+                  <div class="col-lg-11 pr-0 text-right">
                     <button
                       type="button"
                       accounts
@@ -696,6 +632,7 @@
                       type="button"
                       class="btn btn-success modal-with-form mr-2"
                       *ngIf="paymentData.payMode == 'cheque'"
+                      [disabled]="!payForm.form.valid || submitDisabled"
                       (click)="showCheque()"
                     >
                       Cheque preview

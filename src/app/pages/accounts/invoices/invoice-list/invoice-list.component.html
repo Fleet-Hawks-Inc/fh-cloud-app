@@ -4,57 +4,73 @@
       <header class="page-header pr19 pl7">
         <form class="form-horizontal" method="get">
           <div class="row" style="padding-top: 10px">
-            <div class="col-md-2 col-lg-2 pr-0">
-              <div class="input-group input-group-md mb-3">
-                <input type="text" class="form-control" placeholder="Search by invoice#" [(ngModel)]="filter.invNo"
-                  name="invNo" />
+            <div class="col-10">
+              <div class="row">
+                <div class="col-md-2 col-lg-2 pr-0">
+                  <ng-select [(ngModel)]="filter.category" (change)="resetValue()" placeholder="Select category"
+                    name="category">
+                    <ng-option value="invNo">Invoice Number</ng-option>
+                    <ng-option value="customer">Customer</ng-option>
+                    <ng-option value="cusConfirm">Customer Confirmation</ng-option>
+                  </ng-select>
+                </div>
+                <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.category === 'invNo'">
+                  <div class="input-group input-group-md mb-3">
+                    <input type="text" class="form-control" placeholder="Search by invoice#"
+                      [(ngModel)]="filter.searchValue" name="invNo" />
+                  </div>
+                </div>
+                <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.category === 'cusConfirm'">
+                  <input type="text" class="form-control" placeholder="Search by customer confirmation"
+                    [(ngModel)]="filter.searchValue" name="invNo" />
+                </div>
+                <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.category === 'customer'">
+                  <ng-select [(ngModel)]="filter.searchValue" placeholder="Select customer" name="customer">
+                    <ng-option value="{{ data.key }}" *ngFor="let data of customersObjects | keyvalue">{{ data.value }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+                <div class="col-md-2 col-lg-2 pr-0">
+                  <ng-select [(ngModel)]="filter.invType" placeholder="Select Invoice Type" name="invType">
+                    <ng-option value="{{ data.key }}" *ngFor="let data of invoiceTypeObject | keyvalue">{{ data.value }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+                <div class="col-lg-3 col-md-3 pr-0">
+                  <div class="input-daterange input-group">
+                    <span class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-calendar-alt"></i>
+                      </span>
+                    </span>
+                    <input [(ngModel)]="filter.startDate" name="startDate" type="text" placeholder="yyyy/mm/dd"
+                      (click)="startDate.toggle()" ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                      autocomplete="off" />
+                    <span class="
+                        input-group-text
+                        border-left-0 border-right-0
+                        rounded-0
+                      ">
+                      to
+                    </span>
+                    <input [(ngModel)]="filter.endDate" name="endDate" type="text" placeholder="yyyy/mm/dd"
+                      (click)="endDate.toggle()" ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                      autocomplete="off" />
+                  </div>
+                </div>
+                <div class="col-md-2 col-lg-2">
+                  <button type="button" class="btn btn-sm btn-success" [disabled]="disableSearch || disableSearchOrder"
+                    (click)="searchFilter()">
+                    Search
+                  </button>
+                  <button type="button" class="btn btn-sm btn-success ml-3"
+                    [disabled]="disableSearch || disableSearchOrder" (click)="resetFilter()">
+                    Reset
+                  </button>
+                </div>
               </div>
             </div>
-            <div class="col-md-2 col-lg-2 pr-0">
-              <ng-select [(ngModel)]="filter.customer" placeholder="Select customer" name="customer">
-                <ng-option value="{{ data.key }}" *ngFor="let data of customersObjects | keyvalue">{{ data.value }}
-                </ng-option>
-              </ng-select>
-            </div>
-            <div class="col-md-1 col-lg-1 pr-0">
-              <ng-select [(ngModel)]="filter.invType" placeholder="Select Invoice Type" name="invType">
-                <ng-option value="{{ data.key }}" *ngFor="let data of invoiceTypeObject | keyvalue">{{ data.value }}
-                </ng-option>
-              </ng-select>
-            </div>
-            <div class="col-lg-2 col-md-2 pr-0">
-              <div class="input-daterange input-group">
-                <span class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fas fa-calendar-alt"></i>
-                  </span>
-                </span>
-                <input [(ngModel)]="filter.startDate" name="startDate" type="text" placeholder="yyyy/mm/dd"
-                  (click)="startDate.toggle()" ngbDatepicker #startDate="ngbDatepicker" class="form-control"
-                  autocomplete="off" />
-                <span class="
-                    input-group-text
-                    border-left-0 border-right-0
-                    rounded-0
-                  ">
-                  to
-                </span>
-                <input [(ngModel)]="filter.endDate" name="endDate" type="text" placeholder="yyyy/mm/dd"
-                  (click)="endDate.toggle()" ngbDatepicker #endDate="ngbDatepicker" class="form-control"
-                  autocomplete="off" />
-              </div>
-            </div>
-            <div class="col-md-2 col-lg-2">
-              <button type="button" class="btn btn-sm btn-success" [disabled]="disableSearch || disableSearchOrder"
-                (click)="searchFilter()">
-                Search
-              </button>
-              <button type="button" class="btn btn-sm btn-success ml-3" [disabled]="disableSearch || disableSearchOrder"
-                (click)="resetFilter()">
-                Reset
-              </button>
-            </div>
-            <div class="col-md-3 col-lg-3 text-right pr-1">
+            <div class="col-md-2 col-lg-2 text-right">
               <button [disabled]="disableSearch || disableSearchOrder" (click)="refreshData()" data-toggle="tooltip"
                 title="Refresh data" class="btn btn-success btn-sm mr-2">
                 <i class="fas fa-sync"></i>
@@ -309,6 +325,7 @@
                                 <th class="text-2">Invoice Date</th>
                                 <th class="text-2">Customer</th>
                                 <th class="text-2">Order#</th>
+                                <th class="text-2">Order Status</th>
                                 <th class="text-2">Freight Amount</th>
                                 <th class="text-2">Other Charges</th>
                                 <th class="text-2">Tax</th>
@@ -325,7 +342,7 @@
                                   invoices.length == 0 &&
                                   orderInvoices.length == 0
                                 " class="text-center">
-                                <td colspan="13">{{ dataMessage }}</td>
+                                <td colspan="14">{{ dataMessage }}</td>
                               </tr>
                               <tr *ngFor="let inv of orderInvoices; let i = index">
                                 <td class="cursorpoint font-weight-bold" (click)="routeFn(inv.invID, inv.invType)">
@@ -336,33 +353,39 @@
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    customersObjects[inv.customerID] | titlecase
-                                  }}
+                                  customersObjects[inv.customerID] | titlecase
+                                  }} <br>
+                                  <strong>Customer Confirmation:</strong> {{inv.cusConfirmation ? inv.cusConfirmation :
+                                  'NA'}}
                                 </td>
                                 <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{ inv.invNo }}
                                 </td>
+                                <td class="loadid cursorpoint text-capitalize"
+                                  (click)="routeFn(inv.invID, inv.invType)">
+                                  {{ inv.orderStatus }}
+                                </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    inv.charges.freightFee.amount
-                                      | number: "1.2-2"
+                                  inv.charges.freightFee.amount
+                                  | number: "1.2-2"
                                   }}
                                   {{ inv.charges.freightFee.currency }}
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span *ngIf="inv.invType === 'orderInvoice'">Add:
                                     {{
-                                      inv.charges.accessorialFeeInfo.total
-                                        | number: "1.2-2"
+                                    inv.charges.accessorialFeeInfo.total
+                                    | number: "1.2-2"
                                     }}&nbsp;{{
-                                      inv.charges.freightFee.currency
+                                    inv.charges.freightFee.currency
                                     }}</span>,
                                   <span *ngIf="inv.invType === 'orderInvoice'">Deduct:
                                     {{
-                                      inv.charges.accessorialDeductionInfo.total
-                                        | number: "1.2-2"
+                                    inv.charges.accessorialDeductionInfo.total
+                                    | number: "1.2-2"
                                     }}&nbsp;{{
-                                      inv.charges.freightFee.currency
+                                    inv.charges.freightFee.currency
                                     }}</span><br />
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
@@ -385,14 +408,14 @@
                                   -
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                  <span *ngIf="inv.invStatus !== 'overdue'"
-                                    class="badge badge-dark p-1">{{ inv.invStatus | uppercase }}</span>
-                                  <span *ngIf="inv.invStatus === 'overdue'"
-                                    class="badge badge-danger p-1">{{ inv.invStatus | uppercase }}</span>
+                                  <span *ngIf="inv.invStatus !== 'overdue'" class="badge badge-dark p-1">{{
+                                    inv.invStatus | uppercase }}</span>
+                                  <span *ngIf="inv.invStatus === 'overdue'" class="badge badge-danger p-1">{{
+                                    inv.invStatus | uppercase }}</span>
                                 </td>
                                 <td>
                                   <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" [disabled]="
+                                    <button type="button" class="m-0 p-0 btn" data-toggle="dropdown" [disabled]="
                                         inv.invStatus === 'paid' ||
                                         inv.invStatus === 'voided' ||
                                         inv.invStatus === 'partially paid'
@@ -428,8 +451,11 @@
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    customersObjects[inv.customerID] | titlecase
+                                  customersObjects[inv.customerID] | titlecase
                                   }}
+                                </td>
+                                <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                                  -
                                 </td>
                                 <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   -
@@ -460,10 +486,10 @@
                                   {{ inv.invDueDate | date: "yyyy/MM/dd" }}
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                  <span *ngIf="inv.invStatus !== 'overdue'"
-                                    class="badge badge-dark p-1">{{ inv.invStatus | uppercase }}</span>
-                                  <span *ngIf="inv.invStatus === 'overdue'"
-                                    class="badge badge-danger p-1">{{ inv.invStatus | uppercase }}</span>
+                                  <span *ngIf="inv.invStatus !== 'overdue'" class="badge badge-dark p-1">{{
+                                    inv.invStatus | uppercase }}</span>
+                                  <span *ngIf="inv.invStatus === 'overdue'" class="badge badge-danger p-1">{{
+                                    inv.invStatus | uppercase }}</span>
                                 </td>
                                 <td>
                                   <div class="btn-group flex-wrap">
@@ -511,6 +537,7 @@
                                 <th class="text-2">Invoice Date</th>
                                 <th class="text-2">Customer</th>
                                 <th class="text-2">Order#</th>
+                                <th class="text-2">Order Status</th>
                                 <th class="text-2">Freight Amount</th>
                                 <th class="text-2">Other Charges</th>
                                 <th class="text-2">Tax</th>
@@ -527,7 +554,7 @@
                                   openInvoices.length == 0 &&
                                   openOrderInvoices.length == 0
                                 " class="text-center">
-                                <td colspan="13">{{ dataMessage }}</td>
+                                <td colspan="14">{{ dataMessage }}</td>
                               </tr>
                               <tr *ngFor="
                                   let inv of openOrderInvoices;
@@ -541,34 +568,40 @@
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    customersObjects[inv.customerID] | titlecase
-                                  }}
+                                  customersObjects[inv.customerID] | titlecase
+                                  }} <br>
+                                  <strong>Customer Confirmation:</strong> {{inv.cusConfirmation ? inv.cusConfirmation :
+                                  'NA'}}
                                 </td>
                                 <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span *ngIf="inv.invType === 'orderInvoice'">{{ inv.invNo }}</span>
                                 </td>
+                                <td class="loadid cursorpoint text-capitalize"
+                                  (click)="routeFn(inv.invID, inv.invType)">
+                                  {{ inv.orderStatus }}
+                                </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span *ngIf="inv.invType === 'orderInvoice'">{{
-                                      inv.charges.freightFee.amount
-                                        | number: "1.2-2"
+                                    inv.charges.freightFee.amount
+                                    | number: "1.2-2"
                                     }}&nbsp;{{
-                                      inv.charges.freightFee.currency
+                                    inv.charges.freightFee.currency
                                     }}</span>
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span *ngIf="inv.invType === 'orderInvoice'">Add:
                                     {{
-                                      inv.charges.accessorialDeductionInfo.total
-                                        | number: "1.2-2"
+                                    inv.charges.accessorialDeductionInfo.total
+                                    | number: "1.2-2"
                                     }}&nbsp;{{
-                                      inv.charges.freightFee.currency
+                                    inv.charges.freightFee.currency
                                     }}</span><br />
                                   <span *ngIf="inv.invType === 'orderInvoice'">Deduct:
                                     {{
-                                      inv.charges.accessorialFeeInfo.total
-                                        | number: "1.2-2"
+                                    inv.charges.accessorialFeeInfo.total
+                                    | number: "1.2-2"
                                     }}&nbsp;{{
-                                      inv.charges.freightFee.currency
+                                    inv.charges.freightFee.currency
                                     }}</span>
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
@@ -595,10 +628,10 @@
                                   -
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                  <span *ngIf="inv.invStatus !== 'overdue'"
-                                    class="badge badge-dark p-1">{{ inv.invStatus | uppercase }}</span>
-                                  <span *ngIf="inv.invStatus === 'overdue'"
-                                    class="badge badge-danger p-1">{{ inv.invStatus | uppercase }}</span>
+                                  <span *ngIf="inv.invStatus !== 'overdue'" class="badge badge-dark p-1">{{
+                                    inv.invStatus | uppercase }}</span>
+                                  <span *ngIf="inv.invStatus === 'overdue'" class="badge badge-danger p-1">{{
+                                    inv.invStatus | uppercase }}</span>
                                 </td>
                                 <td>
                                   <div class="btn-group flex-wrap" *ngIf="
@@ -631,8 +664,11 @@
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    customersObjects[inv.customerID] | titlecase
+                                  customersObjects[inv.customerID] | titlecase
                                   }}
+                                </td>
+                                <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                                  -
                                 </td>
                                 <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   -
@@ -662,10 +698,10 @@
                                   {{ inv.invDueDate | date: "yyyy/MM/dd" }}
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                  <span *ngIf="inv.invStatus === 'open'"
-                                    class="badge badge-dark p-1">{{ inv.invStatus | uppercase }}</span>
-                                  <span *ngIf="inv.invStatus === 'overdue'"
-                                    class="badge badge-danger p-1">{{ inv.invStatus | uppercase }}</span>
+                                  <span *ngIf="inv.invStatus === 'open'" class="badge badge-dark p-1">{{ inv.invStatus |
+                                    uppercase }}</span>
+                                  <span *ngIf="inv.invStatus === 'overdue'" class="badge badge-danger p-1">{{
+                                    inv.invStatus | uppercase }}</span>
                                 </td>
                                 <td>
                                   <div class="btn-group flex-wrap">
@@ -711,6 +747,7 @@
                                 <th class="text-2">Invoice Date</th>
                                 <th class="text-2">Customer</th>
                                 <th class="text-2">Order#</th>
+                                <th class="text-2">Order Status</th>
                                 <th class="text-2">Freight Amount</th>
                                 <th class="text-2">Other Charges</th>
                                 <th class="text-2">Tax</th>
@@ -741,39 +778,45 @@
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    customersObjects[inv.customerID] | titlecase
-                                  }}
+                                  customersObjects[inv.customerID] | titlecase
+                                  }} <br>
+                                  <strong>Customer Confirmation:</strong> {{inv.cusConfirmation ? inv.cusConfirmation :
+                                  'NA'}}
                                 </td>
                                 <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{ inv.invNo }}
                                 </td>
+                                <td class="loadid cursorpoint text-capitalize"
+                                  (click)="routeFn(inv.invID, inv.invType)">
+                                  {{ inv.orderStatus }}
+                                </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    inv.charges.freightFee.amount
-                                      | number: "1.2-2"
+                                  inv.charges.freightFee.amount
+                                  | number: "1.2-2"
                                   }}&nbsp;{{ inv.charges.freightFee.currency }}
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span *ngIf="inv.invType === 'orderInvoice'">Add:
                                     {{
-                                      inv.charges.accessorialDeductionInfo.total
-                                        | number: "1.2-2"
+                                    inv.charges.accessorialDeductionInfo.total
+                                    | number: "1.2-2"
                                     }}&nbsp;{{
-                                      inv.charges.freightFee.currency
+                                    inv.charges.freightFee.currency
                                     }}</span><br />
                                   <span *ngIf="inv.invType === 'orderInvoice'">Deduct:
                                     {{
-                                      inv.charges.accessorialFeeInfo.total
-                                        | number: "1.2-2"
+                                    inv.charges.accessorialFeeInfo.total
+                                    | number: "1.2-2"
                                     }}&nbsp;{{
-                                      inv.charges.freightFee.currency
+                                    inv.charges.freightFee.currency
                                     }}</span>
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span *ngIf="inv.invType === 'orderInvoice'">{{
-                                      inv.taxesAmt | number: "1.2-2"
+                                    inv.taxesAmt | number: "1.2-2"
                                     }}&nbsp;{{
-                                      inv.charges.freightFee.currency
+                                    inv.charges.freightFee.currency
                                     }}</span>
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
@@ -798,10 +841,10 @@
                                   -
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                  <span *ngIf="inv.invStatus !== 'overdue'"
-                                    class="badge badge-dark p-1">{{ inv.invStatus | uppercase }}</span>
-                                  <span *ngIf="inv.invStatus === 'overdue'"
-                                    class="badge badge-danger p-1">{{ inv.invStatus | uppercase }}</span>
+                                  <span *ngIf="inv.invStatus !== 'overdue'" class="badge badge-dark p-1">{{
+                                    inv.invStatus | uppercase }}</span>
+                                  <span *ngIf="inv.invStatus === 'overdue'" class="badge badge-danger p-1">{{
+                                    inv.invStatus | uppercase }}</span>
                                 </td>
                                 <td>
                                   <div class="btn-group flex-wrap">
@@ -837,8 +880,11 @@
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    customersObjects[inv.customerID] | titlecase
+                                  customersObjects[inv.customerID] | titlecase
                                   }}
+                                </td>
+                                <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                                  -
                                 </td>
                                 <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   -
@@ -871,7 +917,7 @@
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span class="badge badge-dark p-1">{{
                                     inv.invStatus | uppercase
-                                  }}</span>
+                                    }}</span>
                                 </td>
                                 <td>
                                   <div class="btn-group flex-wrap">
@@ -917,6 +963,7 @@
                                 <th class="text-2">Invoice Date</th>
                                 <th class="text-2">Customer</th>
                                 <th class="text-2">Order#</th>
+                                <th class="text-2">Order Status</th>
                                 <th class="text-2">Freight Amount</th>
                                 <th class="text-2">Other Charges</th>
                                 <th class="text-2">Tax</th>
@@ -947,34 +994,40 @@
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    customersObjects[inv.customerID] | titlecase
-                                  }}
+                                  customersObjects[inv.customerID] | titlecase
+                                  }} <br>
+                                  <strong>Customer Confirmation:</strong> {{inv.cusConfirmation ? inv.cusConfirmation :
+                                  'NA'}}
                                 </td>
                                 <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{ inv.invNo }}
                                 </td>
+                                <td class="loadid cursorpoint text-capitalize"
+                                  (click)="routeFn(inv.invID, inv.invType)">
+                                  {{ inv.orderStatus }}
+                                </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    inv.charges.freightFee.amount
-                                      | number: "1.2-2"
+                                  inv.charges.freightFee.amount
+                                  | number: "1.2-2"
                                   }}&nbsp;{{ inv.charges.freightFee.currency }}
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   Add:
                                   {{
-                                    inv.charges.accessorialDeductionInfo.total
-                                      | number: "1.2-2"
+                                  inv.charges.accessorialDeductionInfo.total
+                                  | number: "1.2-2"
                                   }}&nbsp;{{ inv.charges.freightFee.currency
                                   }}<br />
                                   Deduct:
                                   {{
-                                    inv.charges.accessorialFeeInfo.total
-                                      | number: "1.2-2"
+                                  inv.charges.accessorialFeeInfo.total
+                                  | number: "1.2-2"
                                   }}&nbsp;{{ inv.charges.freightFee.currency }}
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{ inv.taxesAmt | number: "1.2-2" }}&nbsp;{{
-                                    inv.charges.freightFee.currency
+                                  inv.charges.freightFee.currency
                                   }}
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
@@ -993,10 +1046,10 @@
                                   -
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                  <span *ngIf="inv.invStatus !== 'overdue'"
-                                    class="badge badge-dark p-1">{{ inv.invStatus | uppercase }}</span>
-                                  <span *ngIf="inv.invStatus === 'overdue'"
-                                    class="badge badge-danger p-1">{{ inv.invStatus | uppercase }}</span>
+                                  <span *ngIf="inv.invStatus !== 'overdue'" class="badge badge-dark p-1">{{
+                                    inv.invStatus | uppercase }}</span>
+                                  <span *ngIf="inv.invStatus === 'overdue'" class="badge badge-danger p-1">{{
+                                    inv.invStatus | uppercase }}</span>
                                 </td>
                                 <td>
                                   <div class="btn-group flex-wrap">
@@ -1028,10 +1081,13 @@
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    customersObjects[inv.customerID] | titlecase
+                                  customersObjects[inv.customerID] | titlecase
                                   }}
                                 </td>
                                 <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                                  -
+                                </td>
+                                <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   -
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
@@ -1062,7 +1118,7 @@
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span class="badge badge-dark p-1">{{
                                     inv.invStatus | uppercase
-                                  }}</span>
+                                    }}</span>
                                 </td>
                                 <td>
                                   <div class="btn-group flex-wrap">
@@ -1105,6 +1161,7 @@
                                 <th class="text-2">Invoice Date</th>
                                 <th class="text-2">Customer</th>
                                 <th class="text-2">Order#</th>
+                                <th class="text-2">Order Status</th>
                                 <th class="text-2">Freight Amount</th>
                                 <th class="text-2">Other Charges</th>
                                 <th class="text-2">Tax</th>
@@ -1135,39 +1192,45 @@
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    customersObjects[inv.customerID] | titlecase
-                                  }}
+                                  customersObjects[inv.customerID] | titlecase
+                                  }} <br>
+                                  <strong>Customer Confirmation:</strong> {{inv.cusConfirmation ? inv.cusConfirmation :
+                                  'NA'}}
                                 </td>
                                 <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{ inv.invNo }}
                                 </td>
+                                <td class="loadid cursorpoint text-capitalize"
+                                  (click)="routeFn(inv.invID, inv.invType)">
+                                  {{ inv.orderStatus }}
+                                </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    inv.charges.freightFee.amount
-                                      | number: "1.2-2"
+                                  inv.charges.freightFee.amount
+                                  | number: "1.2-2"
                                   }}&nbsp;{{ inv.charges.freightFee.currency }}
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span *ngIf="inv.invType === 'orderInvoice'">Add:
                                     {{
-                                      inv.charges.accessorialDeductionInfo.total
-                                        | number: "1.2-2"
+                                    inv.charges.accessorialDeductionInfo.total
+                                    | number: "1.2-2"
                                     }}&nbsp;{{
-                                      inv.charges.freightFee.currency
+                                    inv.charges.freightFee.currency
                                     }}</span><br />
                                   <span *ngIf="inv.invType === 'orderInvoice'">Deduct:
                                     {{
-                                      inv.charges.accessorialFeeInfo.total
-                                        | number: "1.2-2"
+                                    inv.charges.accessorialFeeInfo.total
+                                    | number: "1.2-2"
                                     }}&nbsp;{{
-                                      inv.charges.freightFee.currency
+                                    inv.charges.freightFee.currency
                                     }}</span>
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span *ngIf="inv.invType === 'orderInvoice'">{{
-                                      inv.taxesAmt | number: "1.2-2"
+                                    inv.taxesAmt | number: "1.2-2"
                                     }}&nbsp;{{
-                                      inv.charges.freightFee.currency
+                                    inv.charges.freightFee.currency
                                     }}</span>
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
@@ -1192,10 +1255,10 @@
                                   -
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                  <span *ngIf="inv.invStatus !== 'overdue'"
-                                    class="badge badge-dark p-1">{{ inv.invStatus | uppercase }}</span>
-                                  <span *ngIf="inv.invStatus === 'overdue'"
-                                    class="badge badge-danger p-1">{{ inv.invStatus | uppercase }}</span>
+                                  <span *ngIf="inv.invStatus !== 'overdue'" class="badge badge-dark p-1">{{
+                                    inv.invStatus | uppercase }}</span>
+                                  <span *ngIf="inv.invStatus === 'overdue'" class="badge badge-danger p-1">{{
+                                    inv.invStatus | uppercase }}</span>
                                 </td>
                                 <td>
                                   <div class="btn-group flex-wrap">
@@ -1231,10 +1294,13 @@
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    customersObjects[inv.customerID] | titlecase
+                                  customersObjects[inv.customerID] | titlecase
                                   }}
                                 </td>
                                 <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                                  -
+                                </td>
+                                <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   -
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
@@ -1265,7 +1331,7 @@
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span class="badge badge-dark p-1">{{
                                     inv.invStatus | uppercase
-                                  }}</span>
+                                    }}</span>
                                 </td>
                                 <td>
                                   <div class="btn-group flex-wrap">
@@ -1313,6 +1379,7 @@
                                 <th class="text-2">Invoice Date</th>
                                 <th class="text-2">Customer</th>
                                 <th class="text-2">Order#</th>
+                                <th class="text-2">Order Status</th>
                                 <th class="text-2">Freight Amount</th>
                                 <th class="text-2">Other Charges</th>
                                 <th class="text-2">Tax</th>
@@ -1343,37 +1410,43 @@
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    customersObjects[inv.customerID] | titlecase
-                                  }}
+                                  customersObjects[inv.customerID] | titlecase
+                                  }} <br>
+                                  <strong>Customer Confirmation:</strong> {{inv.cusConfirmation ? inv.cusConfirmation :
+                                  'NA'}}
                                 </td>
                                 <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span *ngIf="inv.invType === 'orderInvoice'">{{ inv.invNo }}</span>
                                 </td>
+                                <td class="loadid cursorpoint text-capitalize"
+                                  (click)="routeFn(inv.invID, inv.invType)">
+                                  {{ inv.orderStatus }}
+                                </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span *ngIf="inv.invType === 'orderInvoice'">{{
-                                      inv.charges.freightFee.amount
-                                        | number: "1.2-2"
+                                    inv.charges.freightFee.amount
+                                    | number: "1.2-2"
                                     }}
                                     {{ inv.charges.freightFee.currency }}</span>
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span *ngIf="inv.invType === 'orderInvoice'">Add:
                                     {{
-                                      inv.charges.accessorialDeductionInfo.total
-                                        | number: "1.2-2"
+                                    inv.charges.accessorialDeductionInfo.total
+                                    | number: "1.2-2"
                                     }}
                                     {{ inv.charges.freightFee.currency }}</span><br />
                                   <span *ngIf="inv.invType === 'orderInvoice'">Deduct:
                                     {{
-                                      inv.charges.accessorialFeeInfo.total
-                                        | number: "1.2-2"
+                                    inv.charges.accessorialFeeInfo.total
+                                    | number: "1.2-2"
                                     }}
                                     {{ inv.charges.freightFee.currency }}</span>
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span *ngIf="inv.invType === 'orderInvoice'">{{ inv.taxesAmt | number: "1.2-2"
                                     }}{{
-                                      inv.charges.freightFee.currency
+                                    inv.charges.freightFee.currency
                                     }}</span>
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
@@ -1400,10 +1473,10 @@
                                   -
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                  <span *ngIf="inv.invStatus !== 'overdue'"
-                                    class="badge badge-dark p-1">{{ inv.invStatus | uppercase }}</span>
-                                  <span *ngIf="inv.invStatus === 'overdue'"
-                                    class="badge badge-danger p-1">{{ inv.invStatus | uppercase }}</span>
+                                  <span *ngIf="inv.invStatus !== 'overdue'" class="badge badge-dark p-1">{{
+                                    inv.invStatus | uppercase }}</span>
+                                  <span *ngIf="inv.invStatus === 'overdue'" class="badge badge-danger p-1">{{
+                                    inv.invStatus | uppercase }}</span>
                                 </td>
                                 <td>
                                   <div class="btn-group flex-wrap">
@@ -1437,7 +1510,7 @@
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    customersObjects[inv.customerID] | titlecase
+                                  customersObjects[inv.customerID] | titlecase
                                   }}
                                 </td>
                                 <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)"></td>
@@ -1465,7 +1538,7 @@
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span class="badge badge-dark p-1">{{
                                     inv.invStatus | uppercase
-                                  }}</span>
+                                    }}</span>
                                 </td>
                                 <td>
                                   <div class="btn-group flex-wrap">
@@ -1509,6 +1582,7 @@
                                 <th class="text-2">Invoice Date</th>
                                 <th class="text-2">Customer</th>
                                 <th class="text-2">Order#</th>
+                                <th class="text-2">Order Status</th>
                                 <th class="text-2">Freight Amount</th>
                                 <th class="text-2">Other Charges</th>
                                 <th class="text-2">Tax</th>
@@ -1539,30 +1613,36 @@
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    customersObjects[inv.customerID] | titlecase
-                                  }}
+                                  customersObjects[inv.customerID] | titlecase
+                                  }} <br>
+                                  <strong>Customer Confirmation:</strong> {{inv.cusConfirmation ? inv.cusConfirmation :
+                                  'NA'}}
                                 </td>
                                 <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span *ngIf="inv.invType === 'orderInvoice'">{{ inv.invNo }}</span>
                                 </td>
+                                <td class="loadid cursorpoint text-capitalize"
+                                  (click)="routeFn(inv.invID, inv.invType)">
+                                  {{ inv.orderStatus }}
+                                </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span *ngIf="inv.invType === 'orderInvoice'">{{
-                                      inv.charges.freightFee.amount
-                                        | number: "1.2-2"
+                                    inv.charges.freightFee.amount
+                                    | number: "1.2-2"
                                     }}
                                     {{ inv.charges.freightFee.currency }}</span>
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span *ngIf="inv.invType === 'orderInvoice'">Add:
                                     {{
-                                      inv.charges.accessorialDeductionInfo.total
-                                        | number: "1.2-2"
+                                    inv.charges.accessorialDeductionInfo.total
+                                    | number: "1.2-2"
                                     }}
                                     {{ inv.charges.freightFee.currency }}</span><br />
                                   <span *ngIf="inv.invType === 'orderInvoice'">Deduct:
                                     {{
-                                      inv.charges.accessorialFeeInfo.total
-                                        | number: "1.2-2"
+                                    inv.charges.accessorialFeeInfo.total
+                                    | number: "1.2-2"
                                     }}
                                     {{ inv.charges.freightFee.currency }}</span>
                                 </td>
@@ -1598,10 +1678,10 @@
                                   -
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                                  <span *ngIf="inv.invStatus !== 'overdue'"
-                                    class="badge badge-dark p-1">{{ inv.invStatus | uppercase }}</span>
-                                  <span *ngIf="inv.invStatus === 'overdue'"
-                                    class="badge badge-danger p-1">{{ inv.invStatus | uppercase }}</span>
+                                  <span *ngIf="inv.invStatus !== 'overdue'" class="badge badge-dark p-1">{{
+                                    inv.invStatus | uppercase }}</span>
+                                  <span *ngIf="inv.invStatus === 'overdue'" class="badge badge-danger p-1">{{
+                                    inv.invStatus | uppercase }}</span>
                                 </td>
                                 <td>
                                   <div class="btn-group flex-wrap">
@@ -1635,8 +1715,11 @@
                                 </td>
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   {{
-                                    customersObjects[inv.customerID] | titlecase
+                                  customersObjects[inv.customerID] | titlecase
                                   }}
+                                </td>
+                                <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
+                                  -
                                 </td>
                                 <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   -
@@ -1669,7 +1752,7 @@
                                 <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                   <span class="badge badge-dark p-1">{{
                                     inv.invStatus | uppercase
-                                  }}</span>
+                                    }}</span>
                                 </td>
                                 <td>
                                   <div class="btn-group flex-wrap">
@@ -1869,7 +1952,7 @@
                             <tr>
                               <td>
                                 <p style="font-size:16px;"><strong></strong>
-                                  </p>
+                                </p>
                               </td>
                             </tr>
                           </tbody>
@@ -2114,13 +2197,13 @@
                       </td>
                       <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                         <p style="margin-top:0px; margin-bottom:0px;">{{
-                        (data.taxesAmt===undefined)?data.taxAmount:data.taxesAmt
-                      }}</p>
+                          (data.taxesAmt===undefined)?data.taxAmount:data.taxesAmt
+                          }}</p>
                       </td>
                       <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                         <p style="margin-top:0px; margin-bottom:0px;">{{
-                        data.subTotal
-                      }}</p>
+                          data.subTotal
+                          }}</p>
                       </td>
                       <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                         <p style="margin-top:0px; margin-bottom:0px;">{{ data.amountReceived }}</p>

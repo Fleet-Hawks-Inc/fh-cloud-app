@@ -42,12 +42,7 @@
                 <div class="form-group row adddriverpl pt-3">
                   <div class="col-lg-10">
                     <label
-                      class="
-                        control-label
-                        font-weight-bold
-                        text-lg-right text-5
-                        pt-2
-                      "
+                      class="control-label font-weight-bold text-lg-right text-5 pt-2"
                       >Basic Details</label
                     >
                   </div>
@@ -56,12 +51,7 @@
                     <div class="row">
                       <div class="col-lg-6">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-2"
                           >Company Name
                           <span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
@@ -96,12 +86,7 @@
 
                       <div class="col-lg-6">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-2"
                           >DBA Name
                         </label>
                         <input
@@ -115,12 +100,7 @@
 
                       <div class="col-lg-6">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-2"
                           >First Name
                           <span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
@@ -154,12 +134,7 @@
 
                       <div class="col-lg-6">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text--lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text--lg-right pt-2"
                           >Last Name
                           <span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
@@ -196,12 +171,7 @@
                     <div class="row justify-content-center">
                       <div class="col-lg-6">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-2"
                           >Employee ID
                           <span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
@@ -237,12 +207,7 @@
 
                       <div class="col-lg-6">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-2"
                           >Date of Birth
                         </label>
                         <input
@@ -263,12 +228,7 @@
 
                       <div class="col-lg-6">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-2"
                           >Phone
                           <span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
@@ -301,12 +261,7 @@
                       </div>
                       <div class="col-lg-6">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-2"
                           >Email
                           <span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
@@ -322,7 +277,7 @@
                           #uem="ngModel"
                           required
                           [ngClass]="{ error: uForm1.submitted && uem.invalid }"
-                          pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$"
+                          pattern="[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
                         />
                         <div
                           *ngIf="uem.invalid && uForm1.submitted"
@@ -338,7 +293,10 @@
                       </div>
 
                       <div class="col-lg-12 mt-3">
-                        <div class="btn btn-sm btn-success">
+                        <div
+                          class="btn btn-sm btn-success"
+                          style="position: relative"
+                        >
                           <i class="fas fa-plus"></i> {{ imageText }} Photo
                           <input
                             class="hidden_input1 w-100"
@@ -422,12 +380,7 @@
                 <div class="form-group row adddriverpl pt-3">
                   <div class="col-lg-10">
                     <label
-                      class="
-                        control-label
-                        font-weight-bold
-                        text-lg-right text-5
-                        pt-2
-                      "
+                      class="control-label font-weight-bold text-lg-right text-5 pt-2"
                       >Address</label
                     >
                   </div>
@@ -439,12 +392,7 @@
                     >
                       <div class="col-lg-5">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-lg-right pt-2"
                           >Address Type &nbsp;
                         </label>
                         <ng-select
@@ -462,12 +410,7 @@
                       </div>
                       <div class="col-lg-4 offset-lg-1">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-lg-right pt-2"
                           >Type Your Location &nbsp;
                         </label>
                         <input
@@ -503,10 +446,10 @@
                           <label for="man_address">Type Manually</label>
                         </div>
                       </div>
-                      <div class="col-lg-2 mar-top-37">
+                      <div class="col-lg-1 text-right mar-top-37">
                         <a
                           href="javascript:;"
-                          class="btn btn-dark btn-sm mr-2"
+                          class="btn btn-dark btn-sm mr-3"
                           (click)="clearUserLocation(i)"
                           >Clear</a
                         >
@@ -531,12 +474,7 @@
                             <div class="row">
                               <div class="col-lg-5">
                                 <label
-                                  class="
-                                    control-label
-                                    font-weight-bold
-                                    text-lg-right
-                                    pt-2
-                                  "
+                                  class="control-label font-weight-bold text-lg-right pt-2"
                                   >Select Country</label
                                 >
                                 <ng-select
@@ -554,12 +492,7 @@
                               </div>
                               <div class="col-lg-5">
                                 <label
-                                  class="
-                                    control-label
-                                    font-weight-bold
-                                    text-lg-right
-                                    pt-2
-                                  "
+                                  class="control-label font-weight-bold text-lg-right pt-2"
                                   >Select Province/State</label
                                 >
                                 <ng-select
@@ -579,12 +512,7 @@
                               </div>
                               <div class="col-lg-5">
                                 <label
-                                  class="
-                                    control-label
-                                    font-weight-bold
-                                    text-lg-right
-                                    pt-2
-                                  "
+                                  class="control-label font-weight-bold text-lg-right pt-2"
                                   >Select City</label
                                 >
                                 <ng-select
@@ -603,12 +531,7 @@
                               </div>
                               <div class="col-lg-5">
                                 <label
-                                  class="
-                                    control-label
-                                    font-weight-bold
-                                    text-lg-right
-                                    pt-2
-                                  "
+                                  class="control-label font-weight-bold text-lg-right pt-2"
                                   >Zip Code</label
                                 >
                                 <input
@@ -626,12 +549,7 @@
                             <div class="row">
                               <div class="col-lg-10">
                                 <label
-                                  class="
-                                    control-label
-                                    font-weight-bold
-                                    text-lg-right
-                                    pt-2
-                                  "
+                                  class="control-label font-weight-bold text-lg-right pt-2"
                                   >Address 1</label
                                 >
                                 <input
@@ -644,12 +562,7 @@
                               </div>
                               <div class="col-lg-10">
                                 <label
-                                  class="
-                                    control-label
-                                    font-weight-bold
-                                    text-lg-right
-                                    pt-2
-                                  "
+                                  class="control-label font-weight-bold text-lg-right pt-2"
                                   >Address 2</label
                                 >
                                 <input
@@ -681,12 +594,7 @@
                     <div class="form-group row adddriverpl pt-3">
                       <div class="col-lg-10">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right text-5
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-lg-right text-5 pt-2"
                           >User Account</label
                         >
                       </div>
@@ -695,12 +603,7 @@
                         <div class="row">
                           <div class="col-lg-6">
                             <label
-                              class="
-                                control-label
-                                font-weight-bold
-                                text-dark text-lg-right
-                                pt-2
-                              "
+                              class="control-label font-weight-bold text-dark text-lg-right pt-2"
                               >Contract Start Date
                             </label>
                             <input
@@ -722,12 +625,7 @@
                           </div>
                           <div class="col-lg-6">
                             <label
-                              class="
-                                control-label
-                                font-weight-bold
-                                text-dark text-lg-right
-                                pt-2
-                              "
+                              class="control-label font-weight-bold text-dark text-lg-right pt-2"
                               >Contract End Date
                             </label>
                             <input
@@ -751,12 +649,7 @@
                         <div class="row">
                           <div class="col-lg-6">
                             <label
-                              class="
-                                control-label
-                                font-weight-bold
-                                text-dark text-lg-right
-                                pt-2
-                              "
+                              class="control-label font-weight-bold text-dark text-lg-right pt-2"
                               >Designation
                             </label>
                             <ng-select
@@ -771,12 +664,7 @@
                           </div>
                           <div class="col-lg-6">
                             <label
-                              class="
-                                control-label
-                                font-weight-bold
-                                text-dark text-lg-right
-                                pt-2
-                              "
+                              class="control-label font-weight-bold text-dark text-lg-right pt-2"
                               >Department
                             </label>
                             <ng-select
@@ -831,12 +719,7 @@
                     <div class="row">
                       <div class="col-lg-6">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-2"
                           >Username
                           <span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
@@ -872,12 +755,7 @@
                       </div>
                       <div class="col-lg-6">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-2"
                           >User Role
                           <span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
@@ -917,12 +795,7 @@
                     <div class="row">
                       <div class="col-lg-6">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-2"
                           >Password
                           <span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
@@ -1080,12 +953,7 @@
                       </div>
                       <div class="col-lg-6">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-2"
                           >Confirm Password
                           <span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
@@ -1145,12 +1013,7 @@
                 <div class="form-group row adddriverpl pt-3">
                   <div class="col-lg-10">
                     <label
-                      class="
-                        control-label
-                        font-weight-bold
-                        text-lg-right text-5
-                        pt-2
-                      "
+                      class="control-label font-weight-bold text-lg-right text-5 pt-2"
                       >Payment Details</label
                     >
                   </div>
@@ -1159,12 +1022,7 @@
                     <div class="row">
                       <div class="col-lg-6">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-2"
                           >Payroll Type
                           <span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
@@ -1195,12 +1053,7 @@
                       </div>
                       <div class="col-lg-3">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-2"
                           >Rate
                         </label>
                         <input
@@ -1214,12 +1067,7 @@
                       </div>
                       <div class="col-lg-3">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-1
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-1"
                           >&nbsp;</label
                         >
                         <ng-select
@@ -1234,12 +1082,7 @@
                       </div>
                       <div class="col-lg-12">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-2"
                           >WCB#
                         </label>
                         <input
@@ -1256,12 +1099,7 @@
                     <div class="row">
                       <div class="col-lg-6">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-2"
                           >Pay Period
                         </label>
                         <ng-select
@@ -1272,7 +1110,9 @@
                         >
                           <ng-option value="Weekly">Weekly</ng-option>
                           <ng-option value="Biweekly">Biweekly</ng-option>
-                          <ng-option value="Semimonthly">Semi-Monthly</ng-option>
+                          <ng-option value="Semimonthly"
+                            >Semi-Monthly</ng-option
+                          >
                           <ng-option value="Monthly">Monthly</ng-option>
                           <ng-option value="Quaterly">Quaterly</ng-option>
                           <ng-option value="Annually">Annually</ng-option>
@@ -1280,12 +1120,7 @@
                       </div>
                       <div class="col-lg-6">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-2"
                           >SIN
                           <span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
@@ -1320,12 +1155,7 @@
 
                       <div class="col-lg-12">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-lg-right pt-2"
                           >Health Care#
                         </label>
                         <input

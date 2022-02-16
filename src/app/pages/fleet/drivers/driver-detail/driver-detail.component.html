@@ -568,7 +568,8 @@
                                 Group:
                             </div>
                             <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                {{ group ? groupsObjects[group] : "-" }}
+                                <!--{{ group ? groupsObjects[group] : "-" }}-->
+                                {{ groupId ? groupsObjects[0].groupName  : "-" }}
                             </div>
                         </div>
                         <div class="row m-0" *ngIf="driverType == 'employee'">
