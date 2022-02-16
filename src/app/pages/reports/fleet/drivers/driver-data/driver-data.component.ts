@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ApiService } from 'src/app/services';
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 
 import * as _ from "lodash";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
+import { NgSelectComponent } from "@ng-select/ng-select";
 declare var $: any;
 
 @Component({
@@ -19,6 +20,8 @@ declare var $: any;
   styleUrls: ['./driver-data.component.css']
 })
 export class DriverDataComponent implements OnInit {
+
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   environment = environment.isFeatureEnabled;
   allDocumentsTypes: any;
   documentsTypesObects: any = {};
@@ -85,6 +88,10 @@ export class DriverDataComponent implements OnInit {
   driverStartPoint = 1;
   driverEndPoint = this.pageLength;
 
+  loadMsg: string = Constants.NO_LOAD_DATA;
+  isSearch = false;
+
+
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -144,36 +151,38 @@ export class DriverDataComponent implements OnInit {
   }
 
   getSuggestions = _.debounce(function (value) {
-    this.driverID = "";
     value = value.toLowerCase();
     if (value != "") {
+      this.loadMsg = Constants.LOAD_DATA;
       this.apiService
         .getData(`drivers/get/suggestions/${value}`)
         .subscribe((result) => {
-          result.map((v) => {
-            if (v.lastName == undefined) {
-              v.lastName = "";
-            }
-            return v;
-          });
-          this.suggestedDrivers = result;
+          if (result.length === 0) {
+            this.loadMsg = Constants.NO_LOAD_FOUND;
+          }
+          if (result.length > 0) {
+            result.map((v) => {
+              if (v.middleName != undefined && v.middleName != '') {
+                v.fullName = `${v.firstName} ${v.middleName} ${v.lastName}`;
+              } else {
+                v.fullName = `${v.firstName} ${v.lastName}`;
+              }
+              return v;
+            });
+            this.suggestedDrivers = result;
+          }
         });
     } else {
       this.suggestedDrivers = [];
     }
   }, 800);
 
-  setDriver(driverID, firstName = "", lastName = "", middleName = "") {
-    if (middleName !== "") {
-      this.driverName = `${firstName} ${middleName} ${lastName}`;
-      // this.driverID = driverID;
-      this.driverID = `${firstName}-${middleName}-${lastName}`;
-    } else {
-      this.driverName = `${firstName} ${lastName}`;
-      this.driverID = `${firstName}-${lastName}`;
+  setDriver(driverID: any) {
+    if (driverID != undefined && driverID != '') {
+      this.driverID = driverID;
     }
+    this.loadMsg = Constants.NO_LOAD_DATA;
 
-    this.suggestedDrivers = [];
   }
 
 
@@ -250,6 +259,7 @@ export class DriverDataComponent implements OnInit {
 
               this.loaded = true;
             }
+            this.isSearch = false;
           });
     }
   }
@@ -288,14 +298,11 @@ export class DriverDataComponent implements OnInit {
   }
   searchFilter() {
     if (
-      this.driverName !== "" ||
+      this.driverID !== "" ||
       this.dutyStatus !== "" ||
       this.driverType !== null
     ) {
-      this.driverName = this.driverName.toLowerCase();
-      if (this.driverID == "") {
-        this.driverID = this.driverName;
-      }
+      this.isSearch = true;
       this.drivers = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.lastEvaluatedKey = ''
@@ -308,18 +315,20 @@ export class DriverDataComponent implements OnInit {
 
   resetFilter() {
     if (
-      this.driverName !== "" ||
+      this.driverID !== "" ||
       this.dutyStatus !== "" ||
       this.driverType !== null
     ) {
+      this.isSearch = true;
+      this.ngSelectComponent.handleClearClick();
       this.drivers = [];
       this.driverID = "";
       this.dutyStatus = "";
       this.driverName = "";
       this.driverType = null;
       this.dataMessage = Constants.FETCHING_DATA;
+      this.lastEvaluatedKey = '';
       this.initDataTable();
-      this.lastEvaluatedKey = ''
       this.driverDraw = 0;
     } else {
       return false;
