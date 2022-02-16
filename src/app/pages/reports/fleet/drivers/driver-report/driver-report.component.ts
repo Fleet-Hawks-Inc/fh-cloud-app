@@ -127,10 +127,9 @@ export class DriverReportComponent implements OnInit {
         for (let i = 0; i < element.tripPlanning.length; i++) {
           const element2 = element.tripPlanning[i];
           type += element2.type
-          date += element2.date
           element2.location = element2.location.replace(/,/g, ' ');
           location += element2.type + ":" + element2.location
-          date += element2.type + ":" + element2.date
+          date += `"${element2.type} :-  ${element2.date}\n\"`
           if (i < element.tripPlanning.length - 1) {
             location += " & ";
           }
