@@ -150,7 +150,7 @@ export class AddEmployeePaymentComponent implements OnInit {
 
   async ngOnInit() {
     this.listService.paymentSaveList.subscribe((res: any) => {
-      if (res === "employee") {
+      if (res.openFrom === "addForm") {
         this.addRecord();
       }
     });

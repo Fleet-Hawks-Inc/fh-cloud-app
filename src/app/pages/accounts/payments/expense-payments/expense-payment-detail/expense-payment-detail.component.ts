@@ -80,6 +80,7 @@ export class ExpensePaymentDetailComponent implements OnInit {
   }
 
   async fetchPayment() {
+    this.downloadDisabled = true;
     const result: any = await this.accountService
       .getData(`expense-payments/detail/${this.paymentID}`)
       .toPromise();

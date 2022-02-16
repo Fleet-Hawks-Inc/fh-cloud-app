@@ -63,7 +63,7 @@ export class AddAdvancePaymentComponent implements OnInit {
 
   ngOnInit() {
     this.listService.paymentSaveList.subscribe((res: any) => {
-      if (res === "advancePayment") {
+      if (res.openFrom === "addForm") {
         this.addRecord();
       }
     });
