@@ -55,6 +55,10 @@ import { NgOtpInputModule } from 'ng-otp-input';
 
 import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 
+//Loading bar
+import { LoadingBarModule } from '@ngx-loading-bar/core';
+import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
+import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -75,7 +79,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     AddAccountComponent,
     ForgotPasswordComponent,
     LocationShareComponent,
-    SubscriptionOnboardComponent
+    SubscriptionOnboardComponent,
+
   ],
   imports: [
     CommonModule,
@@ -99,8 +104,10 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NgxCaptchaModule,
     GoogleMapsModule,
     RxReactiveFormsModule,
-    NgOtpInputModule
-
+    NgOtpInputModule,
+    LoadingBarModule,
+    LoadingBarRouterModule,
+    LoadingBarHttpClientModule
 
 
   ],
