@@ -75,6 +75,7 @@ export class ExpensePaymentDetailComponent implements OnInit {
       toDate: this.paymentData.toDate,
       finalAmount: this.paymentData.finalAmount,
       txnDate: this.paymentData.txnDate,
+      page: "detail",
     };
     this.listService.openPaymentChequeModal(obj);
   }
