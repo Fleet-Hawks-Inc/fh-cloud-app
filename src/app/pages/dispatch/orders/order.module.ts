@@ -17,18 +17,33 @@ import { PdfAutomationComponent } from "../pdf-automation/pdf-automation.compone
 import { PdfViewerModule } from "ng2-pdf-viewer";
 import { BrokeragePdfComponent } from "./brokerage-pdf/brokerage-pdf.component";
 import { BolPdfComponent } from "./bol-pdf/bol-pdf.component";
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { SlickCarouselModule } from "ngx-slick-carousel";
 const routes: Routes = [
   {
-    path: "order-list/:sessionId", component: OrdersListComponent, data: {
-      reuseRoute: true
-    }
+    path: "order-list/:sessionId",
+    component: OrdersListComponent,
+    data: {
+      reuseRoute: true,
+      title: "Order List",
+    },
   },
-  { path: "edit/:orderID", component: AddOrdersComponent },
-  { path: "add", component: AddOrdersComponent },
-  { path: "detail/:orderID", component: OrderDetailComponent },
-  { path: "pdfautomation", component: PdfAutomationComponent },
+  {
+    path: "edit/:orderID",
+    component: AddOrdersComponent,
+    data: { title: "Edit Order" },
+  },
+  { path: "add", component: AddOrdersComponent, data: { title: "Add Order" } },
+  {
+    path: "detail/:orderID",
+    component: OrderDetailComponent,
+    data: { title: "Detail Order" },
+  },
+  {
+    path: "pdfautomation",
+    component: PdfAutomationComponent,
+    data: { title: "PDF Automation" },
+  },
 ];
 @NgModule({
   declarations: [
@@ -52,8 +67,8 @@ const routes: Routes = [
     ChartsModule,
     PdfViewerModule,
     SlickCarouselModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
   ],
   providers: [unsavedChangesGuard],
 })
-export class OrderModule { }
+export class OrderModule {}
