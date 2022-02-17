@@ -57,6 +57,9 @@ export class PaymentChequeComponent implements OnInit {
     invoices: [],
     paymentTo: "",
     advType: "",
+    isVendor: false,
+    gstHst: 0,
+    gstHstAmt: 0,
   };
 
   cheqdata = {
@@ -363,8 +366,8 @@ export class PaymentChequeComponent implements OnInit {
     });
   }
 
-  arrangeFields(ev) {
-    const showData = ev.target.value === "yes" ? true : false;
+  updateVendorDetails() {
+    const showData = this.paydata.isVendor;
     if (showData) {
       this.cheqdata.entityName = this.vendorCompanyName;
       this.cheqdata.entityAddress =
@@ -400,7 +403,7 @@ export class PaymentChequeComponent implements OnInit {
           result.Items[0].venAddress.length > 0
         ) {
           this.vendorCompanyName = result.Items[0].vendorName;
-          this.corporateDrver = true;
+          this.updateVendorDetails()
           for (const iterator of result.Items[0].venAddress) {
             this.vendorAddress = [...this.vendorAddress, iterator];
           }

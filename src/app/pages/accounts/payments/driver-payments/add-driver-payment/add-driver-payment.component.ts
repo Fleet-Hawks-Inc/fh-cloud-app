@@ -19,6 +19,7 @@ declare var $: any;
   styleUrls: ["./add-driver-payment.component.css"],
 })
 export class AddDriverPaymentComponent implements OnInit {
+
   dataMessage: string = Constants.FETCHING_DATA;
   dataMessageAdv: string = Constants.NO_RECORDS_FOUND;
   paymentData = {
@@ -52,6 +53,8 @@ export class AddDriverPaymentComponent implements OnInit {
     },
     taxes: <any>0,
     advance: <any>0,
+    gstHst: <any>0,
+    gstHstAmt: <any>0,
     finalAmount: <any>0,
     accountID: null,
     settlData: [],
@@ -76,6 +79,7 @@ export class AddDriverPaymentComponent implements OnInit {
   searchDisabled = true;
   taxErr = "";
   advErr = "";
+  gstError = "";
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
@@ -409,7 +413,8 @@ export class AddDriverPaymentComponent implements OnInit {
       this.paymentData.taxes -
       this.paymentData.taxdata.cpp -
       this.paymentData.taxdata.ei -
-      this.paymentData.advance;
+      this.paymentData.advance +
+      this.paymentData.gstHstAmt;
     this.paymentData.finalAmount = Number(this.paymentData.finalAmount).toFixed(
       2
     );
@@ -615,6 +620,11 @@ export class AddDriverPaymentComponent implements OnInit {
         this.submitDisabled = false;
       }
     }
+    if (this.isVendor && this.paymentData.gstHst === 0) {
+      this.gstError = "GST/HST should be non-zero.";
+    } else {
+      this.gstError = "";
+    }
   }
 
   fetchAdvancePayments() {
@@ -694,6 +704,7 @@ export class AddDriverPaymentComponent implements OnInit {
       advance: this.paymentData.advance,
       txnDate: this.paymentData.txnDate,
       page: "addForm",
+      isVendor: this.isVendor
     };
 
     this.listService.openPaymentChequeModal(obj);
@@ -812,5 +823,50 @@ export class AddDriverPaymentComponent implements OnInit {
     } else {
       this.calculateFinalTotal();
     }
+  }
+
+  vendorCompanyName: string;
+  corporateDriver = false;
+  getDriverDetails = async () => {
+    console.log(this.paymentData.entityId)
+    const result = await this.apiService
+      .getData(`drivers/cheque/data/${this.paymentData.entityId}`).toPromise();
+    if (result && result.Items.length > 0) {
+      const driverDetails = result.Items[0];
+      if (
+        result.Items[0].vendorName &&
+        result.Items[0].vendorName != "" &&
+        result.Items[0].venAddress &&
+        result.Items[0].venAddress.length > 0
+      ) {
+        this.corporateDriver = true;
+        this.vendorCompanyName = result.Items[0].vendorName;
+
+      } else {
+        this.corporateDriver = false;
+      }
+
+    }
+  }
+
+  isVendor = false;
+
+  changeIssueToVendor(event: any) {
+    console.log(event.target.checked)
+    if (event.target.checked) {
+      this.isVendor = true;
+
+    } else {
+      this.isVendor = false;
+      this.paymentData.gstHstAmt = 0;
+      this.calculateFinalTotal();
+    }
+  }
+
+  calculateGstHst() {
+    console.log(this.paymentData.gstHst);
+    const gstHstAmt = (parseFloat(this.paymentData.gstHst) / 100) * this.paymentData.finalAmount;
+    this.paymentData.gstHstAmt = gstHstAmt || 0;
+    this.calculateFinalTotal();
   }
 }

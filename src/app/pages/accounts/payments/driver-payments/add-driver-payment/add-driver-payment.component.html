@@ -1,16 +1,13 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pl-0 pr-0 pt-0">
-      <header class="page-header pr19 pl7">
-        <div class="row" style="padding-top: 10px">
-          <div class="col-md-4 col-lg-4">
-            <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Payment</h4>
-          </div>
-          <div class="col-md-8 col-lg-8 text-right pr-1">
-            <a
-              routerLink="/accounts/payments/driver-payments/list"
-              class="btn btn-default btn-sm"
-              ><i class="fas fa-list"></i> All Payments</a
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-0 pr-0 pt-0">
+            <header class="page-header pr19 pl7">
+                <div class="row" style="padding-top: 10px">
+                    <div class="col-md-4 col-lg-4">
+                        <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Payment</h4>
+                    </div>
+                    <div class="col-md-8 col-lg-8 text-right pr-1">
+                        <a routerLink="/accounts/payments/driver-payments/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Payments</a
             >
           </div>
         </div>
@@ -152,6 +149,7 @@
                           placeholder="Select Driver"
                           #driverID="ngModel"
                           required
+                          (change)="getDriverDetails()"
                           [disabled]="editDisabled"
                           (change)="checkSearchDisable()"
                         >
@@ -331,7 +329,21 @@
                       Search
                     </button>
                   </div>
+                 
                 </div>
+                <div
+                class="form-group row adddriverpl pt-3" *ngIf="corporateDriver">
+              <div class="col-lg-6">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox"  (change)="changeIssueToVendor($event)" id="flexSwitchCheckDefault">
+                  <label class="form-check-label" for="flexSwitchCheckDefault">Issue To Vendor?</label>
+                </div>
+                <div>
+                <div *ngIf="isVendor"> Vendor Name: <b>{{ vendorCompanyName }} </b> <p>Please make sure you update GST/HST as per Vendor province.</p> </div >
+               
+              </div>
+              </div></div>
+            
               </div>
             </div>
           </div>
@@ -734,19 +746,14 @@
                             class="btn btn-success btn-sm modal-with-form"
                             ><i class="fas fa-sync"></i
                           ></a>
-                        </div>
-                      </div>
-                      <div
-                        class="row pt-1"
-                        *ngIf="
+                    </div>
+                </div>
+                <div class="row pt-1" *ngIf="
                           paymentData.payMode &&
                           paymentData.payMode !== 'cheque'
-                        "
-                      >
-                        <div class="col-lg-5">
-                          <label
-                            class="control-label font-weight-bold labelalign"
-                            >{{ payModeLabel }} Reference<span
+                        ">
+                    <div class="col-lg-5">
+                        <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference<span
                               class="mandfield text-2 ml-1"
                               ><sup>*</sup></span
                             ></label
@@ -918,6 +925,7 @@
                             [(ngModel)]="paymentData.vacPayPer"
                             name="vacPayPer"
                             (input)="calculateVacationPay()"
+                            [disabled]="isVendor"
                           />
                         </div>
                       </div>
@@ -960,12 +968,14 @@
                           class="col-lg-6 offset-lg-6 pt-2"
                           *ngIf="paymentData.paymentTo === 'driver'"
                         >
-                          <a
-                            href="javascript:;"
+                          <button
+                          type="button" class="btn btn-primary btn-sm"
+                          
                             (click)="openPayrollModel()"
                             class="btn btn-default modal-with-form btn-sm"
-                            >Calculate Payroll</a
-                          >
+                            [disabled]="isVendor"> Calculate Payroll</button>
+                           
+                          
                         </div>
                       </div>
                       <div class="row pt-1">
@@ -996,15 +1006,11 @@
                           <label class="error" *ngIf="taxErr">{{
                             taxErr
                           }}</label>
-                        </div>
-                      </div>
-                      <div
-                        class="row pt-1"
-                        *ngIf="paymentData.paymentTo === 'driver'"
-                      >
-                        <div class="col-lg-6 text-right">
-                          <label class="control-label font-weight-bold"
-                            >CPP</label
+                    </div>
+                </div>
+                <div class="row pt-1" *ngIf="paymentData.paymentTo === 'driver'">
+                    <div class="col-lg-6 text-right">
+                        <label class="control-label font-weight-bold">CPP</label
                           >
                         </div>
                         <div class="col-lg-6">
@@ -1056,12 +1062,28 @@
                             disabled
                           />
                           <label class="error">{{ advErr }}</label>
-                        </div>
-                      </div>
-                      <div class="row pt-1">
-                        <div class="col-lg-6 text-right">
-                          <label class="control-label font-weight-bold"
-                            >Net Payable</label
+                    </div>
+                </div>
+                <div class="row pt-1" *ngIf="isVendor">
+                    <div class="col-lg-6 text-right">
+                        <label class="control-label font-weight-bold">GST/HST (%)</label
+                    >
+                  </div>
+                  <div class="col-lg-6">
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="paymentData.gstHst"
+                      name="gst_hst"
+                      (input)="calculateGstHst()"
+                     
+                    />
+                    <label class="error">{{ gstError }}</label>
+                    </div>
+                </div>
+                <div class="row pt-1">
+                    <div class="col-lg-6 text-right">
+                        <label class="control-label font-weight-bold">Net Payable</label
                           >
                         </div>
                         <div class="col-lg-6">
