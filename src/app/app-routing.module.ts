@@ -29,7 +29,7 @@ import { SubscriptionOnboardComponent } from './entry/subscription-onboard/subsc
 
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
-  { path: 'Login', component: LoginComponent },
+  { path: 'Login', component: LoginComponent, data: { title: 'Login' } },
   { path: 'onboard', component: AddAccountComponent },
   { path: 'subOnboard/:id', component: SubscriptionOnboardComponent },
   { path: 'forgotPassword', component: ForgotPasswordComponent },
@@ -47,12 +47,14 @@ const routes: Routes = [
     path: 'Map-Dashboard',
     component: MapDashboardComponent,
     canActivate: [CheckProfileServiceService, AuthService],
+    data: { title: 'Entire Fleet' }
   },
   {
     path: 'fleet',
     loadChildren: () => import('./pages/fleet/fleet.module').then((m) => m.FleetModule),
-    data: { preload: true },
+    data: { preload: true, title: 'Fleet' },
     canActivate: [AuthService, CheckUserService, CheckProfileServiceService],
+
   },
   {
     path: 'compliance',
@@ -62,8 +64,9 @@ const routes: Routes = [
   },
   {
     path: 'dispatch',
-    loadChildren: () => import('./pages/dispatch/dispatch.module').then((m) => m.DispatchModule), data: { preload: false },
-    canActivate: [AuthService, CheckProfileServiceService]
+    loadChildren: () => import('./pages/dispatch/dispatch.module').then((m) => m.DispatchModule), data: { preload: false, title: "Dispatch & Routing" },
+    canActivate: [AuthService, CheckProfileServiceService],
+
   },
   {
     path: 'accounts',

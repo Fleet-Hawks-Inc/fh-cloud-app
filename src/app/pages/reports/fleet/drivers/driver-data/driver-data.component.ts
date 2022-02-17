@@ -329,7 +329,8 @@ export class DriverDataComponent implements OnInit {
       this.dataMessage = Constants.FETCHING_DATA;
       this.lastEvaluatedKey = '';
       this.initDataTable();
-      this.driverDraw = 0;
+this.driverDraw = 0;
+      this.initDataTable();
     } else {
       return false;
     }
