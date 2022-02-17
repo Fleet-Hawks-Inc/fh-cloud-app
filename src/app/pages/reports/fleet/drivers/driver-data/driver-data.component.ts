@@ -318,9 +318,9 @@ export class DriverDataComponent implements OnInit {
       this.driverName = "";
       this.driverType = null;
       this.dataMessage = Constants.FETCHING_DATA;
-      this.initDataTable();
       this.lastEvaluatedKey = ''
       this.driverDraw = 0;
+      this.initDataTable();
     } else {
       return false;
     }

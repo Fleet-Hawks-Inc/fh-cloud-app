@@ -8,23 +8,27 @@ const routes: Routes = [
   {
     path: 'orders',
     loadChildren: () => import('./orders/order.module').then((m) => m.OrderModule),
+    data: { title: 'Orders' }
   },
   {
     path: 'trips',
     loadChildren: () => import('./trips/trip.module').then((m) => m.TripModule),
-
+    data: { title: 'Trips' }
   },
   {
     path: 'routes',
     loadChildren: () => import('./permanent-routing/route.module').then((m) => m.RouteModule),
+    data: { title: 'Routes' }
   },
   {
     path: 'planner',
     loadChildren: () => import('./planner/planner.module').then((m) => m.PlannerModule),
+    data: { title: 'Planner' }
   },
   {
     path: 'cross-border',
     loadChildren: () => import('./cross-border/cross-border.module').then((m) => m.CrossBorderModule),
+    data: { title: 'Cross Border' }
   },
   {
     path: 'documents',
@@ -42,7 +46,8 @@ const routes: Routes = [
     path: 'overview',
     children: [
       { path: '', component: DispatchOverviewComponent }
-    ]
+    ],
+    data: { title: 'Overview' }
   },
 ];
 
