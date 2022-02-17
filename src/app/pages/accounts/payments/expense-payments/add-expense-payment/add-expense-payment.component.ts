@@ -308,10 +308,13 @@ export class AddExpensePaymentComponent implements OnInit {
         this.paymentData.expData.push(obj);
         this.paymentData.expIds.push(element.expenseID);
         if (this.paymentData.expTotal >= 0) {
-          this.submitDisabled = true;
-        } else {
           this.submitDisabled = false;
+          console.log('if ', this.paymentData.expTotal)
+        } else {
+          this.submitDisabled = true;
+          console.log('else', this.paymentData.expTotal)
         }
+
       }
     }
     this.paymentCalculation();
