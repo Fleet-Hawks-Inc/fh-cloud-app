@@ -326,8 +326,8 @@ export class TripDetailComponent implements OnInit {
                   let obj = {};
                   if (ext == "jpg" || ext == "jpeg" || ext == "png") {
                     obj = {
-                      imgPath: `${ext.urlPath}`,
-                      docPath: `${ext.urlPath}`,
+                      imgPath: `${element.urlPath}`,
+                      docPath: `${element.urlPath}`,
                       displayName: element.displayName,
                       name: name,
                       ext: ext,
@@ -335,7 +335,7 @@ export class TripDetailComponent implements OnInit {
                   } else {
                     obj = {
                       imgPath: "assets/img/icon-pdf.png",
-                      docPath: `${ext.urlPath}`,
+                      docPath: `${element.urlPath}`,
                       displayName: element.displayName,
                       name: name,
                       ext: ext,
