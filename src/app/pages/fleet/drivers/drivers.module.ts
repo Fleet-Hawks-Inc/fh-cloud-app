@@ -64,10 +64,10 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   }
 }
 const routes: Routes = [
-  { path: 'add', component: AddDriverComponent, canDeactivate: [unsavedChangesGuard] },
-  { path: 'edit/:driverID', component: AddDriverComponent },
-  { path: 'list', component: DriverListComponent },
-  { path: 'detail/:driverID', component: DriverDetailComponent }
+  { path: 'add', component: AddDriverComponent, canDeactivate: [unsavedChangesGuard], data: { title: 'Add Driver' } },
+  { path: 'edit/:driverID', component: AddDriverComponent, data: { title: 'Edit Driver' } },
+  { path: 'list', component: DriverListComponent, data: { title: 'Drivers List' } },
+  { path: 'detail/:driverID', component: DriverDetailComponent, data: { title: 'Driver Detail' } }
 ];
 @NgModule({
   declarations: [
