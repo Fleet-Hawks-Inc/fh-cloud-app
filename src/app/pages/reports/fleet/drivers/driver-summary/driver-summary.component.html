@@ -6,96 +6,43 @@
           <div class="row" style="padding-top: 10px">
             <div class="col-md-0 col-lg-0 pr-0"></div>
             <div class="col-md-2 col-lg-2 pr-0">
-              <div class="input-group input-group-sm mb-3">
-                <input
-                  type="text"
-                  autocomplete="off"
-                  name="driverName"
-                  [(ngModel)]="driverName"
-                  placeholder="Search driver by name"
-                  class="form-control"
-                  (input)="getSuggestions($event.target.value)"
-                />
-              </div>
-              <div
-                *ngIf="suggestedDrivers?.length > 0"
-                class="result-suggestions"
-              >
-                <ul>
-                  <li
-                    *ngFor="let suggestedDriver of suggestedDrivers"
-                    class="cursorpoint"
-                    (click)="
-                      setDriver(
-                        suggestedDriver.driverID,
-                        suggestedDriver.firstName,
-                        suggestedDriver.lastName,
-                        suggestedDriver.middleName
-                      )
-                    "
-                    class="text-capitalize"
-                  >
-                    {{ suggestedDriver.firstName }}
-                    {{ suggestedDriver.middleName }}
-                    {{ suggestedDriver.lastName }}
-                  </li>
-                </ul>
-              </div>
+              <ng-select autofocus placeholder="Search driver by name" [notFoundText]='loadMsg'
+                (input)="getSuggestions($event.target.value)" #ngSelectComponent [clearable]="false"
+                [(ngModel)]="driverName" (change)="setDriver($event)">
+                <ng-option *ngFor="let driver of suggestedDrivers" value="{{driver.driverID}}">
+                  {{driver.fullName}}
+                </ng-option>
+              </ng-select>
             </div>
             <div class="col-md-2 col-lg-2 pr-0">
-              <ng-select
-                name="driverStatus"
-                [(ngModel)]="driverStatus"
-                placeholder="Driver Status"
-                class="form-control form-control-sm populate"
-              >
+              <ng-select name="driverStatus" [(ngModel)]="driverStatus" placeholder="Driver Status"
+                class="form-control form-control-sm populate">
                 <ng-option value="active">Active </ng-option>
                 <ng-option value="inActive">Inactive </ng-option>
               </ng-select>
             </div>
             <div class="col-md-2 col-lg-2">
-              <button
-                type="submit"
-                (click)="searchDriver()"
-                class="btn btn-sm btn-success mr-3"
-              >
+              <button type="submit" [disabled]="isSearch" (click)="searchDriver()" class="btn btn-sm btn-success mr-3">
                 Search
               </button>
-              <button
-                class="btn btn-sm btn-success"
-                type="submit"
-                (click)="resetDriver()"
-              >
+              <button class="btn btn-sm btn-success" [disabled]="isSearch" type="submit" (click)="resetDriver()">
                 Reset
               </button>
             </div>
             <div class="col-md-6 col-lg-6 text-right pr-1">
               <div class="btn-group flex-wrap ml-2">
-                <button
-                  type="button"
-                  class="btn btn-success btn-sm dropdown-toggle"
-                  data-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <i class="fas fa-upload"></i> Export<span
-                    class="caret"
-                  ></span>
+                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                  aria-expanded="false">
+                  <i class="fas fa-upload"></i> Export<span class="caret"></span>
                 </button>
-                <div
-                  class="dropdown-menu"
-                  role="menu"
-                  x-placement="bottom-start"
-                  style="
+                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
                     position: absolute;
                     will-change: transform;
                     top: 0px;
                     left: 0px;
                     transform: translate3d(0px, 38px, 0px);
-                  "
-                >
-                  <a class="dropdown-item text-1" (click)="requiredCSV()"
-                    >CSV</a
-                  >
+                  ">
+                  <a class="dropdown-item text-1" (click)="requiredCSV()">CSV</a>
                 </div>
               </div>
             </div>
@@ -161,22 +108,14 @@
             <div class="card">
               <div class="card-body bor-radius0px">
                 <section class="reports_div bg-white p-3 text-dark">
-                  <div
-                    infiniteScroll
-                    [infiniteScrollDistance]="1"
-                    [infiniteScrollUpDistance]="1"
-                    [infiniteScrollThrottle]="5"
-                    (scrolled)="onScroll()"
-                  >
-                    <table
-                      id="diverTbl"
-                      class="
+                  <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                    [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                    <table id="diverTbl" class="
                         row-border
                         hover
                         table table-bordered table-striped
                         mb-0
-                      "
-                    >
+                      ">
                       <thead>
                         <tr>
                           <th id="" class="col1 minWidth200">Name</th>
@@ -199,16 +138,13 @@
                         </tr>
                         <tr *ngFor="let driver of drivers; let i = index">
                           <td class="cursorpoint">
-                            <span
-                              class="
+                            <span class="
                                 font-weight-bold
                                 line-height-lg
                                 text-capitalize
-                              "
-                              >{{ driver.firstName }}
+                              ">{{ driver.firstName }}
                               {{ driver.middleName }}
-                              {{ driver.lastName }}</span
-                            >
+                              {{ driver.lastName }}</span>
                           </td>
                           <td class="cursorpoint">{{ driver.email }}</td>
                           <td class="cursorpoint">{{ driver.userName }}</td>
@@ -233,21 +169,14 @@
                           <td class="cursorpoint">
                             <span class="badge badge-dark p-1 text-uppercase">{{
                               driver.driverStatus
-                            }}</span>
+                              }}</span>
                           </td>
                         </tr>
                       </tbody>
                     </table>
                     <div class="row mt-3 dtPaginate" *ngIf="drivers.length > 0">
-                      <div
-                        class="col-lg-12 mt-3 text-center"
-                        *ngIf="lastItemSK !== 'end' && drivers.length !== 0"
-                      >
-                        <button
-                          type="button"
-                          (click)="onScroll()"
-                          class="btn btn-success btn-sm text-light"
-                        >
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && drivers.length !== 0">
+                        <button type="button" (click)="onScroll()" class="btn btn-success btn-sm text-light">
                           Load More..
                         </button>
                       </div>
