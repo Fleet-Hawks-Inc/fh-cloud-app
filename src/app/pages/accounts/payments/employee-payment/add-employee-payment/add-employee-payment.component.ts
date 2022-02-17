@@ -3,7 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
-import { from } from "rxjs";
+import { from, Subscription } from "rxjs";
 import { map } from "rxjs/operators";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService } from "src/app/services/account.service";
@@ -136,6 +136,7 @@ export class AddEmployeePaymentComponent implements OnInit {
   showModal = false;
   employeesObj: any = {};
 
+  subscription: Subscription;
   constructor(
     private listService: ListService,
     private route: ActivatedRoute,
@@ -149,7 +150,7 @@ export class AddEmployeePaymentComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.listService.paymentSaveList.subscribe((res: any) => {
+    this.subscription = this.listService.paymentSaveList.subscribe((res: any) => {
       if (res.openFrom === "addForm") {
         this.addRecord();
       }
@@ -166,6 +167,11 @@ export class AddEmployeePaymentComponent implements OnInit {
     await this.getStates();
     this.fetchClaimCodes();
   }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
+  }
+
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
@@ -392,6 +398,17 @@ export class AddEmployeePaymentComponent implements OnInit {
           this.submitDisabled = false;
           this.response = res;
           this.toaster.success("Employee payment added successfully.");
+          let obj = {
+            type: '',
+            openFrom: ''
+          }
+          this.listService.triggerPaymentSave(obj);
+          let payObj = {
+            showModal: false,
+            page: "",
+          };
+
+          this.listService.openPaymentChequeModal(payObj);
           this.cancel();
         },
       });

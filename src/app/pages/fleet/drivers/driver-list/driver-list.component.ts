@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ApiService } from "../../../../services";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -11,6 +11,7 @@ import { environment } from "../../../../../environments/environment";
 
 import * as _ from "lodash";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
+import { NgSelectComponent } from "@ng-select/ng-select";
 declare var $: any;
 
 @Component({
@@ -19,6 +20,7 @@ declare var $: any;
     styleUrls: ["./driver-list.component.css"],
 })
 export class DriverListComponent implements OnInit {
+    @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
     environment = environment.isFeatureEnabled;
     allDocumentsTypes: any;
     documentsTypesObects: any = {};
@@ -84,6 +86,9 @@ export class DriverListComponent implements OnInit {
     groupId: any = '';
     groupsObjects: any = {};
 
+    loadMsg: string = Constants.NO_LOAD_DATA;
+    isSearch = false;
+
     constructor(
         private apiService: ApiService,
         private router: Router,
@@ -144,34 +149,38 @@ export class DriverListComponent implements OnInit {
         $(".buttons-excel").trigger("click");
     }
     getSuggestions = _.debounce(function (value) {
-        this.driverID = "";
+
         value = value.toLowerCase();
         if (value != "") {
+            this.loadMsg = Constants.LOAD_DATA;
             this.apiService
                 .getData(`drivers/get/suggestions/${value}`)
                 .subscribe((result) => {
-                    result.map((v) => {
-                        if (v.lastName == undefined) {
-                            v.lastName = "";
-                        }
-                        return v;
-                    });
-                    this.suggestedDrivers = result;
+                    if (result.length === 0) {
+                        this.loadMsg = Constants.NO_LOAD_FOUND;
+                    }
+                    if (result.length > 0) {
+                        result.map((v) => {
+                            if (v.middleName != undefined && v.middleName != '') {
+                                v.fullName = `${v.firstName} ${v.middleName} ${v.lastName}`;
+                            } else {
+                                v.fullName = `${v.firstName} ${v.lastName}`;
+                            }
+                            return v;
+                        });
+                        this.suggestedDrivers = result;
+                    }
                 });
         } else {
             this.suggestedDrivers = [];
         }
     }, 800);
-    setDriver(driverID, firstName = "", lastName = "", middleName = "") {
-        if (middleName !== "") {
-            this.driverName = `${firstName} ${middleName} ${lastName}`;
-            // this.driverID = driverID;
-            this.driverID = `${firstName}-${middleName}-${lastName}`;
-        } else {
-            this.driverName = `${firstName} ${lastName}`;
-            this.driverID = `${firstName}-${lastName}`;
+    setDriver(driverID: any) {
+        if (driverID != undefined && driverID != '') {
+            this.driverID = driverID;
         }
-        this.suggestedDrivers = [];
+        this.loadMsg = Constants.NO_LOAD_DATA;
+
     }
     fetchAllGrorups() {
         this.apiService.getData(`groups/get/list?type=drivers&groupId=${this.groupId}`).subscribe((result: any) => {
@@ -181,8 +190,8 @@ export class DriverListComponent implements OnInit {
     fetchGroups() {
         this.apiService.getData(`groups/get/driverlist?type=drivers`).subscribe((result: any) => {
             this.groupsObjects = result;
-      });
-     }
+        });
+    }
     fetchAllVendorsIDs() {
         this.apiService.getData('contacts/get/list/vendor')
             .subscribe((result: any) => {
@@ -262,7 +271,7 @@ export class DriverListComponent implements OnInit {
         if (this.lastEvaluatedKey !== 'end') {
             const result = await this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&type=${this.driverType}&lastKey=${this.lastEvaluatedKey}`).toPromise();
             if (result.Items.length === 0) {
-                this.dataMessage = Constants.NO_RECORDS_FOUND
+                this.dataMessage = Constants.NO_RECORDS_FOUND;
             }
             result.Items.map((v) => {
                 v.url = `/fleet/drivers/detail/${v.driverID}`;
@@ -278,6 +287,7 @@ export class DriverListComponent implements OnInit {
                 this.drivers = this.drivers.concat(result.Items);
                 this.loaded = true;
             }
+            this.isSearch = false;
         }
     }
     onScroll() {
@@ -315,14 +325,11 @@ export class DriverListComponent implements OnInit {
 
     searchFilter() {
         if (
-            this.driverName !== '' ||
+            this.driverID !== '' ||
             this.dutyStatus !== '' ||
             this.driverType !== null
         ) {
-            this.driverName = this.driverName.toLowerCase();
-            if (this.driverID == '') {
-                this.driverID = this.driverName;
-            }
+            this.isSearch = true;
             this.drivers = [];
             this.dataMessage = Constants.FETCHING_DATA;
             this.lastEvaluatedKey = '';
@@ -335,17 +342,18 @@ export class DriverListComponent implements OnInit {
     }
     resetFilter() {
         if (
-            this.driverName !== '' ||
+            this.driverID !== '' ||
             this.dutyStatus !== '' ||
             this.driverType !== null
         ) {
+            this.ngSelectComponent.handleClearClick();
+            this.isSearch = true;
             this.driverID = '';
             this.dutyStatus = '';
             this.driverName = '';
             this.driverType = null;
             this.drivers = [];
             this.dataMessage = Constants.FETCHING_DATA;
-
             this.lastEvaluatedKey = '';
             this.initDataTable();
 

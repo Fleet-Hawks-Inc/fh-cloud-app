@@ -540,7 +540,8 @@
                       <button type="button" class="btn btn-default mr-2" (click)="cancel()">
                         Cancel
                       </button>
-                      <button type="button" class="btn btn-success modal-with-form mr-2" *ngIf="
+                      <button type="button" [disabled]="paymentData.expTotal == 0"
+                        class="btn btn-success modal-with-form mr-2" *ngIf="
                           paymentData.payMode == 'cheque'
                         " (click)="showCheque()">
                         Cheque preview

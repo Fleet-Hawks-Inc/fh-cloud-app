@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
@@ -11,18 +11,20 @@ import { HereMapService } from 'src/app/services/here-map.service';
 
 import * as moment from 'moment'
 import * as _ from 'lodash';
+import { NgSelectComponent } from '@ng-select/ng-select';
 @Component({
     selector: 'app-driver-summary',
     templateUrl: './driver-summary.component.html',
     styleUrls: ['./driver-summary.component.css']
 })
 export class DriverSummaryComponent implements OnInit {
+    @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
     dataMessage: string = Constants.FETCHING_DATA;
     drivers: any = [];
     driverID = '';
-   firstName = '';
-   lastName = '';
-   middleName = '';
+    firstName = '';
+    lastName = '';
+    middleName = '';
     driversCount = {
         total: '',
         active: '',
@@ -30,11 +32,13 @@ export class DriverSummaryComponent implements OnInit {
     };
     driverStatus = null;
     driverName = '';
-    fullExportDriver:any = [];
+    fullExportDriver: any = [];
     lastItemSK = '';
     suggestedDrivers = [];
     disableSearch = false;
     loaded = false;
+    loadMsg: string = Constants.NO_LOAD_DATA;
+    isSearch = false;
     constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
     ngOnInit() {
         this.fetchDriversCount();
@@ -46,7 +50,7 @@ export class DriverSummaryComponent implements OnInit {
             this.drivers = [];
         }
         if (this.lastItemSK !== 'end') {
-            const result = await this.apiService.getData(`drivers/paging/list?name=${this.driverName}&driverStatus=${this.driverStatus}&lastKey=${this.lastItemSK}`).toPromise();
+            const result = await this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&driverStatus=${this.driverStatus}&lastKey=${this.lastItemSK}`).toPromise();
             if (result.Items.length === 0) {
                 this.dataMessage = Constants.NO_RECORDS_FOUND
             }
@@ -61,6 +65,7 @@ export class DriverSummaryComponent implements OnInit {
                 this.drivers = this.drivers.concat(result.Items);
                 this.loaded = true;
             }
+            this.isSearch = false;
         }
     }
     onScroll() {
@@ -74,48 +79,45 @@ export class DriverSummaryComponent implements OnInit {
             this.driversCount = result;
         })
     }
-  getSuggestions = _.debounce(function (value) {
-    this.driverID = "";
-    value = value.toLowerCase();
-    if (value != "") {
-      this.apiService
-        .getData(`drivers/get/suggestions/${value}`)
-        .subscribe((result) => {
-          result.map((v) => {
-            if (v.lastName == undefined) {
-              v.lastName = "";
-            }
-            return v;
-          });
-          this.suggestedDrivers = result;
-        });
-    } else {
-      this.suggestedDrivers = [];
-    }
-  }, 800);
+    getSuggestions = _.debounce(function (value) {
+        value = value.toLowerCase();
+        if (value != "") {
+            this.loadMsg = Constants.LOAD_DATA;
+            this.apiService
+                .getData(`drivers/get/suggestions/${value}`)
+                .subscribe((result) => {
+                    if (result.length === 0) {
+                        this.loadMsg = Constants.NO_LOAD_FOUND;
+                    }
+                    if (result.length > 0) {
+                        result.map((v) => {
+                            if (v.middleName != undefined && v.middleName != '') {
+                                v.fullName = `${v.firstName} ${v.middleName} ${v.lastName}`;
+                            } else {
+                                v.fullName = `${v.firstName} ${v.lastName}`;
+                            }
+                            return v;
+                        });
+                        this.suggestedDrivers = result;
+                    }
+                });
+        } else {
+            this.suggestedDrivers = [];
+        }
+    }, 800);
 
-  setDriver(driverID, firstName = "", lastName = "", middleName = "") {
-    if (middleName !== "") {
-      this.driverName = `${firstName} ${middleName} ${lastName}`;
-      // this.driverID = driverID;
-      this.driverID = `${firstName} ${middleName} ${lastName}`;
-    } else {
-      this.driverName = `${firstName} ${lastName}`;
-      this.driverID = `${firstName} ${lastName}`;
-    }
+    setDriver(driverID: any) {
+        if (driverID != undefined && driverID != '') {
+            this.driverID = driverID;
+        }
+        this.loadMsg = Constants.NO_LOAD_DATA;
 
-    this.suggestedDrivers = [];
-  }
-      searchDriver() {
-        if (this.driverName !== '' || this.driverStatus !== null) 
-        {
-            this.driverName = this.driverName.toLowerCase();
-               if (this.driverID == '') 
-               {
-               this.driverID = this.driverName;
-                }
+    }
+    searchDriver() {
+        if (this.driverID !== '' || this.driverStatus !== null) {
+            this.isSearch = true;
             this.drivers = [];
-                        this.suggestedDrivers = [];
+            this.suggestedDrivers = [];
             this.lastItemSK = '';
             this.dataMessage = Constants.FETCHING_DATA;
             this.fetchPagination();
@@ -124,11 +126,14 @@ export class DriverSummaryComponent implements OnInit {
             return false;
         }
     }
-   
-    
+
+
     resetDriver() {
-        if (this.driverName !== '' || this.driverStatus !== null || this.lastItemSK !== '') {
+        if (this.driverID !== '' || this.driverStatus !== null || this.lastItemSK !== '') {
+            this.ngSelectComponent.handleClearClick();
             this.driverName = '';
+            this.isSearch = true;
+            this.driverID = '';
             this.driverStatus = null;
             this.lastItemSK = '';
             this.drivers = [];
@@ -183,7 +188,7 @@ export class DriverSummaryComponent implements OnInit {
             this.toastr.error("No Records found")
         }
     }
-    
+
     requiredExport() {
         this.apiService.getData(`drivers/get/getFull/export`).subscribe((result: any) => {
             this.fullExportDriver = result.Items;
