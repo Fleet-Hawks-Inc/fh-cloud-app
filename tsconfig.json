@@ -10,20 +10,25 @@
     "module": "es2020",
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
-    
-    "types": ["node", "googlemaps"],
+    "target": "es2017",
+    "types": [
+      "node",
+      "googlemaps"
+    ],
     "typeRoots": [
       "node_modules/@types"
     ],
     "lib": [
-      "es2015",
+      "es2018",
       "dom"
     ]
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": false,
+    "strictInputAccessModifiers": false,
+    "strictTemplates": false
   },
-  "allowSyntheticDefaultImports": true
+  "allowSyntheticDefaultImports": true,
 }

@@ -51,6 +51,10 @@ export class DriverPaymentsDetailComponent implements OnInit {
     transactionLog: [],
     paymentEnity: "",
     isFeatEnabled: false,
+    gstHstPer: <any>0,
+    gstHstAmt: <any>0,
+    isVendorPayment: false,
+    vendorId: '',
   };
   accounts = [];
   accountsObjects = {};
@@ -64,7 +68,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
     private router: Router,
     private accountService: AccountService,
     private apiService: ApiService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.paymentID = this.route.snapshot.params["paymentID"];
@@ -81,8 +85,11 @@ export class DriverPaymentsDetailComponent implements OnInit {
       .getData(`driver-payments/detail/${this.paymentID}`)
       .toPromise();
 
+
     this.downloadDisabled = false;
     this.paymentData = result[0];
+    this.paymentData.isVendorPayment = result[0].data.isVendorPymt;
+    this.paymentData.vendorId = result[0].data.vendorId;
     if (!this.paymentData.isFeatEnabled) {
       this.fetchAccountsByIDs();
       this.fetchAccountsByInternalIDs();
@@ -149,6 +156,9 @@ export class DriverPaymentsDetailComponent implements OnInit {
       advance: this.paymentData.advance,
       txnDate: this.paymentData.txnDate,
       page: "detail",
+      isVendorPayment: this.paymentData.isVendorPayment,
+      vendorId: this.paymentData.vendorId,
+      gstHstPer: this.paymentData.gstHstPer
     };
     this.listService.openPaymentChequeModal(obj);
   }

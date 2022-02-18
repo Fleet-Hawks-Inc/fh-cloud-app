@@ -53,13 +53,16 @@ export class AddDriverPaymentComponent implements OnInit {
     },
     taxes: <any>0,
     advance: <any>0,
-    gstHst: <any>0,
-    gstHstAmt: <any>0,
     finalAmount: <any>0,
     accountID: null,
     settlData: [],
     advData: [],
     transactionLog: [],
+    gstHstPer: <any>0,
+    gstHstAmt: <any>0,
+    isVendorPayment: false,
+    vendorId: '',
+
   };
   drivers = [];
   carriers = [];
@@ -407,7 +410,9 @@ export class AddDriverPaymentComponent implements OnInit {
       ? Number(this.paymentData.totalAmount)
       : 0;
     // this.paymentData.totalAmount = this.paymentData.totalAmount.toFixed(2);
-
+    // Calculate GST
+    const gstHstAmt = (parseFloat(this.paymentData.gstHstPer) / 100) * this.paymentData.finalAmount;
+    this.paymentData.gstHstAmt = gstHstAmt || 0;
     this.paymentData.finalAmount =
       this.paymentData.totalAmount -
       this.paymentData.taxes -
@@ -433,9 +438,12 @@ export class AddDriverPaymentComponent implements OnInit {
       this.toaster.error("Please select settlement(s)");
       return false;
     }
-
+    if (this.isVendor && this.paymentData.gstHstPer === 0) {
+      this.toaster.error("GST/HST value cannot be 0");
+      return false;
+    }
     if (this.paymentData.finalAmount <= 0) {
-      this.toaster.error("Net payable should be greated than 0");
+      this.toaster.error("Net payable should be greater than 0");
       return false;
     }
 
@@ -620,7 +628,7 @@ export class AddDriverPaymentComponent implements OnInit {
         this.submitDisabled = false;
       }
     }
-    if (this.isVendor && this.paymentData.gstHst === 0) {
+    if (this.isVendor && this.paymentData.gstHstPer === 0) {
       this.gstError = "GST/HST should be non-zero.";
     } else {
       this.gstError = "";
@@ -704,7 +712,9 @@ export class AddDriverPaymentComponent implements OnInit {
       advance: this.paymentData.advance,
       txnDate: this.paymentData.txnDate,
       page: "addForm",
-      isVendor: this.isVendor
+      isVendorPayment: this.isVendor,
+      vendorId: this.paymentData.vendorId,
+      gstHstPer: this.paymentData.gstHstPer
     };
 
     this.listService.openPaymentChequeModal(obj);
@@ -825,7 +835,8 @@ export class AddDriverPaymentComponent implements OnInit {
     }
   }
 
-  vendorCompanyName: string;
+  vendorCompanyName: string = "";
+  vendorAddress: string
   corporateDriver = false;
   getDriverDetails = async () => {
     console.log(this.paymentData.entityId)
@@ -841,6 +852,12 @@ export class AddDriverPaymentComponent implements OnInit {
       ) {
         this.corporateDriver = true;
         this.vendorCompanyName = result.Items[0].vendorName;
+        this.paymentData.vendorId = result.Items[0].vendor;
+        if (result.Items[0].venAddress && result.Items[0].venAddress.length > 0) {
+          this.vendorAddress = result.Items[0].venAddress[0];
+        }
+
+        console.log(this.paymentData);
 
       } else {
         this.corporateDriver = false;
@@ -855,7 +872,7 @@ export class AddDriverPaymentComponent implements OnInit {
     console.log(event.target.checked)
     if (event.target.checked) {
       this.isVendor = true;
-
+      this.calculateFinalTotal();
     } else {
       this.isVendor = false;
       this.paymentData.gstHstAmt = 0;
@@ -864,9 +881,13 @@ export class AddDriverPaymentComponent implements OnInit {
   }
 
   calculateGstHst() {
-    console.log(this.paymentData.gstHst);
-    const gstHstAmt = (parseFloat(this.paymentData.gstHst) / 100) * this.paymentData.finalAmount;
-    this.paymentData.gstHstAmt = gstHstAmt || 0;
+    if (this.paymentData.gstHstPer === 0) {
+      this.gstError = "GST/HST should be non-zero.";
+    } else {
+      this.gstError = "";
+    }
+
+
     this.calculateFinalTotal();
   }
 }

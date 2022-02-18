@@ -339,7 +339,10 @@
                   <label class="form-check-label" for="flexSwitchCheckDefault">Issue To Vendor?</label>
                 </div>
                 <div>
-                <div *ngIf="isVendor"> Vendor Name: <b>{{ vendorCompanyName }} </b> <p>Please make sure you update GST/HST as per Vendor province.</p> </div >
+                <div *ngIf="isVendor"> Vendor Details: <br>
+                   <b>{{ vendorCompanyName |  uppercase }} </b> <br>
+                   <b> {{  vendorAddress }} </b>
+                   <p>Please make sure you update GST/HST as per Vendor province.</p> </div >
                
               </div>
               </div></div>
@@ -1073,7 +1076,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      [(ngModel)]="paymentData.gstHst"
+                      [(ngModel)]="paymentData.gstHstPer"
                       name="gst_hst"
                       (input)="calculateGstHst()"
                      

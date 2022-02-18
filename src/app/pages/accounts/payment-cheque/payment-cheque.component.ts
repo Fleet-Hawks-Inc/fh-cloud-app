@@ -57,9 +57,11 @@ export class PaymentChequeComponent implements OnInit {
     invoices: [],
     paymentTo: "",
     advType: "",
-    isVendor: false,
-    gstHst: 0,
     gstHstAmt: 0,
+    isVendorPayment: false,
+    vendorId: "",
+    gstHstPer: 0
+
   };
 
   cheqdata = {
@@ -367,7 +369,7 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   updateVendorDetails() {
-    const showData = this.paydata.isVendor;
+    const showData = this.paydata.isVendorPayment;
     if (showData) {
       this.cheqdata.entityName = this.vendorCompanyName;
       this.cheqdata.entityAddress =
