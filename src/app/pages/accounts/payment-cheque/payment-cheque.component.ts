@@ -102,6 +102,7 @@ export class PaymentChequeComponent implements OnInit {
 
   subscription: Subscription;
   locale = "en-US";
+  isDownload = false;
 
   constructor(
     private listService: ListService,
@@ -113,7 +114,6 @@ export class PaymentChequeComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.listService.paymentModelList.subscribe(
       (res: any) => {
-        console.log('cheque res', res);
         if (res.showModal && res.length != 0) {
           // empty fields
           if (res.page && res.page == 'detail') {
@@ -361,6 +361,7 @@ export class PaymentChequeComponent implements OnInit {
       html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
     });
+
   }
 
   arrangeFields(ev) {
@@ -426,13 +427,18 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   saveDownload() {
-    this.generatePDF();
-    this.modalService.dismissAll();
+    this.isDownload = true;
     let obj = {
       type: this.paydata.type,
       openFrom: this.openFrom
     }
     this.listService.triggerPaymentSave(obj);
+    setTimeout(() => {
+
+      this.isDownload = false;
+      this.modalService.dismissAll();
+      this.generatePDF();
+    }, 1500);
   }
 
   ngOnDestroy() {
