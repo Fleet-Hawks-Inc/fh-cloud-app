@@ -4,9 +4,7 @@
             <header class="page-header pr19 pl7">
                 <div class="row" style="padding-top:10px;">
                     <div class="col-md-4 col-lg-4">
-                        <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">{{
-                            paymentData.paymentEnity | titlecase }} Payment# -
-                            {{ paymentData.paymentNo }}</h4>
+                        <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">{{ paymentData.paymentEnity | titlecase }} Payment# - {{ paymentData.paymentNo }}</h4>
                     </div>
                     <div class="col-md-8 col-lg-8 text-right pr-1">
                         <button type="button" (click)="downloadPaymentPdf();" [disabled]="downloadDisabled" class="btn btn-success
@@ -35,9 +33,7 @@
                                                     <br>
                                                     <p class="mb-0 text-5
                                                         font-weight-bold
-                                                        text-dark">{{
-                                                        paymentData.txnDate |
-                                                        date: "yyyy/MM/dd" }}</p>
+                                                        text-dark">{{ paymentData.txnDate | date: "yyyy/MM/dd" }}</p>
                                                     <p class="mb-0">DATE</p>
                                                 </div>
                                             </div>
@@ -50,13 +46,11 @@
                                                     <p class="mb-0 text-5
                                                         font-weight-bold
                                                         text-dark">
-                                                        {{paymentData.entityName
-                                                        | titlecase}}
+                                                        {{paymentData.entityName | titlecase}}
                                                     </p>
                                                     <p class="mb-0
-                                                        text-uppercase">{{
-                                                        paymentData.paymentEnity
-                                                        }}</p>
+                                                        text-uppercase">{{ paymentData.paymentEnity }}
+                                                    </p>
 
                                                 </div>
                                             </div>
@@ -70,10 +64,7 @@
                                                     <br>
                                                     <p class="mb-0 text-5
                                                         font-weight-bold
-                                                        text-dark">{{
-                                                        paymentData.finalAmount
-                                                        | number : '1.2-2' }} {{
-                                                        paymentData.currency }}</p>
+                                                        text-dark">{{ paymentData.finalAmount | number : '1.2-2' }} {{ paymentData.currency }}</p>
                                                     <p class="mb-0">AMOUNT</p>
                                                 </div>
                                             </div>
@@ -113,26 +104,20 @@
                                                                         }}
                                                                         <span
                                                                             *ngIf="s<paymentData.settlementIds.length-1">,</span>
-                                                                    </span>
+                                                                </span>
                                                                 </span>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td width="40%" class="back-color-gray
-                                                                font-weight-bold">Settled
-                                                                Amount</td>
-                                                            <td width="60%">{{
-                                                                paymentData.finalAmount
-                                                                | number :
-                                                                '1.2-2' }} CAD</td>
+                                                                font-weight-bold">Settled Amount
+                                                            </td>
+                                                            <td width="60%">{{ paymentData.finalAmount | number : '1.2-2' }} CAD</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="back-color-gray
                                                                 font-weight-bold">Advance</td>
-                                                            <td>{{
-                                                                paymentData.advance
-                                                                | number :
-                                                                '1.2-2' }} CAD</td>
+                                                            <td>{{ paymentData.advance | number : '1.2-2' }} CAD</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -148,35 +133,23 @@
                                                     <tbody>
                                                         <tr>
                                                             <td width="40%" class="back-color-gray
-                                                                font-weight-bold">Payment
-                                                                Mode</td>
-                                                            <td width="60%" class="text-capitalize">{{
-                                                                (paymentData.payMode)
-                                                                ?
-                                                                paymentData.payMode
-                                                                : '-' }}</td>
+                                                                font-weight-bold">Payment Mode
+                                                            </td>
+                                                            <td width="60%" class="text-capitalize">{{ (paymentData.payMode) ? paymentData.payMode : '-' }}</td>
                                                         </tr>
                                                         <tr *ngIf="paymentData.payMode">
                                                             <td class="back-color-gray
                                                                 font-weight-bold
-                                                                text-capitalize">{{
-                                                                paymentData.payMode
-                                                                }} Date</td>
-                                                            <td>{{
-                                                                paymentData.payModeDate
-                                                                |
-                                                                date:"yyyy/MM/dd"
-                                                                }}</td>
+                                                                text-capitalize">{{ paymentData.payMode }} Date</td>
+                                                            <td>{{ paymentData.payModeDate | date:"yyyy/MM/dd" }}
+                                                            </td>
                                                         </tr>
                                                         <tr *ngIf="paymentData.payMode">
                                                             <td class="back-color-gray
                                                                 font-weight-bold
-                                                                text-capitalize">{{
-                                                                paymentData.payMode
-                                                                }} Reference</td>
-                                                            <td>{{
-                                                                paymentData.payModeNo
-                                                                }}</td>
+                                                                text-capitalize">{{ paymentData.payMode }} Reference</td>
+                                                            <td>{{ paymentData.payModeNo }}
+                                                            </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -184,8 +157,13 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="alert alert-secondary" *ngIf="paymentData.isVendorPayment">
+                                    NOTE : This payment was issued to Drivers Vendor.
+                                </div>
                             </div>
+
                         </div>
+
                     </div>
                     <div class="row mb-3">
                         <div class="col-lg-12">
@@ -212,12 +190,11 @@
                                                 </tr>
                                                 <tr *ngFor="let data of
                                                     paymentData.transactionLog">
-                                                    <td *ngIf="paymentData.isFeatEnabled"> 
+                                                    <td *ngIf="paymentData.isFeatEnabled">
                                                         {{ data.actName | titlecase}}
                                                     </td>
                                                     <td *ngIf="!paymentData.isFeatEnabled">
-                                                        <span
-                                                            *ngIf="data.actIDType
+                                                        <span *ngIf="data.actIDType
                                                             === 'actID'">{{accountsObjects[data.accountID]
                                                             | titlecase}}</span>
                                                         <span *ngIf="data.actIDType
