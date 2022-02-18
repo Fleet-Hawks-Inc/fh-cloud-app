@@ -408,20 +408,17 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
       : 0;
     this.paymentData.totalAmount =
       Number(this.paymentData.settledAmount) +
-      Number(this.paymentData.vacPayAmount);
+      Number(this.paymentData.vacPayAmount)
     this.paymentData.totalAmount = this.paymentData.totalAmount
       ? Number(this.paymentData.totalAmount)
       : 0;
-    // this.paymentData.totalAmount = this.paymentData.totalAmount.toFixed(2);
-    // Calculate GST
-    const gstHstAmt = (parseFloat(this.paymentData.gstHstPer) / 100) * this.paymentData.finalAmount;
-    this.paymentData.gstHstAmt = gstHstAmt || 0;
+    console.log('dd', this.paymentData)
     this.paymentData.finalAmount =
       this.paymentData.totalAmount -
       this.paymentData.taxes -
       this.paymentData.taxdata.cpp -
       this.paymentData.taxdata.ei -
-      this.paymentData.advance +
+      this.paymentData.advance -
       this.paymentData.gstHstAmt;
     this.paymentData.finalAmount = Number(this.paymentData.finalAmount).toFixed(
       2
@@ -891,11 +888,15 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
     } else {
       this.isVendor = false;
       this.paymentData.gstHstAmt = 0;
+      this.paymentData.gstHstPer = 0;
       this.calculateFinalTotal();
     }
   }
 
   calculateGstHst() {
+    // Calculate GST
+    const gstHstAmt = (this.paymentData.gstHstPer / 100) * this.paymentData.settledAmount;
+    this.paymentData.gstHstAmt = gstHstAmt || 0;
     if (this.paymentData.gstHstPer === 0) {
       this.gstError = "GST/HST should be non-zero.";
     } else {
