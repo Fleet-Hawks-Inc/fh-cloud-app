@@ -4,12 +4,8 @@
       <header class="page-header pr19 pl11">
         <form class="form-horizontal" method="get" name="form" id="form_">
           <div class="row" style="padding-top: 10px">
-            <div class="col-md-2 col-lg-2">
-              <div class="input-group input-group-sm mb-3">
-                <ng-select
-                  [(ngModel)]="unitID"
-                  name="unitID"
-                  style="width: 100%"
+            <div class="col-md-2 col-lg-2 pr-1">
+                <ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%"
                   placeholder="Search by vehicle"
                 >
                   <ng-option
@@ -18,7 +14,6 @@
                     >{{ data.vehicleIdentification }}
                   </ng-option>
                 </ng-select>
-              </div>
             </div>
             <!-- <div class="col-md-2 col-lg-2 pr-0 pl-2">
               <div class="input-group input-group-sm mb-3">
