@@ -85,9 +85,11 @@ export class ExpenseComponent implements OnInit {
 
 
   fetchDriverByTrip() {
-    console.log("url", this.driver)
-    this.accountService.getData(`driver-payments/get/driver/enitity/expense?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&payment=${this.payment}`).subscribe((result: any) => {
-      // this.payments = result
+    // console.log("url", this.driver)
+    // console.log('this.payment 111',this.payment)
+    console.log('this.driver', this.driver)
+    this.accountService.getData(`driver-payments/get/driver/enitity/expense?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
+      // console.log('this.payment 11122',this.payment)
       this.payments = this.payments.concat(result);
       console.log(this.payments)
     })

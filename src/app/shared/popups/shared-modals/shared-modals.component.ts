@@ -125,6 +125,7 @@ export class SharedModalsComponent implements OnInit {
   fieldTextType: boolean;
   cpwdfieldTextType: boolean;
   licCountries: any = [];
+  issueModal: any;
 
   // Issues variables ends
   issuesData = {
@@ -228,11 +229,11 @@ export class SharedModalsComponent implements OnInit {
             keyboard: false,
             windowClass: "add-issue__main",
           };
-          const issueModal = this.modalService.open(
+          this.issueModal = this.modalService.open(
             this.addIssueModal,
             ngbModalOptions
           );
-          issueModal.result.then(
+          this.issueModal.result.then(
             (data) => {
               this.clearIssueData();
               this.listService.separateModals("");
@@ -245,6 +246,8 @@ export class SharedModalsComponent implements OnInit {
           this.fetchVehicles();
           this.fetchAssets();
           this.fetchUsers();
+        } else if(res === "") {
+            this.issueModal.close();
         }
       }
     );
@@ -602,7 +605,7 @@ export class SharedModalsComponent implements OnInit {
         this.response = res;
         this.clearIssueData();
         this.toastr.success("Issue Added successfully");
-        $("#addIssuesModal").modal("hide");
+        this.listService.separateModals("");
         let issueVehicleID = localStorage.getItem("issueVehicleID");
         issueVehicleID = issueVehicleID.slice(1, -1);
         this.listService.fetchVehicleIssues(issueVehicleID);
