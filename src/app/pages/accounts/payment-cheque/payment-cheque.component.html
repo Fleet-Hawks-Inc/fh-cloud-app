@@ -1704,7 +1704,7 @@
                 <!-- <button type="button" class="btn btn-success" (click)="generatePDF()">
           Download
         </button> -->
-                <button type="button" class="btn btn-success" (click)="saveDownload()">{{downloadTitle}}</button>
+                <button type="button" class="btn btn-success" [disabled]="isDownload" (click)="saveDownload()">{{downloadTitle}}</button>
             </div>
         </form>
     </div>

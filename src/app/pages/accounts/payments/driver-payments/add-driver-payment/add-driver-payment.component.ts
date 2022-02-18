@@ -1,9 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
 import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
-import { from } from "rxjs";
+import { from, Subscription } from "rxjs";
 import { map } from "rxjs/operators";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService, ListService } from "src/app/services";
@@ -18,8 +18,7 @@ declare var $: any;
   templateUrl: "./add-driver-payment.component.html",
   styleUrls: ["./add-driver-payment.component.css"],
 })
-export class AddDriverPaymentComponent implements OnInit {
-
+export class AddDriverPaymentComponent implements OnInit, OnDestroy {
   dataMessage: string = Constants.FETCHING_DATA;
   dataMessageAdv: string = Constants.NO_RECORDS_FOUND;
   paymentData = {
@@ -97,7 +96,7 @@ export class AddDriverPaymentComponent implements OnInit {
   allDrivers = [];
   allCarriers = [];
   allOwnOpr = [];
-
+  subscription: Subscription;
   constructor(
     private listService: ListService,
     private route: ActivatedRoute,
@@ -114,7 +113,7 @@ export class AddDriverPaymentComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.listService.paymentSaveList.subscribe((res: any) => {
+    this.subscription = this.listService.paymentSaveList.subscribe((res: any) => {
       if (res.openFrom == 'addForm') {
         this.addRecord();
       }
@@ -134,6 +133,10 @@ export class AddDriverPaymentComponent implements OnInit {
     this.fetchPayPeriods();
     await this.getStates();
     this.fetchClaimCodes();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
   }
 
   fetchDrivers() {
@@ -434,6 +437,7 @@ export class AddDriverPaymentComponent implements OnInit {
     this.location.back(); // <-- go back to previous location on cancel
   }
   addRecord() {
+
     if (this.paymentData.settlementIds.length === 0) {
       this.toaster.error("Please select settlement(s)");
       return false;
@@ -484,6 +488,17 @@ export class AddDriverPaymentComponent implements OnInit {
           this.response = res;
           this.toaster.success("Driver payment added successfully.");
           this.router.navigateByUrl("/accounts/payments/driver-payments/list");
+          let obj = {
+            type: '',
+            openFrom: ''
+          }
+          this.listService.triggerPaymentSave(obj);
+          let payObj = {
+            showModal: false,
+            page: "",
+          };
+
+          this.listService.openPaymentChequeModal(payObj);
         },
       });
   }
