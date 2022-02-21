@@ -27,6 +27,7 @@ export class ServiceprogramComponent implements OnInit {
   programName: any = null;
   serviceTasks: any[];
   record: any = [];
+  disableSearch = false;
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
 
@@ -57,6 +58,7 @@ export class ServiceprogramComponent implements OnInit {
         this.serviceProgramList = this.serviceProgramList.concat(result.Items);
         this.loaded = true;
       }
+      this.disableSearch = false;
     }
   }
 
@@ -69,6 +71,7 @@ export class ServiceprogramComponent implements OnInit {
   searchFilter() {
     if (this.vehicle !== null || this.programName !== null) {
       this.dataMessage = Constants.FETCHING_DATA;
+      this.disableSearch = true;
       this.serviceProgramList = [];
       this.lastItemSK = '';
       this.fetchServiceVehicleList();
@@ -87,6 +90,7 @@ export class ServiceprogramComponent implements OnInit {
 
   resetFilter() {
     if (this.vehicle !== null || this.programName !== null || this.lastItemSK !== '') {
+      this.disableSearch = true;
       this.vehicle = null;
       this.programName = null;
       this.lastItemSK = '';
