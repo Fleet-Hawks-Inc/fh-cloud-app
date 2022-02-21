@@ -1,6 +1,8 @@
-<ngx-loading-bar color="#017BFE" includeSpinner="false" height="5px"></ngx-loading-bar>
-<app-header *ngIf="getToken() && currentURL != '/Login' && currentURL != '/' && !currentURL.includes('/location-share') && !currentURL.includes('/subOnboard')"></app-header>
-<app-sidebar *ngIf="getToken() && currentURL != '/Login' && !currentURL.includes('/location-share')  && !currentURL.includes('/subOnboard') && currentURL != '/'"></app-sidebar>
+<ngx-loading-bar color="#47a447" includeSpinner="false" height="4px"></ngx-loading-bar>
+<app-header *ngIf="getToken() && currentURL != '/Login' && currentURL != '/' && !currentURL.includes('/location-share') && !currentURL.includes('/subOnboard')">
+</app-header>
+<app-sidebar *ngIf="getToken() && currentURL != '/Login' && !currentURL.includes('/location-share')  && !currentURL.includes('/subOnboard') && currentURL != '/'">
+</app-sidebar>
 <router-outlet></router-outlet>
 
 <app-fixed-right-sidebar *ngIf="getToken() && currentURL != '/Login' && currentURL != '/'"></app-fixed-right-sidebar>
