@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { ApiService } from "../../../../services";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -8,11 +8,13 @@ import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import Constants from "../../constants";
 import { environment } from "../../../../../environments/environment";
-
+import { Table } from 'primeng/table';
 import * as _ from "lodash";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { NgSelectComponent } from "@ng-select/ng-select";
+import { FilterService, MenuItem } from "primeng/api";
 declare var $: any;
+
 
 @Component({
     selector: "app-driver-list",
@@ -20,6 +22,7 @@ declare var $: any;
     styleUrls: ["./driver-list.component.css"],
 })
 export class DriverListComponent implements OnInit {
+    @ViewChild('dt') table: Table;
     @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
     environment = environment.isFeatureEnabled;
     allDocumentsTypes: any;
@@ -96,7 +99,8 @@ export class DriverListComponent implements OnInit {
         private httpClient: HttpClient,
         private spinner: NgxSpinnerService,
         private toastr: ToastrService,
-        private countryStateCity: CountryStateCityService
+        private countryStateCity: CountryStateCityService,
+        private filterService: FilterService
     ) { }
 
     ngOnInit(): void {
@@ -115,6 +119,56 @@ export class DriverListComponent implements OnInit {
             }, 1800);
         });
         this.fetchGroups();
+        this._selectedColumns = this.cols;
+        this.items = [{
+            label: 'Options',
+            items: [{
+                label: 'Update',
+                icon: 'pi pi-refresh',
+                command: () => {
+                    this.update();
+                }
+            },
+            {
+                label: 'Delete',
+                icon: 'pi pi-times',
+                command: () => {
+                    this.delete();
+                }
+            }
+            ]
+        },
+        {
+            label: 'Navigate',
+            items: [{
+                label: 'Angular Website',
+                icon: 'pi pi-external-link',
+                url: 'http://angular.io'
+            },
+            {
+                label: 'Router',
+                icon: 'pi pi-upload'
+            }
+            ]
+        }
+        ];
+    }
+
+    update() {
+
+    }
+
+    delete() {
+
+    }
+
+    @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
+
+    set selectedColumns(val: any[]) {
+        //restore original order
+        this._selectedColumns = this.cols.filter(col => val.includes(col));
     }
     fetchAllDocumentsTypes() {
         this.httpClient
@@ -269,7 +323,7 @@ export class DriverListComponent implements OnInit {
     }
     async initDataTable() {
         if (this.lastEvaluatedKey !== 'end') {
-            const result = await this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&type=${this.driverType}&lastKey=${this.lastEvaluatedKey}`).toPromise();
+            let result = await this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&type=${this.driverType}&lastKey=${this.lastEvaluatedKey}`).toPromise();
             if (result.Items.length === 0) {
                 this.dataMessage = Constants.NO_RECORDS_FOUND;
             }
@@ -284,18 +338,51 @@ export class DriverListComponent implements OnInit {
                 else {
                     this.lastEvaluatedKey = 'end'
                 }
+
                 this.drivers = this.drivers.concat(result.Items);
                 this.loaded = true;
             }
             this.isSearch = false;
         }
     }
-    onScroll() {
-        if (this.loaded) {
-            this.initDataTable();
+
+    cols = [
+        { field: 'firstName', header: 'First Name', type: "text" },
+        { field: 'lastName', header: 'Last Name', type: "text" },
+        { field: 'email', header: 'Email', type: "text" },
+        { field: 'driverType', header: 'Type', type: "text" },
+        { field: 'phone', header: 'Phone', type: "text" },
+        { field: 'userName', header: 'Username', type: "text" },
+        { field: 'contractStart', header: 'Start Date', type: "text" },
+        { field: 'CDL_Number', header: 'CDL#', type: "text" },
+        { field: 'licenceDetails.licenceExpiry', header: 'CDL Expiry', type: "date" },
+
+
+
+    ];
+    items: MenuItem[];
+    _selectedColumns: any[];
+    onScroll(event: any) {
+        console.log(event);
+
+        if (event.sortField) {
+            console.log('Sorting')
+            const sortDirection = event.sortOrder === 1 ? 'asc' : 'desc';
+
+            this.drivers = _.orderBy(this.drivers, [event.sortField], sortDirection);
+        } else if (event.globalFilter) {
+            const resu = this.table.filterGlobal(event.globalFilter, 'contains');
+            console.log('dsf', resu);
         }
-        this.loaded = false;
+        else {
+            if (this.loaded) {
+                this.initDataTable();
+            }
+            this.loaded = false;
+
+        }
     }
+
     fetchAddress(drivers: any) {
         for (let d = 0; d < drivers.length; d++) {
             drivers.map(async (e: any) => {
@@ -511,4 +598,11 @@ export class DriverListComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
 
     }
+
+
+
+
+
+
 }
+

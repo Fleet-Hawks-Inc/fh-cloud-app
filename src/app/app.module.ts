@@ -55,10 +55,15 @@ import { NgOtpInputModule } from 'ng-otp-input';
 
 import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 
+// Prime NG Imports
+import { TableModule } from 'primeng/table';
+
 //Loading bar
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { ButtonModule } from 'primeng/button';
+
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -80,6 +85,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     ForgotPasswordComponent,
     LocationShareComponent,
     SubscriptionOnboardComponent,
+
 
   ],
   imports: [
@@ -107,7 +113,10 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NgOtpInputModule,
     LoadingBarModule,
     LoadingBarRouterModule,
-    LoadingBarHttpClientModule
+    LoadingBarHttpClientModule,
+    TableModule,
+    ButtonModule
+
 
 
   ],

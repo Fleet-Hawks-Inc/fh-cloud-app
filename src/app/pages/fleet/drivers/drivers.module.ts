@@ -12,6 +12,12 @@ import { SharedModule } from '../../../shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -85,6 +91,12 @@ const routes: Routes = [
     NgbModule,
     InfiniteScrollModule,
     NgSelectModule,
+    TableModule,
+    ButtonModule,
+    MultiSelectModule,
+    TooltipModule,
+    MenuModule,
+    SplitButtonModule
   ],
   providers: [unsavedChangesGuard,
     { provide: NgbDateAdapter, useClass: CustomAdapter },
