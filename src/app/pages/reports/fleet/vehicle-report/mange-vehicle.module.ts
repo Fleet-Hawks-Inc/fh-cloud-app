@@ -64,7 +64,6 @@ const routes: Routes = [
     component: ActivityComponent,
     data: { title: "Vehicle Activity Reports" },
   },
-
   {
     path: "activity-list",
     component: ActivityListComponent,
@@ -82,6 +81,7 @@ const routes: Routes = [
   },
   { path: 'expense-list', component: ExpenseListComponent },
   { path: 'expense/:vehicleId', component: ExpenseComponent },
+ 
 ];
 
 /**
@@ -105,10 +105,10 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     // from internal model -> your mode
     return date
       ? date.year +
-      this.DELIMITER +
-      ("0" + date.month).slice(-2) +
-      this.DELIMITER +
-      ("0" + date.day).slice(-2)
+          this.DELIMITER +
+          ("0" + date.month).slice(-2) +
+          this.DELIMITER +
+          ("0" + date.day).slice(-2)
       : null;
   }
 }
@@ -173,4 +173,4 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
-export class ManageVehicleModule { }
+export class ManageVehicleModule {}

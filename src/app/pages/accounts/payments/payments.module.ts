@@ -99,28 +99,56 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 }
 
 const routes: Routes = [
-  { path: "advance-payments/list", component: AdvancePaymentsListComponent },
-  { path: "advance-payments/add", component: AddAdvancePaymentComponent },
+  {
+    path: "advance-payments/list",
+    component: AdvancePaymentsListComponent,
+    data: { title: "Advance Payments List" },
+  },
+  {
+    path: "advance-payments/add",
+    component: AddAdvancePaymentComponent,
+    data: { title: "Add Advance Payments" },
+  },
   {
     path: "advance-payments/edit/:paymentID",
     component: AddAdvancePaymentComponent,
+    data: { title: "Edit Advance Payments" },
   },
   {
     path: "advance-payments/detail/:paymentID",
     component: AdvancePaymentsDetailComponent,
+    data: { title: "Advance Payments Detail" },
   },
-  { path: "driver-payments/list", component: DriverPaymentsListComponent },
-  { path: "driver-payments/add", component: AddDriverPaymentComponent },
+  {
+    path: "driver-payments/list",
+    component: DriverPaymentsListComponent,
+    data: { title: "Driver Payments List" },
+  },
+  {
+    path: "driver-payments/add",
+    component: AddDriverPaymentComponent,
+    data: { title: "Add Driver Payments" },
+  },
   {
     path: "driver-payments/edit/:paymentID",
     component: AddDriverPaymentComponent,
+    data: { title: "Edit Driver Payments" },
   },
   {
     path: "driver-payments/detail/:paymentID",
     component: DriverPaymentsDetailComponent,
+    data: { title: "Driver Payments Detail" },
   },
-  { path: "employee-payments/list", component: EmployeePaymentListComponent },
-  { path: "employee-payments/add", component: AddEmployeePaymentComponent },
+  {
+    path: "employee-payments/list",
+    component: EmployeePaymentListComponent,
+    data: { title: "Employee Payments List" },
+  },
+  {
+    path: "employee-payments/add",
+    component: AddEmployeePaymentComponent,
+    data: { title: "Add Employee Payment" },
+  },
   {
     path: "employee-payments/edit/:paymentID",
     component: AddEmployeePaymentComponent,
