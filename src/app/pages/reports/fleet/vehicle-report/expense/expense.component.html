@@ -293,17 +293,65 @@
                                             <td>{{item.payMode}}</td>
                                             <td> <span *ngFor="let stl of item.settlData; let
                                                 s=index;">
-                                                    <b>{{ settlements[stl.settlementId] }}</b>
+                                                    <b>{{stl.settlementName }}</b>
                                                     ({{ stl.status }})
                                                     <span *ngIf="s<item.settlementIds.length-1">,</span>
                                                 </span></td>
                                             <td><strong class="text-capitalize">{{item.paymentTo}}:</strong>
-                                               
-                                                    {{ item.entityName}}
-                                             
+
+                                                {{ item.entityName}}
+
                                             </td>
                                             <td>{{item.finalAmount | number : '1.2-2' }} {{item.currency}}</td>
                                         </tr>
+                                    </tbody>
+                                </table>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-dark">
+                <div class="col pr-0">
+                    <div class="card">
+                        <div class="card-body">
+                            <label class="
+                        control-label
+                        font-weight-bold font-weight-bold
+                        text-lg-right text-dark text-4
+                        pt-1
+                      ">Expense-Payment Details</label>
+                            <section class="reports_div">
+                                <table width="30%" class="row-border hover table table-bordered table-striped mb-0">
+                                    <col style="width:10%">
+                                    <col style="width:10%">
+                                    <col style="width:10%">
+                                    <col style="width:10%">
+                                    <col style="width:10%">
+                                    <thead>
+                                        <tr>
+                                            <th>Payment#</th>
+                                            <th>Date</th>
+                                            <th>Payment Mode </th>
+                                            <th>Paid To</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngIf='expensePay.length == 0' class="text-center">
+                                            <td colspan="15">{{dataMessage}}</td>
+                                        </tr>
+                                        <tr *ngFor='let item of expensePay'>
+                                            <td>{{item.paymentNo}}</td>
+                                            <td>{{item.txnDate |
+                                                date:"yyyy/MM/dd"}}</td>
+                                            <td>{{item.payMode}}</td>
+                                            <td><strong class="text-capitalize">{{item.paymentTo}}:</strong>
+                                                {{ item.entityName}}
+                                            </td>
+                                            <td>{{item.finalAmount | number : '1.2-2' }} {{item.currency}}</td>
+                                        </tr>
+
                                     </tbody>
                                 </table>
                             </section>

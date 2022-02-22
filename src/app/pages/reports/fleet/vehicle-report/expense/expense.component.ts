@@ -54,6 +54,7 @@ export class ExpenseComponent implements OnInit {
   settlements = []
   contacts = []
   payments = [];
+  expensePay = []
   filter = {
     startDate: null,
     endDate: null,
@@ -84,17 +85,26 @@ export class ExpenseComponent implements OnInit {
   }
 
 
-  fetchDriverByTrip() {
+  fetchDriverPayment() {
     // console.log("url", this.driver)
     // console.log('this.payment 111',this.payment)
     console.log('this.driver', this.driver)
-    this.accountService.getData(`driver-payments/get/driver/enitity/expense?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
+    this.accountService.getData(`driver-payments/get/driver/payment?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       // console.log('this.payment 11122',this.payment)
       this.payments = this.payments.concat(result);
       console.log(this.payments)
     })
   }
-
+  fetchExpensePayment() {
+    // console.log("url", this.driver)
+    // console.log('this.payment 111',this.payment)
+    console.log('this.driver', this.driver)
+    this.accountService.getData(`expense-payments/get/driver/expense?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
+      // console.log('this.payment 11122',this.payment)
+      this.expensePay = result;
+      console.log('expensePay',this.expensePay)
+    })
+  }
   fetchSettlement() {
     this.accountService
       .getData(`settlement/get/list`)
@@ -158,7 +168,8 @@ export class ExpenseComponent implements OnInit {
             this.driver.push(driv)
           }
         }
-        this.fetchDriverByTrip();
+        this.fetchDriverPayment();
+        this.fetchExpensePayment()
         console.log("driver", this.driver)
 
         if (result.LastEvaluatedKey !== undefined) {
@@ -197,16 +208,18 @@ export class ExpenseComponent implements OnInit {
       else {
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastItemSK = '';
-        this.allData = []
-        this.fuel = []
-        this.fuelList = []
-        this.serviceLogName = []
-        this.payments = []
-        this.settlements = []
+        this.allData = [];
+        this.fuel = [];
+        this.fuelList = [];
+        this.serviceLogName = [];
+        this.payments = [];
+        this.expensePay = [];
+        this.settlements = [];
         this.fetchVehicleListing()
         this.fetchFuelVehicles()
         this.fetchServiceLogName()
-        this.fetchDriverByTrip();
+        this.fetchDriverPayment();
+        this.fetchExpensePayment();
       }
     } else {
       return false;
