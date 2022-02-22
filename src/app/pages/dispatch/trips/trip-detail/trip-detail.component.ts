@@ -315,10 +315,6 @@ export class TripDetailComponent implements OnInit {
 
         if (documents.length > 0) {
           documents.forEach((el) => {
-            if (
-              el.docType == "Bill of Lading" ||
-              el.docType == "Proof of Delivery"
-            ) {
               if (el.uploadedDocs.length > 0) {
                 el.uploadedDocs.forEach((element) => {
                   let name = element.storedName;
@@ -328,7 +324,7 @@ export class TripDetailComponent implements OnInit {
                     obj = {
                       imgPath: `${element.urlPath}`,
                       docPath: `${element.urlPath}`,
-                      displayName: element.displayName,
+                      displayName: el.docType,
                       name: name,
                       ext: ext,
                     };
@@ -344,7 +340,6 @@ export class TripDetailComponent implements OnInit {
                   this.uploadedDocSrc.push(obj);
                 });
               }
-            }
           });
 
         }
