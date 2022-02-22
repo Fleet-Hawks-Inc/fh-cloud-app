@@ -3952,3 +3952,6 @@ input:checked + .sliderbtn:before {
 .login-modal-outer .modal-dialog {
   max-width: 800px !important;
 }
+.document--main .modal-dialog {
+  max-width: 600px !important;
+}
