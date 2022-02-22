@@ -79,30 +79,19 @@ export class ExpenseComponent implements OnInit {
     this.fetchAllIssuesIDs()
     this.fetchFuelVehicles();
     this.fetchServiceLogName();
-
     this.fetchSettlement();
 
   }
 
 
   fetchDriverPayment() {
-    // console.log("url", this.driver)
-    // console.log('this.payment 111',this.payment)
-    console.log('this.driver', this.driver)
     this.accountService.getData(`driver-payments/get/driver/payment?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
-      // console.log('this.payment 11122',this.payment)
       this.payments = this.payments.concat(result);
-      console.log(this.payments)
     })
   }
   fetchExpensePayment() {
-    // console.log("url", this.driver)
-    // console.log('this.payment 111',this.payment)
-    console.log('this.driver', this.driver)
     this.accountService.getData(`expense-payments/get/driver/expense?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
-      // console.log('this.payment 11122',this.payment)
       this.expensePay = result;
-      console.log('expensePay',this.expensePay)
     })
   }
   fetchSettlement() {
@@ -113,10 +102,6 @@ export class ExpenseComponent implements OnInit {
       });
   }
 
-
-
-
-
   fetchAllIssuesIDs() {
     this.apiService.getData("issues/get/list").subscribe((result: any) => {
       this.issuesObject = result;
@@ -124,7 +109,6 @@ export class ExpenseComponent implements OnInit {
   }
 
   fetchServiceLogName() {
-
     this.apiService.getData(`serviceLogs/getBy/vehicle/name/trips/${this.vehicleId}?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.serviceLogName = result.Items
       if (result.Items.length === 0) {
@@ -133,7 +117,7 @@ export class ExpenseComponent implements OnInit {
     })
   }
 
-  fetchVehicleName() { //show vehicle name in tile
+  fetchVehicleName() { //vehicle name in tile
     this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
       this.vehicleData = result.Items;
       if (result.Items.length === 0) {
@@ -141,7 +125,7 @@ export class ExpenseComponent implements OnInit {
       }
     });
   }
-  fetchFuelVehicles() { // all data in fuel detail
+  fetchFuelVehicles() {
     this.apiService.getData(`fuelEntries/getBy/vehicle/trips/${this.vehicleId}?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.fuel = result.Items;
       if (result.Items.length === 0) {
@@ -170,8 +154,6 @@ export class ExpenseComponent implements OnInit {
         }
         this.fetchDriverPayment();
         this.fetchExpensePayment()
-        console.log("driver", this.driver)
-
         if (result.LastEvaluatedKey !== undefined) {
 
           this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
