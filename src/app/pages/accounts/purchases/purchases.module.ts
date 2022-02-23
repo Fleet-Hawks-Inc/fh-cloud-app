@@ -91,36 +91,81 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 }
 
 const routes: Routes = [
-  { path: "orders/list", component: PurchaseOrdersListComponent },
-  { path: "orders/add", component: AddPurchaseOrderComponent },
-  { path: "orders/edit/:purchaseID", component: AddPurchaseOrderComponent },
+  {
+    path: "orders/list",
+    component: PurchaseOrdersListComponent,
+    data: { title: "Purchase Orders List" },
+  },
+  {
+    path: "orders/add",
+    component: AddPurchaseOrderComponent,
+    data: { title: "Add Purchase Orders" },
+  },
+  {
+    path: "orders/edit/:purchaseID",
+    component: AddPurchaseOrderComponent,
+    data: { title: "Edit Purchase Orders" },
+  },
   {
     path: "orders/detail/:purchaseID",
     component: PurchaseOrderDetailComponent,
+    data: { title: "Detail Purchase Orders" },
   },
-  { path: "vendor-payments/list", component: VendorPaymentsListComponent },
-  { path: "vendor-payments/add", component: AddVendorPaymentComponent },
+  {
+    path: "vendor-payments/list",
+    component: VendorPaymentsListComponent,
+    data: { title: "Vendor Payments List" },
+  },
+  {
+    path: "vendor-payments/add",
+    component: AddVendorPaymentComponent,
+    data: { title: "Add Vendor Payment" },
+  },
   {
     path: "vendor-payments/detail/:paymentID",
     component: VendorPaymentDetailComponent,
+    data: { title: "Detail Vendor Payments" },
   },
   {
     path: "vendor-credit-notes/list",
     component: VendorCreditNotesListComponent,
+    data: { title: "Vendor Credit Notes List" },
   },
-  { path: "vendor-credit-notes/add", component: AddVendorCreditNoteComponent },
+  {
+    path: "vendor-credit-notes/add",
+    component: AddVendorCreditNoteComponent,
+    data: { title: "Add Vendor Credit Notes" },
+  },
   {
     path: "vendor-credit-notes/edit/:creditID",
     component: AddVendorCreditNoteComponent,
+    data: { title: "Edit Vendor Credit Notes" },
   },
   {
     path: "vendor-credit-notes/detail/:creditID",
     component: VendorCreditNoteDetailComponent,
+    data: { title: "Detail Vendor Credit Notes" },
   },
-  { path: "bills/list", component: BillListComponent },
-  { path: "bills/add", component: AddBillComponent },
-  { path: "bills/edit/:billID", component: AddBillComponent },
-  { path: "bills/details/:billID", component: BillDetailsComponent },
+  {
+    path: "bills/list",
+    component: BillListComponent,
+    data: { title: "Bills List" },
+  },
+  {
+    path: "bills/add",
+    component: AddBillComponent,
+    data: { title: "Add Bill" },
+  },
+  {
+    path: "bills/edit/:billID",
+    component: AddBillComponent,
+    data: { title: "Edit Bill" },
+  },
+  {
+    path: "bills/details/:billID",
+    component: BillDetailsComponent,
+    data: { title: "Detail Bill" },
+  },
 ];
 
 @NgModule({
@@ -149,4 +194,4 @@ const routes: Routes = [
     InfiniteScrollModule,
   ],
 })
-export class PurchasesModule { }
+export class PurchasesModule {}
