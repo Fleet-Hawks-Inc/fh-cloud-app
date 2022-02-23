@@ -10,7 +10,7 @@
           <div class="row w-100 m-0">
             <div class="col-4 ml-auto">
               <div class="input-group input-group-md mb-0">
-                <input type="text" autocomplete="off" placeholder="Search By Company Name" 
+                <input type="text"[(ngModel)]="filterVal.cName" autocomplete="off" placeholder="Search By Company Name" 
                   class="form-control" (input)="getSuggestions($event.target.value)" />
               </div>
               
@@ -921,15 +921,15 @@
                 Company Name
                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
               </label>
-              <input [(ngModel)]="unitData.cName" [(ngModel)]="filterVal.cName" name="cName" type="text"  class="form-control"
-                placeholder="eg. Carroll Group" (input)="getSuggestions($event.target.value)" #customerName="ngModel" autocomplete="off" pattern="^[a-zA-Z0-9\s\.]{4,120}$" [ngClass]="{
+              <input [(ngModel)]="unitData.cName" [(ngModel)]="similarVal.cName" name="cName" type="text"  class="form-control"
+                placeholder="eg. Carroll Group" (input)="getSimilarNamesSuggestions($event.target.value)" #customerName="ngModel" autocomplete="off" pattern="^[a-zA-Z0-9\s\.]{4,120}$" [ngClass]="{
                   error: contactForm.submitted && customerName.invalid
                 }" required  />
-                   <div *ngIf="suggestions?.length > 0" class="result-suggestions text-capitalize">
+                   <div *ngIf="actualSuggestions?.length > 0" class="result-suggestions text-capitalize">
                 <ul class="m-0">
-                  <li *ngFor="let suggestedUser of suggestions" style="cursor: pointer"
-                    (click)="setSearchValues(suggestedUser.cName)">
-                    {{ suggestedUser.cName }}
+                  <li *ngFor="let similarUser of actualSuggestions" style="cursor: pointer"
+                    (click)="setSimilarValue(similarUser.cName)">
+                    {{ similarUser.cName }}
                   </li>
                 </ul>
               </div>
