@@ -36,7 +36,7 @@
       </header>
 
       <div class="routing-overview__wrapper m-2">
-        <div class="row">
+        <div *ngIf="isFleetEnabled"class="row">
           <div class="col-12">
             <h2 class="text-dark font-weight-bold text-5">
               <i class="fas fa-truck"></i> Fleet
@@ -107,7 +107,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div *ngIf="isDispatchEnabled" class="row">
           <div class="col-12">
             <h2 class="text-dark font-weight-bold text-5">
               <i class="fas fa-route"></i> Routing & Dispatch
@@ -124,7 +124,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div *ngIf="isAccountsEnabled" class="row">
           <div class="col-12">
             <h2 class="text-dark font-weight-bold text-5">
               <i class="fas fa-file-alt"></i> Accounts
