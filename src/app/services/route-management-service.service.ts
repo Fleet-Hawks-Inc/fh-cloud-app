@@ -7,10 +7,16 @@ import { v4 as uuidv4 } from 'uuid';
 export class RouteManagementServiceService {
   public orderUpdateSessionID: string;
   public tripUpdateSessionID: string;
+  public driverUpdateSessionID: string;
 
   constructor() {
     this.orderUpdateSessionID = uuidv4();
     this.tripUpdateSessionID = uuidv4();
+    this.driverUpdateSessionID = uuidv4();
+  }
+
+  driverUpdated() {
+    return this.driverUpdateSessionID = uuidv4();
   }
 
   orderUpdated() {
@@ -24,5 +30,6 @@ export class RouteManagementServiceService {
   resetAllCache() {
     this.tripUpdateSessionID = uuidv4();
     this.orderUpdateSessionID = uuidv4();
+    this.driverUpdateSessionID = uuidv4();
   }
 }

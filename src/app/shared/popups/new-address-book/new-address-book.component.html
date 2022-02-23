@@ -10,17 +10,18 @@
           <div class="row w-100 m-0">
             <div class="col-4 ml-auto">
               <div class="input-group input-group-md mb-0">
-                <input type="text" autocomplete="off" placeholder="Search By Company Name" name="cName"
-                  [(ngModel)]="filterVal.cName" class="form-control" (input)="getSuggestions($event.target.value)" />
+                <input type="text"[(ngModel)]="filterVal.cName" autocomplete="off" placeholder="Search By Company Name" 
+                  class="form-control" (input)="getSuggestions($event.target.value)" />
               </div>
-              <div *ngIf="suggestions?.length > 0" class="result-suggestions text-capitalize">
+              
+             <div *ngIf="suggestions?.length > 0" class="result-suggestions text-capitalize">
                 <ul class="m-0">
                   <li *ngFor="let suggestedUser of suggestions" style="cursor: pointer"
                     (click)="setSearchValues(suggestedUser.cName)">
                     {{ suggestedUser.cName }}
                   </li>
                 </ul>
-              </div>
+              </div> 
             </div>
 
             <div class="col-3 p-0">
@@ -920,10 +921,18 @@
                 Company Name
                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
               </label>
-              <input [(ngModel)]="unitData.cName" name="cName" type="text" class="form-control"
-                placeholder="eg. Carroll Group" #customerName="ngModel" pattern="^[a-zA-Z0-9\s\.]{4,120}$" [ngClass]="{
+              <input [(ngModel)]="unitData.cName" [(ngModel)]="similarVal.cName" name="cName" type="text"  class="form-control"
+                placeholder="eg. Carroll Group" (input)="getSimilarNamesSuggestions($event.target.value)" #customerName="ngModel" autocomplete="off" pattern="^[a-zA-Z0-9\s\.]{4,120}$" [ngClass]="{
                   error: contactForm.submitted && customerName.invalid
-                }" required />
+                }" required  />
+                   <div *ngIf="actualSuggestions?.length > 0" class="result-suggestions text-capitalize">
+                <ul class="m-0">
+                  <li *ngFor="let similarUser of actualSuggestions" style="cursor: pointer"
+                    (click)="setSimilarValue(similarUser.cName)">
+                    {{ similarUser.cName }}
+                  </li>
+                </ul>
+              </div>
               <div *ngIf="customerName.invalid && contactForm.submitted" class="text-danger">
                 <div *ngIf="customerName.errors.required">
                   Company name is required.
@@ -2230,7 +2239,7 @@
         <button type="button" class="btn btn-default mr-2" (click)="modal.dismiss('Cross click')">
           Close
         </button>
-        <button type="submit" *ngIf="!updateButton" class="btn btn-success" [disabled]="unitDisabled">
+        <button type="submit" *ngIf="!updateButton"  class="btn btn-success" [disabled]="unitDisabled">
           Submit
         </button>
         <button type="submit" *ngIf="updateButton" class="btn btn-success" [disabled]="unitDisabled">

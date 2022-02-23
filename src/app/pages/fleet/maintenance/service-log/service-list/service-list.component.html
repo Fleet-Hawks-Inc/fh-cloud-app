@@ -23,7 +23,36 @@
                                         data.value }}</ng-option>
                                 </ng-select>
                         </div>
+                        <div class="col-md-2 col-lg-2 pr-1">
+                            <ng-select [(ngModel)]="category" name="category" placeholder="Search by Category"
+                                (change)="categoryChange()">
+                                <ng-option *ngFor="let data of categoryFilter" value="{{ data.value }}">
+                                    {{ data.name }}
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="col-md-2 col-lg-2 pr-1">
+                            <div class="input-group input-group-md mb-3" *ngIf="
+                                category != 'vehicle' &&
+                                category != 'asset' &&
+                                category != 'task'
+                              ">
+                                <input type="text" class="form-control" placeholder="Search" name="searchValue"
+                                    [(ngModel)]="searchValue" />
+                            </div>
 
+                            <ng-select [(ngModel)]="searchValue" name="searchValue" placeholder="Search By Vehicle"
+                                *ngIf="category == 'vehicle'">
+                                <ng-option *ngFor="let data of vehiclesObject" value="{{ data.vehicleID }}">
+                                    {{ data.vehicleIdentification }}</ng-option>
+                            </ng-select>
+
+                            <ng-select [(ngModel)]="searchValue" name="searchValue" placeholder="Search By Asset"
+                                *ngIf="category == 'asset'">
+                                <ng-option *ngFor="let data of assetsObject" value="{{ data.assetID }}">
+                                    {{ data.assetIdentification }}</ng-option>
+                            </ng-select>
+                        </div>
                         <div class="col-md-2 col-lg-2 pl-0 pr-0">
                             <ng-select placeholder="Select Task" class="form-control bgnone populate" name="taskID"
                                 [(ngModel)]="taskID">
@@ -40,15 +69,15 @@
                         </div>
 
                         <div class="col-md-4 col-lg-4 text-right pr-1
-                            text-right">
+                                    text-right">
                             <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
 
                                 <button type="button" class="btn btn-success
-                                    btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span
-                                        class="caret"></span></button>
+                                            btn-sm dropdown-toggle" data-toggle="dropdown"
+                                    aria-expanded="false">Actions<span class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change:
-                                    transform; top: 0px; left: 0px; transform:
-                                    translate3d(0px, 38px, 0px);">
+                                            transform; top: 0px; left: 0px; transform:
+                                            translate3d(0px, 38px, 0px);">
                                     <a class="dropdown-item text-1" href="javascript:;">Import</a>
                                     <a class="dropdown-item text-1" href="javascript:;">Export</a>
                                 </div>
@@ -56,7 +85,7 @@
 
                             <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data"
                                 class="btn btn-success btn-sm modal-with-form
-                                mr-2">
+                                        mr-2">
                                 <i class="fas fa-sync"></i>
                             </a>
 
@@ -65,6 +94,8 @@
                                 Add
                                 Service Log</a>
                         </div>
+
+
                     </div>
                 </form>
             </header>

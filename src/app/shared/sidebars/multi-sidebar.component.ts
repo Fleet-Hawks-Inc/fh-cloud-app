@@ -277,6 +277,9 @@ export class CommonSideBarComponent implements OnInit {
   generateTripSessionID() {
     return this.routeManagement.tripUpdateSessionID;
   }
+  generateDriverSessionID() {
+    return this.routeManagement.driverUpdateSessionID;
+  }
 }
 
 @Component({
