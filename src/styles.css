@@ -29,6 +29,7 @@ body {
 
 body {
     margin: 0;
+    overflow-y: scroll !important;
 }
 
 .H_logo {
