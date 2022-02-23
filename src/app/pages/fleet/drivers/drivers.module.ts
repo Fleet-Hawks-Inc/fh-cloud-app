@@ -18,6 +18,9 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { TooltipModule } from 'primeng/tooltip';
 import { MenuModule } from 'primeng/menu';
 import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -72,7 +75,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 const routes: Routes = [
   { path: 'add', component: AddDriverComponent, canDeactivate: [unsavedChangesGuard], data: { title: 'Add Driver' } },
   { path: 'edit/:driverID', component: AddDriverComponent, data: { title: 'Edit Driver' } },
-  { path: 'list', component: DriverListComponent, data: { title: 'Drivers List' } },
+  { path: 'list/:sessionID', component: DriverListComponent, data: { title: 'Drivers List', reuseRoute: true } },
   { path: 'detail/:driverID', component: DriverDetailComponent, data: { title: 'Driver Detail' } }
 ];
 @NgModule({
@@ -96,7 +99,10 @@ const routes: Routes = [
     MultiSelectModule,
     TooltipModule,
     MenuModule,
-    SplitButtonModule
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule
   ],
   providers: [unsavedChangesGuard,
     { provide: NgbDateAdapter, useClass: CustomAdapter },

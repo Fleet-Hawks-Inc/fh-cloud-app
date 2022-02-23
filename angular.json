@@ -35,7 +35,6 @@
                         "styles": [
                             "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
                             "src/assets/css/jquerytable.css",
-                            "src/styles.css",
                             "src/assets/vendor/select2-bootstrap-theme/select2-bootstrap.min.css",
                             "node_modules/ngx-toastr/toastr.css",
                             "node_modules/jstree/dist/themes/default/style.min.css",
@@ -48,7 +47,9 @@
                             "node_modules/primeng/resources/themes/saga-green/theme.css",
                             "node_modules/primeng/resources/primeng.min.css",
                             "node_modules/primeflex/primeflex.css",
-                            "node_modules/primeicons/primeicons.css"
+                            "node_modules/primeicons/primeicons.css",
+                            "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+                            "src/styles.css"
                         ],
                         "scripts": [
                             "src/assets/vendor/jquery/jquery.js",
@@ -70,6 +71,7 @@
                             "node_modules/slick-carousel/slick/slick.min.js",
                             "src/assets/js/jquery.validate.min.js",
                             "node_modules/select2/dist/js/select2.min.js"
+
                         ]
                     },
                     "configurations": {
