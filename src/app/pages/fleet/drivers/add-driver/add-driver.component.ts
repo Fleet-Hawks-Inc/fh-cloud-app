@@ -8,8 +8,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import {
   NgbCalendar,
   NgbDateAdapter,
-  NgbModal,
-  NgbModalOptions,
+  NgbModal
 } from "@ng-bootstrap/ng-bootstrap";
 import { Auth } from "aws-amplify";
 import { passwordStrength } from "check-password-strength";
@@ -23,20 +22,19 @@ import {
   distinctUntilChanged,
   map,
   switchMap,
-  takeUntil,
+  takeUntil
 } from "rxjs/operators";
-import { CanComponentDeactivate } from "src/app/guards/unsaved-changes.guard";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
-
-import { UnsavedChangesComponent } from "src/app/unsaved-changes/unsaved-changes.component";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 import {
   ApiService,
   DashboardUtilityService,
   HereMapService,
-  ListService,
+  ListService
 } from "../../../../services";
 import { ModalService } from "../../../../services/modal.service";
 import Constants from "../../constants";
+
 
 declare var $: any;
 @Component({
@@ -316,6 +314,7 @@ export class AddDriverComponent
   showUploadedPicModal = false;
   pageType = "add";
   groupsData: any = [];
+  sessionID:string;
 
   constructor(
     private apiService: ApiService,
@@ -333,7 +332,8 @@ export class AddDriverComponent
     private router: Router,
     private listService: ListService,
     private countryStateCity: CountryStateCityService,
-    private dashboardUtilityService: DashboardUtilityService
+    private dashboardUtilityService: DashboardUtilityService,
+    private routeMgmntService:RouteManagementServiceService
   ) {
     this.modalServiceOwn.triggerRedirect.next(false);
 
@@ -369,6 +369,7 @@ export class AddDriverComponent
       month: 12,
       day: 31,
     };
+    this.sessionID=this.routeMgmntService.driverUpdateSessionID;
   }
   scrollError() {
     let errorList;
@@ -982,7 +983,7 @@ export class AddDriverComponent
             this.takeUntil$.next();
             this.takeUntil$.complete();
             this.spinner.hide();
-            this.router.navigateByUrl("/fleet/drivers/list");
+            this.router.navigateByUrl(`/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`);            
           },
         });
       } catch (error) {
