@@ -91,3 +91,9 @@ body {
 .p-datatable .p-datatable-thead>tr>th {
     color: black;
 }
+
+.p-datatable .p-datatable-footer {
+    background-color: white;
+    border-color: white;
+    color: black;
+}
