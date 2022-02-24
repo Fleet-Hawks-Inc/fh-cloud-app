@@ -90,13 +90,14 @@ export class DriverListComponent implements OnInit {
         { field: 'firstName', header: 'First Name', type: "text" },
         { field: 'lastName', header: 'Last Name', type: "text" },
         { field: 'email', header: 'Email', type: "text" },
-        { field: 'driverType', header: 'Type', type: "text" },
         { field: 'phone', header: 'Phone', type: "text" },
         { field: 'userName', header: 'Username', type: "text" },
+        { field: 'driverType', header: 'Type', type: "text" },
         { field: 'startDate', header: 'Start Date', type: "text" },
         { field: 'CDL_Number', header: 'CDL#', type: "text" },
         { field: 'licenceDetails.licenceExpiry', header: 'CDL Expiry', type: "text" },
-        { field: "driverStatus", header: 'Status', type: 'text' }
+        { field: "driverStatus", header: 'Status', type: 'text' },
+
     ];
 
     constructor(
@@ -106,14 +107,14 @@ export class DriverListComponent implements OnInit {
         private countryStateCity: CountryStateCityService
     ) { }
 
-    ngOnInit(): void {
+    async ngOnInit(): Promise<void> {
         this.setToggleOptions();
         this.setEmployeeOptions();
         // this.fetchAllDocumentsTypes();
         // this.fetchAllVehiclesIDs();
         // this.fetchAllVendorsIDs();
         // this.fetchOwnerOperatorsByIDss();
-        this.fetchDrivers();
+        await this.fetchDrivers();
 
 
     }
@@ -271,25 +272,19 @@ export class DriverListComponent implements OnInit {
 
 
 
-    onScroll(event: any) {
+    onScroll = async (event: any) => {
 
 
-        if (event.sortField) {
 
-            const sortDirection = event.sortOrder === 1 ? 'asc' : 'desc';
-
-            this.drivers = _.orderBy(this.drivers, [event.sortField], sortDirection);
-        } else if (event.globalFilter) {
-            const resu = this.table.filterGlobal(event.globalFilter, 'contains');
+        if (this.loaded) {
+            await this.fetchDrivers();
 
         }
-        else {
-            if (this.loaded) {
-                this.fetchDrivers();
-            }
-            this.loaded = false;
 
-        }
+
+
+
+
     }
 
     fetchAddress(drivers: any) {

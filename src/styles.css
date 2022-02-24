@@ -67,7 +67,7 @@ body {
 /* Prime NG all Component Styling */
 
 .p-component {
-    font-family: "Open Sans", Arial, sans-serif;
+    font-family: "Arial", Helvetica, sans-serif !important;
     font-size: 14px;
 }
 
@@ -78,4 +78,16 @@ body {
 .p-dropdown .p-dropdown-label.p-placeholder {
     font-size: 12px;
     color: rgb(163, 163, 163);
+}
+
+body {
+    font-family: "Open Sans", Arial, sans-serif;
+}
+
+.p-datatable.p-datatable-sm .p-datatable-tbody>tr>td {
+    padding: 0px 0px 0px 10px;
+}
+
+.p-datatable .p-datatable-thead>tr>th {
+    color: black;
 }
