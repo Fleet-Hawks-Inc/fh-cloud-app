@@ -66,7 +66,7 @@ export class ExpenseComponent implements OnInit {
   driver: any = []
   pay: any = []
   entityId: any
-
+  lastDrvP = ''
   constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute, private spinner: NgxSpinnerService, private accountService: AccountService,) {
   }
 
@@ -84,10 +84,36 @@ export class ExpenseComponent implements OnInit {
   }
 
 
-  fetchDriverPayment() {
-    this.accountService.getData(`driver-payments/get/driver/payment?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
-      this.payments = this.payments.concat(result);
-    })
+  async fetchDriverPayment() {
+    if (this.lastDrvP !== 'end') {
+      // const result: any = await this.accountService.getData(`driver-payments/get/driver/payment?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&lastKey=${this.lastDrvP}`)
+      const result: any = await this.accountService.getData(`driver-payments/get/driver/payment?drivers=${encodeURIComponent(JSON.stringify(this.driver))}`)
+        .toPromise();
+      this.payments = result;
+
+      // this.lastDrvP = "end";
+
+
+      if (result.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND
+      }
+
+      // if (result.length > 0) {
+      //   if (result[result.length - 1].entityId !== undefined) {
+      //     console.log('result[result.length - 1].entityId', result[result.length - 1].entityId)
+      //     this.lastDrvP = encodeURIComponent(result[result.length - 1].entityId);
+      //   }
+      //   else {
+      //     this.lastDrvP = 'end'
+      //   }
+      //   // this.loaded = true;
+
+      // }
+      // this.payments = this.payments.concat(result)
+      console.log('this.payments', this.payments)
+
+      // })
+    }
   }
   fetchExpensePayment() {
     this.accountService.getData(`expense-payments/get/driver/expense?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
