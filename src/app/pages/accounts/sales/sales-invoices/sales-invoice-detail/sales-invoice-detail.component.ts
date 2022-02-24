@@ -17,6 +17,7 @@ export class SalesInvoiceDetailComponent implements OnInit {
   saleID: any;
 
   txnDate: string;
+  payStatus: string;
   cName: string;
   cusAddress: string;
   cusEmail: string;
@@ -36,6 +37,8 @@ export class SalesInvoiceDetailComponent implements OnInit {
   paymentTerm: string;
   dueDate: string;
   customersObjects: any;
+
+  transactionLog = [];
 
   balance: any;
   received: any;
@@ -89,6 +92,8 @@ export class SalesInvoiceDetailComponent implements OnInit {
       this.isInvDue = result.due;
       this.logo = result.logo;
       this.tagline = result.tagline;
+      this.payStatus = result.payStatus;
+      this.transactionLog = result.transactionLog;
     });
   }
 
