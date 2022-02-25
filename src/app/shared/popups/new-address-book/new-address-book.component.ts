@@ -40,10 +40,17 @@ export class NewAddressBookComponent implements OnInit {
   filterVal = {
     cName: '',
   }
-
+  
+    similarVal = {
+    cName: '',
+  }
+  
+  
+  
+  
   updateButton: boolean = false;
   suggestions = [];
-  actualSuggestions: any = [];
+  actualSuggestions = [];
   customers = [];
   brokers = [];
   vendors = [];
@@ -54,7 +61,7 @@ export class NewAddressBookComponent implements OnInit {
   fcCompanies = [];
   owners = [];
   allData = [];
-
+similarSuggestions = [];
   additionalDisabled = false;
   unitDisabled = false;
 
@@ -323,8 +330,20 @@ export class NewAddressBookComponent implements OnInit {
       this.apiService
         .getData(`contacts/suggestion/${value}`)
         .subscribe((result) => {
-          this.actualSuggestions = _.uniqBy(result.Items,'cName');
           this.suggestions = _.uniqBy(result.Items,'cName');
+        });
+    }
+  }, 800);
+  
+  //For Similar Company Name Suggestions
+    getSimilarNamesSuggestions = _.debounce(function (value) {
+    if (value != '') {
+      value = value.toLowerCase()
+      this.apiService
+        .getData(`contacts/similar/cName/suggestion/${value}`)
+        .subscribe((result) => {
+          this.actualSuggestions = _.uniqBy(result.Items,'cName');
+          this.similarSuggestions = _.uniqBy(result.Items,'cName');
         });
     }
   }, 800);
@@ -332,6 +351,11 @@ export class NewAddressBookComponent implements OnInit {
   setSearchValues(searchValue) {
     this.filterVal.cName = searchValue;
     this.suggestions = [];
+  }
+
+  setSimilarValue(similarValue) {
+    this.similarVal.cName = similarValue;
+    this.actualSuggestions = [];
   }
 
   async searchFilter() {
@@ -1122,7 +1146,7 @@ export class NewAddressBookComponent implements OnInit {
 
 validatePopUp()
 {
- const found = this.actualSuggestions.some(a=>a.cName.toLowerCase() === this.unitData.cName.toLowerCase())
+ const found = this.similarSuggestions.some(a=>a.cName.toLowerCase() === this.unitData.cName.toLowerCase())
  if(found)
  {
       if(confirm('Company name is already exists ! Are you sure want to continue?') ===  true)
