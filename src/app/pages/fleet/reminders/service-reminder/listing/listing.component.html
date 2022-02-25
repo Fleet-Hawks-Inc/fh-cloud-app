@@ -3,15 +3,13 @@
         <section role="main" class="content-body pl-1 pt-0 pr-0">
             <header class="page-header pr19 pl11">
                 <div class="row" style="padding-top:10px;">
-                    <div class="col-md-2 col-lg-2">
-                        <div class="input-group input-group-md mb-3">
+                        <div class="col-md-2 col-lg-2 pr-3">
                             <ng-select [(ngModel)]="vehicleID" name="vehicleID" style="width: 100% !important;"
                                 placeholder="Search By vehicle">
                                 <ng-option *ngFor="let data of vehicleList | keyvalue" value="{{ data.key }}"> {{
                                     data.value }}</ng-option>
                             </ng-select>
                         </div>
-                    </div>
 
                     <div class="col-md-2 col-lg-2 pl-0">
                         <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask"
