@@ -498,11 +498,11 @@
                           {{ orderData.total.subTotal | number: "1.2-2" }}
                         </label>
                       </div>
-                      <div class="col-lg-12">
+                      <div class="col-lg-12" *ngIf="!orderData.exempt">
                         <label class="control-label font-weight-bold text-3 text-dark"
                           for="inputDefault">Province/State</label>
                       </div>
-                      <div class="col-lg-10" *ngIf="!orderData.exempt">
+                      <div class="col-lg-6" *ngIf="!orderData.exempt">
                         <ng-select class="form-control populate" name="stateID" [(ngModel)]="orderData.stateID"
                           placeholder="Select state" (change)="selecteProvince($event)">
                           <ng-option *ngFor="let data of stateTaxes" value="{{ data.stateTaxID }}">{{ data.stateName }}
@@ -512,7 +512,7 @@
                     </div>
 
                     <div class="row">
-                      <div class="col-lg-8" *ngIf="orderData.exempt"></div>
+                      <div class="col-lg-6" *ngIf="orderData.exempt"></div>
                       <div class="col-lg-6" *ngIf="!orderData.exempt">
                         <!-- GST -->
                         <div class="row mt-3" *ngFor="
@@ -533,20 +533,20 @@
                       </div>
                       <div class="col-lg-4">
                         <div *ngIf="!orderData.exempt">
-                          <div class="row mt-3" *ngFor="
+                          <div class="row mt-1" *ngFor="
                               let taxD of orderData.charges.taxes;
                               let td = index
                             ">
                             <div class="col-lg-12 pt-1">
                               <div class="bordtop">
-                                <p class="text-right">
+                                <p class="text-right pt-2 mb-0">
                                   {{ taxD.amount | number: "1.2-2" }}
                                 </p>
                               </div>
                             </div>
                           </div>
                         </div>
-                        <div class="row mt-3">
+                        <div class="row mt-1">
                           <div class="col-lg-9 pt-1 pr-0">
                             <div class="bordtop">
                               <h5 class="text-right font-weight-semibold text-4 text-dark">
@@ -556,7 +556,7 @@
                           </div>
                           <div class="col-lg-3 pt-1 pl-0">
                             <div class="bordtop">
-                              <p class="text-right">
+                              <p class="text-right pt-2 mb-0">
                                 {{
                                 orderData.total.vendorCredit | number: "1.2-2"
                                 }}
@@ -574,7 +574,7 @@
                           </div>
                           <div class="col-lg-3 pt-1 pl-0">
                             <div class="bordtop">
-                              <p class="text-right">
+                              <p class="text-right pt-2 mb-0">
                                 {{
                                 orderData.total.finalTotal | number: "1.2-2"
                                 }}
