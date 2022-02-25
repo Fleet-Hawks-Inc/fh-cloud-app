@@ -251,7 +251,8 @@ export class VehicleListComponent implements OnInit {
     if (vehicleList && vehicleList.length > 0) {
       for (const data of vehicleList) {
         if (data.deviceInfo) {
-          const response: any = await this.apiService.postData('vehicles/dashCam/status', { deviceId: data.deviceInfo[0].deviceSrNo.split('#')[1] }).toPromise();
+          const deviceId = data.deviceInfo[0].deviceSrNo.split('#')[1];
+          const response: any = await this.apiService.getData(`vehicles/dashCam/status/${deviceId}`).toPromise();
           if (response && response.isOnline !== undefined) {
             data['isDashOnline'] = response.isOnline;
           }
