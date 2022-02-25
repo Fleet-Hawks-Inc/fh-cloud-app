@@ -98,6 +98,7 @@ export class OrderDetailComponent implements OnInit {
   pageVariable = 1;
 
   carrierLogo: string;
+  invoiceID: string;
   /**
    * Form props
    */
@@ -365,6 +366,10 @@ export class OrderDetailComponent implements OnInit {
         this.zeroRated = result.zeroRated;
         this.carrierID = result.carrierID;
         this.customerID = result.customerID;
+        if (result.invoiceGenerate && result.invData.invID && result.invData.invID != '') {
+          this.invoiceID = result.invData.invID;
+          this.today = await this.getInvDate(this.invoiceID)
+        }
         if (
           result.invoiceGenerate ||
           result.orderStatus === "created" ||
@@ -687,6 +692,13 @@ export class OrderDetailComponent implements OnInit {
 
   pageRendered(event) {
     this.pdfComponent.pdfViewer.currentScaleValue = "page-fit";
+  }
+
+  async getInvDate(orderID: string) {
+    let result = await this.accountService.getData(`order-invoice/detail/invDate/${orderID}`).toPromise();
+    if (result && result.length > 0 && result[0].txnDate) {
+      return result[0].txnDate;
+    }
   }
 
   async saveInvoice() {
