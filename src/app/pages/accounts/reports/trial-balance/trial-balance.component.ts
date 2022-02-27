@@ -96,17 +96,17 @@ export class TrialBalanceComponent implements OnInit {
             this.accounts = [];
         }
         if (this.lastItemSK !== "end") {
-            let name = null;
-            let type = null;
-            if (this.filter.actType !== null || this.filter.actName !== null) {
-                if (this.filter.actType !== null && this.filter.actType !== "") {
-                    type = this.filter.actType;
-                }
-                if (this.filter.actName !== null && this.filter.actName !== "") {
-                    name = this.filter.actName.toLowerCase();
-                }
-                this.dataMessage = Constants.FETCHING_DATA;
-            }
+            // let name = null;
+            // let type = null;
+            // if (this.filter.actType !== null || this.filter.actName !== null) {
+            //     if (this.filter.actType !== null && this.filter.actType !== "") {
+            //         type = this.filter.actType;
+            //     }https://www.google.com/search?q=how+to+calculate+total+of+array+&sxsrf=APq-WBvNSQgtLqbFQsw1P_f2q8speYTAPA%3A1645847832901&ei=GKUZYve3NpLr0AT_2KTwAw&ved=0ahUKEwj3o7z7vJz2AhWSNZQKHX8sCT4Q4dUDCA4&uact=5&oq=how+to+calculate+total+of+array+&gs_lcp=Cgdnd3Mtd2l6EAMyBAgjECcyBggAEBYQHjIGCAAQFhAeMgYIABAWEB4yBggAEBYQHjIGCAAQFhAeMgYIABAWEB4yBggAEBYQHjIGCAAQFhAeMgYIABAWEB46BwgjELADECc6BwgAEEcQsANKBAhBGABKBAhGGABQlT9YlT9goUhoAnABeACAAdEBiAHRAZIBAzItMZgBAKABAcgBCsABAQ&sclient=gws-wiz
+            //     if (this.filter.actName !== null && this.filter.actName !== "") {
+            //         name = this.filter.actName.toLowerCase();
+            //     }
+            //     this.dataMessage = Constants.FETCHING_DATA;
+            // }
             this.accountService.getData(`chartAc/get/coa/${this.currency}/?lastKey=${this.lastItemSK}&start=${this.filter.startDate}&end=${this.filter.endDate}`)
             .subscribe(async (result: any) => {
               if(result.data.length === 0){
@@ -121,6 +121,32 @@ export class TrialBalanceComponent implements OnInit {
                     this.accounts = newArray;
                     console.log('array1',newArray)
                     console.log('array2',this.accounts)
+                    console.log('array3',result.data)
+                    
+for (var i=0;i<this.accounts.length;i++){ 
+   if(this.currTab === 'CAD'){
+        this.currency = 'CAD'
+    if(this.accounts[i].debit != null){    
+        this.cadDebitTotal += parseFloat(this.accounts[i].debit);
+    }
+     if(this.accounts[i].credit != null){    
+        this.cadCreditTotal += parseFloat(this.accounts[i].credit);
+    }
+    }
+    if(this.currTab === 'USD'){
+        this.currency = 'USD'
+        if(this.accounts[i].debit != null){    
+        this.usdDebitTotal += parseFloat(this.accounts[i].debit);
+    }
+     if(this.accounts[i].credit != null){    
+        this.usdCreditTotal += parseFloat(this.accounts[i].credit);
+     }
+    }
+}
+                    console.log('Cad Debit Total',this.cadDebitTotal)
+                    console.log('Cad Credit Total',this.cadCreditTotal)
+                     console.log('USD Debit Total',this.usdDebitTotal)
+                    console.log('USD Credit Total',this.usdCreditTotal)
                     this.accounts = _.filter(this.accounts, function (o) {
                         return o.actType != 'H';
                     });
@@ -130,55 +156,11 @@ export class TrialBalanceComponent implements OnInit {
                     this.accounts = _.filter(this.accounts, function (o) {
                         return o.actType != 'T';
                     });
-                    
-                    var totalAmount = 0;
-                    for (var x = 0; x < newArray.debit.length; x++) {
-
-                       totalAmount += newArray.debit[x];
-                    }
-
-                    console.log(totalAmount);
                     this.loaded = true;
-                   ;
                 }
             });
         }
     }
-
-
-
-
-//For COA
-//   async fetchCOA(refresh?: boolean) {
-//     if (refresh === true) {
-//       this.lastItemSK = "";
-//       this.accounts = [];
-//     }
-//       if(this.lastItemSK != 'end'){
-//             this.accountService.getData(`chartAc/get/coa/CAD/?lastkey=${this.lastKey}&start=${this.filter.startDate}&end=${this.filter.endDate}&date=${this.datee}`)
-//             .subscribe(async (result: any) => {
-//               if(result.data.length === 0){
-//                   this.dataMessage = Constants.NO_RECORDS_FOUND;
-//               }
-//               if(result.data.length > 0){
-//                   result.data.map((v) => {
-//                       this.accounts.push(v);
-//                       console.log('accounts', this.accounts);
-//                   });
-//                   if(this.accounts[this.accounts.length - 1].sk !== undefined){
-//                       this.lastItemSK = encodeURIComponent(this.accounts[this.accounts.length - 1].sk);
-//                   }else{
-//                       this.lastItemSK = 'end';
-//                   }
-//                   const newArray = _.sortBy(this.accounts, ['accountNo']);
-//                   this.accounts = newArray;
-//                   this.loaded = true;
-//                   console.log('newArray', newArray);
-//               }
-//         });
-//       }
-// }
-
 
     
     //For Scrolling Page
@@ -265,25 +247,6 @@ searchFilter()
         }
     }
 
-
-
-
-
-    // //For Export  API
-    // async getExportData() {
-    //     this.allExportData = [];
-    //     let trailBalence: any = await this.accountService.getData(
-    //             `chartAc/export/trial/balence`
-    //         ).toPromise();
-            
-    //     if (trailBalence && trailBalence.length > 0) {
-    //         this.allExportData = this.allExportData.concat(trailBalence)
-    //         console.log('export',this.allExportData);
-    //         this.allExportData = _.sortBy(this.allExportData, ["actNo"]);
-    //     }
-    //   }
-
-
     //For Generating CSV
     async generateCSV() {
         this.exportLoading = true;
@@ -291,7 +254,6 @@ searchFilter()
         let csvArray = []
         let provArray = [];
         try {
-            //await this.getExportData();
             if (this.accounts.length > 0) {
                 
                 for (const element of this.accounts) {
@@ -304,7 +266,6 @@ searchFilter()
                 }                    
                
                 console.log('dataObject',dataObject);
-                // console.log('getExport',this.getExportData);
                 let headers = Object.keys(dataObject[0]).join(',')
                 headers += '\n'
                 csvArray.push(headers)
