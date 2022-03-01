@@ -36,7 +36,6 @@ export class FuelEntryListComponent implements OnInit {
   reviewing=false;
   csvHeader=[]
   vehicleList: any = {};
-  tripList: any = {};
   assetList: any = {};
   driverList: any = {};
   vendorList: any = {};
@@ -103,7 +102,6 @@ export class FuelEntryListComponent implements OnInit {
     this.fetchVehicleList();
     this.fetchAssetList();
     this.fetchWEXCode();
-    this.fetchTripList();
     this.fetchDriverList();
     this.fetchAllAssets();
     this.fetchAllVehicles();
@@ -218,11 +216,6 @@ export class FuelEntryListComponent implements OnInit {
   fetchDriverList() {
     this.apiService.getData('drivers/get/list').subscribe((result: any) => {
       this.driverList = result;
-    });
-  }
-  fetchTripList() {
-    this.apiService.getData('common/trips/get/list').subscribe((result: any) => {
-      this.tripList = result;
     });
   }
   fetchCountries() {
