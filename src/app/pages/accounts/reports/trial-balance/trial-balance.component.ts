@@ -95,7 +95,7 @@ export class TrialBalanceComponent implements OnInit {
             this.accounts = [];
         }
         if (this.lastItemSK !== "end") {
-            this.accountService.getData(`chartAc/get/coa/${this.currency}/?lastKey=${this.lastItemSK}&start=${this.filter.startDate}&end=${this.filter.endDate}`)
+            this.accountService.getData(`chartAc/report/trialBalance/${this.currency}/?lastKey=${this.lastItemSK}&start=${this.filter.startDate}&end=${this.filter.endDate}`)
                 .subscribe(async (result: any) => {
                     if (result.data.length === 0) {
                         this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -224,26 +224,37 @@ export class TrialBalanceComponent implements OnInit {
         let provArray = [];
         try {
             if (this.accounts.length > 0) {
-
                 for (const element of this.accounts) {
-                    let obj = {}
+                     let obj = {}
                     obj["Account Number"] = element.accountNo
                     obj["Account Name"] = element.accountName,
-                        obj["Credit"] = element.credit
+                    obj["Credit"] = element.credit
                     obj["Debit"] = element.debit
-                    dataObject.push(obj)
+                    dataObject.push(obj)  
                 }
-
-                console.log('dataObject', dataObject);
+                 let totObj = {
+                   
+                    ["Credit"] : 'Total' ,
+                    ["Debit"] : " "
+                 }
+                  if(this.currency === 'CAD'){
+                      totObj["Total"] = this.cadCreditTotal 
+                      totObj["Total1"] = this.cadDebitTotal
+                      dataObject.push(totObj)
+                 }
+                else if(this.currency === 'USD') {
+                      totObj["Total"] = this.usdCreditTotal 
+                      totObj["Total1"] = this.usdDebitTotal
+                      dataObject.push(totObj)
+                  }
                 let headers = Object.keys(dataObject[0]).join(',')
                 headers += '\n'
                 csvArray.push(headers)
                 for (const element of dataObject) {
-                    let value = Object.values(element).join(',')
+                   let value = Object.values(element).join(',')
                     value += '\n'
                     csvArray.push(value)
                 }
-                console.log("csv", csvArray);
                 const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8' })
                 const link = document.createElement('a');
                 if (link.download !== undefined) {
@@ -255,7 +266,6 @@ export class TrialBalanceComponent implements OnInit {
                     link.click();
                     document.body.removeChild(link);
                 }
-                console.log('Export', this.allExportData);
                 this.exportLoading = false
             }
             else {
@@ -266,5 +276,4 @@ export class TrialBalanceComponent implements OnInit {
             this.exportLoading = false;
         }
     }
-
 }
