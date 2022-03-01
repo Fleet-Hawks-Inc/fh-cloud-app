@@ -26,6 +26,7 @@ export class ExpenseComponent implements OnInit {
   end: any = null;
   lastItemSK = '';
   datee = '';
+  expDate = ''
   loaded = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   dataMessage = Constants.FETCHING_DATA;
@@ -67,6 +68,8 @@ export class ExpenseComponent implements OnInit {
   pay: any = []
   entityId: any
   lastDrvP = ''
+  lastExpPay = ''
+  // vehicleList = []
   constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute, private spinner: NgxSpinnerService, private accountService: AccountService,) {
   }
 
@@ -74,13 +77,14 @@ export class ExpenseComponent implements OnInit {
     this.end = moment().format("YYYY-MM-DD");
     this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
     this.vehicleId = this.route.snapshot.params[`vehicleId`];
-    this.fetchVehicleListing();
+    this.fetchTrpByVehicle();
     this.fetchVehicleName();
-    this.fetchAllIssuesIDs()
-    this.fetchFuelVehicles();
-    this.fetchServiceLogName();
-    this.fetchSettlement();
+    // this.fetchAllIssuesIDs()
+    this.fetchFuelByVehicle();
+    this.fetchSlogByVehicle();
+    // this.fetchSettlement();
     this.fetchExpensePayment()
+    // this.fetchVehiclesList();
   }
 
 
@@ -90,14 +94,10 @@ export class ExpenseComponent implements OnInit {
       const result: any = await this.accountService.getData(`driver-payments/get/driver/payment?drivers=${encodeURIComponent(JSON.stringify(this.driver))}`)
         .toPromise();
       this.payments = result;
-
       // this.lastDrvP = "end";
-
-
       if (result.length === 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND
       }
-
       // if (result.length > 0) {
       //   if (result[result.length - 1].entityId !== undefined) {
       //     console.log('result[result.length - 1].entityId', result[result.length - 1].entityId)
@@ -116,27 +116,42 @@ export class ExpenseComponent implements OnInit {
     }
   }
   async fetchExpensePayment() {
-    console.log('----fgfhffgfhs', this.vehicleId)
-    const rsult: any = await this.accountService.getData(`expense-transaction/get/expense/pay/byTrp?vehicleId${encodeURIComponent(JSON.stringify(this.vehicleId))}`).toPromise();
-    this.expensePay = rsult;
+  if(this.lastExpPay !== 'end'){
+    const result: any = await this.accountService.getData(`expense/get/expense/pay/byTrp/${encodeURIComponent(JSON.stringify(this.vehicleId))}?startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastExpPay}&date=${this.expDate}`).toPromise();
+    this.expensePay = result;
     console.log('this.expensePay', this.expensePay)
+
+    if(result.length === 0){
+      this.dataMessage = Constants.NO_RECORDS_FOUND
+    }
+    if (result.length > 0) {
+      if (result[result.length - 1].categoryID !== undefined) {
+            this.lastExpPay = encodeURIComponent(result[result.length - 1].categoryID);
+           this.expDate = encodeURIComponent(result[result.length - 1].txnDate);
+          }
+          else {
+            this.lastExpPay = 'end'
+          }
+          this.loaded = true;
+    }
     // })
   }
-  fetchSettlement() {
-    this.accountService
-      .getData(`settlement/get/list`)
-      .subscribe((result: any) => {
-        this.settlements = result;
-      });
   }
+  // fetchSettlement() {
+  //   this.accountService
+  //     .getData(`settlement/get/list`)
+  //     .subscribe((result: any) => {
+  //       this.settlements = result;
+  //     });
+  // }
 
-  fetchAllIssuesIDs() {
-    this.apiService.getData("issues/get/list").subscribe((result: any) => {
-      this.issuesObject = result;
-    });
-  }
+  // fetchAllIssuesIDs() {
+  //   this.apiService.getData("issues/get/list").subscribe((result: any) => {
+  //     this.issuesObject = result;
+  //   });
+  // }
 
-  fetchServiceLogName() {
+  fetchSlogByVehicle() {
     this.apiService.getData(`serviceLogs/getBy/vehicle/name/trips/${this.vehicleId}?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.serviceLogName = result.Items
       if (result.Items.length === 0) {
@@ -144,6 +159,13 @@ export class ExpenseComponent implements OnInit {
       }
     })
   }
+
+
+  // fetchVehiclesList() { 
+  //   this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
+  //     this.vehicleList = result;
+  //   });
+  // }
 
   fetchVehicleName() { //vehicle name in tile
     this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
@@ -153,7 +175,7 @@ export class ExpenseComponent implements OnInit {
       }
     });
   }
-  fetchFuelVehicles() {
+  fetchFuelByVehicle() {
     this.apiService.getData(`fuelEntries/getBy/vehicle/trips/${this.vehicleId}?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.fuel = result.Items;
       if (result.Items.length === 0) {
@@ -162,7 +184,7 @@ export class ExpenseComponent implements OnInit {
     });
   }
 
-  fetchVehicleListing() {
+  fetchTrpByVehicle() {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`vehicles/fetch/TripData?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
         if (result.Items.length === 0) {
@@ -181,7 +203,7 @@ export class ExpenseComponent implements OnInit {
           }
         }
         this.fetchDriverPayment();
-        // this.fetchExpensePayment()
+        this.fetchExpensePayment()
         if (result.LastEvaluatedKey !== undefined) {
 
           this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
@@ -198,7 +220,7 @@ export class ExpenseComponent implements OnInit {
   }
   onScroll() {
     if (this.loaded) {
-      // this.fetchVehicleListing();
+      // this.fetchTrpByVehicle();
     }
     this.loaded = false;
   }
@@ -218,150 +240,23 @@ export class ExpenseComponent implements OnInit {
       else {
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastItemSK = '';
+        this.lastExpPay = ''
         this.allData = [];
         this.fuel = [];
         this.fuelList = [];
         this.serviceLogName = [];
         this.payments = [];
         this.expensePay = [];
-        this.settlements = [];
-        this.fetchVehicleListing()
-        this.fetchFuelVehicles()
-        this.fetchServiceLogName()
+        // this.settlements = [];
+        this.fetchTrpByVehicle()
+        this.fetchFuelByVehicle()
+        this.fetchSlogByVehicle()
         this.fetchDriverPayment();
-        // this.fetchExpensePayment();
+        this.fetchExpensePayment();
       }
     } else {
       return false;
     }
   }
 
-  // generateCSV(type = '') {
-  //   if (this.allData.length > 0) {
-  //     let dataObject = []
-  //     let csvArray = []
-  //     // this.allData.forEach(element => {
-  //     let location = ''
-  //     let driver = ''
-  //     let date = ''
-  //     let tripDetail = []
-  //     if (type === 'trip') {
-  //       tripDetail = this.allData
-  //     }
-  //     else {
-  //       return false;
-  //     }
-
-  //     tripDetail.forEach((element) => {
-  //       let driver = ''
-  //       console.log('element.driver', element.driverName)
-
-  //       let obj = {}
-  //       if (type === 'trip') {
-  //         obj["Vehicle"] = element.vehicle.replace(/, /g, ' &');
-  //         obj["Trip#"] = element.tripNo;
-  //         obj["Order#"] = element.orderName.replace(/, /g, ' &');
-  //         obj["Total Miles"] = element.miles;
-  //       }
-  //       else {
-  //         return false
-  //       }
-  //       dataObject.push(obj)
-  //       // });
-  //     })
-
-  //     let headers = Object.keys(dataObject[0]).join(',')
-  //     headers += ' \n'
-  //     csvArray.push(headers)
-
-  //     dataObject.forEach(element => {
-  //       let obj = Object.values(element).join(',')
-  //       obj += ' \n'
-  //       csvArray.push(obj)
-  //     });
-  //     const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
-  //     const link = document.createElement('a');
-  //     if (link.download !== undefined) {
-  //       const url = URL.createObjectURL(blob);
-  //       link.setAttribute('href', url);
-  //       link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}vehicleActivity-Report.csv`);
-  //       link.style.visibility = 'hidden';
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       document.body.removeChild(link);
-  //     }
-  //   }
-  //   else {
-  //     this.toastr.error("No Records found")
-  //   }
-  // }
-
-
-
-
-
-
-  // fuelCSV() {
-  //   if (this.fuel.length > 0) {
-  //     let dataObject = []
-  //     let csvArray = []
-  //     // this.fuel.forEach(element => {
-  //     let location = ''
-  //     let driver = ''
-  //     let date = ''
-  //     let fuelDetail = []
-  //     // if (type === 'trip') {
-  //     fuelDetail = this.fuel
-  //     // }
-  //     // else {
-  //     //   return false;
-  //     // }
-
-  //     fuelDetail.forEach((element) => {
-  //       console.log('element', element)
-
-  //       driver = element.vehicle
-  //       console.log('driver', driver)
-  //       let obj = {}
-  //       // if (type === 'trip') {
-  //       obj["Vehicle"] = element.vehicle.replace(/, /g, ' &');
-  //       obj["Fuel Card"] = element.data.cardNo;
-  //       obj["Fuel Type"] = element.data.type;
-  //       obj["Date/Time"] = element.data.date;
-  //       obj["Province"] = element.data.city;
-  //       obj["Amount"] = element.data.amt;
-  //       // }
-  //       // else {
-  //       //   return false
-  //       // }
-  //       dataObject.push(obj)
-  //       console.log('ddataobj---', dataObject)
-  //       // });
-  //     })
-
-  //     let headers = Object.keys(dataObject[0]).join(',')
-  //     headers += ' \n'
-  //     csvArray.push(headers)
-
-  //     dataObject.forEach(element => {
-  //       let obj = Object.values(element).join(',')
-  //       obj += ' \n'
-  //       csvArray.push(obj)
-  //     });
-  //     const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
-  //     const link = document.createElement('a');
-  //     if (link.download !== undefined) {
-  //       const url = URL.createObjectURL(blob);
-  //       link.setAttribute('href', url);
-  //       link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}vehicleActivity-Report.csv`);
-  //       link.style.visibility = 'hidden';
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       document.body.removeChild(link);
-  //     }
-  //   }
-  //   else {
-  //     this.toastr.error("No Records found")
-  //   }
-  // }
 }

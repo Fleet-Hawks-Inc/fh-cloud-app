@@ -352,32 +352,42 @@
                                     <col style="width:10%">
                                     <thead>
                                         <tr>
-                                            <th>Payment#</th>
+                                            <th>Vehicle Name/Number</th>
                                             <th>Date</th>
-                                            <th>Payment Mode </th>
-                                            <th>Paid To</th>
+                                            <th>Expense Type</th>
+         
+                                            <!-- <th>Trip & Unit#</th> -->
                                             <th>Amount</th>
+                                            <th>Status</th> 
                                         </tr>
                                     </thead>
-                                    <!-- <tbody>
+                                    <tbody>
                                         <tr *ngIf='expensePay.length == 0' class="text-center">
                                             <td colspan="15">{{dataMessage}}</td>
                                         </tr>
                                         <tr *ngFor='let item of expensePay'>
-                                            <td>{{item.paymentNo}}</td>
+                                            <td>{{item.vehicleName}}</td>
                                             <td>{{item.txnDate |
                                                 date:"yyyy/MM/dd"}}</td>
-                                            <td>{{item.payMode}}</td>
-                                            <td><strong class="text-capitalize">{{item.paymentTo}}:</strong>
+                                            <td>{{item.categoryName}}</td>
+                                            <!-- <td><strong class="text-capitalize">{{item.paymentTo}}:</strong>
                                                 {{ item.entityName}}
-                                            </td>
-                                            <td>{{item.finalAmount | number : '1.2-2' }} {{item.currency}}</td>
+                                            </td> -->
+                                            <td>{{item.finalTotal | number : '1.2-2' }} {{item.currency}}</td>
+                                            <td>  <span
+                                                class="badge badge-dark p-1 text-uppercase">{{item.status  ? item.status
+                                                    : "not deducted"}}</span></td>
                                         </tr>
 
-                                    </tbody> -->
+                                    </tbody> 
                                 </table>
                             </section>
 
+                        </div>
+                        <div class="col-lg-12 mt-3 text-center" *ngIf="lastExpPay !== 'end' && expensePay.length !== 0">
+                            <button type="button" class="btn btn-success btn-sm text-light"
+                                (click)="fetchExpensePayment() ">Load
+                                More..</button>
                         </div>
                     </div>
                 </div>
