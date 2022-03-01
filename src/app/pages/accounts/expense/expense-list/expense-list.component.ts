@@ -56,7 +56,7 @@ export class ExpenseListComponent implements OnInit {
   }
 
   fetchTrips() {
-    this.apiService.getData("trips/get/list").subscribe((result: any) => {
+    this.apiService.getData("common/trips/get/list").subscribe((result: any) => {
       this.trips = result;
     });
   }
