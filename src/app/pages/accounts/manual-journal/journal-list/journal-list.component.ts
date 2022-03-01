@@ -66,7 +66,7 @@ export class JournalListComponent implements OnInit {
 
   deleteJournal(journalID) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.accountService.getData(`journal/delete/${journalID}`)
+      this.accountService.deleteData(`journal/delete/${journalID}`)
       .subscribe((result: any) => {
         if (result !== undefined) {
           this.dataMessage = Constants.FETCHING_DATA;

@@ -575,7 +575,7 @@ export class DriverDetailComponent implements OnInit {
         this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => { });
     }
     fetchDriverTrips() {
-        this.apiService.getData(`trips/get/driver/active/${this.driverID}`).subscribe((result: any) => {
+        this.apiService.getData(`drivers/get/driver/active/${this.driverID}`).subscribe((result: any) => {
             this.trips = result.Items;
 
         });
