@@ -111,6 +111,7 @@ export class PaymentPdfsComponent implements OnInit {
   tagLine = "";
   grandTotal = 0;
   modelRef: any;
+  subTotal: any;
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
       async (res: any) => {
@@ -204,6 +205,7 @@ export class PaymentPdfsComponent implements OnInit {
           await this.fetchAdvancePayments();
 
           // await this.generatePaymentPDF();
+          this.subTotal = this.paymentData.settledAmount + this.paymentData.vacPayAmount;
         }
       }
     );
@@ -317,6 +319,7 @@ export class PaymentPdfsComponent implements OnInit {
     }
     this.payPeriod = newDates.join(", ");
     await this.fetchTrips();
+    this.subTotal += result[0].additionTotal - result[0].deductionTotal;
   }
 
   async getUserAnnualTax() {

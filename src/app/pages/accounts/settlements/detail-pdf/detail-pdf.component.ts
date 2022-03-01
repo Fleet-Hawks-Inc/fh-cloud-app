@@ -19,7 +19,7 @@ export class DetailPdfComponent implements OnInit {
   @ViewChild("settlmentDetail", { static: true })
   modalContent: TemplateRef<any>;
   subscription: Subscription;
-
+  totalMiles: any;
   settlementData = {
     type: null,
     entityId: null,
@@ -110,6 +110,7 @@ export class DetailPdfComponent implements OnInit {
         if (res.showModal && res.length != 0) {
           await this.getCurrentuser();
           this.settlementData = res.settlementData;
+          console.log('this.settlementData', this.settlementData)
           this.entityName = res.entityName;
           this.fuelEnteries = res.fuelEnteries;
 
@@ -166,7 +167,7 @@ export class DetailPdfComponent implements OnInit {
       .getData(`trips/entity/settled/data/${tripIds}`)
       .toPromise();
     this.settledTrips = result;
-
+    let miles = 0;
     for (let i = 0; i < this.settledTrips.length; i++) {
       const element = this.settledTrips[i];
 
@@ -366,7 +367,11 @@ export class DetailPdfComponent implements OnInit {
           }
         });
       }
+
+      miles += element.entityMiles;
     }
+
+    this.totalMiles = miles;
   }
 
   setTripLoc(trp) {
