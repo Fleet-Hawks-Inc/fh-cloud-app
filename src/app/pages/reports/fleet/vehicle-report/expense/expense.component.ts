@@ -80,7 +80,7 @@ export class ExpenseComponent implements OnInit {
     this.fetchFuelVehicles();
     this.fetchServiceLogName();
     this.fetchSettlement();
-
+    this.fetchExpensePayment()
   }
 
 
@@ -115,10 +115,12 @@ export class ExpenseComponent implements OnInit {
       // })
     }
   }
-  fetchExpensePayment() {
-    this.accountService.getData(`expense-payments/get/driver/expense?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
-      this.expensePay = result;
-    })
+  async fetchExpensePayment() {
+    console.log('----fgfhffgfhs', this.vehicleId)
+    const rsult: any = await this.accountService.getData(`expense-transaction/get/expense/pay/byTrp?vehicleId${encodeURIComponent(JSON.stringify(this.vehicleId))}`).toPromise();
+    this.expensePay = rsult;
+    console.log('this.expensePay', this.expensePay)
+    // })
   }
   fetchSettlement() {
     this.accountService
@@ -179,7 +181,7 @@ export class ExpenseComponent implements OnInit {
           }
         }
         this.fetchDriverPayment();
-        this.fetchExpensePayment()
+        // this.fetchExpensePayment()
         if (result.LastEvaluatedKey !== undefined) {
 
           this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
@@ -227,10 +229,139 @@ export class ExpenseComponent implements OnInit {
         this.fetchFuelVehicles()
         this.fetchServiceLogName()
         this.fetchDriverPayment();
-        this.fetchExpensePayment();
+        // this.fetchExpensePayment();
       }
     } else {
       return false;
     }
   }
+
+  // generateCSV(type = '') {
+  //   if (this.allData.length > 0) {
+  //     let dataObject = []
+  //     let csvArray = []
+  //     // this.allData.forEach(element => {
+  //     let location = ''
+  //     let driver = ''
+  //     let date = ''
+  //     let tripDetail = []
+  //     if (type === 'trip') {
+  //       tripDetail = this.allData
+  //     }
+  //     else {
+  //       return false;
+  //     }
+
+  //     tripDetail.forEach((element) => {
+  //       let driver = ''
+  //       console.log('element.driver', element.driverName)
+
+  //       let obj = {}
+  //       if (type === 'trip') {
+  //         obj["Vehicle"] = element.vehicle.replace(/, /g, ' &');
+  //         obj["Trip#"] = element.tripNo;
+  //         obj["Order#"] = element.orderName.replace(/, /g, ' &');
+  //         obj["Total Miles"] = element.miles;
+  //       }
+  //       else {
+  //         return false
+  //       }
+  //       dataObject.push(obj)
+  //       // });
+  //     })
+
+  //     let headers = Object.keys(dataObject[0]).join(',')
+  //     headers += ' \n'
+  //     csvArray.push(headers)
+
+  //     dataObject.forEach(element => {
+  //       let obj = Object.values(element).join(',')
+  //       obj += ' \n'
+  //       csvArray.push(obj)
+  //     });
+  //     const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
+  //     const link = document.createElement('a');
+  //     if (link.download !== undefined) {
+  //       const url = URL.createObjectURL(blob);
+  //       link.setAttribute('href', url);
+  //       link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}vehicleActivity-Report.csv`);
+  //       link.style.visibility = 'hidden';
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       document.body.removeChild(link);
+  //     }
+  //   }
+  //   else {
+  //     this.toastr.error("No Records found")
+  //   }
+  // }
+
+
+
+
+
+
+  // fuelCSV() {
+  //   if (this.fuel.length > 0) {
+  //     let dataObject = []
+  //     let csvArray = []
+  //     // this.fuel.forEach(element => {
+  //     let location = ''
+  //     let driver = ''
+  //     let date = ''
+  //     let fuelDetail = []
+  //     // if (type === 'trip') {
+  //     fuelDetail = this.fuel
+  //     // }
+  //     // else {
+  //     //   return false;
+  //     // }
+
+  //     fuelDetail.forEach((element) => {
+  //       console.log('element', element)
+
+  //       driver = element.vehicle
+  //       console.log('driver', driver)
+  //       let obj = {}
+  //       // if (type === 'trip') {
+  //       obj["Vehicle"] = element.vehicle.replace(/, /g, ' &');
+  //       obj["Fuel Card"] = element.data.cardNo;
+  //       obj["Fuel Type"] = element.data.type;
+  //       obj["Date/Time"] = element.data.date;
+  //       obj["Province"] = element.data.city;
+  //       obj["Amount"] = element.data.amt;
+  //       // }
+  //       // else {
+  //       //   return false
+  //       // }
+  //       dataObject.push(obj)
+  //       console.log('ddataobj---', dataObject)
+  //       // });
+  //     })
+
+  //     let headers = Object.keys(dataObject[0]).join(',')
+  //     headers += ' \n'
+  //     csvArray.push(headers)
+
+  //     dataObject.forEach(element => {
+  //       let obj = Object.values(element).join(',')
+  //       obj += ' \n'
+  //       csvArray.push(obj)
+  //     });
+  //     const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
+  //     const link = document.createElement('a');
+  //     if (link.download !== undefined) {
+  //       const url = URL.createObjectURL(blob);
+  //       link.setAttribute('href', url);
+  //       link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}vehicleActivity-Report.csv`);
+  //       link.style.visibility = 'hidden';
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       document.body.removeChild(link);
+  //     }
+  //   }
+  //   else {
+  //     this.toastr.error("No Records found")
+  //   }
+  // }
 }
