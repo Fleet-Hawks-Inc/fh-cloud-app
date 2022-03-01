@@ -230,7 +230,7 @@ export class FuelEntryDetailsComponent implements OnInit {
   }
 
   async fetchTripList() {
-    await this.apiService.getData('trips/get/list').subscribe((result: any) => {
+    await this.apiService.getData('common/trips/get/list').subscribe((result: any) => {
       this.tripList = result;
     });
   }
