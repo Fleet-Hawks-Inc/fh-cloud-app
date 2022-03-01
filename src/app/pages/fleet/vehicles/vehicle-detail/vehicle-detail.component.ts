@@ -331,7 +331,7 @@ export class VehicleDetailComponent implements OnInit {
     }
 
     fetchUsersList() {
-        this.apiService.getData("users/get/list").subscribe((result: any) => {
+        this.apiService.getData("common/users/get/list").subscribe((result: any) => {
             this.usersList = result;
         });
     }
