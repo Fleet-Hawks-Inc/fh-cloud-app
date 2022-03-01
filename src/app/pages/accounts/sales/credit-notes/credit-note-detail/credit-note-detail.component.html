@@ -151,7 +151,7 @@
                         <tbody>
                           <tr *ngFor="let data of transactionLogs">
                             <td class="text-capitalize">{{
-                              accountsObjects[data.accountID]
+                              data.actName
                               }}</td>
                             <td>
                               <span *ngIf="data.trxType ===
@@ -175,6 +175,11 @@
                                 0.00
                               </span>
                             </td>
+                          </tr>
+                          <tr>
+                            <td class="font-weight-bold text-right">Total</td>
+                            <td>{{totalAmt | number : '1.2-2'}} {{currency}}</td>
+                            <td>{{totalAmt | number : '1.2-2'}} {{currency}}</td>
                           </tr>
                         </tbody>
                       </table>

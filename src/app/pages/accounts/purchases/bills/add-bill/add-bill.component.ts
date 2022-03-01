@@ -42,6 +42,9 @@ export class AddBillComponent implements OnInit {
     ],
     charges: {
       remarks: "",
+      cName: "Adjustments",
+      cType: "add",
+      cAmount: 0,
       accountID: null,
       accFee: [
         {
@@ -79,7 +82,6 @@ export class AddBillComponent implements OnInit {
     total: {
       detailTotal: 0,
       feeTotal: 0,
-      dedTotal: 0,
       subTotal: 0,
       vendorCredit: 0,
       taxes: 0,
@@ -148,7 +150,7 @@ export class AddBillComponent implements OnInit {
     private location: Location,
     private route: ActivatedRoute,
     private apiService: ApiService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.billID = this.route.snapshot.params["billID"];
@@ -272,15 +274,7 @@ export class AddBillComponent implements OnInit {
     }
   }
 
-  dedAccessorialArr(type, index) {
-    if (type === "fee") {
-      this.orderData.charges.accFee.splice(index, 1);
-      this.accessorialFeeTotal();
-    } else if (type === "ded") {
-      this.orderData.charges.accDed.splice(index, 1);
-      this.accessorialDedTotal();
-    }
-  }
+
 
   detailsTotal() {
     this.orderData.total.detailTotal = 0;
@@ -314,9 +308,7 @@ export class AddBillComponent implements OnInit {
   calculateFinalTotal() {
     this.orderData.total.subTotal =
       Number(this.orderData.total.detailTotal) +
-      Number(this.orderData.total.feeTotal) -
-      Number(this.orderData.total.dedTotal);
-
+      Number(this.orderData.total.feeTotal)
     this.allTax();
     this.orderData.total.finalTotal =
       Number(this.orderData.total.subTotal) -
@@ -325,20 +317,18 @@ export class AddBillComponent implements OnInit {
   }
 
   accessorialFeeTotal() {
-    this.orderData.total.feeTotal = 0;
-    this.orderData.charges.accFee.forEach((element) => {
-      this.orderData.total.feeTotal += Number(element.amount);
-    });
+    if (this.orderData.charges.cType === "add") {
+      this.orderData.total.feeTotal = Number(this.orderData.charges.cAmount);
+    } else if (this.orderData.charges.cType === "ded") {
+      this.orderData.total.feeTotal = -Number(this.orderData.charges.cAmount);
+    }
+    // this.orderData.total.feeTotal = 0;
+    // this.orderData.charges.accFee.forEach((element) => {
+    //   this.orderData.total.feeTotal += Number(element.amount);
+    // });
     this.calculateFinalTotal();
   }
 
-  accessorialDedTotal() {
-    this.orderData.total.dedTotal = 0;
-    this.orderData.charges.accDed.forEach((element) => {
-      this.orderData.total.dedTotal += Number(element.amount);
-    });
-    this.calculateFinalTotal();
-  }
 
   taxcalculation(index) {
     this.orderData.charges.taxes[index].amount =
@@ -372,7 +362,6 @@ export class AddBillComponent implements OnInit {
 
     this.orderData.detail = result[0].detail;
     this.orderData.charges = result[0].charges;
-    this.orderData.total.dedTotal = result[0].total.dedTotal;
     this.orderData.total.detailTotal = result[0].total.detailTotal;
     this.orderData.total.feeTotal = result[0].total.feeTotal;
     this.orderData.total.finalTotal = result[0].total.finalTotal;
@@ -435,7 +424,7 @@ export class AddBillComponent implements OnInit {
     this.submitDisabled = true;
     console.log("this.orderData", this.orderData);
     this.accountService.postData("bills", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -452,7 +441,7 @@ export class AddBillComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -480,7 +469,7 @@ export class AddBillComponent implements OnInit {
     this.accountService
       .putData(`bills/update/${this.billID}`, this.orderData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -497,7 +486,7 @@ export class AddBillComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {

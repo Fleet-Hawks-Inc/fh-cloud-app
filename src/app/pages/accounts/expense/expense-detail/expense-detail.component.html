@@ -492,14 +492,14 @@
                                                             {{ expenseData.cityName }}
                                                         </td>
                                                         <td>
-                                                            GST - {{ expenseData.taxes.gstAmount | number : '1.2-2' }}
+                                                            {{ expenseData.taxes.gstAmount | number : '1.2-2' }}
                                                             {{ expenseData.currency }}</td>
                                                         <td>
-                                                            PST - {{
+                                                            {{
                                                             expenseData.taxes.pstAmount | number : '1.2-2' }} {{
                                                             expenseData.currency }}</td>
                                                         <td>
-                                                            HST - {{
+                                                            {{
                                                             expenseData.taxes.hstAmount | number : '1.2-2' }} {{
                                                             expenseData.currency }}</td>
                                                         <td>

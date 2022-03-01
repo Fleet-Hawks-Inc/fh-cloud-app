@@ -40,11 +40,17 @@ export class NewAddressBookComponent implements OnInit {
   filterVal = {
     cName: '',
   }
-
+  
+    similarVal = {
+    cName: '',
+  }
+  
+  
+  
+  
   updateButton: boolean = false;
-
   suggestions = [];
-
+  actualSuggestions = [];
   customers = [];
   brokers = [];
   vendors = [];
@@ -55,7 +61,7 @@ export class NewAddressBookComponent implements OnInit {
   fcCompanies = [];
   owners = [];
   allData = [];
-
+similarSuggestions = [];
   additionalDisabled = false;
   unitDisabled = false;
 
@@ -324,15 +330,32 @@ export class NewAddressBookComponent implements OnInit {
       this.apiService
         .getData(`contacts/suggestion/${value}`)
         .subscribe((result) => {
-          this.suggestions = result.Items;
+          this.suggestions = _.uniqBy(result.Items,'cName');
         });
     }
-
+  }, 800);
+  
+  //For Similar Company Name Suggestions
+    getSimilarNamesSuggestions = _.debounce(function (value) {
+    if (value != '') {
+      value = value.toLowerCase()
+      this.apiService
+        .getData(`contacts/similar/cName/suggestion/${value}`)
+        .subscribe((result) => {
+          this.actualSuggestions = _.uniqBy(result.Items,'cName');
+          this.similarSuggestions = _.uniqBy(result.Items,'cName');
+        });
+    }
   }, 800);
 
   setSearchValues(searchValue) {
     this.filterVal.cName = searchValue;
     this.suggestions = [];
+  }
+
+  setSimilarValue(similarValue) {
+    this.similarVal.cName = similarValue;
+    this.actualSuggestions = [];
   }
 
   async searchFilter() {
@@ -349,12 +372,9 @@ export class NewAddressBookComponent implements OnInit {
       this.dataMessage = Constants.FETCHING_DATA;
       this.lastKey = '';
       this.fetchUnits();
-
     } else {
       return false
     }
-
-
   }
 
   setActiveDiv(item) {
@@ -1027,9 +1047,11 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   async addEntry() {
+    const isValid = this.validatePopUp();
+    if(isValid)
+    {
     this.hideErrors();
     this.unitDisabled = true;
-
     for (let i = 0; i < this.unitData.adrs.length; i++) {
       const element = this.unitData.adrs[i];
       if (element.manual === true) {
@@ -1062,7 +1084,6 @@ export class NewAddressBookComponent implements OnInit {
       delete element.states;
       delete element.cities;
     }
-
     await this.checkCarrierBank(this.unitData);
     for (let j = 0; j < this.unitData.addlCnt.length; j++) {
       const element = this.unitData.addlCnt[j];
@@ -1070,9 +1091,7 @@ export class NewAddressBookComponent implements OnInit {
     }
     // create form data instance
     const formData = new FormData();
-
     formData.append('data', JSON.stringify(this.unitData));
-
     this.apiService.postData('contacts', formData, true).
       subscribe({
         complete: () => { },
@@ -1090,7 +1109,6 @@ export class NewAddressBookComponent implements OnInit {
                 this.throwErrors();
                 this.hasError = true;
                 this.Error = 'Please see the errors';
-
               },
               error: () => {
                 this.unitDisabled = false;
@@ -1100,7 +1118,6 @@ export class NewAddressBookComponent implements OnInit {
         },
         next: (res) => {
           // this.response = res;
-
           this.hasSuccess = true;
           this.unitDisabled = false;
           this.dataMessage = Constants.FETCHING_DATA;
@@ -1122,7 +1139,30 @@ export class NewAddressBookComponent implements OnInit {
           this.toastr.success('Entry added successfully');
         }
       });
+      }
   }
+
+
+
+validatePopUp()
+{
+ const found = this.similarSuggestions.some(a=>a.cName.toLowerCase() === this.unitData.cName.toLowerCase())
+ if(found)
+ {
+      if(confirm('Company name is already exists ! Are you sure want to continue?') ===  true)
+  {
+     return true;
+  }
+  else
+  {
+   return false;
+  }
+ }
+ else{
+ return true;
+ }
+}
+
 
   showMainModal() {
     if (localStorage.getItem('isOpen') != 'true') {
@@ -1135,7 +1175,6 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   deactivate(id) {
-
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
         .deleteData(`contacts/delete/CONT/${id}`)
@@ -1152,18 +1191,19 @@ export class NewAddressBookComponent implements OnInit {
           this.fcCompanies = [];
           this.carriers = [];
           this.fetchUnits();
-
           this.toastr.success('Entry deleted successfully');
         });
     }
   }
 
   async updateEntry() {
+   const isValid = this.validatePopUp();
+    if(isValid)
+    {
     this.hasError = false;
     this.hasSuccess = false;
     this.unitDisabled = true;
     this.hideErrors();
-
     for (let i = 0; i < this.unitData.adrs.length; i++) {
       const element = this.unitData.adrs[i];
       if (element.manual === true) {
@@ -1194,24 +1234,19 @@ export class NewAddressBookComponent implements OnInit {
       }
       delete element.states;
       delete element.cities;
-
     }
-
     for (let j = 0; j < this.unitData.addlCnt.length; j++) {
       const element = this.unitData.addlCnt[j];
       element.flName = element.fName + ' ' + element.lName;
     }
     // create form data instance
     const formData = new FormData();
-
     //append photos if any
     for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
-
     //append other fields
     formData.append('data', JSON.stringify(this.unitData));
-
     this.apiService.putData('contacts', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -1257,6 +1292,7 @@ export class NewAddressBookComponent implements OnInit {
         this.toastr.success('Entry updated successfully');
       },
     });
+    }
   }
 
 
@@ -1285,15 +1321,12 @@ export class NewAddressBookComponent implements OnInit {
           }
         }
       });
-
   }
 
   fetchUnits() {
     this.dataMessage = Constants.FETCHING_DATA;
-
     if (this.lastKey !== 'end') {
       this.apiService.getData(`contacts/fetch/records?lastKey=${this.lastKey}&updatedKey=${this.updatedKey}&companyName=` + this.filterVal.cName).subscribe(res => {
-
         if (res.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
@@ -1316,7 +1349,6 @@ export class NewAddressBookComponent implements OnInit {
           } else if (element.eTypes.includes('owner_operator')) {
             this.owners.push(element);
           }
-
         });
         if (this.units.length > 0) {
           if (this.units[this.units.length - 1].contactSK != undefined) {
@@ -1330,22 +1362,16 @@ export class NewAddressBookComponent implements OnInit {
         this.isSearched = false;
       })
     }
-
-
-
   }
 
   async newGeoCode(data: any) {
-
     let result = await this.apiService.getData(`pcMiles/geocoding/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
-
     if (result.items != undefined && result.items.length > 0) {
       return result.items[0].position;
     }
   }
 
   async resetFilter() {
-
     if (this.filterVal.cName != '') {
       $('#addressbook-content .tab-pane').removeClass('active show');
       $('#all').addClass('active show');
@@ -1501,5 +1527,4 @@ export class NewAddressBookComponent implements OnInit {
       data: []
     }
   }
-
 }

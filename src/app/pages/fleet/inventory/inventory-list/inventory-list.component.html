@@ -22,20 +22,20 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-2 col-lg-2 pl-0">
-                        <div class="input-group input-group-sm mb-3">
+                    <div class="col-md-2 col-lg-2 pr-1">
+                       
                             <ng-select [(ngModel)]="vendorID" name="vendorID" style="width: 100%;" placeholder="Search items by vendor">
                                 <ng-option *ngFor="let data of allVendors | async" [value]="data.contactID">{{data.companyName}}</ng-option>
                             </ng-select>
-                        </div>
+                        
                     </div>
-                    <div class="col-md-2 col-lg-2 pl-0 pr-0">
-                        <div class="input-group input-group-sm mb-3">
+                    <div class="col-md-2 col-lg-2 pr-1">
+                       
                             <ng-select [(ngModel)]="category" name="category" style="width: 100%;" placeholder="Search items by category">
                                 <ng-option value="hardware">Hardware</ng-option>
                                 <ng-option value="brakes">Brakes</ng-option>
                             </ng-select>
-                        </div>
+                      
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <button type="submit" (click)="searchFilter()"
@@ -118,18 +118,14 @@
                           </ul>
                       </div>
                     </div>
-                    <div class="col-md-2 col-lg-2">
-                        <div class="input-group input-group-sm mb-3">
+                    <div class="col-md-2 col-lg-2 pr-1">
                             <ng-select [(ngModel)]="requiredVendorID" name="requiredVendorID" style="width: 100%;" placeholder="Search items by vendor">
                                 <ng-option *ngFor="let data of allVendors | async" [value]="data.contactID">{{data.companyName}}</ng-option>
                             </ng-select>
-                        </div>
                     </div>
-                    <div class="col-md-2 col-lg-2 pl-0">
-                        <div class="input-group input-group-sm mb-3">
+                    <div class="col-md-2 col-lg-2 pr-1">
                             <input autocomplete="off" type="text" name="requiredPartNumber" [(ngModel)]="requiredPartNumber"
                                 class="form-control" (input)="getPartNumberSuggestions($event.target.value)" placeholder="Search by part#"/>
-                        </div>
                         <div *ngIf="requiredSuggestedPartNo?.length > 0" class="result-suggestions">
                             <ul>
                                 <li *ngFor="let data of requiredSuggestedPartNo" style="cursor: pointer;"

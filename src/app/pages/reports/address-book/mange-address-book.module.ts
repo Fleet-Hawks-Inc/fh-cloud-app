@@ -1,22 +1,22 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { AddressBookComponent } from './address-book/address-book.component';
-import { NgSelectModule } from '@ng-select/ng-select';
-
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { CommonModule } from "@angular/common";
+import { HttpClientModule } from "@angular/common/http";
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { AddressBookComponent } from "./address-book/address-book.component";
+import { NgSelectModule } from "@ng-select/ng-select";
 
 const routes: Routes = [
-  {path:'', component: AddressBookComponent}
+  {
+    path: "",
+    component: AddressBookComponent,
+    data: { title: "Customer Information Report" },
+  },
 ];
 
-
 @NgModule({
-  declarations: [
-    AddressBookComponent
-    ],
+  declarations: [AddressBookComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -24,9 +24,8 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     InfiniteScrollModule,
-    NgSelectModule
+    NgSelectModule,
   ],
-  providers: [
-    ]
+  providers: [],
 })
-export class ManageAddressBookModule { }
+export class ManageAddressBookModule {}
