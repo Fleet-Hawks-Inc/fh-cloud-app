@@ -95,7 +95,7 @@ export class TrialBalanceComponent implements OnInit {
             this.accounts = [];
         }
         if (this.lastItemSK !== "end") {
-            this.accountService.getData(`chartAc/get/coa/${this.currency}/?lastKey=${this.lastItemSK}&start=${this.filter.startDate}&end=${this.filter.endDate}`)
+            this.accountService.getData(`chartAc/report/trialBalance/${this.currency}/?lastKey=${this.lastItemSK}&start=${this.filter.startDate}&end=${this.filter.endDate}`)
                 .subscribe(async (result: any) => {
                     if (result.data.length === 0) {
                         this.dataMessage = Constants.NO_RECORDS_FOUND;
