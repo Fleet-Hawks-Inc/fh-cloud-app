@@ -221,7 +221,7 @@ export class FuelEntryListComponent implements OnInit {
     });
   }
   fetchTripList() {
-    this.apiService.getData('trips/get/list').subscribe((result: any) => {
+    this.apiService.getData('common/trips/get/list').subscribe((result: any) => {
       this.tripList = result;
     });
   }
