@@ -259,9 +259,9 @@ export class ServiceListComponent implements OnInit {
 
   refreshData() {
     this.vehicleID = null;
+    this.searchValue = null;
+    this.category = null;
     this.dataMessage = Constants.FETCHING_DATA;
-    this.vehicleIdentification = "";
-    this.assetID = null;
     this.taskID = null;
     this.logs = [];
     this.lastEvaluatedKey = "";

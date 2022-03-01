@@ -6,23 +6,6 @@
             <header class="page-header pr19 pl11">
                 <form class="form-horizontal" method="get">
                     <div class="row" style="padding-top:10px;">
-                            <div class="col-md-2 col-lg-2 pr-0">
-                                <ng-select [(ngModel)]="vehicleID" name="vehicleID" style="width: 100%;"
-                                    placeholder="Search by vehicle">
-                                    <ng-option *ngFor="let data of
-                                        vehiclesObject | keyvalue" value="{{
-                                        data.key }}"> {{
-                                        data.value }}</ng-option>
-                                </ng-select>
-                            </div>
-                        <div class="col-md-2 col-lg-2 pr-3">
-                                <ng-select [(ngModel)]="assetID" name="assetID" style="width: 100%;"
-                                    placeholder="Search by asset">
-                                    <ng-option *ngFor="let data of assetsObject
-                                        | keyvalue" value="{{ data.key }}"> {{
-                                        data.value }}</ng-option>
-                                </ng-select>
-                        </div>
                         <div class="col-md-2 col-lg-2 pr-1">
                             <ng-select [(ngModel)]="category" name="category" placeholder="Search by Category"
                                 (change)="categoryChange()">
