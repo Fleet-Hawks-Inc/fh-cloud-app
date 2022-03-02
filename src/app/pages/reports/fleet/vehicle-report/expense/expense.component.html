@@ -1,0 +1,397 @@
+<section class="body">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pt-0 pr-0 pl-1">
+            <header class="page-header pr19 pl11">
+                <form class="form-horizontal" method="get">
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-md-3 col-lg-3 pr-0">
+                            <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </span>
+                                </span>
+                                <input [(ngModel)]="start" name="fromDate" type="text" placeholder="yyyy/mm/dd"
+                                    (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control"
+                                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                                <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                                    to
+                                </span>
+                                <input [(ngModel)]="end" name="toDate" type="text" placeholder="yyyy/mm/dd"
+                                    (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control"
+                                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-lg-2">
+                            <button type="button" class="btn btn-sm btn-success mr-3"
+                                (click)="searchFilter()">Search</button>
+                        </div>
+
+                        <div class="col-md-6 col-lg-6 text-right pr-1">
+                            <a routerLink="/reports/fleet/vehicles/expense-list" class="btn btn-sm btn-success">Vehicles
+                                List</a>
+                        </div>
+                        <div class="btn-group flex-wrap ml-2">
+                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false"><i class="fas fa-upload"></i>
+                                Export<span class="caret"></span></button>
+                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                <a class="dropdown-item text-1" (click)="generateCSV('trip')">CSV</a>
+                                <a class="dropdown-item text-1" (click)="fuelCSV()">fuelCSV</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </header>
+            <section class="m-2">
+                <div class="row mb-3">
+                    <div class="col-12 mb-4 ">
+                        <div class="bg-white p-3">
+                            <div class="row text-dark col-lg-3">
+                                <div class="col">
+                                    <div class="maindriverbox" style="box-shadow: 3px 3px 5px;">
+                                        <div class="col-8">
+                                            <div>
+                                                <h4 class="mt-1 mb-0 font-weight-bold">Vehicle Name</h4>
+                                                <h3><span
+                                                        *ngFor="let data of vehicleData">{{data.vehicleIdentification}}</span>
+                                                </h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="row text-dark">
+                <div class="col pr-0">
+                    <div class="card">
+                        <div class="card-body">
+                            <label class="
+                            control-label
+                            font-weight-bold font-weight-bold
+                            text-lg-right text-dark text-4
+                            pt-1
+                          ">Trip Details</label>
+                            <section class="reports_div">
+                                <table width="18%" class="row-border hover table table-bordered table-striped mb-0">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <col style="width:5%">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <thead>
+                                        <tr>
+                                            <th>Vehicle</th>
+                                            <th>Trip#</th>
+                                            <th>Order#</th>
+                                            <th>Type</th>
+                                            <th>Driver</th>
+                                            <th>Location</th>
+                                            <th>Date</th>
+                                            <th>Total Miles</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngIf="allData.length == 0" class="text-center">
+                                            <td colspan="15">{{dataMessage}}</td>
+                                        </tr>
+                                        <tr *ngFor="let item of allData">
+                                            <td>{{item.vehicle}}
+                                            </td>
+                                            <td>{{item.tripNo}}</td>
+                                            <td> {{item.orderName}}</td>
+                                            <td>{{item.orderType}}</td>
+                                            <!-- <td> <span *ngFor='let data of item.tripPlanning'>{{data.driverName}}
+                                                    <br></span>
+
+                                            </td> -->
+                                            <td>{{item.driverName}}</td>
+                                            <td>
+                                                <span *ngFor="let data of item.tripPlanning">
+                                                    <b>
+                                                        {{data.type}}:
+                                                    </b>
+                                                    {{ data.location}} <br>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span *ngFor="let data of item.tripPlanning">
+                                                    <b>
+                                                        {{data.type}}:
+                                                    </b>
+                                                    {{ data.date}} <br>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {{ item.miles | number : '1.2-2'}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </section>
+                        </div>
+                        <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
+                            <button type="button" class="btn btn-success btn-sm text-light"
+                                (click)="fetchVehicleListing() ">Load
+                                More..</button>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="row text-dark">
+                <div class="col pr-0">
+                    <div class="card">
+                        <div class="card-body">
+                            <label class="
+                            control-label
+                            font-weight-bold font-weight-bold
+                            text-lg-right text-dark text-4
+                            pt-1
+                          ">Fuel Details</label>
+                            <section class="reports_div">
+                                <table width="18%" class="row-border hover table table-bordered table-striped mb-0">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <thead>
+                                        <tr>
+                                            <th>Vehicle</th>
+                                            <th>Fuel Card</th>
+                                            <th>Fuel Type</th>
+                                            <th>Date/Time</th>
+                                            <th>Province</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngIf="fuel.length == 0" class="text-center">
+                                            <td colspan="15">{{dataMessage}}</td>
+                                        </tr>
+                                        <tr *ngFor="let item of fuel">
+                                            <td>{{item.vehicle}}</td>
+                                            <td>{{item.data.cardNo ? item.data.cardNo: '-' }}</td>
+                                            <td>{{item.data.type}}</td>
+                                            <td>{{item.data.date |
+                                                date:"yyyy/MM/dd"}} {{item.data.time}}</td>
+                                            <td>{{item.data.city}},{{item.data.state}},{{item.data.country}}
+                                            </td>
+                                            <td>{{item.data.amt | number : '1.2-2'}} {{item.data.currency}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row text-dark">
+                <div class="col pr-0">
+                    <div class="card">
+                        <div class="card-body">
+                            <label class="
+                            control-label
+                            font-weight-bold font-weight-bold
+                            text-lg-right text-dark text-4
+                            pt-1
+                          ">Maintenance Details</label>
+                            <section class="reports_div">
+                                <table width="18%" class="row-border hover table table-bordered table-striped mb-0">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+
+                                    <col style="width:2%">
+                                    <thead>
+                                        <tr>
+                                            <th>Vehicles</th>
+                                            <th>Completion Date/Odometer</th>
+                                            <th>Service Task(s)</th>
+
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngIf="serviceLogName.length == 0" class="text-center">
+                                            <td colspan="15">{{dataMessage}}</td>
+                                        </tr>
+                                        <tr *ngFor="let item of serviceLogName">
+                                            <td>{{item.vehicle}}</td>
+                                            <td>{{item.completionDate}}</td>
+                                            <td>
+                                                <div>
+                                                    <span class="font-weight-bold">Service Task(s):
+                                                    </span>
+                                                    <span
+                                                        *ngFor="let task of item.allServiceTasks.serviceTaskList;let j=index; let $last=last">{{task.taskName
+                                                        ? task.taskName : '-'}}
+                                                        <span *ngIf="!$last" class="list-format">,
+                                                        </span>
+                                                    </span>
+                                                    <span *ngIf="item.allServiceTasks.serviceTaskList == 0;">-
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <span class="font-weight-bold">Issue(s):
+                                                    </span>
+                                                    <!-- <a class="text-info font-size-12"
+                                                        *ngFor="let issue of item.selectedIssues;let $last= last">
+                                                        <span>{{issuesObject[issue]}}</span>
+                                                        <span *ngIf="!$last" class="list-format">,
+                                                        </span>
+                                                    </a> -->
+                                                    <a class="text-info font-size-12">{{item.issue}}</a>
+                                                    <span *ngIf="item.selectedIssues.length
+                                                        ==
+                                                        0;">-
+                                                    </span>
+                                                </div>
+                                            </td>
+
+                                            <td>{{(item.allServiceParts.total+item.allServiceTasks.total).toFixed(2)}}
+                                                {{item.allServiceParts.currency}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-dark">
+                <div class="col pr-0">
+                    <div class="card">
+                        <div class="card-body">
+                            <label class="
+                            control-label
+                            font-weight-bold font-weight-bold
+                            text-lg-right text-dark text-4
+                            pt-1
+                          ">Driver-Payment Details</label>
+                            <section class="reports_div">
+                                <table width="18%" class="row-border hover table table-bordered table-striped mb-0">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <thead>
+                                        <tr>
+                                            <th>Payment#</th>
+                                            <th>Date</th>
+                                            <th>Payment Mode Information</th>
+                                            <th>Settlement#</th>
+                                            <th>Paid To</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngIf="payments.length == 0" class="text-center">
+                                            <td colspan="15">{{dataMessage}}</td>
+                                        </tr>
+                                        <tr *ngFor="let item of payments">
+                                            <td>{{item.paymentNo}}</td>
+                                            <td>{{item.txnDate |
+                                                date:"yyyy/MM/dd"}}</td>
+                                            <td>{{item.payMode}}</td>
+                                            <td> <span *ngFor="let stl of item.settlData; let
+                                                s=index;">
+                                                    <b>{{stl.settlementName }}</b>
+                                                    ({{ stl.status }})
+                                                    <span *ngIf="s<item.settlementIds.length-1">,</span>
+                                                </span></td>
+                                            <td><strong class="text-capitalize">{{item.paymentTo}}:</strong>
+
+                                                {{ item.entityName}}
+
+                                            </td>
+                                            <td>{{item.finalAmount | number : '1.2-2' }} {{item.currency}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </section>
+                            <!-- <div class="col-lg-12 mt-3 text-center" *ngIf="lastDrvP !== 'end' && payments.length !== 0">
+                                <button type="button" class="btn btn-success btn-sm text-light"
+                                    (click)="fetchDriverPayment() ">Load
+                                    More..</button>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row text-dark">
+                <div class="col pr-0">
+                    <div class="card">
+                        <div class="card-body">
+                            <label class="
+                        control-label
+                        font-weight-bold font-weight-bold
+                        text-lg-right text-dark text-4
+                        pt-1
+                      ">Expense-Payment Details</label>
+                            <section class="reports_div">
+                                <table width="30%" class="row-border hover table table-bordered table-striped mb-0">
+                                    <col style="width:10%">
+                                    <col style="width:10%">
+                                    <col style="width:10%">
+                                    <col style="width:10%">
+                                    <col style="width:10%">
+                                    <thead>
+                                        <tr>
+                                            <th>Vehicle Name/Number</th>
+                                            <th>Date</th>
+                                            <th>Expense Type</th>
+         
+                                            <!-- <th>Trip & Unit#</th> -->
+                                            <th>Amount</th>
+                                            <th>Status</th> 
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngIf='expensePay.length == 0' class="text-center">
+                                            <td colspan="15">{{dataMessage}}</td>
+                                        </tr>
+                                        <tr *ngFor='let item of expensePay'>
+                                            <td>{{item.vehicleName}}</td>
+                                            <td>{{item.txnDate |
+                                                date:"yyyy/MM/dd"}}</td>
+                                            <td>{{item.categoryName}}</td>
+                                            <!-- <td><strong class="text-capitalize">{{item.paymentTo}}:</strong>
+                                                {{ item.entityName}}
+                                            </td> -->
+                                            <td>{{item.finalTotal | number : '1.2-2' }} {{item.currency}}</td>
+                                            <td>  <span
+                                                class="badge badge-dark p-1 text-uppercase">{{item.status  ? item.status
+                                                    : "not deducted"}}</span></td>
+                                        </tr>
+
+                                    </tbody> 
+                                </table>
+                            </section>
+
+                        </div>
+                        <div class="col-lg-12 mt-3 text-center" *ngIf="lastExpPay !== 'end' && expensePay.length !== 0">
+                            <button type="button" class="btn btn-success btn-sm text-light"
+                                (click)="fetchExpensePayment() ">Load
+                                More..</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
