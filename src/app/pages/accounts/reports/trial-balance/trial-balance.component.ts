@@ -75,7 +75,7 @@ export class TrialBalanceComponent implements OnInit {
     currency = 'CAD';
     transactionLogCAD = [];
     creditTotal = 0;
-    result: any;
+    result = [];
 
 
     constructor(private accountService: AccountService, private toaster: ToastrService) { }
@@ -159,8 +159,12 @@ export class TrialBalanceComponent implements OnInit {
         if (this.filter.startDate !== null || this.filter.endDate !== null) {
             this.start = this.filter.startDate;
             this.end = this.filter.endDate;
-            this.accounts = [];
+            this.cadDebitTotal = 0;
+            this.cadCreditTotal = 0;
+            this.usdDebitTotal = 0;
+            this.usdCreditTotal = 0;
             this.lastItemSK = '';
+            this.accounts = [];
             this.dataMessage = Constants.FETCHING_DATA;
             this.fetchAccounts();
         }
