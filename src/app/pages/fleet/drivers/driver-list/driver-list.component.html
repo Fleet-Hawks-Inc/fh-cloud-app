@@ -39,10 +39,10 @@
                     <div class="col-lg-12">
                         <div class="bg-white p-3 text-dark">
                             <div class="form-group row pt-3">
-                                <div class="col-lg-12" style="height: calc(100vh - 149px); ">
+                                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
 
                                     <p-table #dt [value]="drivers" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true" [loading]="!loaded"
-                                        scrollHeight="500px">
+                                        scrollHeight="100%">
                                         <!-- Caption template of data table -->
                                         <ng-template pTemplate="caption">
 
