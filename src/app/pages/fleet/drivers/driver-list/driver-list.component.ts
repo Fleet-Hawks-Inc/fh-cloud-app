@@ -93,6 +93,7 @@ export class DriverListComponent implements OnInit {
         { field: 'phone', header: 'Phone', type: "text" },
         { field: 'userName', header: 'Username', type: "text" },
         { field: 'driverType', header: 'Type', type: "text" },
+        { field: 'companyName', header: 'Company', type: "text" },
         { field: 'startDate', header: 'Start Date', type: "text" },
         { field: 'CDL_Number', header: 'CDL#', type: "text" },
         { field: 'licenceDetails.licenceExpiry', header: 'CDL Expiry', type: "text" },
@@ -247,25 +248,24 @@ export class DriverListComponent implements OnInit {
     async fetchDrivers() {
         if (this.lastEvaluatedKey !== 'end') {
             let result = await this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&type=${this.driverType}&lastKey=${this.lastEvaluatedKey}`).toPromise();
-            if (result.Items.length === 0) {
+            if (result.data.length === 0) {
                 this.dataMessage = Constants.NO_RECORDS_FOUND;
                 this.loaded = true;
             }
-            result.Items.map((v) => {
+            result.data.map((v) => {
                 v.url = `/fleet/drivers/detail/${v.driverID}`;
             });
             this.suggestedDrivers = [];
-            if (result.Items.length > 0) {
-                if (result.LastEvaluatedKey !== undefined) {
-                    this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].driverSK);
-                }
-                else {
-                    this.lastEvaluatedKey = 'end'
-                }
-
-                this.drivers = this.drivers.concat(result.Items);
-                this.loaded = true;
+            if (result.nextPage !== undefined) {
+                this.lastEvaluatedKey = encodeURIComponent(result.nextPage);
             }
+            else {
+                this.lastEvaluatedKey = 'end'
+            }
+            console.log(this.lastEvaluatedKey, result.nextPage)
+            this.drivers = this.drivers.concat(result.data);
+            this.loaded = true;
+
             this.isSearch = false;
         }
     }
@@ -275,15 +275,11 @@ export class DriverListComponent implements OnInit {
     onScroll = async (event: any) => {
 
 
-
         if (this.loaded) {
-            await this.fetchDrivers();
+            this.fetchDrivers();
 
         }
-
-
-
-
+        this.loaded=false;
 
     }
 

@@ -201,7 +201,7 @@ export class IncidentDetailComponent implements OnInit {
   }
 
   fetchTripsByIDs() {
-    this.apiService.getData('trips/get/list')
+    this.apiService.getData('common/trips/get/list')
       .subscribe((result: any) => {
         this.tripsObject = result;
       })

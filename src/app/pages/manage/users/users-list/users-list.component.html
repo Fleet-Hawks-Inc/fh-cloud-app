@@ -5,12 +5,10 @@
     <section role="main" class="content-body pr-0 pt-0 pl-0">
       <header class="page-header pr19 pl7">
         <div class="row" style="padding-top: 10px">
-          <div class="col-md-2 col-lg-2 pr-0">
-            <div class="input-group input-group-md">
+          <div class="col-md-2 col-lg-2 pr-1">
                <ng-select data-plugin-selectTwo class="form-control populate" [(ngModel)] = "searchValue" name = "searchValue" placeholder="Select user">
                       <ng-option *ngFor ="let item of users" value = {{item.workEmail}}>{{item.firstName + " " + item.lastName}}</ng-option>
                      </ng-select>
-            </div>
           </div>
           <div class="col-md-2 col-lg-2">
             <button
