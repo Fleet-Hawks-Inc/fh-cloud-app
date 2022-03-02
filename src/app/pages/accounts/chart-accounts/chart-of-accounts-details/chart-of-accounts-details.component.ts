@@ -3,6 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { AccountService, ApiService } from "../../../../services";
 import Constants from "../../../fleet/constants";
 import { ToastrService } from "ngx-toastr";
+import * as moment from 'moment';
 @Component({
   selector: "app-chart-of-accounts-details",
   templateUrl: "./chart-of-accounts-details.component.html",
@@ -74,6 +75,8 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     if (this.actID) {
       await this.fetchAccount();
       await this.logsCADPaging();
+      this.filter.endDate = moment().format("YYYY-MM-DD");
+      this.filter.startDate = moment().subtract(15, 'day').format('YYYY-MM-DD');
     }
   }
   fetchAccountClassByIDs() {

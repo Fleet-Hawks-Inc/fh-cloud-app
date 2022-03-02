@@ -209,7 +209,8 @@
                           <p class="text-3 text-dark mb-2">
                             {{
                             this.paymentData.settledAmount | number: "1.2-2"
-                            }}
+                            }} <br>
+                            Miles {{grandTotal}}
                           </p>
                         </td>
                         <td class="pr-3 pt-2 text-right">
@@ -298,6 +299,11 @@
                         <td class="pr-3 pt-2 text-right">
                           <p class="text-3 text-dark mb-2">-</p>
                         </td>
+                      </tr>
+                      <tr class="text-dark">
+                        <td class="pl-3 pr-3 pt-2 text-right pb-2">Sub-Total</td>
+                        <td class="pr-3 pt-2 text-right pb-2"> {{subTotal}}</td>
+                        <td class="pr-3 pt-2 text-right">&nbsp;</td>
                       </tr>
 
                       <tr *ngFor="let ded of paymentData.advData">
