@@ -111,11 +111,11 @@ export class PaymentPdfsComponent implements OnInit {
   tagLine = "";
   grandTotal = 0;
   modelRef: any;
-  subTotal: any;
+  subTotal = 0;
+  totalSettmnt: any;
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
       async (res: any) => {
-        console.log('res', res);
         if (res.showModal && res.length != 0) {
           res.showModal = false;
           this.paymentData = res.data;
@@ -205,7 +205,6 @@ export class PaymentPdfsComponent implements OnInit {
           await this.fetchAdvancePayments();
 
           // await this.generatePaymentPDF();
-          this.subTotal = this.paymentData.settledAmount + this.paymentData.vacPayAmount;
         }
       }
     );
@@ -258,6 +257,7 @@ export class PaymentPdfsComponent implements OnInit {
     this.paymentInfo = result[0].paymentInfo;
     this.currency = result[0].currency;
     let newDates = []
+    let totalAddDed = 0;
     for (let index = 0; index < this.settlements.length; index++) {
       const element = this.settlements[index];
 
@@ -315,11 +315,13 @@ export class PaymentPdfsComponent implements OnInit {
         newDates.push(`${startDate} To ${endDate}`);
       }
 
+      totalAddDed += element.additionTotal - element.deductionTotal;
+
 
     }
     this.payPeriod = newDates.join(", ");
     await this.fetchTrips();
-    this.subTotal += result[0].additionTotal - result[0].deductionTotal;
+    this.subTotal += totalAddDed;
   }
 
   async getUserAnnualTax() {
@@ -447,6 +449,7 @@ export class PaymentPdfsComponent implements OnInit {
   }
 
   async fetchAdvancePayments() {
+    let totalAdv = 0;
     if (this.paymentData.advancePayIds.length > 0) {
       let ids = encodeURIComponent(
         JSON.stringify(this.paymentData.advancePayIds)
@@ -455,6 +458,7 @@ export class PaymentPdfsComponent implements OnInit {
         .getData(`advance/get/selected?entities=${ids}`)
         .toPromise();
       this.advancePayments = result;
+
       this.paymentData.advData.forEach((elem) => {
         this.advancePayments.map((v) => {
           if (v.paymentID === elem.paymentID) {
@@ -462,10 +466,13 @@ export class PaymentPdfsComponent implements OnInit {
             elem.paidAmount = Number(elem.paidAmount);
             elem.txnDate = v.txnDate;
             elem.ref = v.payModeNo;
+            totalAdv += Number(elem.paidAmount);
           }
         });
       });
     }
+    this.subTotal = this.paymentData.finalAmount - totalAdv;
+
   }
 
   async fetchSelectedFuelExpenses() {
@@ -476,6 +483,7 @@ export class PaymentPdfsComponent implements OnInit {
       let result = await this.apiService
         .getData(`fuelEntries/get/selected/ids?fuel=${fuelIDs}`)
         .toPromise();
+
       this.fueldata.map((k) => {
         result.map((fuel) => {
           k.city = fuel.data.city;
