@@ -231,7 +231,7 @@ export class IncidentListComponent implements OnInit {
   }
 
   fetchAllUsersIDs() {
-    this.apiService.getData('users/get/list')
+    this.apiService.getData('common/users/get/list')
       .subscribe((result: any) => {
         this.usersObject = result;
       });
