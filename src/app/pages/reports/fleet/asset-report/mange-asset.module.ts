@@ -38,7 +38,11 @@ const routes: Routes = [
     component: DetailComponent,
     data: { title: "Asset Detail Report" },
   },
-  { path: "activity/:astId", component: ActivityComponent },
+  {
+    path: "activity/:astId",
+    component: ActivityComponent,
+    data: { title: "Asset Activity Report" },
+  },
   {
     path: "activity-list",
     component: ActivityListComponent,
