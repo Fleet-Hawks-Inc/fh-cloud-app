@@ -20,6 +20,8 @@
                 #startDate="ngbDatepicker"
                 class="form-control"
                 autocomplete="off"
+                [minDate]="dateMinLimit"
+                [maxDate]="futureDatesLimit"
               />
               <span
                 class="input-group-text border-left-0 border-right-0 rounded-0"
@@ -36,6 +38,8 @@
                 #endDate="ngbDatepicker"
                 class="form-control"
                 autocomplete="off"
+                [minDate]="dateMinLimit"
+                [maxDate]="futureDatesLimit"
               />
             </div>
           </div>
