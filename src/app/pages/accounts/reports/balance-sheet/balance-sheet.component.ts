@@ -12,6 +12,8 @@ import * as moment from 'moment'
 })
 export class BalanceSheetComponent implements OnInit {
   dataMessage = Constants.FETCHING_DATA;
+    mainArray = [];
+    
     assetArr = [];
     liabilityArr = [];
     equityArr = [];
@@ -41,7 +43,22 @@ export class BalanceSheetComponent implements OnInit {
     dateMinLimit = { year: 1950, month: 1, day: 1 };
     date = new Date();
     futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-
+    //deactivatePredefined = true;
+    CAD = [];
+    USD = [];
+    actID = "";
+    acClasses = [];
+    totalUSD = 0;
+    totalCUSD = 0;
+    totalDCAD = 0;
+    totalCCAD = 0
+    allExportData = [];
+    lastExportSk="";
+    data1 = [];
+    cadDebitTotal = 0;
+    cadCreditTotal = 0;
+    usdDebitTotal = 0;
+    usdCreditTotal = 0;
 
     accountsClassObjects = {};
     coaData = {}
@@ -53,7 +70,8 @@ export class BalanceSheetComponent implements OnInit {
     lastTimestamp: string;
     lastKey: "";
     dataMsgCad: string;
-     currency = 'CAD';
+    currency = 'CAD';
+    
      transactionLogCAD =[];
     creditTotal = 0;
     
@@ -67,6 +85,7 @@ export class BalanceSheetComponent implements OnInit {
     retainedEarnings: any = [];
     ltLiability: any = [];
     
+    
   constructor(private accountService: AccountService, private toaster: ToastrService) { }
 
   ngOnInit() {
@@ -78,7 +97,8 @@ export class BalanceSheetComponent implements OnInit {
     
     
     async fetchBalence(refresh?: boolean){
-    this.accountService.getData(`chartAc/get/coa/${this.currency}/?lastKey=${this.lastItemSK}&start=${this.filter.startDate}&end=${this.filter.endDate}&date=${this.datee}`)
+    if(this.lastItemSK !== 'end'){
+    this.accountService.getData(`chartAc/get/balence/report/${this.currency}/?lastKey=${this.lastItemSK}&start=${this.filter.startDate}&end=${this.filter.endDate}&date=${this.datee}`)
     .subscribe(async(result: any) => {
      if(result.data.length === 0){
      this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -86,9 +106,31 @@ export class BalanceSheetComponent implements OnInit {
      if(result.data.length > 0){
      result.data.map((v) => {
      this.accounts.push(v);
+     this.accounts = _.sortBy(this.accounts, ['accountNo'])    
      })
-     }
+     this.lastItemSK = result.lastKey;
      
+      
+                   //Filtering H , S , T , X Groups and Expence and Revenue
+                    this.accounts = _.filter(this.accounts, function (o) {
+                           return o.accountType != 'H';
+                         });
+                    this.accounts = _.filter(this.accounts, function (o) {
+                           return o.accountType != 'S';
+                         });
+                    this.accounts = _.filter(this.accounts, function (o) {
+                           return o.accountType != 'T';
+                         });
+                    this.accounts = _.filter(this.accounts, function (o) {
+                           return o.accountType != 'X';
+                         });
+                    this.accounts = _.filter(this.accounts, function (o) {
+                           return o.accountClass != 'REVENUE';
+                         });
+                    this.accounts = _.filter(this.accounts, function (o) {
+                           return o.accountClass != 'EXPENSE';
+                         });
+      
       
       //Sorting other Assets,Liabilities and Equities.
       var sortClass = _.chain(this.accounts).groupBy('subAcClass').map((value, key) => ({subAcClass: key, account: value})).value()
@@ -145,6 +187,32 @@ export class BalanceSheetComponent implements OnInit {
       console.log('current assets',this.currLiability)
       }
       }
+      this.loaded = true;
+      }
     });
     }
-  }
+    }
+    
+    changeTab(type) {
+    this.currTab = type;
+    if (this.currTab === 'CAD') {
+       // this.fetchBalence();
+        
+    } else if (this.currTab === 'USD') {
+        //this.fetchBalence();
+    }
+    }
+    
+        //For Scrolling Page
+    onScroll() {
+        if (this.loaded) {
+            this.isLoad = true;
+            this.isLoadText = "Loading";
+            this.fetchBalence();
+            this.lastItemSK = '';
+        }
+        this.loaded = false;
+    }
+    
+    }
+  

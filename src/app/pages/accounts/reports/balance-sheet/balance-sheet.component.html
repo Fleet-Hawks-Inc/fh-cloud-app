@@ -38,11 +38,27 @@
                         <div class="bg-white p-3 text-dark">
                             <div class="form-group row">
                                 <div class="col-lg-12">
-
-                                    <div class="row">
-                                        <!-- Assets -->
+                                    
+                                    
+                                    
+                                    <ul class="nav nav-tabs top-tabs"id="top-tabs"role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link"
+                                            [ngClass]="{ active: currTab === 'CAD' }"
+                                            (click)="changeTab('CAD')"
+                                            id="CAD-tab">CAD Balence Sheet</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link"
+                                            [ngClass]="{ active: currTab === 'USD' }"
+                                            (click)="changeTab('USD')"
+                                            id="USD-tab">USD Balance Sheet</a>
+                                        </li>
+                                    </ul>
+                                     <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                                            [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                                         <div class="row">
                                         <div class="col-lg-12">
-                                            
                                             <h4 class="font-weight-bold text-dark mt-0 mb-3 text-underline">Assets</h4>
                                             <!-- Current Assets -->
                                             <table class="table table-bordered table-striped table-hover">
@@ -55,11 +71,9 @@
                                                     <tr>
                                                         <th class="text-4" width="25%">Account Number</th>
                                                         <th class="text-4" width="20%">Account Name</th>
-                                                        <th class="text-4" width="15%">Debit USD</th>
-                                                        <th class="text-4" width="15%">Debit CAD</th>
-                                                        
-                                                        <th class="text-4" width="15%">Credit USD</th>
-                                                        <th class="text-4" width="15%">Credit CAD</th>
+                                                        <th class="text-4" width="20%">Account Class</th>
+                                                        <th class="text-4" width="15%">Debit</th>
+                                                        <th class="text-4" width="15%">Credit</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -69,12 +83,9 @@
                                                     <tr *ngFor="let ac of sortOtherCurrentAssets">
                                                         <td>{{ac.accountNo}}</td>
                                                         <td>{{ac.accountName}}</td>
-                                                        <!-- Debit USD & CAD -->
-                                                        <td>{{ac.credit}}</td>
-                                                        <td>{{ac.debit}}</td>
-                                                        <!-- Credit USD & CAD -->
-                                                        <td>{{ac.credit}}</td>
-                                                        <td>{{ac.debit}}</td>
+                                                        <td>{{ac.subAcClass}}</td>
+                                                        <td>{{ac.debit | number: "1.2-2"}}</td>
+                                                        <td>{{ac.credit | number: "1.2-2"}}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="font-weight-bold">Total Current Assets</td>
@@ -97,10 +108,9 @@
                                                     <tr>
                                                         <th class="text-4" width="25%">Account Number</th>
                                                         <th class="text-4" width="20%">Account Name</th>
-                                                        <th class="text-4" width="15%">Debit USD</th>
-                                                        <th class="text-4" width="15%">Debit CAD</th>
-                                                        <th class="text-4" width="15%">Credit USD</th>
-                                                        <th class="text-4" width="15%">Credit CAD</th>
+                                                        <th class="text-4" width="20%">Account Class</th>
+                                                        <th class="text-4" width="15%">Debit</th>
+                                                        <th class="text-4" width="15%">Credit</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -110,12 +120,10 @@
                                                     <tr *ngFor="let ac of sortInventoryAssets">
                                                         <td>{{ac.accountNo}}</td>
                                                         <td>{{ac.accountName}}</td>
-                                                        <!-- Debit USD & CAD -->
-                                                        <td>{{ac.credit}}</td>
-                                                        <td>{{ac.debit}}</td>
-                                                        <!-- Credit USD & CAD -->
-                                                        <td>{{ac.credit}}</td>
-                                                        <td>{{ac.debit}}</td>
+                                                        <td>{{ac.subAcClass}}</td>
+
+                                                        <td>{{ac.debit | number: "1.2-2"}}</td>
+                                                        <td>{{ac.credit | number: "1.2-2"}}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="font-weight-bold">Total Inventory Assets</td>
@@ -138,11 +146,9 @@
                                                     <tr>
                                                         <th class="text-4" width="25%">Account Number</th>
                                                         <th class="text-4" width="20%">Account Name</th>
-                                                        <th class="text-4" width="15%">Debit USD</th>
-                                                        <th class="text-4" width="15%">Debit CAD</th>
-                                                        
-                                                        <th class="text-4" width="15%">Credit USD</th>
-                                                        <th class="text-4" width="15%">Credit CAD</th>
+                                                        <th class="text-4" width="20%">Account Class</th>
+                                                        <th class="text-4" width="15%">Debit</th>
+                                                        <th class="text-4" width="15%">Credit</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -152,12 +158,10 @@
                                                     <tr *ngFor="let ac of sortCapitalAsset">
                                                         <td>{{ac.accountNo}}</td>
                                                         <td>{{ac.accountName}}</td>
-                                                        <!-- Debit USD & CAD -->
-                                                        <td>{{ac.credit}}</td>
-                                                        <td>{{ac.debit}}</td>
-                                                        <!-- Credit USD & CAD -->
-                                                        <td>{{ac.credit}}</td>
-                                                        <td>{{ac.debit}}</td>
+                                                        <td>{{ac.subAcClass}}</td>
+
+                                                        <td>{{ac.debit | number: "1.2-2"}}</td>
+                                                        <td>{{ac.credit | number: "1.2-2"}}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="font-weight-bold">Total Capital Assets</td>
@@ -180,11 +184,9 @@
                                                     <tr>
                                                         <th class="text-4" width="25%">Account Number</th>
                                                         <th class="text-4" width="20%">Account Name</th>
-                                                        <th class="text-4" width="15%">Debit USD</th>
-                                                        <th class="text-4" width="15%">Debit CAD</th>
-                                                        
-                                                        <th class="text-4" width="15%">Credit USD</th>
-                                                        <th class="text-4" width="15%">Credit CAD</th>
+                                                        <th class="text-4" width="20%">Account Class</th>
+                                                        <th class="text-4" width="15%">Debit</th>
+                                                        <th class="text-4" width="15%">Credit</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -194,12 +196,10 @@
                                                     <tr *ngFor="let ac of sortONCAsset">
                                                         <td>{{ac.accountNo}}</td>
                                                         <td>{{ac.accountName}}</td>
-                                                        <!-- Debit USD & CAD -->
-                                                        <td>{{ac.credit}}</td>
-                                                        <td>{{ac.debit}}</td>
-                                                        <!-- Credit USD & CAD -->
-                                                        <td>{{ac.credit}}</td>
-                                                        <td>{{ac.debit}}</td>
+                                                        <td>{{ac.subAcClass}}</td>
+
+                                                        <td>{{ac.debit | number: "1.2-2"}}</td>
+                                                        <td>{{ac.credit | number: "1.2-2"}}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="font-weight-bold">Total Other Non-Current Assets</td>
@@ -237,11 +237,9 @@
                                                     <tr>
                                                         <th class="text-4" width="25%">Account Number</th>
                                                         <th class="text-4" width="20%">Account Name</th>
-                                                        <th class="text-4" width="15%">Debit USD</th>
-                                                        <th class="text-4" width="15%">Debit CAD</th>
-                                                        
-                                                        <th class="text-4" width="15%">Credit USD</th>
-                                                        <th class="text-4" width="15%">Credit CAD</th>
+                                                        <th class="text-4" width="20%">Account Class</th>
+                                                        <th class="text-4" width="15%">Debit</th>
+                                                        <th class="text-4" width="15%">Credit</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -251,12 +249,10 @@
                                                     <tr *ngFor="let ac of currLiability">
                                                         <td>{{ac.accountNo}}</td>
                                                         <td>{{ac.accountName}}</td>
-                                                        <!-- Debit USD & CAD -->
-                                                        <td>{{ac.credit}}</td>
-                                                        <td>{{ac.debit}}</td>
-                                                        <!-- Credit USD & CAD -->
-                                                        <td>{{ac.credit}}</td>
-                                                        <td>{{ac.debit}}</td>
+                                                        <td>{{ac.subAcClass}}</td>
+
+                                                        <td>{{ac.debit | number: "1.2-2"}}</td>
+                                                        <td>{{ac.credit | number: "1.2-2"}}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="font-weight-bold">Total Current Liability</td>
@@ -279,11 +275,10 @@
                                                     <tr>
                                                         <th class="text-4" width="25%">Account Number</th>
                                                         <th class="text-4" width="20%">Account Name</th>
-                                                        <th class="text-4" width="15%">Debit USD</th>
-                                                        <th class="text-4" width="15%">Debit CAD</th>
-                                                        
-                                                        <th class="text-4" width="15%">Credit USD</th>
-                                                        <th class="text-4" width="15%">Credit CAD</th>
+                                                        <th class="text-4" width="20%">Account Class</th>
+
+                                                        <th class="text-4" width="15%">Debit</th>
+                                                        <th class="text-4" width="15%">Credit</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -293,13 +288,10 @@
                                                     <tr *ngFor="let ac of ltLiability">
                                                         <td>{{ac.accountNo}}</td>
                                                         <td>{{ac.accountName}}</td>
-                                                
-                                                        <!-- Debit USD & CAD -->
-                                                        <td>{{ac.credit}}</td>
-                                                        <td>{{ac.debit}}</td>
-                                                        <!-- Credit USD & CAD -->
-                                                        <td>{{ac.credit}}</td>
-                                                        <td>{{ac.debit}}</td>
+                                                        <td>{{ac.subAcClass}}</td>
+
+                                                        <td>{{ac.debit | number: "1.2-2"}}</td>
+                                                        <td>{{ac.credit | number: "1.2-2"}}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="font-weight-bold">Total Long Term Liability</td>
@@ -338,12 +330,10 @@
                                                     <tr>
                                                         <th class="text-4" width="25%">Account Number</th>
                                                         <th class="text-4" width="20%">Account Name</th>
-                                                    
-                                                        <th class="text-4" width="15%">Debit USD</th>
-                                                        <th class="text-4" width="15%">Debit CAD</th>
-                                                        
-                                                        <th class="text-4" width="15%">Credit USD</th>
-                                                        <th class="text-4" width="15%">Credit CAD</th>
+                                                        <th class="text-4" width="20%">Account Class</th>
+
+                                                        <th class="text-4" width="15%">Debit</th>
+                                                        <th class="text-4" width="15%">Credit</th>  
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -353,12 +343,10 @@
                                                     <tr *ngFor="let ac of scEquity">
                                                         <td>{{ac.accountNo}}</td>
                                                         <td>{{ac.accountName}}</td>
-                                                        <!-- Debit USD & CAD -->
-                                                        <td>{{ac.credit}}</td>
-                                                        <td>{{ac.debit}}</td>
-                                                        <!-- Credit USD & CAD -->
-                                                        <td>{{ac.credit}}</td>
-                                                        <td>{{ac.debit}}</td>
+                                                        <td>{{ac.subAcClass}}</td>
+
+                                                        <td>{{ac.debit | number: "1.2-2"}}</td>
+                                                        <td>{{ac.credit | number: "1.2-2"}}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="font-weight-bold">Total Share Capital</td>
@@ -381,11 +369,10 @@
                                                     <tr>
                                                         <th class="text-4" width="25%">Account Number</th>
                                                         <th class="text-4" width="20%">Account Name</th>
-                                                        <th class="text-4" width="15%">Debit USD</th>
-                                                        <th class="text-4" width="15%">Debit CAD</th>
-                                                        
-                                                        <th class="text-4" width="15%">Credit USD</th>
-                                                        <th class="text-4" width="15%">Credit CAD</th>
+                                                        <th class="text-4" width="20%">Account Class</th>
+
+                                                        <th class="text-4" width="15%">Debit</th>
+                                                        <th class="text-4" width="15%">Credit</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -395,12 +382,10 @@
                                                     <tr *ngFor="let ac of retainedEarnings">
                                                         <td>{{ac.accountNo}}</td>
                                                         <td>{{ac.accountName}}</td>
-                                                        <!-- Debit USD & CAD -->
-                                                        <td>{{ac.credit}}</td>
-                                                        <td>{{ac.debit}}</td>
-                                                        <!-- Credit USD & CAD -->
-                                                        <td>{{ac.credit}}</td>
-                                                        <td>{{ac.debit}}</td>
+                                                        <td>{{ac.subAcClass}}</td>
+
+                                                        <td>{{ac.debit | number: "1.2-2"}}</td>
+                                                        <td>{{ac.credit | number: "1.2-2"}}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="font-weight-bold">Total Retained Earnings</td>
@@ -437,11 +422,19 @@
                                     </div>
                                  
                                  
-                                 
-                                 
+                                       <div class="col-lg-12 mt-3 text-center"
+                                                    *ngIf="lastItemSK !== 'end' && accounts.length !== 0">
+                                                    <button type="button" class="btn btn-success btn-sm text-light"
+                                                        (click)="onScroll()">
+                                                        <i class="fa fa-spinner fa-spin" *ngIf="isLoad">
+                                                        </i> {{isLoadText}}
+                                                    </button>
+                                                </div>
+                                 </div>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </section>
