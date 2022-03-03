@@ -370,7 +370,7 @@ export class DetailPdfComponent implements OnInit {
 
       miles += element.entityMiles;
     }
-
+    console.log('this.settledTrips', this.settledTrips)
     this.totalMiles = miles;
   }
 
