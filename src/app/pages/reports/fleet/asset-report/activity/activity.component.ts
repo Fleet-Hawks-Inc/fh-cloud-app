@@ -60,7 +60,7 @@ export class ActivityComponent implements OnInit {
   }
   fetchAssetActivity() {
     if (this.lastItemSK !== 'end') {
-      this.apiService.getData(`trips/get/tripData?asset=${this.astId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
+      this.apiService.getData(`common/trips/get/tripData?asset=${this.astId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
         this.allData = this.allData.concat(result.Items)
         if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND
