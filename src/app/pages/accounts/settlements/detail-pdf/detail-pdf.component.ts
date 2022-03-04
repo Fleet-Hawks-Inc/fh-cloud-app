@@ -110,7 +110,6 @@ export class DetailPdfComponent implements OnInit {
         if (res.showModal && res.length != 0) {
           await this.getCurrentuser();
           this.settlementData = res.settlementData;
-          console.log('this.settlementData', this.settlementData)
           this.entityName = res.entityName;
           this.fuelEnteries = res.fuelEnteries;
 
@@ -370,7 +369,6 @@ export class DetailPdfComponent implements OnInit {
 
       miles += element.entityMiles;
     }
-
     this.totalMiles = miles;
   }
 
