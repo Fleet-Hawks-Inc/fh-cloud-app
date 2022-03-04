@@ -135,7 +135,7 @@ export class AddFuelEntryComponent implements OnInit {
 
   async ngOnInit() {
     this.listService.fetchVehicles();
-    this.fetchTrips();
+    //this.fetchTrips();
     this.fetchAssets();
     this.fetchDrivers();
     //this.fetchFuelTypes();
@@ -264,11 +264,6 @@ export class AddFuelEntryComponent implements OnInit {
           this.reeferArray.push(obj);
         }
       });
-    });
-  }
-  fetchTrips() {
-    this.apiService.getData("trips/get/all").subscribe((result: any) => {
-      this.trips = result;
     });
   }
   async getStates(cntryCode) {

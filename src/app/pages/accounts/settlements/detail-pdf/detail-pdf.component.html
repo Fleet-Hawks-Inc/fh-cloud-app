@@ -715,7 +715,7 @@
                     </td>
                   </tr>
                   <ng-container *ngFor="let trp of settledTrips; let t = index">
-                    <tr>
+                    <tr *ngIf="trp.splitArr.length == 0">
                       <td valign="top" style="
                           border-right: 1px solid #adadad;
                           border-bottom: 1px solid #adadad;
@@ -878,7 +878,7 @@
             </tr>
             <tr *ngIf="settledTrips.length > 0" class="text-right">
               <td colspan="9">
-                <p class="mt-2 mb-0  text-dark"><b> Total Miles: {{totalMiles}}</b></p>
+                <p class="mt-2 mb-0  text-dark"><b> Total Miles: {{totalMiles | number: "1.2-2"}}</b></p>
               </td>
             </tr>
             <tr *ngIf="fuelEnteries.length > 0">

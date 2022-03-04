@@ -152,28 +152,42 @@ const routes: Routes = [
   {
     path: "employee-payments/edit/:paymentID",
     component: AddEmployeePaymentComponent,
+    data: { title: "Edit Employee Payment" },
   },
   {
     path: "employee-payments/detail/:paymentID",
     component: EmployeePaymentDetailComponent,
+    data: { title: "Detail Employee Payment" },
   },
-  { path: "vendor-payments/list", component: VendorPaymentListComponent },
-  { path: "vendor-payments/add", component: AddVendorPaymentComponent },
+  {
+    path: "vendor-payments/list",
+    component: VendorPaymentListComponent,
+    data: { title: "Vendor Payment List" },
+  },
+  {
+    path: "vendor-payments/add",
+    component: AddVendorPaymentComponent,
+    data: { title: "Add Vendor Payment" },
+  },
   {
     path: "vendor-payments/detail/:paymentID",
     component: VendorPaymentDetailComponent,
+    data: { title: "Detail Vendor Payment" },
   },
   {
     path: "expense-payments/list",
     component: ExpensePaymentListComponent,
+    data: { title: "Expense Payment List" },
   },
   {
     path: "expense-payments/add",
     component: AddExpensePaymentComponent,
+    data: { title: "Add Expense Payment" },
   },
   {
     path: "expense-payments/detail/:paymentID",
     component: ExpensePaymentDetailComponent,
+    data: { title: "Detail Expense Payment" },
   },
 ];
 

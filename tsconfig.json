@@ -13,7 +13,6 @@
     "target": "es2017",
     "types": [
       "node",
-      "googlemaps"
     ],
     "typeRoots": [
       "node_modules/@types"

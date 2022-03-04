@@ -18,6 +18,7 @@ import { DOCUMENT } from "@angular/common";
 import { delay, filter } from "rxjs/operators";
 import { HttpLoadingService, SharedServiceService } from "./services";
 import { Title } from "@angular/platform-browser";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 declare var $: any;
 @Component({
   selector: "app-root",
@@ -36,7 +37,8 @@ export class AppComponent implements OnInit, AfterContentChecked {
     private changeDetector: ChangeDetectorRef,
     private httpLoadingService: HttpLoadingService,
     private titleService: Title,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalService: NgbModal,
   ) {
     // left sidebar collapsed on overview - fleet page
     const rootHtml = document.getElementsByTagName("html")[0];
@@ -67,6 +69,8 @@ export class AppComponent implements OnInit, AfterContentChecked {
         } else {
           this.token = false;
         }
+        // close all open modals
+        this.modalService.dismissAll();
       }
 
       /**

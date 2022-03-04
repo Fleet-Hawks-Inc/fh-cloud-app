@@ -6,7 +6,7 @@
                     <div class="col-md-2 col-lg-2 pr-0">
                         <h4 class="font-weight-bold mt-0 text-dark">Trial Balance</h4>
                     </div>
-                    <div class="col-lg-2">
+                    <!--<div class="col-lg-2">-->
                         <!--<select class="form-control populate">-->
                         <!--    <option value="2">This Month</option>-->
                         <!--    <option value="2">This Quarter</option>-->
@@ -15,26 +15,25 @@
                         <!--    <option value="2">Last Quarter</option>-->
                         <!--    <option value="2">Last Year</option>-->
                         <!--</select>-->
-                    </div>
-                    <div class="col-lg-3 col-md-3 pr-1">
+                    <!--</div>-->
+                    <div class="col-md-3 col-lg-3 ml-auto pr-0">
                         <div class="input-daterange input-group">
                             <span class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="fas fa-calendar-alt"></i>
+                                <span class="input-group-text ">
+                                    <i class="fas fa-calendar-alt "></i>
                                 </span>
                             </span>
 
-                            <input [(ngModel)]="filter.startDate" name="fromDate" type="text" placeholder="yyyy/mm/dd"
+                            <input [(ngModel)]="filter.startDate"  name="fromDate" type="text" placeholder="yyyy/mm/dd"
                                 (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control"
                                 autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-                            <span class="input-group-text border-left-0
+                            <span class="input-group-text border-left-0 
                     border-right-0 rounded-0">
                                 to
                             </span>
                             <input [(ngModel)]="filter.endDate" name="toDate" type="text" placeholder="yyyy/mm/dd"
                                 (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control"
                                 autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
@@ -44,13 +43,13 @@
                             Reset
                         </button>
                     </div>
-                    <div class="col-md-5 col-lg-3 text-right pr-2">
+                    <div class="col-md-5 col-lg-5 pr-2">
                         <button *ngIf="exportLoading" class="btn btn-success btn-sm ml-2" type="button" disabled>
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             Exporting...
                         </button>
                         <button type="button" *ngIf="!exportLoading" class="btn btn-success btn-sm ml-2 dropdown-toggle"
-                            data-toggle="dropdown" aria-expanded="false">
+                            data-toggle="dropdown"  style="position: absolute; right: 10px"  aria-expanded="false">
                             <i class="fas fa-file-export"></i> Export<span class="caret"></span>
                         </button>
                         <div *ngIf="!exportLoading" class="dropdown-menu" role="menu" x-placement="bottom-start" style="
@@ -61,7 +60,6 @@
                       transform: translate3d(0px, 38px, 0px);
                     ">
                             <a class="dropdown-item text-1" (click)="generateCSV()">Excel</a>
-                            
                         </div>
                     </div>
                 </div>
@@ -101,30 +99,28 @@
                                                             <td colspan="6">{{ dataMessage }}</td>
                                                         </tr>
                                                         <tr *ngFor="let ac of accounts">
-                                                            <td class="cursorpoint"
-                                                           routerLink="/accounts/chart-accounts/detail/{{
+                                                            <td class="cursorpoint" >
+                                                                 <a routerLink="/accounts/chart-accounts/detail/{{
                                                                      ac.accID
-                                                                        }}"
-                                                                   >
-                                                                {{ ac.accountNo }}
+                                                                        }}" target = "_blank">
+                                                                {{ ac.accountNo }} </a>
                                                             </td>
-                                                            <td class="cursorpoint text-capitalize" 
-                                                             routerLink="/accounts/chart-accounts/detail/{{
+                                                            <td class="cursorpoint text-capitalize" >
+                                                                <a routerLink="/accounts/chart-accounts/detail/{{
                                                                      ac.accID
-                                                                        }}">
-                                                                {{ ac.accountName }}
+                                                                        }}" target = "_blank">   {{ ac.accountName }}</a>
                                                             </td>
-                                                            <td class="cursorpoint" 
-                                                            routerLink="/accounts/chart-accounts/detail/{{
+                                                            <td class="cursorpoint">
+                                                                 <a routerLink="/accounts/chart-accounts/detail/{{
                                                                      ac.accID
-                                                                        }}">
-                                                             <span>{{ac.credit | number: "1.2-2"}}</span>
+                                                                        }}" target = "_blank">
+                                                             <span>{{ac.credit | number: "1.2-2"}}</span> </a>
                                                             </td>
-                                                            <td class="cursorpoint"
-                                                             routerLink="/accounts/chart-accounts/detail/{{
+                                                            <td class="cursorpoint">
+                                                                 <a routerLink="/accounts/chart-accounts/detail/{{
                                                                      ac.accID
-                                                                        }}">
-                                                             <span>{{ac.debit | number: "1.2-2"}}</span>
+                                                                        }}" target = "_blank">
+                                                             <span>{{ac.debit | number: "1.2-2"}}</span> </a>
                                                             </td>
                                                         </tr>
                                                         <tr > 

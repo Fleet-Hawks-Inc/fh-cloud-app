@@ -296,7 +296,7 @@ export class OrderDetailComponent implements OnInit {
   companyLogoSrc = "";
   orderLogs = [];
   recallStatus = false;
-
+  invStatus: string;
   isFlag = true;
   showBtns = false;
   brokerageDisabled = false;
@@ -527,6 +527,9 @@ export class OrderDetailComponent implements OnInit {
           this.emailData.emails.push({ label: result.customerEmail });
         }
         //this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
+
+        this.invStatus = result.invStatus ? result.invStatus : 'NA'
+
       },
 
       (err) => { }

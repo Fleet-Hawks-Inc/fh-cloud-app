@@ -75,11 +75,10 @@ export class TrialBalanceComponent implements OnInit {
     currency = 'CAD';
     transactionLogCAD = [];
     creditTotal = 0;
-    result: any;
+    result = [];
 
 
     constructor(private accountService: AccountService, private toaster: ToastrService) { }
-
     ngOnInit() {
         this.filter.endDate = moment().format("YYYY-MM-DD");
         this.filter.startDate = moment().subtract(15, 'day').format('YYYY-MM-DD');
@@ -104,7 +103,11 @@ export class TrialBalanceComponent implements OnInit {
                         result.data.map((v) => {
                             this.accounts.push(v);
                         });
-                        this.lastItemSK = result.lastKey;
+                           this.lastItemSK = result.lastKey;
+                           if(this.lastItemSK !== result.lastKey)
+     {
+      this.lastItemSK = 'end';
+     }
                         const newArray: any = _.sortBy(this.accounts, ["accountNo"]);
                         this.accounts = newArray;
                         for (var i = 0; i < result.data.length; i++) {
@@ -138,6 +141,7 @@ export class TrialBalanceComponent implements OnInit {
                         });
                         this.loaded = true;
                     }
+                    
                 });
         }
     }
@@ -152,15 +156,19 @@ export class TrialBalanceComponent implements OnInit {
             this.lastItemSK = '';
         }
         this.loaded = false;
-    }
+       }
 
 
     searchFilter() {
         if (this.filter.startDate !== null || this.filter.endDate !== null) {
             this.start = this.filter.startDate;
             this.end = this.filter.endDate;
-            this.accounts = [];
+            this.cadDebitTotal = 0;
+            this.cadCreditTotal = 0;
+            this.usdDebitTotal = 0;
+            this.usdCreditTotal = 0;
             this.lastItemSK = '';
+            this.accounts = [];
             this.dataMessage = Constants.FETCHING_DATA;
             this.fetchAccounts();
         }
@@ -172,6 +180,10 @@ export class TrialBalanceComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.start = null;
         this.end = null;
+        this.cadDebitTotal = 0;
+        this.cadCreditTotal = 0;
+        this.usdDebitTotal = 0;
+        this.usdCreditTotal = 0;
         this.lastItemSK = "";
         this.accounts = [];
         this.fetchAccounts();
@@ -207,10 +219,14 @@ export class TrialBalanceComponent implements OnInit {
         this.accounts = [];
         if (this.currTab === "CAD") {
             this.currency = 'CAD'
+             this.cadDebitTotal = 0;
+             this.cadCreditTotal = 0;
             this.lastItemSK = '';
             this.fetchAccounts();
         } else if (this.currTab === "USD") {
             this.currency = 'USD'
+            this.usdDebitTotal = 0;
+            this.usdCreditTotal = 0;
             this.lastItemSK = '';
             this.fetchAccounts();
         }
