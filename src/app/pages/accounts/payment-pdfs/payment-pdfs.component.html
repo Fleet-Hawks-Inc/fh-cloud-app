@@ -209,7 +209,8 @@
                           <p class="text-3 text-dark mb-2">
                             {{
                             this.paymentData.settledAmount | number: "1.2-2"
-                            }}
+                            }} <br>
+                            <b>Miles:</b> {{grandTotal}}
                           </p>
                         </td>
                         <td class="pr-3 pt-2 text-right">
@@ -300,6 +301,7 @@
                         </td>
                       </tr>
 
+
                       <tr *ngFor="let ded of paymentData.advData">
                         <td class="pl-3 pt-2">
                           <p class="text-3 text-dark mb-2 text-capitalize">
@@ -315,7 +317,11 @@
                           <p class="text-3 text-dark mb-2">-</p>
                         </td>
                       </tr>
-
+                      <tr class="text-dark">
+                        <td class="pl-3 pr-3 pt-2 text-right pb-2"><b>Sub-Total</b></td>
+                        <td class="pr-3 pt-2 text-right pb-2"> {{subTotal}}</td>
+                        <td class="pr-3 pt-2 text-right">&nbsp;</td>
+                      </tr>
                       <tr *ngIf="
                             addCharges.length > 0 ||
                             dedCharges.length > 0 ||

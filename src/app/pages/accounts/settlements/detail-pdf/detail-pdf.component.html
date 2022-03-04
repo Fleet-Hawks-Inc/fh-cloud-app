@@ -715,7 +715,7 @@
                     </td>
                   </tr>
                   <ng-container *ngFor="let trp of settledTrips; let t = index">
-                    <tr>
+                    <tr *ngIf="trp.splitArr.length == 0">
                       <td valign="top" style="
                           border-right: 1px solid #adadad;
                           border-bottom: 1px solid #adadad;
@@ -874,6 +874,11 @@
 
                   <tbody></tbody>
                 </table>
+              </td>
+            </tr>
+            <tr *ngIf="settledTrips.length > 0" class="text-right">
+              <td colspan="9">
+                <p class="mt-2 mb-0  text-dark"><b> Total Miles: {{totalMiles | number: "1.2-2"}}</b></p>
               </td>
             </tr>
             <tr *ngIf="fuelEnteries.length > 0">
@@ -1164,6 +1169,12 @@
                 </table>
               </td>
             </tr>
+            <tr *ngIf="settlementData.addition.length > 0">
+              <td colspan="2">
+                <p class="m-0 text-right text-dark mt-2"><b>Sub-Total: {{settlementData.additionTotal}}</b></p>
+              </td>
+            </tr>
+
             <tr *ngIf="settlementData.deduction.length > 0">
               <td colspan="2">
                 <h2 style="font-size: 16px; color: #000000">Deduction</h2>
@@ -1266,6 +1277,11 @@
                   </tr>
                   <tbody></tbody>
                 </table>
+              </td>
+            </tr>
+            <tr *ngIf="settlementData.deduction.length > 0">
+              <td colspan="2">
+                <p class="m-0 text-right text-dark mt-2"><b>Sub-Total: {{settlementData.deductionTotal}}</b></p>
               </td>
             </tr>
             <tr>

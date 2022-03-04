@@ -133,7 +133,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.fuelID = this.route.snapshot.params[`fuelID`];
     this.fetchVehicleList();
     this.fetchAssetList();
-    this.fetchTripList();
+    // this.fetchTripList();
     this.fetchVendorList();
     //this.fetchFuelTypeList();
     this.fetchWEXCode();
@@ -229,11 +229,6 @@ export class FuelEntryDetailsComponent implements OnInit {
     });
   }
 
-  async fetchTripList() {
-    await this.apiService.getData('trips/get/list').subscribe((result: any) => {
-      this.tripList = result;
-    });
-  }
   async fetchVendorData(vendorID) {
     await this.apiService.getData('vendors/' + vendorID).subscribe((result: any) => {
       // this.vendorAddress = result.Items[0].address;

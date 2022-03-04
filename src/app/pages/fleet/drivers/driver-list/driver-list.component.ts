@@ -90,13 +90,15 @@ export class DriverListComponent implements OnInit {
         { field: 'firstName', header: 'First Name', type: "text" },
         { field: 'lastName', header: 'Last Name', type: "text" },
         { field: 'email', header: 'Email', type: "text" },
-        { field: 'driverType', header: 'Type', type: "text" },
         { field: 'phone', header: 'Phone', type: "text" },
         { field: 'userName', header: 'Username', type: "text" },
+        { field: 'driverType', header: 'Type', type: "text" },
+        { field: 'companyName', header: 'Company', type: "text" },
         { field: 'startDate', header: 'Start Date', type: "text" },
         { field: 'CDL_Number', header: 'CDL#', type: "text" },
         { field: 'licenceDetails.licenceExpiry', header: 'CDL Expiry', type: "text" },
-        { field: "driverStatus", header: 'Status', type: 'text' }
+        { field: "driverStatus", header: 'Status', type: 'text' },
+
     ];
 
     constructor(
@@ -106,14 +108,14 @@ export class DriverListComponent implements OnInit {
         private countryStateCity: CountryStateCityService
     ) { }
 
-    ngOnInit(): void {
+    async ngOnInit(): Promise<void> {
         this.setToggleOptions();
         this.setEmployeeOptions();
         // this.fetchAllDocumentsTypes();
         // this.fetchAllVehiclesIDs();
         // this.fetchAllVendorsIDs();
         // this.fetchOwnerOperatorsByIDss();
-        this.fetchDrivers();
+        await this.fetchDrivers();
 
 
     }
@@ -246,50 +248,39 @@ export class DriverListComponent implements OnInit {
     async fetchDrivers() {
         if (this.lastEvaluatedKey !== 'end') {
             let result = await this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&type=${this.driverType}&lastKey=${this.lastEvaluatedKey}`).toPromise();
-            if (result.Items.length === 0) {
+            if (result.data.length === 0) {
                 this.dataMessage = Constants.NO_RECORDS_FOUND;
                 this.loaded = true;
             }
-            result.Items.map((v) => {
+            result.data.map((v) => {
                 v.url = `/fleet/drivers/detail/${v.driverID}`;
             });
             this.suggestedDrivers = [];
-            if (result.Items.length > 0) {
-                if (result.LastEvaluatedKey !== undefined) {
-                    this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].driverSK);
-                }
-                else {
-                    this.lastEvaluatedKey = 'end'
-                }
-
-                this.drivers = this.drivers.concat(result.Items);
-                this.loaded = true;
+            if (result.nextPage !== undefined) {
+                this.lastEvaluatedKey = encodeURIComponent(result.nextPage);
             }
+            else {
+                this.lastEvaluatedKey = 'end'
+            }
+            console.log(this.lastEvaluatedKey, result.nextPage)
+            this.drivers = this.drivers.concat(result.data);
+            this.loaded = true;
+
             this.isSearch = false;
         }
     }
 
 
 
-    onScroll(event: any) {
+    onScroll = async (event: any) => {
 
 
-        if (event.sortField) {
-
-            const sortDirection = event.sortOrder === 1 ? 'asc' : 'desc';
-
-            this.drivers = _.orderBy(this.drivers, [event.sortField], sortDirection);
-        } else if (event.globalFilter) {
-            const resu = this.table.filterGlobal(event.globalFilter, 'contains');
+        if (this.loaded) {
+            this.fetchDrivers();
 
         }
-        else {
-            if (this.loaded) {
-                this.fetchDrivers();
-            }
-            this.loaded = false;
+        this.loaded=false;
 
-        }
     }
 
     fetchAddress(drivers: any) {

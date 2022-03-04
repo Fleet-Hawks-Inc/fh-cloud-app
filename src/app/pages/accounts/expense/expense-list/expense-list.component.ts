@@ -56,7 +56,7 @@ export class ExpenseListComponent implements OnInit {
   }
 
   fetchTrips() {
-    this.apiService.getData("trips/get/list").subscribe((result: any) => {
+    this.apiService.getData("common/trips/get/list").subscribe((result: any) => {
       this.trips = result;
     });
   }
@@ -122,7 +122,7 @@ export class ExpenseListComponent implements OnInit {
   deleteExpense(expenseID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.accountService
-        .getData(`expense/delete/${expenseID}`)
+        .deleteData(`expense/delete/${expenseID}`)
         .subscribe((result: any) => {
           if (result !== undefined) {
             this.dataMessage = Constants.FETCHING_DATA;

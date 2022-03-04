@@ -253,7 +253,7 @@ export class AddExpenseComponent implements OnInit {
     this.location.back(); // <-- go back to previous location on cancel
   }
   fetchTrips() {
-    this.apiService.getData('trips').subscribe((result: any) => {
+    this.apiService.getData('common/trips').subscribe((result: any) => {
       // this.trips = result.Items;
       result.Items.forEach((element) => {
         if(element.isDeleted === 0) {

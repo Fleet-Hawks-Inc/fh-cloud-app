@@ -147,7 +147,7 @@
                           </tr>
                           <tr *ngFor="let data of transactionLog">
                             <td class="text-capitalize">{{
-                              accountsObjects[data.accountID]
+                              data.actName
                               }}</td>
                             <td>
                               <span *ngIf="data.trxType ===

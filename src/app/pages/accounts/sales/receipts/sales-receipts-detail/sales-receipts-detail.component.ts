@@ -115,6 +115,7 @@ export class SalesReceiptsDetailComponent implements OnInit {
             this.docs.push(obj);
           });
         }
+
       });
   }
 
