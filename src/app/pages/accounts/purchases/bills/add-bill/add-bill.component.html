@@ -377,12 +377,19 @@
                             </td>
                             <td>
                               <ng-select [(ngModel)]="detail.accountID" name="accountID{{ idt }}" placeholder="Select
-                                                                account">
+                                                                account" #acc="ngModel" required>
                                 <ng-option *ngFor="let act of accounts" value="{{ act.actID }}">{{ act.actNo }}
                                   -
                                   {{ act.actName | titlecase }}
                                 </ng-option>
                               </ng-select>
+                              <div *ngIf="
+                                    acc.invalid && (acc.dirty || acc.touched)
+                                  " class="text-danger">
+                                <div *ngIf="acc.errors.required">
+                                  Account is required.
+                                </div>
+                              </div>
                             </td>
                             <td>
                               <input type="text" name="description{{ idt }}" [(ngModel)]="detail.description"

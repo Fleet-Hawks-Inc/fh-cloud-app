@@ -168,8 +168,6 @@
                               <th>Drop Off Location</th>
                               <th>Commodity</th>
                               <th>Amount</th>
-                              <th>Invoiced</th>
-                              <th>Payment</th>
                               <th>Status</th>
                               <th>Actions</th>
                             </tr>
@@ -317,17 +315,12 @@
                                 {{ order.charges.freightFee.currency }}
                                 {{ order.totalAmount }}<br />
                               </td>
-                              <td>
-                                <span class="badge badge-dark p-1
-                                  text-capitalize">{{order.invoiceGenerate ? 'YES' : 'NO'}}</span>
-                              </td>
-                              <td>
-                                <span class="badge badge-dark p-1
-                                  text-capitalize">{{order.invStatus ? order.invStatus : 'NA'}}</span>
-                              </td>
+
                               <td [routerLink]="order.url">
                                 <span class="badge badge-dark p-1
-                                  text-capitalize">{{ order.newStatus }}</span>
+                                  text-capitalize">{{ order.newStatus }}</span> <br>
+                                <b>Invoiced: </b> {{order.invoiceGenerate ? 'Yes' : 'No'}} <br>
+                                <b>Payment:</b> {{order.invStatus ? order.invStatus : 'NA'}}
                               </td>
                               <td>
                                 <div class="dropdown dropright">
@@ -566,7 +559,9 @@
                             </td>
                             <td [routerLink]="order.url">
                               <span class="badge badge-dark p-1
-                                text-capitalize">{{ order.newStatus }}</span>
+                                text-capitalize">{{ order.newStatus }}</span> <br>
+                              <b>Invoiced: </b> {{order.invoiceGenerate ? 'Yes' : 'No'}} <br>
+                              <b>Payment:</b> {{order.invStatus ? order.invStatus : 'NA'}}
                             </td>
                             <td>
                               <div class="dropdown dropright">
@@ -762,7 +757,9 @@
                             </td>
                             <td [routerLink]="order.url">
                               <span class="badge badge-dark p-1
-                                text-capitalize">{{ order.newStatus }}</span>
+                                text-capitalize">{{ order.newStatus }}</span> <br>
+                              <b>Invoiced: </b> {{order.invoiceGenerate ? 'Yes' : 'No'}} <br>
+                              <b>Payment:</b> {{order.invStatus ? order.invStatus : 'NA'}}
                             </td>
                             <td>
                               <div class="dropdown dropright">
@@ -958,7 +955,9 @@
                             </td>
                             <td [routerLink]="order.url">
                               <span class="badge badge-dark p-1
-                                text-capitalize">{{ order.newStatus }}</span>
+                                text-capitalize">{{ order.newStatus }}</span> <br>
+                              <b>Invoiced: </b> {{order.invoiceGenerate ? 'Yes' : 'No'}} <br>
+                              <b>Payment:</b> {{order.invStatus ? order.invStatus : 'NA'}}
                             </td>
                             <td>
                               <div class="dropdown dropright">
@@ -1159,7 +1158,9 @@
                             </td>
                             <td [routerLink]="order.url">
                               <span class="badge badge-dark p-1
-                                text-capitalize">{{ order.newStatus }}</span>
+                                text-capitalize">{{ order.newStatus }}</span> <br>
+                              <b>Invoiced: </b> {{order.invoiceGenerate ? 'Yes' : 'No'}} <br>
+                              <b>Payment:</b> {{order.invStatus ? order.invStatus : 'NA'}}
                             </td>
                             <td>
                               <div class="dropdown dropright">
@@ -1353,7 +1354,9 @@
                             </td>
                             <td [routerLink]="order.url">
                               <span class="badge badge-dark p-1
-                                text-capitalize">{{ order.newStatus }}</span>
+                                text-capitalize">{{ order.newStatus }}</span> <br>
+                              <b>Invoiced: </b> {{order.invoiceGenerate ? 'Yes' : 'No'}} <br>
+                              <b>Payment:</b> {{order.invStatus ? order.invStatus : 'NA'}}
                             </td>
                             <td>
                               <div class="dropdown dropright">
@@ -1549,7 +1552,9 @@
                             </td>
                             <td [routerLink]="order.url">
                               <span class="badge badge-dark p-1
-                                text-capitalize">{{ order.newStatus }}</span>
+                                text-capitalize">{{ order.newStatus }}</span> <br>
+                              <b>Invoiced: </b> {{order.invoiceGenerate ? 'Yes' : 'No'}} <br>
+                              <b>Payment:</b> {{order.invStatus ? order.invStatus : 'NA'}}
                             </td>
                             <td>
                               <div class="dropdown dropright">
@@ -1744,7 +1749,9 @@
                             </td>
                             <td [routerLink]="order.url">
                               <span class="badge badge-dark p-1
-                                text-capitalize">{{ order.newStatus }}</span>
+                                text-capitalize">{{ order.newStatus }}</span> <br>
+                              <b>Invoiced: </b> {{order.invoiceGenerate ? 'Yes' : 'No'}} <br>
+                              <b>Payment:</b> {{order.invStatus ? order.invStatus : 'NA'}}
                             </td>
                             <td>
                               <div class="dropdown dropright">
