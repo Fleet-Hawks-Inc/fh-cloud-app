@@ -66,7 +66,7 @@ const routes: Routes = [
   {
     path: "activity-list",
     component: ActivityListComponent,
-    data: { title: "Vehicle Activity List Reports" },
+    data: { title: "Vehicle Activity Reports List" },
   },
   {
     path: "province-miles",
