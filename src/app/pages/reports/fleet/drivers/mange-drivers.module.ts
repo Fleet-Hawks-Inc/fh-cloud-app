@@ -42,11 +42,15 @@ const routes: Routes = [
     data: { title: "Logs Report" },
   },
   { path: "trips", component: TripComponent, data: { title: "Trips Report" } },
-  { path: "driver-report/:drivIDs", component: DriverReportComponent },
+  {
+    path: "driver-report/:drivIDs",
+    component: DriverReportComponent,
+    data: { title: "Driver Detail Report" },
+  },
   {
     path: "driver-data",
     component: DriverDataComponent,
-    data: { title: "Driver Data Report" },
+    data: { title: "Driver Activity List Report" },
   },
 ];
 

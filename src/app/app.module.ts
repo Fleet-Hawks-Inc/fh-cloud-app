@@ -63,6 +63,9 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
@@ -115,7 +118,12 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     LoadingBarRouterModule,
     LoadingBarHttpClientModule,
     TableModule,
-    ButtonModule
+    ButtonModule,
+    MultiSelectModule,
+    TooltipModule,
+    AutoCompleteModule,
+    DropdownModule
+
 
 
 
