@@ -12,11 +12,11 @@
           <tbody>
             <tr>
               <td width="50%">
-                <h1 style=" font-size: 20px;margin: 0;color: #000000;letter-spacing: unset;" class="text-uppercase">
-                  Settlement#: {{ settlementData.setNo }}
+                <h1 style=" font-size: 20px;margin: 0;color: #000000;letter-spacing: unset;" class="text-capitalize">
+                  <b> Settlement#:</b> {{ settlementData.setNo }}
                 </h1>
-                <h1 style="font-size: 20px; margin: 0; color: #000000" class="text-uppercase">
-                  Company: {{ companyName }}
+                <h1 style="font-size: 20px; margin: 0; color: #000000" class="text-capitalize">
+                  <b>Company:</b> {{ companyName }}
                 </h1>
               </td>
               <td width="50%" align="right" valign="middle">
@@ -30,16 +30,16 @@
             <tr>
               <td valign="top">
                 <h2 style="font-size: 20px; margin-bottom: 10px; color: #000000">
-                  <span class="text-uppercase" *ngIf="
+                  <span class="text-capitalize" *ngIf="
                       settlementData.type == 'driver' ||
                       settlementData.type == 'carrier'
                     ">
                     {{ settlementData.type }}
                   </span>
-                  <span class="text-uppercase" *ngIf="settlementData.type == 'owner_operator'">
-                    owner operator
+                  <span class="text-capitalize" *ngIf="settlementData.type == 'owner_operator'">
+                    <b> owner operator</b>
                   </span>
-                  <span class="text-uppercase">
+                  <span class="text-capitalize">
                     : {{ entityName }}
                   </span>
 
@@ -96,6 +96,30 @@
                         ">
                         <p style="margin-bottom: 4px; color: #000000">
                           {{ settlementData.paymentInfo.pType }}
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="50%" bgcolor="#f3f3f3" style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        ">
+                        <p style="
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          ">
+                          Currency
+                        </p>
+                      </td>
+                      <td style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        ">
+                        <p style="margin-bottom: 4px; color: #000000">
+                          {{ settlementData.currency }}
                         </p>
                       </td>
                     </tr>
@@ -878,7 +902,8 @@
             </tr>
             <tr *ngIf="settledTrips.length > 0" class="text-right">
               <td colspan="9">
-                <p class="mt-2 mb-0  text-dark"><b> Total Miles: {{totalMiles | number: "1.2-2"}}</b></p>
+                <p class="mt-2 mb-0  text-dark"><b> Total Payment: {{settlementData.paymentTotal | number: "1.2-2"}}</b>
+                </p>
               </td>
             </tr>
             <tr *ngIf="fuelEnteries.length > 0">
@@ -994,7 +1019,7 @@
                   <tr *ngFor="let data of fuelEnteries">
                     <td valign="top" style="
                         border-right: 1px solid #adadad;
-                        padding-left: 10px;
+                        padding: 0 10px;
                       ">
                       <p style="margin-bottom: 4px; color: #000000">
                         {{ data.fuelDate | date: "yyyy/MM/dd" }}
@@ -1002,7 +1027,7 @@
                     </td>
                     <td style="
                         border-right: 1px solid #adadad;
-                        padding-left: 10px;
+                        padding: 0 10px;
                       ">
                       <p style="margin-bottom: 4px; color: #000000">
                         {{ data.cityName }}, {{ data.locationCountry }}
@@ -1010,7 +1035,7 @@
                     </td>
                     <td valign="top" style="
                         border-right: 1px solid #adadad;
-                        padding-left: 10px;
+                        padding: 0 10px;
                       ">
                       <p style="margin-bottom: 4px; color: #000000">
                         {{ data.fuelCardNumber }}
@@ -1018,7 +1043,7 @@
                     </td>
                     <td valign="top" style="
                         border-right: 1px solid #adadad;
-                        padding-left: 10px;
+                        padding: 0 10px;
                       ">
                       <p style="margin-bottom: 4px; color: #000000">
                         {{ data.type }}
@@ -1029,7 +1054,7 @@
                     </td>
                     <td valign="top" style="
                         border-right: 1px solid #adadad;
-                        padding-left: 10px;
+                        padding: 0 10px;
                       ">
                       <p style="margin-bottom: 4px; color: #000000">
                         {{ data.quantity }} {{ data.unitOfMeasure }}
@@ -1037,7 +1062,7 @@
                     </td>
                     <td valign="top" style="
                         border-right: 1px solid #adadad;
-                        padding-left: 10px;
+                        padding: 0 10px;
                       ">
                       <p style="margin-bottom: 4px; color: #000000">
                         {{ data.subTotal | number: "1.2-2" }}
@@ -1052,7 +1077,7 @@
                     </td>
                     <td valign="top" style="
                         border-right: 1px solid #adadad;
-                        padding-left: 10px;
+                        padding: 0 10px;
                       ">
                       <p style="margin-bottom: 4px; color: #000000">
                         {{ data.action }}
@@ -1061,6 +1086,15 @@
                   </tr>
                   <tbody></tbody>
                 </table>
+              </td>
+            </tr>
+            <tr *ngIf="fuelEnteries.length > 0" class="text-right">
+              <td colspan="2">
+                <p class="mt-2 mb-0  text-dark"><b> Fuel Addition: {{ settlementData.fuelAdd | number: "1.2-2" }} <br>
+                    Fuel Deduction: {{ settlementData.fuelDed | number: "1.2-2" }}</b>
+                </p>
+
+
               </td>
             </tr>
             <tr *ngIf="settlementData.addition.length > 0">
@@ -1171,7 +1205,9 @@
             </tr>
             <tr *ngIf="settlementData.addition.length > 0">
               <td colspan="2">
-                <p class="m-0 text-right text-dark mt-2"><b>Sub-Total: {{settlementData.additionTotal}}</b></p>
+                <p class="m-0 text-right text-dark mt-2"><b>Sub-Total: {{settlementData.additionTotal | number:
+                    "1.2-2"}}</b>
+                </p>
               </td>
             </tr>
 
@@ -1281,179 +1317,11 @@
             </tr>
             <tr *ngIf="settlementData.deduction.length > 0">
               <td colspan="2">
-                <p class="m-0 text-right text-dark mt-2"><b>Sub-Total: {{settlementData.deductionTotal}}</b></p>
+                <p class="m-0 text-right text-dark mt-2"><b>Sub-Total: {{settlementData.deductionTotal | number:
+                    "1.2-2"}}</b></p>
               </td>
             </tr>
-            <tr>
-              <td colspan="2">&nbsp;</td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <table width="100%" align="center" cellpadding="0" cellspacing="0" bordercolor="#adadad" style="
-                    border: 1px solid #adadad;
-                    border-right: 0px solid #adadad;
-                    font-size: 13px;
-                    margin-bottom: 10px;
-                  ">
-                  <tbody>
-                    <tr>
-                      <td width="30%" bgcolor="#f3f3f3" style="
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        ">
-                        <p style="
-                            font-weight: 600;
-                            margin-bottom: 4px;
-                            color: #000000;
-                          ">
-                          Total Payment
-                        </p>
-                      </td>
-                      <td width="20%" style="
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                          margin-bottom: 4px;
-                          color: #000000;
-                        ">
-                        {{ settlementData.paymentTotal | number: "1.2-2" }}
-                      </td>
-                      <td width="30%" bgcolor="#f3f3f3" style="
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        ">
-                        <p style="
-                            font-weight: 600;
-                            margin-bottom: 4px;
-                            color: #000000;
-                          ">
-                          Payment Currency
-                        </p>
-                      </td>
-                      <td width="20%" style="
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                          margin-bottom: 4px;
-                          color: #000000;
-                        ">
-                        {{ settlementData.currency }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <h2 style="
-                    font-size: 16px;
-                    margin-bottom: 8px;
-                    color: #000000;
-                    margin-top: 8px;
-                  ">
-                  Other Charges
-                </h2>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <table width="100%" align="center" cellpadding="0" cellspacing="0" bordercolor="#adadad" style="
-                    border: 1px solid #adadad;
-                    border-right: 0px solid #adadad;
-                    font-size: 13px;
-                    margin-bottom: 0px;
-                  ">
-                  <tbody>
-                    <tr>
-                      <td width="20%" bgcolor="#f3f3f3" style="
-                          border-right: 1px solid #adadad;
-                          border-bottom: 1px solid #adadad;
-                          padding-left: 10px;
-                        ">
-                        <p style="
-                            font-weight: 600;
-                            margin-bottom: 4px;
-                            color: #000000;
-                          ">
-                          Add
-                        </p>
-                      </td>
-                      <td width="12%" style="
-                          border-right: 1px solid #adadad;
-                          border-bottom: 1px solid #adadad;
-                          padding-left: 10px;
-                        ">
-                        <p style="margin-bottom: 4px; color: #000000">
-                          {{ settlementData.additionTotal | number: "1.2-2" }}
-                        </p>
-                      </td>
-                      <td width="20%" bgcolor="#f3f3f3" style="
-                          border-right: 1px solid #adadad;
-                          border-bottom: 1px solid #adadad;
-                          padding-left: 10px;
-                        ">
-                        <p style="
-                            font-weight: 600;
-                            margin-bottom: 4px;
-                            color: #000000;
-                          ">
-                          Deduct
-                        </p>
-                      </td>
-                      <td width="20%" style="
-                          border-right: 1px solid #adadad;
-                          border-bottom: 1px solid #adadad;
-                          padding-left: 10px;
-                          color: #000000;
-                        ">
-                        {{ settlementData.deductionTotal | number: "1.2-2" }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td bgcolor="#f3f3f3" style="
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        ">
-                        <p style="
-                            font-weight: 600;
-                            margin-bottom: 4px;
-                            color: #000000;
-                          ">
-                          Fuel Addition
-                        </p>
-                      </td>
-                      <td style="
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        ">
-                        <p style="margin-bottom: 4px; color: #000000">
-                          {{ settlementData.fuelAdd | number: "1.2-2" }}
-                        </p>
-                      </td>
-                      <td bgcolor="#f3f3f3" style="
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        ">
-                        <p style="
-                            font-weight: 600;
-                            margin-bottom: 4px;
-                            color: #000000;
-                          ">
-                          Fuel Deduction
-                        </p>
-                      </td>
-                      <td style="
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                          margin-bottom: 4px;
-                          color: #000000;
-                        ">
-                        {{ settlementData.fuelDed | number: "1.2-2" }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
+
             <tr>
               <td colspan="2">&nbsp;</td>
             </tr>
