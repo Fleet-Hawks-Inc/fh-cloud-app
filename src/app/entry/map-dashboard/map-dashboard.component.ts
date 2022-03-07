@@ -37,10 +37,20 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   public searchResults: any;
   driverData: any;
   // Google Maps
-  zoom = 3;
+  mapOptions: google.maps.MapOptions = {
+    center: { lat: 48.48248695279594, lng: -99.0688673798094 },
+    zoomControl: true,
+    mapTypeControl: true,
+    streetViewControl: false,
+    fullscreenControl: true,
+    zoom: 5,
+    mapId: '620eb1a41a9e36d4'
+
+  }
   lat = -104.618896;
   lng = 50.44521;
-  center = { lat: 48.48248695279594, lng: -99.0688673798094 };
+
+
   driverMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/driver-marker.png' };
   assetMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/asset-marker.png' };
   vehicleMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/vehicle-marker.png' };
@@ -211,5 +221,11 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void { }
 
+  async refresh() {
+
+    await this.getCurrentAssetLocation();
+    await this.getVehicleLocationByDashCam();
+
+  }
 
 }
