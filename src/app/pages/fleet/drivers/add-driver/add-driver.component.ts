@@ -158,27 +158,8 @@ export class AddDriverComponent
       fastExpiry: null,
       csa: false,
     },
-    paymentDetails: {
-      paymentType: null,
-      loadedMiles: "",
-      loadedMilesTeam: "",
-      loadedMilesUnit: "",
-      loadedMilesTeamUnit: "",
-      emptyMiles: "",
-      emptyMilesTeam: "",
-      emptyMilesUnit: "",
-      emptyMilesTeamUnit: "",
-      loadPayPercentage: "",
-      loadPayPercentageOf: "",
-      rate: "",
-      rateUnit: null,
-      waitingPay: "",
-      waitingPayUnit: null,
-      waitingHourAfter: "",
-      deliveryRate: "",
-      deliveryRateUnit: null,
-      payPeriod: null,
-    },
+    paymentDetails:[],
+    payPeriod: null,
     SIN: "",
     CDL_Number: "",
     licenceDetails: {
@@ -210,6 +191,18 @@ export class AddDriverComponent
       phone: "",
     },
   };
+  paymentDetails: {
+    paymentType: null,
+    loadedMiles: "",
+    loadedMilesTeam: "",
+    loadedMilesUnit: "",
+    loadedMilesTeamUnit: "",
+    emptyMiles: "",
+    emptyMilesTeam: "",
+    emptyMilesUnit: "",
+    emptyMilesTeamUnit: "",
+    default:true,
+  }
   public searchTerm = new Subject<string>();
   public searchResults: any;
   localAbsDocs = [];
@@ -881,9 +874,13 @@ export class AddDriverComponent
       this.hasError = false;
       this.hasSuccess = false;
       this.hideErrors();
+      if(this.paymentDetails.paymentType){
+        this.driverData.paymentDetails.push(this.paymentDetails)
+      }
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
       this.driverData[`deletedUploads`] = this.deletedUploads;
+      console.log(this.driverData)
       for (let d = 0; d < this.driverData.documentDetails.length; d++) {
         const element = this.driverData.documentDetails[d];
         delete element.docStates;
@@ -948,48 +945,48 @@ export class AddDriverComponent
       formData.append("data", JSON.stringify(this.driverData));
 
       this.submitDisabled = true;
-      try {
-        this.apiService.postData("drivers", formData, true).subscribe({
-          complete: () => { },
-          error: (err: any) => {
-            from(err.error)
-              .pipe(
-                map((val: any) => {
-                  // val.message = val.message.replace(/".*"/, 'This Field');
-                  this.errors[val.context.key] = val.message;
-                  this.spinner.hide();
-                })
-              )
-              .subscribe({
-                complete: () => {
-                  this.throwErrors();
-                  this.hasError = true;
-                  this.submitDisabled = false;
-                },
-                error: () => {
-                  this.submitDisabled = false;
-                },
-                next: () => { },
-              });
-          },
-          next: (res) => {
-            // this.response = res;
-            // this.hasSuccess = true;
-            this.dashboardUtilityService.refreshDrivers = true;
-            this.submitDisabled = false;
-            this.toastr.success("Driver added successfully");
-            this.isSubmitted = true;
-            this.modalServiceOwn.triggerRedirect.next(true);
-            this.takeUntil$.next();
-            this.takeUntil$.complete();
-            this.spinner.hide();
-            this.router.navigateByUrl(`/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`);            
-          },
-        });
-      } catch (error) {
-        this.submitDisabled = false;
-        return "error found";
-      }
+      // try {
+      //   this.apiService.postData("drivers", formData, true).subscribe({
+      //     complete: () => { },
+      //     error: (err: any) => {
+      //       from(err.error)
+      //         .pipe(
+      //           map((val: any) => {
+      //             // val.message = val.message.replace(/".*"/, 'This Field');
+      //             this.errors[val.context.key] = val.message;
+      //             this.spinner.hide();
+      //           })
+      //         )
+      //         .subscribe({
+      //           complete: () => {
+      //             this.throwErrors();
+      //             this.hasError = true;
+      //             this.submitDisabled = false;
+      //           },
+      //           error: () => {
+      //             this.submitDisabled = false;
+      //           },
+      //           next: () => { },
+      //         });
+      //     },
+      //     next: (res) => {
+      //       // this.response = res;
+      //       // this.hasSuccess = true;
+      //       this.dashboardUtilityService.refreshDrivers = true;
+      //       this.submitDisabled = false;
+      //       this.toastr.success("Driver added successfully");
+      //       this.isSubmitted = true;
+      //       this.modalServiceOwn.triggerRedirect.next(true);
+      //       this.takeUntil$.next();
+      //       this.takeUntil$.complete();
+      //       this.spinner.hide();
+      //       this.router.navigateByUrl(`/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`);            
+      //     },
+      //   });
+      // } catch (error) {
+      //   this.submitDisabled = false;
+      //   return "error found";
+      // }
     } else {
       this.errorAbstract = true;
       this.toastr.error("Abstract history document is required.");
@@ -1249,44 +1246,26 @@ export class AddDriverComponent
     this.driverData.crossBorderDetails.fastExpiry =
       result.crossBorderDetails.fastExpiry;
     this.driverData.crossBorderDetails.csa = result.crossBorderDetails.csa;
-    this.driverData.paymentDetails.paymentType =
+     this.paymentDetails.paymentType =
       result.paymentDetails.paymentType;
-    this.driverData.paymentDetails.loadedMiles =
+    this.paymentDetails.loadedMiles =
       result.paymentDetails.loadedMiles;
-    this.driverData.paymentDetails.loadedMilesUnit =
+    this.paymentDetails.loadedMilesUnit =
       result.paymentDetails.loadedMilesUnit;
-    this.driverData.paymentDetails.loadedMilesTeam =
+    this.paymentDetails.loadedMilesTeam =
       result.paymentDetails.loadedMilesTeam;
-    this.driverData.paymentDetails.loadedMilesTeamUnit =
+    this.paymentDetails.loadedMilesTeamUnit =
       result.paymentDetails.loadedMilesTeamUnit;
-    this.driverData.paymentDetails.emptyMiles =
+    this.paymentDetails.emptyMiles =
       result.paymentDetails.emptyMiles;
-    this.driverData.paymentDetails.emptyMilesUnit =
+    this.paymentDetails.emptyMilesUnit =
       result.paymentDetails.emptyMilesUnit;
-    this.driverData.paymentDetails.emptyMilesTeam =
+    this.paymentDetails.emptyMilesTeam =
       result.paymentDetails.emptyMilesTeam;
-    this.driverData.paymentDetails.emptyMilesTeamUnit =
+    this.paymentDetails.emptyMilesTeamUnit =
       result.paymentDetails.emptyMilesTeamUnit;
-    this.driverData.paymentDetails.loadPayPercentage =
-      result.paymentDetails.loadPayPercentage;
-    this.driverData.paymentDetails.loadPayPercentageOf =
-      result.paymentDetails.loadPayPercentageOf;
-    this.driverData.paymentDetails.rate = result.paymentDetails.rate;
-    this.driverData.paymentDetails.rateUnit = result.paymentDetails.rateUnit;
-    this.driverData.paymentDetails.waitingPay =
-      result.paymentDetails.waitingPay;
-    this.driverData.paymentDetails.waitingPayUnit =
-      result.paymentDetails.waitingPayUnit;
-    this.driverData.paymentDetails.waitingHourAfter =
-      result.paymentDetails.waitingHourAfter;
-
-    this.driverData.paymentDetails.deliveryRate =
-      result.paymentDetails.deliveryRate;
-    this.driverData.paymentDetails.deliveryRateUnit =
-      result.paymentDetails.deliveryRateUnit;
-
     this.driverData.SIN = result.SIN;
-    this.driverData.paymentDetails.payPeriod = result.paymentDetails.payPeriod;
+    this.driverData.payPeriod = result.payPeriod;
     this.driverData.CDL_Number = result.CDL_Number;
     this.driverData.licenceDetails.issuedCountry =
       result.licenceDetails.issuedCountry;
@@ -1333,6 +1312,9 @@ export class AddDriverComponent
       this.hasError = false;
       this.hasSuccess = false;
       this.hideErrors();
+      if(this.paymentDetails.paymentType){
+        this.driverData.paymentDetails.push(this.paymentDetails)
+      }
       this.driverData[`driverID`] = this.driverID;
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
@@ -1446,69 +1428,13 @@ export class AddDriverComponent
   }
 
   changePaymentModeForm(value) {
-    if (value === "Pay Per Mile") {
-      delete this.driverData.paymentDetails.loadPayPercentage;
-      delete this.driverData.paymentDetails.loadPayPercentageOf;
-      delete this.driverData.paymentDetails.rate;
-      delete this.driverData.paymentDetails.rateUnit;
-      delete this.driverData.paymentDetails.waitingPay;
-      delete this.driverData.paymentDetails.waitingPayUnit;
-      delete this.driverData.paymentDetails.waitingHourAfter;
-      delete this.driverData.paymentDetails.deliveryRate;
-      delete this.driverData.paymentDetails.deliveryRateUnit;
-    } else if (value === "Percentage") {
-      delete this.driverData.paymentDetails.loadedMiles;
-      delete this.driverData.paymentDetails.loadedMilesUnit;
-      delete this.driverData.paymentDetails.loadedMilesTeam;
-      delete this.driverData.paymentDetails.loadedMilesTeamUnit;
-      delete this.driverData.paymentDetails.emptyMiles;
-      delete this.driverData.paymentDetails.emptyMilesTeam;
-      delete this.driverData.paymentDetails.emptyMilesUnit;
-      delete this.driverData.paymentDetails.emptyMilesTeamUnit;
-      delete this.driverData.paymentDetails.deliveryRate;
-      delete this.driverData.paymentDetails.deliveryRateUnit;
-      delete this.driverData.paymentDetails.rate;
-      delete this.driverData.paymentDetails.rateUnit;
-      delete this.driverData.paymentDetails.waitingPay;
-      delete this.driverData.paymentDetails.waitingPayUnit;
-      delete this.driverData.paymentDetails.waitingHourAfter;
-    } else if (value === "Pay Per Hour") {
-      delete this.driverData.paymentDetails.deliveryRate;
-      delete this.driverData.paymentDetails.deliveryRateUnit;
-      delete this.driverData.paymentDetails.loadPayPercentage;
-      delete this.driverData.paymentDetails.loadPayPercentageOf;
-      delete this.driverData.paymentDetails.loadedMiles;
-      delete this.driverData.paymentDetails.loadedMilesUnit;
-      delete this.driverData.paymentDetails.loadedMilesTeam;
-      delete this.driverData.paymentDetails.loadedMilesTeamUnit;
-      delete this.driverData.paymentDetails.emptyMiles;
-      delete this.driverData.paymentDetails.emptyMilesTeam;
-      delete this.driverData.paymentDetails.emptyMilesUnit;
-      delete this.driverData.paymentDetails.emptyMilesTeamUnit;
-    } else {
-      delete this.driverData.paymentDetails.loadedMiles;
-      delete this.driverData.paymentDetails.loadedMilesUnit;
-      delete this.driverData.paymentDetails.loadedMilesTeam;
-      delete this.driverData.paymentDetails.loadedMilesTeamUnit;
-      delete this.driverData.paymentDetails.emptyMiles;
-      delete this.driverData.paymentDetails.emptyMilesTeam;
-      delete this.driverData.paymentDetails.emptyMilesUnit;
-      delete this.driverData.paymentDetails.emptyMilesTeamUnit;
-      delete this.driverData.paymentDetails.rate;
-      delete this.driverData.paymentDetails.rateUnit;
-      delete this.driverData.paymentDetails.waitingPay;
-      delete this.driverData.paymentDetails.waitingPayUnit;
-      delete this.driverData.paymentDetails.waitingHourAfter;
-    }
+   
   }
   changeCurrency(currency: any) {
-    this.driverData.paymentDetails.rateUnit = currency;
-    this.driverData.paymentDetails.deliveryRateUnit = currency;
-    this.driverData.paymentDetails.loadedMilesUnit = currency;
-    this.driverData.paymentDetails.emptyMilesUnit = currency;
-    this.driverData.paymentDetails.loadedMilesTeamUnit = currency;
-    this.driverData.paymentDetails.emptyMilesTeamUnit = currency;
-    this.driverData.paymentDetails.waitingPayUnit = currency;
+    this.paymentDetails.loadedMilesUnit = currency;
+    this.paymentDetails.emptyMilesUnit = currency;
+    this.paymentDetails.loadedMilesTeamUnit = currency;
+    this.paymentDetails.emptyMilesTeamUnit = currency;
   }
   concatArray(path) {
     this.concatArrayKeys = "";
