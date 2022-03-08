@@ -41,7 +41,7 @@ const routes: Routes = [
       import("./new-documents/new-documents.module").then(
         (m) => m.DocumentsModule
       ),
-    data: { title: "Documents" },
+    data: { title: "Documents List" },
   },
   {
     path: "quotes",

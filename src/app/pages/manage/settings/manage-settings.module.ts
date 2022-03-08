@@ -30,12 +30,16 @@ const routes: Routes = [
   },
   { path: "general", component: GeneralSettingsComponent },
   { path: "myaccount", component: MyAccountComponent },
-  { path: "driver", component: DriverSettingComponent },
+  {
+    path: "driver",
+    component: DriverSettingComponent,
+    data: { title: "Deleted Drivers" },
+  },
   { path: "import", component: ImportDriversComponent },
   {
     path: "vehicle",
     component: VehicleSettingComponent,
-    data: { title: "Vehicle Settings" },
+    data: { title: "Deleted Vehicle" },
   },
   {
     path: "asset",

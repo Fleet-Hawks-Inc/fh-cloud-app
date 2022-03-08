@@ -10,8 +10,7 @@
                                 orderData.status }}</span></h4>
                     </div>
                     <div class="col-md-8 col-lg-8 text-right pr-1">
-                        <a routerLink="/accounts/purchases/bills/list"
-                            class="btn
+                        <a routerLink="/accounts/purchases/bills/list" class="btn
                             btn-sm btn-default"><i class="fas fa-list"></i> All
                             bills</a>
                     </div>
@@ -87,8 +86,7 @@
                                                 table-responsive-lg">
                                                 <tbody>
                                                     <tr>
-                                                        <td
-                                                            class="back-color-gray
+                                                        <td class="back-color-gray
                                                             font-weight-bold">Bill
                                                             Type</td>
                                                         <td>{{
@@ -97,8 +95,7 @@
                                                             '-' }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td
-                                                            class="back-color-gray
+                                                        <td class="back-color-gray
                                                             font-weight-bold">Reference#</td>
                                                         <td>{{ orderData.refNo ?
                                                             orderData.refNo :
@@ -106,8 +103,7 @@
                                                     </tr>
 
                                                     <tr>
-                                                        <td
-                                                            class="back-color-gray
+                                                        <td class="back-color-gray
                                                             font-weight-bold">Purchase
                                                             Order#</td>
                                                         <td>{{
@@ -118,8 +114,7 @@
                                                             '-' }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td
-                                                            class="back-color-gray
+                                                        <td class="back-color-gray
                                                             font-weight-bold">Remarks</td>
                                                         <td>{{
                                                             orderData.charges.remarks
@@ -128,8 +123,7 @@
                                                             : '-' }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td
-                                                            class="back-color-gray
+                                                        <td class="back-color-gray
                                                             font-weight-bold">Total
                                                             Amount</td>
                                                         <td>{{
@@ -152,8 +146,7 @@
                                                 table-responsive-lg">
                                                 <tbody>
                                                     <tr>
-                                                        <td width="40%"
-                                                            class="back-color-gray
+                                                        <td width="40%" class="back-color-gray
                                                             font-weight-bold">Due
                                                             Date</td>
                                                         <td width="60%">{{
@@ -161,18 +154,15 @@
                                                             date:"yyyy/MM/dd" }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td
-                                                            class="back-color-gray
+                                                        <td class="back-color-gray
                                                             font-weight-bold">Payment
                                                             terms</td>
-                                                        <td
-                                                            class="text-capitalize">{{
+                                                        <td class="text-capitalize">{{
                                                             orderData.paymentTerm
                                                             }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td width="40%"
-                                                            class="back-color-gray
+                                                        <td width="40%" class="back-color-gray
                                                             font-weight-bold">Taxes</td>
                                                         <td width="60%">
                                                             <span *ngFor="let
@@ -189,8 +179,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td width="40%"
-                                                            class="back-color-gray
+                                                        <td width="40%" class="back-color-gray
                                                             font-weight-bold">Additions</td>
                                                         <td width="60%">
                                                             <span *ngFor="let
@@ -211,8 +200,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td
-                                                            class="back-color-gray
+                                                        <td class="back-color-gray
                                                             font-weight-bold">Deductions</td>
                                                         <td width="60%">
                                                             <span *ngFor="let
@@ -251,10 +239,8 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr
-                                                        *ngIf="orderData.detail.length
-                                                        === 0"
-                                                        class="text-center">
+                                                    <tr *ngIf="orderData.detail.length
+                                                        === 0" class="text-center">
                                                         <td colspan="4">{{noRecord}}</td>
                                                     </tr>
                                                     <tr *ngFor="let data of
@@ -295,10 +281,8 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr
-                                                        *ngIf="orderData.creditData.length
-                                                        === 0"
-                                                        class="text-center">
+                                                    <tr *ngIf="orderData.creditData.length
+                                                        === 0" class="text-center">
                                                         <td colspan="4">{{noRecord}}</td>
                                                     </tr>
                                                     <tr *ngFor="let data of
@@ -327,15 +311,13 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-6"
-                                    *ngIf="documentSlides.length> 0">
+                                <div class="col-lg-6" *ngIf="documentSlides.length> 0">
                                     <div class="row mb-2">
                                         <div class="col-lg-12">
                                             <div class="vehicle-common-box p-3">
                                                 <div class="row">
                                                     <div class="col-lg-6">
-                                                        <label
-                                                            class="control-label
+                                                        <label class="control-label
                                                             font-weight-bold
                                                             text-3">Document(s)</label>
                                                     </div>
@@ -344,25 +326,17 @@
                                                 <div class="row" *ngFor="let
                                                     item of documentSlides;let
                                                     d= index">
-                                                    <div class="col-lg-9"><a
-                                                            href="javascript:;"
-                                                            data-toggle="modal"
-                                                            data-target="#viewDocModal"
-                                                            (click)="setPDFSrc(item.path)">
+                                                    <div class="col-lg-9"><a href="javascript:;" data-toggle="modal"
+                                                            data-target="#viewDocModal" (click)="setPDFSrc(item.path)">
                                                             {{item.name}}</a>
                                                     </div>
                                                     <div class="col-lg-3
                                                         text-right">
                                                         <i class="far fa-file
-                                                            text-dak mr-1"
-                                                            (click)="setPDFSrc(item.path)"
-                                                            data-toggle="modal"
-                                                            data-target="#viewDocModal"></i>
-                                                        <a href="javascript:;"
-                                                            (click)="deleteDocument(item.bucketName,
-                                                            d)"
-                                                            class="modal-with-form"><i
-                                                                class="fas
+                                                            text-dak mr-1" (click)="setPDFSrc(item.path)"
+                                                            data-toggle="modal" data-target="#viewDocModal"></i>
+                                                        <a href="javascript:;" (click)="deleteDocument(item.bucketName,
+                                                            d)" class="modal-with-form"><i class="fas
                                                                 fa-times
                                                                 text-danger"></i></a>
                                                     </div>
@@ -384,47 +358,40 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr
-                                                        *ngIf="orderData.transactionLog.length
-                                                        === 0"
-                                                        class="text-center">
+                                                    <tr *ngIf="orderData.transactionLog.length
+                                                        === 0" class="text-center">
                                                         <td colspan="3">
                                                             {{ noRecord }}
                                                         </td>
                                                     </tr>
                                                     <tr *ngFor="let data of
                                                         orderData.transactionLog">
-                                                        <td
-                                                            class="text-capitalize">{{
-                                                            accountsObjects[data.accountID]
+                                                        <td class="text-capitalize">{{
+                                                            data.actName
                                                             }}</td>
                                                         <td>
-                                                            <span
-                                                                *ngIf="data.trxType
+                                                            <span *ngIf="data.trxType
                                                                 ===
                                                                 'debit'">
                                                                 {{ data.amount |
                                                                 number :
                                                                 '1.2-2' }}
                                                             </span>
-                                                            <span
-                                                                *ngIf="data.trxType
+                                                            <span *ngIf="data.trxType
                                                                 !=
                                                                 'debit'">
                                                                 0.00
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <span
-                                                                *ngIf="data.trxType
+                                                            <span *ngIf="data.trxType
                                                                 ===
                                                                 'credit'">
                                                                 {{ data.amount |
                                                                 number :
                                                                 '1.2-2' }}
                                                             </span>
-                                                            <span
-                                                                *ngIf="data.trxType
+                                                            <span *ngIf="data.trxType
                                                                 !=
                                                                 'credit'">
                                                                 0.00
@@ -446,15 +413,13 @@
 </section>
 
 <!-- VIEW DOCUMENT MODAL -->
-<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog"
-    aria-labelledby="viewDocModalLabel"
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
-                <button type="button" class="close" data-dismiss="modal"
-                    aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -462,8 +427,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-12">
                         <div>
-                            <iframe [src]='pdfSrc' title="" width="100%"
-                                height="400px"> </iframe>
+                            <iframe [src]='pdfSrc' title="" width="100%" height="400px"> </iframe>
 
                         </div>
                     </div>
@@ -471,8 +435,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                    data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
