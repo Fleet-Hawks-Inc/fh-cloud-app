@@ -300,6 +300,7 @@
                         </td>
                       </tr>
 
+
                       <tr *ngFor="let ded of paymentData.advData">
                         <td class="pl-3 pt-2">
                           <p class="text-3 text-dark mb-2 text-capitalize">
@@ -315,7 +316,11 @@
                           <p class="text-3 text-dark mb-2">-</p>
                         </td>
                       </tr>
-
+                      <tr class="text-dark">
+                        <td class="pl-3 pr-3 pt-2 text-right pb-2"><b>Sub-Total</b></td>
+                        <td class="pr-3 pt-2 text-right pb-2"> {{subTotal}}</td>
+                        <td class="pr-3 pt-2 text-right">&nbsp;</td>
+                      </tr>
                       <tr *ngIf="
                             addCharges.length > 0 ||
                             dedCharges.length > 0 ||
@@ -703,6 +708,14 @@
                           </p>
                         </td>
                       </tr>
+                      <tr>
+                        <td colspan="2" class="pl-3 pt-2">
+                          <p class="text-3 text-dark mb-2"><strong>Total</strong></p>
+                        </td>
+                        <td class="pl-3 pt-2">
+                          <p class="text-3 text-dark mb-2"><strong>{{data.totalMiles | number: "1.2-2"}}</strong></p>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </td>
@@ -775,55 +788,19 @@
                   </table>
                 </td>
               </tr>
+              <tr *ngIf="fueldata.length > 0" class="text-right">
+                <td colspan="2">
+                  <p class="mt-2 mb-0  text-dark"><b> Fuel Addition: {{ settlements[0].fuelAdd | number: "1.2-2" }} <br>
+                      Fuel Deduction: {{ settlements[0].fuelDed | number: "1.2-2" }}</b>
+                  </p>
+
+
+                </td>
+              </tr>
               <tr *ngIf="fueldata.length > 0">
                 <td colspan="2">&nbsp;</td>
               </tr>
-              <tr *ngIf="fueldata.length > 0">
-                <td colspan="2">
-                  <table width="100%" border="0" bordercolor="#adadad" cellspacing="0" cellpadding="0">
-                    <tbody>
-                      <tr>
-                        <td width="75%" bgcolor="#f3f3f3" class="pr-3 pt-2 text-right">
-                          <p class="text-3 font-weight-bold text-dark mb-2">
-                            Fuel Addition
-                          </p>
-                        </td>
-                        <td width="7%" bgcolor="#f3f3f3" class="pr-3 pt-2 text-right">
-                          <!-- <p class="text-4 text-dark mb-2">0.00</p> -->
-                        </td>
-                        <td width="8%" bgcolor="#f3f3f3" class="
-                              pr-3
-                              pt-2
-                              text-dark
-                              font-weight-bold
-                              text-right
-                            ">
-                          {{ fuelAddTotal | number: "1.2-2" }}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td width="75%" bgcolor="#f3f3f3" class="pr-3 pt-2 text-right">
-                          <p class="text-3 font-weight-bold text-dark mb-2">
-                            Fuel Deduction
-                          </p>
-                        </td>
-                        <td width="7%" bgcolor="#f3f3f3" class="pr-3 pt-2 text-right">
-                          <!-- <p class="text-4 text-dark mb-2">0.00</p> -->
-                        </td>
-                        <td width="8%" bgcolor="#f3f3f3" class="
-                              pr-3
-                              pt-2
-                              text-dark
-                              font-weight-bold
-                              text-right
-                            ">
-                          {{ fuelDedTotal | number: "1.2-2" }}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
+
               <tr valign="top" *ngIf="paymentData.advData.length > 0">
                 <td colspan="2">
                   <h2 class="text-dark font-weight-bold text-4">

@@ -227,25 +227,29 @@
                         <thead>
                           <tr>
                             <th>Account Name</th>
+                            <th>Type</th>
                             <th>Debit</th>
                             <th>Credit</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>Inventory Acoount</td>
-                            <td>0.00</td>
-                            <td>1000 CAD</td>
+                          <tr *ngFor="let dt of transactionLog">
+
+                            <td>
+                              {{ dt.actName | titlecase}}
+                            </td>
+                            <td>{{dt.type | titlecase}}</td>
+                            <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount | number :
+                                '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
+                            <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount | number :
+                                '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
                           </tr>
                           <tr>
-                            <td>Accounts Receivable</td>
-                            <td>1000 CAD</td>
-                            <td>0.00</td>
-                          </tr>
-                          <tr>
-                            <td>Total</td>
-                            <td>1000 CAD</td>
-                            <td>1000 CAD</td>
+                            <td colspan="2" class="font-weight-bold text-right">Total</td>
+                            <td>{{finalTotal | number : '1.2-2'}}
+                              {{currency}}</td>
+                            <td>{{finalTotal | number : '1.2-2'}}
+                              {{currency}}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -265,7 +269,7 @@
 <ng-template #previewSaleInvoice let-modal>
   <div class="modal-content">
 
-    <div class="modal-body text-dark" id="print_invoice">
+    <div class="modal-body text-dark text-capitalize" id="print_invoice">
       <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
         <tbody>
           <tr>
@@ -354,8 +358,8 @@
                       <p class="m-0 text-dark">{{ salePerson ? salePerson : '-' }} </p>
                     </td>
                     <td style="border-right:1px solid #adadad; padding:10px;">
-                      <p class="m-0 text-dark">{{
-                        status ? status : '-'
+                      <p class="m-0 badge badge-dark p-1 text-uppercase">{{
+                        payStatus ? payStatus : '-'
                         }}</p>
                     </td>
                     <td style="text-align: right; padding:10px;">

@@ -25,7 +25,7 @@ const routes: Routes = [
   {
     path: "foverview",
     component: FoverviewComponent,
-    data: { title: "Fuel Overview Report" },
+    data: { title: "Fuel Report" },
   },
   {
     path: "summary",
