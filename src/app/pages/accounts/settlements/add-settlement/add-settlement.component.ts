@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import * as _ from "lodash";
 import * as moment from "moment";
@@ -8,6 +8,7 @@ import { map } from "rxjs/operators";
 import { AccountService, ApiService, ListService } from "../../../../services";
 import Constants from "../../../fleet/constants";
 import { Location } from "@angular/common";
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 @Component({
   selector: "app-add-settlement",
@@ -15,8 +16,34 @@ declare var $: any;
   styleUrls: ["./add-settlement.component.css"],
 })
 export class AddSettlementComponent implements OnInit {
+  @ViewChild("paymentOptModal",{static:false}) paymentOptModal:TemplateRef<any>;
+
   tripMsg = Constants.NO_RECORDS_FOUND;
   noRecordMsg: string = Constants.NO_RECORDS_FOUND;
+  paymentOptions=["Pay Per Mile","Percentage","Pay Per Hour","Pay Per Delivery"]
+  paymentType=''
+  driverData={
+    paymentDetails:{
+      paymentType:null,
+      rate:null,
+      waitingPay:null,
+      waitingPayUnit:null,
+      waitingHourAfter:null,
+      deliveryRate:null,
+      deliveryRateUnit:null,
+      loadPayPercentage:null,
+      loadPayPercentageOf:null,
+      loadedMiles:null,
+      loadedMilesUnit:null,
+      emptyMiles:null,
+      emptyMilesUnit:null,
+      emptyMilesTeamUnit:null,
+      emptyMilesTeam:null,
+      loadedMilesTeam:null,
+      loadedMilesTeamUnit:null,
+      payPeriod:null,
+    }
+  }
   settlementData = {
     type: null,
     entityId: null,
@@ -171,7 +198,7 @@ export class AddSettlementComponent implements OnInit {
     private listService: ListService,
     private route: ActivatedRoute,
     private location: Location,
-    private router: Router,
+    private modalService: NgbModal,
     private toaster: ToastrService,
     private accountService: AccountService,
     private apiService: ApiService
@@ -192,6 +219,8 @@ export class AddSettlementComponent implements OnInit {
     // this.fetchExpenseCategories();
   }
 
+  changeCurrency(event){}
+  changePaymentModeForm(event){}
   fetchDrivers() {
     this.apiService
       .getData(`drivers/settlements/get/list`)
@@ -2516,5 +2545,13 @@ export class AddSettlementComponent implements OnInit {
   showPaymentPopup() {
     this.pendingInfo = false;
     $("#infoModal").modal("show");
+  }
+  openPaymentModal(){
+    console.log(" I am here")
+    let ngbModalOptions:NgbModalOptions={
+      keyboard:true,
+      windowClass:"preview"
+    };
+    this.modalService.open(this.paymentOptModal,ngbModalOptions)
   }
 }
