@@ -44,7 +44,13 @@
 
               "node_modules/primeicons/primeicons.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/css/theme.css",
+              "src/assets/css/skins/default.css",
+              "src/assets/css/custom.css",
+              "src/assets/css/custom1.css",
+              "src/assets/css/custom2.css",
+              "src/assets/css/login.css"
             ],
             "scripts": [
               "src/assets/vendor/jquery/jquery.js",
