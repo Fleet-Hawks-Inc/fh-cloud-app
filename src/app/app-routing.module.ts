@@ -111,6 +111,13 @@ const routes: Routes = [
     canActivate: [AuthService, CheckProfileServiceService],
   },
   {
+    path: "tracking",
+    loadChildren: () =>
+      import("./pages/tracking/tracking.module").then((m) => m.TrackingModule),
+    data: { preload: false, title: "Geo Location Tracking" },
+    canActivate: [AuthService, CheckProfileServiceService],
+  },
+  {
     path: "404",
     component: ErrorComponent,
   },
@@ -118,6 +125,7 @@ const routes: Routes = [
     path: "**",
     redirectTo: "/404",
   },
+
 ];
 @NgModule({
   imports: [
@@ -139,4 +147,4 @@ const routes: Routes = [
     NgbModal,
   ],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
