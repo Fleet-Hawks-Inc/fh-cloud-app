@@ -71,6 +71,16 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    
+     this.route.queryParams.subscribe(params => {
+        console.log('date',params); // { order: "popular" }
+
+       // this.order = params.order;
+
+      //  console.log(this.order); // popular
+      }
+    );
+    
     this.actID = this.route.snapshot.params[`actID`];
     if (this.actID) {
       await this.fetchAccount();
