@@ -1486,6 +1486,9 @@ validatePopUp()
 
   emptyEntry() {
     this.newArr = [];
+    this.similarVal = {
+    cName: '',
+    }
     this.unitData = {
       cName: '',
       dba: '',
