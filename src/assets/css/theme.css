@@ -294,10 +294,6 @@ a:active {
 /* Layout Boxed - larger or equal min width */
 @media only screen and (min-width: 1200px) {
   /* Layout Boxed - Body Tag */
-  html.boxed body {
-    background: url(../img/patterns/gray_jean.png) repeat;
-    padding-bottom: 5px;
-  }
 
   /* Layout Boxed - Main Wrapper */
   html.boxed .body {
@@ -8598,12 +8594,6 @@ html .card-dark .card-title {
   }
 }
 /* Carousel Areas */
-.carousel-areas {
-  background: transparent url(../img/patterns/stripes.png) repeat 0 0;
-  margin-bottom: -10px;
-  padding: 10px 10px 0 10px;
-  border-radius: 6px 6px 0 0;
-}
 
 .carousel-areas .owl-carousel {
   -webkit-box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
@@ -12192,17 +12182,6 @@ html[xmlns] .clearfix {
 }
 
 /* Arrows */
-.arrow {
-  background: transparent url(../img/arrows.png) no-repeat 0 0;
-  width: 47px;
-  height: 120px;
-  display: inline-block;
-  position: relative;
-}
-
-.arrow.arrow-light {
-  background-image: url(../img/arrows-dark.png);
-}
 
 .arrow.vtl {
   background-position: 0 0;
@@ -16123,9 +16102,6 @@ html.dark .inner-toolbar > ul > li {
 }
 
 /* Treeview */
-.jstree-default .jstree-checkbox {
-  background-image: url(../img/jstree.png) !important;
-}
 
 .jstree-default .jstree-icon {
   color: #333;
@@ -19981,11 +19957,6 @@ html.dark .search-content .search-results-list a:hover {
 }
 
 /* Lock Screen */
-.body-locked {
-  background: url(../img/patterns/noisy_net.png) repeat;
-  max-width: none;
-  min-height: 400px;
-}
 
 .body-locked.body-locked-inline {
   background: none;
@@ -20066,11 +20037,6 @@ html.dark .search-content .search-results-list a:hover {
   }
 }
 /* Lock Screen - Modal */
-.mfp-lock-screen.mfp-bg {
-  background: #000 url(../img/patterns/noisy_net.png) repeat;
-  opacity: 0.99;
-  z-index: 9998;
-}
 
 .mfp-lock-screen.mfp-wrap {
   background: none;

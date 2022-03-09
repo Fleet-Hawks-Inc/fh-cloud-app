@@ -61,6 +61,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
   accountsIntObjects = {};
   showModal = false;
   downloadDisabled = true;
+  downloadDisabledd = true;
 
   constructor(
     private listService: ListService,
@@ -85,7 +86,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
       .getData(`driver-payments/detail/${this.paymentID}`)
       .toPromise();
 
-
+     this.downloadDisabledd = false;
     this.downloadDisabled = false;
     this.paymentData = result[0];
     this.paymentData.isVendorPayment = result[0].data.isVendorPymt;
@@ -127,10 +128,10 @@ export class DriverPaymentsDetailComponent implements OnInit {
       data: this.paymentData,
     };
     this.listService.triggerDownloadPaymentPdf(obj);
-    this.downloadDisabled = true;
+    this.downloadDisabledd = true;
 
     setTimeout(() => {
-      this.downloadDisabled = false;
+      this.downloadDisabledd = false;
     }, 15000);
   }
 
@@ -160,6 +161,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
       vendorId: this.paymentData.vendorId,
       gstHstPer: this.paymentData.gstHstPer
     };
+    this.downloadDisabled = true;
     this.listService.openPaymentChequeModal(obj);
   }
 }
