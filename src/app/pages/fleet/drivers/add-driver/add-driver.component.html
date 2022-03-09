@@ -1467,11 +1467,11 @@
                             text-lg-right
                             pt-2
                           ">Default Payment Type <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <!-- <ng-select [(ngModel)]="paymentDetails.paymentType" name="paymentDetails.paymentType" placeholder="Select the payment type" id="paymentTypeForm" #paySlt="ngModel" required [ngClass]="{
+                                                <ng-select [(ngModel)]="driverData.paymentDetails.paymentType" name="paymentDetails.paymentType" placeholder="Select the payment type" id="paymentTypeForm" #paySlt="ngModel" required [ngClass]="{
                               error: driverF.submitted && paySlt.invalid
                             }">
                                                     <ng-option value="Pay Per Mile">Pay Per Mile</ng-option>
-                                                </ng-select> -->
+                                                </ng-select>
 
                                                 <div *ngIf="paySlt.invalid && driverF.submitted" class="text-danger">
                                                     <div *ngIf="paySlt.errors.required">
@@ -1678,7 +1678,7 @@
                                         </div> -->
                                         <div>
                                             <div class="row" id="payPerMileForm" *ngIf="
-                          paymentDetails.paymentType ==
+                          driverData.paymentDetails.paymentType ==
                           'Pay Per Mile'
                         " style="display: flex">
                                                 <div class="col-lg-3 pr-0">
@@ -1688,7 +1688,7 @@
                               text-lg-right
                               pt-2
                             ">Loaded Miles <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <input [(ngModel)]="paymentDetails.loadedMiles" name="paymentDetails.loadedMiles" type="text" class="form-control" #payM="ngModel" required [ngClass]="{
+                                                    <input [(ngModel)]="driverData.paymentDetails.loadedMiles" name="paymentDetails.loadedMiles" type="text" class="form-control" #payM="ngModel" required [ngClass]="{
                               error: driverF.submitted && payM.invalid
                             }" placeholder="eg. $0.5, $1, $2" />
                                                     <div *ngIf="payM.invalid && driverF.submitted" class="text-danger">
@@ -1709,7 +1709,7 @@
                               mt-1
                             "></label>
                                                     <ng-select class="mt-2" [(ngModel)]="
-                              paymentDetails.loadedMilesUnit
+                              driverData.paymentDetails.loadedMilesUnit
                             " name="paymentDetails.loadedMilesUnit" placeholder="Select Currency" (change)="changeCurrency($event)" #curr4="ngModel" required [ngClass]="{
                               error: driverF.submitted && curr4.invalid
                             }">
@@ -1730,7 +1730,7 @@
                               text-lg-right
                               pt-2
                             ">Empty Miles <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <input [(ngModel)]="paymentDetails.emptyMiles" name="paymentDetails.emptyMiles" type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #eMiles1="ngModel" required [ngClass]="{
+                                                    <input [(ngModel)]="driverData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles" type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #eMiles1="ngModel" required [ngClass]="{
                               error: driverF.submitted && eMiles1.invalid
                             }" />
                                                     <div *ngIf="eMiles1.invalid && driverF.submitted" class="text-danger">
@@ -1750,7 +1750,7 @@
                               pt-2
                               mt-1
                             "></label>
-                                                    <ng-select class="mt-2" [(ngModel)]="paymentDetails.emptyMilesUnit" name="paymentDetails.emptyMilesUnit" placeholder="Select Currency" (change)="changeCurrency($event)" #curr5="ngModel" required [ngClass]="{
+                                                    <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.emptyMilesUnit" name="paymentDetails.emptyMilesUnit" placeholder="Select Currency" (change)="changeCurrency($event)" #curr5="ngModel" required [ngClass]="{
                               error: driverF.submitted && curr5.invalid
                             }">
                                                         <ng-option value="CAD">CAD</ng-option>
@@ -1771,7 +1771,7 @@
                               pt-2
                             ">Loaded Miles (Team) <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <input [(ngModel)]="
-                              paymentDetails.loadedMilesTeam
+                              driverData.paymentDetails.loadedMilesTeam
                             " name="paymentDetails.loadedMilesTeam" type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #lMiles2="ngModel" required [ngClass]="{
                               error: driverF.submitted && lMiles2.invalid
                             }" />
@@ -1791,7 +1791,7 @@
                               mt-1
                             "></label>
                                                     <ng-select class="mt-2" [(ngModel)]="
-                              paymentDetails.loadedMilesTeamUnit
+                              driverData.paymentDetails.loadedMilesTeamUnit
                             " (change)="changeCurrency($event)" name="paymentDetails.loadedMilesTeamUnit" placeholder="Select Currency" #curr6="ngModel" required [ngClass]="{
                               error: driverF.submitted && curr6.invalid
                             }">
@@ -1813,7 +1813,7 @@
                               pt-2
                             ">Empty Miles (Team) <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <input [(ngModel)]="
-                              paymentDetails.emptyMilesTeam
+                              driverData.paymentDetails.emptyMilesTeam
                             " name="paymentDetails.emptyMilesTeam" type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #eMilesTeam="ngModel" required [ngClass]="{
                               error: driverF.submitted && eMilesTeam.invalid
                             }" />
@@ -1833,7 +1833,7 @@
                               mt-1
                             "></label>
                                                     <ng-select class="mt-2" [(ngModel)]="
-                              paymentDetails.emptyMilesTeamUnit
+                              driverData.paymentDetails.emptyMilesTeamUnit
                             " (change)="changeCurrency($event)" name="paymentDetails.emptyMilesTeamUnit" placeholder="Select Currency" #curr7="ngModel" required [ngClass]="{
                               error: driverF.submitted && curr7.invalid
                             }">

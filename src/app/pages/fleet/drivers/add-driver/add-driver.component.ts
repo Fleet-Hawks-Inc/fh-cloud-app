@@ -158,7 +158,19 @@ export class AddDriverComponent
       fastExpiry: null,
       csa: false,
     },
-    paymentDetails:[],
+    paymentOption:[],
+    paymentDetails: {
+      paymentType: null,
+      loadedMiles: "",
+      loadedMilesTeam: "",
+      loadedMilesUnit: "",
+      loadedMilesTeamUnit: "",
+      emptyMiles: "",
+      emptyMilesTeam: "",
+      emptyMilesUnit: "",
+      emptyMilesTeamUnit: "",
+      default:true,
+    },
     payPeriod: null,
     SIN: "",
     CDL_Number: "",
@@ -191,18 +203,7 @@ export class AddDriverComponent
       phone: "",
     },
   };
-  paymentDetails: {
-    paymentType: null,
-    loadedMiles: "",
-    loadedMilesTeam: "",
-    loadedMilesUnit: "",
-    loadedMilesTeamUnit: "",
-    emptyMiles: "",
-    emptyMilesTeam: "",
-    emptyMilesUnit: "",
-    emptyMilesTeamUnit: "",
-    default:true,
-  }
+  
   public searchTerm = new Subject<string>();
   public searchResults: any;
   localAbsDocs = [];
@@ -874,8 +875,9 @@ export class AddDriverComponent
       this.hasError = false;
       this.hasSuccess = false;
       this.hideErrors();
-      if(this.paymentDetails.paymentType){
-        this.driverData.paymentDetails.push(this.paymentDetails)
+      if(this.driverData.paymentDetails.paymentType){
+        this.driverData.paymentOption.push(this.driverData.paymentDetails)
+        delete this.driverData.paymentDetails
       }
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
@@ -1246,23 +1248,23 @@ export class AddDriverComponent
     this.driverData.crossBorderDetails.fastExpiry =
       result.crossBorderDetails.fastExpiry;
     this.driverData.crossBorderDetails.csa = result.crossBorderDetails.csa;
-     this.paymentDetails.paymentType =
+     this.driverData.paymentDetails.paymentType =
       result.paymentDetails.paymentType;
-    this.paymentDetails.loadedMiles =
+    this.driverData.paymentDetails.loadedMiles =
       result.paymentDetails.loadedMiles;
-    this.paymentDetails.loadedMilesUnit =
+    this.driverData.paymentDetails.loadedMilesUnit =
       result.paymentDetails.loadedMilesUnit;
-    this.paymentDetails.loadedMilesTeam =
+    this.driverData.paymentDetails.loadedMilesTeam =
       result.paymentDetails.loadedMilesTeam;
-    this.paymentDetails.loadedMilesTeamUnit =
+    this.driverData.paymentDetails.loadedMilesTeamUnit =
       result.paymentDetails.loadedMilesTeamUnit;
-    this.paymentDetails.emptyMiles =
+    this.driverData.paymentDetails.emptyMiles =
       result.paymentDetails.emptyMiles;
-    this.paymentDetails.emptyMilesUnit =
+    this.driverData.paymentDetails.emptyMilesUnit =
       result.paymentDetails.emptyMilesUnit;
-    this.paymentDetails.emptyMilesTeam =
+    this.driverData.paymentDetails.emptyMilesTeam =
       result.paymentDetails.emptyMilesTeam;
-    this.paymentDetails.emptyMilesTeamUnit =
+    this.driverData.paymentDetails.emptyMilesTeamUnit =
       result.paymentDetails.emptyMilesTeamUnit;
     this.driverData.SIN = result.SIN;
     this.driverData.payPeriod = result.payPeriod;
@@ -1312,8 +1314,8 @@ export class AddDriverComponent
       this.hasError = false;
       this.hasSuccess = false;
       this.hideErrors();
-      if(this.paymentDetails.paymentType){
-        this.driverData.paymentDetails.push(this.paymentDetails)
+      if(this.driverData.paymentDetails.paymentType){
+        this.driverData.paymentOption.push(this.driverData.paymentDetails)
       }
       this.driverData[`driverID`] = this.driverID;
       this.driverData.createdDate = this.driverData.createdDate;
@@ -1431,10 +1433,10 @@ export class AddDriverComponent
    
   }
   changeCurrency(currency: any) {
-    this.paymentDetails.loadedMilesUnit = currency;
-    this.paymentDetails.emptyMilesUnit = currency;
-    this.paymentDetails.loadedMilesTeamUnit = currency;
-    this.paymentDetails.emptyMilesTeamUnit = currency;
+    this.driverData.paymentDetails.loadedMilesUnit = currency;
+    this.driverData.paymentDetails.emptyMilesUnit = currency;
+    this.driverData.paymentDetails.loadedMilesTeamUnit = currency;
+    this.driverData.paymentDetails.emptyMilesTeamUnit = currency;
   }
   concatArray(path) {
     this.concatArrayKeys = "";
