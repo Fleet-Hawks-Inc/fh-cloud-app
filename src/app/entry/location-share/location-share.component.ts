@@ -121,7 +121,7 @@ export class LocationShareComponent implements OnInit {
       }
 
 
-    }, 60000);
+    }, 300000);
   }
 
   async validateAndGetLocation() {
