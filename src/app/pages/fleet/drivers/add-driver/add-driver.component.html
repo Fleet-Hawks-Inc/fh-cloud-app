@@ -1467,7 +1467,7 @@
                             text-lg-right
                             pt-2
                           ">Default Payment Type <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <ng-select [(ngModel)]="driverData.paymentDetails.paymentType" name="paymentDetails.paymentType" placeholder="Select the payment type" id="paymentTypeForm" #paySlt="ngModel" required [ngClass]="{
+                                                <ng-select [(ngModel)]="driverData.paymentDetails.paymentType" [disabled]="true" name="paymentDetails.paymentType" placeholder="Select the payment type" id="paymentTypeForm" #paySlt="ngModel" required [ngClass]="{
                               error: driverF.submitted && paySlt.invalid
                             }">
                                                     <ng-option value="Pay Per Mile">Pay Per Mile</ng-option>

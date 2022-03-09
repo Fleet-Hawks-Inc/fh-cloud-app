@@ -160,7 +160,7 @@ export class AddDriverComponent
     },
     paymentOption:[],
     paymentDetails: {
-      paymentType: null,
+      paymentType: "Pay Per Mile",
       loadedMiles: "",
       loadedMilesTeam: "",
       loadedMilesUnit: "",
@@ -882,7 +882,6 @@ export class AddDriverComponent
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
       this.driverData[`deletedUploads`] = this.deletedUploads;
-      console.log(this.driverData)
       for (let d = 0; d < this.driverData.documentDetails.length; d++) {
         const element = this.driverData.documentDetails[d];
         delete element.docStates;
@@ -947,48 +946,48 @@ export class AddDriverComponent
       formData.append("data", JSON.stringify(this.driverData));
 
       this.submitDisabled = true;
-      // try {
-      //   this.apiService.postData("drivers", formData, true).subscribe({
-      //     complete: () => { },
-      //     error: (err: any) => {
-      //       from(err.error)
-      //         .pipe(
-      //           map((val: any) => {
-      //             // val.message = val.message.replace(/".*"/, 'This Field');
-      //             this.errors[val.context.key] = val.message;
-      //             this.spinner.hide();
-      //           })
-      //         )
-      //         .subscribe({
-      //           complete: () => {
-      //             this.throwErrors();
-      //             this.hasError = true;
-      //             this.submitDisabled = false;
-      //           },
-      //           error: () => {
-      //             this.submitDisabled = false;
-      //           },
-      //           next: () => { },
-      //         });
-      //     },
-      //     next: (res) => {
-      //       // this.response = res;
-      //       // this.hasSuccess = true;
-      //       this.dashboardUtilityService.refreshDrivers = true;
-      //       this.submitDisabled = false;
-      //       this.toastr.success("Driver added successfully");
-      //       this.isSubmitted = true;
-      //       this.modalServiceOwn.triggerRedirect.next(true);
-      //       this.takeUntil$.next();
-      //       this.takeUntil$.complete();
-      //       this.spinner.hide();
-      //       this.router.navigateByUrl(`/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`);            
-      //     },
-      //   });
-      // } catch (error) {
-      //   this.submitDisabled = false;
-      //   return "error found";
-      // }
+      try {
+        this.apiService.postData("drivers", formData, true).subscribe({
+          complete: () => { },
+          error: (err: any) => {
+            from(err.error)
+              .pipe(
+                map((val: any) => {
+                  // val.message = val.message.replace(/".*"/, 'This Field');
+                  this.errors[val.context.key] = val.message;
+                  this.spinner.hide();
+                })
+              )
+              .subscribe({
+                complete: () => {
+                  this.throwErrors();
+                  this.hasError = true;
+                  this.submitDisabled = false;
+                },
+                error: () => {
+                  this.submitDisabled = false;
+                },
+                next: () => { },
+              });
+          },
+          next: (res) => {
+            // this.response = res;
+            // this.hasSuccess = true;
+            this.dashboardUtilityService.refreshDrivers = true;
+            this.submitDisabled = false;
+            this.toastr.success("Driver added successfully");
+            this.isSubmitted = true;
+            this.modalServiceOwn.triggerRedirect.next(true);
+            this.takeUntil$.next();
+            this.takeUntil$.complete();
+            this.spinner.hide();
+            this.router.navigateByUrl(`/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`);            
+          },
+        });
+      } catch (error) {
+        this.submitDisabled = false;
+        return "error found";
+      }
     } else {
       this.errorAbstract = true;
       this.toastr.error("Abstract history document is required.");
@@ -1248,24 +1247,29 @@ export class AddDriverComponent
     this.driverData.crossBorderDetails.fastExpiry =
       result.crossBorderDetails.fastExpiry;
     this.driverData.crossBorderDetails.csa = result.crossBorderDetails.csa;
-     this.driverData.paymentDetails.paymentType =
-      result.paymentDetails.paymentType;
+    result.paymentOption.forEach(element => {
+      if(element.default){
+      this.driverData.paymentDetails.paymentType =
+      element.paymentType;
     this.driverData.paymentDetails.loadedMiles =
-      result.paymentDetails.loadedMiles;
+      element.loadedMiles;
     this.driverData.paymentDetails.loadedMilesUnit =
-      result.paymentDetails.loadedMilesUnit;
+      element.loadedMilesUnit;
     this.driverData.paymentDetails.loadedMilesTeam =
-      result.paymentDetails.loadedMilesTeam;
+      element.loadedMilesTeam;
     this.driverData.paymentDetails.loadedMilesTeamUnit =
-      result.paymentDetails.loadedMilesTeamUnit;
+      element.loadedMilesTeamUnit;
     this.driverData.paymentDetails.emptyMiles =
-      result.paymentDetails.emptyMiles;
+      element.emptyMiles;
     this.driverData.paymentDetails.emptyMilesUnit =
-      result.paymentDetails.emptyMilesUnit;
+      element.emptyMilesUnit;
     this.driverData.paymentDetails.emptyMilesTeam =
-      result.paymentDetails.emptyMilesTeam;
+      element.emptyMilesTeam;
     this.driverData.paymentDetails.emptyMilesTeamUnit =
-      result.paymentDetails.emptyMilesTeamUnit;
+      element.emptyMilesTeamUnit;
+      }
+    });
+     
     this.driverData.SIN = result.SIN;
     this.driverData.payPeriod = result.payPeriod;
     this.driverData.CDL_Number = result.CDL_Number;
@@ -1316,6 +1320,7 @@ export class AddDriverComponent
       this.hideErrors();
       if(this.driverData.paymentDetails.paymentType){
         this.driverData.paymentOption.push(this.driverData.paymentDetails)
+        delete this.driverData.paymentDetails
       }
       this.driverData[`driverID`] = this.driverID;
       this.driverData.createdDate = this.driverData.createdDate;

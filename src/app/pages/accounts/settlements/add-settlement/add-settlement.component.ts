@@ -214,35 +214,38 @@ export class AddSettlementComponent implements OnInit {
         .getData(`drivers/${driverID}`)
         .subscribe((result: any) => {
           this.driverDetail = result.Items[0];
-          if (this.driverDetail.paymentDetails) {
-            let paymentInfo = this.driverDetail.paymentDetails;
-            this.settlementData.paymentInfo.pType = paymentInfo.paymentType;
+          if (this.driverDetail.paymentOption && this.driverDetail.paymentOption.length>0) {
+            this.driverDetail.paymentOption.forEach(element => {
+              if(element.default){
+            this.settlementData.paymentInfo.pType = element.paymentType;
             this.settlementData.paymentInfo.lMileTeam =
-              paymentInfo.loadedMilesTeam ? paymentInfo.loadedMilesTeam : 0;
+              element.loadedMilesTeam ? element.loadedMilesTeam : 0;
             this.settlementData.paymentInfo.eMileTeam =
-              paymentInfo.emptyMilesTeam ? paymentInfo.emptyMilesTeam : 0;
-            this.settlementData.paymentInfo.lMiles = paymentInfo.loadedMiles
-              ? paymentInfo.loadedMiles
+              element.emptyMilesTeam ? element.emptyMilesTeam : 0;
+            this.settlementData.paymentInfo.lMiles = element.loadedMiles
+              ? element.loadedMiles
               : 0;
-            this.settlementData.paymentInfo.eMiles = paymentInfo.emptyMiles
-              ? paymentInfo.emptyMiles
+            this.settlementData.paymentInfo.eMiles = element.emptyMiles
+              ? element.emptyMiles
               : 0;
-            this.settlementData.paymentInfo.pRate = paymentInfo.rate
-              ? paymentInfo.rate
+            this.settlementData.paymentInfo.pRate = element.rate
+              ? element.rate
               : 0;
-            this.settlementData.paymentInfo.dRate = paymentInfo.deliveryRate
-              ? paymentInfo.deliveryRate
+            this.settlementData.paymentInfo.dRate = element.deliveryRate
+              ? element.deliveryRate
               : 0;
 
             let payCurr = "CAD";
-            if (paymentInfo.paymentType === "Pay Per Mile") {
-              payCurr = paymentInfo.loadedMilesUnit;
-            } else if (paymentInfo.paymentType === "Pay Per Hour") {
-              payCurr = paymentInfo.rateUnit;
-            } else if (paymentInfo.paymentType === "Pay Per Delivery") {
-              payCurr = paymentInfo.deliveryRateUnit;
+            if (element.paymentType === "Pay Per Mile") {
+              payCurr = element.loadedMilesUnit;
+            } else if (element.paymentType === "Pay Per Hour") {
+              payCurr = element.rateUnit;
+            } else if (element.paymentType === "Pay Per Delivery") {
+              payCurr = element.deliveryRateUnit;
             }
             this.settlementData.currency = payCurr;
+          }
+          });
             if (
               this.settlementData.paymentInfo.lMiles === 0 &&
               this.settlementData.paymentInfo.eMiles === 0 &&
