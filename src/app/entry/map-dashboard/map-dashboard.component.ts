@@ -51,9 +51,9 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   lng = 50.44521;
 
 
-  driverMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/driver-marker.png' };
-  assetMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/asset-marker.png' };
-  vehicleMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/vehicle-marker.png' };
+  driverMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/driver-marker.png', animation: google.maps.Animation.DROP };
+  assetMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/asset-marker.png', animation: google.maps.Animation.DROP };
+  vehicleMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/vehicle-marker.png', animation: google.maps.Animation.DROP };
   driverPositions = [];
   assetPositions = [];
   vehicleDashPositions = [];
@@ -157,7 +157,8 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
               time: `${new Date(devices.timeModified).toLocaleDateString()} | ${new Date(devices.timeModified).toLocaleTimeString()}`,
               speed: devices.location.speed || 0.00,
               vehicleID: devices.vehicleID,
-              location: devices.location.label
+              location: devices.location.label,
+              deviceId: devices.deviceSerialNo.split('#')[1]
             }
           });
         }
@@ -173,15 +174,19 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   }
 
   openInfoWindow(marker: MapMarker, data, infoType: string) {
+    let content;
     switch (infoType) {
       case 'driver':
         this.infoDetail = this.prepareDriverInfoTemplate(data);
         break;
       case 'asset':
         this.infoDetail = this.prepareAssetInfoTemplate(data);
+
         break;
       case 'vehicle':
+
         this.infoDetail = this.prepareVehicleInfoTemplate(data);
+
         break;
       default:
         throw new Error('Unable to get Marker type info');
@@ -209,9 +214,9 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   }
 
   prepareVehicleInfoTemplate(data: any) {
-    return `<a href='#/fleet/vehicles/detail/${data.vehicleID}' target=_blank'><h4> Vehicle: ${data.vehicleIdentification}</h4></a>
-    Speed: ${parseFloat(data.speed).toFixed(2)} KM/H 
-    Time : ${data.time}<br/> <br/> 
+    return `<b><a href='#/fleet/vehicles/detail/${data.vehicleID}' target=_blank'>Vehicle: ${data.vehicleIdentification}</a></b><br/>
+   <span> Speed: ${parseFloat(data.speed).toFixed(2)} KM/H</span><br>
+    <a class='link' href='#/fleet/tracking/vehicle-dash-cam-tracker/${data.deviceId}?vehicle=${data.vehicleID}'" style='color:blue;font-size:9px'>Realtime view</a>
      `;
   }
 

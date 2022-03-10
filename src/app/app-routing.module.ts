@@ -110,13 +110,7 @@ const routes: Routes = [
     data: { title: "Reports" },
     canActivate: [AuthService, CheckProfileServiceService],
   },
-  {
-    path: "tracking",
-    loadChildren: () =>
-      import("./pages/tracking/tracking.module").then((m) => m.TrackingModule),
-    data: { preload: false, title: "Geo Location Tracking" },
-    canActivate: [AuthService, CheckProfileServiceService],
-  },
+
   {
     path: "404",
     component: ErrorComponent,

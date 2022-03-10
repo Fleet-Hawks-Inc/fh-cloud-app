@@ -14,9 +14,9 @@ const routes: Routes = [
     },
 
     {
-        path: "vehicle-dash-cam-tracker",
+        path: "vehicle-dash-cam-tracker/:deviceSerial",
         component: VehicleDashCamTrackerComponent,
-        data: { title: "Vehicle Tracking" },
+        data: { title: "Realtime Location" },
     },
 
 ];
