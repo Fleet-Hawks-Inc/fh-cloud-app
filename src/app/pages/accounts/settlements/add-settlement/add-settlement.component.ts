@@ -21,6 +21,28 @@ export class AddSettlementComponent implements OnInit {
   tripMsg = Constants.NO_RECORDS_FOUND;
   noRecordMsg: string = Constants.NO_RECORDS_FOUND;
   paymentOptions=["Pay Per Mile","Percentage","Pay Per Hour","Pay Per Delivery"]
+  payPerMile={
+    loadedMiles:null,
+    loadedMilesUnit:null,
+    emptyMiles:null,
+    emptyMilesTeam:null,
+    loadedMilesTeam:null
+    
+  }
+  payPerHour={
+    rate:null,
+    rateUnit:null,
+    waitingPay:null,
+    waitingHourAfter:null,
+  }
+  payPercentage={
+    loadPayPercentage:null,
+    loadPayPercentageOf:null,
+  }
+  payPerDelivery={
+    deliveryRate:null,
+    deliveryRateUnit:null,
+  }
   paymentType=''
   driverData={
     paymentDetails:{
@@ -220,7 +242,7 @@ export class AddSettlementComponent implements OnInit {
   }
 
   changeCurrency(event){}
-  changePaymentModeForm(event){}
+  changePaymentModeForm(){}
   fetchDrivers() {
     this.apiService
       .getData(`drivers/settlements/get/list`)
@@ -2547,7 +2569,6 @@ export class AddSettlementComponent implements OnInit {
     $("#infoModal").modal("show");
   }
   openPaymentModal(){
-    console.log(" I am here")
     let ngbModalOptions:NgbModalOptions={
       keyboard:true,
       windowClass:"preview"
