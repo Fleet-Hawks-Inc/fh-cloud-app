@@ -70,84 +70,84 @@
             <div class="row text-dark">
                 <div class="col pr-0">
                     <div class="card">
-                        <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                            [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
-                            <div class="card-body">
-                                <label class="
+                        <!-- <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                            [infiniteScrollThrottle]="5" (scrolled)="onScroll()"> -->
+                        <div class="card-body">
+                            <label class="
                             control-label
                             font-weight-bold font-weight-bold
                             text-lg-right text-dark text-4
                             pt-1
                           ">Trip Details</label>
-                                <section class="reports_div">
-                                    <table width="18%" class="row-border hover table table-bordered table-striped mb-0">
-                                        <col style="width:2%">
-                                        <col style="width:2%">
-                                        <col style="width:2%">
-                                        <col style="width:2%">
-                                        <col style="width:2%">
-                                        <col style="width:5%">
-                                        <col style="width:2%">
-                                        <col style="width:2%">
-                                        <thead>
-                                            <tr>
-                                                <th>Vehicle</th>
-                                                <th>Trip#</th>
-                                                <th>Order#</th>
-                                                <th>Type</th>
-                                                <th>Driver</th>
-                                                <th>Location</th>
-                                                <th>Date</th>
-                                                <th>Total Miles</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngIf="allData.length == 0" class="text-center">
-                                                <td colspan="15">{{dataMessage}}</td>
-                                            </tr>
-                                            <tr *ngFor="let item of allData">
-                                                <td>{{item.vehicle}}
-                                                </td>
-                                                <td>{{item.tripNo}}</td>
-                                                <td> {{item.orderName}}</td>
-                                                <td>{{item.orderType}}</td>
-                                                <!-- <td> <span *ngFor='let data of item.tripPlanning'>{{data.driverName}}
+                            <section class="reports_div">
+                                <table width="18%" class="row-border hover table table-bordered table-striped mb-0">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <col style="width:5%">
+                                    <col style="width:2%">
+                                    <col style="width:2%">
+                                    <thead>
+                                        <tr>
+                                            <th>Vehicle</th>
+                                            <th>Trip#</th>
+                                            <th>Order#</th>
+                                            <th>Type</th>
+                                            <th>Driver</th>
+                                            <th>Location</th>
+                                            <th>Date</th>
+                                            <th>Total Miles</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngIf="allData.length == 0" class="text-center">
+                                            <td colspan="15">{{dataMessage}}</td>
+                                        </tr>
+                                        <tr *ngFor="let item of allData">
+                                            <td>{{item.vehicle}}
+                                            </td>
+                                            <td>{{item.tripNo}}</td>
+                                            <td> {{item.orderName}}</td>
+                                            <td>{{item.orderType}}</td>
+                                            <!-- <td> <span *ngFor='let data of item.tripPlanning'>{{data.driverName}}
                                                     <br></span>
 
                                             </td> -->
-                                                <td>{{item.driverName}}</td>
-                                                <td>
-                                                    <span *ngFor="let data of item.tripPlanning">
-                                                        <b>
-                                                            {{data.type}}:
-                                                        </b>
-                                                        {{ data.location}} <br>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span *ngFor="let data of item.tripPlanning">
-                                                        <b>
-                                                            {{data.type}}:
-                                                        </b>
-                                                        {{ data.date}} <br>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    {{ item.miles | number : '1.2-2'}}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </section>
-                            </div>
+                                            <td>{{item.driverName}}</td>
+                                            <td>
+                                                <span *ngFor="let data of item.tripPlanning">
+                                                    <b>
+                                                        {{data.type}}:
+                                                    </b>
+                                                    {{ data.location}} <br>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span *ngFor="let data of item.tripPlanning">
+                                                    <b>
+                                                        {{data.type}}:
+                                                    </b>
+                                                    {{ data.date}} <br>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {{ item.miles | number : '1.2-2'}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </section>
                         </div>
-                        <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
-                            <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll() ">Load
-                                More..</button>
-                        </div>
-
-
                     </div>
+                    <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
+                        <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll() ">Load
+                            More..</button>
+                    </div>
+
+
+                    <!-- </div> -->
                 </div>
             </div>
             <div class="row text-dark">
@@ -396,6 +396,7 @@
                                 </table>
                             </section>
 
+                            <!-- </div> -->
                             <!-- </div> -->
                         </div>
                         <!-- key  {{lastExpPay}} && {{expensePay.length}} -->

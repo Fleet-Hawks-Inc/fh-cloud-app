@@ -34,26 +34,26 @@ export class ExpenseComponent implements OnInit {
   exportData = [];
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   public vehicleId;
-  driverList = []
-  fuelList = []
-  allVehicles = []
+  // driverList = []
+  // fuelList = []
+  // allVehicles = []
   lastEvaluatedKey = ''
-  unitName: string;
+  // unitName: string;
   fuel = []
   public unitID;
-  assetUnitID = null;
-  lastTimeCreated = ''
+  // assetUnitID = null;
+  // lastTimeCreated = ''
   //service log data
-  logs = []
-  issuesObject = []
-  vehicleID = null;
-  taskID = null;
-  assetID = null;
-  vehiclesObject = []
-  tasks = []
+  // logs = []
+  // issuesObject = []
+  // vehicleID = null;
+  // taskID = null;
+  // assetID = null;
+  // vehiclesObject = []
+  // tasks = []
   // payment
-  settlements = []
-  contacts = []
+  // settlements = []
+  // contacts = []
   payments = [];
   expensePay = []
   filter = {
@@ -65,9 +65,9 @@ export class ExpenseComponent implements OnInit {
   serviceLogData = []
   payment = []
   driver: any = []
-  pay: any = []
-  entityId: any
-  lastDrvP = ''
+  // pay: any = []
+  // entityId: any
+  // lastDrvP = ''
   lastExpPay = ''
   // vehicleList = []
   totalExpense = 0
@@ -79,7 +79,7 @@ export class ExpenseComponent implements OnInit {
     this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
     this.vehicleId = this.route.snapshot.params[`vehicleId`];
     // this.fetchTrpByVehicle();
-    this.fetchVehicleName();
+    // this.fetchVehicleName();
     // this.fetchFuelByVehicle();
     // this.fetchSlogByVehicle();
     this.fetchExpensePayment()
@@ -88,14 +88,14 @@ export class ExpenseComponent implements OnInit {
 
 
   async fetchDriverPayment() {
-    if (this.lastDrvP !== 'end') {
+    // if (this.lastDrvP !== 'end') {
       const result: any = await this.accountService.getData(`driver-payments/get/driver/payment?drivers=${encodeURIComponent(JSON.stringify(this.driver))}`)
         .toPromise();
       this.payments = result;
       if (result.length === 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND
       }
-    }
+    // }
   }
   fetchExpensePayment() {
     if (this.lastExpPay !== 'end') {
@@ -111,7 +111,7 @@ export class ExpenseComponent implements OnInit {
         if (result.data.length > 0) {
           if (result.nextPage !== 'end') {
             this.lastExpPay = encodeURIComponent(result.nextPage.sk);
-            this.expDate = encodeURIComponent(result.nextPage.txnDate);
+            this.expDate = encodeURIComponent(result.nextPage.transDate);
           }
           else {
             this.lastExpPay = 'end'
@@ -221,7 +221,7 @@ export class ExpenseComponent implements OnInit {
         this.lastExpPay = ''
         this.allData = [];
         this.fuel = [];
-        this.fuelList = [];
+        // this.fuelList = [];
         this.serviceLogData = [];
         this.payments = [];
         this.expensePay = [];
