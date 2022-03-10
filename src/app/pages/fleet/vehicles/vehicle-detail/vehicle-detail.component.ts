@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../services';
-import { ActivatedRoute, Router } from '@angular/router';
-declare var $: any;
-import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import Constants from '../../constants';
-import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { email, ReactiveFormConfig, RxFormBuilder, RxwebValidators } from '@rxweb/reactive-form-validators';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { ReactiveFormConfig, RxFormBuilder, RxwebValidators } from '@rxweb/reactive-form-validators';
+import { ToastrService } from 'ngx-toastr';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+import { environment } from '../../../../../environments/environment';
+import { ApiService } from '../../../../services';
+import Constants from '../../constants';
+declare var $: any;
 
 
 
@@ -231,24 +231,8 @@ export class VehicleDetailComponent implements OnInit {
         autoplay: true,
         autoplaySpeed: 5000,
     };
-    deviceInfo = {
-        deviceType: '',
-        deviceId: '',
-        deviceSrNo: '',
-        email: ''
-    }
-    userFormGroup: FormGroup;
-    selectedDuration: string;
 
-    durations = [
-        { duration: '1d', name: '1 day' },
-        { duration: '3d', name: '3 days' },
-        { duration: '7d', name: '1 week' },
-        { duration: '15d', name: '15 days' },
-        { duration: '30d', name: '1 month' },
-        { duration: '3m', name: '3 months' },
-        { duration: '6m', name: '6 months' },
-    ];
+
 
     contactsObjects: any = {};
     vehicleTypeObects: any = {};
@@ -283,10 +267,7 @@ export class VehicleDetailComponent implements OnInit {
             }
         })
 
-        this.userFormGroup = this.formBuilder.group({
-            duration: ['', RxwebValidators.required()],
-            email: ['', [RxwebValidators.email(), RxwebValidators.required()]],
-        });
+
         this.vehicleID = this.route.snapshot.params['vehicleID'];
         this.getVehicle();
         this.fetchIssues();
@@ -393,17 +374,7 @@ export class VehicleDetailComponent implements OnInit {
             .subscribe(async (vehicleResult: any) => {
                 vehicleResult = vehicleResult.Items[0];
 
-                // Check if DashCam is added to enable Share Live location button
-                if (vehicleResult.deviceInfo && vehicleResult.deviceInfo.length > 0) {
-                    for (const device of vehicleResult.deviceInfo) {
-                        if (device.deviceType === "DashCam") {
-                            this.deviceInfo.deviceId = device.deviceId;
-                            this.deviceInfo.deviceSrNo = device.deviceSrNo;
-                            this.deviceInfo.deviceType = device.deviceType;
 
-                        }
-                    }
-                }
 
                 this.ownerOperatorName = vehicleResult.ownerOperatorID;
                 if (vehicleResult.inspectionFormID != '' && vehicleResult.inspectionFormID != undefined) {
@@ -701,38 +672,13 @@ export class VehicleDetailComponent implements OnInit {
         })
     }
 
-    async shareLocation(shareModal: any) {
-        this.modalService.open(shareModal, { ariaLabelledBy: 'modal-dash-cam', size: 'sm', }).result.then((result) => {
-        }, (reason) => {
-        });
-    }
-    locationLink: string = '';
-    shareLocationLink() {
-        const data = {
-            "deviceSerialNo": this.deviceInfo.deviceSrNo.split('#')[1],
-            "vehicleID": this.vehicleID,
-            "vehicleName": this.vehicleIdentification,
-            "duration": this.selectedDuration,
-            "email": this.deviceInfo.email
-        }
-        this.apiService.postData('location/share/vehicle', data, false).subscribe((resultData: any) => {
 
-            if (resultData) {
-                this.locationLink = resultData.locationPageURL;
 
-                this.modalService.dismissAll();
-                this.toastr.info('Location shared successfully.')
-            }
-
-        })
-
-    }
-    
     fetchGroups() {
-       if(this.groupId !==''){
-        this.apiService.getData(`groups/get/list?type=vehicles&groupId=${this.groupId}`).subscribe((result: any) => {
-            this.groupsObjects = result;
-        });
-       }
+        if (this.groupId !== '') {
+            this.apiService.getData(`groups/get/list?type=vehicles&groupId=${this.groupId}`).subscribe((result: any) => {
+                this.groupsObjects = result;
+            });
+        }
     }
 }

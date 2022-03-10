@@ -214,8 +214,8 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   }
 
   prepareVehicleInfoTemplate(data: any) {
-    return `<b><a href='#/fleet/vehicles/detail/${data.vehicleID}' target=_blank'>Vehicle: ${data.vehicleIdentification}</a></b><br/>
-   <span> Speed: ${parseFloat(data.speed).toFixed(2)} KM/H</span><br>
+    return `<b><a href='#/fleet/vehicles/detail/${data.vehicleID}' target=_blank'>Vehicle: ${data.vehicleIdentification}</a></b><br/><br>
+   <span> Speed: ${parseFloat(data.speed).toFixed(2)} KM/H</span><br><br>
     <a class='link' href='#/fleet/tracking/vehicle-dash-cam-tracker/${data.deviceId}?vehicle=${data.vehicleID}'" style='color:blue;font-size:9px'>Realtime view</a>
      `;
   }
