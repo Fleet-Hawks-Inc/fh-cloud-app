@@ -10,13 +10,11 @@
                     </div>
 
                     <div class="col-md-10 col-lg-10 text-right pr-1">
-                        <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal"
-                            data-target="#driverPasswordModal" href="javascript:;">Change Password</a>
-                        <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal"
-                            data-target="#driverOtherDetailsModal" href="javascript:;">Driver Detailed Information</a>
+                        <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal" data-target="#driverPasswordModal" href="javascript:;">Change Password</a>
+                        <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal" data-target="#driverOtherDetailsModal" href="javascript:;">Driver Detailed Information</a>
                         <a routerLink="/fleet/drivers/edit/{{ driverID }}" class="btn btn-default btn-sm mr-2"><i
                                 class="fas fa-pencil-alt"></i> Edit Driver</a>
-                        <a routerLink="/fleet/drivers/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i>
+                        <a routerLink="/fleet/drivers/list/{{sessionId}}" class="btn btn-sm btn-default"><i class="fas fa-list"></i>
                             Drivers List</a>
                     </div>
                 </div>
@@ -254,8 +252,7 @@
                                                 </h2>
                                             </div>
                                         </div>
-                                        <div class="timeline timeline-simple changelog"
-                                            style="max-height: 497px; overflow-x: auto; width: 100%">
+                                        <div class="timeline timeline-simple changelog" style="max-height: 497px; overflow-x: auto; width: 100%">
                                             <div class="tm-body text-dark" *ngIf="driverLogs.length > 0">
                                                 <ol class="tm-items">
                                                     <li *ngFor="let data of driverLogs">
@@ -265,10 +262,7 @@
                                                                 {{ data.createdTime }}</span>
                                                             <ul class="list-unstyled">
                                                                 <li>
-                                                                    {{ data.userFirstName | titlecase }}
-                                                                    {{ data.userLastName | titlecase }}
-                                                                    {{ data.eventParams.message }}
-                                                                    {{ data.eventParams.type }}
+                                                                    {{ data.userFirstName | titlecase }} {{ data.userLastName | titlecase }} {{ data.eventParams.message }} {{ data.eventParams.type }}
                                                                     <b class="text-success">{{
                                                                         data.firstName}} {{data.lastName}}</b>
                                                                 </li>
@@ -293,8 +287,7 @@
     </div>
 </section>
 
-<div class="modal fade" id="driverOtherDetailsModal" tabindex="-1" role="dialog"
-    aria-labelledby="driverOtherDetailsModal" aria-hidden="true">
+<div class="modal fade" id="driverOtherDetailsModal" tabindex="-1" role="dialog" aria-labelledby="driverOtherDetailsModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 1024px">
         <div class="modal-content">
             <div class="modal-header">
@@ -310,8 +303,7 @@
                         Basic Details
                     </div>
                     <div class="col-lg-6 text-right mb-2">
-                        <button type="button" data-toggle="modal" data-target="#driverProfileModal"
-                            class="btn btn-sm btn-success">
+                        <button type="button" data-toggle="modal" data-target="#driverProfileModal" class="btn btn-sm btn-success">
                             <i class="fas fa-eye text-light"></i> View Photo
                         </button>
                     </div>
@@ -394,8 +386,7 @@
                             <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="corporationType === 'company'">
                                 {{ contactsObject[vendor] }}
                             </div>
-                            <div class="col-lg-6 p-2 bor_half text-capitalize"
-                                *ngIf="corporationType === 'corporation'">
+                            <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="corporationType === 'corporation'">
                                 {{ corporation }}
                             </div>
                         </div>
@@ -501,13 +492,11 @@
                                     <hr class="solid mt-2" />
                                     <div class="row mb-1" *ngFor="let item of absDocs; let d = index">
                                         <div class="col-lg-9">
-                                            <a href="{{ item.path }}"  data-toggle="modal" data-target="#viewDocModal"
-                                                (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
+                                            <a href="{{ item.path }}" data-toggle="modal" data-target="#viewDocModal" (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
                                         </div>
                                         <div class="col-lg-3 text-right">
-                                            <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)"
-                                                data-toggle="modal" data-target="#viewDocModal"></i>
-                                                
+                                            <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal" data-target="#viewDocModal"></i>
+
                                             <!-- <a href="javascript:;" (click)="delete('abs',item.name, d,nullVar)" class="modal-with-form">
                         <i class="fas fa-times text-danger"></i></a> -->
                                         </div>
@@ -568,7 +557,8 @@
                                 Group:
                             </div>
                             <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                {{ group ? groupsObjects[group] : "-" }}
+                                <!--{{ group ? groupsObjects[group] : "-" }}-->
+                                {{ groupId ? groupsObjects[0].groupName : "-" }}
                             </div>
                         </div>
                         <div class="row m-0" *ngIf="driverType == 'employee'">
@@ -596,9 +586,7 @@
                                 Termination Date:
                             </div>
                             <div class="col-lg-6 p-2 bor_half">
-                                {{
-                                terminationDate ? (terminationDate | date: "yyyy/MM/dd") : "-"
-                                }}
+                                {{ terminationDate ? (terminationDate | date: "yyyy/MM/dd") : "-" }}
                             </div>
                         </div>
                         <div class="row m-0" *ngIf="driverType != 'employee'">
@@ -640,11 +628,7 @@
                                 Assigned Vehicle:
                             </div>
                             <div class="col-lg-6 p-2 bor_half">
-                                {{
-                                vehicleList[assignedVehicle]
-                                ? vehicleList[assignedVehicle]
-                                : "-"
-                                }}
+                                {{ vehicleList[assignedVehicle] ? vehicleList[assignedVehicle] : "-" }}
                             </div>
                         </div>
                     </div>
@@ -672,8 +656,7 @@
               ">
                             Address:
                         </div>
-                        <div class="col-lg-6 p-2 bor_half text-capitalize"
-                            *ngIf="item.manual == undefined || item.manual == false">
+                        <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="item.manual == undefined || item.manual == false">
                             {{ item.userLocation }}
                         </div>
                         <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="item.manual">
@@ -762,8 +745,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-12" [style.width]="documents.length > 1 ? '50%' : '100%'"
-                        *ngFor="let item of documents; let i = index">
+                    <div class="col-lg-12" [style.width]="documents.length > 1 ? '50%' : '100%'" *ngFor="let item of documents; let i = index">
                         <div class="row m-0">
                             <div class="
                   col-lg-6
@@ -859,9 +841,7 @@
                                 Expiry Date:
                             </div>
                             <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                {{
-                                item.expiryDate ? (item.expiryDate | date: "yyyy/MM/dd") : "-"
-                                }}
+                                {{ item.expiryDate ? (item.expiryDate | date: "yyyy/MM/dd") : "-" }}
                             </div>
                         </div>
                         <div class="row m-0" *ngIf="assetsDocs[i]">
@@ -877,16 +857,11 @@
                                         <div class="col-lg-6" *ngFor="let doc of assetsDocs[i]; let d = index">
                                             <div class="row">
                                                 <div class="col-lg-9">
-                                                    <a href="{{doc.path}}" data-toggle="modal" data-dismiss="modal"
-                                                        data-target="#viewDocModal"
-                                                        (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
+                                                    <a href="{{doc.path}}" data-toggle="modal" data-dismiss="modal" data-target="#viewDocModal" (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
                                                 </div>
                                                 <div class="col-lg-3 text-right">
-                                                    <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)"
-                                                        data-dismiss="modal" data-toggle="modal"
-                                                        data-target="#viewDocModal"></i>
-                                                    <a href="javascript:;" (click)="delete('doc', doc.name, i, d)"
-                                                        class="modal-with-form"><i
+                                                    <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-dismiss="modal" data-toggle="modal" data-target="#viewDocModal"></i>
+                                                    <a href="javascript:;" (click)="delete('doc', doc.name, i, d)" class="modal-with-form"><i
                                                             class="fas fa-times text-danger"></i></a>
                                                 </div>
                                             </div>
@@ -1117,11 +1092,7 @@
                                             Medical Card Renewal:
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half">
-                                            {{
-                                            liceMedicalCardRenewal
-                                            ? (liceMedicalCardRenewal | date: "yyyy/MM/dd")
-                                            : "-"
-                                            }}
+                                            {{ liceMedicalCardRenewal ? (liceMedicalCardRenewal | date: "yyyy/MM/dd") : "-" }}
                                         </div>
                                     </div>
                                 </div>
@@ -1246,8 +1217,8 @@
                                             Rate:
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half">
-                                            {{ rate
-                                            }}<span *ngIf="rateUnit != undefined">{{
+                                            {{ rate }}
+                                            <span *ngIf="rateUnit != undefined">{{
                                                 rateUnit
                                                 }}</span>
                                         </div>
@@ -1263,8 +1234,8 @@
                                             Waiting period Pay ($):
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                            {{ waitingPay
-                                            }}<span *ngIf="waitingPayUnit != undefined">{{
+                                            {{ waitingPay }}
+                                            <span *ngIf="waitingPayUnit != undefined">{{
                                                 waitingPayUnit
                                                 }}</span>
                                         </div>
@@ -1294,8 +1265,8 @@
                                             Delivery Rate:
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half">
-                                            {{ deliveryRate
-                                            }}<span *ngIf="deliveryRateUnit != undefined">{{
+                                            {{ deliveryRate }}
+                                            <span *ngIf="deliveryRateUnit != undefined">{{
                                                 deliveryRateUnit
                                                 }}</span>
                                         </div>
@@ -1522,8 +1493,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="driverProfileModal" tabindex="-1" role="dialog" aria-labelledby="driverProfileModal"
-    aria-hidden="true">
+<div class="modal fade" id="driverProfileModal" tabindex="-1" role="dialog" aria-labelledby="driverProfileModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="width: 250px">
         <div class="modal-content">
             <div class="modal-header">
@@ -1543,8 +1513,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -1564,8 +1533,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal"
-                    data-target="#driverOtherDetailsModal">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-toggle="modal" data-target="#driverOtherDetailsModal">
                     Cancel
                 </button>
             </div>
@@ -1573,8 +1541,7 @@
     </div>
 </div>
 <!-- Change password modal -->
-<div class="modal fade" id="driverPasswordModal" tabindex="-1" role="dialog" aria-labelledby="driverPasswordModal"
-    aria-hidden="true">
+<div class="modal fade" id="driverPasswordModal" tabindex="-1" role="dialog" aria-labelledby="driverPasswordModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">
         <div class="modal-content">
             <div class="modal-header">
@@ -1584,21 +1551,15 @@
                 </button>
             </div>
             <div class="modal-body text-dark" style="max-height: 500px; overflow: scroll">
-                <form id="driverForm" class="form-horizontal form-bordered text-capitalize" name="driverForm"
-                    [mustMatch]="['password', 'confirmPassword']" (ngSubmit)="driverF.form.valid && onChangePassword()"
-                    novalidate #driverF="ngForm" ngNativeValidate>
+                <form id="driverForm" class="form-horizontal form-bordered text-capitalize" name="driverForm" [mustMatch]="['password', 'confirmPassword']" (ngSubmit)="driverF.form.valid && onChangePassword()" novalidate #driverF="ngForm" ngNativeValidate>
                     <div class="row">
                         <div class="col-lg-12">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Password
                                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                                <input id="pd" [(ngModel)]="driverPwdData.password" placeholder="eg.  $John@01"
-                                    (change)="onChangeHideErrors('password')" name="password" #pwd="ngModel" required
-                                    [ngClass]="{ error: driverF.submitted && pwd.invalid }"
-                                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"
-                                    [type]="fieldTextType ? 'text' : 'password'"
-                                    (input)="validatePassword($event.target.value)" class="form-control" />
+                                <input id="pd" [(ngModel)]="driverPwdData.password" placeholder="eg.  $John@01" (change)="onChangeHideErrors('password')" name="password" #pwd="ngModel" required [ngClass]="{ error: driverF.submitted && pwd.invalid }" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"
+                                    [type]="fieldTextType ? 'text' : 'password'" (input)="validatePassword($event.target.value)" class="form-control" />
                                 <div class="input-group-append">
                                     <span class="input-group-text eye">
                                         <i class="fa" [ngClass]="{
@@ -1622,8 +1583,7 @@
                                 ? 'fas fa-check'
                                 : 'fas fa-times'
                             ]">
-                                                    </i></span>
-                                                8 characters minimum
+                                                    </i></span> 8 characters minimum
                                             </p>
                                             <p class="text-dark pt-2 mb-0">
                                                 <span class="pr-1" [ngClass]="[
@@ -1634,8 +1594,7 @@
                                 ? 'fas fa-check'
                                 : 'fas fa-times'
                             ]">
-                                                    </i></span>
-                                                atleast 1 number
+                                                    </i></span> atleast 1 number
                                             </p>
                                         </div>
                                         <div class="col-lg-12">
@@ -1648,8 +1607,7 @@
                                 ? 'fas fa-check'
                                 : 'fas fa-times'
                             ]">
-                                                    </i></span>
-                                                atleast 1 uppercase
+                                                    </i></span> atleast 1 uppercase
                                             </p>
 
                                             <p class="text-dark pt-2 mb-0">
@@ -1661,8 +1619,7 @@
                                 ? 'fas fa-check'
                                 : 'fas fa-times'
                             ]">
-                                                    </i></span>
-                                                atleast 1 lowercase
+                                                    </i></span> atleast 1 lowercase
                                             </p>
                                         </div>
                                         <div class="col-lg-12">
@@ -1676,8 +1633,7 @@
                               passwordValidation.specialCharacters
                                 ? 'fas fa-check'
                                 : 'fas fa-times'
-                            ]"></i></span>
-                                                atleast 1 special character(!@#$%^&*.-)
+                            ]"></i></span> atleast 1 special character(!@#$%^&*.-)
                                             </p>
                                         </div>
                                     </div>
@@ -1689,11 +1645,8 @@
                                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                                <input id="cnf" [(ngModel)]="driverPwdData.confirmPassword" name="confirmPassword"
-                                    (change)="onChangeHideErrors('confirmPassword')" #cpwd="ngModel" required
-                                    [ngClass]="{ error: driverF.submitted && cpwd.invalid }"
-                                    [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password"
-                                    class="form-control" />
+                                <input id="cnf" [(ngModel)]="driverPwdData.confirmPassword" name="confirmPassword" (change)="onChangeHideErrors('confirmPassword')" #cpwd="ngModel" required [ngClass]="{ error: driverF.submitted && cpwd.invalid }" [type]="cpwdfieldTextType ? 'text' : 'password'"
+                                    placeholder="Confirm password" class="form-control" />
                                 <div class="input-group-append">
                                     <span class="input-group-text eye">
                                         <i class="fa" [ngClass]="{

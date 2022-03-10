@@ -342,18 +342,20 @@ export class AddSalesInvoiceComponent implements OnInit {
       Number(this.saleData.charges.cAmount)
 
     this.allTax();
-    this.saleData.total.finalTotal =
-      Number(this.saleData.total.subTotal) +
-      Number(this.saleData.total.taxes) - Number(this.saleData.total.customerCredit);
+
+    console.log('finalTotal', this.saleData.total)
+    let discount: number;
     if (this.saleData.charges.discountUnit != '' && this.saleData.charges.discountUnit != null) {
       if (this.saleData.charges.discountUnit === '%') {
-        this.saleData.total.discountAmount = (this.saleData.total.subTotal * this.saleData.charges.discount) / 100;
-        this.saleData.total.finalTotal -= this.saleData.total.discountAmount;
+        discount = (this.saleData.total.subTotal * this.saleData.charges.discount) / 100;
       } else {
-        this.saleData.total.discountAmount = this.saleData.charges.discount;
-        this.saleData.total.finalTotal = this.saleData.total.subTotal - this.saleData.total.discountAmount;
+        discount = this.saleData.charges.discount;
       }
     }
+    this.saleData.total.discountAmount = discount;
+    this.saleData.total.finalTotal =
+      Number(this.saleData.total.subTotal) +
+      Number(this.saleData.total.taxes) - Number(discount) - Number(this.saleData.total.customerCredit);
 
   }
 
@@ -576,8 +578,8 @@ export class AddSalesInvoiceComponent implements OnInit {
 
     this.saleData.charges = result.charges;
     this.saleData.remarks = result.remarks;
-    this.saleData.total = result.total;
 
+    console.log('this.saleData', this.saleData)
     await this.fetchAccounts();
     await this.getCustomerOrders(result.customerID);
     this.saleData.sOrderNo = result.sOrderNo;
@@ -590,7 +592,7 @@ export class AddSalesInvoiceComponent implements OnInit {
         }
       })
     })
-
+    this.saleData.total = result.total;
 
   }
 

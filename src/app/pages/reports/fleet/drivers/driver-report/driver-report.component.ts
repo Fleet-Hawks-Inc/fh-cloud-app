@@ -53,7 +53,7 @@ export class DriverReportComponent implements OnInit {
 
   fetchTrip() {
     if (this.lastEvaluatedKey !== 'end') {
-      this.apiService.getData(`trips/get/trip/data?driver=${this.drivIDs}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastEvaluatedKey}&date=${this.datee}`).subscribe((result: any) => {
+      this.apiService.getData(`common/trips/get/trip/data?driver=${this.drivIDs}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastEvaluatedKey}&date=${this.datee}`).subscribe((result: any) => {
         // this.data = result.Items
         this.data = this.data.concat(result.Items)
         for (let driv of this.data) {
@@ -127,10 +127,9 @@ export class DriverReportComponent implements OnInit {
         for (let i = 0; i < element.tripPlanning.length; i++) {
           const element2 = element.tripPlanning[i];
           type += element2.type
-          date += element2.date
           element2.location = element2.location.replace(/,/g, ' ');
           location += element2.type + ":" + element2.location
-          date += element2.type + ":" + element2.date
+          date += `"${element2.type} :-  ${element2.date}\n\"`
           if (i < element.tripPlanning.length - 1) {
             location += " & ";
           }

@@ -89,7 +89,7 @@ export class IncomeListComponent implements OnInit {
 
   deleteIncome(incomeID) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.accountService.getData(`income/delete/${incomeID}`)
+      this.accountService.deleteData(`income/delete/${incomeID}`)
       .subscribe((result: any) => {
         if (result !== undefined) {
           this.dataMessage = Constants.FETCHING_DATA;

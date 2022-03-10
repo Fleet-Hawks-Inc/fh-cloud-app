@@ -5,9 +5,9 @@
         <div class="row" style="padding-top: 10px">
           <div class="col-lg-5 col-md-5 pr-0 d-flex">
             <span class="">
-              <span class="input-group-text">
+              <!-- <span class="input-group-text">
                 <i class="fas fa-calendar-alt"></i>
-              </span>
+              </span> -->
             </span>
             <div class="col-md-5 col-lg-5 pr-0">
               <div class="input-group input-group-md mb-3">
@@ -79,6 +79,7 @@
               </div>
             </div>
           </div>
+          
         </div>
       </header>
 
@@ -233,7 +234,7 @@
                           </div>
                         </ng-template>
                       </ngx-datatable-row-detail>
-                      <ngx-datatable-column [width]="20" [resizeable]="false" [sortable]="false" [draggable]="false"
+                      <!-- <ngx-datatable-column [width]="20" [resizeable]="false" [sortable]="false" [draggable]="false"
                         [canAutoResize]="false">
                         <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
                           <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded"
@@ -241,7 +242,7 @@
                             (click)="toggleExpandRow(row, expanded)">
                           </a>
                         </ng-template>
-                      </ngx-datatable-column>
+                      </ngx-datatable-column> -->
 
                       <ngx-datatable-column name="Customer" prop="cName">
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"

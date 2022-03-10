@@ -4,7 +4,7 @@ import { ApiService } from "src/app/services/api.service";
 import Constants from "src/app/pages/fleet/constants";
 import { ToastrService } from "ngx-toastr";
 import { AccountService } from "src/app/services/account.service";
-import { from } from "rxjs";
+import { from, Subscription } from "rxjs";
 import { map } from "rxjs/operators";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ListService } from "src/app/services/list.service";
@@ -59,6 +59,7 @@ export class AddExpensePaymentComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   expErr = "";
+  subscription: Subscription;
 
   constructor(
     private apiService: ApiService,
@@ -67,10 +68,20 @@ export class AddExpensePaymentComponent implements OnInit {
     private router: Router,
     private listService: ListService,
     private location: Location
-  ) {}
+  ) { }
 
   ngOnInit() {
+    this.subscription = this.listService.paymentSaveList.subscribe((res: any) => {
+      if (res.openFrom === "addForm") {
+        this.addRecord();
+      }
+    });
+
     this.fetchAccounts();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
   }
 
   emptyPrevSelection() {
@@ -296,6 +307,12 @@ export class AddExpensePaymentComponent implements OnInit {
         this.paymentData.expTotal += Number(element.paidAmount);
         this.paymentData.expData.push(obj);
         this.paymentData.expIds.push(element.expenseID);
+        if (this.paymentData.expTotal >= 0) {
+          this.submitDisabled = false;
+        } else {
+          this.submitDisabled = true;
+        }
+
       }
     }
     this.paymentCalculation();
@@ -398,7 +415,7 @@ export class AddExpensePaymentComponent implements OnInit {
     this.accountService
       .postData("expense-payments", this.paymentData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -415,13 +432,24 @@ export class AddExpensePaymentComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {
           this.submitDisabled = false;
           this.response = res;
           this.toaster.success("Expense payment added successfully.");
+          let obj = {
+            type: '',
+            openFrom: ''
+          }
+          this.listService.triggerPaymentSave(obj);
+          let payObj = {
+            showModal: false,
+            page: "",
+          };
+
+          this.listService.openPaymentChequeModal(payObj);
           this.router.navigateByUrl("/accounts/payments/expense-payments/list");
         },
       });
@@ -442,6 +470,7 @@ export class AddExpensePaymentComponent implements OnInit {
       toDate: this.paymentData.toDate,
       finalAmount: this.paymentData.finalAmount,
       txnDate: this.paymentData.txnDate,
+      page: "addForm",
     };
     this.listService.openPaymentChequeModal(obj);
   }

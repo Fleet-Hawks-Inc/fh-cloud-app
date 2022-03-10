@@ -95,7 +95,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="row pt-2">
+                    <div class="row">
                       <div
                         class="col-lg-10"
                         *ngIf="paymentData.paymentTo === 'driver'"
@@ -266,8 +266,8 @@
                           <ng-option
                             value="{{ data.contactID }}"
                             *ngFor="let data of vendors"
-                            >{{ data.companyName }}</ng-option
-                          >
+                            >{{ data.companyName }}
+                          </ng-option>
                         </ng-select>
 
                         <div
@@ -573,7 +573,7 @@
                     <div class="row pt-2">
                       <div class="col-lg-10">
                         <label
-                          class="control-label font-weight-bold text-lg-right pt-2"
+                          class="control-label font-weight-bold text-lg-right"
                           >Reference#
                         </label>
                         <input
@@ -632,6 +632,7 @@
                       type="button"
                       class="btn btn-success modal-with-form mr-2"
                       *ngIf="paymentData.payMode == 'cheque'"
+                      [disabled]="!payForm.form.valid || submitDisabled"
                       (click)="showCheque()"
                     >
                       Cheque preview

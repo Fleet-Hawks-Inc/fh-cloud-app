@@ -246,6 +246,99 @@
                         </div>
                       </div>
                     </div>
+                    <div
+                      class="row mt-2"
+                      *ngIf="settlementData.type != '' && isEntity"
+                    >
+                      <div class="col-10">
+                        <div>
+                          <div
+                            class="row m-0"
+                            style="border: 0.4px solid #e1e2e3"
+                          >
+                            <div
+                              class="col-12"
+                              style="background-color: #e1e2e3"
+                            >
+                              <h5 class="font-weight-bold">
+                                {{
+                                  settlementData.type === "driver"
+                                    ? "Driver"
+                                    : "Owner
+                                operator"
+                                }}
+                                payment details
+                              </h5>
+                            </div>
+                            <div class="col-12">
+                              <strong>Address:</strong>
+                              {{ driverAdrs ? driverAdrs : "NA" }} <br />
+                              <strong>Payment Type:</strong>
+                              {{
+                                settlementData.paymentInfo.pType
+                                  ? settlementData.paymentInfo.pType
+                                  : "NA"
+                              }}
+                              <div
+                                class="row"
+                                *ngIf="
+                                  settlementData.paymentInfo.pType ===
+                                  'Pay Per Mile'
+                                "
+                              >
+                                <div class="col-6">
+                                  <strong>Loaded Miles:</strong>
+                                  {{ settlementData.paymentInfo.lMiles }}
+                                  {{ settlementData.currency }}
+                                </div>
+                                <div class="col-6">
+                                  <strong>Team Loaded Miles:</strong>
+                                  {{ settlementData.paymentInfo.lMileTeam }}
+                                  {{ settlementData.currency }}
+                                </div>
+                                <div class="col-6">
+                                  <strong>Empty Miles:</strong>
+                                  {{ settlementData.paymentInfo.eMiles }}
+                                  {{ settlementData.currency }}
+                                </div>
+                                <div class="col-6">
+                                  <strong>Team Empty Miles:</strong>
+                                  {{ settlementData.paymentInfo.eMileTeam }}
+                                  {{ settlementData.currency }}
+                                </div>
+                              </div>
+
+                              <div
+                                class="row"
+                                *ngIf="
+                                  settlementData.paymentInfo.pType ===
+                                  'Pay Per Hour'
+                                "
+                              >
+                                <div class="col-6">
+                                  <strong>Rate:</strong>
+                                  {{ settlementData.paymentInfo.pRate }}
+                                  {{ settlementData.currency }}
+                                </div>
+                              </div>
+                              <div
+                                class="row"
+                                *ngIf="
+                                  settlementData.paymentInfo.pType ===
+                                  'Pay Per Delivery'
+                                "
+                              >
+                                <div class="col-6">
+                                  <strong> Rate:</strong>
+                                  {{ settlementData.paymentInfo.dRate }}
+                                  {{ settlementData.currency }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
                     <div class="row mt-2">
                       <div
@@ -2232,7 +2325,7 @@
                 </div>
 
                 <div class="form-group row mt-4">
-                  <div class="col-lg-11 pr-0 text-right">
+                  <div class="col-lg-11 pr-1 text-right">
                     <button
                       type="button"
                       class="btn btn-default mr-2"

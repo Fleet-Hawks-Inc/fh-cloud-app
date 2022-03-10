@@ -193,11 +193,11 @@ export class SummaryComponent implements OnInit {
                 obj["Fuel Card#"] = element.data.cardNo
                 obj["City"] = element.data.city
                 obj["Fuel Type"] = element.data.type
-                obj["Fuel Quantity"] = element.data.qty + " " + ".00" 
+                obj["Fuel Quantity"] = element.data.qty + " " 
                 obj["Liters or Gallons"] = element.data.uom ==="L" ? 'LTR' : 'GL'
                 obj["Odometer"] = element.data.odometer
                 obj["Total Discount"] = element.data.discAmt 
-                obj["Total Amount"] = element.data.amt + "." + "00" + " " + element.data.currency
+                obj["Total Amount"] = element.data.amt + " " + element.data.currency
                 dataObject.push(obj)
             });
             let headers = Object.keys(dataObject[0]).join(',')

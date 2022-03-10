@@ -12,10 +12,13 @@ import {
   NavigationEnd,
   NavigationError,
   NavigationCancel,
+  ActivatedRoute,
 } from "@angular/router";
 import { DOCUMENT } from "@angular/common";
-import { delay } from "rxjs/operators";
+import { delay, filter } from "rxjs/operators";
 import { HttpLoadingService, SharedServiceService } from "./services";
+import { Title } from "@angular/platform-browser";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 declare var $: any;
 @Component({
   selector: "app-root",
@@ -23,7 +26,7 @@ declare var $: any;
   styleUrls: ["./app.component.css"],
 })
 export class AppComponent implements OnInit, AfterContentChecked {
-  title = "fleethawks-dashboard";
+  public pageTitle: string;
   loading = false;
   token: boolean = false;
   currentURL = "";
@@ -32,7 +35,10 @@ export class AppComponent implements OnInit, AfterContentChecked {
     private sharedService: SharedServiceService,
     @Inject(DOCUMENT) private document: Document,
     private changeDetector: ChangeDetectorRef,
-    private httpLoadingService: HttpLoadingService
+    private httpLoadingService: HttpLoadingService,
+    private titleService: Title,
+    private route: ActivatedRoute,
+    private modalService: NgbModal,
   ) {
     // left sidebar collapsed on overview - fleet page
     const rootHtml = document.getElementsByTagName("html")[0];
@@ -63,6 +69,8 @@ export class AppComponent implements OnInit, AfterContentChecked {
         } else {
           this.token = false;
         }
+        // close all open modals
+        this.modalService.dismissAll();
       }
 
       /**
@@ -88,6 +96,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
+    this.setTitle();
     this.listenToLoading();
 
     window.addEventListener(
@@ -133,5 +142,30 @@ export class AppComponent implements OnInit, AfterContentChecked {
 
   ngAfterContentChecked(): void {
     this.changeDetector.detectChanges();
+  }
+
+  setTitle() {
+    console.log(this.route.snapshot.data['title']);
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+    )
+      .subscribe(() => {
+
+        var rt = this.getChild(this.route)
+
+        rt.data.subscribe(data => {
+          console.log(data);
+          this.titleService.setTitle(data.title)
+        })
+      })
+    this.titleService.setTitle(this.route.snapshot.data['title']);
+  }
+  getChild(activatedRoute: ActivatedRoute) {
+    if (activatedRoute.firstChild) {
+      return this.getChild(activatedRoute.firstChild);
+    } else {
+      return activatedRoute;
+    }
+
   }
 }

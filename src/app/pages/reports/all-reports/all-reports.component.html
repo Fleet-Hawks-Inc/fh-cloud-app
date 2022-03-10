@@ -36,7 +36,7 @@
       </header>
 
       <div class="routing-overview__wrapper m-2">
-        <div class="row">
+        <div *ngIf="isFleetEnabled"class="row">
           <div class="col-12">
             <h2 class="text-dark font-weight-bold text-5">
               <i class="fas fa-truck"></i> Fleet
@@ -45,7 +45,7 @@
           <div class="col-1">
             <div class="reportbox">
               <a routerLink="/reports/fleet/drivers">
-                <i class="fas text-11 fa-user-tie mb-2"></i>
+                <i class="fas text-6 fa-user-tie mb-2"></i>
                 <br />
                 Driver
               </a>
@@ -54,7 +54,7 @@
           <div class="col-1">
             <div class="reportbox">
               <a routerLink="/reports/fleet/vehicles/overview">
-                <i class="fas text-11 fa-truck mb-2"></i>
+                <i class="fas text-6 fa-truck mb-2"></i>
                 <br />
                 Vehicles
               </a>
@@ -63,7 +63,7 @@
           <div class="col-1">
             <div class="reportbox">
               <a routerLink="/reports/fleet/asset/overview">
-                <i class="fas text-11 fa-box mb-2"></i>
+                <i class="fas text-6 fa-box mb-2"></i>
                 <br />
                 Asset
               </a>
@@ -72,7 +72,7 @@
           <div class="col-1">
             <div class="reportbox">
               <a routerLink="/reports/fleet/fuel/foverview">
-                <i class="fas text-11 fa-gas-pump mb-2"></i>
+                <i class="fas text-6 fa-gas-pump mb-2"></i>
                 <br />
                 Fuel
               </a>
@@ -81,7 +81,7 @@
           <div class="col-1">
             <div class="reportbox">
               <a routerLink="/reports/fleet/reminders/overview">
-                <i class="fas text-11 fa-bell mb-2"></i>
+                <i class="fas text-6 fa-bell mb-2"></i>
                 <br />
                 Reminder
               </a>
@@ -90,7 +90,7 @@
           <div class="col-1">
             <div class="reportbox">
               <a routerLink="/reports/fleet/maintenance/overview">
-                <i class="fas text-11 fa-tools mb-2"></i>
+                <i class="fas text-6 fa-tools mb-2"></i>
                 <br />
                 Maintenance
               </a>
@@ -99,7 +99,7 @@
           <div class="col-1">
             <div class="reportbox">
               <a routerLink="/reports/fleet/inventory/overview">
-                <i class="fas text-11 fa-dolly-flatbed mb-2"></i>
+                <i class="fas text-6 fa-dolly-flatbed mb-2"></i>
                 <br />
                 Inventory
               </a>
@@ -107,7 +107,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div *ngIf="isDispatchEnabled" class="row">
           <div class="col-12">
             <h2 class="text-dark font-weight-bold text-5">
               <i class="fas fa-route"></i> Routing & Dispatch
@@ -116,7 +116,7 @@
           <div class="col-1">
             <div class="reportbox">
               <a routerLink="/reports/dispatch/orders/overview">
-                <i class="fas text-11 fa-user-tie mb-2"></i>
+                <i class="fas text-6 fa-user-tie mb-2"></i>
                 <br />
                 Orders
               </a>
@@ -124,7 +124,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div *ngIf="isAccountsEnabled" class="row">
           <div class="col-12">
             <h2 class="text-dark font-weight-bold text-5">
               <i class="fas fa-file-alt"></i> Accounts
@@ -133,16 +133,16 @@
           <div class="col-1">
             <div class="reportbox">
               <a routerLink="/reports/accounts/collections">
-                <i class="fas text-11 fa-hand-holding-usd mb-2"></i>
+                <i class="fas text-6 fa-hand-holding-usd mb-2"></i>
                 <br />
-                Customer Collection
+                Customer Collect.
               </a>
             </div>
           </div>
           <div class="col-1">
             <div class="reportbox">
               <a routerLink="/reports/accounts/payment">
-                <i class="fas text-11 fa-file-invoice-dollar mb-2"></i>
+                <i class="fas text-6 fa-file-invoice-dollar mb-2"></i>
                 <br />
                 Payment Report
               </a>
@@ -159,9 +159,9 @@
           <div class="col-1">
             <div class="reportbox">
               <a routerLink="/reports/addressbook">
-                <i class="fas text-11 fa-users"></i>
+                <i class="fas text-6 fa-users"></i>
                 <br />
-                Customer Information
+                Customer Infor...
               </a>
             </div>
           </div>

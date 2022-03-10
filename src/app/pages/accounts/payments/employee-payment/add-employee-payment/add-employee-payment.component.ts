@@ -3,7 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
-import { from } from "rxjs";
+import { from, Subscription } from "rxjs";
 import { map } from "rxjs/operators";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService } from "src/app/services/account.service";
@@ -136,6 +136,7 @@ export class AddEmployeePaymentComponent implements OnInit {
   showModal = false;
   employeesObj: any = {};
 
+  subscription: Subscription;
   constructor(
     private listService: ListService,
     private route: ActivatedRoute,
@@ -146,9 +147,15 @@ export class AddEmployeePaymentComponent implements OnInit {
     private apiService: ApiService,
     private httpClient: HttpClient,
     private countryStateCity: CountryStateCityService
-  ) {}
+  ) { }
 
   async ngOnInit() {
+    this.subscription = this.listService.paymentSaveList.subscribe((res: any) => {
+      if (res.openFrom === "addForm") {
+        this.addRecord();
+      }
+    });
+
     this.paymentID = this.route.snapshot.params["paymentID"];
     if (this.paymentID) {
       this.fetchPaymentDetail();
@@ -160,6 +167,11 @@ export class AddEmployeePaymentComponent implements OnInit {
     await this.getStates();
     this.fetchClaimCodes();
   }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
+  }
+
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
@@ -362,7 +374,7 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.accountService
       .postData("employee-payments", this.paymentData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -379,13 +391,24 @@ export class AddEmployeePaymentComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {
           this.submitDisabled = false;
           this.response = res;
           this.toaster.success("Employee payment added successfully.");
+          let obj = {
+            type: '',
+            openFrom: ''
+          }
+          this.listService.triggerPaymentSave(obj);
+          let payObj = {
+            showModal: false,
+            page: "",
+          };
+
+          this.listService.openPaymentChequeModal(payObj);
           this.cancel();
         },
       });

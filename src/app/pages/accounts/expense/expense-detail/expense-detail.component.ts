@@ -1,17 +1,21 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { AccountService } from "src/app/services/account.service";
 import { ApiService } from "src/app/services/api.service";
 import Constants from "../../../fleet/constants";
-
+import * as html2pdf from "html2pdf.js";
 @Component({
   selector: "app-expense-detail",
   templateUrl: "./expense-detail.component.html",
   styleUrls: ["./expense-detail.component.css"],
 })
 export class ExpenseDetailComponent implements OnInit {
+  @ViewChild("previewExpTransaction", { static: true })
+  previewExpTransaction: TemplateRef<any>;
+
   expenseID = "";
   expenses = [];
   vendors = [];
@@ -67,13 +71,20 @@ export class ExpenseDetailComponent implements OnInit {
   customersObject: any = {};
   accountsIntObjects: any = {};
   trips: any = {};
+  downloadDisabled = true;
+  companyLogo: string;
+  tagLine: string;
+  carrierName: string;
+  expPayRef: any;
+
   constructor(
     private accountService: AccountService,
     private apiService: ApiService,
     private toaster: ToastrService,
     private route: ActivatedRoute,
-    private domSanitizer: DomSanitizer
-  ) {}
+    private domSanitizer: DomSanitizer,
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
     this.expenseID = this.route.snapshot.params[`expenseID`];
@@ -114,6 +125,10 @@ export class ExpenseDetailComponent implements OnInit {
               this.documentSlides.push(obj);
             });
           }
+          this.companyLogo = result[0].carrierDtl.logo;
+          this.tagLine = result[0].carrierDtl.tagLine;
+          this.carrierName = result[0].carrierDtl.carrierName;
+          this.downloadDisabled = false;
         }
       });
   }
@@ -124,7 +139,7 @@ export class ExpenseDetailComponent implements OnInit {
     });
   }
   fetchTrips() {
-    this.apiService.getData(`trips/get/list`).subscribe((result: any) => {
+    this.apiService.getData(`common/trips/get/list`).subscribe((result: any) => {
       this.trips = result;
     });
   }
@@ -184,4 +199,31 @@ export class ExpenseDetailComponent implements OnInit {
       this.units = result;
     });
   }
+
+  openModal() {
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "preview-sale-order",
+    };
+    this.expPayRef = this.modalService.open(this.previewExpTransaction, ngbModalOptions)
+  }
+
+  generatePaymentPDF() {
+    let data = document.getElementById("print-exp-trans");
+    html2pdf(data, {
+      margin: 0.5,
+      pagebreak: { mode: "avoid-all", before: 'print-exp-trans' },
+      filename: `expense-transaction-.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        scale: 2, logging: true, dpi: 192, letterRendering: true, allowTaint: true,
+        useCORS: true,
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    });
+    this.expPayRef.close();
+    this.downloadDisabled = false;
+  }
+
 }
