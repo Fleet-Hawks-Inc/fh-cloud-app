@@ -101,7 +101,7 @@
                                                         <tr *ngFor="let ac of accounts">
                                                             <td class="cursorpoint" >
                                                                 <a routerLink="/accounts/chart-accounts/detail/{{ac.accID}}" 
-                                      [queryParams]= "{startDate:filter.startDate,endDate:filter.endDate}" target = "_blank">
+                                      [queryParams]= "{startDate:filter.startDate,endDate:filter.endDate}" queryParamsHandling="merge" target = "_blank">
                                                                 {{ ac.accountNo }} </a>
                                                             </td>
                                                             <td class="cursorpoint text-capitalize" >
