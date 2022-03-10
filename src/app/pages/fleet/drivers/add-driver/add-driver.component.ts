@@ -314,7 +314,7 @@ export class AddDriverComponent
   showUploadedPicModal = false;
   pageType = "add";
   groupsData: any = [];
-  sessionID:string;
+  sessionID: string;
 
   constructor(
     private apiService: ApiService,
@@ -333,7 +333,7 @@ export class AddDriverComponent
     private listService: ListService,
     private countryStateCity: CountryStateCityService,
     private dashboardUtilityService: DashboardUtilityService,
-    private routeMgmntService:RouteManagementServiceService
+    private routeMgmntService: RouteManagementServiceService
   ) {
     this.modalServiceOwn.triggerRedirect.next(false);
 
@@ -369,7 +369,7 @@ export class AddDriverComponent
       month: 12,
       day: 31,
     };
-    this.sessionID=this.routeMgmntService.driverUpdateSessionID;
+    this.sessionID = this.routeMgmntService.driverUpdateSessionID;
   }
   scrollError() {
     let errorList;
@@ -983,7 +983,7 @@ export class AddDriverComponent
             this.takeUntil$.next();
             this.takeUntil$.complete();
             this.spinner.hide();
-            this.router.navigateByUrl(`/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`);            
+            this.router.navigateByUrl(`/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`);
           },
         });
       } catch (error) {
@@ -1101,44 +1101,44 @@ export class AddDriverComponent
       .toPromise();
     // .subscribe(async (result: any) => {
     result = result.Items[0];
-    this.fetchLicStates(result.licenceDetails.issuedCountry);
-    this.driverData.address = result.address;
-    if (result.address !== undefined) {
-      for (let a = 0; a < this.driverData.address.length; a++) {
-        if (this.driverData.address[a].manual) {
-          this.driverData.address[a].isSuggest = false;
-        } else {
-          this.driverData.address[a].isSuggest = true;
-        }
-        const countryCode = this.driverData.address[a].countryCode;
-        const stateCode = this.driverData.address[a].stateCode;
-        this.fetchStates(countryCode, a);
-        if (
-          countryCode !== "" &&
-          countryCode !== null &&
-          stateCode !== "" &&
-          stateCode !== null
-        ) {
-          this.fetchCities(countryCode, stateCode, a);
-        }
-      }
-    }
-    if (result.corporationType === "owner_operator") {
-      // this.listService.fetchOwnerOperators();
-      // this.ownerOperators = this.listService.ownerOperatorList;
+    // this.fetchLicStates(result.licenceDetails.issuedCountry);
+    // this.driverData.address = result.address;
+    // if (result.address !== undefined) {
+    //   for (let a = 0; a < this.driverData.address.length; a++) {
+    //     if (this.driverData.address[a].manual) {
+    //       this.driverData.address[a].isSuggest = false;
+    //     } else {
+    //       this.driverData.address[a].isSuggest = true;
+    //     }
+    //     const countryCode = this.driverData.address[a].countryCode;
+    //     const stateCode = this.driverData.address[a].stateCode;
+    //     this.fetchStates(countryCode, a);
+    //     if (
+    //       countryCode !== "" &&
+    //       countryCode !== null &&
+    //       stateCode !== "" &&
+    //       stateCode !== null
+    //     ) {
+    //       this.fetchCities(countryCode, stateCode, a);
+    //     }
+    //   }
+    // }
+    // if (result.corporationType === "owner_operator") {
+    //   // this.listService.fetchOwnerOperators();
+    //   // this.ownerOperators = this.listService.ownerOperatorList;
 
-      this.listService.fetchOwnerOperators();
-      let opList = new Array<any>();
-      this.getValidOperators(opList);
-      this.ownerOperators = opList;
-    }
-    if (result.corporationType === "company") {
-      this.listService.fetchVendors();
-      // this.vendors = this.listService.vendorList;
-      let vendorList = new Array<any>();
-      this.getValidVendors(vendorList);
-      this.vendors = vendorList;
-    }
+    //   this.listService.fetchOwnerOperators();
+    //   let opList = new Array<any>();
+    //   this.getValidOperators(opList);
+    //   this.ownerOperators = opList;
+    // }
+    // if (result.corporationType === "company") {
+    //   this.listService.fetchVendors();
+    //   // this.vendors = this.listService.vendorList;
+    //   let vendorList = new Array<any>();
+    //   this.getValidVendors(vendorList);
+    //   this.vendors = vendorList;
+    // }
     this.driverData.driverType = result.driverType;
     this.driverData.employeeContractorId = result.employeeContractorId;
     this.driverData.corporationType = result.corporationType;
@@ -1775,7 +1775,7 @@ export class AddDriverComponent
     this.onChangeHideErrors("email");
     this.submitDisabled = false;
   }
-  
+
   fetchGroupsList() {
     this.apiService.getData('groups/get/list/type?type=drivers').subscribe((result: any) => {
       this.groupsData = result;
