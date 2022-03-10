@@ -1402,7 +1402,7 @@ export class AddSettlementComponent implements OnInit {
 
   async fetchSettledTrips(tripIds) {
     let result: any = await this.apiService
-      .getData(`trips/driver/settled?entities=${tripIds}`)
+      .getData(`common/trips/driver/settled?entities=${tripIds}`)
       .toPromise();
     // this.settledTrips = result;
 
