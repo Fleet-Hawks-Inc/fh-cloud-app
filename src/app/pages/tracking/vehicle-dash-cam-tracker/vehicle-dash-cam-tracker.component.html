@@ -2,28 +2,26 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pr-0 pt-0 pl-0">
-            <header class="page-header flex align-items-center justify-content-start">
-                <form class="formgrid grid">
-                    <div class="row">
-                        <div class="col" style="margin-left: 10px;margin-top: 5px;">
+            <header class="page-header">
 
-                            <label class="text-dark" style="margin-top: 10px;font-size: 16px;"> Vehicle : {{vehicleDetails.Items[0].plateNumber}}
-                                
-                                <!-- <span class="text-muted">{{vehicleDetails.Items[0].manufacturerID}} </span><br> -->
-                                </label>
-                            <span style="margin-left:5px;">Last Location: {{ apiResponse.lastLocation}}</span>
+                <div class="row">
+                    <div class="col header-title">
 
-                            <div class="pull-right" *ngIf="loaded">
-                                <button id="btnLiveVideo" type="button" pButton class="mr-1" tooltipPosition="left" icon="fas fa-video" pTooltip="Live Video" (click)="refresh()"></button>
-                                <button id="btnShareLocation" type="button" pButton class="mr-1" tooltipPosition="left" icon="fas fa-map-location" pTooltip="Share Location" (click)="shareLocation()"></button>
-                                <button id="btnResetFilter" type="button" pButton class="mr-1" tooltipPosition="left" icon="pi pi-refresh" pTooltip="Refresh" (click)="refresh()"></button>
-                                <button pButton pRipple pTooltip="Camera is Online." type="button" tooltipPosition="left" icon="fas fa-light fa-wifi" *ngIf="isOnline==true" class="mr-1 p-button-rounded p-button-outlined p-button-success"></button>
-                                <button pButton pRipple *ngIf="!isOnline" pTooltip="Camera is Offline." tooltipPosition="left" type="button" icon="fas fa-video-slash" class="mr-1 p-button-rounded  p-button-outlined p-button-danger"></button>
+                        <label class="mt-0 mb-0"> Vehicle : {{vehicleDetails.Items[0].plateNumber}}</label>
+                        <small class="text-muted text-small">&nbsp; Last Location: {{ apiResponse.lastLocation}}</small>
 
-                            </div>
-                        </div>
+
                     </div>
-                </form>
+                    <div class="col header-buttons" *ngIf="loaded">
+                        <button id="btnLiveVideo" type="button" pButton class="mr-1" tooltipPosition="left" icon="fas fa-video" pTooltip="Live Video" (click)="refresh()"></button>
+                        <button id="btnShareLocation" type="button" pButton class="mr-1" tooltipPosition="left" icon="fas fa-map-location" pTooltip="Share Location" (click)="shareLocation()"></button>
+                        <button id="btnResetFilter" type="button" pButton class="mr-1" tooltipPosition="left" icon="pi pi-refresh" pTooltip="Refresh" (click)="refresh()"></button>
+                        <button pButton pRipple pTooltip="Camera is Online." type="button" tooltipPosition="left" icon="fas fa-light fa-wifi" *ngIf="isOnline==true" class="mr-1 p-button-rounded p-button-outlined p-button-success"></button>
+                        <button pButton pRipple *ngIf="!isOnline" pTooltip="Camera is Offline." tooltipPosition="left" type="button" icon="fas fa-video-slash" class="mr-1 p-button-rounded  p-button-outlined p-button-danger"></button>
+
+                    </div>
+                </div>
+
 
 
             </header>

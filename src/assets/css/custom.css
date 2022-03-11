@@ -1953,8 +1953,6 @@
   background-size: cover;
 }
 
-
-
 /* trip info on dashbaord with stops */
 
 .tripondash {
@@ -4314,4 +4312,22 @@ input:checked + .sliderbtn:before {
 
 .document--main .modal-dialog {
   max-width: 600px !important;
+}
+
+.header-title {
+  margin-left: 10px;
+  margin-top: 5px;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #000;
+}
+
+.header-buttons {
+  margin-left: 10px;
+  margin-top: 5px;
+  align-content: center;
+  align-items: center;
+  text-align: right !important;
 }

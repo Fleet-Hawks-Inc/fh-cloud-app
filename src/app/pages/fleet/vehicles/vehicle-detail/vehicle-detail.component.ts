@@ -247,6 +247,13 @@ export class VehicleDetailComponent implements OnInit {
     groupName: any = '';
     groupId: any = '';
 
+    deviceInfo = {
+        deviceType: '',
+        deviceId: '',
+        deviceSrNo: '',
+        email: ''
+    }
+
     constructor(
         private apiService: ApiService,
         private route: ActivatedRoute,
@@ -374,6 +381,17 @@ export class VehicleDetailComponent implements OnInit {
             .subscribe(async (vehicleResult: any) => {
                 vehicleResult = vehicleResult.Items[0];
 
+                // Check if DashCam is added to enable Share Live location button
+                if (vehicleResult.deviceInfo && vehicleResult.deviceInfo.length > 0) {
+                    for (const device of vehicleResult.deviceInfo) {
+                        if (device.deviceType === "DashCam") {
+                            this.deviceInfo.deviceId = device.deviceId;
+                            this.deviceInfo.deviceSrNo = device.deviceSrNo;
+                            this.deviceInfo.deviceType = device.deviceType;
+
+                        }
+                    }
+                }
 
 
                 this.ownerOperatorName = vehicleResult.ownerOperatorID;
@@ -672,7 +690,10 @@ export class VehicleDetailComponent implements OnInit {
         })
     }
 
-
+    locationDetails() {
+        this.router.navigate([`/fleet/tracking/vehicle-dash-cam-tracker/${this.deviceInfo.deviceSrNo.split('#')[1]}`],
+            { queryParams: { vehicle: this.vehicleID } });
+    }
 
     fetchGroups() {
         if (this.groupId !== '') {

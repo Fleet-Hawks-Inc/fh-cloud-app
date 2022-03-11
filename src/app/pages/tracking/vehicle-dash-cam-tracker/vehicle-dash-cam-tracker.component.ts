@@ -104,10 +104,20 @@ export class VehicleDashCamTrackerComponent implements OnInit {
     });
     // Extract query parameters
     this.extractQueryParams();
+
+    await this.getVehicleDetails();
     // get last location
     await this.getLastLocation();
 
 
+
+    await this.checkDeviceStatus();
+
+
+  }
+
+
+  private async checkDeviceStatus() {
     if (this.apiResponse && this.apiResponse.errorCode) {
       this.messageService.add({ severity: 'error', summary: 'Unable to connect to Vehicle. ', detail: 'Please try after some time.' });
 
@@ -118,19 +128,15 @@ export class VehicleDashCamTrackerComponent implements OnInit {
       this.loaded = true;
       this.mapOptions.center = { lat: this.apiResponse.lng, lng: this.apiResponse.lat };
 
-      await this.getVehicleDetails();
       this.connectToWSServer();
       // this.updateLastLocation();
     }
-
-
   }
-
 
   private extractQueryParams() {
     this.route.queryParams
       .subscribe(params => {
-
+        console.log(params);
         this.vehicleId = params.vehicle;
       }
       );
@@ -187,6 +193,7 @@ export class VehicleDashCamTrackerComponent implements OnInit {
 
   async refresh() {
     await this.getLastLocation();
+    await this.checkDeviceStatus();
 
 
   }
@@ -195,7 +202,7 @@ export class VehicleDashCamTrackerComponent implements OnInit {
   }
   openInfoWindow(marker: MapMarker) {
 
-    if (this.loaded) {
+    if (this.loaded && this.isOnline) {
       this.infoDetail = `<b>Vehicle Name : ${this.vehicleDetails.Items[0].plateNumber}</b><br><br>`;
       this.infoDetail += `Device Serial/ID: ${this.deviceSerial}<br><br>`;
       this.infoDetail += `Device Time: ${this.deviceDetails.dtu || 'NA'}<br><br>`;
