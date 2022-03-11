@@ -5,7 +5,7 @@
             <div class="row" style="padding-top:10px;">
                <div class="col-md-4 col-lg-4">
                   <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Payment#
-                     - 1279430 <span class="badge badge-dark p-1">{{status}}</span></h4>
+                     - {{sRPTNo}} <span class="badge badge-dark p-1">{{status}}</span></h4>
                </div>
                <div class="col-md-8 col-lg-8 text-right pr-1">
                   <a routerLink="/accounts/sales/receipts/list" class="btn
@@ -141,7 +141,7 @@
                                  </tr>
                                  <tr *ngFor="let data of transactionLogs">
                                     <td class="text-capitalize">{{
-                                       accountsObjects[data.accountID]
+                                       data.actName
                                        }}</td>
                                     <td>
                                        <span *ngIf="data.trxType ===
