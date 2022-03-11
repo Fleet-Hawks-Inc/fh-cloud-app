@@ -149,7 +149,7 @@ export class AddEventComponent implements OnInit {
   }
 
   fetchUsers() {
-    this.apiService.getData("users/fetch/records").subscribe((result: any) => {
+    this.apiService.getData("common/users/fetch/records").subscribe((result: any) => {
       result.Items.map((i) => {
         i.fullName = i.firstName + " " + i.lastName;
         return i;
