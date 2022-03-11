@@ -4,13 +4,9 @@ import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import { ActivatedRoute } from "@angular/router";
 import Constants from 'src/app/pages/fleet/constants';
-import { environment } from '../../../../../../environments/environment';
-import { OnboardDefaultService } from '../../../../../services/onboard-default.service';
 import * as _ from 'lodash';
-import { result } from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AccountService } from "src/app/services";
-
 @Component({
   selector: 'app-expense',
   templateUrl: './expense.component.html',
@@ -34,26 +30,8 @@ export class ExpenseComponent implements OnInit {
   exportData = [];
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   public vehicleId;
-  // driverList = []
-  // fuelList = []
-  // allVehicles = []
   lastEvaluatedKey = ''
-  // unitName: string;
   fuel = []
-  public unitID;
-  // assetUnitID = null;
-  // lastTimeCreated = ''
-  //service log data
-  // logs = []
-  // issuesObject = []
-  // vehicleID = null;
-  // taskID = null;
-  // assetID = null;
-  // vehiclesObject = []
-  // tasks = []
-  // payment
-  // settlements = []
-  // contacts = []
   payments = [];
   expensePay = []
   filter = {
@@ -65,11 +43,7 @@ export class ExpenseComponent implements OnInit {
   serviceLogData = []
   payment = []
   driver: any = []
-  // pay: any = []
-  // entityId: any
-  // lastDrvP = ''
   lastExpPay = ''
-  // vehicleList = []
   totalExpense = 0
   constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute, private spinner: NgxSpinnerService, private accountService: AccountService,) {
   }
@@ -78,48 +52,42 @@ export class ExpenseComponent implements OnInit {
     this.end = moment().format("YYYY-MM-DD");
     this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
     this.vehicleId = this.route.snapshot.params[`vehicleId`];
-    // this.fetchTrpByVehicle();
-    // this.fetchVehicleName();
-    // this.fetchFuelByVehicle();
-    // this.fetchSlogByVehicle();
+    this.fetchTrpByVehicle();
+    this.fetchVehicleName();
+    this.fetchFuelByVehicle();
+    this.fetchSlogByVehicle();
     this.fetchExpensePayment()
     // this.fetchVehiclesList();
   }
 
 
   async fetchDriverPayment() {
-    // if (this.lastDrvP !== 'end') {
-      const result: any = await this.accountService.getData(`driver-payments/get/driver/payment?drivers=${encodeURIComponent(JSON.stringify(this.driver))}`)
-        .toPromise();
-      this.payments = result;
-      if (result.length === 0) {
-        this.dataMessage = Constants.NO_RECORDS_FOUND
-      }
-    // }
+    const result: any = await this.accountService.getData(`driver-payments/get/driver/payment?drivers=${encodeURIComponent(JSON.stringify(this.driver))}`)
+      .toPromise();
+    this.payments = result;
+    if (result.length === 0) {
+      this.dataMessage = Constants.NO_RECORDS_FOUND
+    }
   }
   fetchExpensePayment() {
     if (this.lastExpPay !== 'end') {
       this.accountService.getData(`expense/get/expense/pay/byTrp/${encodeURIComponent(JSON.stringify(this.vehicleId))}?startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastExpPay}&date=${this.expDate}`).subscribe((result: any) => {
-        if (result.data.length === 0) {
+        if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND
         }
-        // for (let i = 0; i < result.data.length; i++) {
-        //   const expenseData = result.data[i]
-        //   this.totalExpense += parseFloat(expenseData.finalTotal)
-        // }
-       
-        if (result.data.length > 0) {
-          if (result.nextPage !== 'end') {
-            this.lastExpPay = encodeURIComponent(result.nextPage.sk);
-            this.expDate = encodeURIComponent(result.nextPage.transDate);
-          }
-          else {
-            this.lastExpPay = 'end'
-          }
-          this.loaded = true;
+        for (let i = 0; i < result.Items.length; i++) {
+          const expenseData = result.Items[i]
+          this.totalExpense += parseFloat(expenseData.finalTotal)
         }
-        this.expensePay = this.expensePay.concat(result.data)
-        // console.log('this.expensePay ',this.expensePay )
+        if (result.LastEvaluatedKey !== undefined) {
+          this.lastExpPay = encodeURIComponent(result.LastEvaluatedKey.sk);
+          this.expDate = encodeURIComponent(result.LastEvaluatedKey.transDate);
+        }
+        else {
+          this.lastExpPay = 'end'
+        }
+        this.loaded = true;
+        this.expensePay = this.expensePay.concat(result.Items)
       })
     }
   }
@@ -191,14 +159,12 @@ export class ExpenseComponent implements OnInit {
   }
   onScroll() {
     if (this.loaded) {
-      // console.log('this.loaded', this.loaded)
       this.fetchTrpByVehicle();
     }
     this.loaded = false;
   }
   onScrollExpense() {
     if (this.loaded) {
-      // console.log('this.loaded', this.loaded)
       this.fetchExpensePayment();
     }
     this.loaded = false;
