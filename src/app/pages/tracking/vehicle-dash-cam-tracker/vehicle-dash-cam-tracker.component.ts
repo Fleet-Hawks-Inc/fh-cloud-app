@@ -136,7 +136,7 @@ export class VehicleDashCamTrackerComponent implements OnInit {
   private extractQueryParams() {
     this.route.queryParams
       .subscribe(params => {
-        console.log(params);
+
         this.vehicleId = params.vehicle;
       }
       );
@@ -175,7 +175,7 @@ export class VehicleDashCamTrackerComponent implements OnInit {
         this.isOnline = true;
         this.deviceDetails = message.payload;
         this.messages.push(message);
-        console.log(this.messages);
+
         if (this.messages.length === 1) {
           this.messageService.add({ severity: 'success', summary: 'Vehicle is online.', });
         }

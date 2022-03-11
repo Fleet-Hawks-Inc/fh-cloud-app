@@ -622,7 +622,7 @@ export class VehicleDetailComponent implements OnInit {
                 })
             } else if (value == 'loan') {
                 this.lDocs = [];
-                console.log('loan')
+
                 this.uploadedDocs = result.Attributes.loanDocs;
                 this.existingDocs = result.Attributes.loanDocs;
                 result.Attributes.loanDocs.map((x) => {

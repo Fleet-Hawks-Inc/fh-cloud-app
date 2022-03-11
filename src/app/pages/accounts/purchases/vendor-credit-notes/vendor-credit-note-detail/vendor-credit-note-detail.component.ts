@@ -50,7 +50,6 @@ export class VendorCreditNoteDetailComponent implements OnInit {
       .subscribe((res) => {
         let result = res[0];
         this.purOrder = result.purOrder;
-        console.log("purOrder", this.purOrder);
         this.currency = result.currency;
         this.crRef = result.crRef;
         this.txnDate = result.txnDate;
