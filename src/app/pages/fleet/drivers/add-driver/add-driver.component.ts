@@ -1101,44 +1101,44 @@ export class AddDriverComponent
       .toPromise();
     // .subscribe(async (result: any) => {
     result = result.Items[0];
-    // this.fetchLicStates(result.licenceDetails.issuedCountry);
-    // this.driverData.address = result.address;
-    // if (result.address !== undefined) {
-    //   for (let a = 0; a < this.driverData.address.length; a++) {
-    //     if (this.driverData.address[a].manual) {
-    //       this.driverData.address[a].isSuggest = false;
-    //     } else {
-    //       this.driverData.address[a].isSuggest = true;
-    //     }
-    //     const countryCode = this.driverData.address[a].countryCode;
-    //     const stateCode = this.driverData.address[a].stateCode;
-    //     this.fetchStates(countryCode, a);
-    //     if (
-    //       countryCode !== "" &&
-    //       countryCode !== null &&
-    //       stateCode !== "" &&
-    //       stateCode !== null
-    //     ) {
-    //       this.fetchCities(countryCode, stateCode, a);
-    //     }
-    //   }
-    // }
-    // if (result.corporationType === "owner_operator") {
-    //   // this.listService.fetchOwnerOperators();
-    //   // this.ownerOperators = this.listService.ownerOperatorList;
+    this.fetchLicStates(result.licenceDetails.issuedCountry);
+    this.driverData.address = result.address;
+    if (result.address !== undefined) {
+      for (let a = 0; a < this.driverData.address.length; a++) {
+        if (this.driverData.address[a].manual) {
+          this.driverData.address[a].isSuggest = false;
+        } else {
+          this.driverData.address[a].isSuggest = true;
+        }
+        const countryCode = this.driverData.address[a].countryCode;
+        const stateCode = this.driverData.address[a].stateCode;
+        this.fetchStates(countryCode, a);
+        if (
+          countryCode !== "" &&
+          countryCode !== null &&
+          stateCode !== "" &&
+          stateCode !== null
+        ) {
+          this.fetchCities(countryCode, stateCode, a);
+        }
+      }
+    }
+    if (result.corporationType === "owner_operator") {
+      // this.listService.fetchOwnerOperators();
+      // this.ownerOperators = this.listService.ownerOperatorList;
 
-    //   this.listService.fetchOwnerOperators();
-    //   let opList = new Array<any>();
-    //   this.getValidOperators(opList);
-    //   this.ownerOperators = opList;
-    // }
-    // if (result.corporationType === "company") {
-    //   this.listService.fetchVendors();
-    //   // this.vendors = this.listService.vendorList;
-    //   let vendorList = new Array<any>();
-    //   this.getValidVendors(vendorList);
-    //   this.vendors = vendorList;
-    // }
+      this.listService.fetchOwnerOperators();
+      let opList = new Array<any>();
+      this.getValidOperators(opList);
+      this.ownerOperators = opList;
+    }
+    if (result.corporationType === "company") {
+      this.listService.fetchVendors();
+      // this.vendors = this.listService.vendorList;
+      let vendorList = new Array<any>();
+      this.getValidVendors(vendorList);
+      this.vendors = vendorList;
+    }
     this.driverData.driverType = result.driverType;
     this.driverData.employeeContractorId = result.employeeContractorId;
     this.driverData.corporationType = result.corporationType;
