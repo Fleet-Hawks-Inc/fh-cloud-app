@@ -2,36 +2,61 @@
   <div class="modal-content">
     <div class="modal-header">
       <h4 class="modal-title">Payment</h4>
-      <button type="button" class="close" (click)="modal.dismiss()">&times;</button>
+      <button type="button" class="close" (click)="modal.dismiss()">
+        &times;
+      </button>
     </div>
     <form>
       <div class="modal-body">
         <!-- driver pdf -->
-        <section class="cheque-wrapper" id="driver_pay_pdf"
-          *ngIf="paymentData.paymentTo === 'driver' || paymentData.paymentTo === 'employee'">
-          <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <section
+          class="cheque-wrapper"
+          id="driver_pay_pdf"
+          *ngIf="
+            paymentData.paymentTo === 'driver' ||
+            paymentData.paymentTo === 'employee'
+          "
+        >
+          <table
+            width="90%"
+            border="0"
+            align="center"
+            cellpadding="0"
+            cellspacing="0"
+          >
             <tbody>
               <tr>
                 <td colspan="2">&nbsp;</td>
               </tr>
               <tr>
                 <td>
-                  <h1 style="
-                        font-size: 22px;
-                        font-weight: 700;
-                        margin-bottom: 1px;
-                        margin-top: 1px;
-                      " class="text-dark">
+                  <h1
+                    style="
+                      font-size: 22px;
+                      font-weight: 700;
+                      margin-bottom: 1px;
+                      margin-top: 1px;
+                    "
+                    class="text-dark"
+                  >
                     {{ pdfTitle }}
                   </h1>
                 </td>
                 <td align="right">
-                  <img crossorigin="anonymous" *ngIf="companyLogo" [src]="companyLogo" alt="logo"
-                    style="max-width: 100px;">
-                  <p *ngIf="tagLine" class="mb-0 text-dark" style="font-size: 18px;
-                          margin-top: 10px;
-                          font-weight: 600;">{{ tagLine }}</p>
-
+                  <img
+                    crossorigin="anonymous"
+                    *ngIf="companyLogo"
+                    [src]="companyLogo"
+                    alt="logo"
+                    style="max-width: 100px"
+                  />
+                  <p
+                    *ngIf="tagLine"
+                    class="mb-0 text-dark"
+                    style="font-size: 18px; margin-top: 10px; font-weight: 600"
+                  >
+                    {{ tagLine }}
+                  </p>
                 </td>
               </tr>
               <tr>
@@ -43,60 +68,88 @@
               </tr>
               <tr>
                 <td width="50%" valign="top">
-                  <h2 style="
-                        font-size: 18px;
-                        margin-top: 1px;
-                        font-weight: 600;
-                        margin-bottom: 1px;
-                      " class="text-dark mb-0 text-capitalize">
+                  <h2
+                    style="
+                      font-size: 18px;
+                      margin-top: 1px;
+                      font-weight: 600;
+                      margin-bottom: 1px;
+                    "
+                    class="text-dark mb-0 text-capitalize"
+                  >
                     Company: {{ companyName }}
                   </h2>
-                  <h2 style="
-                        font-size: 18px;
-                        margin-top: 1px;
-                        font-weight: 600;
-                      " class="text-dark mb-0 text-capitalize">
+                  <h2
+                    style="font-size: 18px; margin-top: 1px; font-weight: 600"
+                    class="text-dark mb-0 text-capitalize"
+                  >
                     {{ pdfDetails.name }}
                   </h2>
-                  <div class="text-dark" *ngIf="paymentData.paymentTo === 'driver'" style="    font-size: 12px;
-                  margin-bottom: 2px;">
-                    <strong>Payment Type:</strong> {{paymentInfo.pType}} <br>
-                    <div class="text-dark" *ngIf="paymentInfo.pType === 'Pay Per Mile'">
-                      <strong>Loaded Miles: </strong>{{paymentInfo.lMiles}} {{currency}}, <span
-                        class="ml-2"><strong>Team
-                          Loaded Miles:</strong>
-                        {{paymentInfo.lMileTeam}} {{currency}}</span><br>
-                      <strong>Empty Miles:</strong> {{paymentInfo.eMiles}} {{currency}}, <span class="ml-2"><strong>Team
-                          Empty Miles:</strong>
-                        {{paymentInfo.eMileTeam}} {{currency}}</span>
-
+                  <div
+                    class="text-dark"
+                    *ngIf="paymentData.paymentTo === 'driver'"
+                    style="font-size: 12px; margin-bottom: 2px"
+                  >
+                    <strong>Payment Type:</strong> {{ paymentInfo.pType }}
+                    <br />
+                    <div
+                      class="text-dark"
+                      *ngIf="paymentInfo.pType === 'Pay Per Mile'"
+                    >
+                      <strong>Loaded Miles: </strong>{{ paymentInfo.lMiles }}
+                      {{ currency }},
+                      <span class="ml-2"
+                        ><strong>Team Loaded Miles:</strong>
+                        {{ paymentInfo.lMileTeam }} {{ currency }}</span
+                      ><br />
+                      <strong>Empty Miles:</strong> {{ paymentInfo.eMiles }}
+                      {{ currency }},
+                      <span class="ml-2"
+                        ><strong>Team Empty Miles:</strong>
+                        {{ paymentInfo.eMileTeam }} {{ currency }}</span
+                      >
                     </div>
                   </div>
-                  <p class="text-dark" style="font-size: 12px; margin-bottom: 2px">
-                    <strong>Address:</strong> {{ pdfDetails.address ? pdfDetails.address : 'NA' }}<br />
+                  <p
+                    class="text-dark"
+                    style="font-size: 12px; margin-bottom: 2px"
+                  >
+                    <strong>Address:</strong>
+                    {{ pdfDetails.address ? pdfDetails.address : "NA" }}<br />
                     <strong>Phone:</strong> {{ pdfDetails.phone }}<br />
                     <strong>Email:</strong> {{ pdfDetails.email }}
                   </p>
                 </td>
                 <td valign="top">
-                  <table width="80%" border="0" align="right" cellpadding="0" cellspacing="0">
+                  <table
+                    width="80%"
+                    border="0"
+                    align="right"
+                    cellpadding="0"
+                    cellspacing="0"
+                  >
                     <tbody>
                       <tr>
                         <td align="right">
-                          <h2 class="text-dark mb-0" style="
-                                font-size: 18px;
-                                font-weight: 600;
-                                margin-top: 1px;
-                                margin-bottom: 1px;
-                              ">
+                          <h2
+                            class="text-dark mb-0"
+                            style="
+                              font-size: 18px;
+                              font-weight: 600;
+                              margin-top: 1px;
+                              margin-bottom: 1px;
+                            "
+                          >
                             User ID: {{ pdfDetails.userID }}
                           </h2>
-
                         </td>
                       </tr>
                       <tr>
                         <td align="right">
-                          <p class="text-dark" style="font-size: 12px; margin-bottom: 2px">
+                          <p
+                            class="text-dark"
+                            style="font-size: 12px; margin-bottom: 2px"
+                          >
                             <strong>Status:</strong> {{ payStatus }}
                           </p>
                         </td>
@@ -113,7 +166,12 @@
                 </tr> -->
               <tr>
                 <td colspan="2" valign="top">
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <table
+                    width="100%"
+                    border="0"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
                     <tbody>
                       <tr>
                         <td width="30%">
@@ -121,11 +179,14 @@
                             <tbody>
                               <tr>
                                 <td>
-                                  <p class="text-dark" style="
-                                        font-size: 12px;
-                                        margin-bottom: 4px;
-                                        margin-top: 4px;
-                                      ">
+                                  <p
+                                    class="text-dark"
+                                    style="
+                                      font-size: 12px;
+                                      margin-bottom: 4px;
+                                      margin-top: 4px;
+                                    "
+                                  >
                                     <strong>Payment#:</strong>
                                     {{ pdfDetails.paymentNo }}
                                   </p>
@@ -139,13 +200,16 @@
                             <tbody>
                               <tr>
                                 <td>
-                                  <p class="text-dark" style="
-                                        font-size: 12px;
-                                        margin-bottom: 4px;
-                                        margin-top: 4px;
-                                      ">
+                                  <p
+                                    class="text-dark"
+                                    style="
+                                      font-size: 12px;
+                                      margin-bottom: 4px;
+                                      margin-top: 4px;
+                                    "
+                                  >
                                     <strong>Pay Period:</strong>
-                                    {{ payPeriod ? payPeriod : 'NA'}}
+                                    {{ payPeriod ? payPeriod : "NA" }}
                                   </p>
                                 </td>
                               </tr>
@@ -153,15 +217,23 @@
                           </table>
                         </td>
                         <td width="20%">
-                          <table border="0" align="right" cellpadding="0" cellspacing="0">
+                          <table
+                            border="0"
+                            align="right"
+                            cellpadding="0"
+                            cellspacing="0"
+                          >
                             <tbody>
                               <tr>
                                 <td>
-                                  <p class="text-dark" style="
-                                        font-size: 12px;
-                                        margin-bottom: 4px;
-                                        margin-top: 4px;
-                                      ">
+                                  <p
+                                    class="text-dark"
+                                    style="
+                                      font-size: 12px;
+                                      margin-bottom: 4px;
+                                      margin-top: 4px;
+                                    "
+                                  >
                                     <strong>Year to Date:</strong>
                                     {{ pdfDetails.payYear }}
                                   </p>
@@ -180,9 +252,15 @@
                 </tr> -->
               <tr>
                 <td colspan="2">
-                  <table width="100%" border="1" bordercolor="#adadad" cellspacing="0" cellpadding="0">
+                  <table
+                    width="100%"
+                    border="1"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
                     <tbody>
-                      <tr bgcolor="#f3f3f3">
+                      <tr>
                         <td width="60%" class="pl-3 pt-2">
                           <p class="text-3 font-weight-bold text-dark mb-2">
                             Description
@@ -201,22 +279,18 @@
                       </tr>
                       <tr>
                         <td class="pl-3 pt-2">
-                          <p class="text-3 text-dark mb-2">
-                            Regular Earnings
-                          </p>
+                          <p class="text-3 text-dark mb-2">Regular Earnings</p>
                         </td>
                         <td class="pr-3 pt-2 text-right">
                           <p class="text-3 text-dark mb-2">
                             {{
-                            this.paymentData.settledAmount | number: "1.2-2"
+                              this.paymentData.settledAmount | number: "1.2-2"
                             }}
                           </p>
                         </td>
                         <td class="pr-3 pt-2 text-right">
                           <p class="text-3 text-dark mb-2">
-                            {{
-                            this.annualResult.regEarning | number: "1.2-2"
-                            }}
+                            {{ this.annualResult.regEarning | number: "1.2-2" }}
                           </p>
                         </td>
                       </tr>
@@ -244,21 +318,19 @@
                         </tr> -->
                       <tr>
                         <td class="pl-3 pt-2">
-                          <p class="text-3 text-dark mb-2">
-                            Vacation Pay Paid
-                          </p>
+                          <p class="text-3 text-dark mb-2">Vacation Pay Paid</p>
                         </td>
                         <td class="pr-3 pt-2 text-right">
                           <p class="text-3 text-dark mb-2">
                             {{
-                            this.paymentData.vacPayAmount | number: "1.2-2"
+                              this.paymentData.vacPayAmount | number: "1.2-2"
                             }}
                           </p>
                         </td>
                         <td class="pr-3 pt-2 text-right">
                           <p class="text-3 text-dark mb-2">
                             {{
-                            this.annualResult.vacationPay | number: "1.2-2"
+                              this.annualResult.vacationPay | number: "1.2-2"
                             }}
                           </p>
                         </td>
@@ -300,7 +372,6 @@
                         </td>
                       </tr>
 
-
                       <tr *ngFor="let ded of paymentData.advData">
                         <td class="pl-3 pt-2">
                           <p class="text-3 text-dark mb-2 text-capitalize">
@@ -317,15 +388,21 @@
                         </td>
                       </tr>
                       <tr class="text-dark">
-                        <td class="pl-3 pr-3 pt-2 text-right pb-2"><b>Sub-Total</b></td>
-                        <td class="pr-3 pt-2 text-right pb-2"> {{subTotal}}</td>
+                        <td class="pl-3 pr-3 pt-2 text-right pb-2">
+                          <b>Sub-Total</b>
+                        </td>
+                        <td class="pr-3 pt-2 text-right pb-2">
+                          {{ subTotal }}
+                        </td>
                         <td class="pr-3 pt-2 text-right">&nbsp;</td>
                       </tr>
-                      <tr *ngIf="
-                            addCharges.length > 0 ||
-                            dedCharges.length > 0 ||
-                            paymentData.advData.length > 0
-                          ">
+                      <tr
+                        *ngIf="
+                          addCharges.length > 0 ||
+                          dedCharges.length > 0 ||
+                          paymentData.advData.length > 0
+                        "
+                      >
                         <td class="pl-3 pt-2">&nbsp;</td>
                         <td class="pr-3 pt-2 text-right">&nbsp;</td>
                         <td class="pr-3 pt-2 text-right">&nbsp;</td>
@@ -336,9 +413,7 @@
                         </td>
                         <td class="pr-3 pt-2 text-right">
                           <p class="text-3 text-dark mb-2">
-                            {{
-                            this.paymentData.taxdata.ei | number: "1.2-2"
-                            }}
+                            {{ this.paymentData.taxdata.ei | number: "1.2-2" }}
                           </p>
                         </td>
                         <td class="pr-3 pt-2 text-right">
@@ -349,15 +424,11 @@
                       </tr>
                       <tr>
                         <td class="pl-3 pt-2">
-                          <p class="text-3 text-dark mb-2">
-                            CPP Contributions
-                          </p>
+                          <p class="text-3 text-dark mb-2">CPP Contributions</p>
                         </td>
                         <td class="pr-3 pt-2 text-right">
                           <p class="text-3 text-dark mb-2">
-                            {{
-                            this.paymentData.taxdata.cpp | number: "1.2-2"
-                            }}
+                            {{ this.paymentData.taxdata.cpp | number: "1.2-2" }}
                           </p>
                         </td>
                         <td class="pr-3 pt-2 text-right">
@@ -377,9 +448,7 @@
                         </td>
                         <td class="pr-3 pt-2 text-right">
                           <p class="text-3 text-dark mb-2">
-                            {{
-                            this.annualResult.incomeTax | number: "1.2-2"
-                            }}
+                            {{ this.annualResult.incomeTax | number: "1.2-2" }}
                           </p>
                         </td>
                       </tr>
@@ -392,16 +461,14 @@
                         <td class="pl-3 pt-2">
                           <p class="text-3 text-dark font-weight-bold mb-2">
                             Net Pay {{ paymentData.payMode }} #{{
-                            paymentData.payModeNo
+                              paymentData.payModeNo
                             }}
                             {{ paymentData.payModeDate | date: "dd-MM-yyyy" }}
                           </p>
                         </td>
                         <td class="pr-3 pt-2 text-right">
                           <p class="text-3 font-weight-bold text-dark mb-2">
-                            {{
-                            this.paymentData.finalAmount | number: "1.2-2"
-                            }}
+                            {{ this.paymentData.finalAmount | number: "1.2-2" }}
                           </p>
                         </td>
                         <td class="pr-3 pt-2 text-right">
@@ -418,15 +485,13 @@
                         </td>
                         <td class="pr-3 pt-2 text-right">
                           <p class="text-3 font-weight-bold text-dark mb-2">
-                            {{
-                            this.paymentData.eiInsurable | number: "1.2-2"
-                            }}
+                            {{ this.paymentData.eiInsurable | number: "1.2-2" }}
                           </p>
                         </td>
                         <td class="pr-3 pt-2 text-right">
                           <p class="text-3 font-weight-bold text-dark mb-2">
                             {{
-                            this.annualResult.eiInsurable | number: "1.2-2"
+                              this.annualResult.eiInsurable | number: "1.2-2"
                             }}
                           </p>
                         </td>
@@ -440,7 +505,13 @@
               </tr>
               <tr *ngFor="let data of paymentTrips">
                 <td colspan="2">
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 15px">
+                  <table
+                    width="100%"
+                    border="0"
+                    cellspacing="0"
+                    cellpadding="0"
+                    style="margin-top: 15px"
+                  >
                     <tbody>
                       <tr>
                         <td>
@@ -457,7 +528,12 @@
                           </table>
                         </td>
                         <td width="50%">
-                          <table border="0" align="right" cellpadding="0" cellspacing="0">
+                          <table
+                            border="0"
+                            align="right"
+                            cellpadding="0"
+                            cellspacing="0"
+                          >
                             <tbody>
                               <tr>
                                 <td>
@@ -473,9 +549,15 @@
                       </tr>
                     </tbody>
                   </table>
-                  <table width="100%" border="1" bordercolor="#adadad" cellspacing="0" cellpadding="0">
+                  <table
+                    width="100%"
+                    border="1"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
                     <tbody>
-                      <tr bgcolor="#f3f3f3">
+                      <tr>
                         <td width="20%" class="pl-3 pt-2">
                           <p class="text-3 font-weight-bold text-dark mb-2">
                             Location Type
@@ -509,10 +591,16 @@
                       </tr>
                       <tr>
                         <td colspan="2" class="pl-3 pt-2">
-                          <p class="text-3 text-dark mb-2"><strong>Total</strong></p>
+                          <p class="text-3 text-dark mb-2">
+                            <strong>Total</strong>
+                          </p>
                         </td>
                         <td class="pl-3 pt-2">
-                          <p class="text-3 text-dark mb-2"><strong>{{data.totalMiles | number: "1.2-2"}}</strong></p>
+                          <p class="text-3 text-dark mb-2">
+                            <strong>{{
+                              data.totalMiles | number: "1.2-2"
+                            }}</strong>
+                          </p>
                         </td>
                       </tr>
                     </tbody>
@@ -525,20 +613,32 @@
               <tr>
                 <td></td>
                 <td class="pl-3 pt-2">
-                  <p class="text-3 text-dark mb-2 text-right"><strong>Grand Total: {{grandTotal | number:
-                      "1.2-2"}}</strong></p>
+                  <p class="text-3 text-dark mb-2 text-right">
+                    <strong
+                      >Grand Total: {{ grandTotal | number: "1.2-2" }}</strong
+                    >
+                  </p>
                 </td>
               </tr>
               <tr>
                 <td colspan="2">
-                  <table border="0" align="center" cellpadding="0" cellspacing="0">
+                  <table
+                    border="0"
+                    align="center"
+                    cellpadding="0"
+                    cellspacing="0"
+                  >
                     <tbody>
                       <tr>
                         <td align="center">
                           <h2 style="font-size: 13px">Powered By</h2>
-                          <img alt="Fleet Hawks
-                                                              Inc." src="assets/img/logo.png" width="207"
-                            height="28" />
+                          <img
+                            alt="Fleet Hawks
+                                                              Inc."
+                            src="assets/img/logo.png"
+                            width="207"
+                            height="28"
+                          />
                         </td>
                       </tr>
                     </tbody>
@@ -550,9 +650,21 @@
         </section>
 
         <!-- owner operator pdf -->
-        <section class="cheque-wrapper" id="ownerOperator_pay_pdf"
-          *ngIf="this.paymentData.paymentTo === 'owner_operator' || this.paymentData.paymentTo === 'carrier'">
-          <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <section
+          class="cheque-wrapper"
+          id="ownerOperator_pay_pdf"
+          *ngIf="
+            this.paymentData.paymentTo === 'owner_operator' ||
+            this.paymentData.paymentTo === 'carrier'
+          "
+        >
+          <table
+            width="90%"
+            border="0"
+            align="center"
+            cellpadding="0"
+            cellspacing="0"
+          >
             <tbody>
               <tr>
                 <td colspan="2" align="center">
@@ -570,12 +682,9 @@
               </tr>
               <tr>
                 <td width="50%" valign="top">
-                  <h2 class="
-                        text-dark
-                        mb-0
-                        font-weight-bold
-                        text-6 text-capitalize
-                      ">
+                  <h2
+                    class="text-dark mb-0 font-weight-bold text-6 text-capitalize"
+                  >
                     {{ pdfDetails.name }}
                   </h2>
                   <p class="text-dark">
@@ -587,7 +696,13 @@
                   </p>
                 </td>
                 <td valign="top">
-                  <table width="80%" border="0" align="right" cellpadding="0" cellspacing="0">
+                  <table
+                    width="80%"
+                    border="0"
+                    align="right"
+                    cellpadding="0"
+                    cellspacing="0"
+                  >
                     <tbody>
                       <tr>
                         <td align="right">
@@ -610,21 +725,29 @@
               </tr>
               <tr valign="top">
                 <td colspan="2">
-                  <table width="100%" border="0" bordercolor="#adadad" cellspacing="0" cellpadding="0">
+                  <table
+                    width="100%"
+                    border="0"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
                     <tbody>
                       <tr>
-                        <td width="75%" bgcolor="#f3f3f3" class="pr-3 pt-2 text-right">
+                        <td
+                          width="75%"
+                          bgcolor="#f3f3f3"
+                          class="pr-3 pt-2 text-right"
+                        >
                           <p class="text-3 font-weight-bold text-dark mb-2">
                             Opening Balance
                           </p>
                         </td>
-                        <td width="8%" bgcolor="#f3f3f3" class="
-                              pr-3
-                              pt-2
-                              text-dark
-                              font-weight-bold
-                              text-right
-                            ">
+                        <td
+                          width="8%"
+                          bgcolor="#f3f3f3"
+                          class="pr-3 pt-2 text-dark font-weight-bold text-right"
+                        >
                           {{ paymentData.totalAmount | number: "1.2-2" }}
                         </td>
                       </tr>
@@ -634,14 +757,18 @@
               </tr>
               <tr valign="top">
                 <td colspan="2">
-                  <h2 class="text-dark font-weight-bold text-4">
-                    Trip Detail
-                  </h2>
+                  <h2 class="text-dark font-weight-bold text-4">Trip Detail</h2>
                 </td>
               </tr>
               <tr valign="top" *ngFor="let data of paymentTrips">
                 <td colspan="2">
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 25px">
+                  <table
+                    width="100%"
+                    border="0"
+                    cellspacing="0"
+                    cellpadding="0"
+                    style="margin-top: 25px"
+                  >
                     <tbody>
                       <tr>
                         <td>
@@ -658,7 +785,12 @@
                           </table>
                         </td>
                         <td width="50%">
-                          <table border="0" align="right" cellpadding="0" cellspacing="0">
+                          <table
+                            border="0"
+                            align="right"
+                            cellpadding="0"
+                            cellspacing="0"
+                          >
                             <tbody>
                               <tr>
                                 <td>
@@ -674,7 +806,13 @@
                       </tr>
                     </tbody>
                   </table>
-                  <table width="100%" border="1" bordercolor="#adadad" cellspacing="0" cellpadding="0">
+                  <table
+                    width="100%"
+                    border="1"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
                     <tbody>
                       <tr bgcolor="#f3f3f3">
                         <td width="20%" class="pl-3 pt-2">
@@ -710,10 +848,16 @@
                       </tr>
                       <tr>
                         <td colspan="2" class="pl-3 pt-2">
-                          <p class="text-3 text-dark mb-2"><strong>Total</strong></p>
+                          <p class="text-3 text-dark mb-2">
+                            <strong>Total</strong>
+                          </p>
                         </td>
                         <td class="pl-3 pt-2">
-                          <p class="text-3 text-dark mb-2"><strong>{{data.totalMiles | number: "1.2-2"}}</strong></p>
+                          <p class="text-3 text-dark mb-2">
+                            <strong>{{
+                              data.totalMiles | number: "1.2-2"
+                            }}</strong>
+                          </p>
                         </td>
                       </tr>
                     </tbody>
@@ -722,14 +866,18 @@
               </tr>
               <tr valign="top" *ngIf="fueldata.length > 0">
                 <td colspan="2">
-                  <h2 class="text-dark font-weight-bold text-4">
-                    Fuel Detail
-                  </h2>
+                  <h2 class="text-dark font-weight-bold text-4">Fuel Detail</h2>
                 </td>
               </tr>
               <tr *ngIf="fueldata.length > 0">
                 <td colspan="2">
-                  <table width="100%" border="1" bordercolor="#adadad" cellspacing="0" cellpadding="0">
+                  <table
+                    width="100%"
+                    border="1"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
                     <tbody>
                       <tr bgcolor="#f3f3f3">
                         <td width="15%" class="pl-3 pt-2">
@@ -790,11 +938,14 @@
               </tr>
               <tr *ngIf="fueldata.length > 0" class="text-right">
                 <td colspan="2">
-                  <p class="mt-2 mb-0  text-dark"><b> Fuel Addition: {{ settlements[0].fuelAdd | number: "1.2-2" }} <br>
-                      Fuel Deduction: {{ settlements[0].fuelDed | number: "1.2-2" }}</b>
+                  <p class="mt-2 mb-0 text-dark">
+                    <b>
+                      Fuel Addition:
+                      {{ settlements[0].fuelAdd | number: "1.2-2" }} <br />
+                      Fuel Deduction:
+                      {{ settlements[0].fuelDed | number: "1.2-2" }}</b
+                    >
                   </p>
-
-
                 </td>
               </tr>
               <tr *ngIf="fueldata.length > 0">
@@ -810,7 +961,13 @@
               </tr>
               <tr *ngIf="paymentData.advData.length > 0">
                 <td colspan="2">
-                  <table width="100%" border="1" bordercolor="#adadad" cellspacing="0" cellpadding="0">
+                  <table
+                    width="100%"
+                    border="1"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
                     <tbody>
                       <tr bgcolor="#f3f3f3">
                         <td class="pl-3 pt-2">
@@ -863,24 +1020,36 @@
               </tr>
               <tr *ngIf="paymentData.advData.length > 0">
                 <td colspan="2">
-                  <table width="100%" border="0" bordercolor="#adadad" cellspacing="0" cellpadding="0">
+                  <table
+                    width="100%"
+                    border="0"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
                     <tbody>
                       <tr>
-                        <td width="75%" bgcolor="#f3f3f3" class="pr-3 pt-2 text-right">
+                        <td
+                          width="75%"
+                          bgcolor="#f3f3f3"
+                          class="pr-3 pt-2 text-right"
+                        >
                           <p class="text-3 font-weight-bold text-dark mb-2">
                             Total Advance deducted
                           </p>
                         </td>
-                        <td width="7%" bgcolor="#f3f3f3" class="pr-3 pt-2 text-right">
+                        <td
+                          width="7%"
+                          bgcolor="#f3f3f3"
+                          class="pr-3 pt-2 text-right"
+                        >
                           <!-- <p class="text-4 text-dark mb-2">0.00</p> -->
                         </td>
-                        <td width="8%" bgcolor="#f3f3f3" class="
-                              pr-3
-                              pt-2
-                              text-dark
-                              font-weight-bold
-                              text-right
-                            ">
+                        <td
+                          width="8%"
+                          bgcolor="#f3f3f3"
+                          class="pr-3 pt-2 text-dark font-weight-bold text-right"
+                        >
                           {{ paymentData.advance | number: "1.2-2" }}
                         </td>
                       </tr>
@@ -900,7 +1069,13 @@
               </tr>
               <tr *ngIf="addCharges.length > 0">
                 <td colspan="2">
-                  <table width="100%" border="1" bordercolor="#adadad" cellspacing="0" cellpadding="0">
+                  <table
+                    width="100%"
+                    border="1"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
                     <tbody>
                       <tr bgcolor="#f3f3f3">
                         <td class="pl-3 pt-2">
@@ -940,7 +1115,13 @@
               </tr>
               <tr *ngIf="dedCharges.length > 0">
                 <td colspan="2">
-                  <table width="100%" border="1" bordercolor="#adadad" cellspacing="0" cellpadding="0">
+                  <table
+                    width="100%"
+                    border="1"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
                     <tbody>
                       <tr bgcolor="#f3f3f3">
                         <td class="pl-3 pt-2">
@@ -975,24 +1156,36 @@
               </tr>
               <tr>
                 <td colspan="2">
-                  <table width="100%" border="0" bordercolor="#adadad" cellspacing="0" cellpadding="0">
+                  <table
+                    width="100%"
+                    border="0"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
                     <tbody>
                       <tr>
-                        <td width="75%" bgcolor="#f3f3f3" class="pr-3 pt-2 text-right">
+                        <td
+                          width="75%"
+                          bgcolor="#f3f3f3"
+                          class="pr-3 pt-2 text-right"
+                        >
                           <p class="text-3 font-weight-bold text-dark mb-2">
                             Gross Total
                           </p>
                         </td>
-                        <td width="7%" bgcolor="#f3f3f3" class="pr-3 pt-2 text-right">
+                        <td
+                          width="7%"
+                          bgcolor="#f3f3f3"
+                          class="pr-3 pt-2 text-right"
+                        >
                           <!-- <p class="text-4 text-dark mb-2">0.00</p> -->
                         </td>
-                        <td width="8%" bgcolor="#f3f3f3" class="
-                              pr-3
-                              pt-2
-                              text-dark
-                              font-weight-bold
-                              text-right
-                            ">
+                        <td
+                          width="8%"
+                          bgcolor="#f3f3f3"
+                          class="pr-3 pt-2 text-dark font-weight-bold text-right"
+                        >
                           {{ paymentData.finalAmount | number: "1.2-2" }}
                         </td>
                       </tr>
@@ -1008,7 +1201,11 @@
         <button type="button" class="btn btn-default" (click)="modal.dismiss()">
           Close
         </button>
-        <button type="button" class="btn btn-success" (click)="generatePaymentPDF()">
+        <button
+          type="button"
+          class="btn btn-success"
+          (click)="generatePaymentPDF()"
+        >
           Download PDF
         </button>
       </div>
