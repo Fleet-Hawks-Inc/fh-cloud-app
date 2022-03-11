@@ -34,20 +34,18 @@ export class VendorPaymentDetailComponent implements OnInit {
   vendorName = "";
   paymentID;
   bills = {};
-  accountsObjects = [];
 
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.paymentID = this.route.snapshot.params["paymentID"];
     await this.fetchPayments();
     this.fetchVendor();
     this.fetchBills();
-    this.fetchAccountsByIDs();
   }
 
   async fetchPayments() {
@@ -74,11 +72,4 @@ export class VendorPaymentDetailComponent implements OnInit {
     this.bills = result;
   }
 
-  fetchAccountsByIDs() {
-    this.accountService
-      .getData("chartAc/get/all/list")
-      .subscribe((result: any) => {
-        this.accountsObjects = result;
-      });
-  }
 }
