@@ -4315,3 +4315,7 @@ input:checked + .sliderbtn:before {
 .document--main .modal-dialog {
   max-width: 600px !important;
 }
+
+.import-model--main .modal-dialog {
+  max-width: 700px !important;
+}

@@ -170,7 +170,7 @@ export class AddIncidentComponent implements OnInit {
   }
 
   fetchTrips() {
-    this.apiService.getData("trips/safety/active").subscribe((result: any) => {
+    this.apiService.getData("common/trips/safety/active").subscribe((result: any) => {
       this.trips = result.Items;
     });
   }
