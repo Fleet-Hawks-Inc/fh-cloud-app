@@ -8,7 +8,7 @@ import { VehicleDashCamTrackerComponent } from "./vehicle-dash-cam-tracker/vehic
 
 const routes: Routes = [
     {
-        path: "asset-tracker",
+        path: "asset-tracker/:assetId",
         component: AssetTrackerComponent,
         data: { title: "Asset Tracking" },
     },

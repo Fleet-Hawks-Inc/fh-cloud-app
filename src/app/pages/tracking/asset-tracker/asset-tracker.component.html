@@ -11,14 +11,35 @@
             </header>
             <section class="m-2">
                 <div class="row mb-3 bg-white">
-                    <div class="col-lg-4">
-                        <div class=" p-3 text-dark">
-
-                        </div>
+                    <div class="col-lg-4 p-3">
+                        <p-table [columns]="cols" [paginator]="true" [rows]="10" [value]="locationData" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [loading]="loading" responsiveLayout="scroll">
+                            <ng-template pTemplate="header" let-columns>
+                                <tr>
+                                    <th *ngFor="let col of columns">
+                                        {{col.header}}
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                                <tr>
+                                    <td *ngFor="let col of columns">
+                                        {{rowData[col.field]}}
+                                    </td>
+                                    <td>
+                                        <button type="button" class="p-button-rounded p-button-text" pButton pRipple icon="pi pi-map-marker" (click)="onRowSelect(rowData)"></button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
                     </div>
                     <div class="col-lg-8">
-                        <div class=" p-3 text-dark">
-                            <!-- <p-gmap [options]="options" [overlays]="overlays" [style]="{'width':'100%','height':'50vh'}"></p-gmap> -->
+                        <div class="p-3 text-dark">
+                            <google-map [width]="width" [height]="height" [options]="mapOptions" *ngIf="!loading">
+                                <map-traffic-layer [autoRefresh]="true"></map-traffic-layer>
+                                <map-marker *ngFor="let markerPosition of markerPositions" [position]="markerPosition" [options]="markerOptions"></map-marker>
+
+                            </google-map>
                         </div>
                     </div>
                 </div>

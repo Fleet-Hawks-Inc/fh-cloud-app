@@ -9,9 +9,9 @@ import { VehicleDashCamTrackerComponent } from './vehicle-dash-cam-tracker/vehic
 import { DialogModule } from 'primeng/dialog';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { NgSelectModule } from '@ng-select/ng-select';
-
+import { TableModule } from 'primeng/table';
 import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
-
+import { CalendarModule } from 'primeng/calendar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ClipboardModule } from 'ngx-clipboard';
@@ -31,7 +31,9 @@ import { ClipboardModule } from 'ngx-clipboard';
     ReactiveFormsModule,
     FormsModule,
     ClipboardModule,
-    NgSelectModule
+    NgSelectModule,
+    TableModule,
+    CalendarModule
   ]
 })
 export class TrackingModule { }

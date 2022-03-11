@@ -1,17 +1,15 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pl-0 pt-0 pr-0">
-      <header class="page-header pr19 pl7">
-        <form class="form-horizontal" method="get">
-          <div class="row" style="padding-top: 10px">
-            <div class="col-md-12 col-lg-12 text-right pr-1">
-              <div class="btn-group flex-wrap"></div>
-              <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data"
-              class="btn btn-success btn-sm modal-with-form mr-2">
-              <i class="fas fa-sync"></i></a>
-            
-              <a routerLink="/manage/devices/add" class="btn btn-success btn-sm"
-                ><i class="fas fa-plus"></i> Add Device</a
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-0 pt-0 pr-0">
+            <header class="page-header pr19 pl7">
+                <form class="form-horizontal" method="get">
+                    <div class="row" style="padding-top: 10px">
+                        <div class="col-md-12 col-lg-12 text-right pr-1">
+                            <div class="btn-group flex-wrap"></div>
+                            <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
+                                <i class="fas fa-sync"></i></a>
+
+                            <a routerLink="/manage/devices/add" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Device</a
               >
             </div>
           </div>
@@ -113,38 +111,29 @@
                             else elseBlock
                           "
                         >
-                       <a  style="color: blue; text-decoration: none;" target="_blank" routerLink="/fleet/vehicles/detail/{{device.vehicle.vehicleID}}">  {{ device.vehicle.vehicleIdentification }}</a> 
-                        </td>
-                        <ng-template #elseBlock
-                          ><td>
-                            
-                            <a  style="color: blue; text-decoration: none;" target="_blank" routerLink="/fleet/assets/detail/{{device.asset.assetID}}">  {{  device.asset.assetIdentification }}</a> 
-                            
-                          </td></ng-template
-                        >
-                        <td>
-                          <span class="badge badge-success text-3">{{
+                       <a  style="color: blue; text-decoration: none;" target="_blank" routerLink="/fleet/vehicles/detail/{{device.vehicle.vehicleID}}">  {{ device.vehicle.vehicleIdentification }}</a>
+                            </td>
+                            <ng-template #elseBlock>
+                                <td>
+
+                                    <a style="color: blue; text-decoration: none;" target="_blank" routerLink="/fleet/tracking/asset-tracker/{{device.asset.assetIdentification}}">  {{  device.asset.assetIdentification }}</a>
+
+                                </td>
+                            </ng-template>
+                            <td>
+                                <span class="badge badge-success text-3">{{
                             device.deviceStatus === true ? 'Active' : 'Inactive'
                           }}</span>
-                        </td>
-                        <td class="border-0">
-                          <div class="dropdown dropright">
-                            <button
-                              class="bg-transparent border-0"
-                              type="button"
-                              data-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                            >
+                            </td>
+                            <td class="border-0">
+                                <div class="dropdown dropright">
+                                    <button class="bg-transparent border-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <i class="fas fa-ellipsis-v"></i>
                             </button>
-                            <div class="dropdown-menu">
-                              <a
-                                class="dropdown-item"
-                                routerLink="/manage/devices/edit/{{
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" routerLink="/manage/devices/edit/{{
                                   device.deviceSerialNo.replace('#', '/')
-                                }}"
-                                >Edit</a
+                                }}">Edit</a
                               >
                               <a
                                 href="javascript:;"
