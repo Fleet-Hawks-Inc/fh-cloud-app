@@ -115,8 +115,8 @@
                                                 <td>{{item.vehicle}}</td>
                                                 <td>{{item.tripNo}}</td>
                                                 <td>{{item.orderName}}</td>
-                                                <td>{{item.dateCreated}}</td>
-                                                <td>{{item.totalAmount}}</td>
+                                                <td>{{item.dateCreated | date:"yyyy/MM/dd" }}</td>
+                                                <td>{{item.totalAmount }}</td>
                                                 <td>{{item.charges.freightFee.currency }}</td>
                                             </tr>
                                         </tbody>

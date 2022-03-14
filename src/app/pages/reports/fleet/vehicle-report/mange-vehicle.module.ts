@@ -79,6 +79,16 @@ const routes: Routes = [
     component: ProvinceSummaryComponent,
     data: { title: "Vehicle Province Summary Reports" },
   },
+  {
+    path: "revenue-list",
+    component: RevenueListComponent,
+    data: { title: "Vehicle Revenue Reports" },
+  },
+  {
+    path: "revenue-detail/:vehicleId",
+    component: RevenueDetailComponent,
+    data: { title: "Vehicle Revenue Detail Reports" },
+  },
 ];
 
 /**

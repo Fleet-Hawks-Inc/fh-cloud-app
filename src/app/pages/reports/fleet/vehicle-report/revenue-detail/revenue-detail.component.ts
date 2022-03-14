@@ -37,7 +37,7 @@ export class RevenueDetailComponent implements OnInit {
     this.vehicleId = this.route.snapshot.params[`vehicleId`];
     this.fetchRevenueData()
     this.fetchFuel()
-    // this.fetchVehicleName()
+    // this.fetchVehicleName()/
     // console.log(' this.vehicleId', this.vehicleId)
   }
   // fetchVehicleName() {
@@ -66,19 +66,14 @@ export class RevenueDetailComponent implements OnInit {
   // }
 
   fetchRevenueData() {
-    console.log(' this.lastItemSK', this.lastItemSK)
     this.apiService.getData(`vehicles/fetch/revenue/report?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
       this.allData = this.allData.concat(result.Items)
-      // console.log(' this.allData', this.allData)
       if (result.Items.length === 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND
       }
       if (result.LastEvaluatedKey !== undefined) {
-        console.log(' result.LastEvaluatedKey', result.LastEvaluatedKey)
-        console.log('  this.lastItemSK',  this.lastItemSK)
-        console.log('this.datee',this.datee)
-        this.lastItemSK = encodeURIComponent(result.Items.tripSK);
-        this.datee = encodeURIComponent(result.Items.dateCreated)
+        this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.tripSK);
+        this.datee = encodeURIComponent(result.LastEvaluatedKey.dateCreated)
       }
       else {
         this.lastItemSK = 'end';
@@ -86,16 +81,15 @@ export class RevenueDetailComponent implements OnInit {
       this.loaded = true;
     })
   }
-  onScroll() {
-    if (this.loaded) {
+  // onScroll() {
+  //   if (this.loaded) {
 
-      this.fetchRevenueData();
-      console.log('data99',this.fetchRevenueData())
-      // this.fetchFuel();
-      // this.fetchVehicleName();
-    }
-    this.loaded = false;
-  }
+  //     this.fetchRevenueData();
+  //     // this.fetchFuel();
+  //     // this.fetchVehicleName();
+  //   }
+  //   this.loaded = false;
+  // }
   searchFilter() {
     if (this.start != null && this.end != null) {
       if (this.start != null && this.end == null) {
