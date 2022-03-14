@@ -314,7 +314,7 @@ export class AddDriverComponent
   showUploadedPicModal = false;
   pageType = "add";
   groupsData: any = [];
-  sessionID:string;
+  sessionID: string;
 
   constructor(
     private apiService: ApiService,
@@ -333,7 +333,7 @@ export class AddDriverComponent
     private listService: ListService,
     private countryStateCity: CountryStateCityService,
     private dashboardUtilityService: DashboardUtilityService,
-    private routeMgmntService:RouteManagementServiceService
+    private routeMgmntService: RouteManagementServiceService
   ) {
     this.modalServiceOwn.triggerRedirect.next(false);
 
@@ -369,7 +369,7 @@ export class AddDriverComponent
       month: 12,
       day: 31,
     };
-    this.sessionID=this.routeMgmntService.driverUpdateSessionID;
+    this.sessionID = this.routeMgmntService.driverUpdateSessionID;
   }
   scrollError() {
     let errorList;
@@ -983,7 +983,7 @@ export class AddDriverComponent
             this.takeUntil$.next();
             this.takeUntil$.complete();
             this.spinner.hide();
-            this.router.navigateByUrl(`/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`);            
+            this.router.navigateByUrl(`/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`);
           },
         });
       } catch (error) {
@@ -1775,7 +1775,7 @@ export class AddDriverComponent
     this.onChangeHideErrors("email");
     this.submitDisabled = false;
   }
-  
+
   fetchGroupsList() {
     this.apiService.getData('groups/get/list/type?type=drivers').subscribe((result: any) => {
       this.groupsData = result;
