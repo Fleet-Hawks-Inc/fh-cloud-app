@@ -4,12 +4,8 @@
       <header class="page-header pr19 pl11">
         <form class="form-horizontal" method="get" name="form" id="form_">
           <div class="row" style="padding-top: 10px">
-            <div class="col-md-2 col-lg-2">
-              <div class="input-group input-group-sm mb-3">
-                <ng-select
-                  [(ngModel)]="unitID"
-                  name="unitID"
-                  style="width: 100%"
+            <div class="col-md-2 col-lg-2 pr-1">
+                <ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%"
                   placeholder="Search by vehicle"
                 >
                   <ng-option
@@ -18,7 +14,6 @@
                     >{{ data.vehicleIdentification }}
                   </ng-option>
                 </ng-select>
-              </div>
             </div>
             <!-- <div class="col-md-2 col-lg-2 pr-0 pl-2">
               <div class="input-group input-group-sm mb-3">
@@ -295,7 +290,7 @@
                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
               </label>
               <input (change)="selectDoc($event)" name="" id="uploadedDocs" type="file"
-                class="form-control form-control-file">
+                class="form-control-file">
               <span style="font-size: 12px;">
                 *Only .csv is accepted. The maximum
                 file size can be 15MB.</span>
@@ -346,7 +341,7 @@
                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
               </label>
               <input (change)="selectDoc($event)" name="" id="petroDocs" type="file"
-                class="form-control form-control-file">
+                class="form-control-file">
               <span style="font-size: 12px;">
                 *Only .csv is accepted. The maximum
                 file size can be 15MB.</span>

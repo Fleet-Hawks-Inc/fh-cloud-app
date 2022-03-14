@@ -315,10 +315,6 @@ export class TripDetailComponent implements OnInit {
 
         if (documents.length > 0) {
           documents.forEach((el) => {
-            if (
-              el.docType == "Bill of Lading" ||
-              el.docType == "Proof of Delivery"
-            ) {
               if (el.uploadedDocs.length > 0) {
                 el.uploadedDocs.forEach((element) => {
                   let name = element.storedName;
@@ -326,16 +322,16 @@ export class TripDetailComponent implements OnInit {
                   let obj = {};
                   if (ext == "jpg" || ext == "jpeg" || ext == "png") {
                     obj = {
-                      imgPath: `${ext.urlPath}`,
-                      docPath: `${ext.urlPath}`,
-                      displayName: element.displayName,
+                      imgPath: `${element.urlPath}`,
+                      docPath: `${element.urlPath}`,
+                      displayName: el.docType,
                       name: name,
                       ext: ext,
                     };
                   } else {
                     obj = {
                       imgPath: "assets/img/icon-pdf.png",
-                      docPath: `${ext.urlPath}`,
+                      docPath: `${element.urlPath}`,
                       displayName: element.displayName,
                       name: name,
                       ext: ext,
@@ -344,7 +340,6 @@ export class TripDetailComponent implements OnInit {
                   this.uploadedDocSrc.push(obj);
                 });
               }
-            }
           });
 
         }

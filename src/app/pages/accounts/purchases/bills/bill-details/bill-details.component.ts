@@ -100,7 +100,7 @@ export class BillDetailsComponent implements OnInit {
     private apiService: ApiService,
     private domSanitizer: DomSanitizer,
     private toaster: ToastrService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.billID = this.route.snapshot.params["billID"];
@@ -108,7 +108,6 @@ export class BillDetailsComponent implements OnInit {
     this.fetchVendor();
     this.purchaseOrderDetail();
     this.fetchVendorCredits();
-    this.fetchAccountsByIDs();
   }
 
   async fetchDetails() {
@@ -197,11 +196,4 @@ export class BillDetailsComponent implements OnInit {
       });
   }
 
-  fetchAccountsByIDs() {
-    this.accountService
-      .getData("chartAc/get/all/list")
-      .subscribe((result: any) => {
-        this.accountsObjects = result;
-      });
-  }
 }

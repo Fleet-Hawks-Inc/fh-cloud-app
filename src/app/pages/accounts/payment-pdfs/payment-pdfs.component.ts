@@ -19,7 +19,7 @@ export class PaymentPdfsComponent implements OnInit {
     private apiService: ApiService,
     private accountService: AccountService,
     private modalService: NgbModal,
-  ) {}
+  ) { }
   @ViewChild("driverPaymentDetail", { static: true })
   modalContent: TemplateRef<any>;
   subscription: Subscription;
@@ -35,7 +35,9 @@ export class PaymentPdfsComponent implements OnInit {
     paymentNo: "",
   };
   settlements = [];
-
+  paymentInfo: any;
+  currency: string;
+  payPeriod: any;
   paymentData = {
     paymentEnity: "",
     paymentTo: null,
@@ -107,10 +109,14 @@ export class PaymentPdfsComponent implements OnInit {
   companyName: any = "";
   companyLogo = "";
   tagLine = "";
-
+  grandTotal = 0;
+  modelRef: any;
+  subTotal = 0;
+  totalSettmnt: any;
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
       async (res: any) => {
+        console.log('res', res);
         if (res.showModal && res.length != 0) {
           res.showModal = false;
           this.paymentData = res.data;
@@ -146,13 +152,13 @@ export class PaymentPdfsComponent implements OnInit {
             windowClass: "paymentPdfSection-prog__main",
           };
           res.showModal = false;
-          this.modalService
+          this.modelRef = this.modalService
             .open(this.modalContent, ngbModalOptions)
             .result.then(
-              (result) => {},
-              (reason) => {}
+              (result) => { },
+              (reason) => { }
             );
-            
+
           if (this.paymentData.fromDate && this.paymentData.toDate) {
             this.pdfDetails.payYear = formatDate(
               this.paymentData.toDate,
@@ -198,7 +204,7 @@ export class PaymentPdfsComponent implements OnInit {
             }
           }
           await this.fetchAdvancePayments();
-          
+
           // await this.generatePaymentPDF();
         }
       }
@@ -227,10 +233,14 @@ export class PaymentPdfsComponent implements OnInit {
       pagebreak: { mode: "avoid-all", before: pdfId },
       filename: `${this.paymentData.paymentTo}-payment-${this.paymentData.paymentNo}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
+      html2canvas: {
+        scale: 2, logging: true, allowTaint: true,
+        useCORS: true, dpi: 192, letterRendering: true
+      },
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     });
     localStorage.setItem("downloadDisabled", "false");
+    this.modelRef.close()
   }
 
   ngOnDestroy() {
@@ -245,6 +255,10 @@ export class PaymentPdfsComponent implements OnInit {
       .getData(`settlement/get/selected?entities=${ids}`)
       .toPromise();
     this.settlements = result;
+    this.paymentInfo = result[0].paymentInfo;
+    this.currency = result[0].currency;
+    let newDates = []
+    let totalAddDed = 0;
     for (let index = 0; index < this.settlements.length; index++) {
       const element = this.settlements[index];
 
@@ -273,8 +287,42 @@ export class PaymentPdfsComponent implements OnInit {
           });
         }
       });
+
+      if (element.prStart != undefined && element.prEnd != undefined) {
+
+        let startDate = formatDate(
+          element.prStart,
+          "dd-MM-yyyy",
+          this.locale
+        );
+        let endDate = formatDate(
+          element.prEnd,
+          "dd-MM-yyyy",
+          this.locale
+        );
+        newDates.push(`${startDate} To ${endDate}`);
+      }
+      else {
+        let startDate = formatDate(
+          element.fromDate,
+          "dd-MM-yyyy",
+          this.locale
+        );
+        let endDate = formatDate(
+          element.toDate,
+          "dd-MM-yyyy",
+          this.locale
+        );
+        newDates.push(`${startDate} To ${endDate}`);
+      }
+
+      totalAddDed += element.additionTotal - element.deductionTotal;
+
+
     }
+    this.payPeriod = newDates.join(", ");
     await this.fetchTrips();
+    this.subTotal += totalAddDed;
   }
 
   async getUserAnnualTax() {
@@ -319,7 +367,7 @@ export class PaymentPdfsComponent implements OnInit {
             let obj = {
               tripNo: trip.tripNo,
               date: trip.dateCreated,
-              plans: [],
+              plans: []
             };
             if (v.plan.length > 0) {
               // if sub trip is settled
@@ -351,7 +399,18 @@ export class PaymentPdfsComponent implements OnInit {
           }
         });
       });
+
+
     });
+    this.grandTotal = 0;
+    for (const item of this.paymentTrips) {
+      item.totalMiles = 0;
+      for (const plan of item.plans) {
+        item.totalMiles += parseFloat(plan.miles);
+      }
+      this.grandTotal += item.totalMiles;
+    }
+
   }
 
   fetchDriverDetails() {
@@ -391,6 +450,7 @@ export class PaymentPdfsComponent implements OnInit {
   }
 
   async fetchAdvancePayments() {
+    let totalAdv = 0;
     if (this.paymentData.advancePayIds.length > 0) {
       let ids = encodeURIComponent(
         JSON.stringify(this.paymentData.advancePayIds)
@@ -399,6 +459,7 @@ export class PaymentPdfsComponent implements OnInit {
         .getData(`advance/get/selected?entities=${ids}`)
         .toPromise();
       this.advancePayments = result;
+
       this.paymentData.advData.forEach((elem) => {
         this.advancePayments.map((v) => {
           if (v.paymentID === elem.paymentID) {
@@ -406,10 +467,13 @@ export class PaymentPdfsComponent implements OnInit {
             elem.paidAmount = Number(elem.paidAmount);
             elem.txnDate = v.txnDate;
             elem.ref = v.payModeNo;
+            totalAdv += Number(elem.paidAmount);
           }
         });
       });
     }
+    this.subTotal = this.paymentData.totalAmount - totalAdv;
+
   }
 
   async fetchSelectedFuelExpenses() {
@@ -420,6 +484,7 @@ export class PaymentPdfsComponent implements OnInit {
       let result = await this.apiService
         .getData(`fuelEntries/get/selected/ids?fuel=${fuelIDs}`)
         .toPromise();
+
       this.fueldata.map((k) => {
         result.map((fuel) => {
           k.city = fuel.data.city;

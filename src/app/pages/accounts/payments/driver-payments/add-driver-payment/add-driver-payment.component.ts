@@ -1,9 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
 import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
-import { from } from "rxjs";
+import { from, Subscription } from "rxjs";
 import { map } from "rxjs/operators";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService, ListService } from "src/app/services";
@@ -18,7 +18,7 @@ declare var $: any;
   templateUrl: "./add-driver-payment.component.html",
   styleUrls: ["./add-driver-payment.component.css"],
 })
-export class AddDriverPaymentComponent implements OnInit {
+export class AddDriverPaymentComponent implements OnInit, OnDestroy {
   dataMessage: string = Constants.FETCHING_DATA;
   dataMessageAdv: string = Constants.NO_RECORDS_FOUND;
   paymentData = {
@@ -57,6 +57,11 @@ export class AddDriverPaymentComponent implements OnInit {
     settlData: [],
     advData: [],
     transactionLog: [],
+    gstHstPer: <any>0,
+    gstHstAmt: <any>0,
+    isVendorPayment: false,
+    vendorId: '',
+
   };
   drivers = [];
   carriers = [];
@@ -76,6 +81,7 @@ export class AddDriverPaymentComponent implements OnInit {
   searchDisabled = true;
   taxErr = "";
   advErr = "";
+  gstError = "";
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
@@ -90,7 +96,7 @@ export class AddDriverPaymentComponent implements OnInit {
   allDrivers = [];
   allCarriers = [];
   allOwnOpr = [];
-
+  subscription: Subscription;
   constructor(
     private listService: ListService,
     private route: ActivatedRoute,
@@ -107,9 +113,8 @@ export class AddDriverPaymentComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.listService.paymentSaveList.subscribe((res: any) => {
-
-      if (res === "driver" || res === "carrier" || res === "owner_operator") {
+    this.subscription = this.listService.paymentSaveList.subscribe((res: any) => {
+      if (res.openFrom == 'addForm') {
         this.addRecord();
       }
     });
@@ -128,6 +133,10 @@ export class AddDriverPaymentComponent implements OnInit {
     this.fetchPayPeriods();
     await this.getStates();
     this.fetchClaimCodes();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
   }
 
   fetchDrivers() {
@@ -283,7 +292,7 @@ export class AddDriverPaymentComponent implements OnInit {
   }
 
   fetchtrips() {
-    this.apiService.getData(`trips/get/list`).subscribe((result: any) => {
+    this.apiService.getData(`common/trips/get/list`).subscribe((result: any) => {
       this.trips = result;
     });
   }
@@ -399,18 +408,18 @@ export class AddDriverPaymentComponent implements OnInit {
       : 0;
     this.paymentData.totalAmount =
       Number(this.paymentData.settledAmount) +
-      Number(this.paymentData.vacPayAmount);
+      Number(this.paymentData.vacPayAmount)
     this.paymentData.totalAmount = this.paymentData.totalAmount
       ? Number(this.paymentData.totalAmount)
       : 0;
-    // this.paymentData.totalAmount = this.paymentData.totalAmount.toFixed(2);
-
+    console.log('dd', this.paymentData)
     this.paymentData.finalAmount =
       this.paymentData.totalAmount -
       this.paymentData.taxes -
       this.paymentData.taxdata.cpp -
       this.paymentData.taxdata.ei -
-      this.paymentData.advance;
+      this.paymentData.advance -
+      this.paymentData.gstHstAmt;
     this.paymentData.finalAmount = Number(this.paymentData.finalAmount).toFixed(
       2
     );
@@ -425,13 +434,17 @@ export class AddDriverPaymentComponent implements OnInit {
     this.location.back(); // <-- go back to previous location on cancel
   }
   addRecord() {
+
     if (this.paymentData.settlementIds.length === 0) {
       this.toaster.error("Please select settlement(s)");
       return false;
     }
-
+    if (this.isVendor && this.paymentData.gstHstPer === 0) {
+      this.toaster.error("GST/HST value cannot be 0");
+      return false;
+    }
     if (this.paymentData.finalAmount <= 0) {
-      this.toaster.error("Net payable should be greated than 0");
+      this.toaster.error("Net payable should be greater than 0");
       return false;
     }
 
@@ -472,6 +485,17 @@ export class AddDriverPaymentComponent implements OnInit {
           this.response = res;
           this.toaster.success("Driver payment added successfully.");
           this.router.navigateByUrl("/accounts/payments/driver-payments/list");
+          let obj = {
+            type: '',
+            openFrom: ''
+          }
+          this.listService.triggerPaymentSave(obj);
+          let payObj = {
+            showModal: false,
+            page: "",
+          };
+
+          this.listService.openPaymentChequeModal(payObj);
         },
       });
   }
@@ -616,6 +640,11 @@ export class AddDriverPaymentComponent implements OnInit {
         this.submitDisabled = false;
       }
     }
+    if (this.isVendor && this.paymentData.gstHstPer === 0) {
+      this.gstError = "GST/HST should be non-zero.";
+    } else {
+      this.gstError = "";
+    }
   }
 
   fetchAdvancePayments() {
@@ -695,6 +724,9 @@ export class AddDriverPaymentComponent implements OnInit {
       advance: this.paymentData.advance,
       txnDate: this.paymentData.txnDate,
       page: "addForm",
+      isVendorPayment: this.isVendor,
+      vendorId: this.paymentData.vendorId,
+      gstHstPer: this.paymentData.gstHstPer
     };
 
     this.listService.openPaymentChequeModal(obj);
@@ -813,5 +845,65 @@ export class AddDriverPaymentComponent implements OnInit {
     } else {
       this.calculateFinalTotal();
     }
+  }
+
+  vendorCompanyName: string = "";
+  vendorAddress: string
+  corporateDriver = false;
+  getDriverDetails = async () => {
+    console.log(this.paymentData.entityId)
+    const result = await this.apiService
+      .getData(`drivers/cheque/data/${this.paymentData.entityId}`).toPromise();
+    if (result && result.Items.length > 0) {
+      const driverDetails = result.Items[0];
+      if (
+        result.Items[0].vendorName &&
+        result.Items[0].vendorName != "" &&
+        result.Items[0].venAddress &&
+        result.Items[0].venAddress.length > 0
+      ) {
+        this.corporateDriver = true;
+        this.vendorCompanyName = result.Items[0].vendorName;
+        this.paymentData.vendorId = result.Items[0].vendor;
+        if (result.Items[0].venAddress && result.Items[0].venAddress.length > 0) {
+          this.vendorAddress = result.Items[0].venAddress[0];
+        }
+
+        console.log(this.paymentData);
+
+      } else {
+        this.corporateDriver = false;
+      }
+
+    }
+  }
+
+  isVendor = false;
+
+  changeIssueToVendor(event: any) {
+    console.log(event.target.checked)
+    if (event.target.checked) {
+      this.isVendor = true;
+      this.calculateFinalTotal();
+    } else {
+      this.isVendor = false;
+      this.paymentData.gstHstAmt = 0;
+      this.paymentData.gstHstPer = 0;
+      this.calculateFinalTotal();
+    }
+  }
+
+  calculateGstHst() {
+    // Calculate GST
+    const gstHstAmt = (this.paymentData.gstHstPer / 100) * this.paymentData.settledAmount;
+    this.paymentData.gstHstAmt = gstHstAmt || 0;
+    if (this.paymentData.gstHstPer === 0) {
+      this.gstError = "GST/HST should be non-zero.";
+    } else {
+      this.gstError = "";
+    }
+
+
+    this.calculateFinalTotal();
   }
 }

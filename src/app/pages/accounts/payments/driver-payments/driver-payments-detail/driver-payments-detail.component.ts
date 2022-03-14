@@ -51,12 +51,17 @@ export class DriverPaymentsDetailComponent implements OnInit {
     transactionLog: [],
     paymentEnity: "",
     isFeatEnabled: false,
+    gstHstPer: <any>0,
+    gstHstAmt: <any>0,
+    isVendorPayment: false,
+    vendorId: '',
   };
   accounts = [];
   accountsObjects = {};
   accountsIntObjects = {};
   showModal = false;
   downloadDisabled = true;
+  downloadDisabledd = true;
 
   constructor(
     private listService: ListService,
@@ -64,7 +69,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
     private router: Router,
     private accountService: AccountService,
     private apiService: ApiService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.paymentID = this.route.snapshot.params["paymentID"];
@@ -81,8 +86,11 @@ export class DriverPaymentsDetailComponent implements OnInit {
       .getData(`driver-payments/detail/${this.paymentID}`)
       .toPromise();
 
+     this.downloadDisabledd = false;
     this.downloadDisabled = false;
     this.paymentData = result[0];
+    this.paymentData.isVendorPayment = result[0].data.isVendorPymt;
+    this.paymentData.vendorId = result[0].data.vendorId;
     if (!this.paymentData.isFeatEnabled) {
       this.fetchAccountsByIDs();
       this.fetchAccountsByInternalIDs();
@@ -120,10 +128,10 @@ export class DriverPaymentsDetailComponent implements OnInit {
       data: this.paymentData,
     };
     this.listService.triggerDownloadPaymentPdf(obj);
-    this.downloadDisabled = true;
+    this.downloadDisabledd = true;
 
     setTimeout(() => {
-      this.downloadDisabled = false;
+      this.downloadDisabledd = false;
     }, 15000);
   }
 
@@ -149,7 +157,11 @@ export class DriverPaymentsDetailComponent implements OnInit {
       advance: this.paymentData.advance,
       txnDate: this.paymentData.txnDate,
       page: "detail",
+      isVendorPayment: this.paymentData.isVendorPayment,
+      vendorId: this.paymentData.vendorId,
+      gstHstPer: this.paymentData.gstHstPer
     };
+    this.downloadDisabled = true;
     this.listService.openPaymentChequeModal(obj);
   }
 }

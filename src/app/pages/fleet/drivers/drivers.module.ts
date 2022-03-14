@@ -12,6 +12,15 @@ import { SharedModule } from '../../../shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -64,10 +73,10 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   }
 }
 const routes: Routes = [
-  { path: 'add', component: AddDriverComponent, canDeactivate: [unsavedChangesGuard] },
-  { path: 'edit/:driverID', component: AddDriverComponent },
-  { path: 'list', component: DriverListComponent },
-  { path: 'detail/:driverID', component: DriverDetailComponent }
+  { path: 'add', component: AddDriverComponent, canDeactivate: [unsavedChangesGuard], data: { title: 'Add Driver' } },
+  { path: 'edit/:driverID', component: AddDriverComponent, data: { title: 'Edit Driver' } },
+  { path: 'list/:sessionID', component: DriverListComponent, data: { title: 'Drivers List', reuseRoute: true } },
+  { path: 'detail/:driverID', component: DriverDetailComponent, data: { title: 'Driver Detail' } }
 ];
 @NgModule({
   declarations: [
@@ -85,6 +94,15 @@ const routes: Routes = [
     NgbModule,
     InfiniteScrollModule,
     NgSelectModule,
+    TableModule,
+    ButtonModule,
+    MultiSelectModule,
+    TooltipModule,
+    MenuModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule
   ],
   providers: [unsavedChangesGuard,
     { provide: NgbDateAdapter, useClass: CustomAdapter },

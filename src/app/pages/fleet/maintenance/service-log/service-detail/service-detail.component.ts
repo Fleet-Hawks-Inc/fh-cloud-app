@@ -161,7 +161,7 @@ export class ServiceDetailComponent implements OnInit {
   }
 
   fetchUsers() {
-    this.apiService.getData('users/get/list').subscribe((result: any) => {
+    this.apiService.getData('common/users/get/list').subscribe((result: any) => {
       this.users = result;
 
     });

@@ -4,7 +4,7 @@ import { AccountService } from "src/app/services/account.service";
 import { ListService } from "src/app/services/list.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
-
+import * as html2pdf from "html2pdf.js";
 @Component({
   selector: "app-expense-payment-detail",
   templateUrl: "./expense-payment-detail.component.html",
@@ -75,11 +75,13 @@ export class ExpensePaymentDetailComponent implements OnInit {
       toDate: this.paymentData.toDate,
       finalAmount: this.paymentData.finalAmount,
       txnDate: this.paymentData.txnDate,
+      page: "detail",
     };
     this.listService.openPaymentChequeModal(obj);
   }
 
   async fetchPayment() {
+    this.downloadDisabled = true;
     const result: any = await this.accountService
       .getData(`expense-payments/detail/${this.paymentID}`)
       .toPromise();
@@ -109,6 +111,19 @@ export class ExpensePaymentDetailComponent implements OnInit {
   }
 
   generatePaymentPDF() {
-
+    let data = document.getElementById("print-exp-pay");
+    html2pdf(data, {
+      margin: 0.5,
+      pagebreak: { mode: "avoid-all", before: 'print-exp-pay' },
+      filename: `expense-payment-${this.paymentData.paymentNo}.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        scale: 2, logging: true, dpi: 192, letterRendering: true, allowTaint: true,
+        useCORS: true,
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    });
+    this.expPayRef.close();
+    this.downloadDisabled = false;
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
@@ -11,6 +11,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import Constants from '../../../fleet/constants';
 import { environment } from 'src/environments/environment';
 import * as _ from 'lodash';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-company-documents',
@@ -18,6 +19,9 @@ import * as _ from 'lodash';
   styleUrls: ['./company-documents.component.css']
 })
 export class CompanyDocumentsComponent implements OnInit {
+
+  @ViewChild("addDocumentModal", { static: true })
+  addDocumentModal: TemplateRef<any>;
   dataMessage: string = Constants.FETCHING_DATA;
   environment = environment.isFeatureEnabled;
   Asseturl = this.apiService.AssetUrl;
@@ -46,7 +50,6 @@ export class CompanyDocumentsComponent implements OnInit {
   documentData = {
     categoryType: 'company',
     tripID: null,
-    documentNumber: '',
     docType: null,
     // documentName: '',
     description: '',
@@ -84,6 +87,8 @@ export class CompanyDocumentsComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   alltrips = [];
+  docRef: any;
+
 
   getSuggestions = _.debounce(function (searchvalue) {
     this.suggestions = [];
@@ -110,7 +115,8 @@ export class CompanyDocumentsComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private modalService: NgbModal,
   ) {
     this.selectedFileNames = new Map<any, any>();
   }
@@ -119,11 +125,6 @@ export class CompanyDocumentsComponent implements OnInit {
     this.fetchDocumentsCount();
     this.fetchTrips();
     this.fetchTripsByIDs();
-    // this.fetchLastDocumentNumber();
-
-    $(document).ready(() => {
-      // this.form = $('#form_').validate();
-    });
   }
   /*
    * Get all trips from api
@@ -249,8 +250,7 @@ export class CompanyDocumentsComponent implements OnInit {
           next: (res) => {
             this.spinner.hide();
             this.toastr.success('Document Added successfully');
-            $('#addDocumentModal').modal('hide');
-            this.documentData.documentNumber = '';
+            this.docRef.close();
             this.documentData.docType = null;
             this.documentData.tripID = null;
             this.documentData.uploadedDocs = [];
@@ -307,14 +307,12 @@ export class CompanyDocumentsComponent implements OnInit {
     this.documentData = {
       categoryType: 'company',
       tripID: null,
-      documentNumber: '',
       docType: null,
       // documentName: '',
       description: '',
       uploadedDocs: [],
       dateCreated: moment().format('YYYY-MM-DD')
     };
-    this.documentData.documentNumber = '';
     this.documentData.docType = null;
     this.documentData.description = '';
     this.documentData.uploadedDocs = [];
@@ -330,7 +328,7 @@ export class CompanyDocumentsComponent implements OnInit {
             this.documentData.tripID = null;
           }
         });
-        this.documentData.documentNumber = result.documentNumber;
+        this.documentData['documentNumber'] = result.documentNumber.toString();
         // this.documentData.documentName = result.documentName;
         this.documentData.docType = result.docType;
         this.documentData.description = result.description;
@@ -368,38 +366,19 @@ export class CompanyDocumentsComponent implements OnInit {
             }
           });
         }
+        this.openDocModal();
 
-        /*
-                if (result.uploadedDocs.length > 0) {
-                  result.uploadedDocs.forEach((x: any) => {
-                    let obj: any = {};
-                    if (
-                      x.storedName.split(".")[1] === "jpg" ||
-                      x.storedName.split(".")[1] === "png" ||
-                      x.storedName.split(".")[1] === "jpeg"
-                    ) {
-                      obj = {
-                        imgPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
-                        docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
-                        displayName: x.displayName,
-                        name: x.storedName,
-                        ext: x.storedName.split(".")[1],
-                      };
-                    } else {
-                      obj = {
-                        imgPath: "assets/img/icon-pdf.png",
-                        docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
-                        displayName: x.displayName,
-                        name: x.storedName,
-                        ext: x.storedName.split(".")[1],
-                      };
-                    }
-                    this.newDoc.push(obj);
-                  });
-                }
-        */
       });
-    $('#addDocumentModal').modal('show');
+
+  }
+
+  openDocModal() {
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "document--main",
+    };
+    this.docRef = this.modalService.open(this.addDocumentModal, ngbModalOptions);
   }
 
   onUpdateDocument() {
@@ -444,8 +423,7 @@ export class CompanyDocumentsComponent implements OnInit {
           next: (res) => {
 
             this.toastr.success('Document Updated successfully');
-            $('#addDocumentModal').modal('hide');
-            this.documentData.documentNumber = '';
+            this.docRef.close();
             this.documentData.docType = null;
             this.documentData.tripID = '';
             this.documentData.uploadedDocs = [];
@@ -453,6 +431,7 @@ export class CompanyDocumentsComponent implements OnInit {
             // this.documentData.documentName = '';
             this.documentData.description = '';
             this.lastEvaluatedKey = '';
+            this.documents = [];
             this.currentID = null;
             this.initDataTable();
             this.submitDisabled = false;
@@ -616,12 +595,10 @@ export class CompanyDocumentsComponent implements OnInit {
   }
 
   openDocumentModal() {
-    this.fetchLastDocumentNumber();
     this.currentID = null;
     this.documentData = {
       categoryType: 'company',
       tripID: null,
-      documentNumber: '',
       docType: null,
       // documentName: '',
       description: '',
@@ -630,21 +607,13 @@ export class CompanyDocumentsComponent implements OnInit {
     };
     this.newDoc = '';
 
-    $("#addDocumentModal").modal('show');
+    this.openDocModal();
   }
 
   showDescModal(description) {
     this.descriptionData = description;
     $("#routeNotes").modal('show');
   }
-
-  fetchLastDocumentNumber() {
-    this.apiService.getData('documents/get/last/number').subscribe((result) => {
-      this.documentNumberDisabled = true;
-      this.documentData.documentNumber = result.toString();
-    });
-  }
-
   refreshData() {
     this.dataMessage = Constants.FETCHING_DATA;
     this.documents = [];

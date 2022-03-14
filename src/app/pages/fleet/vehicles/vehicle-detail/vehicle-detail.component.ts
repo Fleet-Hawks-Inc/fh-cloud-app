@@ -259,6 +259,9 @@ export class VehicleDetailComponent implements OnInit {
     countryName = '';
     stateName = '';
     vehicleLogs = [];
+    groupsObjects: any = {};
+    groupName: any = '';
+    groupId: any = '';
 
     constructor(
         private apiService: ApiService,
@@ -301,6 +304,7 @@ export class VehicleDetailComponent implements OnInit {
                 return a[b[`code`]] = b[`name`], a;
             }, {});
         });
+        this.fetchGroups();
     }
 
     fetchContactsByIDs() {
@@ -327,7 +331,7 @@ export class VehicleDetailComponent implements OnInit {
     }
 
     fetchUsersList() {
-        this.apiService.getData("users/get/list").subscribe((result: any) => {
+        this.apiService.getData("common/users/get/list").subscribe((result: any) => {
             this.usersList = result;
         });
     }
@@ -432,7 +436,7 @@ export class VehicleDetailComponent implements OnInit {
                 this.reapeatbyOdometerMiles = vehicleResult.reapeatbyOdometerMiles;
                 this.currentStatus = vehicleResult.currentStatus;
                 this.ownership = vehicleResult.ownership;
-                this.groupID = vehicleResult.groupID;
+                this.groupId = vehicleResult.groupID;
                 this.aceID = vehicleResult.aceID;
                 this.aciID = vehicleResult.aciID;
                 this.vehicleColor = vehicleResult.vehicleColor;
@@ -590,7 +594,7 @@ export class VehicleDetailComponent implements OnInit {
                 this.lDocs = vehicleResult.loanDocsUpload;
                 this.docs = vehicleResult.uploadDocument;
 
-
+                this.fetchGroups();
             });
     }
 
@@ -722,5 +726,13 @@ export class VehicleDetailComponent implements OnInit {
 
         })
 
+    }
+    
+    fetchGroups() {
+       if(this.groupId !==''){
+        this.apiService.getData(`groups/get/list?type=vehicles&groupId=${this.groupId}`).subscribe((result: any) => {
+            this.groupsObjects = result;
+        });
+       }
     }
 }

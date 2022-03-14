@@ -83,7 +83,7 @@ export class EmployeePaymentDetailComponent implements OnInit {
     private toaster: ToastrService,
     private accountService: AccountService,
     private apiService: ApiService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.paymentID = this.route.snapshot.params["paymentID"];
@@ -95,6 +95,7 @@ export class EmployeePaymentDetailComponent implements OnInit {
   }
 
   fetchPaymentDetail() {
+    this.downloadDisabled = true;
     this.accountService
       .getData(`employee-payments/detail/${this.paymentID}`)
       .subscribe((result: any) => {
@@ -109,6 +110,9 @@ export class EmployeePaymentDetailComponent implements OnInit {
           v.type = v.type.replace("_", " ");
         });
         this.fetchEmpDetail(result[0].entityId);
+        this.downloadDisabled = false;
+      }, err => {
+        this.downloadDisabled = false;
       });
   }
 

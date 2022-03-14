@@ -174,7 +174,7 @@
                           </thead>
                           <tbody>
                             <tr *ngIf="orders.length === 0" class="text-center">
-                              <td colspan="10">{{ dataMessage }}</td>
+                              <td colspan="12">{{ dataMessage }}</td>
                             </tr>
                             <tr class="cursorpoint" *ngFor="let order of
                               orders;
@@ -315,9 +315,11 @@
                                 {{ order.charges.freightFee.currency }}
                                 {{ order.totalAmount }}<br />
                               </td>
-                              <td [routerLink]="order.url">
-                                <span class="badge badge-dark p-1
-                                  text-capitalize">{{ order.newStatus }}</span>
+
+                              <td class="text-capitalize" [routerLink]="order.url">
+                                <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
+                                <b>Invoiced: </b> {{order.invoiceGenerate ? 'Yes' : 'No'}} <br>
+                                <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
                               </td>
                               <td>
                                 <div class="dropdown dropright">
@@ -554,9 +556,10 @@
                               {{ order.charges.freightFee.currency }}
                               {{ order.totalAmount }}<br />
                             </td>
-                            <td [routerLink]="order.url">
-                              <span class="badge badge-dark p-1
-                                text-capitalize">{{ order.newStatus }}</span>
+                            <td class="text-capitalize" [routerLink]="order.url">
+                              <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
+                              <b>Invoiced: </b> {{order.invoiceGenerate ? 'Yes' : 'No'}} <br>
+                              <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
                             </td>
                             <td>
                               <div class="dropdown dropright">
@@ -750,9 +753,10 @@
                               {{ order.charges.freightFee.currency }}
                               {{ order.totalAmount }}<br />
                             </td>
-                            <td [routerLink]="order.url">
-                              <span class="badge badge-dark p-1
-                                text-capitalize">{{ order.newStatus }}</span>
+                            <td class="text-capitalize" [routerLink]="order.url">
+                              <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
+                              <b>Invoiced: </b> {{order.invoiceGenerate ? 'Yes' : 'No'}} <br>
+                              <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
                             </td>
                             <td>
                               <div class="dropdown dropright">
@@ -946,9 +950,10 @@
                               {{ order.charges.freightFee.currency }}
                               {{ order.totalAmount }}<br />
                             </td>
-                            <td [routerLink]="order.url">
-                              <span class="badge badge-dark p-1
-                                text-capitalize">{{ order.newStatus }}</span>
+                            <td class="text-capitalize" [routerLink]="order.url">
+                              <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
+                              <b>Invoiced: </b> {{order.invoiceGenerate ? 'Yes' : 'No'}} <br>
+                              <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
                             </td>
                             <td>
                               <div class="dropdown dropright">
@@ -1147,9 +1152,10 @@
                               {{ order.charges.freightFee.currency }}
                               {{ order.totalAmount }}<br />
                             </td>
-                            <td [routerLink]="order.url">
-                              <span class="badge badge-dark p-1
-                                text-capitalize">{{ order.newStatus }}</span>
+                            <td class="text-capitalize" [routerLink]="order.url">
+                              <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
+                              <b>Invoiced: </b> {{order.invoiceGenerate ? 'Yes' : 'No'}} <br>
+                              <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
                             </td>
                             <td>
                               <div class="dropdown dropright">
@@ -1341,9 +1347,10 @@
                               {{ order.charges.freightFee.currency }}
                               {{ order.totalAmount }}<br />
                             </td>
-                            <td [routerLink]="order.url">
-                              <span class="badge badge-dark p-1
-                                text-capitalize">{{ order.newStatus }}</span>
+                            <td class="text-capitalize" [routerLink]="order.url">
+                              <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
+                              <b>Invoiced: </b> {{order.invoiceGenerate ? 'Yes' : 'No'}} <br>
+                              <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
                             </td>
                             <td>
                               <div class="dropdown dropright">
@@ -1537,9 +1544,10 @@
                               {{ order.charges.freightFee.currency }}
                               {{ order.totalAmount }}<br />
                             </td>
-                            <td [routerLink]="order.url">
-                              <span class="badge badge-dark p-1
-                                text-capitalize">{{ order.newStatus }}</span>
+                            <td class="text-capitalize" [routerLink]="order.url">
+                              <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
+                              <b>Invoiced: </b> {{order.invoiceGenerate ? 'Yes' : 'No'}} <br>
+                              <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
                             </td>
                             <td>
                               <div class="dropdown dropright">
@@ -1732,9 +1740,10 @@
                               {{ order.charges.freightFee.currency }}
                               {{ order.totalAmount }}<br />
                             </td>
-                            <td [routerLink]="order.url">
-                              <span class="badge badge-dark p-1
-                                text-capitalize">{{ order.newStatus }}</span>
+                            <td class="text-capitalize" [routerLink]="order.url">
+                              <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
+                              <b>Invoiced: </b> {{order.invoiceGenerate ? 'Yes' : 'No'}} <br>
+                              <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
                             </td>
                             <td>
                               <div class="dropdown dropright">

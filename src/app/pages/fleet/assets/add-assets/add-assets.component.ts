@@ -169,6 +169,7 @@ export class AddAssetsComponent implements OnInit {
   companyLabel = "";
 
   isEdit: boolean = false;
+  groupsData:any = [];
   
    retInterval = [
     {
@@ -223,7 +224,6 @@ export class AddAssetsComponent implements OnInit {
     this.fetchManufacturers();
     this.listService.fetchVendors();
     this.listService.fetchOwnerOperators();
-    this.fetchGroups();
     this.fetchAssets();
     this.fetchInspectionForms();
     this.assetID = this.route.snapshot.params[`assetID`];
@@ -241,6 +241,7 @@ export class AddAssetsComponent implements OnInit {
     let operatorList = new Array<any>();
     this.getValidOperators(operatorList);
     this.ownOperators = operatorList;
+    this.fetchGroupsList();
   }
 
   private getValidVendors(vendorList: any[]) {
@@ -996,16 +997,9 @@ export class AddAssetsComponent implements OnInit {
     }
   }
 
-  fetchGroups() {
-    this.apiService
-      .getData(`groups/getGroup/${this.groupData.groupType}`)
-      .subscribe((result: any) => {
-        this.groups = result.Items;
-      });
-  }
 
   getGroups() {
-    this.fetchGroups();
+    this.fetchGroupsList();
   }
 
   fetchAssets() {
@@ -1046,7 +1040,7 @@ export class AddAssetsComponent implements OnInit {
         this.groupSubmitDisabled = false;
         this.response = res;
         this.hasSuccess = true;
-        this.fetchGroups();
+        this.fetchGroupsList();
         this.toastr.success("Group added successfully.");
         $("#addGroupModal").modal("hide");
         this.groupData[`groupName`] = "";
@@ -1141,5 +1135,11 @@ export class AddAssetsComponent implements OnInit {
       description: "",
       groupMembers: [],
     };
+  }
+  
+  fetchGroupsList() {
+    this.apiService.getData('groups/get/list/type?type=assets').subscribe((result: any) => {
+      this.groupsData = result;
+    });
   }
 }
