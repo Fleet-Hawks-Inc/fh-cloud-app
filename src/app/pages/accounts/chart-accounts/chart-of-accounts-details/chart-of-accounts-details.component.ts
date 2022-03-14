@@ -45,7 +45,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   date = new Date();
   accountsClassObjects = {};
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-  filter = {
+   filter = {
     startDate: null,
     endDate: null,
   };
@@ -62,6 +62,9 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   isLoadText = "Load More";
   closingAmountCad = 0;
   closingAmountUsd = 0;
+  startDate : string;
+  public endDate : string;
+  
 
   constructor(
     private accountService: AccountService,
@@ -71,13 +74,20 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.actID = this.route.snapshot.params[`actID`];
+     this.route.queryParams.subscribe(params => {
+        if(params.startDate)
+        {
+          this.filter.startDate = params.startDate
+          this.filter.endDate = params.endDate 
+        }     
+      }
+    );
+     this.actID = this.route.snapshot.params[`actID`];
     if (this.actID) {
       await this.fetchAccount();
       await this.logsCADPaging();
-      this.filter.endDate = moment().format("YYYY-MM-DD");
-      this.filter.startDate = moment().subtract(15, 'day').format('YYYY-MM-DD');
-    }
+    } 
+  
   }
   fetchAccountClassByIDs() {
     this.accountService

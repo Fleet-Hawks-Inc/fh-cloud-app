@@ -9,7 +9,8 @@
           </div>
           <div class="col-md-8 col-lg-8 text-right" *ngIf="showBtns">
             <span class="mr-2 text-dark"><b>Invoiced: </b> {{isInvoiced ? 'Yes' : 'No'}}</span>
-            <span class="mx-2 text-dark text-capitalize"><b>Payment:</b> {{invStatus ? invStatus : 'NA'}}</span>
+            <span class="mx-2 text-dark text-capitalize"><b>Payment:</b> {{invStatus ? invStatus.replace('_', ' ') :
+              'NA'}}</span>
             <a *ngIf="orderStatus === 'delivered'" routerLink="/dispatch/orders/edit/{{ orderID }}"
               [queryParams]="{ state: 'recall' }" title="Recall" class="btn btn-sm mr-2 btn-success">
               <i class="fas fa-redo"></i>

@@ -279,7 +279,7 @@ export class DriverListComponent implements OnInit {
             this.fetchDrivers();
 
         }
-        this.loaded=false;
+        this.loaded = false;
 
     }
 
