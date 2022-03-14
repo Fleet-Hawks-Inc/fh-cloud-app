@@ -34,7 +34,8 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     };
   }
 
-  toModel(date: NgbDateStruct): string { // from internal model -> your mode
+  toModel(date: NgbDateStruct): string {
+    // from internal model -> your mode
     let month: any = "";
     let day: any = "";
     if (date) {
@@ -89,17 +90,17 @@ const routes: Routes = [
   {
     path: "add",
     component: AddSettlementComponent,
-    data: { title: "Add Settlements List" },
+    data: { title: "Add Settlements" },
   },
   {
     path: "edit/:settlementID",
     component: AddSettlementComponent,
-    data: { title: "Edit Settlements List" },
+    data: { title: "Edit Settlements" },
   },
   {
     path: "detail/:settlementID",
     component: SettlementsDetailComponent,
-    data: { title: "Detail Settlements List" },
+    data: { title: "Settlements Detail" },
   },
 ];
 @NgModule({

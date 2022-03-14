@@ -51,20 +51,18 @@ export class DriverSummaryComponent implements OnInit {
         }
         if (this.lastItemSK !== 'end') {
             const result = await this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&driverStatus=${this.driverStatus}&lastKey=${this.lastItemSK}`).toPromise();
-            if (result.Items.length === 0) {
+            if (result.data.length === 0) {
                 this.dataMessage = Constants.NO_RECORDS_FOUND
             }
             this.suggestedDrivers = [];
-            if (result.Items.length > 0) {
-                if (result.LastEvaluatedKey !== undefined) {
-                    this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].driverSK);
-                }
-                else {
-                    this.lastItemSK = 'end'
-                }
-                this.drivers = this.drivers.concat(result.Items);
-                this.loaded = true;
+            if (result.nextPage !== undefined) {
+                this.lastItemSK = encodeURIComponent(result.nextPage);
             }
+            else {
+                this.lastItemSK = 'end'
+            }
+            this.drivers = this.drivers.concat(result.data);
+            this.loaded = true;
             this.isSearch = false;
         }
     }

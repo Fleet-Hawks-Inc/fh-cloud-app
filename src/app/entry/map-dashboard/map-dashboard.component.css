@@ -6,3 +6,19 @@
   margin-top: 70%;
   opacity: 0.2;
 }
+
+.gm-style-iw {
+  background-color: #252525;
+  padding: 2% 11%;
+}
+
+.iw-content p {
+  color: #a5a5a5;
+}
+
+.iw-subTitle {
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 5px 0;
+}

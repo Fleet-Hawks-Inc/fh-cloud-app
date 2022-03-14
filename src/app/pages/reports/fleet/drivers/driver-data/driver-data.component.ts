@@ -236,29 +236,21 @@ export class DriverDataComponent implements OnInit {
         )
         .subscribe(
           (result: any) => {
-            result.Items.map((v) => {
+            result.data.map((v) => {
               v.url = `/reports/fleet/drivers/driver-report/${v.driverID}`;
             });
-            if (result.Items.length === 0) {
+            if (result.data.length === 0) {
 
               this.dataMessage = Constants.NO_RECORDS_FOUND
             }
-            if (result.Items.length === 0) {
-
-              this.dataMessage = Constants.NO_RECORDS_FOUND
+                if (result.nextPage !== undefined) {
+                this.lastEvaluatedKey = encodeURIComponent(result.nextPage);
             }
-            if (result.Items.length > 0) {
-
-              if (result.LastEvaluatedKey !== undefined) {
-                this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].driverSK);
-              }
-              else {
+            else {
                 this.lastEvaluatedKey = 'end'
-              }
-              this.drivers = this.drivers.concat(result.Items)
-
-              this.loaded = true;
             }
+            this.drivers = this.drivers.concat(result.data);
+            this.loaded = true;
             this.isSearch = false;
           });
     }
@@ -329,7 +321,7 @@ export class DriverDataComponent implements OnInit {
       this.dataMessage = Constants.FETCHING_DATA;
       this.lastEvaluatedKey = '';
       this.initDataTable();
-this.driverDraw = 0;
+      this.driverDraw = 0;
       this.initDataTable();
     } else {
       return false;

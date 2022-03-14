@@ -283,7 +283,7 @@ export class AddSettlementComponent implements OnInit {
   }
 
   fetchOrders() {
-    this.apiService.getData(`orders/get/list`).subscribe((result: any) => {
+    this.apiService.getData(`common/orders/get/list`).subscribe((result: any) => {
       this.orders = result;
     });
   }
@@ -291,7 +291,7 @@ export class AddSettlementComponent implements OnInit {
   fetchTrips() {
     this.apiService
       .getData(
-        `trips/driver/unsettled?type=${this.settlementData.type}&entityID=${this.settlementData.entityId}&startDate=${this.settlementData.fromDate}&endDate=${this.settlementData.toDate}&operatorDrivers=${this.operatorDrivers}`
+        `common/trips/driver/unsettled?type=${this.settlementData.type}&entityID=${this.settlementData.entityId}&startDate=${this.settlementData.fromDate}&endDate=${this.settlementData.toDate}&operatorDrivers=${this.operatorDrivers}`
       )
       .subscribe((result: any) => {
         this.searchDisabled = false;
@@ -1373,7 +1373,7 @@ export class AddSettlementComponent implements OnInit {
 
   async fetchSettledTrips(tripIds) {
     let result: any = await this.apiService
-      .getData(`trips/driver/settled?entities=${tripIds}`)
+      .getData(`common/trips/driver/settled?entities=${tripIds}`)
       .toPromise();
     // this.settledTrips = result;
 

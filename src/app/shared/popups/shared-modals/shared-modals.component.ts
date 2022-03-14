@@ -246,8 +246,8 @@ export class SharedModalsComponent implements OnInit {
           this.fetchVehicles();
           this.fetchAssets();
           this.fetchUsers();
-        } else if(res === "") {
-            this.issueModal.close();
+        } else if (res === "") {
+          this.issueModal.close();
         }
       }
     );
@@ -310,12 +310,12 @@ export class SharedModalsComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -338,7 +338,7 @@ export class SharedModalsComponent implements OnInit {
   addVehicleModel() {
     this.hideErrors();
     this.apiService.postData("vehicleModels", this.vehicleModelData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -351,8 +351,8 @@ export class SharedModalsComponent implements OnInit {
             complete: () => {
               this.throwErrors();
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
@@ -374,7 +374,7 @@ export class SharedModalsComponent implements OnInit {
     this.apiService
       .postData("assetManufacturers", this.assetMakeData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -387,8 +387,8 @@ export class SharedModalsComponent implements OnInit {
               complete: () => {
                 this.throwErrors();
               },
-              error: () => {},
-              next: () => {},
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {
@@ -407,7 +407,7 @@ export class SharedModalsComponent implements OnInit {
   addAssetModel() {
     this.hideErrors();
     this.apiService.postData("assetModels", this.assetModelData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -420,8 +420,8 @@ export class SharedModalsComponent implements OnInit {
             complete: () => {
               this.throwErrors();
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
@@ -447,7 +447,7 @@ export class SharedModalsComponent implements OnInit {
   addServiceProgram() {
     this.hideErrors();
     this.apiService.postData("servicePrograms", this.serviceData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -460,8 +460,8 @@ export class SharedModalsComponent implements OnInit {
             complete: () => {
               this.throwErrors();
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
@@ -478,7 +478,7 @@ export class SharedModalsComponent implements OnInit {
   addServiceTask() {
     this.hideErrors();
     this.apiService.postData("tasks", this.taskData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -491,8 +491,8 @@ export class SharedModalsComponent implements OnInit {
             complete: () => {
               this.throwErrors();
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
@@ -507,7 +507,7 @@ export class SharedModalsComponent implements OnInit {
 
   fetchVehicles() {
     this.apiService.getData("vehicles").subscribe({
-      error: () => {},
+      error: () => { },
       next: (result: any) => {
         // this.vehicles = result.Items;
         console.log("result.Items", result.Items);
@@ -522,7 +522,7 @@ export class SharedModalsComponent implements OnInit {
 
   fetchTasks() {
     this.apiService.getData("tasks").subscribe({
-      error: () => {},
+      error: () => { },
       next: (result: any) => {
         // this.tasks = result.Items;
         result.Items.forEach((element) => {
@@ -584,7 +584,7 @@ export class SharedModalsComponent implements OnInit {
 
     // this.apiService.postData('issues/', data).subscribe({
     this.apiService.postData("issues", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -597,8 +597,8 @@ export class SharedModalsComponent implements OnInit {
             complete: () => {
               this.throwErrors();
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
@@ -635,7 +635,12 @@ export class SharedModalsComponent implements OnInit {
 
   fetchUsers() {
     this.apiService.getData("users").subscribe((result: any) => {
-      this.users = result.Items;
+      result["Items"].map((r: any) => {
+        if (r.isDeleted === 0) {
+          this.users.push(r);
+        }
+      })
+
     });
   }
 

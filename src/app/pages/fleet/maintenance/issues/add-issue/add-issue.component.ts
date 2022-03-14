@@ -138,7 +138,7 @@ clone = false;
   }
 
   fetchUsers() {
-    this.apiService.getData("users/fetch/records").subscribe((result: any) => {
+    this.apiService.getData("common/users/fetch/records").subscribe((result: any) => {
       this.users = result.Items;
     });
   }

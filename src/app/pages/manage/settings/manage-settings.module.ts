@@ -20,6 +20,15 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { CustomerSettingComponent } from "./customer-setting/customer-setting.component";
 import { DoverviewComponent } from "./settings-overview/doverview/doverview.component";
 import { ImportDriversComponent } from "./import-drivers/import-drivers.component";
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
 
 const routes: Routes = [
   { path: "overview", component: SettingsOverviewComponent },
@@ -30,12 +39,16 @@ const routes: Routes = [
   },
   { path: "general", component: GeneralSettingsComponent },
   { path: "myaccount", component: MyAccountComponent },
-  { path: "driver", component: DriverSettingComponent },
+  {
+    path: "driver",
+    component: DriverSettingComponent,
+    data: { title: "Deleted Drivers" },
+  },
   { path: "import", component: ImportDriversComponent },
   {
     path: "vehicle",
     component: VehicleSettingComponent,
-    data: { title: "Vehicle Settings" },
+    data: { title: "Deleted Vehicle" },
   },
   {
     path: "asset",
@@ -104,6 +117,15 @@ const routes: Routes = [
     NgbModule,
     InfiniteScrollModule,
     NgSelectModule,
+    TableModule,
+    ButtonModule,
+    MultiSelectModule,
+    TooltipModule,
+    MenuModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule
   ],
 })
-export class ManageSettingsModule {}
+export class ManageSettingsModule { }
