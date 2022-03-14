@@ -1,10 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { GoogleMap, MapDirectionsService, MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from "moment";
-import { MessageService } from 'primeng/api';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { ApiService } from 'src/app/services';
 
 interface location {
@@ -23,6 +21,9 @@ interface location {
 export class AssetTrackerComponent implements OnInit {
   @ViewChild(GoogleMap) googleMap: GoogleMap;
   @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
+
+
+
   options: any;
   width = "100%";
   height = "700px";
@@ -40,7 +41,7 @@ export class AssetTrackerComponent implements OnInit {
     mapTypeControl: true,
     streetViewControl: false,
     fullscreenControl: true,
-    zoom: 4,
+    zoom: 5,
     mapId: '620eb1a41a9e36d4',
     zoomControlOptions: {
       position: google.maps.ControlPosition.RIGHT_TOP,
@@ -49,7 +50,7 @@ export class AssetTrackerComponent implements OnInit {
     center: this.center
   };
   assetID;
-  locationData;
+  locationData = [];
   loading = false;;
   value: Date;
 
@@ -68,6 +69,20 @@ export class AssetTrackerComponent implements OnInit {
   endMarker: google.maps.LatLngLiteral;
   noDevices = false;
   infoDetail: string;
+  pathCoordinates = [];
+  durations = [
+    { name: '6 Hours', value: '6h' },
+    { name: '12 Hours', value: '12h' },
+    { name: '24 Hours', value: '24h' },
+    { name: '48 Hours', value: '48h' },
+    { name: '72 Hours', value: '72h' },
+  ]
+  selectedDuration = undefined;
+  showTraffic = false;
+  vertices: google.maps.LatLng[];
+  bounds = new google.maps.LatLngBounds();
+
+  assetId: any;
 
   /**
    * Constructor
@@ -79,6 +94,7 @@ export class AssetTrackerComponent implements OnInit {
     private apiService: ApiService,
     private message: MessageService,
     private route: ActivatedRoute,
+    private primengConfig: PrimeNGConfig
   ) {
     this.assetID = this.route.snapshot.params.assetId;
     this.markerPositions = new Array<markerPosition>();
@@ -89,30 +105,46 @@ export class AssetTrackerComponent implements OnInit {
    * Angular OnInit()
    */
   async ngOnInit(): Promise<void> {
-
-    await this.getDeviceEventsFor24Hours(this.assetID);
+    this.primengConfig.ripple = true;
+    // Extract query parameters
+    this.extractQueryParams();
+    // await this.fetchAsset();
+    await this.getDeviceEventsForDuration(this.selectedDuration);
     this.mapOptions.center = this.center;
     // this.googleMap.googleMap.setCenter(this.center);
 
 
     this.polylineOptions = new google.maps.Polyline({
       strokeColor: 'green',
-      icons: [
-        {
-          icon: this.lineSymbol,
-          offset: "100%",
-        },
-      ],
       path: this.vertices
     })
 
-    this.animate();
-    this.googleMap.googleMap.fitBounds(this.bounds);
 
 
 
   }
 
+  private extractQueryParams() {
+    this.route.queryParams
+      .subscribe(params => {
+
+        this.assetId = params.assetId;
+      }
+      );
+  }
+
+  showTrafficLayer() {
+    this.showTraffic = !this.showTraffic;
+  }
+
+  /**
+   * update map data with selected duration
+   */
+  async updateData() {
+
+    await this.getDeviceEventsForDuration(this.selectedDuration.value);
+
+  }
 
   /**
    * Open Marker Window
@@ -141,16 +173,33 @@ export class AssetTrackerComponent implements OnInit {
         lng: parseFloat(cords[0]),
         lat: parseFloat(cords[1]),
       };
-      console.log(event);
 
       //  this.googleMap.googleMap.setCenter(this.center)
-      // this.googleMap.googleMap.setZoom(17);
+
+      this.zoomIn(16);
       this.googleMap.googleMap.panTo(curPosition)
+
 
     } else {
       this.message.add({ severity: 'error', summary: 'Location not available', detail: 'Tracker was not able to get GPS signal.' })
     }
 
+  }
+  zoomIncrement = 1;
+  zoomFactor = 2.0; // 2.0 - 0.1 (Slower (rough animation), Faster
+  zoomIn(endZoom: number) {
+    if (this.googleMap.googleMap.getZoom() < endZoom) {
+      this.googleMap.googleMap.setZoom(this.googleMap.googleMap.getZoom() + this.zoomIncrement);
+      setTimeout(() => { this.zoomIn(endZoom); }, this.zoomFactor * 100);
+    }
+  }
+
+  zoomDecrement = 1;
+  zoomOut(endZoom: number) {
+    if (this.googleMap.googleMap.getZoom() > endZoom) {
+      this.googleMap.googleMap.setZoom(this.googleMap.googleMap.getZoom() - this.zoomDecrement);
+      setTimeout(() => { this.zoomOut(endZoom); }, this.zoomFactor * 100);
+    }
   }
 
 
@@ -159,10 +208,11 @@ export class AssetTrackerComponent implements OnInit {
    * Get Device location for duration
    * @param assetIdentification 
    */
-  async getDeviceEventsFor24Hours(assetIdentification: string) {
+  async getDeviceEventsForDuration(duration = '6h') {
     this.loading = true;
     const data: any = await this.apiService
-      .getData(`assetTrackers/getLast24HoursData/${assetIdentification}/48h`).toPromise();
+      .getData(`assetTrackers/getLocationData/${this.assetID}/${duration}`).toPromise();
+
 
     if (data && data.length > 0) {
       for (const item of data) {
@@ -191,18 +241,31 @@ export class AssetTrackerComponent implements OnInit {
         lat: parseFloat(endCords[1]),
       };
 
-      this.drawWayPoints(data);
+      data.forEach(path => {
+        const cords = path.cords.split(",");
+        this.pathCoordinates.push({
+          lng: parseFloat(cords[0]),
+          lat: parseFloat(cords[1]),
+        });
+      });
+
+      this.drawPath(data);
     } else {
       this.noDevices = true;
 
-      this.message.add({ severity: 'error', summary: 'Location data not available for selected duration', detail: 'Please change the duration and try again.' })
+      this.message.add({ severity: 'error', summary: 'Location data not available for selected duration', detail: 'Please change the duration and try again.' });
+      this.loading = false;
+
     }
 
   }
 
-  vertices: google.maps.LatLng[];
-  bounds = new google.maps.LatLngBounds();
-  drawWayPoints(results: any[]) {
+
+  /**
+   * draw path using polyline
+   * @param results 
+   */
+  drawPath(results: any[]) {
     try {
       this.vertices = new Array<any>();
       let cords = results[0].cords.split(",");
@@ -220,47 +283,70 @@ export class AssetTrackerComponent implements OnInit {
       for (let way of results) {
         const cords = way.cords.split(",");
 
-        const myLatLng = new google.maps.LatLng(parseFloat(cords[1]),
+        const latLng = new google.maps.LatLng(parseFloat(cords[1]),
           parseFloat(cords[0]));
-        this.vertices.push(myLatLng);
+        this.vertices.push(latLng);
 
 
-        this.bounds.extend(myLatLng);
+        this.bounds.extend(latLng);
       }
 
 
-      // const request: google.maps.DirectionsRequest = {
-      //   destination: endCords,
-      //   origin: startCords,
-      //   travelMode: google.maps.TravelMode.DRIVING
-      // };
-      // this.directionsResults$ = this.mapDirectionsService.route(request).pipe(map(response => response.result));
-
+      this.polylineOptions = new google.maps.Polyline({
+        strokeColor: 'green',
+        path: this.vertices
+      });
+      // if (this.googleMap) {
+      //   this.googleMap.googleMap.fitBounds(this.bounds);
+      //   this.googleMap.googleMap.setCenter(this.bounds.getCenter());
+      // }
     } catch (err) {
-      console.error('erro1', err);
+      console.error('Error', err);
     }
   }
 
 
-  animate() {
-    try {
+  /**
+   * create all markers from the map.
+   */
+  clearRoutes() {
 
-      let count = 0;
-      setInterval(() => {
-        console.log('Interval', count);
-        count = (count + 1) % 200;
-        const icons = this.polylineOptions.get("icons");
-        icons[0].offset = count / 2 + "%";
-        this.polylineOptions.setOptions({})
-      }, 200)
-    } catch (err) {
-      console.error('err', err);
+    if (this.googleMap.googleMap.getZoom() > 4) {
+      this.zoomOut(4);
     }
+    this.markerPositions = [];
+
   }
+
+
+
+  /**
+   * fetch Asset data
+   */
+  async fetchAsset() {
+
+    this.apiService.getData(`assets/${this.assetId}`).subscribe(
+      async (res: any) => {
+        if (res) {
+          let result = res.Items[0];
+          console.log(res.Items[0]);
+        }
+
+      },
+      (err) => { }
+    );
+  }
+
+
+
+
 
 }
 
 
+/**
+ * Marker Interface
+ */
 interface markerPosition {
   location: google.maps.LatLng;
   data: any;

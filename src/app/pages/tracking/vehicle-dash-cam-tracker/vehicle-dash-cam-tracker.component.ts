@@ -137,7 +137,7 @@ export class VehicleDashCamTrackerComponent implements OnInit {
     this.route.queryParams
       .subscribe(params => {
 
-        this.vehicleId = params.vehicle;
+        this.vehicleId = params.vehicleId;
       }
       );
   }

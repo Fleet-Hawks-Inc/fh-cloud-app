@@ -692,7 +692,7 @@ export class VehicleDetailComponent implements OnInit {
 
     locationDetails() {
         this.router.navigate([`/fleet/tracking/vehicle-dash-cam-tracker/${this.deviceInfo.deviceSrNo.split('#')[1]}`],
-            { queryParams: { vehicle: this.vehicleID } });
+            { queryParams: { vehicleId: this.vehicleID } });
     }
 
     fetchGroups() {

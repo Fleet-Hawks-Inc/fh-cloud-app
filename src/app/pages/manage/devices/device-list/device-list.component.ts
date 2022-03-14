@@ -3,6 +3,7 @@ import { Console } from 'console';
 import { ApiService } from '../../../../services/api.service'
 import { ToastrService } from 'ngx-toastr';
 import Constants from '../../constants';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -14,7 +15,7 @@ import Constants from '../../constants';
 export class DeviceListComponent implements OnInit {
 
   constructor(private apiService: ApiService,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService, private router: Router) { }
 
   next: any = 'null';
 
@@ -32,6 +33,8 @@ export class DeviceListComponent implements OnInit {
     this.devices = [];
     this.fetchDevices();
   }
+
+
   private async fetchDevices() {
     try {
       if (this.next === 'end') {
@@ -100,7 +103,7 @@ export class DeviceListComponent implements OnInit {
             this.next = 'null';
             this.fetchDevices();
             this.toastr.success(`Device ${status} Successfully`)
-            }
+          }
         })
       }
       catch (error) {
@@ -114,5 +117,16 @@ export class DeviceListComponent implements OnInit {
 
     await this.fetchDevices();
 
+  }
+
+  gotoAssetTracker(device) {
+    console.log(device);
+    this.router.navigate(
+      [`/fleet/tracking/asset-tracker/${device.asset.assetIdentification}`],
+      {
+        queryParams: { assetId: device.asset.assetID },
+
+      }
+    );
   }
 }

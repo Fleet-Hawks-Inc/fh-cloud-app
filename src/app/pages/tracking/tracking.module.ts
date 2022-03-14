@@ -13,9 +13,10 @@ import { TableModule } from 'primeng/table';
 import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 import { CalendarModule } from 'primeng/calendar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { DropdownModule } from 'primeng/dropdown';
 import { ClipboardModule } from 'ngx-clipboard';
-
+import { RippleModule } from 'primeng/ripple';
+import { SplitterModule } from 'primeng/splitter';
 @NgModule({
   declarations: [AssetTrackerComponent, VehicleDashCamTrackerComponent],
   imports: [
@@ -33,7 +34,10 @@ import { ClipboardModule } from 'ngx-clipboard';
     ClipboardModule,
     NgSelectModule,
     TableModule,
-    CalendarModule
+    CalendarModule,
+    DropdownModule,
+    RippleModule,
+    SplitterModule
   ]
 })
 export class TrackingModule { }

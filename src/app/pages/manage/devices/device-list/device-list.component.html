@@ -111,12 +111,12 @@
                             else elseBlock
                           "
                         >
-                       <a  style="color: blue; text-decoration: none;" target="_blank" routerLink="/fleet/vehicles/detail/{{device.vehicle.vehicleID}}">  {{ device.vehicle.vehicleIdentification }}</a>
+                       <a  style="color: blue; text-decoration: none;" target="_blank" routerLink="/fleet/tracking/vehicle-dash-cam-tracker/{{device.deviceSerialNo.split('#')[1]}}" [queryParams]="{ vehicleId: device.vehicle.vehicleID}">  {{ device.vehicle.vehicleIdentification }}</a>
                             </td>
                             <ng-template #elseBlock>
                                 <td>
 
-                                    <a style="color: blue; text-decoration: none;" target="_blank" routerLink="/fleet/tracking/asset-tracker/{{device.asset.assetIdentification}}">  {{  device.asset.assetIdentification }}</a>
+                                    <a style="color: blue; text-decoration: none;" target="_blank" routerLink="/fleet/tracking/asset-tracker/{{device.asset.assetIdentification}}" [queryParams]="{ assetId: device.asset.assetID}" queryParamsHandling="merge">  {{  device.asset.assetIdentification }}</a>
 
                                 </td>
                             </ng-template>

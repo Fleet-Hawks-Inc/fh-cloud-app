@@ -417,13 +417,13 @@ export class AssetDetailComponent implements OnInit {
     //         this.groupsObjects = result;
     //     });
     // }
-    
+
     fetchGroups() {
-       if(this.groupId !==''){
-        this.apiService.getData(`groups/get/list?type=assets&groupId=${this.groupId}`).subscribe((result: any) => {
-            this.groupsObjects = result;
-        });
-       }
+        if (this.groupId !== '') {
+            this.apiService.getData(`groups/get/list?type=assets&groupId=${this.groupId}`).subscribe((result: any) => {
+                this.groupsObjects = result;
+            });
+        }
     }
 
     fetchAssetLogs() {
@@ -655,7 +655,7 @@ export class AssetDetailComponent implements OnInit {
      */
     async getDeviceEventsFor24Hours(assetIdentification: string) {
         this.apiService
-            .getData(`assetTrackers/getLast24HoursData/${assetIdentification}`)
+            .getData(`assetTrackers/getLocationData/${assetIdentification}`)
             .subscribe((data) => {
                 if (data && data.length > 0) {
                     for (const item of data) {
