@@ -37,8 +37,12 @@
                         <div class="p-3 text-dark">
                             <google-map [width]="width" [height]="height" [options]="mapOptions" *ngIf="!loading">
                                 <map-traffic-layer [autoRefresh]="true"></map-traffic-layer>
-                                <map-marker *ngFor="let markerPosition of markerPositions" [position]="markerPosition" [options]="markerOptions"></map-marker>
-
+                                <map-marker #marker="mapMarker" *ngFor="let markerPosition of markerPositions" [position]="markerPosition.location" [options]="markerOptions" (mapClick)="openInfoWindow(marker,markerPosition.data)"></map-marker>
+                                <map-marker [position]="startMarker" [options]="startMarkerOptions"></map-marker>
+                                <map-marker [position]="endMarker" [options]="endMarkerOptions"></map-marker>
+                                <map-polyline [options]="polylineOptions"></map-polyline>
+                                <map-info-window class="marker-info" [innerHTML]="infoDetail"></map-info-window>
+                                <!-- <map-directions-renderer *ngIf="(directionsResults$ | async) as directionsResults" [directions]="directionsResults"></map-directions-renderer> -->
                             </google-map>
                         </div>
                     </div>
