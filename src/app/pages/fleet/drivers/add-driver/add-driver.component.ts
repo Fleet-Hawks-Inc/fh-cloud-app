@@ -159,18 +159,6 @@ export class AddDriverComponent
       csa: false,
     },
     paymentOption:[],
-    paymentDetails: {
-      paymentType: "Pay Per Mile",
-      loadedMiles: "",
-      loadedMilesTeam: "",
-      loadedMilesUnit: "",
-      loadedMilesTeamUnit: "",
-      emptyMiles: "",
-      emptyMilesTeam: "",
-      emptyMilesUnit: "",
-      emptyMilesTeamUnit: "",
-      default:true,
-    },
     payPeriod: null,
     SIN: "",
     CDL_Number: "",
@@ -309,6 +297,39 @@ export class AddDriverComponent
   pageType = "add";
   groupsData: any = [];
   sessionID: string;
+  paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"}]
+
+  paymentType="ppm"
+
+  payPerMile={
+    pType:"ppm",
+    loadedMiles:null,
+    currency:null,
+    emptyMiles:null,
+    emptyMilesTeam:null,
+    loadedMilesTeam:null,
+    default:false
+  }
+  payPerHour={
+    pType:"pph",
+    rate:null,
+    currency:null,
+    waitingPay:null,
+    waitingHourAfter:null,
+    default:false
+  }
+  payPercentage={
+    pType:"pp",
+    loadPayPercentage:null,
+    loadPayPercentageOf:null,
+    default:false
+  }
+  payPerDelivery={
+    pType:"ppd",
+    deliveryRate:null,
+    currency:null,
+    default:false
+  }
 
   constructor(
     private apiService: ApiService,
@@ -875,10 +896,23 @@ export class AddDriverComponent
       this.hasError = false;
       this.hasSuccess = false;
       this.hideErrors();
-      if(this.driverData.paymentDetails.paymentType){
-        this.driverData.paymentOption.push(this.driverData.paymentDetails)
-        delete this.driverData.paymentDetails
+      switch(this.paymentType){
+        case "ppd":
+          this.payPerDelivery.default=true
+          break;
+        case "pph":
+          this.payPerHour.default=true
+          break;
+        case "pp":
+          this.payPercentage.default=true
+          break;
+        case "ppm":
+          this.payPerMile.default=true
+          break;
+        default: 
+        this.payPerMile.default=true
       }
+      this.driverData.paymentOption=[this.payPerMile,this.payPerDelivery,this.payPerHour,this.payPercentage]
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
       this.driverData[`deletedUploads`] = this.deletedUploads;
@@ -1249,24 +1283,30 @@ export class AddDriverComponent
     this.driverData.crossBorderDetails.csa = result.crossBorderDetails.csa;
     result.paymentOption.forEach(element => {
       if(element.default){
-      this.driverData.paymentDetails.paymentType =
-      element.paymentType;
-    this.driverData.paymentDetails.loadedMiles =
-      element.loadedMiles;
-    this.driverData.paymentDetails.loadedMilesUnit =
-      element.loadedMilesUnit;
-    this.driverData.paymentDetails.loadedMilesTeam =
-      element.loadedMilesTeam;
-    this.driverData.paymentDetails.loadedMilesTeamUnit =
-      element.loadedMilesTeamUnit;
-    this.driverData.paymentDetails.emptyMiles =
-      element.emptyMiles;
-    this.driverData.paymentDetails.emptyMilesUnit =
-      element.emptyMilesUnit;
-    this.driverData.paymentDetails.emptyMilesTeam =
-      element.emptyMilesTeam;
-    this.driverData.paymentDetails.emptyMilesTeamUnit =
-      element.emptyMilesTeamUnit;
+      this.paymentType =
+      element.pType;
+      if(this.paymentType="Pay Per Hour"){
+          this.payPerHour.currency=element.currency
+          this.payPerHour.rate=element.rate
+          this.payPerHour.waitingHourAfter=element.waitingHourAfter
+          this.payPerHour.waitingPay=element.waitingPay
+      }
+    // this.driverData.paymentDetails.loadedMiles =
+    //   element.loadedMiles;
+    // this.driverData.paymentDetails.loadedMilesUnit =
+    //   element.loadedMilesUnit;
+    // this.driverData.paymentDetails.loadedMilesTeam =
+    //   element.loadedMilesTeam;
+    // this.driverData.paymentDetails.loadedMilesTeamUnit =
+    //   element.loadedMilesTeamUnit;
+    // this.driverData.paymentDetails.emptyMiles =
+    //   element.emptyMiles;
+    // this.driverData.paymentDetails.emptyMilesUnit =
+    //   element.emptyMilesUnit;
+    // this.driverData.paymentDetails.emptyMilesTeam =
+    //   element.emptyMilesTeam;
+    // this.driverData.paymentDetails.emptyMilesTeamUnit =
+    //   element.emptyMilesTeamUnit;
       }
     });
      
@@ -1318,10 +1358,10 @@ export class AddDriverComponent
       this.hasError = false;
       this.hasSuccess = false;
       this.hideErrors();
-      if(this.driverData.paymentDetails.paymentType){
-        this.driverData.paymentOption.push(this.driverData.paymentDetails)
-        delete this.driverData.paymentDetails
-      }
+      // if(this.driverData.paymentDetails.paymentType){
+      //   this.driverData.paymentOption.push(this.driverData.paymentDetails)
+      //   delete this.driverData.paymentDetails
+      // }
       this.driverData[`driverID`] = this.driverID;
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
@@ -1438,10 +1478,10 @@ export class AddDriverComponent
    
   }
   changeCurrency(currency: any) {
-    this.driverData.paymentDetails.loadedMilesUnit = currency;
-    this.driverData.paymentDetails.emptyMilesUnit = currency;
-    this.driverData.paymentDetails.loadedMilesTeamUnit = currency;
-    this.driverData.paymentDetails.emptyMilesTeamUnit = currency;
+    // this.driverData.paymentDetails.loadedMilesUnit = currency;
+    // this.driverData.paymentDetails.emptyMilesUnit = currency;
+    // this.driverData.paymentDetails.loadedMilesTeamUnit = currency;
+    // this.driverData.paymentDetails.emptyMilesTeamUnit = currency;
   }
   concatArray(path) {
     this.concatArrayKeys = "";
