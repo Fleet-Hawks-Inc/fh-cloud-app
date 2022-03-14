@@ -510,7 +510,7 @@ export class DriverDetailComponent implements OnInit {
     fetchGroups(groupId) {
         this.apiService.getData(`groups/get/list?type=drivers&groupId=${groupId}`).subscribe((result: any) => {
             this.groupsObjects = result;
-            console.log('groupsObject', this.groupsObjects)
+
         });
     }
 

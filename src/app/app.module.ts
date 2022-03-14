@@ -67,6 +67,11 @@ import { DropdownModule } from 'primeng/dropdown';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MultiSelectModule } from 'primeng/multiselect';
 
+import { TrackingModule } from './pages/tracking/tracking.module';
+import { VehicleDashCamTrackerComponent } from './pages/tracking/vehicle-dash-cam-tracker/vehicle-dash-cam-tracker.component';
+import { AssetTrackerComponent } from './pages/tracking/asset-tracker/asset-tracker.component';
+
+
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -122,7 +127,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     MultiSelectModule,
     TooltipModule,
     AutoCompleteModule,
-    DropdownModule
+    DropdownModule,
+    TrackingModule
 
 
 

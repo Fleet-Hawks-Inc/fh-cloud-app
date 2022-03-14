@@ -262,7 +262,7 @@ export class DriverListComponent implements OnInit {
             else {
                 this.lastEvaluatedKey = 'end'
             }
-            console.log(this.lastEvaluatedKey, result.nextPage)
+
             this.drivers = this.drivers.concat(result.data);
             this.loaded = true;
 
@@ -335,7 +335,7 @@ export class DriverListComponent implements OnInit {
         this.driverName = null;
     }
     resetFilter() {
-        console.log(this.driverID)
+
         if (
             this.driverID !== '' ||
             this.dutyStatus !== '' ||
