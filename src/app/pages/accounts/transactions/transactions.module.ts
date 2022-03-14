@@ -19,7 +19,7 @@ const routes: Routes = [
   {
     path: "transfers/detail",
     component: TransfersDetailComponent,
-    data: { title: "Detail Transfers List" },
+    data: { title: "Transfers List Detail" },
   },
 ];
 
