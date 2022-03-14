@@ -1470,7 +1470,7 @@
                                                 <ng-select [(ngModel)]="paymentType" name="paymentType" placeholder="Select the payment type" id="paymentTypeForm" #paySlt="ngModel" required [ngClass]="{
                               error: driverF.submitted && paySlt.invalid
                             }">
-                                        <ng-option *ngFor="let option of paymentOptions" [value]="option">{{option}}</ng-option>
+                                        <ng-option *ngFor="let option of paymentOptions" [value]="option.value">{{option.name}}</ng-option>
                                                 </ng-select>
 
                                                 <div *ngIf="paySlt.invalid && driverF.submitted" class="text-danger">
@@ -1501,7 +1501,7 @@
                                     </div>
                                     <div class="col-lg-6 mb-1">
                                         <div class="row" id="payPerHourForm" *ngIf="
-                        paymentType == 'Pay Per Hour'
+                        paymentType == 'pph'
                       ">
                                             <div class="col-lg-4">
                                                 <label class="
@@ -1580,7 +1580,7 @@
                                         </div> 
                                         <div class="row" id="payPerHourForm" *ngIf="
                         paymentType ==
-                        'Pay Per Delivery'
+                        'ppd'
                       ">
                                             <div class="col-lg-4">
                                                 <label class="
@@ -1626,7 +1626,7 @@
                                             </div>
                                         </div>
                                         <div class="row" id="payPercentageForm" *ngIf="
-                        paymentType == 'Percentage'
+                        paymentType == 'pp'
                       ">
                                             <div class="col-lg-10">
                                                 <label class="
@@ -1679,7 +1679,7 @@
                                         <div>
                                             <div class="row" id="payPerMileForm" *ngIf="
                           paymentType ==
-                          'Pay Per Mile'
+                          'ppm'
                         " style="display: flex">
                                                 <div class="col-lg-3 pr-0">
                                                     <label class="
