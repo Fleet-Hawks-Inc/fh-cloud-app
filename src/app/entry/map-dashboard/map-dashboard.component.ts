@@ -206,17 +206,20 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   }
   prepareAssetInfoTemplate(data: any) {
     // console.log('data', data);
-    return `<a href='#/fleet/assets/detail/${data.assetID}' target=_blank'><h4> Asset: ${data.assetIdentification}</h4></a>
-    Speed: ${data.speed} KM/H | Altitude: ${data.altitude} <br/> <br/>
-    Time : ${data.time}<br/> <br/>
+    return `<b> Asset: ${data.assetIdentification}</b><br/>
+    Speed: ${data.speed} KM/H | Altitude: ${data.altitude} <br/>
+    Time : ${data.time}<br/> 
     Temp. : ${data.temp} | Battery : ${data.battery}
+    <br/>
+    <a class='link' target='_blank' href = '#/fleet/tracking/asset-tracker/${data.assetIdentification}?assetId=${data.assetID}' style='color:blue;font-size:9px'>Asset Report</a> | 
+    <a href='#/fleet/assets/detail/${data.assetID}' target=_blank'>Asset Details</a>
      `;
   }
 
   prepareVehicleInfoTemplate(data: any) {
-    return `<b>Vehicle: ${data.vehicleIdentification}</a></b><br/>
+    return `<b>Vehicle: ${data.vehicleIdentification}</b></b><br/>
    <span> Speed: ${parseFloat(data.speed).toFixed(2)} KM/H</span><br/>   
-      <a class='link' target='_blank' href = '#/fleet/tracking/vehicle-dash-cam-tracker/${data.deviceId}?vehicle=${data.vehicleID}' style='color:blue;font-size:9px'>Realtime view</a> | 
+      <a class='link' target='_blank' href = '#/fleet/tracking/vehicle-dash-cam-tracker/${data.deviceId}?vehicleId=${data.vehicleID}' style='color:blue;font-size:9px'>Realtime view</a> | 
       <a class='link' target='_blank' href ='#/fleet/vehicles/detail/${data.vehicleID}' style='color:blue;font-size:9px'>Vehicle details</a>
         `;
   }

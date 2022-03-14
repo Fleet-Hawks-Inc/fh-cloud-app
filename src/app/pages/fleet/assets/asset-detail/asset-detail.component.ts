@@ -404,8 +404,7 @@ export class AssetDetailComponent implements OnInit {
                     // this.spinner.hide(); // loader hide
                 }
 
-                // Load devices information
-                this.getDeviceEventsFor24Hours(this.assetIdentification);
+
             },
             (err) => { }
         );
@@ -650,38 +649,7 @@ export class AssetDetailComponent implements OnInit {
         this.center = event.latLng.toJSON();
     }
 
-    /**
-     * Get Devices data if attached for last 24 hours
-     */
-    async getDeviceEventsFor24Hours(assetIdentification: string) {
-        this.apiService
-            .getData(`assetTrackers/getLocationData/${assetIdentification}`)
-            .subscribe((data) => {
-                if (data && data.length > 0) {
-                    for (const item of data) {
-                        const stillUtc = moment.utc(item.time).toDate();
-                        const localTime = moment(stillUtc)
-                            .local()
-                            .format("YYYY-MM-DD HH:mm:ss");
-                        item.time = localTime;
-                    }
-                    this.rows = data;
-                    this.loadingIndicator = false;
-                    const cords = data[0].cords.split(",");
 
-                    this.center = {
-                        lng: parseFloat(cords[0]),
-                        lat: parseFloat(cords[1]),
-                    };
-                    this.markerPositions.push({
-                        lng: parseFloat(cords[0]),
-                        lat: parseFloat(cords[1]),
-                    });
-                } else {
-                    this.noDevices = true;
-                }
-            });
-    }
 
     /** when row is clicked updated map */
     onLocationRowSelected({ selected }) {
