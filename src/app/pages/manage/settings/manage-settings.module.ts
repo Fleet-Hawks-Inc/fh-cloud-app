@@ -21,14 +21,28 @@ import { CustomerSettingComponent } from "./customer-setting/customer-setting.co
 import { VehImportComponent } from './veh-import/veh-import.component';
 import { DoverviewComponent } from "./settings-overview/doverview/doverview.component";
 import { ImportDriversComponent } from "./import-drivers/import-drivers.component";
+import { ImportOverviewComponent } from "./settings-overview/import-overview/import-overview.component";
+import { VehicleSettingsComponent } from './vehicle-settings/vehicle-settings.component';
+import { DeletedVehiclesComponent } from './vehicle-settings/deleted-vehicles/deleted-vehicles.component';
+import { ImportedVehiclesComponent } from './vehicle-settings/imported-vehicles/imported-vehicles.component';
 
 const routes: Routes = [
   { path: "overview", component: SettingsOverviewComponent },
+  {
+    path: 'vehicles',
+    loadChildren: () => import('./vehicle-settings/vehicles-settings.module').then((m) => m.VehiclesSettingsModule),
+    data: { title: 'Vehicles Settings' }
+  },
   {
     path: "doverview",
     component: DoverviewComponent,
     data: { title: "Driver Settings" },
   },
+  // {
+  //   path: "vehicles",
+  //   component: ImportOverviewComponent,
+  //   data: { title: "Vehicle Settings" },
+  // },
   { path: "general", component: GeneralSettingsComponent },
   { path: "myaccount", component: MyAccountComponent },
   {
@@ -82,8 +96,8 @@ const routes: Routes = [
     component: CustomerSettingComponent,
     data: { title: "Customer Settings" },
   },
-  { 
-    path: 'vehimport', 
+  {
+    path: 'import-vehicle',
     component: VehImportComponent
   },
 ];
@@ -106,6 +120,9 @@ const routes: Routes = [
     DoverviewComponent,
     VehImportComponent,
     ImportDriversComponent,
+    VehicleSettingsComponent,
+    DeletedVehiclesComponent,
+    ImportedVehiclesComponent,
   ],
   imports: [
     CommonModule,
@@ -116,4 +133,4 @@ const routes: Routes = [
     NgSelectModule,
   ],
 })
-export class ManageSettingsModule {}
+export class ManageSettingsModule { }
