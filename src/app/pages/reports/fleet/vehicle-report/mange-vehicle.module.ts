@@ -26,7 +26,8 @@ import { ActivityListComponent } from "./activity-list/activity-list.component";
 import { ActivityComponent } from "./activity/activity.component";
 import { ProvinceMilesComponent } from "./province-miles/province-miles.component";
 import { ProvinceSummaryComponent } from "./province-summary/province-summary.component";
-
+import { RevenueListComponent } from './revenue-list/revenue-list.component';
+import { RevenueDetailComponent } from './revenue-detail/revenue-detail.component';
 const routes: Routes = [
   {
     path: "overview",
@@ -78,6 +79,16 @@ const routes: Routes = [
     component: ProvinceSummaryComponent,
     data: { title: "Vehicle Province Summary Reports" },
   },
+  {
+    path: "revenue-list",
+    component: RevenueListComponent,
+    data: { title: "Vehicle Revenue Reports" },
+  },
+  {
+    path: "revenue-detail/:vehicleId",
+    component: RevenueDetailComponent,
+    data: { title: "Vehicle Revenue Detail Reports" },
+  },
 ];
 
 /**
@@ -101,10 +112,10 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     // from internal model -> your mode
     return date
       ? date.year +
-          this.DELIMITER +
-          ("0" + date.month).slice(-2) +
-          this.DELIMITER +
-          ("0" + date.day).slice(-2)
+      this.DELIMITER +
+      ("0" + date.month).slice(-2) +
+      this.DELIMITER +
+      ("0" + date.day).slice(-2)
       : null;
   }
 }
@@ -147,6 +158,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     ActivityComponent,
     ProvinceMilesComponent,
     ProvinceSummaryComponent,
+    RevenueListComponent,
+    RevenueDetailComponent,
   ],
 
   imports: [
@@ -167,4 +180,4 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
-export class ManageVehicleModule {}
+export class ManageVehicleModule { }
