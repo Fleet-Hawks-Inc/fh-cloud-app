@@ -49,7 +49,7 @@
                                                         </td>
                                                         <td class="text-capitalize">
                                                             <!--{{ groupID ? groupsObjects[groupID] : "-" }}-->
-                                                            {{ groupId ? groupsObjects[0].groupName  : "-" }}
+                                                            {{ groupId ? groupsObjects[0].groupName : "-" }}
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -102,8 +102,7 @@
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">
                                                             <span *ngIf="ownerShip !== 'interchange'">
-                                                                Year,</span>
-                                                            Make &amp; Model
+                                                                Year,</span> Make &amp; Model
                                                         </td>
                                                         <td class="text-capitalize">
                                                             <span *ngIf="ownerShip !== 'interchange'">{{
@@ -176,8 +175,7 @@
                                                             Rented Amount
                                                         </td>
                                                         <td class="text-capitalize">
-                                                            {{ ownAmt ? ownAmt : "-" }}
-                                                            {{ ownCurr }}
+                                                            {{ ownAmt ? ownAmt : "-" }} {{ ownCurr }}
                                                         </td>
                                                     </tr>
                                                     <tr *ngIf="ownerShip === 'rented'">
@@ -217,8 +215,7 @@
                                                             Leased Amount
                                                         </td>
                                                         <td class="text-capitalize">
-                                                            {{ ownAmt ? ownAmt : "-" }}
-                                                            {{ ownCurr }}
+                                                            {{ ownAmt ? ownAmt : "-" }} {{ ownCurr }}
                                                         </td>
                                                     </tr>
 
@@ -259,9 +256,7 @@
                                                             Inspection Form Name
                                                         </td>
                                                         <td class="text-capitalize">
-                                                            <a href="#inspectionFormModal" data-toggle="modal"
-                                                                data-target="#inspectionFormModal"
-                                                                class="modal-with-form font-weight-bold">{{
+                                                            <a href="#inspectionFormModal" data-toggle="modal" data-target="#inspectionFormModal" class="modal-with-form font-weight-bold">{{
                                                                 inspectionFormName ? inspectionFormName : "-"
                                                                 }}
                                                             </a>
@@ -392,17 +387,14 @@
                                             <div class="vehicle-common-box p-3 mb-3">
                                                 <div class="row">
                                                     <div class="col-lg-6">
-                                                        <label
-                                                            class="control-label font-weight-bold text-3">Photo(s)</label>
+                                                        <label class="control-label font-weight-bold text-3">Photo(s)</label>
                                                     </div>
                                                 </div>
                                                 <hr class="solid mt-3" />
                                                 <div class="row">
-                                                    <div class="col-lg-6"
-                                                        *ngFor="let item of assetsImages; let i = index">
+                                                    <div class="col-lg-6" *ngFor="let item of assetsImages; let i = index">
                                                         <div class="vehicle-photo-box">
-                                                            <img [src]="item.path" width="100%" class="img-fluid"
-                                                                style="height: 180px; object-fit: cover" />
+                                                            <img [src]="item.path" width="100%" class="img-fluid" style="height: 180px; object-fit: cover" />
                                                             <!-- <iframe [src]="item" width="100px" height="100px" frameborder="0"></iframe> -->
                                                             <hr class="m-3" />
                                                             <div class="row">
@@ -441,11 +433,7 @@
                                                             Loan Vendor
                                                         </td>
                                                         <td width="60%">
-                                                            {{
-                                                            loan.loanVendorID
-                                                            ? contactsObjects[loan.loanVendorID]
-                                                            : "-"
-                                                            }}
+                                                            {{ loan.loanVendorID ? contactsObjects[loan.loanVendorID] : "-" }}
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -453,8 +441,7 @@
                                                             Amount of Loan
                                                         </td>
                                                         <td>
-                                                            {{ loan.amountOfLoan ? loan.amountOfLoan : "-" }}
-                                                            {{ loan.amountOfLoanCurrency }}
+                                                            {{ loan.amountOfLoan ? loan.amountOfLoan : "-" }} {{ loan.amountOfLoanCurrency }}
                                                         </td>
                                                     </tr>
 
@@ -463,11 +450,7 @@
                                                             Annual Percentage Rate
                                                         </td>
                                                         <td>
-                                                            {{
-                                                            loan.annualPercentageRate
-                                                            ? loan.annualPercentageRate + "%"
-                                                            : "-"
-                                                            }}
+                                                            {{ loan.annualPercentageRate ? loan.annualPercentageRate + "%" : "-" }}
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -484,8 +467,7 @@
                                                             Down Payment
                                                         </td>
                                                         <td class="text-capitalize">
-                                                            {{ loan.downPayment ? loan.downPayment : "-" }}
-                                                            {{ loan.downPaymentCurrency }}
+                                                            {{ loan.downPayment ? loan.downPayment : "-" }} {{ loan.downPaymentCurrency }}
                                                         </td>
                                                     </tr>
 
@@ -494,11 +476,7 @@
                                                             Date of Loan
                                                         </td>
                                                         <td class="text-capitalize">
-                                                            {{
-                                                            loan.dateOfLoan
-                                                            ? (loan.dateOfLoan | date: "yyyy/MM/dd")
-                                                            : "-"
-                                                            }}
+                                                            {{ loan.dateOfLoan ? (loan.dateOfLoan | date: "yyyy/MM/dd") : "-" }}
                                                         </td>
                                                     </tr>
 
@@ -507,11 +485,7 @@
                                                             Loan End Date
                                                         </td>
                                                         <td class="text-capitalize">
-                                                            {{
-                                                            loan.loadEndDate
-                                                            ? (loan.loadEndDate | date: "yyyy/MM/dd")
-                                                            : "-"
-                                                            }}
+                                                            {{ loan.loadEndDate ? (loan.loadEndDate | date: "yyyy/MM/dd") : "-" }}
                                                         </td>
                                                     </tr>
 
@@ -520,11 +494,7 @@
                                                             Loan Due Date
                                                         </td>
                                                         <td class="text-capitalize">
-                                                            {{
-                                                            loan.loanDueDate
-                                                            ? (loan.loanDueDate | date: "yyyy/MM/dd")
-                                                            : "-"
-                                                            }}
+                                                            {{ loan.loanDueDate ? (loan.loanDueDate | date: "yyyy/MM/dd") : "-" }}
                                                         </td>
                                                     </tr>
 
@@ -542,11 +512,7 @@
                                                             Number of Payments
                                                         </td>
                                                         <td class="text-capitalize">
-                                                            {{
-                                                            loan.numberOfPayments
-                                                            ? loan.numberOfPayments
-                                                            : "-"
-                                                            }}
+                                                            {{ loan.numberOfPayments ? loan.numberOfPayments : "-" }}
                                                         </td>
                                                     </tr>
 
@@ -555,10 +521,7 @@
                                                             Monthly Payment
                                                         </td>
                                                         <td class="text-capitalize">
-                                                            {{
-                                                            loan.monthlyPayment ? loan.monthlyPayment : "-"
-                                                            }}
-                                                            {{ loan.monthlyPaymentCurrency }}
+                                                            {{ loan.monthlyPayment ? loan.monthlyPayment : "-" }} {{ loan.monthlyPaymentCurrency }}
                                                         </td>
                                                     </tr>
 
@@ -591,22 +554,16 @@
                                                             <td colspan="2">{{ noRecordMsg }}</td>
                                                         </tr>
                                                         <tr *ngFor="let data of lDocs; let i = index">
-                                                        <td width="80%">
-                                                      <a href="{{data.path}}"target="_blank">Document {{ i + 1 }}</a>
-                                                        </td>
-                                                 <!--   <a href="{{ data.path }}">Document {{ i+1}}</a> -->
+                                                            <td width="80%">
+                                                                <a href="{{data.path}}" target="_blank">Document {{ i + 1 }}</a>
+                                                            </td>
+                                                            <!--   <a href="{{ data.path }}">Document {{ i+1}}</a> -->
                                                             <td width="20%">
-                                                                <a href="javascript:;"
-                                                                    class="btn btn-deafault pull-right btn-xs"
-                                                                    (click)="deleteDocument('loan', data.name)"><i
+                                                                <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="deleteDocument('loan', data.name)"><i
                                                                         class="fas fa-trash-alt"></i></a>
-                                                                <a class="btn btn-deafault pull-right btn-xs"
-                                                                     target="_blank"><i
+                                                                <a class="btn btn-deafault pull-right btn-xs" target="_blank"><i
                                                                         class="fas fa-download"></i></a>
-                                                                <a href="{{ data.path }}"
-                                                                    class="btn btn-deafault pull-right btn-xs"
-                                                                    (click)="setPDFSrc(data.path)" data-toggle="modal"
-                                                                    data-target="#viewDocModal"><i
+                                                                <a href="{{ data.path }}" class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(data.path)" data-toggle="modal" data-target="#viewDocModal"><i
                                                                         class="fas fa-eye"></i></a>
                                                             </td>
                                                         </tr>
@@ -625,8 +582,7 @@
                                         </div>
                                         <div class="col-lg-12" *ngIf="!environment">
                                             <!-- Morris: Line -->
-                                            <canvas baseChart [datasets]="chartData" [labels]="chartLabels"
-                                                [options]="chartOptions" [legend]="chartLegend" [chartType]="chartType">
+                                            <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions" [legend]="chartLegend" [chartType]="chartType">
                                             </canvas>
                                         </div>
                                         <div class="col-lg-12">
@@ -647,11 +603,7 @@
                                                             Date of Issue
                                                         </td>
                                                         <td width="60%">
-                                                            {{
-                                                            dateOfIssue
-                                                            ? (dateOfIssue | date: "yyyy/MM/dd")
-                                                            : "-"
-                                                            }}
+                                                            {{ dateOfIssue ? (dateOfIssue | date: "yyyy/MM/dd") : "-" }}
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -659,11 +611,7 @@
                                                             Date of Expiry
                                                         </td>
                                                         <td>
-                                                            {{
-                                                            dateOfExpiry
-                                                            ? (dateOfExpiry | date: "yyyy/MM/dd")
-                                                            : "-"
-                                                            }}
+                                                            {{ dateOfExpiry ? (dateOfExpiry | date: "yyyy/MM/dd") : "-" }}
                                                         </td>
                                                     </tr>
 
@@ -672,8 +620,7 @@
                                                             Premium Amount
                                                         </td>
                                                         <td>
-                                                            {{ premiumAmount ? premiumAmount : "-" }}
-                                                            {{ premiumCurrency }}
+                                                            {{ premiumAmount ? premiumAmount : "-" }} {{ premiumCurrency }}
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -681,10 +628,7 @@
                                                             Reminder Before Expiry
                                                         </td>
                                                         <td class="text-small">
-                                                            {{ reminderBefore ? reminderBefore : "" }}
-                                                            {{
-                                                            reminderBeforeUnit ? reminderBeforeUnit : "-"
-                                                            }}
+                                                            {{ reminderBefore ? reminderBefore : "" }} {{ reminderBeforeUnit ? reminderBeforeUnit : "-" }}
                                                         </td>
                                                     </tr>
 
@@ -717,11 +661,7 @@
                                                             Purchase Vendor
                                                         </td>
                                                         <td width="60%">
-                                                            {{
-                                                            purchase.purchaseVendorID
-                                                            ? contactsObjects[purchase.purchaseVendorID]
-                                                            : "-"
-                                                            }}
+                                                            {{ purchase.purchaseVendorID ? contactsObjects[purchase.purchaseVendorID] : "-" }}
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -729,12 +669,7 @@
                                                             Purchase Price
                                                         </td>
                                                         <td>
-                                                            {{
-                                                            purchase.purchasePrice
-                                                            ? purchase.purchasePrice
-                                                            : "-"
-                                                            }}
-                                                            {{ purchase.purchasePriceCurrency }}
+                                                            {{ purchase.purchasePrice ? purchase.purchasePrice : "-" }} {{ purchase.purchasePriceCurrency }}
                                                         </td>
                                                     </tr>
 
@@ -749,11 +684,7 @@
                                                             Purchase Date
                                                         </td>
                                                         <td class="text-small">
-                                                            {{
-                                                            purchase.purchaseDate
-                                                            ? (purchase.purchaseDate | date: "yyyy/MM/dd")
-                                                            : "-"
-                                                            }}
+                                                            {{ purchase.purchaseDate ? (purchase.purchaseDate | date: "yyyy/MM/dd") : "-" }}
                                                         </td>
                                                     </tr>
 
@@ -762,11 +693,7 @@
                                                             Purchase Odometer in Miles
                                                         </td>
                                                         <td class="text-capitalize">
-                                                            {{
-                                                            purchase.purchaseOdometer
-                                                            ? purchase.purchaseOdometer
-                                                            : "-"
-                                                            }}
+                                                            {{ purchase.purchaseOdometer ? purchase.purchaseOdometer : "-" }}
                                                         </td>
                                                     </tr>
 
@@ -775,12 +702,7 @@
                                                             Warranty Expiration Date
                                                         </td>
                                                         <td class="text-capitalize">
-                                                            {{
-                                                            purchase.warrantyExpirationDate
-                                                            ? (purchase.warrantyExpirationDate
-                                                            | date: "yyyy/MM/dd")
-                                                            : "-"
-                                                            }}
+                                                            {{ purchase.warrantyExpirationDate ? (purchase.warrantyExpirationDate | date: "yyyy/MM/dd") : "-" }}
                                                         </td>
                                                     </tr>
 
@@ -789,11 +711,7 @@
                                                             Warranty Expiration Meter
                                                         </td>
                                                         <td class="text-capitalize">
-                                                            {{
-                                                            purchase.warrantyExpirationMeter
-                                                            ? purchase.warrantyExpirationMeter
-                                                            : "-"
-                                                            }}
+                                                            {{ purchase.warrantyExpirationMeter ? purchase.warrantyExpirationMeter : "-" }}
                                                         </td>
                                                     </tr>
 
@@ -802,11 +720,7 @@
                                                             Purchase Comments
                                                         </td>
                                                         <td class="text-capitalize">
-                                                            {{
-                                                            purchase.purchaseComments
-                                                            ? purchase.purchaseComments
-                                                            : "-"
-                                                            }}
+                                                            {{ purchase.purchaseComments ? purchase.purchaseComments : "-" }}
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -830,21 +744,16 @@
                                                             <td colspan="2">{{ noRecordMsg }}</td>
                                                         </tr>
                                                         <tr *ngFor="let data of pDocs; let i = index">
-                                                         <td width="80%">
-                                                      <a href="{{data.path}}"target="_blank">Document {{ i + 1 }}</a>
-                                                        </td>
+                                                            <td width="80%">
+                                                                <a href="{{data.path}}" target="_blank">Document {{ i + 1 }}</a>
+                                                            </td>
                                                             <td width="20%">
-                                                                <a href="javascript:;"
-                                                                    class="btn btn-deafault pull-right btn-xs" (click)="
+                                                                <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="
                                     deleteDocument('purchase', data.name)
                                   "><i class="fas fa-trash-alt"></i></a>
-                                                                <a class="btn btn-deafault pull-right btn-xs"
-                                                                    href="{{ data.path }}" target="_blank"><i
+                                                                <a class="btn btn-deafault pull-right btn-xs" href="{{ data.path }}" target="_blank"><i
                                                                         class="fas fa-download"></i></a>
-                                                                <a href="javascript:;"
-                                                                    class="btn btn-deafault pull-right btn-xs"
-                                                                    (click)="setPDFSrc(data.path)" data-toggle="modal"
-                                                                    data-target="#viewDocModal"><i
+                                                                <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(data.path)" data-toggle="modal" data-target="#viewDocModal"><i
                                                                         class="fas fa-eye"></i></a>
                                                             </td>
                                                         </tr>
@@ -852,72 +761,24 @@
                                                 </table>
                                             </div>
                                         </div>
-                                        <div class="col-lg-12 mt-3" *ngIf="rows.length === 0">
-                                            <label *ngIf="!noDevices"
-                                                class="control-label font-weight-bold text-3">Loading Asset trackers
-                                                .....</label>
-                                            <label *ngIf="noDevices" class="control-label font-weight-bold text-3">There
-                                                are no asset tracker attached.</label>
-                                        </div>
-                                        <div class="col-lg-12 mt-3" *ngIf="rows.length > 0">
-                                            <label class="control-label font-weight-bold text-3">Map Location:</label>
-                                            <google-map height="400px" width="100%" [center]="center" [zoom]="zoom">
-                                                <map-marker *ngFor="let markerPosition of markerPositions"
-                                                    [position]="markerPosition" [options]="markerOptions"></map-marker>
-                                            </google-map><br /><br />
-                                            <label class="control-label font-weight-bold text-3">Asset Tracker Data
-                                                (Last 24 Hours):</label>
-                                            <ngx-datatable class="ngx-datatable" [rows]="rows" [limit]="10"
-                                                rowHeight="auto" [columnMode]="ColumnMode.force" [headerHeight]="50"
-                                                [footerHeight]="50" [reorderable]="reorderable"
-                                                [loadingIndicator]="loadingIndicator"
-                                                [selectionType]="SelectionType.single" [selected]="selected"
-                                                (select)="onLocationRowSelected($event)">
-                                                <ngx-datatable-column name="Message" prop="messageType"
-                                                    [sortable]="false" [width]="80"></ngx-datatable-column>
-                                                <ngx-datatable-column name="When" [sortable]="false" prop="time"
-                                                    [width]="80"></ngx-datatable-column>
-                                                <ngx-datatable-column name="Battery" prop="battery" [sortable]="false"
-                                                    [width]="50"></ngx-datatable-column>
-                                                <ngx-datatable-column [sortable]="false" name="Speed" prop="speed"
-                                                    [width]="30"></ngx-datatable-column>
-                                                <ngx-datatable-column name="Location" prop="location" [sortable]="false"
-                                                    [width]="150"></ngx-datatable-column>
-                                                <!-- <ngx-datatable-column [sortable]="false">
-                          <ng-template ngx-datatable-cell-template>
-                            <a href="#" style="text-align: right"
-                              >Show on Map</a
-                            ></ng-template
-                          ></ngx-datatable-column
-                        > -->
-                                            </ngx-datatable>
-                                        </div>
+
                                         <div class="col-lg-12 mt-3" *ngIf="assetsDocs?.length > 0">
                                             <div class="vehicle-common-box p-3">
                                                 <div class="row">
                                                     <div class="col-lg-6">
-                                                        <label
-                                                            class="control-label font-weight-bold text-3">Document(s)</label>
+                                                        <label class="control-label font-weight-bold text-3">Document(s)</label>
                                                     </div>
                                                 </div>
                                                 <hr class="solid mt-3" />
                                                 <div class="row mb-1" *ngFor="let doc of assetsDocs; let d = index">
                                                     <div class="col-lg-9">
-                                                        <a href="{{ doc.path }}" data-toggle="modal"
-                                                            data-target="#viewDocModal"
-                                                            (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
+                                                        <a href="{{ doc.path }}" data-toggle="modal" data-target="#viewDocModal" (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
                                                     </div>
                                                     <div class="col-lg-3 text-right">
-                                                        <em class="far fa-file text-dak mr-1"
-                                                            (click)="setPDFSrc(doc.path)" data-toggle="modal"
-                                                            data-target="#viewDocModal"></em>
-                                                        <a href="javascript:;" (click)="deleteDocument('doc', doc.name)"
-                                                            class="modal-with-form">
+                                                        <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"></em>
+                                                        <a href="javascript:;" (click)="deleteDocument('doc', doc.name)" class="modal-with-form">
                                                             <em class="fas fa-times text-danger"></em></a>
-                                                              <a href="{{ doc.path }}"
-                                                                    class="btn btn-deafault pull-right btn-xs"
-                                                                    (click)="setPDFSrc(doc.path)" data-toggle="modal"
-                                                                    data-target="#viewDocModal"><i
+                                                        <a href="{{ doc.path }}" class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"><i
                                                                         class="fas fa-eye"></i></a>
                                                     </div>
                                                 </div>
@@ -937,8 +798,7 @@
                               p-2">
                                                         <i class="fas fa-user"></i> Asset Log
                                                     </h2>
-                                                    <div class="timeline timeline-simple changelog"
-                                                        style="max-height: 497px; overflow-x: auto; width: 100%">
+                                                    <div class="timeline timeline-simple changelog" style="max-height: 497px; overflow-x: auto; width: 100%">
                                                         <div class="tm-body text-dark" *ngIf="assetLogs.length > 0">
                                                             <ol class="tm-items">
                                                                 <li *ngFor="let data of assetLogs">
@@ -948,10 +808,7 @@
                                                                             {{ data.createdTime }}</span>
                                                                         <ul class="list-unstyled">
                                                                             <li>
-                                                                                {{ data.userFirstName | titlecase }}
-                                                                                {{ data.userLastName | titlecase }}
-                                                                                {{ data.eventParams.message }}
-                                                                                {{ data.eventParams.type }}
+                                                                                {{ data.userFirstName | titlecase }} {{ data.userLastName | titlecase }} {{ data.eventParams.message }} {{ data.eventParams.type }}
                                                                                 <b class="text-success">{{
                                                                                     data.entityNumber
                                                                                     }}</b>
@@ -961,8 +818,7 @@
                                                                 </li>
                                                             </ol>
                                                         </div>
-                                                        <div class="mt-3 mb-3 text-center"
-                                                            *ngIf="assetLogs.length == 0">
+                                                        <div class="mt-3 mb-3 text-center" *ngIf="assetLogs.length == 0">
                                                             {{ noRecordMsg }}
                                                         </div>
                                                     </div>
@@ -984,8 +840,7 @@
 
 
 <!-- VIEW DOCUMENT MODAL -->
-<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -1014,8 +869,7 @@
 </div>
 
 <!-- view inspection form -->
-<div class="modal fade" id="inspectionFormModal" tabindex="-1" role="dialog" aria-labelledby="inspectionFormModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="inspectionFormModal" tabindex="-1" role="dialog" aria-labelledby="inspectionFormModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

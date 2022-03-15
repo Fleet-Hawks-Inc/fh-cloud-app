@@ -50,7 +50,7 @@ const routes: Routes = [
   {
     path: "driver-data",
     component: DriverDataComponent,
-    data: { title: "Driver Activity List Report" },
+    data: { title: "Driver Activity Report List" },
   },
 ];
 

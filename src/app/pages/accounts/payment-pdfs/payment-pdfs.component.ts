@@ -116,7 +116,7 @@ export class PaymentPdfsComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
       async (res: any) => {
-        console.log('res', res);
+
         if (res.showModal && res.length != 0) {
           res.showModal = false;
           this.paymentData = res.data;

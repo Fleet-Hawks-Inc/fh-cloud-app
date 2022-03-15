@@ -5,6 +5,9 @@ import * as _ from 'lodash';
 import { ToastrService } from "ngx-toastr";
 import { $ } from 'protractor';
 import * as moment from 'moment'
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
+
 
 
 //import { AccountService } from 'src/app/services';
@@ -27,18 +30,18 @@ export class TrialBalanceComponent implements OnInit {
     actType = null;
     accounts: any = [];
     exportData = []
-    filter = {
+    public filter = {
         actType: null,
         actName: null,
         startDate: null,
         endDate: null,
     };
+    end : '';
+    start: '';
     datee = '';
     disableSearch = false;
     exportLoading = false;
     loaded = false;
-    start = null;
-    end = null;
     currTab = "CAD";
     isLoadText = "Load More...";
     isLoad = false;
@@ -76,15 +79,20 @@ export class TrialBalanceComponent implements OnInit {
     transactionLogCAD = [];
     creditTotal = 0;
     result = [];
+    startDate: string;
+    public endDate: string;
 
 
-    constructor(private accountService: AccountService, private toaster: ToastrService) { }
+    constructor(private accountService: AccountService, private toaster: ToastrService, private route: ActivatedRoute) { }
     ngOnInit() {
         this.filter.endDate = moment().format("YYYY-MM-DD");
         this.filter.startDate = moment().subtract(15, 'day').format('YYYY-MM-DD');
         this.fetchAccounts();
         this.fetchAccountClassByIDs();
         this.getAcClasses();
+         
+         
+        
     }
 
 
@@ -105,9 +113,9 @@ export class TrialBalanceComponent implements OnInit {
                         });
                            this.lastItemSK = result.lastKey;
                            if(this.lastItemSK !== result.lastKey)
-     {
-      this.lastItemSK = 'end';
-     }
+                          {
+                            this.lastItemSK = 'end';
+                          }
                         const newArray: any = _.sortBy(this.accounts, ["accountNo"]);
                         this.accounts = newArray;
                         for (var i = 0; i < result.data.length; i++) {
