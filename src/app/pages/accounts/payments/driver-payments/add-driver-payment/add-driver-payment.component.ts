@@ -412,7 +412,7 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
     this.paymentData.totalAmount = this.paymentData.totalAmount
       ? Number(this.paymentData.totalAmount)
       : 0;
-    console.log('dd', this.paymentData)
+
     this.paymentData.finalAmount =
       this.paymentData.totalAmount -
       this.paymentData.taxes -
@@ -851,7 +851,7 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
   vendorAddress: string
   corporateDriver = false;
   getDriverDetails = async () => {
-    console.log(this.paymentData.entityId)
+
     const result = await this.apiService
       .getData(`drivers/cheque/data/${this.paymentData.entityId}`).toPromise();
     if (result && result.Items.length > 0) {
@@ -869,7 +869,7 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
           this.vendorAddress = result.Items[0].venAddress[0];
         }
 
-        console.log(this.paymentData);
+
 
       } else {
         this.corporateDriver = false;
@@ -881,7 +881,7 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
   isVendor = false;
 
   changeIssueToVendor(event: any) {
-    console.log(event.target.checked)
+
     if (event.target.checked) {
       this.isVendor = true;
       this.calculateFinalTotal();

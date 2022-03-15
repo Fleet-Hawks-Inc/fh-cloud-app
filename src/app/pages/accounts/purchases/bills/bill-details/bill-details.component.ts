@@ -115,7 +115,7 @@ export class BillDetailsComponent implements OnInit {
       .getData(`bills/details/${this.billID}`)
       .toPromise();
     this.orderData = result[0];
-    console.log("this.orderData", this.orderData);
+
 
     if (
       result[0].attachments != undefined &&
@@ -187,7 +187,7 @@ export class BillDetailsComponent implements OnInit {
   }
 
   deleteDocument(name: string, index: number) {
-    console.log("name", name);
+
     this.accountService
       .deleteData(`bills/uploadDelete/${this.billID}/${name}`)
       .subscribe((result: any) => {
