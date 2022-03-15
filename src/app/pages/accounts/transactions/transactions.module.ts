@@ -14,12 +14,12 @@ const routes: Routes = [
   {
     path: "transfers/add",
     component: AddTransferComponent,
-    data: { title: "Add Transfers List" },
+    data: { title: "Add Transfer" },
   },
   {
     path: "transfers/detail",
     component: TransfersDetailComponent,
-    data: { title: "Transfers List Detail" },
+    data: { title: "Transfer Detail" },
   },
 ];
 
