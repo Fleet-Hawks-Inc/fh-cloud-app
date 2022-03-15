@@ -106,7 +106,7 @@ const routes: Routes = [
   {
     path: "orders/detail/:saleID",
     component: SalesOrderDetailComponent,
-    data: { title: "Detail Sale Order" },
+    data: { title: "Sale Order Detail" },
   },
   {
     path: "invoices/list",
@@ -126,7 +126,7 @@ const routes: Routes = [
   {
     path: "invoices/detail/:saleID",
     component: SalesInvoiceDetailComponent,
-    data: { title: "Detail Sale Invoices" },
+    data: { title: "Sale Invoices Detail" },
   },
   {
     path: "receipts/list",
@@ -141,7 +141,7 @@ const routes: Routes = [
   {
     path: "receipts/detail/:saleID",
     component: SalesReceiptsDetailComponent,
-    data: { title: "Detail Sales Receipt" },
+    data: { title: "Sales Receipt Detail" },
   },
   {
     path: "credit-notes/list",
@@ -161,7 +161,7 @@ const routes: Routes = [
   {
     path: "credit-notes/detail/:creditID",
     component: CreditNoteDetailComponent,
-    data: { title: "Detail Credit Note" },
+    data: { title: "Credit Note Detail" },
   },
 ];
 

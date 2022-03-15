@@ -100,7 +100,7 @@ const routes: Routes = [
   {
     path: "detail/:settlementID",
     component: SettlementsDetailComponent,
-    data: { title: "Detail Settlements" },
+    data: { title: "Settlements Detail" },
   },
 ];
 @NgModule({
