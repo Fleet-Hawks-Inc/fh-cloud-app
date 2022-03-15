@@ -18,7 +18,7 @@ const routes: Routes = [
   {
     path: "calendar-view",
     component: CalendarViewComponent,
-    data: { title: "Calendar View" },
+    data: { title: "Planner" },
   },
   {
     path: "map-view",

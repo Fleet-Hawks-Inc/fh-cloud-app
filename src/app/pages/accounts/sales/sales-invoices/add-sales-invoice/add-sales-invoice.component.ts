@@ -342,8 +342,6 @@ export class AddSalesInvoiceComponent implements OnInit {
       Number(this.saleData.charges.cAmount)
 
     this.allTax();
-
-    console.log('finalTotal', this.saleData.total)
     let discount: number;
     if (this.saleData.charges.discountUnit != '' && this.saleData.charges.discountUnit != null) {
       if (this.saleData.charges.discountUnit === '%') {
@@ -579,7 +577,7 @@ export class AddSalesInvoiceComponent implements OnInit {
     this.saleData.charges = result.charges;
     this.saleData.remarks = result.remarks;
 
-    console.log('this.saleData', this.saleData)
+
     await this.fetchAccounts();
     await this.getCustomerOrders(result.customerID);
     this.saleData.sOrderNo = result.sOrderNo;

@@ -114,7 +114,7 @@ export class ServiceProgramListComponent implements OnInit {
     }
   }
   getSuggestions = _.debounce(function (searchvalue) {
-    console.log(searchvalue)
+
     this.suggestions = [];
     if (searchvalue !== '') {
       searchvalue = searchvalue.toLowerCase();

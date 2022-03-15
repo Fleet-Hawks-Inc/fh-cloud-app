@@ -10,72 +10,20 @@ import { ApiService } from "src/app/services/api.service";
   styleUrls: ["./purchase-order-detail.component.css"],
 })
 export class PurchaseOrderDetailComponent implements OnInit {
-  orderData = {
-    txnDate: null,
-    refNo: "",
-    orderNo: "",
-    currency: "CAD",
-    poType: "",
-    vendorID: null,
-    detail: [
-      {
-        comm: "",
-        qty: "",
-        qtyTyp: null,
-        rate: "",
-        rateTyp: null,
-        amount: 0,
-      },
-    ],
-    charges: {
-      remarks: "",
-      cName: "Adjustments",
-      cType: "add",
-      cAmount: 0,
-      accFee: [
-        {
-          name: "",
-          amount: 0,
-        },
-      ],
-      accDed: [
-        {
-          name: "",
-          amount: 0,
-        },
-      ],
-      taxes: [
-        {
-          name: "GST",
-          tax: 0,
-          type: "prcnt",
-          amount: 0,
-        },
-        {
-          name: "PST",
-          tax: 0,
-          type: "prcnt",
-          amount: 0,
-        },
-        {
-          name: "HST",
-          tax: 0,
-          type: "prcnt",
-          amount: 0,
-        },
-      ],
-    },
-    total: {
-      detailTotal: 0,
-      feeTotal: 0,
-      dedTotal: 0,
-      subTotal: 0,
-      taxes: 0,
-      finalTotal: 0,
-    },
-    status: "",
-    billStatus: "",
-  };
+  commDetails = [];
+  taxes = [];
+  poType: string;
+  charges: any;
+  currency: string;
+  txnDate: string;
+  refNo: string;
+  orderNo: string;
+  status: string;
+  billStatus: string;
+  vendorID: string;
+  finalTotal: string;
+  remarks: string;
+
   purchaseID;
   vendorName: "";
   emailDisabled = false;
@@ -85,24 +33,34 @@ export class PurchaseOrderDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private apiService: ApiService,
     private toaster: ToastrService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.purchaseID = this.route.snapshot.params["purchaseID"];
     await this.fetchDetails();
-    await this.fetchVendor();
+
   }
 
   async fetchDetails() {
     let result: any = await this.accountService
       .getData(`purchase-orders/details/${this.purchaseID}`)
       .toPromise();
-    this.orderData = result[0];
+    await this.fetchVendor(result[0].vendorID);
+    this.txnDate = result[0].txnDate;
+    this.currency = result[0].currency;
+    this.finalTotal = result[0].total.finalTotal;
+    this.refNo = result[0].refNo;
+    this.remarks = result[0].remarks;
+    this.poType = result[0].poType;
+    this.orderNo = result[0].orderNo;
+    this.status = result[0].status;
+    this.billStatus = result[0].billStatus;
+    this.commDetails = result[0].detail;
   }
 
-  async fetchVendor() {
+  async fetchVendor(vendorID: string) {
     let result: any = await this.apiService
-      .getData(`contacts/minor/detail/${this.orderData.vendorID}`)
+      .getData(`contacts/minor/detail/${vendorID}`)
       .toPromise();
     if (result.Items.length > 0) {
       this.vendorName = result.Items[0].cName;

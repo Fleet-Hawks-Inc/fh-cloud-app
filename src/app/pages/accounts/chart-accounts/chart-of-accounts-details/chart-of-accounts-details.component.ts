@@ -74,29 +74,18 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    
-    
      this.route.queryParams.subscribe(params => {
-        console.log('date',params); 
         if(params.startDate)
         {
           this.filter.startDate = params.startDate
-          this.filter.endDate = params.endDate
-         
-        }
-        
-       
+          this.filter.endDate = params.endDate 
+        }     
       }
     );
      this.actID = this.route.snapshot.params[`actID`];
-   
-    
-    //this.startDate = this.route.snapshot.params['startDate']
     if (this.actID) {
       await this.fetchAccount();
       await this.logsCADPaging();
-      // this.filter.endDate = moment().format("YYYY-MM-DD");
-      // this.filter.startDate = moment().subtract( 15,'day').format('YYYY-MM-DD');
     } 
   
   }
