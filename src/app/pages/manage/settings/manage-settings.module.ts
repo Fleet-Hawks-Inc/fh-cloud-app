@@ -21,6 +21,7 @@ import { CustomerSettingComponent } from "./customer-setting/customer-setting.co
 import { VehImportComponent } from './veh-import/veh-import.component';
 import { DoverviewComponent } from "./settings-overview/doverview/doverview.component";
 import { ImportDriversComponent } from "./import-drivers/import-drivers.component";
+
 import { VehicleSettingsComponent } from './vehicle-settings/vehicle-settings.component';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -31,6 +32,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
+
 
 const routes: Routes = [
   { path: "overview", component: SettingsOverviewComponent },
@@ -61,22 +63,22 @@ const routes: Routes = [
   {
     path: "asset",
     component: AssetsSettingComponent,
-    data: { title: "Assets Settings" },
+    data: { title: "Deleted Assets" },
   },
   {
     path: "fuel",
     component: FuelSettingComponent,
-    data: { title: "Fuel Settings" },
+    data: { title: "Deleted Fuel" },
   },
   {
     path: "reminders",
     component: RemindersSettingComponent,
-    data: { title: "Reminders Settings" },
+    data: { title: "Deleted Reminders" },
   },
   {
     path: "issue",
     component: IssueSettingComponent,
-    data: { title: "Issue Settings" },
+    data: { title: "Deleted Issue" },
   },
   {
     path: "dispatch",
@@ -139,7 +141,7 @@ const routes: Routes = [
     SplitButtonModule,
     CalendarModule,
     AutoCompleteModule,
-    DropdownModule
+    DropdownModule,
   ],
 })
-export class ManageSettingsModule { }
+export class ManageSettingsModule {}
