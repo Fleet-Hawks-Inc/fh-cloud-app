@@ -40,7 +40,7 @@ const routes: Routes = [
     data: { title: 'Vehicles Settings' }
   },
   {
-    path: "doverview",
+    path: "driver-overview",
     component: DoverviewComponent,
     data: { title: "Driver Settings" },
   },
