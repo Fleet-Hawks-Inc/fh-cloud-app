@@ -22,8 +22,6 @@ import { VehImportComponent } from './veh-import/veh-import.component';
 import { DoverviewComponent } from "./settings-overview/doverview/doverview.component";
 import { ImportDriversComponent } from "./import-drivers/import-drivers.component";
 import { VehicleSettingsComponent } from './vehicle-settings/vehicle-settings.component';
-import { DeletedVehiclesComponent } from './vehicle-settings/deleted-vehicles/deleted-vehicles.component';
-import { ImportedVehiclesComponent } from './vehicle-settings/imported-vehicles/imported-vehicles.component';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -125,8 +123,6 @@ const routes: Routes = [
     VehImportComponent,
     ImportDriversComponent,
     VehicleSettingsComponent,
-    DeletedVehiclesComponent,
-    ImportedVehiclesComponent,
   ],
   imports: [
     CommonModule,
