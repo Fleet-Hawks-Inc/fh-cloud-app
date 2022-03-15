@@ -118,7 +118,7 @@ export class SremindersComponent implements OnInit {
   fetchTasksList() {
     this.apiService.getData('tasks/get/list?type=service').subscribe((result: any) => {
       this.tasksData = result;
-      console.log('tasksData', this.tasksData)
+
     });
   }
 

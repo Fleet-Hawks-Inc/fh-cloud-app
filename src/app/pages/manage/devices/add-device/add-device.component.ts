@@ -233,7 +233,7 @@ export class AddDeviceComponent implements OnInit {
       this.apiService.putData("devices", this.device).subscribe({
         complete: () => { },
         error: (err: any) => {
-          console.log(err);
+
           from(err.error)
             .pipe(
               map((val: any) => {

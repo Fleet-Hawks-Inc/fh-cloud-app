@@ -110,6 +110,7 @@ const routes: Routes = [
     data: { title: "Reports" },
     canActivate: [AuthService, CheckProfileServiceService],
   },
+
   {
     path: "404",
     component: ErrorComponent,
@@ -118,6 +119,7 @@ const routes: Routes = [
     path: "**",
     redirectTo: "/404",
   },
+
 ];
 @NgModule({
   imports: [
@@ -139,4 +141,4 @@ const routes: Routes = [
     NgbModal,
   ],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
