@@ -1,24 +1,13 @@
-.notrip-oview img {
-  width: 100px;
-  height: auto;
-  display: block;
-  margin: auto;
-  margin-top: 70%;
-  opacity: 0.2;
+.marker-info>span {
+    font-size: 10px;
+    color: black;
 }
 
-.gm-style-iw {
-  background-color: #252525;
-  padding: 2% 11%;
+.marker-info link {
+    font-size: 11px;
 }
 
-.iw-content p {
-  color: #a5a5a5;
-}
-
-.iw-subTitle {
-  color: white;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 5px 0;
+.map-container {
+    width: 800px;
+    height: 600px;
 }

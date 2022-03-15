@@ -20,15 +20,15 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { CustomerSettingComponent } from "./customer-setting/customer-setting.component";
 import { DoverviewComponent } from "./settings-overview/doverview/doverview.component";
 import { ImportDriversComponent } from "./import-drivers/import-drivers.component";
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { TooltipModule } from 'primeng/tooltip';
-import { MenuModule } from 'primeng/menu';
-import { SplitButtonModule } from 'primeng/splitbutton';
-import { CalendarModule } from 'primeng/calendar';
-import { AutoCompleteModule } from 'primeng/autocomplete';
-import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from "primeng/table";
+import { ButtonModule } from "primeng/button";
+import { MultiSelectModule } from "primeng/multiselect";
+import { TooltipModule } from "primeng/tooltip";
+import { MenuModule } from "primeng/menu";
+import { SplitButtonModule } from "primeng/splitbutton";
+import { CalendarModule } from "primeng/calendar";
+import { AutoCompleteModule } from "primeng/autocomplete";
+import { DropdownModule } from "primeng/dropdown";
 
 const routes: Routes = [
   { path: "overview", component: SettingsOverviewComponent },
@@ -53,22 +53,22 @@ const routes: Routes = [
   {
     path: "asset",
     component: AssetsSettingComponent,
-    data: { title: "Assets Settings" },
+    data: { title: "Deleted Assets" },
   },
   {
     path: "fuel",
     component: FuelSettingComponent,
-    data: { title: "Fuel Settings" },
+    data: { title: "Deleted Fuel" },
   },
   {
     path: "reminders",
     component: RemindersSettingComponent,
-    data: { title: "Reminders Settings" },
+    data: { title: "Deleted Reminders" },
   },
   {
     path: "issue",
     component: IssueSettingComponent,
-    data: { title: "Issue Settings" },
+    data: { title: "Deleted Issue" },
   },
   {
     path: "dispatch",
@@ -125,7 +125,7 @@ const routes: Routes = [
     SplitButtonModule,
     CalendarModule,
     AutoCompleteModule,
-    DropdownModule
+    DropdownModule,
   ],
 })
-export class ManageSettingsModule { }
+export class ManageSettingsModule {}

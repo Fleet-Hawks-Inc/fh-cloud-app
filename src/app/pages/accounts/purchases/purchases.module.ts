@@ -109,7 +109,7 @@ const routes: Routes = [
   {
     path: "orders/detail/:purchaseID",
     component: PurchaseOrderDetailComponent,
-    data: { title: "Detail Purchase Orders" },
+    data: { title: "Purchase Orders Detail" },
   },
   {
     path: "vendor-payments/list",
@@ -124,7 +124,7 @@ const routes: Routes = [
   {
     path: "vendor-payments/detail/:paymentID",
     component: VendorPaymentDetailComponent,
-    data: { title: "Detail Vendor Payments" },
+    data: { title: "Vendor Payments Detail" },
   },
   {
     path: "vendor-credit-notes/list",
@@ -144,7 +144,7 @@ const routes: Routes = [
   {
     path: "vendor-credit-notes/detail/:creditID",
     component: VendorCreditNoteDetailComponent,
-    data: { title: "Detail Vendor Credit Notes" },
+    data: { title: "Vendor Credit Notes Detail" },
   },
   {
     path: "bills/list",
@@ -164,7 +164,7 @@ const routes: Routes = [
   {
     path: "bills/details/:billID",
     component: BillDetailsComponent,
-    data: { title: "Detail Bill" },
+    data: { title: "Bill Detail" },
   },
 ];
 

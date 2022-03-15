@@ -15,7 +15,7 @@ export class BolPdfComponent implements OnInit {
   constructor(
     private listService: ListService,
     private modalService: NgbModal
-  ) {}
+  ) { }
   subscription: Subscription;
   orderData = {
     createdDate: null,
@@ -68,7 +68,7 @@ export class BolPdfComponent implements OnInit {
     this.subscription = this.listService.bolPdfList.subscribe(
       async (res: any) => {
         if (res.showModal && res.length != 0) {
-          console.log("res====", res);
+
           this.orderData = res.orderData;
           this.carrierData = res.carrierData;
           this.companyLogo = res.companyLogo;
@@ -82,8 +82,8 @@ export class BolPdfComponent implements OnInit {
           this.modalService
             .open(this.modalContent, ngbModalOptions)
             .result.then(
-              (result) => {},
-              (reason) => {}
+              (result) => { },
+              (reason) => { }
             );
           // this.generatePDF();
         }
