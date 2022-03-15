@@ -51,7 +51,18 @@ export class ServiceListComponent implements OnInit {
   allAssets = [];
   assetID = null;
   loaded = false;
-
+  searchValue = null;
+  category = null;
+  categoryFilter = [
+    {
+      'name': 'Vehicle',
+      'value': 'vehicle'
+    },
+    {
+      'name': 'Asset',
+      'value': 'asset'
+    },
+  ]
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -85,8 +96,9 @@ export class ServiceListComponent implements OnInit {
   }
 
   fetchAllVehiclesIDs() {
-    this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
-      this.vehiclesObject = result;
+    this.apiService.getData('vehicles/list/minor').subscribe((result: any) => {
+      this.vehiclesObject = result.Items;
+
     });
   }
 
@@ -105,8 +117,8 @@ export class ServiceListComponent implements OnInit {
   }
 
   fetchAllAssetsIDs() {
-    this.apiService.getData("assets/get/list").subscribe((result: any) => {
-      this.assetsObject = result;
+    this.apiService.getData('assets/get/minor/details').subscribe((result: any) => {
+      this.assetsObject = result.Items;
     });
   }
 
@@ -142,12 +154,12 @@ export class ServiceListComponent implements OnInit {
     if (this.lastEvaluatedKey !== "end") {
       this.apiService
         .getData(
-          "serviceLogs/fetch/records?vehicleID=" +
-          this.vehicleID +
+          "serviceLogs/fetch/records?searchValue=" +
+          this.searchValue +
           "&taskID=" +
           this.taskID +
-          "&asset=" +
-          this.assetID +
+          "&category=" +
+          this.category +
           "&lastKey=" +
           this.lastEvaluatedKey
         )
@@ -176,6 +188,10 @@ export class ServiceListComponent implements OnInit {
         });
     }
   }
+  categoryChange() {
+    this.searchValue = null;
+
+  }
   onScroll() {
     if (this.loaded) {
       this.initDataTable();
@@ -184,22 +200,32 @@ export class ServiceListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.vehicleID != null || this.assetID != null || this.taskID != null) {
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.logs = [];
-      this.lastEvaluatedKey = "";
-      this.initDataTable();
-    } else {
+    if (this.searchValue != null || this.category != null || this.taskID != null) {
+      if (this.searchValue != null && this.category == null) {
+        this.toastr.error('Please select both searchValue and category.');
+        return false;
+      } else if (this.searchValue == null && this.category != null) {
+        this.toastr.error('Please select both searchValue and category.');
+        return false;
+      }
+      else {
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.logs = [];
+        this.lastEvaluatedKey = "";
+        this.initDataTable();
+      }
+    }
+    else {
       return false;
     }
   }
 
   resetFilter() {
-    if (this.vehicleID != null || this.assetID != null || this.taskID != null) {
+    if (this.searchValue != null || this.category != null || this.taskID != null) {
       this.vehicleID = null;
       this.dataMessage = Constants.FETCHING_DATA;
-      this.vehicleIdentification = "";
-      this.assetID = null;
+      this.searchValue = null;
+      this.category = null;
       this.taskID = null;
       this.lastEvaluatedKey = "";
       this.logs = [];
@@ -233,9 +259,9 @@ export class ServiceListComponent implements OnInit {
 
   refreshData() {
     this.vehicleID = null;
+    this.searchValue = null;
+    this.category = null;
     this.dataMessage = Constants.FETCHING_DATA;
-    this.vehicleIdentification = "";
-    this.assetID = null;
     this.taskID = null;
     this.logs = [];
     this.lastEvaluatedKey = "";

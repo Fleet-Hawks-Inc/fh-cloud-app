@@ -29,53 +29,23 @@ export class AddPurchaseOrderComponent implements OnInit {
     detail: [
       {
         comm: "",
-        qty: "",
+        qty: 0,
         qtyTyp: null,
-        rate: "",
+        rate: 0,
         rateTyp: null,
         amount: 0,
         rowID: uuidv4(),
         status: "pending",
       },
     ],
-    charges: {
-      remarks: "",
-      cName: "Adjustments",
-      cType: "add",
-      cAmount: 0,
-      taxes: [
-        {
-          name: "GST",
-          tax: 0,
-          type: "prcnt",
-          amount: 0,
-        },
-        {
-          name: "PST",
-          tax: 0,
-          type: "prcnt",
-          amount: 0,
-        },
-        {
-          name: "HST",
-          tax: 0,
-          type: "prcnt",
-          amount: 0,
-        },
-      ],
-    },
+
     total: {
-      detailTotal: 0,
-      feeTotal: 0,
-      subTotal: 0,
-      taxes: 0,
       finalTotal: 0,
     },
+    remarks: "",
     status: "draft",
     billStatus: "",
-    stateID: null,
-    stateName: "",
-    exempt: false,
+
   };
   quantityTypes = [];
   vendors = [];
@@ -87,8 +57,13 @@ export class AddPurchaseOrderComponent implements OnInit {
   Error: string = "";
   Success: string = "";
   purchaseID;
-  stateTaxes = [];
   cloneID: any;
+
+  files: any;
+  docs = [];
+  oldDocs = [];
+  removedDocs = [];
+  filesError = '';
 
   constructor(
     private httpClient: HttpClient,
@@ -117,7 +92,6 @@ export class AddPurchaseOrderComponent implements OnInit {
 
     this.listService.fetchVendors();
     this.fetchQuantityTypes();
-    this.fetchStateTaxes();
     let vendorList = new Array<any>();
     this.getValidVendors(vendorList);
     this.vendors = vendorList;
@@ -149,15 +123,15 @@ export class AddPurchaseOrderComponent implements OnInit {
   addDetail() {
     let obj = {
       comm: "",
-      qty: "",
+      qty: 0,
       qtyTyp: null,
-      rate: "",
+      rate: 0,
       rateTyp: null,
       amount: 0,
       rowID: uuidv4(),
       status: "pending",
     };
-    const lastAdded = this.orderData.detail[this.orderData.detail.length - 1];
+    const lastAdded: any = this.orderData.detail[this.orderData.detail.length - 1];
     if (
       lastAdded.comm !== "" &&
       lastAdded.qty !== "" &&
@@ -174,7 +148,6 @@ export class AddPurchaseOrderComponent implements OnInit {
     if (this.orderData.detail.length > 1) {
       this.orderData.detail.splice(index, 1);
     }
-    this.detailsTotal();
   }
 
   checkEmailStat(type) {
@@ -196,9 +169,9 @@ export class AddPurchaseOrderComponent implements OnInit {
       const element = this.orderData.detail[i];
       if (
         element.comm === "" ||
-        element.qty === "" ||
+        element.qty === 0 ||
         element.qtyTyp === null ||
-        element.rate === "" ||
+        element.rate === 0 ||
         element.rateTyp === null ||
         element.amount <= 0
       ) {
@@ -207,18 +180,24 @@ export class AddPurchaseOrderComponent implements OnInit {
       }
     }
 
-    if (this.orderData.total.subTotal <= 0) {
-      this.toaster.error("Amount should be greater than 0");
-      return false;
-    }
-
     if (this.orderData.total.finalTotal <= 0) {
       this.toaster.error("Amount should be greater than 0");
       return false;
     }
-
     this.submitDisabled = true;
-    this.accountService.postData("purchase-orders", this.orderData).subscribe({
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append docs if any
+    for (let j = 0; j < this.docs.length; j++) {
+      formData.append("docs", this.docs[j]);
+    }
+
+    //append other fields
+    formData.append("data", JSON.stringify(this.orderData));
+
+    this.accountService.postData("purchase-orders", formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -252,28 +231,17 @@ export class AddPurchaseOrderComponent implements OnInit {
     this.location.back();
   }
 
-  detailsTotal() {
-    this.orderData.total.detailTotal = 0;
-    this.orderData.detail.forEach((element) => {
-      this.orderData.total.detailTotal += Number(element.amount);
-    });
-    this.calculateFinalTotal();
-  }
 
-  calcDetailAmount(index: number) {
-    if (!this.orderData.detail[index].rate) {
-      this.orderData.detail[index].rate = "0";
-    }
-    if (!this.orderData.detail[index].qty) {
-      this.orderData.detail[index].qty = "0";
-    }
-    if (this.orderData.detail[index].qty && this.orderData.detail[index].rate) {
-      this.orderData.detail[index].amount =
-        Number(this.orderData.detail[index].qty) *
-        Number(this.orderData.detail[index].rate);
-    }
-    this.detailsTotal();
-    this.allTax();
+
+  calcDetailAmount(i: number) {
+    let total: any = 0;
+    let amount: any = (this.orderData.detail[i].qty ? this.orderData.detail[i].qty : 0) * (this.orderData.detail[i].rate ? this.orderData.detail[i].rate : 0);
+    this.orderData.detail[i].amount = parseFloat(amount.toFixed(2));
+    this.orderData.detail.forEach((element) => {
+      total += element.amount;
+    });
+    this.orderData.total.finalTotal = parseFloat(total);
+
   }
 
   setQuanType(event: any, index: number) {
@@ -281,54 +249,52 @@ export class AddPurchaseOrderComponent implements OnInit {
     this.orderData.detail[index].rateTyp = event.target.value;
   }
 
-  calculateFinalTotal() {
-    this.orderData.total.subTotal =
-      Number(this.orderData.total.detailTotal) +
-      Number(this.orderData.total.feeTotal);
+  deleteDocument(name: string, index: number) {
+    this.oldDocs.filter(elem => {
+      if (elem.displayName === name) {
+        let obj = {
+          storedName: elem.name,
+          displayName: elem.displayName,
+        }
+        this.removedDocs.push(obj);;
+      }
+    })
 
-    this.allTax();
-    this.orderData.total.finalTotal =
-      Number(this.orderData.total.subTotal) +
-      Number(this.orderData.total.taxes);
-  }
-
-  accessorialFeeTotal() {
-    if (this.orderData.charges.cType === "add") {
-      this.orderData.total.feeTotal = Number(this.orderData.charges.cAmount);
-    } else if (this.orderData.charges.cType === "ded") {
-      this.orderData.total.feeTotal = -Number(this.orderData.charges.cAmount);
-    }
-    this.calculateFinalTotal();
-  }
-
-  taxcalculation(index) {
-    this.orderData.charges.taxes[index].amount =
-      (this.orderData.charges.taxes[index].tax *
-        this.orderData.total.subTotal) /
-      100;
-
-    this.taxTotal();
-  }
-
-  allTax() {
-    this.orderData.charges.taxes.forEach((element) => {
-      element.amount = (element.tax * this.orderData.total.subTotal) / 100;
-    });
-  }
-
-  taxTotal() {
-    this.orderData.total.taxes = 0;
-    this.orderData.charges.taxes.forEach((element) => {
-      this.orderData.total.taxes += Number(element.amount);
-    });
-    this.calculateFinalTotal();
+    this.oldDocs.splice(index, 1);
   }
 
   async fetchDetails() {
-    let result: any = await this.accountService
+    let res: any = await this.accountService
       .getData(`purchase-orders/details/${this.purchaseID}`)
       .toPromise();
-    this.orderData = result[0];
+    this.orderData = res[0];
+    if (res[0].docs.length > 0) {
+      res[0].docs.forEach((x: any) => {
+        let obj: any = {};
+        if (
+          x.storedName.split(".")[1] === "jpg" ||
+          x.storedName.split(".")[1] === "png" ||
+          x.storedName.split(".")[1] === "jpeg"
+        ) {
+          obj = {
+            imgPath: `${x.urlPath}`,
+            docPath: `${x.urlPath}`,
+            displayName: x.displayName,
+            name: x.storedName,
+            ext: x.storedName.split(".")[1],
+          };
+        } else {
+          obj = {
+            imgPath: "assets/img/icon-pdf.png",
+            docPath: `${x.urlPath}`,
+            displayName: x.displayName,
+            name: x.storedName,
+            ext: x.storedName.split(".")[1],
+          };
+        }
+        this.oldDocs.push(obj);
+      });
+    }
   }
 
   updateRecord() {
@@ -336,9 +302,9 @@ export class AddPurchaseOrderComponent implements OnInit {
       const element = this.orderData.detail[i];
       if (
         element.comm === "" ||
-        element.qty === "" ||
+        element.qty === 0 ||
         element.qtyTyp === null ||
-        element.rate === "" ||
+        element.rate === 0 ||
         element.rateTyp === null ||
         element.amount <= 0
       ) {
@@ -347,19 +313,25 @@ export class AddPurchaseOrderComponent implements OnInit {
       }
     }
 
-    if (this.orderData.total.subTotal <= 0) {
-      this.toaster.error("Amount should be greater than 0");
-      return false;
-    }
-
     if (this.orderData.total.finalTotal <= 0) {
       this.toaster.error("Amount should be greater than 0");
       return false;
     }
     this.orderData["sendEmail"] = false;
+    this.orderData['removedDocs'] = this.removedDocs;
     this.submitDisabled = true;
+    // create form data instance
+    const formData = new FormData();
+
+    //append docs if any
+    for (let j = 0; j < this.docs.length; j++) {
+      formData.append("docs", this.docs[j]);
+    }
+
+    //append other fields
+    formData.append("data", JSON.stringify(this.orderData));
     this.accountService
-      .putData(`purchase-orders/update/${this.purchaseID}`, this.orderData)
+      .putData(`purchase-orders/update/${this.purchaseID}`, formData, true)
       .subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -397,50 +369,6 @@ export class AddPurchaseOrderComponent implements OnInit {
     this.listService.changeButton(false);
   }
 
-  async fetchStateTaxes() {
-    let result = await this.apiService.getData("stateTaxes").toPromise();
-    this.stateTaxes = result.Items;
-  }
-
-  async taxExempt() {
-    this.orderData.charges.taxes.map((v) => {
-      v.tax = 0;
-    });
-    this.orderData.stateID = null;
-    this.orderData.stateName = null;
-    this.allTax();
-    this.taxTotal();
-  }
-
-  async selecteProvince(stateID) {
-    let taxObj = {
-      GST: "",
-      HST: "",
-      PST: "",
-      stateCode: "",
-      stateName: "",
-      stateTaxID: "",
-    };
-
-    this.stateTaxes.map((v) => {
-      if (v.stateTaxID === stateID) {
-        taxObj = v;
-        this.orderData.stateName = v.stateName;
-      }
-    });
-
-    this.orderData.charges.taxes.map((v) => {
-      if (v.name === "GST") {
-        v.tax = Number(taxObj.GST);
-      } else if (v.name === "HST") {
-        v.tax = Number(taxObj.HST);
-      } else if (v.name === "PST") {
-        v.tax = Number(taxObj.PST);
-      }
-    });
-    this.allTax();
-    this.taxTotal();
-  }
 
   cloneOrder(type) {
     if (type === "yes") {
@@ -452,5 +380,41 @@ export class AddPurchaseOrderComponent implements OnInit {
     delete this.orderData['purchaseID'];
     delete this.orderData['paymentLinked'];
     this.addRecord();
+  }
+
+  uploadDocs(documents) {
+    let files = [...documents];
+    let filesSize = 0;
+    if (files.length > 5) {
+      this.toaster.error("Files count limit exceeded");
+      this.filesError = "Files should not be more than 5";
+      return;
+    }
+
+    for (let i = 0; i < files.length; i++) {
+      this.filesError = '';
+      filesSize += files[i].size / 1024 / 1024;
+      if (filesSize > 10) {
+        this.toaster.error("Files size limit exceeded");
+        this.filesError = 'Files size limit exceeded. Files size should be less than 10mb';
+        return;
+      } else {
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
+          this.docs.push(files[i]);
+        } else {
+          this.filesError =
+            "Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.";
+        }
+      }
+    }
   }
 }

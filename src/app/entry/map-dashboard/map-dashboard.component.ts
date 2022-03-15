@@ -37,13 +37,23 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   public searchResults: any;
   driverData: any;
   // Google Maps
-  zoom = 3;
+  mapOptions: google.maps.MapOptions = {
+    center: { lat: 48.48248695279594, lng: -99.0688673798094 },
+    zoomControl: true,
+    mapTypeControl: true,
+    streetViewControl: false,
+    fullscreenControl: true,
+    zoom: 5,
+    mapId: '620eb1a41a9e36d4'
+
+  }
   lat = -104.618896;
   lng = 50.44521;
-  center = { lat: 48.48248695279594, lng: -99.0688673798094 };
-  driverMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/driver-marker.png' };
-  assetMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/asset-marker.png' };
-  vehicleMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/vehicle-marker.png' };
+
+
+  driverMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/driver-marker.png', animation: google.maps.Animation.DROP };
+  assetMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/asset-marker.png', animation: google.maps.Animation.DROP };
+  vehicleMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/vehicle-marker.png', animation: google.maps.Animation.DROP };
   driverPositions = [];
   assetPositions = [];
   vehicleDashPositions = [];
@@ -147,7 +157,8 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
               time: `${new Date(devices.timeModified).toLocaleDateString()} | ${new Date(devices.timeModified).toLocaleTimeString()}`,
               speed: devices.location.speed || 0.00,
               vehicleID: devices.vehicleID,
-              location: devices.location.label
+              location: devices.location.label,
+              deviceId: devices.deviceSerialNo.split('#')[1]
             }
           });
         }
@@ -163,15 +174,19 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   }
 
   openInfoWindow(marker: MapMarker, data, infoType: string) {
+    let content;
     switch (infoType) {
       case 'driver':
         this.infoDetail = this.prepareDriverInfoTemplate(data);
         break;
       case 'asset':
         this.infoDetail = this.prepareAssetInfoTemplate(data);
+
         break;
       case 'vehicle':
+
         this.infoDetail = this.prepareVehicleInfoTemplate(data);
+
         break;
       default:
         throw new Error('Unable to get Marker type info');
@@ -191,18 +206,22 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   }
   prepareAssetInfoTemplate(data: any) {
     // console.log('data', data);
-    return `<a href='#/fleet/assets/detail/${data.assetID}' target=_blank'><h4> Asset: ${data.assetIdentification}</h4></a>
-    Speed: ${data.speed} KM/H | Altitude: ${data.altitude} <br/> <br/>
-    Time : ${data.time}<br/> <br/>
+    return `<b> Asset: ${data.assetIdentification}</b><br/>
+    Speed: ${data.speed} KM/H | Altitude: ${data.altitude} <br/>
+    Time : ${data.time}<br/> 
     Temp. : ${data.temp} | Battery : ${data.battery}
+    <br/>
+    <a class='link' target='_blank' href = '#/fleet/tracking/asset-tracker/${data.assetIdentification}?assetId=${data.assetID}' style='color:blue;font-size:9px'>Asset Report</a> | 
+    <a href='#/fleet/assets/detail/${data.assetID}' target=_blank'>Asset Details</a>
      `;
   }
 
   prepareVehicleInfoTemplate(data: any) {
-    return `<a href='#/fleet/vehicles/detail/${data.vehicleID}' target=_blank'><h4> Vehicle: ${data.vehicleIdentification}</h4></a>
-    Speed: ${parseFloat(data.speed).toFixed(2)} KM/H 
-    Time : ${data.time}<br/> <br/> 
-     `;
+    return `<b>Vehicle: ${data.vehicleIdentification}</b></b><br/>
+   <span> Speed: ${parseFloat(data.speed).toFixed(2)} KM/H</span><br/>   
+      <a class='link' target='_blank' href = '#/fleet/tracking/vehicle-dash-cam-tracker/${data.deviceId}?vehicleId=${data.vehicleID}' style='color:blue;font-size:9px'>Realtime view</a> | 
+      <a class='link' target='_blank' href ='#/fleet/vehicles/detail/${data.vehicleID}' style='color:blue;font-size:9px'>Vehicle details</a>
+        `;
   }
 
   valuechange() {
@@ -211,5 +230,11 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void { }
 
+  async refresh() {
+
+    await this.getCurrentAssetLocation();
+    await this.getVehicleLocationByDashCam();
+
+  }
 
 }

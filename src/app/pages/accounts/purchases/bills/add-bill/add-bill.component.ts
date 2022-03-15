@@ -42,6 +42,9 @@ export class AddBillComponent implements OnInit {
     ],
     charges: {
       remarks: "",
+      cName: "Adjustments",
+      cType: "add",
+      cAmount: 0,
       accountID: null,
       accFee: [
         {
@@ -79,7 +82,6 @@ export class AddBillComponent implements OnInit {
     total: {
       detailTotal: 0,
       feeTotal: 0,
-      dedTotal: 0,
       subTotal: 0,
       vendorCredit: 0,
       taxes: 0,
@@ -148,7 +150,7 @@ export class AddBillComponent implements OnInit {
     private location: Location,
     private route: ActivatedRoute,
     private apiService: ApiService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.billID = this.route.snapshot.params["billID"];
@@ -272,15 +274,7 @@ export class AddBillComponent implements OnInit {
     }
   }
 
-  dedAccessorialArr(type, index) {
-    if (type === "fee") {
-      this.orderData.charges.accFee.splice(index, 1);
-      this.accessorialFeeTotal();
-    } else if (type === "ded") {
-      this.orderData.charges.accDed.splice(index, 1);
-      this.accessorialDedTotal();
-    }
-  }
+
 
   detailsTotal() {
     this.orderData.total.detailTotal = 0;
@@ -311,12 +305,10 @@ export class AddBillComponent implements OnInit {
     this.orderData.detail[index].rateTyp = val;
   }
 
-  calculateFinalTotal() {
+  async calculateFinalTotal() {
     this.orderData.total.subTotal =
       Number(this.orderData.total.detailTotal) +
-      Number(this.orderData.total.feeTotal) -
-      Number(this.orderData.total.dedTotal);
-
+      Number(this.orderData.total.feeTotal)
     this.allTax();
     this.orderData.total.finalTotal =
       Number(this.orderData.total.subTotal) -
@@ -325,20 +317,16 @@ export class AddBillComponent implements OnInit {
   }
 
   accessorialFeeTotal() {
-    this.orderData.total.feeTotal = 0;
-    this.orderData.charges.accFee.forEach((element) => {
-      this.orderData.total.feeTotal += Number(element.amount);
-    });
+    if (this.orderData.charges.cType === "add") {
+      this.orderData.total.feeTotal = Number(this.orderData.charges.cAmount);
+    } else if (this.orderData.charges.cType === "ded") {
+      this.orderData.total.feeTotal = -Number(this.orderData.charges.cAmount);
+    }
     this.calculateFinalTotal();
+    this.allTax();
+    this.taxTotal();
   }
 
-  accessorialDedTotal() {
-    this.orderData.total.dedTotal = 0;
-    this.orderData.charges.accDed.forEach((element) => {
-      this.orderData.total.dedTotal += Number(element.amount);
-    });
-    this.calculateFinalTotal();
-  }
 
   taxcalculation(index) {
     this.orderData.charges.taxes[index].amount =
@@ -371,17 +359,14 @@ export class AddBillComponent implements OnInit {
       .toPromise();
 
     this.orderData.detail = result[0].detail;
-    this.orderData.charges = result[0].charges;
-    this.orderData.total.dedTotal = result[0].total.dedTotal;
-    this.orderData.total.detailTotal = result[0].total.detailTotal;
-    this.orderData.total.feeTotal = result[0].total.feeTotal;
-    this.orderData.total.finalTotal = result[0].total.finalTotal;
-    this.orderData.total.subTotal = result[0].total.subTotal;
-    this.orderData.total.taxes = result[0].total.taxes;
+    this.orderData.charges.remarks = result[0].remarks;
+    this.orderData.total.subTotal = result[0].total.finalTotal;
+    this.orderData.total.detailTotal = result[0].total.finalTotal;
     this.orderData.refNo = result[0].refNo;
     this.orderData.currency = result[0].currency;
     this.orderData.vendorID = result[0].vendorID;
-    this.calculateFinalTotal();
+
+    await this.calculateFinalTotal();
   }
 
   /*
@@ -433,9 +418,9 @@ export class AddBillComponent implements OnInit {
     // append other fields
     formData.append("data", JSON.stringify(this.orderData));
     this.submitDisabled = true;
-    console.log("this.orderData", this.orderData);
+
     this.accountService.postData("bills", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -452,7 +437,7 @@ export class AddBillComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -480,7 +465,7 @@ export class AddBillComponent implements OnInit {
     this.accountService
       .putData(`bills/update/${this.billID}`, this.orderData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -497,7 +482,7 @@ export class AddBillComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {
@@ -616,32 +601,35 @@ export class AddBillComponent implements OnInit {
     this.taxTotal();
   }
 
-  async selecteProvince(stateID) {
-    let taxObj = {
-      GST: "",
-      HST: "",
-      PST: "",
-      stateCode: "",
-      stateName: "",
-      stateTaxID: "",
-    };
-    this.stateTaxes.map((v) => {
-      if (v.stateTaxID === stateID) {
-        taxObj = v;
-      }
-    });
+  async selecteProvince(stateID = undefined) {
+    if (stateID != undefined) {
 
-    this.orderData.charges.taxes.map((v) => {
-      if (v.name === "GST") {
-        v.tax = Number(taxObj.GST);
-      } else if (v.name === "HST") {
-        v.tax = Number(taxObj.HST);
-      } else if (v.name === "PST") {
-        v.tax = Number(taxObj.PST);
-      }
-    });
-    this.allTax();
-    this.taxTotal();
+      let taxObj = {
+        GST: "",
+        HST: "",
+        PST: "",
+        stateCode: "",
+        stateName: "",
+        stateTaxID: "",
+      };
+      this.stateTaxes.map((v) => {
+        if (v.stateTaxID === stateID) {
+          taxObj = v;
+        }
+      });
+
+      this.orderData.charges.taxes.map((v) => {
+        if (v.name === "GST") {
+          v.tax = Number(taxObj.GST);
+        } else if (v.name === "HST") {
+          v.tax = Number(taxObj.HST);
+        } else if (v.name === "PST") {
+          v.tax = Number(taxObj.PST);
+        }
+      });
+      this.allTax();
+      this.taxTotal();
+    }
   }
 
   async typeChange(type) {

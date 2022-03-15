@@ -23,7 +23,6 @@ export class VendorCreditNoteDetailComponent implements OnInit {
   totalAmt: any;
   status: string;
   transactionLog = [];
-  accountsObjects = [];
   purchaseOrders = [];
 
   vendors = [];
@@ -43,7 +42,6 @@ export class VendorCreditNoteDetailComponent implements OnInit {
     }
     this.fetchVendors();
     this.fetchPurchaseOrders();
-    this.fetchAccountsByIDs();
   }
 
   fetchCredit() {
@@ -52,7 +50,6 @@ export class VendorCreditNoteDetailComponent implements OnInit {
       .subscribe((res) => {
         let result = res[0];
         this.purOrder = result.purOrder;
-        console.log("purOrder", this.purOrder);
         this.currency = result.currency;
         this.crRef = result.crRef;
         this.txnDate = result.txnDate;
@@ -101,13 +98,6 @@ export class VendorCreditNoteDetailComponent implements OnInit {
       });
   }
 
-  fetchAccountsByIDs() {
-    this.accountService
-      .getData("chartAc/get/all/list")
-      .subscribe((result: any) => {
-        this.accountsObjects = result;
-      });
-  }
 
   async fetchPurchaseOrders() {
     let result: any = await this.accountService

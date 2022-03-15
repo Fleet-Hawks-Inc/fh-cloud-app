@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../services';
-import { ActivatedRoute, Router } from '@angular/router';
-declare var $: any;
-import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import Constants from '../../constants';
-import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { email, ReactiveFormConfig, RxFormBuilder, RxwebValidators } from '@rxweb/reactive-form-validators';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { ReactiveFormConfig, RxFormBuilder, RxwebValidators } from '@rxweb/reactive-form-validators';
+import { ToastrService } from 'ngx-toastr';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+import { environment } from '../../../../../environments/environment';
+import { ApiService } from '../../../../services';
+import Constants from '../../constants';
+declare var $: any;
 
 
 
@@ -231,24 +231,8 @@ export class VehicleDetailComponent implements OnInit {
         autoplay: true,
         autoplaySpeed: 5000,
     };
-    deviceInfo = {
-        deviceType: '',
-        deviceId: '',
-        deviceSrNo: '',
-        email: ''
-    }
-    userFormGroup: FormGroup;
-    selectedDuration: string;
 
-    durations = [
-        { duration: '1d', name: '1 day' },
-        { duration: '3d', name: '3 days' },
-        { duration: '7d', name: '1 week' },
-        { duration: '15d', name: '15 days' },
-        { duration: '30d', name: '1 month' },
-        { duration: '3m', name: '3 months' },
-        { duration: '6m', name: '6 months' },
-    ];
+
 
     contactsObjects: any = {};
     vehicleTypeObects: any = {};
@@ -262,6 +246,13 @@ export class VehicleDetailComponent implements OnInit {
     groupsObjects: any = {};
     groupName: any = '';
     groupId: any = '';
+
+    deviceInfo = {
+        deviceType: '',
+        deviceId: '',
+        deviceSrNo: '',
+        email: ''
+    }
 
     constructor(
         private apiService: ApiService,
@@ -283,10 +274,7 @@ export class VehicleDetailComponent implements OnInit {
             }
         })
 
-        this.userFormGroup = this.formBuilder.group({
-            duration: ['', RxwebValidators.required()],
-            email: ['', [RxwebValidators.email(), RxwebValidators.required()]],
-        });
+
         this.vehicleID = this.route.snapshot.params['vehicleID'];
         this.getVehicle();
         this.fetchIssues();
@@ -331,7 +319,7 @@ export class VehicleDetailComponent implements OnInit {
     }
 
     fetchUsersList() {
-        this.apiService.getData("users/get/list").subscribe((result: any) => {
+        this.apiService.getData("common/users/get/list").subscribe((result: any) => {
             this.usersList = result;
         });
     }
@@ -404,6 +392,7 @@ export class VehicleDetailComponent implements OnInit {
                         }
                     }
                 }
+
 
                 this.ownerOperatorName = vehicleResult.ownerOperatorID;
                 if (vehicleResult.inspectionFormID != '' && vehicleResult.inspectionFormID != undefined) {
@@ -633,7 +622,7 @@ export class VehicleDetailComponent implements OnInit {
                 })
             } else if (value == 'loan') {
                 this.lDocs = [];
-                console.log('loan')
+
                 this.uploadedDocs = result.Attributes.loanDocs;
                 this.existingDocs = result.Attributes.loanDocs;
                 result.Attributes.loanDocs.map((x) => {
@@ -701,38 +690,16 @@ export class VehicleDetailComponent implements OnInit {
         })
     }
 
-    async shareLocation(shareModal: any) {
-        this.modalService.open(shareModal, { ariaLabelledBy: 'modal-dash-cam', size: 'sm', }).result.then((result) => {
-        }, (reason) => {
-        });
+    locationDetails() {
+        this.router.navigate([`/fleet/tracking/vehicle-dash-cam-tracker/${this.deviceInfo.deviceSrNo.split('#')[1]}`],
+            { queryParams: { vehicleId: this.vehicleID } });
     }
-    locationLink: string = '';
-    shareLocationLink() {
-        const data = {
-            "deviceSerialNo": this.deviceInfo.deviceSrNo.split('#')[1],
-            "vehicleID": this.vehicleID,
-            "vehicleName": this.vehicleIdentification,
-            "duration": this.selectedDuration,
-            "email": this.deviceInfo.email
-        }
-        this.apiService.postData('location/share/vehicle', data, false).subscribe((resultData: any) => {
 
-            if (resultData) {
-                this.locationLink = resultData.locationPageURL;
-
-                this.modalService.dismissAll();
-                this.toastr.info('Location shared successfully.')
-            }
-
-        })
-
-    }
-    
     fetchGroups() {
-       if(this.groupId !==''){
-        this.apiService.getData(`groups/get/list?type=vehicles&groupId=${this.groupId}`).subscribe((result: any) => {
-            this.groupsObjects = result;
-        });
-       }
+        if (this.groupId !== '') {
+            this.apiService.getData(`groups/get/list?type=vehicles&groupId=${this.groupId}`).subscribe((result: any) => {
+                this.groupsObjects = result;
+            });
+        }
     }
 }

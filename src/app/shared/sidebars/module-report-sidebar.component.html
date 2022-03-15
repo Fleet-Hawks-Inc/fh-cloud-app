@@ -1,5 +1,5 @@
 <ul class="nav nav-main mr-0 bg-white">
-  <li class="nav-parent">
+  <li *ngIf="isFleetEnabled" class="nav-parent">
     <a class="nav-link" href="#">
       <i class="fas fa-truck" aria-hidden="true"></i>
       <span>Fleet</span>
@@ -68,7 +68,7 @@
     </ul>
   </li>
 
-  <li class="nav-parent">
+  <li *ngIf="isDispatchEnabled" class="nav-parent">
     <a class="nav-link" href="#">
       <i class="fas fa-route" aria-hidden="true"></i>
       <span>Routing & Dispatch</span>
@@ -173,7 +173,7 @@
   <!-- </ul>
 </li> -->
 
-  <li class="nav-parent">
+  <li *ngIf="isAccountsEnabled" class="nav-parent">
     <a class="nav-link" href="#">
       <i class="fas fa-file-alt"></i>
       <span>Accounts </span>
@@ -195,7 +195,7 @@
     </ul>
   </li>
 
-  <li class="nav-parent">
+  <li *ngIf="isAccountsEnabled" class="nav-parent">
     <a class="nav-link" href="#">
       <i class="fas fa-users"></i>
       <span>Customer Information </span>

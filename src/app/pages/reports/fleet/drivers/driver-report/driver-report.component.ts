@@ -53,7 +53,7 @@ export class DriverReportComponent implements OnInit {
 
   fetchTrip() {
     if (this.lastEvaluatedKey !== 'end') {
-      this.apiService.getData(`trips/get/trip/data?driver=${this.drivIDs}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastEvaluatedKey}&date=${this.datee}`).subscribe((result: any) => {
+      this.apiService.getData(`common/trips/get/trip/data?driver=${this.drivIDs}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastEvaluatedKey}&date=${this.datee}`).subscribe((result: any) => {
         // this.data = result.Items
         this.data = this.data.concat(result.Items)
         for (let driv of this.data) {

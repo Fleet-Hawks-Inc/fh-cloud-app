@@ -26,6 +26,7 @@ export class SalesReceiptsDetailComponent implements OnInit {
   invoiceData: any = [];
   status: any;
   payMode: any;
+  sRPTNo: string;
 
   invoicesList: any;
   accountsObjects = [];
@@ -47,7 +48,6 @@ export class SalesReceiptsDetailComponent implements OnInit {
       this.fetchInvoicesByID();
       this.fetchCustomersByIDs();
       this.fetchSaleOrder();
-      this.fetchAccountsByIDs();
     }
   }
 
@@ -87,6 +87,7 @@ export class SalesReceiptsDetailComponent implements OnInit {
         this.status = result.status;
         this.payMode = result.payMode;
         this.transactionLogs = result.transactionLog;
+        this.sRPTNo = result.sRPTNo;
 
         if (result.docs.length > 0) {
           result.docs.forEach((x: any) => {
@@ -115,14 +116,7 @@ export class SalesReceiptsDetailComponent implements OnInit {
             this.docs.push(obj);
           });
         }
-      });
-  }
 
-  fetchAccountsByIDs() {
-    this.accountService
-      .getData("chartAc/get/all/list")
-      .subscribe((result: any) => {
-        this.accountsObjects = result;
       });
   }
 

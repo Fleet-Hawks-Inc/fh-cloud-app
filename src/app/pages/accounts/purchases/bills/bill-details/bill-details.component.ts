@@ -100,7 +100,7 @@ export class BillDetailsComponent implements OnInit {
     private apiService: ApiService,
     private domSanitizer: DomSanitizer,
     private toaster: ToastrService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.billID = this.route.snapshot.params["billID"];
@@ -108,7 +108,6 @@ export class BillDetailsComponent implements OnInit {
     this.fetchVendor();
     this.purchaseOrderDetail();
     this.fetchVendorCredits();
-    this.fetchAccountsByIDs();
   }
 
   async fetchDetails() {
@@ -116,7 +115,7 @@ export class BillDetailsComponent implements OnInit {
       .getData(`bills/details/${this.billID}`)
       .toPromise();
     this.orderData = result[0];
-    console.log("this.orderData", this.orderData);
+
 
     if (
       result[0].attachments != undefined &&
@@ -188,7 +187,7 @@ export class BillDetailsComponent implements OnInit {
   }
 
   deleteDocument(name: string, index: number) {
-    console.log("name", name);
+
     this.accountService
       .deleteData(`bills/uploadDelete/${this.billID}/${name}`)
       .subscribe((result: any) => {
@@ -197,11 +196,4 @@ export class BillDetailsComponent implements OnInit {
       });
   }
 
-  fetchAccountsByIDs() {
-    this.accountService
-      .getData("chartAc/get/all/list")
-      .subscribe((result: any) => {
-        this.accountsObjects = result;
-      });
-  }
 }

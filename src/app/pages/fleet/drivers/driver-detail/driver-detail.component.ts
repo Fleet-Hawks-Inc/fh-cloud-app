@@ -13,6 +13,7 @@ import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { passwordStrength } from 'check-password-strength';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 declare var $: any;
 @Component({
     selector: 'app-driver-detail',
@@ -53,12 +54,12 @@ export class DriverDetailComponent implements OnInit {
     fastID: any;
     fastExpiry: any;
     citizenship: any;
-    csa: any;
+    csa: any = false;
     group: any;
     assignedVehicle: any;
     address: any;
     documents: any;
-    licNotification: any;
+    licNotification: any = false;
     liceIssueSate: any;
     liceIssueCountry: any;
     liceWCB: any;
@@ -104,8 +105,8 @@ export class DriverDetailComponent implements OnInit {
 
     hosStatus: any;
     hosRemarks: any;
-    hosPcAllowed: boolean;
-    hosYmAllowed: boolean;
+    hosPcAllowed: boolean = false;
+    hosYmAllowed: boolean = false;
     hosType: any;
     hosCycle: any;
     timezone: any;
@@ -122,7 +123,7 @@ export class DriverDetailComponent implements OnInit {
     docs = [];
     assetsDocs = [];
     absDocs = [];
-    profile:any = [];
+    profile: any = [];
     documentTypeList: any = [];
     documentsTypesObects: any = {};
     dataMessage = Constants.NO_RECORDS_FOUND;
@@ -150,6 +151,7 @@ export class DriverDetailComponent implements OnInit {
     driverLogs = [];
     groupName: any = '';
     groupId: any = '';
+    sessionId: string;
 
     constructor(
         private hereMap: HereMapService,
@@ -159,8 +161,10 @@ export class DriverDetailComponent implements OnInit {
         private domSanitizer: DomSanitizer,
         private httpClient: HttpClient,
         private toastr: ToastrService,
-        private countryStateCity: CountryStateCityService
+        private countryStateCity: CountryStateCityService,
+        private routerMgmtService: RouteManagementServiceService
     ) {
+        this.sessionId = this.routerMgmtService.driverUpdateSessionID;
 
     }
 
@@ -341,10 +345,13 @@ export class DriverDetailComponent implements OnInit {
                     this.driverData = await result[`Items`][0];
                     this.userName = this.driverData.userName;
                     this.driverDataUpdate = await result[`Items`][0];
-                    await this.fetchHomeTerminal(this.driverData.hosDetails.homeTerminal);
-                    if (this.driverData.address !== undefined || this.driverData.address !== '') {
+                    if (this.driverData.hosDetails.homeTerminal != '') {
+                        await this.fetchHomeTerminal(this.driverData.hosDetails.homeTerminal);
+                    }
+                    if (this.driverData.address !== undefined && this.driverData.address !== '') {
                         this.fetchCompleteAdd(this.driverData.address);
                     }
+
                     this.cycle = this.driverData.hosDetails.hosCycleName;
                     this.email = this.driverData.email;
                     this.phone = this.driverData.phone;
@@ -360,16 +367,14 @@ export class DriverDetailComponent implements OnInit {
                     this.terminationDate = this.driverData.terminationDate;
                     this.contractStart = this.driverData.contractStart;
                     this.contractEnd = this.driverData.contractEnd;
-                    
+
                     if (this.driverData.driverImage !== '' && this.driverData.driverImage !== undefined) {
-                          this.profile =  this.driverData.uploadImage;
-                        //this.profile = `${this.Asseturl}/${this.driverData.carrierID}/${this.driverData.driverImage}`;
+                        this.profile = this.driverData.uploadImage;
                     } else {
-                          this.profile = 'assets/img/driver/driver.png';
+                        this.profile = 'assets/img/driver/driver.png';
                     }
                     if (this.driverData.abstractDocs !== undefined && this.driverData.abstractDocs.length > 0) {
-                          this.absDocs = this.driverData.docsAbs;
-                        //this.absDocs = this.driverData.abstractDocs.map(x => ({ path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x }));
+                        this.absDocs = this.driverData.docsAbs;
                     }
                     this.driverType = this.driverData.driverType;
                     this.employeeId = this.driverData.employeeContractorId;
@@ -387,38 +392,40 @@ export class DriverDetailComponent implements OnInit {
                     this.fastExpiry = this.driverData.crossBorderDetails.fastExpiry;
                     this.citizenship = await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.citizenship);
                     this.csa = this.driverData.crossBorderDetails.csa;
-                    // this.group = this.driverData.groupID;
                     this.groupId = this.driverData.groupID;
-                    this.groupName = this.fetchGroups(this.groupId)[0].groupName
+                    if (this.groupId != null) {
+
+                        this.groupName = this.fetchGroups(this.groupId)[0].groupName
+                    }
                     this.assignedVehicle = this.driverData.assignedVehicle;
                     this.address = this.driverData.address;
                     let newDocuments = [];
-                    for (let i = 0; i < this.driverData.documentDetails.length; i++) {
-                        let docmnt = []
-                        if (this.driverData.documentDetails[i].uploadedDocs != undefined && this.driverData.documentDetails[i].uploadedDocs.length > 0) {
-                            docmnt = this.driverData.documentDetails[i].uploadedDocs;
+                    if (this.driverData.documentDetails.length > 0) {
+                        for (let i = 0; i < this.driverData.documentDetails.length; i++) {
+                            let docmnt = []
+                            if (this.driverData.documentDetails[i].uploadedDocs != undefined && this.driverData.documentDetails[i].uploadedDocs.length > 0) {
+                                docmnt = this.driverData.documentDetails[i].uploadedDocs;
+                            }
+                            newDocuments.push({
+                                documentType: this.driverData.documentDetails[i].documentType ? this.driverData.documentDetails[i].documentType : '',
+                                document: this.driverData.documentDetails[i].document ? this.driverData.documentDetails[i].document : '',
+                                issuingAuthority: this.driverData.documentDetails[i].issuingAuthority ? this.driverData.documentDetails[i].issuingAuthority : '',
+                                issuingCountry: this.driverData.documentDetails[i].issuingCountry ? await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.documentDetails[i].issuingCountry) : '',
+                                issuingState: this.driverData.documentDetails[i].issuingCountry ? await this.countryStateCity.GetStateNameFromCode(this.driverData.documentDetails[i].issuingState, this.driverData.documentDetails[i].issuingCountry) : '',
+                                issueDate: this.driverData.documentDetails[i].issueDate ? this.driverData.documentDetails[i].issueDate : '',
+                                expiryDate: this.driverData.documentDetails[i].expiryDate ? this.driverData.documentDetails[i].expiryDate : '',
+                                uploadedDocs: docmnt
+                            });
+
+                            //Presigned URL Using AWS S3
+                            this.assetsDocs[i] = this.driverData.docuementUpload;
                         }
-                        newDocuments.push({
-                            documentType: this.driverData.documentDetails[i].documentType,
-                            document: this.driverData.documentDetails[i].document,
-                            issuingAuthority: this.driverData.documentDetails[i].issuingAuthority,
-                            issuingCountry: await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.documentDetails[i].issuingCountry),
-                            issuingState: await this.countryStateCity.GetStateNameFromCode(this.driverData.documentDetails[i].issuingState, this.driverData.documentDetails[i].issuingCountry),
-                            issueDate: this.driverData.documentDetails[i].issueDate,
-                            expiryDate: this.driverData.documentDetails[i].expiryDate,
-                            uploadedDocs: docmnt
-                        });
-                        /*
-                        if (this.driverData.documentDetails[i].uploadedDocs != undefined && this.driverData.documentDetails[i].uploadedDocs.length > 0) {
-                            this.assetsDocs[i] = this.driverData.documentDetails[i].uploadedDocs.map(x => ({ path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x }));
-                        }
-                        */
-                         //Presigned URL Using AWS S3
-                        this.assetsDocs[i] = this.driverData.docuementUpload;
                     }
                     this.documents = newDocuments;
                     this.liceIssueSate = await this.countryStateCity.GetStateNameFromCode(this.driverData.licenceDetails.issuedState, this.driverData.licenceDetails.issuedCountry),
+
                         this.liceIssueCountry = await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.licenceDetails.issuedCountry);
+
                     this.licenceExpiry = this.driverData.licenceDetails.licenceExpiry;
                     this.liceMedicalCardRenewal = this.driverData.licenceDetails.medicalCardRenewal;
                     this.licNotification = this.driverData.licenceDetails.licenceNotification;
@@ -449,7 +456,6 @@ export class DriverDetailComponent implements OnInit {
                     this.loadPayPercentage = this.driverData.paymentDetails.loadPayPercentage;
                     this.loadPayPercentageOf = this.driverData.paymentDetails.loadPayPercentageOf;
                     this.payPeriod = this.driverData.paymentDetails.payPeriod.replace('_', ' ');
-                    //  this.homeTerminal = this.driverData.hosDetails.homeTerminal;
                     this.hosStatus = this.driverData.hosDetails.hosStatus;
                     this.hosRemarks = this.driverData.hosDetails.hosRemarks;
                     this.hosPcAllowed = this.driverData.hosDetails.pcAllowed;
@@ -500,11 +506,11 @@ export class DriverDetailComponent implements OnInit {
     //             this.groupsObjects = result;
     //         });
     // }
-    
+
     fetchGroups(groupId) {
         this.apiService.getData(`groups/get/list?type=drivers&groupId=${groupId}`).subscribe((result: any) => {
             this.groupsObjects = result;
-            console.log('groupsObject', this.groupsObjects)
+
         });
     }
 
@@ -571,7 +577,7 @@ export class DriverDetailComponent implements OnInit {
         this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => { });
     }
     fetchDriverTrips() {
-        this.apiService.getData(`trips/get/driver/active/${this.driverID}`).subscribe((result: any) => {
+        this.apiService.getData(`drivers/get/driver/active/${this.driverID}`).subscribe((result: any) => {
             this.trips = result.Items;
 
         });
