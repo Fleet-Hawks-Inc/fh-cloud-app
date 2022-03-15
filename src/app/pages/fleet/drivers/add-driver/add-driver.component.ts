@@ -1267,28 +1267,29 @@ export class AddDriverComponent
       result.crossBorderDetails.fastExpiry;
     this.driverData.crossBorderDetails.csa = result.crossBorderDetails.csa;
     result.paymentOption.forEach(element => {
-      
+      if(element.default){
       this.paymentType =
       element.pType;
-      if(this.paymentType=="pph"){
+      }
+      if(element.pType=="pph"){
           this.payPerHour.currency=element.currency
           this.payPerHour.rate=element.rate
           this.payPerHour.waitingHourAfter=element.waitingHourAfter
           this.payPerHour.waitingPay=element.waitingPay
       }
 
-      if(this.paymentType=="ppm"){
+      if(element.pType=="ppm"){
         this.payPerMile.loadedMiles=element.loadedMiles
         this.payPerMile.currency=element.currency
         this.payPerMile.emptyMiles=element.emptyMiles
         this.payPerMile.emptyMilesTeam=element.emptyMilesTeam
         this.payPerMile.loadedMilesTeam=element.loadedMilesTeam
       }
-      if(this.paymentType=="pp"){
+      if(element.pType=="pp"){
         this.payPercentage.loadPayPercentage=element.loadPayPercentage
         this.payPercentage.loadPayPercentageOf=element.loadPayPercentageOf
       }
-      if(this.paymentType=="ppd"){
+      if(element.pType=="ppd"){
         this.payPerDelivery.currency=element.currency
         this.payPerDelivery.deliveryRate=element.deliveryRate
       }
