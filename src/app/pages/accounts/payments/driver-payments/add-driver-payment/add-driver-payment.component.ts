@@ -897,11 +897,6 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
     // Calculate GST
     const gstHstAmt = (this.paymentData.gstHstPer / 100) * this.paymentData.settledAmount;
     this.paymentData.gstHstAmt = gstHstAmt || 0;
-    if (this.paymentData.gstHstPer === 0) {
-      this.gstError = "GST/HST should be non-zero.";
-    } else {
-      this.gstError = "";
-    }
 
 
     this.calculateFinalTotal();
