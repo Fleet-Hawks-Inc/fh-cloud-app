@@ -4514,3 +4514,22 @@ input:checked+.sliderbtn:before {
 .document--main .modal-dialog {
     max-width: 600px !important;
 }
+
+.gm-style .gm-style-iw-c b {
+    color: #333333;
+    font-family: Roboto, Arial;
+    font-size: 14px;
+}
+
+.gm-style .gm-style-iw-c a {
+    color: #427fed;
+    font-family: Roboto, Arial;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.gm-style .gm-style-iw-c {
+    color: #333333;
+    font-family: Roboto, Arial;
+    font-size: 13px;
+}
