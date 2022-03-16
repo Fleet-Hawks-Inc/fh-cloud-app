@@ -561,14 +561,6 @@
     padding-right: 10px;
 }
 
-.gbox {
-    background: url(../graph/graph.png) #fff;
-    float: left;
-    border: solid 2px #777576;
-    width: 1296px;
-    height: 304px;
-}
-
 .gtime {
     float: left;
     width: 1296px;
@@ -614,14 +606,6 @@
 
 .gmainbox2 {
     float: left;
-}
-
-.gbox2 {
-    background: url(../graph/graph2.png) #fff;
-    float: left;
-    width: 1334px;
-    height: 343px;
-    padding: 40px 0 0 40px;
 }
 
 .gtime {
@@ -900,14 +884,6 @@
 .hosgmainbox2 {
     float: left;
     width: 100%;
-}
-
-.hosgbox2 {
-    background: url(../graph/graph2.png) #fff;
-    float: left;
-    width: 1334px;
-    height: 343px;
-    padding: 40px 0 0 40px;
 }
 
 .gtime {
@@ -2021,13 +1997,6 @@
     bottom: 0px;
 }
 
-.tempgraph {
-    background: url(../img/temp-graph.png);
-    width: 1100px;
-    height: 149px;
-    float: left;
-}
-
 
 /* full top part */
 
@@ -2036,13 +2005,6 @@
     width: 100%;
     background: #fff;
     background-size: cover;
-}
-
-.speedgraph {
-    background: url(../img/speed-graph.png) 10px 0 no-repeat;
-    width: 990px;
-    height: 149px;
-    float: left;
 }
 
 
@@ -4513,6 +4475,28 @@ input:checked+.sliderbtn:before {
 
 .document--main .modal-dialog {
     max-width: 600px !important;
+}
+
+.import-model--main .modal-dialog {
+    max-width: 700px !important;
+}
+
+.header-title {
+    margin-left: 10px;
+    margin-top: 5px;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    font-size: 16px;
+    color: #000;
+}
+
+.header-buttons {
+    margin-left: 10px;
+    margin-top: 5px;
+    align-content: center;
+    align-items: center;
+    text-align: right !important;
 }
 
 .gm-style .gm-style-iw-c b {

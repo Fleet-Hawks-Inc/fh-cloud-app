@@ -157,7 +157,7 @@ const routes: Routes = [
   {
     path: "employee-payments/detail/:paymentID",
     component: EmployeePaymentDetailComponent,
-    data: { title: "Detail Employee Payment" },
+    data: { title: "Employee Payment Detail" },
   },
   {
     path: "vendor-payments/list",
@@ -172,7 +172,7 @@ const routes: Routes = [
   {
     path: "vendor-payments/detail/:paymentID",
     component: VendorPaymentDetailComponent,
-    data: { title: "Detail Vendor Payment" },
+    data: { title: "Vendor Payment Detail" },
   },
   {
     path: "expense-payments/list",
@@ -187,7 +187,7 @@ const routes: Routes = [
   {
     path: "expense-payments/detail/:paymentID",
     component: ExpensePaymentDetailComponent,
-    data: { title: "Detail Expense Payment" },
+    data: { title: "Expense Payment Detail" },
   },
 ];
 

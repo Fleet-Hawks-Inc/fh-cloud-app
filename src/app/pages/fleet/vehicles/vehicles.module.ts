@@ -18,6 +18,8 @@ import { VehicleDetailComponent } from "./vehicle-detail/vehicle-detail.componen
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
 import { NgSelectModule } from "@ng-select/ng-select";
+import { TooltipModule } from "primeng/tooltip";
+import { ButtonModule } from "primeng/button";
 const routes: Routes = [
   {
     path: "add",
@@ -61,10 +63,10 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     // from internal model -> your mode
     return date
       ? date.year +
-          this.DELIMITER +
-          ("0" + date.month).slice(-2) +
-          this.DELIMITER +
-          ("0" + date.day).slice(-2)
+      this.DELIMITER +
+      ("0" + date.month).slice(-2) +
+      this.DELIMITER +
+      ("0" + date.day).slice(-2)
       : null;
   }
 }
@@ -111,6 +113,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgSelectModule,
     SlickCarouselModule,
     InfiniteScrollModule,
+    TooltipModule,
+    ButtonModule
   ],
   exports: [],
   providers: [
@@ -118,4 +122,4 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
-export class VehiclesModule {}
+export class VehiclesModule { }
