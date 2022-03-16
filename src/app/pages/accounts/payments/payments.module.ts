@@ -10,7 +10,7 @@ import {
 } from "@ng-bootstrap/ng-bootstrap";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
-import { IConfig, NgxMaskModule } from 'ngx-mask';
+
 import { AddAccountModule } from "../add-account/add-account.module";
 import { PaymentChequeComponent } from "../payment-cheque/payment-cheque.component";
 import { PaymentPdfsComponent } from "../payment-pdfs/payment-pdfs.component";
@@ -30,7 +30,7 @@ import { AddVendorPaymentComponent } from "./vendor-payment/add-vendor-payment/a
 import { VendorPaymentDetailComponent } from "./vendor-payment/vendor-payment-detail/vendor-payment-detail.component";
 import { VendorPaymentListComponent } from "./vendor-payment/vendor-payment-list/vendor-payment-list.component";
 
-export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
+
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -221,7 +221,7 @@ const routes: Routes = [
     NgSelectModule,
     AddAccountModule,
     InfiniteScrollModule,
-    NgxMaskModule.forRoot(),
+
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
