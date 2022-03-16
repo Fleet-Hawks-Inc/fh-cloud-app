@@ -29,7 +29,7 @@ const routes: Routes = [
   {
     path: "detail/:routeID",
     component: RouteDetailComponent,
-    data: { title: "Detail Route" },
+    data: { title: "Route Detail" },
   },
 ];
 @NgModule({
