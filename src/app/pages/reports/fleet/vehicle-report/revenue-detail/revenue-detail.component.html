@@ -70,9 +70,10 @@
                                         <div class="col-8">
 
                                             <div>
-                                                <h4 class="mt-1 mb-0 font-weight-bold">Fuel</h4>
-                                                <h3>{{totalQty}}
-                                                </h3>
+                                                <h4 class="mt-1 mb-0 font-weight-bold">Vehicle</h4>
+                                                <h3><span
+                                                    *ngFor="let data of vehicleData">{{data.vehicleIdentification}}</span>
+                                            </h3>
 
                                             </div>
 
@@ -99,12 +100,13 @@
                                       <col style="width:1%"> -->
                                         <thead>
                                             <tr>
-                                                <th>Vehicle</th>
-                                                <th>Trip#</th>
+                                                <!-- <th>Vehicle</th> -->
                                                 <th>Order#</th>
-                                                <th>Date</th>
-                                                <th>Amount</th>
-                                                <th>Currency</th>
+                                                <th>Trip#</th>
+                                               
+                                                <th>Trip Date</th>
+                                                <!-- <th>Amount</th>
+                                                <th>Currency</th> -->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -112,12 +114,13 @@
                                                 <td colspan="15">{{dataMessage}}</td>
                                             </tr>
                                             <tr *ngFor="let item of allData">
-                                                <td>{{item.vehicle}}</td>
-                                                <td>{{item.tripNo}}</td>
+                                                <!-- <td>{{item.vehicle}}</td> -->
+                                                
                                                 <td>{{item.orderName}}</td>
+                                                <td>{{item.tripNo}}</td>
                                                 <td>{{item.dateCreated | date:"yyyy/MM/dd" }}</td>
-                                                <td>{{item.totalAmount }}</td>
-                                                <td>{{item.charges.freightFee.currency }}</td>
+                                                <!-- <td>{{item.totalAmount }}</td>
+                                                <td>{{item.charges.freightFee.currency }}</td> -->
                                             </tr>
                                         </tbody>
                                     </table>
@@ -126,7 +129,7 @@
 
                         </div>
                         <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
-                            <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll() ">Load
+                            <button type="button" class="btn btn-success btn-sm text-light" (click)="fetchRevenueData() ">Load
                                 More..</button>
 
                         </div>

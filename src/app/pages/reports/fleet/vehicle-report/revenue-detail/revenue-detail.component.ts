@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from 'src/app/services';
+import { ApiService,AccountService } from 'src/app/services';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from "@angular/router";
 import * as moment from 'moment';
@@ -28,7 +28,9 @@ export class RevenueDetailComponent implements OnInit {
   suggestedVehicles = [];
   public vehicleId;
   totalQty = 0;
-  constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute) { }
+  invData= []
+  orderIDs :any = []
+  constructor(private apiService: ApiService, private accountService: AccountService,private toastr: ToastrService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.end = moment().format("YYYY-MM-DD");
@@ -36,40 +38,36 @@ export class RevenueDetailComponent implements OnInit {
 
     this.vehicleId = this.route.snapshot.params[`vehicleId`];
     this.fetchRevenueData()
-    this.fetchFuel()
-    // this.fetchVehicleName()/
-    // console.log(' this.vehicleId', this.vehicleId)
+    // this.fetchFuel()
+    // this.fetchVehicleName()
+    this.fetchInvoices()
   }
-  // fetchVehicleName() {
-  //   this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
-  //     this.vehicleData = result.Items;
-  //   });
-  // }
-  // getSuggestions = _.debounce(function (value) {
-
-  //   value = value.toLowerCase();
-  //   if (value != '') {
-  //     this.apiService
-  //       .getData(`vehicles/suggestion/${value}`)
-  //       .subscribe((result) => {
-
-  //         this.suggestedVehicles = result;
-  //       });
-  //   } else {
-  //     this.suggestedVehicles = []
-  //   }
-  // }, 800);
-  // setVehicle(vehicleIDs, vehicleIdentification) {
-  //   this.vehicleIdentification = vehicleIdentification;
-  //   this.vehicleId = vehicleIDs;
-  //   this.suggestedVehicles = [];
-  // }
+  fetchVehicleName() {
+    this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
+      this.vehicleData = result.Items;
+    });
+  }
 
   fetchRevenueData() {
     this.apiService.getData(`vehicles/fetch/revenue/report?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
       this.allData = this.allData.concat(result.Items)
       if (result.Items.length === 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND
+      }
+      // for (let veh of this.allData) {
+      //   let dataa = veh
+       
+
+      //   for (let driv of dataa.orderId) {
+      //     this.orderIDs.push(driv)
+      //     console.log(' this.orderIDs====', this.orderIDs)
+       
+      //   }
+      // }
+      for(let element of this.allData) {
+        for(let elem of element.orderId) {
+        this.orderIDs.push(elem)
+        }
       }
       if (result.LastEvaluatedKey !== undefined) {
         this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.tripSK);
@@ -80,6 +78,15 @@ export class RevenueDetailComponent implements OnInit {
       }
       this.loaded = true;
     })
+  }
+  fetchInvoices() {
+    console.log('this.order',this.orderIDs)
+    this.accountService
+      .getData(`order-invoice/get/invoice/byOrder?orders=${encodeURIComponent(JSON.stringify(this.orderIDs))}`)
+      .subscribe((res: any) => {
+        this.invData = res;
+        // console.log('tissinvData',this.invData)
+      });
   }
   // onScroll() {
   //   if (this.loaded) {
