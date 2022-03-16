@@ -418,7 +418,7 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
       this.paymentData.taxes -
       this.paymentData.taxdata.cpp -
       this.paymentData.taxdata.ei -
-      this.paymentData.advance -
+      this.paymentData.advance +
       this.paymentData.gstHstAmt;
     this.paymentData.finalAmount = Number(this.paymentData.finalAmount).toFixed(
       2
