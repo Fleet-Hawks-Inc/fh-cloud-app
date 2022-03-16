@@ -1,16 +1,13 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pl-0 pr-0 pt-0">
-      <header class="page-header pr19 pl7">
-        <div class="row" style="padding-top: 10px">
-          <div class="col-md-4 col-lg-4">
-            <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Payment</h4>
-          </div>
-          <div class="col-md-8 col-lg-8 text-right pr-1">
-            <a
-              routerLink="/accounts/payments/driver-payments/list"
-              class="btn btn-default btn-sm"
-              ><i class="fas fa-list"></i> All Payments</a
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-0 pr-0 pt-0">
+            <header class="page-header pr19 pl7">
+                <div class="row" style="padding-top: 10px">
+                    <div class="col-md-4 col-lg-4">
+                        <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Payment</h4>
+                    </div>
+                    <div class="col-md-8 col-lg-8 text-right pr-1">
+                        <a routerLink="/accounts/payments/driver-payments/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Payments</a
             >
           </div>
         </div>
@@ -766,19 +763,14 @@
                             class="btn btn-success btn-sm modal-with-form"
                             ><i class="fas fa-sync"></i
                           ></a>
-                        </div>
-                      </div>
-                      <div
-                        class="row pt-1"
-                        *ngIf="
+                    </div>
+                </div>
+                <div class="row pt-1" *ngIf="
                           paymentData.payMode &&
                           paymentData.payMode !== 'cheque'
-                        "
-                      >
-                        <div class="col-lg-5">
-                          <label
-                            class="control-label font-weight-bold labelalign"
-                            >{{ payModeLabel }} Reference<span
+                        ">
+                    <div class="col-lg-5">
+                        <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference<span
                               class="mandfield text-2 ml-1"
                               ><sup>*</sup></span
                             ></label
@@ -1030,15 +1022,11 @@
                           <label class="error" *ngIf="taxErr">{{
                             taxErr
                           }}</label>
-                        </div>
-                      </div>
-                      <div
-                        class="row pt-1"
-                        *ngIf="paymentData.paymentTo === 'driver'"
-                      >
-                        <div class="col-lg-6 text-right">
-                          <label class="control-label font-weight-bold"
-                            >CPP</label
+                    </div>
+                </div>
+                <div class="row pt-1" *ngIf="paymentData.paymentTo === 'driver'">
+                    <div class="col-lg-6 text-right">
+                        <label class="control-label font-weight-bold">CPP</label
                           >
                         </div>
                         <div class="col-lg-6">
@@ -1090,12 +1078,11 @@
                             disabled
                           />
                           <label class="error">{{ advErr }}</label>
-                        </div>
-                      </div>
-                      <div class="row pt-1" *ngIf="isVendor">
-                        <div class="col-lg-6 text-right">
-                          <label class="control-label font-weight-bold"
-                            >GST/HST (%)</label
+                    </div>
+                </div>
+                <div class="row pt-1" *ngIf="isVendor">
+                    <div class="col-lg-6 text-right">
+                        <label class="control-label font-weight-bold">GST/HST (%)</label
                           >
                         </div>
                         <div class="col-lg-6">
@@ -1105,8 +1092,9 @@
                             [(ngModel)]="paymentData.gstHstPer"
                             name="gst_hst"
                             (input)="calculateGstHst()"
+                          
                           />
-                          <label class="error">{{ gstError }}</label>
+                     
                         </div>
                       </div>
                       <div class="row pt-1">
