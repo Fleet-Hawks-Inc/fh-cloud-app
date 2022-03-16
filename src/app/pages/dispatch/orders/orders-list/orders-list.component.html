@@ -316,14 +316,10 @@
                                 {{ order.totalAmount }}<br />
                               </td>
 
-                              <td class="text-uppercase" [routerLink]="order.url">
-                                <span class="badge badge-dark p-1" pTooltip="Order">{{ order.newStatus }}</span>
-                                <br>
-                                <span class="badge badge-warning p-1" pTooltip="Invoiced">
-                                  {{order.invoiceGenerate ? 'Yes' : 'No'}} </span><br>
-                                <span class="badge badge-success p-1" pTooltip="Payment"> {{order.invStatus
-                                  ?
-                                  order.invStatus.replace('_', ' ') : 'NA'}}</span>
+                              <td class="text-capitalize" [routerLink]="order.url">
+                                <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
+                                <b>Invoiced: </b> {{order.invoiceGenerate ? 'Yes' : 'No'}} <br>
+                                <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
                               </td>
                               <td>
                                 <div class="dropdown dropright">

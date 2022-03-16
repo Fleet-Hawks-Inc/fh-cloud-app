@@ -19,8 +19,6 @@ import { BrokeragePdfComponent } from "./brokerage-pdf/brokerage-pdf.component";
 import { BolPdfComponent } from "./bol-pdf/bol-pdf.component";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { SlickCarouselModule } from "ngx-slick-carousel";
-import { TooltipModule } from 'primeng/tooltip';
-import { ChipModule } from 'primeng/chip';
 
 const routes: Routes = [
   {
@@ -71,8 +69,6 @@ const routes: Routes = [
     PdfViewerModule,
     SlickCarouselModule,
     InfiniteScrollModule,
-    TooltipModule,
-    ChipModule
   ],
   providers: [unsavedChangesGuard],
 })
