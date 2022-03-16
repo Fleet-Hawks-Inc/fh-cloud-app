@@ -5,7 +5,6 @@ import { SettingsOverviewComponent } from "./settings-overview/settings-overview
 import { GeneralSettingsComponent } from "./general-settings/general-settings.component";
 import { MyAccountComponent } from "./my-account/my-account.component";
 import { DriverSettingComponent } from "./driver-setting/driver-setting.component";
-import { VehicleSettingComponent } from "./vehicle-setting/vehicle-setting.component";
 import { AssetsSettingComponent } from "./assets-setting/assets-setting.component";
 import { FuelSettingComponent } from "./fuel-setting/fuel-setting.component";
 import { RemindersSettingComponent } from "./reminders-setting/reminders-setting.component";
@@ -18,7 +17,6 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule } from "@angular/forms";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { CustomerSettingComponent } from "./customer-setting/customer-setting.component";
-import { VehImportComponent } from './veh-import/veh-import.component';
 import { DoverviewComponent } from "./settings-overview/doverview/doverview.component";
 import { ImportDriversComponent } from "./import-drivers/import-drivers.component";
 import { VehicleSettingsComponent } from './vehicle-settings/vehicle-settings.component';
@@ -53,11 +51,6 @@ const routes: Routes = [
     data: { title: "Deleted Drivers" },
   },
   { path: "import", component: ImportDriversComponent },
-  {
-    path: "vehicle",
-    component: VehicleSettingComponent,
-    data: { title: "Deleted Vehicle" },
-  },
   {
     path: "asset",
     component: AssetsSettingComponent,
@@ -98,10 +91,7 @@ const routes: Routes = [
     component: CustomerSettingComponent,
     data: { title: "Customer Settings" },
   },
-  {
-    path: 'import-vehicle',
-    component: VehImportComponent
-  },
+
 ];
 
 @NgModule({
@@ -110,7 +100,6 @@ const routes: Routes = [
     GeneralSettingsComponent,
     MyAccountComponent,
     DriverSettingComponent,
-    VehicleSettingComponent,
     AssetsSettingComponent,
     FuelSettingComponent,
     RemindersSettingComponent,
@@ -120,7 +109,6 @@ const routes: Routes = [
     SafetySettingComponent,
     CustomerSettingComponent,
     DoverviewComponent,
-    VehImportComponent,
     ImportDriversComponent,
     VehicleSettingsComponent,
   ],
