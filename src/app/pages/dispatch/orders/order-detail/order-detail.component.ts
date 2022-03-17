@@ -1011,14 +1011,19 @@ export class OrderDetailComponent implements OnInit {
   }
 
   async downloadBolPdf() {
-    await this.fetchBOLDetails();
+    let result = await this.fetchBOLDetails();
+
     this.showBolModal = true;
     let data = {
-      carrierData: this.carrierData,
-      orderData: this.orderInvData,
+      orderData: result.shipmentsData ? result.shipmentsData : [],
       showModal: this.showBolModal,
       companyLogo: this.companyLogoSrc,
+      assets: result.assets ? result.assets : [],
+      drivers: result.drivers ? result.drivers : [],
+      vehicles: result.vehicles ? result.vehicles : [],
+      finalAmount: result.finalAmount
     };
+
     this.listService.triggerBolPdf(data);
   }
 
@@ -1061,7 +1066,7 @@ export class OrderDetailComponent implements OnInit {
     let result: any = await this.apiService
       .getData(`orders/get/bol/data/${this.orderID}`)
       .toPromise();
-    result = result.Items[0];
+    return result
   }
 
   sendEmailCopy(value) {

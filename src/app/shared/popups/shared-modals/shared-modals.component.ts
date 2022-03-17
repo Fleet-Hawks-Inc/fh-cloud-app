@@ -44,6 +44,11 @@ export class SharedModalsComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
+  docs = {
+    docType: null,
+    uploadedDocs: [],
+  };
+
   constructor(
     private apiService: ApiService,
     private modalService: NgbModal,
