@@ -634,7 +634,7 @@ export class SharedModalsComponent implements OnInit {
   }
 
   fetchUsers() {
-    this.apiService.getData("users").subscribe((result: any) => {
+    this.apiService.getData("common/users").subscribe((result: any) => {
       result["Items"].map((r: any) => {
         if (r.isDeleted === 0) {
           this.users.push(r);

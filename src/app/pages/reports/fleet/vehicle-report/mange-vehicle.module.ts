@@ -28,6 +28,8 @@ import { ProvinceMilesComponent } from "./province-miles/province-miles.componen
 import { ProvinceSummaryComponent } from "./province-summary/province-summary.component";
 import { RevenueListComponent } from './revenue-list/revenue-list.component';
 import { RevenueDetailComponent } from './revenue-detail/revenue-detail.component';
+import { ExpenseListComponent } from './expense-list/expense-list.component';
+import { ExpenseComponent } from './expense/expense.component';
 const routes: Routes = [
   {
     path: "overview",
@@ -89,6 +91,8 @@ const routes: Routes = [
     component: RevenueDetailComponent,
     data: { title: "Vehicle Revenue Detail Reports" },
   },
+  { path: 'expense-list', component: ExpenseListComponent },
+  { path: 'expense/:vehicleId', component: ExpenseComponent },
 ];
 
 /**
@@ -160,6 +164,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     ProvinceSummaryComponent,
     RevenueListComponent,
     RevenueDetailComponent,
+    ExpenseListComponent,
+    ExpenseComponent,
   ],
 
   imports: [
@@ -180,4 +186,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
+
 export class ManageVehicleModule { }
+
