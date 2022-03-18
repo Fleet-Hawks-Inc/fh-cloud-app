@@ -439,10 +439,7 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
       this.toaster.error("Please select settlement(s)");
       return false;
     }
-    if (this.isVendor && this.paymentData.gstHstPer === 0) {
-      this.toaster.error("GST/HST value cannot be 0");
-      return false;
-    }
+
     if (this.paymentData.finalAmount <= 0) {
       this.toaster.error("Net payable should be greater than 0");
       return false;
