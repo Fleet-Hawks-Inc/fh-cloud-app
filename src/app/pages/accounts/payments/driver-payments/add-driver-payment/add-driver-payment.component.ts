@@ -640,11 +640,7 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
         this.submitDisabled = false;
       }
     }
-    if (this.isVendor && this.paymentData.gstHstPer === 0) {
-      this.gstError = "GST/HST should be non-zero.";
-    } else {
-      this.gstError = "";
-    }
+
   }
 
   fetchAdvancePayments() {
