@@ -6,6 +6,8 @@ import { ApiService } from '../../../../services';
 import { passwordStrength } from 'check-password-strength';
 import { ToastrService } from 'ngx-toastr'
 import { Auth } from 'aws-amplify'
+import { FormGroup } from '@angular/forms';
+import { alphaAsync, compare, numericAsync, password, pattern, prop, ReactiveFormConfig, required, RxFormBuilder } from '@rxweb/reactive-form-validators';
 declare var $: any;
 @Component({
   selector: 'app-company-profile',
@@ -63,15 +65,40 @@ export class CompanyProfileComponent implements OnInit {
     specialCharacters: false,
     length: false
   };
-  oldPassError = ''
+  oldPassError = '';
+  showVerification: boolean = false;
+
+  userVerificationFormGroup: FormGroup;
+  verificationInfo: VerificationInfo;
+  userInfo: UserInfo;
+  userInfoFormGroup: FormGroup
+  userErrorMessage: string;
+  userNameExists = false;
+  userNameExistsErr = '';
+  carrierNameExists = false;
+  carrierNameErr = '';
+  emailExistsExists = false;
+  emailExistsErr = '';
+  subCompanies = [];
 
   constructor(private route: ActivatedRoute,
     private apiService: ApiService,
-    private toastr: ToastrService
-  ) { }
+    private toastr: ToastrService,
+    private formBuilder: RxFormBuilder
+  ) {
+    ReactiveFormConfig.set({
+      'validationMessage': {
+        "required": "This field is required",
+        "email": "Email is invalid.",
+        "compare": "Passwords does not match."
+      }
+    })
+  }
 
   ngOnInit() {
+    this.userInfo = new UserInfo();
     this.companyID = this.route.snapshot.params[`companyID`];
+    this.userInfoFormGroup = this.formBuilder.formGroup(this.userInfo);
     this.fetchCarrier();
   }
 
@@ -197,22 +224,139 @@ export class CompanyProfileComponent implements OnInit {
       .next()
       .remove('label');
   }
+
   fetchCarrier() {
     this.apiService.getData(`carriers/${this.companyID}`)
       .subscribe((result: any) => {
-        this.carriers = result.Items[0];
-        if (!this.carriers.referral && this.carriers.findingWay === 'Referral') {
-          this.carriers.referral = {};
-        }
-        if (result.Items.length > 0) {
-          this.showData = true;
-        }
-        if (this.carriers.uploadedLogo === '' || this.carriers.uploadedLogo === undefined) {
-          this.logoSrc = 'assets/img/logo.png';
-        } else {
-          this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
+        if(result.Items && result.Items.length > 0) {
+          this.carriers = result.Items[0];
+          if (!this.carriers.referral && this.carriers.findingWay === 'Referral') {
+            this.carriers.referral = {};
+          }
+          if (result.Items.length > 0) {
+            this.showData = true;
+          }
+          if (this.carriers.uploadedLogo === '' || this.carriers.uploadedLogo === undefined) {
+            this.logoSrc = 'assets/img/logo.png';
+          } else {
+            this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
+          }
+          if(this.carriers.subCompInfo && this.carriers.subCompInfo.length > 0) {
+            this.subCompanies = this.carriers.subCompInfo;
+          }
         }
       });
   }
+  
+  async addSubCompany() {
+    const data = {
+      userName: this.userInfo.username,
+      email: this.userInfo.email,
+      password: this.userInfo.compPassword,
+      firstName: this.userInfo.firstName,
+      lastName: this.userInfo.lastName,
+      carrierName: this.userInfo.carrierName
+    }
+    const result:any = await this.apiService.postData(`carriers/sub-company/add`, data).toPromise();
+    if(result) {
+      this.clearForm();
+      this.toastr.success('Sub company added successfully');
+      this.fetchCarrier();
+    } else {
+      this.toastr.error('Something went wrong!');
+      return false;
+    }
+  }
 
+  async validateUsername() {
+    const data = {
+      userName: this.userInfo.username
+    }
+    this.apiService.postData(`carriers/validate/username`, data).subscribe((result: any) => {
+      console.log('result', result)
+      if(!result) {
+        this.userNameExists = true;
+        this.userNameExistsErr = 'Username already exists';
+      } else {
+        this.userNameExists = false;
+        this.userNameExistsErr = '';
+      }
+    })
+  }
+
+  async validateEmail() {
+    const data = {
+      email: this.userInfo.email
+    }
+    this.apiService.postData(`carriers/validate/email`, data).subscribe((result: any) => {
+      console.log('result', result)
+      if(!result) {
+        this.emailExistsExists = true;
+        this.emailExistsErr = 'Email already exists';
+      } else {
+        this.emailExistsExists = false;
+        this.emailExistsErr = '';
+      }
+    })
+  }
+
+  async validateCompanyName() {
+    const data = {
+      carrierName: this.userInfo.carrierName
+    }
+    this.apiService.postData(`carriers/validate/carriername`, data).subscribe((result: any) => {
+      console.log('result', result)
+      if(!result) {
+        this.carrierNameExists = true;
+        this.carrierNameErr = 'Registered Company Name already exists';
+      } else {
+        this.carrierNameExists = false;
+        this.carrierNameErr = '';
+      }
+    })
+  }
+  
+
+  clearForm() {
+    this.userInfoFormGroup.reset();
+    $("#addCompanyModal").modal('hide')
+  }
+}
+
+
+class VerificationInfo {
+  @prop()
+  @required({ message: "Verification code cannot be blank." })
+  @numericAsync({ message: "Only numbers allowed.", allowDecimal: false })
+  verificationCode: string;
+}
+
+class UserInfo {
+  @required()
+  @pattern({
+    expression: { 'onlyAlpha': /^(?=[a-zA-Z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$/ }, message: "Username should be at-least 6 characters long and can be a combination of numbers, letters  and dot(.)."
+  })
+  username: string;
+
+  @required()
+  @prop()
+  email: string;
+
+  @required()
+  @prop()
+  @password({ validation: { maxLength: 15, minLength: 8, upperCase: true, digit: true, alphabet: true, specialCharacter: true }, message: "Password must be of length 8 or more with combination of uppercase, lowercase, numbers & special characters." })
+  compPassword: string;
+
+  @required()
+  @compare({ fieldName: 'password', message: "Password does not match." })
+  confirmPassword: string;
+
+  @required()
+  firstName: string;
+
+  @required()
+  lastName: string;
+
+  @required()
+  carrierName: string
 }
