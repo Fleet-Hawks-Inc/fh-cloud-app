@@ -195,4 +195,15 @@ export class ImportedVehiclesComponent implements OnInit {
     this.importModelRef = this.modalService.open(this.importModel, ngbModalOptions)
   }
 
+  refreshData() {
+
+  }
+
+  /**
+    * Clears the table filters
+    * @param table Table 
+    */
+  clear(table: Table) {
+    table.clear();
+  }
 }
