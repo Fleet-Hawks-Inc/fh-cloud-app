@@ -157,18 +157,18 @@ export class ExpenseComponent implements OnInit {
     }
 
   }
-  onScroll() {
-    if (this.loaded) {
-      this.fetchTrpByVehicle();
-    }
-    this.loaded = false;
-  }
-  onScrollExpense() {
-    if (this.loaded) {
-      this.fetchExpensePayment();
-    }
-    this.loaded = false;
-  }
+  // onScroll() {
+  //   if (this.loaded) {
+  //     this.fetchTrpByVehicle();
+  //   }
+  //   this.loaded = false;
+  // }
+  // onScrollExpense() {
+  //   if (this.loaded) {
+  //     this.fetchExpensePayment();
+  //   }
+  //   this.loaded = false;
+  // }
   searchFilter() {
     if (this.start != null && this.end != null) {
       if (this.start != null && this.end == null) {
@@ -187,14 +187,13 @@ export class ExpenseComponent implements OnInit {
         this.lastExpPay = ''
         this.allData = [];
         this.fuel = [];
-        // this.fuelList = [];
         this.serviceLogData = [];
         this.payments = [];
         this.expensePay = [];
         this.totalExpense = 0;
-        // this.fetchTrpByVehicle()
-        // this.fetchFuelByVehicle()
-        // this.fetchSlogByVehicle()
+        this.fetchTrpByVehicle()
+        this.fetchFuelByVehicle()
+        this.fetchSlogByVehicle()
         this.fetchExpensePayment();
       }
     } else {
