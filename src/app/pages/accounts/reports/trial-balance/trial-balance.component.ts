@@ -25,7 +25,6 @@ export class TrialBalanceComponent implements OnInit {
     revenueArr = [];
     accArray = []
     expenseArr = [];
-    lastItemSK = "";
     actName = null;
     actType = null;
     accounts: any = [];
@@ -41,14 +40,12 @@ export class TrialBalanceComponent implements OnInit {
     datee = '';
     disableSearch = false;
     exportLoading = false;
-    loaded = false;
     currTab = "CAD";
     isLoadText = "Load More...";
     isLoad = false;
     dateMinLimit = { year: 1950, month: 1, day: 1 };
     date = new Date();
     futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-    //deactivatePredefined = true;
     CAD = [];
     USD = [];
     actID = "";
@@ -73,7 +70,6 @@ export class TrialBalanceComponent implements OnInit {
     tempResults = [];
     account: any;
     lastTimestamp: string;
-    lastKey: "";
     dataMsgCad: string;
     currency = 'CAD';
     transactionLogCAD = [];
@@ -90,19 +86,14 @@ export class TrialBalanceComponent implements OnInit {
         this.fetchAccounts();
         this.fetchAccountClassByIDs();
         this.getAcClasses();
-         
-         
-        
     }
 
 
     async fetchAccounts(refresh?: boolean) {
         if (refresh === true) {
-            this.lastItemSK = "";
             this.accounts = [];
         }
-        if (this.lastItemSK !== "end") {
-            this.accountService.getData(`chartAc/report/trialBalance/${this.currency}/?lastKey=${this.lastItemSK}&start=${this.filter.startDate}&end=${this.filter.endDate}`)
+            this.accountService.getData(`chartAc/report/trialBalance/${this.currency}/?&start=${this.filter.startDate}&end=${this.filter.endDate}`)
                 .subscribe(async (result: any) => {
                     if (result.data.length === 0) {
                         this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -110,14 +101,24 @@ export class TrialBalanceComponent implements OnInit {
                     if (result.data.length > 0) {
                         result.data.map((v) => {
                             this.accounts.push(v);
-                        });
-                           this.lastItemSK = result.lastKey;
-                           if(this.lastItemSK !== result.lastKey)
-                          {
-                            this.lastItemSK = 'end';
-                          }
+                         });
                         const newArray: any = _.sortBy(this.accounts, ["accountNo"]);
                         this.accounts = newArray;
+                          for(let i = 0;i<this.accounts.length;i++)
+                        {
+                             if(this.currTab === 'CAD'){
+                             this.currency = 'CAD';
+                             this.accounts = _.filter(this.accounts, function(o){
+                             return o.debit != '0'|| o.credit != '0';
+                             })
+                             }
+                            if(this.currTab === 'USD'){
+                             this.currency = 'USD';
+                             this.accounts = _.filter(this.accounts, function(o){
+                             return o.debit != '0'|| o.credit != '0';
+                             })
+                             }
+                        }
                         for (var i = 0; i < result.data.length; i++) {
                             if (this.currTab === 'CAD') {
                                 this.currency = 'CAD'
@@ -147,24 +148,11 @@ export class TrialBalanceComponent implements OnInit {
                         this.accounts = _.filter(this.accounts, function (o) {
                             return o.actType != 'T';
                         });
-                        this.loaded = true;
                     }
                     
                 });
-        }
     }
-
-
-    //For Scrolling Page
-    onScroll() {
-        if (this.loaded) {
-            this.isLoad = true;
-            this.isLoadText = "Loading";
-            this.fetchAccounts();
-            this.lastItemSK = '';
-        }
-        this.loaded = false;
-       }
+   
 
 
     searchFilter() {
@@ -175,7 +163,6 @@ export class TrialBalanceComponent implements OnInit {
             this.cadCreditTotal = 0;
             this.usdDebitTotal = 0;
             this.usdCreditTotal = 0;
-            this.lastItemSK = '';
             this.accounts = [];
             this.dataMessage = Constants.FETCHING_DATA;
             this.fetchAccounts();
@@ -192,7 +179,6 @@ export class TrialBalanceComponent implements OnInit {
         this.cadCreditTotal = 0;
         this.usdDebitTotal = 0;
         this.usdCreditTotal = 0;
-        this.lastItemSK = "";
         this.accounts = [];
         this.fetchAccounts();
     }
@@ -229,13 +215,11 @@ export class TrialBalanceComponent implements OnInit {
             this.currency = 'CAD'
              this.cadDebitTotal = 0;
              this.cadCreditTotal = 0;
-            this.lastItemSK = '';
             this.fetchAccounts();
         } else if (this.currTab === "USD") {
             this.currency = 'USD'
             this.usdDebitTotal = 0;
             this.usdCreditTotal = 0;
-            this.lastItemSK = '';
             this.fetchAccounts();
         }
     }
@@ -284,7 +268,7 @@ export class TrialBalanceComponent implements OnInit {
                 if (link.download !== undefined) {
                     const url = URL.createObjectURL(blob);
                     link.setAttribute('href', url);
-                    link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}-invoice.csv`);
+                    link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}-trialBalance.csv`);
                     link.style.visibility = 'hidden';
                     document.body.appendChild(link);
                     link.click();
