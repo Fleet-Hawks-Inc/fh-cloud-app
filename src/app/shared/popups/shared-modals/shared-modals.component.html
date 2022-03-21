@@ -527,8 +527,8 @@
 
 
 <ng-template #addDocType let-modal>
-  <form class="form-horizontal" method="get" name="form" id="form_" #docForm="ngForm"
-    (ngSubmit)="docForm.form.valid && onAddDocument()" novalidate ngNativeValidate>
+  <form class="form-horizontal" method="get" name="form" id="form_" #docTypeForm="ngForm"
+    (ngSubmit)="docTypeForm.form.valid && addDocTypes()" novalidate ngNativeValidate>
     <div class="modal-header">
       <h5 class="modal-title" id="addDocumentModalLabel">Add Document</h5>
       <button type="button" (click)="modal.dismiss('Cross click')" class="close" data-dismiss="modal"
@@ -546,15 +546,14 @@
             <span class="mandfield text-2 ml-1"><sup>*</sup></span>
           </label>
           <ng-select [(ngModel)]="docs.docType" name="docType" placeholder="Select Document Type" class="form-control"
-            #docTypeName="ngModel" required [ngClass]="{ 'error' : docForm.submitted && docTypeName.invalid }">
+            #docTypeName="ngModel" required [ngClass]="{ 'error' : docTypeForm.submitted && docTypeName.invalid }">
 
-            <ng-option value="Bill of Lading">Bill of Lading (BOL)</ng-option>
-            <ng-option value="Proof of Delivery">Proof of Delivery (POD)</ng-option>
-            <ng-option value="Fuel Receipts">Fuel Receipts</ng-option>
-            <ng-option value="Load Confirmation">Load Confirmation</ng-option>
+            <ng-option value="bol">Bill of Lading (BOL)</ng-option>
+            <ng-option value="pod">Proof of Delivery (POD)</ng-option>
+
 
           </ng-select>
-          <div *ngIf="docTypeName.invalid && docForm.submitted" class="text-danger">
+          <div *ngIf="docTypeName.invalid && docTypeForm.submitted" class="text-danger">
             <div>
 
               <div *ngIf="docTypeName.errors.required">
@@ -572,7 +571,8 @@
           <label class="control-label font-weight-bold labelmt text-3 text-dark">Choose File
             <span class="mandfield text-2 ml-1"><sup>*</sup></span>
           </label>
-          <input (change)="selectDoc($event)" name="" id="uploadedDocs" type="file" class="form-control choosefileLH">
+          <input multiple (change)="selectDocTypes($event)" name="" id="uploadedDocs" type="file"
+            class="form-control choosefileLH">
 
           <span>
             Acceptable formats (pdf, jpg, jpeg, png). The maximum
@@ -584,10 +584,8 @@
     </div>
     <div class="modal-footer">
       <button (click)="modal.dismiss('Cross click')" class="btn btn-default modal-dismiss">Cancel</button>
-      <button type="submit" *ngIf="currentID" [disabled]="submitDisabled"
-        class="btn btn-success modal-confirm">Update</button>
-      <button type="submit" *ngIf="!currentID" [disabled]="submitDisabled"
-        class="btn btn-success modal-confirm">Save</button>
+
+      <button type="submit" [disabled]="!docTypeForm.form.valid" class="btn btn-success modal-confirm">Save</button>
     </div>
   </form>
 </ng-template>

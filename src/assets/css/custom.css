@@ -4085,7 +4085,13 @@ input:checked + .sliderbtn:before {
 .assign-confirm__main.modal .modal-dialog {
   max-width: 500px;
 }
-
+.doc-type__main.modal .modal-dialog,
+.docs-selection__main.modal .modal-dialog {
+  max-width: 500px;
+}
+.modal-open .docs-selection__main.modal {
+  background: rgb(0 0 0 / 22%);
+}
 /* 04.09.21 account classes */
 
 .detailbox {
