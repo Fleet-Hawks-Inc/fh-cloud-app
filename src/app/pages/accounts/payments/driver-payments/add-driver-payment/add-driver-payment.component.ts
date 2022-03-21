@@ -418,7 +418,7 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
       this.paymentData.taxes -
       this.paymentData.taxdata.cpp -
       this.paymentData.taxdata.ei -
-      this.paymentData.advance -
+      this.paymentData.advance +
       this.paymentData.gstHstAmt;
     this.paymentData.finalAmount = Number(this.paymentData.finalAmount).toFixed(
       2
@@ -439,10 +439,7 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
       this.toaster.error("Please select settlement(s)");
       return false;
     }
-    if (this.isVendor && this.paymentData.gstHstPer === 0) {
-      this.toaster.error("GST/HST value cannot be 0");
-      return false;
-    }
+
     if (this.paymentData.finalAmount <= 0) {
       this.toaster.error("Net payable should be greater than 0");
       return false;
@@ -455,6 +452,11 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
           return false;
         }
       }
+    }
+    if (!this.isVendor) {
+      this.paymentData.vendorId = '';
+      this.paymentData.isVendorPayment = false;
+
     }
     this.submitDisabled = true;
     this.accountService
@@ -640,11 +642,7 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
         this.submitDisabled = false;
       }
     }
-    if (this.isVendor && this.paymentData.gstHstPer === 0) {
-      this.gstError = "GST/HST should be non-zero.";
-    } else {
-      this.gstError = "";
-    }
+
   }
 
   fetchAdvancePayments() {
@@ -726,7 +724,8 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
       page: "addForm",
       isVendorPayment: this.isVendor,
       vendorId: this.paymentData.vendorId,
-      gstHstPer: this.paymentData.gstHstPer
+      gstHstPer: this.paymentData.gstHstPer,
+      gstHstAmt: this.paymentData.gstHstAmt
     };
 
     this.listService.openPaymentChequeModal(obj);
@@ -897,11 +896,6 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
     // Calculate GST
     const gstHstAmt = (this.paymentData.gstHstPer / 100) * this.paymentData.settledAmount;
     this.paymentData.gstHstAmt = gstHstAmt || 0;
-    if (this.paymentData.gstHstPer === 0) {
-      this.gstError = "GST/HST should be non-zero.";
-    } else {
-      this.gstError = "";
-    }
 
 
     this.calculateFinalTotal();

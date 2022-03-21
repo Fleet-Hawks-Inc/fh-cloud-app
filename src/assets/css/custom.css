@@ -1,6 +1,7 @@
 .qtumbtn {
   margin-top: 38px !important;
 }
+
 /*
 ::-webkit-scrollbar {
     width: 8px;
@@ -14,21 +15,25 @@
 ::-webkit-scrollbar:horizontal {
   width: 2px;
 }
+
 /* Track */
 
 ::-webkit-scrollbar-track {
   background: #fff;
 }
+
 /* Handle */
 
 ::-webkit-scrollbar-thumb {
   background: #dedede;
 }
+
 /* Handle on hover */
 
 ::-webkit-scrollbar-thumb:hover {
   background: #5c5c5c;
 }
+
 /* chat classes start from here*/
 
 .chat-menu {
@@ -68,6 +73,7 @@
   line-height: 10px;
   color: #a8a8a8;
 }
+
 /*Name*/
 
 .chat-hdicon {
@@ -141,6 +147,7 @@
   padding: 5px;
   border-radius: 5px;
 }
+
 /*attachment in chat*/
 
 .media .media-body {
@@ -276,6 +283,7 @@
     margin-left: 12%;
   }
 }
+
 /*
 .input-group-prepend {
   position: absolute; top: 5px; left: 5px;
@@ -300,11 +308,13 @@
   margin-top: 5px;
   margin-right: 5px;
 }
+
 /*geo fencing classes*/
 
 #map {
   height: 100%;
 }
+
 /*mis class*/
 
 .topnav {
@@ -344,6 +354,7 @@
   background: #fff;
   text-decoration: none;
 }
+
 /* Violation classes and Dispatch Schedule circle */
 
 .cirred {
@@ -415,7 +426,9 @@
   width: 12px;
   height: 12px;
 }
+
 /* duty status classes */
+
 /* profile pic classes*/
 
 .profile-img .file {
@@ -436,6 +449,7 @@
   right: 0;
   top: 0;
 }
+
 /* map classes */
 
 .mapclass {
@@ -450,6 +464,7 @@
   width: 100%;
   position: fixed !important;
 }
+
 /*driver list classes*/
 
 .onduty {
@@ -517,6 +532,7 @@
   color: #fff;
   margin-right: 5px;
 }
+
 /* graph page classes */
 
 .gmainbox {
@@ -568,6 +584,7 @@
   padding-top: 60px;
   padding-left: 10px;
 }
+
 /* graph page 2 classes */
 
 .gmainbox2 {
@@ -805,6 +822,7 @@
     width: 420px;
   }
 }
+
 /* DVIR */
 
 .dvirChk {
@@ -816,6 +834,7 @@
   min-width: 13%;
   float: left;
 }
+
 /* GeoFence Description Page */
 
 .geofields {
@@ -827,6 +846,7 @@
   min-width: 50%;
   float: left;
 }
+
 /* hos report class*/
 
 .hosvalue {
@@ -856,6 +876,7 @@
   padding-top: 60px;
   margin-right: 5%;
 }
+
 /*dashboard drive list classes*/
 
 .drivermain {
@@ -888,6 +909,7 @@
 .driverdetail:hover {
   border: 2px solid black;
 }
+
 /* .driverdetail a{display: block; height: 425px; text-decoration:none; border: solid 3px #fff; padding:10px 10px;}
 .driverdetail a:hover{background: #f0f0f0; text-decoration:none; border: solid 3px #000;} */
 
@@ -936,6 +958,7 @@
 .iconL a {
   background: #ebebeb;
 }
+
 /*dashboard drive detail classes*/
 
 .driverdetail2 {
@@ -958,6 +981,7 @@
 .vinfo .vdetail {
   padding: 10px;
 }
+
 /* PICK UP BUTTON CLASS */
 
 .pickup {
@@ -968,6 +992,7 @@
   text-align: center;
   color: #fff;
 }
+
 /* DROP OFF BUTTON CLASS */
 
 .dropoff {
@@ -978,6 +1003,7 @@
   text-align: center;
   color: #fff;
 }
+
 /*dashboard driver list classes*/
 
 .drivermain {
@@ -1060,6 +1086,7 @@
   width: 130px;
   float: left;
 }
+
 /* trip  info*/
 
 .tripscrolbar {
@@ -1223,6 +1250,7 @@
   left: 472px;
   top: 55px;
 }
+
 /* trip info date time */
 
 .tripdt1 {
@@ -1278,6 +1306,7 @@
   top: 10px;
   text-align: center;
 }
+
 /* trip info location */
 
 .triploc1 {
@@ -1333,6 +1362,7 @@
   top: 80px;
   text-align: center;
 }
+
 /* trip info new classes with new style 18.05.20 , trip info vertical */
 
 .tripsmain {
@@ -1455,6 +1485,7 @@
   left: 20px;
   top: -10px;
 }
+
 /* HOS driver insight classes di mean drive insite rejected */
 
 .dionduty {
@@ -1483,7 +1514,9 @@
   font-size: 20px;
   color: #fc3142;
 }
+
 /* HOS driver insight classes di mean drive insite rejected end */
+
 /* HOS driver insight classes di mean drive insite rejected end */
 
 .maindriverbox {
@@ -1513,6 +1546,7 @@
   padding-top: 10px;
   font-weight: 600;
 }
+
 /* widget classes dispatch dashboard classed start */
 
 .widgetmain {
@@ -1607,6 +1641,7 @@
 .minwidth127 {
   min-width: 127px;
 }
+
 /* ********************* dashboard chat main box classes start here ********************** */
 
 .dchatmb {
@@ -1619,6 +1654,7 @@
   bottom: 0px;
   z-index: 99999 !important;
 }
+
 /* Button used to open the chat form */
 
 .open-button {
@@ -1633,6 +1669,7 @@
   left: 0px;
   width: 280px;
 }
+
 /* The popup chat - hidden by default */
 
 .chat-popup {
@@ -1647,6 +1684,7 @@
   height: 50px;
   border-radius: 7px 7px 0 0;
 }
+
 /* chat input of all chat boxes */
 
 .dcinput {
@@ -1654,6 +1692,7 @@
   margin-left: 17%;
   border-radius: 60px;
 }
+
 /* chat box 1*/
 
 .dchatb1 {
@@ -1674,6 +1713,7 @@
   height: 50px;
   border-radius: 7px 7px 0 0;
 }
+
 /* chat box 2*/
 
 .dchatb2 {
@@ -1694,6 +1734,7 @@
   height: 50px;
   border-radius: 7px 7px 0 0;
 }
+
 /* chat box 3*/
 
 .dchatb3 {
@@ -1714,6 +1755,7 @@
   height: 50px;
   border-radius: 7px 7px 0 0;
 }
+
 /* chat box 4*/
 
 .dchatb4 {
@@ -1734,8 +1776,11 @@
   height: 50px;
   border-radius: 7px 7px 0 0;
 }
+
 /* ********************* chat classes end here ********************** */
+
 /* ********************* yard entery page classes start here ********************** */
+
 /* geofenc map serach*/
 
 .gfmap {
@@ -1748,8 +1793,11 @@
   right: 20px;
   top: 10px;
 }
+
 /* ********************* yard entery page classes end here ********************** */
+
 /* ********************* vehicle new page classes start here ********************** */
+
 /* Safety Parameters */
 
 .slidecontainer {
@@ -1786,6 +1834,7 @@
   background: #333;
   cursor: pointer;
 }
+
 /* ********************* vehicle new page classes end here ********************** */
 
 .positionfix {
@@ -1795,11 +1844,13 @@
 .positionsta {
   position: static !important;
 }
+
 /* make borde red for validation */
 
 .redBorder {
   border: solid 1px #c10000;
 }
+
 /* Mapbox CSS */
 
 #map {
@@ -1808,6 +1859,7 @@
           bottom: 0; */
   width: 100%;
 }
+
 /* #map1 {
           height:800px;
           top: 10;
@@ -1877,6 +1929,7 @@
 .mapboxgl-ctrl-geocoder--icon {
   display: none !important;
 }
+
 /* full bottom part */
 
 .mainbtmsec {
@@ -1890,6 +1943,7 @@
   left: 0px;
   bottom: 0px;
 }
+
 /* full top part */
 
 .maintopsec {
@@ -1898,6 +1952,7 @@
   background: #fff;
   background-size: cover;
 }
+
 /* trip info on dashbaord with stops */
 
 .tripondash {
@@ -1917,6 +1972,7 @@
   background: #fff;
   text-decoration: none;
 }
+
 /* load board classes start */
 
 td.loadid a {
@@ -1938,6 +1994,7 @@ td.loadid a {
 .orload {
   background: #e6f5ff !important;
 }
+
 /* load board dashboard */
 
 .widgetload {
@@ -1989,6 +2046,7 @@ td.loadid a {
   border-radius: 3px;
   margin-right: 4px;
 }
+
 /* dispatch  page */
 
 .disbox {
@@ -2010,6 +2068,7 @@ td.loadid a {
   position: absolute;
   bottom: 0px;
 }
+
 /* create load  page */
 
 .labelmt {
@@ -2045,7 +2104,9 @@ td.loadid a {
   margin-left: -12px;
   position: absolute;
 }
+
 /*****************  har classes start  *********************************/
+
 /* safety page classes */
 
 .border_bottom {
@@ -2085,11 +2146,13 @@ td.loadid a {
   max-height: 380px !important;
   overflow: scroll;
 }
+
 /* cycle table cell width */
 
 .cell_width {
   min-width: 350px;
 }
+
 /* ADD NEW VEHICLE TOP NAV BAR */
 
 .addv_topnav {
@@ -2104,6 +2167,7 @@ td.loadid a {
   margin: 0;
   padding: 0;
 }
+
 /* .addv_topnav ul li{float: left;} */
 
 .addv_topnav ul li {
@@ -2127,6 +2191,7 @@ td.loadid a {
   background: #fff;
   text-decoration: none;
 }
+
 /* ADD VEHICLE INFORMATION */
 
 #vehicle_new_details {
@@ -2146,11 +2211,13 @@ td.loadid a {
   font-size: 1rem;
   color: black;
 }
+
 /* Stock Quantity */
 
 .table-stock-qty-td {
   vertical-align: middle !important;
 }
+
 /* Stock Assignment Add button setting */
 
 .mar-top-asg-stock-btn {
@@ -2168,6 +2235,7 @@ td.loadid a {
 .mar-top-38 {
   margin-top: 38px !important;
 }
+
 /* BUSINESS PAGE CSS */
 
 .business_image_style {
@@ -2179,6 +2247,7 @@ td.loadid a {
 .margin_50 {
   margin-top: 50px;
 }
+
 /* TEXT UNDERLINE */
 
 .text-underline {
@@ -2206,6 +2275,7 @@ td.loadid a {
   /* margin-left: 50px;
   margin-right: 50px; */
 }
+
 /* PRICE PLAN */
 
 .price-plan {
@@ -2291,6 +2361,7 @@ td.loadid a {
 .large-color {
   background-color: #4e8dd3;
 }
+
 /* IFTA PAGE */
 
 .ifta-tabs {
@@ -2333,6 +2404,7 @@ td.loadid a {
 .margin-left-35 {
   margin-left: 35px;
 }
+
 /* DOCUMENTS PAGE */
 
 .document_box {
@@ -2385,11 +2457,13 @@ td.loadid a {
 .card-border {
   border: 0.4px solid #ddd;
 }
+
 /*****************  har classes end  *********************************/
 
 .temp_graph {
   cursor: pointer;
 }
+
 /* temp dashboard */
 
 .dashboard {
@@ -2499,7 +2573,9 @@ td.loadid a {
   color: #757575;
   margin-bottom: 10px;
 }
+
 /* ************************************************** NEW CLASSES START 16.07.20  ************************************************** */
+
 /* on hover show description of the driver on map view */
 
 .vehicle-description {
@@ -2519,6 +2595,7 @@ td.loadid a {
   padding: 10px;
   background: rgba(255, 255, 255, 1);
 }
+
 /* overivew new layout with vertical trip info */
 
 .driverleftmain {
@@ -2544,6 +2621,7 @@ td.loadid a {
 .driveredit-scroll-y {
   display: block;
 }
+
 /* critical events new classes */
 
 .cmaindiv {
@@ -2553,11 +2631,13 @@ td.loadid a {
 .cerbor {
   border-right: solid 1px #c6c6c6;
 }
+
 /* live view new classes */
 
 .tripbor {
   border-bottom: solid 1px #ebebeb;
 }
+
 /* new safety page */
 
 .safetytile {
@@ -2566,6 +2646,7 @@ td.loadid a {
   width: 100%;
   padding: 3%;
 }
+
 /* create order page */
 
 .cotabdiv {
@@ -2607,6 +2688,7 @@ td.loadid a {
   background-color: rgb(34, 34, 34) !important;
   border-color: rgb(34, 34, 34) !important;
 }
+
 /* .btn-LTL:hover, .btn-LTL:active, .btn-LTL:focus {
 	color: #fff;
 	background-color: #2b2b2b;
@@ -2630,8 +2712,11 @@ td.loadid a {
   background-color: rgb(34, 34, 34) !important;
   border-color: rgb(34, 34, 34) !important;
 }
+
 /* p.css classes end here */
+
 /*****************  common classes  *********************************/
+
 /* border solid */
 
 .bordall {
@@ -2653,6 +2738,7 @@ td.loadid a {
 .bordbtm {
   border-bottom: solid 1px #dddddd;
 }
+
 /* border dashed */
 
 .bordtopdas {
@@ -2662,11 +2748,13 @@ td.loadid a {
 .borddas {
   border: dashed 1px #aaa;
 }
+
 /* border radius */
 
 .bor-radius0px {
   border-radius: 0px !important;
 }
+
 /* box */
 
 .boxshadow1 {
@@ -2676,7 +2764,9 @@ td.loadid a {
 .boxshadow0 {
   box-shadow: none !important;
 }
+
 /* padding classes */
+
 /* padding right */
 
 .pr2 {
@@ -2714,6 +2804,7 @@ td.loadid a {
 .pr133 {
   padding-right: 133px !important;
 }
+
 /* padding bottom */
 
 .pb2 {
@@ -2739,6 +2830,7 @@ td.loadid a {
 .pb21 {
   padding-bottom: 21px !important;
 }
+
 /* padding left */
 
 .pl4 {
@@ -2760,6 +2852,7 @@ td.loadid a {
 .pl18 {
   padding-left: 18px !important;
 }
+
 /* padding all */
 
 .p7 {
@@ -2773,6 +2866,7 @@ td.loadid a {
 .pr10 {
   padding-right: 10px;
 }
+
 /* width */
 
 .w100 {
@@ -2806,6 +2900,7 @@ td.loadid a {
 .btnw90px {
   width: 90px;
 }
+
 /* color */
 
 .blue1 {
@@ -2827,11 +2922,13 @@ td.loadid a {
 .green1 {
   color: #1eb54f;
 }
+
 /* overflow x*/
 
 .overflowxv {
   overflow-x: visible;
 }
+
 /* bg color */
 
 .bgcol1 {
@@ -2849,16 +2946,19 @@ td.loadid a {
 .bggreyn {
   background: #f6f6f6 !important;
 }
+
 /* line height */
 
 .LH16 {
   line-height: 16px !important;
 }
+
 /* cursor */
 
 .cursorpoint {
   cursor: pointer;
 }
+
 /* cursor */
 
 .text-white {
@@ -2869,12 +2969,14 @@ td.loadid a {
   display: flex;
   justify-content: center;
 }
+
 /* margin */
 
 .mt-1-c1,
 .my-1-c1 {
   margin-top: 0.15rem !important;
 }
+
 /* margin top */
 
 .mar-top-2 {
@@ -2888,6 +2990,7 @@ td.loadid a {
 .mt74 {
   margin-top: 74px !important;
 }
+
 /* margin right */
 
 .mr15 {
@@ -2897,6 +3000,7 @@ td.loadid a {
 .mr50 {
   margin-right: 50px !important;
 }
+
 /* margin bottom */
 
 .mb2 {
@@ -2906,6 +3010,11 @@ td.loadid a {
 .mb4 {
   margin-bottom: 4px !important;
 }
+
+.mb10 {
+  margin-bottom: 10px !important;
+}
+
 /* z-index */
 
 .zindex9910 {
@@ -2930,10 +3039,13 @@ td.loadid a {
   padding-top: 3px;
   border-radius: 5px;
 }
+
 /* TABLE ROW HOVER */
+
 /* table tbody tr:hover{
   background-color: #ccc;
 } */
+
 /*  Driver profile Page  */
 
 .summary_box {
@@ -2955,11 +3067,13 @@ td.loadid a {
 .border-box {
   border: 0.5px solid #ddd;
 }
+
 /* Daljit Classes Starts here */
 
 .f-40 {
   font-size: 40px !important;
 }
+
 /*--Incidents Css--*/
 
 .incident-tabs.nav-tabs li {
@@ -3012,6 +3126,7 @@ td.loadid a {
 .dataTables_length {
   display: none;
 }
+
 /* Safety Details css*/
 
 .safety-deails__map {
@@ -3023,6 +3138,7 @@ td.loadid a {
   background-color: #eee;
   border: 0.5px solid #ddd;
 }
+
 /*--Add Alert--*/
 
 .add-alert__listing {
@@ -3085,6 +3201,7 @@ td.loadid a {
   display: block;
   text-decoration: none;
 }
+
 /*--Reports--*/
 
 .reports-sidebar,
@@ -3115,6 +3232,7 @@ td.loadid a {
   border-right: 1px solid #424242;
   background-color: #efefef !important;
 }
+
 /* .reports-sidebar ul li a.active::after {
     position: absolute;
     top: 10px;
@@ -3154,6 +3272,7 @@ html.fixed .reports-wrapper {
 .reports-listing a:last-child {
   border: none;
 }
+
 /* .reports-listing a::after {
     position: absolute;
     top: 25px;
@@ -3212,6 +3331,7 @@ html.fixed .reports-wrapper {
   height: 50px;
   overflow: auto;
 }
+
 /* new IFTA look page */
 
 .newbgifta {
@@ -3230,6 +3350,7 @@ html.fixed .reports-wrapper {
 .btnifta:hover {
   background: #161616 !important;
 }
+
 /* new classes update after tester rashmi testing */
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
@@ -3246,6 +3367,7 @@ table.dataTable thead th,
 table.dataTable thead td {
   padding: 10px 10px !important;
 }
+
 /*top padding should be equal of vehicle table between numbering and count*/
 
 .dataTables_wrapper .dataTables_info {
@@ -3259,6 +3381,7 @@ table.dataTable thead td {
 .checkboxalign {
   vertical-align: middle !important;
 }
+
 /*drop down icon for common pages*/
 
 .togglecolor::after {
@@ -3266,6 +3389,7 @@ table.dataTable thead td {
   margin-top: 8px !important;
   float: right !important;
 }
+
 /*drop down icon on asset page*/
 
 .toggleright::after {
@@ -3273,11 +3397,13 @@ table.dataTable thead td {
   float: right !important;
   color: #999;
 }
+
 /* Page body colro ligh grey class */
 
 .pagebody {
   background: #ecedf0 !important;
 }
+
 /* placeholder classes */
 
 ::-webkit-input-placeholder {
@@ -3297,6 +3423,7 @@ table.dataTable thead td {
   color: #999999 !important;
   font-size: 12px !important;
 }
+
 /* Optional label color */
 
 .optional-label-color {
@@ -3327,6 +3454,7 @@ table.dataTable thead td {
 .bggreyn {
   background: #f6f6f6 !important;
 }
+
 /* clickable button */
 
 .btn-alert {
@@ -3349,6 +3477,7 @@ table.dataTable thead td {
   background-color: rgb(34, 34, 34) !important;
   border-color: rgb(34, 34, 34) !important;
 }
+
 /* no trip in dispatch planner classes */
 
 .notrip-dp {
@@ -3371,8 +3500,11 @@ table.dataTable thead td {
 .notrip-dp p {
   text-align: center;
 }
+
 /* no trip in dispatch planner classes end */
+
 /* planner modal classes for scroll each column*/
+
 /* miles buttons */
 
 .btn-miles {
@@ -3394,6 +3526,7 @@ table.dataTable thead td {
   background-color: rgb(34, 34, 34) !important;
   border-color: rgb(34, 34, 34) !important;
 }
+
 /* load type in new order page */
 
 .wltype {
@@ -3411,11 +3544,13 @@ table.dataTable thead td {
 .btnw90px {
   width: 90px;
 }
+
 /* load type in new order page */
 
 .wltype {
   width: 135px;
 }
+
 /* yes/no buttons */
 
 .btn-yesno {
@@ -3437,6 +3572,7 @@ table.dataTable thead td {
   background-color: rgb(34, 34, 34) !important;
   border-color: rgb(34, 34, 34) !important;
 }
+
 /* height */
 
 .heighta {
@@ -3446,16 +3582,19 @@ table.dataTable thead td {
 .h31 {
   height: 31px !important;
 }
+
 /* min height */
 
 .mh31 {
   min-height: 31px !important;
 }
+
 /* padding left sign in button page */
 
 .pl-signin {
   padding-left: 46px;
 }
+
 /* more than two orders in trip detail page */
 
 .orderinfoheight {
@@ -3467,6 +3606,7 @@ table.dataTable thead td {
   max-height: 200px !important;
   overflow: scroll;
 }
+
 /* scrollbar in vehicle detail page */
 
 .vdtableinfoheight {
@@ -3478,6 +3618,7 @@ table.dataTable thead td {
   max-height: 210px !important;
   overflow: scroll;
 }
+
 /* no Activity in Timelines in dispatch home page classes */
 
 .noactivity-dh {
@@ -3500,7 +3641,9 @@ table.dataTable thead td {
 .noactivity-dh p {
   text-align: center;
 }
+
 /* no Activity in Timelines in dispatch home page classes end */
+
 /* Associated Company classes */
 
 .assoc {
@@ -3528,13 +3671,17 @@ table.dataTable thead td {
   display: block;
   color: #fff;
 }
+
 /* Associated Company classes end */
+
 /* Safety Summary height of driver page */
 
 .ssdriver {
   height: 570px;
 }
+
 /* Safety Summary height of driver page end*/
+
 /* no trip on main home overview page classes */
 
 .notrip-oview {
@@ -3558,7 +3705,9 @@ table.dataTable thead td {
 .notrip-oview p {
   text-align: center;
 }
+
 /* no trip on main home overview page classes end */
+
 /* order detail page attachment start */
 
 .min-heightat {
@@ -3580,12 +3729,15 @@ table.dataTable thead td {
   width: 79px;
   height: 100px;
 }
+
 /* order detail page attachment end */
+
 /* choose file line height class start*/
 
 .choosefileLH {
   line-height: 16px !important;
 }
+
 /* column visibility scroll */
 
 .colvisi-scrollbar {
@@ -3593,18 +3745,22 @@ table.dataTable thead td {
   height: 500px;
   overflow-y: auto;
 }
+
 /* choose file line height class end*/
 
 .adddriverpl {
   /* padding-left: 73px; */
   padding-left: 120px;
 }
+
 /* add orderpadding class start 11.05.21 */
 
 .adddriverpl2 {
   padding-left: 52px;
 }
+
 /* add driver class end */
+
 /* address book classes start */
 
 .heightab {
@@ -3665,8 +3821,11 @@ table.dataTable thead td {
 .addcontbtn {
   display: none;
 }
+
 /* address book classes end */
+
 /* pic zoom classes */
+
 /* The Close Button */
 
 .close {
@@ -3684,6 +3843,7 @@ table.dataTable thead td {
   text-decoration: none;
   cursor: pointer;
 }
+
 /* circles in trips and routes */
 
 .tripbarn {
@@ -3723,11 +3883,13 @@ table.dataTable thead td {
   overflow-x: scroll;
   white-space: nowrap;
 }
+
 /* new header input height */
 
 .page-header .row .col-lg-2 .input-group .form-control {
   height: calc(1.3em + 0.75rem + 0.1em) !important;
 }
+
 /* modal cross 31.05.21 */
 
 .modal-header .close {
@@ -3735,6 +3897,7 @@ table.dataTable thead td {
   padding: 0.5rem 0.5rem !important;
   color: #000 !important;
 }
+
 /* header select input height */
 
 .input-daterange input {
@@ -3777,6 +3940,7 @@ input.placeholder-lowercase {
   /* Recent browsers */
   text-transform: none;
 }
+
 /* on board page width according screen sizes */
 
 .onboardwidth {
@@ -3800,6 +3964,7 @@ input.placeholder-lowercase {
   overflow-x: hidden;
   padding-bottom: 15px;
 }
+
 /* toggle switch */
 
 .switch {
@@ -3852,6 +4017,7 @@ input:checked + .sliderbtn:before {
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
+
 /* Rounded sliders */
 
 .sliderbtn.round {
@@ -3919,6 +4085,7 @@ input:checked + .sliderbtn:before {
 .assign-confirm__main.modal .modal-dialog {
   max-width: 500px;
 }
+
 /* 04.09.21 account classes */
 
 .detailbox {
@@ -3959,6 +4126,7 @@ input:checked + .sliderbtn:before {
   left: -20px;
   top: 30%;
 }
+
 /*
 .entire-fleet a {
   width: 23px;
@@ -3973,6 +4141,7 @@ input:checked + .sliderbtn:before {
 }
 
 */
+
 /* New Own Icon */
 
 @font-face {
@@ -4110,6 +4279,7 @@ input:checked + .sliderbtn:before {
 .light-backdrop {
   background-color: #dfdfdf4a;
 }
+
 /* Classes for reports main page 26.01.21*/
 
 .reportbox {
@@ -4168,4 +4338,23 @@ input:checked + .sliderbtn:before {
   align-content: center;
   align-items: center;
   text-align: right !important;
+}
+
+.gm-style .gm-style-iw-c b {
+  color: #333333;
+  font-family: Roboto, Arial;
+  font-size: 14px;
+}
+
+.gm-style .gm-style-iw-c a {
+  color: #427fed;
+  font-family: Roboto, Arial;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.gm-style .gm-style-iw-c {
+  color: #333333;
+  font-family: Roboto, Arial;
+  font-size: 13px;
 }
