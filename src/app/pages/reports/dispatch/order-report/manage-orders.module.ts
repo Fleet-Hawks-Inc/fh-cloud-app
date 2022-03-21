@@ -16,7 +16,7 @@ const routes: Routes = [
   {
     path: "detailreport",
     component: DetailreportComponent,
-    data: { title: "Order Detail Report" },
+    data: { title: "Order Report Detail" },
   },
 ];
 

@@ -509,8 +509,8 @@ export class SharedModalsComponent implements OnInit {
     this.apiService.getData("vehicles").subscribe({
       error: () => { },
       next: (result: any) => {
-        // this.vehicles = result.Items;
-        console.log("result.Items", result.Items);
+
+
         result.Items.forEach((element) => {
           if (element.isDeleted === 0) {
             this.vehicles.push(element);
@@ -634,7 +634,7 @@ export class SharedModalsComponent implements OnInit {
   }
 
   fetchUsers() {
-    this.apiService.getData("users").subscribe((result: any) => {
+    this.apiService.getData("common/users").subscribe((result: any) => {
       result["Items"].map((r: any) => {
         if (r.isDeleted === 0) {
           this.users.push(r);

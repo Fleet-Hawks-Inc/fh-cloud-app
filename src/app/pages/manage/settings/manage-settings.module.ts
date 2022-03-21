@@ -5,7 +5,6 @@ import { SettingsOverviewComponent } from "./settings-overview/settings-overview
 import { GeneralSettingsComponent } from "./general-settings/general-settings.component";
 import { MyAccountComponent } from "./my-account/my-account.component";
 import { DriverSettingComponent } from "./driver-setting/driver-setting.component";
-import { VehicleSettingComponent } from "./vehicle-setting/vehicle-setting.component";
 import { AssetsSettingComponent } from "./assets-setting/assets-setting.component";
 import { FuelSettingComponent } from "./fuel-setting/fuel-setting.component";
 import { RemindersSettingComponent } from "./reminders-setting/reminders-setting.component";
@@ -20,6 +19,8 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { CustomerSettingComponent } from "./customer-setting/customer-setting.component";
 import { DoverviewComponent } from "./settings-overview/doverview/doverview.component";
 import { ImportDriversComponent } from "./import-drivers/import-drivers.component";
+
+import { VehicleSettingsComponent } from './vehicle-settings/vehicle-settings.component';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { MultiSelectModule } from 'primeng/multiselect';
@@ -30,13 +31,20 @@ import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
 
+
 const routes: Routes = [
   { path: "overview", component: SettingsOverviewComponent },
   {
-    path: "doverview",
+    path: 'vehicles',
+    loadChildren: () => import('./vehicle-settings/vehicles-settings.module').then((m) => m.VehiclesSettingsModule),
+    data: { title: 'Vehicles Settings' }
+  },
+  {
+    path: "driver-overview",
     component: DoverviewComponent,
     data: { title: "Driver Settings" },
   },
+
   { path: "general", component: GeneralSettingsComponent },
   { path: "myaccount", component: MyAccountComponent },
   {
@@ -46,29 +54,24 @@ const routes: Routes = [
   },
   { path: "import", component: ImportDriversComponent },
   {
-    path: "vehicle",
-    component: VehicleSettingComponent,
-    data: { title: "Deleted Vehicle" },
-  },
-  {
     path: "asset",
     component: AssetsSettingComponent,
-    data: { title: "Assets Settings" },
+    data: { title: "Deleted Assets" },
   },
   {
     path: "fuel",
     component: FuelSettingComponent,
-    data: { title: "Fuel Settings" },
+    data: { title: "Deleted Fuel" },
   },
   {
     path: "reminders",
     component: RemindersSettingComponent,
-    data: { title: "Reminders Settings" },
+    data: { title: "Deleted Reminders" },
   },
   {
     path: "issue",
     component: IssueSettingComponent,
-    data: { title: "Issue Settings" },
+    data: { title: "Deleted Issue" },
   },
   {
     path: "dispatch",
@@ -90,6 +93,7 @@ const routes: Routes = [
     component: CustomerSettingComponent,
     data: { title: "Customer Settings" },
   },
+
 ];
 
 @NgModule({
@@ -98,7 +102,6 @@ const routes: Routes = [
     GeneralSettingsComponent,
     MyAccountComponent,
     DriverSettingComponent,
-    VehicleSettingComponent,
     AssetsSettingComponent,
     FuelSettingComponent,
     RemindersSettingComponent,
@@ -109,6 +112,7 @@ const routes: Routes = [
     CustomerSettingComponent,
     DoverviewComponent,
     ImportDriversComponent,
+    VehicleSettingsComponent,
   ],
   imports: [
     CommonModule,
@@ -125,7 +129,7 @@ const routes: Routes = [
     SplitButtonModule,
     CalendarModule,
     AutoCompleteModule,
-    DropdownModule
+    DropdownModule,
   ],
 })
-export class ManageSettingsModule { }
+export class ManageSettingsModule {}

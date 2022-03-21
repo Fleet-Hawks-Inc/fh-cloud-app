@@ -4,13 +4,9 @@ import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import { ActivatedRoute } from "@angular/router";
 import Constants from 'src/app/pages/fleet/constants';
-import { environment } from '../../../../../../environments/environment';
-import { OnboardDefaultService } from '../../../../../services/onboard-default.service';
 import * as _ from 'lodash';
-import { result } from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AccountService } from "src/app/services";
-
 @Component({
   selector: 'app-expense',
   templateUrl: './expense.component.html',
@@ -34,26 +30,8 @@ export class ExpenseComponent implements OnInit {
   exportData = [];
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   public vehicleId;
-  driverList = []
-  fuelList = []
-  allVehicles = []
   lastEvaluatedKey = ''
-  unitName: string;
   fuel = []
-  public unitID;
-  assetUnitID = null;
-  lastTimeCreated = ''
-  //service log data
-  logs = []
-  issuesObject = []
-  vehicleID = null;
-  taskID = null;
-  assetID = null;
-  vehiclesObject = []
-  tasks = []
-  // payment
-  settlements = []
-  contacts = []
   payments = [];
   expensePay = []
   filter = {
@@ -62,14 +40,12 @@ export class ExpenseComponent implements OnInit {
     type: null,
     paymentNo: null,
   };
-  serviceLogName = []
+  serviceLogData = []
   payment = []
   driver: any = []
-  pay: any = []
-  entityId: any
-  lastDrvP = ''
   lastExpPay = ''
-  // vehicleList = []
+  totalExpense = 0
+  totalDriverPay = 0
   constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute, private spinner: NgxSpinnerService, private accountService: AccountService,) {
   }
 
@@ -79,93 +55,54 @@ export class ExpenseComponent implements OnInit {
     this.vehicleId = this.route.snapshot.params[`vehicleId`];
     this.fetchTrpByVehicle();
     this.fetchVehicleName();
-    // this.fetchAllIssuesIDs()
     this.fetchFuelByVehicle();
     this.fetchSlogByVehicle();
-    // this.fetchSettlement();
     this.fetchExpensePayment()
-    // this.fetchVehiclesList();
   }
 
 
   async fetchDriverPayment() {
-    if (this.lastDrvP !== 'end') {
-      // const result: any = await this.accountService.getData(`driver-payments/get/driver/payment?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&lastKey=${this.lastDrvP}`)
-      const result: any = await this.accountService.getData(`driver-payments/get/driver/payment?drivers=${encodeURIComponent(JSON.stringify(this.driver))}`)
-        .toPromise();
-      this.payments = result;
-      // this.lastDrvP = "end";
-      if (result.length === 0) {
-        this.dataMessage = Constants.NO_RECORDS_FOUND
-      }
-      // if (result.length > 0) {
-      //   if (result[result.length - 1].entityId !== undefined) {
-      //     console.log('result[result.length - 1].entityId', result[result.length - 1].entityId)
-      //     this.lastDrvP = encodeURIComponent(result[result.length - 1].entityId);
-      //   }
-      //   else {
-      //     this.lastDrvP = 'end'
-      //   }
-      //   // this.loaded = true;
-
-      // }
-      // this.payments = this.payments.concat(result)
-      console.log('this.payments', this.payments)
-
-      // })
-    }
-  }
-  async fetchExpensePayment() {
-  if(this.lastExpPay !== 'end'){
-    const result: any = await this.accountService.getData(`expense/get/expense/pay/byTrp/${encodeURIComponent(JSON.stringify(this.vehicleId))}?startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastExpPay}&date=${this.expDate}`).toPromise();
-    this.expensePay = result;
-    console.log('this.expensePay', this.expensePay)
-
-    if(result.length === 0){
+    const result: any = await this.accountService.getData(`driver-payments/get/driver/payment?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&startDate=${this.start}&endDate=${this.end}`)
+      .toPromise();
+    this.payments = result;
+    if (result.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND
     }
-    if (result.length > 0) {
-      if (result[result.length - 1].categoryID !== undefined) {
-            this.lastExpPay = encodeURIComponent(result[result.length - 1].categoryID);
-           this.expDate = encodeURIComponent(result[result.length - 1].txnDate);
-          }
-          else {
-            this.lastExpPay = 'end'
-          }
-          this.loaded = true;
+    for (let i = 0; i < result.length; i++) {
+      const paymentdata = result[i]
+      this.totalDriverPay += parseFloat(paymentdata.finalAmount)
     }
-    // })
   }
+  fetchExpensePayment() {
+    if (this.lastExpPay !== 'end') {
+      this.accountService.getData(`expense/get/expense/pay/byTrp/${encodeURIComponent(JSON.stringify(this.vehicleId))}?startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastExpPay}&date=${this.expDate}`).subscribe((result: any) => {
+        if (result.Items.length === 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND
+        }
+        for (let i = 0; i < result.Items.length; i++) {
+          const expenseData = result.Items[i]
+          this.totalExpense += parseFloat(expenseData.finalTotal)
+        }
+        if (result.LastEvaluatedKey !== undefined) {
+          this.lastExpPay = encodeURIComponent(result.LastEvaluatedKey.sk);
+          this.expDate = encodeURIComponent(result.LastEvaluatedKey.transDate);
+        }
+        else {
+          this.lastExpPay = 'end'
+        }
+        this.loaded = true;
+        this.expensePay = this.expensePay.concat(result.Items)
+      })
+    }
   }
-  // fetchSettlement() {
-  //   this.accountService
-  //     .getData(`settlement/get/list`)
-  //     .subscribe((result: any) => {
-  //       this.settlements = result;
-  //     });
-  // }
-
-  // fetchAllIssuesIDs() {
-  //   this.apiService.getData("issues/get/list").subscribe((result: any) => {
-  //     this.issuesObject = result;
-  //   });
-  // }
-
   fetchSlogByVehicle() {
     this.apiService.getData(`serviceLogs/getBy/vehicle/name/trips/${this.vehicleId}?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
-      this.serviceLogName = result.Items
+      this.serviceLogData = result.Items
       if (result.Items.length === 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND
       }
     })
   }
-
-
-  // fetchVehiclesList() { 
-  //   this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
-  //     this.vehicleList = result;
-  //   });
-  // }
 
   fetchVehicleName() { //vehicle name in tile
     this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
@@ -203,7 +140,6 @@ export class ExpenseComponent implements OnInit {
           }
         }
         this.fetchDriverPayment();
-        this.fetchExpensePayment()
         if (result.LastEvaluatedKey !== undefined) {
 
           this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
@@ -218,13 +154,18 @@ export class ExpenseComponent implements OnInit {
     }
 
   }
-  onScroll() {
-    if (this.loaded) {
-      // this.fetchTrpByVehicle();
-    }
-    this.loaded = false;
-  }
-
+  // onScroll() {
+  //   if (this.loaded) {
+  //     this.fetchTrpByVehicle();
+  //   }
+  //   this.loaded = false;
+  // }
+  // onScrollExpense() {
+  //   if (this.loaded) {
+  //     this.fetchExpensePayment();
+  //   }
+  //   this.loaded = false;
+  // }
   searchFilter() {
     if (this.start != null && this.end != null) {
       if (this.start != null && this.end == null) {
@@ -243,15 +184,14 @@ export class ExpenseComponent implements OnInit {
         this.lastExpPay = ''
         this.allData = [];
         this.fuel = [];
-        this.fuelList = [];
-        this.serviceLogName = [];
+        this.serviceLogData = [];
         this.payments = [];
         this.expensePay = [];
-        // this.settlements = [];
+        this.totalExpense = 0;
+        this.totalDriverPay = 0;
         this.fetchTrpByVehicle()
         this.fetchFuelByVehicle()
         this.fetchSlogByVehicle()
-        this.fetchDriverPayment();
         this.fetchExpensePayment();
       }
     } else {
@@ -259,4 +199,40 @@ export class ExpenseComponent implements OnInit {
     }
   }
 
+  generateCSV() {
+    if (this.expensePay.length > 0) {
+      let dataObject = []
+      let csvArray = []
+      this.expensePay.forEach(element => {
+        let obj = {}
+        obj["Vehicle Name/Number"] = element.vehicleName;
+        obj["Expense Type"] = element.categoryName;
+        obj["Amount"] = element.finalTotal + " " + element.currency;
+
+        dataObject.push(obj)
+      });
+      let headers = Object.keys(dataObject[0]).join(',')
+      headers += ' \n'
+      csvArray.push(headers)
+      dataObject.forEach(element => {
+        let obj = Object.values(element).join(',')
+        obj += ' \n'
+        csvArray.push(obj)
+      });
+      const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}VehicleExpense-Report.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+    else {
+      this.toastr.error("No Records found")
+    }
+  }
 }

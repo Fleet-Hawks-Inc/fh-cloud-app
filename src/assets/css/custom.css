@@ -1953,8 +1953,6 @@
   background-size: cover;
 }
 
-
-
 /* trip info on dashbaord with stops */
 
 .tripondash {
@@ -3011,6 +3009,10 @@ td.loadid a {
 
 .mb4 {
   margin-bottom: 4px !important;
+}
+
+.mb10 {
+  margin-bottom: 10px !important;
 }
 
 /* z-index */
@@ -4318,4 +4320,41 @@ input:checked + .sliderbtn:before {
 
 .import-model--main .modal-dialog {
   max-width: 700px !important;
+}
+
+.header-title {
+  margin-left: 10px;
+  margin-top: 5px;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #000;
+}
+
+.header-buttons {
+  margin-left: 10px;
+  margin-top: 5px;
+  align-content: center;
+  align-items: center;
+  text-align: right !important;
+}
+
+.gm-style .gm-style-iw-c b {
+  color: #333333;
+  font-family: Roboto, Arial;
+  font-size: 14px;
+}
+
+.gm-style .gm-style-iw-c a {
+  color: #427fed;
+  font-family: Roboto, Arial;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.gm-style .gm-style-iw-c {
+  color: #333333;
+  font-family: Roboto, Arial;
+  font-size: 13px;
 }

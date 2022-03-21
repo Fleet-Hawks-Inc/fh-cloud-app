@@ -77,6 +77,8 @@ export class PaymentPdfsComponent implements OnInit {
     workerBenefit: 0,
     incomeTax: 0,
     eiInsurable: 0,
+    gstHstAmt: 0,
+    isVendorPayment: false,
   };
   locale = "en-US";
   annualResult = {
@@ -93,6 +95,7 @@ export class PaymentPdfsComponent implements OnInit {
     eiInsurable: 0,
     netPay: 0,
   };
+
   setlTripIds = [];
   trips = [];
   paymentTrips = [];
@@ -116,7 +119,7 @@ export class PaymentPdfsComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
       async (res: any) => {
-        console.log('res', res);
+
         if (res.showModal && res.length != 0) {
           res.showModal = false;
           this.paymentData = res.data;
@@ -487,12 +490,14 @@ export class PaymentPdfsComponent implements OnInit {
 
       this.fueldata.map((k) => {
         result.map((fuel) => {
-          k.city = fuel.data.city;
-          k.country = fuel.data.country;
-          k.vehicle = fuel.data.unitNo;
-          k.card = fuel.data.cardNo;
-          k.quantity = `${fuel.data.qty} ${fuel.data.uom}`;
-          k.fuelDate = fuel.data.date;
+          if (k.fuelID === fuel.data.fuelID) {
+            k.city = fuel.data.city;
+            k.country = fuel.data.country;
+            k.vehicle = fuel.data.unitNo;
+            k.card = fuel.data.cardNo;
+            k.quantity = `${fuel.data.qty} ${fuel.data.uom}`;
+            k.fuelDate = fuel.data.date;
+          }
         });
 
         if (k.action === "add") {
