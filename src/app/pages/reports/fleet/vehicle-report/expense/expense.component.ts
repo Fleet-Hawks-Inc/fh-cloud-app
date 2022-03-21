@@ -45,6 +45,7 @@ export class ExpenseComponent implements OnInit {
   driver: any = []
   lastExpPay = ''
   totalExpense = 0
+  totalDriverPay = 0
   constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute, private spinner: NgxSpinnerService, private accountService: AccountService,) {
   }
 
@@ -57,16 +58,19 @@ export class ExpenseComponent implements OnInit {
     this.fetchFuelByVehicle();
     this.fetchSlogByVehicle();
     this.fetchExpensePayment()
-    // this.fetchVehiclesList();
   }
 
 
   async fetchDriverPayment() {
-    const result: any = await this.accountService.getData(`driver-payments/get/driver/payment?drivers=${encodeURIComponent(JSON.stringify(this.driver))}`)
+    const result: any = await this.accountService.getData(`driver-payments/get/driver/payment?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&startDate=${this.start}&endDate=${this.end}`)
       .toPromise();
     this.payments = result;
     if (result.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND
+    }
+    for (let i = 0; i < result.length; i++) {
+      const paymentdata = result[i]
+      this.totalDriverPay += parseFloat(paymentdata.finalAmount)
     }
   }
   fetchExpensePayment() {
@@ -99,13 +103,6 @@ export class ExpenseComponent implements OnInit {
       }
     })
   }
-
-
-  // fetchVehiclesList() {
-  //   this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
-  //     this.vehicleList = result;
-  //   });
-  // }
 
   fetchVehicleName() { //vehicle name in tile
     this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
@@ -191,6 +188,7 @@ export class ExpenseComponent implements OnInit {
         this.payments = [];
         this.expensePay = [];
         this.totalExpense = 0;
+        this.totalDriverPay = 0;
         this.fetchTrpByVehicle()
         this.fetchFuelByVehicle()
         this.fetchSlogByVehicle()
