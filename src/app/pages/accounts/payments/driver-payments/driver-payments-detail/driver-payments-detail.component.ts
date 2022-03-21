@@ -86,11 +86,13 @@ export class DriverPaymentsDetailComponent implements OnInit {
       .getData(`driver-payments/detail/${this.paymentID}`)
       .toPromise();
 
-     this.downloadDisabledpdf = false;
+    this.downloadDisabledpdf = false;
     this.downloadDisabled = false;
     this.paymentData = result[0];
-    this.paymentData.isVendorPayment = result[0].data.isVendorPymt;
-    this.paymentData.vendorId = result[0].data.vendorId;
+    this.paymentData.isVendorPayment = result[0].data.isVendorPymt || false;
+    this.paymentData.gstHstPer = result[0].data.gstHstPer || 0;
+    this.paymentData.vendorId = result[0].data.vendorId || undefined;
+    this.paymentData.gstHstAmt = (this.paymentData.gstHstPer / 100) * this.paymentData.settledAmount || 0;
     if (!this.paymentData.isFeatEnabled) {
       this.fetchAccountsByIDs();
       this.fetchAccountsByInternalIDs();
@@ -159,7 +161,8 @@ export class DriverPaymentsDetailComponent implements OnInit {
       page: "detail",
       isVendorPayment: this.paymentData.isVendorPayment,
       vendorId: this.paymentData.vendorId,
-      gstHstPer: this.paymentData.gstHstPer
+      gstHstPer: this.paymentData.gstHstPer,
+      gstHstAmt: this.paymentData.gstHstAmt
     };
     this.downloadDisabled = true;
     this.listService.openPaymentChequeModal(obj);
