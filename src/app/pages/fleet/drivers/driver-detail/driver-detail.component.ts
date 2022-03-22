@@ -32,6 +32,7 @@ export class DriverDetailComponent implements OnInit {
     homeTerminal: string;
     cycle: string;
     public driverID: string;
+    currency=''
     private driverData: any;
     private driverDataUpdate: any;
     carrierID: any;
@@ -152,6 +153,36 @@ export class DriverDetailComponent implements OnInit {
     groupName: any = '';
     groupId: any = '';
     sessionId: string;
+    payPerMile={
+        pType:"ppm",
+        loadedMiles:null,
+        currency:null,
+        emptyMiles:null,
+        emptyMilesTeam:null,
+        loadedMilesTeam:null,
+        default:false
+      }
+      payPerHour={
+        pType:"pph",
+        rate:null,
+        currency:null,
+        waitingPay:null,
+        waitingHourAfter:null,
+        default:false
+      }
+      payPercentage={
+        pType:"pp",
+        loadPayPercentage:null,
+        loadPayPercentageOf:null,
+        default:false
+      }
+      payPerDelivery={
+        pType:"ppd",
+        deliveryRate:null,
+        currency:null,
+        default:false
+      }
+    
 
     constructor(
         private hereMap: HereMapService,
@@ -167,6 +198,7 @@ export class DriverDetailComponent implements OnInit {
         this.sessionId = this.routerMgmtService.driverUpdateSessionID;
 
     }
+    paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"}]
 
     ngOnInit() {
 
@@ -357,6 +389,36 @@ export class DriverDetailComponent implements OnInit {
                     this.phone = this.driverData.phone;
                     this.DOB = this.driverData.DOB;
                     this.CDL = this.driverData.CDL_Number;
+                    this.payPeriod=this.driverData.payPeriod
+                    this.driverData.paymentOption.forEach(element => {
+                        if(element.default){
+                        const type=this.paymentOptions.find(el=> el.value==element.pType)
+                        this.paymentType = type.name
+                        }
+
+                    if(element.pType=="pph"){
+                        this.payPerHour.currency=element.currency
+                        this.payPerHour.rate=element.rate
+                        this.payPerHour.waitingHourAfter=element.waitingHourAfter
+                        this.payPerHour.waitingPay=element.waitingPay
+                    }
+              
+                    if(element.pType=="ppm"){
+                      this.payPerMile.loadedMiles=element.loadedMiles
+                      this.payPerMile.currency=element.currency
+                      this.payPerMile.emptyMiles=element.emptyMiles
+                      this.payPerMile.emptyMilesTeam=element.emptyMilesTeam
+                      this.payPerMile.loadedMilesTeam=element.loadedMilesTeam
+                    }
+                    if(element.pType=="pp"){
+                      this.payPercentage.loadPayPercentage=element.loadPayPercentage
+                      this.payPercentage.loadPayPercentageOf=element.loadPayPercentageOf
+                    }
+                    if(element.pType=="ppd"){
+                      this.payPerDelivery.currency=element.currency
+                      this.payPerDelivery.deliveryRate=element.deliveryRate
+                    }
+                    });
                     if (this.driverData.middleName !== undefined && this.driverData.middleName !== null && this.driverData.middleName !== '') {
                         this.driverName = `${this.driverData.firstName} ${this.driverData.middleName} ${this.driverData.lastName}`;
                     } else {
@@ -434,24 +496,8 @@ export class DriverDetailComponent implements OnInit {
                     this.liceVehicleType = this.driverData.licenceDetails.vehicleType;
                     this.liceContractStart = this.driverData.licenceDetails.contractStart;
                     this.liceContractEnd = this.driverData.licenceDetails.contractEnd;
-                    this.paymentType = this.driverData.paymentDetails.paymentType;
-                    this.loadedMiles = this.driverData.paymentDetails.loadedMiles;
-                    this.loadedMilesUnit = this.driverData.paymentDetails.loadedMilesUnit;
-                    this.loadedMilesTeam = this.driverData.paymentDetails.loadedMilesTeam;
-                    this.loadedMilesTeamUnit = this.driverData.paymentDetails.loadedMilesTeamUnit;
-
-                    this.emptyMiles = this.driverData.paymentDetails.emptyMiles;
-                    this.emptyMilesUnit = this.driverData.paymentDetails.emptyMilesUnit;
-                    this.emptyMilesTeam = this.driverData.paymentDetails.emptyMilesTeam;
-                    this.emptyMilesTeamUnit = this.driverData.paymentDetails.emptyMilesTeamUnit;
-
-                    this.rate = this.driverData.paymentDetails.rate;
-                    this.rateUnit = this.driverData.paymentDetails.rateUnit;
-                    this.waitingPay = this.driverData.paymentDetails.waitingPay;
-                    this.waitingPayUnit = this.driverData.paymentDetails.waitingPayUnit;
-                    this.waitingHourAfter = this.driverData.paymentDetails.waitingHourAfter;
-                    this.deliveryRate = this.driverData.paymentDetails.deliveryRate;
-                    this.deliveryRateUnit = this.driverData.paymentDetails.deliveryRateUnit;
+                   
+                    
                     this.SIN = this.driverData.SIN;
                     this.loadPayPercentage = this.driverData.paymentDetails.loadPayPercentage;
                     this.loadPayPercentageOf = this.driverData.paymentDetails.loadPayPercentageOf;

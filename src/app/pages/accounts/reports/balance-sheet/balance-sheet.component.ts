@@ -163,364 +163,327 @@ export class BalanceSheetComponent implements OnInit {
     ngOnInit() {
         this.filter.endDate = moment().format("YYYY-MM-DD");
         this.filter.startDate = moment().subtract(15, 'day').format('YYYY-MM-DD');
-        this.fetchBalence();
+        this.fetchBalance();
     }
 
 
 
-    async fetchBalence(refresh?: boolean) {
-        if (this.lastItemSK !== 'end') {
-            this.accountService.getData(`chartAc/get/balence/report/${this.currency}/?lastKey=${this.lastItemSK}&start=${this.filter.startDate}&end=${this.filter.endDate}&date=${this.datee}`)
-                .subscribe(async (result: any) => {
-                    if (result.data.length === 0) {
+    async fetchBalance(refresh?: boolean) {
+        this.accountService.getData(`chartAc/get/balance/report/${this.currency}/?start=${this.filter.startDate}&end=${this.filter.endDate}&date=${this.datee}`)
+            .subscribe(async (result: any) => {
+                if (result.data.length > 0) {
+                    result.data.map((v) => {
+                        this.accounts.push(v);
+                        this.accounts = _.sortBy(this.accounts, ['accountNo'])
+                    })
+                    //Sorting other Assets,Liabilities and Equities.
+                    var sortClass = _.chain(this.accounts).groupBy('subAcClass').map((value, key) => ({ subAcClass: key, account: value })).value()
+                    for (let i = 0; i < sortClass.length; i++) {
+                        if (sortClass[i].subAcClass == 'inventory') {
+                            this.sortInventoryAssets = sortClass[i].account;
+                        }
+                        if (sortClass[i].subAcClass == 'capital asset') {
+                            this.sortCapitalAsset = sortClass[i].account;
+                        }
+                        if (sortClass[i].subAcClass == 'other non-current asset') {
+                            this.sortONCAsset = sortClass[i].account;
+                        }
+                        if (sortClass[i].subAcClass == 'share capital') {
+                            this.scEquity = sortClass[i].account;
+                        }
+                        if (sortClass[i].subAcClass == 'retained earnings') {
+                            this.retainedEarnings = sortClass[i].account;
+                        }
+                        if (sortClass[i].subAcClass == 'long term debt') {
+                            this.ltLiability = sortClass[i].account;
+                        }
+                    }
+                    if (this.scEquity.length === 0) {
                         this.dataMessage = Constants.NO_RECORDS_FOUND;
                     }
-                    if (result.data.length > 0) {
-                        result.data.map((v) => {
-                            this.accounts.push(v);
-                            this.accounts = _.sortBy(this.accounts, ['accountNo'])
-                        })
-                        this.lastItemSK = result.lastKey;
-                        if (this.lastItemSK !== result.lastKey) {
-                            this.lastItemSK = 'end';
-                        }
-
-
-                        //Filtering H , S , T , X Groups and Expence and Revenue
-                        this.accounts = _.filter(this.accounts, function (o) {
-                            return o.accountType != 'H';
-                        });
-                        this.accounts = _.filter(this.accounts, function (o) {
-                            return o.accountType != 'S';
-                        });
-                        this.accounts = _.filter(this.accounts, function (o) {
-                            return o.accountType != 'T';
-                        });
-                        this.accounts = _.filter(this.accounts, function (o) {
-                            return o.accountType != 'X';
-                        });
-                        this.accounts = _.filter(this.accounts, function (o) {
-                            return o.accountClass != 'REVENUE';
-                        });
-                        this.accounts = _.filter(this.accounts, function (o) {
-                            return o.accountClass != 'EXPENSE';
-                        });
-
-
-                        //Sorting other Assets,Liabilities and Equities.
-                        var sortClass = _.chain(this.accounts).groupBy('subAcClass').map((value, key) => ({ subAcClass: key, account: value })).value()
-                        for (let i = 0; i < sortClass.length; i++) {
-                            if (sortClass[i].subAcClass == 'inventory') {
-                                this.sortInventoryAssets = sortClass[i].account;
-                            }
-                            if (sortClass[i].subAcClass == 'capital asset') {
-                                this.sortCapitalAsset = sortClass[i].account;
-                            }
-                            if (sortClass[i].subAcClass == 'other non-current asset') {
-                                this.sortONCAsset = sortClass[i].account;
-                            }
-                            if (sortClass[i].subAcClass == 'share capital') {
-                                this.scEquity = sortClass[i].account;
-                            }
-                            if (sortClass[i].subAcClass == 'retained earnings') {
-                                this.retainedEarnings = sortClass[i].account;
-                            }
-                            if (sortClass[i].subAcClass == 'long term debt') {
-                                this.ltLiability = sortClass[i].account;
-                            }
-                        }
-
-                        //Sorting Current Assets
-                        var sortAssets = _.chain(this.accounts).groupBy('accountClass').map((value, key) => ({ accountClass: key, account: value })).value()
-                        for (let i = 0; i < sortAssets.length; i++) {
-                            if (sortAssets[i].accountClass == 'ASSET') {
-                                this.sortOtherCurrentAssets = sortAssets[i].account;
-                                this.sortOtherCurrentAssets = _.filter(this.sortOtherCurrentAssets, function (o) {
-                                    return o.subAcClass != 'inventory';
-                                });
-                                this.sortOtherCurrentAssets = _.filter(this.sortOtherCurrentAssets, function (o) {
-                                    return o.subAcClass != 'capital asset';
-                                });
-                                this.sortOtherCurrentAssets = _.filter(this.sortOtherCurrentAssets, function (o) {
-                                    return o.subAcClass != 'other non-current asset';
-                                });
-                                this.sortOtherCurrentAssets = _.filter(this.sortOtherCurrentAssets, function (o) {
-                                    return o.subAcClass != 'other current asset';
-                                });
-                            }
-                        }
-
-
-                        //Sorting Current Liabilities.
-                        var sortLiability = _.chain(this.accounts).groupBy('accountClass').map((value, key) => ({ accountClass: key, account: value })).value()
-                        for (let i = 0; i < sortAssets.length; i++) {
-                            if (sortAssets[i].accountClass == 'LIABILITY') {
-                                this.currLiability = sortAssets[i].account;
-                                this.accounts = _.filter(this.accounts, function (o) {
-                                    return o.subAcClass != 'long term debt';
-                                });
-                            }
-                        }
-
-                        //Calculation Current Assets 
-                        for (let i = 0; i < this.sortOtherCurrentAssets.length; i++) {
-                            if (this.currTab === 'CAD') {
-                                this.currency = 'CAD'
-                                if (this.sortOtherCurrentAssets[i].debit != null) {
-                                    this.currentAssetDebitTotalCAD += parseFloat(this.sortOtherCurrentAssets[i].debit);
-                                }
-                                if (this.sortOtherCurrentAssets[i].credit != null) {
-                                    this.currentAssetCreditTotalCAD += parseFloat(this.sortOtherCurrentAssets[i].credit);
-                                }
-                            }
-                        }
-                        for (let i = 0; i < this.sortOtherCurrentAssets.length; i++) {
-                            if (this.currTab === 'USD') {
-                                this.currency = 'USD'
-                                if (this.sortOtherCurrentAssets[i].debit != null) {
-                                    this.currentAssetDebitTotalUSD += parseFloat(this.sortOtherCurrentAssets[i].debit);
-                                }
-                                if (this.sortOtherCurrentAssets[i].credit != null) {
-                                    this.currentAssetCreditTotalUSD += parseFloat(this.sortOtherCurrentAssets[i].credit);
-                                }
-                            }
-                        }
-
-
-                        //Calculation Inventory Assets 
-                        for (let i = 0; i < this.sortInventoryAssets.length; i++) {
-                            if (this.currTab === 'CAD') {
-                                this.currency = 'CAD'
-                                if (this.sortInventoryAssets[i].debit != null) {
-                                    this.inventoryAssetDebitTotalCAD += parseFloat(this.sortInventoryAssets[i].debit);
-                                }
-                                if (this.sortInventoryAssets[i].credit != null) {
-                                    this.inventoryAssetCreditTotalCAD += parseFloat(this.sortInventoryAssets[i].credit);
-                                }
-                            }
-                        }
-                        for (let i = 0; i < this.sortInventoryAssets.length; i++) {
-                            if (this.currTab === 'USD') {
-                                this.currency = 'USD'
-                                if (this.sortInventoryAssets[i].debit != null) {
-                                    this.inventoryAssetDebitTotalUSD += parseFloat(this.sortInventoryAssets[i].debit);
-                                }
-                                if (this.sortInventoryAssets[i].credit != null) {
-                                    this.inventoryAssetCreditTotalUSD += parseFloat(this.sortInventoryAssets[i].credit);
-                                }
-                            }
-                        }
-
-
-                        //Calculation Capital Assets 
-                        for (let i = 0; i < this.sortCapitalAsset.length; i++) {
-                            if (this.currTab === 'CAD') {
-                                this.currency = 'CAD'
-                                if (this.sortCapitalAsset[i].debit != null) {
-                                    this.capitalAssetDebitTotalCAD += parseFloat(this.sortCapitalAsset[i].debit);
-                                }
-                                if (this.sortCapitalAsset[i].credit != null) {
-                                    this.capitalAssetCreditTotalCAD += parseFloat(this.sortCapitalAsset[i].credit);
-                                }
-                            }
-                        }
-                        for (let i = 0; i < this.sortCapitalAsset.length; i++) {
-                            if (this.currTab === 'USD') {
-                                this.currency = 'USD'
-                                if (this.sortCapitalAsset[i].debit != null) {
-                                    this.capitalAssetDebitTotalUSD += parseFloat(this.sortCapitalAsset[i].debit);
-                                }
-                                if (this.sortCapitalAsset[i].credit != null) {
-                                    this.capitalAssetCreditTotalUSD += parseFloat(this.sortCapitalAsset[i].credit);
-                                }
-                            }
-                        }
-
-
-                        //Calculation Other Non-Current Assets 
-                        for (let i = 0; i < this.sortONCAsset.length; i++) {
-                            if (this.currTab === 'CAD') {
-                                this.currency = 'CAD'
-                                if (this.sortONCAsset[i].debit != null) {
-                                    this.ONCAssetDebitTotalCAD += parseFloat(this.sortONCAsset[i].debit);
-                                }
-                                if (this.sortONCAsset[i].credit != null) {
-                                    this.ONCAssetCreditTotalCAD += parseFloat(this.sortONCAsset[i].credit);
-                                }
-                            }
-                        }
-                        for (let i = 0; i < this.sortONCAsset.length; i++) {
-                            if (this.currTab === 'USD') {
-                                this.currency = 'USD'
-                                if (this.sortONCAsset[i].debit != null) {
-                                    this.ONCAssetDebitTotalUSD += parseFloat(this.sortONCAsset[i].debit);
-                                }
-                                if (this.sortONCAsset[i].credit != null) {
-                                    this.ONCAssetCreditTotalUSD += parseFloat(this.sortONCAsset[i].credit);
-                                }
-                            }
-                        }
-
-
-                        //Total of All Assets CAD USD
-                        if (this.currTab === 'CAD') {
-                            this.currency = 'CAD';
-                            this.totalAssetsDebitCAD = this.currentAssetDebitTotalCAD + this.inventoryAssetDebitTotalCAD + this.capitalAssetDebitTotalCAD + this.ONCAssetDebitTotalCAD;
-                            this.totalAssetsCreditCAD = this.currentAssetCreditTotalCAD + this.inventoryAssetCreditTotalCAD + this.capitalAssetCreditTotalCAD + this.ONCAssetCreditTotalCAD;
-                        }
-                        if (this.currTab === 'USD') {
-                            this.currency = 'USD';
-                            this.totalAssetsDebitUSD = this.currentAssetDebitTotalUSD + this.inventoryAssetDebitTotalUSD + this.capitalAssetDebitTotalUSD + this.ONCAssetDebitTotalUSD;
-                            this.totalAssetsCreditUSD = this.currentAssetCreditTotalUSD + this.inventoryAssetCreditTotalUSD + this.capitalAssetCreditTotalUSD + this.ONCAssetCreditTotalUSD;
-                        }
-
-
-
-
-
-
-                        //Calculation current Liabilities
-                        for (let i = 0; i < this.currLiability.length; i++) {
-                            if (this.currTab === 'CAD') {
-                                this.currency = 'CAD'
-                                if (this.currLiability[i].debit != null) {
-                                    this.totalCurrentLiabilityDebitCAD += parseFloat(this.currLiability[i].debit);
-                                }
-                                if (this.currLiability[i].credit != null) {
-                                    this.totalCurrentLiabilityCreditCAD += parseFloat(this.currLiability[i].credit);
-                                }
-                            }
-                        }
-                        for (let i = 0; i < this.currLiability.length; i++) {
-                            if (this.currTab === 'USD') {
-                                this.currency = 'USD'
-                                if (this.currLiability[i].debit != null) {
-                                    this.totalCurrentLiabilityDebitUSD += parseFloat(this.currLiability[i].debit);
-                                }
-                                if (this.currLiability[i].credit != null) {
-                                    this.totalCurrentLiabilityCreditUSD += parseFloat(this.currLiability[i].credit);
-                                }
-                            }
-                        }
-
-
-                        //Calculation Long Term Liabilities
-                        for (let i = 0; i < this.ltLiability.length; i++) {
-                            if (this.currTab === 'CAD') {
-                                this.currency = 'CAD'
-                                if (this.ltLiability[i].debit != null) {
-                                    this.totalLongTermLiabilityDebitCAD += parseFloat(this.ltLiability[i].debit);
-                                }
-                                if (this.ltLiability[i].credit != null) {
-                                    this.totalLongTermLiabilityCreditCAD += parseFloat(this.ltLiability[i].credit);
-                                }
-                            }
-                        }
-                        for (let i = 0; i < this.ltLiability.length; i++) {
-                            if (this.currTab === 'USD') {
-                                this.currency = 'USD'
-                                if (this.ltLiability[i].debit != null) {
-                                    this.totalLongTermLiabilityDebitUSD += parseFloat(this.ltLiability[i].debit);
-                                }
-                                if (this.ltLiability[i].credit != null) {
-                                    this.totalLongTermLiabilityCreditUSD += parseFloat(this.ltLiability[i].credit);
-                                }
-                            }
-                        }
-
-
-                        //Total of All Liabilities CAD USD
-                        if (this.currTab === 'CAD') {
-                            this.currency = 'CAD';
-                            this.totalLiabilityDebitCAD = this.totalCurrentLiabilityDebitCAD + this.totalLongTermLiabilityDebitCAD;
-                            this.totalLiabilityCreditCAD = this.totalCurrentLiabilityCreditCAD + this.totalLongTermLiabilityCreditCAD;
-                        }
-                        if (this.currTab === 'USD') {
-                            this.currency = 'USD';
-                            this.totalLiabilityDebitUSD = this.totalCurrentLiabilityDebitUSD + this.totalLongTermLiabilityDebitUSD;
-                            this.totalLiabilityCreditUSD = this.totalCurrentLiabilityCreditUSD + this.totalLongTermLiabilityCreditUSD;
-                        }
-
-
-                        //Calculation Share Capital Equity
-                        for (let i = 0; i < this.scEquity.length; i++) {
-                            if (this.currTab === 'CAD') {
-                                this.currency = 'CAD'
-                                if (this.scEquity[i].debit != null) {
-                                    this.totalShareCapitalDebitCAD += parseFloat(this.scEquity[i].debit);
-                                }
-                                if (this.scEquity[i].credit != null) {
-                                    this.totalShareCapitalCreditCAD += parseFloat(this.scEquity[i].credit);
-                                }
-                            }
-                        }
-                        for (let i = 0; i < this.scEquity.length; i++) {
-                            if (this.currTab === 'USD') {
-                                this.currency = 'USD'
-                                if (this.scEquity[i].debit != null) {
-                                    this.totalShareCapitalDebitUSD += parseFloat(this.scEquity[i].debit);
-                                }
-                                if (this.scEquity[i].credit != null) {
-                                    this.totalShareCapitalCreditUSD += parseFloat(this.scEquity[i].credit);
-                                }
-                            }
-                        }
-
-
-                        //Calculation Retained Earnings Equity
-                        for (let i = 0; i < this.retainedEarnings.length; i++) {
-                            if (this.currTab === 'CAD') {
-                                this.currency = 'CAD'
-                                if (this.retainedEarnings[i].debit != null) {
-                                    this.totalRetainedEarningsDebitCAD += parseFloat(this.retainedEarnings[i].debit);
-                                }
-                                if (this.retainedEarnings[i].credit != null) {
-                                    this.totalRetainedEarningsCreditCAD += parseFloat(this.retainedEarnings[i].credit);
-                                }
-                            }
-                        }
-                        for (let i = 0; i < this.retainedEarnings.length; i++) {
-                            if (this.currTab === 'USD') {
-                                this.currency = 'USD'
-                                if (this.retainedEarnings[i].debit != null) {
-                                    this.totalRetainedEarningsDebitUSD += parseFloat(this.retainedEarnings[i].debit);
-                                }
-                                if (this.retainedEarnings[i].credit != null) {
-                                    this.totalRetainedEarningsCreditUSD += parseFloat(this.retainedEarnings[i].credit);
-                                }
-                            }
-                        }
-
-
-                        //Total of All Equities CAD USD
-                        if (this.currTab === 'CAD') {
-                            this.currency = 'CAD';
-                            this.totalEquityDebitCAD = this.totalShareCapitalDebitCAD + this.totalRetainedEarningsDebitCAD;
-                            this.totalEquityCreditCAD = this.totalShareCapitalCreditCAD + this.totalRetainedEarningsCreditCAD;
-                        }
-                        if (this.currTab === 'USD') {
-                            this.currency = 'USD';
-                            this.totalEquityDebitUSD = this.totalShareCapitalDebitUSD + this.totalRetainedEarningsDebitUSD;
-                            this.totalEquityCreditUSD = this.totalShareCapitalCreditUSD + this.totalRetainedEarningsCreditUSD;
-                        }
-
-
-                        //Total of Equities and Liability CAD USD
-                        if (this.currTab === 'CAD') {
-                            this.currency = 'CAD';
-                            this.totalLiabilityEquityDebitCAD = this.totalEquityDebitCAD + this.totalLiabilityDebitCAD;
-                            this.totalLiabilityEquityCreditCAD = this.totalEquityCreditCAD + this.totalLiabilityCreditCAD;
-                        }
-                        if (this.currTab === 'USD') {
-                            this.currency = 'USD';
-                            this.totalLiabilityEquityDebitUSD = this.totalLiabilityDebitUSD + this.totalEquityDebitUSD;
-                            this.totalLiabilityEquityCreditUSD = this.totalLiabilityCreditUSD + this.totalEquityCreditUSD;
-                        }
-
-                        this.loaded = true;
+                    if (this.sortInventoryAssets.length === 0) {
+                        this.dataMessage = Constants.NO_RECORDS_FOUND;
                     }
-                });
-        }
+                    if (this.sortCapitalAsset.length === 0) {
+                        this.dataMessage = Constants.NO_RECORDS_FOUND;
+                    }
+                    if (this.retainedEarnings.length === 0) {
+                        this.dataMessage = Constants.NO_RECORDS_FOUND;
+                    }
+                    if (this.ltLiability.length === 0) {
+                        this.dataMessage = Constants.NO_RECORDS_FOUND;
+                    }
+                    //Sorting Current Assets
+                    var sortAssets = _.chain(this.accounts).groupBy('accountClass').map((value, key) => ({ accountClass: key, account: value })).value()
+                    for (let i = 0; i < sortAssets.length; i++) {
+                        if (sortAssets[i].accountClass == 'ASSET') {
+                            this.sortOtherCurrentAssets = sortAssets[i].account;
+                            this.sortOtherCurrentAssets = _.filter(this.sortOtherCurrentAssets, function (o) {
+                                return o.subAcClass != 'inventory';
+                            });
+                            this.sortOtherCurrentAssets = _.filter(this.sortOtherCurrentAssets, function (o) {
+                                return o.subAcClass != 'capital asset';
+                            });
+                            this.sortOtherCurrentAssets = _.filter(this.sortOtherCurrentAssets, function (o) {
+                                return o.subAcClass != 'other non-current asset';
+                            });
+                            this.sortOtherCurrentAssets = _.filter(this.sortOtherCurrentAssets, function (o) {
+                                return o.subAcClass != 'other current asset';
+                            });
+                        }
+                    }
+                    if (this.sortOtherCurrentAssets.length === 0) {
+                        this.dataMessage = Constants.NO_RECORDS_FOUND;
+                    }
+                    //Sorting Current Liabilities.
+                    var sortLiability = _.chain(this.accounts).groupBy('accountClass').map((value, key) => ({ accountClass: key, account: value })).value()
+                    for (let i = 0; i < sortAssets.length; i++) {
+                        if (sortAssets[i].accountClass == 'LIABILITY') {
+                            this.currLiability = sortAssets[i].account;
+                            this.accounts = _.filter(this.accounts, function (o) {
+                                return o.subAcClass != 'long term debt';
+                            });
+                        }
+                    }
+                    if (this.currLiability.length === 0) {
+                        this.dataMessage = Constants.NO_RECORDS_FOUND;
+                    }
+                    //Calculation Current Assets 
+                    for (let i = 0; i < this.sortOtherCurrentAssets.length; i++) {
+                        if (this.currTab === 'CAD') {
+                            this.currency = 'CAD'
+                            if (this.sortOtherCurrentAssets[i].debit != null) {
+                                this.currentAssetDebitTotalCAD += parseFloat(this.sortOtherCurrentAssets[i].debit);
+                            }
+                            if (this.sortOtherCurrentAssets[i].credit != null) {
+                                this.currentAssetCreditTotalCAD += parseFloat(this.sortOtherCurrentAssets[i].credit);
+                            }
+                        }
+                    }
+                    for (let i = 0; i < this.sortOtherCurrentAssets.length; i++) {
+                        if (this.currTab === 'USD') {
+                            this.currency = 'USD'
+                            if (this.sortOtherCurrentAssets[i].debit != null) {
+                                this.currentAssetDebitTotalUSD += parseFloat(this.sortOtherCurrentAssets[i].debit);
+                            }
+                            if (this.sortOtherCurrentAssets[i].credit != null) {
+                                this.currentAssetCreditTotalUSD += parseFloat(this.sortOtherCurrentAssets[i].credit);
+                            }
+                        }
+                    }
+                    //Calculation Inventory Assets 
+                    for (let i = 0; i < this.sortInventoryAssets.length; i++) {
+                        if (this.currTab === 'CAD') {
+                            this.currency = 'CAD'
+                            if (this.sortInventoryAssets[i].debit != null) {
+                                this.inventoryAssetDebitTotalCAD += parseFloat(this.sortInventoryAssets[i].debit);
+                            }
+                            if (this.sortInventoryAssets[i].credit != null) {
+                                this.inventoryAssetCreditTotalCAD += parseFloat(this.sortInventoryAssets[i].credit);
+                            }
+                        }
+                    }
+                    for (let i = 0; i < this.sortInventoryAssets.length; i++) {
+                        if (this.currTab === 'USD') {
+                            this.currency = 'USD'
+                            if (this.sortInventoryAssets[i].debit != null) {
+                                this.inventoryAssetDebitTotalUSD += parseFloat(this.sortInventoryAssets[i].debit);
+                            }
+                            if (this.sortInventoryAssets[i].credit != null) {
+                                this.inventoryAssetCreditTotalUSD += parseFloat(this.sortInventoryAssets[i].credit);
+                            }
+                        }
+                    }
+                    //Calculation Capital Assets 
+                    for (let i = 0; i < this.sortCapitalAsset.length; i++) {
+                        if (this.currTab === 'CAD') {
+                            this.currency = 'CAD'
+                            if (this.sortCapitalAsset[i].debit != null) {
+                                this.capitalAssetDebitTotalCAD += parseFloat(this.sortCapitalAsset[i].debit);
+                            }
+                            if (this.sortCapitalAsset[i].credit != null) {
+                                this.capitalAssetCreditTotalCAD += parseFloat(this.sortCapitalAsset[i].credit);
+                            }
+                        }
+                    }
+                    for (let i = 0; i < this.sortCapitalAsset.length; i++) {
+                        if (this.currTab === 'USD') {
+                            this.currency = 'USD'
+                            if (this.sortCapitalAsset[i].debit != null) {
+                                this.capitalAssetDebitTotalUSD += parseFloat(this.sortCapitalAsset[i].debit);
+                            }
+                            if (this.sortCapitalAsset[i].credit != null) {
+                                this.capitalAssetCreditTotalUSD += parseFloat(this.sortCapitalAsset[i].credit);
+                            }
+                        }
+                    }
+                    //Calculation Other Non-Current Assets 
+                    for (let i = 0; i < this.sortONCAsset.length; i++) {
+                        if (this.currTab === 'CAD') {
+                            this.currency = 'CAD'
+                            if (this.sortONCAsset[i].debit != null) {
+                                this.ONCAssetDebitTotalCAD += parseFloat(this.sortONCAsset[i].debit);
+                            }
+                            if (this.sortONCAsset[i].credit != null) {
+                                this.ONCAssetCreditTotalCAD += parseFloat(this.sortONCAsset[i].credit);
+                            }
+                        }
+                    }
+                    for (let i = 0; i < this.sortONCAsset.length; i++) {
+                        if (this.currTab === 'USD') {
+                            this.currency = 'USD'
+                            if (this.sortONCAsset[i].debit != null) {
+                                this.ONCAssetDebitTotalUSD += parseFloat(this.sortONCAsset[i].debit);
+                            }
+                            if (this.sortONCAsset[i].credit != null) {
+                                this.ONCAssetCreditTotalUSD += parseFloat(this.sortONCAsset[i].credit);
+                            }
+                        }
+                    }
+                    //Total of All Assets CAD USD
+                    if (this.currTab === 'CAD') {
+                        this.currency = 'CAD';
+                        this.totalAssetsDebitCAD = this.currentAssetDebitTotalCAD + this.inventoryAssetDebitTotalCAD + this.capitalAssetDebitTotalCAD + this.ONCAssetDebitTotalCAD;
+                        this.totalAssetsCreditCAD = this.currentAssetCreditTotalCAD + this.inventoryAssetCreditTotalCAD + this.capitalAssetCreditTotalCAD + this.ONCAssetCreditTotalCAD;
+                    }
+                    if (this.currTab === 'USD') {
+                        this.currency = 'USD';
+                        this.totalAssetsDebitUSD = this.currentAssetDebitTotalUSD + this.inventoryAssetDebitTotalUSD + this.capitalAssetDebitTotalUSD + this.ONCAssetDebitTotalUSD;
+                        this.totalAssetsCreditUSD = this.currentAssetCreditTotalUSD + this.inventoryAssetCreditTotalUSD + this.capitalAssetCreditTotalUSD + this.ONCAssetCreditTotalUSD;
+                    }
+                    //Calculation current Liabilities
+                    for (let i = 0; i < this.currLiability.length; i++) {
+                        if (this.currTab === 'CAD') {
+                            this.currency = 'CAD'
+                            if (this.currLiability[i].debit != null) {
+                                this.totalCurrentLiabilityDebitCAD += parseFloat(this.currLiability[i].debit);
+                            }
+                            if (this.currLiability[i].credit != null) {
+                                this.totalCurrentLiabilityCreditCAD += parseFloat(this.currLiability[i].credit);
+                            }
+                        }
+                    }
+                    for (let i = 0; i < this.currLiability.length; i++) {
+                        if (this.currTab === 'USD') {
+                            this.currency = 'USD'
+                            if (this.currLiability[i].debit != null) {
+                                this.totalCurrentLiabilityDebitUSD += parseFloat(this.currLiability[i].debit);
+                            }
+                            if (this.currLiability[i].credit != null) {
+                                this.totalCurrentLiabilityCreditUSD += parseFloat(this.currLiability[i].credit);
+                            }
+                        }
+                    }
+                    //Calculation Long Term Liabilities
+                    for (let i = 0; i < this.ltLiability.length; i++) {
+                        if (this.currTab === 'CAD') {
+                            this.currency = 'CAD'
+                            if (this.ltLiability[i].debit != null) {
+                                this.totalLongTermLiabilityDebitCAD += parseFloat(this.ltLiability[i].debit);
+                            }
+                            if (this.ltLiability[i].credit != null) {
+                                this.totalLongTermLiabilityCreditCAD += parseFloat(this.ltLiability[i].credit);
+                            }
+                        }
+                    }
+                    for (let i = 0; i < this.ltLiability.length; i++) {
+                        if (this.currTab === 'USD') {
+                            this.currency = 'USD'
+                            if (this.ltLiability[i].debit != null) {
+                                this.totalLongTermLiabilityDebitUSD += parseFloat(this.ltLiability[i].debit);
+                            }
+                            if (this.ltLiability[i].credit != null) {
+                                this.totalLongTermLiabilityCreditUSD += parseFloat(this.ltLiability[i].credit);
+                            }
+                        }
+                    }
+                    //Total of All Liabilities CAD USD
+                    if (this.currTab === 'CAD') {
+                        this.currency = 'CAD';
+                        this.totalLiabilityDebitCAD = this.totalCurrentLiabilityDebitCAD + this.totalLongTermLiabilityDebitCAD;
+                        this.totalLiabilityCreditCAD = this.totalCurrentLiabilityCreditCAD + this.totalLongTermLiabilityCreditCAD;
+                    }
+                    if (this.currTab === 'USD') {
+                        this.currency = 'USD';
+                        this.totalLiabilityDebitUSD = this.totalCurrentLiabilityDebitUSD + this.totalLongTermLiabilityDebitUSD;
+                        this.totalLiabilityCreditUSD = this.totalCurrentLiabilityCreditUSD + this.totalLongTermLiabilityCreditUSD;
+                    }
+                    //Calculation Share Capital Equity
+                    for (let i = 0; i < this.scEquity.length; i++) {
+                        if (this.currTab === 'CAD') {
+                            this.currency = 'CAD'
+                            if (this.scEquity[i].debit != null) {
+                                this.totalShareCapitalDebitCAD += parseFloat(this.scEquity[i].debit);
+                            }
+                            if (this.scEquity[i].credit != null) {
+                                this.totalShareCapitalCreditCAD += parseFloat(this.scEquity[i].credit);
+                            }
+                        }
+                    }
+                    for (let i = 0; i < this.scEquity.length; i++) {
+                        if (this.currTab === 'USD') {
+                            this.currency = 'USD'
+                            if (this.scEquity[i].debit != null) {
+                                this.totalShareCapitalDebitUSD += parseFloat(this.scEquity[i].debit);
+                            }
+                            if (this.scEquity[i].credit != null) {
+                                this.totalShareCapitalCreditUSD += parseFloat(this.scEquity[i].credit);
+                            }
+                        }
+                    }
+
+
+                    //Calculation Retained Earnings Equity
+                    for (let i = 0; i < this.retainedEarnings.length; i++) {
+                        if (this.currTab === 'CAD') {
+                            this.currency = 'CAD'
+                            if (this.retainedEarnings[i].debit != null) {
+                                this.totalRetainedEarningsDebitCAD += parseFloat(this.retainedEarnings[i].debit);
+                            }
+                            if (this.retainedEarnings[i].credit != null) {
+                                this.totalRetainedEarningsCreditCAD += parseFloat(this.retainedEarnings[i].credit);
+                            }
+                        }
+                    }
+                    for (let i = 0; i < this.retainedEarnings.length; i++) {
+                        if (this.currTab === 'USD') {
+                            this.currency = 'USD'
+                            if (this.retainedEarnings[i].debit != null) {
+                                this.totalRetainedEarningsDebitUSD += parseFloat(this.retainedEarnings[i].debit);
+                            }
+                            if (this.retainedEarnings[i].credit != null) {
+                                this.totalRetainedEarningsCreditUSD += parseFloat(this.retainedEarnings[i].credit);
+                            }
+                        }
+                    }
+
+
+                    //Total of All Equities CAD USD
+                    if (this.currTab === 'CAD') {
+                        this.currency = 'CAD';
+                        this.totalEquityDebitCAD = this.totalShareCapitalDebitCAD + this.totalRetainedEarningsDebitCAD;
+                        this.totalEquityCreditCAD = this.totalShareCapitalCreditCAD + this.totalRetainedEarningsCreditCAD;
+                    }
+                    if (this.currTab === 'USD') {
+                        this.currency = 'USD';
+                        this.totalEquityDebitUSD = this.totalShareCapitalDebitUSD + this.totalRetainedEarningsDebitUSD;
+                        this.totalEquityCreditUSD = this.totalShareCapitalCreditUSD + this.totalRetainedEarningsCreditUSD;
+                    }
+
+
+                    //Total of Equities and Liability CAD USD
+                    if (this.currTab === 'CAD') {
+                        this.currency = 'CAD';
+                        this.totalLiabilityEquityDebitCAD = this.totalEquityDebitCAD + this.totalLiabilityDebitCAD;
+                        this.totalLiabilityEquityCreditCAD = this.totalEquityCreditCAD + this.totalLiabilityCreditCAD;
+                    }
+                    if (this.currTab === 'USD') {
+                        this.currency = 'USD';
+                        this.totalLiabilityEquityDebitUSD = this.totalLiabilityDebitUSD + this.totalEquityDebitUSD;
+                        this.totalLiabilityEquityCreditUSD = this.totalLiabilityCreditUSD + this.totalEquityCreditUSD;
+                    }
+                }
+            });
     }
 
     changeTab(type) {
@@ -544,9 +507,8 @@ export class BalanceSheetComponent implements OnInit {
             this.totalShareCapitalCreditCAD = 0
             this.totalRetainedEarningsDebitCAD = 0;
             this.totalRetainedEarningsCreditCAD = 0;
-            this.lastItemSK = '';
-            this.fetchBalence();
-
+            // this.lastItemSK = '';
+            this.fetchBalance();
         } else if (this.currTab === 'USD') {
             this.currency = 'USD'
             this.currentAssetDebitTotalUSD = 0;
@@ -565,24 +527,13 @@ export class BalanceSheetComponent implements OnInit {
             this.totalShareCapitalCreditUSD = 0;
             this.totalRetainedEarningsDebitUSD = 0;
             this.totalRetainedEarningsCreditUSD = 0;
-            this.lastItemSK = '';
-            this.fetchBalence();
+            // this.lastItemSK = '';
+            this.fetchBalance();
         }
     }
 
 
 
-
-    //For Scrolling Page
-    onScroll() {
-        if (this.loaded) {
-            this.isLoad = true;
-            this.isLoadText = "Loading";
-            this.fetchBalence();
-            this.lastItemSK = '';
-        }
-        this.loaded = false;
-    }
 
     //export
     async generateCSV() {
