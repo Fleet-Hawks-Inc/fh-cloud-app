@@ -9,7 +9,15 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { DeletedVehiclesComponent } from './deleted-vehicles/deleted-vehicles.component';
 import { ImportedVehiclesComponent } from './imported-vehicles/imported-vehicles.component';
 import { VehicleSettingsComponent } from "./vehicle-settings.component";
-
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
 const routes: Routes = [
   {
     path: "deleted-vehicles",
@@ -41,6 +49,15 @@ const routes: Routes = [
     NgbModule,
     InfiniteScrollModule,
     NgSelectModule,
+    TableModule,
+    ButtonModule,
+    MultiSelectModule,
+    TooltipModule,
+    MenuModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule,
   ],
 })
 export class VehiclesSettingsModule { }

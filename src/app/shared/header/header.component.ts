@@ -160,6 +160,7 @@ export class HeaderComponent implements OnInit {
     try {
       await Auth.signOut();
       this.listService.triggerModal("");
+      this.listService.openDocTypeMOdal("");
       localStorage.removeItem("LoggedIn");
       localStorage.removeItem("user");
       localStorage.removeItem("active-header");
