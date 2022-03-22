@@ -19,6 +19,7 @@ import { BrokeragePdfComponent } from "./brokerage-pdf/brokerage-pdf.component";
 import { BolPdfComponent } from "./bol-pdf/bol-pdf.component";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { SlickCarouselModule } from "ngx-slick-carousel";
+
 const routes: Routes = [
   {
     path: "order-list/:sessionId",
@@ -71,4 +72,4 @@ const routes: Routes = [
   ],
   providers: [unsavedChangesGuard],
 })
-export class OrderModule {}
+export class OrderModule { }
