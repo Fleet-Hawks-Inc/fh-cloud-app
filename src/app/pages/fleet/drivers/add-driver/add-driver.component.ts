@@ -158,27 +158,8 @@ export class AddDriverComponent
       fastExpiry: null,
       csa: false,
     },
-    paymentDetails: {
-      paymentType: null,
-      loadedMiles: "",
-      loadedMilesTeam: "",
-      loadedMilesUnit: "",
-      loadedMilesTeamUnit: "",
-      emptyMiles: "",
-      emptyMilesTeam: "",
-      emptyMilesUnit: "",
-      emptyMilesTeamUnit: "",
-      loadPayPercentage: "",
-      loadPayPercentageOf: "",
-      rate: "",
-      rateUnit: null,
-      waitingPay: "",
-      waitingPayUnit: null,
-      waitingHourAfter: "",
-      deliveryRate: "",
-      deliveryRateUnit: null,
-      payPeriod: null,
-    },
+    paymentOption:[],
+    payPeriod: null,
     SIN: "",
     CDL_Number: "",
     licenceDetails: {
@@ -210,6 +191,7 @@ export class AddDriverComponent
       phone: "",
     },
   };
+  
   public searchTerm = new Subject<string>();
   public searchResults: any;
   localAbsDocs = [];
@@ -315,6 +297,39 @@ export class AddDriverComponent
   pageType = "add";
   groupsData: any = [];
   sessionID: string;
+  paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"}]
+
+  paymentType="ppm"
+
+  payPerMile={
+    pType:"ppm",
+    loadedMiles:null,
+    currency:null,
+    emptyMiles:null,
+    emptyMilesTeam:null,
+    loadedMilesTeam:null,
+    default:false
+  }
+  payPerHour={
+    pType:"pph",
+    rate:null,
+    currency:null,
+    waitingPay:null,
+    waitingHourAfter:null,
+    default:false
+  }
+  payPercentage={
+    pType:"pp",
+    loadPayPercentage:null,
+    loadPayPercentageOf:null,
+    default:false
+  }
+  payPerDelivery={
+    pType:"ppd",
+    deliveryRate:null,
+    currency:null,
+    default:false
+  }
 
   constructor(
     private apiService: ApiService,
@@ -881,6 +896,23 @@ export class AddDriverComponent
       this.hasError = false;
       this.hasSuccess = false;
       this.hideErrors();
+      switch(this.paymentType){
+        case "ppd":
+          this.payPerDelivery.default=true
+          break;
+        case "pph":
+          this.payPerHour.default=true
+          break;
+        case "pp":
+          this.payPercentage.default=true
+          break;
+        case "ppm":
+          this.payPerMile.default=true
+          break;
+        default: 
+        this.payPerMile.default=true
+      }
+      this.driverData.paymentOption=[this.payPerMile,this.payPerDelivery,this.payPerHour,this.payPercentage]
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
       this.driverData[`deletedUploads`] = this.deletedUploads;
@@ -1234,44 +1266,37 @@ export class AddDriverComponent
     this.driverData.crossBorderDetails.fastExpiry =
       result.crossBorderDetails.fastExpiry;
     this.driverData.crossBorderDetails.csa = result.crossBorderDetails.csa;
-    this.driverData.paymentDetails.paymentType =
-      result.paymentDetails.paymentType;
-    this.driverData.paymentDetails.loadedMiles =
-      result.paymentDetails.loadedMiles;
-    this.driverData.paymentDetails.loadedMilesUnit =
-      result.paymentDetails.loadedMilesUnit;
-    this.driverData.paymentDetails.loadedMilesTeam =
-      result.paymentDetails.loadedMilesTeam;
-    this.driverData.paymentDetails.loadedMilesTeamUnit =
-      result.paymentDetails.loadedMilesTeamUnit;
-    this.driverData.paymentDetails.emptyMiles =
-      result.paymentDetails.emptyMiles;
-    this.driverData.paymentDetails.emptyMilesUnit =
-      result.paymentDetails.emptyMilesUnit;
-    this.driverData.paymentDetails.emptyMilesTeam =
-      result.paymentDetails.emptyMilesTeam;
-    this.driverData.paymentDetails.emptyMilesTeamUnit =
-      result.paymentDetails.emptyMilesTeamUnit;
-    this.driverData.paymentDetails.loadPayPercentage =
-      result.paymentDetails.loadPayPercentage;
-    this.driverData.paymentDetails.loadPayPercentageOf =
-      result.paymentDetails.loadPayPercentageOf;
-    this.driverData.paymentDetails.rate = result.paymentDetails.rate;
-    this.driverData.paymentDetails.rateUnit = result.paymentDetails.rateUnit;
-    this.driverData.paymentDetails.waitingPay =
-      result.paymentDetails.waitingPay;
-    this.driverData.paymentDetails.waitingPayUnit =
-      result.paymentDetails.waitingPayUnit;
-    this.driverData.paymentDetails.waitingHourAfter =
-      result.paymentDetails.waitingHourAfter;
+    result.paymentOption.forEach(element => {
+      if(element.default){
+      this.paymentType =
+      element.pType;
+      }
+      if(element.pType=="pph"){
+          this.payPerHour.currency=element.currency
+          this.payPerHour.rate=element.rate
+          this.payPerHour.waitingHourAfter=element.waitingHourAfter
+          this.payPerHour.waitingPay=element.waitingPay
+      }
 
-    this.driverData.paymentDetails.deliveryRate =
-      result.paymentDetails.deliveryRate;
-    this.driverData.paymentDetails.deliveryRateUnit =
-      result.paymentDetails.deliveryRateUnit;
-
+      if(element.pType=="ppm"){
+        this.payPerMile.loadedMiles=element.loadedMiles
+        this.payPerMile.currency=element.currency
+        this.payPerMile.emptyMiles=element.emptyMiles
+        this.payPerMile.emptyMilesTeam=element.emptyMilesTeam
+        this.payPerMile.loadedMilesTeam=element.loadedMilesTeam
+      }
+      if(element.pType=="pp"){
+        this.payPercentage.loadPayPercentage=element.loadPayPercentage
+        this.payPercentage.loadPayPercentageOf=element.loadPayPercentageOf
+      }
+      if(element.pType=="ppd"){
+        this.payPerDelivery.currency=element.currency
+        this.payPerDelivery.deliveryRate=element.deliveryRate
+      }
+    });
+     
     this.driverData.SIN = result.SIN;
-    this.driverData.paymentDetails.payPeriod = result.paymentDetails.payPeriod;
+    this.driverData.payPeriod = result.payPeriod;
     this.driverData.CDL_Number = result.CDL_Number;
     this.driverData.licenceDetails.issuedCountry =
       result.licenceDetails.issuedCountry;
@@ -1317,6 +1342,23 @@ export class AddDriverComponent
       this.hasError = false;
       this.hasSuccess = false;
       this.hideErrors();
+      switch(this.paymentType){
+        case "ppd":
+          this.payPerDelivery.default=true
+          break;
+        case "pph":
+          this.payPerHour.default=true
+          break;
+        case "pp":
+          this.payPercentage.default=true
+          break;
+        case "ppm":
+          this.payPerMile.default=true
+          break;
+        default: 
+        this.payPerMile.default=true
+      }
+      this.driverData.paymentOption=[this.payPerMile,this.payPerDelivery,this.payPerHour,this.payPercentage]
       this.driverData[`driverID`] = this.driverID;
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
@@ -1430,69 +1472,13 @@ export class AddDriverComponent
   }
 
   changePaymentModeForm(value) {
-    if (value === "Pay Per Mile") {
-      delete this.driverData.paymentDetails.loadPayPercentage;
-      delete this.driverData.paymentDetails.loadPayPercentageOf;
-      delete this.driverData.paymentDetails.rate;
-      delete this.driverData.paymentDetails.rateUnit;
-      delete this.driverData.paymentDetails.waitingPay;
-      delete this.driverData.paymentDetails.waitingPayUnit;
-      delete this.driverData.paymentDetails.waitingHourAfter;
-      delete this.driverData.paymentDetails.deliveryRate;
-      delete this.driverData.paymentDetails.deliveryRateUnit;
-    } else if (value === "Percentage") {
-      delete this.driverData.paymentDetails.loadedMiles;
-      delete this.driverData.paymentDetails.loadedMilesUnit;
-      delete this.driverData.paymentDetails.loadedMilesTeam;
-      delete this.driverData.paymentDetails.loadedMilesTeamUnit;
-      delete this.driverData.paymentDetails.emptyMiles;
-      delete this.driverData.paymentDetails.emptyMilesTeam;
-      delete this.driverData.paymentDetails.emptyMilesUnit;
-      delete this.driverData.paymentDetails.emptyMilesTeamUnit;
-      delete this.driverData.paymentDetails.deliveryRate;
-      delete this.driverData.paymentDetails.deliveryRateUnit;
-      delete this.driverData.paymentDetails.rate;
-      delete this.driverData.paymentDetails.rateUnit;
-      delete this.driverData.paymentDetails.waitingPay;
-      delete this.driverData.paymentDetails.waitingPayUnit;
-      delete this.driverData.paymentDetails.waitingHourAfter;
-    } else if (value === "Pay Per Hour") {
-      delete this.driverData.paymentDetails.deliveryRate;
-      delete this.driverData.paymentDetails.deliveryRateUnit;
-      delete this.driverData.paymentDetails.loadPayPercentage;
-      delete this.driverData.paymentDetails.loadPayPercentageOf;
-      delete this.driverData.paymentDetails.loadedMiles;
-      delete this.driverData.paymentDetails.loadedMilesUnit;
-      delete this.driverData.paymentDetails.loadedMilesTeam;
-      delete this.driverData.paymentDetails.loadedMilesTeamUnit;
-      delete this.driverData.paymentDetails.emptyMiles;
-      delete this.driverData.paymentDetails.emptyMilesTeam;
-      delete this.driverData.paymentDetails.emptyMilesUnit;
-      delete this.driverData.paymentDetails.emptyMilesTeamUnit;
-    } else {
-      delete this.driverData.paymentDetails.loadedMiles;
-      delete this.driverData.paymentDetails.loadedMilesUnit;
-      delete this.driverData.paymentDetails.loadedMilesTeam;
-      delete this.driverData.paymentDetails.loadedMilesTeamUnit;
-      delete this.driverData.paymentDetails.emptyMiles;
-      delete this.driverData.paymentDetails.emptyMilesTeam;
-      delete this.driverData.paymentDetails.emptyMilesUnit;
-      delete this.driverData.paymentDetails.emptyMilesTeamUnit;
-      delete this.driverData.paymentDetails.rate;
-      delete this.driverData.paymentDetails.rateUnit;
-      delete this.driverData.paymentDetails.waitingPay;
-      delete this.driverData.paymentDetails.waitingPayUnit;
-      delete this.driverData.paymentDetails.waitingHourAfter;
-    }
+   
   }
   changeCurrency(currency: any) {
-    this.driverData.paymentDetails.rateUnit = currency;
-    this.driverData.paymentDetails.deliveryRateUnit = currency;
-    this.driverData.paymentDetails.loadedMilesUnit = currency;
-    this.driverData.paymentDetails.emptyMilesUnit = currency;
-    this.driverData.paymentDetails.loadedMilesTeamUnit = currency;
-    this.driverData.paymentDetails.emptyMilesTeamUnit = currency;
-    this.driverData.paymentDetails.waitingPayUnit = currency;
+    // this.driverData.paymentDetails.loadedMilesUnit = currency;
+    // this.driverData.paymentDetails.emptyMilesUnit = currency;
+    // this.driverData.paymentDetails.loadedMilesTeamUnit = currency;
+    // this.driverData.paymentDetails.emptyMilesTeamUnit = currency;
   }
   concatArray(path) {
     this.concatArrayKeys = "";

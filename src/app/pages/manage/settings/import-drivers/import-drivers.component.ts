@@ -214,7 +214,7 @@ export class ImportDriversComponent implements OnInit {
             this.submitDisabled = false;
             this.toastr.success("The file has been scheduled for processing and you will be notified via email once it is completed.")
             $('#importDocs').val('');
-            $('#importModel').modal('hide');
+            this.importModelRef.close();
             this.fetchDriverImport();
           }
         })
