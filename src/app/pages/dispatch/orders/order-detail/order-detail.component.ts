@@ -555,7 +555,7 @@ export class OrderDetailComponent implements OnInit {
         if (result.customerEmail && result.customerEmail != '') {
           this.emailData.emails.push({ label: result.customerEmail });
         }
-        //this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
+        this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
 
         this.invStatus = result.invStatus ? result.invStatus : 'NA'
 
@@ -567,6 +567,7 @@ export class OrderDetailComponent implements OnInit {
 
   async showDocs(documents) {
     this.docs = [];
+    this.newInvDocs = [];
     documents.forEach((x: any) => {
       if (
         x.storedName.split(".")[1] === "jpg" ||
@@ -595,6 +596,8 @@ export class OrderDetailComponent implements OnInit {
       }
     });
 
+    this.newInvDocs = [...this.newInvDocs, ...this.docs];
+    console.log('this.newInvDocs', this.newInvDocs)
   }
 
   async openEmailInv() {
