@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import {environment} from '../../../../../environments/environment';
-import Constants from '../../constants';
-import { ApiService } from '../../../../services';
+import { environment } from '../../../../../../environments/environment';
+import Constants from '../../../constants';
+import { ApiService } from '../../../../../services';
 import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
+
 @Component({
-  selector: 'app-vehicle-setting',
-  templateUrl: './vehicle-setting.component.html',
-  styleUrls: ['./vehicle-setting.component.css']
+  selector: 'app-deleted-vehicles',
+  templateUrl: './deleted-vehicles.component.html',
+  styleUrls: ['./deleted-vehicles.component.css']
 })
-export class VehicleSettingComponent implements OnInit {
+export class DeletedVehiclesComponent implements OnInit {
+
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   lastEvaluatedKey = '';
@@ -22,15 +24,15 @@ export class VehicleSettingComponent implements OnInit {
   driversList: any = {};
   vehicleModelList: any = {};
   vehicleManufacturersList: any = {};
-  getSuggestions = _.debounce(function(value) {
+  getSuggestions = _.debounce(function (value) {
 
     value = value.toLowerCase();
     if (value !== '') {
       this.apiService
-      .getData(`vehicles/deleted/suggestion/${value}`)
-      .subscribe((result) => {
-        this.suggestedVehicles = result;
-      });
+        .getData(`vehicles/deleted/suggestion/${value}`)
+        .subscribe((result) => {
+          this.suggestedVehicles = result;
+        });
     } else {
       this.suggestedVehicles = [];
     }
@@ -51,31 +53,31 @@ export class VehicleSettingComponent implements OnInit {
     this.vehicleID = vehicleIdentification;
     this.suggestedVehicles = [];
   }
-      async initDataTable() {
-        if (this.lastEvaluatedKey !== 'end') {
-            const result = await this.apiService.getData('vehicles/fetch/deleted/records?vehicle=' + this.vehicleID + '&lastKey=' + this.lastEvaluatedKey).toPromise();
-            if (result.Items.length === 0) {
-                this.dataMessage = Constants.NO_RECORDS_FOUND
-            }
-            this.suggestedVehicles = [];
-            if (result.Items.length > 0) {
-                if (result.LastEvaluatedKey !== undefined) {
-                    this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].vehicleSK);
-                }
-                else {
-                    this.lastEvaluatedKey = 'end'
-                }
-                this.vehicles = this.vehicles.concat(result.Items);
-                this.loaded = true;
-            }
+  async initDataTable() {
+    if (this.lastEvaluatedKey !== 'end') {
+      const result = await this.apiService.getData('vehicles/fetch/deleted/records?vehicle=' + this.vehicleID + '&lastKey=' + this.lastEvaluatedKey).toPromise();
+      if (result.Items.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND
+      }
+      this.suggestedVehicles = [];
+      if (result.Items.length > 0) {
+        if (result.LastEvaluatedKey !== undefined) {
+          this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].vehicleSK);
         }
-    }
-    onScroll() {
-        if (this.loaded) {
-            this.initDataTable();
+        else {
+          this.lastEvaluatedKey = 'end'
         }
-        this.loaded = false;
+        this.vehicles = this.vehicles.concat(result.Items);
+        this.loaded = true;
+      }
     }
+  }
+  onScroll() {
+    if (this.loaded) {
+      this.initDataTable();
+    }
+    this.loaded = false;
+  }
   searchFilter() {
     if (this.vehicleIdentification !== '') {
       this.vehicleIdentification = this.vehicleIdentification.toLowerCase();
@@ -125,4 +127,5 @@ export class VehicleSettingComponent implements OnInit {
     this.lastEvaluatedKey = '';
     this.dataMessage = Constants.FETCHING_DATA;
   }
+
 }

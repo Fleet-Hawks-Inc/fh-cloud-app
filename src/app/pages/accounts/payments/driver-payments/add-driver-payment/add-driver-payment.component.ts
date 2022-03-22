@@ -452,6 +452,11 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
         }
       }
     }
+    if (!this.isVendor) {
+      this.paymentData.vendorId = '';
+      this.paymentData.isVendorPayment = false;
+
+    }
     this.submitDisabled = true;
     this.accountService
       .postData("driver-payments", this.paymentData)
@@ -718,7 +723,8 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
       page: "addForm",
       isVendorPayment: this.isVendor,
       vendorId: this.paymentData.vendorId,
-      gstHstPer: this.paymentData.gstHstPer
+      gstHstPer: this.paymentData.gstHstPer,
+      gstHstAmt: this.paymentData.gstHstAmt
     };
 
     this.listService.openPaymentChequeModal(obj);
