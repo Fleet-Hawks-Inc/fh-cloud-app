@@ -917,7 +917,8 @@
                               </h2>
                             </div>
                             <div class="col-6 text-right">
-                              <button class="btn btn-success btn-sm" (click)="openDocModal()">Add Document</button>
+                              <button [disabled]="docs.length == 4" class="btn btn-success btn-sm"
+                                (click)="openDocModal()">Add Document</button>
                               <!-- <input type="file" #uploadBol (change)="selectDocuments($event)" multiple
                                 class="p-0 pull-right mb-0" id="bolUpload" /> -->
                             </div>
@@ -1712,14 +1713,14 @@
         Cancel
       </button>
       <button class="btn btn-success" *ngIf="docs.length != 0" (click)="openDocumentModal('print')">Print</button>
-      <button *ngIf="isGenerate" [disabled]="generateBtnDisabled" (click)="openDocumentModal('generate')"
-        class="btn btn-success">
+      <button *ngIf="docs.length != 0 && isGenerate" [disabled]="generateBtnDisabled"
+        (click)="openDocumentModal('generate')" class="btn btn-success">
         Generate & Print
       </button>
 
 
       <button class="btn btn-success" *ngIf="docs.length == 0" (click)="generate()">Print</button>
-      <button *ngIf="docs.length == 0 || isGenerate" [disabled]="generateBtnDisabled" (click)="generatePDF()"
+      <button *ngIf="docs.length == 0 && isGenerate" [disabled]="generateBtnDisabled" (click)="generatePDF()"
         class="btn btn-success">
         Generate & Print
       </button>

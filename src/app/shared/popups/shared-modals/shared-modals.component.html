@@ -583,7 +583,7 @@
 
     </div>
     <div class="modal-footer">
-      <button (click)="modal.dismiss('Cross click')" class="btn btn-default modal-dismiss">Cancel</button>
+      <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-default modal-dismiss">Cancel</button>
 
       <button type="submit" [disabled]="!docTypeForm.form.valid" class="btn btn-success modal-confirm">Save</button>
     </div>
