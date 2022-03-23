@@ -119,7 +119,7 @@ export class AddReceiptComponent implements OnInit {
     private apiService: ApiService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.listService.fetchCustomers();
@@ -142,7 +142,7 @@ export class AddReceiptComponent implements OnInit {
       .getData(`chartAc/get/list/all`)
       .subscribe((result: any) => {
         this.accounts = result;
-        console.log('this.accounts', this.accounts)
+
       });
   }
 
@@ -416,7 +416,7 @@ export class AddReceiptComponent implements OnInit {
       this.getInvoiceArr();
       this.receiptData.invAmount = this.totalReceivedAmt;
       this.accountService.postData("receipts", this.receiptData).subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -433,7 +433,7 @@ export class AddReceiptComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {

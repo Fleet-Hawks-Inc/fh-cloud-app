@@ -314,7 +314,7 @@ export class AddDriverComponent
   showUploadedPicModal = false;
   pageType = "add";
   groupsData: any = [];
-  sessionID:string;
+  sessionID: string;
 
   constructor(
     private apiService: ApiService,
@@ -333,7 +333,7 @@ export class AddDriverComponent
     private listService: ListService,
     private countryStateCity: CountryStateCityService,
     private dashboardUtilityService: DashboardUtilityService,
-    private routeMgmntService:RouteManagementServiceService
+    private routeMgmntService: RouteManagementServiceService
   ) {
     this.modalServiceOwn.triggerRedirect.next(false);
 
@@ -369,7 +369,7 @@ export class AddDriverComponent
       month: 12,
       day: 31,
     };
-    this.sessionID=this.routeMgmntService.driverUpdateSessionID;
+    this.sessionID = this.routeMgmntService.driverUpdateSessionID;
   }
   scrollError() {
     let errorList;
@@ -983,7 +983,7 @@ export class AddDriverComponent
             this.takeUntil$.next();
             this.takeUntil$.complete();
             this.spinner.hide();
-            this.router.navigateByUrl(`/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`);            
+            this.router.navigateByUrl(`/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`);
           },
         });
       } catch (error) {
@@ -1099,7 +1099,7 @@ export class AddDriverComponent
     let result = await this.apiService
       .getData(`drivers/${this.driverID}`)
       .toPromise();
-    // .subscribe(async (result: any) => {
+
     result = result.Items[0];
     this.fetchLicStates(result.licenceDetails.issuedCountry);
     this.driverData.address = result.address;
@@ -1124,8 +1124,6 @@ export class AddDriverComponent
       }
     }
     if (result.corporationType === "owner_operator") {
-      // this.listService.fetchOwnerOperators();
-      // this.ownerOperators = this.listService.ownerOperatorList;
 
       this.listService.fetchOwnerOperators();
       let opList = new Array<any>();
@@ -1134,7 +1132,6 @@ export class AddDriverComponent
     }
     if (result.corporationType === "company") {
       this.listService.fetchVendors();
-      // this.vendors = this.listService.vendorList;
       let vendorList = new Array<any>();
       this.getValidVendors(vendorList);
       this.vendors = vendorList;
@@ -1185,7 +1182,6 @@ export class AddDriverComponent
     this.driverData.createdTime = result.createdTime;
     this.driverData.driverImage = result.driverImage;
     if (result.driverImage !== "" && result.driverImage !== undefined) {
-      //this.driverProfileSrc = result.uploadImage;
       this.driverProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.driverImage}`;
       this.imageTitle = "Change";
     } else {
@@ -1196,12 +1192,6 @@ export class AddDriverComponent
     if (result.abstractDocs !== undefined && result.abstractDocs.length > 0) {
       this.driverData[`abstractDocs`] = result.abstractDocs;
       this.absDocs = result.docsAbs;
-      /*
-      this.absDocs = result.abstractDocs.map((x: any) => ({
-        path: `${this.Asseturl}/${result.carrierID}/${x}`,
-        name: x,
-      }));
-      */
     }
     this.driverData.gender = result.gender;
     this.driverData.DOB = result.DOB;
@@ -1230,12 +1220,7 @@ export class AddDriverComponent
         result.documentDetails[i].uploadedDocs.length > 0
       ) {
         this.assetsDocs[i] = result.docuementUpload;
-        //  this.assetsDocs[i] = result.documentDetails[i].uploadedDocs.map(
-        //    (x) => ({
-        //      path: `${this.Asseturl}/${result.carrierID}/${x}`,
-        //      name: x,
-        //    })
-        //  );
+
       }
     }
     this.driverData.documentDetails = this.newDocuments;
@@ -1325,9 +1310,8 @@ export class AddDriverComponent
       result.emergencyDetails.relationship;
     this.driverData.emergencyDetails.phone = result.emergencyDetails.phone;
     this.driverData[`timeCreated`] = result.timeCreated;
-
-    // });
   }
+
   async onUpdateDriver() {
     if (this.abstractDocs.length > 0 || this.absDocs.length > 0) {
       this.hasError = false;
@@ -1775,7 +1759,7 @@ export class AddDriverComponent
     this.onChangeHideErrors("email");
     this.submitDisabled = false;
   }
-  
+
   fetchGroupsList() {
     this.apiService.getData('groups/get/list/type?type=drivers').subscribe((result: any) => {
       this.groupsData = result;

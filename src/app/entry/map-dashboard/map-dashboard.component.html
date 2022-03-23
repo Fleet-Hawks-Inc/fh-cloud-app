@@ -29,12 +29,13 @@
 
             </header>
             <div style="height: calc(100vh - 110px);width: 100%;">
+
                 <google-map [options]='mapOptions' [width]="width" [height]="height">
                     <map-marker #marker="mapMarker" *ngFor="let driverPosition of driverPositions" [position]="driverPosition.position" [options]="driverMarkerOptions" (mapClick)="openInfoWindow(marker, driverPosition.data,'driver')"></map-marker>
-                    <map-info-window [innerHTML]="infoDetail"></map-info-window>
+                    <map-info-window class="marker-info" [innerHTML]="infoDetail"></map-info-window>
                     <map-marker #marker="mapMarker" *ngFor="let assetPosition of assetPositions" [position]="assetPosition.position" [options]="assetMarkerOptions" (mapClick)="openInfoWindow(marker, assetPosition.data,'asset')"></map-marker>
                     <map-marker #marker="mapMarker" *ngFor="let vehiclePosition of vehicleDashPositions" [position]="vehiclePosition.position" [options]="vehicleMarkerOptions" (mapClick)="openInfoWindow(marker, vehiclePosition.data,'vehicle')"></map-marker>
-                    <map-traffic-layer [autoRefresh]="true"></map-traffic-layer>
+
 
                 </google-map>
             </div>

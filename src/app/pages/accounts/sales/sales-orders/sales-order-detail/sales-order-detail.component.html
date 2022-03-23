@@ -8,20 +8,36 @@
               Sales Order# - {{ sOrNo }}
               <span class="badge badge-dark p-1 text-uppercase">{{
                 status
-                }}</span>
-              <span class="badge badge-success p-1 text-uppercase ml-1" *ngIf="status === 'sent'">Emailed</span>
+              }}</span>
+              <span
+                class="badge badge-success p-1 text-uppercase ml-1"
+                *ngIf="status === 'sent'"
+                >Emailed</span
+              >
             </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
-            <button type="button" class="btn btn-success btn-sm mr-2" (click)="sendConfirmationEmail()"
-              [disabled]="emailDisabled || status == 'invoiced'">
+            <button
+              type="button"
+              class="btn btn-success btn-sm mr-2"
+              (click)="sendConfirmationEmail()"
+              [disabled]="emailDisabled || status == 'invoiced'"
+            >
               Send Email To Customer
             </button>
-            <button type="button" *ngIf="isPDF" class="btn btn-success btn-sm mr-2" (click)="openModal()">
+            <button
+              type="button"
+              *ngIf="isPDF"
+              class="btn btn-success btn-sm mr-2"
+              (click)="openModal()"
+            >
               PDF
             </button>
-            <a routerLink="/accounts/sales/orders/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> All
-              Sales Orders</a>
+            <a
+              routerLink="/accounts/sales/orders/list"
+              class="btn btn-sm btn-default"
+              ><i class="fas fa-list"></i> All Sales Orders</a
+            >
           </div>
         </div>
       </header>
@@ -47,12 +63,9 @@
                       <div class="text-center p-4 cmaindiv">
                         <i class="fa fa-user text-7"></i>
                         <br />
-                        <p class="
-                            mb-0
-                            text-5
-                            font-weight-bold
-                            text-dark text-capitalize
-                          ">
+                        <p
+                          class="mb-0 text-5 font-weight-bold text-dark text-capitalize"
+                        >
                           {{ customerName ? customerName : "-" }}
                         </p>
                         <p class="mb-0">CUSTOMER</p>
@@ -66,7 +79,7 @@
                         <p class="mb-0 text-5 font-weight-bold text-dark">
                           {{ currency }}
                           {{
-                          finalTotal ? (finalTotal | number: "1.2-2") : "0"
+                            finalTotal ? (finalTotal | number: "1.2-2") : "0"
                           }}
                         </p>
                         <p class="mb-0">AMOUNT</p>
@@ -89,20 +102,27 @@
                       <table class="table table-bordered table-responsive-lg">
                         <tbody>
                           <tr>
-                            <td width="40%" class="back-color-gray font-weight-bold">
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
                               Shipment Date
                             </td>
                             <td width="60%">
-                              {{ shipDate ? (shipDate | date: "yyyy/MM/dd" ) : '-' }}
+                              {{
+                                shipDate ? (shipDate | date: "yyyy/MM/dd") : "-"
+                              }}
                             </td>
                           </tr>
                           <tr>
-                            <td width="40%" class="back-color-gray font-weight-bold">
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
                               Reference#
                             </td>
-                            <td width="60%">{{ sRef ? sRef : '-' }}</td>
+                            <td width="60%">{{ sRef ? sRef : "-" }}</td>
                           </tr>
-
                         </tbody>
                       </table>
                     </div>
@@ -114,19 +134,25 @@
                       <table class="table table-bordered table-responsive-lg">
                         <tbody>
                           <tr>
-                            <td width="40%" class="back-color-gray font-weight-bold">
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
                               Sales Person
                             </td>
-                            <td width="60%">{{ salePerson ? salePerson : '-' }}</td>
+                            <td width="60%">
+                              {{ salePerson ? salePerson : "-" }}
+                            </td>
                           </tr>
                           <tr>
-                            <td width="40%" class="back-color-gray font-weight-bold">
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
                               Remarks
                             </td>
                             <td width="60%">{{ remarks ? remarks : "-" }}</td>
                           </tr>
-
-
                         </tbody>
                       </table>
                     </div>
@@ -158,10 +184,13 @@
                             </td>
                             <td>{{ item.desc ? item.desc : "-" }}</td>
                             <td>
-                              {{ item.amount ? (item.amount | number: "1.2-2") : "-" }}
+                              {{
+                                item.amount
+                                  ? (item.amount | number: "1.2-2")
+                                  : "-"
+                              }}
                               {{ currency }}
                             </td>
-
                           </tr>
                           <tr *ngIf="sOrderDetails?.length === 0">
                             <td>No Data Found</td>
@@ -183,20 +212,29 @@
                               <span>No document found</span>
                             </td>
                           </tr>
-                          <tr *ngFor="let doc of docs; let d= index">
+                          <tr *ngFor="let doc of docs; let d = index">
                             <td>{{ d + 1 }}</td>
                             <td>{{ doc.displayName }}</td>
                             <td>
-                              <a class="image-popup-no-margins" href="{{
-                                doc.docPath }}" target="_blank">
-                                <img class="img-fluid img_thumbnail" src="{{
-                                  doc.imgPath }}" />
+                              <a
+                                class="image-popup-no-margins"
+                                href="{{ doc.docPath }}"
+                                target="_blank"
+                              >
+                                <img
+                                  class="img-fluid img_thumbnail"
+                                  src="{{ doc.imgPath }}"
+                                />
                               </a>
                             </td>
                             <td class="cursorpoint">
-                              <a href="javascript:;" (click)="deleteDocument(doc.displayName, d)"
-                                class="modal-with-form">
-                                <em class="fas fa-times text-danger"></em></a>
+                              <a
+                                href="javascript:;"
+                                (click)="deleteDocument(doc.displayName, d)"
+                                class="modal-with-form"
+                              >
+                                <em class="fas fa-times text-danger"></em
+                              ></a>
                             </td>
                           </tr>
                         </tbody>
@@ -213,26 +251,40 @@
   </div>
 </section>
 
-
 <ng-template #previewSaleOrder let-modal>
   <div class="modal-content">
-
     <div class="modal-body text-dark" id="print_sale">
-      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <table
+        width="100%"
+        border="0"
+        align="center"
+        cellpadding="0"
+        cellspacing="0"
+      >
         <tbody>
           <tr>
             <td>
-              <h2 class="modal-title mt-0" id="modal-basic-title"><strong>Sales Order</strong></h2>
+              <h2 class="modal-title mt-0" id="modal-basic-title">
+                <strong>Sales Order</strong>
+              </h2>
             </td>
           </tr>
           <tr>
             <td valign="top">
-              <p class="text-dark" style="font-size:13px; margin-bottom:5px; margin-top:5px;"><strong>Sales
-                  Order #:</strong> {{ sOrNo }}</p>
+              <p
+                class="text-dark"
+                style="font-size: 13px; margin-bottom: 5px; margin-top: 5px"
+              >
+                <strong>Sales Order #:</strong> {{ sOrNo }}
+              </p>
             </td>
             <td valign="top" align="right">
-              <p class="text-dark" style="font-size:13px; margin-bottom:5px; margin-top:5px;">
-                <strong>Sales OrderDate:</strong> {{ txnDate ? (txnDate | date: "yyyy/MM/dd") : "-" }}
+              <p
+                class="text-dark"
+                style="font-size: 13px; margin-bottom: 5px; margin-top: 5px"
+              >
+                <strong>Sales OrderDate:</strong>
+                {{ txnDate ? (txnDate | date: "yyyy/MM/dd") : "-" }}
               </p>
             </td>
           </tr>
@@ -241,16 +293,18 @@
           </tr>
           <tr>
             <td width="50%" valign="top">
-              <h2 class="text-dark" style="font-size:20px;">Customer</h2>
-              <p class="text-dark text-capitalize" style="font-size:13px;"> <strong>{{customerName}}</strong><br>
-                <strong>Address:</strong> {{address ? address : 'NA'}}<br>
+              <h2 class="text-dark" style="font-size: 20px">Customer</h2>
+              <p class="text-dark text-capitalize" style="font-size: 13px">
+                <strong>{{ customerName }}</strong
+                ><br />
+                <strong>Address:</strong> {{ address ? address : "NA" }}<br />
               </p>
             </td>
             <td valign="top" align="right">
-              <h2 style="font-size:20px;">&nbsp;</h2>
-              <p class="m-0 text-dark" style="font-size:13px;"> <strong>Phone:</strong> {{workPhone ? workPhone :
-                'NA'}}<br>
-                <strong>Email:</strong> {{workEmail ? workEmail : 'NA'}}<br>
+              <h2 style="font-size: 20px">&nbsp;</h2>
+              <p class="m-0 text-dark" style="font-size: 13px">
+                <strong>Phone:</strong> {{ workPhone ? workPhone : "NA" }}<br />
+                <strong>Email:</strong> {{ workEmail ? workEmail : "NA" }}<br />
               </p>
             </td>
           </tr>
@@ -262,51 +316,103 @@
           </tr>
           <tr>
             <td colspan="2">
-              <h2 style="font-size:16px; margin-bottom:10px; margin-top:0px;">Invoice</h2>
+              <h2 style="font-size: 16px; margin-bottom: 10px; margin-top: 0px">
+                Invoice
+              </h2>
             </td>
           </tr>
           <tr>
             <td colspan="2">
-              <table width="100%" border="0" style="border:1px solid #adadad; font-size:13px;" cellspacing="0"
-                cellpadding="0">
+              <table
+                width="100%"
+                border="0"
+                style="border: 1px solid #adadad; font-size: 13px"
+                cellspacing="0"
+                cellpadding="0"
+              >
                 <tbody>
-                  <tr bgcolor="#f3f3f3">
-                    <td width="15%"
-                      style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
-                      <p class="m-0 text-dark" style="font-weight:600;">Reference#</p>
+                  <tr>
+                    <td
+                      width="15%"
+                      style="
+                        border-bottom: 1px solid #adadad;
+                        border-right: 1px solid #adadad;
+                        padding: 10px;
+                      "
+                    >
+                      <p class="m-0 text-dark" style="font-weight: 600">
+                        Reference#
+                      </p>
                     </td>
-                    <td width="15%"
-                      style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
-                      <p class="m-0 text-dark" style="font-weight:600;">Shipment Date</p>
+                    <td
+                      width="15%"
+                      style="
+                        border-bottom: 1px solid #adadad;
+                        border-right: 1px solid #adadad;
+                        padding: 10px;
+                      "
+                    >
+                      <p class="m-0 text-dark" style="font-weight: 600">
+                        Shipment Date
+                      </p>
                     </td>
-                    <td width="15%"
-                      style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
-                      <p class="m-0 text-dark" style="font-weight:600;">Sales Person</p>
+                    <td
+                      width="15%"
+                      style="
+                        border-bottom: 1px solid #adadad;
+                        border-right: 1px solid #adadad;
+                        padding: 10px;
+                      "
+                    >
+                      <p class="m-0 text-dark" style="font-weight: 600">
+                        Sales Person
+                      </p>
                     </td>
-                    <td width="15%"
-                      style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
-                      <p class="m-0 text-dark" style="font-weight:600;">Status</p>
+                    <td
+                      width="15%"
+                      style="
+                        border-bottom: 1px solid #adadad;
+                        border-right: 1px solid #adadad;
+                        padding: 10px;
+                      "
+                    >
+                      <p class="m-0 text-dark" style="font-weight: 600">
+                        Status
+                      </p>
                     </td>
-                    <td style="border-bottom:1px solid #adadad; text-align: right; padding:10px;">
-                      <p class="m-0 text-dark" style="font-weight:600;">Remarks</p>
+                    <td
+                      style="
+                        border-bottom: 1px solid #adadad;
+                        text-align: right;
+                        padding: 10px;
+                      "
+                    >
+                      <p class="m-0 text-dark" style="font-weight: 600">
+                        Remarks
+                      </p>
                     </td>
                   </tr>
                   <tr>
-                    <td height="25" style="border-right:1px solid #adadad; padding:10px;">
-                      <p class="m-0 text-dark"> {{ sRef ? sRef : '-' }}</p>
+                    <td
+                      height="25"
+                      style="border-right: 1px solid #adadad; padding: 10px"
+                    >
+                      <p class="m-0 text-dark">{{ sRef ? sRef : "-" }}</p>
                     </td>
-                    <td style="border-right:1px solid #adadad; padding:10px;">
-                      <p class="m-0 text-dark"> {{ shipDate ? (shipDate | date: "yyyy/MM/dd" ) : '' }}</p>
+                    <td style="border-right: 1px solid #adadad; padding: 10px">
+                      <p class="m-0 text-dark">
+                        {{ shipDate ? (shipDate | date: "yyyy/MM/dd") : "" }}
+                      </p>
                     </td>
-                    <td style="border-right:1px solid #adadad; padding:10px;">
-                      <p class="m-0 text-dark">{{ salePerson ? salePerson : '-' }} </p>
+                    <td style="border-right: 1px solid #adadad; padding: 10px">
+                      <p class="m-0 text-dark">
+                        {{ salePerson ? salePerson : "-" }}
+                      </p>
                     </td>
-                    <td style="border-right:1px solid #adadad; padding:10px;">
-                      <p class="m-0 text-dark">{{
-                        status ? status : '-'
-                        }}</p>
+                    <td style="border-right: 1px solid #adadad; padding: 10px">
+                      <p class="m-0 text-dark">{{ status ? status : "-" }}</p>
                     </td>
-                    <td style="text-align: right; padding:10px;">
+                    <td style="text-align: right; padding: 10px">
                       <p class="m-0 text-dark">{{ remarks ? remarks : "-" }}</p>
                     </td>
                   </tr>
@@ -319,59 +425,135 @@
           </tr>
           <tr>
             <td colspan="2">
-              <h2 style="font-size:16px; margin-bottom:10px; margin-top:0px;">Extras</h2>
+              <h2 style="font-size: 16px; margin-bottom: 10px; margin-top: 0px">
+                Extras
+              </h2>
             </td>
           </tr>
 
           <tr>
             <td colspan="2">
-              <table width="100%" border="0"
-                style="border:1px solid #adadad; border-bottom:0px solid #adadad; font-size:13px;" cellspacing="0"
-                cellpadding="0">
+              <table
+                width="100%"
+                border="0"
+                style="
+                  border: 1px solid #adadad;
+                  border-bottom: 0px solid #adadad;
+                  font-size: 13px;
+                "
+                cellspacing="0"
+                cellpadding="0"
+              >
                 <thead>
-                  <tr bgcolor="#f3f3f3">
-                    <td width="15%"
-                      style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
-                      <p class="m-0 text-dark" style="font-weight:600;">Commodity</p>
+                  <tr>
+                    <td
+                      width="15%"
+                      style="
+                        border-bottom: 1px solid #adadad;
+                        border-right: 1px solid #adadad;
+                        padding: 10px;
+                      "
+                    >
+                      <p class="m-0 text-dark" style="font-weight: 600">
+                        Commodity
+                      </p>
                     </td>
-                    <td width="15%"
-                      style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
-                      <p class="m-0 text-dark" style="font-weight:600;">Quantity</p>
+                    <td
+                      width="15%"
+                      style="
+                        border-bottom: 1px solid #adadad;
+                        border-right: 1px solid #adadad;
+                        padding: 10px;
+                      "
+                    >
+                      <p class="m-0 text-dark" style="font-weight: 600">
+                        Quantity
+                      </p>
                     </td>
-                    <td width="15%"
-                      style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
-                      <p class="m-0 text-dark" style="font-weight:600;">Rate</p>
+                    <td
+                      width="15%"
+                      style="
+                        border-bottom: 1px solid #adadad;
+                        border-right: 1px solid #adadad;
+                        padding: 10px;
+                      "
+                    >
+                      <p class="m-0 text-dark" style="font-weight: 600">Rate</p>
                     </td>
-                    <td width="27%"
-                      style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
-                      <p class="m-0 text-dark" style="font-weight:600;">Description</p>
+                    <td
+                      width="27%"
+                      style="
+                        border-bottom: 1px solid #adadad;
+                        border-right: 1px solid #adadad;
+                        padding: 10px;
+                      "
+                    >
+                      <p class="m-0 text-dark" style="font-weight: 600">
+                        Description
+                      </p>
                     </td>
-                    <td style="border-bottom:1px solid #adadad; text-align: left; padding:10px;">
-                      <p class="m-0 text-dark" style="font-weight:600;">Amount</p>
+                    <td
+                      style="
+                        border-bottom: 1px solid #adadad;
+                        text-align: left;
+                        padding: 10px;
+                      "
+                    >
+                      <p class="m-0 text-dark" style="font-weight: 600">
+                        Amount
+                      </p>
                     </td>
-
-
                   </tr>
                 </thead>
                 <tbody>
-
                   <tr *ngFor="let item of sOrderDetails">
-                    <td style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">{{
-                      item.commodity ? item.commodity : "-" }}</td>
-                    <td style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
+                    <td
+                      style="
+                        border-bottom: 1px solid #adadad;
+                        border-right: 1px solid #adadad;
+                        padding: 10px;
+                      "
+                    >
+                      {{ item.commodity ? item.commodity : "-" }}
+                    </td>
+                    <td
+                      style="
+                        border-bottom: 1px solid #adadad;
+                        border-right: 1px solid #adadad;
+                        padding: 10px;
+                      "
+                    >
                       {{ item.qty ? item.qty : "-" }} {{ item.qtyUnit }}
                     </td>
-                    <td style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
+                    <td
+                      style="
+                        border-bottom: 1px solid #adadad;
+                        border-right: 1px solid #adadad;
+                        padding: 10px;
+                      "
+                    >
                       {{ item.rate ? item.rate : "-" }} /
                       {{ item.rateUnit }}
                     </td>
-                    <td style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">{{
-                      item.desc ? item.desc : "-" }}</td>
-                    <td style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
+                    <td
+                      style="
+                        border-bottom: 1px solid #adadad;
+                        border-right: 1px solid #adadad;
+                        padding: 10px;
+                      "
+                    >
+                      {{ item.desc ? item.desc : "-" }}
+                    </td>
+                    <td
+                      style="
+                        border-bottom: 1px solid #adadad;
+                        border-right: 1px solid #adadad;
+                        padding: 10px;
+                      "
+                    >
                       {{ item.amount ? (item.amount | number: "1.2-2") : "-" }}
                       {{ currency }}
                     </td>
-
                   </tr>
                   <tr *ngIf="sOrderDetails?.length === 0">
                     <td>No Data Found</td>
@@ -381,11 +563,15 @@
               <table class="border-0 w-100 mt-4">
                 <tbody>
                   <tr>
-                    <td class="border-0 text-right" colspan="5">Total Amount: <span
-                        style="font-size: 30px;font-weight: 600;">{{ currency
-                        }} {{
-                        finalTotal ? (finalTotal | number: "1.2-2") : "0"
-                        }}</span></td>
+                    <td class="border-0 text-right" colspan="5">
+                      Total Amount:
+                      <span style="font-size: 30px; font-weight: 600"
+                        >{{ currency }}
+                        {{
+                          finalTotal ? (finalTotal | number: "1.2-2") : "0"
+                        }}</span
+                      >
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -400,8 +586,12 @@
                 <tbody>
                   <tr>
                     <td align="center">
-                      <h2 style="font-size:13px;">Powered By</h2>
-                      <img src="../../../../../../assets/img/logo.png" width="207" height="28">
+                      <h2 style="font-size: 13px">Powered By</h2>
+                      <img
+                        src="../../../../../../assets/img/logo.png"
+                        width="207"
+                        height="28"
+                      />
                     </td>
                   </tr>
                 </tbody>
@@ -415,14 +605,16 @@
       </table>
     </div>
     <div class="modal-footer">
-
-      <button type="button" (click)="modal.dismiss('Cross click')" class="btn
-        btn-default">
+      <button
+        type="button"
+        (click)="modal.dismiss('Cross click')"
+        class="btn btn-default"
+      >
         Cancel
       </button>
-      <button (click)="generatePDF()" class="btn
-        btn-success ml-2 ">Download</button>
-
+      <button (click)="generatePDF()" class="btn btn-success ml-2">
+        Download
+      </button>
     </div>
   </div>
 </ng-template>

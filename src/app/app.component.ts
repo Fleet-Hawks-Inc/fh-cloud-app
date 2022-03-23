@@ -145,7 +145,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
   }
 
   setTitle() {
-    console.log(this.route.snapshot.data['title']);
+
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
     )
@@ -154,7 +154,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
         var rt = this.getChild(this.route)
 
         rt.data.subscribe(data => {
-          console.log(data);
+
           this.titleService.setTitle(data.title)
         })
       })
