@@ -102,6 +102,7 @@ export class TrialBalanceComponent implements OnInit {
                         result.data.map((v) => {
                             this.accounts.push(v);
                          });
+                         
                         const newArray: any = _.sortBy(this.accounts, ["accountNo"]);
                         this.accounts = newArray;
                           for(let i = 0;i<this.accounts.length;i++)
@@ -149,6 +150,18 @@ export class TrialBalanceComponent implements OnInit {
                             return o.actType != 'T';
                         });
                     }
+                    if (this.currTab === 'CAD') {
+                             this.currency = 'CAD'
+                    if(this.accounts.length === 0){
+                      this.dataMessage = Constants.NO_RECORDS_FOUND;
+                         }
+                             }
+                    if (this.currTab === 'USD') {
+                        this.currency = 'USD'
+                    if(this.accounts.length === 0){
+                     this.dataMessage = Constants.NO_RECORDS_FOUND;
+                           }
+                         }
                     
                 });
     }

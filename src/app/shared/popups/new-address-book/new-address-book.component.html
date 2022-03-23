@@ -921,7 +921,7 @@
                 Company Name
                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
               </label>
-              <input [(ngModel)]="unitData.cName" [(ngModel)]="similarVal.cName" name="cName" type="text"  class="form-control"
+              <input [(ngModel)]="unitData.cName" name="cName" type="text"  class="form-control"
                 placeholder="eg. Carroll Group" (input)="getSimilarNamesSuggestions($event.target.value)" #customerName="ngModel" autocomplete="off" pattern="^[a-zA-Z0-9\s\.]{4,120}$" [ngClass]="{
                   error: contactForm.submitted && customerName.invalid
                 }" required  />
@@ -1182,10 +1182,7 @@
                   <label class="control-label font-weight-bold text-lg-right pt-2">Payroll Type</label>
                   <ng-select [(ngModel)]="unit.carrierData.pType" class="form-control" name="unit.carrierData.pType"
                     placeholder="Select payroll type">
-                    <ng-option value="Pay Per Mile" selected="true">Pay Per Mile</ng-option>
-                    <ng-option value="Percentage">Percentage</ng-option>
-                    <ng-option value="Pay Per Hour">Pay Per Hour</ng-option>
-                    <ng-option value="Pay Per Delivery">Pay Per Delivery</ng-option>
+                    <ng-option *ngFor="let option of paymentOptions" [value]="option.value">{{option.name}}</ng-option>
                   </ng-select>
                 </div>
                 <div class="col-2">
@@ -1209,23 +1206,23 @@
                   </div>
                 </div>
                 <div class="row ng-star-inserted w-100 m-0" id="payPerDeliveryForm"
-                  *ngIf="unit.carrierData.pType == 'Pay Per Delivery'">
+                  *ngIf="unit.carrierData.pType == 'ppd'">
                   <div class="col-3">
                     <label class="control-label font-weight-bold text-lg-right pt-2">Delivery Rate</label>
-                    <input [(ngModel)]="unit.carrierData.dr" name="unit.carrierData.dr" type="text" class="form-control"
+                    <input [(ngModel)]="unit.carrierData.ppd.deliveryRate" name="unit.carrierData.ppd.deliveryRate" type="text" class="form-control"
                       placeholder="eg. 30 " />
                   </div>
                   <div class="col-3 pt-2 mt-1">
                     <label class="control-label font-weight-bold text-lg-right"></label>
-                    <ng-select class="" [(ngModel)]="unit.carrierData.drCur" (change)="updateCurrency($event)"
-                      name="unit.carrierData.drCur" placeholder="Select Currency">
+                    <ng-select class="" [(ngModel)]="unit.carrierData.ppd.currency"
+                      name="unit.carrierData.ppd.currency" placeholder="Select Currency">
                       <ng-option value="CAD">CAD</ng-option>
                       <ng-option value="USD">USD</ng-option>
                     </ng-select>
                   </div>
                 </div>
                 <div class="col-lg-12">
-                  <div class="row" id="payPerHourForm" *ngIf="unit.carrierData.pType == 'Pay Per Hour'">
+                  <div class="row" id="payPerHourForm" *ngIf="unit.carrierData.pType == 'pph'">
                     <div class="col-3">
                       <label class="
                           control-label
@@ -1233,8 +1230,8 @@
                           text-lg-right
                           pt-2
                         ">Rate</label>
-                      <input type="number" min="0" class="form-control" [(ngModel)]="unit.carrierData.pRate"
-                        name="paymentDetails.pRate" placeholder="eg. 5 " />
+                      <input type="number" min="0" class="form-control" [(ngModel)]="unit.carrierData.pph.rate"
+                        name="unit.carrierData.pph.rate" placeholder="eg. 5 " />
                     </div>
                     <div class="col-3">
                       <label class="
@@ -1243,7 +1240,7 @@
                           text-lg-right
                           pt-4
                         "></label>
-                      <ng-select [(ngModel)]="unit.carrierData.pRCurr" (change)="updateCurrency($event)"
+                      <ng-select [(ngModel)]="unit.carrierData.pph.currency" 
                         class="form-control" name="unit.carrierData.pRCurr" placeholder="Select Currency">
                         <ng-option value="CAD">CAD</ng-option>
                         <ng-option value="USD">USD</ng-option>
@@ -1252,7 +1249,7 @@
                   </div>
 
                   <div class="row align-items-center" id="payPercentageForm"
-                    *ngIf="unit.carrierData.pType == 'Percentage'">
+                    *ngIf="unit.carrierData.pType == 'pp'">
                     <div class="col-lg-12">
                       <label class="
                           control-label
@@ -1262,15 +1259,15 @@
                         ">Load Pay Percent</label>
                       <div class="row">
                         <div class="col-3">
-                          <input type="number" min="0" class="form-control" [(ngModel)]="unit.carrierData.pPnt"
-                            name="unit.carrierData.pPnt" />
+                          <input type="number" min="0" class="form-control" [(ngModel)]="unit.carrierData.pp.loadPayPercentage"
+                            name="unit.carrierData.pp.loadPayPercentage" />
                         </div>
                         <div class="col-1">
                           <label class="font-weight-bold">% of</label>
                         </div>
                         <div class="col-5">
-                          <ng-select [(ngModel)]="unit.carrierData.perType" class="form-control"
-                            name="unit.carrierData.perType" placeholder="Select Percent Type">
+                          <ng-select [(ngModel)]="unit.carrierData.pp.loadPayPercentageOf" class="form-control"
+                            name="unit.carrierData.pp.loadPayPercentageOf" placeholder="Select Percent Type">
                             <ng-option value="Freight Fees" selected="true">Freight Fees</ng-option>
                             <ng-option value="Freight + Fuel Surcharge">Freight + Fuel Surcharge</ng-option>
                             <ng-option value="Total Income">Total Income</ng-option>
@@ -1279,7 +1276,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row" id="payPerMileForm" *ngIf="unit.carrierData.pType == 'Pay Per Mile'">
+                  <div class="row" id="payPerMileForm" *ngIf="unit.carrierData.pType == 'ppm'">
                     <div class="col-3">
                       <label class="
                           control-label
@@ -1287,7 +1284,7 @@
                           text-lg-right
                           pt-2
                         ">Loaded Miles</label>
-                      <input type="number" min="0" [(ngModel)]="unit.carrierData.lm" name="unit.carrierData.lm"
+                      <input type="number" min="0" [(ngModel)]="unit.carrierData.ppm.loadedMiles" name="unit.carrierData.ppm.loadedMiles"
                         class="form-control" placeholder="eg. 5 " />
                     </div>
 
@@ -1298,8 +1295,8 @@
                           text-lg-right
                           pt-4
                         "></label>
-                      <ng-select [(ngModel)]="unit.carrierData.lmCur" (change)="updateCurrency($event)"
-                        class="form-control" name="unit.carrierData.lmCur" placeholder="Select Currency">
+                      <ng-select [(ngModel)]="unit.carrierData.ppm.currency" 
+                        class="form-control" name="unit.carrierData.ppm.currency" placeholder="Select Currency">
                         <ng-option value="CAD">CAD</ng-option>
                         <ng-option value="USD">USD</ng-option>
                       </ng-select>
@@ -1311,7 +1308,7 @@
                           text-lg-right
                           pt-2
                         ">Empty Miles</label>
-                      <input type="number" [(ngModel)]="unit.carrierData.em" name="unit.carrierData.em"
+                      <input type="number" [(ngModel)]="unit.carrierData.ppm.emptyMiles" name="unit.carrierData.ppm.emptyMiles"
                         class="form-control" placeholder="eg. 5" />
                     </div>
                     <div class="col-3">
@@ -1321,8 +1318,8 @@
                           text-lg-right
                           pt-4
                         "></label>
-                      <ng-select [(ngModel)]="unit.carrierData.emCur" (change)="updateCurrency($event)"
-                        class="form-control" name="unit.carrierData.emCur" placeholder="Select Currency">
+                      <ng-select [(ngModel)]="unit.carrierData.ppm.currency" 
+                        class="form-control" name="unit.carrierData.ppm.currency" placeholder="Select Currency">
                         <ng-option value="CAD">CAD</ng-option>
                         <ng-option value="USD">USD</ng-option>
                       </ng-select>
@@ -1807,19 +1804,16 @@
                   </label>
                   <ng-select [(ngModel)]="unit.opData.pType" class="form-control" name="unit.opData.pType"
                     placeholder="Select payroll type">
-                    <ng-option value="Pay Per Mile">Pay Per Mile</ng-option>
-                    <ng-option value="Percentage">Percentage</ng-option>
-                    <ng-option value="Pay Per Hour">Pay Per Hour</ng-option>
-                    <ng-option value="Pay Per Delivery">Pay Per Delivery</ng-option>
+                    <ng-option *ngFor="let option of paymentOptions" [value]="option.value">{{option.name}}</ng-option>
                   </ng-select>
                 </div>
 
 
-                <div class="row m-0 w-100" id="payPerHourForm" *ngIf="unit.opData.pType == 'Pay Per Hour'">
+                <div class="row m-0 w-100" id="payPerHourForm" *ngIf="unit.opData.pType == 'pph'">
                   <div class="col-3">
                     <label class="control-label font-weight-bold text-lg-right pt-2">Rate</label>
-                    <input type="number" min="0" class="form-control" [(ngModel)]="unit.opData.pRate"
-                      name="unit.opData.pRate" placeholder="eg. 5" />
+                    <input type="number" min="0" class="form-control" [(ngModel)]="unit.opData.pph.rate"
+                      name="unit.opData.pph.rate" placeholder="eg. 5" />
 
                     <!-- <div *ngIf="ownerrate.invalid && (ownerrate.dirty || ownerrate.touched)" class="text-danger">
                                                               <div *ngIf="ownerrate.errors.pattern">
@@ -1829,20 +1823,20 @@
                   </div>
                   <div class="col-3">
                     <label class="control-label font-weight-bold text-lg-right pt-4"></label>
-                    <ng-select [(ngModel)]="unit.opData.pRCur" class="form-control" (change)="updateCurrency($event)"
-                      placeholder="eg. 1,2,3 " name="unit.opData.pRCur" placeholder="Select Currency">
+                    <ng-select [(ngModel)]="unit.opData.pph.currency" class="form-control"
+                      placeholder="eg. 1,2,3 " name="unit.opData.pph.currency" placeholder="Select Currency">
                       <ng-option value="CAD">CAD</ng-option>
                       <ng-option value="USD">USD</ng-option>
                     </ng-select>
                   </div>
                 </div>
-                <div class="row m-0 w-100" id="payPercentageForm" *ngIf="unit.opData.pType == 'Percentage'">
+                <div class="row m-0 w-100" id="payPercentageForm" *ngIf="unit.opData.pType == 'pp'">
                   <div class="col-12">
                     <label class="control-label font-weight-bold text-lg-right pt-2">Load Pay Percent</label>
                     <div class="row">
                       <div class="col-3">
                         <input type="number" min="0" class="form-control" placeholder="eg. 5 "
-                          [(ngModel)]="unit.opData.pPnt" name="paymentDetails.pPnt" />
+                          [(ngModel)]="unit.opData.pp.loadPayPercentage" name="paymentDetails.loadPayPercentage" />
 
                         <!-- <div *ngIf="ownerloadpaypercent.invalid && (ownerloadpaypercent.dirty || ownerloadpaypercent.touched)" class="text-danger">
                                                                       <div *ngIf="ownerloadpaypercent.errors.pattern">
@@ -1854,7 +1848,7 @@
                         <label class="font-weight-bold">% of</label>
                       </div>
                       <div class="col-5">
-                        <ng-select [(ngModel)]="unit.opData.perType" class="form-control" name="paymentDetails.perType"
+                        <ng-select [(ngModel)]="unit.opData.pp.loadPayPercentageOf" class="form-control" name="paymentDetails.pp.loadPayPercentageOf"
                           placeholder="Select Percent Type">
                           <ng-option value="Freight Fees" selected="true">Freight Fees</ng-option>
                           <ng-option value="Freight + Fuel Surcharge">Freight + Fuel Surcharge</ng-option>
@@ -1864,10 +1858,10 @@
                     </div>
                   </div>
                 </div>
-                <div class="row m-0 w-100" id="payPerMileForm" *ngIf="unit.opData.pType == 'Pay Per Mile'">
+                <div class="row m-0 w-100" id="payPerMileForm" *ngIf="unit.opData.pType == 'ppm'">
                   <div class="col-3">
                     <label class="control-label font-weight-bold text-lg-right pt-2">Loaded Miles</label>
-                    <input type="number" min="0" [(ngModel)]="unit.opData.lm" name="unit.opData.lm" class="form-control"
+                    <input type="number" min="0" [(ngModel)]="unit.opData.ppm.loadedMiles" name="unit.opData.ppm.loadedMiles" class="form-control"
                       placeholder="eg. 5" />
 
                     <!-- <div *ngIf="ownerloadedmiles.invalid && (ownerloadedmiles.dirty || ownerloadedmiles.touched)" class="text-danger">
@@ -1878,15 +1872,15 @@
                   </div>
                   <div class="col-3">
                     <label class="control-label font-weight-bold text-lg-right pt-4"></label>
-                    <ng-select [(ngModel)]="unit.opData.lmCur" class="form-control" (change)="updateCurrency($event)"
-                      name="unit.opData.lmCur" placeholder="Select Currency">
+                    <ng-select [(ngModel)]="unit.opData.ppm.currency" class="form-control"
+                      name="unit.opData.ppm.currency" placeholder="Select Currency">
                       <ng-option value="CAD">CAD</ng-option>
                       <ng-option value="USD">USD</ng-option>
                     </ng-select>
                   </div>
                   <div class="col-3">
                     <label class="control-label font-weight-bold text-lg-right pt-2">Empty Miles</label>
-                    <input type="number" min="0" [(ngModel)]="unit.opData.em" name="unit.opData.em" class="form-control"
+                    <input type="number" min="0" [(ngModel)]="unit.opData.ppm.emptyMiles" name="unit.opData.ppm.emptyMiles" class="form-control"
                       placeholder="eg. 5" />
 
                     <!-- <div *ngIf="ownerempty.invalid && (ownerempty.dirty || ownerempty.touched)" class="text-danger">
@@ -1897,17 +1891,17 @@
                   </div>
                   <div class="col-3">
                     <label class="control-label font-weight-bold text-lg-right pt-4"></label>
-                    <ng-select [(ngModel)]="unit.opData.emCur" class="form-control" (change)="updateCurrency($event)"
+                    <ng-select [(ngModel)]="unit.opData.ppm.currency" class="form-control"
                       name="unit.opData.emCur" placeholder="Select Currency">
                       <ng-option value="CAD">CAD</ng-option>
                       <ng-option value="USD">USD</ng-option>
                     </ng-select>
                   </div>
                 </div>
-                <div class="row m-0 w-100" id="payPerDeliveryForm" *ngIf="unit.opData.pType == 'Pay Per Delivery'">
+                <div class="row m-0 w-100" id="payPerDeliveryForm" *ngIf="unit.opData.pType == 'ppd'">
                   <div class="col-3">
                     <label class="control-label font-weight-bold text-lg-right pt-2">Delivery Rate</label>
-                    <input [(ngModel)]="unit.opData.dr" name="unit.opData.dr" type="text" class="form-control"
+                    <input [(ngModel)]="unit.opData.ppd.deliveryRate" name="unit.opData.ppd.deliveryRate" type="text" class="form-control"
                       placeholder="eg. 30" />
                   </div>
                   <div class="col-3">
@@ -1918,8 +1912,8 @@
                         pt-2
                         mt-1
                       "></label>
-                    <ng-select class="mt-2" [(ngModel)]="unit.opData.drCur" (change)="updateCurrency($event)"
-                      name="unit.opData.drCur" placeholder="Select Currency">
+                    <ng-select class="mt-2" [(ngModel)]="unit.opData.ppd.currency"
+                      name="unit.opData.ppd.currency" placeholder="Select Currency">
                       <ng-option value="CAD">CAD</ng-option>
                       <ng-option value="USD">USD</ng-option>
                     </ng-select>
@@ -2479,80 +2473,79 @@
                   <div class="col-6">
                     <table style="float: left" class="table table-bordered mb-2">
                       <tbody>
+                        <div *ngFor="let option of item.carrierData.paymentOption" [ngStyle]="{'display':(option.default)?'block':'none'}">
                         <tr>
                           <th width="40%" class="back-color-gray">
                             Payroll Type:
                           </th>
                           <td>
                             {{
-                            item.carrierData.pType
-                            ? item.carrierData.pType
+                            option.pType
+                            ? mapPayment[option.pType]
                             : "-"
                             }}
                           </td>
                         </tr>
-                        <tr *ngIf="item.carrierData.pType === 'Pay Per Mile'">
+                        <tr *ngIf="option.pType == 'ppm'">
                           <th width="40%" class="back-color-gray">
                             Loaded Miles:
                           </th>
                           <td>
-                            {{ item.carrierData.lm ? item.carrierData.lm : "-" }}
+                            {{ option.loadedMiles ? option.loadedMiles : "-" }}
                             {{
-                            item.carrierData.lm ? item.carrierData.lmCur : ""
+                            option.currency
                             }}
                           </td>
                         </tr>
-                        <tr *ngIf="item.carrierData.pType === 'Pay Per Mile'">
+                        <tr *ngIf="option.pType == 'ppm'">
                           <th width="40%" class="back-color-gray">
                             Empty Miles:
                           </th>
                           <td>
-                            {{ item.carrierData.em ? item.carrierData.em : "-" }}
+                            {{ option.emptyMiles ? option.emptyMiles : "-" }}
                             {{
-                            item.carrierData.em ? item.carrierData.emCur : ""
+                            option.currency
                             }}
                           </td>
                         </tr>
-                        <tr *ngIf="item.carrierData.pType === 'Percentage'">
+                        <tr *ngIf="option.pType === 'pp'">
                           <th width="40%" class="back-color-gray">
                             Load Pay Percent:
                           </th>
                           <td>
                             {{
-                            item.carrierData.pPnt ? item.carrierData.pPnt : "-"
+                            option.loadPayPercentage
                             }}
                             {{
-                            item.carrierData.pPnt
-                            ? item.carrierData.perType
-                            : ""
+                            option.loadPayPercentageOf
                             }}
                           </td>
                         </tr>
-                        <tr *ngIf="item.carrierData.pType === 'Pay Per Hour'">
+                        <tr *ngIf="option.pType == 'pph'">
                           <th width="40%" class="back-color-gray">Rate:</th>
                           <td>
                             {{
-                            item.carrierData.pRate
-                            ? item.carrierData.pRate
+                            option.rate
+                            ? option.rate
                             : "-"
                             }}
                             {{
-                            item.carrierData.pRate
-                            ? item.carrierData.pRCurr
+                            option.currency
+                            ? option.currency
                             : ""
                             }}
                           </td>
                         </tr>
-                        <tr *ngIf="item.carrierData.pType === 'Pay Per Delivery'">
+                        <tr *ngIf="item.carrierData.pType === 'ppd'">
                           <th width="40%" class="back-color-gray">
                             Delivery Rate:
                           </th>
                           <td>
-                            {{ item.carrierData.dr ? item.carrierData.dr : "-" }}
-                            {{ item.carrierData.drCur }}
+                            {{ option.deliveryRate ? option.deliveryRate : "-" }}
+                            {{ option.currency }}
                           </td>
                         </tr>
-
+                      </div>
                         <tr>
                           <th width="40%" class="back-color-gray">
                             Local Tax (in Percentage):
@@ -2952,32 +2945,61 @@
                             }}
                           </td>
                         </tr>
+                  <div *ngFor="let option of item.opData.paymentOption" [ngStyle]="{'display':(option.default)?'block':'none'}">
                         <tr>
                           <th width="40%" class="back-color-gray">
                             Payroll Type:
                           </th>
                           <td>
-                            {{ item.opData.pType ? item.opData.pType : "-" }}
+                            {{ option.pType ? mapPayment[option.pType] : "-" }}
                           </td>
                         </tr>
-                        <tr *ngIf="item.opData.pType === 'Pay Per Mile'">
+                        <tr *ngIf="option.pType == 'ppm'">
                           <th width="40%" class="back-color-gray">
                             Loaded Miles:
                           </th>
                           <td>
-                            {{ item.opData.lm ? item.opData.lm : "-" }}
-                            {{ item.opData.lm ? item.opData.lmCur : "" }}
+                            {{ option.loadedMiles ? option.loadedMiles : "-" }}
+                            {{ option.currency ? option.currency : "" }}
                           </td>
                         </tr>
-                        <tr *ngIf="item.opData.pType === 'Pay Per Mile'">
+                        <tr *ngIf="option.pType == 'ppm'">
                           <th width="40%" class="back-color-gray">
                             Empty Miles:
                           </th>
                           <td>
-                            {{ item.opData.em ? item.opData.em : "-" }}
-                            {{ item.opData.em ? item.opData.emCur : "" }}
+                            {{ option.emptyMiles ? option.emptyMiles : "-" }}
+                            {{ option.currency ? option.currency : "" }}
                           </td>
                         </tr>
+                        <tr *ngIf="option.pType == 'pph'">
+                          <th width="40%" class="back-color-gray">
+                            Rate:
+                          </th>
+                          <td>
+                            {{ option.rate ? option.rate : "-" }}
+                            {{ option.currency ? option.currency : "" }}
+                          </td>
+                        </tr>
+                        <tr *ngIf="option.pType == 'pp'">
+                          <th width="40%" class="back-color-gray">
+                            Percentage:
+                          </th>
+                          <td>
+                            {{ option.loadPayPercentage ? option.loadPayPercentage : "-" }} of 
+                            {{ option.loadPayPercentageOf ? option.loadPayPercentageOf : "" }}
+                          </td>
+                        </tr>
+                        <tr *ngIf="option.pType == 'ppd'">
+                          <th width="40%" class="back-color-gray">
+                            Delivery Rate:
+                          </th>
+                          <td>
+                            {{ option.deliveryRate ? option.deliveryRate : "-" }} of 
+                            {{ option.currency ? option.currency : "" }}
+                          </td>
+                        </tr>
+                   </div>
                       </tbody>
                     </table>
                   </div>

@@ -24,6 +24,7 @@ import { ForgotPasswordComponent } from "./entry/forgot-password/forgot-password
 import { HttpClientModule } from "@angular/common/http";
 import { LocationShareComponent } from "./entry/location-share/location-share.component";
 import { SubscriptionOnboardComponent } from "./entry/subscription-onboard/subscription-onboard.component";
+import { ListOrganizationsComponent } from "./entry/list-organizations/list-organizations.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "/Login", pathMatch: "full" },
@@ -57,6 +58,12 @@ const routes: Routes = [
     canActivate: [CheckProfileServiceService, AuthService],
     data: { title: "Entire Fleet" },
   },
+  {
+    path: "organizations",
+    component: ListOrganizationsComponent,
+    data: { title: "Organizations List" },
+  },
+
   {
     path: "fleet",
     loadChildren: () =>
@@ -119,7 +126,6 @@ const routes: Routes = [
     path: "**",
     redirectTo: "/404",
   },
-
 ];
 @NgModule({
   imports: [
@@ -141,4 +147,4 @@ const routes: Routes = [
     NgbModal,
   ],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
