@@ -35,7 +35,37 @@ export class NewAddressBookComponent implements OnInit {
   closeResult = '';
   public searchTerm = new Subject<string>();
   public searchResults: any;
-
+  paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"}]
+  mapPayment={ppm:"Pay Per Mile",pp:"Percentage",pph:"Pay Per Hour",ppd:"Pay Per Delivery"}
+  payPerMile={
+    pType:"ppm",
+    loadedMiles:null,
+    currency:null,
+    emptyMiles:null,
+    emptyMilesTeam:null,
+    loadedMilesTeam:null,
+    default:false
+  }
+  payPerHour={
+    pType:"pph",
+    rate:null,
+    currency:null,
+    waitingPay:null,
+    waitingHourAfter:null,
+    default:false
+  }
+  payPercentage={
+    pType:"pp",
+    loadPayPercentage:null,
+    loadPayPercentageOf:null,
+    default:false
+  }
+  payPerDelivery={
+    pType:"ppd",
+    deliveryRate:null,
+    currency:null,
+    default:false
+  }
   units: any = [];
   filterVal = {
     cName: '',
@@ -285,6 +315,37 @@ similarSuggestions = [];
     this.modalSubscription.unsubscribe();
   }
 
+  resetPaymentOption(){
+    this.payPerMile={
+      pType:"ppm",
+      loadedMiles:null,
+      currency:null,
+      emptyMiles:null,
+      emptyMilesTeam:null,
+      loadedMilesTeam:null,
+      default:false
+    }
+    this.payPerHour={
+      pType:"pph",
+      rate:null,
+      currency:null,
+      waitingPay:null,
+      waitingHourAfter:null,
+      default:false
+    }
+    this.payPercentage={
+      pType:"pp",
+      loadPayPercentage:null,
+      loadPayPercentageOf:null,
+      default:false
+    }
+    this.payPerDelivery={
+      pType:"ppd",
+      deliveryRate:null,
+      currency:null,
+      default:false
+    }
+  }
   /*
    * Get all countries from api
    */
@@ -613,6 +674,7 @@ similarSuggestions = [];
         }
       } else if (element === 'carrier') {
         if (!this.newArr.includes('carrier')) {
+          this.resetPaymentOption();
           let data = {
             carrierData: {
               csa: false,
@@ -628,17 +690,21 @@ similarSuggestions = [];
               cvor: '',
               lTax: '',
               fTax: '',
-              pType: null,
-              pRate: '',
-              pRCurr: null,
-              pPnt: '',
-              perType: '',
-              lm: '',
-              lmCur: null,
-              em: '',
-              emCur: null,
-              dr: '',
-              drCur: null,
+              pType: 'ppm',
+              ppd:this.payPerDelivery,
+              pph:this.payPerHour,
+              ppm:this.payPerMile,
+              pp:this.payPercentage,
+              // pRate: '',
+              // pRCurr: null,
+              // pPnt: '',
+              // perType: '',
+              // lm: '',
+              // lmCur: null,
+              // em: '',
+              // emCur: null,
+              // dr: '',
+              // drCur: null,
               aTax: false,
               wsib: false,
               wsibAcc: '',
@@ -734,23 +800,28 @@ similarSuggestions = [];
         }
       } else if (element === 'owner_operator') {
         if (!this.newArr.includes('owner_operator')) {
+          this.resetPaymentOption();
           let data = {
             opData: {
               csa: false,
               fast: '',
               fastExp: null,
               sin: '',
-              pType: '',
-              pRate: '',
-              pRCur: null,
-              pPnt: '',
-              perType: '',
-              lm: '',
-              lmCur: null,
-              em: '',
-              emCur: null,
-              dr: '',
-              drCur: null,
+              pType: 'ppm',
+              ppd:this.payPerDelivery,
+              pph:this.payPerHour,
+              ppm:this.payPerMile,
+              pp:this.payPercentage,
+              // pRate: '',
+              // pRCur: null,
+              // pPnt: '',
+              // perType: '',
+              // lm: '',
+              // lmCur: null,
+              // em: '',
+              // emCur: null,
+              // dr: '',
+              // drCur: null,
               wsib: false,
               wsibAcc: '',
               wsibExp: null,
@@ -1089,6 +1160,41 @@ similarSuggestions = [];
       const element = this.unitData.addlCnt[j];
       element.flName = element.fName + ' ' + element.lName;
     }
+
+    if(this.unitData.data.length>0){
+    for(let element of this.unitData.data){
+      if(element.carrierData || element.opData){
+        const el=element.carrierData?element.carrierData:element.opData
+        el.ppd.default=false
+            el.pph.default=false
+            el.ppm.default=false
+            el.pp.default=false
+        switch(el.pType){
+          case "ppd":
+          el.ppd.default=true
+          break;
+        case "pph":
+          el.pph.default=true
+          break;
+        case "pp":
+          el.pp.default=true
+          break;
+        case "ppm":
+          el.ppm.default=true
+          break;
+
+        }
+        el.paymentOption=[el.pp,el.ppd,el.pph,el.ppm]
+        delete el.pType
+        delete el.pp
+        delete el.ppd
+        delete el.pph
+        delete el.ppm
+        if(element.carrierData) element.carrierData=el
+        if(element.opData)  element.opData=el
+      }
+    }
+  }
     // create form data instance
     const formData = new FormData();
     formData.append('data', JSON.stringify(this.unitData));
@@ -1246,6 +1352,40 @@ validatePopUp()
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
     //append other fields
+    if(this.unitData.data.length>0){
+      for(let element of this.unitData.data){
+        if(element.carrierData || element.opData){
+          const el=element.carrierData?element.carrierData:element.opData
+          el.ppd.default=false
+            el.pph.default=false
+            el.ppm.default=false
+            el.pp.default=false
+          switch(el.pType){
+            case "ppd":
+            el.ppd.default=true
+            break;
+          case "pph":
+            el.pph.default=true
+            break;
+          case "pp":
+            el.pp.default=true
+            break;
+          case "ppm":
+            el.ppm.default=true
+            break;
+  
+          }
+          el.paymentOption=[el.pp,el.ppd,el.pph,el.ppm]
+          delete el.pType
+          delete el.pp
+          delete el.ppd
+          delete el.pph
+          delete el.ppm
+          if(element.carrierData) element.carrierData=el
+          if(element.opData)  element.opData=el
+        }
+      }
+    }
     formData.append('data', JSON.stringify(this.unitData));
     this.apiService.putData('contacts', formData, true).subscribe({
       complete: () => { },
@@ -1428,6 +1568,49 @@ validatePopUp()
       }
       this.unitData.addlCnt = res.addlCnt;
       this.unitData.data = res.data;
+      console.log(this.unitData.data)
+      for(const data of this.unitData.data){
+        if(data.carrierData){
+          let newData=data.carrierData
+          for(const element of data.carrierData.paymentOption){
+            if(element.default){
+              newData.pType=element.pType
+            }
+            if(element.pType=="ppm"){
+              newData.ppm=element
+            }
+            if(element.pType=="pph"){
+              newData.pph=element
+            }
+            if(element.pType=="pp"){
+              newData.pp=element
+            }
+            if(element.pType=="ppd"){
+              newData.ppd=element
+            }
+          }
+        }
+        if(data.opData){
+          let newData=data.opData
+          for(const element of data.opData.paymentOption){
+            if(element.default){
+              newData.pType=element.pType
+            }
+            if(element.pType=="ppm"){
+              newData.ppm=element
+            }
+            if(element.pType=="pph"){
+              newData.pph=element
+            }
+            if(element.pType=="pp"){
+              newData.pp=element
+            }
+            if(element.pType=="ppd"){
+              newData.ppd=element
+            }
+          }
+        }
+      }
       //to show profile image
       if (res.profileImg !== '' && res.profileImg !== undefined) {
         this.profilePath = `${this.Asseturl}/${res.carrierID}/${res.profileImg}`;

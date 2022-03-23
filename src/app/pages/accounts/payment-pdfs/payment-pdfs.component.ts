@@ -77,6 +77,8 @@ export class PaymentPdfsComponent implements OnInit {
     workerBenefit: 0,
     incomeTax: 0,
     eiInsurable: 0,
+    gstHstAmt: 0,
+    isVendorPayment: false,
   };
   locale = "en-US";
   annualResult = {
@@ -93,6 +95,7 @@ export class PaymentPdfsComponent implements OnInit {
     eiInsurable: 0,
     netPay: 0,
   };
+
   setlTripIds = [];
   trips = [];
   paymentTrips = [];

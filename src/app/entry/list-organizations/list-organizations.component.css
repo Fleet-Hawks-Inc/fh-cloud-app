@@ -1,0 +1,16 @@
+.h1class {
+  line-height: 34px !important;
+  letter-spacing: 0px !important;
+}
+
+.view-link {
+  font-weight: 500;
+}
+.view-link a {
+  color: #0e6ede;
+  text-decoration: none;
+}
+.view-link a:hover {
+  color: #0e6ede;
+  text-decoration: underline;
+}

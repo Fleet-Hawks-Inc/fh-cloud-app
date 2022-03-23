@@ -138,6 +138,9 @@ export class PaymentChequeComponent implements OnInit {
           this.getCarriers();
           this.getCurrentuser();
           this.paydata = res;
+          this.paydata.gstHstAmt = this.paydata.gstHstAmt === undefined ? 0 : this.paydata.gstHstAmt;
+          this.paydata.gstHstPer = this.paydata.gstHstAmt === undefined ? 0 : this.paydata.gstHstPer;
+          this.paydata.isVendorPayment = this.paydata.isVendorPayment === undefined ? false : this.paydata.isVendorPayment;
           this.cheqdata.payDate = formatDate(
             this.paydata.txnDate,
             "dd-MM-yyyy",
@@ -194,7 +197,7 @@ export class PaymentChequeComponent implements OnInit {
             this.paydata.type === "driver" ||
             this.paydata.type === "employee"
           ) {
-            this.cheqdata.regularPay = this.paydata.settledAmount;
+            this.cheqdata.regularPay = this.paydata.settledAmount + this.paydata.gstHstAmt;
             this.cheqdata.vacationPay = this.paydata.vacPayAmount;
             this.cheqdata.grossPay =
               Number(this.cheqdata.regularPay) +
@@ -219,7 +222,7 @@ export class PaymentChequeComponent implements OnInit {
             this.paydata.type === "carrier" ||
             this.paydata.type === "vendor"
           ) {
-            this.cheqdata.regularPay = this.paydata.finalAmount;
+            this.cheqdata.regularPay = this.paydata.finalAmount + this.paydata.gstHstAmt;
             this.cheqdata.grossPay = this.paydata.finalAmount;
             if (this.paydata.type === "vendor") {
               this.cheqdata.invoices = this.paydata.invoices;
