@@ -1079,7 +1079,7 @@
                                             Loaded Miles:
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                            {{ loadedMiles ? loadedMiles : '0' }} {{ loadedMilesUnit }}
+                                            {{ payPerMile.loadedMiles ? payPerMile.loadedMiles : '0' }} {{ payPerMile.currency }}
                                         </div>
                                     </div>
                                     <div class="row m-0" *ngIf="paymentType === 'Pay Per Mile'">
@@ -1093,7 +1093,7 @@
                                             Loaded Miles (Team):
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                            {{ loadedMilesTeam ? loadedMilesTeam : '0' }} {{ loadedMilesTeamUnit }}
+                                            {{ payPerMile.loadedMilesTeam ? payPerMile.loadedMilesTeam : '0' }} {{ payPerMile.currency }}
                                         </div>
                                     </div>
                                     <div class="row m-0" *ngIf="paymentType === 'Pay Per Mile'">
@@ -1107,7 +1107,7 @@
                                             Empty Miles:
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                            {{ emptyMiles ? emptyMiles : '0' }} {{ emptyMilesUnit }}
+                                            {{ payPerMile.emptyMiles ? payPerMile.emptyMiles : '0' }} {{ payPerMile.currency }}
                                         </div>
                                     </div>
                                     <div class="row m-0" *ngIf="paymentType === 'Pay Per Mile'">
@@ -1121,7 +1121,7 @@
                                             Empty Miles (Team):
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                            {{ emptyMilesTeam ? emptyMilesTeam : '0' }} {{ emptyMilesTeamUnit }}
+                                            {{ payPerMile.emptyMilesTeam ? payPerMile.emptyMilesTeam : '0' }} {{ payPerMile.currency }}
                                         </div>
                                     </div>
                                     <div class="row m-0" *ngIf="paymentType === 'Percentage'">
@@ -1135,7 +1135,7 @@
                                             Load Pay Percentage:
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                            {{ loadPayPercentage ? loadPayPercentage : '-' }}
+                                            {{ payPercentage.loadPayPercentage ? payPercentage.loadPayPercentage : '-' }}
                                         </div>
                                     </div>
                                     <div class="row m-0" *ngIf="paymentType === 'Percentage'">
@@ -1149,7 +1149,7 @@
                                             Load Pay Percentage Of:
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                            {{ loadPayPercentageOf ? loadPayPercentageOf : '-' }}
+                                            {{ payPercentage.loadPayPercentageOf ? payPercentage.loadPayPercentageOf : '-' }}
                                         </div>
                                     </div>
                                     <div class="row m-0" *ngIf="paymentType === 'Pay Per Hour'">
@@ -1163,9 +1163,9 @@
                                             Rate:
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half">
-                                            {{ rate }}
-                                            <span *ngIf="rateUnit != undefined">{{
-                                                rateUnit ? rateUnit : '-'
+                                            {{ payPerHour.rate }}
+                                            <span *ngIf="payPerHour.currency != undefined">{{
+                                                payPerHour.currency ? payPerHour.currency : '-'
                                                 }}</span>
                                         </div>
                                     </div>
@@ -1180,9 +1180,9 @@
                                             Waiting period Pay ($):
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                            {{ waitingPay ? waitingPay : '-' }}
-                                            <span *ngIf="waitingPayUnit != undefined">{{
-                                                waitingPayUnit
+                                            {{ payPerHour.waitingPay ? payPerHour.waitingPay : '-' }}
+                                            <span *ngIf="payPerHour.currency != undefined">{{
+                                                payPerHour.currency
                                                 }}</span>
                                         </div>
                                     </div>
@@ -1197,7 +1197,7 @@
                                             Waiting hour start after:
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                            {{ waitingHourAfter ? waitingHourAfter : '-' }}
+                                            {{ payPerHour.waitingHourAfter ? payPerHour.waitingHourAfter : '-' }}
                                         </div>
                                     </div>
                                     <div class="row m-0" *ngIf="paymentType === 'Pay Per Delivery'">
@@ -1211,9 +1211,26 @@
                                             Delivery Rate:
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half">
-                                            {{ deliveryRate ? deliveryRate : '0' }}
-                                            <span *ngIf="deliveryRateUnit != undefined">{{
-                                                deliveryRateUnit
+                                            {{ payPerDelivery.deliveryRate ? payPerDelivery.deliveryRate : '0' }}
+                                            <span *ngIf="payPerDelivery.currency== undefined">{{
+                                                payPerDelivery.currency
+                                                }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row m-0" *ngIf="paymentType === 'Flat Rate'">
+                                        <div class="
+                        col-lg-6
+                        p-2
+                        font-weight-bold
+                        text-3 text-left
+                        back-color-gray
+                      ">
+                                            Flat Rate:
+                                        </div>
+                                        <div class="col-lg-6 p-2 bor_half">
+                                            {{ payFlatRate.flatRate ? payFlatRate.flatRate : '0' }}
+                                            <span *ngIf="payFlatRate.currency!= undefined">{{
+                                                payFlatRate.currency
                                                 }}</span>
                                         </div>
                                     </div>
