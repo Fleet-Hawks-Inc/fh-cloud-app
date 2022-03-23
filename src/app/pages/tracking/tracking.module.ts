@@ -17,6 +17,18 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ClipboardModule } from 'ngx-clipboard';
 import { RippleModule } from 'primeng/ripple';
 import { SplitterModule } from 'primeng/splitter';
+import { NgxEchartsModule } from 'ngx-echarts';
+import { AccordionModule } from 'primeng/accordion';
+// Import the echarts core module, which provides the necessary interfaces for using echarts.
+import * as echarts from 'echarts/core';
+// Import bar charts, all with Chart suffix
+import { LineChart } from 'echarts/charts';
+import { TitleComponent, TooltipComponent, GridComponent, ToolboxComponent, DataZoomComponent } from 'echarts/components';
+// Import the Canvas renderer, note that introducing the CanvasRenderer or SVGRenderer is a required step
+import { CanvasRenderer } from 'echarts/renderers';
+import { TabViewModule } from 'primeng/tabview';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+echarts.use([TitleComponent, TooltipComponent, ToolboxComponent, GridComponent, DataZoomComponent, LineChart, CanvasRenderer]);
 @NgModule({
   declarations: [AssetTrackerComponent, VehicleDashCamTrackerComponent],
   imports: [
@@ -37,7 +49,14 @@ import { SplitterModule } from 'primeng/splitter';
     CalendarModule,
     DropdownModule,
     RippleModule,
-    SplitterModule
+    SplitterModule,
+    NgxEchartsModule.forRoot({
+
+      echarts
+    }),
+    TabViewModule,
+    AccordionModule,
+    NgbModule
   ]
 })
 export class TrackingModule { }

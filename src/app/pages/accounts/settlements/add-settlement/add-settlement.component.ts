@@ -167,7 +167,7 @@ export class AddSettlementComponent implements OnInit {
   dummyDelEntry = [];
   allFuelsDumm = [];
   isEntity: boolean;
-  paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"}]
+  paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"},{name:"Flat Rate",value:"pfr"}]
   constructor(
     private listService: ListService,
     private route: ActivatedRoute,
@@ -270,6 +270,9 @@ export class AddSettlementComponent implements OnInit {
       if(element.pType=="ppd"){
         this.settlementData.currency =element.currency?element.currency:'CAD'
         this.settlementData.paymentInfo.dRate=element.deliveryRate?element.deliveryRate:0
+      }
+      if(element.pType=="pfr"){
+        
       }
 });
   }
