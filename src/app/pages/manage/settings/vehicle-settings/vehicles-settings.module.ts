@@ -6,8 +6,8 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule } from "@angular/forms";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
-import { DeletedVehiclesComponent } from './deleted-vehicles/deleted-vehicles.component';
-import { ImportedVehiclesComponent } from './imported-vehicles/imported-vehicles.component';
+import { DeletedVehiclesComponent } from "./deleted-vehicles/deleted-vehicles.component";
+import { ImportedVehiclesComponent } from "./imported-vehicles/imported-vehicles.component";
 import { VehicleSettingsComponent } from "./vehicle-settings.component";
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -32,16 +32,12 @@ const routes: Routes = [
   {
     path: "overview",
     component: VehicleSettingsComponent,
-    data: { title: "vehicles overview" },
+    data: { title: "Vehicles Settings" },
   },
-
 ];
 
 @NgModule({
-  declarations: [
-    DeletedVehiclesComponent,
-    ImportedVehiclesComponent
-  ],
+  declarations: [DeletedVehiclesComponent, ImportedVehiclesComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -60,4 +56,4 @@ const routes: Routes = [
     DropdownModule,
   ],
 })
-export class VehiclesSettingsModule { }
+export class VehiclesSettingsModule {}

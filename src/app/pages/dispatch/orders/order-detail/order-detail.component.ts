@@ -230,6 +230,7 @@ export class OrderDetailComponent implements OnInit {
 
   emailDocs = [];
   invDocs = [];
+  newInvDocs = [];
   attachedDocs = [];
   isEmail = false;
 
@@ -554,7 +555,7 @@ export class OrderDetailComponent implements OnInit {
         if (result.customerEmail && result.customerEmail != '') {
           this.emailData.emails.push({ label: result.customerEmail });
         }
-        //this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
+        this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
 
         this.invStatus = result.invStatus ? result.invStatus : 'NA'
 
@@ -566,6 +567,7 @@ export class OrderDetailComponent implements OnInit {
 
   async showDocs(documents) {
     this.docs = [];
+    this.newInvDocs = [];
     documents.forEach((x: any) => {
       if (
         x.storedName.split(".")[1] === "jpg" ||
@@ -594,6 +596,8 @@ export class OrderDetailComponent implements OnInit {
       }
     });
 
+    this.newInvDocs = [...this.newInvDocs, ...this.docs];
+    console.log('this.newInvDocs', this.newInvDocs)
   }
 
   async openEmailInv() {
@@ -658,6 +662,7 @@ export class OrderDetailComponent implements OnInit {
       this.previewInvoiceModal,
       ngbModalOptions
     );
+    this.newInvDocs = this.invDocs
   }
 
   addEmails() {
@@ -703,8 +708,7 @@ export class OrderDetailComponent implements OnInit {
 
   async generate() {
     this.isShow = true;
-    this.previewRef.close();
-    this.docSelRef.close();
+
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
       margin: [0.5, 0.3, 0.5, 0.3],
@@ -719,6 +723,9 @@ export class OrderDetailComponent implements OnInit {
       },
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     });
+    this.previewRef.close();
+    this.docSelRef.close();
+    this.invDocs = this.attachedDocs;
   }
 
   openDocModal() {
@@ -764,12 +771,14 @@ export class OrderDetailComponent implements OnInit {
 
   openDocumentModal(type: string) {
     this.printBtnType = type;
-    let ngbModalOptions: NgbModalOptions = {
-      keyboard: false,
-      backdrop: "static",
-      windowClass: "docs-selection__main",
-    };
-    this.docSelRef = this.modalService.open(this.documentSelectionModal, ngbModalOptions)
+    if (this.docs.length > 0) {
+      let ngbModalOptions: NgbModalOptions = {
+        keyboard: false,
+        backdrop: "static",
+        windowClass: "docs-selection__main",
+      };
+      this.docSelRef = this.modalService.open(this.documentSelectionModal, ngbModalOptions)
+    }
   }
 
   documentSelection() {
@@ -780,7 +789,7 @@ export class OrderDetailComponent implements OnInit {
       }
     })
 
-    this.invDocs = this.attachedDocs.filter(function (doc) {
+    this.newInvDocs = this.attachedDocs.filter(function (doc) {
       return types.indexOf(doc.type) > -1;
     });
 
@@ -999,6 +1008,7 @@ export class OrderDetailComponent implements OnInit {
         });
       }
       this.attachedDocs = this.invDocs;
+      this.newInvDocs = this.invDocs;
       this.toastr.success("BOL/POD uploaded successfully");
       this.uploadBol.nativeElement.value = "";
       await this.fetchOrder();
@@ -1101,6 +1111,7 @@ export class OrderDetailComponent implements OnInit {
           });
         }
         this.attachedDocs = this.invDocs;
+        this.newInvDocs = this.invDocs;
         this.showBtns = true;
       });
   }

@@ -20,24 +20,26 @@ import { CustomerSettingComponent } from "./customer-setting/customer-setting.co
 import { DoverviewComponent } from "./settings-overview/doverview/doverview.component";
 import { ImportDriversComponent } from "./import-drivers/import-drivers.component";
 
-import { VehicleSettingsComponent } from './vehicle-settings/vehicle-settings.component';
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { TooltipModule } from 'primeng/tooltip';
-import { MenuModule } from 'primeng/menu';
-import { SplitButtonModule } from 'primeng/splitbutton';
-import { CalendarModule } from 'primeng/calendar';
-import { AutoCompleteModule } from 'primeng/autocomplete';
-import { DropdownModule } from 'primeng/dropdown';
-
+import { VehicleSettingsComponent } from "./vehicle-settings/vehicle-settings.component";
+import { TableModule } from "primeng/table";
+import { ButtonModule } from "primeng/button";
+import { MultiSelectModule } from "primeng/multiselect";
+import { TooltipModule } from "primeng/tooltip";
+import { MenuModule } from "primeng/menu";
+import { SplitButtonModule } from "primeng/splitbutton";
+import { CalendarModule } from "primeng/calendar";
+import { AutoCompleteModule } from "primeng/autocomplete";
+import { DropdownModule } from "primeng/dropdown";
 
 const routes: Routes = [
   { path: "overview", component: SettingsOverviewComponent },
   {
-    path: 'vehicles',
-    loadChildren: () => import('./vehicle-settings/vehicles-settings.module').then((m) => m.VehiclesSettingsModule),
-    data: { title: 'Vehicles Settings' }
+    path: "vehicles",
+    loadChildren: () =>
+      import("./vehicle-settings/vehicles-settings.module").then(
+        (m) => m.VehiclesSettingsModule
+      ),
+    data: { title: "Vehicles Settings" },
   },
   {
     path: "driver-overview",
@@ -91,9 +93,8 @@ const routes: Routes = [
   {
     path: "customer",
     component: CustomerSettingComponent,
-    data: { title: "Customer Settings" },
+    data: { title: "Deleted Customer" },
   },
-
 ];
 
 @NgModule({
