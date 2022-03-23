@@ -1,10 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { ActivatedRoute } from '@angular/router';
+import { EChartsOption } from 'echarts/types/dist/echarts';
 import * as moment from "moment";
 import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { ApiService } from 'src/app/services';
 
+import {
+  NgbCalendar,
+  NgbDateAdapter,
+  NgbModal
+} from "@ng-bootstrap/ng-bootstrap";
 interface location {
   battery;
   location;
@@ -26,15 +32,24 @@ export class AssetTrackerComponent implements OnInit {
 
   options: any;
   width = "100%";
-  height = "700px";
+  height = "500px";
   selectedRow;
   cols = [
+
     { field: 'battery', header: 'Battery' },
     { field: 'location', header: 'Location' },
     { field: 'speed', header: 'Speed' },
     { field: 'temperature', header: 'Tracker Temp.' },
     { field: 'time', header: 'Time' }
+
   ];
+  sensorDataCols = [
+    { field: 'assetName', header: 'Asset Name' },
+    { field: 'temperature', header: 'Temperature(Celsius)' },
+    { field: 'humidity', header: 'Humidity' },
+    { field: 'time', header: 'Date & Time' },
+  ]
+  sensorData = [];
   center = { lat: 48.48248695279594, lng: -99.0688673798094 };
   mapOptions: google.maps.MapOptions = {
     zoomControl: true,
@@ -94,7 +109,8 @@ export class AssetTrackerComponent implements OnInit {
     private apiService: ApiService,
     private message: MessageService,
     private route: ActivatedRoute,
-    private primengConfig: PrimeNGConfig
+    private primengConfig: PrimeNGConfig,
+    private ngbCalendar: NgbCalendar,
   ) {
     this.assetID = this.route.snapshot.params.assetId;
     this.markerPositions = new Array<markerPosition>();
@@ -119,8 +135,7 @@ export class AssetTrackerComponent implements OnInit {
       path: this.vertices
     })
 
-
-
+    this.getSensorData();
 
   }
 
@@ -143,6 +158,7 @@ export class AssetTrackerComponent implements OnInit {
   async updateData() {
 
     await this.getDeviceEventsForDuration(this.selectedDuration.value);
+    await this.getSensorData();
 
   }
 
@@ -261,6 +277,7 @@ export class AssetTrackerComponent implements OnInit {
   }
 
 
+
   /**
    * draw path using polyline
    * @param results 
@@ -339,6 +356,117 @@ export class AssetTrackerComponent implements OnInit {
 
 
 
+  chartOption: any;
+  updateOptions: any;
+
+
+
+  sensorLoading = false;
+  sensorTemperature = [];
+  async getSensorData() {
+    this.sensorLoading = true;
+    const data: sensorData[] = await this.apiService
+      .getData(`assetTrackers/getSensorData/${this.assetID}/bleTemp/200h`).toPromise();
+
+    if (data && data.length > 0) {
+
+      for (const res of data) {
+        const time = new Date(res.time).toLocaleString();
+
+        this.sensorTemperature.push({ name: time, value: res.graphTemp });
+
+        // format time
+
+        const updateRes = {
+          assetName: this.assetID,
+          time: time,
+          temperature: res.temperature,
+          humidity: res.humidity
+        }
+        this.sensorData.push(updateRes);
+
+
+      }
+      console.log(this.sensorTemperature);
+      this.sensorLoading = false;
+      this.mapper();
+    } else {
+      this.sensorLoading = false;
+    }
+
+  }
+
+  mapper() {
+
+
+    this.chartOption = {
+      tooltip: {
+        trigger: 'axis',
+        position: function (pt) {
+          return [pt[0], '10%'];
+        },
+      },
+      title: {
+        left: 'center',
+        text: 'Asset Temperature'
+      },
+      toolbox: {
+        feature: {
+          dataZoom: {
+
+            yAxisIndex: 'none'
+          },
+          restore: {},
+          saveAsImage: {},
+        }
+      },
+
+      // dataZoom: [
+      //   {
+      //     type: 'inside',
+      //     start: 0,
+      //     end: 5
+      //   },
+      //   {
+      //     start: 0,
+      //     end: 5
+      //   }
+      // ],
+      xAxis: {
+        type: 'time',
+        boundaryGap: false
+
+      },
+      yAxis: {
+        type: 'value',
+        boundaryGap: [0, '100%'],
+        axisLabel: {
+          formatter: '{value} °C'
+        }
+      },
+
+      series: [
+        {
+          name: 'Temperature',
+          type: 'line',
+          smooth: true,
+          symbol: 'circle',
+          // areaStyle: {},
+          data: this.sensorTemperature,
+          markLine: {
+            data: [{ type: 'average', name: 'Avg' }]
+          }
+        },
+
+      ]
+    };
+
+  }
+
+
+
+
+
 
 
 }
@@ -350,4 +478,19 @@ export class AssetTrackerComponent implements OnInit {
 interface markerPosition {
   location: google.maps.LatLng;
   data: any;
+}
+
+
+interface sensorData {
+
+  messageType: string
+  time: number;
+  temperature: number;
+  humidity: number;
+  light: string;
+  battery: number; // expressed in percentage
+  graphHumidity: any;
+  graphTemp: any
+
+
 }
