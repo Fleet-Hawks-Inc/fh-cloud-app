@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Auth } from 'aws-amplify';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-list-organizations',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListOrganizationsComponent implements OnInit {
 
-  constructor() { }
+  currentUser:any = {};
+  organizations = [];
+  constructor(private apiService: ApiService) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+    console.log('this.currentUser', this.currentUser);
+    this.apiService.getData(`carriers/get/organizations`).subscribe((res) => {
+      console.log('res', res)
+      this.organizations = res;
+    })
   }
-
 }

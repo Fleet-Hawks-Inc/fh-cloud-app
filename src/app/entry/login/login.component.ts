@@ -155,19 +155,28 @@ export class LoginComponent implements OnInit {
             let carrierID = await this.apiService.getCarrierID();
 
             this.apiService.getData(`carriers/${carrierID}`).subscribe((res) => {
-              if ('isProfileComplete' in res.Items[0]) {
-                if (res.Items[0].isProfileComplete) {
-
-                  this.router.navigate(['/Map-Dashboard'])
+              if(res.Items.length > 0) {
+                localStorage.setItem('fhCarrierId', res.Items[0].carrierID);
+                if ('isProfileComplete' in res.Items[0]) {
+                  if (res.Items[0].isProfileComplete) {
+                    if(res.Items[0].subCompIDs && res.Items[0].subCompIDs.length > 0) {
+                      this.router.navigate(['/organizations'])
+                    } else {
+                      this.router.navigate(['/Map-Dashboard'])
+                    }
+                    
+                  } else {
+                    this.router.navigate(['/onboard'])
+                  }
+                  localStorage.setItem("isProfileComplete", res.Items[0].isProfileComplete)
+                } else {
+                  if(res.Items[0].subCompIDs && res.Items[0].subCompIDs.length > 0) {
+                    this.router.navigate(['/organizations'])
+                  } else {
+                    this.router.navigate(['/Map-Dashboard'])
+                  }
                 }
-                else {
-                  this.router.navigate(['/onboard'])
-                }
-                localStorage.setItem("isProfileComplete", res.Items[0].isProfileComplete)
-              } else {
-                this.router.navigate(['/Map-Dashboard'])
               }
-
             })
           }
           const isActivatedUser = (await Auth.currentSession()).getIdToken().payload;
@@ -207,7 +216,8 @@ export class LoginComponent implements OnInit {
               localStorage.setItem('LoggedIn', 'true');
               localStorage.setItem('signOut', 'false'); //trigger flag
               localStorage.setItem('accessToken', jwt);//save token in session storage
-              await this.router.navigate(['/Map-Dashboard']);
+              // await this.router.navigate(['/Map-Dashboard']);
+              
               this.listService.triggerModal('');
               localStorage.setItem('user', JSON.stringify(user));
             }

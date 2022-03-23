@@ -14,3 +14,71 @@
   color: #0e6ede;
   text-decoration: underline;
 }
+
+.eye {
+  border: none;
+  background-color: #ebebeb;
+}
+.red1 {
+  color: #fe4e37;
+}
+
+.green1 {
+  color: #1eb54f;
+}
+
+.modal-update {
+  max-width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* new login page classes 15.09.21 */
+
+.maindivleft {
+  background: #000000;
+  float: left;
+  width: 50%;
+  position: relative;
+  min-height: 100vh;
+}
+
+.maindivright {
+  background: #ffffff;
+  float: right;
+  width: 50%;
+  position: relative;
+  min-height: 100vh;
+}
+
+@media screen and (max-width: 1067px) {
+  .maindivright {
+    width: 100% !important;
+    float: right;
+  }
+  .maindivleft {
+    display: none !important;
+  }
+}
+
+.mtnew {
+  margin-top: 25% !important;
+}
+
+.validation-message-align {
+  padding-left: 33px;
+  padding-bottom: 8px;
+}
+
+.signup-section {
+  width: 50%;
+}
+
+@media screen and (max-width: 1067px) {
+  .signup-section {
+    width: 90%;
+  }
+}
+
