@@ -297,7 +297,7 @@ export class AddDriverComponent
   pageType = "add";
   groupsData: any = [];
   sessionID: string;
-  paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"}]
+  paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"},{name:"Flat Rate", value:"pfr"}]
 
   paymentType="ppm"
 
@@ -330,7 +330,12 @@ export class AddDriverComponent
     currency:null,
     default:false
   }
-
+  payFlatRate={
+    pType:"pfr",
+    flatRate:null,
+    currency:null,
+    default:false
+  }
   constructor(
     private apiService: ApiService,
     private httpClient: HttpClient,
@@ -909,10 +914,13 @@ export class AddDriverComponent
         case "ppm":
           this.payPerMile.default=true
           break;
+        case "pfr":
+          this.payFlatRate.default=true
+          break;
         default: 
         this.payPerMile.default=true
       }
-      this.driverData.paymentOption=[this.payPerMile,this.payPerDelivery,this.payPerHour,this.payPercentage]
+      this.driverData.paymentOption=[this.payPerMile,this.payPerDelivery,this.payPerHour,this.payPercentage,this.payFlatRate]
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
       this.driverData[`deletedUploads`] = this.deletedUploads;
@@ -1277,7 +1285,10 @@ export class AddDriverComponent
           this.payPerHour.waitingHourAfter=element.waitingHourAfter
           this.payPerHour.waitingPay=element.waitingPay
       }
-
+      if(element.pType=="pfr"){
+        this.payFlatRate.flatRate=element.flatRate
+        this.payFlatRate.currency=element.currency
+      }
       if(element.pType=="ppm"){
         this.payPerMile.loadedMiles=element.loadedMiles
         this.payPerMile.currency=element.currency
@@ -1342,6 +1353,11 @@ export class AddDriverComponent
       this.hasError = false;
       this.hasSuccess = false;
       this.hideErrors();
+      this.payPerDelivery.default=false
+      this.payPerHour.default=false
+      this.payPerMile.default=false
+      this.payPercentage.default=false
+      this.payFlatRate.default=false
       switch(this.paymentType){
         case "ppd":
           this.payPerDelivery.default=true
@@ -1355,10 +1371,11 @@ export class AddDriverComponent
         case "ppm":
           this.payPerMile.default=true
           break;
-        default: 
-        this.payPerMile.default=true
+        case "pfr":
+          this.payFlatRate.default=true
+          break
       }
-      this.driverData.paymentOption=[this.payPerMile,this.payPerDelivery,this.payPerHour,this.payPercentage]
+      this.driverData.paymentOption=[this.payPerMile,this.payPerDelivery,this.payPerHour,this.payPercentage,this.payFlatRate]
       this.driverData[`driverID`] = this.driverID;
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;

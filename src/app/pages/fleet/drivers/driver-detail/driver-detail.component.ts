@@ -182,6 +182,13 @@ export class DriverDetailComponent implements OnInit {
         currency:null,
         default:false
       }
+
+      payFlatRate={
+        pType:"pfr",
+        flatRate:null,
+        currency:null,
+        default:false
+      }
     
 
     constructor(
@@ -198,7 +205,7 @@ export class DriverDetailComponent implements OnInit {
         this.sessionId = this.routerMgmtService.driverUpdateSessionID;
 
     }
-    paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"}]
+    paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"}, {name:"Flat Rate",value:"pfr"}]
 
     ngOnInit() {
 
@@ -402,7 +409,10 @@ export class DriverDetailComponent implements OnInit {
                         this.payPerHour.waitingHourAfter=element.waitingHourAfter
                         this.payPerHour.waitingPay=element.waitingPay
                     }
-              
+                    if(element.pType="pfr"){
+                        this.payFlatRate.flatRate=element.flatRate
+                        this.payFlatRate.currency=element.currency
+                    }
                     if(element.pType=="ppm"){
                       this.payPerMile.loadedMiles=element.loadedMiles
                       this.payPerMile.currency=element.currency
