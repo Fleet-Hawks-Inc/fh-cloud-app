@@ -1467,13 +1467,10 @@
                             text-lg-right
                             pt-2
                           ">Default Payment Type <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <ng-select [(ngModel)]="driverData.paymentDetails.paymentType" name="paymentDetails.paymentType" placeholder="Select the payment type" id="paymentTypeForm" (change)="changePaymentModeForm($event)" #paySlt="ngModel" required [ngClass]="{
+                                                <ng-select [(ngModel)]="paymentType" name="paymentType" placeholder="Select the payment type" id="paymentTypeForm" #paySlt="ngModel" required [ngClass]="{
                               error: driverF.submitted && paySlt.invalid
                             }">
-                                                    <ng-option value="Pay Per Mile">Pay Per Mile</ng-option>
-                                                    <ng-option value="Percentage">Percentage</ng-option>
-                                                    <ng-option value="Pay Per Hour">Pay Per Hour</ng-option>
-                                                    <ng-option value="Pay Per Delivery">Pay Per Delivery</ng-option>
+                                        <ng-option *ngFor="let option of paymentOptions" [value]="option.value">{{option.name}}</ng-option>
                                                 </ng-select>
 
                                                 <div *ngIf="paySlt.invalid && driverF.submitted" class="text-danger">
@@ -1504,7 +1501,7 @@
                                     </div>
                                     <div class="col-lg-6 mb-1">
                                         <div class="row" id="payPerHourForm" *ngIf="
-                        driverData.paymentDetails.paymentType == 'Pay Per Hour'
+                        paymentType == 'pph'
                       ">
                                             <div class="col-lg-4">
                                                 <label class="
@@ -1514,7 +1511,7 @@
                             pt-2
                           ">
                           Rate <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <input [(ngModel)]="driverData.paymentDetails.rate" name="paymentDetails.rate" type="text" class="form-control" placeholder="eg. $20 ,$40 ,$60" #payHour="ngModel" required [ngClass]="{
+                                                <input [(ngModel)]="payPerHour.rate" name="payPerHour.rate" type="text" class="form-control" placeholder="eg. $20 ,$40 ,$60" #payHour="ngModel" required [ngClass]="{
                             error: driverF.submitted && payHour.invalid
                           }" />
                                                 <div *ngIf="payHour.invalid && driverF.submitted" class="text-danger">
@@ -1534,7 +1531,7 @@
                             pt-2
                             mt-1
                           "></label>
-                                                <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.rateUnit" (change)="changeCurrency($event)" name="paymentDetails.rateUnit" placeholder="Select Currency" #payCurr="ngModel" required [ngClass]="{
+                                                <ng-select class="mt-2" [(ngModel)]="payPerHour.currency" (change)="changeCurrency($event)" name="rateUnit" placeholder="Select Currency" #payCurr="ngModel" required [ngClass]="{
                             error: driverF.submitted && payCurr.invalid
                           }">
                                                     <ng-option value="CAD">CAD</ng-option>
@@ -1554,15 +1551,7 @@
                             text-lg-right
                             pt-2
                           ">Waiting period Pay</label>
-                                                <input [(ngModel)]="driverData.paymentDetails.waitingPay" name="paymentDetails.waitingPay" type="text" class="form-control" placeholder=" eg. $20 ,$40 ,$60" #payWait="ngModel" />
-                                                <!-- <div *ngIf="payWait.invalid && (payWait.dirty || payWait.touched)" class="text-danger">
-                            <div *ngIf="payWait.errors.required">
-                              Waiting period pay is required.
-                            </div>
-                            <div *ngIf="payWait.errors.pattern">
-                             Waiting period pay must contain numbers.
-                            </div>
-                          </div> -->
+                                                <input [(ngModel)]="payPerHour.waitingPay" name="payPerHour.waitingPay" type="text" class="form-control" placeholder=" eg. $20 ,$40 ,$60" #payWait="ngModel" />
                                             </div>
                                             <div class="col-lg-6">
                                                 <label class="
@@ -1572,16 +1561,10 @@
                             pt-2
                             mt-1
                           "></label>
-                                                <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.waitingPayUnit" (change)="changeCurrency($event)" name="paymentDetails.waitingPayUnit" placeholder="Select Currency">
+                                                <ng-select class="mt-2" [(ngModel)]="payPerHour.currency" (change)="changeCurrency($event)" name="paymentDetails.waitingPayUnit" placeholder="Select Currency">
                                                     <ng-option value="CAD">CAD</ng-option>
                                                     <ng-option value="USD">USD</ng-option>
                                                 </ng-select>
-                                                <!-- <div *ngIf="curr1.invalid && (curr1.dirty || curr1.touched)" class="text-danger">
-                          <div *ngIf="curr1.errors.required">
-                            Currency is required.
-                          </div>
-
-                        </div> -->
                                             </div>
                                             <div class="col-lg-4">
                                                 <label class="
@@ -1591,21 +1574,13 @@
                             pt-2
                           ">Waiting hour start after</label>
                                                 <input [(ngModel)]="
-                            driverData.paymentDetails.waitingHourAfter
+                            payPerHour.waitingHourAfter
                           " name="paymentDetails.waitingHourAfter" type="text" class="form-control" placeholder="eg. Min 3 hours" />
-                                                <!-- <div *ngIf="payWait1.invalid && (payWait1.dirty || payWait1.touched)" class="text-danger">
-                            <div *ngIf="payWait1.errors.required">
-                              Waiting hour start is required.
-                            </div>
-                            <div *ngIf="payWait1.errors.pattern">
-                             Waiting hour start must contain numbers.
-                            </div>
-                          </div> -->
                                             </div>
-                                        </div>
-                                        <div class="row" id="payPerHourForm" *ngIf="
-                        driverData.paymentDetails.paymentType ==
-                        'Pay Per Delivery'
+                                        </div> 
+                                        <div class="row" id="payPerDelivery" *ngIf="
+                        paymentType ==
+                        'ppd'
                       ">
                                             <div class="col-lg-4">
                                                 <label class="
@@ -1614,7 +1589,7 @@
                             text-lg-right
                             pt-2
                           ">Delivery Rate <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <input [(ngModel)]="driverData.paymentDetails.deliveryRate" name="paymentDetails.deliveryRate" type="text" class="form-control" placeholder="eg. $20 ,$40 ,$60" #dRate="ngModel" required [ngClass]="{
+                                                <input [(ngModel)]="payPerDelivery.deliveryRate" name="paymentDetails.deliveryRate" type="text" class="form-control" placeholder="eg. $20 ,$40 ,$60" #dRate="ngModel" required [ngClass]="{
                             error: driverF.submitted && dRate.invalid
                           }" />
                                                 <div *ngIf="dRate.invalid && driverF.submitted" class="text-danger">
@@ -1635,7 +1610,7 @@
                             mt-1
                           "></label>
                                                 <ng-select class="mt-2" [(ngModel)]="
-                            driverData.paymentDetails.deliveryRateUnit
+                            payPerDelivery.currency
                           " (change)="changeCurrency($event)" name="paymentDetails.deliveryRateUnit" placeholder="Select Currency" #curr2="ngModel" required [ngClass]="{
                             error: driverF.submitted && curr2.invalid
                           }">
@@ -1650,8 +1625,55 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row" id="payFlatRate" *ngIf="
+                        paymentType ==
+                        'pfr'
+                      ">
+                                            <div class="col-lg-4">
+                                                <label class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                          ">Flat Rate <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input [(ngModel)]="payFlatRate.flatRate" name="payFlatRate.flatRate" type="text" class="form-control" placeholder="eg. $20 ,$40 ,$60" #fRate="ngModel" required [ngClass]="{
+                            error: driverF.submitted && fRate.invalid
+                          }" />
+                                                <div *ngIf="fRate.invalid && driverF.submitted" class="text-danger">
+                                                    <div *ngIf="fRate.errors.required">
+                                                        Flat rate is required.
+                                                    </div>
+                                                    <div *ngIf="fRate.errors.pattern">
+                                                        Flat rate must contain numbers.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                            mt-1
+                          "></label>
+                                                <ng-select class="mt-2" [(ngModel)]="
+                            payFlatRate.currency
+                          "  name="payFlatRate.currency" placeholder="Select Currency" #fCurr="ngModel" required [ngClass]="{
+                            error: driverF.submitted && fCurr.invalid
+                          }">
+                                                    <ng-option value="CAD">CAD</ng-option>
+                                                    <ng-option value="USD">USD</ng-option>
+                                                </ng-select>
+                                                <div *ngIf="fCurr.invalid && driverF.submitted" class="text-danger">
+                                                    <div *ngIf="fCurr.errors.required">
+                                                        Currency is required.
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row" id="payPercentageForm" *ngIf="
-                        driverData.paymentDetails.paymentType == 'Percentage'
+                        paymentType == 'pp'
                       ">
                                             <div class="col-lg-10">
                                                 <label class="
@@ -1663,8 +1685,8 @@
                                                 <div class="row">
                                                     <div class="col-lg-3">
                                                         <input [(ngModel)]="
-                                driverData.paymentDetails.loadPayPercentage
-                              " name="paymentDetails.loadPayPercentage" type="text" class="form-control" placeholder="eg. 2%, 5%, 10%" #lPay1="ngModel" required [ngClass]="{
+                                payPercentage.loadPayPercentage
+                              " name="payPercentage.loadPayPercentage" type="text" class="form-control" placeholder="eg. 2%, 5%, 10%" #lPay1="ngModel" required [ngClass]="{
                                 error: driverF.submitted && lPay1.invalid
                               }" />
                                                         <div *ngIf="lPay1.invalid && driverF.submitted" class="text-danger">
@@ -1682,8 +1704,8 @@
                                                     </div>
                                                     <div class="col-lg-7">
                                                         <ng-select [(ngModel)]="
-                                driverData.paymentDetails.loadPayPercentageOf
-                              " name="paymentDetails.loadPayPercentageOf" placeholder="Select the percentage type of" #ff="ngModel" required [ngClass]="{
+                                payPercentage.loadPayPercentageOf
+                              " name="payPercentage.loadPayPercentageOf" placeholder="Select the percentage type of" #ff="ngModel" required [ngClass]="{
                                 error: driverF.submitted && ff.invalid
                               }">
                                                             <ng-option value="Freight Fees">Freight Fees</ng-option>
@@ -1703,8 +1725,8 @@
                                         </div>
                                         <div>
                                             <div class="row" id="payPerMileForm" *ngIf="
-                          driverData.paymentDetails.paymentType ==
-                          'Pay Per Mile'
+                          paymentType ==
+                          'ppm'
                         " style="display: flex">
                                                 <div class="col-lg-3 pr-0">
                                                     <label class="
@@ -1713,7 +1735,7 @@
                               text-lg-right
                               pt-2
                             ">Loaded Miles <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <input [(ngModel)]="driverData.paymentDetails.loadedMiles" name="paymentDetails.loadedMiles" type="text" class="form-control" #payM="ngModel" required [ngClass]="{
+                                                    <input [(ngModel)]="payPerMile.loadedMiles" name="payPerMile.loadedMiles" type="text" class="form-control" #payM="ngModel" required [ngClass]="{
                               error: driverF.submitted && payM.invalid
                             }" placeholder="eg. $0.5, $1, $2" />
                                                     <div *ngIf="payM.invalid && driverF.submitted" class="text-danger">
@@ -1734,8 +1756,8 @@
                               mt-1
                             "></label>
                                                     <ng-select class="mt-2" [(ngModel)]="
-                              driverData.paymentDetails.loadedMilesUnit
-                            " name="paymentDetails.loadedMilesUnit" placeholder="Select Currency" (change)="changeCurrency($event)" #curr4="ngModel" required [ngClass]="{
+                              payPerMile.currency
+                            " name="loadedMilesUnit" placeholder="Select Currency" (change)="changeCurrency($event)" #curr4="ngModel" required [ngClass]="{
                               error: driverF.submitted && curr4.invalid
                             }">
                                                         <ng-option value="CAD">CAD</ng-option>
@@ -1755,7 +1777,7 @@
                               text-lg-right
                               pt-2
                             ">Empty Miles <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <input [(ngModel)]="driverData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles" type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #eMiles1="ngModel" required [ngClass]="{
+                                                    <input [(ngModel)]="payPerMile.emptyMiles" name="payPerMile.emptyMiles" type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #eMiles1="ngModel" required [ngClass]="{
                               error: driverF.submitted && eMiles1.invalid
                             }" />
                                                     <div *ngIf="eMiles1.invalid && driverF.submitted" class="text-danger">
@@ -1775,9 +1797,7 @@
                               pt-2
                               mt-1
                             "></label>
-                                                    <ng-select class="mt-2" [(ngModel)]="
-                              driverData.paymentDetails.emptyMilesUnit
-                            " name="paymentDetails.emptyMilesUnit" placeholder="Select Currency" (change)="changeCurrency($event)" #curr5="ngModel" required [ngClass]="{
+                                                    <ng-select class="mt-2" [(ngModel)]="payPerMile.currency" name="emptyMilesUnit" placeholder="Select Currency" (change)="changeCurrency($event)" #curr5="ngModel" required [ngClass]="{
                               error: driverF.submitted && curr5.invalid
                             }">
                                                         <ng-option value="CAD">CAD</ng-option>
@@ -1798,8 +1818,8 @@
                               pt-2
                             ">Loaded Miles (Team) <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <input [(ngModel)]="
-                              driverData.paymentDetails.loadedMilesTeam
-                            " name="paymentDetails.loadedMilesTeam" type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #lMiles2="ngModel" required [ngClass]="{
+                              payPerMile.loadedMilesTeam
+                            " name="payPerMile.loadedMilesTeam" type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #lMiles2="ngModel" required [ngClass]="{
                               error: driverF.submitted && lMiles2.invalid
                             }" />
                                                     <div *ngIf="lMiles2.invalid && driverF.submitted" class="text-danger">
@@ -1818,8 +1838,8 @@
                               mt-1
                             "></label>
                                                     <ng-select class="mt-2" [(ngModel)]="
-                              driverData.paymentDetails.loadedMilesTeamUnit
-                            " (change)="changeCurrency($event)" name="paymentDetails.loadedMilesTeamUnit" placeholder="Select Currency" #curr6="ngModel" required [ngClass]="{
+                              payPerMile.currency
+                            " (change)="changeCurrency($event)" name="loadedMilesTeamUnit" placeholder="Select Currency" #curr6="ngModel" required [ngClass]="{
                               error: driverF.submitted && curr6.invalid
                             }">
                                                         <ng-option value="CAD">CAD</ng-option>
@@ -1840,8 +1860,8 @@
                               pt-2
                             ">Empty Miles (Team) <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <input [(ngModel)]="
-                              driverData.paymentDetails.emptyMilesTeam
-                            " name="paymentDetails.emptyMilesTeam" type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #eMilesTeam="ngModel" required [ngClass]="{
+                              payPerMile.emptyMilesTeam
+                            " name="payPerMile.emptyMilesTeam" type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #eMilesTeam="ngModel" required [ngClass]="{
                               error: driverF.submitted && eMilesTeam.invalid
                             }" />
                                                     <div *ngIf="eMilesTeam.invalid && driverF.submitted" class="text-danger">
@@ -1860,8 +1880,8 @@
                               mt-1
                             "></label>
                                                     <ng-select class="mt-2" [(ngModel)]="
-                              driverData.paymentDetails.emptyMilesTeamUnit
-                            " (change)="changeCurrency($event)" name="paymentDetails.emptyMilesTeamUnit" placeholder="Select Currency" #curr7="ngModel" required [ngClass]="{
+                              payPerMile.currency
+                            " (change)="changeCurrency($event)" name="emptyMilesTeamUnit" placeholder="Select Currency" #curr7="ngModel" required [ngClass]="{
                               error: driverF.submitted && curr7.invalid
                             }">
                                                         <ng-option value="CAD">CAD</ng-option>
@@ -1883,7 +1903,7 @@
                               text-lg-right
                               pt-2
                             ">Pay Period</label>
-                                                    <ng-select [(ngModel)]="driverData.paymentDetails.payPeriod" name="paymentDetails.payPeriod" placeholder="Select pay period of the driver" #ppSlt="ngModel">
+                                                    <ng-select [(ngModel)]="driverData.payPeriod" name="paymentDetails.payPeriod" placeholder="Select pay period of the driver" #ppSlt="ngModel">
                                                         <ng-option value="Weekly">Weekly</ng-option>
                                                         <ng-option value="Biweekly">Biweekly</ng-option>
                                                         <ng-option value="Monthly">Monthly</ng-option>

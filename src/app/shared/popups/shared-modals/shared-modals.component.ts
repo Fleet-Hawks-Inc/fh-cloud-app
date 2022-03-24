@@ -7,7 +7,7 @@ import { map } from "rxjs/operators";
 import { ListService } from "../../../services";
 import * as moment from "moment";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
-import { ConsoleService } from "@ng-select/ng-select/lib/console.service";
+
 
 declare var $: any;
 @Component({
@@ -18,6 +18,8 @@ declare var $: any;
 export class SharedModalsComponent implements OnInit {
   @ViewChild("vehProgramModal", { static: true })
   vehProgramModal: TemplateRef<any>;
+  @ViewChild("addDocType", { static: true })
+  addDocType: TemplateRef<any>;
   @ViewChild("addIssueModal", { static: true }) addIssueModal: TemplateRef<any>;
   @ViewChild("assetModelsModal", { static: true })
   assetModelsModal: TemplateRef<any>;
@@ -43,6 +45,12 @@ export class SharedModalsComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+
+  submitDisabled: boolean = false;
+  docs = {
+    docType: null,
+    uploadedDocs: [],
+  };
 
   constructor(
     private apiService: ApiService,
@@ -184,7 +192,22 @@ export class SharedModalsComponent implements OnInit {
   subscription: any;
   users = [];
 
+  getDocsLength: any;
+  docModalRef: any;
+
   async ngOnInit() {
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: "static",
+      keyboard: false,
+      windowClass: "doc-type__main",
+    };
+    this.subscription = this.listService.docModalList.subscribe((res: any) => {
+      if (res.type === 'order' || res.type === 'trip') {
+        this.getDocsLength = res.docLength;
+        this.docModalRef = this.modalService.open(this.addDocType, ngbModalOptions)
+      }
+    })
+
     this.fetchApis();
 
     $(document).ready(() => {
@@ -668,5 +691,34 @@ export class SharedModalsComponent implements OnInit {
       taskName: "",
       description: "",
     };
+  }
+
+  selectDocTypes(event) {
+    let files = [];
+    this.uploadedDocs = [];
+    files = [...event.target.files];
+    let totalCount = this.getDocsLength + files.length;
+
+    if (totalCount > 4) {
+      this.uploadedDocs = [];
+      this.toastr.error("Only 4 documents can be uploaded");
+      return false;
+    } else {
+      this.uploadedDocs = files;
+    }
+  }
+
+  addDocTypes() {
+    if (this.uploadedDocs.length === 0) {
+      this.toastr.error("Please select at least one document!");
+      return false;
+    }
+    let obj = {
+      docType: this.docs.docType,
+      documents: this.uploadedDocs,
+      module: 'order'
+    }
+    this.listService.getAllDocs(obj);
+    this.docModalRef.close()
   }
 }

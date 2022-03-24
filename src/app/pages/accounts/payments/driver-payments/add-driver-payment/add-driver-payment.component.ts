@@ -439,7 +439,6 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
       this.toaster.error("Please select settlement(s)");
       return false;
     }
-
     if (this.paymentData.finalAmount <= 0) {
       this.toaster.error("Net payable should be greater than 0");
       return false;

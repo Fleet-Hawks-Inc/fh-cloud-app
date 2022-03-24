@@ -84,6 +84,12 @@ export class ListService {
   addressDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   addressList = this.addressDataSource.asObservable();
 
+  docModalSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  docModalList = this.docModalSource.asObservable();
+
+  getDocsModalSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  getDocsModalList = this.getDocsModalSource.asObservable();
+
   paymentModelDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   paymentModelList = this.paymentModelDataSource.asObservable();
 
@@ -310,6 +316,14 @@ export class ListService {
 
   triggerModal(value: any) {
     this.addressDataSource.next(value);
+  }
+
+  openDocTypeMOdal(value: any) {
+    this.docModalSource.next(value);
+  }
+
+  getAllDocs(value: any) {
+    this.getDocsModalSource.next(value);
   }
   openPaymentChequeModal(value) {
     this.paymentModelDataSource.next(value);
