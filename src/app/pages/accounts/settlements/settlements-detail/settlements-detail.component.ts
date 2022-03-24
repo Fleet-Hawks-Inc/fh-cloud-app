@@ -72,16 +72,7 @@ export class SettlementsDetailComponent implements OnInit {
     paymentLinked: false,
     pendingPayment: 0,
     currency: "CAD",
-    paymentInfo: {
-      lMiles: 0,
-      lMileTeam: 0,
-      eMileTeam: 0,
-      rate: 0,
-      eMiles: 0,
-      pRate: 0,
-      dRate: 0,
-      pType: "",
-    },
+    paymentSelected:[],
     fuelIds: [],
     fuelData: [],
     transactionLog: [],
@@ -93,7 +84,11 @@ export class SettlementsDetailComponent implements OnInit {
   operatorDetail = {
     cName: "",
   };
-
+  paymentAbr={"ppm": "Pay Per Mile",
+  "pp":"Percentage",
+  "ppd":"Pay Per Delivery",
+  "pph":"Pay Per Hour",
+  "pfr":"Pay Flat Rate"}
   entityName = "";
   entityPaymentType = "";
   accountsObjects = {};
@@ -136,8 +131,8 @@ export class SettlementsDetailComponent implements OnInit {
         this.settlementData.transactionLog.map((v: any) => {
           v.type = v.type.replace("_", " ");
         });
-        if (this.settlementData.paymentInfo) {
-          this.entityPaymentType = this.settlementData.paymentInfo.pType;
+        if (this.settlementData.paymentSelected.length>0) {
+          this.entityPaymentType = this.paymentAbr[this.settlementData.paymentSelected[0].pType];
         }
         this.entityName = this.settlementData.entityName;
         this.fetchSelectedFuelExpenses();

@@ -409,7 +409,7 @@ export class DriverDetailComponent implements OnInit {
                         this.payPerHour.waitingHourAfter=element.waitingHourAfter
                         this.payPerHour.waitingPay=element.waitingPay
                     }
-                    if(element.pType="pfr"){
+                    if(element.pType=="pfr"){
                         this.payFlatRate.flatRate=element.flatRate
                         this.payFlatRate.currency=element.currency
                     }
