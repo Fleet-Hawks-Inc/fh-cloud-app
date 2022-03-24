@@ -86,8 +86,10 @@ export class ApiService {
     //   'x-auth-token': this.jwt})
     // };
     let isCarrier = localStorage.getItem('carrierID') != null ? localStorage.getItem('carrierID') : '';
+    let selectedCarrier = localStorage.getItem('xfhCarrierId') != null ? localStorage.getItem('xfhCarrierId') : '';
+    console.log('selectedCarrier', selectedCarrier)
     const headers = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'fh-carrier-id': isCarrier })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'fh-carrier-id': isCarrier, 'x-fleethawks-carrier-id': selectedCarrier })
     };
 
     return this.http.get<any>(this.BaseUrl + url, headers);

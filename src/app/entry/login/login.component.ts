@@ -153,10 +153,9 @@ export class LoginComponent implements OnInit {
           }
           else {
             let carrierID = await this.apiService.getCarrierID();
-
+            localStorage.setItem('xfhCarrierId', carrierID);
             this.apiService.getData(`carriers/${carrierID}`).subscribe((res) => {
               if(res.Items.length > 0) {
-                localStorage.setItem('fhCarrierId', res.Items[0].carrierID);
                 if ('isProfileComplete' in res.Items[0]) {
                   if (res.Items[0].isProfileComplete) {
                     if(res.Items[0].subCompIDs && res.Items[0].subCompIDs.length > 0) {

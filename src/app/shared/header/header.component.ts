@@ -178,6 +178,7 @@ export class HeaderComponent implements OnInit {
       localStorage.removeItem("isManageEnabled");
       localStorage.setItem("signOut", "true"); //trigger flag
       localStorage.removeItem("accessToken"); //Remove token from local
+      localStorage.removeItem('xfhCarrierId');
       // localStorage.removeItem('jwt');
       this.router.navigate(["/Login"]);
     } catch (error) {
