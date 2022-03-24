@@ -334,6 +334,19 @@
                                   {{ settlementData.currency }}
                                 </div>
                               </div>
+                              <div
+                                class="row"
+                                *ngIf="
+                                settlementData.paymentSelected[0].pType ==
+                                  'pfr'
+                                "
+                              >
+                                <div class="col-6">
+                                  <strong> Flat Rate:</strong>
+                                  {{settlementData.paymentSelected[0].flatRate }}
+                                  {{ settlementData.currency }}
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
