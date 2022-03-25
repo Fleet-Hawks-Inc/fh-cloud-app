@@ -163,7 +163,7 @@ export class AddInvoiceComponent implements OnInit {
   }
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    this.currentUser = localStorage.getItem("currentUserName");
     this.invoiceData.invSalesman = this.currentUser;
 }
   selectedCustomer(customerID: any) {

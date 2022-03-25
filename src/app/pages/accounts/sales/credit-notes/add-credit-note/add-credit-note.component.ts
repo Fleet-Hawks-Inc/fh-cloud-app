@@ -113,7 +113,8 @@ export class AddCreditNoteComponent implements OnInit {
 
   getCurrentUser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    this.creditData.salePerson = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    // this.creditData.salePerson = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    this.creditData.salePerson = localStorage.getItem("currentUserName");
   };
 
   fetchQuantityUnits() {

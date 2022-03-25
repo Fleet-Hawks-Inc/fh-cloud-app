@@ -127,8 +127,9 @@ export class AddEventComponent implements OnInit {
    * Get Current User logged in
    */
   getCurrentuser = async () => {
-    let result = (await Auth.currentSession()).getIdToken().payload;
-    this.currentUser = `${result.firstName} ${result.lastName}`;
+    // let result = (await Auth.currentSession()).getIdToken().payload;
+    // this.currentUser = `${result.firstName} ${result.lastName}`;
+    this.currentUser = localStorage.getItem("currentUserName");
     this.event.createdBy = this.currentUser;
   };
 

@@ -160,8 +160,10 @@ export class LoginComponent implements OnInit {
                   if (res.Items[0].isProfileComplete) {
                     if(res.Items[0].subCompIDs && res.Items[0].subCompIDs.length > 0) {
                       this.router.navigate(['/organizations'])
+                      localStorage.setItem("subCompany", 'yes')
                     } else {
                       this.router.navigate(['/Map-Dashboard'])
+                      localStorage.setItem("subCompany", 'no')
                     }
                     
                   } else {
@@ -171,8 +173,10 @@ export class LoginComponent implements OnInit {
                 } else {
                   if(res.Items[0].subCompIDs && res.Items[0].subCompIDs.length > 0) {
                     this.router.navigate(['/organizations'])
+                    localStorage.setItem("subCompany", 'yes')
                   } else {
                     this.router.navigate(['/Map-Dashboard'])
+                    localStorage.setItem("subCompany", 'no')
                   }
                 }
               }

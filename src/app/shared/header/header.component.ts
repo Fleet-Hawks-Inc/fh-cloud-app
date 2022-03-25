@@ -80,6 +80,7 @@ export class HeaderComponent implements OnInit {
     data: [],
   };
   updateButton = false;
+  showSwitch = false;
   constructor(
     private sharedService: SharedServiceService,
     private apiService: ApiService,
@@ -100,6 +101,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.init();
     this.getCurrentuser();
+    this.showSwitch = localStorage.getItem("subCompany") == 'yes' ? true : false;
     this.fetchCarrier();
     if (this.headerFnService.subsVar === undefined) {
       this.headerFnService.subsVar =
@@ -179,6 +181,8 @@ export class HeaderComponent implements OnInit {
       localStorage.setItem("signOut", "true"); //trigger flag
       localStorage.removeItem("accessToken"); //Remove token from local
       localStorage.removeItem('xfhCarrierId');
+      localStorage.removeItem('currentUserName');
+      localStorage.removeItem('subCompany');
       // localStorage.removeItem('jwt');
       this.router.navigate(["/Login"]);
     } catch (error) {
@@ -187,10 +191,18 @@ export class HeaderComponent implements OnInit {
   }
 
   getCurrentuser = async () => {
-    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    this.userRole = this.currentUser.userType;
-    localStorage.setItem("currentUsername", this.currentUser.username);
-    this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    const selectedCarrier = localStorage.getItem('xfhCarrierId');
+    if(selectedCarrier) {
+      const res = await this.apiService.getData(`carriers/get/detail/${selectedCarrier}`).toPromise()
+        this.userRole = 'Super Admin';
+        this.currentUser = `${res.Items[0].firstName} ${res.Items[0].lastName}`; 
+        // localStorage.setItem("currentUsername", res.Items[0].userName);
+    } else {
+      this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+      this.userRole = this.currentUser.userType;
+      // localStorage.setItem("currentUsername", this.currentUser.username);
+      this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    }
     const outputName = this.currentUser.match(/\b(\w)/g);
     this.smallName = outputName.join("");
     localStorage.setItem("currentUserName", this.currentUser);

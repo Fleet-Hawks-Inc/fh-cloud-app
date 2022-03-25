@@ -406,8 +406,10 @@ export class AddSalesInvoiceComponent implements OnInit {
   }
 
   getCurrentUser = async () => {
-    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    this.saleData.salePerson = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    // this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+    // this.saleData.salePerson = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+
+    this.saleData.salePerson = localStorage.getItem("currentUserName");
   };
 
   async stateSelectChange() {

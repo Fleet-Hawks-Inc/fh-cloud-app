@@ -464,8 +464,9 @@ export class AddOrdersComponent implements OnInit {
     ]); // <-- go back to previous location on cancel
   }
   async getCarrierState() {
-    let carrierID = (await Auth.currentSession()).getIdToken().payload
-      .carrierID;
+    // let carrierID = (await Auth.currentSession()).getIdToken().payload
+    //   .carrierID;
+    let carrierID = localStorage.getItem('xfhCarrierId');
     let result: any = await this.apiService
       .getData(`carriers/${carrierID}`)
       .toPromise();

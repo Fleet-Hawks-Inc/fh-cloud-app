@@ -220,8 +220,10 @@ export class AddSalesOrderComponent implements OnInit {
   }
 
   getCurrentuser = async () => {
-    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    this.salesData.salePerson = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    // this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+    // this.salesData.salePerson = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+
+    this.salesData.salePerson = localStorage.getItem("currentUserName");
   };
 
   async calculateAmount(i: number) {

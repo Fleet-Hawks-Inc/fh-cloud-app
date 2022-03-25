@@ -22,8 +22,9 @@ export class ListOrganizationsComponent implements OnInit {
     })
   }
 
-  switchDashboard(carrierID) {
-    localStorage.setItem('xfhCarrierId', carrierID);
+  switchDashboard(data) {
+    localStorage.setItem('xfhCarrierId', data.carrierID);
+    localStorage.setItem("currentUserName", `${data.firstName} ${data.lastName}`);
     this.router.navigate(['/Map-Dashboard'])
   }
 }

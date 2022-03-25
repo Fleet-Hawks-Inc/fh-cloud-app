@@ -511,8 +511,9 @@ export class PaymentPdfsComponent implements OnInit {
   }
 
   getCurrentuser = async () => {
-    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    const carrierID = this.currentUser.carrierID;
+    // this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+    // const carrierID = this.currentUser.carrierID;
+    const carrierID = localStorage.getItem('xfhCarrierId');
     let result: any = await this.apiService
       .getData(`carriers/detail/${carrierID}`)
       .toPromise();
