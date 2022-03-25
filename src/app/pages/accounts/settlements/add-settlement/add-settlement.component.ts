@@ -291,7 +291,6 @@ export class AddSettlementComponent implements OnInit {
 
           case "ppm":
             this.ppm=element
-            console.log(element)
             this.settlementData.paymentSelected.push(this.ppm)
             break;
           
@@ -1072,6 +1071,9 @@ export class AddSettlementComponent implements OnInit {
         this.settlementData.paymentTotal =
         this.ownDelCouunt * Number(payment.deliveryRate);
         break;
+        case "pfr":
+          this.settlementData.paymentTotal=this.ownDelCouunt * Number(payment.flatRate)
+          break;
         }
     this.calculateFinalTotal();
   }
@@ -1166,7 +1168,9 @@ export class AddSettlementComponent implements OnInit {
                 this.settlementData.paymentTotal =
           this.delvCount * Number(payment.deliveryRate);
                 break;
-
+              case "pfr":
+                this.settlementData.paymentTotal=this.delvCount* Number(payment.flatRate)
+                break;
           }
       // if (this.settlementData.paymentInfo.pType === "Pay Per Mile") {
         
@@ -1207,6 +1211,9 @@ export class AddSettlementComponent implements OnInit {
             this.settlementData.paymentTotal =
           this.delvCount * Number(payment.deliverRate);
             break;
+            case "pfr":
+              this.settlementData.paymentTotal=this.delvCount* Number(payment.flatRate)
+              break;
 
         }
       }
