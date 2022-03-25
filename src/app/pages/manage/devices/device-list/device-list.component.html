@@ -1,41 +1,36 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pl-0 pt-0 pr-0">
-            <header class="page-header pr19 pl7">
-                <form class="form-horizontal" method="get">
-                    <div class="row" style="padding-top: 10px">
-                        <div class="col-md-12 col-lg-12 text-right pr-1">
-                            <div class="btn-group flex-wrap"></div>
-                            <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
-                                <i class="fas fa-sync"></i></a>
+            <header class="page-header">
 
-                            <a routerLink="/manage/devices/add" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Device</a
-              >
-            </div>
-          </div>
-        </form>
-      </header>
-
-      <section class="m-2">
-        <div class="row mb-3">
-          <div class="col-lg-12">
-            <div
-            infiniteScroll
-            [infiniteScrollDistance]="1"
-            [infiniteScrollUpDistance]="2"
-           
-            (scrolled)="onScroll()"
-          >
-            <div class="bg-white p-3 text-dark">
-              <div
-                id="simple-table_wrapper"
-                class="dataTables_wrapper dt-bootstrap4 no-footer"
-              >
                 <div class="row">
-                  <div class="col-lg-6">
-                    <div class="dataTables_length" id="simple-table_length">
-                      <label
-                        >Show
+
+                    <div class="col header-title">
+                        <label class="mt-0 mb-0"> Devices</label>
+                    </div>
+                    <div class="col header-buttons">
+
+                        <button id="btnLiveVideo" type="button" pButton class="mr-1" tooltipPosition="left" icon="pi pi-refresh" pTooltip="Refresh" (click)="refreshData()"></button>
+
+                        <button id="btnLiveVideo" type="button" pButton class="mr-1" tooltipPosition="left" icon="pi pi-plus" routerLink="/manage/devices/add" pTooltip="Add Device" (click)="refreshData()"></button>
+
+                    </div>
+
+
+
+                </div>
+            </header>
+
+            <section class="m-2">
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="2" (scrolled)="onScroll()">
+                            <div class="bg-white p-3 text-dark">
+                                <div id="simple-table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="dataTables_length" id="simple-table_length">
+                                                <label>Show
                         <select
                           name="simple-table_length"
                           aria-controls="simple-table"
@@ -69,6 +64,9 @@
                     <thead>
                       <tr>
                         <th width="10%" class="col3" style="width: 135px">
+                          Type
+                        </th>
+                        <th width="10%" class="col3" style="width: 135px">
                           Serial/IMEI
                         </th>
                         <th width="25%" class="col2" style="width: 371px">
@@ -92,6 +90,9 @@
 
                       <tr role="row" class="odd" *ngFor="let device of devices">
                         <td
+                       
+                      >  {{ device.deviceType }}</td>
+                        <td
                           routerLink="/manage/devices/detail/{{
                             device.deviceSerialNo.replace('#', '/')
                           }}"
@@ -112,26 +113,26 @@
                           "
                         >
                        <a  style="color: blue; text-decoration: none;" target="_blank" routerLink="/fleet/tracking/vehicle-dash-cam-tracker/{{device.deviceSerialNo.split('#')[1]}}" [queryParams]="{ vehicleId: device.vehicle.vehicleID}">  {{ device.vehicle.vehicleIdentification }}</a>
-                            </td>
-                            <ng-template #elseBlock>
-                                <td>
-
-                                    <a style="color: blue; text-decoration: none;" target="_blank" routerLink="/fleet/tracking/asset-tracker/{{device.asset.assetIdentification}}" [queryParams]="{ assetId: device.asset.assetID}" queryParamsHandling="merge">  {{  device.asset.assetIdentification }}</a>
-
-                                </td>
-                            </ng-template>
+                        </td>
+                        <ng-template #elseBlock>
                             <td>
-                                <span class="badge badge-success text-3">{{
+
+                                <a style="color: blue; text-decoration: none;" target="_blank" routerLink="/fleet/tracking/asset-tracker/{{device.asset.assetIdentification}}" [queryParams]="{ assetId: device.asset.assetID}" queryParamsHandling="merge">  {{  device.asset.assetIdentification }}</a>
+
+                            </td>
+                        </ng-template>
+                        <td>
+                            <span class="badge badge-success text-3">{{
                             device.deviceStatus === true ? 'Active' : 'Inactive'
                           }}</span>
-                            </td>
-                            <td class="border-0">
-                                <div class="dropdown dropright">
-                                    <button class="bg-transparent border-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        </td>
+                        <td class="border-0">
+                            <div class="dropdown dropright">
+                                <button class="bg-transparent border-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <i class="fas fa-ellipsis-v"></i>
                             </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" routerLink="/manage/devices/edit/{{
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" routerLink="/manage/devices/edit/{{
                                   device.deviceSerialNo.replace('#', '/')
                                 }}">Edit</a
                               >
