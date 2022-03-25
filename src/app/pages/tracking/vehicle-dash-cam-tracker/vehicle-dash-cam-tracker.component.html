@@ -32,9 +32,9 @@
 
                         <div class="text-dark" style="height: calc(100vh - 170px);width: 100%;" *ngIf="loaded">
 
-                            <google-map [width]="width" [height]="height" [options]="mapOptions" *ngIf="loaded">
+                            <google-map [width]="width" [center]="center" [height]="height" [options]="mapOptions" *ngIf="loaded">
                                 <map-traffic-layer [autoRefresh]="true"></map-traffic-layer>
-                                <map-marker #marker="mapMarker" [position]="mapOptions.center" [options]="vehicleMarkerOptions" (mapClick)="openInfoWindow(marker)"></map-marker>
+                                <map-marker #marker="mapMarker" [position]="center" [options]="vehicleMarkerOptions" (mapClick)="openInfoWindow(marker)"></map-marker>
                                 <map-info-window [innerHTML]="infoDetail"></map-info-window>
 
                             </google-map>

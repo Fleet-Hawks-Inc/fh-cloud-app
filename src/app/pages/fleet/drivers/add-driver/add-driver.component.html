@@ -1578,7 +1578,7 @@
                           " name="paymentDetails.waitingHourAfter" type="text" class="form-control" placeholder="eg. Min 3 hours" />
                                             </div>
                                         </div> 
-                                        <div class="row" id="payPerHourForm" *ngIf="
+                                        <div class="row" id="payPerDelivery" *ngIf="
                         paymentType ==
                         'ppd'
                       ">
@@ -1619,6 +1619,53 @@
                                                 </ng-select>
                                                 <div *ngIf="curr2.invalid && driverF.submitted" class="text-danger">
                                                     <div *ngIf="curr2.errors.required">
+                                                        Currency is required.
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" id="payFlatRate" *ngIf="
+                        paymentType ==
+                        'pfr'
+                      ">
+                                            <div class="col-lg-4">
+                                                <label class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                          ">Flat Rate <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input [(ngModel)]="payFlatRate.flatRate" name="payFlatRate.flatRate" type="text" class="form-control" placeholder="eg. $20 ,$40 ,$60" #fRate="ngModel" required [ngClass]="{
+                            error: driverF.submitted && fRate.invalid
+                          }" />
+                                                <div *ngIf="fRate.invalid && driverF.submitted" class="text-danger">
+                                                    <div *ngIf="fRate.errors.required">
+                                                        Flat rate is required.
+                                                    </div>
+                                                    <div *ngIf="fRate.errors.pattern">
+                                                        Flat rate must contain numbers.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label class="
+                            control-label
+                            font-weight-bold
+                            text-lg-right
+                            pt-2
+                            mt-1
+                          "></label>
+                                                <ng-select class="mt-2" [(ngModel)]="
+                            payFlatRate.currency
+                          "  name="payFlatRate.currency" placeholder="Select Currency" #fCurr="ngModel" required [ngClass]="{
+                            error: driverF.submitted && fCurr.invalid
+                          }">
+                                                    <ng-option value="CAD">CAD</ng-option>
+                                                    <ng-option value="USD">USD</ng-option>
+                                                </ng-select>
+                                                <div *ngIf="fCurr.invalid && driverF.submitted" class="text-danger">
+                                                    <div *ngIf="fCurr.errors.required">
                                                         Currency is required.
                                                     </div>
 

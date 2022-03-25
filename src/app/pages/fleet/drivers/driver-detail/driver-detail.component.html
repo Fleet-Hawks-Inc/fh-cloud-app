@@ -1217,6 +1217,23 @@
                                                 }}</span>
                                         </div>
                                     </div>
+                                    <div class="row m-0" *ngIf="paymentType === 'Flat Rate'">
+                                        <div class="
+                        col-lg-6
+                        p-2
+                        font-weight-bold
+                        text-3 text-left
+                        back-color-gray
+                      ">
+                                            Flat Rate:
+                                        </div>
+                                        <div class="col-lg-6 p-2 bor_half">
+                                            {{ payFlatRate.flatRate ? payFlatRate.flatRate : '0' }}
+                                            <span *ngIf="payFlatRate.currency!= undefined">{{
+                                                payFlatRate.currency
+                                                }}</span>
+                                        </div>
+                                    </div>
 
                                     <div class="row m-0" *ngIf="driverType == 'employee'">
                                         <div class="

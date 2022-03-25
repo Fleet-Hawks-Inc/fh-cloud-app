@@ -202,7 +202,7 @@ export class SharedModalsComponent implements OnInit {
       windowClass: "doc-type__main",
     };
     this.subscription = this.listService.docModalList.subscribe((res: any) => {
-      if (res.type === 'order') {
+      if (res.type === 'order' || res.type === 'trip') {
         this.getDocsLength = res.docLength;
         this.docModalRef = this.modalService.open(this.addDocType, ngbModalOptions)
       }
