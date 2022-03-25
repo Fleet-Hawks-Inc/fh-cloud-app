@@ -55,32 +55,32 @@
                                         </div>
                                     </ng-template>
                                 </p-table>
-                                <div class="text-center mr-4 alert alert-warning" *ngIf="locationData.length === 0">
+                                <div class="text-center mr-4 alert alert-info" *ngIf="locationData.length === 0 && loading!=true">
                                     <br>
-                                    <p>There is no Asset Tracker data available for the selected duration. Please update the duration and try again. </p>
+                                    <p>There is NO Asset Tracker data available for the selected duration. Please update the duration and try again. </p>
                                 </div>
                             </div>
-                            <div class="col-lg-8">
-                                <div class="p-3 text-dark">
-                                    <google-map [width]="width" [height]="height" [options]="mapOptions" *ngIf="!loading">
-                                        <map-traffic-layer *ngIf="showTraffic" [autoRefresh]="true"></map-traffic-layer>
-                                        <map-marker #marker="mapMarker" *ngFor="let markerPosition of markerPositions" [position]="markerPosition.location" [options]="markerOptions" (mapClick)="openInfoWindow(marker,markerPosition.data)"></map-marker>
-                                        <map-marker [position]="startMarker" [options]="startMarkerOptions"></map-marker>
+                            <div class=" col-lg-8 ">
+                                <div class="p-3 text-dark ">
+                                    <google-map [width]="width " [height]="height " [options]="mapOptions " *ngIf="!loading ">
+                                        <map-traffic-layer *ngIf="showTraffic " [autoRefresh]="true "></map-traffic-layer>
+                                        <map-marker #marker="mapMarker " *ngFor="let markerPosition of markerPositions " [position]="markerPosition.location " [options]="markerOptions " (mapClick)="openInfoWindow(marker,markerPosition.data) "></map-marker>
+                                        <map-marker [position]="startMarker " [options]="startMarkerOptions "></map-marker>
 
-                                        <map-marker [position]="endMarker" [options]="endMarkerOptions"></map-marker>
-                                        <map-polyline [options]="polylineOptions"></map-polyline>
-                                        <map-info-window class="marker-info" [innerHTML]="infoDetail"></map-info-window>
-                                        <!-- <map-directions-renderer *ngIf="(directionsResults$ | async) as directionsResults" [directions]="directionsResults"></map-directions-renderer> -->
+                                        <map-marker [position]="endMarker " [options]="endMarkerOptions "></map-marker>
+                                        <map-polyline [options]="polylineOptions "></map-polyline>
+                                        <map-info-window class="marker-info " [innerHTML]="infoDetail "></map-info-window>
+                                        <!-- <map-directions-renderer *ngIf="(directionsResults$ | async) as directionsResults " [directions]="directionsResults "></map-directions-renderer> -->
                                     </google-map>
                                 </div>
                             </div>
                         </div>
                     </p-accordionTab>
 
-                    <p-accordionTab header="Temperature">
+                    <p-accordionTab header="Temperature ">
                         <label>Duration</label>
                         <p-dropdown id="assetRangeDrp" class="m-3" [options]="durations" [(ngModel)]="selectedSensorDuration" (onChange)="updateSensorData()" optionLabel="name"></p-dropdown><br><br>
-                        <p-tabView *ngIf="sensorData.length > 0">
+                        <p-tabView *ngIf="sensorData.length> 0">
                             <p-tabPanel header="Table View">
                                 <div class="card">
                                     <p-table id="sensorTable" #sensorDT [resizableColumns]="true" [columns]="sensorDataCols" [paginator]="true" [rows]="10" [value]="sensorData" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [loading]="sensorLoading" autoLayout="true"
@@ -128,9 +128,9 @@
                             </p-tabPanel>
 
                         </p-tabView><br><br>
-                        <div class="text-center mr-4 alert alert-warning" *ngIf="sensorData.length === 0">
+                        <div class="text-center mr-4 alert alert-info" *ngIf="sensorData.length === 0 && sensorLoading!=true">
                             <br>
-                            <p>There is no Sensor attached to the tracker OR data is not available for the selected duration. Please update the duration and try again or check the Temperature and Humidity sensor connectivity. </p>
+                            <p>There is NO data available for selected duration. Please update the duration and try again or check the Temperature and Humidity sensor connectivity. </p>
                         </div>
 
                     </p-accordionTab>
