@@ -72,6 +72,19 @@ export class ExpenseComponent implements OnInit {
       const paymentdata = result[i]
       this.totalDriverPay += parseFloat(paymentdata.finalAmount)
     }
+    result.map((v) => {
+      v.currency = v.currency ? v.currency : "CAD";
+      if (v.payMode) {
+        v.payMode = v.payMode.replace("_", " ");
+      } else {
+        v.payMode = "-";
+      }
+      v.paymentTo = v.paymentTo.replace("_", " ");
+      v.settlData.map((k) => {
+        k.status = k.status.replace("_", " ");
+      });
+      this.payments.push(v);
+    });
   }
   fetchExpensePayment() {
     if (this.lastExpPay !== 'end') {
@@ -104,7 +117,6 @@ export class ExpenseComponent implements OnInit {
           }
 
           this.expensePay.push(v);
-          console.log(this.expensePay)
         });
         // this.expensePay = this.expensePay.concat(result.Items)
       })
@@ -143,7 +155,7 @@ export class ExpenseComponent implements OnInit {
             hour: time.get('hour'),
             minute: time.get('minute')
           })
-          date = date.format('MMM Do YYYY, h:mm a')
+          date = date.format(' h:mm a')
         }
         else {
           date = date.format('MMM Do YYYY')

@@ -109,7 +109,7 @@
                                             <td>{{item.tripNo}}</td>
                                             <td> {{item.orderName}}</td>
                                             <td>{{item.orderType}}</td>
-                                            <td>{{item.driverName}}</td>
+                                            <td>{{item.driverName | titlecase}}</td>
                                             <td>
                                                 <span *ngFor="let data of item.tripPlanning">
                                                     <b>
@@ -180,7 +180,8 @@
                                             <td>{{item.data.type}}</td>
                                             <!-- <td>{{item.data.date |
                                                 date:"yyyy/MM/dd"}} {{item.data.time}}</td> -->
-                                                <td>{{item.dateTime}}</td>
+                                                <td>{{item.data.date |
+                                                    date:"yyyy/MM/dd"}}, {{item.dateTime}}</td>
                                             <td>{{item.data.city}},{{item.data.state}},{{item.data.country}}
                                             </td>
                                             <td>{{item.data.amt | number : '1.2-2'}} {{item.data.currency}}</td>
@@ -307,7 +308,7 @@
                                             <td>{{item.paymentNo}}</td>
                                             <td>{{item.txnDate |
                                                 date:"yyyy/MM/dd"}}</td>
-                                            <td>{{item.payMode}}</td>
+                                            <td>{{item.payMode | titlecase }}</td>
                                             <td> <span *ngFor="let stl of item.settlData; let
                                                 s=index;">
                                                     <b>{{stl.settlementName }}</b>
@@ -316,7 +317,7 @@
                                                 </span></td>
                                             <td><strong class="text-capitalize">{{item.paymentTo}}:</strong>
 
-                                                {{ item.entityName}}
+                                                {{ item.entityName | titlecase }}
 
                                             </td>
                                             <td>{{item.finalAmount | number : '1.2-2' }} {{item.currency}}</td>
