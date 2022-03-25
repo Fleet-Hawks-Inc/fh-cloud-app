@@ -72,6 +72,19 @@ export class ExpenseComponent implements OnInit {
       const paymentdata = result[i]
       this.totalDriverPay += parseFloat(paymentdata.finalAmount)
     }
+    result.map((v) => {
+      v.currency = v.currency ? v.currency : "CAD";
+      if (v.payMode) {
+        v.payMode = v.payMode.replace("_", " ");
+      } else {
+        v.payMode = "-";
+      }
+      v.paymentTo = v.paymentTo.replace("_", " ");
+      v.settlData.map((k) => {
+        k.status = k.status.replace("_", " ");
+      });
+      this.payments.push(v);
+    });
   }
   fetchExpensePayment() {
     if (this.lastExpPay !== 'end') {
@@ -91,7 +104,21 @@ export class ExpenseComponent implements OnInit {
           this.lastExpPay = 'end'
         }
         this.loaded = true;
-        this.expensePay = this.expensePay.concat(result.Items)
+        result.Items.map((v) => {
+          v.disableEdit = false;
+          if (v.status) {
+            v.newStatus = v.status.replace("_", " ");
+            if (
+              v.status === "deducted" ||
+              v.status === "partially_deducted"
+            ) {
+              v.disableEdit = true;
+            }
+          }
+
+          this.expensePay.push(v);
+        });
+        // this.expensePay = this.expensePay.concat(result.Items)
       })
     }
   }
@@ -118,6 +145,25 @@ export class ExpenseComponent implements OnInit {
       if (result.Items.length === 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND
       }
+      result[`Items`].forEach(element => {
+
+
+        let date: any = moment(element.data.date)
+        if (element.data.time) {
+          let time = moment(element.data.time, 'h mm a')
+          date.set({
+            hour: time.get('hour'),
+            minute: time.get('minute')
+          })
+          date = date.format(' h:mm a')
+        }
+        else {
+          date = date.format('MMM Do YYYY')
+        }
+        element.dateTime = date
+
+      });
+
     });
   }
 

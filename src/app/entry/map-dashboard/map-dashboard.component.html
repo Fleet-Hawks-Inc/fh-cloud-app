@@ -9,22 +9,24 @@
     <div class="inner-wrapper">
         <section role="main" class="content-body">
             <header class="page-header flex align-items-center justify-content-start">
-                <form class="formgrid grid">
-                    <div class="row">
-                        <div class="col" style="margin-left: 10px;margin-top: 5px;">
 
-                            <label style="padding-top: 10px; font-size: 22px;"> Entire Fleet </label>
-                            <button id="btnResetFilter" type="button" pButton class="pull-right" tooltipPosition="left" icon="pi pi-refresh" pTooltip="Refresh" (click)="refresh()"></button>
+                <div class="row">
+                    <div class="col header-title">
 
-
-                        </div>
-
-
-
-
+                        Entire Fleet
+                    </div>
+                    <div class="col header-buttons">
+                        <button pButton pRipple type="button" *ngIf="driverPositions.length>0" class="p-button-text">{{driverPositions.length}} Drivers</button>
+                        <button pButton pRipple type="button" *ngIf="assetPositions.length>0" class="p-button-text">{{assetPositions.length}} Assets</button>
+                        <button pButton pRipple type="button" *ngIf="vehicleDashPositions.length>0" class="p-button-text">{{vehicleDashPositions.length}} Vehicles</button>
+                        <button id="btnResetFilter" type="button" pButton class="pull-right" tooltipPosition="left" icon="pi pi-refresh" pTooltip="Refresh" (click)="refresh()"></button>
                     </div>
 
-                </form>
+                </div>
+
+
+
+
 
 
             </header>

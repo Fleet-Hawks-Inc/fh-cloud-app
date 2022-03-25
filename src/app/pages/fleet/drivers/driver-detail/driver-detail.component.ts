@@ -10,6 +10,7 @@ import Constants from '../../constants';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { map } from 'rxjs/operators';
+import * as moment from 'moment';
 import { from } from 'rxjs';
 import { passwordStrength } from 'check-password-strength';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
@@ -123,6 +124,8 @@ export class DriverDetailComponent implements OnInit {
     assetList: any = {};
     docs = [];
     assetsDocs = [];
+    start = null;
+    end = null;
     absDocs = [];
     profile: any = [];
     documentTypeList: any = [];
@@ -211,7 +214,8 @@ export class DriverDetailComponent implements OnInit {
 
         this.driverID = this.route.snapshot.params[`driverID`]; // get asset Id from URL
         this.fetchDriver();
-
+        this.end = moment().format('YYYY-MM-DD');
+        this.start = moment().subtract(15, 'days').format('YYYY-MM-DD');
         // this.fetchGroupsbyIDs();
         this.fetchAllContacts();
         this.fetchDocuments();
@@ -632,11 +636,10 @@ export class DriverDetailComponent implements OnInit {
     deleteUploadedFile(name: string) { // delete from aws
         this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => { });
     }
-    fetchDriverTrips() {
-        this.apiService.getData(`drivers/get/driver/active/${this.driverID}`).subscribe((result: any) => {
+  fetchDriverTrips() {
+        this.apiService.getData(`drivers/get/driver/active?driver=${this.driverID}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
             this.trips = result.Items;
-
-        });
+           });
     }
 
     fetchDriverLogs() {

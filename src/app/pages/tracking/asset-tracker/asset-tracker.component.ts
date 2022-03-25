@@ -361,7 +361,6 @@ export class AssetTrackerComponent implements OnInit {
       async (res: any) => {
         if (res) {
           let result = res.Items[0];
-          console.log(res.Items[0]);
         }
 
       },
@@ -374,7 +373,7 @@ export class AssetTrackerComponent implements OnInit {
    * @param duration selected duration from dropdown
    */
   async getSensorData(duration = '6h') {
-    console.log(duration);
+
     this.sensorLoading = true;
     const data: sensorData[] = await this.apiService
       .getData(`assetTrackers/getSensorData/${this.assetID}/bleTemp/${duration}`).toPromise();
@@ -398,7 +397,7 @@ export class AssetTrackerComponent implements OnInit {
 
 
       }
-      console.log(this.sensorTemperature);
+
       this.sensorLoading = false;
       this.mapper();
     } else {
@@ -467,7 +466,7 @@ export class AssetTrackerComponent implements OnInit {
           type: 'line',
           smooth: true,
           symbol: 'circle',
-          // areaStyle: {},
+          areaStyle: {},
           data: this.sensorTemperature,
         },
 
