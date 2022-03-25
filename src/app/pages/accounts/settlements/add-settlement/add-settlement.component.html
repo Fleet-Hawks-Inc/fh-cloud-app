@@ -275,35 +275,35 @@
                               {{ driverAdrs ? driverAdrs : "NA" }} <br />
                               <strong>Payment Type:</strong>
                               {{
-                                settlementData.paymentInfo.pType
-                                  ? settlementData.paymentInfo.pType
+                                settlementData.paymentSelected[0]
+                                  ? paymentAbr[settlementData.paymentSelected[0].pType]
                                   : "NA"
                               }}
                               <div
                                 class="row"
                                 *ngIf="
-                                  settlementData.paymentInfo.pType ===
-                                  'Pay Per Mile'
+                                  settlementData.paymentSelected[0].pType ==
+                                  'ppm'
                                 "
                               >
                                 <div class="col-6">
                                   <strong>Loaded Miles:</strong>
-                                  {{ settlementData.paymentInfo.lMiles }}
+                                  {{ settlementData.paymentSelected[0].loadedMiles }}
                                   {{ settlementData.currency }}
                                 </div>
                                 <div class="col-6">
                                   <strong>Team Loaded Miles:</strong>
-                                  {{ settlementData.paymentInfo.lMileTeam }}
+                                  {{ settlementData.paymentSelected[0].loadedMilesTeam }}
                                   {{ settlementData.currency }}
                                 </div>
                                 <div class="col-6">
                                   <strong>Empty Miles:</strong>
-                                  {{ settlementData.paymentInfo.eMiles }}
+                                  {{ settlementData.paymentSelected[0].emptyMiles }}
                                   {{ settlementData.currency }}
                                 </div>
                                 <div class="col-6">
                                   <strong>Team Empty Miles:</strong>
-                                  {{ settlementData.paymentInfo.eMileTeam }}
+                                  {{ settlementData.paymentSelected[0].emptyMilesTeam }}
                                   {{ settlementData.currency }}
                                 </div>
                               </div>
@@ -311,26 +311,39 @@
                               <div
                                 class="row"
                                 *ngIf="
-                                  settlementData.paymentInfo.pType ===
-                                  'Pay Per Hour'
+                                settlementData.paymentSelected[0].pType ==
+                                  'pph'
                                 "
                               >
                                 <div class="col-6">
                                   <strong>Rate:</strong>
-                                  {{ settlementData.paymentInfo.pRate }}
+                                  {{ settlementData.paymentSelected[0].rate }}
                                   {{ settlementData.currency }}
                                 </div>
                               </div>
                               <div
                                 class="row"
                                 *ngIf="
-                                  settlementData.paymentInfo.pType ===
-                                  'Pay Per Delivery'
+                                settlementData.paymentSelected[0].pType ==
+                                  'ppd'
                                 "
                               >
                                 <div class="col-6">
                                   <strong> Rate:</strong>
-                                  {{ settlementData.paymentInfo.dRate }}
+                                  {{settlementData.paymentSelected[0].deliveryRate }}
+                                  {{ settlementData.currency }}
+                                </div>
+                              </div>
+                              <div
+                                class="row"
+                                *ngIf="
+                                settlementData.paymentSelected[0].pType ==
+                                  'pfr'
+                                "
+                              >
+                                <div class="col-6">
+                                  <strong> Flat Rate:</strong>
+                                  {{settlementData.paymentSelected[0].flatRate }}
                                   {{ settlementData.currency }}
                                 </div>
                               </div>

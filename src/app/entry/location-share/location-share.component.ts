@@ -86,7 +86,7 @@ export class LocationShareComponent implements OnInit {
       this.connectToWSServer();
       this.updateLastLocation();
     }
-    this.overlays.push(new google.maps.Marker({ position: this.center, title: "Konyaalti" }),);
+
   }
 
   private connectToWSServer() {
