@@ -568,6 +568,7 @@ export class OrderDetailComponent implements OnInit {
   async showDocs(documents) {
     this.docs = [];
     this.newInvDocs = [];
+    this.emailDocs = [];
     documents.forEach((x: any) => {
       if (
         x.storedName.split(".")[1] === "jpg" ||
@@ -597,7 +598,8 @@ export class OrderDetailComponent implements OnInit {
     });
 
     this.newInvDocs = [...this.newInvDocs, ...this.docs];
-    console.log('this.newInvDocs', this.newInvDocs)
+    this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
+
   }
 
   async openEmailInv() {
@@ -888,6 +890,7 @@ export class OrderDetailComponent implements OnInit {
         this.attachments.splice(index, 1);
       } else {
         this.docs.splice(index, 1);
+        this.newInvDocs.splice(index, 1);
       }
       this.toastr.success("Document deleted successfully");
     }
