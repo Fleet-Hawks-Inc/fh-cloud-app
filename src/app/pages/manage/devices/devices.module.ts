@@ -9,7 +9,8 @@ import { FormsModule } from "@angular/forms";
 import { ReactiveFormsModule } from "@angular/forms";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
-
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip'
 const routes: Routes = [
   {
     path: "add",
@@ -46,6 +47,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgSelectModule,
     InfiniteScrollModule,
+    ButtonModule,
+    TooltipModule
   ],
 })
-export class DeviceModule {}
+export class DeviceModule { }
