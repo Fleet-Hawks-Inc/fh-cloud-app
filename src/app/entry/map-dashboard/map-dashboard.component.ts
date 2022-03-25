@@ -207,7 +207,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   prepareAssetInfoTemplate(data: any) {
     // console.log('data', data);
     return `<b> Asset: ${data.assetIdentification}</b><br/>
-    Speed: ${data.speed} KM/H | Altitude: ${data.altitude} <br/>
+    Speed: ${data.speed} | Altitude: ${data.altitude} <br/>
     Time : ${data.time}<br/> 
     Temp. : ${data.temp} | Battery : ${data.battery}
     <br/>
