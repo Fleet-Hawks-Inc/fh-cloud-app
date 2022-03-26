@@ -148,7 +148,8 @@ export class HeaderComponent implements OnInit {
     let result: any = await this.dashboardService.getCarriers();
     if (result.Items.length > 0) {
       this.carriers = result.Items[0];
-      this.currentCarrierID = this.carriers.carrierID;
+      // this.currentCarrierID = this.carriers.carrierID;
+      this.currentCarrierID = localStorage.getItem('xfhCarrierId');
       this.logoSrc = "assets/img/logo.png";
       // if (this.carriers.uploadedLogo !== '') {
       //   this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;

@@ -80,6 +80,7 @@ export class CompanyProfileComponent implements OnInit {
   emailExistsExists = false;
   emailExistsErr = '';
   subCompanies = [];
+  showSubCompany = false;
 
   constructor(private route: ActivatedRoute,
     private apiService: ApiService,
@@ -230,6 +231,7 @@ export class CompanyProfileComponent implements OnInit {
       .subscribe((result: any) => {
         if(result.Items && result.Items.length > 0) {
           this.carriers = result.Items[0];
+          console.log('this.carriers', this.carriers)
           if (!this.carriers.referral && this.carriers.findingWay === 'Referral') {
             this.carriers.referral = {};
           }
@@ -243,6 +245,9 @@ export class CompanyProfileComponent implements OnInit {
           }
           if(this.carriers.subCompInfo && this.carriers.subCompInfo.length > 0) {
             this.subCompanies = this.carriers.subCompInfo;
+          }
+          if(!this.carriers.parentID) {
+            this.showSubCompany = true;
           }
         }
       });

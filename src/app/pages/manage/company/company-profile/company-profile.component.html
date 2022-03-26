@@ -9,12 +9,14 @@
             <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Company Profile</h4>
           </div>
           <div class="col-md-10 col-lg-10 text-right pr-1">
+
             <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal" data-target="#addCompanyModal"
-              href="javascript:;"  *ngIf="subCompanies.length < 5"><i class="fas fa-plus"></i> Sub Company</a>
+              href="javascript:;"  *ngIf="showSubCompany && subCompanies.length < 5"><i class="fas fa-plus"></i> Sub Company</a>
+
             <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal" data-target="#changePasswordModal"
               href="javascript:;">Change Password</a>
             <a routerLink="/manage/company/edit/{{carriers.carrierID}}" class="btn btn-dark btn-sm"
-              *ngIf="carriers.length > 0 && carriers.carrierID != '' || carriers.carrierID != undefined"><i
+              ><i
                 class="fas fa-plus"></i> Edit
               Company
               Detail</a>
@@ -26,8 +28,8 @@
           <div class="col-lg-12 pr-1 pl-2">
             <div class="bg-white">
               <div class="row p-3">
-                <div class="col-2">
-                  <span *ngIf="carriers.uploadedLogo != '' || carriers.uploadedLogo != undefined"><img [src]="logoSrc"
+                <div class="col-2" *ngIf="carriers.uploadedLogo != '' && carriers.uploadedLogo != undefined">
+                  <span><img [src]="logoSrc"
                       class="img-fluid"></span>
                 </div>
                 <div class="col-10 text-dark">
@@ -183,7 +185,7 @@
                 </div>
 
 
-                <div class="col-lg-12">
+                <div class="col-lg-12" *ngIf="carriers.banks.length > 0">
                   <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Bank Details</h2>
                   <table class="table table-bordered table-responsive-lg" *ngFor="let bank of carriers.banks">
                     <tbody>
@@ -240,7 +242,7 @@
                     </tbody>
                   </table>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12" *ngIf="carriers.banks.length > 0">
                   <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Bank Details</h2>
                   <table class="table table-bordered table-responsive-lg" *ngFor="let bank of carriers.banks">
                     <tbody>
@@ -302,7 +304,7 @@
 
                 <div class="col-lg-12" *ngIf="subCompanies.length > 0">
                   <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Sub Companies</h2>
-                  <table class="table table-bordered table-responsive-lg" *ngFor="let bank of carriers.banks">
+                  <table class="table table-bordered table-responsive-lg">
                     <tbody>
                       <tr class="text-capitalize" *ngFor="let data of subCompanies">
                         <td width="20%" class="back-color-gray">Username</td>

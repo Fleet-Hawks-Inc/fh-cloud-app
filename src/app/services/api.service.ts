@@ -74,7 +74,7 @@ export class ApiService {
     let headers: object;
     let selectedCarrier = localStorage.getItem('xfhCarrierId') != null ? localStorage.getItem('xfhCarrierId') : '';
     if (formData) {
-      headers = { headers: {} }
+      headers = { headers: new HttpHeaders({'x-fleethawks-carrier-id': selectedCarrier }) };
     }
     else {
       headers = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'x-fleethawks-carrier-id': selectedCarrier }) };
