@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild, } from "@angular/core";
-import { AccountService, ApiService } from "../../../../services";
+import { AccountService, ApiService, ListService } from "../../../../services";
 import { ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { NgxSpinnerService } from "ngx-spinner";
@@ -33,7 +33,8 @@ export class TripDetailComponent implements OnInit {
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     private hereMap: HereMapService,
-    private location: Location
+    private location: Location,
+    private listService: ListService,
   ) {
     this.selectedFileNames = new Map<any, any>();
   }
@@ -62,6 +63,7 @@ export class TripDetailComponent implements OnInit {
 
   orderType: string;
   tripID = "";
+  docType: string;
   allAssetName = "";
   errors: {};
   trips = [];
@@ -115,6 +117,15 @@ export class TripDetailComponent implements OnInit {
   customerData = [];
   isEmail: boolean = false;
   ngOnInit() {
+
+    this.listService.getDocsModalList.subscribe((res: any) => {
+      if (res && res.docType != null && res.docType != '') {
+        if (res.module === 'trip') {
+          this.docType = res.docType;
+          this.uploadBolPods(res);
+        }
+      }
+    })
 
     this.tripID = this.route.snapshot.params["tripID"];
     this.fetchTripDetail();
@@ -244,6 +255,7 @@ export class TripDetailComponent implements OnInit {
                 displayName: x.displayName,
                 name: x.storedName,
                 ext: x.storedName.split(".")[1],
+                type: x.type ? x.type : 'other'
               };
               this.uploadedDocSrc.push(obj);
             } else {
@@ -254,6 +266,7 @@ export class TripDetailComponent implements OnInit {
                 displayName: x.displayName,
                 name: x.storedName,
                 ext: x.storedName.split(".")[1],
+                type: x.type ? x.type : 'other'
               };
               this.uploadedDocSrc.push(obj);
             }
@@ -315,31 +328,33 @@ export class TripDetailComponent implements OnInit {
 
         if (documents.length > 0) {
           documents.forEach((el) => {
-              if (el.uploadedDocs.length > 0) {
-                el.uploadedDocs.forEach((element) => {
-                  let name = element.storedName;
-                  let ext = element.storedName.split(".")[1];
-                  let obj = {};
-                  if (ext == "jpg" || ext == "jpeg" || ext == "png") {
-                    obj = {
-                      imgPath: `${element.urlPath}`,
-                      docPath: `${element.urlPath}`,
-                      displayName: el.docType,
-                      name: name,
-                      ext: ext,
-                    };
-                  } else {
-                    obj = {
-                      imgPath: "assets/img/icon-pdf.png",
-                      docPath: `${element.urlPath}`,
-                      displayName: element.displayName,
-                      name: name,
-                      ext: ext,
-                    };
-                  }
-                  this.uploadedDocSrc.push(obj);
-                });
-              }
+            if (el.uploadedDocs.length > 0) {
+              el.uploadedDocs.forEach((element) => {
+                let name = element.storedName;
+                let ext = element.storedName.split(".")[1];
+                let obj = {};
+                if (ext == "jpg" || ext == "jpeg" || ext == "png") {
+                  obj = {
+                    imgPath: `${element.urlPath}`,
+                    docPath: `${element.urlPath}`,
+                    displayName: el.docType,
+                    name: name,
+                    ext: ext,
+                    type: element.type ? element.type : 'other'
+                  };
+                } else {
+                  obj = {
+                    imgPath: "assets/img/icon-pdf.png",
+                    docPath: `${element.urlPath}`,
+                    displayName: element.displayName,
+                    name: name,
+                    ext: ext,
+                    type: element.type ? element.type : 'other'
+                  };
+                }
+                this.uploadedDocSrc.push(obj);
+              });
+            }
           });
 
         }
@@ -558,6 +573,75 @@ export class TripDetailComponent implements OnInit {
     ];
   }
 
+  async uploadBolPods(res: any) {
+    for (let i = 0; i < res.documents.length; i++) {
+      const element = res.documents[i];
+      let name = element.name.split(".");
+      let ext = name[name.length - 1];
+
+      if (ext != "jpg" && ext != "jpeg" && ext != "png" && ext != "pdf") {
+        $("#bolUpload").val("");
+        this.toastr.error("Only image and pdf files are allowed");
+        return false;
+      }
+    }
+
+    for (let i = 0; i < res.documents.length; i++) {
+      this.uploadedDocs.push(res.documents[i]);
+    }
+    // create form data instance
+    const formData = new FormData();
+    // append photos if any
+    for (let i = 0; i < this.uploadedDocs.length; i++) {
+      formData.append("uploadedDocs", this.uploadedDocs[i]);
+    }
+
+    let result: any = await this.apiService
+      .postData(`trips/update/bol/${this.tripID}/${this.docType}`, formData, true).toPromise()
+    if (result && result.length > 0) {
+      this.tripData.documents = res;
+      this.uploadedDocSrc = [];
+      this.uploadedDocs = [];
+      if (res.length > 0) {
+        for (let k = 0; k < res.length; k++) {
+          const element = res[k];
+          // this.uploadedDocSrc.push(`${this.Asseturl}/${this.tripData.carrierID}/${element}`);
+          let name = element.storedName;
+          let ext = element.storedName.split('.')[1];
+          let obj = {
+            imgPath: '',
+            docPath: '',
+            displayName: '',
+            name: '',
+            ext: '',
+            type: ''
+          };
+          if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+            obj = {
+              imgPath: `${ext.urlPath}`,
+              docPath: `${ext.urlPath}`,
+              displayName: element.displayName,
+              name: name,
+              ext: ext,
+              type: ext.type ? ext.type : 'other'
+            };
+          } else {
+            obj = {
+              imgPath: 'assets/img/icon-pdf.png',
+              docPath: `${ext.urlPath}`,
+              displayName: element.displayName,
+              name: name,
+              ext: ext,
+              type: ext.type ? ext.type : 'other'
+            };
+          }
+          this.uploadedDocSrc.push(obj);
+        }
+      }
+      this.toastr.success('BOL/POD uploaded successfully');
+      this.fetchTripDetail();
+    }
+  }
 
   /*
    * Selecting files before uploading
@@ -717,5 +801,13 @@ export class TripDetailComponent implements OnInit {
 
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
+  }
+
+  openDocModal() {
+    let obj = {
+      type: 'trip',
+      docLength: this.uploadedDocSrc.length
+    }
+    this.listService.openDocTypeMOdal(obj)
   }
 }
