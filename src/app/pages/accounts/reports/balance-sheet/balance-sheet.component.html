@@ -28,7 +28,7 @@
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
-                      <button type="button" class="btn btn-success btn-sm">Search</button>
+                        <button type="button" class="btn btn-success btn-sm">Search</button>
                     </div>
                     <div class="col-md-5 col-lg-5 pr-2">
                         <button *ngIf="exportLoading" class="btn btn-success btn-sm ml-2" type="button" disabled>
@@ -57,9 +57,6 @@
                         <div class="bg-white p-3 text-dark">
                             <div class="form-group row">
                                 <div class="col-lg-12">
-
-
-
                                     <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                                         <li class="nav-item">
                                             <a class="nav-link" [ngClass]="{ active: currTab === 'CAD' }"
@@ -87,8 +84,7 @@
                                                             <th class="text-4" width="25%">Account Number</th>
                                                             <th class="text-4" width="20%">Account Name</th>
                                                             <th class="text-4" width="20%">Account Class</th>
-                                                            <th class="text-4" width="15%">Debit</th>
-                                                            <th class="text-4" width="15%">Credit</th>
+                                                            <th class="text-4" width="15%">Closing Balance</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -99,27 +95,21 @@
                                                             <td>{{ac.accountNo}}</td>
                                                             <td>{{ac.accountName}}</td>
                                                             <td>{{ac.subAcClass}}</td>
-                                                            <td>{{ac.debit | number: "1.2-2"}}</td>
-                                                            <td>{{ac.credit | number: "1.2-2"}}</td>
+                                                            <td>
+                                                                <span *ngIf="currTab === 'CAD'">{{ac.closingBalAmtCAD |
+                                                                    number: "1.2-2"}}</span>
+                                                                <span *ngIf="currTab === 'USD'">{{ac.closingBalAmtUSD |
+                                                                    number: "1.2-2"}}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td class="font-weight-bold">Total Current Assets</td>
                                                             <td></td>
                                                             <td></td>
                                                             <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf="currency === 'CAD'">{{currentAssetDebitTotalCAD
+                                                                <span *ngIf="currency === 'CAD'">{{currentAssetTotalCAD
                                                                     | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf="currency === 'USD'">{{currentAssetDebitTotalUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf=" currency === 'CAD'">{{currentAssetCreditTotalCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf=" currency === 'USD'">{{currentAssetCreditTotalUSD
+                                                                <span *ngIf="currency === 'USD'">{{currentAssetTotalUSD
                                                                     | number: "1.2-2"}}</span>
                                                             </td>
                                                         </tr>
@@ -138,8 +128,7 @@
                                                             <th class="text-4" width="25%">Account Number</th>
                                                             <th class="text-4" width="20%">Account Name</th>
                                                             <th class="text-4" width="20%">Account Class</th>
-                                                            <th class="text-4" width="15%">Debit</th>
-                                                            <th class="text-4" width="15%">Credit</th>
+                                                            <th class="text-4" width="15%">Closing Balance</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -150,9 +139,12 @@
                                                             <td>{{ac.accountNo}}</td>
                                                             <td>{{ac.accountName}}</td>
                                                             <td>{{ac.subAcClass}}</td>
-
-                                                            <td>{{ac.debit | number: "1.2-2"}}</td>
-                                                            <td>{{ac.credit | number: "1.2-2"}}</td>
+                                                            <td>
+                                                                <span *ngIf="currTab === 'CAD'">{{ac.closingBalAmtCAD |
+                                                                    number: "1.2-2"}}</span>
+                                                                <span *ngIf="currTab === 'USD'">{{ac.closingBalAmtUSD |
+                                                                    number: "1.2-2"}}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td class="font-weight-bold">Total Inventory Assets</td>
@@ -160,18 +152,10 @@
                                                             <td></td>
                                                             <td class="font-weight-bold text-4">
                                                                 <span
-                                                                    *ngIf="currency === 'CAD'">{{inventoryAssetDebitTotalCAD
+                                                                    *ngIf="currency === 'CAD'">{{inventoryAssetTotalCAD
                                                                     | number: "1.2-2"}}</span>
                                                                 <span
-                                                                    *ngIf="currency === 'USD'">{{inventoryAssetDebitTotalUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf=" currency === 'CAD'">{{inventoryAssetCreditTotalCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf=" currency === 'USD'">{{inventoryAssetCreditTotalUSD
+                                                                    *ngIf="currency === 'USD'">{{inventoryAssetTotalUSD
                                                                     | number: "1.2-2"}}</span>
                                                             </td>
                                                         </tr>
@@ -189,8 +173,7 @@
                                                             <th class="text-4" width="25%">Account Number</th>
                                                             <th class="text-4" width="20%">Account Name</th>
                                                             <th class="text-4" width="20%">Account Class</th>
-                                                            <th class="text-4" width="15%">Debit</th>
-                                                            <th class="text-4" width="15%">Credit</th>
+                                                            <th class="text-4" width="15%">Closing Balance</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -201,28 +184,21 @@
                                                             <td>{{ac.accountNo}}</td>
                                                             <td>{{ac.accountName}}</td>
                                                             <td>{{ac.subAcClass}}</td>
-
-                                                            <td>{{ac.debit | number: "1.2-2"}}</td>
-                                                            <td>{{ac.credit | number: "1.2-2"}}</td>
+                                                            <td>
+                                                                <span *ngIf="currTab === 'CAD'">{{ac.closingBalAmtCAD |
+                                                                    number: "1.2-2"}}</span>
+                                                                <span *ngIf="currTab === 'USD'">{{ac.closingBalAmtUSD |
+                                                                    number: "1.2-2"}}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td class="font-weight-bold">Total Capital Assets</td>
                                                             <td></td>
                                                             <td></td>
                                                             <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf="currency === 'CAD'">{{capitalAssetDebitTotalCAD
+                                                                <span *ngIf="currency === 'CAD'">{{capitalAssetTotalCAD
                                                                     | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf="currency === 'USD'">{{capitalAssetDebitTotalUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf=" currency === 'CAD'">{{capitalAssetCreditTotalCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf=" currency === 'USD'">{{capitalAssetCreditTotalUSD
+                                                                <span *ngIf="currency === 'USD'">{{capitalAssetTotalUSD
                                                                     | number: "1.2-2"}}</span>
                                                             </td>
                                                         </tr>
@@ -240,8 +216,8 @@
                                                             <th class="text-4" width="25%">Account Number</th>
                                                             <th class="text-4" width="20%">Account Name</th>
                                                             <th class="text-4" width="20%">Account Class</th>
-                                                            <th class="text-4" width="15%">Debit</th>
-                                                            <th class="text-4" width="15%">Credit</th>
+                                                            <th class="text-4" width="15%">Closing Balance</th>
+
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -252,9 +228,12 @@
                                                             <td>{{ac.accountNo}}</td>
                                                             <td>{{ac.accountName}}</td>
                                                             <td>{{ac.subAcClass}}</td>
-
-                                                            <td>{{ac.debit | number: "1.2-2"}}</td>
-                                                            <td>{{ac.credit | number: "1.2-2"}}</td>
+                                                            <td>
+                                                                <span *ngIf="currTab === 'CAD'">{{ac.closingBalAmtCAD |
+                                                                    number: "1.2-2"}}</span>
+                                                                <span *ngIf="currTab === 'USD'">{{ac.closingBalAmtUSD |
+                                                                    number: "1.2-2"}}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td class="font-weight-bold">Total Other Non-Current Assets
@@ -262,17 +241,9 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td class="font-weight-bold text-4">
-                                                                <span *ngIf="currency === 'CAD'">{{ONCAssetDebitTotalCAD
+                                                                <span *ngIf="currency === 'CAD'">{{ONCAssetTotalCAD
                                                                     | number: "1.2-2"}}</span>
-                                                                <span *ngIf="currency === 'USD'">{{ONCAssetDebitTotalUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf=" currency === 'CAD'">{{ONCAssetCreditTotalCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf=" currency === 'USD'">{{ONCAssetCreditTotalUSD
+                                                                <span *ngIf="currency === 'USD'">{{ONCAssetTotalUSD
                                                                     | number: "1.2-2"}}</span>
                                                             </td>
                                                         </tr>
@@ -285,8 +256,7 @@
                                                             <th width="25%">All Assets Total</th>
                                                             <th width="20%"></th>
                                                             <th width="20%"></th>
-                                                            <th width="15%">Debit</th>
-                                                            <th width="15%">Credit</th>
+                                                            <th width="15%">Total Assets Closing Balance</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -295,16 +265,10 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td class="font-weight-bold text-4">
-                                                                <span *ngIf="currency === 'CAD'">{{totalAssetsDebitCAD |
+                                                                <span *ngIf="currency === 'CAD'">{{totalAssetsCAD |
                                                                     number: "1.2-2"}}</span>
-                                                                <span *ngIf="currency === 'USD'">{{totalAssetsDebitUSD |
+                                                                <span *ngIf="currency === 'USD'">{{totalAssetsUSD |
                                                                     number: "1.2-2"}}</span>
-                                                            </td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span *ngIf=" currency === 'CAD'">{{totalAssetsCreditCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span *ngIf=" currency === 'USD'">{{totalAssetsCreditUSD
-                                                                    | number: "1.2-2"}}</span>
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -327,8 +291,7 @@
                                                             <th class="text-4" width="25%">Account Number</th>
                                                             <th class="text-4" width="20%">Account Name</th>
                                                             <th class="text-4" width="20%">Account Class</th>
-                                                            <th class="text-4" width="15%">Debit</th>
-                                                            <th class="text-4" width="15%">Credit</th>
+                                                            <th class="text-4" width="15%">Closing Balance</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -339,9 +302,12 @@
                                                             <td>{{ac.accountNo}}</td>
                                                             <td>{{ac.accountName}}</td>
                                                             <td>{{ac.subAcClass}}</td>
-
-                                                            <td>{{ac.debit | number: "1.2-2"}}</td>
-                                                            <td>{{ac.credit | number: "1.2-2"}}</td>
+                                                            <td>
+                                                                <span *ngIf="currTab === 'CAD'">{{ac.closingBalAmtCAD |
+                                                                    number: "1.2-2"}}</span>
+                                                                <span *ngIf="currTab === 'USD'">{{ac.closingBalAmtUSD |
+                                                                    number: "1.2-2"}}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td class="font-weight-bold">Total Current Liability</td>
@@ -349,18 +315,10 @@
                                                             <td></td>
                                                             <td class="font-weight-bold text-4">
                                                                 <span
-                                                                    *ngIf="currency === 'CAD'">{{totalCurrentLiabilityDebitCAD
+                                                                    *ngIf="currency === 'CAD'">{{totalCurrentLiabilityCAD
                                                                     | number: "1.2-2"}}</span>
                                                                 <span
-                                                                    *ngIf="currency === 'USD'">{{totalCurrentLiabilityDebitUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf=" currency === 'CAD'">{{totalCurrentLiabilityCreditCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf=" currency === 'USD'">{{totalCurrentLiabilityCreditUSD
+                                                                    *ngIf="currency === 'USD'">{{totalCurrentLiabilityUSD
                                                                     | number: "1.2-2"}}</span>
                                                             </td>
                                                         </tr>
@@ -378,9 +336,8 @@
                                                             <th class="text-4" width="25%">Account Number</th>
                                                             <th class="text-4" width="20%">Account Name</th>
                                                             <th class="text-4" width="20%">Account Class</th>
+                                                            <th class="text-4" width="15%">Closing Balance</th>
 
-                                                            <th class="text-4" width="15%">Debit</th>
-                                                            <th class="text-4" width="15%">Credit</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -391,9 +348,12 @@
                                                             <td>{{ac.accountNo}}</td>
                                                             <td>{{ac.accountName}}</td>
                                                             <td>{{ac.subAcClass}}</td>
-
-                                                            <td>{{ac.debit | number: "1.2-2"}}</td>
-                                                            <td>{{ac.credit | number: "1.2-2"}}</td>
+                                                            <td>
+                                                                <span *ngIf="currTab === 'CAD'">{{ac.closingBalAmtCAD |
+                                                                    number: "1.2-2"}}</span>
+                                                                <span *ngIf="currTab === 'USD'">{{ac.closingBalAmtUSD |
+                                                                    number: "1.2-2"}}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td class="font-weight-bold">Total Long Term Liability</td>
@@ -401,18 +361,10 @@
                                                             <td></td>
                                                             <td class="font-weight-bold text-4">
                                                                 <span
-                                                                    *ngIf="currency === 'CAD'">{{totalLongTermLiabilityDebitCAD
+                                                                    *ngIf="currency === 'CAD'">{{totalLongTermLiabilityCAD
                                                                     | number: "1.2-2"}}</span>
                                                                 <span
-                                                                    *ngIf="currency === 'USD'">{{totalLongTermLiabilityDebitUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf=" currency === 'CAD'">{{totalLongTermLiabilityCreditCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf=" currency === 'USD'">{{totalLongTermLiabilityCreditUSD
+                                                                    *ngIf="currency === 'USD'">{{totalLongTermLiabilityUSD
                                                                     | number: "1.2-2"}}</span>
                                                             </td>
                                                         </tr>
@@ -425,8 +377,7 @@
                                                             <th width="25%">All Liability Total</th>
                                                             <th width="20%"></th>
                                                             <th width="20%"></th>
-                                                            <th width="15%">Debit</th>
-                                                            <th width="15%">Credit</th>
+                                                            <th width="15%">Total Liability Closing Balance</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -435,19 +386,9 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf="currency === 'CAD'">{{totalLiabilityDebitCAD
+                                                                <span *ngIf="currency === 'CAD'">{{totalLiabilityCAD
                                                                     | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf="currency === 'USD'">{{totalLiabilityDebitUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf=" currency === 'CAD'">{{totalLiabilityCreditCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf=" currency === 'USD'">{{totalLiabilityCreditUSD
+                                                                <span *ngIf="currency === 'USD'">{{totalLiabilityUSD
                                                                     | number: "1.2-2"}}</span>
                                                             </td>
                                                         </tr>
@@ -472,9 +413,8 @@
                                                             <th class="text-4" width="25%">Account Number</th>
                                                             <th class="text-4" width="20%">Account Name</th>
                                                             <th class="text-4" width="20%">Account Class</th>
+                                                            <th class="text-4" width="15%">Closing Balance</th>
 
-                                                            <th class="text-4" width="15%">Debit</th>
-                                                            <th class="text-4" width="15%">Credit</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -485,28 +425,21 @@
                                                             <td>{{ac.accountNo}}</td>
                                                             <td>{{ac.accountName}}</td>
                                                             <td>{{ac.subAcClass}}</td>
-
-                                                            <td>{{ac.debit | number: "1.2-2"}}</td>
-                                                            <td>{{ac.credit | number: "1.2-2"}}</td>
+                                                            <td>
+                                                                <span *ngIf="currTab === 'CAD'">{{ac.closingBalAmtCAD |
+                                                                    number: "1.2-2"}}</span>
+                                                                <span *ngIf="currTab === 'USD'">{{ac.closingBalAmtUSD |
+                                                                    number: "1.2-2"}}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="font-weight-bold">Total Share Capital</td>
+                                                            <td class="font-weight-bold">Total Long Term Liability</td>
                                                             <td></td>
                                                             <td></td>
                                                             <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf="currency === 'CAD'">{{totalShareCapitalDebitCAD
+                                                                <span *ngIf="currency === 'CAD'">{{totalShareCapitalCAD
                                                                     | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf="currency === 'USD'">{{totalShareCapitalDebitUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf=" currency === 'CAD'">{{totalShareCapitalCreditCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf=" currency === 'USD'">{{totalShareCapitalCreditUSD
+                                                                <span *ngIf="currency === 'USD'">{{totalShareCapitalUSD
                                                                     | number: "1.2-2"}}</span>
                                                             </td>
                                                         </tr>
@@ -524,9 +457,8 @@
                                                             <th class="text-4" width="25%">Account Number</th>
                                                             <th class="text-4" width="20%">Account Name</th>
                                                             <th class="text-4" width="20%">Account Class</th>
+                                                            <th class="text-4" width="15%">Closing Balance</th>
 
-                                                            <th class="text-4" width="15%">Debit</th>
-                                                            <th class="text-4" width="15%">Credit</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -537,28 +469,23 @@
                                                             <td>{{ac.accountNo}}</td>
                                                             <td>{{ac.accountName}}</td>
                                                             <td>{{ac.subAcClass}}</td>
-
-                                                            <td>{{ac.debit | number: "1.2-2"}}</td>
-                                                            <td>{{ac.credit | number: "1.2-2"}}</td>
+                                                            <td>
+                                                                <span *ngIf="currTab === 'CAD'">{{ac.closingBalAmtCAD |
+                                                                    number: "1.2-2"}}</span>
+                                                                <span *ngIf="currTab === 'USD'">{{ac.closingBalAmtUSD |
+                                                                    number: "1.2-2"}}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="font-weight-bold">Total Retained Earnings</td>
+                                                            <td class="font-weight-bold">Total Long Term Liability</td>
                                                             <td></td>
                                                             <td></td>
                                                             <td class="font-weight-bold text-4">
                                                                 <span
-                                                                    *ngIf="currency === 'CAD'">{{totalRetainedEarningsDebitCAD
+                                                                    *ngIf="currency === 'CAD'">{{totalRetainedEarningsCAD
                                                                     | number: "1.2-2"}}</span>
                                                                 <span
-                                                                    *ngIf="currency === 'USD'">{{totalRetainedEarningsDebitUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf=" currency === 'CAD'">{{totalRetainedEarningsCreditCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf=" currency === 'USD'">{{totalRetainedEarningsCreditUSD
+                                                                    *ngIf="currency === 'USD'">{{totalRetainedEarningsCAD
                                                                     | number: "1.2-2"}}</span>
                                                             </td>
                                                         </tr>
@@ -572,8 +499,7 @@
                                                             <th width="25%">All Equity Total</th>
                                                             <th width="20%"></th>
                                                             <th width="20%"></th>
-                                                            <th width="15%">Debit</th>
-                                                            <th width="15%">Credit</th>
+                                                            <th width="15%">All Equities Closing Balance</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -582,15 +508,9 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td class="font-weight-bold text-4">
-                                                                <span *ngIf="currency === 'CAD'">{{totalEquityDebitCAD |
-                                                                    number: "1.2-2"}}</span>
-                                                                <span *ngIf="currency === 'USD'">{{totalEquityDebitUSD |
-                                                                    number: "1.2-2"}}</span>
-                                                            </td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span *ngIf=" currency === 'CAD'">{{totalEquityCreditCAD
+                                                                <span *ngIf="currency === 'CAD'">{{totalEquityCAD
                                                                     | number: "1.2-2"}}</span>
-                                                                <span *ngIf=" currency === 'USD'">{{totalEquityCreditUSD
+                                                                <span *ngIf="currency === 'USD'">{{totalEquityUSD
                                                                     | number: "1.2-2"}}</span>
                                                             </td>
                                                         </tr>
@@ -603,8 +523,8 @@
                                                             <th width="25%">Liability & Equity Total</th>
                                                             <th width="20%"></th>
                                                             <th width="20%"></th>
-                                                            <th width="15%">Debit</th>
-                                                            <th width="15%">Credit</th>
+                                                            <th width="15%">All Equities & Liabilities Closing Balance
+                                                            </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -614,18 +534,10 @@
                                                             <td></td>
                                                             <td class="font-weight-bold text-4">
                                                                 <span
-                                                                    *ngIf="currency === 'CAD'">{{totalLiabilityEquityDebitCAD
+                                                                    *ngIf="currency === 'CAD'">{{totalLiabilityEquityCAD
                                                                     | number: "1.2-2"}}</span>
                                                                 <span
-                                                                    *ngIf="currency === 'USD'">{{totalLiabilityEquityDebitUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf=" currency === 'CAD'">{{totalLiabilityEquityCreditCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf=" currency === 'USD'">{{totalLiabilityEquityCreditUSD
+                                                                    *ngIf="currency === 'USD'">{{totalLiabilityEquityUSD
                                                                     | number: "1.2-2"}}</span>
                                                             </td>
                                                         </tr>
@@ -633,21 +545,10 @@
                                                 </table>
                                             </div>
                                         </div>
-
-                                        <!--
-                                       <div class="col-lg-12 mt-3 text-center"
-                                                    *ngIf="lastItemSK !== 'end' && accounts.length !== 0">
-                                                    <button type="button" class="btn btn-success btn-sm text-light"
-                                                        (click)="onScroll()">
-                                                        <i class="fa fa-spinner fa-spin" *ngIf="isLoad">
-                                                        </i> {{isLoadText}}
-                                                    </button>
-                                                </div> -->
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </section>
