@@ -146,10 +146,19 @@
                                                         </span>
                                                     </span>
                                                 </td>
-                                                <td> <span *ngIf="item.receiptData.length === 0">-</span>
+                                                <!-- <td>  -->
+                                                    <!-- <span *ngIf = "item.recInv === undefined ">-</span>
                                                     {{item.recInv}}
+                                                </td> -->
+                                                <td>
+                                                    <span *ngIf="item.receiptData.length === 0">-</span>
+                                                    <span *ngFor='let item1 of item.receiptData'>
+                                                        <span *ngFor='let item2 of item1'>
+                                                            {{item2.recNo}}
+                                                            </span>
+                                                    
+                                                    </span>
                                                 </td>
-
 
 
                                                 <!-- <td>{{item.totalAmount }}</td>

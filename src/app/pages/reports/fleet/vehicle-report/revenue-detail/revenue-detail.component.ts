@@ -53,14 +53,14 @@ export class RevenueDetailComponent implements OnInit {
       if (result.Items.length === 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND
       }
-      for(let data of this.allData){
-        for(let recData of data.receiptData){
-          for(let rec of recData){
-            data.recInv = []
-            data.recInv.push(rec.invNOs)
-          }
-        }
-      }
+      // for(let data of this.allData){
+      //   for(let recData of data.receiptData){
+      //     for(let rec of recData){
+      //       data.recInv = []
+      //       data.recInv.push(rec.invNOs)
+      //     }
+      //   }
+      // }
       if (result.LastEvaluatedKey !== undefined) {
         this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.tripSK);
         this.datee = encodeURIComponent(result.LastEvaluatedKey.dateCreated)
@@ -71,7 +71,7 @@ export class RevenueDetailComponent implements OnInit {
       this.loaded = true;
     })
   }
- 
+
   // onScroll() {
   //   if (this.loaded) {
 
