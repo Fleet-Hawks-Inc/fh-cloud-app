@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ReactiveFormConfig, RxFormBuilder, RxwebValidators } from '@rxweb/reactive-form-validators';
 import { ToastrService } from 'ngx-toastr';
@@ -29,6 +30,7 @@ export class VehicleDashCamTrackerComponent implements OnInit {
   center = { lat: 48.48248695279594, lng: -99.0688673798094 };
   token = undefined;
   loaded = false;
+  showLiveFeed = false;
   deviceSerial = undefined;
   deviceDetails = undefined;
   apiResponse: {
@@ -46,6 +48,7 @@ export class VehicleDashCamTrackerComponent implements OnInit {
     lat: 0.0,
     lng: 0.0
   };
+  liveStreamVehicle: string;
   deviceInfo = {
     deviceType: '',
     deviceId: '',
@@ -78,12 +81,13 @@ export class VehicleDashCamTrackerComponent implements OnInit {
     { duration: '3m', name: '3 months' },
     { duration: '6m', name: '6 months' },
   ];
-
+  liveFeedUrl;
   constructor(private route: ActivatedRoute,
     private webSocket: DashCamLocationStreamService,
     private apiService: ApiService,
     private messageService: MessageService,
-    private formBuilder: RxFormBuilder) {
+    private formBuilder: RxFormBuilder,
+    protected _sanitizer: DomSanitizer) {
 
 
     this.deviceSerial = this.route.snapshot.params.deviceSerial;
@@ -275,5 +279,23 @@ export class VehicleDashCamTrackerComponent implements OnInit {
   copied(event: any) {
     this.messageService.add({ severity: 'info', summary: 'Link copied to clipboard.', detail: 'This link will be valid for selected duration.' })
   }
+
+  /**
+   * Open Live View popup.
+   * @param content
+   */
+  async openLiveView() {
+    const deviceId = this.deviceInfo.deviceSrNo.split('#')[1];
+    const response = await this.apiService.getData(`vehicles/dashCam/liveFeed/${deviceId}`).toPromise()
+    this.liveFeedUrl = this._sanitizer.bypassSecurityTrustResourceUrl(response.feedUrl);
+    this.liveStreamVehicle = `(${this.deviceInfo.deviceId})`;
+    this.showLiveFeed = true;
+    setTimeout(() => {
+      this.showLiveFeed = false;
+    }, 60000);
+
+  }
+
+
 
 }

@@ -216,6 +216,7 @@ export class OrderDetailComponent implements OnInit {
 
   emailData = {
     emails: [],
+    isSingle: false
   };
 
   subject = "";
@@ -308,6 +309,7 @@ export class OrderDetailComponent implements OnInit {
   isFlag = true;
   showBtns = false;
   brokerageDisabled = false;
+  singleDisabled = true;
 
   documentsArr = [
     {
@@ -670,6 +672,7 @@ export class OrderDetailComponent implements OnInit {
   addEmails() {
     this.isFlag = true;
     this.isEmail = true;
+
     if (this.emailData.emails.length === 0) {
       this.toastr.error("Please enter at least one email");
       this.isEmail = false;
@@ -790,7 +793,11 @@ export class OrderDetailComponent implements OnInit {
         types.push(x.value)
       }
     })
-
+    if (types.length > 1) {
+      this.singleDisabled = false;
+    } else {
+      this.singleDisabled = true;
+    }
     this.newInvDocs = this.attachedDocs.filter(function (doc) {
       return types.indexOf(doc.type) > -1;
     });

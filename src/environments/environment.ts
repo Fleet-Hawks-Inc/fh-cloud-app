@@ -7,10 +7,10 @@ export const environment = {
   isFeatureEnabled: true,
 
 
-  BaseUrl: 'http://localhost:3000/api/v1/',
+  //BaseUrl: 'http://localhost:3000/api/v1/',
   AccountServiceUrl: 'http://localhost:4002/api/v1/',
   // SafetyServiceUrl: 'http://localhost:4000/api/v1/',
-  // BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
+  BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
   // AccountServiceUrl: ' https://accounts.ap-south-1.fleethawks.com/api/v1/',
   SafetyServiceUrl: 'http://localhost:4000/api/v1/',
 
@@ -29,7 +29,7 @@ export const environment = {
   isSafetyEnabled: false,
   isAccountsEnabled: false,
   isReportsEnabled: true,
-  isUserRoles:true,
+  isUserRoles: true,
 
   AssetURL: "https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com",
   safetyURL: "http://localhost:4000/api/v1/",
