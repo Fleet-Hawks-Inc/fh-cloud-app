@@ -14,7 +14,7 @@ export class RevenueDetailComponent implements OnInit {
   // vehicleId = null;
   start = null;
   end = null;
-  allData = [];
+  allData:any = [];
   vehicleData = [];
   lastItemSK = ''
   datee = ''
@@ -34,13 +34,12 @@ export class RevenueDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.end = moment().format("YYYY-MM-DD");
-    this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
+    this.start = moment().subtract(5, 'months').format('YYYY-MM-DD');
 
     this.vehicleId = this.route.snapshot.params[`vehicleId`];
     this.fetchRevenueData()
     // this.fetchFuel()
     this.fetchVehicleName()
-    // this.fetchRecipt();
   }
   fetchVehicleName() {
     this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
@@ -54,12 +53,14 @@ export class RevenueDetailComponent implements OnInit {
       if (result.Items.length === 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND
       }
-      // for (let element of this.allData) {
-      //   element.invD = []
-      //   for (let elem of element.orderId) {
-      //     this.orderIDs.push(elem)
-      //   }
-      // }
+      for(let data of this.allData){
+        for(let recData of data.receiptData){
+          for(let rec of recData){
+            data.recInv = []
+            data.recInv.push(rec.invNOs)
+          }
+        }
+      }
       if (result.LastEvaluatedKey !== undefined) {
         this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.tripSK);
         this.datee = encodeURIComponent(result.LastEvaluatedKey.dateCreated)
@@ -70,12 +71,7 @@ export class RevenueDetailComponent implements OnInit {
       this.loaded = true;
     })
   }
-  fetchRecipt() {
-    this.accountService.getData(`receipts/get/receipt/byInv?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
-      this.recptData = result;
-      console.log('this---', this.recptData)
-    })
-  }
+ 
   // onScroll() {
   //   if (this.loaded) {
 
@@ -102,7 +98,7 @@ export class RevenueDetailComponent implements OnInit {
         this.allData = []
         this.dataMessage = Constants.FETCHING_DATA;
         this.fetchRevenueData();
-        // this.fetchVehicleName();
+        this.fetchVehicleName();
       }
     } else {
       return false;

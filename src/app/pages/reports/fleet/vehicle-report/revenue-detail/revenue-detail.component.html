@@ -99,6 +99,7 @@
                                         <col style="width:1%">
                                         <col style="width:1%">
                                         <col style="width:1%">
+                                        <col style="width:1%">
                                         <thead>
                                             <tr>
                                                 <!-- <th>Vehicle</th> -->
@@ -108,6 +109,7 @@
                                                 <th>Trip Date</th>
                                                 <th>Invoice#</th>
                                                 <th>Invoice Date</th>
+                                                <th>Receipt#</th>
                                                 <!-- <th>Amount</th>
                                                 <th>Currency</th> -->
                                             </tr>
@@ -123,30 +125,33 @@
                                                 <td>{{item.tripNo}}</td>
                                                 <td>{{item.dateCreated | date:"yyyy/MM/dd" }}</td>
                                                 <td>
-                                                    <span *ngIf="item.invoiceData[0].length === 0">-</span>
+                                                    <span *ngIf="item.invoiceData.length === 0">-</span>
                                                     <span *ngFor='let item1 of item.invoiceData'>
-                                                        <span *ngFor='let invD of item1'>
-                                                            <span *ngIf="invD.invStatus === 'paid'">
-                                                                {{invD.invNo}}
-                                                            </span>
-                                                            <span *ngIf="invD.invStatus != 'paid'">
-                                                                -
-                                                            </span>
-
-                                                        </span></span>
+                                                        <span *ngIf="item1.invStatus === 'paid'">
+                                                            {{item1.invNo}}
+                                                        </span>
+                                                        <span *ngIf="item1.invStatus != 'paid'">
+                                                            -
+                                                        </span>
+                                                    </span>
                                                 </td>
                                                 <td>
-                                                    <span *ngIf="item.invoiceData[0].length === 0">-</span>
+                                                    <span *ngIf="item.invoiceData.length === 0">-</span>
                                                     <span *ngFor='let item1 of item.invoiceData'>
-                                                        <span *ngFor='let invD of item1'>
-                                                            <span *ngIf="invD.invStatus === 'paid'">
-                                                                {{invD.txnDate | date: "yyyy/MM/dd"}}
-                                                            </span>
-                                                            <span *ngIf="invD.invStatus != 'paid'">
-                                                                -
-                                                            </span>
-                                                        </span></span>
+                                                        <span *ngIf="item1.invStatus === 'paid'">
+                                                            {{item1.txnDate | date: "yyyy/MM/dd"}}
+                                                        </span>
+                                                        <span *ngIf="item1.invStatus != 'paid'">
+                                                            -
+                                                        </span>
+                                                    </span>
                                                 </td>
+                                                <td> <span *ngIf="item.receiptData.length === 0">-</span>
+                                                    {{item.recInv}}
+                                                </td>
+
+
+
                                                 <!-- <td>{{item.totalAmount }}</td>
                                                 <td>{{item.charges.freightFee.currency }}</td> -->
                                             </tr>
