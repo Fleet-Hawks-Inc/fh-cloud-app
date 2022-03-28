@@ -138,7 +138,7 @@
                         "
                       >
                         <p style="margin-bottom: 4px; color: #000000">
-                          {{ settlementData.paymentInfo.pType }}
+                          {{ paymentAbr[settlementData.paymentSelected[0].pType] }}
                         </p>
                       </td>
                     </tr>
@@ -170,7 +170,7 @@
                         "
                       >
                         <p style="margin-bottom: 4px; color: #000000">
-                          {{ settlementData.currency }}
+                          {{ settlementData.paymentSelected[0].currency }}
                         </p>
                       </td>
                     </tr>
@@ -194,7 +194,7 @@
                   <tbody>
                     <tr
                       *ngIf="
-                        settlementData.paymentInfo.pType === 'Pay Per Mile'
+                        settlementData.paymentSelected[0].pType === 'ppm'
                       "
                     >
                       <td
@@ -225,15 +225,15 @@
                       >
                         <p style="margin-bottom: 4px; color: #000000">
                           {{
-                            settlementData.paymentInfo.eMiles | number: "1.2-2"
+                            settlementData.paymentSelected[0].emptyMiles | number: "1.2-2"
                           }}
-                          {{ settlementData.currency }}
+                          {{ settlementData.paymentSelected[0].currency }}
                         </p>
                       </td>
                     </tr>
                     <tr
                       *ngIf="
-                        settlementData.paymentInfo.pType === 'Pay Per Mile'
+                        settlementData.paymentSelected[0].pType === 'ppm'
                       "
                     >
                       <td
@@ -263,15 +263,15 @@
                       >
                         <p style="margin-bottom: 4px; color: #000000">
                           {{
-                            settlementData.paymentInfo.lMiles | number: "1.2-2"
+                            settlementData.paymentSelected[0].loadedMiles | number: "1.2-2"
                           }}
-                          {{ settlementData.currency }}
+                          {{ settlementData.paymentSelected[0].currency }}
                         </p>
                       </td>
                     </tr>
                     <tr
                       *ngIf="
-                        settlementData.paymentInfo.pType === 'Pay Per Mile' &&
+                        settlementData.paymentSelected[0].pType === 'ppm' &&
                         settlementData.type === 'driver'
                       "
                     >
@@ -302,16 +302,16 @@
                       >
                         <p style="margin-bottom: 4px; color: #000000">
                           {{
-                            settlementData.paymentInfo.eMileTeam
+                            settlementData.paymentSelected[0].emptyMilesTeam
                               | number: "1.2-2"
                           }}
-                          {{ settlementData.currency }}
+                          {{ settlementData.paymentSelected[0].currency }}
                         </p>
                       </td>
                     </tr>
                     <tr
                       *ngIf="
-                        settlementData.paymentInfo.pType === 'Pay Per Mile' &&
+                        settlementData.paymentSelected[0].pType === 'ppm' &&
                         settlementData.type === 'driver'
                       "
                     >
@@ -342,16 +342,16 @@
                       >
                         <p style="margin-bottom: 4px; color: #000000">
                           {{
-                            settlementData.paymentInfo.lMileTeam
+                            settlementData.paymentSelected[0].loadedMilesTeam
                               | number: "1.2-2"
                           }}
-                          {{ settlementData.currency }}
+                          {{ settlementData.paymentSelected[0].currency }}
                         </p>
                       </td>
                     </tr>
                     <tr
                       *ngIf="
-                        settlementData.paymentInfo.pType === 'Pay Per Delivery'
+                        settlementData.paymentSelected[0].pType === 'ppd'
                       "
                     >
                       <td
@@ -381,15 +381,15 @@
                       >
                         <p style="margin-bottom: 4px; color: #000000">
                           {{
-                            settlementData.paymentInfo.dRate | number: "1.2-2"
+                            settlementData.paymentSelected[0].deliveryRate | number: "1.2-2"
                           }}
-                          {{ settlementData.currency }}
+                          {{ settlementData.paymentSelected[0].currency }}
                         </p>
                       </td>
                     </tr>
                     <tr
                       *ngIf="
-                        settlementData.paymentInfo.pType === 'Pay Per Hour'
+                        settlementData.paymentSelected[0].pType === 'pph'
                       "
                     >
                       <td
@@ -419,9 +419,9 @@
                       >
                         <p style="margin-bottom: 4px; color: #000000">
                           {{
-                            settlementData.paymentInfo.rate | number: "1.2-2"
+                            settlementData.paymentSelected[0].rate | number: "1.2-2"
                           }}
-                          {{ settlementData.currency }}
+                          {{ settlementData.paymentSelected[0].currency }}
                         </p>
                       </td>
                     </tr>
