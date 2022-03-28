@@ -1049,7 +1049,8 @@ export class AddSettlementComponent implements OnInit {
   oprFinalCal() {
     if(this.settlementData.paymentSelected.length>0){
       for(const payment of this.settlementData.paymentSelected){
-        switch(payment.ptype){
+        
+        switch(payment.pType){
           case "ppm":
             let loadedMilesPayment = 0;
             let emptyMilesPayment = 0;
