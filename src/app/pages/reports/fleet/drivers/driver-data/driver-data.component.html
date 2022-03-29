@@ -6,12 +6,11 @@
 <section class="body">
 
     <div class="inner-wrapper">
-
         <section role="main" class="content-body pl-1 pt-0 pr-0">
             <header class="page-header pr19 pl11">
                 <form class="form-horizontal" method="get">
                     <div class="row" style="padding-top:10px;">
-                        <div class="col-md-2 col-lg-2 pr-1">
+                        <div class="col-md-2 col-lg-2 pr-0">
                             <ng-select autofocus placeholder="Search driver by name" [notFoundText]='loadMsg'
                                 (input)="getSuggestions($event.target.value)" #ngSelectComponent [clearable]="false"
                                 [(ngModel)]="driverName" (change)="setDriver($event)">
@@ -21,7 +20,7 @@
                             </ng-select>
 
                         </div>
-                        <div class="col-md-2 col-lg-2 pr-1">
+                        <div class="col-md-2 col-lg-2 pr-0 pl-2">
                             <ng-select [(ngModel)]="driverType" name="driverType" placeholder="Driver type"
                                 class="form-control form-control-sm populate">
 
@@ -31,16 +30,33 @@
                             </ng-select>
                         </div>
 
-                        <div class="col-md-2 col-lg-2">
-                            <button type="submit" [disabled]="isSearch" (click)="searchFilter()" class="btn btn-sm
-                  btn-success mr-3">Search</button>
-                            <button type="button" [disabled]="isSearch" (click)="resetFilter()" class="btn btn-sm
-                  btn-success">Reset</button>
+                        <div class="col-md-3 col-lg-3 pl-2">
+                          <button
+                            type="submit"
+                            [disabled]="isSearch"
+                            (click)="searchFilter()"
+                            class="btn btn-sm btn-success mr-2"
+                          >
+                            Search
+                          </button>
+                          <button
+                            type="button"
+                            [disabled]="isSearch"
+                            (click)="resetFilter()"
+                            class="btn btn-sm btn-success"
+                          >
+                            Reset
+                          </button>
                         </div>
-                        <div class="col-md-4 col-lg-6 text-right pr-1">
-                            <a routerLink="/reports/fleet/drivers" class="btn btn-sm btn-success">Back
-                            </a>
+                      
+                        <div class="col-md-5 col-lg-5 text-right pr-1">
+                          <a
+                            routerLink="/reports/fleet/drivers"
+                            class="btn btn-sm btn-success"
+                            >Back
+                          </a>
                         </div>
+                      
                         <div class="col-md-6 text-right pr-1 page-buttons">
                             <div class="btn-group flex-wrap" style="min-width:190px;" *ngIf="!environment">
                                 <button type="button" class="mr-3 driverbtn btn btn-default
