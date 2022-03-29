@@ -841,6 +841,7 @@ export class TripDetailComponent implements OnInit {
   }
 
   alarmCols = [
+    { field: 'alAssetName', header: 'Asset Name' },
     { field: 'highTemp', header: 'High' },
     { field: 'lowTemp', header: 'Low' },
     { field: 'alIsActivate', header: 'IsActive' },
@@ -848,6 +849,8 @@ export class TripDetailComponent implements OnInit {
   tripAlarms = []
   selectedAssetAlarm;
   async getTripAlarms() {
+    this.assetNamesList = [];
+    this.assetNamesList.push(...this.tempNamesList)
     this.tripAlarms = await this.apiService.getData(`alarms/${this.tripData.tripNo}`).toPromise();
     this.tripAlarms.forEach(element => {
       const assetObj = _.find(this.assetNamesList, { assetID: element.assetId });
@@ -900,9 +903,9 @@ export class TripDetailComponent implements OnInit {
     console.log(rowData);
     const decision = confirm('Do you want to Delete the Alarm?');
     if (decision) {
-      await this.apiService.deleteData(`alarms/${rowData.alarmId}`).toPromise();
+      await this.apiService.deleteData(`alarms/${rowData.alAlarmId}`).toPromise();
       console.log(this.tempNamesList);
-      this.assetNamesList.push(...this.tempNamesList)
+
       this.showAlerts = false;
 
     }
