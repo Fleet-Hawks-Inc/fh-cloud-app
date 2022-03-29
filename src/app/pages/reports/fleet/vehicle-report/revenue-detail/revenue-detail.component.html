@@ -100,6 +100,9 @@
                                         <col style="width:1%">
                                         <col style="width:1%">
                                         <col style="width:1%">
+                                        <col style="width:1%">
+                                        <col style="width:1%">
+                                        <col style="width:1%">
                                         <thead>
                                             <tr>
                                                 <!-- <th>Vehicle</th> -->
@@ -109,7 +112,11 @@
                                                 <th>Trip Date</th>
                                                 <th>Invoice#</th>
                                                 <th>Invoice Date</th>
+                                                <th>Invoice Amount</th>
                                                 <th>Receipt#</th>
+                                                <th>Receipt Date</th>
+                                                <th>Receipt Amount</th>
+
                                                 <!-- <th>Amount</th>
                                                 <th>Currency</th> -->
                                             </tr>
@@ -146,8 +153,16 @@
                                                         </span>
                                                     </span>
                                                 </td>
+                                                <td> <span *ngIf="item.invoiceData.length === 0">-</span>
+                                                    <span *ngFor='let item1 of item.invoiceData'>
+                                                        <span *ngIf="item1.invStatus === 'paid'">
+                                                            {{item1.finalAmount | number: "1.2-2" }}
+                                                            {{item1.charges.freightFee.currency}}
+                                                        </span>
+                                                    </span>
+                                                </td>
                                                 <!-- <td>  -->
-                                                    <!-- <span *ngIf = "item.recInv === undefined ">-</span>
+                                                <!-- <span *ngIf = "item.recInv === undefined ">-</span>
                                                     {{item.recInv}}
                                                 </td> -->
                                                 <td>
@@ -155,8 +170,29 @@
                                                     <span *ngFor='let item1 of item.receiptData'>
                                                         <span *ngFor='let item2 of item1'>
                                                             {{item2.recNo}}
-                                                            </span>
-                                                    
+                                                        </span>
+
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span *ngIf="item.receiptData.length === 0">-</span>
+                                                    <span *ngFor='let item1 of item.receiptData'>
+                                                        <span *ngFor='let item2 of item1'>
+                                                            {{item2.txnDate | date: "yyyy/MM/dd"
+                                                            }}
+                                                        </span>
+
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span *ngIf="item.receiptData.length === 0">-</span>
+                                                    <span *ngFor='let item1 of item.receiptData'>
+                                                        <span *ngFor='let item2 of item1'>
+                                                            {{item2.recAmount | number: "1.2-2"}}&nbsp;{{
+                                                            item2.recAmountCur
+                                                            }}
+                                                        </span>
+
                                                     </span>
                                                 </td>
 
