@@ -162,6 +162,7 @@ export class CompanyDocumentsComponent implements OnInit {
         if (this.filterValues.searchValue != '' || this.filterValues.start != '' || this.filterValues.end != '') {
           this.docEndPoint = this.totalRecords;
         }
+
         this.initDataTable();
       },
     });
@@ -520,6 +521,7 @@ export class CompanyDocumentsComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.documents = [];
         this.suggestions = [];
+        this.lastEvaluatedKey = "";
         this.filterValues.searchValue = this.filterValues.searchValue.toLowerCase();
         if (this.filterValues.startDate !== '') {
           this.filterValues.start = this.filterValues.startDate;
