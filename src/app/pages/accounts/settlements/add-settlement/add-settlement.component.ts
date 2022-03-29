@@ -20,29 +20,7 @@ export class AddSettlementComponent implements OnInit {
 
   tripMsg = Constants.NO_RECORDS_FOUND;
   noRecordMsg: string = Constants.NO_RECORDS_FOUND;
-  paymentOptions=["Pay Per Mile","Percentage","Pay Per Hour","Pay Per Delivery"]
-  payPerMile={
-    loadedMiles:null,
-    loadedMilesUnit:null,
-    emptyMiles:null,
-    emptyMilesTeam:null,
-    loadedMilesTeam:null
-    
-  }
-  payPerHour={
-    rate:null,
-    rateUnit:null,
-    waitingPay:null,
-    waitingHourAfter:null,
-  }
-  payPercentage={
-    loadPayPercentage:null,
-    loadPayPercentageOf:null,
-  }
-  payPerDelivery={
-    deliveryRate:null,
-    deliveryRateUnit:null,
-  }
+ 
   paymentType=''
   driverData={
     paymentDetails:{
@@ -227,7 +205,7 @@ export class AddSettlementComponent implements OnInit {
     pType:"ppm",
     loadedMiles:0,
     currency:'CAD',
-    emptymiles:0,
+    emptyMiles:0,
     emptyMilesTeam:0,
     loadedMilesTeam:0,
     default:false,
@@ -337,21 +315,25 @@ export class AddSettlementComponent implements OnInit {
         switch(type.value){
           case "pph":
           this.pph=element
+          this.paymentType=this.pph.pType
           this.settlementData.paymentSelected.push(this.pph)
           break;
 
           case "ppm":
             this.ppm=element
+            this.paymentType=this.ppm.pType
             this.settlementData.paymentSelected.push(this.ppm)
             break;
           
           case "pp":
             this.pp=element
+            this.paymentType=this.ppm.pType
             this.settlementData.paymentSelected.push(this.pp)
             break;
 
             case "pfr":
               this.pfr=element
+              this.paymentType=this.pfr.pType
               this.settlementData.paymentSelected.push(this.pfr)
               break;
         }

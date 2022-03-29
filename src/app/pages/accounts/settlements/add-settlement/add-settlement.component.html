@@ -167,7 +167,7 @@
                                 style="font-size:13px; text-decoration: underline; color:cornflowerblue"
                                 href="javascript:;">Change</a>
                               <div class="row" *ngIf="
-                                  settlementData..paymentSelected[0].pType ==
+                                  settlementData.paymentSelected[0].pType ==
                                   'ppm'
                                 ">
                                 <div class="col-6">
@@ -1728,7 +1728,7 @@
                         id="paymentTypeForm" #paySlt="ngModel" required [ngClass]="{
               error: paymentForm.submitted && paySlt.invalid
             }">
-                        <ng-option *ngFor="let option of paymentOptions" [value]="option">{{option}}</ng-option>
+                        <ng-option *ngFor="let option of paymentOptions" [value]="option.value">{{option.name}}</ng-option>
                       </ng-select>
 
                       <div *ngIf="paySlt.invalid && paymentForm.submitted" class="text-danger">
@@ -1740,7 +1740,7 @@
                   </div>
                 </div>
                 <div class="col-lg-6 mb-1">
-                  <div class="row" id="payPerHourForm" *ngIf="paymentType == 'Pay Per Hour'">
+                  <div class="row" id="payPerHourForm" *ngIf="paymentType == 'pph'">
                     <div class="col-lg-4">
                       <label class="
             control-label
@@ -1749,7 +1749,7 @@
             pt-2
           ">
                         Rate <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                      <input [(ngModel)]="payPerHour.rate" name="payPerHour.rate" type="text"
+                      <input [(ngModel)]="pph.rate" name="pph.rate" type="text"
                         class="form-control" placeholder="eg. $20 ,$40 ,$60" #payHour="ngModel" required [ngClass]="{
             error: paymentForm.submitted && payHour.invalid
           }" />
@@ -1770,8 +1770,8 @@
             pt-2
             mt-1
           "></label>
-                      <ng-select class="mt-2" [(ngModel)]="payPerHour.rateUnit"
-                        (change)="changeCurrency($event)" name="payPerHour.rateUnit" placeholder="Select Currency"
+                      <ng-select class="mt-2" [(ngModel)]="pph.currency"
+                        (change)="changeCurrency($event)" name="payPerHour.currency" placeholder="Select Currency"
                         #payCurr="ngModel" required [ngClass]="{
             error: paymentForm.submitted && payCurr.invalid
           }">
@@ -1792,7 +1792,7 @@
             text-lg-right
             pt-2
           ">Waiting period Pay</label>
-                      <input [(ngModel)]="payPerHour.waitingPay" name="payPerHour.waitingPay"
+                      <input [(ngModel)]="pph.waitingPay" name="pph.waitingPay"
                         type="text" class="form-control" placeholder=" eg. $20 ,$40 ,$60" #payWait="ngModel" />
                     </div>
                     <div class="col-lg-6">
@@ -1803,8 +1803,8 @@
             pt-2
             mt-1
           "></label>
-                      <ng-select class="mt-2" [(ngModel)]="payPerHour.rateUnit"
-                        (change)="changeCurrency($event)" name="payPerHour.waitingPayUnit"
+                      <ng-select class="mt-2" [(ngModel)]="pph.currency"
+                         name="pph.currency"
                         placeholder="Select Currency">
                         <ng-option value="CAD">CAD</ng-option>
                         <ng-option value="USD">USD</ng-option>
@@ -1818,11 +1818,11 @@
             pt-2
           ">Waiting hour start after</label>
                       <input [(ngModel)]="
-            payPerHour.waitingHourAfter
-          " name="payPerHour.waitingHourAfter" type="text" class="form-control" placeholder="eg. Min 3 hours" />
+            pph.waitingHourAfter
+          " name="pph.waitingHourAfter" type="text" class="form-control" placeholder="eg. Min 3 hours" />
                     </div>
                   </div>
-                  <div class="row" id="payPerDelivery" *ngIf="paymentType =='Pay Per Delivery'">
+                  <div class="row" id="payPerDelivery" *ngIf="paymentType =='ppd'">
                     <div class="col-lg-4">
                       <label class="
             control-label
@@ -1830,7 +1830,7 @@
             text-lg-right
             pt-2
           ">Delivery Rate <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                      <input [(ngModel)]="payPerDelivery.deliveryRate" name="payDelivery.deliveryRate"
+                      <input [(ngModel)]="ppd.deliveryRate" name="payDelivery.deliveryRate"
                         type="text" class="form-control" placeholder="eg. $20 ,$40 ,$60" #dRate="ngModel" required
                         [ngClass]="{
             error: paymentForm.submitted && dRate.invalid
@@ -1853,8 +1853,8 @@
             mt-1
           "></label>
                       <ng-select class="mt-2" [(ngModel)]="
-            payPerDelivery.deliveryRateUnit
-          " (change)="changeCurrency($event)" name="payPerDelivery.deliveryRateUnit" placeholder="Select Currency"
+            ppd.currency
+          " name="payPerDelivery.deliveryRateUnit" placeholder="Select Currency"
                         #curr2="ngModel" required [ngClass]="{
             error: paymentForm.submitted && curr2.invalid
           }">
@@ -1869,7 +1869,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row" id="payPercentageForm" *ngIf="paymentType == 'Percentage'">
+                  <div class="row" id="payPercentageForm" *ngIf="paymentType == 'pp'">
                     <div class="col-lg-10">
                       <label class="
             control-label
@@ -1880,8 +1880,8 @@
                       <div class="row">
                         <div class="col-lg-3">
                           <input [(ngModel)]="
-                payPercentage.loadPayPercentage
-              " name="payPercentage.loadPayPercentage" type="text" class="form-control" placeholder="eg. 2%, 5%, 10%"
+                pp.loadPayPercentage
+              " name="pp.loadPayPercentage" type="text" class="form-control" placeholder="eg. 2%, 5%, 10%"
                             #lPay1="ngModel" required [ngClass]="{
                 error: paymentForm.submitted && lPay1.invalid
               }" />
@@ -1900,7 +1900,7 @@
                         </div>
                         <div class="col-lg-7">
                           <ng-select [(ngModel)]="
-                payPercentage.loadPayPercentageOf
+                pp.loadPayPercentageOf
               " name="payPercentage.loadPayPercentageOf" placeholder="Select the percentage type of" #ff="ngModel"
                             required [ngClass]="{
                 error: paymentForm.submitted && ff.invalid
@@ -1920,7 +1920,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row" id="payPerMileForm" *ngIf="paymentType =='Pay Per Mile'" style="display: flex">
+                  <div class="row" id="payPerMileForm" *ngIf="paymentType =='ppm'" style="display: flex">
                     <div class="col-lg-3 pr-0">
                       <label class="
               control-label
@@ -1928,7 +1928,7 @@
               text-lg-right
               pt-2
             ">Loaded Miles <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                      <input [(ngModel)]="payPerMile.loadedMiles" name="payPerMile.loadedMiles"
+                      <input [(ngModel)]="ppm.loadedMiles" name="ppm.loadedMiles"
                         type="text" class="form-control" #payM="ngModel" required [ngClass]="{
               error: paymentForm.submitted && payM.invalid
             }" placeholder="eg. $0.5, $1, $2" />
@@ -1950,8 +1950,8 @@
               mt-1
             "></label>
                       <ng-select class="mt-2" [(ngModel)]="
-              payPerMile.loadedMilesUnit
-            " name="payPerMile.loadedMilesUnit" placeholder="Select Currency" (change)="changeCurrency($event)"
+              ppm.currency
+            " name="payPerMile.loadedMilesUnit" placeholder="Select Currency"
                         #curr4="ngModel" required [ngClass]="{
               error: paymentForm.submitted && curr4.invalid
             }">
@@ -1972,7 +1972,7 @@
               text-lg-right
               pt-2
             ">Empty Miles <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                      <input [(ngModel)]="payPerMile.emptyMiles" name="payPerMile.emptyMiles"
+                      <input [(ngModel)]="ppm.emptyMiles" name="payPerMile.emptyMiles"
                         type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #eMiles1="ngModel" required
                         [ngClass]="{
               error: paymentForm.submitted && eMiles1.invalid
@@ -1995,8 +1995,8 @@
               mt-1
             "></label>
                       <ng-select class="mt-2" [(ngModel)]="
-              payPerMile.loadedMilesUnit
-            " name="payPerMile.emptyMilesUnit" placeholder="Select Currency" (change)="changeCurrency($event)"
+              ppm.currency
+            " name="payPerMile.emptyMilesUnit" placeholder="Select Currency" 
                         #curr5="ngModel" required [ngClass]="{
               error: paymentForm.submitted && curr5.invalid
             }">
@@ -2018,7 +2018,7 @@
               pt-2
             ">Loaded Miles (Team) <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                       <input [(ngModel)]="
-              payPerMile.loadedMilesTeam
+              ppm.loadedMilesTeam
             " name="payPerMile.loadedMilesTeam" type="text" class="form-control" placeholder="eg. $0.5, $1, $2"
                         #lMiles2="ngModel" required [ngClass]="{
               error: paymentForm.submitted && lMiles2.invalid
@@ -2030,7 +2030,7 @@
 
                       </div>
                     </div>
-                    <div class="col-lg-2">
+                    <!-- <div class="col-lg-2">
                       <label class="
               control-label
               font-weight-bold
@@ -2039,8 +2039,8 @@
               mt-1
             "></label>
                       <ng-select class="mt-2" [(ngModel)]="
-              payPerMile.loadedMilesUnit
-            " (change)="changeCurrency($event)" name="payPerMile.loadedMilesTeamUnit" placeholder="Select Currency"
+              ppm.currency
+            " name="payPerMile.loadedMilesTeamUnit" placeholder="Select Currency"
                         #curr6="ngModel" required [ngClass]="{
               error: paymentForm.submitted && curr6.invalid
             }">
@@ -2053,7 +2053,7 @@
                         </div>
 
                       </div>
-                    </div>
+                    </div> -->
                     <div class="col-lg-3 pr-0">
                       <label class="
               control-label
@@ -2062,7 +2062,7 @@
               pt-2
             ">Empty Miles (Team) <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                       <input [(ngModel)]="
-                      payPerMile.emptyMilesTeam
+                      ppm.emptyMilesTeam
             " name="payPerMile.emptyMilesTeam" type="text" class="form-control" placeholder="eg. $0.5, $1, $2"
                         #eMilesTeam="ngModel" required [ngClass]="{
               error: paymentForm.submitted && eMilesTeam.invalid
@@ -2074,7 +2074,7 @@
 
                       </div>
                     </div>
-                    <div class="col-lg-2">
+                    <!-- <div class="col-lg-2">
                       <label class="
               control-label
               font-weight-bold
@@ -2083,8 +2083,8 @@
               mt-1
             "></label>
                       <ng-select class="mt-2" [(ngModel)]="
-              payPerMile.loadedMilesUnit
-            " (change)="changeCurrency($event)" name="payPerMile.emptyMilesTeamUnit" placeholder="Select Currency"
+              ppm.currency
+            "  name="payPerMile.emptyMilesTeamUnit" placeholder="Select Currency"
                         #curr7="ngModel" required [ngClass]="{
               error: paymentForm.submitted && curr7.invalid
             }">
@@ -2097,7 +2097,7 @@
                         </div>
 
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
