@@ -464,7 +464,6 @@ export class AssetTrackerComponent implements OnInit {
         {
           name: 'Temperature',
           type: 'line',
-          smooth: true,
           symbol: 'circle',
           areaStyle: {},
           data: this.sensorTemperature,
