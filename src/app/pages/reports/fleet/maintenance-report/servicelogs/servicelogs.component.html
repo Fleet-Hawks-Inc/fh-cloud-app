@@ -4,7 +4,7 @@
       <header class="page-header pr19 pl11">
         <form class="form-horizontal" method="get">
           <div class="row" style="padding-top: 10px">
-            <div class="col-md-2 col-lg-2 pr-1">
+            <div class="col-md-2 col-lg-2 pr-0">
               <ng-select [(ngModel)]="category" name="category" placeholder="Search by Category"
                 (change)="categoryChange()">
                 <ng-option *ngFor="let data of categoryFilter" value="{{ data.value }}">
@@ -12,8 +12,13 @@
                 </ng-option>
               </ng-select>
             </div>
-            <div class="col-md-2 col-lg-2 pr-1">
-              <div class="input-group input-group-md mb-3" *ngIf="
+
+            <!-- Set spacing issue -->
+            <div class="col-md-2 col-lg-2 pl-2 pr-0">
+              <div
+                class="input-group input-group-md mb-3"
+                *ngIf="
+
                   category != 'vehicle' &&
                   category != 'asset' &&
                   category != 'task'
@@ -34,14 +39,14 @@
                   {{ data.assetIdentification }}</ng-option>
               </ng-select>
             </div>
-            <div class="col-md-2 col-lg-2 pr-0">
+            <div class="col-md-2 col-lg-2 pl-2 pr-0">
               <ng-select [(ngModel)]="taskID" name="taskID" placeholder="search by service task">
                 <ng-option *ngFor="let item of tasks" value="{{ item.taskID }}">
                   <div title="{{ item.taskName }}">{{ item.taskName }}</div>
                 </ng-option>
               </ng-select>
             </div>
-            <div class="col-md-3 col-lg-3 pr-0">
+            <div class="col-md-3 col-lg-3 pl-2 pr-0">
               <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
                 <span class="input-group-prepend">
                   <span class="input-group-text">
@@ -64,7 +69,7 @@
               </div>
             </div>
 
-            <div class="col-md-2 col-lg-2">
+            <div class="col-md-2 col-lg-2 pl-2">
               <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">
                 Search
               </button>

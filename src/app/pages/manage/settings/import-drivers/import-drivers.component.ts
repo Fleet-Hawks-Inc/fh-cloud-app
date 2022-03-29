@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Input, TemplateRef } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -13,6 +13,8 @@ import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
 import CSVFileValidator, { ParsedResults, ValidatorConfig, } from 'csv-file-validator';
 import { Router } from '@angular/router'
 import { threadId } from 'worker_threads';
+import { Table } from 'primeng/table';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 
 @Component({
@@ -21,9 +23,17 @@ declare var $: any;
   styleUrls: ['./import-drivers.component.css']
 })
 export class ImportDriversComponent implements OnInit {
-  @ViewChild('vehImporter') vehImporter: any
+  @ViewChild('vehImporter') vehImporter: any;;
+  @ViewChild('dt') table: Table;
 
+  @ViewChild("importModel", { static: true })
+  importModel: TemplateRef<any>;
+
+  dataMessage: string = Constants.FETCHING_DATA;
+  loaded = false;
   validData = [];
+  importDrivers = [];
+
   isFileValid = false;
   inValidMessages = [];
   importDocs = [];
@@ -33,22 +43,50 @@ export class ImportDriversComponent implements OnInit {
   check: boolean = false;
   submitDisabled: boolean = true;
 
-  constructor(private apiService: ApiService, private toastr: ToastrService
+  // columns of data table
+  dataColumns = [
+    { field: 'status', header: 'Status', type: "text" },
+    { field: 'timeCreated', header: 'Uploaded', type: "text" },
+    { field: 'docs[0].displayName', header: 'File Name', type: "text" },
+    { field: "module", header: 'Module', type: 'text' },
+
+  ];
+  _selectedColumns: any[];
+  importModelRef: any;
+
+  constructor(private apiService: ApiService, private toastr: ToastrService,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit(): void {
+    this.setToggleOptions();
+    this.fetchDriverImport();
+  }
+
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
   }
 
   validateCSV($event) {
     const data: ValidatorConfig = {
       headers: [
         {
-          name: 'Employee ID', inputName: 'employeeId', required: true, unique: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'employee_id', inputName: 'employeeId', required: true, unique: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           }
         },
         {
-          name: 'Username', inputName: 'username', required: true, unique: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'username', inputName: 'username', required: true, unique: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           }, validate: function (name: string) {
             const nameformat = /^(?=[a-zA-Z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$/;
@@ -56,17 +94,17 @@ export class ImportDriversComponent implements OnInit {
           }
         },
         {
-          name: 'First Name', inputName: 'firstName', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'first_name', inputName: 'firstName', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           }
         },
         {
-          name: 'Last Name', inputName: 'lastName', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'last_name', inputName: 'lastName', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           }
         },
         {
-          name: 'Birth Date', inputName: 'birthDate', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'birth_date', inputName: 'birthDate', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           }, validate: function (date: string) {
             const dateformat = /^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$/;
@@ -74,7 +112,7 @@ export class ImportDriversComponent implements OnInit {
           }
         },
         {
-          name: 'Phone', inputName: 'phone', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'phone', inputName: 'phone', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           }, validate: function (phoneno: string) {
             const phoneformat = /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;
@@ -82,7 +120,7 @@ export class ImportDriversComponent implements OnInit {
           }
         },
         {
-          name: 'Email', inputName: 'email', required: true, unique: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'email', inputName: 'email', required: true, unique: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           }, validate: function (email: string) {
             const reqExp = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/
@@ -90,7 +128,7 @@ export class ImportDriversComponent implements OnInit {
           }
         },
         {
-          name: 'Start Date', inputName: 'startDate', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'start_date', inputName: 'startDate', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           }, validate: function (date: string) {
             const dateformat = /^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$/;
@@ -98,12 +136,12 @@ export class ImportDriversComponent implements OnInit {
           }
         },
         {
-          name: 'Citizenship', inputName: 'citizenship', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'citizenship', inputName: 'citizenship', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           },
         },
         {
-          name: 'CDL#', inputName: 'cdl', required: true, unique: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'cdl', inputName: 'cdl', required: true, unique: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           },
         },
@@ -176,11 +214,49 @@ export class ImportDriversComponent implements OnInit {
             this.submitDisabled = false;
             this.toastr.success("The file has been scheduled for processing and you will be notified via email once it is completed.")
             $('#importDocs').val('');
-            $('#importModel').modal('hide');
+            this.importModelRef.close();
+            this.fetchDriverImport();
           }
         })
       }
     }
+  }
+
+  async fetchDriverImport() {
+    this.loaded = true;
+    let result = await this.apiService.getData('importer/get?type=driver').toPromise();
+    if (result.length === 0) {
+      this.dataMessage = Constants.NO_RECORDS_FOUND;
+      this.loaded = false;
+    }
+    if (result && result.length > 0) {
+      this.importDrivers = result;
+    }
+    this.loaded = false;
+  }
+
+  openModal() {
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "import-model--main",
+    };
+    this.importModelRef = this.modalService.open(this.importModel, ngbModalOptions)
+  }
+
+  /**
+     * Clears the table filters
+     * @param table Table 
+     */
+  clear(table: Table) {
+    table.clear();
+  }
+
+
+  refreshData() {
+    this.importDrivers = []
+    this.fetchDriverImport();
+    this.dataMessage = Constants.FETCHING_DATA;
   }
 
 }

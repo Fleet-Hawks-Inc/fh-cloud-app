@@ -9,29 +9,32 @@
     <div class="inner-wrapper">
         <section role="main" class="content-body">
             <header class="page-header flex align-items-center justify-content-start">
-                <form class="formgrid grid">
-                    <div class="row">
-                        <div class="col" style="margin-left: 10px;margin-top: 5px;">
 
-                            <label style="padding-top: 10px; font-size: 22px;"> Entire Fleet </label>
-                            <button id="btnResetFilter" type="button" pButton class="pull-right" tooltipPosition="left" icon="pi pi-refresh" pTooltip="Refresh" (click)="refresh()"></button>
+                <div class="row">
+                    <div class="col header-title">
 
-
-                        </div>
-
-
-
-
+                        Entire Fleet
+                    </div>
+                    <div class="col header-buttons">
+                        <button pButton pRipple type="button" *ngIf="driverPositions.length>0" class="p-button-text">{{driverPositions.length}} Drivers</button>
+                        <button pButton pRipple type="button" *ngIf="assetPositions.length>0" class="p-button-text">{{assetPositions.length}} Assets</button>
+                        <button pButton pRipple type="button" *ngIf="vehicleDashPositions.length>0" class="p-button-text">{{vehicleDashPositions.length}} Vehicles</button>
+                        <button id="btnResetFilter" type="button" pButton class="pull-right" tooltipPosition="left" icon="pi pi-refresh" pTooltip="Refresh" (click)="refresh()"></button>
                     </div>
 
-                </form>
+                </div>
+
+
+
+
 
 
             </header>
             <div style="height: calc(100vh - 110px);width: 100%;">
+
                 <google-map [options]='mapOptions' [width]="width" [height]="height">
                     <map-marker #marker="mapMarker" *ngFor="let driverPosition of driverPositions" [position]="driverPosition.position" [options]="driverMarkerOptions" (mapClick)="openInfoWindow(marker, driverPosition.data,'driver')"></map-marker>
-                    <map-info-window [innerHTML]="infoDetail"></map-info-window>
+                    <map-info-window class="marker-info" [innerHTML]="infoDetail"></map-info-window>
                     <map-marker #marker="mapMarker" *ngFor="let assetPosition of assetPositions" [position]="assetPosition.position" [options]="assetMarkerOptions" (mapClick)="openInfoWindow(marker, assetPosition.data,'asset')"></map-marker>
                     <map-marker #marker="mapMarker" *ngFor="let vehiclePosition of vehicleDashPositions" [position]="vehiclePosition.position" [options]="vehicleMarkerOptions" (mapClick)="openInfoWindow(marker, vehiclePosition.data,'vehicle')"></map-marker>
 

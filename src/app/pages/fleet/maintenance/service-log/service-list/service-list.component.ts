@@ -98,7 +98,7 @@ export class ServiceListComponent implements OnInit {
   fetchAllVehiclesIDs() {
     this.apiService.getData('vehicles/list/minor').subscribe((result: any) => {
       this.vehiclesObject = result.Items;
-      console.log('this.vehiclesObject', this.vehiclesObject)
+
     });
   }
 

@@ -1,0 +1,112 @@
+<p-toast position="top-right"></p-toast>
+<section class="body">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pr-0 pt-0 pl-0">
+            <header class="page-header">
+
+                <div class="row">
+                    <div class="col header-title">
+
+                        <label class="mt-0 mb-0"> Vehicle : {{vehicleDetails.Items[0].plateNumber}}</label>
+                        <small class="text-muted text-small">&nbsp; Last Location: {{ apiResponse.lastLocation}}</small>
+
+
+                    </div>
+                    <div class="col header-buttons" *ngIf="loaded">
+                        <!-- <button id="btnLiveVideo" type="button" pButton class="mr-1" tooltipPosition="left" icon="fas fa-video" pTooltip="Live Video" (click)="refresh()"></button> -->
+                        <button id="btnShareLocation" type="button" pButton class="mr-1" tooltipPosition="left" icon="fas fa-map-location" pTooltip="Share Location" (click)="shareLocation()"></button>
+                        <button id="btnResetFilter" type="button" pButton class="mr-1" tooltipPosition="left" icon="pi pi-refresh" pTooltip="Refresh" (click)="refresh()"></button>
+                        <button pButton pRipple pTooltip="Camera is Online." (click)="openLiveView()" type="button" tooltipPosition="left" icon="fas fa-light fa-video" *ngIf="isOnline==true" class="mr-1 p-button-rounded p-button-outlined p-button-success"></button>
+                        <button pButton pRipple *ngIf="!isOnline" pTooltip="Camera is Offline." tooltipPosition="left" type="button" icon="fas fa-video-slash" class="mr-1 p-button-rounded  p-button-outlined p-button-danger"></button>
+
+                    </div>
+                </div>
+
+
+
+            </header>
+            <section class="m-2">
+                <div class="row mb-3 bg-white">
+
+                    <div class="col-lg-12 p-3 text-dark">
+
+                        <div class="text-dark" style="height: calc(100vh - 170px);width: 100%;" *ngIf="loaded">
+
+                            <google-map [width]="width" [center]="center" [height]="height" [options]="mapOptions" *ngIf="loaded">
+                                <map-traffic-layer [autoRefresh]="true"></map-traffic-layer>
+                                <map-marker #marker="mapMarker" [position]="center" [options]="vehicleMarkerOptions" (mapClick)="openInfoWindow(marker)"></map-marker>
+                                <map-info-window [innerHTML]="infoDetail"></map-info-window>
+
+                            </google-map>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </div>
+</section>
+
+<p-dialog [(visible)]="display" [style]="{width: '500px',height:'450px'}" position="top">
+    <ng-template pTemplate="header">
+        <h3> {{vehicleDetails.Items[0].plateNumber}}</h3>
+    </ng-template>
+
+    <form [formGroup]="userFormGroup">
+        <div class="form-group">
+            <label>Enter email of user to share the location information.</label><br>
+            <input type="text" formControlName="email" [(ngModel)]="deviceInfo.email" class="form-control" placeholder="Email of user to share with." />
+
+            <small class="form-text text-danger" *ngFor="let errorMessage of userFormGroup.controls.email['errorMessages']">
+                {{errorMessage}}
+            </small>
+        </div>
+        <div class="form-group">
+            <label>Select the duration of the share.</label><br>
+
+            <ng-select formControlName="duration" placeholder="Select sharing duration" [items]="durations" bindLabel="name" bindValue="duration" [(ngModel)]="selectedDuration" placeholder="Select Duration">
+            </ng-select>
+
+            <small class="form-text text-danger" *ngFor="let errorMessage of userFormGroup.controls.duration['errorMessages']">
+                {{errorMessage}}
+            </small>
+        </div>
+        <br>
+        <button pButton [disabled]="!userFormGroup.valid" type="button" (click)="shareLocationLink()">Share</button><br>
+        <small>Note: Please add no-reply@fleethawks.com as trusted email. Email may go to SPAM or JUNK folder.
+        </small>
+        <br>
+    </form>
+    <br>
+    <div class="input-group" *ngIf="locationLink!=undefined">
+        <input type="text" class="form-control" [(ngModel)]="locationLink" placeholder="content will be copy after click the copy button" />
+        <span class="input-group-append">
+            <button pButton
+                
+                type="button"
+                ngxClipboard
+                [cbContent]="locationLink"
+                (cbOnSuccess)="isCopied1 = true"
+                (cbOnError)="onCopyFailure()"
+                [class.btn-success]="isCopied1"
+                (cbOnSuccess)="copied($event)"
+            >
+                Copy
+            </button>
+        </span>
+    </div>
+</p-dialog>
+
+<p-dialog [(visible)]="showLiveFeed" [maximizable]="true">
+    <ng-template pTemplate="header">
+        <h4 class="modal-title" id="modal-dash-cam">Dash Cam Live Feed {{vehicleDetails.Items[0].plateNumber}}</h4>
+    </ng-template>
+    <b>Warning: To save data consumption this window will close automatically after 1 minute of streaming. </b>
+
+    <div class="embed-responsive z-depth-1-half" style="height: 600px;width: 100%;">
+        <iframe id="videoIframe" height="600px" width="100%" [src]="liveFeedUrl"></iframe>
+    </div><br>
+
+    <ng-template pTemplate="footer">
+
+    </ng-template>
+</p-dialog>

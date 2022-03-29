@@ -10,6 +10,7 @@ import Constants from '../../constants';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { map } from 'rxjs/operators';
+import * as moment from 'moment';
 import { from } from 'rxjs';
 import { passwordStrength } from 'check-password-strength';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
@@ -32,6 +33,7 @@ export class DriverDetailComponent implements OnInit {
     homeTerminal: string;
     cycle: string;
     public driverID: string;
+    currency=''
     private driverData: any;
     private driverDataUpdate: any;
     carrierID: any;
@@ -54,12 +56,12 @@ export class DriverDetailComponent implements OnInit {
     fastID: any;
     fastExpiry: any;
     citizenship: any;
-    csa: any;
+    csa: any = false;
     group: any;
     assignedVehicle: any;
     address: any;
     documents: any;
-    licNotification: any;
+    licNotification: any = false;
     liceIssueSate: any;
     liceIssueCountry: any;
     liceWCB: any;
@@ -105,8 +107,8 @@ export class DriverDetailComponent implements OnInit {
 
     hosStatus: any;
     hosRemarks: any;
-    hosPcAllowed: boolean;
-    hosYmAllowed: boolean;
+    hosPcAllowed: boolean = false;
+    hosYmAllowed: boolean = false;
     hosType: any;
     hosCycle: any;
     timezone: any;
@@ -122,6 +124,8 @@ export class DriverDetailComponent implements OnInit {
     assetList: any = {};
     docs = [];
     assetsDocs = [];
+    start = null;
+    end = null;
     absDocs = [];
     profile: any = [];
     documentTypeList: any = [];
@@ -152,6 +156,43 @@ export class DriverDetailComponent implements OnInit {
     groupName: any = '';
     groupId: any = '';
     sessionId: string;
+    payPerMile={
+        pType:"ppm",
+        loadedMiles:null,
+        currency:null,
+        emptyMiles:null,
+        emptyMilesTeam:null,
+        loadedMilesTeam:null,
+        default:false
+      }
+      payPerHour={
+        pType:"pph",
+        rate:null,
+        currency:null,
+        waitingPay:null,
+        waitingHourAfter:null,
+        default:false
+      }
+      payPercentage={
+        pType:"pp",
+        loadPayPercentage:null,
+        loadPayPercentageOf:null,
+        default:false
+      }
+      payPerDelivery={
+        pType:"ppd",
+        deliveryRate:null,
+        currency:null,
+        default:false
+      }
+
+      payFlatRate={
+        pType:"pfr",
+        flatRate:null,
+        currency:null,
+        default:false
+      }
+    
 
     constructor(
         private hereMap: HereMapService,
@@ -167,12 +208,14 @@ export class DriverDetailComponent implements OnInit {
         this.sessionId = this.routerMgmtService.driverUpdateSessionID;
 
     }
+    paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"}, {name:"Flat Rate",value:"pfr"}]
 
     ngOnInit() {
 
         this.driverID = this.route.snapshot.params[`driverID`]; // get asset Id from URL
         this.fetchDriver();
-
+        this.end = moment().format('YYYY-MM-DD');
+        this.start = moment().subtract(15, 'days').format('YYYY-MM-DD');
         // this.fetchGroupsbyIDs();
         this.fetchAllContacts();
         this.fetchDocuments();
@@ -345,15 +388,51 @@ export class DriverDetailComponent implements OnInit {
                     this.driverData = await result[`Items`][0];
                     this.userName = this.driverData.userName;
                     this.driverDataUpdate = await result[`Items`][0];
-                    await this.fetchHomeTerminal(this.driverData.hosDetails.homeTerminal);
-                    if (this.driverData.address !== undefined || this.driverData.address !== '') {
+                    if (this.driverData.hosDetails.homeTerminal != '') {
+                        await this.fetchHomeTerminal(this.driverData.hosDetails.homeTerminal);
+                    }
+                    if (this.driverData.address !== undefined && this.driverData.address !== '') {
                         this.fetchCompleteAdd(this.driverData.address);
                     }
+
                     this.cycle = this.driverData.hosDetails.hosCycleName;
                     this.email = this.driverData.email;
                     this.phone = this.driverData.phone;
                     this.DOB = this.driverData.DOB;
                     this.CDL = this.driverData.CDL_Number;
+                    this.payPeriod=this.driverData.payPeriod
+                    this.driverData.paymentOption.forEach(element => {
+                        if(element.default){
+                        const type=this.paymentOptions.find(el=> el.value==element.pType)
+                        this.paymentType = type.name
+                        }
+
+                    if(element.pType=="pph"){
+                        this.payPerHour.currency=element.currency
+                        this.payPerHour.rate=element.rate
+                        this.payPerHour.waitingHourAfter=element.waitingHourAfter
+                        this.payPerHour.waitingPay=element.waitingPay
+                    }
+                    if(element.pType=="pfr"){
+                        this.payFlatRate.flatRate=element.flatRate
+                        this.payFlatRate.currency=element.currency
+                    }
+                    if(element.pType=="ppm"){
+                      this.payPerMile.loadedMiles=element.loadedMiles
+                      this.payPerMile.currency=element.currency
+                      this.payPerMile.emptyMiles=element.emptyMiles
+                      this.payPerMile.emptyMilesTeam=element.emptyMilesTeam
+                      this.payPerMile.loadedMilesTeam=element.loadedMilesTeam
+                    }
+                    if(element.pType=="pp"){
+                      this.payPercentage.loadPayPercentage=element.loadPayPercentage
+                      this.payPercentage.loadPayPercentageOf=element.loadPayPercentageOf
+                    }
+                    if(element.pType=="ppd"){
+                      this.payPerDelivery.currency=element.currency
+                      this.payPerDelivery.deliveryRate=element.deliveryRate
+                    }
+                    });
                     if (this.driverData.middleName !== undefined && this.driverData.middleName !== null && this.driverData.middleName !== '') {
                         this.driverName = `${this.driverData.firstName} ${this.driverData.middleName} ${this.driverData.lastName}`;
                     } else {
@@ -367,13 +446,11 @@ export class DriverDetailComponent implements OnInit {
 
                     if (this.driverData.driverImage !== '' && this.driverData.driverImage !== undefined) {
                         this.profile = this.driverData.uploadImage;
-                        //this.profile = `${this.Asseturl}/${this.driverData.carrierID}/${this.driverData.driverImage}`;
                     } else {
                         this.profile = 'assets/img/driver/driver.png';
                     }
                     if (this.driverData.abstractDocs !== undefined && this.driverData.abstractDocs.length > 0) {
                         this.absDocs = this.driverData.docsAbs;
-                        //this.absDocs = this.driverData.abstractDocs.map(x => ({ path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x }));
                     }
                     this.driverType = this.driverData.driverType;
                     this.employeeId = this.driverData.employeeContractorId;
@@ -391,38 +468,40 @@ export class DriverDetailComponent implements OnInit {
                     this.fastExpiry = this.driverData.crossBorderDetails.fastExpiry;
                     this.citizenship = await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.citizenship);
                     this.csa = this.driverData.crossBorderDetails.csa;
-                    // this.group = this.driverData.groupID;
                     this.groupId = this.driverData.groupID;
-                    this.groupName = this.fetchGroups(this.groupId)[0].groupName
+                    if (this.groupId != null) {
+
+                        this.groupName = this.fetchGroups(this.groupId)[0].groupName
+                    }
                     this.assignedVehicle = this.driverData.assignedVehicle;
                     this.address = this.driverData.address;
                     let newDocuments = [];
-                    for (let i = 0; i < this.driverData.documentDetails.length; i++) {
-                        let docmnt = []
-                        if (this.driverData.documentDetails[i].uploadedDocs != undefined && this.driverData.documentDetails[i].uploadedDocs.length > 0) {
-                            docmnt = this.driverData.documentDetails[i].uploadedDocs;
+                    if (this.driverData.documentDetails.length > 0) {
+                        for (let i = 0; i < this.driverData.documentDetails.length; i++) {
+                            let docmnt = []
+                            if (this.driverData.documentDetails[i].uploadedDocs != undefined && this.driverData.documentDetails[i].uploadedDocs.length > 0) {
+                                docmnt = this.driverData.documentDetails[i].uploadedDocs;
+                            }
+                            newDocuments.push({
+                                documentType: this.driverData.documentDetails[i].documentType ? this.driverData.documentDetails[i].documentType : '',
+                                document: this.driverData.documentDetails[i].document ? this.driverData.documentDetails[i].document : '',
+                                issuingAuthority: this.driverData.documentDetails[i].issuingAuthority ? this.driverData.documentDetails[i].issuingAuthority : '',
+                                issuingCountry: this.driverData.documentDetails[i].issuingCountry ? await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.documentDetails[i].issuingCountry) : '',
+                                issuingState: this.driverData.documentDetails[i].issuingCountry ? await this.countryStateCity.GetStateNameFromCode(this.driverData.documentDetails[i].issuingState, this.driverData.documentDetails[i].issuingCountry) : '',
+                                issueDate: this.driverData.documentDetails[i].issueDate ? this.driverData.documentDetails[i].issueDate : '',
+                                expiryDate: this.driverData.documentDetails[i].expiryDate ? this.driverData.documentDetails[i].expiryDate : '',
+                                uploadedDocs: docmnt
+                            });
+
+                            //Presigned URL Using AWS S3
+                            this.assetsDocs[i] = this.driverData.docuementUpload;
                         }
-                        newDocuments.push({
-                            documentType: this.driverData.documentDetails[i].documentType,
-                            document: this.driverData.documentDetails[i].document,
-                            issuingAuthority: this.driverData.documentDetails[i].issuingAuthority,
-                            issuingCountry: await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.documentDetails[i].issuingCountry),
-                            issuingState: await this.countryStateCity.GetStateNameFromCode(this.driverData.documentDetails[i].issuingState, this.driverData.documentDetails[i].issuingCountry),
-                            issueDate: this.driverData.documentDetails[i].issueDate,
-                            expiryDate: this.driverData.documentDetails[i].expiryDate,
-                            uploadedDocs: docmnt
-                        });
-                        /*
-                        if (this.driverData.documentDetails[i].uploadedDocs != undefined && this.driverData.documentDetails[i].uploadedDocs.length > 0) {
-                            this.assetsDocs[i] = this.driverData.documentDetails[i].uploadedDocs.map(x => ({ path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x }));
-                        }
-                        */
-                        //Presigned URL Using AWS S3
-                        this.assetsDocs[i] = this.driverData.docuementUpload;
                     }
                     this.documents = newDocuments;
                     this.liceIssueSate = await this.countryStateCity.GetStateNameFromCode(this.driverData.licenceDetails.issuedState, this.driverData.licenceDetails.issuedCountry),
+
                         this.liceIssueCountry = await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.licenceDetails.issuedCountry);
+
                     this.licenceExpiry = this.driverData.licenceDetails.licenceExpiry;
                     this.liceMedicalCardRenewal = this.driverData.licenceDetails.medicalCardRenewal;
                     this.licNotification = this.driverData.licenceDetails.licenceNotification;
@@ -431,29 +510,12 @@ export class DriverDetailComponent implements OnInit {
                     this.liceVehicleType = this.driverData.licenceDetails.vehicleType;
                     this.liceContractStart = this.driverData.licenceDetails.contractStart;
                     this.liceContractEnd = this.driverData.licenceDetails.contractEnd;
-                    this.paymentType = this.driverData.paymentDetails.paymentType;
-                    this.loadedMiles = this.driverData.paymentDetails.loadedMiles;
-                    this.loadedMilesUnit = this.driverData.paymentDetails.loadedMilesUnit;
-                    this.loadedMilesTeam = this.driverData.paymentDetails.loadedMilesTeam;
-                    this.loadedMilesTeamUnit = this.driverData.paymentDetails.loadedMilesTeamUnit;
-
-                    this.emptyMiles = this.driverData.paymentDetails.emptyMiles;
-                    this.emptyMilesUnit = this.driverData.paymentDetails.emptyMilesUnit;
-                    this.emptyMilesTeam = this.driverData.paymentDetails.emptyMilesTeam;
-                    this.emptyMilesTeamUnit = this.driverData.paymentDetails.emptyMilesTeamUnit;
-
-                    this.rate = this.driverData.paymentDetails.rate;
-                    this.rateUnit = this.driverData.paymentDetails.rateUnit;
-                    this.waitingPay = this.driverData.paymentDetails.waitingPay;
-                    this.waitingPayUnit = this.driverData.paymentDetails.waitingPayUnit;
-                    this.waitingHourAfter = this.driverData.paymentDetails.waitingHourAfter;
-                    this.deliveryRate = this.driverData.paymentDetails.deliveryRate;
-                    this.deliveryRateUnit = this.driverData.paymentDetails.deliveryRateUnit;
+                   
+                    
                     this.SIN = this.driverData.SIN;
                     this.loadPayPercentage = this.driverData.paymentDetails.loadPayPercentage;
                     this.loadPayPercentageOf = this.driverData.paymentDetails.loadPayPercentageOf;
                     this.payPeriod = this.driverData.paymentDetails.payPeriod.replace('_', ' ');
-                    //  this.homeTerminal = this.driverData.hosDetails.homeTerminal;
                     this.hosStatus = this.driverData.hosDetails.hosStatus;
                     this.hosRemarks = this.driverData.hosDetails.hosRemarks;
                     this.hosPcAllowed = this.driverData.hosDetails.pcAllowed;
@@ -508,7 +570,7 @@ export class DriverDetailComponent implements OnInit {
     fetchGroups(groupId) {
         this.apiService.getData(`groups/get/list?type=drivers&groupId=${groupId}`).subscribe((result: any) => {
             this.groupsObjects = result;
-            console.log('groupsObject', this.groupsObjects)
+
         });
     }
 
@@ -574,11 +636,10 @@ export class DriverDetailComponent implements OnInit {
     deleteUploadedFile(name: string) { // delete from aws
         this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => { });
     }
-    fetchDriverTrips() {
-        this.apiService.getData(`drivers/get/driver/active/${this.driverID}`).subscribe((result: any) => {
+  fetchDriverTrips() {
+        this.apiService.getData(`drivers/get/driver/active?driver=${this.driverID}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
             this.trips = result.Items;
-
-        });
+           });
     }
 
     fetchDriverLogs() {

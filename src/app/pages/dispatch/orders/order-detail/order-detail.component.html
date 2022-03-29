@@ -5,11 +5,11 @@
         <div class="row" style="padding-top: 10px">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
             Order Details
-
           </div>
           <div class="col-md-8 col-lg-8 text-right" *ngIf="showBtns">
-            <span class="mr-2 text-dark"><b>Invoiced: </b> {{isInvoiced ? 'Yes' : 'No'}}</span>
-            <span class="mx-2 text-dark text-capitalize"><b>Payment:</b> {{invStatus ? invStatus : 'NA'}}</span>
+            <span class="mr-2 text-dark"><b>Invoiced: </b> {{ isInvoiced ? "Yes" : "No" }}</span>
+            <span class="mx-2 text-dark text-capitalize"><b>Payment:</b>
+              {{ invStatus ? invStatus.replace("_", " ") : "NA" }}</span>
             <a *ngIf="orderStatus === 'delivered'" routerLink="/dispatch/orders/edit/{{ orderID }}"
               [queryParams]="{ state: 'recall' }" title="Recall" class="btn btn-sm mr-2 btn-success">
               <i class="fas fa-redo"></i>
@@ -26,11 +26,11 @@
               <i class="fas fa-download"> </i>
               Brokerage
             </button>
-            <!-- <button (click)="downloadBolPdf();" class="btn btn-success btn-sm
+            <button (click)="downloadBolPdf();" class="btn btn-success btn-sm
               mr-2">
               <i class="fas fa-download"> </i>
               BOL
-            </button> -->
+            </button>
             <a *ngIf="hideEdit" routerLink="/dispatch/orders/edit/{{ orderID }}" class="btn btn-default btn-sm mr-2"><i
                 class="fas fa-pencil-alt"></i> Edit Order</a>
             <a (click)="cancel()" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Orders</a>
@@ -598,7 +598,7 @@
               <div class="row">
                 <div class="col-lg-6 text-dark">
                   <div id="vehicle-details" class="">
-                    <div class="row m-0 back-color-gray">
+                    <div class="row m-0 back-color-gray border-0">
                       <div class="col-lg-12 p-2">
                         <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
                           Additional Details
@@ -748,7 +748,7 @@
           <div class="col-lg-12">
             <div class="bg-white p-3">
               <div class="row">
-                <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
+                <div class="col-xl-5 col-12 mb-3 pl-0 pr-0">
                   <div class="col-xl-12 col-12 mb-3">
                     <div class="boxshadow1 maindisbox w100 pull-left">
                       <div class="widgetload">
@@ -831,117 +831,6 @@
                       </div>
                     </div>
                   </div>
-                </div>
-
-                <div class="col-xl-3 col-12 pl-0 pr-0">
-                  <div class="col-xl-12 col-12 mb-3">
-                    <div class="boxshadow1 maindisbox w100 pull-left">
-                      <div class="widgetload">
-                        <div class="widgettbload">
-                          <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
-                            <i class="fas fa-box"></i> Attachments
-                          </h2>
-                        </div>
-                        <div class="row">
-                          <div class="col-12">
-                            <div class="row my-2 px-2" *ngFor="let item of attachments; let d = index">
-                              <div class="col-5">
-                                <a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
-                                  (click)="setPDFSrc(item.docPath)">Document {{ d + 1 }}</a>
-                              </div>
-                              <div class="col- 3 text-right">
-                                <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.docPath)"
-                                  data-toggle="modal" data-target="#viewDocModal"></em>
-                                <a href="javascript:;" (click)="delete('attachment', item.name, d)"
-                                  class="modal-with-form">
-                                  <em class="fas fa-times text-danger"></em></a>
-                              </div>
-                            </div>
-                            <div *ngIf="attachments.length == 0" class="my-2 px-2">
-                              <span>No attachment found</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-xl-3 col-12 pl-0 pr-0">
-                  <div class="col-xl-12 col-12 mb-3">
-                    <div class="boxshadow1 maindisbox w100 pull-left">
-                      <div class="widgetload">
-                        <div class="widgettbload">
-                          <div class="row align-items-center">
-                            <div class="col-6">
-                              <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
-                                <i class="fas fa-box"></i> Upload BOL/POD
-                              </h2>
-                            </div>
-                            <div class="col-6">
-                              <input type="file" #uploadBol (change)="selectDocuments($event)" multiple
-                                class="p-0 form-control pull-right mb-0" id="bolUpload" />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row" style="max-height: 170px; overflow: scroll">
-                          <div class="col-12">
-                            <table class="table table-bordered">
-                              <thead>
-                                <th>Sr.</th>
-                                <th>Name</th>
-                                <th>Icon/Thumbnail</th>
-                                <th>Action</th>
-                              </thead>
-                              <tbody>
-                                <tr *ngIf="docs.length == 0">
-                                  <td colspan="4">
-                                    <span>No document found</span>
-                                  </td>
-                                </tr>
-                                <tr *ngFor="let doc of docs; let d = index">
-                                  <td>{{ d + 1 }}</td>
-                                  <td>{{ doc.displayName }}</td>
-                                  <td>
-                                    <a class="image-popup-no-margins" href="{{ doc.docPath }}" target="_blank">
-                                      <img class="img_thumbnail" src="{{ doc.imgPath }}" />
-                                    </a>
-                                  </td>
-                                  <td class="cursorpoint text-center">
-                                    <a href="javascript:;" (click)="delete('docs', doc.name, d)"
-                                      class="modal-with-form">
-                                      <em class="fas fa-times text-danger"></em></a>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <!-- <div class="row my-2 px-2" *ngFor="let doc of docs;let d= index">
-                              <div class="col-4">
-                                <a class="image-popup-no-margins" href="{{doc.docPath}}" target="_blank">
-                                  <img class="img_thumbnail" src="{{doc.imgPath}}">
-                                  <p>{{doc.displayName}}</p>
-                                </a>
-                                <a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
-                                  (click)="setPDFSrc(doc.path)">{{doc.displayName}}</a>
-                              </div>
-                              <div class="col-1 text-right">
-                                <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
-                                  data-target="#viewDocModal"></em>
-                                <a href="javascript:;" (click)="delete('docs',doc.name, d)" class="modal-with-form">
-                                  <em class="fas fa-times text-danger"></em></a>
-                              </div>
-                            </div> -->
-                            <!-- <div *ngIf="docs.length == 0;" class="my-2 px-2">
-                              <span>No document found</span>
-                            </div> -->
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-xl-6 col-12 pl-0 pr-0">
                   <div class="col-xl-12 col-12 mb-3">
                     <div class="boxshadow1">
                       <div class="widgetload">
@@ -981,6 +870,124 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="col-xl-3 col-12 pl-0 pr-0">
+                  <div class="col-xl-12 col-12 mb-3">
+                    <div class="boxshadow1 maindisbox w100 pull-left">
+                      <div class="widgetload">
+                        <div class="widgettbload">
+                          <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                            <i class="fas fa-box"></i> Attachments
+                          </h2>
+                        </div>
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="row my-2 px-2" *ngFor="let item of attachments; let d = index">
+                              <div class="col-5">
+                                <a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
+                                  (click)="setPDFSrc(item.docPath)">Document {{ d + 1 }}</a>
+                              </div>
+                              <div class="col- 3 text-right">
+                                <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.docPath)"
+                                  data-toggle="modal" data-target="#viewDocModal"></em>
+                                <a href="javascript:;" (click)="delete('attachment', item.name, d)"
+                                  class="modal-with-form">
+                                  <em class="fas fa-times text-danger"></em></a>
+                              </div>
+                            </div>
+                            <div *ngIf="attachments.length == 0" class="my-2 px-2">
+                              <span>No attachment found</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-xl-4 col-12 pl-0 pr-0">
+                  <div class="col-xl-12 col-12 mb-3">
+                    <div class="boxshadow1 maindisbox w100 pull-left">
+                      <div class="widgetload">
+                        <div class="widgettbload">
+                          <div class="row align-items-center">
+                            <div class="col-6">
+                              <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                                <i class="fas fa-box"></i> BOL/POD
+                              </h2>
+                            </div>
+                            <div class="col-6 text-right">
+                              <button [disabled]="docs.length == 4" class="btn btn-success btn-sm"
+                                (click)="openDocModal()">Add Document</button>
+                              <!-- <input type="file" #uploadBol (change)="selectDocuments($event)" multiple
+                                class="p-0 pull-right mb-0" id="bolUpload" /> -->
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row" style="max-height: 260px; overflow: scroll">
+                          <div class="col-12">
+                            <table class="table table-bordered">
+                              <thead>
+                                <th>Sr.</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Icon/Thumbnail</th>
+                                <th>Action</th>
+                              </thead>
+                              <tbody>
+                                <tr *ngIf="docs.length == 0">
+                                  <td colspan="4">
+                                    <span>No document found</span>
+                                  </td>
+                                </tr>
+                                <tr *ngFor="let doc of docs; let d = index">
+                                  <td>{{ d + 1 }}</td>
+                                  <td>{{ doc.displayName }}</td>
+                                  <td>
+                                    <span *ngIf="doc.type === 'bol'">Bill of lading</span>
+                                    <span *ngIf="doc.type === 'pod'">Proof of delivery</span>
+                                    <span *ngIf="doc.type === 'other'">Other</span>
+                                  </td>
+                                  <td>
+                                    <a class="image-popup-no-margins" href="{{ doc.docPath }}" target="_blank">
+                                      <img class="img_thumbnail" src="{{ doc.imgPath }}" />
+                                    </a>
+                                  </td>
+                                  <td class="cursorpoint text-center">
+                                    <a href="javascript:;" (click)="delete('docs', doc.name, d)"
+                                      class="modal-with-form">
+                                      <em class="fas fa-times text-danger"></em></a>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <!-- <div class="row my-2 px-2" *ngFor="let doc of docs;let d= index">
+                              <div class="col-4">
+                                <a class="image-popup-no-margins" href="{{doc.docPath}}" target="_blank">
+                                  <img class="img_thumbnail" src="{{doc.imgPath}}">
+                                  <p>{{doc.displayName}}</p>
+                                </a>
+                                <a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
+                                  (click)="setPDFSrc(doc.path)">{{doc.displayName}}</a>
+                              </div>
+                              <div class="col-1 text-right">
+                                <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
+                                  data-target="#viewDocModal"></em>
+                                <a href="javascript:;" (click)="delete('docs',doc.name, d)" class="modal-with-form">
+                                  <em class="fas fa-times text-danger"></em></a>
+                              </div>
+                            </div> -->
+                            <!-- <div *ngIf="docs.length == 0;" class="my-2 px-2">
+                              <span>No document found</span>
+                            </div> -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
               </div>
             </div>
           </div>
@@ -989,47 +996,6 @@
     </section>
   </div>
 </section>
-
-<!-- Modal -->
-<div class="modal fade" id="templateSelectionModal" tabindex="-1" role="dialog"
-  aria-labelledby="templateSelectionModalLabel" aria-hidden="true">
-  <div class="modal-dialog" style="max-width: 1200px" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="templateSelectionModalLabel">
-          Select Invoice Template
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <i class="far fa-window-close modal-dismiss" style="font-size: 25px"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="invoice-templates__listing">
-          <ul class="m-0 p-0 d-flex flex-wrap">
-            <li class="position-relative" *ngFor="let item of templateList; let i = index"
-              [ngClass]="{ active: selectedItem === i }" (click)="selectedItem = i">
-              <img src="{{ item }}" class="img-fluid" />
-              <div class="invoice-actions">
-                <div>
-                  <a href="javascript:;" class="btn btn-success">Use template</a>
-                </div>
-              </div>
-              <div class="selected-template">
-                <i class="fa fa-check-circle fa-fw" style="color: #000"></i>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <a (click)="previewModal()" href="javascript:;" class="btn btn-success">Preview</a>
-        <button type="button" class="btn btn-default" data-dismiss="modal">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- *ngIf="isModalShow" -->
 <ng-template #previewInvoiceModal let-modal>
@@ -1109,9 +1075,10 @@
                         <h6 style="
                             color: #040404;
                             font-weight: 500;
-                            font-size: 13px;line-height: 24px;
-                            width: 300px;" class="ml-auto m-0">
-
+                            font-size: 13px;
+                            line-height: 24px;
+                            width: 300px;
+                          " class="ml-auto m-0">
                           {{ invoiceData.carrierData.address }}
                         </h6>
                         <h6 style="
@@ -1127,8 +1094,10 @@
                             color: #040404;
                             font-weight: 500;
                             font-size: 13px;
-                            line-height: 24px;" class="ml-auto m-0">
-                          <strong>Email: </strong> {{ invoiceData.carrierData.email }}
+                            line-height: 24px;
+                          " class="ml-auto m-0">
+                          <strong>Email: </strong>
+                          {{ invoiceData.carrierData.email }}
                         </h6>
                       </td>
                     </tr>
@@ -1679,7 +1648,7 @@
                   </table>
                   <table class="invoice-iner__wrapper" width="100%" style="border-top: none">
                     <tbody>
-                      <tr *ngFor="let newDoc of invDocs">
+                      <tr *ngFor="let newDoc of newInvDocs">
                         <td>
                           <table>
                             <tbody>
@@ -1743,8 +1712,16 @@
       <button class="btn btn-default" (click)="modal.dismiss('Cross click')">
         Cancel
       </button>
-      <button class="btn btn-success" (click)="generate()">Print</button>
-      <button *ngIf="isGenerate" [disabled]="generateBtnDisabled" (click)="generatePDF()" class="btn btn-success">
+      <button class="btn btn-success" *ngIf="docs.length != 0" (click)="openDocumentModal('print')">Print</button>
+      <button *ngIf="docs.length != 0 && isGenerate" [disabled]="generateBtnDisabled"
+        (click)="openDocumentModal('generate')" class="btn btn-success">
+        Generate & Print
+      </button>
+
+
+      <button class="btn btn-success" *ngIf="docs.length == 0" (click)="generate()">Print</button>
+      <button *ngIf="docs.length == 0 && isGenerate" [disabled]="generateBtnDisabled" (click)="generatePDF()"
+        class="btn btn-success">
         Generate & Print
       </button>
     </div>
@@ -2540,6 +2517,22 @@
               Send me a copy at <strong> {{ carrierEmail }}</strong>
             </label>
           </div>
+          <div class="col-12 mt-2">
+            <div class="form-check form-check-inline" *ngFor="let item of documentsArr;let i = index;">
+              <input class="form-check-input" name="checkbox{{item.id}}" [(ngModel)]="item.checked"
+                (change)="documentSelection()" type="checkbox" id="inlineCheckbox_{{i}}" [disabled]="item.disabled">
+              <label class="form-check-label" for="inlineCheckbox_{{i}}">{{item.docName}}</label>
+            </div>
+          </div>
+          <!-- <div class="col-12 mt-2">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" name="checkbox" [(ngModel)]="emailData.isSingle" type="checkbox"
+                id="inlineCheckbox1" [disabled]="singleDisabled">
+              <label class="form-check-label" for="inlineCheckbox1">Single file (All documents will be merged in single
+                file.) </label>
+            </div>
+          </div> -->
+
           <div class="col-12 mt-3">
             <p>
               <strong>Note:</strong> All documents will be sent with this email
@@ -2559,6 +2552,45 @@
       </button>
       <button type="submit" [disabled]="isEmail" (click)="addEmails()" class="btn btn-success">
         Submit
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+
+<ng-template #documentSelectionModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Select documents which you want to download?</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form>
+    <div class="modal-body">
+      <div class="document-selects__main">
+        <div class="row align-items-center mb-2">
+
+          <div class="col-12 mt-2">
+            <div class="form-check form-check-inline" *ngFor="let item of documentsArr;">
+              <input class="form-check-input" name="checkbox{{item.id}}" [(ngModel)]="item.checked"
+                (change)="documentSelection()" type="checkbox" id="inlineCheckbox1" [disabled]="item.disabled">
+              <label class="form-check-label" for="inlineCheckbox1">{{item.docName}}</label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+
+      <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-default">
+        Cancel
+      </button>
+      <button type="submit" *ngIf="printBtnType == 'print'" (click)="generate()" class="btn btn-success">
+        OK
+      </button>
+      <button type="submit" *ngIf="printBtnType == 'generate'" (click)="generatePDF()" class="btn btn-success">
+        OK
       </button>
     </div>
   </form>

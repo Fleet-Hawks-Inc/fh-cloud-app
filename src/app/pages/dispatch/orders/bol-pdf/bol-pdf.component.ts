@@ -11,67 +11,38 @@ import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 })
 export class BolPdfComponent implements OnInit {
   @ViewChild("ordBolPrev", { static: true })
-  modalContent: TemplateRef<any>;
+  ordBolPrev: TemplateRef<any>;
   constructor(
     private listService: ListService,
     private modalService: NgbModal
-  ) {}
+  ) { }
   subscription: Subscription;
-  orderData = {
-    createdDate: null,
-    additionalContact: <any>null,
-    carrierData: {
-      address: "",
-      companyName: "",
-      phone: "",
-      email: "",
-      fax: "",
-      logo: "",
-      carrierID: "",
-    },
-    charges: {
-      accessorialDeductionInfo: {
-        accessorialDeduction: [],
-      },
-      accessorialFeeInfo: {
-        accessorialFee: [],
-      },
-      freightFee: {
-        amount: 0,
-        currency: "",
-        type: "",
-      },
-      fuelSurcharge: {
-        amount: 0,
-        currency: "",
-        type: "",
-      },
-      cusAddressID: "",
-      customerID: "",
-    },
-    data: [],
-    finalAmount: 0,
-    phone: "",
-    subTotal: 0,
-    taxesAmt: 0,
-  };
-  carrierData = {
-    name: "",
-    email: "",
-    address: "",
-    phone: "",
-  };
+
+  drivers = [];
+  assets = [];
+  vehicles = [];
+  orderData = [];
+  carrierData: any;
   companyLogo = "";
+  finalAmount: any;
+  today: any;
+  orderNumber: string;
   logoSrc = "assets/img/logo.png";
 
   ngOnInit() {
     this.subscription = this.listService.bolPdfList.subscribe(
       async (res: any) => {
         if (res.showModal && res.length != 0) {
-          console.log("res====", res);
+
           this.orderData = res.orderData;
+          this.drivers = res.drivers;
+          this.assets = res.assets;
+          this.vehicles = res.vehicles;
           this.carrierData = res.carrierData;
           this.companyLogo = res.companyLogo;
+          this.finalAmount = res.finalAmount;
+          this.today = res.date;
+          this.orderNumber = res.orderNumber;
 
           let ngbModalOptions: NgbModalOptions = {
             backdrop: "static",
@@ -80,10 +51,10 @@ export class BolPdfComponent implements OnInit {
           };
           res.showModal = false;
           this.modalService
-            .open(this.modalContent, ngbModalOptions)
+            .open(this.ordBolPrev, ngbModalOptions)
             .result.then(
-              (result) => {},
-              (reason) => {}
+              (result) => { },
+              (reason) => { }
             );
           // this.generatePDF();
         }
@@ -94,7 +65,7 @@ export class BolPdfComponent implements OnInit {
   async generatePDF() {
     var data = document.getElementById("print_bol");
     html2pdf(data, {
-      margin: [0.5, 0, 0.5, 0],
+      margin: 0.5,
       pagebreak: { mode: "avoid-all", before: "print_bol" },
       filename: `BOL ${new Date().getTime()}.pdf`,
       image: { type: "jpeg", quality: 0.98 },

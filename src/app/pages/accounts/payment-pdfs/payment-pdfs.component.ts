@@ -35,7 +35,8 @@ export class PaymentPdfsComponent implements OnInit {
     paymentNo: "",
   };
   settlements = [];
-  paymentInfo: any;
+  // paymentInfo: any;
+  paymentSelected=[]
   currency: string;
   payPeriod: any;
   paymentData = {
@@ -77,6 +78,8 @@ export class PaymentPdfsComponent implements OnInit {
     workerBenefit: 0,
     incomeTax: 0,
     eiInsurable: 0,
+    gstHstAmt: 0,
+    isVendorPayment: false,
   };
   locale = "en-US";
   annualResult = {
@@ -93,6 +96,7 @@ export class PaymentPdfsComponent implements OnInit {
     eiInsurable: 0,
     netPay: 0,
   };
+
   setlTripIds = [];
   trips = [];
   paymentTrips = [];
@@ -113,10 +117,15 @@ export class PaymentPdfsComponent implements OnInit {
   modelRef: any;
   subTotal = 0;
   totalSettmnt: any;
+  paymentAbr={"ppm": "Pay Per Mile",
+  "pp":"Percentage",
+  "ppd":"Pay Per Delivery",
+  "pph":"Pay Per Hour",
+  "pfr":"Pay Flat Rate"}
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
       async (res: any) => {
-        console.log('res', res);
+
         if (res.showModal && res.length != 0) {
           res.showModal = false;
           this.paymentData = res.data;
@@ -255,7 +264,7 @@ export class PaymentPdfsComponent implements OnInit {
       .getData(`settlement/get/selected?entities=${ids}`)
       .toPromise();
     this.settlements = result;
-    this.paymentInfo = result[0].paymentInfo;
+    this.paymentSelected = result[0].paymentSelected
     this.currency = result[0].currency;
     let newDates = []
     let totalAddDed = 0;
@@ -487,12 +496,14 @@ export class PaymentPdfsComponent implements OnInit {
 
       this.fueldata.map((k) => {
         result.map((fuel) => {
-          k.city = fuel.data.city;
-          k.country = fuel.data.country;
-          k.vehicle = fuel.data.unitNo;
-          k.card = fuel.data.cardNo;
-          k.quantity = `${fuel.data.qty} ${fuel.data.uom}`;
-          k.fuelDate = fuel.data.date;
+          if (k.fuelID === fuel.data.fuelID) {
+            k.city = fuel.data.city;
+            k.country = fuel.data.country;
+            k.vehicle = fuel.data.unitNo;
+            k.card = fuel.data.cardNo;
+            k.quantity = `${fuel.data.qty} ${fuel.data.uom}`;
+            k.fuelDate = fuel.data.date;
+          }
         });
 
         if (k.action === "add") {

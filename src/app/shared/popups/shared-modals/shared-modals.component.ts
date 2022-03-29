@@ -7,7 +7,7 @@ import { map } from "rxjs/operators";
 import { ListService } from "../../../services";
 import * as moment from "moment";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
-import { ConsoleService } from "@ng-select/ng-select/lib/console.service";
+
 
 declare var $: any;
 @Component({
@@ -18,6 +18,8 @@ declare var $: any;
 export class SharedModalsComponent implements OnInit {
   @ViewChild("vehProgramModal", { static: true })
   vehProgramModal: TemplateRef<any>;
+  @ViewChild("addDocType", { static: true })
+  addDocType: TemplateRef<any>;
   @ViewChild("addIssueModal", { static: true }) addIssueModal: TemplateRef<any>;
   @ViewChild("assetModelsModal", { static: true })
   assetModelsModal: TemplateRef<any>;
@@ -43,6 +45,12 @@ export class SharedModalsComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+
+  submitDisabled: boolean = false;
+  docs = {
+    docType: null,
+    uploadedDocs: [],
+  };
 
   constructor(
     private apiService: ApiService,
@@ -184,7 +192,24 @@ export class SharedModalsComponent implements OnInit {
   subscription: any;
   users = [];
 
+  getDocsLength: any;
+  docModalRef: any;
+  documentType: string;
+
   async ngOnInit() {
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: "static",
+      keyboard: false,
+      windowClass: "doc-type__main",
+    };
+    this.subscription = this.listService.docModalList.subscribe((res: any) => {
+      if (res.type === 'order' || res.type === 'trip') {
+        this.documentType = res.type;
+        this.getDocsLength = res.docLength;
+        this.docModalRef = this.modalService.open(this.addDocType, ngbModalOptions)
+      }
+    })
+
     this.fetchApis();
 
     $(document).ready(() => {
@@ -246,8 +271,8 @@ export class SharedModalsComponent implements OnInit {
           this.fetchVehicles();
           this.fetchAssets();
           this.fetchUsers();
-        } else if(res === "") {
-            this.issueModal.close();
+        } else if (res === "") {
+          this.issueModal.close();
         }
       }
     );
@@ -296,13 +321,15 @@ export class SharedModalsComponent implements OnInit {
   }
 
   fetchAssets() {
-    this.apiService.getData("assets").subscribe((result: any) => {
-      result.Items.forEach((element) => {
-        if (element.isDeleted === 0) {
-          this.assets.push(element);
-        }
+    if (this.assets.length === 0) {
+      this.apiService.getData("assets").subscribe((result: any) => {
+        result.Items.forEach((element) => {
+          if (element.isDeleted === 0) {
+            this.assets.push(element);
+          }
+        });
       });
-    });
+    }
   }
 
   throwErrors() {
@@ -310,12 +337,12 @@ export class SharedModalsComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -338,7 +365,7 @@ export class SharedModalsComponent implements OnInit {
   addVehicleModel() {
     this.hideErrors();
     this.apiService.postData("vehicleModels", this.vehicleModelData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -351,8 +378,8 @@ export class SharedModalsComponent implements OnInit {
             complete: () => {
               this.throwErrors();
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
@@ -374,7 +401,7 @@ export class SharedModalsComponent implements OnInit {
     this.apiService
       .postData("assetManufacturers", this.assetMakeData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -387,8 +414,8 @@ export class SharedModalsComponent implements OnInit {
               complete: () => {
                 this.throwErrors();
               },
-              error: () => {},
-              next: () => {},
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {
@@ -407,7 +434,7 @@ export class SharedModalsComponent implements OnInit {
   addAssetModel() {
     this.hideErrors();
     this.apiService.postData("assetModels", this.assetModelData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -420,8 +447,8 @@ export class SharedModalsComponent implements OnInit {
             complete: () => {
               this.throwErrors();
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
@@ -447,7 +474,7 @@ export class SharedModalsComponent implements OnInit {
   addServiceProgram() {
     this.hideErrors();
     this.apiService.postData("servicePrograms", this.serviceData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -460,8 +487,8 @@ export class SharedModalsComponent implements OnInit {
             complete: () => {
               this.throwErrors();
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
@@ -478,7 +505,7 @@ export class SharedModalsComponent implements OnInit {
   addServiceTask() {
     this.hideErrors();
     this.apiService.postData("tasks", this.taskData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -491,8 +518,8 @@ export class SharedModalsComponent implements OnInit {
             complete: () => {
               this.throwErrors();
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
@@ -506,23 +533,26 @@ export class SharedModalsComponent implements OnInit {
   }
 
   fetchVehicles() {
-    this.apiService.getData("vehicles").subscribe({
-      error: () => {},
-      next: (result: any) => {
-        // this.vehicles = result.Items;
-        console.log("result.Items", result.Items);
-        result.Items.forEach((element) => {
-          if (element.isDeleted === 0) {
-            this.vehicles.push(element);
-          }
-        });
-      },
-    });
+    if (this.vehicles.length === 0) {
+
+      this.apiService.getData("vehicles").subscribe({
+        error: () => { },
+        next: (result: any) => {
+
+
+          result.Items.forEach((element) => {
+            if (element.isDeleted === 0) {
+              this.vehicles.push(element);
+            }
+          });
+        },
+      });
+    }
   }
 
   fetchTasks() {
     this.apiService.getData("tasks").subscribe({
-      error: () => {},
+      error: () => { },
       next: (result: any) => {
         // this.tasks = result.Items;
         result.Items.forEach((element) => {
@@ -584,7 +614,7 @@ export class SharedModalsComponent implements OnInit {
 
     // this.apiService.postData('issues/', data).subscribe({
     this.apiService.postData("issues", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -597,8 +627,8 @@ export class SharedModalsComponent implements OnInit {
             complete: () => {
               this.throwErrors();
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
@@ -634,9 +664,16 @@ export class SharedModalsComponent implements OnInit {
   }
 
   fetchUsers() {
-    this.apiService.getData("users").subscribe((result: any) => {
-      this.users = result.Items;
-    });
+    if (this.users.length === 0) {
+      this.apiService.getData("common/users").subscribe((result: any) => {
+        result["Items"].map((r: any) => {
+          if (r.isDeleted === 0) {
+            this.users.push(r);
+          }
+        })
+
+      });
+    }
   }
 
   clearAssetMake() {
@@ -663,5 +700,39 @@ export class SharedModalsComponent implements OnInit {
       taskName: "",
       description: "",
     };
+  }
+
+  selectDocTypes(event) {
+    let files = [];
+    this.uploadedDocs = [];
+    files = [...event.target.files];
+    let totalCount = this.getDocsLength + files.length;
+
+    if (totalCount > 4) {
+      this.uploadedDocs = [];
+      this.toastr.error("Only 4 documents can be uploaded");
+      return false;
+    } else {
+      this.uploadedDocs = files;
+    }
+  }
+
+  addDocTypes() {
+    if (this.uploadedDocs.length === 0) {
+      this.toastr.error("Please select at least one document!");
+      return false;
+    }
+    let obj = {
+      docType: this.docs.docType,
+      documents: this.uploadedDocs,
+      module: ''
+    }
+    if (this.documentType === 'order') {
+      obj.module = 'order';
+    } else if (this.documentType === 'trip') {
+      obj.module = 'trip';
+    }
+    this.listService.getAllDocs(obj);
+    this.docModalRef.close()
   }
 }

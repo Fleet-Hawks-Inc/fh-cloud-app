@@ -6,7 +6,7 @@
           <div class="row" style="padding-top:10px;">
 
 
-            <div class="col-md-2 col-lg-2">
+            <div class="col-md-2 col-lg-2 pr-0">
 
               <ng-select data-plugin-selectTwo class="form-control populate" [(ngModel)]="vehicle" name="vehicle"
                 placeholder="Search Vehicle">
@@ -15,11 +15,23 @@
               </ng-select>
             </div>
 
-            <div class="col-md-2 col-lg-2 pl-0 pr-2">
-              <ng-select data-plugin-selectTwo class="form-control populate" [(ngModel)]="programName"
-                name="programName" placeholder="Select Service Task">
-                <ng-option *ngFor="let item of serviceProgramList" value="{{ item.programID }}">{{
-                  item.programName }}</ng-option>
+            <!-- Set spacing issue -->
+            <div class="col-md-2 col-lg-2 pl-2 pr-0">
+              <ng-select
+                data-plugin-selectTwo
+                class="form-control populate"
+                [(ngModel)]="programName"
+                name="programName"
+                placeholder="Select Service Task"
+              >
+                <ng-option
+                  *ngFor="let item of serviceProgramList"
+                  value="{{ item.programID }}"
+                  >{{ item.programName }}</ng-option
+                >
+
+
+           
               </ng-select>
             </div>
 

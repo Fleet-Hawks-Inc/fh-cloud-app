@@ -12,6 +12,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { FleetRoutingModule } from './fleet-routing.module';
 import { DashboardDriverComponent } from './index';
 import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 const COMPONENTS = [
@@ -87,7 +89,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgMultiSelectDropDownModule.forRoot(),
     NgxSpinnerModule,
     ReactiveFormsModule,
-    RxReactiveFormsModule
+    RxReactiveFormsModule,
+    ButtonModule,
+    TooltipModule
 
   ],
   exports: [...COMPONENTS],
