@@ -141,6 +141,8 @@ export class AddAccountComponent implements OnInit {
     length: false
   };
   siteKey = '6LckOPUdAAAAAInZHt4GWtTfwWJkhUa5RNlH22ud';
+  parentID= null;
+
   constructor(private apiService: ApiService,
     private toaster: ToastrService,
     private accountService: AccountService,
@@ -172,6 +174,8 @@ export class AddAccountComponent implements OnInit {
         this.findingWay = data.findingWay;
         this.carrierID = data.carrierID;
         this.referral = data.referral;
+        this.carrierName = data.carrierName ? data.carrierName : null;
+        this.parentID = data.parentID ? data.parentID : null;
       }
     });
   }
@@ -515,6 +519,9 @@ export class AddAccountComponent implements OnInit {
         },
         banks: this.banks
       };
+      if(this.parentID) {
+        data['parentID'] = this.parentID;
+      }
       if (this.findingWay === 'Referral') {
         data[`referral`] = this.referral;
       }

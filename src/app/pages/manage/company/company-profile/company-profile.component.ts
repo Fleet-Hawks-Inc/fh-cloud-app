@@ -277,57 +277,61 @@ export class CompanyProfileComponent implements OnInit {
     const data = {
       userName: this.userInfo.username
     }
-    this.apiService.postData(`carriers/validate/username`, data).subscribe((result: any) => {
-      console.log('result', result)
-      if(!result) {
-        this.userNameExists = true;
-        this.userNameExistsErr = 'Username already exists';
-      } else {
-        this.userNameExists = false;
-        this.userNameExistsErr = '';
-      }
-    })
+    if(this.userInfo.username) {
+      this.apiService.postData(`carriers/validate/username`, data).subscribe((result: any) => {
+        console.log('result', result)
+        if(!result) {
+          this.userNameExists = true;
+          this.userNameExistsErr = 'Username already exists';
+        } else {
+          this.userNameExists = false;
+          this.userNameExistsErr = '';
+        }
+      })
+    }
   }
 
   async validateEmail() {
     const data = {
       email: this.userInfo.email
     }
-    this.apiService.postData(`carriers/validate/email`, data).subscribe((result: any) => {
-      console.log('result', result)
-      if(!result) {
-        this.emailExistsExists = true;
-        this.emailExistsErr = 'Email already exists';
-      } else {
-        this.emailExistsExists = false;
-        this.emailExistsErr = '';
-      }
-    })
+    if(this.userInfo.email) {
+      this.apiService.postData(`carriers/validate/email`, data).subscribe((result: any) => {
+        console.log('result', result)
+        if(!result) {
+          this.emailExistsExists = true;
+          this.emailExistsErr = 'Email already exists';
+        } else {
+          this.emailExistsExists = false;
+          this.emailExistsErr = '';
+        }
+      })
+    }
   }
 
   async validateCompanyName() {
     const data = {
       carrierName: this.userInfo.carrierName
     }
-    this.apiService.postData(`carriers/validate/carriername`, data).subscribe((result: any) => {
-      console.log('result', result)
-      if(!result) {
-        this.carrierNameExists = true;
-        this.carrierNameErr = 'Registered Company Name already exists';
-      } else {
-        this.carrierNameExists = false;
-        this.carrierNameErr = '';
-      }
-    })
+    if(this.userInfo.carrierName) {
+      this.apiService.postData(`carriers/validate/carriername`, data).subscribe((result: any) => {
+        console.log('result', result)
+        if(!result) {
+          this.carrierNameExists = true;
+          this.carrierNameErr = 'Registered Company Name already exists';
+        } else {
+          this.carrierNameExists = false;
+          this.carrierNameErr = '';
+        }
+      })
+    }
   }
-  
 
   clearForm() {
     this.userInfoFormGroup.reset();
     $("#addCompanyModal").modal('hide')
   }
 }
-
 
 class VerificationInfo {
   @prop()

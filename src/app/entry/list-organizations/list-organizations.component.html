@@ -1,65 +1,36 @@
-<div class="bg-light">
-  <div class="ml-none ml-0">
-      <div class="maindivleft">
-          <div class="row justify-content-center mtnew">
-              <div class="col-lg-9 offset-lg-3">
-                  <h2 class="font-weight-bold text-light text-7 mb-0">
-                      Dashboard Features
-                  </h2>
-                  <h2 class="font-weight-normal text-light text-5 mt-4 mb-0">
-                      <i class="fas fa-check"></i> Fleet
-                  </h2>
-                  <h2 class="font-weight-normal text-light text-5 mt-1 mb-0">
-                      <i class="fas fa-check"></i> Compliance ( HOS, DVIR, IFTA )
-                  </h2>
-                  <h2 class="font-weight-normal text-light mt-1 text-5 mb-0">
-                      <i class="fas fa-check"></i> Routing & Dispatch
-                  </h2>
-                  <h2 class="font-weight-normal text-light mt-1 text-5 mb-0">
-                      <i class="fas fa-check"></i> Safety
-                  </h2>
-                  <h2 class="font-weight-normal text-light mt-1 text-5 mb-0">
-                      <i class="fas fa-check"></i> Accounting
-                  </h2>
-                  <h2 class="font-weight-normal text-light mt-1 text-5 mb-4">
-                      <i class="fas fa-check"></i> Reports
-                  </h2>
+<section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body">
+      <header class="page-header pr-5">
+        <div class="row pr-1 mr-1" style="padding-top: 10px">
+          <div class="col-md-12 col-lg-12">
+            <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">
+              Organizations
+            </h4>
+          </div>
+        </div>
+      </header>
+
+      <div class="routing-overview__wrapper m-3">
+        <div class="row">
+          <div class="col-lg-12 mb-3" *ngFor="let data of organizations">
+            <div class="bg-white">
+              <div class="row p-3">
+                <div class="col-10 text-dark">
+                  <h1
+                    class="font-weight-semibold text-5 h1class text-capitalize mt-1 mb-0"
+                  >
+                  {{ data.carrierName }}
+                  </h1>
+                  <p class="view-link mb-2">
+                    <a href="javascript:;" (click)="switchDashboard(data)">View Dashboard</a>
+                  </p>
+                </div>
               </div>
+            </div>
           </div>
+        </div>
       </div>
-      <div class="maindivright">
-          <div class="row justify-content-center mtnew">
-              <section class="signup-section">
-                  <div class="">
-                      <div class="col-sm-12 log">
-                          <img src="./assets/img/logologin.png" alt="FH Admin" />
-                      </div>
-                      <div class="col-md-12 col-lg-12">
-                        <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">
-                          Organizations
-                        </h4>
-                      </div>
-                      <div class="row">
-                        <div class="col-lg-12 mb-3" *ngFor="let data of organizations">
-                          <div class="bg-white">
-                            <div class="row p-3">
-                              <div class="col-10 text-dark">
-                                <h1
-                                  class="font-weight-semibold text-5 h1class text-capitalize mt-1 mb-0"
-                                >
-                                  {{ data.carrierName }}
-                                </h1>
-                                <p class="view-link mb-2">
-                                  <a href="javascript:;" (click)="switchDashboard(data)">View Dashboard</a>
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                  </div>
-              </section>
-          </div>
-      </div>
+    </section>
   </div>
-</div>
+</section>
