@@ -307,6 +307,36 @@ export class AddSettlementComponent implements OnInit {
         });
     }
   }
+  updatePaymentOption(){
+    this.settlementData.paymentSelected=[]
+    if(this.paymentType){
+      switch(this.paymentType){
+        case "pph":
+          this.settlementData.paymentSelected.push(this.pph)
+          break;
+
+          case "ppm":
+            this.settlementData.paymentSelected.push(this.ppm)
+            break;
+          
+          case "pp":
+            this.settlementData.paymentSelected.push(this.pp)
+            break;
+
+            case "pfr":
+              this.settlementData.paymentSelected.push(this.pfr)
+              break;
+
+      }
+    }
+    this.selectedTrip("","")
+    this.closePayment();
+
+  }
+  closePayment(){
+    this.modalService.dismissAll();
+
+  }
   setPaymentOption(data:any){
 
     data.paymentOption.forEach(element => {
@@ -339,32 +369,6 @@ export class AddSettlementComponent implements OnInit {
         }
         
         }
-  
-      //   if(element.pType=="pph"){
-      //     // this.payPerHour.currency=element.currency
-      //     this.settlementData.paymentInfo.pRate =element.rate?element.rate:0
-      //     // this.payPerHour.waitingHourAfter=element.waitingHourAfter
-      //     // this.payPerHour.waitingPay=element.waitingPay
-      // }
-
-      // if(element.pType=="ppm"){
-      //   this.settlementData.paymentInfo.lMiles=element.loadedMiles?element.loadedMiles:0
-      //   this.settlementData.currency =element.currency?element.currency:"CAD"
-      //   this.settlementData.paymentInfo.eMiles=element.emptyMiles?element.emptyMiles:0
-      //   this.settlementData.paymentInfo.eMileTeam =element.emptyMilesTeam?element.emptyMilesTeam:0
-      //   this.settlementData.paymentInfo.lMileTeam=element.loadedMilesTeam?element.loadedMilesTeam:0
-      // }
-      // if(element.pType=="pp"){
-      //   // this.payPercentage.loadPayPercentage=element.loadPayPercentage
-      //   // this.payPercentage.loadPayPercentageOf=element.loadPayPercentageOf
-      // }
-      // if(element.pType=="ppd"){
-      //   this.settlementData.currency =element.currency?element.currency:'CAD'
-      //   this.settlementData.paymentInfo.dRate=element.deliveryRate?element.deliveryRate:0
-      // }
-      // if(element.pType=="pfr"){
-
-      // }
 });
   }
   cancel() {
