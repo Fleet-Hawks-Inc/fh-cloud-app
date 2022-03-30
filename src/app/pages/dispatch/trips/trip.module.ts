@@ -28,6 +28,7 @@ import { SharedModule } from "../../../shared/shared.module";
 import { AddTripComponent } from "./add-trip/add-trip.component";
 import { TripDetailComponent } from "./trip-detail/trip-detail.component";
 import { TripListComponent } from "./trip-list/trip-list.component";
+
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */

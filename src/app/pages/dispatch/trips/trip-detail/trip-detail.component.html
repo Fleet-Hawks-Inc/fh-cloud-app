@@ -1202,7 +1202,11 @@
             <h5>Select asset to set an Alarm</h5>
             <p-dropdown [options]="assetNamesList" class="m-2" appendTo="body" placeholder="Select Asset" [(ngModel)]="selectedAssetAlarm" optionLabel="assetName" style="width:100px" optionValue="assetName"></p-dropdown>
             <p-inputNumber id="highTemp" tooltipPosition="top" pTooltip="Enter High Temperature Threshold" [(ngModel)]="highTemp" mode="decimal" class="m-2" suffix="℃" :min="-40" :max="40" placeholder="High Temperature Threshold"></p-inputNumber>
-            <p-inputNumber id="lowtemp" tooltipPosition="top" pTooltip="Enter Low Temperature Threshold" [(ngModel)]="lowTemp" mode="decimal" class="m-2" suffix="℃" :min="-40" :max="40" placeholder="Low Temperature Threshold"></p-inputNumber> <button pButton type="button" (click)="addAlarmToAsset()" label="Add Alert" class="m-2"></button>
+
+            <p-inputNumber id="lowtemp" tooltipPosition="top" pTooltip="Enter Low Temperature Threshold" [(ngModel)]="lowTemp" mode="decimal" class="m-2" suffix="℃" :min="-40" :max="40" placeholder="Low Temperature Threshold"></p-inputNumber>
+            <input type="text" id="emails" pTooltip="Multiple emails with comma seperated." placeholder="Email Address(s)" pInputText [(ngModel)]="emails" class="m-2" />
+
+            <button pButton type="button" (click)="addAlarmToAsset()" label="Add Alert" class="m-2"></button>
             <br><br><span class="m-2 text-400" style="color:red" *ngIf="assetAlert">{{assetAlert}}</span>
             <div class="col">
                 <h5>Existing Alerts</h5>
@@ -1230,7 +1234,9 @@
             </div>
         </div>
     </div>
-
+    <ng-template pTemplate="footer">
+        <span><b>NOTE: This feature is in BETA testing stage.</b></span>
+    </ng-template>
 
 
 </p-dialog>
