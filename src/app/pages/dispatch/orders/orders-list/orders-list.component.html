@@ -353,10 +353,10 @@
                                         }}">Edit</a>
                                                                         <a *ngIf="order.orderStatus!='delivered' || order.orderStatus === 'confirmed'"
                                                                             class="dropdown-item" [routerLink]="[
-                                      '/dispatch',
-                                      'trips',
-                                      'add-trip'
-                                      ]" [queryParams]="{orderId:order.orderID,orderNum:order.orderNumber}">
+                                                                                     '/dispatch',
+                                                                                     'trips',
+                                                                                     'add-trip'
+                                               ]" [queryParams]="{orderId:order.orderID,orderNum:order.orderNumber}">
                                                                             Create Trip</a>
                                                                         <a *ngIf="order.orderStatus == 'created' ||
                                         order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
