@@ -866,9 +866,10 @@ export class TripDetailComponent implements OnInit {
 
   alarmInput: IAddAlarmInput;
   showAlerts = false;
-  highTemp: number = 0;
-  lowTemp: number = -5;
+  highTemp: number = 10;
+  lowTemp: number = -10;
   selectedAlarmAlert = {};
+  emails: string
   async addAlerts() {
     this.showAlerts = true;
     await this.getTripAlarms();
@@ -884,7 +885,9 @@ export class TripDetailComponent implements OnInit {
       assetID: assetObj.assetID,
       assetName: assetObj.assetName,
       highTemp: this.highTemp.toString(),
-      lowTemp: this.lowTemp.toString()
+      lowTemp: this.lowTemp.toString(),
+      emails: this.emails.split(',')
+
     }
     const output = await this.apiService.postData('alarms', this.alarmInput).subscribe(async (data: any) => {
       await this.getTripAlarms();
@@ -920,4 +923,5 @@ interface IAddAlarmInput {
   assetName: string,
   highTemp: string,
   lowTemp: string,
+  emails: string[]
 }
