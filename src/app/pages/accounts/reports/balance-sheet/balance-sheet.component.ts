@@ -88,76 +88,55 @@ export class BalanceSheetComponent implements OnInit {
     ltLiability: any = [];
 
     //Current Assets Total CAD USD
-    currentAssetDebitTotalCAD = 0;
+    currentAssetTotalCAD = 0;
     currentAssetCreditTotalCAD = 0;
-    currentAssetDebitTotalUSD = 0;
+    currentAssetTotalUSD = 0;
     currentAssetCreditTotalUSD = 0;
 
     //Inventory Assets Total CAD USD
-    inventoryAssetDebitTotalCAD = 0;
-    inventoryAssetCreditTotalCAD = 0;
-    inventoryAssetDebitTotalUSD = 0;
-    inventoryAssetCreditTotalUSD = 0;
+    inventoryAssetTotalCAD = 0;
+    inventoryAssetTotalUSD = 0;
 
     //Capital Assets Total CAD USD
-    capitalAssetDebitTotalCAD = 0;
-    capitalAssetCreditTotalCAD = 0;
-    capitalAssetDebitTotalUSD = 0;
-    capitalAssetCreditTotalUSD = 0;
+    capitalAssetTotalCAD = 0;
+    capitalAssetTotalUSD = 0;
 
     //Other Non Current Assets Total CAD USD
-    ONCAssetDebitTotalCAD = 0;
-    ONCAssetCreditTotalCAD = 0;
-    ONCAssetDebitTotalUSD = 0;
-    ONCAssetCreditTotalUSD = 0;
+    ONCAssetTotalCAD = 0;
+    ONCAssetTotalUSD = 0;
 
     //Total of All Assets CAD USD
-    totalAssetsDebitCAD = 0;
-    totalAssetsCreditCAD = 0;
-    totalAssetsDebitUSD = 0;
-    totalAssetsCreditUSD = 0;
+    totalAssetsCAD = 0;
+    totalAssetsUSD = 0;
 
     //Current Liability Total CAD USD
-    totalCurrentLiabilityDebitCAD = 0;
-    totalCurrentLiabilityCreditCAD = 0;
-    totalCurrentLiabilityDebitUSD = 0;
-    totalCurrentLiabilityCreditUSD = 0;
+    totalCurrentLiabilityCAD = 0;
+    totalCurrentLiabilityUSD = 0;
 
     //Long Term Liabilities Total CAD USD
-    totalLongTermLiabilityDebitCAD = 0;
-    totalLongTermLiabilityCreditCAD = 0;
-    totalLongTermLiabilityDebitUSD = 0;
-    totalLongTermLiabilityCreditUSD = 0;
+    totalLongTermLiabilityCAD = 0;
+    totalLongTermLiabilityUSD = 0;
 
     //Total of all liability
-    totalLiabilityDebitCAD = 0;
-    totalLiabilityCreditCAD = 0;
-    totalLiabilityDebitUSD = 0;
-    totalLiabilityCreditUSD = 0;
+    totalLiabilityCAD = 0;
+    totalLiabilityUSD = 0;
 
     //Share Capital Total CAD USD
-    totalShareCapitalDebitCAD = 0;
-    totalShareCapitalCreditCAD = 0;
-    totalShareCapitalDebitUSD = 0;
-    totalShareCapitalCreditUSD = 0;
+    totalShareCapitalCAD = 0;
+    totalShareCapitalUSD = 0;
 
     //Retained Earnings Total CAD USD
-    totalRetainedEarningsDebitCAD = 0;
-    totalRetainedEarningsCreditCAD = 0;
-    totalRetainedEarningsDebitUSD = 0;
-    totalRetainedEarningsCreditUSD = 0;
+    totalRetainedEarningsCAD = 0;
+    totalRetainedEarningsUSD = 0;
 
     //Total of All Equities
-    totalEquityDebitCAD = 0
-    totalEquityCreditCAD = 0;
-    totalEquityDebitUSD = 0;
-    totalEquityCreditUSD = 0;
+    totalEquityCAD = 0
+    totalEquityUSD = 0;
 
     //Total of All Equities and Liabilities
-    totalLiabilityEquityDebitCAD = 0;
-    totalLiabilityEquityCreditCAD = 0;
-    totalLiabilityEquityDebitUSD = 0;
-    totalLiabilityEquityCreditUSD = 0;
+    totalLiabilityEquityCAD = 0;
+    totalLiabilityEquityUSD = 0;
+
 
     constructor(private accountService: AccountService, private toaster: ToastrService) { }
     ngOnInit() {
@@ -218,6 +197,7 @@ export class BalanceSheetComponent implements OnInit {
                     for (let i = 0; i < sortAssets.length; i++) {
                         if (sortAssets[i].accountClass == 'ASSET') {
                             this.sortOtherCurrentAssets = sortAssets[i].account;
+
                             this.sortOtherCurrentAssets = _.filter(this.sortOtherCurrentAssets, function (o) {
                                 return o.subAcClass != 'inventory';
                             });
@@ -252,22 +232,14 @@ export class BalanceSheetComponent implements OnInit {
                     for (let i = 0; i < this.sortOtherCurrentAssets.length; i++) {
                         if (this.currTab === 'CAD') {
                             this.currency = 'CAD'
-                            if (this.sortOtherCurrentAssets[i].debit != null) {
-                                this.currentAssetDebitTotalCAD += parseFloat(this.sortOtherCurrentAssets[i].debit);
-                            }
-                            if (this.sortOtherCurrentAssets[i].credit != null) {
-                                this.currentAssetCreditTotalCAD += parseFloat(this.sortOtherCurrentAssets[i].credit);
+                            if (this.sortOtherCurrentAssets[i].closingBalAmtCAD != null) {
+                                this.currentAssetTotalCAD += parseFloat(this.sortOtherCurrentAssets[i].closingBalAmtCAD);
                             }
                         }
-                    }
-                    for (let i = 0; i < this.sortOtherCurrentAssets.length; i++) {
                         if (this.currTab === 'USD') {
                             this.currency = 'USD'
-                            if (this.sortOtherCurrentAssets[i].debit != null) {
-                                this.currentAssetDebitTotalUSD += parseFloat(this.sortOtherCurrentAssets[i].debit);
-                            }
-                            if (this.sortOtherCurrentAssets[i].credit != null) {
-                                this.currentAssetCreditTotalUSD += parseFloat(this.sortOtherCurrentAssets[i].credit);
+                            if (this.sortOtherCurrentAssets[i].closingBalAmtUSD != null) {
+                                this.currentAssetTotalUSD += parseFloat(this.sortOtherCurrentAssets[i].closingBalAmtUSD);
                             }
                         }
                     }
@@ -275,22 +247,14 @@ export class BalanceSheetComponent implements OnInit {
                     for (let i = 0; i < this.sortInventoryAssets.length; i++) {
                         if (this.currTab === 'CAD') {
                             this.currency = 'CAD'
-                            if (this.sortInventoryAssets[i].debit != null) {
-                                this.inventoryAssetDebitTotalCAD += parseFloat(this.sortInventoryAssets[i].debit);
-                            }
-                            if (this.sortInventoryAssets[i].credit != null) {
-                                this.inventoryAssetCreditTotalCAD += parseFloat(this.sortInventoryAssets[i].credit);
+                            if (this.sortInventoryAssets[i].closingBalAmtCAD != null) {
+                                this.inventoryAssetTotalCAD += parseFloat(this.sortInventoryAssets[i].closingBalAmtCAD);
                             }
                         }
-                    }
-                    for (let i = 0; i < this.sortInventoryAssets.length; i++) {
                         if (this.currTab === 'USD') {
                             this.currency = 'USD'
-                            if (this.sortInventoryAssets[i].debit != null) {
-                                this.inventoryAssetDebitTotalUSD += parseFloat(this.sortInventoryAssets[i].debit);
-                            }
-                            if (this.sortInventoryAssets[i].credit != null) {
-                                this.inventoryAssetCreditTotalUSD += parseFloat(this.sortInventoryAssets[i].credit);
+                            if (this.sortInventoryAssets[i].closingBalAmtUSD != null) {
+                                this.inventoryAssetTotalUSD += parseFloat(this.sortInventoryAssets[i].closingBalAmtUSD);
                             }
                         }
                     }
@@ -298,189 +262,142 @@ export class BalanceSheetComponent implements OnInit {
                     for (let i = 0; i < this.sortCapitalAsset.length; i++) {
                         if (this.currTab === 'CAD') {
                             this.currency = 'CAD'
-                            if (this.sortCapitalAsset[i].debit != null) {
-                                this.capitalAssetDebitTotalCAD += parseFloat(this.sortCapitalAsset[i].debit);
-                            }
-                            if (this.sortCapitalAsset[i].credit != null) {
-                                this.capitalAssetCreditTotalCAD += parseFloat(this.sortCapitalAsset[i].credit);
+                            if (this.sortCapitalAsset[i].closingBalAmtCAD != null) {
+                                this.capitalAssetTotalCAD += parseFloat(this.sortCapitalAsset[i].closingBalAmtCAD);
                             }
                         }
-                    }
-                    for (let i = 0; i < this.sortCapitalAsset.length; i++) {
                         if (this.currTab === 'USD') {
                             this.currency = 'USD'
-                            if (this.sortCapitalAsset[i].debit != null) {
-                                this.capitalAssetDebitTotalUSD += parseFloat(this.sortCapitalAsset[i].debit);
-                            }
-                            if (this.sortCapitalAsset[i].credit != null) {
-                                this.capitalAssetCreditTotalUSD += parseFloat(this.sortCapitalAsset[i].credit);
+                            if (this.sortCapitalAsset[i].closingBalAmtUSD != null) {
+                                this.capitalAssetTotalUSD += parseFloat(this.sortCapitalAsset[i].closingBalAmtUSD);
                             }
                         }
                     }
+
                     //Calculation Other Non-Current Assets 
                     for (let i = 0; i < this.sortONCAsset.length; i++) {
                         if (this.currTab === 'CAD') {
                             this.currency = 'CAD'
-                            if (this.sortONCAsset[i].debit != null) {
-                                this.ONCAssetDebitTotalCAD += parseFloat(this.sortONCAsset[i].debit);
-                            }
-                            if (this.sortONCAsset[i].credit != null) {
-                                this.ONCAssetCreditTotalCAD += parseFloat(this.sortONCAsset[i].credit);
+                            if (this.sortONCAsset[i].closingBalAmtCAD != null) {
+                                this.ONCAssetTotalCAD += parseFloat(this.sortONCAsset[i].closingBalAmtCAD);
                             }
                         }
-                    }
-                    for (let i = 0; i < this.sortONCAsset.length; i++) {
                         if (this.currTab === 'USD') {
                             this.currency = 'USD'
-                            if (this.sortONCAsset[i].debit != null) {
-                                this.ONCAssetDebitTotalUSD += parseFloat(this.sortONCAsset[i].debit);
-                            }
-                            if (this.sortONCAsset[i].credit != null) {
-                                this.ONCAssetCreditTotalUSD += parseFloat(this.sortONCAsset[i].credit);
+                            if (this.sortONCAsset[i].closingBalAmtUSD != null) {
+                                this.ONCAssetTotalUSD += parseFloat(this.sortONCAsset[i].closingBalAmtUSD);
                             }
                         }
+
                     }
+
                     //Total of All Assets CAD USD
                     if (this.currTab === 'CAD') {
                         this.currency = 'CAD';
-                        this.totalAssetsDebitCAD = this.currentAssetDebitTotalCAD + this.inventoryAssetDebitTotalCAD + this.capitalAssetDebitTotalCAD + this.ONCAssetDebitTotalCAD;
-                        this.totalAssetsCreditCAD = this.currentAssetCreditTotalCAD + this.inventoryAssetCreditTotalCAD + this.capitalAssetCreditTotalCAD + this.ONCAssetCreditTotalCAD;
+                        this.totalAssetsCAD = this.currentAssetTotalCAD + this.inventoryAssetTotalCAD + this.capitalAssetTotalCAD + this.ONCAssetTotalCAD;
                     }
                     if (this.currTab === 'USD') {
                         this.currency = 'USD';
-                        this.totalAssetsDebitUSD = this.currentAssetDebitTotalUSD + this.inventoryAssetDebitTotalUSD + this.capitalAssetDebitTotalUSD + this.ONCAssetDebitTotalUSD;
-                        this.totalAssetsCreditUSD = this.currentAssetCreditTotalUSD + this.inventoryAssetCreditTotalUSD + this.capitalAssetCreditTotalUSD + this.ONCAssetCreditTotalUSD;
+                        this.totalAssetsUSD = this.currentAssetTotalUSD + this.inventoryAssetTotalUSD + this.capitalAssetTotalUSD + this.ONCAssetTotalUSD;
                     }
+
+
                     //Calculation current Liabilities
                     for (let i = 0; i < this.currLiability.length; i++) {
                         if (this.currTab === 'CAD') {
                             this.currency = 'CAD'
-                            if (this.currLiability[i].debit != null) {
-                                this.totalCurrentLiabilityDebitCAD += parseFloat(this.currLiability[i].debit);
-                            }
-                            if (this.currLiability[i].credit != null) {
-                                this.totalCurrentLiabilityCreditCAD += parseFloat(this.currLiability[i].credit);
+                            if (this.currLiability[i].closingBalAmtCAD != null) {
+                                this.totalCurrentLiabilityCAD += parseFloat(this.currLiability[i].closingBalAmtCAD);
                             }
                         }
-                    }
-                    for (let i = 0; i < this.currLiability.length; i++) {
                         if (this.currTab === 'USD') {
                             this.currency = 'USD'
-                            if (this.currLiability[i].debit != null) {
-                                this.totalCurrentLiabilityDebitUSD += parseFloat(this.currLiability[i].debit);
-                            }
-                            if (this.currLiability[i].credit != null) {
-                                this.totalCurrentLiabilityCreditUSD += parseFloat(this.currLiability[i].credit);
+                            if (this.currLiability[i].closingBalAmtUSD != null) {
+                                this.totalCurrentLiabilityUSD += parseFloat(this.currLiability[i].closingBalAmtUSD);
                             }
                         }
                     }
+
                     //Calculation Long Term Liabilities
                     for (let i = 0; i < this.ltLiability.length; i++) {
                         if (this.currTab === 'CAD') {
                             this.currency = 'CAD'
-                            if (this.ltLiability[i].debit != null) {
-                                this.totalLongTermLiabilityDebitCAD += parseFloat(this.ltLiability[i].debit);
-                            }
-                            if (this.ltLiability[i].credit != null) {
-                                this.totalLongTermLiabilityCreditCAD += parseFloat(this.ltLiability[i].credit);
+                            if (this.ltLiability[i].closingBalAmtCAD != null) {
+                                this.totalLongTermLiabilityCAD += parseFloat(this.ltLiability[i].closingBalAmtCAD);
                             }
                         }
-                    }
-                    for (let i = 0; i < this.ltLiability.length; i++) {
                         if (this.currTab === 'USD') {
                             this.currency = 'USD'
-                            if (this.ltLiability[i].debit != null) {
-                                this.totalLongTermLiabilityDebitUSD += parseFloat(this.ltLiability[i].debit);
-                            }
-                            if (this.ltLiability[i].credit != null) {
-                                this.totalLongTermLiabilityCreditUSD += parseFloat(this.ltLiability[i].credit);
+                            if (this.ltLiability[i].closingBalAmtUSD != null) {
+                                this.totalLongTermLiabilityUSD += parseFloat(this.ltLiability[i].closingBalAmtUSD);
                             }
                         }
                     }
+
                     //Total of All Liabilities CAD USD
                     if (this.currTab === 'CAD') {
                         this.currency = 'CAD';
-                        this.totalLiabilityDebitCAD = this.totalCurrentLiabilityDebitCAD + this.totalLongTermLiabilityDebitCAD;
-                        this.totalLiabilityCreditCAD = this.totalCurrentLiabilityCreditCAD + this.totalLongTermLiabilityCreditCAD;
+                        this.totalLiabilityCAD = this.totalCurrentLiabilityCAD + this.totalLongTermLiabilityCAD;
                     }
                     if (this.currTab === 'USD') {
                         this.currency = 'USD';
-                        this.totalLiabilityDebitUSD = this.totalCurrentLiabilityDebitUSD + this.totalLongTermLiabilityDebitUSD;
-                        this.totalLiabilityCreditUSD = this.totalCurrentLiabilityCreditUSD + this.totalLongTermLiabilityCreditUSD;
+                        this.totalLiabilityUSD = this.totalCurrentLiabilityUSD + this.totalLongTermLiabilityUSD;
                     }
                     //Calculation Share Capital Equity
                     for (let i = 0; i < this.scEquity.length; i++) {
                         if (this.currTab === 'CAD') {
                             this.currency = 'CAD'
-                            if (this.scEquity[i].debit != null) {
-                                this.totalShareCapitalDebitCAD += parseFloat(this.scEquity[i].debit);
-                            }
-                            if (this.scEquity[i].credit != null) {
-                                this.totalShareCapitalCreditCAD += parseFloat(this.scEquity[i].credit);
+                            if (this.scEquity[i].closingBalAmtCAD != null) {
+                                this.totalShareCapitalCAD += parseFloat(this.scEquity[i].closingBalAmtCAD);
                             }
                         }
-                    }
-                    for (let i = 0; i < this.scEquity.length; i++) {
                         if (this.currTab === 'USD') {
                             this.currency = 'USD'
-                            if (this.scEquity[i].debit != null) {
-                                this.totalShareCapitalDebitUSD += parseFloat(this.scEquity[i].debit);
-                            }
-                            if (this.scEquity[i].credit != null) {
-                                this.totalShareCapitalCreditUSD += parseFloat(this.scEquity[i].credit);
+                            if (this.scEquity[i].closingBalAmtUSD != null) {
+                                this.totalShareCapitalUSD += parseFloat(this.scEquity[i].closingBalAmtUSD);
                             }
                         }
                     }
+
 
 
                     //Calculation Retained Earnings Equity
                     for (let i = 0; i < this.retainedEarnings.length; i++) {
                         if (this.currTab === 'CAD') {
                             this.currency = 'CAD'
-                            if (this.retainedEarnings[i].debit != null) {
-                                this.totalRetainedEarningsDebitCAD += parseFloat(this.retainedEarnings[i].debit);
+                            if (this.retainedEarnings[i].closingBalAmtCAD != null) {
+                                this.totalRetainedEarningsCAD += parseFloat(this.retainedEarnings[i].closingBalAmtCAD);
                             }
-                            if (this.retainedEarnings[i].credit != null) {
-                                this.totalRetainedEarningsCreditCAD += parseFloat(this.retainedEarnings[i].credit);
+                        }
+                        if (this.currTab === 'CAD') {
+                            this.currency = 'CAD'
+                            if (this.retainedEarnings[i].closingBalAmtUSD != null) {
+                                this.totalRetainedEarningsUSD += parseFloat(this.retainedEarnings[i].closingBalAmtUSD);
                             }
                         }
                     }
-                    for (let i = 0; i < this.retainedEarnings.length; i++) {
-                        if (this.currTab === 'USD') {
-                            this.currency = 'USD'
-                            if (this.retainedEarnings[i].debit != null) {
-                                this.totalRetainedEarningsDebitUSD += parseFloat(this.retainedEarnings[i].debit);
-                            }
-                            if (this.retainedEarnings[i].credit != null) {
-                                this.totalRetainedEarningsCreditUSD += parseFloat(this.retainedEarnings[i].credit);
-                            }
-                        }
-                    }
+
 
 
                     //Total of All Equities CAD USD
                     if (this.currTab === 'CAD') {
                         this.currency = 'CAD';
-                        this.totalEquityDebitCAD = this.totalShareCapitalDebitCAD + this.totalRetainedEarningsDebitCAD;
-                        this.totalEquityCreditCAD = this.totalShareCapitalCreditCAD + this.totalRetainedEarningsCreditCAD;
+                        this.totalEquityCAD = this.totalShareCapitalCAD + this.totalRetainedEarningsCAD;
                     }
                     if (this.currTab === 'USD') {
                         this.currency = 'USD';
-                        this.totalEquityDebitUSD = this.totalShareCapitalDebitUSD + this.totalRetainedEarningsDebitUSD;
-                        this.totalEquityCreditUSD = this.totalShareCapitalCreditUSD + this.totalRetainedEarningsCreditUSD;
+                        this.totalEquityUSD = this.totalShareCapitalUSD + this.totalRetainedEarningsUSD;
                     }
 
 
                     //Total of Equities and Liability CAD USD
                     if (this.currTab === 'CAD') {
                         this.currency = 'CAD';
-                        this.totalLiabilityEquityDebitCAD = this.totalEquityDebitCAD + this.totalLiabilityDebitCAD;
-                        this.totalLiabilityEquityCreditCAD = this.totalEquityCreditCAD + this.totalLiabilityCreditCAD;
+                        this.totalLiabilityEquityCAD = this.totalEquityCAD + this.totalLiabilityCAD;
                     }
                     if (this.currTab === 'USD') {
                         this.currency = 'USD';
-                        this.totalLiabilityEquityDebitUSD = this.totalLiabilityDebitUSD + this.totalEquityDebitUSD;
-                        this.totalLiabilityEquityCreditUSD = this.totalLiabilityCreditUSD + this.totalEquityCreditUSD;
+                        this.totalLiabilityEquityUSD = this.totalLiabilityUSD + this.totalEquityUSD;
                     }
                 }
             });
@@ -491,42 +408,27 @@ export class BalanceSheetComponent implements OnInit {
         this.accounts = [];
         if (this.currTab === 'CAD') {
             this.currency = 'CAD'
-            this.currentAssetDebitTotalCAD = 0;
+            this.currentAssetTotalCAD = 0;
             this.currentAssetCreditTotalCAD = 0;
-            this.totalCurrentLiabilityDebitCAD = 0;
-            this.totalCurrentLiabilityCreditCAD = 0;
-            this.inventoryAssetDebitTotalCAD = 0;
-            this.inventoryAssetCreditTotalCAD = 0;
-            this.capitalAssetCreditTotalCAD = 0;
-            this.capitalAssetDebitTotalCAD = 0;
-            this.ONCAssetDebitTotalCAD = 0;
-            this.ONCAssetCreditTotalCAD = 0;
-            this.totalLongTermLiabilityDebitCAD = 0;
-            this.totalLongTermLiabilityCreditCAD = 0;
-            this.totalShareCapitalDebitCAD = 0;
-            this.totalShareCapitalCreditCAD = 0
-            this.totalRetainedEarningsDebitCAD = 0;
-            this.totalRetainedEarningsCreditCAD = 0;
+            this.totalCurrentLiabilityCAD = 0;
+            this.inventoryAssetTotalCAD = 0;
+            this.capitalAssetTotalCAD = 0;
+            this.ONCAssetTotalCAD = 0;
+            this.totalLongTermLiabilityCAD = 0;
+            this.totalShareCapitalCAD = 0;
+            this.totalRetainedEarningsCAD = 0;
             // this.lastItemSK = '';
             this.fetchBalance();
         } else if (this.currTab === 'USD') {
             this.currency = 'USD'
-            this.currentAssetDebitTotalUSD = 0;
-            this.currentAssetCreditTotalUSD = 0
-            this.inventoryAssetDebitTotalUSD = 0;
-            this.inventoryAssetCreditTotalUSD = 0;
-            this.totalCurrentLiabilityDebitUSD = 0;
-            this.totalCurrentLiabilityCreditUSD = 0;
-            this.capitalAssetCreditTotalUSD = 0;
-            this.capitalAssetDebitTotalUSD = 0;
-            this.ONCAssetDebitTotalUSD = 0;
-            this.ONCAssetCreditTotalUSD = 0;
-            this.totalLongTermLiabilityDebitUSD = 0;
-            this.totalLongTermLiabilityCreditUSD = 0;
-            this.totalShareCapitalDebitUSD = 0;
-            this.totalShareCapitalCreditUSD = 0;
-            this.totalRetainedEarningsDebitUSD = 0;
-            this.totalRetainedEarningsCreditUSD = 0;
+            this.currentAssetTotalUSD = 0;
+            this.inventoryAssetTotalUSD = 0;
+            this.totalCurrentLiabilityUSD = 0;
+            this.capitalAssetTotalUSD = 0;
+            this.ONCAssetTotalUSD = 0;
+            this.totalLongTermLiabilityUSD = 0;
+            this.totalShareCapitalUSD = 0;
+            this.totalRetainedEarningsUSD = 0;
             // this.lastItemSK = '';
             this.fetchBalance();
         }
@@ -548,23 +450,25 @@ export class BalanceSheetComponent implements OnInit {
                     obj['Account Number'] = element.accountNo
                     obj['Account Name'] = element.accountName
                     obj['Account Class'] = element.subAcClass
-                    obj['Debit'] = element.debit
-                    obj['Credit'] = element.credit
+                    if (this.currTab === 'CAD') {
+                        obj['Closing Balance'] = element.closingBalAmtCAD
+                    }
+                    else {
+                        obj['Closing Balance'] = element.closingBalAmtUSD
+                    }
                     dataObject.push(obj)
                 }
                 let totObj = {
                     ['Credit']: 'Total Current Assets',
-                    ['Debit']: '',
+                    ['Dummyy']: '',
                     ['Dummy']: '',
                 }
                 if (this.currency === 'CAD') {
-                    totObj['Total'] = this.currentAssetDebitTotalCAD
-                    totObj['Total1'] = this.currentAssetCreditTotalCAD
+                    totObj['Total'] = this.currentAssetTotalCAD
                     dataObject.push(totObj, '\n')
                 }
                 else if (this.currency === 'USD') {
-                    totObj['Total'] = this.currentAssetDebitTotalUSD
-                    totObj['Total1'] = this.currentAssetCreditTotalUSD
+                    totObj['Total'] = this.currentAssetTotalUSD
                     dataObject.push(totObj, '\n')
                 }
             }
@@ -576,8 +480,12 @@ export class BalanceSheetComponent implements OnInit {
                     obj2['Account Number'] = element.accountNo
                     obj2['Account Name'] = element.accountName
                     obj2['Account Class'] = element.subAcClass
-                    obj2['Debit'] = element.debit
-                    obj2['Credit'] = element.credit
+                    if (this.currTab === 'CAD') {
+                        obj2['Closing Balance'] = element.closingBalAmtCAD
+                    }
+                    else {
+                        obj2['Closing Balance'] = element.closingBalAmtUSD
+                    }
                     dataObject.push(obj2)
                 }
                 let totObj2 = {
@@ -586,13 +494,11 @@ export class BalanceSheetComponent implements OnInit {
                     ['Dummy']: '',
                 }
                 if (this.currency === 'CAD') {
-                    totObj2['Total'] = this.inventoryAssetDebitTotalCAD
-                    totObj2['Total1'] = this.inventoryAssetCreditTotalCAD
+                    totObj2['Total'] = this.inventoryAssetTotalCAD
                     dataObject.push(totObj2, '\n')
                 }
                 else if (this.currency === 'USD') {
-                    totObj2['Total'] = this.inventoryAssetDebitTotalUSD
-                    totObj2['Total1'] = this.inventoryAssetCreditTotalUSD
+                    totObj2['Total'] = this.inventoryAssetTotalUSD
                     dataObject.push(totObj2, '\n')
                 }
             }
@@ -604,8 +510,12 @@ export class BalanceSheetComponent implements OnInit {
                     obj3['Account Number'] = element.accountNo
                     obj3['Account Name'] = element.accountName
                     obj3['Account Class'] = element.subAcClass
-                    obj3['Debit'] = element.debit
-                    obj3['Credit'] = element.credit
+                    if (this.currTab === 'CAD') {
+                        obj3['Closing Balance'] = element.closingBalAmtCAD
+                    }
+                    else {
+                        obj3['Closing Balance'] = element.closingBalAmtUSD
+                    }
                     dataObject.push(obj3)
                 }
                 let totObj3 = {
@@ -614,13 +524,11 @@ export class BalanceSheetComponent implements OnInit {
                     ['Dummy']: '',
                 }
                 if (this.currency === 'CAD') {
-                    totObj3['Total'] = this.capitalAssetDebitTotalCAD
-                    totObj3['Total1'] = this.capitalAssetCreditTotalCAD
+                    totObj3['Total'] = this.capitalAssetTotalCAD
                     dataObject.push(totObj3, '\n')
                 }
                 else if (this.currency === 'USD') {
-                    totObj3['Total'] = this.capitalAssetDebitTotalUSD
-                    totObj3['Total1'] = this.capitalAssetCreditTotalUSD
+                    totObj3['Total'] = this.capitalAssetTotalUSD
                     dataObject.push(totObj3, '\n')
                 }
             }
@@ -633,8 +541,12 @@ export class BalanceSheetComponent implements OnInit {
                     obj4['Account Number'] = element.accountNo
                     obj4['Account Name'] = element.accountName
                     obj4['Account Class'] = element.subAcClass
-                    obj4['Debit'] = element.debit
-                    obj4['Credit'] = element.credit
+                    if (this.currTab === 'CAD') {
+                        obj4['Closing Balance'] = element.closingBalAmtCAD
+                    }
+                    else {
+                        obj4['Closing Balance'] = element.closingBalAmtUSD
+                    }
                     dataObject.push(obj4)
                 }
                 let totObj4 = {
@@ -643,13 +555,11 @@ export class BalanceSheetComponent implements OnInit {
                     ['Dummy']: '',
                 }
                 if (this.currency === 'CAD') {
-                    totObj4['Total'] = this.ONCAssetDebitTotalCAD
-                    totObj4['Total1'] = this.ONCAssetCreditTotalCAD
+                    totObj4['Total'] = this.ONCAssetTotalCAD
                     dataObject.push(totObj4, '\n')
                 }
                 else if (this.currency === 'USD') {
-                    totObj4['Total'] = this.ONCAssetDebitTotalUSD
-                    totObj4['Total1'] = this.ONCAssetCreditTotalUSD
+                    totObj4['Total'] = this.ONCAssetTotalUSD
                     dataObject.push(totObj4, '\n')
                 }
             }
@@ -661,13 +571,11 @@ export class BalanceSheetComponent implements OnInit {
                 ['Dummy']: '',
             }
             if (this.currency === 'CAD') {
-                totObj5['Total'] = this.totalAssetsDebitCAD
-                totObj5['Total1'] = this.totalAssetsCreditCAD
+                totObj5['Total'] = this.totalAssetsCAD
                 dataObject.push(totObj5, '\n')
             }
             else if (this.currency === 'USD') {
-                totObj5['Total'] = this.totalAssetsDebitUSD
-                totObj5['Total1'] = this.totalAssetsCreditUSD
+                totObj5['Total'] = this.totalAssetsUSD
                 dataObject.push(totObj5, '\n')
             }
 
@@ -679,8 +587,12 @@ export class BalanceSheetComponent implements OnInit {
                     obj5['Account Number'] = element.accountNo
                     obj5['Account Name'] = element.accountName
                     obj5['Account Class'] = element.subAcClass
-                    obj5['Debit'] = element.debit
-                    obj5['Credit'] = element.credit
+                    if (this.currTab === 'CAD') {
+                        obj5['Closing Balance'] = element.closingBalAmtCAD
+                    }
+                    else {
+                        obj5['Closing Balance'] = element.closingBalAmtUSD
+                    }
                     dataObject.push(obj5)
                 }
                 let totObj5 = {
@@ -689,13 +601,11 @@ export class BalanceSheetComponent implements OnInit {
                     ['Dummy']: '',
                 }
                 if (this.currency === 'CAD') {
-                    totObj5['Total'] = this.totalCurrentLiabilityDebitCAD
-                    totObj5['Total1'] = this.totalCurrentLiabilityCreditCAD
+                    totObj5['Total'] = this.totalCurrentLiabilityCAD
                     dataObject.push(totObj5, '\n')
                 }
                 else if (this.currency === 'USD') {
-                    totObj5['Total'] = this.totalCurrentLiabilityDebitUSD
-                    totObj5['Total1'] = this.totalCurrentLiabilityCreditUSD
+                    totObj5['Total'] = this.totalCurrentLiabilityUSD
                     dataObject.push(totObj5, '\n')
                 }
             }
@@ -707,8 +617,12 @@ export class BalanceSheetComponent implements OnInit {
                     obj6['Account Number'] = element.accountNo
                     obj6['Account Name'] = element.accountName
                     obj6['Account Class'] = element.subAcClass
-                    obj6['Debit'] = element.debit
-                    obj6['Credit'] = element.credit
+                    if (this.currTab === 'CAD') {
+                        obj6['Closing Balance'] = element.closingBalAmtCAD
+                    }
+                    else {
+                        obj6['Closing Balance'] = element.closingBalAmtUSD
+                    }
                     dataObject.push(obj6)
                 }
                 let totObj6 = {
@@ -717,13 +631,11 @@ export class BalanceSheetComponent implements OnInit {
                     ['Dummy']: '',
                 }
                 if (this.currency === 'CAD') {
-                    totObj6['Total'] = this.totalLongTermLiabilityDebitCAD
-                    totObj6['Total1'] = this.totalLongTermLiabilityCreditCAD
+                    totObj6['Total'] = this.totalLongTermLiabilityCAD
                     dataObject.push(totObj6, '\n')
                 }
                 else if (this.currency === 'USD') {
-                    totObj6['Total'] = this.totalLongTermLiabilityDebitUSD
-                    totObj6['Total1'] = this.totalLongTermLiabilityCreditUSD
+                    totObj6['Total'] = this.totalLongTermLiabilityUSD
                     dataObject.push(totObj6, '\n')
                 }
             }
@@ -735,13 +647,11 @@ export class BalanceSheetComponent implements OnInit {
                 ['Dummy']: '',
             }
             if (this.currency === 'CAD') {
-                totObjLiabilityTOT['Total'] = this.totalLiabilityDebitCAD
-                totObjLiabilityTOT['Total1'] = this.totalLiabilityCreditCAD
+                totObjLiabilityTOT['Total'] = this.totalLiabilityCAD
                 dataObject.push(totObjLiabilityTOT, '\n')
             }
             else if (this.currency === 'USD') {
-                totObjLiabilityTOT['Total'] = this.totalLiabilityDebitUSD
-                totObjLiabilityTOT['Total1'] = this.totalLiabilityCreditUSD
+                totObjLiabilityTOT['Total'] = this.totalLiabilityUSD
                 dataObject.push(totObjLiabilityTOT, '\n')
             }
 
@@ -753,8 +663,12 @@ export class BalanceSheetComponent implements OnInit {
                     obj7['Account Number'] = element.accountNo
                     obj7['Account Name'] = element.accountName
                     obj7['Account Class'] = element.subAcClass
-                    obj7['Debit'] = element.debit
-                    obj7['Credit'] = element.credit
+                    if (this.currTab === 'CAD') {
+                        obj7['Closing Balance'] = element.closingBalAmtCAD
+                    }
+                    else {
+                        obj7['Closing Balance'] = element.closingBalAmtUSD
+                    }
                     dataObject.push(obj7)
                 }
                 let totObj7 = {
@@ -763,13 +677,11 @@ export class BalanceSheetComponent implements OnInit {
                     ['Dummy']: '',
                 }
                 if (this.currency === 'CAD') {
-                    totObj7['Total'] = this.totalShareCapitalDebitCAD
-                    totObj7['Total1'] = this.totalShareCapitalCreditCAD
+                    totObj7['Total'] = this.totalShareCapitalCAD
                     dataObject.push(totObj7, '\n')
                 }
                 else if (this.currency === 'USD') {
-                    totObj7['Total'] = this.totalShareCapitalDebitUSD
-                    totObj7['Total1'] = this.totalShareCapitalCreditUSD
+                    totObj7['Total'] = this.totalShareCapitalUSD
                     dataObject.push(totObj7, '\n')
                 }
             }
@@ -783,8 +695,12 @@ export class BalanceSheetComponent implements OnInit {
                     obj8['Account Number'] = element.accountNo
                     obj8['Account Name'] = element.accountName
                     obj8['Account Class'] = element.subAcClass
-                    obj8['Debit'] = element.debit
-                    obj8['Credit'] = element.credit
+                    if (this.currTab === 'CAD') {
+                        obj8['Closing Balance'] = element.closingBalAmtCAD
+                    }
+                    else {
+                        obj8['Closing Balance'] = element.closingBalAmtUSD
+                    }
                     dataObject.push(obj8)
                 }
                 let totObj8 = {
@@ -793,13 +709,11 @@ export class BalanceSheetComponent implements OnInit {
                     ['Dummy']: '',
                 }
                 if (this.currency === 'CAD') {
-                    totObj8['Total'] = this.totalRetainedEarningsDebitCAD
-                    totObj8['Total1'] = this.totalRetainedEarningsCreditCAD
+                    totObj8['Total'] = this.totalRetainedEarningsCAD
                     dataObject.push(totObj8, '\n')
                 }
                 else if (this.currency === 'USD') {
-                    totObj8['Total'] = this.totalRetainedEarningsDebitUSD
-                    totObj8['Total1'] = this.totalRetainedEarningsCreditUSD
+                    totObj8['Total'] = this.totalRetainedEarningsUSD
                     dataObject.push(totObj8, '\n')
                 }
             }
@@ -811,13 +725,11 @@ export class BalanceSheetComponent implements OnInit {
                 ['Dummy']: '',
             }
             if (this.currency === 'CAD') {
-                totObjEquityTOT['Total'] = this.totalEquityDebitCAD
-                totObjEquityTOT['Total1'] = this.totalEquityCreditCAD
+                totObjEquityTOT['Total'] = this.totalEquityCAD
                 dataObject.push(totObjEquityTOT, '\n')
             }
             else if (this.currency === 'USD') {
-                totObjEquityTOT['Total'] = this.totalEquityDebitUSD
-                totObjEquityTOT['Total1'] = this.totalEquityCreditUSD
+                totObjEquityTOT['Total'] = this.totalEquityUSD
                 dataObject.push(totObjEquityTOT, '\n')
             }
             //Total Liability & Equity
@@ -827,13 +739,11 @@ export class BalanceSheetComponent implements OnInit {
                 ['Dummy']: '',
             }
             if (this.currency === 'CAD') {
-                totObjLiabilityEquityTOT['Total'] = this.totalLiabilityEquityDebitCAD
-                totObjLiabilityEquityTOT['Total1'] = this.totalLiabilityEquityCreditCAD
+                totObjLiabilityEquityTOT['Total'] = this.totalLiabilityEquityCAD
                 dataObject.push(totObjLiabilityEquityTOT, '\n')
             }
             else if (this.currency === 'USD') {
-                totObjLiabilityEquityTOT['Total'] = this.totalLiabilityEquityDebitUSD
-                totObjLiabilityEquityTOT['Total1'] = this.totalLiabilityEquityCreditUSD
+                totObjLiabilityEquityTOT['Total'] = this.totalLiabilityEquityUSD
                 dataObject.push(totObjLiabilityEquityTOT, '\n')
             }
             let headers = Object.keys(dataObject[0]).join(',')

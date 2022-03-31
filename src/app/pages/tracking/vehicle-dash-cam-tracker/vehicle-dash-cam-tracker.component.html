@@ -16,7 +16,7 @@
                         <!-- <button id="btnLiveVideo" type="button" pButton class="mr-1" tooltipPosition="left" icon="fas fa-video" pTooltip="Live Video" (click)="refresh()"></button> -->
                         <button id="btnShareLocation" type="button" pButton class="mr-1" tooltipPosition="left" icon="fas fa-map-location" pTooltip="Share Location" (click)="shareLocation()"></button>
                         <button id="btnResetFilter" type="button" pButton class="mr-1" tooltipPosition="left" icon="pi pi-refresh" pTooltip="Refresh" (click)="refresh()"></button>
-                        <button pButton pRipple pTooltip="Camera is Online." type="button" tooltipPosition="left" icon="fas fa-light fa-wifi" *ngIf="isOnline==true" class="mr-1 p-button-rounded p-button-outlined p-button-success"></button>
+                        <button pButton pRipple pTooltip="Camera is Online." (click)="openLiveView()" type="button" tooltipPosition="left" icon="fas fa-light fa-video" *ngIf="isOnline==true" class="mr-1 p-button-rounded p-button-outlined p-button-success"></button>
                         <button pButton pRipple *ngIf="!isOnline" pTooltip="Camera is Offline." tooltipPosition="left" type="button" icon="fas fa-video-slash" class="mr-1 p-button-rounded  p-button-outlined p-button-danger"></button>
 
                     </div>
@@ -94,4 +94,19 @@
             </button>
         </span>
     </div>
+</p-dialog>
+
+<p-dialog [(visible)]="showLiveFeed" [maximizable]="true">
+    <ng-template pTemplate="header">
+        <h4 class="modal-title" id="modal-dash-cam">Dash Cam Live Feed {{vehicleDetails.Items[0].plateNumber}}</h4>
+    </ng-template>
+    <b>Warning: To save data consumption this window will close automatically after 1 minute of streaming. </b>
+
+    <div class="embed-responsive z-depth-1-half" style="height: 600px;width: 100%;">
+        <iframe id="videoIframe" height="600px" width="100%" [src]="liveFeedUrl"></iframe>
+    </div><br>
+
+    <ng-template pTemplate="footer">
+
+    </ng-template>
 </p-dialog>

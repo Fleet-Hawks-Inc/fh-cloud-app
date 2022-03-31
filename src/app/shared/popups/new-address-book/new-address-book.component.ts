@@ -35,8 +35,8 @@ export class NewAddressBookComponent implements OnInit {
   closeResult = '';
   public searchTerm = new Subject<string>();
   public searchResults: any;
-  paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"}]
-  mapPayment={ppm:"Pay Per Mile",pp:"Percentage",pph:"Pay Per Hour",ppd:"Pay Per Delivery"}
+  paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"},{name: "Pay Flat Rate", value: "pfr"}]
+  mapPayment={ppm:"Pay Per Mile",pp:"Percentage",pph:"Pay Per Hour",ppd:"Pay Per Delivery",pfr: "Pay Flat Rate"}
   payPerMile={
     pType:"ppm",
     loadedMiles:null,
@@ -63,6 +63,12 @@ export class NewAddressBookComponent implements OnInit {
   payPerDelivery={
     pType:"ppd",
     deliveryRate:null,
+    currency:null,
+    default:false
+  }
+  payFlatRate={
+    pType:"pfr",
+    flatRate:null,
     currency:null,
     default:false
   }
@@ -342,6 +348,12 @@ similarSuggestions = [];
     this.payPerDelivery={
       pType:"ppd",
       deliveryRate:null,
+      currency:null,
+      default:false
+    }
+    this.payFlatRate={
+      pType:"pfr",
+      flatRate:null,
       currency:null,
       default:false
     }
@@ -695,6 +707,7 @@ similarSuggestions = [];
               pph:this.payPerHour,
               ppm:this.payPerMile,
               pp:this.payPercentage,
+              pfr:this.payFlatRate,
               // pRate: '',
               // pRCurr: null,
               // pPnt: '',
@@ -812,6 +825,7 @@ similarSuggestions = [];
               pph:this.payPerHour,
               ppm:this.payPerMile,
               pp:this.payPercentage,
+              pfr:this.payFlatRate,
               // pRate: '',
               // pRCur: null,
               // pPnt: '',
@@ -1169,6 +1183,7 @@ similarSuggestions = [];
             el.pph.default=false
             el.ppm.default=false
             el.pp.default=false
+            el.pfr.default=false
         switch(el.pType){
           case "ppd":
           el.ppd.default=true
@@ -1182,14 +1197,18 @@ similarSuggestions = [];
         case "ppm":
           el.ppm.default=true
           break;
+        case "pfr":
+          el.pfr.default=true
+          break;
 
         }
-        el.paymentOption=[el.pp,el.ppd,el.pph,el.ppm]
+        el.paymentOption=[el.pp,el.ppd,el.pph,el.ppm,el.pfr]
         delete el.pType
         delete el.pp
         delete el.ppd
         delete el.pph
         delete el.ppm
+        delete el.pfr
         if(element.carrierData) element.carrierData=el
         if(element.opData)  element.opData=el
       }
@@ -1360,6 +1379,7 @@ validatePopUp()
             el.pph.default=false
             el.ppm.default=false
             el.pp.default=false
+            el.pfr.default=false
           switch(el.pType){
             case "ppd":
             el.ppd.default=true
@@ -1373,14 +1393,18 @@ validatePopUp()
           case "ppm":
             el.ppm.default=true
             break;
+          case "pfr":
+            el.pfr.default=true
+            break;
   
           }
-          el.paymentOption=[el.pp,el.ppd,el.pph,el.ppm]
+          el.paymentOption=[el.pp,el.ppd,el.pph,el.ppm,el.pfr]
           delete el.pType
           delete el.pp
           delete el.ppd
           delete el.pph
           delete el.ppm
+          delete el.pfr
           if(element.carrierData) element.carrierData=el
           if(element.opData)  element.opData=el
         }
@@ -1588,6 +1612,9 @@ validatePopUp()
             if(element.pType=="ppd"){
               newData.ppd=element
             }
+            if(element.pType=="pfr"){
+              newData.pfr=element
+            }
           }
         }
         if(data.opData){
@@ -1607,6 +1634,9 @@ validatePopUp()
             }
             if(element.pType=="ppd"){
               newData.ppd=element
+            }
+            if(element.pType=="pfr"){
+              newData.pfr=element
             }
           }
         }
