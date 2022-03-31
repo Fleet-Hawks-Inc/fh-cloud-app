@@ -333,13 +333,9 @@
                                     <a *ngIf="order.orderStatus!= 'delivered'" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
                                       order.orderID
                                       }}">Edit</a>
-                                        <a *ngIf="order.orderStatus!='delivered' || order.orderStatus === 'confirmed'"
-                                                                            class="dropdown-item" [routerLink]="[
-                                                                                     '/dispatch',
-                                                                                     'trips',
-                                                                                     'add-trip'
-                                               ]" [queryParams]="{orderId:order.orderID,orderNum:order.orderNumber}">
-                                                                            Create Trip</a>
+                                          <a *ngIf="order.orderStatus === 'confirmed'"
+                                       class="dropdown-item" [routerLink]="['/dispatch','trips','add-trip']"
+                              [queryParams]="{orderId:order.orderID,orderNum:order.orderNumber}">Create Trip</a>
                                     <a *ngIf="order.orderStatus == 'created' ||
                                       order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
                                       (click)="deactivateOrder(order)">Delete</a>
