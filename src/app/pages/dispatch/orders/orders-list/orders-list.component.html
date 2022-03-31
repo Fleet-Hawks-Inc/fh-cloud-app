@@ -330,16 +330,12 @@
                                   <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{
                                     i
                                     }}">
-                                    
-                  <a *ngIf="order.orderStatus!= 'delivered'"
-                         class="dropdown-item" 
-                       routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
-                                      
-                         <a 
-                  *ngIf="order.orderStatus === 'confirmed'"
-               class="dropdown-item" [routerLink]="['/dispatch','trips','add-trip']"
-                 [queryParams]="{orderId:order.orderID,orderNum:order.orderNumber}">Create Trip</a>
-                          
+                                    <a *ngIf="order.orderStatus!= 'delivered'" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
+                                      order.orderID
+                                      }}">Edit</a>
+                                          <a *ngIf="order.orderStatus === 'confirmed'"
+                                       class="dropdown-item" [routerLink]="['/dispatch','trips','add-trip']"
+                              [queryParams]="{orderId:order.orderID,orderNum:order.orderNumber}">Create Trip</a>
                                     <a *ngIf="order.orderStatus == 'created' ||
                                       order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
                                       (click)="deactivateOrder(order)">Delete</a>
@@ -580,12 +576,12 @@
                                   <a *ngIf="order.orderStatus!='delivered'" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
                                     order.orderID
                                     }}">Edit</a>
-                                     <a *ngIf="order.orderStatus !='delivered' || order.orderStatus === 'confirmed'"
-                                      class="dropdown-item" [routerLink]="[
+                                     <a *ngIf="order.orderStatus!='delivered'"
+                                                                        class="dropdown-item" [routerLink]="[
                                       '/dispatch',
                                       'trips',
                                       'add-trip'
-                                      ]" [queryParams]="{orderId:order.orderID,orderNum:order.orderNumber">
+                                      ]" [queryParams]="{orderId:order.orderID,orderNum:order.orderNumber}">
                                                                         Create Trip</a>
                                   <a class="dropdown-item" [routerLink]="[
                                     '/dispatch',
@@ -594,7 +590,9 @@
                                     ]" [queryParams]="{
                                     cloneID: order.orderID
                                     }">Clone</a>
-                                    
+                                    <a *ngIf="order.orderStatus == 'created' ||
+                                    order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
+                                    (click)="deactivateOrder(order)">Delete</a>
                                 </div>
                               </div>
                             </td>
