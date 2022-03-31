@@ -35,12 +35,14 @@ export class LocationShareComponent implements OnInit {
     lastReportedDate: "",
     networkType: any,
     speed: any,
-    errorCode: any
+    errorCode: any,
+    lat: number,
+    lng: number
   };
 
 
   infoDetail = 'Vehicle is Offline!!';
-  vehicleMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/live-location-icon.png' };
+  vehicleMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/vehicle-marker.png' };
   mapOptions: google.maps.MapOptions = {
     center: this.center,
     zoomControl: true,
@@ -72,21 +74,17 @@ export class LocationShareComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     // google.maps.geometry.spherical.computeHeading - for rotation of icon
     this.apiResponse = await this.validateAndGetLocation();
-
-
-
-
-
     if (this.apiResponse && this.apiResponse.errorCode) {
       this.toaster.error('This link has expired.');
       this.loaded = false;
     }
     if (this.apiResponse) {
       this.loaded = true;
+      this.center = { lat: this.apiResponse.lng, lng: this.apiResponse.lat };
       this.connectToWSServer();
       this.updateLastLocation();
     }
-    this.overlays.push(new google.maps.Marker({ position: this.center, title: "Konyaalti" }),);
+
   }
 
   private connectToWSServer() {

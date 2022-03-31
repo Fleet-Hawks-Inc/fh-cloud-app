@@ -3,7 +3,6 @@ import { FormGroup } from '@angular/forms';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { ActivatedRoute } from '@angular/router';
 import { ReactiveFormConfig, RxFormBuilder, RxwebValidators } from '@rxweb/reactive-form-validators';
-import { ToastrService } from 'ngx-toastr';
 import { MessageService } from 'primeng/api';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -54,7 +53,7 @@ export class VehicleDashCamTrackerComponent implements OnInit {
   }
   userFormGroup: FormGroup;
   infoDetail = 'Vehicle is Offline!!';
-  vehicleMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/live-location-icon.png' };
+  vehicleMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/vehicle-marker.png' };
   mapOptions: google.maps.MapOptions = {
     zoomControl: true,
     mapTypeControl: true,
@@ -84,8 +83,6 @@ export class VehicleDashCamTrackerComponent implements OnInit {
     private apiService: ApiService,
     private messageService: MessageService,
     private formBuilder: RxFormBuilder) {
-
-
     this.deviceSerial = this.route.snapshot.params.deviceSerial;
 
   }
@@ -104,13 +101,10 @@ export class VehicleDashCamTrackerComponent implements OnInit {
     });
     // Extract query parameters
     this.extractQueryParams();
-
     await this.getVehicleDetails();
     // get last location
     await this.getLastLocation();
-
-
-
+    this.center = { lng: this.apiResponse.lat, lat: this.apiResponse.lng };
     await this.checkDeviceStatus();
 
 
@@ -143,22 +137,23 @@ export class VehicleDashCamTrackerComponent implements OnInit {
   }
 
   private async getVehicleDetails() {
-    this.apiService.getData("vehicles/" + this.vehicleId)
-      .subscribe(async (vehicleResult: any) => {
-        this.vehicleDetails = vehicleResult;
-        vehicleResult = vehicleResult.Items[0];
-        // Check if DashCam is added to enable Share Live location button
-        if (vehicleResult.deviceInfo && vehicleResult.deviceInfo.length > 0) {
-          for (const device of vehicleResult.deviceInfo) {
-            if (device.deviceType === "DashCam") {
-              this.deviceInfo.deviceId = device.deviceId;
-              this.deviceInfo.deviceSrNo = device.deviceSrNo;
-              this.deviceInfo.deviceType = device.deviceType;
+    let vehicleResult = await this.apiService.getData("vehicles/" + this.vehicleId).toPromise();
+    if (vehicleResult) {
+      this.vehicleDetails = vehicleResult;
+      vehicleResult = vehicleResult.Items[0];
+      // Check if DashCam is added to enable Share Live location button
+      if (vehicleResult.deviceInfo && vehicleResult.deviceInfo.length > 0) {
+        for (const device of vehicleResult.deviceInfo) {
+          if (device.deviceType === "DashCam") {
+            this.deviceInfo.deviceId = device.deviceId;
+            this.deviceInfo.deviceSrNo = device.deviceSrNo;
+            this.deviceInfo.deviceType = device.deviceType;
 
-            }
           }
         }
-      });
+      }
+    }
+
   }
 
   private connectToWSServer() {
@@ -202,12 +197,14 @@ export class VehicleDashCamTrackerComponent implements OnInit {
   }
   openInfoWindow(marker: MapMarker) {
 
+
     if (this.loaded && this.isOnline) {
+
       this.infoDetail = `<b>Vehicle Name : ${this.vehicleDetails.Items[0].plateNumber}</b><br><br>`;
       this.infoDetail += `Device Serial/ID: ${this.deviceSerial}<br><br>`;
       this.infoDetail += `Device Time: ${this.deviceDetails.dtu || 'NA'}<br><br>`;
       if (this.apiResponse.speed) {
-        this.infoDetail += `Speed : ${this.deviceDetails.location.speed || 'NA'} km/h<br><br>`
+        this.infoDetail += `Speed : ${parseFloat(this.deviceDetails.location.speed).toFixed(2) || 'NA'} km/h<br><br>`
       }
       if (this.apiResponse.networkType) {
         this.infoDetail += `Network : ${this.apiResponse.networkType}`
