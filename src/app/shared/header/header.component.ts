@@ -13,7 +13,7 @@ import { DashboardUtilityService } from "src/app/services/dashboard-utility.serv
 })
 export class HeaderComponent implements OnInit {
   environment = environment.isFeatureEnabled;
-
+  showNotificationDetail = false;
   isFleetEnabled = environment.isFleetEnabled;
   isDispatchEnabled = environment.isDispatchEnabled;
   isComplianceEnabled = environment.isComplianceEnabled;
@@ -109,6 +109,7 @@ export class HeaderComponent implements OnInit {
           }
         );
     }
+    console.log('sdf');
   }
 
   async init() {
@@ -247,5 +248,9 @@ export class HeaderComponent implements OnInit {
       ],
       data: [],
     };
+  }
+
+  showDetail() {
+    this.showNotificationDetail = true;
   }
 }
