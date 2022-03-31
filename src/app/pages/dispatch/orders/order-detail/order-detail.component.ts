@@ -631,6 +631,8 @@ export class OrderDetailComponent implements OnInit {
       emails: this.userEmails,
       subject: this.subject,
       sendCopy: this.isCopy,
+      isSingle: this.emailData.isSingle
+
     };
 
     let result = await this.apiService
