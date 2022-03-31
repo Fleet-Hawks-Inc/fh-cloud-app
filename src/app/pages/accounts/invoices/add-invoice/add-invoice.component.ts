@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {Auth} from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import { Location } from '@angular/common';
 @Component({
   selector: 'app-add-invoice',
@@ -23,11 +23,11 @@ export class AddInvoiceComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private router: Router) { }
-    pageTitle = 'Add Invoice';
-    dateMinLimit = { year: 2021, month: 1, day: 1 };
-    date = new Date();
-    futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-    users: any = [];
+  pageTitle = 'Add Invoice';
+  dateMinLimit = { year: 2021, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  users: any = [];
   invoiceData = {
     invNo: '',
     txnDate: moment().format('YYYY-MM-DD'),
@@ -61,7 +61,8 @@ export class AddInvoiceComponent implements OnInit {
     finalAmount: 0,
     taxAmount: 0,
     transactionLog: [],
-    discountAmount: 0
+    discountAmount: 0,
+    taxExempt: true
   };
   midAmt = 0; // midAmt is sum of all the amount values in details table
   finalAmount: any = 0;
@@ -104,13 +105,13 @@ export class AddInvoiceComponent implements OnInit {
   Error = '';
   Success = '';
   submitDisabled = false;
-  currentUser:any = '';
+  currentUser: any = '';
   async ngOnInit() {
-    
+
     this.getCurrentuser();
     // this.customers = this.listService.customersList;
     this.fetchStateTaxes();
-   // this.fetchUsers();
+    // this.fetchUsers();
     this.fetchAccounts();
     this.invID = this.route.snapshot.params[`invID`];
     if (this.invID) {
@@ -165,7 +166,7 @@ export class AddInvoiceComponent implements OnInit {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
     this.invoiceData.invSalesman = this.currentUser;
-}
+  }
   selectedCustomer(customerID: any) {
     this.apiService
       .getData(`contacts/detail/${customerID}`)
@@ -178,7 +179,7 @@ export class AddInvoiceComponent implements OnInit {
             element[`isChecked`] = false;
           }
           if (this.invID) {
-            this.customerSelected[0].adrs.filter( elem => {
+            this.customerSelected[0].adrs.filter(elem => {
               if (elem.addressID === this.invoiceData.cusAddressID) {
                 elem.isChecked = true;
               }
@@ -212,25 +213,25 @@ export class AddInvoiceComponent implements OnInit {
     }
   }
   getInvDueDate(e: any) {
- if (e === '15') {
-  const test = moment().add(15, 'd');
-  const test1 = moment(test).format('YYYY-MM-DD');
-  this.invoiceData.invDueDate = test1;
- } else if (e === '30') {
-  const test = moment().add(30, 'd');
-  const test1 = moment(test).format('YYYY-MM-DD');
-  this.invoiceData.invDueDate = test1;
- } else if (e === '45') {
-  const test = moment().add(45, 'd');
-  const test1 = moment(test).format('YYYY-MM-DD');
-  this.invoiceData.invDueDate = test1;
- } else if (e === 'dueReceipt') {
-  this.invoiceData.invDueDate = moment().format('YYYY-MM-DD');
- } else if (e === 'dueEnd') {
-  this.invoiceData.invDueDate   = moment().endOf('month').format('YYYY-MM-DD');
- } else {
-  this.invoiceData.invDueDate   = null;
- }
+    if (e === '15') {
+      const test = moment().add(15, 'd');
+      const test1 = moment(test).format('YYYY-MM-DD');
+      this.invoiceData.invDueDate = test1;
+    } else if (e === '30') {
+      const test = moment().add(30, 'd');
+      const test1 = moment(test).format('YYYY-MM-DD');
+      this.invoiceData.invDueDate = test1;
+    } else if (e === '45') {
+      const test = moment().add(45, 'd');
+      const test1 = moment(test).format('YYYY-MM-DD');
+      this.invoiceData.invDueDate = test1;
+    } else if (e === 'dueReceipt') {
+      this.invoiceData.invDueDate = moment().format('YYYY-MM-DD');
+    } else if (e === 'dueEnd') {
+      this.invoiceData.invDueDate = moment().endOf('month').format('YYYY-MM-DD');
+    } else {
+      this.invoiceData.invDueDate = null;
+    }
   }
   calculateDetailAmt(e: number, d: number, type: string) {
     if (type === 'price') {
@@ -260,7 +261,7 @@ export class AddInvoiceComponent implements OnInit {
       },
     ];
     this.tax = (Number(selected.GST) ? selected.GST : 0)
-             + (Number(selected.HST) ? selected.HST : 0) + (Number(selected.PST) ? selected.PST : 0);
+      + (Number(selected.HST) ? selected.HST : 0) + (Number(selected.PST) ? selected.PST : 0);
     await this.calculateAmount();
   }
 
@@ -284,25 +285,25 @@ export class AddInvoiceComponent implements OnInit {
         },
       ];
     } else {
-         this.stateTaxes.map((v: any) => {
-          if (this.invoiceData.invStateProvince === v.stateTaxID) {
-            this.invoiceData.taxesInfo = [
-              {
-                name: 'GST',
-                amount: v.GST,
-              },
-              {
-                name: 'HST',
-                amount: v.HST,
-              },
-              {
-                name: 'PST',
-                amount: v.PST,
-              },
-            ];
-          }
-        });
-      }
+      this.stateTaxes.map((v: any) => {
+        if (this.invoiceData.invStateProvince === v.stateTaxID) {
+          this.invoiceData.taxesInfo = [
+            {
+              name: 'GST',
+              amount: v.GST,
+            },
+            {
+              name: 'HST',
+              amount: v.HST,
+            },
+            {
+              name: 'PST',
+              amount: v.PST,
+            },
+          ];
+        }
+      });
+    }
 
     this.newTaxes = this.invoiceData.taxesInfo;
     if (this.invoiceData.subTotal > 0) {
@@ -328,6 +329,7 @@ export class AddInvoiceComponent implements OnInit {
   }
 
   addInvoice() {
+
     this.invoiceData.balance = this.invoiceData.finalAmount;
     this.submitDisabled = true;
     this.errors = {};
@@ -370,8 +372,9 @@ export class AddInvoiceComponent implements OnInit {
     }
     this.invoiceData.subTotal = this.midAmt;
     if (this.invoiceData.discountUnit === '%') {
-      this.invoiceData.subTotal = this.midAmt - (this.invoiceData.discount * this.midAmt) / 100;
-      this.invoiceData.discountAmount = (this.invoiceData.discount * this.midAmt) / 100;
+      let discount = (this.invoiceData.discount * this.midAmt) / 100;
+      this.invoiceData.subTotal = this.midAmt - discount;
+      this.invoiceData.discountAmount = discount;
     } else if (this.invoiceData.discountUnit === 'CAD') {
       this.invoiceData.subTotal = this.midAmt - this.invoiceData.discount;
       this.invoiceData.discountAmount = this.invoiceData.discount;
@@ -380,25 +383,32 @@ export class AddInvoiceComponent implements OnInit {
       this.invoiceData.discountAmount = this.invoiceData.discount;
     }
     this.finalAmount = (this.invoiceData.subTotal).toFixed(2);
-    const gst = this.invoiceData.taxesInfo[0].amount ? this.invoiceData.taxesInfo[0].amount : 0;
-    const pst = this.invoiceData.taxesInfo[1].amount ? this.invoiceData.taxesInfo[1].amount : 0;
-    const hst = this.invoiceData.taxesInfo[2].amount ? this.invoiceData.taxesInfo[2].amount : 0;
-    const totalTax = parseInt(gst, 10)  + parseInt(pst, 10) + parseInt(hst, 10);
-    const taxAmount =  parseInt(this.finalAmount, 10) * totalTax / 100;
-    this.invoiceData.taxAmount = +taxAmount.toFixed(2);
-    const final = parseInt(this.finalAmount, 10) + taxAmount;
 
-    this.invoiceData.finalAmount = final;
-    this.newTaxes = this.invoiceData.taxesInfo;
-    if (this.invoiceData.subTotal > 0) {
-      for (const element of this.newTaxes) {
-        element.taxAmount = +((this.invoiceData.subTotal * element.amount) / 100).toFixed(2);
+    if (!this.invoiceData.taxExempt) {
+      const gst = this.invoiceData.taxesInfo[0].amount ? this.invoiceData.taxesInfo[0].amount : 0;
+      const pst = this.invoiceData.taxesInfo[1].amount ? this.invoiceData.taxesInfo[1].amount : 0;
+      const hst = this.invoiceData.taxesInfo[2].amount ? this.invoiceData.taxesInfo[2].amount : 0;
+      const totalTax = parseInt(gst, 10) + parseInt(pst, 10) + parseInt(hst, 10);
+      const taxAmount = this.midAmt * totalTax / 100;
+      this.invoiceData.taxAmount = +taxAmount.toFixed(2);
+      const final = parseInt(this.finalAmount, 10) + taxAmount;
+
+      this.invoiceData.finalAmount = final;
+      this.newTaxes = this.invoiceData.taxesInfo;
+      if (this.invoiceData.subTotal > 0) {
+        for (const element of this.newTaxes) {
+          element.taxAmount = +((this.midAmt * element.amount) / 100).toFixed(2);
+        }
       }
+    } else {
+      this.invoiceData.taxAmount = 0;
+      this.invoiceData.finalAmount = this.finalAmount;
     }
+
   }
 
   async fetchInvoice() {
-    let res:any = await this.accountService.getData(`invoices/detail/${this.invID}`).toPromise();
+    let res: any = await this.accountService.getData(`invoices/detail/${this.invID}`).toPromise();
     this.invoiceData = res[0];
     this.selectedCustomer(this.invoiceData.customerID);
     this.invoiceData.invStateProvince = this.invoiceData.invStateProvince;
@@ -459,22 +469,29 @@ export class AddInvoiceComponent implements OnInit {
       },
     });
   }
-    /*
-   * Get all customers's IDs of names from api
-   */
-    fetchCustomersByIDs() {
-      this.apiService.getData('contacts/get/list').subscribe((result: any) => {
-        this.customersObjects = result;
-      });
-    }
+  /*
+ * Get all customers's IDs of names from api
+ */
+  fetchCustomersByIDs() {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+      this.customersObjects = result;
+    });
+  }
 
-    refreshCustomerData() {
-      this.listService.fetchCustomers();
-    }
-    openModal(unit: string) {
-      this.listService.triggerModal(unit);
+  refreshCustomerData() {
+    this.listService.fetchCustomers();
+  }
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
 
-      localStorage.setItem('isOpen', 'true');
-      this.listService.changeButton(false);
+    localStorage.setItem('isOpen', 'true');
+    this.listService.changeButton(false);
+  }
+
+  changeTax(value) {
+    if (!value && this.stateTaxes.length === 0) {
+      this.fetchStateTaxes();
     }
+    this.calculateAmount();
+  }
 }
