@@ -187,8 +187,6 @@ export class ImportedAssetsComponent implements OnInit {
     table.clear();
   }
   postDocument() {
-    // this.error.hasError = false
-    // this.error.message = ''
     if (this.check == true) {
       if (this.uploadedDocs.length > 0) {
         const formData = new FormData();
@@ -200,21 +198,13 @@ export class ImportedAssetsComponent implements OnInit {
         this.apiService.postData('importer', formData, true).subscribe({
           complete: () => { },
           error: (err: any) => {
-            // this.error.hasError = true
-            // this.error.message = err
             this.submitDisabled = true;
             $('#uploadedDocs').val('');
-            // this.importModelRef.close();
-            // this.fetchAssetImport();
           },
           next: (res) => {
-            // this.error.hasError = false
-            // this.error.message = ''
-            // this.error.attributes = []
             this.submitDisabled = false;
             this.toastr.success("The file has been scheduled for processing and you will be notified via email once it is completed.")
             $('#uploadedDocs').val('');
-            // $('#importModel').modal('hide');
             this.importModelRef.close();
             this.fetchAssetImport();
           }
