@@ -57,18 +57,18 @@
                                         {{ pdfDetails.name }}
                                     </h2>
                                     <div class="text-dark" *ngIf="paymentData.paymentTo === 'driver'" style="font-size: 12px; margin-bottom: 2px">
-                                        <strong>Payment Type:</strong> {{ paymentInfo.pType }}
+                                        <strong>Payment Type:</strong> {{ paymentAbr[paymentSelected[0].pType] }}
                                         <br />
-                                        <div class="text-dark" *ngIf="paymentInfo.pType === 'Pay Per Mile'">
-                                            <strong>Loaded Miles: </strong>{{ paymentInfo.lMiles }} {{ currency }},
+                                        <div class="text-dark" *ngIf="paymentSelected[0].pType === 'ppm'">
+                                            <strong>Loaded Miles: </strong>{{ paymentSelected[0].loadedMiles }} {{ paymentSelected[0].currency }},
                                             <span class="ml-2"><strong>Team Loaded Miles:</strong>
-                        {{ paymentInfo.lMileTeam }} {{ currency }}</span
+                        {{ paymentSelected[0].loadedMilesTeam }} {{ paymentSelected[0].currency }}</span
                       ><br />
-                      <strong>Empty Miles:</strong> {{ paymentInfo.eMiles }}
+                      <strong>Empty Miles:</strong> {{ paymentSelected[0].emptyMiles }}
                       {{ currency }},
                       <span class="ml-2"
                         ><strong>Team Empty Miles:</strong>
-                        {{ paymentInfo.eMileTeam }} {{ currency }}</span
+                        {{ paymentSelected[0].emptyMilesTeam }} {{ paymentSelected[0].currency }}</span
                       >
                     </div>
                   </div>
@@ -304,8 +304,8 @@
                         <td class="pr-3 pt-2 text-right">
                           <p class="text-3 text-dark mb-2">
                             {{
-                              this.paymentData.gstHstAmt
-                            }}%
+                              this.paymentData.gstHstAmt | number: "1.2-2"
+                            }}
                           </p>
                         </td>
                         <td class="pr-3 pt-2 text-right">

@@ -5,165 +5,92 @@
         <form class="form-horizontal" method="get">
           <div class="row" style="padding-top: 10px">
             <div class="col-md-2 col-lg-2 pr-0">
-              <ng-select
-                [(ngModel)]="category"
-                name="category"
-                placeholder="Search by Category"
-                (change)="categoryChange()"
-              >
-                <ng-option
-                  *ngFor="let data of categoryFilter"
-                  value="{{ data.value }}"
-                >
+              <ng-select [(ngModel)]="category" name="category" placeholder="Search by Category"
+                (change)="categoryChange()">
+                <ng-option *ngFor="let data of categoryFilter" value="{{ data.value }}">
                   {{ data.name }}
                 </ng-option>
               </ng-select>
             </div>
+
             <!-- Set spacing issue -->
             <div class="col-md-2 col-lg-2 pl-2 pr-0">
               <div
                 class="input-group input-group-md mb-3"
                 *ngIf="
+
                   category != 'vehicle' &&
                   category != 'asset' &&
                   category != 'task'
-                "
-              >
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Search"
-                  name="searchValue"
-                  [(ngModel)]="searchValue"
-                />
+                ">
+                <input type="text" class="form-control" placeholder="Search" name="searchValue"
+                  [(ngModel)]="searchValue" />
               </div>
 
-              <ng-select
-                [(ngModel)]="searchValue"
-                name="searchValue"
-                placeholder="Search By Vehicle"
-                *ngIf="category == 'vehicle'"
-              >
-                <ng-option
-                  *ngFor="let data of vehiclesData"
-                  value="{{ data.vehicleID }}"
-                >
-                  {{ data.vehicleIdentification }}</ng-option
-                >
+              <ng-select [(ngModel)]="searchValue" name="searchValue" placeholder="Search By Vehicle"
+                *ngIf="category == 'vehicle'">
+                <ng-option *ngFor="let data of vehiclesData" value="{{ data.vehicleID }}">
+                  {{ data.vehicleIdentification }}</ng-option>
               </ng-select>
 
-              <ng-select
-                [(ngModel)]="searchValue"
-                name="searchValue"
-                placeholder="Search By Asset"
-                *ngIf="category == 'asset'"
-              >
-                <ng-option
-                  *ngFor="let data of assetsData"
-                  value="{{ data.assetID }}"
-                >
-                  {{ data.assetIdentification }}</ng-option
-                >
+              <ng-select [(ngModel)]="searchValue" name="searchValue" placeholder="Search By Asset"
+                *ngIf="category == 'asset'">
+                <ng-option *ngFor="let data of assetsData" value="{{ data.assetID }}">
+                  {{ data.assetIdentification }}</ng-option>
               </ng-select>
             </div>
-
             <div class="col-md-2 col-lg-2 pl-2 pr-0">
-              <ng-select
-                [(ngModel)]="taskID"
-                name="taskID"
-                placeholder="search by service task"
-              >
+              <ng-select [(ngModel)]="taskID" name="taskID" placeholder="search by service task">
                 <ng-option *ngFor="let item of tasks" value="{{ item.taskID }}">
                   <div title="{{ item.taskName }}">{{ item.taskName }}</div>
                 </ng-option>
               </ng-select>
             </div>
-
             <div class="col-md-3 col-lg-3 pl-2 pr-0">
-              <div
-                class="input-daterange input-group input-group-sm"
-                data-plugin-datepicker=""
-              >
+              <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
                 <span class="input-group-prepend">
                   <span class="input-group-text">
                     <i class="fas fa-calendar-alt"></i>
                   </span>
                 </span>
-                <input
-                  [(ngModel)]="start"
-                  name="fromDate"
-                  type="text"
-                  placeholder="yyyy/mm/dd"
-                  (click)="from.toggle()"
-                  ngbDatepicker
-                  #from="ngbDatepicker"
-                  class="form-control"
-                  autocomplete="off"
-                  [minDate]="dateMinLimit"
-                  [maxDate]="futureDatesLimit"
-                />
-                <span
-                  class="input-group-text border-left-0 border-right-0 rounded-0"
-                >
+                <input [(ngModel)]="start" name="fromDate" type="text" placeholder="yyyy/mm/dd" (click)="from.toggle()"
+                  ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit"
+                  [maxDate]="futureDatesLimit" />
+                <span class="
+                    input-group-text
+                    border-left-0 border-right-0
+                    rounded-0
+                  ">
                   to
                 </span>
-                <input
-                  [(ngModel)]="end"
-                  name="toDate"
-                  type="text"
-                  placeholder="yyyy/mm/dd"
-                  (click)="to.toggle()"
-                  ngbDatepicker
-                  #to="ngbDatepicker"
-                  class="form-control"
-                  autocomplete="off"
-                  [minDate]="dateMinLimit"
-                  [maxDate]="futureDatesLimit"
-                />
+                <input [(ngModel)]="end" name="toDate" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()"
+                  ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit"
+                  [maxDate]="futureDatesLimit" />
               </div>
             </div>
 
             <div class="col-md-2 col-lg-2 pl-2">
-              <button
-                type="submit"
-                (click)="searchFilter()"
-                class="btn btn-sm btn-success mr-2"
-              >
+              <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">
                 Search
               </button>
-              <button
-                type="button"
-                (click)="resetFilter()"
-                class="btn btn-sm btn-success line-height-18"
-              >
+              <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success line-height-18">
                 Reset
               </button>
             </div>
 
             <div class="col-md-1 col-lg-1 text-right pr-1">
               <div class="btn-group flex-wrap ml-2">
-                <button
-                  type="button"
-                  class="btn btn-success btn-sm dropdown-toggle"
-                  data-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <i class="fas fa-upload"></i> Export<span
-                    class="caret"
-                  ></span>
+                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                  aria-expanded="false">
+                  <i class="fas fa-upload"></i> Export<span class="caret"></span>
                 </button>
-                <div
-                  class="dropdown-menu"
-                  role="menu"
-                  x-placement="bottom-start"
-                  style="
+                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
                     position: absolute;
                     will-change: transform;
                     top: 0px;
                     left: 0px;
                     transform: translate3d(0px, 38px, 0px);
-                  "
-                >
+                  ">
                   <a class="dropdown-item text-1" (click)="csv()">CSV</a>
                 </div>
               </div>
@@ -176,17 +103,15 @@
         <div class="col">
           <div class="card">
             <div class="card-body bor-radius0px">
-              <div
-                infiniteScroll
-                [infiniteScrollDistance]="1"
-                [infiniteScrollUpDistance]="1"
-                [infiniteScrollThrottle]="5"
-                (scrolled)="onScroll()"
-              >
+              <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
                 <section class="reports_div bg-white">
-                  <table
-                    class="row-border hover table table-bordered table-striped mb-0"
-                  >
+                  <table class="
+                      row-border
+                      hover
+                      table table-bordered table-striped
+                      mb-0
+                    ">
                     <thead>
                       <tr>
                         <th>Unit Type</th>
@@ -209,41 +134,28 @@
                         <td>{{ item.odometer ? item.odometer : "-" }}</td>
                         <td>{{ vendorsObject[item.vendorID] }}</td>
                         <td>
-                          <span
-                            title="Service Task"
-                            *ngFor="
+                          <span title="Service Task" *ngFor="
                               let task of item.allServiceTasks.serviceTaskList;
                               let j = index;
                               let $last = last
-                            "
-                          >
+                            ">
                             {{ task.taskName ? task.taskName : "-" }}
                             <span *ngIf="!$last" class="list-format">, </span>
                           </span>
-                          <span
-                            *ngIf="item.allServiceTasks.serviceTaskList == 0"
-                            >-
+                          <span *ngIf="item.allServiceTasks.serviceTaskList == 0">-
                           </span>
                         </td>
                         <td>
                           {{ item.completionDate | date: "yyyy/MM/dd"
-                          }}<br /><span
-                            *ngIf="item?.vehicleID"
-                            class="font-size-12"
-                            >{{ item.odometer }} miles</span
-                          >
+                          }}<br /><span *ngIf="item?.vehicleID" class="font-size-12">{{ item.odometer }} miles</span>
                         </td>
                         <td>
-                          <span
-                            class="text-success"
-                            [ngClass]="{
+                          <span class="text-success" [ngClass]="{
                               'text-danger': item.currentStatus == 'sold',
                               'text-muted':
                                 item.currentStatus === 'outOfService'
-                            }"
-                          >
-                            {{ item.entityStatus }}</span
-                          >
+                            }">
+                            {{ item.entityStatus }}</span>
                         </td>
                         <td>
                           {{ item.allServiceTasks.subTotal.toFixed(2) }}
@@ -253,19 +165,12 @@
                     </tbody>
                   </table>
                 </section>
-                <div
-                  class="col-lg-12 mt-3 text-center"
-                  *ngIf="
+                <div class="col-lg-12 mt-3 text-center" *ngIf="
                     lastItemSK !== 'end' &&
                     datee !== 'end' &&
                     allData.length !== 0
-                  "
-                >
-                  <button
-                    type="button"
-                    class="btn btn-success btn-sm text-light"
-                    (click)="onScroll()"
-                  >
+                  ">
+                  <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
                     Load More..
                   </button>
                 </div>
