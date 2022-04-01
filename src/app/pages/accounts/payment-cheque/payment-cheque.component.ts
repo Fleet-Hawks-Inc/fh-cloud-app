@@ -327,9 +327,6 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   getCurrentuser = async () => {
-    // let data = (await Auth.currentSession()).getIdToken().payload;
-    // this.getCurrentCarrDetail(data.carrierID);
-
     const carrID = localStorage.getItem('xfhCarrierId');
     this.getCurrentCarrDetail(carrID);
   };

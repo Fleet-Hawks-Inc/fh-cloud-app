@@ -197,11 +197,9 @@ export class HeaderComponent implements OnInit {
       const res = await this.apiService.getData(`carriers/get/detail/${selectedCarrier}`).toPromise()
         this.userRole = 'Super Admin';
         this.currentUser = `${res.Items[0].firstName} ${res.Items[0].lastName}`; 
-        // localStorage.setItem("currentUsername", res.Items[0].userName);
     } else {
       this.currentUser = (await Auth.currentSession()).getIdToken().payload;
       this.userRole = this.currentUser.userType;
-      // localStorage.setItem("currentUsername", this.currentUser.username);
       this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
     }
     const outputName = this.currentUser.match(/\b(\w)/g);
