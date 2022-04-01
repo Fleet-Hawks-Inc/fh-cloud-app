@@ -7,7 +7,8 @@
             Order Details
           </div>
           <div class="col-md-8 col-lg-8 text-right" *ngIf="showBtns">
-            <span class="mr-2 text-dark"><b>Invoiced: </b> {{ isInvoiced ? "Yes" : "No" }}</span>
+            <span class="mr-2 text-dark"><b>Invoiced: </b> {{ invDate ? (invDate | date: "yyyy/MM/dd") : "No" }}
+            </span>
             <span class="mx-2 text-dark text-capitalize"><b>Payment:</b>
               {{ invStatus ? invStatus.replace("_", " ") : "NA" }}</span>
             <a *ngIf="orderStatus === 'delivered'" routerLink="/dispatch/orders/edit/{{ orderID }}"
@@ -2517,6 +2518,22 @@
               Send me a copy at <strong> {{ carrierEmail }}</strong>
             </label>
           </div>
+          <div class="col-12 mt-2">
+            <div class="form-check form-check-inline" *ngFor="let item of documentsArr;let i = index;">
+              <input class="form-check-input" name="checkbox{{item.id}}" [(ngModel)]="item.checked"
+                (change)="documentSelection()" type="checkbox" id="inlineCheckbox_{{i}}" [disabled]="item.disabled">
+              <label class="form-check-label" for="inlineCheckbox_{{i}}">{{item.docName}}</label>
+            </div>
+          </div>
+          <div class="col-12 mt-2">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" name="checkbox" [(ngModel)]="emailData.isSingle" type="checkbox"
+                id="inlineCheckbox1" [disabled]="singleDisabled">
+              <label class="form-check-label" for="inlineCheckbox1">Single file (All documents will be merged in single
+                file.) </label>
+            </div>
+          </div>
+
           <div class="col-12 mt-3">
             <p>
               <strong>Note:</strong> All documents will be sent with this email

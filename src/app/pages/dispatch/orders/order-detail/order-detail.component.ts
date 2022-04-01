@@ -216,6 +216,7 @@ export class OrderDetailComponent implements OnInit {
 
   emailData = {
     emails: [],
+    isSingle: false
   };
 
   subject = "";
@@ -308,6 +309,7 @@ export class OrderDetailComponent implements OnInit {
   isFlag = true;
   showBtns = false;
   brokerageDisabled = false;
+  singleDisabled = true;
 
   documentsArr = [
     {
@@ -342,6 +344,7 @@ export class OrderDetailComponent implements OnInit {
 
   docSelRef: any;
   printBtnType: string;
+  invDate: any = '';
 
   constructor(
     private apiService: ApiService,
@@ -417,9 +420,10 @@ export class OrderDetailComponent implements OnInit {
         this.zeroRated = result.zeroRated;
         this.carrierID = result.carrierID;
         this.customerID = result.customerID;
-        if (result.invoiceGenerate && result.invData.invID && result.invData.invID != '') {
+        if (result.invData && result.invData.invID && result.invData.invID != '') {
           this.invoiceID = result.invData.invID;
-          this.today = await this.getInvDate(this.invoiceID)
+          this.invDate = await this.getInvDate(this.invoiceID)
+          
         }
         if (
           result.invoiceGenerate ||
@@ -568,6 +572,7 @@ export class OrderDetailComponent implements OnInit {
   async showDocs(documents) {
     this.docs = [];
     this.newInvDocs = [];
+    this.emailDocs = [];
     documents.forEach((x: any) => {
       if (
         x.storedName.split(".")[1] === "jpg" ||
@@ -597,7 +602,8 @@ export class OrderDetailComponent implements OnInit {
     });
 
     this.newInvDocs = [...this.newInvDocs, ...this.docs];
-    console.log('this.newInvDocs', this.newInvDocs)
+    this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
+
   }
 
   async openEmailInv() {
@@ -627,6 +633,8 @@ export class OrderDetailComponent implements OnInit {
       emails: this.userEmails,
       subject: this.subject,
       sendCopy: this.isCopy,
+      isSingle: this.emailData.isSingle
+
     };
 
     let result = await this.apiService
@@ -668,6 +676,7 @@ export class OrderDetailComponent implements OnInit {
   addEmails() {
     this.isFlag = true;
     this.isEmail = true;
+
     if (this.emailData.emails.length === 0) {
       this.toastr.error("Please enter at least one email");
       this.isEmail = false;
@@ -788,7 +797,11 @@ export class OrderDetailComponent implements OnInit {
         types.push(x.value)
       }
     })
-
+    if (types.length > 1) {
+      this.singleDisabled = false;
+    } else {
+      this.singleDisabled = true;
+    }
     this.newInvDocs = this.attachedDocs.filter(function (doc) {
       return types.indexOf(doc.type) > -1;
     });
@@ -888,6 +901,7 @@ export class OrderDetailComponent implements OnInit {
         this.attachments.splice(index, 1);
       } else {
         this.docs.splice(index, 1);
+        this.newInvDocs.splice(index, 1);
       }
       this.toastr.success("Document deleted successfully");
     }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, TemplateRef } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import * as _ from "lodash";
 import * as moment from "moment";
@@ -8,6 +8,7 @@ import { map } from "rxjs/operators";
 import { AccountService, ApiService, ListService } from "../../../../services";
 import Constants from "../../../fleet/constants";
 import { Location } from "@angular/common";
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 @Component({
   selector: "app-add-settlement",
@@ -15,8 +16,34 @@ declare var $: any;
   styleUrls: ["./add-settlement.component.css"],
 })
 export class AddSettlementComponent implements OnInit {
+  @ViewChild("paymentOptModal",{static:false}) paymentOptModal:TemplateRef<any>;
+
   tripMsg = Constants.NO_RECORDS_FOUND;
   noRecordMsg: string = Constants.NO_RECORDS_FOUND;
+ 
+  paymentType=''
+  driverData={
+    paymentDetails:{
+      paymentType:null,
+      rate:null,
+      waitingPay:null,
+      waitingPayUnit:null,
+      waitingHourAfter:null,
+      deliveryRate:null,
+      deliveryRateUnit:null,
+      loadPayPercentage:null,
+      loadPayPercentageOf:null,
+      loadedMiles:null,
+      loadedMilesUnit:null,
+      emptyMiles:null,
+      emptyMilesUnit:null,
+      emptyMilesTeamUnit:null,
+      emptyMilesTeam:null,
+      loadedMilesTeam:null,
+      loadedMilesTeamUnit:null,
+      payPeriod:null,
+    }
+  }
   settlementData = {
     type: null,
     entityId: null,
@@ -69,17 +96,18 @@ export class AddSettlementComponent implements OnInit {
     paymentLinked: false,
     pendingPayment: 0,
     currency: "CAD",
-    paymentInfo: {
-      lMiles: 0,
-      lMileTeam: 0,
-      eMileTeam: 0,
-      rate: 0,
-      eMiles: 0,
-      pRate: 0,
-      dRate: 0,
-      pType: "",
-      // drivers: [],
-    },
+    paymentSelected:[],
+    // paymentInfo: {
+    //   lMiles: 0,
+    //   lMileTeam: 0,
+    //   eMileTeam: 0,
+    //   rate: 0,
+    //   eMiles: 0,
+    //   pRate: 0,
+    //   dRate: 0,
+    //   pType: "",
+    //   // drivers: [],
+    // },
     fuelIds: [],
     fuelData: [],
     // expIds: [],
@@ -168,11 +196,51 @@ export class AddSettlementComponent implements OnInit {
   allFuelsDumm = [];
   isEntity: boolean;
   paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"},{name:"Flat Rate",value:"pfr"}]
+  paymentAbr={"ppm": "Pay Per Mile",
+"pp":"Percentage",
+"ppd":"Pay Per Delivery",
+"pph":"Pay Per Hour",
+"pfr":"Pay Flat Rate"}
+  ppm={
+    pType:"ppm",
+    loadedMiles:0,
+    currency:'CAD',
+    emptyMiles:0,
+    emptyMilesTeam:0,
+    loadedMilesTeam:0,
+    default:false,
+  }
+  pph={
+    pType:"pph",
+    rate:0,
+    currency:'CAD',
+    waitingPay:0,
+    waitingHourAfter:0,
+    default:false,
+  }
+  pp={
+    pType:"pp",
+    loadPayPercentage:0,
+    loadPayPercentageOf:0,
+    default:false,
+  }
+  ppd={
+    pType:"ppd",
+    deliveryRate:0,
+    currency:'CAD',
+    default:false
+  }
+  pfr={
+    pType:"pfr",
+    flatRate:0,
+    currency:'CAD',
+    default:false,
+  }
   constructor(
     private listService: ListService,
     private route: ActivatedRoute,
     private location: Location,
-    private router: Router,
+    private modalService: NgbModal,
     private toaster: ToastrService,
     private accountService: AccountService,
     private apiService: ApiService
@@ -193,6 +261,8 @@ export class AddSettlementComponent implements OnInit {
     // this.fetchExpenseCategories();
   }
 
+  changeCurrency(event){}
+  changePaymentModeForm(){}
   fetchDrivers() {
     this.apiService
       .getData(`drivers/settlements/get/list`)
@@ -218,14 +288,10 @@ export class AddSettlementComponent implements OnInit {
           if (this.driverDetail.paymentOption && this.driverDetail.paymentOption.length>0) {
             this.setPaymentOption(this.driverDetail);
             if (
-              this.settlementData.paymentInfo.lMiles === 0 &&
-              this.settlementData.paymentInfo.eMiles === 0 &&
-              this.settlementData.paymentInfo.pRate === 0 &&
-              this.settlementData.paymentInfo.dRate === 0
+              this.settlementData.paymentSelected.length==0
             ) {
               this.pendingInfo = true;
             }
-
             if (!this.settlementData.currency || this.pendingInfo) {
               this.showPaymentPopup();
             }
@@ -241,39 +307,68 @@ export class AddSettlementComponent implements OnInit {
         });
     }
   }
+  updatePaymentOption(){
+    this.settlementData.paymentSelected=[]
+    if(this.paymentType){
+      switch(this.paymentType){
+        case "pph":
+          this.settlementData.paymentSelected.push(this.pph)
+          break;
+
+          case "ppm":
+            this.settlementData.paymentSelected.push(this.ppm)
+            break;
+          
+          case "pp":
+            this.settlementData.paymentSelected.push(this.pp)
+            break;
+
+            case "pfr":
+              this.settlementData.paymentSelected.push(this.pfr)
+              break;
+
+      }
+    }
+    this.selectedTrip("","")
+    this.closePayment();
+
+  }
+  closePayment(){
+    this.modalService.dismissAll();
+
+  }
   setPaymentOption(data:any){
 
     data.paymentOption.forEach(element => {
       if(element.default){
         const type=this.paymentOptions.find(el=> el.value==element.pType)
-        this.settlementData.paymentInfo.pType = type.name
-        }
-  
-        if(element.pType=="pph"){
-          // this.payPerHour.currency=element.currency
-          this.settlementData.paymentInfo.pRate =element.rate?element.rate:0
-          // this.payPerHour.waitingHourAfter=element.waitingHourAfter
-          // this.payPerHour.waitingPay=element.waitingPay
-      }
+        switch(type.value){
+          case "pph":
+          this.pph=element
+          this.paymentType=this.pph.pType
+          this.settlementData.paymentSelected.push(this.pph)
+          break;
 
-      if(element.pType=="ppm"){
-        this.settlementData.paymentInfo.lMiles=element.loadedMiles?element.loadedMiles:0
-        this.settlementData.currency =element.currency?element.currency:"CAD"
-        this.settlementData.paymentInfo.eMiles=element.emptyMiles?element.emptyMiles:0
-        this.settlementData.paymentInfo.eMileTeam =element.emptyMilesTeam?element.emptyMilesTeam:0
-        this.settlementData.paymentInfo.lMileTeam=element.loadedMilesTeam?element.loadedMilesTeam:0
-      }
-      if(element.pType=="pp"){
-        // this.payPercentage.loadPayPercentage=element.loadPayPercentage
-        // this.payPercentage.loadPayPercentageOf=element.loadPayPercentageOf
-      }
-      if(element.pType=="ppd"){
-        this.settlementData.currency =element.currency?element.currency:'CAD'
-        this.settlementData.paymentInfo.dRate=element.deliveryRate?element.deliveryRate:0
-      }
-      if(element.pType=="pfr"){
+          case "ppm":
+            this.ppm=element
+            this.paymentType=this.ppm.pType
+            this.settlementData.paymentSelected.push(this.ppm)
+            break;
+          
+          case "pp":
+            this.pp=element
+            this.paymentType=this.ppm.pType
+            this.settlementData.paymentSelected.push(this.pp)
+            break;
+
+            case "pfr":
+              this.pfr=element
+              this.paymentType=this.pfr.pType
+              this.settlementData.paymentSelected.push(this.pfr)
+              break;
+        }
         
-      }
+        }
 });
   }
   cancel() {
@@ -989,26 +1084,38 @@ export class AddSettlementComponent implements OnInit {
   }
 
   oprFinalCal() {
-    if (this.settlementData.paymentInfo.pType === "Pay Per Mile") {
-      let loadedMilesPayment = 0;
-      let emptyMilesPayment = 0;
-      loadedMilesPayment =
-        this.settlementData.miles.tripsLoaded *
-        Number(this.settlementData.paymentInfo.lMiles);
-      emptyMilesPayment =
-        this.settlementData.miles.tripsEmpty *
-        Number(this.settlementData.paymentInfo.eMiles);
+    if(this.settlementData.paymentSelected.length>0){
+      for(const payment of this.settlementData.paymentSelected){
+        
+        switch(payment.pType){
+          case "ppm":
+            let loadedMilesPayment = 0;
+            let emptyMilesPayment = 0;
+            loadedMilesPayment =
+            this.settlementData.miles.tripsLoaded *
+            Number(payment.loadedMiles);
+            emptyMilesPayment =
+            this.settlementData.miles.tripsEmpty *
+            Number(payment.emptyMiles);
 
-      this.settlementData.paymentTotal = loadedMilesPayment + emptyMilesPayment;
-    } else if (this.settlementData.paymentInfo.pType === "Pay Per Hour") {
-      this.settlementData.paymentTotal =
+            this.settlementData.paymentTotal = loadedMilesPayment + emptyMilesPayment;
+      break;
+      case "pph":
+        this.settlementData.paymentTotal =
         this.settlementData.miles.totalHours *
-        Number(this.settlementData.paymentInfo.pRate);
-    } else if (this.settlementData.paymentInfo.pType === "Pay Per Delivery") {
-      this.settlementData.paymentTotal =
-        this.ownDelCouunt * Number(this.settlementData.paymentInfo.dRate);
-    }
+        Number(payment.rate);
+        break;
+      case "ppd":
+        this.settlementData.paymentTotal =
+        this.ownDelCouunt * Number(payment.deliveryRate);
+        break;
+        case "pfr":
+          this.settlementData.paymentTotal=this.ownDelCouunt * Number(payment.flatRate)
+          break;
+        }
     this.calculateFinalTotal();
+  }
+  }
   }
 
   driverCarrMilesCal(plan) {
@@ -1071,48 +1178,82 @@ export class AddSettlementComponent implements OnInit {
     if (this.settlementData.type === "driver") {
       // driver_hours will be from ELD
       this.settlementData.miles.driverHours = 0;
-      if (this.settlementData.paymentInfo.pType === "Pay Per Mile") {
-        let loadedMilesPayment =
+      if(this.settlementData.paymentSelected.length>0){
+        for(const payment of this.settlementData.paymentSelected){
+          switch(payment.pType){
+            case "ppm":
+              let loadedMilesPayment =
           this.settlementData.miles.driverLoaded *
-          Number(this.settlementData.paymentInfo.lMiles) +
+          Number(payment.loadedMiles) +
           this.settlementData.miles.driverLoadedTeam *
-          Number(this.settlementData.paymentInfo.lMileTeam);
+          Number(payment.loadedMilesTeam);
         let emptyMilesPayment =
           this.settlementData.miles.driverEmpty *
-          Number(this.settlementData.paymentInfo.eMiles) +
+          Number(payment.emptyMiles) +
           this.settlementData.miles.driverEmptyTeam *
-          Number(this.settlementData.paymentInfo.eMileTeam);
+          Number(payment.emptyMilesTeam);
         this.settlementData.paymentTotal =
           loadedMilesPayment + emptyMilesPayment;
-      } else if (this.settlementData.paymentInfo.pType === "Pay Per Hour") {
-        this.settlementData.paymentTotal =
+              break;
+
+            case "pph":
+              this.settlementData.paymentTotal =
           this.settlementData.miles.driverHours *
-          Number(this.settlementData.paymentInfo.rate);
-      } else if (this.settlementData.paymentInfo.pType === "Pay Per Delivery") {
-        this.settlementData.paymentTotal =
-          this.delvCount * Number(this.settlementData.paymentInfo.dRate);
-      }
+          Number(payment.rate);
+              break;
+
+              case "ppd":
+                this.settlementData.paymentTotal =
+          this.delvCount * Number(payment.deliveryRate);
+                break;
+              case "pfr":
+                this.settlementData.paymentTotal=this.delvCount* Number(payment.flatRate)
+                break;
+          }
+      // if (this.settlementData.paymentInfo.pType === "Pay Per Mile") {
+        
+      // } else if (this.settlementData.paymentInfo.pType === "Pay Per Hour") {
+        
+      // } else if (this.settlementData.paymentInfo.pType === "Pay Per Delivery") {
+        
+      // }
+    
+    }
       this.settlementData.miles.totalHours = 0;
+    }
     } else if (this.settlementData.type === "carrier") {
-      if (this.settlementData.paymentInfo.pType === "Pay Per Mile") {
-        let loadedMilesPayment = 0;
+      for(const payment of this.settlementData.paymentSelected){
+
+        switch(payment.pType){
+          case "ppm":
+            let loadedMilesPayment = 0;
         let emptyMilesPayment = 0;
         loadedMilesPayment =
           this.settlementData.miles.tripsLoaded *
-          Number(this.settlementData.paymentInfo.lMiles);
+          Number(payment.loadedMiles);
         emptyMilesPayment =
           this.settlementData.miles.tripsEmpty *
-          Number(this.settlementData.paymentInfo.eMiles);
+          Number(payment.emptyMiles);
 
         this.settlementData.paymentTotal =
           loadedMilesPayment + emptyMilesPayment;
-      } else if (this.settlementData.paymentInfo.pType === "Pay Per Hour") {
-        this.settlementData.paymentTotal =
+            break;
+
+            case "pph":
+              this.settlementData.paymentTotal =
           this.settlementData.miles.totalHours *
-          Number(this.settlementData.paymentInfo.pRate);
-      } else if (this.settlementData.paymentInfo.pType === "Pay Per Delivery") {
-        this.settlementData.paymentTotal =
-          this.delvCount * Number(this.settlementData.paymentInfo.dRate);
+          Number(payment.rate);
+          break;
+          
+          case "ppd":
+            this.settlementData.paymentTotal =
+          this.delvCount * Number(payment.deliverRate);
+            break;
+            case "pfr":
+              this.settlementData.paymentTotal=this.delvCount* Number(payment.flatRate)
+              break;
+
+        }
       }
     }
   }
@@ -1290,6 +1431,7 @@ export class AddSettlementComponent implements OnInit {
       });
     }
     this.submitDisabled = true;
+    console.log(this.settlementData)
 
     this.accountService.postData("settlement", this.settlementData).subscribe({
       complete: () => { },
@@ -1881,10 +2023,7 @@ export class AddSettlementComponent implements OnInit {
               //     : 0;
 
                 if (
-                  this.settlementData.paymentInfo.lMiles === 0 &&
-                  this.settlementData.paymentInfo.eMiles === 0 &&
-                  this.settlementData.paymentInfo.pRate === 0 &&
-                  this.settlementData.paymentInfo.dRate
+                  this.settlementData.paymentSelected.length==0
                 ) {
                   this.pendingInfo = true;
                 }
@@ -1932,10 +2071,7 @@ export class AddSettlementComponent implements OnInit {
                 // }
                 // this.settlementData.currency = payCurr;
                 if (
-                  this.settlementData.paymentInfo.lMiles === 0 &&
-                  this.settlementData.paymentInfo.eMiles === 0 &&
-                  this.settlementData.paymentInfo.pRate === 0 &&
-                  this.settlementData.paymentInfo.dRate === 0
+                  this.settlementData.paymentSelected.length==0
                 ) {
                   this.pendingInfo = true;
                 }
@@ -2079,17 +2215,7 @@ export class AddSettlementComponent implements OnInit {
       carrFedTax: 0,
       carrFedAmount: 0,
     };
-    this.settlementData.paymentInfo = {
-      lMiles: 0,
-      lMileTeam: 0,
-      eMileTeam: 0,
-      rate: 0,
-      eMiles: 0,
-      pRate: 0,
-      dRate: 0,
-      pType: "",
-      // drivers: [],
-    };
+    this.settlementData.paymentSelected=[]
     this.settlementData.paymentTotal = 0;
     this.settlementData.taxes = 0;
     this.settlementData.subTotal = 0;
@@ -2528,5 +2654,12 @@ export class AddSettlementComponent implements OnInit {
   showPaymentPopup() {
     this.pendingInfo = false;
     $("#infoModal").modal("show");
+  }
+  openPaymentModal(){
+    let ngbModalOptions:NgbModalOptions={
+      keyboard:true,
+      windowClass:"preview"
+    };
+    this.modalService.open(this.paymentOptModal,ngbModalOptions)
   }
 }

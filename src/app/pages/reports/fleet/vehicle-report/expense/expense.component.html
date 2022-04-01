@@ -84,13 +84,12 @@
                                     <col style="width:2%">
                                     <col style="width:2%">
                                     <col style="width:2%">
-                                    <col style="width:2%">
                                     <col style="width:5%">
                                     <col style="width:2%">
                                     <col style="width:2%">
                                     <thead>
                                         <tr>
-                                            <th>Vehicle</th>
+                                          
                                             <th>Trip#</th>
                                             <th>Order#</th>
                                             <th>Type</th>
@@ -105,12 +104,12 @@
                                             <td colspan="15">{{dataMessage}}</td>
                                         </tr>
                                         <tr *ngFor="let item of allData">
-                                            <td>{{item.vehicle}}
-                                            </td>
+                                          
+                                            
                                             <td>{{item.tripNo}}</td>
                                             <td> {{item.orderName}}</td>
                                             <td>{{item.orderType}}</td>
-                                            <td>{{item.driverName}}</td>
+                                            <td>{{item.driverName | titlecase}}</td>
                                             <td>
                                                 <span *ngFor="let data of item.tripPlanning">
                                                     <b>
@@ -179,8 +178,10 @@
                                             <td>{{item.vehicle}}</td>
                                             <td>{{item.data.cardNo ? item.data.cardNo: '-' }}</td>
                                             <td>{{item.data.type}}</td>
-                                            <td>{{item.data.date |
-                                                date:"yyyy/MM/dd"}} {{item.data.time}}</td>
+                                            <!-- <td>{{item.data.date |
+                                                date:"yyyy/MM/dd"}} {{item.data.time}}</td> -->
+                                                <td>{{item.data.date |
+                                                    date:"yyyy/MM/dd"}}, {{item.dateTime}}</td>
                                             <td>{{item.data.city}},{{item.data.state}},{{item.data.country}}
                                             </td>
                                             <td>{{item.data.amt | number : '1.2-2'}} {{item.data.currency}}</td>
@@ -224,17 +225,29 @@
                                         </tr>
                                         <tr *ngFor="let item of serviceLogData">
                                             <td>{{item.vehicle}}</td>
-                                            <td>{{item.completionDate}}</td>
+                                            <td>{{item.completionDate |
+                                                date:"yyyy/MM/dd"}}</td>
                                             <td>
                                                 <div>
                                                     <span class="font-weight-bold">Service Task(s):
                                                     </span>
-                                                    <span
-                                                        *ngFor="let task of item.allServiceTasks.serviceTaskList;let j=index; let $last=last">{{task.taskName
-                                                        ? task.taskName : '-'}}
-                                                        <span *ngIf="!$last" class="list-format">,
-                                                        </span>
+                                                    <span title="Service
+                                                    Task" *ngFor="let
+                                                    task
+                                                    of
+                                                    item.allServiceTasks.serviceTaskList;let
+                                                    j=
+                                                    index;
+                                                    let
+                                                    $last=
+                                                    last">{{task.taskName
+                                                    ?
+                                                    task.taskName
+                                                    :
+                                                    '-'}}<span *ngIf="!$last"
+                                                        class="list-format">,
                                                     </span>
+                                                </span>
                                                     <span *ngIf="item.allServiceTasks.serviceTaskList == 0;">-
                                                     </span>
                                                 </div>
@@ -295,7 +308,7 @@
                                             <td>{{item.paymentNo}}</td>
                                             <td>{{item.txnDate |
                                                 date:"yyyy/MM/dd"}}</td>
-                                            <td>{{item.payMode}}</td>
+                                            <td>{{item.payMode | titlecase }}</td>
                                             <td> <span *ngFor="let stl of item.settlData; let
                                                 s=index;">
                                                     <b>{{stl.settlementName }}</b>
@@ -304,7 +317,7 @@
                                                 </span></td>
                                             <td><strong class="text-capitalize">{{item.paymentTo}}:</strong>
 
-                                                {{ item.entityName}}
+                                                {{ item.entityName | titlecase }}
 
                                             </td>
                                             <td>{{item.finalAmount | number : '1.2-2' }} {{item.currency}}</td>
@@ -362,8 +375,8 @@
                                                 date:"yyyy/MM/dd"}}</td>
                                             <td>{{item.categoryName}}</td>
                                             <td>{{item.finalTotal | number : '1.2-2' }} {{item.currency}}</td>
-                                            <td> <span class="badge badge-dark p-1 text-uppercase">{{item.status ?
-                                                    item.status
+                                            <td> <span class="badge badge-dark p-1 text-uppercase">{{item.newStatus ?
+                                                    item.newStatus
                                                     : "not deducted"}}</span></td>
                                         </tr>
                                         <tr>

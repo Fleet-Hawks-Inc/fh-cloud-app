@@ -194,6 +194,7 @@ export class SharedModalsComponent implements OnInit {
 
   getDocsLength: any;
   docModalRef: any;
+  documentType: string;
 
   async ngOnInit() {
     let ngbModalOptions: NgbModalOptions = {
@@ -202,7 +203,8 @@ export class SharedModalsComponent implements OnInit {
       windowClass: "doc-type__main",
     };
     this.subscription = this.listService.docModalList.subscribe((res: any) => {
-      if (res.type === 'order') {
+      if (res.type === 'order' || res.type === 'trip') {
+        this.documentType = res.type;
         this.getDocsLength = res.docLength;
         this.docModalRef = this.modalService.open(this.addDocType, ngbModalOptions)
       }
@@ -319,13 +321,15 @@ export class SharedModalsComponent implements OnInit {
   }
 
   fetchAssets() {
-    this.apiService.getData("assets").subscribe((result: any) => {
-      result.Items.forEach((element) => {
-        if (element.isDeleted === 0) {
-          this.assets.push(element);
-        }
+    if (this.assets.length === 0) {
+      this.apiService.getData("assets").subscribe((result: any) => {
+        result.Items.forEach((element) => {
+          if (element.isDeleted === 0) {
+            this.assets.push(element);
+          }
+        });
       });
-    });
+    }
   }
 
   throwErrors() {
@@ -529,18 +533,21 @@ export class SharedModalsComponent implements OnInit {
   }
 
   fetchVehicles() {
-    this.apiService.getData("vehicles").subscribe({
-      error: () => { },
-      next: (result: any) => {
+    if (this.vehicles.length === 0) {
+
+      this.apiService.getData("vehicles").subscribe({
+        error: () => { },
+        next: (result: any) => {
 
 
-        result.Items.forEach((element) => {
-          if (element.isDeleted === 0) {
-            this.vehicles.push(element);
-          }
-        });
-      },
-    });
+          result.Items.forEach((element) => {
+            if (element.isDeleted === 0) {
+              this.vehicles.push(element);
+            }
+          });
+        },
+      });
+    }
   }
 
   fetchTasks() {
@@ -657,14 +664,16 @@ export class SharedModalsComponent implements OnInit {
   }
 
   fetchUsers() {
-    this.apiService.getData("common/users").subscribe((result: any) => {
-      result["Items"].map((r: any) => {
-        if (r.isDeleted === 0) {
-          this.users.push(r);
-        }
-      })
+    if (this.users.length === 0) {
+      this.apiService.getData("common/users").subscribe((result: any) => {
+        result["Items"].map((r: any) => {
+          if (r.isDeleted === 0) {
+            this.users.push(r);
+          }
+        })
 
-    });
+      });
+    }
   }
 
   clearAssetMake() {
@@ -716,7 +725,12 @@ export class SharedModalsComponent implements OnInit {
     let obj = {
       docType: this.docs.docType,
       documents: this.uploadedDocs,
-      module: 'order'
+      module: ''
+    }
+    if (this.documentType === 'order') {
+      obj.module = 'order';
+    } else if (this.documentType === 'trip') {
+      obj.module = 'trip';
     }
     this.listService.getAllDocs(obj);
     this.docModalRef.close()
