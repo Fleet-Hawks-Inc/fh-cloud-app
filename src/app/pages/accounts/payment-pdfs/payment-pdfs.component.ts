@@ -35,7 +35,8 @@ export class PaymentPdfsComponent implements OnInit {
     paymentNo: "",
   };
   settlements = [];
-  paymentInfo: any;
+  // paymentInfo: any;
+  paymentSelected=[]
   currency: string;
   payPeriod: any;
   paymentData = {
@@ -116,6 +117,11 @@ export class PaymentPdfsComponent implements OnInit {
   modelRef: any;
   subTotal = 0;
   totalSettmnt: any;
+  paymentAbr={"ppm": "Pay Per Mile",
+  "pp":"Percentage",
+  "ppd":"Pay Per Delivery",
+  "pph":"Pay Per Hour",
+  "pfr":"Pay Flat Rate"}
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
       async (res: any) => {
@@ -258,7 +264,7 @@ export class PaymentPdfsComponent implements OnInit {
       .getData(`settlement/get/selected?entities=${ids}`)
       .toPromise();
     this.settlements = result;
-    this.paymentInfo = result[0].paymentInfo;
+    this.paymentSelected = result[0].paymentSelected
     this.currency = result[0].currency;
     let newDates = []
     let totalAddDed = 0;

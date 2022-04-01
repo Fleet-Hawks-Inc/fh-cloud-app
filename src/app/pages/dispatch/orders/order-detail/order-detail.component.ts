@@ -344,6 +344,7 @@ export class OrderDetailComponent implements OnInit {
 
   docSelRef: any;
   printBtnType: string;
+  invDate: any = '';
 
   constructor(
     private apiService: ApiService,
@@ -419,9 +420,10 @@ export class OrderDetailComponent implements OnInit {
         this.zeroRated = result.zeroRated;
         this.carrierID = result.carrierID;
         this.customerID = result.customerID;
-        if (result.invoiceGenerate && result.invData.invID && result.invData.invID != '') {
+        if (result.invData && result.invData.invID && result.invData.invID != '') {
           this.invoiceID = result.invData.invID;
-          this.today = await this.getInvDate(this.invoiceID)
+          this.invDate = await this.getInvDate(this.invoiceID)
+          
         }
         if (
           result.invoiceGenerate ||
@@ -631,6 +633,8 @@ export class OrderDetailComponent implements OnInit {
       emails: this.userEmails,
       subject: this.subject,
       sendCopy: this.isCopy,
+      isSingle: this.emailData.isSingle
+
     };
 
     let result = await this.apiService

@@ -60,8 +60,7 @@ export class PaymentChequeComponent implements OnInit {
     gstHstAmt: 0,
     isVendorPayment: false,
     vendorId: "",
-    gstHstPer: 0
-
+    gstHstPer: 0,
   };
 
   cheqdata = {
@@ -95,6 +94,8 @@ export class PaymentChequeComponent implements OnInit {
     invoices: [],
     currency: "",
     currencyText: "",
+    gstHst: 0,
+    gstHstYTD: 0
   };
   driverData;
   corporateDrver = false;
@@ -227,6 +228,11 @@ export class PaymentChequeComponent implements OnInit {
             if (this.paydata.type === "vendor") {
               this.cheqdata.invoices = this.paydata.invoices;
             }
+          }
+
+          if(this.paydata.isVendorPayment) {
+            this.cheqdata.regularPay = this.paydata.totalAmount;
+            this.cheqdata.grossPay = this.paydata.totalAmount;
           }
 
           // this if cond. only in the case of expense payment
@@ -457,9 +463,13 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   async getUserAnnualTax() {
+    let entityID = this.paydata.entityId;
+    if(this.paydata.isVendorPayment) {
+      entityID = this.paydata.vendorId;
+    }
     let result: any = await this.accountService
       .getData(
-        `driver-payments/annual/payment/${this.paydata.entityId}/${this.paydata.payYear}`
+        `driver-payments/annual/payment/${entityID}/${this.paydata.payYear}`
       )
       .toPromise();
     this.cheqdata.vacationPayYTD = result[0].vacationPay
@@ -486,13 +496,13 @@ export class PaymentChequeComponent implements OnInit {
       this.cheqdata.taxYTD =
         Number(this.cheqdata.taxYTD) + Number(this.cheqdata.tax);
     }
-
+    this.cheqdata.gstHstYTD = Number(result[0].gstHst);
     this.cheqdata.grossPayYTD =
       Number(this.cheqdata.vacationPayYTD) +
       Number(this.cheqdata.regularPayYTD);
     this.cheqdata.withHeldYTD =
       Number(this.cheqdata.cppYTD) + Number(this.cheqdata.eiYTD);
-    this.cheqdata.netPayYTD =
-      Number(this.cheqdata.grossPayYTD) - Number(this.cheqdata.withHeldYTD);
+    this.cheqdata.netPayYTD = Number(this.cheqdata.grossPayYTD) - Number(this.cheqdata.withHeldYTD) + Number(this.cheqdata.gstHstYTD);
+    this.cheqdata.gstHst = this.paydata.gstHstAmt;
   }
 }

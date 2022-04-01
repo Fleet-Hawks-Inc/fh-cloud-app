@@ -13,8 +13,7 @@
             <div class="input-group input-group-sm mb-3">
               <input type="text" autocomplete="off" placeholder="Search Asset" name="assetIdentification"
                 [(ngModel)]="assetIdentification" class="form-control" (input)="getSuggestions($event.target.value)">
-
-            </div>
+           </div>
             <div *ngIf="suggestedAssets?.length > 0" class="result-suggestions">
               <ul>
                 <li *ngFor="let suggestedAsset of suggestedAssets" style="cursor: pointer;"
@@ -25,7 +24,8 @@
             </div>
           </div>
 
-          <div class="col-md-2 col-lg-2 pr-0">
+
+          <div class="col-md-2 col-lg-2 pr-0 pl-2">
             <ng-select [(ngModel)]="assetType" name="assetType" class="form-control populate" placeholder="Select type">
               <ng-option value="container">Container</ng-option>
               <ng-option value="double_drop">Double Drop</ng-option>
@@ -48,19 +48,37 @@
             </ng-select>
           </div>
 
-          <div class="col-md-2 col-lg-2">
+          <div class="col-md-3 col-lg-3 pl-2">
             <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">Search</button>
             <button class="btn btn-sm btn-success" type="submit" (click)=" resetFilter()">Reset</button>
 
           </div>
 
-          <div class="col-md-4 col-lg-4 text-right pr-1">
+           <div class="col-md-3 col-lg-3 text-right pr-1">
             <div class="btn-group flex-wrap ml-2">
-              <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
-              <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                <a class="dropdown-item text-1" (click)="csv()">CSV</a>
+              <button
+                  type="button"
+                  class="btn btn-success btn-sm dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-upload"></i> Export<span
+                    class="caret"
+                  ></span>
+                </button>
+                <div
+                  class="dropdown-menu"
+                  role="menu"
+                  x-placement="bottom-start"
+                  style="
+                    position: absolute;
+                    will-change: transform;
+                    top: 0px;
+                    left: 0px;
+                    transform: translate3d(0px, 38px, 0px);
+                  "
+                >
+                  <a class="dropdown-item text-1" (click)="csv()">CSV</a>
               </div>
             </div>
           </div>

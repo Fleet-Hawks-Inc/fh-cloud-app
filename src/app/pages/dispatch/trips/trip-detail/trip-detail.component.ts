@@ -13,6 +13,9 @@ declare var $: any;
 import { environment } from "src/environments/environment";
 import Constants from "src/app/pages/fleet/constants";
 import { Location } from "@angular/common";
+import * as _ from "lodash";
+
+
 @Component({
   selector: "app-trip-detail",
   templateUrl: "./trip-detail.component.html",
@@ -35,6 +38,7 @@ export class TripDetailComponent implements OnInit {
     private hereMap: HereMapService,
     private location: Location,
     private listService: ListService,
+
   ) {
     this.selectedFileNames = new Map<any, any>();
   }
@@ -188,6 +192,8 @@ export class TripDetailComponent implements OnInit {
     });
   }
 
+  assetNamesList = [];
+  tempNamesList = [];
   async fetchTripDetail() {
     this.tripID = this.route.snapshot.params["tripID"];
     let locations = [];
@@ -322,7 +328,28 @@ export class TripDetailComponent implements OnInit {
           this.plannedMiles += parseFloat(element.miles);
           this.newCoords.push(`${element.lat},${element.lng}`);
           this.trips.push(obj);
+
+          // create Asset Object
+          for (let i = 0; i < element.assetID.length; i++) {
+            const assetObj = {
+              assetID: element.assetID[i],
+              assetName: element.assetNames[i],
+
+            };
+            this.assetNamesList.push(assetObj);
+
+          }
+
+
+
         }
+        // filter out duplicates
+        this.assetNamesList = _.uniqBy(this.assetNamesList, function (e) {
+          return e.assetID;
+        });
+        this.tempNamesList = _.uniqBy(this.assetNamesList, function (e) {
+          return e.assetID;
+        });
 
         let documents = result.tripDocs;
 
@@ -386,6 +413,8 @@ export class TripDetailComponent implements OnInit {
           this.tagLine = result.termsInfo.tagLine ? result.termsInfo.tagLine : '';
         }
       });
+
+
   }
 
   /**
@@ -810,4 +839,89 @@ export class TripDetailComponent implements OnInit {
     }
     this.listService.openDocTypeMOdal(obj)
   }
+
+  alarmCols = [
+    { field: 'alAssetName', header: 'Asset Name' },
+    { field: 'highTemp', header: 'High' },
+    { field: 'lowTemp', header: 'Low' },
+    { field: 'alIsActivate', header: 'IsActive' },
+  ]
+  tripAlarms = []
+  selectedAssetAlarm;
+  async getTripAlarms() {
+    this.assetNamesList = [];
+    this.assetNamesList.push(...this.tempNamesList)
+    this.tripAlarms = await this.apiService.getData(`alarms/${this.tripData.tripNo}`).toPromise();
+    this.tripAlarms.forEach(element => {
+      const assetObj = _.find(this.assetNamesList, { assetID: element.assetId });
+      console.log(assetObj);
+      if (assetObj) {
+        _.remove(this.assetNamesList, { assetID: assetObj.assetID });
+        console.log(this.assetNamesList);
+        this.selectedAlarmAlert = undefined
+
+      }
+    });
+  }
+
+  alarmInput: IAddAlarmInput;
+  showAlerts = false;
+  highTemp: number = 10;
+  lowTemp: number = -10;
+  selectedAlarmAlert = {};
+  emails: string
+  async addAlerts() {
+    this.showAlerts = true;
+    await this.getTripAlarms();
+  }
+  assetAlert = undefined;
+  async addAlarmToAsset() {
+    this.assetAlert = undefined;
+    const assetObj = _.find(this.assetNamesList, { assetName: this.selectedAssetAlarm })
+
+    this.alarmInput = {
+      tripID: this.tripID,
+      tripNo: this.tripData.tripNo,
+      assetID: assetObj.assetID,
+      assetName: assetObj.assetName,
+      highTemp: this.highTemp.toString(),
+      lowTemp: this.lowTemp.toString(),
+      emails: this.emails.split(',')
+
+    }
+    const output = await this.apiService.postData('alarms', this.alarmInput).subscribe(async (data: any) => {
+      await this.getTripAlarms();
+
+    }, error => {
+      console.log('error', error.error.errorMessage);
+      if (error && error.error && error.error.errorMessage.includes('Temperature sensor')) {
+        this.assetAlert = error.error.errorMessage;
+      }
+    });
+
+
+  }
+
+  async deleteAlarm(rowData) {
+    console.log(rowData);
+    const decision = confirm('Do you want to Delete the Alarm?');
+    if (decision) {
+      await this.apiService.deleteData(`alarms/${rowData.alAlarmId}`).toPromise();
+      console.log(this.tempNamesList);
+
+      this.showAlerts = false;
+
+    }
+  }
+
+}
+
+interface IAddAlarmInput {
+  tripNo: string,
+  tripID: string,
+  assetID: string,
+  assetName: string,
+  highTemp: string,
+  lowTemp: string,
+  emails: string[]
 }
