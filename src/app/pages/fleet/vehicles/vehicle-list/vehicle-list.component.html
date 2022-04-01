@@ -10,7 +10,7 @@
                 <form class="formgrid grid">
                     <div class="row">
                         <div class="col" style="margin-left: 20px;margin-top: 5px;">
-                            <p-autoComplete #autoComp id="autoCmpSugDriver" [placeholder]="'Type Vehicles Name'" class="mr-2" [forceSelection]="true" emptyMessage="No data found." [(ngModel)]="vehicleIdentification" [suggestions]="suggestedVehicles" [minLength]="2" (completeMethod)="getSuggestions($event.query)" (onSelect)="setVehicle($event.vehicleID,$event.vehicleIdentification)"field="vehicleIdentification"> </p-autoComplete>
+                            <p-autoComplete #autoComp id="autoCmpSugDriver" [placeholder]="'Type Vehicles Name'" class="mr-2" [forceSelection]="true" emptyMessage="No data found." [(ngModel)]="vehicleIdentification" [suggestions]="suggestedVehicles" [minLength]="2" (completeMethod)="getSuggestions($event.query)" (onSelect)="setVehicle($event.vehicleID,$event.vehicleIdentification)" field="vehicleIdentification"> </p-autoComplete>
                             <p-dropdown id="drpDvrType" [style]="{minWidth: '200px'}" [options]="vehStatus" class="mr-2" placeholder="Select a Vehicle Status" [(ngModel)]="currentStatus" optionLabel="name" optionValue="value">
                             </p-dropdown>
                             <button id="btnSearch" type="button" [disabled]="isSearch" pButton class="mr-2" icon="pi pi-search" pTooltip="Search" (click)="searchFilter()"></button>
@@ -88,20 +88,20 @@
                                                         <span *ngSwitchCase="'vehicleIdentification'">
                                                             <b> {{get(vehicle,dataColumns.field) | titlecase}}</b>
                                                         </span>
-                                                         <span *ngSwitchCase="'modelID'">
-                                                         {{get(vehicle,dataColumns.field) ? get(vehicle,dataColumns.field) : '-' }}
+                                                        <span *ngSwitchCase="'modelID'">
+                                                            {{get(vehicle,dataColumns.field) ? get(vehicle,dataColumns.field) : '-' }}
                                                         </span>
-                                                         <span *ngSwitchCase="'ownership'">
-                                                         {{get(vehicle,dataColumns.field) ? get(vehicle,dataColumns.field) : '-' }}
+                                                        <span *ngSwitchCase="'ownership'">
+                                                            {{get(vehicle,dataColumns.field) ? get(vehicle,dataColumns.field) : '-' }}
                                                         </span>
                                                         <span *ngSwitchCase="'driverList.driverID'">
                                                             <span>
-                                                    {{(driversList[vehicle.driverID]) ? driversList[vehicle.driverID] : '-' }}
+                                                                {{(driversList[vehicle.driverID]) ? driversList[vehicle.driverID] : '-' }}
                                                             </span>
                                                         </span>
                                                         <span *ngSwitchCase="'driverList.teamDriverID'">
                                                             <span>
-                                                {{(driversList[vehicle.teamDriverID]) ? driversList[vehicle.teamDriverID]: '-' }}
+                                                                {{(driversList[vehicle.teamDriverID]) ? driversList[vehicle.teamDriverID]: '-' }}
                                                             </span>
                                                         </span>
                                                         <!--

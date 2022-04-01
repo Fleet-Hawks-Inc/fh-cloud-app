@@ -21,9 +21,6 @@ declare var $: any;
 export class VehicleListComponent implements OnInit {
   @ViewChild('dt') table: Table;
   @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
-  
-  
-  //Variables
    allDocumentsTypes: any;
     documentsTypesObects: any = {};
     mapView = false;
@@ -33,10 +30,6 @@ export class VehicleListComponent implements OnInit {
     isSearch = false;
   get = _.get;
     _selectedColumns: any[];
-    
-
-  
-  
   liveModalTimeout: any;
   liveStreamVehicle: string;
   environment = environment.isFeatureEnabled;
@@ -98,9 +91,6 @@ export class VehicleListComponent implements OnInit {
   lastItemSK = ''
   loaded = false
 
-
-
-
         // columns of data table
     dataColumns = [
         { field: 'vehicleIdentification', header: 'Name/Number', type: "text" },
@@ -115,11 +105,8 @@ export class VehicleListComponent implements OnInit {
         { field: 'driverList.teamDriverID', header: 'Team Driver Assigned', type: 'text'},
         { field: 'plateNumber', header: 'Plate Number', type: "text" },
         { field: 'currentStatus', header: 'Status', type: 'text' },
-
     ];
   
-
-
   constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService,
     private onboard: OnboardDefaultService, protected _sanitizer: DomSanitizer, private modalService: NgbModal) {
   }
@@ -138,13 +125,12 @@ export class VehicleListComponent implements OnInit {
     this.fetchVendorList();
     await this.initDataTable()
     
-    /*
+    
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
     });
-*/
 
     this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
       this.vehicleTypeObects = data.reduce((a: any, b: any) => {
@@ -153,8 +139,6 @@ export class VehicleListComponent implements OnInit {
     });
 
   }
-  
-  
       setToggleOptions() {
         this.selectedColumns = this.dataColumns;
     }
@@ -176,11 +160,6 @@ export class VehicleListComponent implements OnInit {
 
     }
   
-  
-  
-  
-  
-
   getSuggestions = _.debounce(function (value) {
     value = value.toLowerCase();
     if (value != '') {
@@ -275,8 +254,6 @@ export class VehicleListComponent implements OnInit {
     $('.buttons-excel').trigger('click');
   }
 
-
-
   async initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
        await this.apiService.getData('vehicles/fetch/records?vehicle=' + this.vehicleID + '&status=' + this.currentStatus + '&lastKey=' + this.lastEvaluatedKey)
@@ -288,9 +265,9 @@ export class VehicleListComponent implements OnInit {
           if (result.Items.length > 0) {
             result.Items.map((v) => {
               v.url = `/fleet/vehicles/detail/${v.vehicleID}`;
-              if(v.deviceInfo === undefined){
-              v.deviceInfo = []
-              }
+              // if(v.deviceInfo === undefined){
+              //v.deviceInfo = []
+              //}
             });
             if (result.LastEvaluatedKey !== undefined) {
               this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].vehicleSK);
@@ -304,7 +281,6 @@ export class VehicleListComponent implements OnInit {
             this.isSearch = false;
             await this.getDashCamConnection(this.vehicles);
             await this.getDashCamStatus(this.vehicles);
-            
           }
         });
     }
@@ -326,11 +302,9 @@ export class VehicleListComponent implements OnInit {
       for (const data of vehicleList) {
         if (data.deviceInfo) {
           data['isDashCam'] = true;
-
         }
       }
     }
-
   }
 
   /**
