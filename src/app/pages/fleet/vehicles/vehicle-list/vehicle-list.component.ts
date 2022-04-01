@@ -276,7 +276,6 @@ export class VehicleListComponent implements OnInit {
               this.lastEvaluatedKey = 'end'
             }
             this.vehicles = this.vehicles.concat(result.Items)
-            console.log('veh',this.vehicles);
             this.loaded = true;
             this.isSearch = false;
             await this.getDashCamConnection(this.vehicles);
