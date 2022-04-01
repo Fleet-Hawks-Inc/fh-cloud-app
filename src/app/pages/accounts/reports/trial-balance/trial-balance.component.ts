@@ -35,7 +35,7 @@ export class TrialBalanceComponent implements OnInit {
         startDate: null,
         endDate: null,
     };
-    end : '';
+    end: '';
     start: '';
     datee = '';
     disableSearch = false;
@@ -93,79 +93,78 @@ export class TrialBalanceComponent implements OnInit {
         if (refresh === true) {
             this.accounts = [];
         }
-            this.accountService.getData(`chartAc/report/trialBalance/${this.currency}/?&start=${this.filter.startDate}&end=${this.filter.endDate}`)
-                .subscribe(async (result: any) => {
-                    if (result.data.length === 0) {
+        this.accountService.getData(`chartAc/report/trialBalance/${this.currency}/?&start=${this.filter.startDate}&end=${this.filter.endDate}`)
+            .subscribe(async (result: any) => {
+                if (result.data.length === 0) {
+                    this.dataMessage = Constants.NO_RECORDS_FOUND;
+                }
+                if (result.data.length > 0) {
+                    result.data.map((v) => {
+                        this.accounts.push(v);
+                    });
+
+                    const newArray: any = _.sortBy(this.accounts, ["accountNo"]);
+                    this.accounts = newArray;
+                    for (let i = 0; i < this.accounts.length; i++) {
+                        if (this.currTab === 'CAD') {
+                            this.currency = 'CAD';
+                            this.accounts = _.filter(this.accounts, function (o) {
+                                return o.debit != '0' || o.credit != '0';
+                            })
+                        }
+                        if (this.currTab === 'USD') {
+                            this.currency = 'USD';
+                            this.accounts = _.filter(this.accounts, function (o) {
+                                return o.debit != '0' || o.credit != '0';
+                            })
+                        }
+                    }
+                    for (var i = 0; i < result.data.length; i++) {
+                        if (this.currTab === 'CAD') {
+                            this.currency = 'CAD'
+                            if (result.data[i].debit != null) {
+                                this.cadDebitTotal += parseFloat(result.data[i].debit);
+                            }
+                            if (result.data[i].credit != null) {
+                                this.cadCreditTotal += parseFloat(result.data[i].credit);
+                            }
+                        }
+                        if (this.currTab === 'USD') {
+                            this.currency = 'USD'
+                            if (result.data[i].debit != null) {
+                                this.usdDebitTotal += parseFloat(result.data[i].debit);
+                            }
+                            if (result.data[i].credit != null) {
+                                this.usdCreditTotal += parseFloat(result.data[i].credit);
+                            }
+                        }
+                    }
+                    this.accounts = _.filter(this.accounts, function (o) {
+                        return o.actType != 'H';
+                    });
+                    this.accounts = _.filter(this.accounts, function (o) {
+                        return o.actType != 'S';
+                    });
+                    this.accounts = _.filter(this.accounts, function (o) {
+                        return o.actType != 'T';
+                    });
+                }
+                if (this.currTab === 'CAD') {
+                    this.currency = 'CAD'
+                    if (this.accounts.length === 0) {
                         this.dataMessage = Constants.NO_RECORDS_FOUND;
                     }
-                    if (result.data.length > 0) {
-                        result.data.map((v) => {
-                            this.accounts.push(v);
-                         });
-                         
-                        const newArray: any = _.sortBy(this.accounts, ["accountNo"]);
-                        this.accounts = newArray;
-                          for(let i = 0;i<this.accounts.length;i++)
-                        {
-                             if(this.currTab === 'CAD'){
-                             this.currency = 'CAD';
-                             this.accounts = _.filter(this.accounts, function(o){
-                             return o.debit != '0'|| o.credit != '0';
-                             })
-                             }
-                            if(this.currTab === 'USD'){
-                             this.currency = 'USD';
-                             this.accounts = _.filter(this.accounts, function(o){
-                             return o.debit != '0'|| o.credit != '0';
-                             })
-                             }
-                        }
-                        for (var i = 0; i < result.data.length; i++) {
-                            if (this.currTab === 'CAD') {
-                                this.currency = 'CAD'
-                                if (result.data[i].debit != null) {
-                                    this.cadDebitTotal += parseFloat(result.data[i].debit);
-                                }
-                                if (result.data[i].credit != null) {
-                                    this.cadCreditTotal += parseFloat(result.data[i].credit);
-                                }
-                            }
-                            if (this.currTab === 'USD') {
-                                this.currency = 'USD'
-                                if (result.data[i].debit != null) {
-                                    this.usdDebitTotal += parseFloat(result.data[i].debit);
-                                }
-                                if (result.data[i].credit != null) {
-                                    this.usdCreditTotal += parseFloat(result.data[i].credit);
-                                }
-                            }
-                        }
-                        this.accounts = _.filter(this.accounts, function (o) {
-                            return o.actType != 'H';
-                        });
-                        this.accounts = _.filter(this.accounts, function (o) {
-                            return o.actType != 'S';
-                        });
-                        this.accounts = _.filter(this.accounts, function (o) {
-                            return o.actType != 'T';
-                        });
+                }
+                if (this.currTab === 'USD') {
+                    this.currency = 'USD'
+                    if (this.accounts.length === 0) {
+                        this.dataMessage = Constants.NO_RECORDS_FOUND;
                     }
-                    if (this.currTab === 'CAD') {
-                             this.currency = 'CAD'
-                    if(this.accounts.length === 0){
-                      this.dataMessage = Constants.NO_RECORDS_FOUND;
-                         }
-                             }
-                    if (this.currTab === 'USD') {
-                        this.currency = 'USD'
-                    if(this.accounts.length === 0){
-                     this.dataMessage = Constants.NO_RECORDS_FOUND;
-                           }
-                         }
-                    
-                });
+                }
+
+            });
     }
-   
+
 
 
     searchFilter() {
@@ -226,8 +225,8 @@ export class TrialBalanceComponent implements OnInit {
         this.accounts = [];
         if (this.currTab === "CAD") {
             this.currency = 'CAD'
-             this.cadDebitTotal = 0;
-             this.cadCreditTotal = 0;
+            this.cadDebitTotal = 0;
+            this.cadCreditTotal = 0;
             this.fetchAccounts();
         } else if (this.currTab === "USD") {
             this.currency = 'USD'
@@ -246,33 +245,33 @@ export class TrialBalanceComponent implements OnInit {
         try {
             if (this.accounts.length > 0) {
                 for (const element of this.accounts) {
-                     let obj = {}
+                    let obj = {}
                     obj["Account Number"] = element.accountNo
                     obj["Account Name"] = element.accountName,
-                    obj["Credit"] = element.credit
+                        obj["Credit"] = element.credit
                     obj["Debit"] = element.debit
-                    dataObject.push(obj)  
+                    dataObject.push(obj)
                 }
-                 let totObj = {
-                   
-                    ["Credit"] : 'Total' ,
-                    ["Debit"] : " "
-                 }
-                  if(this.currency === 'CAD'){
-                      totObj["Total"] = this.cadCreditTotal 
-                      totObj["Total1"] = this.cadDebitTotal
-                      dataObject.push(totObj)
-                 }
-                else if(this.currency === 'USD') {
-                      totObj["Total"] = this.usdCreditTotal 
-                      totObj["Total1"] = this.usdDebitTotal
-                      dataObject.push(totObj)
-                  }
+                let totObj = {
+
+                    ["Credit"]: 'Total',
+                    ["Debit"]: " "
+                }
+                if (this.currency === 'CAD') {
+                    totObj["Total"] = this.cadCreditTotal
+                    totObj["Total1"] = this.cadDebitTotal
+                    dataObject.push(totObj)
+                }
+                else if (this.currency === 'USD') {
+                    totObj["Total"] = this.usdCreditTotal
+                    totObj["Total1"] = this.usdDebitTotal
+                    dataObject.push(totObj)
+                }
                 let headers = Object.keys(dataObject[0]).join(',')
                 headers += '\n'
                 csvArray.push(headers)
                 for (const element of dataObject) {
-                   let value = Object.values(element).join(',')
+                    let value = Object.values(element).join(',')
                     value += '\n'
                     csvArray.push(value)
                 }
