@@ -16,7 +16,6 @@ export class ListOrganizationsComponent implements OnInit {
 
   async ngOnInit() {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    console.log('currentUser', this.currentUser)
     this.apiService.getData(`carriers/get/organizations/${this.currentUser.carrierID}`).subscribe((res) => {
       this.organizations = res;
     })

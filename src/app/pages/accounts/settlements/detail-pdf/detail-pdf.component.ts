@@ -383,9 +383,6 @@ export class DetailPdfComponent implements OnInit {
   }
 
   getCurrentuser = async () => {
-    // this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    // const carrierID = this.currentUser.carrierID;
-
     const carrierID = localStorage.getItem('xfhCarrierId');
 
     let result: any = await this.apiService
