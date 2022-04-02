@@ -71,7 +71,6 @@ export class ImportedAssetsComponent implements OnInit {
     }
     if (result && result.length > 0) {
       this.importAssets = result;
-      console.log('result--', this.importAssets)
     }
     this.loaded = false;
   }
