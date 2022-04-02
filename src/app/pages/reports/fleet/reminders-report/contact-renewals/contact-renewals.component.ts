@@ -5,7 +5,7 @@ import { ApiService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
 import { ToastrService } from 'ngx-toastr';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-
+import { ListService } from '../../../../../services';
 @Component({
   selector: 'app-contact-renewals',
   templateUrl: './contact-renewals.component.html',
@@ -32,14 +32,20 @@ export class ContactRenewalsComponent implements OnInit {
   data: any = [];
   driversList: any = {};
   mergedList: any = {};
-  constructor(private apiService: ApiService, private toastr: ToastrService) { }
+  employees = [];
+  drivers: any;
+  constructor( private listService: ListService,private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
+    this.listService.fetchDrivers();
     this.fetchallitems();
     this.fectchTasks();
     this.fetchEmployees();
     this.fetchReminderCount();
     this.fetchVehicleIDs();
+    let driverList = new Array<any>();
+    this.getValidDrivers(driverList);
+    this.drivers = driverList;
   }
   fectchTasks() {
     this.apiService.getData("tasks/get/list?type=contact").subscribe((result: any) => {
@@ -60,6 +66,13 @@ export class ContactRenewalsComponent implements OnInit {
       })
     })
   }
+ //for search with contact name
+  fetchEmployeesData() {
+    this.apiService.getData('contacts/employee/records').subscribe((res) => {
+
+      this.employees = res.Items;
+    });
+  }
   fetchEmployees() {
     this.apiService.getData('contacts/get/emp/list').subscribe((res) => {
       this.empName = res;
@@ -71,7 +84,18 @@ export class ContactRenewalsComponent implements OnInit {
       }
     });
   }
-
+ //for search with contact name
+  private getValidDrivers(driverList: any[]) {
+    let ids = [];
+    this.listService.driversList.forEach((element) => {
+      element.forEach((element2) => {
+        if (element2.isDeleted === 0 && !ids.includes(element2.driverID)) {
+          driverList.push(element2);
+          ids.push(element2.driverID);
+        }
+      });
+    });
+  }
   fetchallitems() {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`reminders/fetch/records?reminderIdentification=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&lastKey=${this.lastItemSK}&reminderType=contact`)
