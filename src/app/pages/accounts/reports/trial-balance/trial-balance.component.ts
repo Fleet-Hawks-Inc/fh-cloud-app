@@ -248,8 +248,8 @@ export class TrialBalanceComponent implements OnInit {
                     let obj = {}
                     obj["Account Number"] = element.accountNo
                     obj["Account Name"] = element.accountName,
-                        obj["Credit"] = element.credit.toFixed(2)
-                    obj["Debit"] = element.debit.toFixed(2)
+                        obj["Credit"] = element.credit
+                    obj["Debit"] = element.debit
                     dataObject.push(obj)
                 }
                 let totObj = {
@@ -258,13 +258,13 @@ export class TrialBalanceComponent implements OnInit {
                     ["Debit"]: " "
                 }
                 if (this.currency === 'CAD') {
-                    totObj["Total"] = this.cadCreditTotal.toFixed(2)
-                    totObj["Total1"] = this.cadDebitTotal.toFixed(2)
+                    totObj["Total"] = this.cadCreditTotal
+                    totObj["Total1"] = this.cadDebitTotal
                     dataObject.push(totObj)
                 }
                 else if (this.currency === 'USD') {
-                    totObj["Total"] = this.usdCreditTotal.toFixed(2)
-                    totObj["Total1"] = this.usdDebitTotal.toFixed(2)
+                    totObj["Total"] = this.usdCreditTotal
+                    totObj["Total1"] = this.usdDebitTotal
                     dataObject.push(totObj)
                 }
                 let headers = Object.keys(dataObject[0]).join(',')
