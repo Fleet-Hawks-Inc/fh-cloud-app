@@ -74,10 +74,11 @@ export class RevenueDetailComponent implements OnInit {
       //   if (this.currTab === 'CAD') {
       //     this.currency = 'CAD'
       //     const data = result.Items[i]
-      //     // console.log('data--', data)
+      //     console.log('data--', data)
       //     // for (let invD of data.invoiceData) {
       //     data.invoiceData.map((elem) => {
       //       if (elem.charges.fuelSurcharge.currency === 'CAD') {
+      //         console.log()
       //         this.allData = result.Items
       //         console.log('this==', this.allData)
 
@@ -112,6 +113,7 @@ export class RevenueDetailComponent implements OnInit {
         for (let invData of data.invoiceData) {
 
           this.totalInv += parseFloat(invData.finalAmount)
+          console.log('this.inv', this.totalInv)
         }
 
         for (let recData of data.receiptData) {
@@ -199,21 +201,57 @@ export class RevenueDetailComponent implements OnInit {
       let csvArray = []
       this.allData.forEach(element => {
         let invNo = ''
+        let invDate = ''
+        let invAm = ''
+        let recNo = ''
+        let recDate = ''
+        let recAm = ''
         for (let item1 of element.invoiceData) {
           if (item1.invStatus === 'paid') {
             invNo = item1.invNo
-            console.log('inv', invNo)
+            invDate = item1.txnDate;
+            invAm = item1.finalAmount + item1.charges.freightFee.currency
+            // console.log('invAm', invAm)
+          }
+        }
+        for (let item1 of element.receiptData) {
+          for (let item2 of item1) {
+            recNo = item2.recNo;
+            recDate = item2.txnDate;
+            recAm = item2.recAmount + item2.recAmountCur
           }
         }
         let obj = {}
-        obj["Trip#"] = element.tripNo;
+
         obj["Order#"] = element.orderName.replace(/, /g, ' &');
+        obj["Trip#"] = element.tripNo;
         obj["Trip Date"] = element.dateCreated;
         obj["Total Miles"] = element.miles;
         obj["Invoice#"] = invNo;
-        // obj["Trip Date"] = element.dateCreated;
+        obj["Invoice Date"] = invDate;
+        obj["Invoice Amount"] = invAm;
+        obj["Receipt#"] = recNo;
+        obj["Receipt Date"] = recDate;
+        obj["Receipt Amount"] = recAm;
+
         dataObject.push(obj)
+
       });
+      let totalObj = {
+        ["Total Miles"]: 'Total',
+      }
+      totalObj["Trip#"] = ""
+      totalObj["Trip Date"] = ""
+      totalObj["Total"] = this.totalMiles;
+      totalObj["Invoice#"] = ""
+      totalObj["Invoice Date"] = ""
+      totalObj["TotalInv"] = this.totalInv;
+      totalObj["Recipt#"] = ""
+      totalObj["Recipt Date"] = ""
+      totalObj["TotalRec"] = this.totalRec;
+
+      dataObject.push(totalObj)
+
       let headers = Object.keys(dataObject[0]).join(',')
       headers += ' \n'
       csvArray.push(headers)
