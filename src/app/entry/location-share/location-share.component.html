@@ -10,7 +10,7 @@
         <div class="col-md-1"></div>
         <div class="col-md-10" style="height: 70vh;width: 100vh;">
             <h3>Truck : {{ apiResponse.vehicleName }}</h3>
-            <p>Last Location(5 mins ago.): <b>{{ apiResponse.lastLocation}}</b></p>
+            <p>Last Location: <b>{{ apiResponse.lastLocation}}</b></p>
             <google-map [width]="width" [height]="height" [center]="center" [options]="mapOptions" [zoom]="zoom">
                 <map-traffic-layer [autoRefresh]="true"></map-traffic-layer>
                 <map-marker #marker="mapMarker" [position]="center" [options]="vehicleMarkerOptions" (mapClick)="openInfoWindow(marker)"></map-marker>

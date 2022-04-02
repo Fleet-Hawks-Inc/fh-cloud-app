@@ -46,7 +46,8 @@ export class AddTripComponent implements OnInit {
   @ViewChild("orderModal", { static: true })
   orderModal: TemplateRef<any>;
 
-  orderModalRef: any;
+  
+  orderModalRef: any = undefined;
 
   newCoords = [];
   public searchResults: any;
@@ -274,6 +275,9 @@ export class AddTripComponent implements OnInit {
   planComm = [];
   currentCarrID = "";
   tripsObject: any = {};
+  orderId:string;
+  orderType:string;
+  orderNum:string;
 
   constructor(
     private apiService: ApiService,
@@ -303,6 +307,19 @@ export class AddTripComponent implements OnInit {
         this.recalledState = true;
       }
     });
+    
+    this.route.queryParams.subscribe( async(params) => {
+    this.orderId = params.orderId;
+    this.orderNum = params.orderNum;
+      if (this.orderId != undefined) {
+        await this.fetchOrderDetails([this.orderId])
+       this.changeMapRoute('order')
+       this.temporaryOrderIDs.push(this.orderId);
+       this.temporaryOrderNumber.push(this.orderNum);
+       await this.saveSelectOrderIDS()
+        }
+    });
+    
     this.fetchCarriers();
     this.orderFTLInit();
     this.mapShow();
@@ -729,15 +746,15 @@ export class AddTripComponent implements OnInit {
 
   async saveSelectOrderIDS() {
     this.OrderIDs = this.temporaryOrderIDs;
-    this.orderModalRef.close();
+    if(this.orderModalRef) {
+     this.orderModalRef.close();
+     }
     this.orderNo = this.temporaryOrderNumber.toString();
     let tripPlans = [];
-
     let current = this;
     let totalMilesOrder = 0;
     let calculateBy = "";
     this.orderStops = [];
-
     if (this.activeTab == "FTL") {
       this.allFetchedOrders = this.ftlOrders;
     } else {
