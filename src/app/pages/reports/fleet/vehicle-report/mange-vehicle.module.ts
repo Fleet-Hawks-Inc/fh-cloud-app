@@ -26,8 +26,8 @@ import { ActivityListComponent } from "./activity-list/activity-list.component";
 import { ActivityComponent } from "./activity/activity.component";
 import { ProvinceMilesComponent } from "./province-miles/province-miles.component";
 import { ProvinceSummaryComponent } from "./province-summary/province-summary.component";
-import { ExpenseListComponent } from './expense-list/expense-list.component';
-import { ExpenseComponent } from './expense/expense.component';
+import { ExpenseListComponent } from "./expense-list/expense-list.component";
+import { ExpenseComponent } from "./expense/expense.component";
 const routes: Routes = [
   {
     path: "overview",
@@ -62,7 +62,7 @@ const routes: Routes = [
   {
     path: "activity/:vehicleId",
     component: ActivityComponent,
-    data: { title: "Vehicle Activity Reports" },
+    data: { title: "Vehicle Activity Detail Report" },
   },
   {
     path: "activity-list",
@@ -79,9 +79,16 @@ const routes: Routes = [
     component: ProvinceSummaryComponent,
     data: { title: "Vehicle Province Summary Reports" },
   },
-  { path: 'expense-list', component: ExpenseListComponent },
-  { path: 'expense/:vehicleId', component: ExpenseComponent },
- 
+  {
+    path: "expense-list",
+    component: ExpenseListComponent,
+    data: { title: "Vehicle Expense List" },
+  },
+  {
+    path: "expense/:vehicleId",
+    component: ExpenseComponent,
+    data: { title: "Vehicle Expense Detail Report" },
+  },
 ];
 
 /**
