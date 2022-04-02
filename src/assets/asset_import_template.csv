@@ -1,1 +1,1 @@
-asset_name/number,vin,start_date,asset_type,status,year,licence_country,licence_province/state,licence_plate_number
+asset_name,vin,start_date,asset_type,status,year,licence_country,licence_province,licence_plate_number

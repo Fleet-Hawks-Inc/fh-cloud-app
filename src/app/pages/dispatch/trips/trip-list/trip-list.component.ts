@@ -377,6 +377,7 @@ export class TripListComponent implements OnInit {
             this.records = false;
 
             this.toastr.success("Trip deleted successfully");
+            this.initDataTable();
           },
         });
     }

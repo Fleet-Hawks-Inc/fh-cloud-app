@@ -79,7 +79,7 @@ export class ImportedAssetsComponent implements OnInit {
     const data: ValidatorConfig = {
       headers: [
         {
-          name: 'asset_name/number', inputName: 'assetname/number', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'asset_name', inputName: 'assetname/number', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
           }
         },
@@ -121,7 +121,7 @@ export class ImportedAssetsComponent implements OnInit {
           }
         },
         {
-          name: 'licence_province/state', inputName: 'licenceprovince/state', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'licence_province', inputName: 'licenceprovince/state', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
           }
         },
@@ -172,8 +172,11 @@ export class ImportedAssetsComponent implements OnInit {
   }
 
   refreshData() {
-
+    this.importAssets = []
+    this.fetchAssetImport();
+    this.dataMessage = Constants.FETCHING_DATA;
   }
+
   modalClose() {
     $('#uploadedDocs').val('');
     this.inValidMessages = [];
