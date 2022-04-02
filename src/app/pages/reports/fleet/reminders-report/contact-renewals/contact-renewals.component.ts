@@ -29,7 +29,9 @@ export class ContactRenewalsComponent implements OnInit {
     dueSoon: '',
   };
   record = []
-  data: any = []
+  data: any = [];
+  driversList: any = {};
+  mergedList: any = {};
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -61,6 +63,12 @@ export class ContactRenewalsComponent implements OnInit {
   fetchEmployees() {
     this.apiService.getData('contacts/get/emp/list').subscribe((res) => {
       this.empName = res;
+      if (res) {
+        this.apiService.getData('drivers/get/list').subscribe((result) => {
+          this.driversList = result;
+          this.mergedList = { ...res, ...result }; // merge id lists to one
+        });
+      }
     });
   }
 

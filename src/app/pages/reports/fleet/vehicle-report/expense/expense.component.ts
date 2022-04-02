@@ -64,7 +64,7 @@ export class ExpenseComponent implements OnInit {
   async fetchDriverPayment() {
     const result: any = await this.accountService.getData(`driver-payments/get/driver/payment?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&startDate=${this.start}&endDate=${this.end}`)
       .toPromise();
-    this.payments = result;
+    // this.payments = result;
     if (result.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND
     }
@@ -185,6 +185,11 @@ export class ExpenseComponent implements OnInit {
             this.driver.push(driv)
           }
         }
+        if (this.loaded) {
+          this.payments = []
+          this.totalDriverPay = 0;
+          this.dataMessage = Constants.FETCHING_DATA
+        }
         this.fetchDriverPayment();
         if (result.LastEvaluatedKey !== undefined) {
 
@@ -232,7 +237,7 @@ export class ExpenseComponent implements OnInit {
         this.fuel = [];
         this.serviceLogData = [];
         this.payments = [];
-        this.expensePay = [];
+        this.expensePay = []; 
         this.totalExpense = 0;
         this.totalDriverPay = 0;
         this.fetchTrpByVehicle()
