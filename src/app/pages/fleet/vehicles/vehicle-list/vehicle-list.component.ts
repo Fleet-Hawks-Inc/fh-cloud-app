@@ -6,7 +6,7 @@ import { NgSelectComponent } from "@ng-select/ng-select";
 import { Table } from 'primeng/table';
 
 import * as _ from 'lodash';
-import { NgxSpinnerService } from 'ngx-spinner';
+//import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { ApiService, HereMapService } from '../../../../services';
@@ -107,13 +107,12 @@ export class VehicleListComponent implements OnInit {
         { field: 'currentStatus', header: 'Status', type: 'text' },
     ];
   
-  constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService,
+  constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService,
     private onboard: OnboardDefaultService, protected _sanitizer: DomSanitizer, private modalService: NgbModal) {
   }
 
 
   async ngOnInit(): Promise<void> {
-
     this.onboard.checkInspectionForms();
     this.setToggleOptions();
     this.setVehiclesOptions();
@@ -186,7 +185,7 @@ export class VehicleListComponent implements OnInit {
     }
 
     clearSuggestions() {
-        this.vehicleIdentification = '';
+        this.vehicleIdentification = null;
     }
 
 
@@ -254,21 +253,17 @@ export class VehicleListComponent implements OnInit {
     $('.buttons-excel').trigger('click');
   }
 
-  async initDataTable() {
-    if (this.lastEvaluatedKey !== 'end') {
-       await this.apiService.getData('vehicles/fetch/records?vehicle=' + this.vehicleID + '&status=' + this.currentStatus + '&lastKey=' + this.lastEvaluatedKey)
-        .subscribe(async (result: any) => {
-          this.dataMessage = Constants.FETCHING_DATA
-          if (result.Items.length === 0) {
-            this.dataMessage = Constants.NO_RECORDS_FOUND
-          }
-          if (result.Items.length > 0) {
+    async initDataTable() {
+        if (this.lastEvaluatedKey !== 'end') {
+            let result = await this.apiService.getData('vehicles/fetch/records?vehicle=' + this.vehicleID + '&status=' + this.currentStatus + '&lastKey=' + this.lastEvaluatedKey).toPromise();
+            if (result.Items.length === 0) {
+                this.dataMessage = Constants.NO_RECORDS_FOUND;
+                this.loaded = true;
+            }
             result.Items.map((v) => {
-              v.url = `/fleet/vehicles/detail/${v.vehicleID}`;
-              // if(v.deviceInfo === undefined){
-              //v.deviceInfo = []
-              //}
+                v.url = `/fleet/vehicles/detail/${v.vehicleID}`;
             });
+           // this.suggestedDrivers = [];
             if (result.LastEvaluatedKey !== undefined) {
               this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].vehicleSK);
             }
@@ -276,16 +271,13 @@ export class VehicleListComponent implements OnInit {
               this.lastEvaluatedKey = 'end'
             }
             this.vehicles = this.vehicles.concat(result.Items)
-            console.log('veh',this.vehicles);
             this.loaded = true;
             this.isSearch = false;
             await this.getDashCamConnection(this.vehicles);
             await this.getDashCamStatus(this.vehicles);
-          }
-        });
+        }
     }
-  }
-  
+
   onScroll = async(event: any) => {
     if (this.loaded) {
       this.initDataTable();
