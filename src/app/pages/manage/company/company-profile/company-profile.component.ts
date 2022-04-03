@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr'
 import { Auth } from 'aws-amplify'
 import { FormGroup } from '@angular/forms';
 import { alphaAsync, compare, numericAsync, password, pattern, prop, ReactiveFormConfig, required, RxFormBuilder } from '@rxweb/reactive-form-validators';
+import { InvokeHeaderFnService } from 'src/app/services/invoke-header-fn.service';
 declare var $: any;
 @Component({
   selector: 'app-company-profile',
@@ -85,7 +86,8 @@ export class CompanyProfileComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private apiService: ApiService,
     private toastr: ToastrService,
-    private formBuilder: RxFormBuilder
+    private formBuilder: RxFormBuilder,
+    private headerFnService: InvokeHeaderFnService,
   ) {
     ReactiveFormConfig.set({
       'validationMessage': {
@@ -265,6 +267,8 @@ export class CompanyProfileComponent implements OnInit {
     const result:any = await this.apiService.postData(`carriers/sub-company/add`, data).toPromise();
     if(result) {
       this.clearForm();
+      localStorage.setItem("subCompany",'yes');
+      this.headerComponentFunction();
       this.toastr.success('Sub company added successfully');
       this.fetchCarrier();
     } else {
@@ -325,6 +329,10 @@ export class CompanyProfileComponent implements OnInit {
         }
       })
     }
+  }
+
+  headerComponentFunction() {
+    this.headerFnService.callHeaderFn();
   }
 
   clearForm() {
