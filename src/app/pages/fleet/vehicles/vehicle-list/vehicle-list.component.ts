@@ -6,7 +6,7 @@ import { NgSelectComponent } from "@ng-select/ng-select";
 import { Table } from 'primeng/table';
 
 import * as _ from 'lodash';
-//import { NgxSpinnerService } from 'ngx-spinner';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
 import { ApiService, HereMapService } from '../../../../services';
@@ -107,7 +107,7 @@ export class VehicleListComponent implements OnInit {
         { field: 'currentStatus', header: 'Status', type: 'text' },
     ];
   
-  constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService,
+  constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService,private spinner: NgxSpinnerService,
     private onboard: OnboardDefaultService, protected _sanitizer: DomSanitizer, private modalService: NgbModal) {
   }
 
