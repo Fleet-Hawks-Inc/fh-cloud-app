@@ -33,7 +33,7 @@ export class DriverDetailComponent implements OnInit {
     homeTerminal: string;
     cycle: string;
     public driverID: string;
-    currency=''
+    currency = ''
     private driverData: any;
     private driverDataUpdate: any;
     carrierID: any;
@@ -156,43 +156,43 @@ export class DriverDetailComponent implements OnInit {
     groupName: any = '';
     groupId: any = '';
     sessionId: string;
-    payPerMile={
-        pType:"ppm",
-        loadedMiles:null,
-        currency:null,
-        emptyMiles:null,
-        emptyMilesTeam:null,
-        loadedMilesTeam:null,
-        default:false
-      }
-      payPerHour={
-        pType:"pph",
-        rate:null,
-        currency:null,
-        waitingPay:null,
-        waitingHourAfter:null,
-        default:false
-      }
-      payPercentage={
-        pType:"pp",
-        loadPayPercentage:null,
-        loadPayPercentageOf:null,
-        default:false
-      }
-      payPerDelivery={
-        pType:"ppd",
-        deliveryRate:null,
-        currency:null,
-        default:false
-      }
+    payPerMile = {
+        pType: "ppm",
+        loadedMiles: null,
+        currency: null,
+        emptyMiles: null,
+        emptyMilesTeam: null,
+        loadedMilesTeam: null,
+        default: false
+    }
+    payPerHour = {
+        pType: "pph",
+        rate: null,
+        currency: null,
+        waitingPay: null,
+        waitingHourAfter: null,
+        default: false
+    }
+    payPercentage = {
+        pType: "pp",
+        loadPayPercentage: null,
+        loadPayPercentageOf: null,
+        default: false
+    }
+    payPerDelivery = {
+        pType: "ppd",
+        deliveryRate: null,
+        currency: null,
+        default: false
+    }
 
-      payFlatRate={
-        pType:"pfr",
-        flatRate:null,
-        currency:null,
-        default:false
-      }
-    
+    payFlatRate = {
+        pType: "pfr",
+        flatRate: null,
+        currency: null,
+        default: false
+    }
+
 
     constructor(
         private hereMap: HereMapService,
@@ -208,7 +208,7 @@ export class DriverDetailComponent implements OnInit {
         this.sessionId = this.routerMgmtService.driverUpdateSessionID;
 
     }
-    paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"}, {name:"Flat Rate",value:"pfr"}]
+    paymentOptions = [{ name: "Pay Per Mile", value: "ppm" }, { name: "Percentage", value: "pp" }, { name: "Pay Per Hour", value: "pph" }, { name: "Pay Per Delivery", value: "ppd" }, { name: "Flat Rate", value: "pfr" }]
 
     ngOnInit() {
 
@@ -395,44 +395,46 @@ export class DriverDetailComponent implements OnInit {
                         this.fetchCompleteAdd(this.driverData.address);
                     }
 
-                    this.cycle = this.driverData.hosDetails.hosCycleName;
+                    this.cycle = this.driverData.hosDetails.hosCycleName ? this.driverData.hosDetails.hosCycleName : '';
                     this.email = this.driverData.email;
                     this.phone = this.driverData.phone;
                     this.DOB = this.driverData.DOB;
                     this.CDL = this.driverData.CDL_Number;
-                    this.payPeriod=this.driverData.payPeriod
-                    this.driverData.paymentOption.forEach(element => {
-                        if(element.default){
-                        const type=this.paymentOptions.find(el=> el.value==element.pType)
-                        this.paymentType = type.name
-                        }
+                    this.payPeriod = this.driverData.payPeriod
+                    if (this.driverData.paymentOption) {
+                        this.driverData.paymentOption.forEach(element => {
+                            if (element.default) {
+                                const type = this.paymentOptions.find(el => el.value == element.pType)
+                                this.paymentType = type.name
+                            }
 
-                    if(element.pType=="pph"){
-                        this.payPerHour.currency=element.currency
-                        this.payPerHour.rate=element.rate
-                        this.payPerHour.waitingHourAfter=element.waitingHourAfter
-                        this.payPerHour.waitingPay=element.waitingPay
+                            if (element.pType == "pph") {
+                                this.payPerHour.currency = element.currency
+                                this.payPerHour.rate = element.rate
+                                this.payPerHour.waitingHourAfter = element.waitingHourAfter
+                                this.payPerHour.waitingPay = element.waitingPay
+                            }
+                            if (element.pType == "pfr") {
+                                this.payFlatRate.flatRate = element.flatRate
+                                this.payFlatRate.currency = element.currency
+                            }
+                            if (element.pType == "ppm") {
+                                this.payPerMile.loadedMiles = element.loadedMiles
+                                this.payPerMile.currency = element.currency
+                                this.payPerMile.emptyMiles = element.emptyMiles
+                                this.payPerMile.emptyMilesTeam = element.emptyMilesTeam
+                                this.payPerMile.loadedMilesTeam = element.loadedMilesTeam
+                            }
+                            if (element.pType == "pp") {
+                                this.payPercentage.loadPayPercentage = element.loadPayPercentage
+                                this.payPercentage.loadPayPercentageOf = element.loadPayPercentageOf
+                            }
+                            if (element.pType == "ppd") {
+                                this.payPerDelivery.currency = element.currency
+                                this.payPerDelivery.deliveryRate = element.deliveryRate
+                            }
+                        });
                     }
-                    if(element.pType=="pfr"){
-                        this.payFlatRate.flatRate=element.flatRate
-                        this.payFlatRate.currency=element.currency
-                    }
-                    if(element.pType=="ppm"){
-                      this.payPerMile.loadedMiles=element.loadedMiles
-                      this.payPerMile.currency=element.currency
-                      this.payPerMile.emptyMiles=element.emptyMiles
-                      this.payPerMile.emptyMilesTeam=element.emptyMilesTeam
-                      this.payPerMile.loadedMilesTeam=element.loadedMilesTeam
-                    }
-                    if(element.pType=="pp"){
-                      this.payPercentage.loadPayPercentage=element.loadPayPercentage
-                      this.payPercentage.loadPayPercentageOf=element.loadPayPercentageOf
-                    }
-                    if(element.pType=="ppd"){
-                      this.payPerDelivery.currency=element.currency
-                      this.payPerDelivery.deliveryRate=element.deliveryRate
-                    }
-                    });
                     if (this.driverData.middleName !== undefined && this.driverData.middleName !== null && this.driverData.middleName !== '') {
                         this.driverName = `${this.driverData.firstName} ${this.driverData.middleName} ${this.driverData.lastName}`;
                     } else {
@@ -510,8 +512,8 @@ export class DriverDetailComponent implements OnInit {
                     this.liceVehicleType = this.driverData.licenceDetails.vehicleType;
                     this.liceContractStart = this.driverData.licenceDetails.contractStart;
                     this.liceContractEnd = this.driverData.licenceDetails.contractEnd;
-                   
-                    
+
+
                     this.SIN = this.driverData.SIN;
                     this.loadPayPercentage = this.driverData.paymentDetails.loadPayPercentage;
                     this.loadPayPercentageOf = this.driverData.paymentDetails.loadPayPercentageOf;
@@ -636,10 +638,10 @@ export class DriverDetailComponent implements OnInit {
     deleteUploadedFile(name: string) { // delete from aws
         this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => { });
     }
-  fetchDriverTrips() {
+    fetchDriverTrips() {
         this.apiService.getData(`drivers/get/driver/active?driver=${this.driverID}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
             this.trips = result.Items;
-           });
+        });
     }
 
     fetchDriverLogs() {
