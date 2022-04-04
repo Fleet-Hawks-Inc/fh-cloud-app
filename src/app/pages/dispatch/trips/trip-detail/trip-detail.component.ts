@@ -120,6 +120,14 @@ export class TripDetailComponent implements OnInit {
   companyLogoSrc: string;
   customerData = [];
   isEmail: boolean = false;
+  metricSelected: string = 'F';
+  metrics = [
+    { name: 'F', value: 'F' },
+    { name: 'C', value: 'C' },
+
+  ];
+  isCelsius = false;
+  get = _.get;
   ngOnInit() {
 
     this.listService.getDocsModalList.subscribe((res: any) => {
@@ -845,6 +853,9 @@ export class TripDetailComponent implements OnInit {
     { field: 'highTemp', header: 'High' },
     { field: 'lowTemp', header: 'Low' },
     { field: 'alIsActivate', header: 'IsActive' },
+
+
+
   ]
   tripAlarms = []
   selectedAssetAlarm;
@@ -853,6 +864,7 @@ export class TripDetailComponent implements OnInit {
     this.assetNamesList.push(...this.tempNamesList)
     this.tripAlarms = await this.apiService.getData(`alarms/${this.tripData.tripNo}`).toPromise();
     this.tripAlarms.forEach(element => {
+      // removing asset which has alarm set previously.
       const assetObj = _.find(this.assetNamesList, { assetID: element.assetId });
       console.log(assetObj);
       if (assetObj) {
@@ -860,6 +872,13 @@ export class TripDetailComponent implements OnInit {
         console.log(this.assetNamesList);
         this.selectedAlarmAlert = undefined
 
+      }
+      if (element.alTempCelsius == 0) {
+        element.highTemp = element.highTemp + ' F';
+        element.lowTemp = element.lowTemp + ' F';
+      } else {
+        element.highTemp = element.highTemp + ' C';
+        element.lowTemp = element.lowTemp + ' C'
       }
     });
   }
@@ -878,7 +897,10 @@ export class TripDetailComponent implements OnInit {
   async addAlarmToAsset() {
     this.assetAlert = undefined;
     const assetObj = _.find(this.assetNamesList, { assetName: this.selectedAssetAlarm })
-
+    this.validateMultipleEmails();
+    if (!this.isEmailsValid) {
+      return;
+    }
     this.alarmInput = {
       tripID: this.tripID,
       tripNo: this.tripData.tripNo,
@@ -886,7 +908,8 @@ export class TripDetailComponent implements OnInit {
       assetName: assetObj.assetName,
       highTemp: this.highTemp.toString(),
       lowTemp: this.lowTemp.toString(),
-      emails: this.emails.split(',')
+      emails: this.emails.split(','),
+      isCelsius: this.isCelsius === true ? 1 : 0 // Is in Celsius or Faherenhiet 
 
     }
     const output = await this.apiService.postData('alarms', this.alarmInput).subscribe(async (data: any) => {
@@ -914,6 +937,44 @@ export class TripDetailComponent implements OnInit {
     }
   }
 
+  isEmailsValid = true;
+  validateMultipleEmails() {
+    // Get value on emails input as a string
+
+
+    // Split string by comma into an array
+    let emailsValidate = this.emails.split(",");
+
+
+    const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    const invalidEmails = [];
+
+    for (let i = 0; i < emailsValidate.length; i++) {
+      // Trim whitespaces from email address
+      emailsValidate[i] = emailsValidate[i].trim();
+
+      // Check email against our regex to determine if email is valid
+      if (emailsValidate[i] == "" || !regex.test(emailsValidate[i])) {
+        invalidEmails.push(emailsValidate[i]);
+      }
+    }
+    if (invalidEmails.length > 0) {
+      this.isEmailsValid = false;
+    } else {
+      this.isEmailsValid = true;
+    }
+  }
+
+  changeMetric(e) {
+    console.log(e.value);
+    if (e.value === 'F') {
+      this.isCelsius = false;
+    } else {
+      this.isCelsius = true;
+    }
+  }
+
 }
 
 interface IAddAlarmInput {
@@ -923,5 +984,6 @@ interface IAddAlarmInput {
   assetName: string,
   highTemp: string,
   lowTemp: string,
-  emails: string[]
+  emails: string[],
+  isCelsius: number
 }

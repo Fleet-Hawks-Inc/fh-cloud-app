@@ -5,6 +5,7 @@ import { Injectable, NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { RouterModule, Routes } from "@angular/router";
+
 import {
   NgbDateAdapter,
   NgbDateParserFormatter,
@@ -28,7 +29,7 @@ import { SharedModule } from "../../../shared/shared.module";
 import { AddTripComponent } from "./add-trip/add-trip.component";
 import { TripDetailComponent } from "./trip-detail/trip-detail.component";
 import { TripListComponent } from "./trip-list/trip-list.component";
-
+import { SelectButtonModule } from 'primeng/selectbutton';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -141,7 +142,8 @@ const routes: Routes = [
     ButtonModule,
     TableModule,
     ToastModule,
-    TooltipModule
+    TooltipModule,
+    SelectButtonModule
   ],
   providers: [
     unsavedChangesGuard,
