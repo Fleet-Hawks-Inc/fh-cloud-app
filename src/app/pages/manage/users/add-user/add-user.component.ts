@@ -176,7 +176,7 @@ export class AddUserComponent implements OnInit {
     this.isCarrierID = localStorage.getItem('carrierID');
     if (this.isCarrierID === undefined || this.isCarrierID === null) {
       let usr = (await Auth.currentSession()).getIdToken().payload;
-      this.isCarrierID = usr.carrierID;
+      this.isCarrierID = localStorage.getItem('xfhCarrierId');
     }
   }
   // ADDRESS Section

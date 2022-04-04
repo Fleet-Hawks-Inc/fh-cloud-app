@@ -119,8 +119,9 @@ export class AddIncidentComponent implements OnInit {
   }
 
   getCurrentUser = async () => {
-    let result = (await Auth.currentSession()).getIdToken().payload;
-    this.currentUser = `${result.firstName} ${result.lastName}`;
+    // let result = (await Auth.currentSession()).getIdToken().payload;
+    // this.currentUser = `${result.firstName} ${result.lastName}`;
+    this.currentUser = localStorage.getItem("currentUserName");
     this.safetyManagers.push(this.currentUser);
   };
 

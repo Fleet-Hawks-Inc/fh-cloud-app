@@ -273,14 +273,10 @@ export class DriverListComponent implements OnInit {
 
 
     onScroll = async (event: any) => {
-
-
         if (this.loaded) {
             this.fetchDrivers();
-
         }
         this.loaded = false;
-
     }
 
     fetchAddress(drivers: any) {

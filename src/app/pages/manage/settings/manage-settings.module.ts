@@ -5,7 +5,6 @@ import { SettingsOverviewComponent } from "./settings-overview/settings-overview
 import { GeneralSettingsComponent } from "./general-settings/general-settings.component";
 import { MyAccountComponent } from "./my-account/my-account.component";
 import { DriverSettingComponent } from "./driver-setting/driver-setting.component";
-import { AssetsSettingComponent } from "./assets-setting/assets-setting.component";
 import { FuelSettingComponent } from "./fuel-setting/fuel-setting.component";
 import { RemindersSettingComponent } from "./reminders-setting/reminders-setting.component";
 import { IssueSettingComponent } from "./issue-setting/issue-setting.component";
@@ -30,6 +29,9 @@ import { SplitButtonModule } from "primeng/splitbutton";
 import { CalendarModule } from "primeng/calendar";
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { DropdownModule } from "primeng/dropdown";
+import { AssetsSettingComponent } from "./assets-setting/assets-setting.component";
+// import { DeletedAssetsComponent } from './assets-setting/deleted-assets/deleted-assets.component';
+// import { ImportedAssetsComponent } from './assets-setting/imported-assets/imported-assets.component';
 
 const routes: Routes = [
   { path: "overview", component: SettingsOverviewComponent },
@@ -55,11 +57,11 @@ const routes: Routes = [
     data: { title: "Deleted Drivers" },
   },
   { path: "import", component: ImportDriversComponent },
-  {
-    path: "asset",
-    component: AssetsSettingComponent,
-    data: { title: "Deleted Assets" },
-  },
+  // {
+  //   path: "asset",
+  //   component: AssetsSettingComponent,
+  //   data: { title: "Deleted Assets" },
+  // },
   {
     path: "fuel",
     component: FuelSettingComponent,
@@ -95,6 +97,14 @@ const routes: Routes = [
     component: CustomerSettingComponent,
     data: { title: "Deleted Customer" },
   },
+  {
+    path: "assets",
+    loadChildren: () =>
+      import("./assets-setting/assets-settings.modules").then(
+        (m) => m.AssetsSettingsModules
+      ),
+    data: { title: "Assets Settings" },
+  },
 ];
 
 @NgModule({
@@ -103,7 +113,6 @@ const routes: Routes = [
     GeneralSettingsComponent,
     MyAccountComponent,
     DriverSettingComponent,
-    AssetsSettingComponent,
     FuelSettingComponent,
     RemindersSettingComponent,
     IssueSettingComponent,
@@ -114,6 +123,9 @@ const routes: Routes = [
     DoverviewComponent,
     ImportDriversComponent,
     VehicleSettingsComponent,
+    AssetsSettingComponent
+    // DeletedAssetsComponent,
+    // ImportedAssetsComponent,
   ],
   imports: [
     CommonModule,
