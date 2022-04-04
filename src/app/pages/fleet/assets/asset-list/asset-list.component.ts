@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,  Input, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -8,6 +8,8 @@ import Constants from '../../constants';
 import { environment } from '../../../../../environments/environment';
 import { OnboardDefaultService } from '../../../../services/onboard-default.service';
 import * as _ from 'lodash';
+import { Table } from 'primeng/table';
+import { NgSelectComponent } from '@ng-select/ng-select';
 declare var $: any;
 
 @Component({
@@ -16,6 +18,9 @@ declare var $: any;
   styleUrls: ['./asset-list.component.css'],
 })
 export class AssetListComponent implements OnInit {
+  @ViewChild('dt') table: Table;
+  
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   allAssetTypes: any;
@@ -99,6 +104,27 @@ export class AssetListComponent implements OnInit {
   contactsObjects = [];
   loaded = false
   lastItemSK = ''
+  
+  loadMsg: string = Constants.NO_LOAD_DATA;
+  assetOptions: any[];
+  _selectedColumns: any[];
+  get = _.get;
+  isSearch = false;
+  
+  dataColumns = [
+        { field: 'assetIdentification', header: 'Asset Name/Number', type: "text" },
+        { field: 'VIN', header: 'VIN', type: "text" },
+        { field: 'assetType', header: 'Asset Type', type: "text" },
+        { field: 'assetDetails.manufacturer', header: 'Make', type: "text" },
+        { field: 'assetDetails.licencePlateNumber', header: 'Licence Plate Number', type: "text" },
+        { field: 'assetDetails.year', header: 'Year', type: "text" },
+        { field: 'assetDetails.ownerShip', header: 'Ownership', type: "text" },
+        { field: 'assetDetails.ownCname', header: 'Company Name', type: "text" },
+        { field: 'assetDetails.annualSafetyDate', header: 'Annual Safety Date', type: "text" },
+        { field: "currentStatus", header: 'Status', type: 'text' },
+
+    ];
+  
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
@@ -107,17 +133,54 @@ export class AssetListComponent implements OnInit {
     private hereMap: HereMapService,
     private onboard: OnboardDefaultService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.setToggleOptions();
+    this.setAssetOptions();
     this.onboard.checkInspectionForms();
     this.fetchGroups();
-    this.initDataTable();
+  // await this.initDataTable();
+   this.initDataTable();
     this.fetchContacts();
 
   }
+  
+  setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    setAssetOptions() {
+        this.assetOptions = [{ "value": "container", "name": "Container" }, 
+        { "value": "double_drop", "name": "Double Drop" }, 
+        { "value": "dump_trailer", "name": "Dump Trailer" },
+        { "value": "flat_bed", "name": "Flat bed" },
+        { "value": "lowboy", "name": "Lowboy" },
+        { "value": "stepDeck", "name": "StepDeck" },
+        { "value": "removable_gooseneck", "name": "Removable Gooseneck" },
+        { "value": "dry_van", "name": "Dry Van" },
+        { "value": "reefer", "name": "Reefer" },
+        { "value": "power_only", "name": "Power Only" },
+        { "value": "conestoga_trailer", "name": "Conestoga Trailer" },
+        { "value": "side_kit_trailer", "name": "Side Kit Trailer" },
+        { "value": "enclosed_trailer", "name": "Enclosed Trailer" },
+        { "value": "scrap_trailer", "name": "Scrap Trailer" },
+        { "value": "semi_trailer", "name": "Semi Trailer" },
+        { "value": "chassis", "name": "Chassis" },
+        { "value": "tank_trailer", "name": "Tank Trailer" },
+        ];
+    }
+    @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
+
+    set selectedColumns(val: any[]) {
+        //restore original order
+        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+    }
 
   getSuggestions = _.debounce(function (value) {
     value = value.toLowerCase();
     if (value != '') {
+      this.loadMsg = Constants.LOAD_DATA;
       this.apiService
         .getData(`assets/suggestion/${value}`)
         .subscribe((result) => {
@@ -207,9 +270,6 @@ export class AssetListComponent implements OnInit {
 
             this.dataMessage = Constants.NO_RECORDS_FOUND
             this.suggestedAssets = [];
-
-
-
           }
           if (result.Items.length > 0) {
             result[`Items`].map((v: any) => {
@@ -223,16 +283,17 @@ export class AssetListComponent implements OnInit {
               this.lastEvaluatedKey = 'end'
             }
             this.allData = this.allData.concat(result.Items)
-
             this.loaded = true;
+            this.isSearch = false;
           }
         });
   }
-  onScroll() {
+  
+  onScroll = async(event: any) => {
     if (this.loaded) {
       this.initDataTable();
     }
-    this.loaded = true;
+    this.loaded = false;
   }
 
   searchFilter() {
@@ -241,8 +302,9 @@ export class AssetListComponent implements OnInit {
       if (this.assetID == '') {
         this.assetID = this.assetIdentification;
       }
-      this.dataMessage = Constants.FETCHING_DATA;
+      this.isSearch = true;
       this.allData = [];
+      this.dataMessage = Constants.FETCHING_DATA;
       this.lastEvaluatedKey = ''
       this.suggestedAssets = [];
       this.initDataTable();
@@ -252,6 +314,14 @@ export class AssetListComponent implements OnInit {
     }
   }
 
+   clearInput() {
+        this.suggestedAssets = null;
+    }
+
+    clearSuggestions() {
+        this.assetIdentification = null;
+    }
+ 
   resetFilter() {
     if (this.assetIdentification !== '' || this.assetType !== null) {
       this.assetID = '';
@@ -259,6 +329,7 @@ export class AssetListComponent implements OnInit {
       this.assetType = null;
       this.suggestedAssets = [];
       this.allData = [];
+      this.isSearch = true;
       this.dataMessage = Constants.FETCHING_DATA;
       this.lastEvaluatedKey = ''
       this.initDataTable();
@@ -378,14 +449,19 @@ export class AssetListComponent implements OnInit {
   }
 
   refreshData() {
+    this.allData = [];
     this.assetID = '';
     this.assetIdentification = '';
     this.assetType = null;
     this.suggestedAssets = [];
-    this.allData = [];
     this.lastEvaluatedKey = '';
-    this.dataMessage = Constants.FETCHING_DATA;
+    this.loaded = false;
     this.initDataTable();
+    this.dataMessage = Constants.FETCHING_DATA;
 
   }
+  
+   clear(table: Table) {
+        table.clear();
+    }
 }
