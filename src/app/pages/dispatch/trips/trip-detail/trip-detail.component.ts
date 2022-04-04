@@ -866,10 +866,10 @@ export class TripDetailComponent implements OnInit {
     this.tripAlarms.forEach(element => {
       // removing asset which has alarm set previously.
       const assetObj = _.find(this.assetNamesList, { assetID: element.assetId });
-      console.log(assetObj);
+
       if (assetObj) {
         _.remove(this.assetNamesList, { assetID: assetObj.assetID });
-        console.log(this.assetNamesList);
+
         this.selectedAlarmAlert = undefined
 
       }
@@ -912,7 +912,7 @@ export class TripDetailComponent implements OnInit {
       isCelsius: this.isCelsius === true ? 1 : 0 // Is in Celsius or Faherenhiet 
 
     }
-    const output = await this.apiService.postData('alarms', this.alarmInput).subscribe(async (data: any) => {
+    await this.apiService.postData('alarms', this.alarmInput).subscribe(async (data: any) => {
       await this.getTripAlarms();
 
     }, error => {
@@ -926,13 +926,10 @@ export class TripDetailComponent implements OnInit {
   }
 
   async deleteAlarm(rowData) {
-    console.log(rowData);
+
     const decision = confirm('Do you want to Delete the Alarm?');
     if (decision) {
-      await this.apiService.deleteData(`alarms/${rowData.alAlarmId}`).toPromise();
-      console.log(this.tempNamesList);
-
-      this.showAlerts = false;
+      await this.apiService.deleteData(`alarms/${rowData.alAlarmId}`).toPromise(); this.showAlerts = false;
 
     }
   }
@@ -967,7 +964,7 @@ export class TripDetailComponent implements OnInit {
   }
 
   changeMetric(e) {
-    console.log(e.value);
+
     if (e.value === 'F') {
       this.isCelsius = false;
     } else {
