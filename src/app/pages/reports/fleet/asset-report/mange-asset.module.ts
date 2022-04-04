@@ -22,6 +22,9 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { ActivityComponent } from "./activity/activity.component";
 import { ActivityListComponent } from "./activity-list/activity-list.component";
 
+import { ExpenseListComponent } from './expense-list/expense-list.component';
+import { ExpenseComponent } from './expense/expense.component';
+
 const routes: Routes = [
   {
     path: "overview",
@@ -48,6 +51,16 @@ const routes: Routes = [
     component: ActivityListComponent,
     data: { title: "Asset Activity List" },
   },
+  {
+    path: "expense/:astId",
+    component: ExpenseComponent,
+    data: {title: "Asset Expense Report"}
+  },
+  {
+    path: "expense-list",
+    component: ExpenseListComponent,
+    data: {title: "Expense List"}
+  }
 ];
 
 /**
@@ -114,6 +127,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     DetailComponent,
     ActivityComponent,
     ActivityListComponent,
+    ExpenseListComponent,
+    ExpenseComponent,
   ],
   imports: [
     CommonModule,
