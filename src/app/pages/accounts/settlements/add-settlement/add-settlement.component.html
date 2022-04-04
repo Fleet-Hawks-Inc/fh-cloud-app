@@ -350,6 +350,7 @@
                             <th>Vehicle</th>
                             <th>Assets</th>
                             <th>Carrier</th>
+                            <th>Payment</th>
                             <th>Status</th>
                           </tr>
                         </thead>
@@ -420,6 +421,10 @@
                                   {{ carriers[carr] }}
                                   <span *ngIf="c < trp.carrID.length - 1">,</span>
                                 </span>
+                              </td>
+                              <td>
+                                <!-- <span>{{trp.paymentSelected[0].pType}}</span>
+                                <span>Rate: {{trp.paymentSelected[0].amount}}</span> -->
                               </td>
                               <td>
                                 <span class="badge badge-dark p-1">DELIVERED</span>
@@ -642,7 +647,7 @@
                                 </td>
                                 <td>
                                   <p>Total: {{trp.amount}}</p>
-                                  <p>Payment: {{  paymentAbr[trp.paymentSelected[0].pType]}} <a href="javascript:;" (click)="openPaymentModelFor(trp)">change</a></p>
+                                  <p>Payment: {{  paymentAbr[trp.paymentSelected[0].pType]}} <a *ngIf="!settlementData.tripIds.includes(trp.tripID)" href="javascript:;" (click)="openPaymentModelFor(trp)">change</a></p>
                                 </td>
                                 <td>
                                   <span class="badge badge-dark p-1">DELIVERED</span>

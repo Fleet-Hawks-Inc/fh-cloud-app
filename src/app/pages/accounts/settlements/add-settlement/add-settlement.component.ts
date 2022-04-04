@@ -402,12 +402,15 @@ export class AddSettlementComponent implements OnInit {
         switch(element.paymentSelected[0].pType){
           case "ppm":
             element.amount=element.entityMiles*element.paymentSelected[0].loadedMiles
+            element.paymentSelected=[this.ppm]
             break;
           case "pfr":
             element.amount=element.paymentSelected[0].flatRate
+            element.paymentSelected=[this.pfr]
             break;
           case "ppd":
             element.amount=element.paymentSelected[0].deliveryRate
+            element.paymentselected=[this.ppd]
             break;
         }
 
@@ -1048,7 +1051,8 @@ export class AddSettlementComponent implements OnInit {
         id: element.tripID,
         splitIDs: [],
         plan: [],
-        amount:element.amount
+        amount:element.amount,
+        paymentSelected:element.paymentSelected
       };
       this.settlementData.trpData.push(obj);
     }
@@ -1162,7 +1166,6 @@ export class AddSettlementComponent implements OnInit {
     }
   }
   oprFinalCal() {
-    console.log(this.settlementData)
     this.calculateTripAmount()
   //   if(this.settlementData.paymentSelected.length>0){
   //     for(const payment of this.settlementData.paymentSelected){
@@ -1255,7 +1258,6 @@ export class AddSettlementComponent implements OnInit {
   }
 
   driverCarrPaymentCal() {
-    console.log(this.settlementData)
     if (this.settlementData.type === "driver") {
       // driver_hours will be from ELD
       this.settlementData.miles.driverHours = 0;
@@ -1507,7 +1509,6 @@ export class AddSettlementComponent implements OnInit {
       });
     }
     this.submitDisabled = true;
-    console.log(this.settlementData)
 
     this.accountService.postData("settlement", this.settlementData).subscribe({
       complete: () => { },
@@ -1572,7 +1573,7 @@ export class AddSettlementComponent implements OnInit {
           let stldTrips = encodeURIComponent(
             JSON.stringify(this.settlementData.tripIds)
           );
-          this.fetchSettledTrips(stldTrips);
+          this.fetchSettledTrips(stldTrips,this.settlementData.trpData);
         }
         if (this.settlementData.fromDate == undefined) {
           this.settlementData.fromDate = null;
@@ -1598,7 +1599,7 @@ export class AddSettlementComponent implements OnInit {
       });
   }
 
-  async fetchSettledTrips(tripIds) {
+  async fetchSettledTrips(tripIds,trpData) {
     let result: any = await this.apiService
       .getData(`common/trips/driver/settled?entities=${tripIds}`)
       .toPromise();
@@ -1824,6 +1825,7 @@ export class AddSettlementComponent implements OnInit {
       });
     }
     this.settledTrips = result;
+    console.log(this.settledTrips)
     this.dummySettledTrips = result;
     let stlObj = result.reduce((a: any, b: any) => {
       return (
