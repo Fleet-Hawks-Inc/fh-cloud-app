@@ -234,6 +234,8 @@ export class ProvinceMilesComponent implements OnInit {
                 const element4 = element2.canProvince[k];
                 canState += `"${element4.StCntry}\n\"`;
                 canMiles += `"${element4.Total}\n\"`;
+
+           
               }
               let obj = {}
               obj["Vehicle"] = element.vehicle;
@@ -243,12 +245,13 @@ export class ProvinceMilesComponent implements OnInit {
               if (type === 'US') {
                 obj["Province(US)"] = element2.usProvince[stateIndex].StCntry;
                 obj["US Province Miles"] = element2.usProvince[stateIndex].Total;
-                obj["US Total Miles"] = element.usMiles;
+                console.log("Hello",element2.usProvince)
+                obj["US Total Miles"] = element.usMiles.toFixed(2);
               }
               else {
                 obj["Province(Canada)"] = element2.canProvince[stateIndex].StCntry;
                 obj["Canada Province Miles"] = element2.canProvince[stateIndex].Total;
-                obj["Canada Total Miles"] = element.canMiles;
+                obj["Canada Total Miles"] = element.canMiles.toFixed(2);   
               }
 
               obj["Trip Miles"] = element.miles;

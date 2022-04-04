@@ -225,7 +225,7 @@
                             >
                             <span *ngFor="let item1 of item.provinceData">
                               <span *ngFor="let item2 of item1.usProvince">
-                                {{ item2.Total }}<br />
+                                {{ item2.Total | number: "1.2-2"}}<br />
                               </span>
                             </span>
                           </td>
@@ -246,7 +246,7 @@
                             >
                             <span *ngFor="let item1 of item.provinceData">
                               <span *ngFor="let item2 of item1.canProvince">
-                                {{ item2.Total }}<br />
+                                {{ item2.Total | number: "1.2-2"}}<br/>
                               </span>
                             </span>
                           </td>
