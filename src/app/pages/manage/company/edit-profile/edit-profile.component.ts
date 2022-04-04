@@ -147,6 +147,9 @@ export class EditProfileComponent implements OnInit {
   yardAddress: boolean;
   submitDisabled = false;
   uploadedPicture = '';
+  subCompIDs = [];
+  subCompInfo = [];
+
   constructor(private apiService: ApiService, private toaster: ToastrService,
     private headerFnService: InvokeHeaderFnService,
     private route: ActivatedRoute,
@@ -176,6 +179,8 @@ export class EditProfileComponent implements OnInit {
         this.carriers = result.Items[0];
         this.carrierID = this.carriers.carrierID;
         this.CCC = this.carriers.CCC;
+        this.subCompIDs = this.carriers.subCompIDs ? this.carriers.subCompIDs : [];
+        this.subCompInfo = this.carriers.subCompInfo ? this.carriers.subCompInfo : [];
         this.DBAName = this.carriers.DBAName;
         this.DOT = this.carriers.DOT;
         this.EIN = this.carriers.EIN;
@@ -585,8 +590,9 @@ export class EditProfileComponent implements OnInit {
           trucks: this.fleets.trucks
         },
         banks: this.banks,
-        uploadedLogo: this.uploadedLogo
-
+        uploadedLogo: this.uploadedLogo,
+        subCompIDs : this.subCompIDs,
+        subCompInfo : this.subCompInfo
       };
       if (this.findingWay == "Referral") {
         data["referral"] = this.referral;
