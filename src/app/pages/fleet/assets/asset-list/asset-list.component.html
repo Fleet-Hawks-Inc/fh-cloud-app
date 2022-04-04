@@ -10,35 +10,24 @@
                 <form class="formgrid grid">
                     <div class="row">
                         <div class="col" style="margin-left: 20px;margin-top: 5px;">
-                            <p-autoComplete #autoComp id="autoCmpSugDriver" [placeholder]="'Type Assets Name'" class="mr-2" [forceSelection]="true" emptyMessage="No data found." [(ngModel)]="assetIdentification" [suggestions]="suggestedAssets" [minLength]="2" (completeMethod)="getSuggestions($event.query)"
-                                (onSelect)="setAsset($event.assetID,$event.assetIdentification)" field="assetIdentification"> </p-autoComplete>
+                            <p-autoComplete #autoComp id="autoCmpSugAsset" [placeholder]="'Type Assets Name'" class="mr-2" [forceSelection]="true" emptyMessage="No data found." [(ngModel)]="assetIdentification" [suggestions]="suggestedAssets" [minLength]="2" (completeMethod)="getSuggestions($event.query)"
+                                (onSelect)="setAsset($event.assetIdentification)" field="assetIdentification"> </p-autoComplete>
                             <p-dropdown id="drpDvrType" [style]="{minWidth: '200px'}" [options]="assetOptions" class="mr-2" placeholder="Select a Assets Type" [(ngModel)]="assetType" optionLabel="name" optionValue="value">
                             </p-dropdown>
                             <button id="btnSearch" type="button" [disabled]="isSearch" pButton class="mr-2" icon="pi pi-search" pTooltip="Search" (click)="searchFilter()"></button>
                             <button id="btnResetFilter" type="button" [disabled]="isSearch" pButton class="mr-2" icon="pi pi-refresh" pTooltip="Reset" (click)="resetFilter()"></button>
-
-
                         </div>
-
-
                         <div class="col">
                         </div>
-
-
                     </div>
-
                 </form>
-
-
             </header>
-
             <section class="m-2">
                 <div class="row mb-3">
                     <div class="col-lg-12">
                         <div class="bg-white p-3 text-dark">
                             <div class="form-group row pt-3">
                                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
-
                                     <p-table #dt [value]="allData" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true" [loading]="!loaded"
                                         scrollHeight="100%">
                                         <!-- Caption template of data table -->
@@ -48,8 +37,6 @@
                                                 <div>
                                                     <h3 class="m-0"> Assets </h3>
                                                 </div>
-
-
                                                 <div class="text-right">
                                                     <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
                                                     <button type="button" pButton pTooltip="Add" routerLink="/fleet/assets/add" class="p-button-outlined mr-2" icon="pi pi-plus"></button>
@@ -69,7 +56,7 @@
                                                 <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn style="width:10%">
 
                                                     <div [ngSwitch]="dataColumns.field">
-                                                        <!-- Driver Status Filter Customization -->
+                                                        <!-- Asset Status Filter Customization -->
                                                         <span *ngSwitchCase="'currentStatus'">
                                                             <div class="flex justify-content-center align-items-center"
                                                                 alignFrozen="left" pFrozenColumn [frozen]="true">
@@ -104,10 +91,6 @@
                                                             </div>
                                                         </span>
                             </div>
-
-
-
-
                             </th>
                             <th style="width:100px" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
 

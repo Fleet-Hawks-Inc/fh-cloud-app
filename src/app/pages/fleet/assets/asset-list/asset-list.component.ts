@@ -192,10 +192,8 @@ export class AssetListComponent implements OnInit {
 
   }, 800)
 
-  setAsset(assetID, assetIdentification) {
+  setAsset(assetIdentification) {
     this.assetIdentification = assetIdentification;
-    this.assetID = assetIdentification;
-
     this.suggestedAssets = [];
   }
 
