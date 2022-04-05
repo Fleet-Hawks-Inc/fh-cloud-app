@@ -9,7 +9,7 @@
             <div class="col-md-2 col-lg-2 pr-0">
 
               <ng-select data-plugin-selectTwo class="form-control populate" [(ngModel)]="vehicle" name="vehicle"
-                placeholder="Search Vehicle">
+                placeholder="Select Vehicle">
                 <ng-option *ngFor="let item of vehicles | keyvalue" value="{{ item.key }}">{{
                   item.value }}</ng-option>
               </ng-select>
@@ -17,21 +17,13 @@
 
             <!-- Set spacing issue -->
             <div class="col-md-2 col-lg-2 pl-2 pr-0">
-              <ng-select
-                data-plugin-selectTwo
-                class="form-control populate"
-                [(ngModel)]="programName"
-                name="programName"
-                placeholder="Select Service Task"
-              >
-                <ng-option
-                  *ngFor="let item of serviceProgramList"
-                  value="{{ item.programID }}"
-                  >{{ item.programName }}</ng-option
-                >
+              <ng-select data-plugin-selectTwo class="form-control populate" [(ngModel)]="programName"
+                name="programName" placeholder="Select Program Name">
+                <ng-option *ngFor="let item of serviceProgramList" value="{{ item.programID }}">{{ item.programName }}
+                </ng-option>
 
 
-           
+
               </ng-select>
             </div>
 
@@ -74,6 +66,9 @@
                   <div class="col-lg-12">
                     <div class="table-responsive">
                       <table class="row-border hover table table-bordered table-striped mb-0">
+                        <col style="width: 1%" />
+                        <col style="width: 1%" />
+                        <col style="width: 1%" />
                         <thead>
                           <tr>
                             <th>Vehicle</th>
@@ -87,10 +82,7 @@
                           </tr>
                           <tr *ngFor="let item of serviceProgramList">
                             <td>
-                              <span *ngFor="
-                                                        let vehicle of item.vehicles;
-                                                        let i = index
-                                                      ">
+                              <span *ngFor="let vehicle of item.vehicles;let i = index">
                                 {{ vehicles[vehicle]
                                 }}{{ i !== item.vehicles.length - 1 ? ", " : "" }}
                               </span>
