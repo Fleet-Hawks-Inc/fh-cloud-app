@@ -9,6 +9,7 @@ export class RouteManagementServiceService {
   public tripUpdateSessionID: string;
   public driverUpdateSessionID: string;
   public vehicleUpdateSessionID: string;
+  public assetUpdateSessionID: string;
   
 
   constructor() {
@@ -16,6 +17,7 @@ export class RouteManagementServiceService {
     this.tripUpdateSessionID = uuidv4();
     this.driverUpdateSessionID = uuidv4();
     this.vehicleUpdateSessionID = uuidv4();
+    this.assetUpdateSessionID = uuidv4();
   }
 
   driverUpdated() {
@@ -32,10 +34,14 @@ export class RouteManagementServiceService {
  vehicleUpdated() {
     return this.vehicleUpdateSessionID = uuidv4();
   }
+  assetUpdated() {
+    return this.assetUpdateSessionID = uuidv4();
+  }
   resetAllCache() {
     this.tripUpdateSessionID = uuidv4();
     this.orderUpdateSessionID = uuidv4();
     this.driverUpdateSessionID = uuidv4();
     this.vehicleUpdateSessionID = uuidv4();
+    this.assetUpdateSessionID = uuidv4();
   }
 }
