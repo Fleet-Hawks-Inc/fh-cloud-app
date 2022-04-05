@@ -9,10 +9,14 @@
             <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Company Profile</h4>
           </div>
           <div class="col-md-10 col-lg-10 text-right pr-1">
+
+            <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal" data-target="#addCompanyModal"
+              href="javascript:;"  *ngIf="showSubCompany && subCompanies.length < 5"><i class="fas fa-plus"></i> Sub Company</a>
+
             <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal" data-target="#changePasswordModal"
               href="javascript:;">Change Password</a>
-            <a routerLink="/manage/company/edit/{{carriers.carrierID}}" class="btn btn-dark btn-sm"
-              *ngIf="carriers.length > 0 && carriers.carrierID != '' || carriers.carrierID != undefined"><i
+            <a routerLink="/manage/company/edit/{{carriers.carrierID}}" class="btn btn-dark btn-sm" style="color: #ffffff;"
+              ><i
                 class="fas fa-plus"></i> Edit
               Company
               Detail</a>
@@ -24,8 +28,8 @@
           <div class="col-lg-12 pr-1 pl-2">
             <div class="bg-white">
               <div class="row p-3">
-                <div class="col-2">
-                  <span *ngIf="carriers.uploadedLogo != '' || carriers.uploadedLogo != undefined"><img [src]="logoSrc"
+                <div class="col-2" *ngIf="carriers.uploadedLogo != '' && carriers.uploadedLogo != undefined">
+                  <span><img [src]="logoSrc"
                       class="img-fluid"></span>
                 </div>
                 <div class="col-10 text-dark">
@@ -181,7 +185,7 @@
                 </div>
 
 
-                <div class="col-lg-12">
+                <div class="col-lg-12" *ngIf="carriers.banks.length > 0">
                   <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Bank Details</h2>
                   <table class="table table-bordered table-responsive-lg" *ngFor="let bank of carriers.banks">
                     <tbody>
@@ -238,7 +242,7 @@
                     </tbody>
                   </table>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12" *ngIf="carriers.banks.length > 0">
                   <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Bank Details</h2>
                   <table class="table table-bordered table-responsive-lg" *ngFor="let bank of carriers.banks">
                     <tbody>
@@ -294,6 +298,21 @@
                         <td>{{carriers.notesFactor }}</td>
                       </tr>
 
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="col-lg-12" *ngIf="subCompanies.length > 0">
+                  <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Sub Companies</h2>
+                  <table class="table table-bordered table-responsive-lg">
+                    <tbody>
+                      <tr class="text-capitalize" *ngFor="let data of subCompanies">
+                        <td width="20%" class="back-color-gray">Username</td>
+                        <td width="30%"><span *ngIf="carriers.banks != undefined">{{data.username}}</span></td>
+                        <td width="20%" class="back-color-gray">Status</td>
+                        <td width="30%"><span *ngIf="carriers.banks != undefined">{{data.status}}</span>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -445,3 +464,105 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="addCompanyModal" tabindex="-1" role="dialog" aria-labelledby="addCompanyModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Sub Company</h5>
+        <button type="button" class="close" (click)="clearForm()" aria-label="Close">
+          <i class="far fa-window-close" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark" style="max-height: 500px;overflow: scroll;">
+        <form id="addCompanyForm" class="form-horizontal form-bordered text-capitalize" name="addCompF" [mustMatch]="['password', 'confirmPassword']" (ngSubmit)="addCompF.form.valid"
+          novalidate #addCompF="ngForm" [formGroup]="userInfoFormGroup">
+          <div class="row">
+            <div class="col-lg-12">
+              <label class="control-label font-weight-bold text-lg-right pt-2"> First Name <span
+                  class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <div class="input-group">
+                <input name="fName" type="text" formControlName="firstName" placeholder="eg. John"
+                  required class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-lg-12">
+              <label class="control-label font-weight-bold text-lg-right pt-2"> Last Name <span
+                  class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <div class="input-group">
+                <input name="lName" type="text" formControlName="lastName" placeholder="eg. Smith"
+                  required class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-lg-12">
+              <label class="control-label font-weight-bold text-lg-right pt-2"> Registered Company Name <span
+                  class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <div class="input-group">
+                <input name="cName" type="text" formControlName="carrierName" placeholder="eg. Fleet Inc."
+                  required class="form-control" (focusout)="validateCompanyName()" />
+              </div>
+              <div class="text-danger" *ngIf="carrierNameExists" >{{carrierNameErr}}</div>
+            </div>
+
+            <div class="col-lg-12">
+              <label class="control-label font-weight-bold text-lg-right pt-2"> Email <span
+                  class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <div class="input-group">
+                <input name="emailId" type="text" formControlName="email" placeholder="eg. johnsmith@gmail.com"
+                  required class="form-control" (focusout)="validateEmail()" />
+              </div>
+              <div class="text-danger" *ngIf="emailExistsExists" >{{emailExistsErr}}</div>
+            </div>
+
+            <div class="col-lg-12">
+              <label class="control-label font-weight-bold text-lg-right pt-2"> Username <span
+                  class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <div class="input-group">
+                <input name="username" type="text" formControlName="username" placeholder="eg. johnsmith12"
+                  required class="form-control" (focusout)="validateUsername()" />
+              </div>
+              <div class="text-danger" *ngIf="userNameExists" >{{userNameExistsErr}}</div>
+            </div>
+
+            <div class="col-lg-12">
+              <label class="control-label font-weight-bold text-lg-right pt-2"> Password <span
+                  class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <div class="input-group">
+                <input name="pwd" type="password" formControlName="compPassword" placeholder="eg. $John@01"
+                  required class="form-control" />
+              </div>
+            </div>
+
+            <div class="col-lg-12">
+              <label class="control-label font-weight-bold text-lg-right pt-2"> Confirm Password<span
+                  class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <div class="input-group">
+                <input name="confirmPwd" type="password" formControlName="confirmPassword" placeholder="eg. $John@01"
+                  required class="form-control" />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="row mt-3">
+          <div class="col-lg-12 text-right">
+            <button type="button" class="cus-btn-padd btn btn-default mr-2" (click)="clearForm()">Cancel</button>
+            <button type="submit" class="cus-btn-padd btn btn-success" [disabled]="submitDisabled" (click)="addSubCompany()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

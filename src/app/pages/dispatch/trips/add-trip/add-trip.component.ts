@@ -2668,8 +2668,8 @@ export class AddTripComponent implements OnInit {
 
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    this.currentCarrID = this.currentUser.carrierID;
-    this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    this.currentCarrID = localStorage.getItem('xfhCarrierId');
+    this.currentUser = localStorage.getItem("currentUserName");
   };
 
   resetMap() {

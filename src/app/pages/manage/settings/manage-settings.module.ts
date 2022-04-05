@@ -56,7 +56,11 @@ const routes: Routes = [
     component: DriverSettingComponent,
     data: { title: "Deleted Drivers" },
   },
-  { path: "import", component: ImportDriversComponent },
+  {
+    path: "import",
+    component: ImportDriversComponent,
+    data: { title: "Imported Drivers" },
+  },
   // {
   //   path: "asset",
   //   component: AssetsSettingComponent,
@@ -123,7 +127,7 @@ const routes: Routes = [
     DoverviewComponent,
     ImportDriversComponent,
     VehicleSettingsComponent,
-    AssetsSettingComponent
+    AssetsSettingComponent,
     // DeletedAssetsComponent,
     // ImportedAssetsComponent,
   ],
