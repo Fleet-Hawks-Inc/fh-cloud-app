@@ -187,14 +187,14 @@ export class AssetListComponent implements OnInit {
           this.suggestedAssets = result;
         });
     } else {
-      this.suggestedAssets = [];
+      //this.suggestedAssets = [];
     }
 
   }, 800)
 
   setAsset(assetIdentification) {
     this.assetIdentification = assetIdentification;
-    this.suggestedAssets = [];
+    //this.suggestedAssets = [];
   }
 
   fetchGroups() {
@@ -265,9 +265,7 @@ export class AssetListComponent implements OnInit {
         .subscribe((result: any) => {
           this.dataMessage = Constants.FETCHING_DATA
           if (result.Items.length === 0) {
-
             this.dataMessage = Constants.NO_RECORDS_FOUND
-            this.suggestedAssets = [];
           }
           if (result.Items.length > 0) {
             result[`Items`].map((v: any) => {
@@ -295,7 +293,7 @@ export class AssetListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.assetIdentification !== '' || this.assetType !== null) {
+    if (this.assetIdentification !== '' ||  this.assetType !== null) {
       this.assetIdentification = this.assetIdentification.toLowerCase();
       if (this.assetID == '') {
         this.assetID = this.assetIdentification;
@@ -304,7 +302,6 @@ export class AssetListComponent implements OnInit {
       this.allData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.lastEvaluatedKey = ''
-      this.suggestedAssets = [];
       this.initDataTable();
 
     } else {
@@ -317,7 +314,7 @@ export class AssetListComponent implements OnInit {
     }
 
     clearSuggestions() {
-        this.assetIdentification = null;
+        this.assetIdentification = '';
     }
  
   resetFilter() {
