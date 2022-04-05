@@ -31,29 +31,6 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 
-/*const routes: Routes = [
-  {
-    path: "add",
-    component: AddAssetsComponent,
-    canDeactivate: [unsavedChangesGuard],
-    data: { title: "Add Asset" },
-  },
-  {
-    path: "edit/:assetID",
-    component: AddAssetsComponent,
-    data: { title: "Edit Asset" },
-  },
-  {
-    path: "list",
-    component: AssetListComponent,
-    data: { title: "Asset List" },
-  },
-  {
-    path: "detail/:assetID",
-    component: AssetDetailComponent,
-    data: { title: "Asset Detail" },
-  },
-]; */ 
   const routes: Routes = [
   { path: 'add', component: AddAssetsComponent, canDeactivate: [unsavedChangesGuard], data: { title: 'Add Asset' } },
   { path: 'edit/:assetID', component: AddAssetsComponent, data: { title: 'Edit Asset' } },

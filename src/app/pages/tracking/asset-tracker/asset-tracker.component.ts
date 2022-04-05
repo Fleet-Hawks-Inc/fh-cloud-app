@@ -39,7 +39,8 @@ export class AssetTrackerComponent implements OnInit {
   ];
   sensorDataCols = [
     { field: 'assetName', header: 'Asset Name' },
-    { field: 'temperature', header: 'Temperature(Celsius)' },
+    { field: 'c_temperature', header: 'Temperature(Celsius)' },
+    { field: 'f_temperature', header: 'Temperature(Fahrenheit)' },
     { field: 'humidity', header: 'Humidity' },
     { field: 'time', header: 'Date & Time' },
   ]
@@ -69,7 +70,8 @@ export class AssetTrackerComponent implements OnInit {
     scale: 8,
     strokeColor: "#393",
   };
-  chartOption: EChartsOption;
+  chartOptionCelsius: EChartsOption;
+  chartOptionFahrenheit: EChartsOption;
   updateOptions: any;
   sensorLoading = false;
   sensorTemperature = [];
@@ -368,6 +370,8 @@ export class AssetTrackerComponent implements OnInit {
     );
   }
 
+  fTemp = [];
+  cTemp = [];
   /**
    * Gets Sensor data from Cloud Service
    * @param duration selected duration from dropdown
@@ -380,17 +384,22 @@ export class AssetTrackerComponent implements OnInit {
 
     if (data && data.length > 0) {
       this.sensorTemperature = [];
+      this.fTemp = [];
+      this.cTemp = [];
       for (const res of data) {
         const time = new Date(res.time).toLocaleString();
 
-        this.sensorTemperature.push({ name: time, value: res.graphTemp });
-
+        this.cTemp.push({ name: time, value: res.c_graphTemp });
+        this.fTemp.push({ name: time, value: res.f_graphTemp });
+        // default is Fahrenheit 
+        this.sensorTemperature = this.fTemp;
         // format time
 
         const updateRes = {
           assetName: this.assetID,
           time: time,
-          temperature: res.temperature,
+          c_temperature: res.temperature,
+          f_temperature: Number(((res.temperature * 1.8) + 32).toFixed(2)),
           humidity: res.humidity
         }
         this.sensorData.push(updateRes);
@@ -414,7 +423,7 @@ export class AssetTrackerComponent implements OnInit {
   mapper() {
 
 
-    this.chartOption = {
+    this.chartOptionCelsius = {
       tooltip: {
         trigger: 'axis',
         position: function (pt) {
@@ -466,16 +475,90 @@ export class AssetTrackerComponent implements OnInit {
           type: 'line',
           symbol: 'circle',
           areaStyle: {},
-          data: this.sensorTemperature,
+          data: this.cTemp,
+        },
+
+      ]
+    };
+
+    this.chartOptionFahrenheit = {
+      tooltip: {
+        trigger: 'axis',
+        position: function (pt) {
+          return [pt[0], '10%'];
+        },
+      },
+      title: {
+        left: 'center',
+        text: 'Asset Temperature'
+      },
+      toolbox: {
+        feature: {
+          dataZoom: {
+
+            yAxisIndex: 'none'
+          },
+          restore: {},
+          saveAsImage: {},
+        }
+      },
+
+      // dataZoom: [
+      //   {
+      //     type: 'inside',
+      //     start: 0,
+      //     end: 50
+      //   },
+      //   {
+      //     start: 0,
+      //     end: 50
+      //   }
+      // ],
+      xAxis: {
+        type: 'time',
+        boundaryGap: false
+
+      },
+      yAxis: {
+        type: 'value',
+        boundaryGap: [0, '100%'],
+        axisLabel: {
+          formatter: '{value} °F'
+        }
+      },
+
+      series: [
+        {
+          name: 'Temperature',
+          type: 'line',
+          symbol: 'circle',
+          areaStyle: {},
+          data: this.fTemp,
+
         },
 
       ]
     };
 
   }
+  tempMetric = [
+    { name: 'F', code: 'F' },
+    { name: 'C', code: 'C' }
+  ];
+  selectedMetric = 'F';
+  showFahrenheit = true;
+  changeTempMetric(e) {
+    console.log(e.value);
+    if (e.value === 'F') {
+      this.showFahrenheit = true;
+    } else {
+      this.showFahrenheit = false;
+    }
 
+  }
 
 }
+
 
 
 /**
@@ -495,8 +578,9 @@ interface sensorData {
   humidity: number;
   light: string;
   battery: number; // expressed in percentage
-  graphHumidity: any;
-  graphTemp: any
+  graphHumidity: any,
+  c_graphTemp: any, // Celsius
+  f_graphTemp: any // Fahrenheit
 
 
 }

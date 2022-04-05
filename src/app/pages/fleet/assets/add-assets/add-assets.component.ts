@@ -14,6 +14,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { ListService } from "../../../../services/list.service";
 import * as moment from "moment";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 
 @Component({
   selector: "app-add-assets",
@@ -164,9 +165,14 @@ export class AddAssetsComponent implements OnInit {
   groupSubmitDisabled = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
-  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  futureDatesLimit = { 
+    year: this.date.getFullYear() + 30, 
+    month: 12, 
+    day: 31
+    };
   editDisabled = false;
   companyLabel = "";
+  sessionID: string;
 
   isEdit: boolean = false;
   groupsData:any = [];
@@ -211,9 +217,11 @@ export class AddAssetsComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private httpClient: HttpClient,
     private countryStateCity: CountryStateCityService,
-    private dashboardUtilityService: DashboardUtilityService
+    private dashboardUtilityService: DashboardUtilityService,
+    private routerMgmtService: RouteManagementServiceService
   ) {
     this.selectedFileNames = new Map<any, any>();
+    this.sessionID = this.routerMgmtService.assetUpdateSessionID;
   }
 
   get today() {
@@ -585,6 +593,7 @@ export class AddAssetsComponent implements OnInit {
         this.response = res;
         this.toastr.success("Asset added successfully.");
         this.dashboardUtilityService.refreshAssets = true;
+        this.router.navigateByUrl(`/fleet/assets/list/${this.routerMgmtService.assetUpdated()}`);
         this.cancel();
       },
     });

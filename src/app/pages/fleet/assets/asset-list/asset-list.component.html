@@ -12,7 +12,7 @@
                         <div class="col" style="margin-left: 20px;margin-top: 5px;">
                             <p-autoComplete #autoComp id="autoCmpSugAsset" [placeholder]="'Type Assets Name'" class="mr-2" [forceSelection]="true" emptyMessage="No data found." [(ngModel)]="assetIdentification" [suggestions]="suggestedAssets" [minLength]="2" (completeMethod)="getSuggestions($event.query)"
                                 (onSelect)="setAsset($event.assetIdentification)" field="assetIdentification"> </p-autoComplete>
-                            <p-dropdown id="drpDvrType" [style]="{minWidth: '200px'}" [options]="assetOptions" class="mr-2" placeholder="Select a Assets Type" [(ngModel)]="assetType" optionLabel="name" optionValue="value">
+                            <p-dropdown id="drpAstType" [style]="{minWidth: '200px'}" [options]="assetOptions" class="mr-2" placeholder="Select a Assets Type" [(ngModel)]="assetType" optionLabel="name" optionValue="value">
                             </p-dropdown>
                             <button id="btnSearch" type="button" [disabled]="isSearch" pButton class="mr-2" icon="pi pi-search" pTooltip="Search" (click)="searchFilter()"></button>
                             <button id="btnResetFilter" type="button" [disabled]="isSearch" pButton class="mr-2" icon="pi pi-refresh" pTooltip="Reset" (click)="resetFilter()"></button>
@@ -41,9 +41,7 @@
                                                     <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
                                                     <button type="button" pButton pTooltip="Add" routerLink="/fleet/assets/add" class="p-button-outlined mr-2" icon="pi pi-plus"></button>
                                                     <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
-
                                                     <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
-
                                                     <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" placeholder="Choose Columns">
                                                     </p-multiSelect>
                                                 </div>
@@ -52,9 +50,7 @@
                                         <!-- Header template of DataTable -->
                                         <ng-template pTemplate="header" let-columns>
                                             <tr>
-
                                                 <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn style="width:10%">
-
                                                     <div [ngSwitch]="dataColumns.field">
                                                         <!-- Asset Status Filter Customization -->
                                                         <span *ngSwitchCase="'currentStatus'">
@@ -72,14 +68,9 @@
                                         </ng-template>
                                         </p-multiSelect>
                                         </ng-template>
-
-
                                         </p-columnFilter>
                                 </div>
                                 </span>
-
-
-
                                 <span *ngSwitchDefault>
                                                             <div class="flex justify-content-center align-items-center"
                                                                 alignFrozen="right" pFrozenColumn [frozen]="true">
