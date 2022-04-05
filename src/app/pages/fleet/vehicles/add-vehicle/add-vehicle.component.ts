@@ -302,7 +302,7 @@ export class AddVehicleComponent implements OnInit {
     $(document).ready(() => {
       // this.vehicleForm = $('#vehicleForm').validate();
     });
-    this.sessionID = this.routerMgmtService.driverUpdateSessionID;
+    this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
   }
 
   async ngOnInit() {
