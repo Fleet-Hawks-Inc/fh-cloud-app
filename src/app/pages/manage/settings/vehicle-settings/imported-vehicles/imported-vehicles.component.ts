@@ -56,7 +56,7 @@ export class ImportedVehiclesComponent implements OnInit {
     }
   }
   validateCSV($event) {
-    console.log($event.srcElement.files[0]);
+
     const data: ValidatorConfig = {
       headers: [
         {
@@ -88,6 +88,9 @@ export class ImportedVehiclesComponent implements OnInit {
         {
           name: 'year', inputName: 'year', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
+          }, validate: function (date: string) {
+            const dateformat = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+            return dateformat.test(date)
           }
         },
         {

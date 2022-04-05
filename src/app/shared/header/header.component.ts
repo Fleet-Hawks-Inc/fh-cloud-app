@@ -80,6 +80,7 @@ export class HeaderComponent implements OnInit {
     data: [],
   };
   updateButton = false;
+  showSwitch = false;
   constructor(
     private sharedService: SharedServiceService,
     private apiService: ApiService,
@@ -100,6 +101,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.init();
     this.getCurrentuser();
+    this.showSwitch = localStorage.getItem("subCompany") == 'yes' ? true : false;
     this.fetchCarrier();
     if (this.headerFnService.subsVar === undefined) {
       this.headerFnService.subsVar =
@@ -146,7 +148,8 @@ export class HeaderComponent implements OnInit {
     let result: any = await this.dashboardService.getCarriers();
     if (result.Items.length > 0) {
       this.carriers = result.Items[0];
-      this.currentCarrierID = this.carriers.carrierID;
+      // this.currentCarrierID = this.carriers.carrierID;
+      this.currentCarrierID = localStorage.getItem('xfhCarrierId');
       this.logoSrc = "assets/img/logo.png";
       // if (this.carriers.uploadedLogo !== '') {
       //   this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
@@ -178,6 +181,9 @@ export class HeaderComponent implements OnInit {
       localStorage.removeItem("isManageEnabled");
       localStorage.setItem("signOut", "true"); //trigger flag
       localStorage.removeItem("accessToken"); //Remove token from local
+      localStorage.removeItem('xfhCarrierId');
+      localStorage.removeItem('currentUserName');
+      localStorage.removeItem('subCompany');
       // localStorage.removeItem('jwt');
       this.router.navigate(["/Login"]);
     } catch (error) {
@@ -186,10 +192,16 @@ export class HeaderComponent implements OnInit {
   }
 
   getCurrentuser = async () => {
-    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    this.userRole = this.currentUser.userType;
-    localStorage.setItem("currentUsername", this.currentUser.username);
-    this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    const selectedCarrier = localStorage.getItem('xfhCarrierId');
+    if(selectedCarrier) {
+      const res = await this.apiService.getData(`carriers/get/detail/${selectedCarrier}`).toPromise()
+        this.userRole = 'Super Admin';
+        this.currentUser = `${res.Items[0].firstName} ${res.Items[0].lastName}`; 
+    } else {
+      this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+      this.userRole = this.currentUser.userType;
+      this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    }
     const outputName = this.currentUser.match(/\b(\w)/g);
     this.smallName = outputName.join("");
     localStorage.setItem("currentUserName", this.currentUser);

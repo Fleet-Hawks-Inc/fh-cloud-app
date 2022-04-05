@@ -1583,8 +1583,8 @@ export class AddDriverComponent
 
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    this.currentUserCarrier = this.currentUser.carrierID;
-    this.carrierID = this.currentUser.carrierID;
+    this.currentUserCarrier = localStorage.getItem('xfhCarrierId');
+    this.carrierID = localStorage.getItem('xfhCarrierId');
 
     if (this.currentUser.userType === "Cloud Admin") {
       let isCarrierID = localStorage.getItem("carrierID");

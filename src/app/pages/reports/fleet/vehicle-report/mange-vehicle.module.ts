@@ -64,7 +64,7 @@ const routes: Routes = [
   {
     path: "activity/:vehicleId",
     component: ActivityComponent,
-    data: { title: "Vehicle Activity Reports" },
+    data: { title: "Vehicle Activity Detail Report" },
   },
   {
     path: "activity-list",
@@ -91,8 +91,17 @@ const routes: Routes = [
     component: RevenueDetailComponent,
     data: { title: "Vehicle Revenue Detail Reports" },
   },
-  { path: 'expense-list', component: ExpenseListComponent },
-  { path: 'expense/:vehicleId', component: ExpenseComponent },
+  {
+    path: "expense-list",
+    component: ExpenseListComponent,
+    data: { title: "Vehicle Expense List" },
+  },
+  {
+    path: "expense/:vehicleId",
+    component: ExpenseComponent,
+    data: { title: "Vehicle Expense Detail Report" },
+  },
+
 ];
 
 /**
@@ -187,5 +196,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   ],
 })
 
+
 export class ManageVehicleModule { }
+
 
