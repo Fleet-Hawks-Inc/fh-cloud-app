@@ -40,7 +40,7 @@ export class RevenueDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.end = moment().format("YYYY-MM-DD");
-    this.start = moment().subtract(5, 'months').format('YYYY-MM-DD');
+    this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
 
     this.vehicleId = this.route.snapshot.params[`vehicleId`];
     this.fetchRevenueData()
@@ -53,81 +53,42 @@ export class RevenueDetailComponent implements OnInit {
     });
   }
 
-  fetchRevenueData() {
-    // console.log(this.currency)
-    this.apiService.getData(`vehicles/fetch/revenue/report?currency=${this.currency}&vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
-      this.allData = this.allData.concat(result.Items);
-      if (result.Items.length === 0) {
-        this.dataMessage = Constants.NO_RECORDS_FOUND
+  async fetchRevenueData() {
+    let newAllData = [];
+    let result: any = await this.apiService.getData(`vehicles/fetch/revenue/report?currency=${this.currency}&vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).toPromise();
+
+    this.allData = result.Items
+    if (result.Items.length === 0 && this.allData.length === 0) {
+      this.dataMessage = Constants.NO_RECORDS_FOUND
+    }
+    for (let i = 0; i < this.allData.length; i++) {
+      const data = this.allData[i]
+      data.miles = 0;
+      for (let tripD of data.tripPlanning) {
+        data.miles += Number(tripD.miles);
       }
-      if (result.LastEvaluatedKey !== undefined) {
+      this.totalMiles += parseFloat(data.miles)
+      for (let invData of data.invoiceData) {
 
-        this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.tripSK);
-        console.log('this.lastSk--', this.lastItemSK)
-        this.datee = encodeURIComponent(result.LastEvaluatedKey.dateCreated)
+        this.totalInv += parseFloat(invData.finalAmount)
       }
-      else {
-        this.lastItemSK = 'end';
-      }
-      this.loaded = true;
-      // for (let i = 0; i < result.Items.length; i++) {
-      //   if (this.currTab === 'CAD') {
-      //     this.currency = 'CAD'
-      //     const data = result.Items[i]
-      //     console.log('data--', data)
-      //     // for (let invD of data.invoiceData) {
-      //     data.invoiceData.map((elem) => {
-      //       if (elem.charges.fuelSurcharge.currency === 'CAD') {
-      //         console.log()
-      //         this.allData = result.Items
-      //         console.log('this==', this.allData)
 
-      //       }
-      //     })
-      //     // for (let idn of invD.charges) {
-      //     //   console.log('idn-', idn)
-
-      //     // }
-      //     // }
-      //   }
-      //   else if (this.currTab === 'USD') {
-      //     this.currency = 'USD'
-      //     const data = result.Items[i]
-      //     data.invoiceData.map((elem) => {
-      //       if (elem.charges.fuelSurcharge.currency === 'USD') {
-      //         this.allData = result.Items
-      //         console.log('this==', this.allData)
-
-      //       }
-      //     })
-
-      //   }
-      // }
-      for (let i = 0; i < result.Items.length; i++) {
-        const data = result.Items[i]
-        data.miles = 0;
-        for (let tripD of data.tripPlanning) {
-          data.miles += Number(tripD.miles);
-        }
-        this.totalMiles += parseFloat(data.miles)
-        for (let invData of data.invoiceData) {
-
-          this.totalInv += parseFloat(invData.finalAmount)
-          console.log('this.inv', this.totalInv)
-        }
-
-        for (let recData of data.receiptData) {
-          for (let rec of recData) {
-            // console.log('rec==', rec)
-            this.totalRec += parseFloat(rec.recAmount)
-            // console.log('this.totalRec', this.totalRec)
-          }
+      for (let recData of data.receiptData) {
+        for (let rec of recData) {
+          this.totalRec += parseFloat(rec.recAmount)
         }
       }
+    }
+    // if (result.LastEvaluatedKey !== undefined) {
 
+    //   this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.tripSK);
+    //   this.datee = encodeURIComponent(result.LastEvaluatedKey.dateCreated)
+    // }
+    // else {
+    //   this.lastItemSK = 'end';
+    // }
+    // this.loaded = true;
 
-
-    })
   }
   //For Switching Tab
   changeTab(type) {
@@ -135,12 +96,14 @@ export class RevenueDetailComponent implements OnInit {
     this.allData = [];
     if (this.currTab === "CAD") {
       this.currency = 'CAD'
+      this.dataMessage = Constants.FETCHING_DATA;
       this.totalMiles = 0;
       this.totalInv = 0;
       this.totalRec = 0;
       this.fetchRevenueData();
     } else if (this.currTab === "USD") {
       this.currency = 'USD'
+      this.dataMessage = Constants.FETCHING_DATA;
       this.totalMiles = 0;
       this.totalInv = 0;
       this.totalRec = 0;
@@ -211,7 +174,6 @@ export class RevenueDetailComponent implements OnInit {
             invNo = item1.invNo
             invDate = item1.txnDate;
             invAm = item1.finalAmount + item1.charges.freightFee.currency
-            // console.log('invAm', invAm)
           }
         }
         for (let item1 of element.receiptData) {
