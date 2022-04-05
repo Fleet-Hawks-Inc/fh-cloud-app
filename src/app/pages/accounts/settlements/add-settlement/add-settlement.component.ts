@@ -332,6 +332,9 @@ export class AddSettlementComponent implements OnInit {
       }
     }
     this.selectedTrip("","")
+    if(this.trips.length>0){
+      this.fetchTrips();
+    }
     this.setPayment();
     this.closePayment();
 
@@ -457,6 +460,8 @@ export class AddSettlementComponent implements OnInit {
     }
 
     this.setPayment();
+    this.settlementData.paymentSelected=this.trip.paymentSelected
+    this.calculateTripAmount();
     this.closePayment();
   }
   }
