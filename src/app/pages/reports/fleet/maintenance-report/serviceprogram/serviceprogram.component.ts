@@ -28,6 +28,7 @@ export class ServiceprogramComponent implements OnInit {
   serviceTasks: any[];
   record: any = [];
   disableSearch = false;
+  exportFull = []
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
 
@@ -98,12 +99,28 @@ export class ServiceprogramComponent implements OnInit {
       return false;
     }
   }
+  fetchExportfullList() {
+    this.apiService.getData('servicePrograms/fetch/report/export').subscribe((result: any) => {
+      this.exportFull = result;
+      this.generateCSV();
+    })
 
+  }
+  csv() {
+    if (this.vehicle !== null || this.programName !== null) {
+      this.exportFull = this.serviceProgramList
+      this.generateCSV();
+    }
+    else {
+      this.fetchExportfullList()
+    }
+  }
+ 
   generateCSV() {
-    if (this.serviceProgramList.length > 0) {
+    if (this.exportFull.length > 0) {
       let dataObject = []
       let csvArray = []
-      this.serviceProgramList.forEach(element => {
+      this.exportFull.forEach(element => {
         let obj = {}
         let ab  = ''
         let allVehicles:any = []
