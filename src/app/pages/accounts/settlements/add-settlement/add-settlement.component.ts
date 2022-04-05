@@ -401,15 +401,15 @@ export class AddSettlementComponent implements OnInit {
         // element.paymentSelected=this.settlementData.paymentSelected;
         switch(element.paymentSelected[0].pType){
           case "ppm":
-            element.amount=element.entityMiles*element.paymentSelected[0].loadedMiles
+            element.amount=(element.entityMiles*element.paymentSelected[0].loadedMiles).toFixed(2)
             element.paymentSelected=[this.ppm]
             break;
           case "pfr":
-            element.amount=element.paymentSelected[0].flatRate
+            element.amount=(element.paymentSelected[0].flatRate).toFixed(2)
             element.paymentSelected=[this.pfr]
             break;
           case "ppd":
-            element.amount=element.paymentSelected[0].deliveryRate
+            element.amount=element.paymentSelected[0].deliveryRate.toFixed(2)
             element.paymentselected=[this.ppd]
             break;
         }
@@ -798,15 +798,18 @@ export class AddSettlementComponent implements OnInit {
   }
 
   calculateFinalTotal() {
+    console.log(this.settlementData.paymentTotal)
     this.settlementData.taxes = 0;
     this.settlementData.subTotal =
       this.settlementData.paymentTotal +
       this.settlementData.additionTotal -
       this.settlementData.deductionTotal;
+      console.log(this.settlementData.subTotal)
     if (
       this.settlementData.type == "driver" ||
       this.settlementData.type == "owner_operator"
     ) {
+      
       this.settlementData.subTotal =
         this.settlementData.subTotal +
         this.settlementData.fuelAdd -
@@ -845,6 +848,7 @@ export class AddSettlementComponent implements OnInit {
         this.settlementData.subTotal - Number(this.settlementData.taxes);
       this.settlementData.finalTotal = +midTerm.toFixed(2);
     } else if (this.settlementData.type == "owner_operator") {
+      
       this.settlementData.finalTotal = +this.settlementData.subTotal.toFixed(2);
       this.calculateTaxes();
     } else {
@@ -1825,6 +1829,16 @@ export class AddSettlementComponent implements OnInit {
       });
     }
     this.settledTrips = result;
+    if(trpData.length>0 && this.settledTrips.length>0){
+      for(const stl of this.settledTrips){
+        for(const trp of trpData){
+          if(trp.id==stl.tripID){
+            stl.paymentSelected=trp.paymentSelected
+            stl.amount=trp.amount
+          }
+        }
+      }
+    }
     console.log(this.settledTrips)
     this.dummySettledTrips = result;
     let stlObj = result.reduce((a: any, b: any) => {
