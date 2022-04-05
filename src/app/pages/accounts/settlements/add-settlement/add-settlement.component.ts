@@ -1408,7 +1408,7 @@ export class AddSettlementComponent implements OnInit {
             index++
           ) {
             const oprElement = this.settlementData.miles.drivers[index];
-            let paymentInfor = oprElement.paymentDetails;
+            let paymentInfor = oprElement.paymentOption;
             let driverDeliveryCount = 0;
             oprElement.loaded = 0;
             oprElement.empty = 0;
@@ -1438,7 +1438,7 @@ export class AddSettlementComponent implements OnInit {
               // this.oprDriverPaymentCalc(paymentInfor, oprElement, driverDeliveryCount);
               paymentInfor.driverID = oprElement.driverID;
               // this.settlementData.paymentInfo.drivers.push(paymentInfor);
-              if (paymentInfor.paymentType === "Pay Per Mile") {
+              if (paymentInfor.paymentType === "ppm") {
                 paymentInfor.loadedMiles = paymentInfor.loadedMiles
                   ? paymentInfor.loadedMiles
                   : 0;
@@ -1454,10 +1454,10 @@ export class AddSettlementComponent implements OnInit {
                 let emptyMilesPayment =
                   oprElement.empty * Number(paymentInfor.emptyMiles);
                 this.drvrPay = loadedMilesPayment + emptyMilesPayment;
-              } else if (paymentInfor.paymentType === "Pay Per Hour") {
+              } else if (paymentInfor.paymentType === "pph") {
                 this.settlementData.paymentTotal =
                   oprElement.hours * Number(paymentInfor.rate);
-              } else if (paymentInfor.paymentType === "Pay Per Delivery") {
+              } else if (paymentInfor.paymentType === "ppd") {
                 this.settlementData.paymentTotal =
                   driverDeliveryCount * Number(paymentInfor.deliveryRate);
               }
@@ -2201,15 +2201,25 @@ export class AddSettlementComponent implements OnInit {
               empty: 0,
               hours: 0,
               driverID: element.driverID,
-              paymentDetails: element.paymentDetails,
+              paymentOption: {},
               ownerDeduction: false,
             };
+            element.paymentOption.forEach(element=>{
+              if(element.default){
+                obj.paymentOption=element
+              }
+            })
             operatorDrivers.push(element.driverID);
             this.settlementData.miles.drivers.push(obj);
           } else {
             this.settlementData.miles.drivers.map((v) => {
               if (v.driverID === element.driverID) {
-                v.paymentDetails = element.paymentDetails;
+                element.paymentOption.forEach(el=>{
+                  if(el.default){
+                    v.paymentOption = el;
+                  }
+                })
+                
                 operatorDrivers.push(element.driverID);
               }
             });

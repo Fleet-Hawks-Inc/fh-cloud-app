@@ -121,8 +121,9 @@
                             <p-tabPanel header="Graph View">
 
                                 <div style="height:500px">
-
-                                    <div echarts [options]="chartOption" style="height:500px"></div>
+                                    <p-selectButton [options]="tempMetric" (onChange)="changeTempMetric($event)" [(ngModel)]="selectedMetric" optionLabel="name" optionValue="code"></p-selectButton>
+                                    <div echarts [options]="chartOptionFahrenheit" *ngIf="showFahrenheit" style="height:500px"></div>
+                                    <div echarts [options]="chartOptionCelsius" *ngIf="!showFahrenheit" style="height:500px"></div>
                                 </div>
 
                             </p-tabPanel>

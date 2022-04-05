@@ -13,6 +13,7 @@ import * as moment from 'moment'
 import * as _ from "lodash";
 import { NgForm } from "@angular/forms";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 
 declare var $: any;
 
@@ -55,6 +56,7 @@ export class AddVehicleComponent implements OnInit {
    * Vehicle Prop
    */
   vehicleID: string;
+  sessionID: string;
   hasBasic: boolean = false;
   hasLife: boolean = false;
   hasSpecs: boolean = false;
@@ -293,12 +295,14 @@ export class AddVehicleComponent implements OnInit {
     private listService: ListService,
     private domSanitizer: DomSanitizer,
     private countryStateCity: CountryStateCityService,
-    private dashboardUtilityService: DashboardUtilityService
+    private dashboardUtilityService: DashboardUtilityService,
+    private routerMgmtService: RouteManagementServiceService
   ) {
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
       // this.vehicleForm = $('#vehicleForm').validate();
     });
+    this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
   }
 
   async ngOnInit() {
@@ -755,6 +759,7 @@ export class AddVehicleComponent implements OnInit {
             this.toastr.success("Vehicle Added Successfully");
             this.router.navigateByUrl("/fleet/vehicles/list");
             this.dashboardUtilityService.refreshVehicles = true;
+            this.router.navigateByUrl(`/fleet/vehicles/list/${this.routerMgmtService.vehicleUpdated()}`);
             // this.location.back();
           },
         });
