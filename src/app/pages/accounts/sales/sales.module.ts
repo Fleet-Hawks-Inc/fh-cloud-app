@@ -156,7 +156,7 @@ const routes: Routes = [
   {
     path: "credit-notes/edit/:creditID",
     component: AddCreditNoteComponent,
-    data: { title: "Edit Credit Note" },
+    data: { title: "Edit Customer Credit Note" },
   },
   {
     path: "credit-notes/detail/:creditID",
