@@ -852,7 +852,7 @@ export class TripDetailComponent implements OnInit {
     { field: 'alAssetName', header: 'Asset Name' },
     { field: 'highTemp', header: 'High' },
     { field: 'lowTemp', header: 'Low' },
-    { field: 'alIsActivate', header: 'IsActive' },
+    { field: 'alIsActivate', header: 'Is Activated?' },
 
 
 
@@ -901,6 +901,7 @@ export class TripDetailComponent implements OnInit {
     if (!this.isEmailsValid) {
       return;
     }
+
     this.alarmInput = {
       tripID: this.tripID,
       tripNo: this.tripData.tripNo,
@@ -909,7 +910,9 @@ export class TripDetailComponent implements OnInit {
       highTemp: this.highTemp.toString(),
       lowTemp: this.lowTemp.toString(),
       emails: this.emails.split(','),
-      isCelsius: this.isCelsius === true ? 1 : 0 // Is in Celsius or Faherenhiet 
+      isCelsius: this.isCelsius === true ? 1 : 0, // Is in Celsius or Fahrenheit 
+      active: this.tripStatus == 'dispatched' || this.tripStatus == 'started' || this.tripStatus == 'enroute' ? 1 : 0
+
 
     }
     await this.apiService.postData('alarms', this.alarmInput).subscribe(async (data: any) => {
@@ -921,7 +924,6 @@ export class TripDetailComponent implements OnInit {
         this.assetAlert = error.error.errorMessage;
       }
     });
-
 
   }
 
@@ -982,5 +984,6 @@ interface IAddAlarmInput {
   highTemp: string,
   lowTemp: string,
   emails: string[],
-  isCelsius: number
+  isCelsius: number,
+  active: number
 }

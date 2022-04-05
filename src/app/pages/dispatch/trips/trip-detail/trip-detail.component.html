@@ -1233,7 +1233,8 @@
                         <td *ngFor="let col of columns">
                             <div [ngSwitch]="col.field">
                                 <span *ngSwitchCase="'alIsActivate'">
-                                               {{get(tripAlarms,col.field) === '0' ? 'True' : 'False'}} 
+                                               {{rowData[col.field] === 0 ? 'No' : 'Yes'}} 
+                                               {{get(tripAlarms,col.field)}}
                                             </span>
 
                                 <span *ngSwitchDefault>   {{rowData[col.field]}}</span>
