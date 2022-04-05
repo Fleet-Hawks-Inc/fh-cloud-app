@@ -405,11 +405,11 @@ export class AddSettlementComponent implements OnInit {
             element.paymentSelected=[this.ppm]
             break;
           case "pfr":
-            element.amount=(element.paymentSelected[0].flatRate).toFixed(2)
+            element.amount=Number(element.paymentSelected[0].flatRate).toFixed(2)
             element.paymentSelected=[this.pfr]
             break;
           case "ppd":
-            element.amount=element.paymentSelected[0].deliveryRate.toFixed(2)
+            element.amount=Number(element.paymentSelected[0].deliveryRate).toFixed(2)
             element.paymentselected=[this.ppd]
             break;
         }
@@ -798,13 +798,11 @@ export class AddSettlementComponent implements OnInit {
   }
 
   calculateFinalTotal() {
-    console.log(this.settlementData.paymentTotal)
     this.settlementData.taxes = 0;
     this.settlementData.subTotal =
       this.settlementData.paymentTotal +
       this.settlementData.additionTotal -
       this.settlementData.deductionTotal;
-      console.log(this.settlementData.subTotal)
     if (
       this.settlementData.type == "driver" ||
       this.settlementData.type == "owner_operator"
@@ -1154,7 +1152,7 @@ export class AddSettlementComponent implements OnInit {
         //   this.settlementData.paymentTotal =
         //     driverDeliveryCount * Number(paymentInfor.deliveryRate);
         // }
-        // oprElement.payment += this.drvrPay;
+        //oprElement.payment += this.drvrPay;
       }
       // final payment will be according to owner operator values
       this.oprFinalCal();
@@ -1171,6 +1169,7 @@ export class AddSettlementComponent implements OnInit {
   }
   oprFinalCal() {
     this.calculateTripAmount()
+    this.calculateFinalTotal();
   //   if(this.settlementData.paymentSelected.length>0){
   //     for(const payment of this.settlementData.paymentSelected){
         
@@ -1839,7 +1838,6 @@ export class AddSettlementComponent implements OnInit {
         }
       }
     }
-    console.log(this.settledTrips)
     this.dummySettledTrips = result;
     let stlObj = result.reduce((a: any, b: any) => {
       return (
