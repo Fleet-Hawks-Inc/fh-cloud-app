@@ -132,6 +132,8 @@ export class AddUserComponent implements OnInit {
   deletedUploads = [];
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  allSubRoles=[]
+  subRole=[]
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
@@ -163,6 +165,7 @@ export class AddUserComponent implements OnInit {
     this.fetchUserRoles();
     this.getCurrentuser();
     this.searchLocation();
+    this.fetchSubRoles();
   }
 
   fetchUserRoles() {
@@ -171,6 +174,11 @@ export class AddUserComponent implements OnInit {
     }
     );
 
+  }
+  fetchSubRoles(){
+    this.httpClient.get('assets/jsonFiles/user/subRoles.json').subscribe((data:any)=>{
+      this.allSubRoles=data
+    })
   }
   getCurrentuser = async () => {
     this.isCarrierID = localStorage.getItem('carrierID');
@@ -369,6 +377,10 @@ export class AddUserComponent implements OnInit {
 
     this.hideErrors();
     // this.spinner.show();
+
+    if(this.subRole.length>0){
+      this.userData.userLoginData.userRoles=this.userData.userLoginData.userRoles.concat(this.subRole)
+    }
     for (let i = 0; i < this.userData.adrs.length; i++) {
       const element = this.userData.adrs[i];
       delete element.states;
@@ -539,6 +551,9 @@ export class AddUserComponent implements OnInit {
     this.hasSuccess = false;
     this.hideErrors();
     // this.spinner.show();
+    if(this.subRole.length>0){
+      this.userData.userLoginData.userRoles=this.userData.userLoginData.userRoles.concat(this.subRole)
+    }
     this.userData[`contactID`] = this.contactID;
     this.userData[`deletedUploads`] = this.deletedUploads;
     if (this.userData.loginEnabled === false) {
