@@ -8,10 +8,10 @@
         <section role="main" class="content-body pl-1 pt-0 pr-0">
             <header class="page-header flex align-items-center justify-content-start">
                 <form class="formgrid grid">
-               <!--     <form class="form-horizontal" method="get"> -->
                     <div class="row">
                         <div class="col" style="margin-left: 20px;margin-top: 5px;">
-                            <p-autoComplete  #autoComp id="autoCmpSugVehicle" [placeholder]="'Type Vehicles Name'"class="mr-2"[forceSelection]="true"emptyMessage="No data found." [(ngModel)]="vehicleIdentification" [suggestions]="suggestedVehicles" [minLength]="2" (completeMethod)="getSuggestions($event.query)" (onSelect)="setVehicle($event.vehicleIdentification)" field="vehName"></p-autoComplete>
+                            <p-autoComplete  #autoComp id="autoCmpSugVehicle" [placeholder]="'Type Vehicles Name'"class="mr-2"[forceSelection]="true"emptyMessage="No data found." [(ngModel)]="vehicleIdentification" [suggestions]="suggestedVehicles" [minLength]="2" (completeMethod)="getSuggestions($event.query)" 
+                            (onSelect)="setVehicle($event.vehicleIdentification)" field="vehName"></p-autoComplete>
                             <p-dropdown id="drpVehType" [style]="{minWidth: '200px'}" [options]="vehStatus" class="mr-2" placeholder="Select a Vehicle Status" [(ngModel)]="currentStatus" optionLabel="name" optionValue="value">
                             </p-dropdown>
                             <button id="btnSearch" type="submit" [disabled]="isSearch" pButton class="mr-2" icon="pi pi-search" pTooltip="Search" (click)="searchFilter()"></button>
@@ -20,7 +20,6 @@
                         <div class="col">
                         </div>
                     </div>
-                  <!--  </form> -->
                 </form>
             </header>
             <section class="m-2">
