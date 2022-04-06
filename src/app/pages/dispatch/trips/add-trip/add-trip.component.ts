@@ -2577,7 +2577,7 @@ export class AddTripComponent implements OnInit {
 
     let url = "";
     if (type === "recall") {
-      url = "admin/trip/recall";
+      url = "trip-recall/trip/recall";
     } else {
       url = "trips";
     }
