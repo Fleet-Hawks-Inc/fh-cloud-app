@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as _ from 'lodash';
-import { OnboardDefaultService } from '../../../../../services/onboard-default.service';
 import Constants from 'src/app/pages/fleet/constants';
 @Component({
   selector: 'app-revenue-list',
@@ -24,12 +23,9 @@ export class RevenueListComponent implements OnInit {
   currentStatus = null;
   vehicleIdentification = '';
   allOptions: any = {};
-  groupsList: any = {};
   vehicleModelList: any = {};
   vehicleManufacturersList: any = {};
-  // serviceProgramsList: any = {};
   driversList: any = {};
-  vendorsList: any = {};
   currentView = 'list';
   totalRecords = 20;
   lastEvaluatedKey = '';
@@ -42,10 +38,7 @@ export class RevenueListComponent implements OnInit {
     protected _sanitizer: DomSanitizer) {
   }
   ngOnInit() {
-    this.fetchGroups();
     this.fetchDriversList();
-    // this.fetchServiceProgramsList();
-    this.fetchVendorList();
     this.initDataTable()
   }
   getSuggestions = _.debounce(function (value) {
@@ -62,12 +55,6 @@ export class RevenueListComponent implements OnInit {
     }
   }, 800);
 
-  fetchGroups() {
-    this.apiService.getData('groups/get/list').subscribe((result: any) => {
-      this.groupsList = result;
-    });
-  }
-
   fetchVehicleModelList() {
     this.apiService.getData('vehicleModels/get/list').subscribe((result: any) => {
       this.vehicleModelList = result;
@@ -77,19 +64,6 @@ export class RevenueListComponent implements OnInit {
   fetchDriversList() {
     this.apiService.getData('drivers/get/list').subscribe((result: any) => {
       this.driversList = result;
-    });
-  }
-
-
-  // fetchServiceProgramsList() {
-  //   this.apiService.getData('servicePrograms/get/list').subscribe((result: any) => {
-  //     this.serviceProgramsList = result;
-  //   });
-  // }
-
-  fetchVendorList() {
-    this.apiService.getData('contacts/get/list/vendor').subscribe((result: any) => {
-      this.vendorsList = result;
     });
   }
 
