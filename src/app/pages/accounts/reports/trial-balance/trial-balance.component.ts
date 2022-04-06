@@ -183,13 +183,9 @@ export class TrialBalanceComponent implements OnInit {
     }
    
     searchFilter() { 
-        
-        
         if (this.filter.startDate !== null || this.filter.endDate !== null) {
-           
            this.start = this.filter.startDate;
             this.end = this.filter.endDate;
-           
           if (this.start > this.end) {
         this.toaster.error('Start Date should be less then end date.');
         return false;
@@ -200,13 +196,13 @@ export class TrialBalanceComponent implements OnInit {
             this.usdDebitTotal = 0;
             this.usdCreditTotal = 0;
             this.accounts = [];
+            this.creTotal = [];
+            this.debTotal = [];
             this.dataMessage = Constants.FETCHING_DATA;
             this.fetchAccounts();
           }
-            
         }
     }
-
 
 
     resetFilter() {
@@ -218,6 +214,8 @@ export class TrialBalanceComponent implements OnInit {
         this.usdDebitTotal = 0;
         this.usdCreditTotal = 0;
         this.accounts = [];
+        this.creTotal = [];
+        this.debTotal = [];
         this.fetchAccounts();
     }
 
