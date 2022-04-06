@@ -18,6 +18,7 @@ import { SplitButtonModule } from "primeng/splitbutton";
 import { CalendarModule } from "primeng/calendar";
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { DropdownModule } from "primeng/dropdown";
+import { DialogModule } from 'primeng/dialog';
 const routes: Routes = [
   {
     path: "deleted-assets",
@@ -54,6 +55,7 @@ const routes: Routes = [
     CalendarModule,
     AutoCompleteModule,
     DropdownModule,
+    DialogModule
   ],
 })
-export class AssetsSettingsModules {}
+export class AssetsSettingsModules { }
