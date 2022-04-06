@@ -172,7 +172,13 @@ export class VehicleListComponent implements OnInit {
                         this.loadMsg = Constants.NO_LOAD_FOUND;
                     }
                     if (result.length > 0) {
-                             this.suggestedVehicles = result;
+                    result.map((v) => {
+                    if(v.vehicleIdentification != ''){
+                    v.vehName = v.vehicleIdentification;
+                    }
+                    return v;
+                    });
+                    this.suggestedVehicles = result;
                     } else {
                     }
                 });
@@ -180,9 +186,12 @@ export class VehicleListComponent implements OnInit {
             this.suggestedVehicles = [];
         }
     }, 800);
-  
-    setVehicle(vehicleIdentification) {
-    this.vehicleIdentification = vehicleIdentification;
+    
+    setVehicle(vehicleIdentification: any) {
+    if(vehicleIdentification != undefined && vehicleIdentification != ''){
+        this.vehicleIdentification = vehicleIdentification;
+    }
+        this.loadMsg = Constants.NO_LOAD_DATA;
   }
   
 
@@ -276,15 +285,7 @@ export class VehicleListComponent implements OnInit {
     }
 
 
- getDeshCam()
- {
- for(let i = 0;i<=this.vehicles.length;i++){
-  if(this.vehicles[i].dashCamSerNo != 'NA'){
-  this.actualSrNo = this.vehicles[i].dashCamSerNo.split('#')[1]
-  console.log('Serial No',this.actualSrNo)
-  }
-  }
- }
+
 
   onScroll = async(event: any) => {
     if (this.loaded) {
