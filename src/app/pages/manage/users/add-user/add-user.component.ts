@@ -518,6 +518,13 @@ export class AddUserComponent implements OnInit {
           confirmPassword: ''
         }
       };
+      if(this.userData.userLoginData.userRoles.length>0){
+        for(const subRole of this.allSubRoles){
+          if(this.userData.userLoginData.userRoles.includes(subRole.role)){
+            this.seprateRoles();
+          }
+        }
+      }
       if (this.userData.loginEnabled === true) {
         this.enableUserLogin = true;
       } else {
@@ -535,6 +542,23 @@ export class AddUserComponent implements OnInit {
         this.imageText = 'Add';
       }
     });
+  }
+
+  seprateRoles(){
+    const checkArray=this.userData.userLoginData.userRoles;
+    this.userData.userLoginData.userRoles=[]
+    for(const element of checkArray){
+      for(const el of this.userRoles){
+        if(element==el.role && !this.userData.userLoginData.userRoles.includes(element)){
+          this.userData.userLoginData.userRoles.push(element)
+        }
+      }
+      for(const e of this.allSubRoles){
+        if(element==e.role && !this.subRole.includes(element)){
+          this.subRole.push(element)
+        }
+      }
+    }
   }
   scrollError() {
     let errorList;

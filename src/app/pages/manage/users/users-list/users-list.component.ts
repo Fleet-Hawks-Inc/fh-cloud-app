@@ -48,6 +48,8 @@ export class UsersListComponent implements OnInit {
     roles: any = [];
     response: any = '';
     reminderID:any ;
+    allSubRoles=[]
+    subRole=[]
     
 
   constructor(private apiService: ApiService,
@@ -60,6 +62,7 @@ export class UsersListComponent implements OnInit {
     this.fetchUserRoles();
     this.fetchRoles();
     this.fetchUsers();
+    this.fetchSubRoles();
   }
 
  
@@ -115,6 +118,14 @@ export class UsersListComponent implements OnInit {
               this.userRoles[element.role]=element.name
             });
   }
+
+  async fetchSubRoles(){
+    const data:any=await this.httpClient.get('assets/jsonFiles/user/subRoles.json').toPromise()
+      data.forEach(element=>{
+        this.userRoles[element.role]=element.name
+      })
+      this.allSubRoles=data
+  }
    
   fetchRoles() {
     this.httpClient.get('assets/jsonFiles/user/userRoles.json').subscribe((data: any) => {
@@ -123,18 +134,39 @@ export class UsersListComponent implements OnInit {
   }
 
   fetchRole(user: any) {
-    this.fetchUserRoles();
+    //this.fetchUserRoles();
     this.selectedUserData = user;
     this.setUsrName = user.userLoginData.userName;
-    this.setRoles = user.userLoginData.userRoles;
+    
     this.selectedUser.userID = user.contactID;
+    const checkArray=user.userLoginData.userRoles;
+    let roles=[]
+    let subRoles=[]
+    for(const element of checkArray){
+      for(const el of this.roles){
+        if(element==el.role && !roles.includes(element)){
+          roles.push(element)
+        }
+      }
+      for(const e of this.allSubRoles){
+        if(element==e.role && !subRoles.includes(element)){
+          subRoles.push(element)
+        }
+      }
+    }
+    this.subRole=subRoles
+    this.setRoles=roles
+    
+  }
+  seprateRoles(user:any){
+    
   }
   cancel() {
     $('#assignrole').modal('hide');
   }
   
   assignRole() {
-    this.selectedUser.userRoles = this.setRoles;
+    this.selectedUser.userRoles = this.setRoles.concat(this.subRole);
     this.apiService.putData('contacts/assignRole', this.selectedUser).
       subscribe({
         complete: () => { },
