@@ -21,6 +21,8 @@ export class DriverPaymentsDetailComponent implements OnInit {
     txnDate: "",
     fromDate: null,
     toDate: null,
+    prStart: null,
+    prEnd: null,
     settlementIds: [],
     advancePayIds: [],
     payMode: null,
@@ -129,6 +131,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
       showModal: this.showModal,
       data: this.paymentData,
     };
+
     this.listService.triggerDownloadPaymentPdf(obj);
     this.downloadDisabledpdf = true;
 
@@ -162,8 +165,11 @@ export class DriverPaymentsDetailComponent implements OnInit {
       isVendorPayment: this.paymentData.isVendorPayment,
       vendorId: this.paymentData.vendorId,
       gstHstPer: this.paymentData.gstHstPer,
-      gstHstAmt: this.paymentData.gstHstAmt
+      gstHstAmt: this.paymentData.gstHstAmt,
+      prEnd: this.paymentData.prEnd ? this.paymentData.prEnd : '',
+      prStart: this.paymentData.prStart ? this.paymentData.prStart : '',
     };
+
     this.downloadDisabled = true;
     this.listService.openPaymentChequeModal(obj);
   }

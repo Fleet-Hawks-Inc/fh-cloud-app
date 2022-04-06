@@ -28,6 +28,8 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
     txnDate: moment().format("YYYY-MM-DD"),
     fromDate: null,
     toDate: null,
+    prStart: null,
+    prEnd: null,
     settlementIds: [],
     advancePayIds: [],
     payMode: null,
@@ -452,11 +454,22 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
         }
       }
     }
+    if (
+      this.paymentData.prStart == "" ||
+      this.paymentData.prStart == null ||
+      this.paymentData.prEnd == "" ||
+      this.paymentData.prEnd == null
+    ) {
+      this.toaster.error("Please select pay period");
+      return false;
+    }
+
     if (!this.isVendor) {
       this.paymentData.vendorId = '';
       this.paymentData.isVendorPayment = false;
 
     }
+
     this.submitDisabled = true;
     this.accountService
       .postData("driver-payments", this.paymentData)

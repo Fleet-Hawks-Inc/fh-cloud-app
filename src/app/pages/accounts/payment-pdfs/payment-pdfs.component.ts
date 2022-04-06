@@ -36,7 +36,7 @@ export class PaymentPdfsComponent implements OnInit {
   };
   settlements = [];
   // paymentInfo: any;
-  paymentSelected=[]
+  paymentSelected = []
   currency: string;
   payPeriod: any;
   paymentData = {
@@ -47,6 +47,8 @@ export class PaymentPdfsComponent implements OnInit {
     txnDate: "",
     fromDate: null,
     toDate: null,
+    prStart: null,
+    prEnd: null,
     settlementIds: [],
     advancePayIds: [],
     payMode: null,
@@ -117,11 +119,13 @@ export class PaymentPdfsComponent implements OnInit {
   modelRef: any;
   subTotal = 0;
   totalSettmnt: any;
-  paymentAbr={"ppm": "Pay Per Mile",
-  "pp":"Percentage",
-  "ppd":"Pay Per Delivery",
-  "pph":"Pay Per Hour",
-  "pfr":"Pay Flat Rate"}
+  paymentAbr = {
+    "ppm": "Pay Per Mile",
+    "pp": "Percentage",
+    "ppd": "Pay Per Delivery",
+    "pph": "Pay Per Hour",
+    "pfr": "Pay Flat Rate"
+  }
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
       async (res: any) => {
@@ -167,7 +171,35 @@ export class PaymentPdfsComponent implements OnInit {
               (result) => { },
               (reason) => { }
             );
+          let newDates: string;
+          if (this.paymentData.prStart != undefined && this.paymentData.prEnd != undefined) {
 
+            let startDate = formatDate(
+              this.paymentData.prStart,
+              "dd-MM-yyyy",
+              this.locale
+            );
+            let endDate = formatDate(
+              this.paymentData.prEnd,
+              "dd-MM-yyyy",
+              this.locale
+            );
+            newDates = `${startDate} To ${endDate}`;
+          }
+          else {
+            let startDate = formatDate(
+              this.paymentData.fromDate,
+              "dd-MM-yyyy",
+              this.locale
+            );
+            let endDate = formatDate(
+              this.paymentData.toDate,
+              "dd-MM-yyyy",
+              this.locale
+            );
+            newDates = `${startDate} To ${endDate}`;
+          }
+          this.payPeriod = newDates;
           if (this.paymentData.fromDate && this.paymentData.toDate) {
             this.pdfDetails.payYear = formatDate(
               this.paymentData.toDate,
@@ -266,7 +298,7 @@ export class PaymentPdfsComponent implements OnInit {
     this.settlements = result;
     this.paymentSelected = result[0].paymentSelected
     this.currency = result[0].currency;
-    let newDates = []
+
     let totalAddDed = 0;
     for (let index = 0; index < this.settlements.length; index++) {
       const element = this.settlements[index];
@@ -297,39 +329,13 @@ export class PaymentPdfsComponent implements OnInit {
         }
       });
 
-      if (element.prStart != undefined && element.prEnd != undefined) {
 
-        let startDate = formatDate(
-          element.prStart,
-          "dd-MM-yyyy",
-          this.locale
-        );
-        let endDate = formatDate(
-          element.prEnd,
-          "dd-MM-yyyy",
-          this.locale
-        );
-        newDates.push(`${startDate} To ${endDate}`);
-      }
-      else {
-        let startDate = formatDate(
-          element.fromDate,
-          "dd-MM-yyyy",
-          this.locale
-        );
-        let endDate = formatDate(
-          element.toDate,
-          "dd-MM-yyyy",
-          this.locale
-        );
-        newDates.push(`${startDate} To ${endDate}`);
-      }
 
       totalAddDed += element.additionTotal - element.deductionTotal;
 
 
     }
-    this.payPeriod = newDates.join(", ");
+
     await this.fetchTrips();
     this.subTotal += totalAddDed;
   }

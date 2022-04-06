@@ -35,6 +35,8 @@ export class PaymentChequeComponent implements OnInit {
     payYear: "",
     fromDate: "",
     toDate: "",
+    prStart: '',
+    prEnd: '',
     vacPayPer: 0,
     vacPayAmount: 0,
     totalAmount: 0,
@@ -166,17 +168,33 @@ export class PaymentChequeComponent implements OnInit {
               "yyyy",
               this.locale
             );
-            let startDate = formatDate(
-              this.paydata.fromDate,
-              "dd-MM-yyyy",
-              this.locale
-            );
-            let endDate = formatDate(
-              this.paydata.toDate,
-              "dd-MM-yyyy",
-              this.locale
-            );
-            this.cheqdata.payPeriod = `${startDate} To ${endDate}`;
+            if (this.paydata.prStart != '' && this.paydata.prEnd != '') {
+              let startDate = formatDate(
+                this.paydata.prStart,
+                "dd-MM-yyyy",
+                this.locale
+              );
+              let endDate = formatDate(
+                this.paydata.prEnd,
+                "dd-MM-yyyy",
+                this.locale
+              );
+              this.cheqdata.payPeriod = `${startDate} To ${endDate}`;
+            } else {
+              let startDate = formatDate(
+                this.paydata.fromDate,
+                "dd-MM-yyyy",
+                this.locale
+              );
+              let endDate = formatDate(
+                this.paydata.toDate,
+                "dd-MM-yyyy",
+                this.locale
+              );
+              this.cheqdata.payPeriod = `${startDate} To ${endDate}`;
+            }
+
+
           }
 
           if (this.paydata.type === "advancePayment") {
@@ -230,7 +248,7 @@ export class PaymentChequeComponent implements OnInit {
             }
           }
 
-          if(this.paydata.isVendorPayment) {
+          if (this.paydata.isVendorPayment) {
             this.cheqdata.regularPay = this.paydata.totalAmount;
             this.cheqdata.grossPay = this.paydata.totalAmount;
           }
@@ -461,7 +479,7 @@ export class PaymentChequeComponent implements OnInit {
 
   async getUserAnnualTax() {
     let entityID = this.paydata.entityId;
-    if(this.paydata.isVendorPayment) {
+    if (this.paydata.isVendorPayment) {
       entityID = this.paydata.vendorId;
     }
     let result: any = await this.accountService
