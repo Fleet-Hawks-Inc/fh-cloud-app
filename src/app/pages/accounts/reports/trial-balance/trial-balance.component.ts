@@ -61,6 +61,8 @@ export class TrialBalanceComponent implements OnInit {
     cadCreditTotal = 0;
     usdDebitTotal = 0;
     usdCreditTotal = 0;
+    creTotal : any= [];
+    debTotal :any = [];
 
     accountsClassObjects = {};
     coaData = {}
@@ -112,43 +114,58 @@ export class TrialBalanceComponent implements OnInit {
                              this.accounts = _.filter(this.accounts, function(o){
                              return o.debit != '0'|| o.credit != '0';
                              })
+                        
+                            const tempTotal = this.accounts[i].credit - this.accounts[i].debit
+                            if (tempTotal > 0) {
+                            this.accounts[i].credit = tempTotal;
+                           this.accounts[i].debit = 0;
+                                  }
+                                  else {
+                             this.accounts[i].debit = tempTotal;
+                            this.accounts[i].credit = 0;
+                                     }
+                              this.creTotal.push(this.accounts[i].credit);
+                              this.debTotal.push(this.accounts[i].debit);
                              }
                             if(this.currTab === 'USD'){
                              this.currency = 'USD';
                              this.accounts = _.filter(this.accounts, function(o){
                              return o.debit != '0'|| o.credit != '0';
                              })
+                                 const tempTotal = this.accounts[i].credit - this.accounts[i].debit
+                            if (tempTotal > 0) {
+                            this.accounts[i].credit = tempTotal;
+                           this.accounts[i].debit = 0;
+                                  }
+                                  else {
+                             this.accounts[i].debit = tempTotal;
+                            this.accounts[i].credit = 0;
+                                     }
+                              this.creTotal.push(this.accounts[i].credit);
+                              this.debTotal.push(this.accounts[i].debit);
                              }
                         }
-                        for (var i = 0; i < result.data.length; i++) {
-                            if (this.currTab === 'CAD') {
-                                this.currency = 'CAD'
-                                if (result.data[i].debit != null) {
-                                    this.cadDebitTotal += parseFloat(result.data[i].debit);
-                                }
-                                if (result.data[i].credit != null) {
-                                    this.cadCreditTotal += parseFloat(result.data[i].credit);
-                                }
-                            }
-                            if (this.currTab === 'USD') {
-                                this.currency = 'USD'
-                                if (result.data[i].debit != null) {
-                                    this.usdDebitTotal += parseFloat(result.data[i].debit);
-                                }
-                                if (result.data[i].credit != null) {
-                                    this.usdCreditTotal += parseFloat(result.data[i].credit);
-                                }
-                            }
-                        }
-                        this.accounts = _.filter(this.accounts, function (o) {
-                            return o.actType != 'H';
-                        });
-                        this.accounts = _.filter(this.accounts, function (o) {
-                            return o.actType != 'S';
-                        });
-                        this.accounts = _.filter(this.accounts, function (o) {
-                            return o.actType != 'T';
-                        });
+                         
+                          for(let i=0;i<=this.accounts.length;i++) {
+                              if(this.currTab === 'CAD') {
+                                  this.currency = 'CAD';
+                                  if(this.creTotal[i]>0) {
+                                      this.cadCreditTotal += parseFloat(this.creTotal[i]);
+                                  }
+                                  if(this.debTotal[i]<0) {
+                                      this.cadDebitTotal += parseFloat(this.debTotal[i]);
+                                  }
+                              }
+                              if(this.currTab === 'USD') {
+                                  this.currency = 'USD';
+                                  if(this.creTotal[i]>0) {
+                                      this.usdCreditTotal += parseFloat(this.creTotal[i]);
+                                  }
+                                  if(this.debTotal[i]<0) {
+                                      this.usdDebitTotal += parseFloat(this.debTotal[i]);
+                                  }
+                              }
+                         }
                     }
                     if (this.currTab === 'CAD') {
                              this.currency = 'CAD'
@@ -162,16 +179,22 @@ export class TrialBalanceComponent implements OnInit {
                      this.dataMessage = Constants.NO_RECORDS_FOUND;
                            }
                          }
-                    
                 });
     }
    
-
-
-    searchFilter() {
+    searchFilter() { 
+        
+        
         if (this.filter.startDate !== null || this.filter.endDate !== null) {
-            this.start = this.filter.startDate;
+           
+           this.start = this.filter.startDate;
             this.end = this.filter.endDate;
+           
+          if (this.start > this.end) {
+        this.toaster.error('Start Date should be less then end date.');
+        return false;
+          }
+          else{
             this.cadDebitTotal = 0;
             this.cadCreditTotal = 0;
             this.usdDebitTotal = 0;
@@ -179,6 +202,8 @@ export class TrialBalanceComponent implements OnInit {
             this.accounts = [];
             this.dataMessage = Constants.FETCHING_DATA;
             this.fetchAccounts();
+          }
+            
         }
     }
 
