@@ -95,22 +95,10 @@
 
                                             <section class="reports_div">
                                                 <table class="row-border hover table table-bordered table-striped mb-0">
-                                                    <!-- <col style="width:1%">
-                                                    <col style="width:1%">
-                                                    <col style="width:1%">
-                                                    <col style="width:1%">
-                                                    <col style="width:1%">
-                                                    <col style="width:1%">
-                                                    <col style="width:1%">
-                                                    <col style="width:1%">
-                                                    <col style="width:1%"> -->
-
                                                     <thead>
                                                         <tr>
-                                                            <!-- <th>Vehicle</th> -->
                                                             <th>Order#</th>
                                                             <th>Trip#</th>
-
                                                             <th>Trip Date</th>
                                                             <th>Total Miles</th>
                                                             <th>Invoice#</th>
@@ -119,9 +107,6 @@
                                                             <th>Receipt#</th>
                                                             <th>Receipt Date</th>
                                                             <th>Receipt Amount</th>
-
-                                                            <!-- <th>Amount</th>
-                                                <th>Currency</th> -->
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -129,8 +114,6 @@
                                                             <td colspan="15">{{dataMessage}}</td>
                                                         </tr>
                                                         <tr *ngFor="let item of allData">
-                                                            <!-- <td>{{item.vehicle}}</td> -->
-
                                                             <td>{{item.orderName}}</td>
                                                             <td>{{item.tripNo}}</td>
                                                             <td>{{item.dateCreated | date:"yyyy/MM/dd" }}</td>
@@ -165,10 +148,7 @@
                                                                     </span>
                                                                 </span>
                                                             </td>
-                                                            <!-- <td>  -->
-                                                            <!-- <span *ngIf = "item.recInv === undefined ">-</span>
-                                                    {{item.recInv}}
-                                                </td> -->
+                                                        
                                                             <td>
                                                                 <span *ngIf="item.receiptData.length === 0">-</span>
                                                                 <span *ngFor='let item1 of item.receiptData'>
@@ -199,10 +179,6 @@
 
                                                                 </span>
                                                             </td>
-
-
-                                                            <!-- <td>{{item.totalAmount }}</td>
-                                                <td>{{item.charges.freightFee.currency }}</td> -->
                                                         </tr>
                                                         <tr>
                                                             <td></td>

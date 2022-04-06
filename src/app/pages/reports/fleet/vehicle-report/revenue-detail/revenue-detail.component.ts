@@ -40,7 +40,7 @@ export class RevenueDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.end = moment().format("YYYY-MM-DD");
-    this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
+    this.start = moment().subtract(15, 'days').format('YYYY-MM-DD');
 
     this.vehicleId = this.route.snapshot.params[`vehicleId`];
     this.fetchRevenueData()
@@ -90,6 +90,7 @@ export class RevenueDetailComponent implements OnInit {
     // this.loaded = true;
 
   }
+
   //For Switching Tab
   changeTab(type) {
     this.currTab = type;
@@ -227,7 +228,7 @@ export class RevenueDetailComponent implements OnInit {
       if (link.download !== undefined) {
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Asset-Report.csv`);
+        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Revenue-detail.csv`);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
