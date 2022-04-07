@@ -26,6 +26,10 @@ import { BadgeModule } from 'primeng/badge';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { TabViewModule } from 'primeng/tabview';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { SidebarModule } from 'primeng/sidebar';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -92,7 +96,11 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     DragDropModule,
     BadgeModule,
     OverlayPanelModule,
-    DialogModule
+    DialogModule,
+    TabViewModule,
+    TableModule,
+    ButtonModule,
+    SidebarModule
   ],
   declarations: [
     SidebarComponent,

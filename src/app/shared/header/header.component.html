@@ -56,12 +56,43 @@
     </div>
 
     <div class="header-right">
-        <p-overlayPanel #op baseZIndex="1000">
-            <ng-template pTemplate>
-                <p (click)="showDetail()"> Content</p>
-            </ng-template>
-        </p-overlayPanel>
-        <i class="pi pi-bell mr-4 p-text-secondary" pBadge style="font-size: 1.5rem" severity="danger" size="large" (click)="op.toggle($event)" value="2"></i>
+        <i class="pi pi-bell mr-4 p-text-secondary" pBadge style="font-size: 1.3rem; cursor: pointer;" severity="danger" size="large" (click)="showNotifications=true" [value]="unReadCounter"></i>
+        <p-sidebar [(visible)]="showNotifications" appendTo="body" modal="false" baseZIndex="100000" position="right" styleClass="p-sidebar-sm">
+
+            <p-tabView>
+                <p-tabPanel header="Notifications">
+                    <p-table responsiveLayout="scroll" styleClass="p-datatable-md" [value]="notifications" selectionMode="single">
+                        <ng-template pTemplate="header">
+
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-notification>
+                            <tr>
+                                <td (click)="showDetail(notification)" style="cursor:pointer;">{{notification.message}}</td>
+
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-tabPanel>
+                <p-tabPanel header="Announcements">
+                    <p-table responsiveLayout="scroll" styleClass="p-datatable-md" [value]="announcements" selectionMode="single">
+                        <ng-template pTemplate="header">
+
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-announcement>
+                            <tr>
+                                <td (click)="showDetail(announcement)" style="cursor:pointer;">{{ announcement.message}}</td>
+
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-tabPanel>
+
+            </p-tabView>
+
+
+        </p-sidebar>
+
+
         <a href="javascript:;" (click)="openModal('list')" class="modal-with-form address-book-icon" title="Address Book">
             <i class="far fa-address-book text-dark" style="font-size: 18px"></i>
         </a>
@@ -114,6 +145,9 @@
 <app-new-address-book></app-new-address-book>
 <app-shared-modals></app-shared-modals>
 
-<p-dialog header="Title" [(visible)]="showNotificationDetail">
-  Content
+<p-dialog header="Message" [modal]="true" [style]="{width: '50vw'}"  [(visible)]="showNotificationDetail">
+  {{detailMessage}}
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" (click)="showNotificationDetail=false" label="Ok" styleClass="p-button-text"></p-button>
+</ng-template>
 </p-dialog>
