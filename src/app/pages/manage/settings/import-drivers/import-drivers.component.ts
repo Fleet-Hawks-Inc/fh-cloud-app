@@ -1,20 +1,11 @@
-import { Component, OnInit, ElementRef, ViewChild, Input, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ElementRef } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
-import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
 import Constants from '../../constants';
-import { environment } from '../../../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
-import * as moment from 'moment'
+
 import * as _ from 'lodash'
-import { ViewEncapsulation } from '@angular/core';
-import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
-import CSVFileValidator, { ParsedResults, ValidatorConfig, } from 'csv-file-validator';
-import { Router } from '@angular/router'
-import { threadId } from 'worker_threads';
+import CSVFileValidator, { ValidatorConfig, } from 'csv-file-validator';
 import { Table } from 'primeng/table';
-import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 
 @Component({
@@ -23,11 +14,12 @@ declare var $: any;
   styleUrls: ['./import-drivers.component.css']
 })
 export class ImportDriversComponent implements OnInit {
-  @ViewChild('vehImporter') vehImporter: any;;
   @ViewChild('dt') table: Table;
 
-  @ViewChild("importModel", { static: true })
-  importModel: TemplateRef<any>;
+  @ViewChild('myInput')
+  myInputVariable: ElementRef;
+
+  display = false;
 
   dataMessage: string = Constants.FETCHING_DATA;
   loaded = false;
@@ -43,19 +35,25 @@ export class ImportDriversComponent implements OnInit {
   check: boolean = false;
   submitDisabled: boolean = true;
 
+
   // columns of data table
   dataColumns = [
-    { field: 'status', header: 'Status', type: "text" },
+    { field: 'displayName', header: 'File Name', type: "text" },
     { field: 'timeCreated', header: 'Uploaded', type: "text" },
-    { field: 'docs[0].displayName', header: 'File Name', type: "text" },
     { field: "module", header: 'Module', type: 'text' },
+    { field: 'fileStatus', header: 'Status', type: "text" },
 
   ];
   _selectedColumns: any[];
-  importModelRef: any;
 
-  constructor(private apiService: ApiService, private toastr: ToastrService,
-    private modalService: NgbModal,
+
+  statuses = [
+    { label: 'Uploaded', value: 'uploaded' },
+    { label: 'Partially Processed', value: 'partially_processed' },
+    { label: 'Processed', value: 'processed' },
+  ]
+
+  constructor(private apiService: ApiService, private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -107,7 +105,7 @@ export class ImportDriversComponent implements OnInit {
           name: 'birth_date', inputName: 'birthDate', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           }, validate: function (date: string) {
-            const dateformat = /^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$/;
+            const dateformat = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
             return dateformat.test(date)
           }
         },
@@ -131,7 +129,7 @@ export class ImportDriversComponent implements OnInit {
           name: 'start_date', inputName: 'startDate', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           }, validate: function (date: string) {
-            const dateformat = /^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$/;
+            const dateformat = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
             return dateformat.test(date)
           }
         },
@@ -156,10 +154,19 @@ export class ImportDriversComponent implements OnInit {
             this.submitDisabled = false;
           }
           else {
-            this.inValidMessages = csvData.inValidMessages
             this.isFileValid = false;
             this.check = false;
             this.submitDisabled = true;
+
+            for (let item of csvData.inValidMessages) {
+              let joinStr = '';
+              if (item.includes('birth_date') || item.includes('start_date')) {
+                joinStr = item + '. Please enter the date in the format: YYYY-MM-DD';
+                this.inValidMessages.push(joinStr)
+              } else {
+                this.inValidMessages.push(item)
+              }
+            }
           }
           csvData.data
         } else if (csvData.data.length == 0) {
@@ -214,7 +221,7 @@ export class ImportDriversComponent implements OnInit {
             this.submitDisabled = false;
             this.toastr.success("The file has been scheduled for processing and you will be notified via email once it is completed.")
             $('#importDocs').val('');
-            this.importModelRef.close();
+            this.display = false;
             this.fetchDriverImport();
           }
         })
@@ -223,25 +230,24 @@ export class ImportDriversComponent implements OnInit {
   }
 
   async fetchDriverImport() {
-    this.loaded = true;
     let result = await this.apiService.getData('importer/get?type=driver').toPromise();
     if (result.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
-      this.loaded = false;
+      this.loaded = true;
     }
     if (result && result.length > 0) {
       this.importDrivers = result;
     }
-    this.loaded = false;
+    this.loaded = true;
   }
 
   openModal() {
-    let ngbModalOptions: NgbModalOptions = {
-      keyboard: false,
-      backdrop: "static",
-      windowClass: "import-model--main",
-    };
-    this.importModelRef = this.modalService.open(this.importModel, ngbModalOptions)
+    this.display = true;
+  }
+
+  cancel() {
+    this.inValidMessages = [];
+    this.myInputVariable.nativeElement.value = "";
   }
 
   /**

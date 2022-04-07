@@ -711,6 +711,16 @@
                                         </td>
                                       </tr>
                                       <tr style="color: #000000">
+                                        <td>GST/HST</td>
+                                        <td align="right">
+                                          {{ cheqdata.gstHst | number: "1.2-2" }}
+                                        </td>
+                                        <td align="right">&nbsp;</td>
+                                        <td align="right">
+                                          {{ cheqdata.gstHstYTD | number: "1.2-2" }}
+                                        </td>
+                                      </tr>
+                                      <tr style="color: #000000">
                                         <td>Withheld</td>
                                         <td align="right" class="">
                                           -{{
@@ -1729,6 +1739,16 @@
                                             cheqdata.grossPayYTD
                                               | number: "1.2-2"
                                           }}
+                                        </td>
+                                      </tr>
+                                      <tr style="color: #000000">
+                                        <td>GST/HST</td>
+                                        <td align="right">
+                                          {{ cheqdata.gstHst | number: "1.2-2" }}
+                                        </td>
+                                        <td align="right">&nbsp;</td>
+                                        <td align="right">
+                                          {{ cheqdata.gstHstYTD | number: "1.2-2" }}
                                         </td>
                                       </tr>
                                       <tr style="color: #000000">

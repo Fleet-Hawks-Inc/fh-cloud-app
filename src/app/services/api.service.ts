@@ -58,11 +58,12 @@ export class ApiService {
 
   postData(url: string, data, formData: boolean = false) {
     let headers: object;
+    let selectedCarrier = localStorage.getItem('xfhCarrierId') != null ? localStorage.getItem('xfhCarrierId') : '';
     if (formData) {
-      headers = { headers: {} }
+      headers = { headers: new HttpHeaders({'x-fleethawks-carrier-id': selectedCarrier }) }
     }
     else {
-      headers = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+      headers = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'x-fleethawks-carrier-id': selectedCarrier }) };
     }
 
     return this.http.post(this.BaseUrl + url, data, headers);
@@ -71,11 +72,12 @@ export class ApiService {
 
   putData(url: string, data, formData: boolean = false) {
     let headers: object;
+    let selectedCarrier = localStorage.getItem('xfhCarrierId') != null ? localStorage.getItem('xfhCarrierId') : '';
     if (formData) {
-      headers = { headers: {} }
+      headers = { headers: new HttpHeaders({'x-fleethawks-carrier-id': selectedCarrier }) };
     }
     else {
-      headers = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+      headers = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'x-fleethawks-carrier-id': selectedCarrier }) };
     }
 
     return this.http.put<any>(this.BaseUrl + url, data, headers);
@@ -86,8 +88,9 @@ export class ApiService {
     //   'x-auth-token': this.jwt})
     // };
     let isCarrier = localStorage.getItem('carrierID') != null ? localStorage.getItem('carrierID') : '';
+    let selectedCarrier = localStorage.getItem('xfhCarrierId') != null ? localStorage.getItem('xfhCarrierId') : '';
     const headers = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'fh-carrier-id': isCarrier })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'fh-carrier-id': isCarrier, 'x-fleethawks-carrier-id': selectedCarrier })
     };
 
     return this.http.get<any>(this.BaseUrl + url, headers);
@@ -98,8 +101,9 @@ export class ApiService {
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})
     // };
+    let selectedCarrier = localStorage.getItem('xfhCarrierId') != null ? localStorage.getItem('xfhCarrierId') : '';
     const headers = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'x-fleethawks-carrier-id': selectedCarrier })
     };
     return this.http.delete<any>(this.BaseUrl + url, headers);
   }

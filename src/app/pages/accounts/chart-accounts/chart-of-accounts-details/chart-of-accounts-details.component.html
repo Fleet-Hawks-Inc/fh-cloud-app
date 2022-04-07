@@ -301,7 +301,7 @@
                                   >
                                 </td>
                                 <td>{{ trx.type | titlecase }}</td>
-                                <td>{{ trx.desc | titlecase }}</td>
+                                <td [innerHTML]="trx.desc"></td>
                                 <td>
                                   <span *ngIf="trx.trxType === 'debit'"
                                     >{{ trx.amount | number: "1.2-2" }}&nbsp;
@@ -345,7 +345,7 @@
                                   {{ trx.uName ? trx.uName : "-" }}
                                 </td>
                                 <td>{{ trx.entityType | titlecase }}</td>
-                                <td>{{ trx.desc | titlecase }}</td>
+                                <td [innerHTML]="trx.desc"></td>
                                 <td>
                                   <span *ngIf="trx.trxType === 'debit'"
                                     >{{ trx.amount | number: "1.2-2" }}&nbsp;
@@ -503,7 +503,7 @@
                                   >
                                 </td>
                                 <td>{{ trx.type | titlecase }}</td>
-                                <td>{{ trx.desc | titlecase }}</td>
+                                <td [innerHTML]="trx.desc"></td>
                                 <td>
                                   <span *ngIf="trx.trxType === 'debit'"
                                     >{{ trx.amount | number: "1.2-2" }}&nbsp;
@@ -545,7 +545,7 @@
                                   {{ trx.uName ? trx.uName : "-" }}
                                 </td>
                                 <td>{{ trx.entityType | titlecase }}</td>
-                                <td>{{ trx.desc | titlecase }}</td>
+                                <td [innerHTML]="trx.desc"></td>
                                 <td>
                                   <span *ngIf="trx.trxType === 'debit'"
                                     >{{ trx.amount | number: "1.2-2" }}&nbsp;

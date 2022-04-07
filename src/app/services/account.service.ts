@@ -55,11 +55,12 @@ export class AccountService {
 
   postData(url: string, data, formData: boolean = false) {
     let headers: object;
-    if(formData){
-      headers =  {headers: {}}
+    let selectedCarrier = localStorage.getItem('xfhCarrierId') != null ? localStorage.getItem('xfhCarrierId') : '';
+    if (formData) {
+      headers = { headers: new HttpHeaders({'x-fleethawks-carrier-id': selectedCarrier }) }
     }
     else {
-      headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})};
+      headers = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'x-fleethawks-carrier-id': selectedCarrier }) };
     }
 
     return this.http.post(this.AccountServiceUrl + url , data , headers);
@@ -68,11 +69,12 @@ export class AccountService {
 
   putData(url: string, data, formData: boolean = false) {
     let headers: object;
-    if(formData){
-      headers =  {headers: {}}
+    let selectedCarrier = localStorage.getItem('xfhCarrierId') != null ? localStorage.getItem('xfhCarrierId') : '';
+    if (formData) {
+      headers = { headers: new HttpHeaders({'x-fleethawks-carrier-id': selectedCarrier }) };
     }
     else {
-      headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})};
+      headers = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'x-fleethawks-carrier-id': selectedCarrier }) };
     }
 
     return this.http.put<any>(this.AccountServiceUrl + url , data , headers);
@@ -82,8 +84,10 @@ export class AccountService {
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})
     // };
+    let selectedCarrier = localStorage.getItem('xfhCarrierId') != null ? localStorage.getItem('xfhCarrierId') : '';
     let isCarrier = localStorage.getItem('carrierID') !=null ? localStorage.getItem('carrierID') : '';
-    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json', 'fh-carrier-id': isCarrier})
+    const headers = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'fh-carrier-id': isCarrier, 'x-fleethawks-carrier-id': selectedCarrier })
     };
 
     return this.http.get<any>(this.AccountServiceUrl + url , headers);
@@ -94,7 +98,9 @@ export class AccountService {
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})
     // };
-    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
+    let selectedCarrier = localStorage.getItem('xfhCarrierId') != null ? localStorage.getItem('xfhCarrierId') : '';
+    const headers = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'x-fleethawks-carrier-id': selectedCarrier })
     };
     return this.http.delete<any>(this.AccountServiceUrl + url , headers);
   }

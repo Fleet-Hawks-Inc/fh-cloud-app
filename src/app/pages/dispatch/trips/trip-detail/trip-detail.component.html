@@ -1193,47 +1193,62 @@
 
 
 
-<p-dialog header="Title" [(visible)]="showAlerts" [style]="{width: '50vw', height: '50vw'}">
+<p-dialog header="Title" [(visible)]="showAlerts" [style]="{width: '50vw', height: '70vw'}">
     <ng-template pTemplate="header">
         <h3>Add alarms</h3>
     </ng-template>
     <div class="row">
         <div class="col">
-            <h5>Select asset to set an Alarm</h5>
-            <p-dropdown [options]="assetNamesList" class="m-2" appendTo="body" placeholder="Select Asset" [(ngModel)]="selectedAssetAlarm" optionLabel="assetName" style="width:100px" optionValue="assetName"></p-dropdown>
-            <p-inputNumber id="highTemp" tooltipPosition="top" pTooltip="Enter High Temperature Threshold" [(ngModel)]="highTemp" mode="decimal" class="m-2" suffix="℃" :min="-40" :max="40" placeholder="High Temperature Threshold"></p-inputNumber>
 
-            <p-inputNumber id="lowtemp" tooltipPosition="top" pTooltip="Enter Low Temperature Threshold" [(ngModel)]="lowTemp" mode="decimal" class="m-2" suffix="℃" :min="-40" :max="40" placeholder="Low Temperature Threshold"></p-inputNumber>
-            <input type="text" id="emails" pTooltip="Multiple emails with comma seperated." placeholder="Email Address(s)" pInputText [(ngModel)]="emails" class="m-2" />
+            Select asset:<br>
+            <p-dropdown [options]="assetNamesList" class="mb-2" appendTo="body" placeholder="Select Asset" [(ngModel)]="selectedAssetAlarm" optionLabel="assetName" style="width:100px" optionValue="assetName"></p-dropdown><br/>
+            <span class="small" style="color:red" *ngIf="assetAlert">{{assetAlert}}<br> </span>
+            <label class="mt-2">High Temp. threshold</label><br>
+            <p-inputNumber id="highTemp" tooltipPosition="top" pTooltip="Enter High Temperature Threshold" [(ngModel)]="highTemp" mode="decimal" class="mb-2" [suffix]="metricSelected" :min="-100" :max="80" placeholder="High Temperature Threshold"></p-inputNumber><br>
+            <label class="mb-2">Low Temp. threshold</label><br>
+            <p-inputNumber id="lowtemp" tooltipPosition="top" pTooltip="Enter Low Temperature Threshold" [(ngModel)]="lowTemp" mode="decimal" class="mb-2" [suffix]="metricSelected" :min="-100" :max="80" placeholder="Low Temperature Threshold"></p-inputNumber><br/> Metric:
+            <p-selectButton [options]="metrics" (onChange)="changeMetric($event)" [(ngModel)]="metricSelected" optionLabel="name" class="mb-2" optionValue="value"></p-selectButton>
+            <label class="mt-2">Emails:</label>
+            <br><input required type="email" id="emails" pTooltip="Multiple emails with comma separated." placeholder="Email Address(s)" pInputText [(ngModel)]="emails" class="mb-2" /><br>
+            <span class="small" style="color:red" *ngIf="!isEmailsValid"> One or more emails are not valid. <br> </span>
+            <br/>
 
-            <button pButton type="button" (click)="addAlarmToAsset()" label="Add Alert" class="m-2"></button>
-            <br><br><span class="m-2 text-400" style="color:red" *ngIf="assetAlert">{{assetAlert}}</span>
-            <div class="col">
-                <h5>Existing Alerts</h5>
-                <span *ngIf="tripAlarms.length==0"> There are no existing Alarms configured</span>
-                <p-table *ngIf="tripAlarms.length>0" [columns]="alarmCols" [value]="tripAlarms" responsiveLayout="scroll">
-                    <ng-template pTemplate="header" let-columns>
-                        <tr>
-                            <th *ngFor="let col of columns">
-                                {{col.header}}
-                            </th>
-                            <th>Action</th>
-                        </tr>
-                    </ng-template>
-                    <ng-template pTemplate="body" let-rowData let-columns="columns">
-                        <tr>
-                            <td *ngFor="let col of columns">
-                                {{rowData[col.field]}}
-                            </td>
-                            <td>
-                                <button pButton type="button" icon="pi pi-times" (click)="deleteAlarm(rowData)" class="p-button-rounded p-button-danger p-button-outlined"></button>
-                            </td>
-                        </tr>
-                    </ng-template>
-                </p-table>
-            </div>
+            <button pButton type="button" (click)="addAlarmToAsset()" label="Add Alert" class="mb-2"></button>
+
+        </div>
+        <div class="col">
+            <h5>Existing Alerts</h5>
+            <span *ngIf="tripAlarms.length==0"> There are no existing Alarms configured</span>
+            <p-table *ngIf="tripAlarms.length>0" [columns]="alarmCols" [value]="tripAlarms" responsiveLayout="scroll">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns">
+                            {{col.header}}
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr>
+                        <td *ngFor="let col of columns">
+                            <div [ngSwitch]="col.field">
+                                <span *ngSwitchCase="'alIsActivate'">
+                                               {{rowData[col.field] === 0 ? 'No' : 'Yes'}} 
+                                               {{get(tripAlarms,col.field)}}
+                                            </span>
+
+                                <span *ngSwitchDefault>   {{rowData[col.field]}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <button pButton type="button" icon="pi pi-times" (click)="deleteAlarm(rowData)" class="p-button-rounded p-button-danger p-button-outlined"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
         </div>
     </div>
+
     <ng-template pTemplate="footer">
         <span><b>NOTE: This feature is in BETA testing stage.</b></span>
     </ng-template>

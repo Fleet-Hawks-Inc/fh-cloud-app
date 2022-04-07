@@ -123,8 +123,9 @@ export class MyDocumentListComponent implements OnInit {
   }
 
   getCurrentuser = async () => {
-    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    // this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+    // this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    this.currentUser = localStorage.getItem("currentUserName");
   }
 
   /*
