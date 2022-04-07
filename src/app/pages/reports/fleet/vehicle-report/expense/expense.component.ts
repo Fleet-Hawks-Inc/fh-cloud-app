@@ -25,7 +25,11 @@ export class ExpenseComponent implements OnInit {
   expDate = ''
   loaded = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
-  dataMessage = Constants.FETCHING_DATA;
+  tripMessage = Constants.FETCHING_DATA;
+  logMessage = Constants.FETCHING_DATA;
+  expenseMessage = Constants.FETCHING_DATA;
+  fuelMessage = Constants.FETCHING_DATA;
+  drvPayMessay = Constants.FETCHING_DATA;
   date = new Date();
   exportData = [];
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
@@ -66,7 +70,7 @@ export class ExpenseComponent implements OnInit {
       .toPromise();
     // this.payments = result;
     if (result.length === 0) {
-      this.dataMessage = Constants.NO_RECORDS_FOUND
+      this.drvPayMessay = Constants.NO_RECORDS_FOUND
     }
     for (let i = 0; i < result.length; i++) {
       const paymentdata = result[i]
@@ -90,7 +94,7 @@ export class ExpenseComponent implements OnInit {
     if (this.lastExpPay !== 'end') {
       this.accountService.getData(`expense/get/expense/pay/byTrp/${encodeURIComponent(JSON.stringify(this.vehicleId))}?startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastExpPay}&date=${this.expDate}`).subscribe((result: any) => {
         if (result.Items.length === 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND
+          this.expenseMessage = Constants.NO_RECORDS_FOUND
         }
         for (let i = 0; i < result.Items.length; i++) {
           const expenseData = result.Items[i]
@@ -126,7 +130,7 @@ export class ExpenseComponent implements OnInit {
     this.apiService.getData(`serviceLogs/getBy/vehicle/name/trips/${this.vehicleId}?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.serviceLogData = result.Items
       if (result.Items.length === 0) {
-        this.dataMessage = Constants.NO_RECORDS_FOUND
+        this.logMessage = Constants.NO_RECORDS_FOUND
       }
     })
   }
@@ -135,7 +139,7 @@ export class ExpenseComponent implements OnInit {
     this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
       this.vehicleData = result.Items;
       if (result.Items.length === 0) {
-        this.dataMessage = Constants.NO_RECORDS_FOUND
+        this.tripMessage = Constants.NO_RECORDS_FOUND
       }
     });
   }
@@ -143,7 +147,7 @@ export class ExpenseComponent implements OnInit {
     this.apiService.getData(`fuelEntries/getBy/vehicle/trips/${this.vehicleId}?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.fuel = result.Items;
       if (result.Items.length === 0) {
-        this.dataMessage = Constants.NO_RECORDS_FOUND
+        this.fuelMessage = Constants.NO_RECORDS_FOUND
       }
       result[`Items`].forEach(element => {
 
@@ -170,10 +174,11 @@ export class ExpenseComponent implements OnInit {
   fetchTrpByVehicle() {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`vehicles/fetch/TripData?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
-        if (result.Items.length === 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND
-        }
+
         this.allData = this.allData.concat(result.Items)
+        if (result.Items.length === 0 && this.allData.length === 0) {
+          this.tripMessage = Constants.NO_RECORDS_FOUND
+        }
         for (let veh of this.allData) {
           let dataa = veh
           veh.miles = 0
@@ -188,7 +193,7 @@ export class ExpenseComponent implements OnInit {
         if (this.loaded) {
           this.payments = []
           this.totalDriverPay = 0;
-          this.dataMessage = Constants.FETCHING_DATA
+          this.tripMessage = Constants.FETCHING_DATA
         }
         this.fetchDriverPayment();
         if (result.LastEvaluatedKey !== undefined) {
@@ -230,14 +235,14 @@ export class ExpenseComponent implements OnInit {
         return false;
       }
       else {
-        this.dataMessage = Constants.FETCHING_DATA;
+        // this.dataMessage = Constants.FETCHING_DATA;
         this.lastItemSK = '';
         this.lastExpPay = ''
         this.allData = [];
         this.fuel = [];
         this.serviceLogData = [];
         this.payments = [];
-        this.expensePay = []; 
+        this.expensePay = [];
         this.totalExpense = 0;
         this.totalDriverPay = 0;
         this.fetchTrpByVehicle()

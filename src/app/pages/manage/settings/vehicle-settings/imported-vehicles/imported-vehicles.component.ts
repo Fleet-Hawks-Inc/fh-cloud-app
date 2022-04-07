@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, TemplateRef, Input } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -15,9 +15,9 @@ declare var $: any;
 })
 export class ImportedVehiclesComponent implements OnInit {
   @ViewChild('dt') table: Table;
-  @ViewChild('vehImporter') vehImporter: any;
-  @ViewChild("importModel", { static: true })
-  importModel: TemplateRef<any>;
+
+  @ViewChild('myInput')
+  myInputVariable: ElementRef;
 
   dataMessage: string = Constants.FETCHING_DATA;
   loaded = false;
@@ -29,16 +29,43 @@ export class ImportedVehiclesComponent implements OnInit {
   importDocs = [];
   check: boolean = false;
   submitDisabled: boolean = true;
-  importModelRef: any;
+
   importData = {
     module: 'vehicle',
   }
+
+  // columns of data table
+  dataColumns = [
+    { field: 'displayName', header: 'File Name', type: "text" },
+    { field: 'timeCreated', header: 'Uploaded', type: "text" },
+    { field: "module", header: 'Module', type: 'text' },
+    { field: 'fileStatus', header: 'Status', type: "text" },
+
+  ];
+  _selectedColumns: any[];
+
+  display = false;
 
   constructor(private apiService: ApiService, private toastr: ToastrService, private modalService: NgbModal,
   ) { }
 
   ngOnInit(): void {
-    this.fetchVehicleImport()
+    this.setToggleOptions();
+    this.fetchVehicleImport();
+  }
+
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
   }
 
   chooseFile(event) {
@@ -89,7 +116,7 @@ export class ImportedVehiclesComponent implements OnInit {
           name: 'year', inputName: 'year', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
           }, validate: function (date: string) {
-            const dateformat = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+            const dateformat = /^\d{4}$/;
             return dateformat.test(date)
           }
         },
@@ -125,10 +152,23 @@ export class ImportedVehiclesComponent implements OnInit {
             this.submitDisabled = false;
           }
           else {
-            this.inValidMessages = csvData.inValidMessages
+
             this.isFileValid = false;
             this.check = false;
             this.submitDisabled = true;
+            for (let item of csvData.inValidMessages) {
+              let joinStr = '';
+              if (item.includes('vin')) {
+                joinStr = item + '. VIN must be between 17-18 alphanumeric characters eg.2G1WH55K5Y9322458.';
+                this.inValidMessages.push(joinStr)
+              } else if (item.includes('year')) {
+                joinStr = item + '.  Please enter the year in the format: YYYY';
+                this.inValidMessages.push(joinStr)
+              } else {
+                this.inValidMessages.push(item)
+              }
+            }
+            console.log('this.inValidMessages', this.inValidMessages)
           }
           csvData.data
         } else if (csvData.data.length == 0) {
@@ -149,16 +189,15 @@ export class ImportedVehiclesComponent implements OnInit {
   }
 
   async fetchVehicleImport() {
-    this.loaded = true;
     let result = await this.apiService.getData('importer/get?type=vehicle').toPromise();
     if (result.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
-      this.loaded = false;
+      this.loaded = true;
     }
     if (result && result.length > 0) {
       this.importVehicles = result;
     }
-    this.loaded = false;
+    this.loaded = true;
   }
 
 
@@ -181,7 +220,7 @@ export class ImportedVehiclesComponent implements OnInit {
             this.submitDisabled = false;
             this.toastr.success("The file has been scheduled for processing and you will be notified via email once it is completed")
             $('#importDocs').val('');
-            this.importModelRef.close();
+            this.display = false;
             this.fetchVehicleImport();
           }
         })
@@ -190,12 +229,12 @@ export class ImportedVehiclesComponent implements OnInit {
   }
 
   openModal() {
-    let ngbModalOptions: NgbModalOptions = {
-      keyboard: false,
-      backdrop: "static",
-      windowClass: "import-model--main",
-    };
-    this.importModelRef = this.modalService.open(this.importModel, ngbModalOptions)
+    this.display = true;
+  }
+
+  cancel() {
+    this.inValidMessages = [];
+    this.myInputVariable.nativeElement.value = "";
   }
 
   refreshData() {

@@ -88,7 +88,7 @@
                               </span>
                             </td>
                             <td>{{ item.programName }}</td>
-                            <td>{{ item.description }}</td>
+                            <td>{{ item.description ? item.description : "-"  }}</td>
                           </tr>
                         </tbody>
                       </table>

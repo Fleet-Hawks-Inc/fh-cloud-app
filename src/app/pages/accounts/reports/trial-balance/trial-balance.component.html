@@ -108,12 +108,12 @@
                                                             <td class="cursorpoint">
                                                                  <a routerLink="/accounts/chart-accounts/detail/{{ac.accID}}" 
                                       [queryParams]= "{startDate:filter.startDate,endDate:filter.endDate}" target = "_blank">
-                                                             <span>{{ac.credit | number: "1.2-2"}}</span> </a>
+                                                             <span>{{ac.credit | number: "1.2-2" }}</span> </a>
                                                             </td>
                                                             <td class="cursorpoint">
                               <a routerLink="/accounts/chart-accounts/detail/{{ac.accID}}" 
                                       [queryParams]= "{startDate:filter.startDate,endDate:filter.endDate}"
-                                                                     target = "_blank">
+                                                                    target = "_blank">
                                                              <span>{{ac.debit | number: "1.2-2"}}</span> </a>
                                                             </td>
                                                         </tr>
@@ -127,7 +127,7 @@
                                                                     </span>
                                                                     
                                                                     <span *ngIf=" currency === 'USD'"
-                                                                >{{usdCreditTotal | number: "1.2-2"
+                                                                >{{usdCreditTotal | number: "1.2-2" 
                                                                     }}
                                                                     </span>
                                                             </td>
