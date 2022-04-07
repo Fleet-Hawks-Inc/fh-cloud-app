@@ -67,7 +67,7 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-rowData let-notification>
                             <tr>
-                                <td (click)="showDetail(notification)" style="cursor:pointer;">{{notification.message}}</td>
+                                <td (click)="showDetail(notification)" style="cursor:pointer;">{{notification.shortMessage}}</td>
 
                             </tr>
                         </ng-template>
@@ -80,7 +80,7 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-rowData let-announcement>
                             <tr>
-                                <td (click)="showDetail(announcement)" style="cursor:pointer;">{{ announcement.message}}</td>
+                                <td (click)="showDetail(announcement,false)" style="cursor:pointer;">{{ announcement.shortMessage}}</td>
 
                             </tr>
                         </ng-template>

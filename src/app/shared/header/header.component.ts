@@ -265,11 +265,11 @@ export class HeaderComponent implements OnInit {
   }
 
   detailMessage: string;
-  async showDetail(notification) {
+  async showDetail(notification, isNotification = true) {
     this.showNotifications = false;
     this.detailMessage = notification.message;
     this.showNotificationDetail = true;
-    if (notification.read === 0) {
+    if (isNotification && notification.read === 0) {
 
       await this.apiService.putData(`notification/read/${notification.id}`, {}).toPromise();
     }
@@ -295,7 +295,7 @@ export class HeaderComponent implements OnInit {
 
         }
         const length = 50;
-        element.message = element.message.length > length ?
+        element['shortMessage'] = element.message.length > length ?
           element.message.substring(0, length - 3) + "..." :
           element.message;
 
@@ -305,7 +305,7 @@ export class HeaderComponent implements OnInit {
       this.announcements = result.announcements;
       this.announcements.forEach(element => {
         const length = 50;
-        element.message = element.message.length > length ?
+        element['shortMessage'] = element.message.length > length ?
           element.message.substring(0, length - 3) + "..." :
           element.message;
 
