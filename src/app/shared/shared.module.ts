@@ -11,7 +11,7 @@ import { SharedModalsComponent } from './popups/shared-modals/shared-modals.comp
 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { DialogModule } from 'primeng/dialog';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 // ngselect2
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
@@ -22,9 +22,14 @@ import { AllCarriersComponent } from './all-carriers/all-carriers.component';
 import { MustMatchDirective } from '../directives/must-match.directive';
 import { AbsoluteValuePipe } from '../pipes/absolute-value.pipe';
 import { NewAddressBookComponent } from './popups/new-address-book/new-address-book.component';
-
+import { BadgeModule } from 'primeng/badge';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { TabViewModule } from 'primeng/tabview';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { SidebarModule } from 'primeng/sidebar';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -88,7 +93,14 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgbModule,
     SlickCarouselModule,
     InfiniteScrollModule,
-    DragDropModule
+    DragDropModule,
+    BadgeModule,
+    OverlayPanelModule,
+    DialogModule,
+    TabViewModule,
+    TableModule,
+    ButtonModule,
+    SidebarModule
   ],
   declarations: [
     SidebarComponent,

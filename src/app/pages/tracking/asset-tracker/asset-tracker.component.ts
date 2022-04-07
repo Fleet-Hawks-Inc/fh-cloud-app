@@ -548,7 +548,7 @@ export class AssetTrackerComponent implements OnInit {
   selectedMetric = 'F';
   showFahrenheit = true;
   changeTempMetric(e) {
-    console.log(e.value);
+
     if (e.value === 'F') {
       this.showFahrenheit = true;
     } else {

@@ -13,7 +13,7 @@ import { DashboardUtilityService } from "src/app/services/dashboard-utility.serv
 })
 export class HeaderComponent implements OnInit {
   environment = environment.isFeatureEnabled;
-
+  showNotificationDetail = false;
   isFleetEnabled = environment.isFleetEnabled;
   isDispatchEnabled = environment.isDispatchEnabled;
   isComplianceEnabled = environment.isComplianceEnabled;
@@ -96,9 +96,10 @@ export class HeaderComponent implements OnInit {
       }
       this.navSelected = val;
     });
+
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.init();
     this.getCurrentuser();
     this.showSwitch = localStorage.getItem("subCompany") == 'yes' ? true : false;
@@ -111,6 +112,8 @@ export class HeaderComponent implements OnInit {
           }
         );
     }
+
+    await this.getAllNotificationAnnouncement()
   }
 
   async init() {
@@ -193,10 +196,10 @@ export class HeaderComponent implements OnInit {
 
   getCurrentuser = async () => {
     const selectedCarrier = localStorage.getItem('xfhCarrierId');
-    if(selectedCarrier) {
+    if (selectedCarrier) {
       const res = await this.apiService.getData(`carriers/get/detail/${selectedCarrier}`).toPromise()
-        this.userRole = 'Super Admin';
-        this.currentUser = `${res.Items[0].firstName} ${res.Items[0].lastName}`; 
+      this.userRole = 'Super Admin';
+      this.currentUser = `${res.Items[0].firstName} ${res.Items[0].lastName}`;
     } else {
       this.currentUser = (await Auth.currentSession()).getIdToken().payload;
       this.userRole = this.currentUser.userType;
@@ -259,5 +262,51 @@ export class HeaderComponent implements OnInit {
       ],
       data: [],
     };
+  }
+
+  detailMessage: string;
+  showDetail(notification) {
+    this.showNotifications = false;
+    this.detailMessage = notification.message;
+    this.showNotificationDetail = true;
+  }
+
+  showNotifications = false;
+  notifications = [];
+  announcements = [];
+  unReadCounter = 0;
+  async getAllNotificationAnnouncement() {
+
+    const result = await this.apiService.getData('notification/getAll').toPromise();
+    if (result.notifications) {
+      this.notifications = result.notifications;
+      this.notifications.forEach(element => {
+        if (element.read === 0) {
+          this.unReadCounter += 1;
+
+        }
+        const length = 50;
+        element.message = element.message.length > length ?
+          element.message.substring(0, length - 3) + "..." :
+          element.message;
+
+      });
+    }
+    if (result.announcements) {
+      this.announcements = result.announcements;
+      this.announcements.forEach(element => {
+        if (element.read === 0) {
+          this.unReadCounter += 1;
+
+        }
+        const length = 50;
+        element.message = element.message.length > length ?
+          element.message.substring(0, length - 3) + "..." :
+          element.message;
+
+      });
+    }
+
+
   }
 }
