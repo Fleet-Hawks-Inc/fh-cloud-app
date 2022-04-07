@@ -112,7 +112,7 @@ export class HeaderComponent implements OnInit {
           }
         );
     }
-    console.log('sdf');
+
     await this.getAllNotificationAnnouncement()
   }
 
