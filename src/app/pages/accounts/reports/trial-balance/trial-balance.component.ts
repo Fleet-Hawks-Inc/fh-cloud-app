@@ -79,6 +79,9 @@ export class TrialBalanceComponent implements OnInit {
     result = [];
     startDate: string;
     public endDate: string;
+    tempcredit :any= [];
+    tempdebit :any=[];
+    
 
 
     constructor(private accountService: AccountService, private toaster: ToastrService, private route: ActivatedRoute) { }
@@ -114,56 +117,47 @@ export class TrialBalanceComponent implements OnInit {
                              this.accounts = _.filter(this.accounts, function(o){
                              return o.debit != '0'|| o.credit != '0';
                              })
-                        
-                            const tempTotal = this.accounts[i].credit - this.accounts[i].debit
-                            if (tempTotal > 0) {
-                            this.accounts[i].credit = tempTotal;
-                           this.accounts[i].debit = 0;
-                                  }
-                                  else {
-                             this.accounts[i].debit = tempTotal;
-                            this.accounts[i].credit = 0;
-                                     }
-                              this.creTotal.push(this.accounts[i].credit);
-                              this.debTotal.push(this.accounts[i].debit);
+                              
+                             if(this.accounts[i].credit > this.accounts[i].debit) {
+                                 this.tempcredit = this.accounts[i].credit - this.accounts[i].debit;
+                                 this.accounts[i].credit = this.tempcredit;
+                                this.accounts[i].debit = 0;
+                             } else if(this.accounts[i].credit < this.accounts[i].debit) {
+                                 this.tempdebit = this.accounts[i].debit - this.accounts[i].credit;
+                                 this.accounts[i].debit = this.tempdebit;
+                                 this.accounts[i].credit = 0;
                              }
+                             }
+                             
                             if(this.currTab === 'USD'){
                              this.currency = 'USD';
                              this.accounts = _.filter(this.accounts, function(o){
                              return o.debit != '0'|| o.credit != '0';
                              })
-                                 const tempTotal = this.accounts[i].credit - this.accounts[i].debit
-                            if (tempTotal > 0) {
-                            this.accounts[i].credit = tempTotal;
-                           this.accounts[i].debit = 0;
-                                  }
-                                  else {
-                             this.accounts[i].debit = tempTotal;
-                            this.accounts[i].credit = 0;
-                                     }
-                              this.creTotal.push(this.accounts[i].credit);
-                              this.debTotal.push(this.accounts[i].debit);
+                             
+                              if(this.accounts[i].credit > this.accounts[i].debit) {
+                                 this.tempcredit = this.accounts[i].credit - this.accounts[i].debit;
+                                 this.accounts[i].credit = this.tempcredit;
+                                 this.accounts[i].debit = 0;
+                                 
+                             } else if(this.accounts[i].credit < this.accounts[i].debit) {
+                                 this.tempdebit = this.accounts[i].debit - this.accounts[i].credit;
+                                 this.accounts[i].debit = this.tempdebit;
+                                 this.accounts[i].credit = 0;
+                             }
                              }
                         }
                          
                           for(let i=0;i<=this.accounts.length;i++) {
                               if(this.currTab === 'CAD') {
                                   this.currency = 'CAD';
-                                  if(this.creTotal[i]>0) {
-                                      this.cadCreditTotal += parseFloat(this.creTotal[i]);
-                                  }
-                                  if(this.debTotal[i]<0) {
-                                      this.cadDebitTotal += parseFloat(this.debTotal[i]);
-                                  }
+                                      this.cadCreditTotal += parseFloat(this.accounts[i].credit);
+                                      this.cadDebitTotal += parseFloat(this.accounts[i].credit);
                               }
                               if(this.currTab === 'USD') {
                                   this.currency = 'USD';
-                                  if(this.creTotal[i]>0) {
-                                      this.usdCreditTotal += parseFloat(this.creTotal[i]);
-                                  }
-                                  if(this.debTotal[i]<0) {
-                                      this.usdDebitTotal += parseFloat(this.debTotal[i]);
-                                  }
+                                  this.usdCreditTotal += parseFloat(this.accounts[i].credit);
+                                  this.usdDebitTotal += parseFloat(this.accounts[i].credit);
                               }
                          }
                     }
