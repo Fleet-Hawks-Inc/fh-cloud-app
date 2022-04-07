@@ -139,9 +139,7 @@ export class VehicleListComponent implements OnInit {
     });
 
   }
-      setToggleOptions() {
-        this.selectedColumns = this.dataColumns;
-    }
+
     setVehiclesOptions() {
         this.vehStatus =  [
                                 { 'name': 'Active', 'value': 'active'  },
@@ -150,6 +148,11 @@ export class VehicleListComponent implements OnInit {
                                 { 'name': 'Sold', 'value':'sold'}
                                 ];
     }
+    
+    setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    } 
+    
     @Input() get selectedColumns(): any[] {
         return this._selectedColumns;
     }
@@ -270,6 +273,7 @@ export class VehicleListComponent implements OnInit {
             result.Items.map((v) => {
                 v.url = `/fleet/vehicles/detail/${v.vehicleID}`;
             });
+            this.suggestedVehicles = [];
             if (result.LastEvaluatedKey !== undefined) {
               this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].vehicleSK);
             }
@@ -350,9 +354,11 @@ export class VehicleListComponent implements OnInit {
     clearInput() {
         this.suggestedVehicles = null;
     }
-    clearSuggestions() {
-        this.vehicleIdentification = null;
-    }
+    
+    
+    //clearSuggestions() {
+      //  this.vehicleIdentification = null;
+    //}
     
   resetFilter() {
     if (this.vehicleIdentification !== '' || this.currentStatus !== null) {
