@@ -8,10 +8,10 @@
         <section role="main" class="content-body pl-1 pt-0 pr-0">
             <header class="page-header flex align-items-center justify-content-start">
                 <form class="formgrid grid">
-               <!--     <form class="form-horizontal" method="get"> -->
                     <div class="row">
                         <div class="col" style="margin-left: 20px;margin-top: 5px;">
-                            <p-autoComplete  #autoComp id="autoCmpSugVehicle" [placeholder]="'Type Vehicles Name'" class="mr-2" [forceSelection]="true" emptyMessage="No data found." [(ngModel)]="vehicleIdentification" [suggestions]="suggestedVehicles" [minLength]="2" (completeMethod)="getSuggestions($event.query)" (onSelect)="setVehicle($event.vehicleIdentification)" field="vehicleIdentification"> </p-autoComplete>
+                            <p-autoComplete  #autoComp id="autoCmpSugVehicle" [placeholder]="'Type Vehicles Name'"class="mr-2"[forceSelection]="true"emptyMessage="No data found." [(ngModel)]="vehicleIdentification" [suggestions]="suggestedVehicles" [minLength]="1" (completeMethod)="getSuggestions($event.query)" 
+                            (onSelect)="setVehicle($event.vehicleIdentification)" field="vehName"></p-autoComplete>
                             <p-dropdown id="drpVehType" [style]="{minWidth: '200px'}" [options]="vehStatus" class="mr-2" placeholder="Select a Vehicle Status" [(ngModel)]="currentStatus" optionLabel="name" optionValue="value">
                             </p-dropdown>
                             <button id="btnSearch" type="submit" [disabled]="isSearch" pButton class="mr-2" icon="pi pi-search" pTooltip="Search" (click)="searchFilter()"></button>
@@ -20,7 +20,6 @@
                         <div class="col">
                         </div>
                     </div>
-                  <!--  </form> -->
                 </form>
             </header>
             <section class="m-2">
@@ -88,36 +87,51 @@
                                                 <td *ngFor="let dataColumns of columns" style="width:10%;cursor: pointer;">
                                                     <div [ngSwitch]="dataColumns.field">
                                                         <span *ngSwitchCase="'vehicleIdentification'">
-                                                           <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}"><b>{{get(vehicle,dataColumns.field) | titlecase}}</b></span>
+                    <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}"><b>{{get(vehicle,dataColumns.field) | titlecase}}</b></span>
+                                                        </span>
+                                                        <span *ngSwitchCase="'VIN'">
+                    <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{get(vehicle,dataColumns.field)}}</span>
+                                                        </span>
+                                                        <span *ngSwitchCase="'lifeCycle.startDate'">
+                    <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{get(vehicle,dataColumns.field)}}</span>
+                                                        </span>
+                                                        <span *ngSwitchCase="'year'">
+                    <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{get(vehicle,dataColumns.field)}}</span>
+                                                        </span>
+                                                        <span *ngSwitchCase="'plateNumber'">
+                    <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{get(vehicle,dataColumns.field)}}</span>
+                                                        </span>
+                                                        <span *ngSwitchCase="'annualSafetyDate'">
+                    <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{get(vehicle,dataColumns.field) ? get(vehicle,dataColumns.field) : '-'}}</span>
                                                         </span>
                                                         <span *ngSwitchCase="'manufacturerID'">
-                                 {{(get(vehicle,dataColumns.field) ? get(vehicle,dataColumns.field) : '-') | titlecase }}
+                    <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{(get(vehicle,dataColumns.field) ? get(vehicle,dataColumns.field) : '-') | titlecase }}</span>
                                                         </span>
                                                         <span *ngSwitchCase="'modelID'">
-                                 {{(get(vehicle,dataColumns.field) ? get(vehicle,dataColumns.field) : '-') | titlecase }}
+                    <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{(get(vehicle,dataColumns.field) ? get(vehicle,dataColumns.field) : '-') | titlecase }}</span>
                                                         </span>
                                                         <span *ngSwitchCase="'ownership'">
-                                 {{((vehicle.ownership) ? vehicle.ownership : '-') | titlecase}}
+                    <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{((vehicle.ownership) ? vehicle.ownership : '-') | titlecase}}</span>
                                                         </span>
                                                         <span *ngSwitchCase="'driverList.driverID'">
                                                             <span>
-                                 {{((driversList[vehicle.driverID]) ? driversList[vehicle.driverID]: '-') | titlecase }}
+                    <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{((driversList[vehicle.driverID]) ? driversList[vehicle.driverID]: '-') | titlecase }}</span>
                                                             </span>
                                                         </span>
                                                         <span *ngSwitchCase="'driverList.teamDriverID'">
                                                             <span>
-                                 {{((driversList[vehicle.teamDriverID]) ? driversList[vehicle.teamDriverID]: '-') | titlecase }}                                                            
+                    <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{((driversList[vehicle.teamDriverID]) ? driversList[vehicle.teamDriverID]: '-') | titlecase }}</span>                                                            
                                                            </span>
                                                         </span>
                                                         <span *ngSwitchCase="'currentStatus'">
-                                                             {{get(vehicle,dataColumns.field) | titlecase}}
+                    <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{get(vehicle,dataColumns.field) | titlecase}}</span>
                                                         </span> 
                                                         
                                                         
                                         <span *ngSwitchCase="'dashCamSerNo'">
                                         <span  *ngIf="vehicle.dashCamSerNo != 'NA';else noCam">
-                                        <span class="badge badge-success"routerLink="/fleet/tracking/vehicle-dash-cam-tracker/{{vehicle.dashCamSerNo.split('#')[1]}}"
-                                        [queryParams]="{ vehicleId: vehicle.vehicleID}">Live Cam</span>
+                                        <a class="badge badge-success"routerLink="/fleet/tracking/vehicle-dash-cam-tracker/{{vehicle.dashCamSerNo.split('#')[1]}}"
+                                        [queryParams]="{ vehicleId: vehicle.vehicleID}"target="_blank">Live Cam</a>
                                         </span>
                                         <ng-template #noCam>
                                         <span class="badge badge-danger">No Cam</span>

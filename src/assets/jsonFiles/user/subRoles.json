@@ -1,0 +1,9 @@
+[{
+    "name": "Trip-Recall",
+    "role": "role_trip_recall"
+  },
+  {
+    "name": "Order-Delete",
+    "role": "role_order_delete"
+  }
+]

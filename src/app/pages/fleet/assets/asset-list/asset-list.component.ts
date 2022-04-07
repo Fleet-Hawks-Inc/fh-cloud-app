@@ -138,8 +138,7 @@ export class AssetListComponent implements OnInit {
     this.setAssetOptions();
     this.onboard.checkInspectionForms();
     this.fetchGroups();
-  // await this.initDataTable();
-   this.initDataTable();
+    await this.initDataTable();
     this.fetchContacts();
 
   }
@@ -184,16 +183,26 @@ export class AssetListComponent implements OnInit {
       this.apiService
         .getData(`assets/suggestion/${value}`)
         .subscribe((result) => {
-          this.suggestedAssets = result;
+           if (result.length === 0) {
+         this.suggestedAssets = [];
+        this.loadMsg = Constants.NO_LOAD_FOUND;
+         }
+         
+          if (result.length > 0) {
+             this.suggestedAssets = result;
+                    } else {
+              }
         });
     } else {
-      //this.suggestedAssets = [];
+      this.suggestedAssets = [];
     }
+  }, 800);
 
-  }, 800)
-
-  setAsset(assetIdentification) {
-    this.assetIdentification = assetIdentification;
+  setAsset(assetIdentification: any) {
+     if (assetIdentification != undefined && assetIdentification != '') {
+            this.assetIdentification = assetIdentification;
+        }
+     this.loadMsg = Constants.NO_LOAD_DATA;
     //this.suggestedAssets = [];
   }
 
@@ -259,19 +268,16 @@ export class AssetListComponent implements OnInit {
     this.visible = !this.visible;
   }
 
-  initDataTable() {
-    if (this.lastEvaluatedKey !== 'end')
-      this.apiService.getData('assets/fetch/records?asset=' + this.assetIdentification + '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey)
-        .subscribe((result: any) => {
-          this.dataMessage = Constants.FETCHING_DATA
-          if (result.Items.length === 0) {
-            this.dataMessage = Constants.NO_RECORDS_FOUND
-          }
-          if (result.Items.length > 0) {
-            result[`Items`].map((v: any) => {
-              v.url = `/fleet/assets/detail/${v.assetID}`;
-              v.assetType = v.assetType.replace("_", " ")
-            })
+  async initDataTable() {
+        if (this.lastEvaluatedKey !== 'end') {
+            let result = await this.apiService.getData('assets/fetch/records?asset=' + this.assetIdentification + '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey).toPromise();
+            if (result.Items.length === 0) {
+                this.dataMessage = Constants.NO_RECORDS_FOUND;
+                this.loaded = true;
+            }
+            result.Items.map((v) => {
+                v.url = `/fleet/assets/detail/${v.assetID}`;
+            });
             if (result.LastEvaluatedKey !== undefined) {
               this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].assetSK);
             }
@@ -281,9 +287,9 @@ export class AssetListComponent implements OnInit {
             this.allData = this.allData.concat(result.Items)
             this.loaded = true;
             this.isSearch = false;
-          }
-        });
-  }
+        }
+    }
+  
   
   onScroll = async(event: any) => {
     if (this.loaded) {
@@ -331,115 +337,6 @@ export class AssetListComponent implements OnInit {
 
     } else {
       return false;
-    }
-  }
-
-  hideShowColumn() {
-    // for headers
-    if (this.hideShow.vin == false) {
-      $('.col0').css('display', 'none');
-    } else {
-      $('.col0').css('display', '');
-    }
-    if (this.hideShow.assetName == false) {
-      $('.col1').css('display', 'none');
-    } else {
-      $('.col1').css('display', '');
-    }
-
-    if (this.hideShow.type == false) {
-      $('.col2').css('display', 'none');
-    } else {
-      $('.col2').css('display', '');
-    }
-
-    if (this.hideShow.plateNo == false) {
-      $('.col3').css('display', 'none');
-    } else {
-      $('.col3').css('display', '');
-    }
-
-    if (this.hideShow.lastLocation == false) {
-      $('.col4').css('display', 'none');
-    } else {
-      $('.col4').css('display', '');
-    }
-
-    if (this.hideShow.year == false) {
-      $('.col5').css('display', 'none');
-    } else {
-      $('.col5').removeClass('extra');
-      $('.col5').css('display', '');
-      $('.col5').css('min-width', '200px');
-    }
-
-    if (this.hideShow.make == false) {
-      $('.col6').css('display', 'none');
-    } else {
-      $('.col6').css('display', '');
-    }
-
-    if (this.hideShow.model == false) {
-      $('.col7').css('display', 'none');
-    } else {
-      $('.col7').removeClass('extra');
-      $('.col7').css('display', '');
-      $('.col7').css('min-width', '200px');
-    }
-
-    if (this.hideShow.ownership == false) {
-      $('.col8').css('display', 'none');
-    } else {
-      $('.col8').removeClass('extra');
-      $('.col8').css('display', '');
-      $('.col8').css('min-width', '200px');
-    }
-
-    if (this.hideShow.currentStatus == false) {
-      $('.col9').css('display', 'none');
-    } else {
-      $('.col9').css('display', '');
-    }
-
-    // extra columns
-    if (this.hideShow.group == false) {
-      $('.col10').css('display', 'none');
-    } else {
-      $('.col10').removeClass('extra');
-      $('.col10').css('display', '');
-      $('.col10').css('min-width', '200px');
-    }
-
-    if (this.hideShow.aceID == false) {
-      $('.col11').css('display', 'none');
-    } else {
-      $('.col11').removeClass('extra');
-      $('.col11').css('display', '');
-      $('.col11').css('min-width', '200px');
-    }
-
-    if (this.hideShow.aciID == false) {
-      $('.col12').css('display', 'none');
-    } else {
-      $('.col12').removeClass('extra');
-      $('.col12').css('display', '');
-      $('.col12').css('min-width', '200px');
-    }
-
-    if (this.hideShow.gvwr == false) {
-      $('.col13').css('display', 'none');
-    } else {
-      $('.col13').removeClass('extra');
-      $('.col13').css('display', '');
-      $('.col13').css('min-width', '200px');
-    }
-
-    if (this.hideShow.gawr == false) {
-      $('.col14').css('display', 'none');
-    } else {
-      $('.col14').removeClass('extra');
-      $('.col14').css('display', '');
-      $('.col14').css('min-width', '200px');
     }
   }
 

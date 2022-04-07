@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, Input } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { ParsedResults, ValidatorConfig } from 'csv-file-validator';
@@ -18,8 +18,9 @@ declare var $: any;
 export class ImportedAssetsComponent implements OnInit {
   @ViewChild('dt') table: Table;
   @ViewChild('asstImporter') asstImporter: any;
-  @ViewChild("importModel", { static: true })
-  importModel: TemplateRef<any>;
+
+  display = false;
+
   loaded = false;
   dataMessage: string = Constants.FETCHING_DATA;
   uploadedDocs = [];
@@ -40,10 +41,35 @@ export class ImportedAssetsComponent implements OnInit {
   importData = {
     module: 'asset',
   }
+  // columns of data table
+  dataColumns = [
+    { field: 'displayName', header: 'File Name', type: "text" },
+    { field: 'timeCreated', header: 'Uploaded', type: "text" },
+    { field: "module", header: 'Module', type: 'text' },
+    { field: 'fileStatus', header: 'Status', type: "text" },
+
+  ];
+  _selectedColumns: any[];
+
   constructor(private apiService: ApiService, private location: Location, private toastr: ToastrService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
+    this.setToggleOptions();
     this.fetchAssetImport()
+  }
+
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
   }
 
   selectDoc(event) {
@@ -63,16 +89,16 @@ export class ImportedAssetsComponent implements OnInit {
     }
   }
   async fetchAssetImport() {
-    this.loaded = true;
+
     let result = await this.apiService.getData('importer/get?type=asset').toPromise();
     if (result.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
-      this.loaded = false;
+      this.loaded = true;
     }
     if (result && result.length > 0) {
       this.importAssets = result;
     }
-    this.loaded = false;
+    this.loaded = true;
   }
 
   validateCSV($event) {
@@ -95,7 +121,6 @@ export class ImportedAssetsComponent implements OnInit {
           name: 'start_date', inputName: 'startdate', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
           }, validate: function (date: string) {
-            // const dateformat = /^([0]?[1-9]|[1|2][0-9]|[3][0|1])[./-]([0]?[1-9]|[1][0-2])[./-]([0-9]{4}|[0-9]{2})$/;
             const dateformat = /^(\d{4})(\/|-)(\d{1,2})(\/|-)(\d{1,2})$/;
             return dateformat.test(date)
           }
@@ -113,6 +138,9 @@ export class ImportedAssetsComponent implements OnInit {
         {
           name: 'year', inputName: 'year', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
+          }, validate: function (date: string) {
+            const dateformat = /^\d{4}$/;
+            return dateformat.test(date)
           }
         },
         {
@@ -145,10 +173,24 @@ export class ImportedAssetsComponent implements OnInit {
             this.inValidMessages = [];
           }
           else {
-            this.inValidMessages = csvData.inValidMessages
             this.isFileValid = false;
             this.check = false;
             this.submitDisabled = true;
+            for (let item of csvData.inValidMessages) {
+              let joinStr = '';
+              if (item.includes('start_date')) {
+                joinStr = item + '. Please enter the date in the format: YYYY-MM-DD';
+                this.inValidMessages.push(joinStr)
+              } else if (item.includes('year')) {
+                joinStr = item + '.  Please enter the year in the format: YYYY';
+                this.inValidMessages.push(joinStr)
+              } else if (item.includes('vin')) {
+                joinStr = item + '. VIN must be between 17-18 alphanumeric characters eg.2G1WH55K5Y9322458.';
+                this.inValidMessages.push(joinStr)
+              } else {
+                this.inValidMessages.push(item)
+              }
+            }
           }
           csvData.data
         } else if (csvData.data.length == 0) {
@@ -162,13 +204,14 @@ export class ImportedAssetsComponent implements OnInit {
       })
       .catch(err => { })
   }
+
+
   openModal() {
-    let ngbModalOptions: NgbModalOptions = {
-      keyboard: false,
-      backdrop: "static",
-      windowClass: "import-model--main",
-    };
-    this.importModelRef = this.modalService.open(this.importModel, ngbModalOptions)
+    this.display = true;
+  }
+
+  cancel() {
+    this.inValidMessages = [];
   }
 
   refreshData() {
@@ -188,7 +231,7 @@ export class ImportedAssetsComponent implements OnInit {
   clear(table: Table) {
     table.clear();
   }
-  postDocument() {
+  uploadImport() {
     if (this.check == true) {
       if (this.uploadedDocs.length > 0) {
         const formData = new FormData();
@@ -214,8 +257,6 @@ export class ImportedAssetsComponent implements OnInit {
       }
     }
   }
-  cancel() {
-    this.location.back(); // <-- go back to previous location on cancel
-  }
+
 }
 

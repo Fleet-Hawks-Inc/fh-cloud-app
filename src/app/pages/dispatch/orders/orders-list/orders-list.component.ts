@@ -358,11 +358,10 @@ export class OrdersListComponent implements OnInit {
   }
 
   filterOrders() {
-    if (this.orderFiltr.category == null || this.orderFiltr.category == "") {
-      this.toastr.error("Please select category");
-      return false;
-    }
-
+   // if (this.orderFiltr.category == null || this.orderFiltr.category == "") {
+  //    this.toastr.error("Please select category");
+  //    return false;
+  //  }
     if (this.orderFiltr.startDate === null) this.orderFiltr.startDate = "";
     if (this.orderFiltr.endDate === null) this.orderFiltr.endDate = "";
     if (

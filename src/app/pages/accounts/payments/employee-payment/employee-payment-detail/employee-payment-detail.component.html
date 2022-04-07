@@ -306,7 +306,7 @@
                                 accountsIntObjects[dt.accountID] | titlecase
                               }}</span>
                             </td>
-                            <td>{{ dt.desc }}</td>
+                            <td [innerHTML]="dt.desc"></td>
                             <!-- <td>{{dt.type | titlecase}}</td> -->
                             <td>
                               <span *ngIf="dt.trxType === 'debit'"
