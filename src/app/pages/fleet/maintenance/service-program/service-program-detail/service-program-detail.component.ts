@@ -86,7 +86,7 @@ export class ServiceProgramDetailComponent implements OnInit {
     let newProgram = Object.assign({}, ...this.programs);
     delete newProgram.pk;
     delete newProgram.timeCreated;
-      this.apiService.putData(`servicePrograms/${this.programID}`, newProgram, this.programs[0]).subscribe({
+    this.apiService.putData(`servicePrograms/${this.programID}`, newProgram, this.programs[0]).subscribe({
       complete: () => { },
       error: (err) => {
         from(err.error)
@@ -168,7 +168,11 @@ export class ServiceProgramDetailComponent implements OnInit {
   fetchAllVehicles() {
     this.apiService.getData('vehicles')
       .subscribe((result: any) => {
-        this.allVehicles = result.Items;
+        result["Items"].map((r: any) => {
+          if (r.isDeleted === 0) {
+            this.allVehicles.push(r);
+          }
+        })
         if (this.vehicles) {
           this.updateVehicles(result.Items, this.programs[0].vehicles);
         }
@@ -177,8 +181,11 @@ export class ServiceProgramDetailComponent implements OnInit {
   updateVehicles(vehiclesArr, serviceArr) {
     vehiclesArr.filter(element => {
       if (!serviceArr.includes(element.vehicleID)) {
-
-        this.allVehicles.push(element);
+        element.map((r: any) => {
+          if (r.isDeleted === 0) {
+            this.allVehicles.push(r);
+          }
+        })
       }
     });
   }
@@ -193,7 +200,6 @@ export class ServiceProgramDetailComponent implements OnInit {
   addVehicle() {
     this.vehicleData.filter(element => {
       if (!this.programs[0].vehicles.includes(element)) {
-
         this.programs[0].vehicles.push(element);
         $('#addVehicleModal').modal('hide');
         this.fetchAllVehicles();
