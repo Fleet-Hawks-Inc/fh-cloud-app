@@ -139,7 +139,7 @@ export class AssetListComponent implements OnInit {
     this.onboard.checkInspectionForms();
     this.fetchGroups();
   // await this.initDataTable();
-   this.initDataTable();
+    await this.initDataTable();
     this.fetchContacts();
 
   }
@@ -259,7 +259,7 @@ export class AssetListComponent implements OnInit {
     this.visible = !this.visible;
   }
 
-  initDataTable() {
+  /*initDataTable() {
     if (this.lastEvaluatedKey !== 'end')
       this.apiService.getData('assets/fetch/records?asset=' + this.assetIdentification + '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey)
         .subscribe((result: any) => {
@@ -283,7 +283,31 @@ export class AssetListComponent implements OnInit {
             this.isSearch = false;
           }
         });
-  }
+  }*/
+  
+  async initDataTable() {
+        if (this.lastEvaluatedKey !== 'end') {
+            let result = await this.apiService.getData('assets/fetch/records?asset=' + this.assetIdentification + '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey).toPromise();
+            if (result.Items.length === 0) {
+                this.dataMessage = Constants.NO_RECORDS_FOUND;
+                this.loaded = true;
+            }
+            result.Items.map((v) => {
+                v.url = `/fleet/assets/detail/${v.assetID}`;
+            });
+            if (result.LastEvaluatedKey !== undefined) {
+              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].assetSK);
+            }
+            else {
+              this.lastEvaluatedKey = 'end'
+            }
+            this.allData = this.allData.concat(result.Items)
+            this.loaded = true;
+            this.isSearch = false;
+        }
+    }
+
+  
   
   onScroll = async(event: any) => {
     if (this.loaded) {
