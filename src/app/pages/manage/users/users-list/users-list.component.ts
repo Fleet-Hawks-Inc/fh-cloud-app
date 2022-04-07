@@ -22,6 +22,7 @@ export class UsersListComponent implements OnInit {
   suggestedUsers = [];
   searchUserName = '';
   users: any = [];
+  filterUsers: any = [];
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
@@ -35,27 +36,27 @@ export class UsersListComponent implements OnInit {
   userPrevEvauatedKeys = [''];
   userStartPoint = 1;
   userEndPoint = this.pageLength;
-  userRoles={};
+  userRoles = {};
   selectedUserData: any = '';
   selectedUser = {
     userID: '',
-    userRoles : {},
+    userRoles: {},
   }
   newRoles = [];
-   searchValue = null;
-    lastItemSK = "";
-    loaded: boolean = false;
-    roles: any = [];
-    response: any = '';
-    reminderID:any ;
-    allSubRoles=[]
-    subRole=[]
-    
+  searchValue = null;
+  lastItemSK = "";
+  loaded: boolean = false;
+  roles: any = [];
+  response: any = '';
+  reminderID: any;
+  allSubRoles = []
+  subRole = []
+
 
   constructor(private apiService: ApiService,
-  private toastr: ToastrService,
-  private spinner: NgxSpinnerService,
-  private httpClient: HttpClient,
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService,
+    private httpClient: HttpClient,
   ) { }
 
   ngOnInit() {
@@ -65,7 +66,7 @@ export class UsersListComponent implements OnInit {
     this.fetchSubRoles();
   }
 
- 
+
   getSuggestions = _.debounce(function (value) {
     this.contactID = '';
     value = value.toLowerCase();
@@ -86,18 +87,21 @@ export class UsersListComponent implements OnInit {
     }
   }, 800);
 
-    setUser(contactID, firstName = "", lastName = "", middleName = "") {
-    if (middleName !== "") {
-      this.searchUserName = `${firstName} ${middleName} ${lastName}`;
-      // this.contactID = contactID;
-      this.contactID = `${firstName} ${middleName} ${lastName}`;
-    } else {
-      this.searchUserName = `${firstName} ${lastName}`;
-      this.contactID = `${firstName} ${lastName}`;
-    }
+  setUser(data: any) {
+    console.log('data', data)
+    this.searchValue = `${data.firstName} ${data.lastName}`;
+    this.contactID = data.contactID;
+    // if (middleName !== "") {
+    //   this.searchUserName = `${firstName} ${middleName} ${lastName}`;
+    //   // this.contactID = contactID;
+    //   this.contactID = `${firstName} ${middleName} ${lastName}`;
+    // } else {
+    //   this.searchUserName = `${firstName} ${lastName}`;
+    //   this.contactID = `${firstName} ${lastName}`;
+    // }
     this.suggestedUsers = [];
   }
-  
+
   fetchUsers() {
     this.apiService.getData('contacts/get/employee/count/?searchValue=' + this.contactID)
       .subscribe({
@@ -113,20 +117,20 @@ export class UsersListComponent implements OnInit {
       });
   }
   async fetchUserRoles() {
-    const data:any=await this.httpClient.get('assets/jsonFiles/user/userRoles.json').toPromise();
-          data.forEach(element => {
-              this.userRoles[element.role]=element.name
-            });
+    const data: any = await this.httpClient.get('assets/jsonFiles/user/userRoles.json').toPromise();
+    data.forEach(element => {
+      this.userRoles[element.role] = element.name
+    });
   }
 
-  async fetchSubRoles(){
-    const data:any=await this.httpClient.get('assets/jsonFiles/user/subRoles.json').toPromise()
-      data.forEach(element=>{
-        this.userRoles[element.role]=element.name
-      })
-      this.allSubRoles=data
+  async fetchSubRoles() {
+    const data: any = await this.httpClient.get('assets/jsonFiles/user/subRoles.json').toPromise()
+    data.forEach(element => {
+      this.userRoles[element.role] = element.name
+    })
+    this.allSubRoles = data
   }
-   
+
   fetchRoles() {
     this.httpClient.get('assets/jsonFiles/user/userRoles.json').subscribe((data: any) => {
       this.roles = data;
@@ -137,34 +141,34 @@ export class UsersListComponent implements OnInit {
     //this.fetchUserRoles();
     this.selectedUserData = user;
     this.setUsrName = user.userLoginData.userName;
-    
+
     this.selectedUser.userID = user.contactID;
-    const checkArray=user.userLoginData.userRoles;
-    let roles=[]
-    let subRoles=[]
-    for(const element of checkArray){
-      for(const el of this.roles){
-        if(element==el.role && !roles.includes(element)){
+    const checkArray = user.userLoginData.userRoles;
+    let roles = []
+    let subRoles = []
+    for (const element of checkArray) {
+      for (const el of this.roles) {
+        if (element == el.role && !roles.includes(element)) {
           roles.push(element)
         }
       }
-      for(const e of this.allSubRoles){
-        if(element==e.role && !subRoles.includes(element)){
+      for (const e of this.allSubRoles) {
+        if (element == e.role && !subRoles.includes(element)) {
           subRoles.push(element)
         }
       }
     }
-    this.subRole=subRoles
-    this.setRoles=roles
-    
+    this.subRole = subRoles
+    this.setRoles = roles
+
   }
-  seprateRoles(user:any){
-    
+  seprateRoles(user: any) {
+
   }
   cancel() {
     $('#assignrole').modal('hide');
   }
-  
+
   assignRole() {
     this.selectedUser.userRoles = this.setRoles.concat(this.subRole);
     this.apiService.putData('contacts/assignRole', this.selectedUser).
@@ -174,7 +178,7 @@ export class UsersListComponent implements OnInit {
           from(err.error)
             .pipe(
               map((val: any) => {
-                  val.message = val.message.replace(/".*"/, 'This Field');
+                val.message = val.message.replace(/".*"/, 'This Field');
               })
             )
             .subscribe({
@@ -189,52 +193,44 @@ export class UsersListComponent implements OnInit {
           this.response = res;
           this.toastr.success('Role is assigned successfully');
           $('#assignrole').modal('hide');
-          this.users = [];
-          // this.userDraw = 0;
-          this.dataMessage = Constants.FETCHING_DATA;
-          this.lastItemSK = '';
-          this.initDataTable();
+          this.users.filter(elem => {
+            if (elem.contactID === this.selectedUser.userID) {
+              elem.userLoginData.userRoles = this.selectedUser.userRoles;
+            }
+          })
+
         }
       });
   }
-  
+
   initDataTable() {
-    if (this.lastItemSK !== 'end'){
-    this.apiService.getData(`contacts/fetch/employee/records?searchValue=${this.contactID}&lastKey=${this.lastItemSK}`)
-    .subscribe((result: any) => {
-        if (result.Items.length === 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-        if (result.Items.length > 0) {
-                if (result.LastEvaluatedKey !== undefined) {
-                    this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.contactSK);
-                }
-                else {
-                    this.lastItemSK = 'end'
-                }
-             this.users = this.users.concat(result.Items);
+    if (this.lastItemSK !== 'end') {
+      this.apiService.getData(`contacts/fetch/employee/records?searchValue=${this.contactID}&lastKey=${this.lastItemSK}`)
+        .subscribe((result: any) => {
+          if (result.Items.length === 0) {
+            this.dataMessage = Constants.NO_RECORDS_FOUND;
+          }
+          if (result.Items.length > 0) {
+            if (result.LastEvaluatedKey !== undefined) {
+              this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.contactSK);
+            }
+            else {
+              this.lastItemSK = 'end'
+            }
+            this.users = this.users.concat(result.Items);
+            this.filterUsers = this.users;
             this.loaded = true;
-        }
-      })
+          }
+        })
     }
   }
-  
-   searchFilter() {
-    if (this.searchValue !== null) {
-     this.searchValue = this.searchValue.toLowerCase();
-               if (this.contactID == '') 
-               {
-               this.contactID = this.searchValue;
-                }
-                
-      this.users = [];
-      this.lastItemSK = '';
-      this.initDataTable();
-    } else {
-      return false;
-    }
+
+  searchFilter() {
+    this.lastItemSK = '';
+    this.users = [];
+    this.initDataTable();
   }
-  
+
   onScroll() {
     if (this.loaded) {
       this.initDataTable();
@@ -254,7 +250,7 @@ export class UsersListComponent implements OnInit {
     }
   }
 
-   async deleteUser(contactID) {
+  async deleteUser(contactID) {
     if (confirm('Are you sure you want to delete?') === true) {
       await this.apiService
         .deleteData(`contacts/delete/user/${contactID}`)
