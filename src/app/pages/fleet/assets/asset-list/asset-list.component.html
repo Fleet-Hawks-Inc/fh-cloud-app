@@ -12,7 +12,7 @@
                         <div class="col" style="margin-left: 20px;margin-top: 5px;">
                             <p-autoComplete #autoComp id="autoCmpSugAsset" [placeholder]="'Type Assets Name'" class="mr-2" [forceSelection]="true" emptyMessage="No data found." [(ngModel)]="assetIdentification" [suggestions]="suggestedAssets" [minLength]="2" (completeMethod)="getSuggestions($event.query)"
                                 (onSelect)="setAsset($event.assetIdentification)" field="assetIdentification"> </p-autoComplete>
-                            <p-dropdown id="drpAstType" [style]="{minWidth: '200px'}" [options]="assetOptions" class="mr-2" placeholder="Select a Assets Type" [(ngModel)]="assetType" optionLabel="name" optionValue="value">
+                            <p-dropdown id="drpDvrType" [style]="{minWidth: '200px'}" [options]="assetOptions" class="mr-2" placeholder="Select a Assets Type" [(ngModel)]="assetType" optionLabel="name" optionValue="value">
                             </p-dropdown>
                             <button id="btnSearch" type="button" [disabled]="isSearch" pButton class="mr-2" icon="pi pi-search" pTooltip="Search" (click)="searchFilter()"></button>
                             <button id="btnResetFilter" type="button" [disabled]="isSearch" pButton class="mr-2" icon="pi pi-refresh" pTooltip="Reset" (click)="resetFilter()"></button>
