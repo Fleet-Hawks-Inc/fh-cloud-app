@@ -10,7 +10,7 @@
                 <form class="formgrid grid">
                     <div class="row">
                         <div class="col" style="margin-left: 20px;margin-top: 5px;">
-                            <p-autoComplete  #autoComp id="autoCmpSugVehicle" [placeholder]="'Type Vehicles Name'"class="mr-2"[forceSelection]="true"emptyMessage="No data found." [(ngModel)]="vehicleIdentification" [suggestions]="suggestedVehicles" [minLength]="2" (completeMethod)="getSuggestions($event.query)" 
+                            <p-autoComplete  #autoComp id="autoCmpSugVehicle" [placeholder]="'Type Vehicles Name'"class="mr-2"[forceSelection]="true"emptyMessage="No data found." [(ngModel)]="vehicleIdentification" [suggestions]="suggestedVehicles" [minLength]="1" (completeMethod)="getSuggestions($event.query)" 
                             (onSelect)="setVehicle($event.vehicleIdentification)" field="vehName"></p-autoComplete>
                             <p-dropdown id="drpVehType" [style]="{minWidth: '200px'}" [options]="vehStatus" class="mr-2" placeholder="Select a Vehicle Status" [(ngModel)]="currentStatus" optionLabel="name" optionValue="value">
                             </p-dropdown>
