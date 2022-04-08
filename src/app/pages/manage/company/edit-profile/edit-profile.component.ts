@@ -591,8 +591,8 @@ export class EditProfileComponent implements OnInit {
         },
         banks: this.banks,
         uploadedLogo: this.uploadedLogo,
-        subCompIDs : this.subCompIDs,
-        subCompInfo : this.subCompInfo
+        subCompIDs: this.subCompIDs,
+        subCompInfo: this.subCompInfo
       };
       if (this.findingWay == "Referral") {
         data["referral"] = this.referral;
@@ -603,7 +603,7 @@ export class EditProfileComponent implements OnInit {
       }
       // create form data instance
       const formData = new FormData();
-      console.log('data', data);
+
       // append photos if any
       for (let i = 0; i < this.uploadedPhotos.length; i++) {
         formData.append('uploadedPhotos', this.uploadedPhotos[i]);

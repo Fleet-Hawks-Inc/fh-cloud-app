@@ -231,9 +231,9 @@ export class CompanyProfileComponent implements OnInit {
   fetchCarrier() {
     this.apiService.getData(`carriers/${this.companyID}`)
       .subscribe((result: any) => {
-        if(result.Items && result.Items.length > 0) {
+        if (result.Items && result.Items.length > 0) {
           this.carriers = result.Items[0];
-          console.log('this.carriers', this.carriers)
+
           if (!this.carriers.referral && this.carriers.findingWay === 'Referral') {
             this.carriers.referral = {};
           }
@@ -245,16 +245,16 @@ export class CompanyProfileComponent implements OnInit {
           } else {
             this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
           }
-          if(this.carriers.subCompInfo && this.carriers.subCompInfo.length > 0) {
+          if (this.carriers.subCompInfo && this.carriers.subCompInfo.length > 0) {
             this.subCompanies = this.carriers.subCompInfo;
           }
-          if(!this.carriers.parentID) {
+          if (!this.carriers.parentID) {
             this.showSubCompany = true;
           }
         }
       });
   }
-  
+
   async addSubCompany() {
     const data = {
       userName: this.userInfo.username,
@@ -264,10 +264,10 @@ export class CompanyProfileComponent implements OnInit {
       lastName: this.userInfo.lastName,
       carrierName: this.userInfo.carrierName
     }
-    const result:any = await this.apiService.postData(`carriers/sub-company/add`, data).toPromise();
-    if(result) {
+    const result: any = await this.apiService.postData(`carriers/sub-company/add`, data).toPromise();
+    if (result) {
       this.clearForm();
-      localStorage.setItem("subCompany",'yes');
+      localStorage.setItem("subCompany", 'yes');
       this.headerComponentFunction();
       this.toastr.success('Sub company added successfully');
       this.fetchCarrier();
@@ -281,10 +281,10 @@ export class CompanyProfileComponent implements OnInit {
     const data = {
       userName: this.userInfo.username
     }
-    if(this.userInfo.username) {
+    if (this.userInfo.username) {
       this.apiService.postData(`carriers/validate/username`, data).subscribe((result: any) => {
-        console.log('result', result)
-        if(!result) {
+
+        if (!result) {
           this.userNameExists = true;
           this.userNameExistsErr = 'Username already exists';
         } else {
@@ -299,10 +299,10 @@ export class CompanyProfileComponent implements OnInit {
     const data = {
       email: this.userInfo.email
     }
-    if(this.userInfo.email) {
+    if (this.userInfo.email) {
       this.apiService.postData(`carriers/validate/email`, data).subscribe((result: any) => {
-        console.log('result', result)
-        if(!result) {
+
+        if (!result) {
           this.emailExistsExists = true;
           this.emailExistsErr = 'Email already exists';
         } else {
@@ -317,10 +317,10 @@ export class CompanyProfileComponent implements OnInit {
     const data = {
       carrierName: this.userInfo.carrierName
     }
-    if(this.userInfo.carrierName) {
+    if (this.userInfo.carrierName) {
       this.apiService.postData(`carriers/validate/carriername`, data).subscribe((result: any) => {
-        console.log('result', result)
-        if(!result) {
+
+        if (!result) {
           this.carrierNameExists = true;
           this.carrierNameErr = 'Registered Company Name already exists';
         } else {
