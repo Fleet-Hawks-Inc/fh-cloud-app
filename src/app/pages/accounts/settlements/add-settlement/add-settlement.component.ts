@@ -422,6 +422,7 @@ export class AddSettlementComponent implements OnInit {
   }
 
   openPaymentModelFor(trip:any){
+    this.trip=[]
     this.trip=trip;
     this.paymentType=this.trip.paymentSelected[0].pType
     let ngbModalOptions:NgbModalOptions={
@@ -436,30 +437,41 @@ export class AddSettlementComponent implements OnInit {
       this.trip.paymentSelected=[]
    switch(this.paymentType){
      case "pph":
-       this.trip.paymentSelected.push(this.pph)
+       this.trip.paymentSelected=[this.pph]
        break;
       case "ppm":
-        this.trip.paymentSelected.push(this.ppm)
+        this.trip.paymentSelected=[this.ppm]
         break;
       case "pfr":
-        this.trip.paymentSelected.push(this.pfr)
+        this.trip.paymentSelected=[this.pfr]
       break;
       case "ppd":
-        this.trip.paymentSelected.push(this.ppd)
+        this.trip.paymentSelected=[this.ppd]
       break;
       case "pp":
-        this.trip.paymentSelected.push(this.pp)
+        this.trip.paymentSelected=[this.pp]
       break;
    }
-    
+
     for(const trp of this.trips){
       
       if(trp.tripID==this.trip.tripID){
         trp.paymentSelected=this.trip.paymentSelected
+        switch(trp.paymentSelected[0].pType){
+          case "ppm":
+            trp.amount=(trp.entityMiles*trp.paymentSelected[0].loadedMiles).toFixed(2)
+            break;
+          case "pfr":
+            trp.amount=Number(trp.paymentSelected[0].flatRate).toFixed(2)
+            break;
+          case "ppd":
+            trp.amount=Number(trp.paymentSelected[0].deliveryRate).toFixed(2)
+            break;
+        }
       }
     }
 
-    this.setPayment();
+   // this.setPayment();
     this.settlementData.paymentSelected=this.trip.paymentSelected
     this.calculateTripAmount();
     this.closePayment();
