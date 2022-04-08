@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -11,7 +11,7 @@ import * as _ from 'lodash'
 import { ViewEncapsulation } from '@angular/core';
 import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
 import {Router} from '@angular/router'
-import { threadId } from 'worker_threads';
+import { Table } from 'primeng/table';
 
 declare var $: any;
 
@@ -24,6 +24,7 @@ declare var $: any;
 })
 export class FuelEntryListComponent implements OnInit {
 
+  @ViewChild('dt') table: Table;
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   title = 'Fuel Entries List';
