@@ -43,7 +43,7 @@ export class UsersListComponent implements OnInit {
     userRoles: {},
   }
   newRoles = [];
-  searchValue = null;
+  searchValue = '';
   lastItemSK = "";
   loaded: boolean = false;
   roles: any = [];
@@ -62,7 +62,7 @@ export class UsersListComponent implements OnInit {
   ngOnInit() {
     this.fetchUserRoles();
     this.fetchRoles();
-    this.fetchUsers();
+    this.initDataTable();
     this.fetchSubRoles();
   }
 
@@ -88,34 +88,12 @@ export class UsersListComponent implements OnInit {
   }, 800);
 
   setUser(data: any) {
-    console.log('data', data)
     this.searchValue = `${data.firstName} ${data.lastName}`;
+    this.searchValue = this.searchValue.toLowerCase().trim();
     this.contactID = data.contactID;
-    // if (middleName !== "") {
-    //   this.searchUserName = `${firstName} ${middleName} ${lastName}`;
-    //   // this.contactID = contactID;
-    //   this.contactID = `${firstName} ${middleName} ${lastName}`;
-    // } else {
-    //   this.searchUserName = `${firstName} ${lastName}`;
-    //   this.contactID = `${firstName} ${lastName}`;
-    // }
     this.suggestedUsers = [];
   }
 
-  fetchUsers() {
-    this.apiService.getData('contacts/get/employee/count/?searchValue=' + this.contactID)
-      .subscribe({
-        complete: () => { },
-        error: () => { },
-        next: (result: any) => {
-          this.totalRecords = result.Count;
-          if (this.contactID !== '') {
-            this.userEndPoint = this.totalRecords;
-          }
-          this.initDataTable();
-        },
-      });
-  }
   async fetchUserRoles() {
     const data: any = await this.httpClient.get('assets/jsonFiles/user/userRoles.json').toPromise();
     data.forEach(element => {
@@ -138,10 +116,11 @@ export class UsersListComponent implements OnInit {
   }
 
   fetchRole(user: any) {
-    //this.fetchUserRoles();
     this.selectedUserData = user;
     this.setUsrName = user.userLoginData.userName;
-
+    if (this.setUsrName == '') {
+      this.setUsrName = user.workEmail;
+    }
     this.selectedUser.userID = user.contactID;
     const checkArray = user.userLoginData.userRoles;
     let roles = []
@@ -162,9 +141,7 @@ export class UsersListComponent implements OnInit {
     this.setRoles = roles
 
   }
-  seprateRoles(user: any) {
 
-  }
   cancel() {
     $('#assignrole').modal('hide');
   }
@@ -205,7 +182,7 @@ export class UsersListComponent implements OnInit {
 
   initDataTable() {
     if (this.lastItemSK !== 'end') {
-      this.apiService.getData(`contacts/fetch/employee/records?searchValue=${this.contactID}&lastKey=${this.lastItemSK}`)
+      this.apiService.getData(`contacts/fetch/employee/records?searchValue=${this.searchValue}&lastKey=${this.lastItemSK}`)
         .subscribe((result: any) => {
           if (result.Items.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -228,6 +205,7 @@ export class UsersListComponent implements OnInit {
   searchFilter() {
     this.lastItemSK = '';
     this.users = [];
+    this.suggestedUsers = [];
     this.initDataTable();
   }
 
@@ -244,6 +222,7 @@ export class UsersListComponent implements OnInit {
       this.contactID = '';
       this.users = [];
       this.lastItemSK = '';
+      this.suggestedUsers = [];
       this.initDataTable();
     } else {
       return false;
@@ -260,7 +239,7 @@ export class UsersListComponent implements OnInit {
           this.dataMessage = Constants.FETCHING_DATA;
           this.users = [];
           this.lastItemSK = '';
-          this.fetchUsers();
+          this.initDataTable();
           this.toastr.success('User deleted successfully');
         });
     }
