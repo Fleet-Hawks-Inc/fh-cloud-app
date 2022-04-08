@@ -121,7 +121,7 @@ export class HeaderComponent implements OnInit {
     await this.getAllNotificationAnnouncement();
     setInterval(async () => {
       await this.getAllNotificationAnnouncement();
-    }, 1000 * 60);
+    }, 1000 * 60 * 5);
   }
 
   async init() {
