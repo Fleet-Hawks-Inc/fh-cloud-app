@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import Constants from '../../../constants';
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import * as html2pdf from "html2pdf.js";
 @Component({
   selector: 'app-service-detail',
   templateUrl: './service-detail.component.html',
@@ -13,6 +14,8 @@ import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 export class ServiceDetailComponent implements OnInit {
   @ViewChild("previewExpTransaction", { static: true })
   previewExpTransaction: TemplateRef<any>;
+  @ViewChild("logModal", { static: true })
+  logModal: TemplateRef<any>;
   logurl = this.apiService.AssetUrl;
   noRecordMessage: string = Constants.NO_RECORDS_FOUND;
   private logID;
@@ -57,7 +60,7 @@ export class ServiceDetailComponent implements OnInit {
 
   logImages = []
   logDocs = [];
-  expPayRef: any;
+  logModalRef: any;
   showModal = false;
   downloadDisabledpdf = true;
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
@@ -207,9 +210,9 @@ export class ServiceDetailComponent implements OnInit {
     let ngbModalOptions: NgbModalOptions = {
       keyboard: false,
       backdrop: "static",
-      windowClass: "preview-sale-order",
+      windowClass: "log-order",
     };
-    this.expPayRef = this.modalService.open(this.previewExpTransaction, ngbModalOptions)
+    this.logModalRef = this.modalService.open(this.logModal, ngbModalOptions)
   }
 
   downloadPaymentPdf() {
@@ -225,4 +228,24 @@ export class ServiceDetailComponent implements OnInit {
       this.downloadDisabledpdf = false;
     }, 15000);
   }
+
+  downloadPdf() {
+    var data = document.getElementById("log_wrap");
+    html2pdf(data, {
+      margin: [0.5, 0.3, 0.5, 0.3],
+      pagebreak: { mode: 'avoid-all', before: "log_wrap" },
+      filename: "invoice.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        dpi: 300,
+        letterRendering: true,
+        allowTaint: true,
+        useCORS: true,
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    });
+    this.logModalRef.close();
+  }
+
+  
 }
