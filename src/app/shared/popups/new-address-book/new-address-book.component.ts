@@ -1369,11 +1369,11 @@ export class NewAddressBookComponent implements OnInit {
         for (let element of this.unitData.data) {
           if (element.carrierData || element.opData) {
             const el = element.carrierData ? element.carrierData : element.opData
-            el.ppd.default = false
-            el.pph.default = false
-            el.ppm.default = false
-            el.pp.default = false
-            el.pfr.default = false
+           if(el.ppd) el.ppd.default = false
+            if(el.pph) el.pph.default = false
+            if(el.ppm) el.ppm.default = false
+            if(el.pp) el.pp.default = false
+            if(el.pfr) el.pfr.default = false
             switch (el.pType) {
               case "ppd":
                 el.ppd.default = true
@@ -1393,12 +1393,12 @@ export class NewAddressBookComponent implements OnInit {
 
             }
             el.paymentOption = [el.pp, el.ppd, el.pph, el.ppm, el.pfr]
-            delete el.pType
-            delete el.pp
-            delete el.ppd
-            delete el.pph
-            delete el.ppm
-            delete el.pfr
+           if(el.pType) delete el.pType
+           if(el.pp) delete el.pp
+            if(el.ppd) delete el.ppd
+            if(el.pph) delete el.pph
+            if(el.ppm) delete el.ppm
+            if(el.pfr) delete el.pfr
             if (element.carrierData) element.carrierData = el
             if (element.opData) element.opData = el
           }
