@@ -121,7 +121,7 @@ export class HeaderComponent implements OnInit {
     await this.getAllNotificationAnnouncement();
     setInterval(async () => {
       await this.getAllNotificationAnnouncement();
-    }, 1000 * 60 * 5);
+    }, 1000 * 60);
   }
 
   async init() {
@@ -289,8 +289,6 @@ export class HeaderComponent implements OnInit {
 
 
   async getAllNotificationAnnouncement() {
-    this.notifications = [];
-    this.announcements = [];
     const result = await this.apiService.getData('notification/getAll').toPromise();
     if (result.notifications) {
       this.notifications = result.notifications;
