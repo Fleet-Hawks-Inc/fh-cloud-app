@@ -328,6 +328,9 @@ export class AddSettlementComponent implements OnInit {
             case "pfr":
               this.settlementData.paymentSelected.push(this.pfr)
               break;
+            case "ppd":
+              this.settlementData.paymentSelected.push(this.ppd)
+              break;
 
       }
     }
