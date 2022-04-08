@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ApiService } from '../../../../../services';
+import { ApiService, ListService } from '../../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import Constants from '../../../constants';
-
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 @Component({
   selector: 'app-service-detail',
   templateUrl: './service-detail.component.html',
   styleUrls: ['./service-detail.component.css']
 })
 export class ServiceDetailComponent implements OnInit {
+  @ViewChild("previewExpTransaction", { static: true })
+  previewExpTransaction: TemplateRef<any>;
   logurl = this.apiService.AssetUrl;
   noRecordMessage: string = Constants.NO_RECORDS_FOUND;
   private logID;
@@ -55,7 +57,9 @@ export class ServiceDetailComponent implements OnInit {
 
   logImages = []
   logDocs = [];
-
+  expPayRef: any;
+  showModal = false;
+  downloadDisabledpdf = true;
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   constructor(
@@ -63,6 +67,8 @@ export class ServiceDetailComponent implements OnInit {
     private apiService: ApiService,
     private route: ActivatedRoute,
     private domSanitizer: DomSanitizer,
+    private modalService: NgbModal,
+    private listService: ListService,
   ) { }
 
   ngOnInit() {
@@ -83,7 +89,7 @@ export class ServiceDetailComponent implements OnInit {
       next: (result: any) => {
         this.logsData = result.Items[0];
 
-
+        // console.log('this.logsData--', this.logsData)
         this.fetchSelectedIssues(this.logsData.selectedIssues);
 
         result = result.Items[0];
@@ -156,6 +162,7 @@ export class ServiceDetailComponent implements OnInit {
       this.apiService.getData('issues/fetch/selected?issueIds=' + issueIDs)
         .subscribe((result: any) => {
           this.issuesObject = result;
+          console.log('isse0', this.issuesObject)
         });
     }
   }
@@ -194,5 +201,28 @@ export class ServiceDetailComponent implements OnInit {
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }
+  }
+
+  openModal() {
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "preview-sale-order",
+    };
+    this.expPayRef = this.modalService.open(this.previewExpTransaction, ngbModalOptions)
+  }
+
+  downloadPaymentPdf() {
+    this.showModal = true;
+    let obj = {
+      showModal: this.showModal,
+      data: this.logsData,
+    };
+    this.listService.triggerDownloadPaymentPdf(obj);
+    // this.downloadDisabledpdf = true;
+
+    setTimeout(() => {
+      this.downloadDisabledpdf = false;
+    }, 15000);
   }
 }

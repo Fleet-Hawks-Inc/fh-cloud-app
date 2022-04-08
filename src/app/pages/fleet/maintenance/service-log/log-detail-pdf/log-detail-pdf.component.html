@@ -1,0 +1,46 @@
+<ng-template #settlmentDetail let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">ServiceLog Details</h4>
+            <button type="button" class="close" (click)="modal.dismiss()">
+                &times;
+            </button>
+        </div>
+        <form>
+            <div class="modal-body" id="settlmentDetailSection">
+                <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td valign="top">
+                            <table width="99%" style=" border: 1px solid #adadad; color: #000000;
+                              border-right: 0px solid #adadad; font-size: 13px; margin-bottom: 10px;
+                            " cellpadding="0" cellspacing="0" bordercolor="#adadad">
+                                <tbody>
+                                    <tr>
+                                        <td width="50%" bgcolor="#f3f3f3" style=" border-right: 1px solid #adadad;
+                                            border-bottom: 1px solid #adadad;
+                                            padding-left: 10px;">
+                                            <p style="font-weight: 600; margin-bottom: 4px; color: #000000; ">
+                                                Unit Type:
+                                            </p>
+                                        </td>
+
+                                        <td style=" 
+                                            border-right: 1px solid #adadad; 
+                                            border-bottom: 1px solid #adadad; 
+                                            padding-left: 10px;">
+                                            <p style="margin-bottom: 4px; color: #000000">
+                                                {{
+                                                logsData.unitType
+                                                }}
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+    </div>
+</ng-template>

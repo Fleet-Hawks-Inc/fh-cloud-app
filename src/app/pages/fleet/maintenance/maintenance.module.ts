@@ -27,6 +27,7 @@ import {
   AddIssueComponent,
   IssueDetailComponent,
 } from "./index";
+import { LogDetailPdfComponent } from './service-log/log-detail-pdf/log-detail-pdf.component';
 
 const COMPONENTS = [
   // AddServiceProgramComponent,
@@ -173,7 +174,7 @@ const routes: Routes = [
   },
 ];
 @NgModule({
-  declarations: [...COMPONENTS],
+  declarations: [...COMPONENTS, LogDetailPdfComponent],
   imports: [
     CommonModule,
     SharedModule,
