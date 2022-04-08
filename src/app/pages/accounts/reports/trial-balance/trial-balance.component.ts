@@ -270,9 +270,7 @@ export class TrialBalanceComponent implements OnInit {
                     obj["Credit"] = element.credit === '0' ? '-': element.credit
                     dataObject.push(obj)  
                 }
-                  console.log('data',dataObject);
                  let totObj = {
-                   
                     ["Debit"]  : 'Total' ,
                     ["Credit"] : " "
                  }
