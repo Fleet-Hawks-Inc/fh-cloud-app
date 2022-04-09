@@ -81,6 +81,12 @@ export class HeaderComponent implements OnInit {
   };
   updateButton = false;
   showSwitch = false;
+
+  showNotifications = false;
+  notifications = [];
+  announcements = [];
+  unReadCounter = 0;
+
   constructor(
     private sharedService: SharedServiceService,
     private apiService: ApiService,
@@ -112,8 +118,10 @@ export class HeaderComponent implements OnInit {
           }
         );
     }
-
-    await this.getAllNotificationAnnouncement()
+    await this.getAllNotificationAnnouncement();
+    setInterval(async () => {
+      await this.getAllNotificationAnnouncement();
+    }, 1000 * 60 * 5);
   }
 
   async init() {
@@ -280,12 +288,7 @@ export class HeaderComponent implements OnInit {
 
 
 
-  showNotifications = false;
-  notifications = [];
-  announcements = [];
-  unReadCounter = 0;
   async getAllNotificationAnnouncement() {
-
     const result = await this.apiService.getData('notification/getAll').toPromise();
     if (result.notifications) {
       this.notifications = result.notifications;

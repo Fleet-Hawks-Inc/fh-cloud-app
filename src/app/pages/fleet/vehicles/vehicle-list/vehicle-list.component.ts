@@ -352,9 +352,9 @@ export class VehicleListComponent implements OnInit {
   }
 
 
-  //clearSuggestions() {
-  //  this.vehicleIdentification = null;
-  //}
+  clearSuggestions() {
+    this.vehicleIdentification = null;
+  }
 
   resetFilter() {
     if (this.vehicleIdentification !== '' || this.currentStatus !== null) {
