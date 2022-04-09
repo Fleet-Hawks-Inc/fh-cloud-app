@@ -121,11 +121,11 @@ export class TrialBalanceComponent implements OnInit {
                              if(this.accounts[i].credit > this.accounts[i].debit) {
                                  this.tempcredit = this.accounts[i].credit - this.accounts[i].debit;
                                  this.accounts[i].credit = this.tempcredit;
-                                this.accounts[i].debit = 0;
+                                this.accounts[i].debit = '0';
                              } else if(this.accounts[i].credit < this.accounts[i].debit) {
                                  this.tempdebit = this.accounts[i].debit - this.accounts[i].credit;
                                  this.accounts[i].debit = this.tempdebit;
-                                 this.accounts[i].credit = 0;
+                                 this.accounts[i].credit = '0';
                              }
                              }
                              
@@ -138,12 +138,12 @@ export class TrialBalanceComponent implements OnInit {
                               if(this.accounts[i].credit > this.accounts[i].debit) {
                                  this.tempcredit = this.accounts[i].credit - this.accounts[i].debit;
                                  this.accounts[i].credit = this.tempcredit;
-                                 this.accounts[i].debit = 0;
+                                 this.accounts[i].debit = '0';
                                  
                              } else if(this.accounts[i].credit < this.accounts[i].debit) {
                                  this.tempdebit = this.accounts[i].debit - this.accounts[i].credit;
                                  this.accounts[i].debit = this.tempdebit;
-                                 this.accounts[i].credit = 0;
+                                 this.accounts[i].credit = '0';
                              }
                              }
                         }
@@ -265,15 +265,14 @@ export class TrialBalanceComponent implements OnInit {
                 for (const element of this.accounts) {
                      let obj = {}
                     obj["Account Number"] = element.accountNo
-                    obj["Account Name"] = element.accountName,
-                    obj["Credit"] = element.credit.toFixed(2)
-                    obj["Debit"] = element.debit.toFixed(2)
+                    obj["Account Name"] = element.accountName
+                    obj["Debit"] = element.debit === '0' ? '-': element.debit
+                    obj["Credit"] = element.credit === '0' ? '-': element.credit
                     dataObject.push(obj)  
                 }
                  let totObj = {
-                   
-                    ["Credit"] : 'Total' ,
-                    ["Debit"] : " "
+                    ["Debit"]  : 'Total' ,
+                    ["Credit"] : " "
                  }
                   if(this.currency === 'CAD'){
                       totObj["Total"] = this.cadCreditTotal.toFixed(2)
