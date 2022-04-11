@@ -149,6 +149,7 @@ export class EditProfileComponent implements OnInit {
   uploadedPicture = '';
   subCompIDs = [];
   subCompInfo = [];
+  businessCountryStat = false;
 
   constructor(private apiService: ApiService, private toaster: ToastrService,
     private headerFnService: InvokeHeaderFnService,
@@ -205,6 +206,9 @@ export class EditProfileComponent implements OnInit {
         this.phone = this.carriers.phone;
         this.fax = this.carriers.fax;
         this.bizCountry = this.carriers.bizCountry;
+        if(this.bizCountry) {
+          this.businessCountryStat = true;
+        }
         // uploadedLogo = '';
         this.fleets = {
           curtainSide: this.carriers.fleets.curtainSide,
