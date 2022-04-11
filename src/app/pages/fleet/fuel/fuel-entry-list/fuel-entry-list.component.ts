@@ -88,6 +88,17 @@ export class FuelEntryListComponent implements OnInit {
   readonly headerHeight = 70;
   pageLimit = 10
   loaded = false;
+  _selectedColumns: any[];
+  dataColumns=[
+    {field:'Date Time', header: 'Date Time', type:"date"},
+    {field:'Fuel Card #',header:'Fuel Card #',type:"number"},
+    {field:'Unit #', header: 'Unit #',type:'text'},
+    {field:'Fuel Type',header:'Use Type',type:'text'},
+    {field:'Fuel Amount',header:'Fuel Amount',type:'number'},
+    {field:'Fuel Units', header:'Fuel Units', type:'number'},
+    {field:'Site', header:'Site', type:'text'},
+    {field:'Province', header:'Province',type:'text'}
+  ]
 
   constructor(
     private apiService: ApiService,
@@ -297,8 +308,8 @@ export class FuelEntryListComponent implements OnInit {
     }
   }
   initDataTable() {
-    this.spinner.show();
     this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey + '&timeCreated=' + this.lastTimeCreated).subscribe((result: any) => {
+      this.loaded=true
       if (result.Items.length == 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND;
       }
@@ -436,6 +447,7 @@ export class FuelEntryListComponent implements OnInit {
     this.lastEvaluatedKey = '';
     this.dataMessage = Constants.FETCHING_DATA;
     this.fuelList = [];
+    this.initDataTable();
     // this.fuelEntriesCount();
     this.resetCountResult();
   }
@@ -608,5 +620,13 @@ return match
     this.uploadedDocs=[]
   }
   }
+   /**
+     * Clears the table filters
+     * @param table Table 
+     */
+    clear(table: Table) {
+      table.clear();
+  }
+
 }
 
