@@ -123,7 +123,12 @@ const routes: Routes = [
     ChartsModule,
     NgxDatatableModule,
     TableModule,
-    MenuModule
+    MenuModule,
+    ButtonModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule
   ],
   providers: [
     unsavedChangesGuard,

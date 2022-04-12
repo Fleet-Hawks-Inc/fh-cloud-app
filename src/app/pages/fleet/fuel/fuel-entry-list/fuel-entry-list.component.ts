@@ -90,14 +90,14 @@ export class FuelEntryListComponent implements OnInit {
   loaded = false;
   _selectedColumns: any[];
   dataColumns=[
-    {field:'Date Time', header: 'Date Time', type:"date"},
-    {field:'Fuel Card #',header:'Fuel Card #',type:"number"},
-    {field:'Unit #', header: 'Unit #',type:'text'},
-    {field:'Fuel Type',header:'Use Type',type:'text'},
-    {field:'Fuel Amount',header:'Fuel Amount',type:'number'},
-    {field:'Fuel Units', header:'Fuel Units', type:'number'},
-    {field:'Site', header:'Site', type:'text'},
-    {field:'Province', header:'Province',type:'text'}
+    {field:'data.date', header: 'Date Time', type:"date"},
+    {field:'data.cardNo',header:'Fuel Card #',type:"text"},
+    {field:'data.unitNo', header: 'Unit #',type:'text'},
+    {field:'data.useType',header:'Use Type',type:'text'},
+    {field:'data.type',header:' Type',type:'text'},
+    {field:'data.amt',header:'Fuel Amount',type:'text'},
+    {field:'data.site', header:'Site', type:'text'},
+    {field:'data.city', header:'Province',type:'text'}
   ]
 
   constructor(
@@ -289,14 +289,14 @@ export class FuelEntryListComponent implements OnInit {
   //   }
   // }
 
-  deleteFuelEntry(eventData) {
+  deleteFuelEntry(fuelID) {
     if (confirm('Are you sure you want to delete?') === true) {
       // let record = {
       //   date: eventData.createdDate,
       //   time: eventData.createdTime,
       //   eventID: eventData.fuelID
       // }
-      this.apiService.deleteData(`fuelEntries/delete/${eventData.fuelID}`).subscribe((result: any) => {
+      this.apiService.deleteData(`fuelEntries/delete/${fuelID}`).subscribe((result: any) => {
 
         this.fuelList = [];
         this.fuelDraw = 0;
@@ -304,6 +304,7 @@ export class FuelEntryListComponent implements OnInit {
         this.lastEvaluatedKey = '';
         //this.fuelEntriesCount();
         this.toastr.success('Fuel Entry Deleted Successfully!');
+        this.initDataTable();
       });
     }
   }
@@ -339,7 +340,6 @@ export class FuelEntryListComponent implements OnInit {
 
 
       this.fuelList = this.fuelList.concat(_.orderBy(result.Items, [(obj) => new Date(obj.data.date)], ['desc']))
-
 
       if (result.LastEvaluatedKey.fuelSK !== undefined) {
         // for prev button

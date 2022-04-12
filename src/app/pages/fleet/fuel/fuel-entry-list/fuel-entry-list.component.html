@@ -109,8 +109,8 @@
                     <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
                       (click)="clear(dt)"><i class="fa-solid fa-filter"></i></button>
 
-                    <button type="button" pButton pRipple class="p-button-outlined mr-2"
-                      icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+                    <!-- <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                      icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button> -->
 
                     <!-- <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" placeholder="Choose Columns"> -->
                     <!-- </p-multiSelect> -->
@@ -121,7 +121,7 @@
               <ng-template pTemplate="header" let-columns>
                 <tr>
                   <th *ngFor="let column of dataColumns" [pSortableColumn]="column.field" pResizableColumn
-                    style="width:10%">
+                    style="width:12%">
                      <span>
                       <div class="flex justify-content-center align-items-center" alignFrozen="right" pFrozenColumn
                         [frozen]="true">
@@ -146,26 +146,26 @@
 
                 <tr>
 
-                  <td style="width:10%">
+                  <td style="width:12%">
                     {{fuel.dateTime}}
                   </td>
-                  <td style="width:10%">
+                  <td style="width:12%">
                     {{fuel.data.cardNo}}
                   </td>
-                  <td style="width:10%">
+                  <td style="width:12%">
                     {{(vehicleList[fuel.unitID]?vehicleList[fuel.unitID]:'')}}
                     {{(assetList[fuel.unitID]?assetList[fuel.unitID]:'')}}
                   </td>
-                  <td style="width:10%">{{fuel.data.useType}}</td>
-                  <td style="width:10%">{{fuel.data.type}}</td>
-                  <td style="width:10%">{{fuel.data.amt}}</td>
-                  <td style="width:10%">{{fuel.data.site}}</td>
-                  <td style="width:10%">{{fuel.data.city}},{{fuel.data.state}},{{fuel.data.country}}</td>
+                  <td style="width:12%">{{fuel.data.useType}}</td>
+                  <td style="width:12%">{{fuel.data.type}}</td>
+                  <td style="width:12%">{{fuel.data.amt}}</td>
+                  <td style="width:12%">{{fuel.data.site}}</td>
+                  <td style="width:12%">{{fuel.data.city}},{{fuel.data.state}},{{fuel.data.country}}</td>
                   <td style=" text-align: center; width: 100px;" pFrozenColumn alignFrozen="right" [frozen]="true">
 
-                    <button id="btnEdit" pButton routerLink="/fleet/fuel/edit/{{fuel.fuelID}}" type="button"
+                    <button id="btnEdit" pButton routerLink="/fleet/fuel/edit/{{fuel.data.fuelID}}" type="button"
                       icon="fas fa-user-pen" class="p-button-rounded p-button-text"></button>
-                    <button id="btnDelete" pButton type="button" icon="fas fa-user-slash"
+                    <button (click)="deleteFuelEntry(fuel.data.fuelID)" id="btnDelete" pButton type="button" icon="fas fa-user-slash"
                       class="p-button-rounded p-button-danger p-button-text"></button>
                   </td>
                 </tr>
