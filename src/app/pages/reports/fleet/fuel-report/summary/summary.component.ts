@@ -187,7 +187,7 @@ export class SummaryComponent implements OnInit {
             let csvArray = []
             this.exportList.forEach(element => {
                 let obj = {}    
-                obj["Date/Time"] = element.dateTime                                                                          
+                obj["Date/Time"] = element.dateTime.replace(/, /g, ' &');                                                                          
                 obj["Use Type"] = element.data.useType
                 obj["Unit Name"] = this.assetList[element.unitID] || this.vehicleList[element.unitID]
                 obj["Fuel Card#"] = element.data.cardNo

@@ -18,7 +18,7 @@
             <button *ngIf="showInvBtn" (click)="openEmailInv()" class="btn btn-sm mr-2 btn-success">
               Email
             </button>
-            <button *ngIf="showInvBtn" (click)="showInv(); isModalShow = true" class="btn btn-success btn-sm mr-2">
+            <button *ngIf="showInvBtn" [disabled]="invBtnDisableStat" (click)="showInv(); isModalShow = true" class="btn btn-success btn-sm mr-2">
               Invoice
             </button>
 

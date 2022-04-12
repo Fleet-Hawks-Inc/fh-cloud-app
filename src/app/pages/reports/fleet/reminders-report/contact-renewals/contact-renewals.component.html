@@ -3,19 +3,30 @@
     <section role="main" class="content-body pt-0 pr-0 pl-1">
       <header class="page-header pr19 pl11">
         <div class="row" style="padding-top: 10px">
-          <div class="col-md-2 col-lg-2">
-            <ng-select [(ngModel)]="entityID" name="entityID" style="width: 100%;" class="text-capitalize"
-                placeholder="Search by contact">
-                <ng-option *ngFor="let driver of drivers" value="{{driver.driverID}}">
-                    {{driver.firstName}}
-                </ng-option>
-                <ng-option *ngFor="let emp of employees" value="{{emp.entityID}}">
-                    {{emp.firstName}} {{emp.lastName}}
-                </ng-option>
+          <div class="col-md-2 col-lg-2 pr-0">
+            <ng-select
+              [(ngModel)]="entityID"
+              name="entityID"
+              style="width: 100%"
+              class="text-capitalize"
+              placeholder="Search by contact"
+            >
+              <ng-option
+                *ngFor="let driver of drivers"
+                value="{{ driver.driverID }}"
+              >
+                {{ driver.firstName }}
+              </ng-option>
+              <ng-option
+                *ngFor="let emp of employees"
+                value="{{ emp.entityID }}"
+              >
+                {{ emp.firstName }} {{ emp.lastName }}
+              </ng-option>
             </ng-select>
           </div>
 
-          <div class="col-md-2 col-lg-2 pr-0">
+          <div class="col-md-2 col-lg-2 pl-2 pr-0">
             <ng-select
               [(ngModel)]="searchServiceTask"
               name="searchServiceTask"
@@ -30,7 +41,7 @@
               </ng-option>
             </ng-select>
           </div>
-          <div class="col-md-2 col-lg-2 pr-0">
+          <div class="col-md-2 col-lg-2 pl-2 pr-0">
             <ng-select
               [(ngModel)]="filterStatus"
               name="filterStatus"
@@ -45,11 +56,11 @@
             </ng-select>
           </div>
 
-          <div class="col-md-2 col-lg-2">
+          <div class="col-md-2 col-lg-2 pl-2">
             <button
               type="button"
               (click)="searchData()"
-              class="btn btn-sm btn-success mr-3"
+              class="btn btn-sm btn-success mr-2"
             >
               Search
             </button>
@@ -159,7 +170,7 @@
                           <tr *ngFor="let item of empData">
                             <td>
                               <span class="text-capitalize">
-                                {{mergedList[item.entityID] }}
+                                {{ mergedList[item.entityID] }}
                               </span>
                             </td>
                             <td>

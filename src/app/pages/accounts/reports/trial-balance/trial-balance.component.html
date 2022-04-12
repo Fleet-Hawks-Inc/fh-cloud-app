@@ -87,8 +87,8 @@
                                                         <tr>
                                                             <th class="text-2">Account Number</th>
                                                             <th class="text-2">Account Name</th>
-                                                            <th class="text-2">Credit</th>
                                                             <th class="text-2">Debit</th>
+                                                            <th class="text-2">Credit</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -107,14 +107,17 @@
                                                             </td>
                                                             <td class="cursorpoint">
                                                                  <a routerLink="/accounts/chart-accounts/detail/{{ac.accID}}" 
-                                      [queryParams]= "{startDate:filter.startDate,endDate:filter.endDate}" target = "_blank">
-                                                             <span>{{ac.credit | number: "1.2-2" }}</span> </a>
+                                      [queryParams]= "{startDate:filter.startDate,endDate:filter.endDate}" target = "_blank"> 
+                                                             <span *ngIf= "ac.debit == 0"> - </span> </a>
+                                                             <span *ngIf="ac.debit != 0">{{ac.debit | number: "1.2-2" }}</span> 
+                                                            
                                                             </td>
                                                             <td class="cursorpoint">
-                              <a routerLink="/accounts/chart-accounts/detail/{{ac.accID}}" 
+                                      <a routerLink="/accounts/chart-accounts/detail/{{ac.accID}}" 
                                       [queryParams]= "{startDate:filter.startDate,endDate:filter.endDate}"
                                                                     target = "_blank">
-                                                             <span>{{ac.debit | number: "1.2-2"}}</span> </a>
+                                                                 <span *ngIf= "ac.credit == 0"> - </span> </a>
+                                                             <span *ngIf= "ac.credit != 0">{{ac.credit | number: "1.2-2"}}</span> 
                                                             </td>
                                                         </tr>
                                                         <tr > 

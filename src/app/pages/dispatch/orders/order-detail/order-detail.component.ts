@@ -345,6 +345,7 @@ export class OrderDetailComponent implements OnInit {
   docSelRef: any;
   printBtnType: string;
   invDate: any = '';
+  invBtnDisableStat = true;
 
   constructor(
     private apiService: ApiService,
@@ -437,6 +438,9 @@ export class OrderDetailComponent implements OnInit {
           this.hideEdit = false;
         }
         this.orderStatus = result.orderStatus;
+        if(this.orderStatus != 'attached' && this.orderStatus != 'confirmed' && this.orderStatus != 'created') {
+          this.invBtnDisableStat = false;
+        }
         this.cusAddressID = result.cusAddressID;
         this.customerAddress = result.customerAddress;
         this.customerName = result.customerName;
