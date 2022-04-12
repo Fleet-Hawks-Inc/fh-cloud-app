@@ -299,7 +299,7 @@
 <ng-template #logModal let-modal>
    <div class="modal-content">
       <div class="modal-header">
-         <h4 class="modal-title">ServiceLog Details</h4>
+         <h4 class="modal-title"><b>Service Log Details</b></h4>
          <button type="button" class="close" (click)="modal.dismiss()">
             &times;
          </button>
@@ -314,47 +314,142 @@
                            " cellpadding="0" cellspacing="0" bordercolor="#adadad">
                         <tbody>
                            <tr>
-                              <td width="50%" bgcolor="#f3f3f3" style=" border-right: 1px solid #adadad;
-                                           border-bottom: 1px solid #adadad;
+                              <div>
+                                 <td style="border-right: 1px solid #adadad; 
+                                 border-bottom: 1px solid #adadad; 
+                                 padding-left: 10px; padding-right: 90px;">
+
+                                    <p style="font-weight: 600; margin-bottom: 4px; color: #000000; ">
+                                       Unit Type:
+                                    </p>
+                                    <p style="font-weight: 600; margin-bottom: 4px; color: #000000; ">
+                                       Vehicle#
+                                    </p>
+                                    <p style="font-weight: 600; margin-bottom: 4px; color: #000000; ">
+                                       Odometer Miles:
+                                    </p>
+                                 </td>
+
+                                 <td style=" 
+                                           border-bottom: 1px solid #adadad; 
                                            padding-left: 10px;">
+                                    <p style="margin-bottom: 4px; color: #000000">
+                                       {{
+                                       logsData.unitType
+                                       }}
+                                    </p>
+
+                                    <p style="margin-bottom: 4px; color: #000000">
+                                       {{vehiclesObject[vehicle]}}
+                                    </p>
+
+                                    <p style="margin-bottom: 4px; color: #000000">
+                                       {{odometer ? odometer : '-'}}
+                                    </p>
+
+                                 </td>
+                              </div>
+                              <!-- <div> -->
+                              <td style="border-right: 1px solid #adadad; 
+                              border-bottom: 1px solid #adadad;
+                              padding-left: 10px; padding-right: 90px;">
+
                                  <p style="font-weight: 600; margin-bottom: 4px; color: #000000; ">
-                                    Unit Type:
+                                    Completion Date:
                                  </p>
+
                                  <p style="font-weight: 600; margin-bottom: 4px; color: #000000; ">
-                                    Vehicle#
+                                    BIll#
                                  </p>
+
                                  <p style="font-weight: 600; margin-bottom: 4px; color: #000000; ">
-                                    Odometer Miles:
+                                    Vendor:
                                  </p>
                               </td>
-
                               <td style="border-right: 1px solid #adadad; 
                                            border-bottom: 1px solid #adadad; 
                                            padding-left: 10px;">
                                  <p style="margin-bottom: 4px; color: #000000">
-                                    {{
-                                    logsData.unitType
-                                    }}
+                                    {{completionDate ? (completionDate
+                                    |
+                                    date:'yyyy/MM/dd') : '-'}}
                                  </p>
 
                                  <p style="margin-bottom: 4px; color: #000000">
-                                    {{vehiclesObject[vehicle]}}
+                                    {{reference ? reference : '-'}}
                                  </p>
 
                                  <p style="margin-bottom: 4px; color: #000000">
-                                    {{odometer ? odometer : '-'}}
+                                    {{vendorID ?
+                                    vendorsObject[vendorID] :
+                                    '-'}}
                                  </p>
+
                               </td>
+                              <!-- </div> -->
                            </tr>
                         </tbody>
                      </table>
-                  </td>
-               </tr>
-            </table>
-         </div>
-         <div class="modal-footer">
-            <button (click)="downloadPdf()">Download</button>
+                     <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tbody>
+                           <tr>
+                              <td>
+                                 <div>
+                                    <h5><b>Issue Details</b></h5>
+                                 </div>
+                                 <form>
+                                    <div>
+                                       <!-- <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0"> -->
+                           <tr>
+                              <td style="border-right: 1px solid #adadad; 
+                                       border-bottom: 1px solid #adadad; 
+                                       padding-left: 10px; padding-right: 90px;">
+
+                                 <p style="font-weight: 600; margin-bottom: 4px;  ">
+                                    Issue
+                                 </p>
+                                 <p style="font-weight: 600; margin-bottom: 4px;  ">
+                                    <span *ngFor='let data of issuesObject'>
+                                       {{data.issueName}}</span>
+                                 </p>
+
+                              </td>
+                              <td style=" 
+                                           border-bottom: 1px solid #adadad; 
+                                           padding-left: 10px;">
+                                 <p style="margin-bottom: 4px; color: #000000">
+                                    Assigned To
+                                 </p>
+
+                                 <p style="margin-bottom: 4px; color: #000000">
+
+                                 </p>
+
+                                 <p style="margin-bottom: 4px; color: #000000">
+                                    <span *ngFor='let data of issuesObject'>
+                                       {{users[data.assignedTo]}}
+                                    </span>
+
+                                 </p>
+
+                              </td>
+                           </tr>
+
+                           <!-- </table> -->
+                           <!-- </div> -->
          </div>
       </form>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+      </td>
+      </tr>
+      </table>
+   </div>
+   <div class="modal-footer">
+      <button (click)="downloadPdf()">Download</button>
+   </div>
+   </form>
    </div>
 </ng-template>
