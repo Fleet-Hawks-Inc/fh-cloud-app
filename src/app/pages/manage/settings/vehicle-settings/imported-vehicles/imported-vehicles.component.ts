@@ -239,7 +239,9 @@ export class ImportedVehiclesComponent implements OnInit {
   }
 
   refreshData() {
-
+   this.importVehicles = []
+   this.fetchVehicleImport();
+   this.dataMessage = Constants.FETCHING_DATA;
   }
 
   /**
