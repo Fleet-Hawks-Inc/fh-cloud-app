@@ -5,15 +5,10 @@
         <form class="form-horizontal" method="get" name="form" id="form_">
           <div class="row" style="padding-top: 10px">
             <div class="col-md-2 col-lg-2 pr-1">
-                <ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%"
-                  placeholder="Search by vehicle"
-                >
-                  <ng-option
-                    *ngFor="let data of allVehicles"
-                    [value]="data.vehicleID"
-                    >{{ data.vehicleIdentification }}
-                  </ng-option>
-                </ng-select>
+              <ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%" placeholder="Search by vehicle">
+                <ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{ data.vehicleIdentification }}
+                </ng-option>
+              </ng-select>
             </div>
             <!-- <div class="col-md-2 col-lg-2 pr-0 pl-2">
               <div class="input-group input-group-sm mb-3">
@@ -31,81 +26,42 @@
                     <i class="fas fa-calendar-alt"></i>
                   </span>
                 </span>
-                <input
-                  [(ngModel)]="fromDate"
-                  name="fromDate"
-                  type="text"
-                  placeholder="yyyy/mm/dd"
-                  (click)="from.toggle()"
-                  ngbDatepicker
-                  #from="ngbDatepicker"
-                  class="form-control"
-                  autocomplete="off"
-                  [minDate]="dateMinLimit"
-                  [maxDate]="futureDatesLimit"
-                />
-                <span
-                  class="
+                <input [(ngModel)]="fromDate" name="fromDate" type="text" placeholder="yyyy/mm/dd"
+                  (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off"
+                  [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                <span class="
                     input-group-text
                     border-left-0 border-right-0
                     rounded-0
-                  "
-                >
+                  ">
                   to
                 </span>
-                <input
-                  [(ngModel)]="toDate"
-                  name="toDate"
-                  type="text"
-                  placeholder="yyyy/mm/dd"
-                  (click)="to.toggle()"
-                  ngbDatepicker
-                  #to="ngbDatepicker"
-                  class="form-control"
-                  autocomplete="off"
-                  [minDate]="dateMinLimit"
-                  [maxDate]="futureDatesLimit"
-                />
+                <input [(ngModel)]="toDate" name="toDate" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()"
+                  ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit"
+                  [maxDate]="futureDatesLimit" />
               </div>
             </div>
             <div class="col-md-2 col-lg- pl-2">
-              <button
-                type="submit"
-                (click)="searchFilter()"
-                class="btn btn-sm btn-success mr-3"
-              >
+              <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">
                 Search
               </button>
-              <button
-                type="button"
-                (click)="resetFilter()"
-                class="btn btn-sm btn-success"
-              >
+              <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">
                 Reset
               </button>
             </div>
             <div class="col-md-5 text-right pr-1 page-buttons">
               <div class="btn-group flex-wrap" *ngIf="!environment">
-                <button
-                  type="button"
-                  class="btn btn-success btn-sm dropdown-toggle"
-                  data-toggle="dropdown"
-                  aria-expanded="false"
-                >
+                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                  aria-expanded="false">
                   Actions<span class="caret"></span>
                 </button>
-                <div
-                  class="dropdown-menu"
-                  role="menu"
-                  x-placement="bottom-start"
-                  style="
+                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
                     position: absolute;
                     will-change: transform;
                     top: 0px;
                     left: 0px;
                     transform: translate3d(0px, 38px, 0px);
-                  "
-                >
+                  ">
                   <a class="dropdown-item text-1" href="">Import</a>
                   <a class="dropdown-item text-1" href="">Export</a>
                 </div>
@@ -132,18 +88,112 @@
       </header>
       <section class="m-2">
         <div class="row mb-3">
-          <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark">
-              <div class="form-group row pt-1">
-                <div class="col-lg-12">
-                  <div
-                    class="
-                      table-responsive
-                      hover
-                      table table-bordered table-striped
-                    "
-                  >
-                    <ngx-datatable
+          <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
+            <p-table #dt [value]="fuelList" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both"
+              [loading]="!loaded" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+              [scrollable]="true" [loading]="!loaded" scrollHeight="100%">
+              <!-- Caption template of data table -->
+              <ng-template pTemplate="caption">
+
+                <div class="p-d-flex d-flex justify-content-between align-items-center">
+                  <div>
+                    <h3 class="m-0"> Fuel </h3>
+                  </div>
+
+
+                  <div class="text-right">
+                    <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
+                      class="p-button-outlined mr-2"><i class="fa-solid fa-arrows-rotate"></i></button>
+                    <button type="button" pButton pTooltip="Add" routerLink="/fleet/fuel/add"
+                      class="p-button-outlined mr-2"><i class="fa-solid fa-plus"></i></button>
+                    <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                      (click)="clear(dt)"><i class="fa-solid fa-filter"></i></button>
+
+                    <!-- <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                      icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button> -->
+
+                    <!-- <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" placeholder="Choose Columns"> -->
+                    <!-- </p-multiSelect> -->
+                  </div>
+                </div>
+              </ng-template>
+              <!-- Header template of DataTable -->
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th *ngFor="let column of dataColumns" [pSortableColumn]="column.field" pResizableColumn
+                    style="width:12%">
+                     <span>
+                      <div class="flex justify-content-center align-items-center" alignFrozen="right" pFrozenColumn
+                        [frozen]="true">
+                        {{column.header}}
+                        <p-sortIcon [field]="column.field"></p-sortIcon>
+                         <p-columnFilter [type]="column.type" [field]="column.field" matchMode="contains"
+                          [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
+                        </p-columnFilter>
+                      </div>
+                    </span>
+                    </th>
+
+<!-- <th style="width:100px" alignFrozen="right" pFrozenColumn [frozen]="true">Date Time</th> -->
+                  <th style="width:100px" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
+
+                </tr>
+
+              </ng-template>
+
+              <!-- Body Template of Data Table -->
+              <ng-template pTemplate="body" let-fuel let-columns="columns" let-rowIndex="rowIndex">
+
+                <tr>
+
+                  <td style="width:12%">
+                    {{fuel.dateTime}}
+                  </td>
+                  <td style="width:12%">
+                    {{fuel.data.cardNo}}
+                  </td>
+                  <td style="width:12%">
+                    {{(vehicleList[fuel.unitID]?vehicleList[fuel.unitID]:'')}}
+                    {{(assetList[fuel.unitID]?assetList[fuel.unitID]:'')}}
+                  </td>
+                  <td style="width:12%">{{fuel.data.useType}}</td>
+                  <td style="width:12%">{{fuel.data.type}}</td>
+                  <td style="width:12%">{{fuel.data.amt}}</td>
+                  <td style="width:12%">{{fuel.data.site}}</td>
+                  <td style="width:12%">{{fuel.data.city}},{{fuel.data.state}},{{fuel.data.country}}</td>
+                  <td style=" text-align: center; width: 100px;" pFrozenColumn alignFrozen="right" [frozen]="true">
+
+                    <button id="btnEdit" pButton routerLink="/fleet/fuel/edit/{{fuel.data.fuelID}}" type="button"
+                      icon="fas fa-user-pen" class="p-button-rounded p-button-text"></button>
+                    <button (click)="deleteFuelEntry(fuel.data.fuelID)" id="btnDelete" pButton type="button" icon="fas fa-user-slash"
+                      class="p-button-rounded p-button-danger p-button-text"></button>
+                  </td>
+                </tr>
+              </ng-template>
+              <!-- Empty Template -->
+
+              <ng-template pTemplate="emptymessage" let-columns>
+                <div class="col-lg-12 mt-3 text-center">
+                  {{dataMessage}}
+                  <br /><br>
+                </div>
+              </ng-template>
+              <!-- Summary Section with Load More button -->
+
+              <ng-template pTemplate="summary" let-columns>
+                <div class="col-lg-12 mt-3 text-center " *ngIf="lastEvaluatedKey !=='end' && fuelList.length !==0 ">
+                  <button type="button " (click)="onScroll($event) " class="btn btn-success btn-sm text-light ">Load
+                    More..</button>
+
+                  <br /><br>
+                </div>
+                <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey ==='end'">Total Records:
+                  {{fuelList.length}}</div>
+              </ng-template>
+
+
+            </p-table>
+            <!-- <ngx-datatable
                       #myTable
                       class="bootstrap expandable fixedTable"
                       [rows]="fuelList"
@@ -217,30 +267,9 @@
                           {{ value.city }}, {{ value.state }}, {{ value.country }}
                         </ng-template>
                       </ngx-datatable-column>
-                      <!-- <ngx-datatable-column name="Actions" prop="data" [sortable]=false>
-                      <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
-                          let-row="row">
-                      <div class="btn-group flex-wrap">
-                        <button type="button" class="mb-1 mt-1 mr-1 btn"
-                          
-                          data-toggle="dropdown"><i class="fas
-                            fa-ellipsis-v"></i></button>
-                        <div class="dropdown-menu" role="menu">
-                          <a
-                            routerLink="/fleet/fuel/edit/{{value.fuelID
-                            }}"
-                            class="dropdown-item text-1">Edit</a>
-                          <button type="button" class="dropdown-item
-                            text-1"
-                            (click)="deleteFuelEntry(value)">Delete</button>
-                        </div>
-                      </div>
-                      </ng-template>
-                    </ngx-datatable-column> -->
-                    </ngx-datatable>
-                  </div>
+                    </ngx-datatable> -->
 
-                  <!-- <div class="row mt-3 dtPaginate" *ngIf="fuelList.length> 0">
+            <!-- <div class="row mt-3 dtPaginate" *ngIf="fuelList.length> 0">
                     <div class="col-6">
                       Showing {{ fuelStartPoint }} to {{ fuelEndPoint }} of {{
                       totalRecords }} enteries
@@ -254,9 +283,7 @@
                         [disabled]="fuelNext">Next</button>
                     </div>
                   </div> -->
-                </div>
-              </div>
-            </div>
+
           </div>
         </div>
 
@@ -280,17 +307,16 @@
         </button>
       </div>
       <div class="modal-body text-dark">
-          <div class="col-log-10" style="margin-left:10px">
-           <span style="font-size: 20px;">Please upload the BVD report in CSV fromat.</span>
-          </div>
+        <div class="col-log-10" style="margin-left:10px">
+          <span style="font-size: 20px;">Please upload the BVD report in CSV fromat.</span>
+        </div>
         <div class="row">
           <div class="col-lg-12">
             <div class="form-group col-lg-12 mb-3">
               <label class="control-label font-weight-bold labelmt text-3 text-dark">Choose File
                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
               </label>
-              <input (change)="selectDoc($event)" name="" id="uploadedDocs" type="file"
-                class="form-control-file">
+              <input (change)="selectDoc($event)" name="" id="uploadedDocs" type="file" class="form-control-file">
               <span style="font-size: 12px;">
                 *Only .csv is accepted. The maximum
                 file size can be 15MB.</span>
@@ -300,17 +326,17 @@
               </div>
             </div> -->
 
-            <div *ngIf="error.hasError">
+              <div *ngIf="error.hasError">
               </div>
               <span class="text-danger">{{error.message}}</span>
 
             </div>
-            <div style="text-align: right;" >
-            <button *ngIf="!reviewing" class="btn btn-primary" (click)="postDocument()">Submit</button>
-            <button *ngIf="reviewing" class="btn btn-dark" type="button" disabled>
-              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            Reviewing...
-            </button>
+            <div style="text-align: right;">
+              <button *ngIf="!reviewing" class="btn btn-primary" (click)="postDocument()">Submit</button>
+              <button *ngIf="reviewing" class="btn btn-dark" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Reviewing...
+              </button>
             </div>
           </div>
         </div>
@@ -331,17 +357,16 @@
         </button>
       </div>
       <div class="modal-body text-dark">
-          <div class="col-log-10" style="margin-left:10px">
-           <span style="font-size: 20px;">Please upload the Petro report in CSV fromat.</span>
-          </div>
+        <div class="col-log-10" style="margin-left:10px">
+          <span style="font-size: 20px;">Please upload the Petro report in CSV fromat.</span>
+        </div>
         <div class="row">
           <div class="col-lg-12">
             <div class="form-group col-lg-12 mb-3">
               <label class="control-label font-weight-bold labelmt text-3 text-dark">Choose File
                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
               </label>
-              <input (change)="selectDoc($event)" name="" id="petroDocs" type="file"
-                class="form-control-file">
+              <input (change)="selectDoc($event)" name="" id="petroDocs" type="file" class="form-control-file">
               <span style="font-size: 12px;">
                 *Only .csv is accepted. The maximum
                 file size can be 15MB.</span>
@@ -351,17 +376,17 @@
               </div>
             </div> -->
 
-            <div *ngIf="error.hasError">
+              <div *ngIf="error.hasError">
               </div>
               <span class="text-danger">{{error.message}}</span>
 
             </div>
-            <div style="text-align: right;" >
-            <button *ngIf="!reviewing" class="btn btn-primary" (click)="postPetroDoc()">Submit</button>
-            <button *ngIf="reviewing" class="btn btn-dark" type="button" disabled>
-              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            Reviewing...
-            </button>
+            <div style="text-align: right;">
+              <button *ngIf="!reviewing" class="btn btn-primary" (click)="postPetroDoc()">Submit</button>
+              <button *ngIf="reviewing" class="btn btn-dark" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Reviewing...
+              </button>
             </div>
           </div>
         </div>

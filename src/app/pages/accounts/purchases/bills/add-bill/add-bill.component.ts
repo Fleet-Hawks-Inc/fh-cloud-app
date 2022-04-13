@@ -499,7 +499,7 @@ export class AddBillComponent implements OnInit {
       this.dataMessage = Constants.FETCHING_DATA;
       let result: any = await this.accountService
         .getData(
-          `vendor-credits/specific/${this.orderData.vendorID}?currency=${this.orderData.currency}&order=${this.orderData.purchaseID}`
+          `vendor-credits/specific/${this.orderData.vendorID}?currency=${this.orderData.currency}`
         )
         .toPromise();
       if (result.length === 0) {
@@ -522,6 +522,7 @@ export class AddBillComponent implements OnInit {
     this.vendorCredits = [];
     this.purchaseOrders = [];
     this.fetchPurchaseOrders();
+    this.fetchVendorCredits()
   }
 
   assignFullPayment(index, data) {

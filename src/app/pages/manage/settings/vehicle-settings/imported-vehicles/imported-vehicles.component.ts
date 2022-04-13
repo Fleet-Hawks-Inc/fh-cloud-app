@@ -208,6 +208,7 @@ export class ImportedVehiclesComponent implements OnInit {
         for (let i = 0; i < this.importDocs.length; i++) {
           formData.append("importDocs", this.importDocs[i])
         }
+        this.submitDisabled = true;
         //append other fields
         formData.append("data", JSON.stringify(this.importData));
         this.apiService.postData('importer', formData, true).subscribe({
@@ -238,7 +239,9 @@ export class ImportedVehiclesComponent implements OnInit {
   }
 
   refreshData() {
-
+   this.importVehicles = []
+   this.fetchVehicleImport();
+   this.dataMessage = Constants.FETCHING_DATA;
   }
 
   /**

@@ -125,21 +125,21 @@
                                                             <td class="font-weight-bold text-4">Total</td>
                                                             <td class="font-weight-bold text-4">
                                                                 <span *ngIf=" currency === 'CAD'"
-                                                                >{{cadCreditTotal | number: "1.2-2"
+                                                                >{{cadDebitTotal | number: "1.2-2"
                                                                     }}
                                                                     </span>
                                                                     
                                                                     <span *ngIf=" currency === 'USD'"
-                                                                >{{usdCreditTotal | number: "1.2-2" 
+                                                                >{{usdDebitTotal | number: "1.2-2" 
                                                                     }}
                                                                     </span>
                                                             </td>
                                                             <td class="font-weight-bold text-4">
                                                                 <span *ngIf="currency === 'CAD'">
-                                                                    {{cadDebitTotal | number: "1.2-2"}}</span>
+                                                                    {{cadCreditTotal | number: "1.2-2"}}</span>
                                                                     
                                                                     <span *ngIf="currency === 'USD'">
-                                                                    {{usdDebitTotal | number: "1.2-2"}}</span>
+                                                                    {{usdCreditTotal | number: "1.2-2"}}</span>
                                                                     
                                                             </td>
                                                         </tr>

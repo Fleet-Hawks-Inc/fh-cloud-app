@@ -84,7 +84,7 @@ export class AddVendorPaymentComponent implements OnInit {
     private accountService: AccountService,
     private location: Location,
     private toaster: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.listService.fetchVendors();
@@ -163,7 +163,7 @@ export class AddVendorPaymentComponent implements OnInit {
     if (this.paymentData.vendorID) {
       let result: any = await this.accountService
         .getData(
-          `advance/entity/${this.paymentData.vendorID}?from=null&to=null&curr=${this.paymentData.currency}`
+          `advance/allPayments/entity/${this.paymentData.vendorID}/${this.paymentData.currency}`
         )
         .toPromise();
       if (result.length === 0) {
@@ -294,7 +294,7 @@ export class AddVendorPaymentComponent implements OnInit {
     this.accountService
       .postData("purchase-payments", this.paymentData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -311,7 +311,7 @@ export class AddVendorPaymentComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {

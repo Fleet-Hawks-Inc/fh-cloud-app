@@ -210,7 +210,7 @@ export class ImportDriversComponent implements OnInit {
         }
         //append other fields
         formData.append("data", JSON.stringify(this.importData));
-
+        this.submitDisabled = true;
         this.apiService.postData('importer', formData, true).subscribe({
           complete: () => { },
           error: (err: any) => {
