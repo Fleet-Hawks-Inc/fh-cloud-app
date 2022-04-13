@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, Input, ElementRef } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { ParsedResults, ValidatorConfig } from 'csv-file-validator';
@@ -18,6 +18,9 @@ declare var $: any;
 export class ImportedAssetsComponent implements OnInit {
   @ViewChild('dt') table: Table;
   @ViewChild('asstImporter') asstImporter: any;
+
+  @ViewChild('myInput')
+  myInputVariable: ElementRef;
 
   display = false;
 
@@ -210,10 +213,6 @@ export class ImportedAssetsComponent implements OnInit {
     this.display = true;
   }
 
-  cancel() {
-    this.inValidMessages = [];
-  }
-
   refreshData() {
     this.importAssets = []
     this.fetchAssetImport();
@@ -232,12 +231,14 @@ export class ImportedAssetsComponent implements OnInit {
     table.clear();
   }
   uploadImport() {
+
     if (this.check == true) {
       if (this.uploadedDocs.length > 0) {
         const formData = new FormData();
         for (let i = 0; i < this.uploadedDocs.length; i++) {
           formData.append("uploadedDocs", this.uploadedDocs[i])
         }
+        this.submitDisabled = true;
         //append other fields
         formData.append("data", JSON.stringify(this.importData));
         this.apiService.postData('importer', formData, true).subscribe({
@@ -250,12 +251,17 @@ export class ImportedAssetsComponent implements OnInit {
             this.submitDisabled = false;
             this.toastr.success("The file has been scheduled for processing and you will be notified via email once it is completed.")
             $('#uploadedDocs').val('');
-            this.importModelRef.close();
+            this.display = false;
             this.fetchAssetImport();
           }
         })
       }
     }
+  }
+
+  cancel() {
+    this.inValidMessages = [];
+    this.myInputVariable.nativeElement.value = "";
   }
 
 }
