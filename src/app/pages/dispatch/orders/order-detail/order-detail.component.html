@@ -18,7 +18,8 @@
             <button *ngIf="showInvBtn" (click)="openEmailInv()" class="btn btn-sm mr-2 btn-success">
               Email
             </button>
-            <button *ngIf="showInvBtn" [disabled]="invBtnDisableStat" (click)="showInv(); isModalShow = true" class="btn btn-success btn-sm mr-2">
+            <button *ngIf="showInvBtn" [disabled]="invBtnDisableStat" (click)="showInv(); isModalShow = true"
+              class="btn btn-success btn-sm mr-2">
               Invoice
             </button>
 
@@ -816,17 +817,7 @@
                               <span class="pull-right">{{ totalCharges | number: "1.2-2" }}
                                 {{ charges.freightFee.currency }}</span>
                             </p>
-                            <!-- <p class="mb-0 text-dark bordtopdas">
-                              <strong>Advance Received</strong>
-                              <span class="pull-right">${{advances}}</span>
-                            </p> -->
-                            <!-- <p class="mb-0 text-dark bordtopdas">
-                              <strong>Balance</strong>
-                              <span class="pull-right"
-                                >{{ balance }}
-                                {{ charges.freightFee.currency }}</span
-                              >
-                            </p> -->
+
                           </div>
                         </div>
                       </div>
@@ -920,8 +911,6 @@
                             <div class="col-6 text-right">
                               <button [disabled]="docs.length == 4" class="btn btn-success btn-sm"
                                 (click)="openDocModal()">Add Document</button>
-                              <!-- <input type="file" #uploadBol (change)="selectDocuments($event)" multiple
-                                class="p-0 pull-right mb-0" id="bolUpload" /> -->
                             </div>
                           </div>
                         </div>
@@ -962,25 +951,7 @@
                                 </tr>
                               </tbody>
                             </table>
-                            <!-- <div class="row my-2 px-2" *ngFor="let doc of docs;let d= index">
-                              <div class="col-4">
-                                <a class="image-popup-no-margins" href="{{doc.docPath}}" target="_blank">
-                                  <img class="img_thumbnail" src="{{doc.imgPath}}">
-                                  <p>{{doc.displayName}}</p>
-                                </a>
-                                <a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
-                                  (click)="setPDFSrc(doc.path)">{{doc.displayName}}</a>
-                              </div>
-                              <div class="col-1 text-right">
-                                <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
-                                  data-target="#viewDocModal"></em>
-                                <a href="javascript:;" (click)="delete('docs',doc.name, d)" class="modal-with-form">
-                                  <em class="fas fa-times text-danger"></em></a>
-                              </div>
-                            </div> -->
-                            <!-- <div *ngIf="docs.length == 0;" class="my-2 px-2">
-                              <span>No document found</span>
-                            </div> -->
+
                           </div>
                         </div>
                       </div>
