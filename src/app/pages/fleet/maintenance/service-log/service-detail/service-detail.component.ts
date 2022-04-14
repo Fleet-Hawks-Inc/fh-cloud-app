@@ -234,7 +234,7 @@ export class ServiceDetailComponent implements OnInit {
     html2pdf(data, {
       margin: [0.5, 0.3, 0.5, 0.3],
       pagebreak: { mode: 'avoid-all', before: "log_wrap" },
-      filename: "invoice.pdf",
+      filename: "serviceLog.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {
         dpi: 300,

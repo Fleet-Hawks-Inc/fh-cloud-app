@@ -7,7 +7,10 @@
                   Service Log Details
                </div>
                <div class="col-md-8 col-lg-8 text-right pr-1">
-                  <a (click)="openModal()" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Log PDF</a>
+                  <button class="btn btn-sm btn-success mr-3" (click)="openModal()">
+                     Log PDF
+                  </button>
+                  <!-- <a (click)="openModal()" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Log PDF</a> -->
                   <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-sm btn-default"><i
                         class="fas fa-list"></i> Service Logs List</a>
                </div>
@@ -299,12 +302,13 @@
 <ng-template #logModal let-modal>
    <div class="modal-content">
       <div class="modal-header">
-         <h4 class="modal-title"><b>Service Log Details</b></h4>
+         <h2 class="modal-title"><b>Service Log Details</b></h2>
          <button type="button" class="close" (click)="modal.dismiss()">
             &times;
          </button>
       </div>
       <form>
+
          <div class="modal-body" id="log_wrap">
             <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
                <tr>
@@ -390,66 +394,207 @@
                            </tr>
                         </tbody>
                      </table>
-                     <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+
+               <tr>
+                  <td colspan="2">
+                     <h5><b>Issue Details</b></h5>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table width="99%" style=" border: 1px solid #adadad; color: #000000;
+                     border-right: 0px solid #adadad; font-size: 13px; margin-bottom: 10px;
+                     " bordercolor="#adadad">
                         <tbody>
+                           <col style="width:50%">
+                           <col style="width:50%">
                            <tr>
-                              <td>
-                                 <div>
-                                    <h5><b>Issue Details</b></h5>
-                                 </div>
-                                 <form>
-                                    <div>
-                                       <!-- <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0"> -->
-                           <tr>
-                              <td style="border-right: 1px solid #adadad; 
-                                       border-bottom: 1px solid #adadad; 
-                                       padding-left: 10px; padding-right: 90px;">
-
-                                 <p style="font-weight: 600; margin-bottom: 4px;  ">
-                                    Issue
-                                 </p>
-                                 <p style="font-weight: 600; margin-bottom: 4px;  ">
-                                    <span *ngFor='let data of issuesObject'>
-                                       {{data.issueName}}</span>
-                                 </p>
-
+                              <td width="50%" style="
+                              border-bottom: 1px solid ;  background-color: 	#E8E8E8;
+                              border-right: 1px solid ;
+                              padding-left: 10px;  padding-right: 550px; padding-top: 10p; padding-bottom: 10px">
+                                 Issue
                               </td>
-                              <td style=" 
-                                           border-bottom: 1px solid #adadad; 
-                                           padding-left: 10px;">
-                                 <p style="margin-bottom: 4px; color: #000000">
-                                    Assigned To
-                                 </p>
-
-                                 <p style="margin-bottom: 4px; color: #000000">
-
-                                 </p>
-
-                                 <p style="margin-bottom: 4px; color: #000000">
-                                    <span *ngFor='let data of issuesObject'>
-                                       {{users[data.assignedTo]}}
-                                    </span>
-
-                                 </p>
-
+                              <td width="50%" style="
+                              border-bottom: 1px solid; background-color: 	#E8E8E8;
+                              border-right: 1px solid;
+                              padding-left: 10px;  padding-right: 10px;
+                              padding-bottom: 10px;  padding-top: 10px
+                            ">
+                                 Assigned To
                               </td>
                            </tr>
+                           <tr *ngFor='let data of issuesObject'>
+                              <td height="25" style="
+                             border-right: 1px solid #adadad;
+                             padding-left: 10px;
+                             padding-top: 10p; padding-bottom: 10px;
+                           ">
+                                 {{data.issueName}}
+                              </td>
+                              <td style="
+                             border-right: 1px solid #adadad;
+                             padding-left: 10px;  padding-right: 10px;
+                             padding-top: 10p; padding-bottom: 10px;
+                           ">
+                                 {{users[data.assignedTo]}}</td>
+                           </tr>
+                     </table>
 
-                           <!-- </table> -->
-                           <!-- </div> -->
+                  </td>
+               </tr>
+
+               <tr>
+                  <td colspan="2">
+                     <h5><b>Service Tasks</b></h5>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table width="99%" style=" border: 1px solid #adadad; color: #000000;
+                     border-right: 0px solid #adadad; font-size: 13px; margin-bottom: 10px;
+                     " bordercolor="#adadad">
+                        <tbody>
+                           <col style="width:50%">
+                           <col style="width:50%">
+                           <tr>
+                              <td width="50%" style="
+                              border-bottom: 1px solid ;
+                              border-right: 1px solid ; background-color: 	#E8E8E8;
+                              padding-left: 10px;  padding-right: 550px;">
+                                 Task
+                              </td>
+                              <td width="50%" style="
+                              border-bottom: 1px solid;  background-color:#E8E8E8;
+                              border-right: 1px solid;
+                              padding-left: 10px;  padding-right: 10px;
+                              padding-bottom: 10px;  padding-top: 10px
+                            ">
+                                 Labor
+                              </td>
+                           </tr>
+                           <tr *ngFor='let data of allServiceTasks'>
+                              <td height="25" style="
+                             border-right: 1px solid #adadad;
+                             padding-left: 10px;
+                           ">
+                                 {{data.taskName}}
+                              </td>
+                              <td style="
+                             border-right: 1px solid #adadad;
+                             padding-left: 10px; padding-right: 590px;
+                           "> {{data.laborCost}} {{currency}}</td>
+                           </tr>
+                     </table>
+
+                  </td>
+               </tr>
+
+               <tr>
+                  <td colspan="2">
+                     <h5><b>Service Parts</b></h5>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table width="99%" style=" border: 1px solid #adadad; color: #000000;
+                     border-right: 0px solid #adadad; font-size: 13px; margin-bottom: 10px;
+                     " bordercolor="#adadad">
+                        <tbody>
+                           <col style="width:50%">
+                           <col style="width:50%">
+                           <tr>
+                              <td width="50%" style="
+                              border-bottom: 1px solid ;
+                              border-right: 1px solid ; background-color: 	#E8E8E8;
+                              padding-left: 10px;  padding-right: 550px;">
+                                 Task
+                              </td>
+                              <td width="50%" style="
+                              border-bottom: 1px solid;  background-color:#E8E8E8;
+                              border-right: 1px solid;
+                              padding-left: 10px;  padding-right: 10px;
+                              padding-bottom: 10px;  padding-top: 10px
+                            ">
+                                 Labor
+                              </td>
+                           </tr>
+                           <tr *ngFor='let data of allServiceParts'>
+                              <td height="25" style="
+                             border-right: 1px solid #adadad;
+                             padding-left: 10px;
+                           ">
+                                 {{data.partNumber}}
+                              </td>
+                              <td style="
+                             border-right: 1px solid #adadad;
+                             padding-left: 10px; padding-right: 10px;
+                           "> {{data.partCost}} {{currency}}</td>
+                           </tr>
+                     </table>
+
+                  </td>
+               </tr>
+
+
+               <tr>
+                  <td colspan="2">
+                     <h5><b> Description</b></h5>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table width="99%" style=" border: 1px solid #adadad; color: #000000;
+                     border-right: 0px solid #adadad; font-size: 13px; margin-bottom: 10px;
+                     " bordercolor="#adadad">
+                        <tbody>
+                           <col style="width:50%">
+                           <col style="width:50%">
+                           <tr>
+                              <td width="50%" style="
+                              border-bottom: 1px solid ;
+                              border-right: 1px solid ; 
+                              padding-left: 10px;  padding-right: 550px;">
+                                 {{description ? description : '-'}}
+                              </td>
+
+                           </tr>
+                        </tbody>
+
+                     </table>
+
+                  </td>
+               </tr>
+
+
+
+               </td>
+               </tr>
+
+               <tr>
+                  <td colspan="2">
+                     <table border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tbody>
+                           <tr>
+                              <td align="center">
+                                 <h2 class="text-dark" style="font-size:13px;">Powered By
+                                 </h2>
+                                 <img src="assets/img/logo.png" width="207" height="28">
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+            </table>
+         </div>
+         <div class="modal-footer">
+
+            <button type="button" class="btn btn-default" (click)="modal.dismiss()">
+               Close
+            </button>
+            <button type="button" class="btn btn-success" (click)="downloadPdf()">Download</button>
          </div>
       </form>
-      </td>
-      </tr>
-      </tbody>
-      </table>
-      </td>
-      </tr>
-      </table>
-   </div>
-   <div class="modal-footer">
-      <button (click)="downloadPdf()">Download</button>
-   </div>
-   </form>
    </div>
 </ng-template>
