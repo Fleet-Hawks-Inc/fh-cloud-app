@@ -25,11 +25,11 @@ export class ExpenseComponent implements OnInit {
   expDate = ''
   loaded = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
-  tripMessage = Constants.FETCHING_DATA;
+  dataMessage = Constants.FETCHING_DATA;
   logMessage = Constants.FETCHING_DATA;
   expenseMessage = Constants.FETCHING_DATA;
   fuelMessage = Constants.FETCHING_DATA;
-  drvPayMessay = Constants.FETCHING_DATA;
+  drvPayMessage = Constants.FETCHING_DATA;
   date = new Date();
   exportData = [];
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
@@ -70,7 +70,7 @@ export class ExpenseComponent implements OnInit {
       .toPromise();
     // this.payments = result;
     if (result.length === 0) {
-      this.drvPayMessay = Constants.NO_RECORDS_FOUND
+      this.drvPayMessage = Constants.NO_RECORDS_FOUND
     }
     for (let i = 0; i < result.length; i++) {
       const paymentdata = result[i]
@@ -139,7 +139,7 @@ export class ExpenseComponent implements OnInit {
     this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
       this.vehicleData = result.Items;
       if (result.Items.length === 0) {
-        this.tripMessage = Constants.NO_RECORDS_FOUND
+        this.dataMessage = Constants.NO_RECORDS_FOUND
       }
     });
   }
@@ -176,8 +176,8 @@ export class ExpenseComponent implements OnInit {
       this.apiService.getData(`vehicles/fetch/TripData?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
 
         this.allData = this.allData.concat(result.Items)
-        if (result.Items.length === 0 && this.allData.length === 0) {
-          this.tripMessage = Constants.NO_RECORDS_FOUND
+        if (result.Items.length === 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND
         }
         for (let veh of this.allData) {
           let dataa = veh
@@ -193,7 +193,7 @@ export class ExpenseComponent implements OnInit {
         if (this.loaded) {
           this.payments = []
           this.totalDriverPay = 0;
-          this.tripMessage = Constants.FETCHING_DATA
+          this.drvPayMessage = Constants.FETCHING_DATA
         }
         this.fetchDriverPayment();
         if (result.LastEvaluatedKey !== undefined) {
@@ -245,6 +245,11 @@ export class ExpenseComponent implements OnInit {
         this.expensePay = [];
         this.totalExpense = 0;
         this.totalDriverPay = 0;
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.logMessage = Constants.FETCHING_DATA;
+        this.expenseMessage = Constants.FETCHING_DATA;
+        this.fuelMessage = Constants.FETCHING_DATA;
+        this.drvPayMessage = Constants.FETCHING_DATA;
         this.fetchTrpByVehicle()
         this.fetchFuelByVehicle()
         this.fetchSlogByVehicle()
