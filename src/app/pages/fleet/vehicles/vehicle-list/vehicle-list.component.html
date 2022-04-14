@@ -10,9 +10,8 @@
                 <form class="formgrid grid">
                     <div class="row">
                         <div class="col" style="margin-left: 20px;margin-top: 5px;">
-<p-autoComplete  class="mr-2" [(ngModel)]="vehicleIdentification" [placeholder]="'Type Vehicles Name'"emptyMessage="No data found."[suggestions]="suggestedVehicles" (onSelect)="setVehicle($event.vehicleIdentification)" (completeMethod)="getSuggestions($event.query)"field="vehName"></p-autoComplete>
-                    <!--        <p-autoComplete  #autoComp id="autoCmpSugVehicle" [placeholder]="'Type Vehicles Name'"class="mr-2"[forceSelection]="true"emptyMessage="No data found." [(ngModel)]="vehicleIdentification" [suggestions]="suggestedVehicles" [minLength]="1" (completeMethod)="getSuggestions($event.query)" 
-                            (onSelect)="setVehicle($event.vehicleIdentification)" field="vehName"></p-autoComplete>  -->
+                            <p-autoComplete #autoComp id="autoCmpSugVehicle" [forceSelection]="true" [placeholder]="'Type Vehicles Name'" class="mr-2" [forceSelection]="true" emptyMessage="No data found." [(ngModel)]="vehicleIdentification" [suggestions]="suggestedVehicles" [minLength]="1"
+                                (completeMethod)="getSuggestions($event.query)" (onSelect)="setVehicle($event.vehicleIdentification)" field="vehicleIdentification"> </p-autoComplete>
                             <p-dropdown id="drpVehType" [style]="{minWidth: '200px'}" [options]="vehStatus" class="mr-2" placeholder="Select a Vehicle Status" [(ngModel)]="currentStatus" optionLabel="name" optionValue="value">
                             </p-dropdown>
                             <button id="btnSearch" type="submit" [disabled]="isSearch" pButton class="mr-2" icon="pi pi-search" pTooltip="Search" (click)="searchFilter()"></button>
@@ -29,7 +28,8 @@
                         <div class="bg-white p-3 text-dark">
                             <div class="form-group row pt-3">
                                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
-                                    <p-table #dt [value]="vehicles" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true" [loading]="!loaded" scrollHeight="100%">
+                                    <p-table #dt [value]="vehicles" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true" [loading]="!loaded"
+                                        scrollHeight="100%">
                                         <!-- Caption template of data table -->
                                         <ng-template pTemplate="caption">
                                             <div class="p-d-flex d-flex justify-content-between align-items-center">
@@ -62,83 +62,83 @@
                                                                             <ng-template let-option pTemplate="item">
                                                                                 <div>
                                                                                     <span class="ml-1">{{option.name }}</span>
-                                                                                </div>
-                                                                            </ng-template>
-                                                                        </p-multiSelect>
-                                                                    </ng-template>
-                                                                </p-columnFilter>
-                                                            </div>
-                                                        </span>
-                                                        <span *ngSwitchDefault>
+                                                    </div>
+                                        </ng-template>
+                                        </p-multiSelect>
+                                        </ng-template>
+                                        </p-columnFilter>
+                                </div>
+                                </span>
+                                <span *ngSwitchDefault>
                                                             <div class="flex justify-content-center align-items-center" alignFrozen="right" pFrozenColumn [frozen]="true">
                                                                 {{dataColumns.header}}
                                                                 <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
                                                                 <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field" matchMode="contains" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu"></p-columnFilter>
                                                             </div>
                                                         </span>
-                                                    </div>
-                                                </th>
-                                                <th style="width:100px" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
-                                            </tr>
-                                        </ng-template>
+                            </div>
+                            </th>
+                            <th style="width:100px" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
+                            </tr>
+                            </ng-template>
 
-                                        <!-- Body Template of Data Table -->
-                                        <ng-template pTemplate="body" let-vehicle let-columns="columns" let-rowIndex="rowIndex">
-                                            <tr>
-                                                <td *ngFor="let dataColumns of columns" style="width:10%;cursor: pointer;">
-                                                    <div [ngSwitch]="dataColumns.field">
-                                                        <span *ngSwitchCase="'vehicleIdentification'">
+                            <!-- Body Template of Data Table -->
+                            <ng-template pTemplate="body" let-vehicle let-columns="columns" let-rowIndex="rowIndex">
+                                <tr>
+                                    <td *ngFor="let dataColumns of columns" style="width:10%;cursor: pointer;">
+                                        <div [ngSwitch]="dataColumns.field">
+                                            <span *ngSwitchCase="'vehicleIdentification'">
                     <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}"><b>{{get(vehicle,dataColumns.field) | titlecase}}</b></span>
-                                                        </span>
-                                                        <span *ngSwitchCase="'VIN'">
+                                            </span>
+                                            <span *ngSwitchCase="'VIN'">
                     <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{get(vehicle,dataColumns.field)}}</span>
-                                                        </span>
-                                                        <span *ngSwitchCase="'lifeCycle.startDate'">
+                                            </span>
+                                            <span *ngSwitchCase="'lifeCycle.startDate'">
                     <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{get(vehicle,dataColumns.field)}}</span>
-                                                        </span>
-                                                        <span *ngSwitchCase="'year'">
+                                            </span>
+                                            <span *ngSwitchCase="'year'">
                     <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{get(vehicle,dataColumns.field)}}</span>
-                                                        </span>
-                                                        <span *ngSwitchCase="'plateNumber'">
+                                            </span>
+                                            <span *ngSwitchCase="'plateNumber'">
                     <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{get(vehicle,dataColumns.field)}}</span>
-                                                        </span>
-                                                        <span *ngSwitchCase="'annualSafetyDate'">
+                                            </span>
+                                            <span *ngSwitchCase="'annualSafetyDate'">
                     <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{get(vehicle,dataColumns.field) ? get(vehicle,dataColumns.field) : '-'}}</span>
-                                                        </span>
-                                                        <span *ngSwitchCase="'manufacturerID'">
+                                            </span>
+                                            <span *ngSwitchCase="'manufacturerID'">
                     <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{(get(vehicle,dataColumns.field) ? get(vehicle,dataColumns.field) : '-') | titlecase }}</span>
-                                                        </span>
-                                                        <span *ngSwitchCase="'modelID'">
+                                            </span>
+                                            <span *ngSwitchCase="'modelID'">
                     <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{(get(vehicle,dataColumns.field) ? get(vehicle,dataColumns.field) : '-') | titlecase }}</span>
-                                                        </span>
-                                                        <span *ngSwitchCase="'ownership'">
+                                            </span>
+                                            <span *ngSwitchCase="'ownership'">
                     <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{((vehicle.ownership) ? vehicle.ownership : '-') | titlecase}}</span>
-                                                        </span>
-                                                        <span *ngSwitchCase="'driverList.driverID'">
+                                            </span>
+                                            <span *ngSwitchCase="'driverList.driverID'">
                                                             <span>
                     <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{((driversList[vehicle.driverID]) ? driversList[vehicle.driverID]: '-') | titlecase }}</span>
-                                                            </span>
-                                                        </span>
-                                                        <span *ngSwitchCase="'driverList.teamDriverID'">
+                                            </span>
+                                            </span>
+                                            <span *ngSwitchCase="'driverList.teamDriverID'">
                                                             <span>
-                    <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{((driversList[vehicle.teamDriverID]) ? driversList[vehicle.teamDriverID]: '-') | titlecase }}</span>                                                            
-                                                           </span>
-                                                        </span>
-                                                        <span *ngSwitchCase="'currentStatus'">
+                    <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{((driversList[vehicle.teamDriverID]) ? driversList[vehicle.teamDriverID]: '-') | titlecase }}</span>
+                                            </span>
+                                            </span>
+                                            <span *ngSwitchCase="'currentStatus'">
                     <span routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{get(vehicle,dataColumns.field) | titlecase}}</span>
-                                                        </span> 
-                                                        
-                                                        
-                                        <span *ngSwitchCase="'dashCamSerNo'">
+                                            </span>
+
+
+                                            <span *ngSwitchCase="'dashCamSerNo'">
                                         <span  *ngIf="vehicle.dashCamSerNo != 'NA';else noCam">
                                         <a class="badge badge-success"routerLink="/fleet/tracking/vehicle-dash-cam-tracker/{{vehicle.dashCamSerNo.split('#')[1]}}"
                                         [queryParams]="{ vehicleId: vehicle.vehicleID}"target="_blank">Live Cam</a>
                                         </span>
-                                        <ng-template #noCam>
-                                        <span class="badge badge-danger">No Cam</span>
-                                        </ng-template>
-                                        </span>
-                                                        <!--
+                                            <ng-template #noCam>
+                                                <span class="badge badge-danger">No Cam</span>
+                                            </ng-template>
+                                            </span>
+                                            <!--
                                                         <span *ngSwitchCase="'dashCamSerNo.deviceId'">
                                                             <span *ngIf="get(vehicle,dataColumns.field); else noCam">{{get(vehicle,'deviceInfo.deviceId')}}</span> 
                                                             <ng-template #noCam>
@@ -146,39 +146,39 @@
                                                             </ng-template>
                                                         </span>
                                                         -->
-                                                        <span *ngSwitchDefault> {{get(vehicle,dataColumns.field)}}</span>
-                                                    </div>
+                                            <span *ngSwitchDefault> {{get(vehicle,dataColumns.field)}}</span>
+                                        </div>
 
-                                                </td>
-                                                <td style=" text-align: center; width: 100px;" pFrozenColumn alignFrozen="right" [frozen]="true">
-                                                    <button id="btnEdit" pButton routerLink="/fleet/vehicles/edit/{{vehicle.vehicleID}}" type="button" icon="fas fa-user-pen" class="p-button-rounded p-button-text"></button>
-                                                    <button id="btnDelete" (click)="deleteVehicle(vehicle)" pButton type="button" icon="fas fa-user-slash" class="p-button-rounded p-button-danger p-button-text"></button>
-                                                </td>
-                                            </tr>
-                                        </ng-template>
-                                        <!-- Empty Template -->
-                                        <ng-template pTemplate="emptymessage" let-columns>
-                                            <div class="col-lg-12 mt-3 text-center">
-                                                {{dataMessage}}
-                                                <br /><br>
-                                            </div>
-                                        </ng-template>
-                                        <!-- Summary Section with Load More button -->
-                                        <ng-template pTemplate="summary" let-columns>
-                                            <div class="col-lg-12 mt-3 text-center " *ngIf="lastEvaluatedKey !=='end' && vehicles.length !==0 ">
-                                                <button type="button " (click)="onScroll($event) " class="btn btn-success btn-sm text-light ">Load
-                                                    More..</button>
-                                                <br /><br>
-                                            </div>
-                                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey ==='end'">Total Records: {{vehicles.length}}</div>
-                                        </ng-template>
-                                    </p-table>
+                                    </td>
+                                    <td style=" text-align: center; width: 100px;" pFrozenColumn alignFrozen="right" [frozen]="true">
+                                        <button id="btnEdit" pButton routerLink="/fleet/vehicles/edit/{{vehicle.vehicleID}}" type="button" icon="fas fa-user-pen" class="p-button-rounded p-button-text"></button>
+                                        <button id="btnDelete" (click)="deleteVehicle(vehicle)" pButton type="button" icon="fas fa-user-slash" class="p-button-rounded p-button-danger p-button-text"></button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            <!-- Empty Template -->
+                            <ng-template pTemplate="emptymessage" let-columns>
+                                <div class="col-lg-12 mt-3 text-center">
+                                    {{dataMessage}}
+                                    <br /><br>
                                 </div>
-                            </div>
+                            </ng-template>
+                            <!-- Summary Section with Load More button -->
+                            <ng-template pTemplate="summary" let-columns>
+                                <div class="col-lg-12 mt-3 text-center " *ngIf="lastEvaluatedKey !=='end' && vehicles.length !==0 ">
+                                    <button type="button " (click)="onScroll($event) " class="btn btn-success btn-sm text-light ">Load
+                                                    More..</button>
+                                    <br /><br>
+                                </div>
+                                <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey ==='end'">Total Records: {{vehicles.length}}</div>
+                            </ng-template>
+                            </p-table>
                         </div>
                     </div>
                 </div>
-            </section>
-        </section>
+    </div>
+    </div>
+    </section>
+    </section>
     </div>
 </section>

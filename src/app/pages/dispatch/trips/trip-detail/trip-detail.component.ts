@@ -636,159 +636,46 @@ export class TripDetailComponent implements OnInit {
     let result: any = await this.apiService
       .postData(`trips/update/bol/${this.tripID}/${this.docType}`, formData, true).toPromise()
     if (result && result.length > 0) {
-      this.tripData.documents = res;
+      this.tripData.documents = result;
       this.uploadedDocSrc = [];
       this.uploadedDocs = [];
-      if (res.length > 0) {
-        for (let k = 0; k < res.length; k++) {
-          const element = res[k];
-          // this.uploadedDocSrc.push(`${this.Asseturl}/${this.tripData.carrierID}/${element}`);
-          let name = element.storedName;
-          let ext = element.storedName.split('.')[1];
-          let obj = {
-            imgPath: '',
-            docPath: '',
-            displayName: '',
-            name: '',
-            ext: '',
-            type: ''
+      for (let k = 0; k < result.length; k++) {
+        const element = result[k];
+        let name = element.storedName;
+        let ext = element.storedName.split('.')[1];
+        let obj = {
+          imgPath: '',
+          docPath: '',
+          displayName: '',
+          name: '',
+          ext: '',
+          type: ''
+        };
+        if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+          obj = {
+            imgPath: `${element.urlPath}`,
+            docPath: `${element.urlPath}`,
+            displayName: element.displayName,
+            name: name,
+            ext: ext,
+            type: element.type ? element.type : 'other'
           };
-          if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
-            obj = {
-              imgPath: `${ext.urlPath}`,
-              docPath: `${ext.urlPath}`,
-              displayName: element.displayName,
-              name: name,
-              ext: ext,
-              type: ext.type ? ext.type : 'other'
-            };
-          } else {
-            obj = {
-              imgPath: 'assets/img/icon-pdf.png',
-              docPath: `${ext.urlPath}`,
-              displayName: element.displayName,
-              name: name,
-              ext: ext,
-              type: ext.type ? ext.type : 'other'
-            };
-          }
-          this.uploadedDocSrc.push(obj);
+        } else {
+          obj = {
+            imgPath: 'assets/img/icon-pdf.png',
+            docPath: `${element.urlPath}`,
+            displayName: element.displayName,
+            name: name,
+            ext: ext,
+            type: element.type ? element.type : 'other'
+          };
         }
+        this.uploadedDocSrc.push(obj);
       }
       this.toastr.success('BOL/POD uploaded successfully');
-      this.fetchTripDetail();
     }
   }
 
-  /*
-   * Selecting files before uploading
-   */
-  async selectDocuments(event) {
-    let files = [];
-    this.uploadedDocs = [];
-    files = [...event.target.files];
-    let totalCount = this.tripData.documents.length + files.length;
-
-    if (totalCount > 4) {
-      this.uploadedDocs = [];
-      $("#bolUpload").val("");
-      this.toastr.error("Only 4 documents can be uploaded");
-      return false;
-    } else {
-      for (let i = 0; i < files.length; i++) {
-        const element = files[i];
-        let name = element.name.split(".");
-        let ext = name[name.length - 1];
-
-        if (ext != "jpg" && ext != "jpeg" && ext != "png" && ext != "pdf") {
-          $("#bolUpload").val("");
-          this.toastr.error("Only image and pdf files are allowed");
-          return false;
-        }
-      }
-
-      for (let i = 0; i < files.length; i++) {
-        this.uploadedDocs.push(files[i]);
-      }
-      // create form data instance
-      const formData = new FormData();
-
-      //   for (let i = 0; i < files.length; i++) {
-      //   const element = files[i];
-      //   this.uploadedDocs.push(element);
-      // }
-
-      //append docs if any
-      for (let j = 0; j < this.uploadedDocs.length; j++) {
-        // let file = this.uploadedDocs[j];
-        //  formData.append(`uploadedDocs-${j}`, file);
-        formData.append("uploadedDocs", this.uploadedDocs[j]);
-      }
-      formData.append("data", JSON.stringify(this.tripData.documents));
-      this.apiService
-        .postData('trips/update/bol/' + this.tripID, formData, true)
-        .subscribe({
-          complete: () => { },
-          error: (err: any) => {
-            from(err.error)
-              .pipe(
-                map((val: any) => {
-                  val.message = val.message.replace(/".*"/, "This Field");
-                  this.errors[val.context.label] = val.message;
-                  this.spinner.hide();
-                })
-              )
-              .subscribe({
-                complete: () => {
-                  this.spinner.hide();
-                },
-                error: () => { },
-                next: () => { },
-              });
-          },
-          next: (res: any) => {
-            this.tripData.documents = res;
-            this.uploadedDocSrc = [];
-            this.uploadedDocs = [];
-            if (res.length > 0) {
-              for (let k = 0; k < res.length; k++) {
-                const element = res[k];
-                // this.uploadedDocSrc.push(`${this.Asseturl}/${this.tripData.carrierID}/${element}`);
-                let name = element.storedName;
-                let ext = element.storedName.split('.')[1];
-                let obj = {
-                  imgPath: '',
-                  docPath: '',
-                  displayName: '',
-                  name: '',
-                  ext: '',
-                };
-                if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
-                  obj = {
-                    imgPath: `${ext.urlPath}`,
-                    docPath: `${ext.urlPath}`,
-                    displayName: element.displayName,
-                    name: name,
-                    ext: ext,
-                  };
-                } else {
-                  obj = {
-                    imgPath: 'assets/img/icon-pdf.png',
-                    docPath: `${ext.urlPath}`,
-                    displayName: element.displayName,
-                    name: name,
-                    ext: ext,
-                  };
-                }
-                this.uploadedDocSrc.push(obj);
-              }
-            }
-            this.toastr.success('BOL/POD uploaded successfully');
-            this.fetchTripDetail();
-          },
-        });
-    }
-  }
 
 
   openTripInfo() {
@@ -919,7 +806,6 @@ export class TripDetailComponent implements OnInit {
       await this.getTripAlarms();
 
     }, error => {
-      console.log('error', error.error.errorMessage);
       if (error && error.error && error.error.errorMessage.includes('Temperature sensor')) {
         this.assetAlert = error.error.errorMessage;
       }

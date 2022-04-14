@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -11,7 +11,7 @@ import * as _ from 'lodash'
 import { ViewEncapsulation } from '@angular/core';
 import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
 import {Router} from '@angular/router'
-import { threadId } from 'worker_threads';
+import { Table } from 'primeng/table';
 
 declare var $: any;
 
@@ -24,6 +24,7 @@ declare var $: any;
 })
 export class FuelEntryListComponent implements OnInit {
 
+  @ViewChild('dt') table: Table;
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   title = 'Fuel Entries List';
@@ -87,6 +88,17 @@ export class FuelEntryListComponent implements OnInit {
   readonly headerHeight = 70;
   pageLimit = 10
   loaded = false;
+  _selectedColumns: any[];
+  dataColumns=[
+    {field:'data.date', header: 'Date Time', type:"date"},
+    {field:'data.cardNo',header:'Fuel Card #',type:"text"},
+    {field:'data.unitNo', header: 'Unit #',type:'text'},
+    {field:'data.useType',header:'Use Type',type:'text'},
+    {field:'data.type',header:' Type',type:'text'},
+    {field:'data.amt',header:'Fuel Amount',type:'text'},
+    {field:'data.site', header:'Site', type:'text'},
+    {field:'data.city', header:'Province',type:'text'}
+  ]
 
   constructor(
     private apiService: ApiService,
@@ -277,14 +289,14 @@ export class FuelEntryListComponent implements OnInit {
   //   }
   // }
 
-  deleteFuelEntry(eventData) {
+  deleteFuelEntry(fuelID) {
     if (confirm('Are you sure you want to delete?') === true) {
       // let record = {
       //   date: eventData.createdDate,
       //   time: eventData.createdTime,
       //   eventID: eventData.fuelID
       // }
-      this.apiService.deleteData(`fuelEntries/delete/${eventData.fuelID}`).subscribe((result: any) => {
+      this.apiService.deleteData(`fuelEntries/delete/${fuelID}`).subscribe((result: any) => {
 
         this.fuelList = [];
         this.fuelDraw = 0;
@@ -292,12 +304,13 @@ export class FuelEntryListComponent implements OnInit {
         this.lastEvaluatedKey = '';
         //this.fuelEntriesCount();
         this.toastr.success('Fuel Entry Deleted Successfully!');
+        this.initDataTable();
       });
     }
   }
   initDataTable() {
-    this.spinner.show();
     this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey + '&timeCreated=' + this.lastTimeCreated).subscribe((result: any) => {
+      this.loaded=true
       if (result.Items.length == 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND;
       }
@@ -327,7 +340,6 @@ export class FuelEntryListComponent implements OnInit {
 
 
       this.fuelList = this.fuelList.concat(_.orderBy(result.Items, [(obj) => new Date(obj.data.date)], ['desc']))
-
 
       if (result.LastEvaluatedKey.fuelSK !== undefined) {
         // for prev button
@@ -435,6 +447,7 @@ export class FuelEntryListComponent implements OnInit {
     this.lastEvaluatedKey = '';
     this.dataMessage = Constants.FETCHING_DATA;
     this.fuelList = [];
+    this.initDataTable();
     // this.fuelEntriesCount();
     this.resetCountResult();
   }
@@ -607,5 +620,13 @@ return match
     this.uploadedDocs=[]
   }
   }
+   /**
+     * Clears the table filters
+     * @param table Table 
+     */
+    clear(table: Table) {
+      table.clear();
+  }
+
 }
 

@@ -311,13 +311,15 @@ export class AddTripComponent implements OnInit {
     this.route.queryParams.subscribe( async(params) => {
     this.orderId = params.orderId;
     this.orderNum = params.orderNum;
-      if (this.orderId != undefined) {
-        await this.fetchOrderDetails([this.orderId])
+    if (this.orderId != undefined) {
+       await this.fetchOrderDetails([this.orderId])
        this.changeMapRoute('order')
-       this.temporaryOrderIDs.push(this.orderId);
+      this.temporaryOrderIDs.push(this.orderId);
        this.temporaryOrderNumber.push(this.orderNum);
-       await this.saveSelectOrderIDS()
-        }
+       await this.fetchFTLOrders();
+       await this.fetchLTLOrders();
+       await this.saveSelectOrderIDS();
+      }
     });
     
     this.fetchCarriers();
