@@ -111,18 +111,25 @@
                 <li> File must have all the predefined header with valid data.</li>
                 <li> File must not contain more than 200 records. </li>
             </ul>
-            <div class="form-group col-lg-12 mt-5 mb-3">
-                <label class="control-label font-weight-bold label mb text-3 text-dark">Choose File
-                    <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                </label>
-                <input class="form-control choosefileLH" #myInput (change)="selectDoc($event)"
-                    (change)="validateCSV($event)" accept=".csv" id="uploadedDocs" type="file">
-                <div *ngIf="inValidMessages.length > 0">
-                    <br><span><b>Below are the errors in the uploaded file. Please rectify them and upload
-                            the file again.</b></span>
-                    <ul>
-                        <li *ngFor="let error of inValidMessages"><span class="text-danger">{{error}}.</span></li>
-                    </ul>
+            <div class="row">
+                <div class="form-group col-lg-11 mt-5 mb-3">
+                    <label class="control-label font-weight-bold label mb text-3 text-dark">Choose File
+                        <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                    </label>
+                    <input class="form-control choosefileLH" #myInput (change)="selectDoc($event)"
+                        (change)="validateCSV($event)" accept=".csv" id="uploadedDocs" type="file">
+                    <div *ngIf="inValidMessages.length > 0">
+                        <br><span><b>Below are the errors in the uploaded file. Please rectify them and upload
+                                the file again.</b></span>
+                        <ul>
+                            <li *ngFor="let error of inValidMessages"><span class="text-danger">{{error}}.</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-group col-lg-1 mt-5 mb-3">
+                    <i class="pi pi-refresh mt-4 pt-2" (click)="cancel()" style="font-size: 1.5rem"></i>
+
                 </div>
             </div>
 

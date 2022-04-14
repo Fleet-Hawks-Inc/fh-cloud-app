@@ -152,12 +152,12 @@ export class TrialBalanceComponent implements OnInit {
                               if(this.currTab === 'CAD') {
                                   this.currency = 'CAD';
                                       this.cadCreditTotal += parseFloat(this.accounts[i].credit);
-                                      this.cadDebitTotal += parseFloat(this.accounts[i].credit);
+                                      this.cadDebitTotal += parseFloat(this.accounts[i].debit);
                               }
                               if(this.currTab === 'USD') {
                                   this.currency = 'USD';
                                   this.usdCreditTotal += parseFloat(this.accounts[i].credit);
-                                  this.usdDebitTotal += parseFloat(this.accounts[i].credit);
+                                  this.usdDebitTotal += parseFloat(this.accounts[i].debit);
                               }
                          }
                     }

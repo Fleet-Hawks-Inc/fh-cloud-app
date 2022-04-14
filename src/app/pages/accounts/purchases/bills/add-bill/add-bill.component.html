@@ -229,7 +229,7 @@
                           </td>
                           <td>{{ data.vCrNo }}</td>
                           <td>{{ data.txnDate | date: "yyyy/MM/dd" }}</td>
-                          <td>{{ data.crRef }}</td>
+                          <td>{{ data.crRef ? data.crRef : '-' }}</td>
                           <td>
                             {{ data.totalAmt | number: "1.2-2" }}
                             {{ data.currency }}
