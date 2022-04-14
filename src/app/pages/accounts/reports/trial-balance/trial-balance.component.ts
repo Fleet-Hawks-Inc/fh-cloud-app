@@ -275,13 +275,13 @@ export class TrialBalanceComponent implements OnInit {
                     ["Credit"] : " "
                  }
                   if(this.currency === 'CAD'){
-                      totObj["Total"] = this.cadCreditTotal.toFixed(2)
                       totObj["Total1"] = this.cadDebitTotal.toFixed(2)
+                      totObj["Total"] = this.cadCreditTotal.toFixed(2)
                       dataObject.push(totObj)
                  }
                 else if(this.currency === 'USD') {
-                      totObj["Total"] = this.usdCreditTotal.toFixed(2)
                       totObj["Total1"] = this.usdDebitTotal.toFixed(2)
+                      totObj["Total"] = this.usdCreditTotal.toFixed(2)
                       dataObject.push(totObj)
                   }
                 let headers = Object.keys(dataObject[0]).join(',')
