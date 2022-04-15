@@ -71,10 +71,11 @@
                         </div>
                         </div>
                         </div>
-                  <div class="col-12">
+                  <div class="col-lg-12">
                    <div class="table-responsive" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
                     [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
-                      <table id="diverTbl" class="row-border hover table table-bordered table-striped mb-0">
+                      <table 
+                      class="row-border hover table table-bordered table-striped mb-0">
 			            <thead>
                              <tr>
                                <th width="5%">Company Name</th>
@@ -87,16 +88,16 @@
                           </thead>
 			              <tbody>
 			         <tr *ngIf="customers.length == 0" class="text-center">
-                        <td colspan="10">{{dataMessage}}</td>
+                        <td colspan="13">{{dataMessage}}</td>
                         </tr>
                         <tr *ngFor="let item of customers; let i = index;">
                             <td>
                                 <span class="font-weight-bold line-height-lg text-capitalize">
                                    {{item.cName}}</span>
                              </td>
-                             <td>{{item.workEmail}}</td>
-                             <td>{{item.workPhone}}</td>
-                             <td>{{item.eTypes}}</td>
+                             <td>{{item.workEmail ? item.workEmail : '-'}}</td>
+                             <td>{{item.workPhone ? item.workPhone : '-'}}</td>
+                             <td class="text-capitalize">{{item.eTypes ? item.eTypes : '-'}}</td>
                               <td *ngIf="item.adrs[0]">
                                                 <span *ngIf="item.adrs[0].manual">
                                                   {{
@@ -127,18 +128,20 @@
                                                   {{ item.adrs[0].zip }}
                                                 </span>
                                                 <span *ngIf="!item.adrs[0].manual">
-                                                  {{ item.adrs[0].userLoc }}
+                                                  {{ item.adrs[0].userLoc ? item.adrs[0].userLoc : '-'}}
                                                 </span>
                                                 </td>
-                                                <td class="border-0">
+                                                <td>
                                                 <div class="dropdown dropright">
                                             <button class="bg-transparent border-0" type="button"
-                                            id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true"
+                                            id="dropdownMenuButton-{{i}}" data-toggle="dropdown" 
+                                            aria-haspopup="true"
                                             aria-expanded="false">
                                             <i class="fas fa-ellipsis-v"></i>
                                             </button>
-                                            <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                      <a href="javascript:;" class="dropdown-item"
+                                            <div class="dropdown-menu" 
+                                            attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                      <a  class="dropdown-item" href="javascript:;"
                                          (click)="restoreCustomer(item)">Restore</a>
                                         </div>
                                         </div>

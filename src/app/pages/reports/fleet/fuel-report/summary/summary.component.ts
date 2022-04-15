@@ -30,7 +30,7 @@ export class SummaryComponent implements OnInit {
     assetList: any = {};
     lastItemSK = '';
     loaded = false;
-    currency = 0;
+    currency = '';
     fuelCount = {
         cad_amount: 0,
         usd_amount: 0,
@@ -186,18 +186,29 @@ export class SummaryComponent implements OnInit {
             let dataObject = []
             let csvArray = []
             this.exportList.forEach(element => {
-                let obj = {}    
-                obj["Date/Time"] = element.dateTime.replace(/, /g, ' &');                                                                          
-                obj["Use Type"] = element.data.useType
-                obj["Unit Name"] = this.assetList[element.unitID] || this.vehicleList[element.unitID]
-                obj["Fuel Card#"] = element.data.cardNo
-                obj["City"] = element.data.city
-                obj["Fuel Type"] = element.data.type
-                obj["Fuel Quantity"] = element.data.qty + " " 
-                obj["Liters or Gallons"] = element.data.uom ==="L" ? 'LTR' : 'GL'
-                obj["Odometer"] = element.data.odometer
-                obj["Total Discount"] = element.data.discAmt 
-                obj["Total Amount"] = element.data.amt + " " + element.data.currency
+                let obj = {} 
+                let retailCADTotal = [];
+                let retailUSDTotal = [];
+                if(element.data.currency === 'CAD'){
+                retailCADTotal = element.data.amt
+                }
+                if(element.data.currency === 'USD'){
+                retailUSDTotal = element.data.amt
+                }
+                obj['Date/Time'] = element.dateTime.replace(/, /g, ' &');                                                                          
+                obj['Use Type'] = element.data.useType
+                obj['Unit Name'] = this.assetList[element.unitID] || this.vehicleList[element.unitID]
+                obj['Fuel Card#'] = element.data.cardNo
+                obj['City'] = element.data.city
+                obj['Fuel Type'] = element.data.type
+                obj['Fuel Quantity'] = element.data.qty + " " 
+                obj['Liters or Gallons'] = element.data.uom ==="L" ? 'LTR' : 'GL'
+                obj['Odometer'] = element.data.odometer
+                obj['Retail Price Per L'] = element.data.rPpu + ' ' + element.data.currency
+                obj['Retail Amount Before Tax'] = element.data.rBeforeTax + ' ' + element.data.currency
+                obj['Total Discount'] = element.data.discAmt
+                obj['Retail Amount CAD'] = retailCADTotal
+                obj['Retail Amount USD'] = retailUSDTotal
                 dataObject.push(obj)
             });
             let headers = Object.keys(dataObject[0]).join(',')
