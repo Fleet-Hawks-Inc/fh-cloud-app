@@ -63,6 +63,9 @@ export class ServiceDetailComponent implements OnInit {
   logModalRef: any;
   showModal = false;
   downloadDisabledpdf = true;
+  companyLogo = "";
+  tagLine: "";
+  companyName: any = "";
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   constructor(
@@ -77,6 +80,7 @@ export class ServiceDetailComponent implements OnInit {
   ngOnInit() {
     this.logID = this.route.snapshot.params['logID'];
     this.fetchProgramByID();
+    this.getCurrentuser();
     this.fetchAllVehiclesIDs();
     this.fetchAllVendorsIDs();
     // this.fetchAllIssuesIDs();
@@ -96,6 +100,13 @@ export class ServiceDetailComponent implements OnInit {
         this.fetchSelectedIssues(this.logsData.selectedIssues);
 
         result = result.Items[0];
+        // console.log('result--', result)
+        // this.companyLogo = result.carrierDtl.logo;
+        // this.tagLine = result.carrierDtl.tagLine;
+        // this.carrierName = result.carrierDtl.carrierName;
+        // console.log('companylofog', this.companyLogo)
+        // console.log('this.tagLine', this.tagLine)
+        // console.log(' this.carrierName', this.carrierName)
         this.vehicle = result.unitID;
         this.assetID = result.unitID;
         this.vendorID = result.vendorID;
@@ -165,7 +176,7 @@ export class ServiceDetailComponent implements OnInit {
       this.apiService.getData('issues/fetch/selected?issueIds=' + issueIDs)
         .subscribe((result: any) => {
           this.issuesObject = result;
-          console.log('isse0', this.issuesObject)
+          // console.log('isse0', this.issuesObject)
         });
     }
   }
@@ -232,12 +243,12 @@ export class ServiceDetailComponent implements OnInit {
   downloadPdf() {
     var data = document.getElementById("log_wrap");
     html2pdf(data, {
-      margin: [0.5, 0.3, 0.5, 0.3],
+      margin: 0.5,
       pagebreak: { mode: 'avoid-all', before: "log_wrap" },
       filename: "serviceLog.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {
-        dpi: 300,
+        dpi: 192,
         letterRendering: true,
         allowTaint: true,
         useCORS: true,
@@ -246,6 +257,16 @@ export class ServiceDetailComponent implements OnInit {
     });
     this.logModalRef.close();
   }
+  getCurrentuser = async () => {
+    // this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+    // const carrierID = this.currentUser.carrierID;
+    const carrierID = localStorage.getItem('xfhCarrierId');
+    let result: any = await this.apiService
+      .getData(`carriers/detail/${carrierID}`)
+      .toPromise();
+    this.companyName = result.companyName;
+    this.companyLogo = result.logo;
+    this.tagLine = result.tagLine;
+  };
 
-  
 }

@@ -302,14 +302,37 @@
 <ng-template #logModal let-modal>
    <div class="modal-content">
       <div class="modal-header">
-         <h2 class="modal-title"><b>Service Log Details</b></h2>
+         <h2 class="modal-title"><b>Log </b></h2>
          <button type="button" class="close" (click)="modal.dismiss()">
             &times;
          </button>
       </div>
+      <!-- <div class="modal-body text-dark text-capitalize">
+        
+      </div> -->
       <form>
-
          <div class="modal-body" id="log_wrap">
+            <section class="cheque-wrapper" id="log_wrap">
+               <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+                  <tbody>
+                     <tr>
+                        <td width="50%">
+                           <h2 class="text-dark" id="modal-basic-title " style="font-size:26px; margin-bottom: 0px;">
+                              Service Log Details
+                           </h2>
+                           <!-- <button type="button" style="color: #000;" class="close" (click)="modal.dismiss()">
+                              &times;
+                           </button> -->
+                        </td>
+                        <!-- </tr> -->
+                        <!-- <tr> -->
+                        <td width="50%" align="right"> <img crossorigin="anonymous" *ngIf="companyLogo"
+                              [src]="companyLogo" alt="logo" style="max-width: 100px; padding-right: 10px; ">
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </section>
             <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
                <tr>
                   <td valign="top">
@@ -397,7 +420,7 @@
 
                <tr>
                   <td colspan="2">
-                     <h5><b>Issue Details</b></h5>
+                     <h5 style="color:#231F20;"><b>Issue Details</b></h5>
                   </td>
                </tr>
                <tr>
@@ -409,13 +432,13 @@
                            <col style="width:50%">
                            <col style="width:50%">
                            <tr>
-                              <td width="50%" style="
+                              <td width="50%" style="font-size: 13px;
                               border-bottom: 1px solid ;  background-color: 	#E8E8E8;
                               border-right: 1px solid ;
                               padding-left: 10px;  padding-right: 550px; padding-top: 10p; padding-bottom: 10px">
                                  Issue
                               </td>
-                              <td width="50%" style="
+                              <td width="50%" style="font-size: 13px;
                               border-bottom: 1px solid; background-color: 	#E8E8E8;
                               border-right: 1px solid;
                               padding-left: 10px;  padding-right: 10px;
@@ -424,18 +447,22 @@
                                  Assigned To
                               </td>
                            </tr>
+                           <tr *ngIf="issuesObject?.length == 0">
+                              <td colspan="5" style="padding-top: 10px; padding-bottom: 10px;" align="center">
+                                 -</td>
+                           </tr>
                            <tr *ngFor='let data of issuesObject'>
-                              <td height="25" style="
+                              <td width="50%" style="font-size: 13px;
                              border-right: 1px solid #adadad;
-                             padding-left: 10px;
-                             padding-top: 10p; padding-bottom: 10px;
+                             padding-right: 10px; padding-left: 10px;
+                             padding-top: 10px; padding-bottom: 10px;
                            ">
                                  {{data.issueName}}
                               </td>
-                              <td style="
+                              <td width="50%" style="font-size: 13px;
                              border-right: 1px solid #adadad;
-                             padding-left: 10px;  padding-right: 10px;
-                             padding-top: 10p; padding-bottom: 10px;
+                               padding-left: 10px;
+                             padding-top: 10px; padding-bottom: 10px;
                            ">
                                  {{users[data.assignedTo]}}</td>
                            </tr>
@@ -446,11 +473,11 @@
 
                <tr>
                   <td colspan="2">
-                     <h5><b>Service Tasks</b></h5>
+                     <h5 style="color:#231F20;"><b>Service Tasks</b></h5>
                   </td>
                </tr>
                <tr>
-                  <td colspan="2">
+                  <td colspan=" 2">
                      <table width="99%" style=" border: 1px solid #adadad; color: #000000;
                      border-right: 0px solid #adadad; font-size: 13px; margin-bottom: 10px;
                      " bordercolor="#adadad">
@@ -458,13 +485,13 @@
                            <col style="width:50%">
                            <col style="width:50%">
                            <tr>
-                              <td width="50%" style="
+                              <td width="50%" style="font-size: 13px;
                               border-bottom: 1px solid ;
                               border-right: 1px solid ; background-color: 	#E8E8E8;
                               padding-left: 10px;  padding-right: 550px;">
                                  Task
                               </td>
-                              <td width="50%" style="
+                              <td width="50%" style="font-size: 13px;
                               border-bottom: 1px solid;  background-color:#E8E8E8;
                               border-right: 1px solid;
                               padding-left: 10px;  padding-right: 10px;
@@ -473,14 +500,18 @@
                                  Labor
                               </td>
                            </tr>
+                           <tr *ngIf="allServiceTasks?.length == 0">
+                              <td colspan="5" style="padding-top: 10px; padding-bottom: 10px;" align="center">
+                                 {{noRecordMessage}}</td>
+                           </tr>
                            <tr *ngFor='let data of allServiceTasks'>
-                              <td height="25" style="
+                              <td height="25" style="font-size: 13px;
                              border-right: 1px solid #adadad;
                              padding-left: 10px;
                            ">
                                  {{data.taskName}}
                               </td>
-                              <td style="
+                              <td style="font-size: 13px;
                              border-right: 1px solid #adadad;
                              padding-left: 10px; padding-right: 590px;
                            "> {{data.laborCost}} {{currency}}</td>
@@ -492,7 +523,7 @@
 
                <tr>
                   <td colspan="2">
-                     <h5><b>Service Parts</b></h5>
+                     <h5 style="color:#231F20;"><b>Service Parts</b></h5>
                   </td>
                </tr>
                <tr>
@@ -504,13 +535,13 @@
                            <col style="width:50%">
                            <col style="width:50%">
                            <tr>
-                              <td width="50%" style="
+                              <td width="50%" style="font-size: 13px;
                               border-bottom: 1px solid ;
                               border-right: 1px solid ; background-color: 	#E8E8E8;
                               padding-left: 10px;  padding-right: 550px;">
                                  Task
                               </td>
-                              <td width="50%" style="
+                              <td width="50%" style="font-size: 13px;
                               border-bottom: 1px solid;  background-color:#E8E8E8;
                               border-right: 1px solid;
                               padding-left: 10px;  padding-right: 10px;
@@ -519,14 +550,18 @@
                                  Labor
                               </td>
                            </tr>
+                           <tr *ngIf="allServiceParts?.length == 0">
+                              <td colspan="5" style="padding-top: 10px; padding-bottom: 10px;" align="center">
+                                 {{noRecordMessage}}</td>
+                           </tr>
                            <tr *ngFor='let data of allServiceParts'>
-                              <td height="25" style="
+                              <td height="25" style="font-size: 13px;
                              border-right: 1px solid #adadad;
                              padding-left: 10px;
                            ">
                                  {{data.partNumber}}
                               </td>
-                              <td style="
+                              <td style="font-size: 13px;
                              border-right: 1px solid #adadad;
                              padding-left: 10px; padding-right: 10px;
                            "> {{data.partCost}} {{currency}}</td>
