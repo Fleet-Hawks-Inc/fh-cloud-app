@@ -10,6 +10,8 @@ import { CountryStateCityService } from 'src/app/services/country-state-city.ser
 import { environment } from '../../../../../environments/environment';
 import { ApiService } from '../../../../services';
 import Constants from '../../constants';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+
 declare var $: any;
 
 
@@ -58,6 +60,7 @@ export class VehicleDetailComponent implements OnInit {
     serviceProgramID: any = [];
     primaryMeter = '';
     repeatByTime = '';
+    sessionID: string;
     repeatByTimeUnit = '';
     reapeatbyOdometerMiles = '';
     currentStatus = '';
@@ -263,8 +266,11 @@ export class VehicleDetailComponent implements OnInit {
         private domSanitizer: DomSanitizer,
         private countryStateCity: CountryStateCityService,
         private modalService: NgbModal,
-        private formBuilder: RxFormBuilder
-    ) { }
+        private formBuilder: RxFormBuilder,
+        private routerMgmtService: RouteManagementServiceService
+    ) { 
+            this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
+    }
 
     ngOnInit() {
         ReactiveFormConfig.set({

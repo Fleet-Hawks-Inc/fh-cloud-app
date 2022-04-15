@@ -120,7 +120,7 @@ export class DeviceListComponent implements OnInit {
   }
 
   gotoAssetTracker(device) {
-    console.log(device);
+
     this.router.navigate(
       [`/fleet/tracking/asset-tracker/${device.asset.assetIdentification}`],
       {

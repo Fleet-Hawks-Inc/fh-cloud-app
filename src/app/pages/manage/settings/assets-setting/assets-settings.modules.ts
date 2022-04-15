@@ -6,39 +6,39 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule } from "@angular/forms";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
-import { DeletedAssetsComponent } from './deleted-assets/deleted-assets.component';
-import { ImportedAssetsComponent } from './imported-assets/imported-assets.component';
-import {AssetsSettingComponent } from "./assets-setting.component";
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { TooltipModule } from 'primeng/tooltip';
-import { MenuModule } from 'primeng/menu';
-import { SplitButtonModule } from 'primeng/splitbutton';
-import { CalendarModule } from 'primeng/calendar';
-import { AutoCompleteModule } from 'primeng/autocomplete';
-import { DropdownModule } from 'primeng/dropdown';
+import { DeletedAssetsComponent } from "./deleted-assets/deleted-assets.component";
+import { ImportedAssetsComponent } from "./imported-assets/imported-assets.component";
+import { AssetsSettingComponent } from "./assets-setting.component";
+import { TableModule } from "primeng/table";
+import { ButtonModule } from "primeng/button";
+import { MultiSelectModule } from "primeng/multiselect";
+import { TooltipModule } from "primeng/tooltip";
+import { MenuModule } from "primeng/menu";
+import { SplitButtonModule } from "primeng/splitbutton";
+import { CalendarModule } from "primeng/calendar";
+import { AutoCompleteModule } from "primeng/autocomplete";
+import { DropdownModule } from "primeng/dropdown";
+import { DialogModule } from 'primeng/dialog';
 const routes: Routes = [
   {
     path: "deleted-assets",
     component: DeletedAssetsComponent,
-    data: { title: "Deleted assets" },
+    data: { title: "Deleted Assets" },
   },
   {
     path: "imported-assets",
     component: ImportedAssetsComponent,
-    data: { title: "Imported assets" },
+    data: { title: "Imported Assets" },
   },
   {
     path: "overview",
-    component:AssetsSettingComponent,
-    data: { title: "assets Settings" },
+    component: AssetsSettingComponent,
+    data: { title: "Assets Settings" },
   },
 ];
 
 @NgModule({
-  declarations: [ DeletedAssetsComponent,
-    ImportedAssetsComponent,],
+  declarations: [DeletedAssetsComponent, ImportedAssetsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -55,6 +55,7 @@ const routes: Routes = [
     CalendarModule,
     AutoCompleteModule,
     DropdownModule,
+    DialogModule
   ],
 })
-export class AssetsSettingsModules {}
+export class AssetsSettingsModules { }

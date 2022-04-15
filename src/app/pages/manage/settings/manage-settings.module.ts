@@ -30,8 +30,7 @@ import { CalendarModule } from "primeng/calendar";
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { DropdownModule } from "primeng/dropdown";
 import { AssetsSettingComponent } from "./assets-setting/assets-setting.component";
-// import { DeletedAssetsComponent } from './assets-setting/deleted-assets/deleted-assets.component';
-// import { ImportedAssetsComponent } from './assets-setting/imported-assets/imported-assets.component';
+import { DialogModule } from 'primeng/dialog';
 
 const routes: Routes = [
   { path: "overview", component: SettingsOverviewComponent },
@@ -56,7 +55,11 @@ const routes: Routes = [
     component: DriverSettingComponent,
     data: { title: "Deleted Drivers" },
   },
-  { path: "import", component: ImportDriversComponent },
+  {
+    path: "import",
+    component: ImportDriversComponent,
+    data: { title: "Imported Drivers" },
+  },
   // {
   //   path: "asset",
   //   component: AssetsSettingComponent,
@@ -123,7 +126,7 @@ const routes: Routes = [
     DoverviewComponent,
     ImportDriversComponent,
     VehicleSettingsComponent,
-    AssetsSettingComponent
+    AssetsSettingComponent,
     // DeletedAssetsComponent,
     // ImportedAssetsComponent,
   ],
@@ -143,6 +146,7 @@ const routes: Routes = [
     CalendarModule,
     AutoCompleteModule,
     DropdownModule,
+    DialogModule
   ],
 })
-export class ManageSettingsModule {}
+export class ManageSettingsModule { }

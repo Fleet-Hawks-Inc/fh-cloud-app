@@ -14,7 +14,8 @@
                         <div class="bg-white p-3 text-dark">
                             <div class="form-group row pt-3">
                                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
-                                    <p-table #dt class="text-capitalize" [value]="importAssets">
+                                    <p-table #dt class="text-capitalize" [loading]="!loaded" [columns]="selectedColumns"
+                                        [value]="importAssets">
                                         <!-- Caption template of data table -->
                                         <ng-template pTemplate="caption">
 
@@ -43,8 +44,8 @@
                                         </ng-template>
                                         <ng-template pTemplate="header">
                                             <tr>
-                                                <th pSortableColumn="docs[0].displayName">File Name <p-sortIcon
-                                                        field="docs[0].displayName">
+                                                <th pSortableColumn="displayName">File Name <p-sortIcon
+                                                        field="displayName">
                                                     </p-sortIcon>
                                                 </th>
                                                 <th pSortableColumn="timeCreated">Uploaded on <p-sortIcon
@@ -63,7 +64,7 @@
                                         </ng-template>
                                         <ng-template pTemplate="body" let-asset>
                                             <tr>
-                                                <td>{{asset.docs[0].displayName}}</td>
+                                                <td>{{asset.displayName}}</td>
                                                 <td>{{asset.timeCreated | date : 'dd/MM/yyyy hh:mm:ss a'}}</td>
                                                 <td>{{asset.module}}</td>
                                                 <td><span class="badge badge-dark">{{asset.fileStatus}}</span></td>
@@ -98,32 +99,25 @@
         </section>
     </div>
 </section>
-<ng-template #importModel let-modal>
-    <div class="modal-header">
-        <h5 class="modal-title" id="importModel">Import Asset Data</h5>
 
-        <button type="button" (click)="modal.dismiss('Cross click')" class="close" data-dismiss="modal"
-            aria-label="Close">
-            <i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i>
-        </button>
-    </div>
-    <div class="modal-body ">
-        <div class="row">
-            <div class="col-lg-12">
-                <span>To successfully import asset data please make sure your file conforms following:</span>
-                <ul style="margin:0px">
-                    <li> File must have all the headers. <a href='assets/asset_import_template.csv'>Click
-                            Here</a> to download the template file.</li>
-                    <li> File must be comma seperated.</li>
-                    <li> File must have all the predefined header with valid data.</li>
-                    <li> File must not contain more than 200 records. </li>
-                </ul>
-                <div class="form-group col-lg-12 mb-3">
+<p-dialog header="Import Asset" (onHide)="cancel()" [(visible)]="display" [style]="{width: '40vw'}" position="top">
+    <div class="row">
+        <div class="col-lg-12">
+            <span>To successfully import asset data please make sure your file conforms following:</span>
+            <ul style="margin:0px">
+                <li> File must have all the headers. <a href='assets/asset_import_template.csv'>Click
+                        Here</a> to download the template file.</li>
+                <li> File must be comma seperated.</li>
+                <li> File must have all the predefined header with valid data.</li>
+                <li> File must not contain more than 200 records. </li>
+            </ul>
+            <div class="row">
+                <div class="form-group col-lg-11 mt-5 mb-3">
                     <label class="control-label font-weight-bold label mb text-3 text-dark">Choose File
                         <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                     </label>
-                    <input class="form-control-file" (change)="selectDoc($event)" (change)="validateCSV($event)"
-                        accept=".csv" id="uploadedDocs" type="file">
+                    <input class="form-control choosefileLH" #myInput (change)="selectDoc($event)"
+                        (change)="validateCSV($event)" accept=".csv" id="uploadedDocs" type="file">
                     <div *ngIf="inValidMessages.length > 0">
                         <br><span><b>Below are the errors in the uploaded file. Please rectify them and upload
                                 the file again.</b></span>
@@ -133,11 +127,17 @@
                     </div>
                 </div>
 
+                <div class="form-group col-lg-1 mt-5 mb-3">
+                    <i class="pi pi-refresh mt-4 pt-2" (click)="cancel()" style="font-size: 1.5rem"></i>
+
+                </div>
             </div>
+
         </div>
     </div>
-    <div class="modal-footer">
-        <button (click)="modal.dismiss('Cross click')" class="btn btn-default modal-dismiss">Cancel</button>
-        <button class="btn btn-success" [disabled]="submitDisabled" (click)="postDocument()">Submit</button>
-    </div>
-</ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton type="button" (click)="display = false;cancel();" label="Cancel"
+            class="p-button-outlined"></button>
+        <button pButton type="button" (click)="uploadImport()" label="Submit" [disabled]="submitDisabled"></button>
+    </ng-template>
+</p-dialog>

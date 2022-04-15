@@ -3,15 +3,20 @@
     <section role="main" class="content-body pl-1 pt-0 pr-0">
       <header class="page-header pr19 pl11">
         <form class="form-horizontal" method="get">
-          <div class="row" style="padding-top:10px;">
-
-
+          <div class="row" style="padding-top: 10px">
             <div class="col-md-2 col-lg-2 pr-0">
-
-              <ng-select data-plugin-selectTwo class="form-control populate" [(ngModel)]="vehicle" name="vehicle"
-                placeholder="Search Vehicle">
-                <ng-option *ngFor="let item of vehicles | keyvalue" value="{{ item.key }}">{{
-                  item.value }}</ng-option>
+              <ng-select
+                data-plugin-selectTwo
+                class="form-control populate"
+                [(ngModel)]="vehicle"
+                name="vehicle"
+                placeholder="Select Vehicle"
+              >
+                <ng-option
+                  *ngFor="let item of vehicles | keyvalue"
+                  value="{{ item.key }}"
+                  >{{ item.value }}</ng-option
+                >
               </ng-select>
             </div>
 
@@ -22,44 +27,63 @@
                 class="form-control populate"
                 [(ngModel)]="programName"
                 name="programName"
-                placeholder="Select Service Task"
+                placeholder="Select Program Name"
               >
                 <ng-option
                   *ngFor="let item of serviceProgramList"
                   value="{{ item.programID }}"
-                  >{{ item.programName }}</ng-option
-                >
-
-
-           
+                  >{{ item.programName }}
+                </ng-option>
               </ng-select>
             </div>
 
             <div class="col-md-2 col-lg-2 pl-2">
-              <button type="submit" [disabled]="disableSearch" (click)="searchFilter()"
-                class="btn btn-sm btn-success mr-3">Search</button>
-              <button type="button" [disabled]="disableSearch" (click)="resetFilter()"
-                class="btn btn-sm btn-success">Reset</button>
+              <button
+                type="submit"
+                [disabled]="disableSearch"
+                (click)="searchFilter()"
+                class="btn btn-sm btn-success mr-2"
+              >
+                Search
+              </button>
+              <button
+                type="button"
+                [disabled]="disableSearch"
+                (click)="resetFilter()"
+                class="btn btn-sm btn-success"
+              >
+                Reset
+              </button>
             </div>
 
             <div class="col-md-6 col-lg-6 text-right pr-1">
               <div class="btn-group flex-wrap ml-4">
-                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                  aria-expanded="false">
-                  <i class="fas fa-upload"></i> Export<span class="caret"></span>
+                <button
+                  type="button"
+                  class="btn btn-success btn-sm dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-upload"></i> Export<span
+                    class="caret"
+                  ></span>
                 </button>
-                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
+                <div
+                  class="dropdown-menu"
+                  role="menu"
+                  x-placement="bottom-start"
+                  style="
                     position: absolute;
                     will-change: transform;
                     top: 0px;
                     left: 0px;
                     transform: translate3d(0px, 38px, 0px);
-                  ">
-                  <a class="dropdown-item text-1" (click)="requiredCSV()">CSV</a>
+                  "
+                >
+                  <a class="dropdown-item text-1" (click)="csv()">CSV</a>
                 </div>
               </div>
             </div>
-
           </div>
         </form>
       </header>
@@ -67,13 +91,23 @@
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
-            <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1" [infiniteScrollThrottle]="5"
-              (scrolled)="onScroll()">
+            <div
+              infiniteScroll
+              [infiniteScrollDistance]="1"
+              [infiniteScrollUpDistance]="1"
+              [infiniteScrollThrottle]="5"
+              (scrolled)="onScroll()"
+            >
               <div class="bg-white p-3 text-dark">
-                <div class="form-group row pt-3">
+                <div class="form-group row">
                   <div class="col-lg-12">
                     <div class="table-responsive">
-                      <table class="row-border hover table table-bordered table-striped mb-0">
+                      <table
+                        class="row-border hover table table-bordered table-striped mb-0"
+                      >
+                        <col style="width: 1%" />
+                        <col style="width: 1%" />
+                        <col style="width: 1%" />
                         <thead>
                           <tr>
                             <th>Vehicle</th>
@@ -82,26 +116,34 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngIf="serviceProgramList.length == 0" class="text-center">
+                          <tr
+                            *ngIf="serviceProgramList.length == 0"
+                            class="text-center"
+                          >
                             <td colspan="3">{{ dataMessage }}</td>
                           </tr>
                           <tr *ngFor="let item of serviceProgramList">
                             <td>
-                              <span *ngFor="
-                                                        let vehicle of item.vehicles;
-                                                        let i = index
-                                                      ">
+                              <span
+                                *ngFor="
+                                  let vehicle of item.vehicles;
+                                  let i = index
+                                "
+                              >
                                 {{ vehicles[vehicle]
-                                }}{{ i !== item.vehicles.length - 1 ? ", " : "" }}
+                                }}{{
+                                  i !== item.vehicles.length - 1 ? ", " : ""
+                                }}
                               </span>
                             </td>
                             <td>{{ item.programName }}</td>
-                            <td>{{ item.description }}</td>
+                            <td>
+                              {{ item.description ? item.description : "-" }}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -110,18 +152,19 @@
         </div>
       </section>
       <div class="row mt-3 dtPaginate">
-        <div class="col-lg-12 mt-3 text-center" *ngIf=" lastItemSK !== 'end' && serviceProgramList.length !== 0">
-          <button type="button" (click)="onScroll()" class="btn btn-success btn-sm text-light">
+        <div
+          class="col-lg-12 mt-3 text-center"
+          *ngIf="lastItemSK !== 'end' && serviceProgramList.length !== 0"
+        >
+          <button
+            type="button"
+            (click)="onScroll()"
+            class="btn btn-success btn-sm text-light"
+          >
             Load More ...
           </button>
         </div>
       </div>
-
-
-
-
-
     </section>
-
   </div>
 </section>

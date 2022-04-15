@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Component,Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectComponent } from "@ng-select/ng-select";
 import { Table } from 'primeng/table';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import * as _ from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -21,15 +22,16 @@ declare var $: any;
 export class VehicleListComponent implements OnInit {
   @ViewChild('dt') table: Table;
   @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
-   allDocumentsTypes: any;
-    documentsTypesObects: any = {};
-    mapView = false;
-    listView = true;
-    visible = true;
-      loadMsg: string = Constants.NO_LOAD_DATA;
-    isSearch = false;
+  allDocumentsTypes: any;
+  documentsTypesObects: any = {};
+  mapView = false;
+  listView = true;
+  actualSrNo;
+  visible = true;
+  loadMsg: string = Constants.NO_LOAD_DATA;
+  isSearch = false;
   get = _.get;
-    _selectedColumns: any[];
+  _selectedColumns: any[];
   liveModalTimeout: any;
   liveStreamVehicle: string;
   environment = environment.isFeatureEnabled;
@@ -52,7 +54,6 @@ export class VehicleListComponent implements OnInit {
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
-
   hideShow = {
     vin: true,
     vehicleName: true,
@@ -79,8 +80,7 @@ export class VehicleListComponent implements OnInit {
     annualSafety: true,
     teamDriver: true
   }
-    vehStatus: any[];
-
+  vehStatus: any[];
   vehicleNext = false;
   vehiclePrev = true;
   vehicleDraw = 0;
@@ -91,29 +91,29 @@ export class VehicleListComponent implements OnInit {
   lastItemSK = ''
   loaded = false
 
-        // columns of data table
-    dataColumns = [
-        { field: 'vehicleIdentification', header: 'Name/Number', type: "text" },
-        { field: 'VIN', header: 'VIN', type: "text" },
-        { field: 'lifeCycle.startDate', header: 'Start Date', type: "text" },
-        { field: 'manufacturerID', header: 'Make', type: "text" },
-        { field: 'modelID', header: 'Model', type: "text" },
-        { field: 'year', header: 'Year', type: "text" },
-        { field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
-        { field: 'ownership', header: 'Ownership', type: "text" },
-        { field: 'driverList.driverID', header: 'Driver Assigned', type: 'text'},
-        { field: 'driverList.teamDriverID', header: 'Team Driver Assigned', type: 'text'},
-        { field: 'plateNumber', header: 'Plate Number', type: "text" },
-        { field: 'currentStatus', header: 'Status', type: 'text' },
-    ];
-  
+  // columns of data table
+  dataColumns = [
+    { field: 'vehicleIdentification', header: 'Name/Number', type: "text" },
+    { field: 'VIN', header: 'VIN', type: "text" },
+    { field: 'lifeCycle.startDate', header: 'Start Date', type: "text" },
+    { field: 'manufacturerID', header: 'Make', type: "text" },
+    { field: 'modelID', header: 'Model', type: "text" },
+    { field: 'year', header: 'Year', type: "text" },
+    { field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
+    { field: 'ownership', header: 'Ownership', type: "text" },
+    { field: 'driverList.driverID', header: 'Driver Assigned', type: 'text' },
+    { field: 'driverList.teamDriverID', header: 'Team Driver Assigned', type: 'text' },
+    { field: 'plateNumber', header: 'Plate Number', type: "text" },
+    { field: 'dashCamSerNo', header: 'DashCam', type: "text" },
+    { field: 'currentStatus', header: 'Status', type: 'text' },
+  ];
+
   constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService,
-    private onboard: OnboardDefaultService, protected _sanitizer: DomSanitizer, private modalService: NgbModal) {
+    private onboard: OnboardDefaultService, protected _sanitizer: DomSanitizer, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) {
   }
 
 
   async ngOnInit(): Promise<void> {
-
     this.onboard.checkInspectionForms();
     this.setToggleOptions();
     this.setVehiclesOptions();
@@ -124,8 +124,8 @@ export class VehicleListComponent implements OnInit {
     this.fetchServiceProgramsList();
     this.fetchVendorList();
     await this.initDataTable()
-    
-    
+
+
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -139,27 +139,30 @@ export class VehicleListComponent implements OnInit {
     });
 
   }
-      setToggleOptions() {
-        this.selectedColumns = this.dataColumns;
-    }
-    setVehiclesOptions() {
-        this.vehStatus =  [
-                                { 'name': 'Active', 'value': 'active'  },
-                                { 'name': 'Inactive', 'value': 'inActive' },
-                                { 'name': 'Out of Service', 'value': 'outOfService' },
-                                { 'name': 'Sold', 'value':'sold'}
-                                ];
-    }
-    @Input() get selectedColumns(): any[] {
-        return this._selectedColumns;
-    }
 
-    set selectedColumns(val: any[]) {
-        //restore original order
-        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+  setVehiclesOptions() {
+    this.vehStatus = [
+      { 'name': 'Active', 'value': 'active' },
+      { 'name': 'Inactive', 'value': 'inActive' },
+      { 'name': 'Out of Service', 'value': 'outOfService' },
+      { 'name': 'Sold', 'value': 'sold' }
+    ];
+  }
 
-    }
-  
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+  }
+
   getSuggestions = _.debounce(function (value) {
     value = value.toLowerCase();
     if (value != '') {
@@ -167,27 +170,29 @@ export class VehicleListComponent implements OnInit {
       this.apiService
         .getData(`vehicles/suggestion/${value}`)
         .subscribe((result) => {
-          this.suggestedVehicles = result;
+          if (result.length === 0) {
+            this.suggestedVehicles = [];
+            this.loadMsg = Constants.NO_LOAD_FOUND;
+          }
+          if (result.length > 0) {
+
+            this.suggestedVehicles = result;
+          } else {
+            this.suggestedVehicles = [];
+          }
         });
     } else {
-      this.suggestedVehicles = []
+      this.suggestedVehicles = [];
     }
   }, 800);
-  
-  
-    setVehicle(vehicleID, vehicleIdentification) {
-    this.vehicleIdentification = vehicleIdentification;
-    this.vehicleID = vehicleIdentification;
-    this.suggestedVehicles = [];
-  }
-  
-    clearInput() {
-        this.suggestedVehicles = null;
-    }
 
-    clearSuggestions() {
-        this.vehicleIdentification = '';
+  setVehicle(vehicleIdentification: any) {
+    if (vehicleIdentification != undefined && vehicleIdentification != '') {
+      this.vehicleIdentification = vehicleIdentification;
     }
+    this.loadMsg = Constants.NO_LOAD_DATA;
+  }
+
 
 
   changeVehicleID() {
@@ -256,36 +261,33 @@ export class VehicleListComponent implements OnInit {
 
   async initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
-       await this.apiService.getData('vehicles/fetch/records?vehicle=' + this.vehicleID + '&status=' + this.currentStatus + '&lastKey=' + this.lastEvaluatedKey)
-        .subscribe(async (result: any) => {
-          this.dataMessage = Constants.FETCHING_DATA
-          if (result.Items.length === 0) {
-            this.dataMessage = Constants.NO_RECORDS_FOUND
-          }
-          if (result.Items.length > 0) {
-            result.Items.map((v) => {
-              v.url = `/fleet/vehicles/detail/${v.vehicleID}`;
-              // if(v.deviceInfo === undefined){
-              //v.deviceInfo = []
-              //}
-            });
-            if (result.LastEvaluatedKey !== undefined) {
-              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].vehicleSK);
-            }
-            else {
-              this.lastEvaluatedKey = 'end'
-            }
-            this.vehicles = this.vehicles.concat(result.Items)
-            this.loaded = true;
-            this.isSearch = false;
-            await this.getDashCamConnection(this.vehicles);
-            await this.getDashCamStatus(this.vehicles);
-          }
-        });
+      let result = await this.apiService.getData('vehicles/fetch/records?vehicle=' + this.vehicleID + '&status=' + this.currentStatus + '&lastKey=' + this.lastEvaluatedKey).toPromise();
+      if (result.Items.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND;
+        this.loaded = true;
+      }
+      result.Items.map((v) => {
+        v.url = `/fleet/vehicles/detail/${v.vehicleID}`;
+      });
+      this.suggestedVehicles = [];
+      if (result.LastEvaluatedKey !== undefined) {
+        this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].vehicleSK);
+      }
+      else {
+        this.lastEvaluatedKey = 'end'
+      }
+      this.vehicles = this.vehicles.concat(result.Items)
+      this.loaded = true;
+      this.isSearch = false;
+      await this.getDashCamConnection(this.vehicles);
+      await this.getDashCamStatus(this.vehicles);
     }
   }
-  
-  onScroll = async(event: any) => {
+
+
+
+
+  onScroll = async (event: any) => {
     if (this.loaded) {
       this.initDataTable();
     }
@@ -310,6 +312,7 @@ export class VehicleListComponent implements OnInit {
    * Get device status from DashCam
    * @param vehicleList all the vehicles
    */
+
   async getDashCamStatus(vehicleList: any) {
     if (vehicleList && vehicleList.length > 0) {
       for (const data of vehicleList) {
@@ -322,8 +325,10 @@ export class VehicleListComponent implements OnInit {
         }
       }
     }
-
   }
+
+
+
 
   searchFilter() {
     if (this.vehicleIdentification !== '' || this.currentStatus !== null) {
@@ -335,24 +340,34 @@ export class VehicleListComponent implements OnInit {
       this.vehicles = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.lastEvaluatedKey = ''
-      this.suggestedVehicles = [];
       this.initDataTable();
     } else {
       return false;
     }
   }
 
+
+  clearInput() {
+    this.suggestedVehicles = null;
+  }
+
+
+  clearSuggestions() {
+    this.vehicleIdentification = null;
+  }
+
   resetFilter() {
     if (this.vehicleIdentification !== '' || this.currentStatus !== null) {
       this.isSearch = true;
       this.vehicleID = '';
-      this.suggestedVehicles = [];
       this.vehicleIdentification = '';
       this.currentStatus = null;
-      this.lastEvaluatedKey = ''
       this.vehicles = [];
-      this.dataMessage = Constants.FETCHING_DATA;
+      this.loaded = false;
+      this.lastEvaluatedKey = ''
+      this.suggestedVehicles = null;
       this.initDataTable();
+      this.dataMessage = Constants.FETCHING_DATA;
     } else {
       return false;
     }
@@ -534,8 +549,9 @@ export class VehicleListComponent implements OnInit {
     this.currentStatus = null;
     this.vehicles = [];
     this.lastEvaluatedKey = '';
-    this.dataMessage = Constants.FETCHING_DATA;
+    this.loaded = false;
     this.initDataTable();
+    this.dataMessage = Constants.FETCHING_DATA;
   }
 
 
@@ -570,13 +586,13 @@ export class VehicleListComponent implements OnInit {
   clearVideoTimeout() {
     clearTimeout(this.liveModalTimeout);
   }
-  
-  
-      /**
-     * Clears the table filters
-     * @param table Table 
-     */
-    clear(table: Table) {
-        table.clear();
-    }
+
+
+  /**
+ * Clears the table filters
+ * @param table Table 
+ */
+  clear(table: Table) {
+    table.clear();
+  }
 }

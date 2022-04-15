@@ -162,7 +162,8 @@ export class DriverPaymentsDetailComponent implements OnInit {
       isVendorPayment: this.paymentData.isVendorPayment,
       vendorId: this.paymentData.vendorId,
       gstHstPer: this.paymentData.gstHstPer,
-      gstHstAmt: this.paymentData.gstHstAmt
+      gstHstAmt: this.paymentData.gstHstAmt,
+      settlementIds: this.paymentData.settlementIds
     };
     this.downloadDisabled = true;
     this.listService.openPaymentChequeModal(obj);

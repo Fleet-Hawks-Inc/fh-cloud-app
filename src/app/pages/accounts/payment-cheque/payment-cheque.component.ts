@@ -109,7 +109,8 @@ export class PaymentChequeComponent implements OnInit {
   subscription: Subscription;
   locale = "en-US";
   isDownload = false;
-
+  settlementIDs = new Array();
+  payPeriod: any;
   constructor(
     private listService: ListService,
     private apiService: ApiService,
@@ -119,7 +120,7 @@ export class PaymentChequeComponent implements OnInit {
 
   ngOnInit() {
     this.subscription = this.listService.paymentModelList.subscribe(
-      (res: any) => {
+      async (res: any) => {
         if (res.showModal && res.length != 0) {
           // empty fields
           if (res.page && res.page == 'detail') {
@@ -139,6 +140,7 @@ export class PaymentChequeComponent implements OnInit {
           this.getCarriers();
           this.getCurrentuser();
           this.paydata = res;
+          this.settlementIDs = res.settlementIds;
           this.paydata.gstHstAmt = this.paydata.gstHstAmt === undefined ? 0 : this.paydata.gstHstAmt;
           this.paydata.gstHstPer = this.paydata.gstHstAmt === undefined ? 0 : this.paydata.gstHstPer;
           this.paydata.isVendorPayment = this.paydata.isVendorPayment === undefined ? false : this.paydata.isVendorPayment;
@@ -166,17 +168,18 @@ export class PaymentChequeComponent implements OnInit {
               "yyyy",
               this.locale
             );
-            let startDate = formatDate(
-              this.paydata.fromDate,
-              "dd-MM-yyyy",
-              this.locale
-            );
-            let endDate = formatDate(
-              this.paydata.toDate,
-              "dd-MM-yyyy",
-              this.locale
-            );
-            this.cheqdata.payPeriod = `${startDate} To ${endDate}`;
+            // let startDate = formatDate(
+            //   this.paydata.fromDate,
+            //   "dd-MM-yyyy",
+            //   this.locale
+            // );
+            // let endDate = formatDate(
+            //   this.paydata.toDate,
+            //   "dd-MM-yyyy",
+            //   this.locale
+            // );
+            this.cheqdata.payPeriod = await this.getSettlementData(this.settlementIDs);
+
           }
 
           if (this.paydata.type === "advancePayment") {
@@ -230,7 +233,7 @@ export class PaymentChequeComponent implements OnInit {
             }
           }
 
-          if(this.paydata.isVendorPayment) {
+          if (this.paydata.isVendorPayment) {
             this.cheqdata.regularPay = this.paydata.totalAmount;
             this.cheqdata.grossPay = this.paydata.totalAmount;
           }
@@ -327,8 +330,8 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   getCurrentuser = async () => {
-    let data = (await Auth.currentSession()).getIdToken().payload;
-    this.getCurrentCarrDetail(data.carrierID);
+    const carrID = localStorage.getItem('xfhCarrierId');
+    this.getCurrentCarrDetail(carrID);
   };
 
   getCurrentCarrDetail(carrierID) {
@@ -461,7 +464,7 @@ export class PaymentChequeComponent implements OnInit {
 
   async getUserAnnualTax() {
     let entityID = this.paydata.entityId;
-    if(this.paydata.isVendorPayment) {
+    if (this.paydata.isVendorPayment) {
       entityID = this.paydata.vendorId;
     }
     let result: any = await this.accountService
@@ -501,5 +504,50 @@ export class PaymentChequeComponent implements OnInit {
       Number(this.cheqdata.cppYTD) + Number(this.cheqdata.eiYTD);
     this.cheqdata.netPayYTD = Number(this.cheqdata.grossPayYTD) - Number(this.cheqdata.withHeldYTD) + Number(this.cheqdata.gstHstYTD);
     this.cheqdata.gstHst = this.paydata.gstHstAmt;
+  }
+
+  async getSettlementData(stlIds) {
+    let ids = encodeURIComponent(
+      JSON.stringify(stlIds)
+    );
+    let result: any = await this.accountService
+      .getData(`settlement/get/selected?entities=${ids}`)
+      .toPromise();
+    let newDates = []
+    for (let index = 0; index < result.length; index++) {
+      const element = result[index];
+
+      if (element.prStart != undefined && element.prEnd != undefined) {
+
+        let startDate = formatDate(
+          element.prStart,
+          "dd-MM-yyyy",
+          this.locale
+        );
+        let endDate = formatDate(
+          element.prEnd,
+          "dd-MM-yyyy",
+          this.locale
+        );
+        newDates.push(`${startDate} To ${endDate}`);
+      }
+      else {
+        let startDate = formatDate(
+          element.fromDate,
+          "dd-MM-yyyy",
+          this.locale
+        );
+        let endDate = formatDate(
+          element.toDate,
+          "dd-MM-yyyy",
+          this.locale
+        );
+        newDates.push(`${startDate} To ${endDate}`);
+      }
+
+
+    }
+    return newDates.join(", ");
+
   }
 }

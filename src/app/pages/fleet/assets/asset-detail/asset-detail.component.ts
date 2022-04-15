@@ -12,6 +12,8 @@ import Constants from "src/app/pages/manage/constants";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { environment } from "../../../../../environments/environment";
 import { ApiService } from "../../../../services";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+
 
 declare var $: any;
 
@@ -219,6 +221,7 @@ export class AssetDetailComponent implements OnInit {
     asset: any = '';
     groupName: any = '';
     groupId: any = '';
+    sessionID: string;
 
     constructor(
         private toastr: ToastrService,
@@ -226,8 +229,12 @@ export class AssetDetailComponent implements OnInit {
         private apiService: ApiService,
         private route: ActivatedRoute,
         private spinner: NgxSpinnerService,
-        private countryStateCity: CountryStateCityService
-    ) { }
+        private countryStateCity: CountryStateCityService,
+        private routerMgmtService: RouteManagementServiceService
+    ) {
+        
+        this.sessionID = this.routerMgmtService.assetUpdateSessionID;
+    }
 
     ngOnInit() {
         this.assetID = this.route.snapshot.params[`assetID`]; // get asset Id from URL

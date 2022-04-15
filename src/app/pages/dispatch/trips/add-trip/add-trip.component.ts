@@ -311,13 +311,15 @@ export class AddTripComponent implements OnInit {
     this.route.queryParams.subscribe( async(params) => {
     this.orderId = params.orderId;
     this.orderNum = params.orderNum;
-      if (this.orderId != undefined) {
-        await this.fetchOrderDetails([this.orderId])
+    if (this.orderId != undefined) {
+       await this.fetchOrderDetails([this.orderId])
        this.changeMapRoute('order')
-       this.temporaryOrderIDs.push(this.orderId);
+      this.temporaryOrderIDs.push(this.orderId);
        this.temporaryOrderNumber.push(this.orderNum);
-       await this.saveSelectOrderIDS()
-        }
+       await this.fetchFTLOrders();
+       await this.fetchLTLOrders();
+       await this.saveSelectOrderIDS();
+      }
     });
     
     this.fetchCarriers();
@@ -2577,7 +2579,7 @@ export class AddTripComponent implements OnInit {
 
     let url = "";
     if (type === "recall") {
-      url = "admin/trip/recall";
+      url = "trip-recall/trip/recall";
     } else {
       url = "trips";
     }
@@ -2668,8 +2670,8 @@ export class AddTripComponent implements OnInit {
 
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    this.currentCarrID = this.currentUser.carrierID;
-    this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    this.currentCarrID = localStorage.getItem('xfhCarrierId');
+    this.currentUser = localStorage.getItem("currentUserName");
   };
 
   resetMap() {
