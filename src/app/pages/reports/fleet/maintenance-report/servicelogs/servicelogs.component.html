@@ -216,8 +216,8 @@
                               let $last = last
                             "
                           >
-                            {{ task.taskName ? task.taskName : "-" }}
-                            <span *ngIf="!$last" class="list-format">, </span>
+                            {{ task.taskName ? task.taskName : "-"
+                            }}<span *ngIf="!$last" class="list-format">, </span>
                           </span>
                           <span
                             *ngIf="item.allServiceTasks.serviceTaskList == 0"
