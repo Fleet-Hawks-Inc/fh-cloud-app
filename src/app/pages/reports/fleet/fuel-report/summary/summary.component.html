@@ -186,8 +186,11 @@
                                                     <th>Fuel Quantity</th>
                                                     <th>Litres or Gallons</th>
                                                     <th>Odometer</th>
+                                                    <th>Retail Price Per L</th>
+                                                    <th>Retail Amount Before Tax</th>
                                                     <th>Total Discount</th>
-                                                    <th>Total Amount</th>
+                                                    <th>Retail Amount CAD</th>
+                                                    <th>Retail Amount USD</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -199,22 +202,17 @@
                                                         <td><span
                                                                 *ngIf="fuelEntry.dateTime">{{fuelEntry.dateTime}}</span>
                                                         </td>
-                                                        
-                                                        <td class="line-height-lg text-capitalize" ><span
-                                                                *ngIf="fuelEntry.data.useType">{{fuelEntry.data.useType}}</span>
+                                                        <td class="line-height-lg text-capitalize" >
+                                                          <span *ngIf="fuelEntry.data.useType">{{fuelEntry.data.useType}}</span>
                                                         </td>
-                                                        
                                                         <td class="line-height-lg text-capitalize"> <span *ngIf="fuelEntry.unitID">
-                                                                <span
-                                                                    *ngIf="fuelEntry.unitType!='reefer'">{{vehicleList[fuelEntry.unitID]}}</span>
-
-                                                                <span
-                                                                    *ngIf="fuelEntry.data.useType=='reefer'">{{assetList[fuelEntry.unitID]}}</span>
-                                                                {{fuelEntry.unitIdentification}}</span>
+                                                        <span *ngIf="fuelEntry.unitType!='reefer'">{{vehicleList[fuelEntry.unitID]}}</span>
+                                                        <span *ngIf="fuelEntry.data.useType=='reefer'">{{assetList[fuelEntry.unitID]}}</span>{{fuelEntry.unitIdentification}}</span>
                                                         </td>
 
-                                                        <td><span
-                                                                *ngIf="fuelEntry.data.cardNo">{{fuelEntry.data.cardNo}}</span>
+                                                        <td>
+                                                          <span *ngIf="fuelEntry.data.cardNo">{{fuelEntry.data.cardNo}}</span>
+                                                          <span *ngIf="!fuelEntry.data.cardNo">-</span>
                                                         </td>
 
                                                         <td><span
@@ -233,16 +231,29 @@
                                                                 *ngIf="fuelEntry.data.uom">{{fuelEntry.data.uom === "L" ? 'LTR' : 'GL' }}</span>
                                                         </td>
 
-                                                        <td><span
-                                                                *ngIf="fuelEntry.data.odometer">{{fuelEntry.data.odometer}}</span>
+                                                        <td>
+                                                          <span *ngIf="fuelEntry.data.odometer">{{fuelEntry.data.odometer}}</span>
+                                                          <span *ngIf="!fuelEntry.data.odometer">-</span>
                                                         </td>
-
-                                                        <td><span
-                                                                *ngIf="fuelEntry.data.discAmt">{{fuelEntry.data.discAmt}}</span>
+                                                        <td>
+                                                            <span>{{fuelEntry.data.rPpu }}&nbsp;{{fuelEntry.data.currency}}</span>
                                                         </td>
-
-                                                        <td><span
-                                                                *ngIf="fuelEntry.data.amt">{{fuelEntry.data.amt | number : '1.2-2' }}&nbsp;{{fuelEntry.data.currency}}</span>
+                                                        <td>
+                                                            <span>{{fuelEntry.data.rBeforeTax}}&nbsp;{{fuelEntry.data.currency}}</span>
+                                                        </td>
+                                                        <td>
+                                                          <span *ngIf="fuelEntry.data.discAmt">{{fuelEntry.data.discAmt}}</span>
+                                                          <span *ngIf="!fuelEntry.data.discAmt">-</span>
+                                                        </td>
+                                                        <td>
+                                                          <span *ngIf="fuelEntry.data.currency === 'CAD'">
+                                                           <span *ngIf="fuelEntry.data.amt">{{fuelEntry.data.amt | number : '1.2-2' }}</span>
+                                                          </span>
+                                                        </td>
+                                                        <td>
+                                                          <span *ngIf="fuelEntry.data.currency === 'USD'">
+                                                           <span *ngIf="fuelEntry.data.amt">{{fuelEntry.data.amt | number : '1.2-2' }}</span>
+                                                          </span>
                                                         </td>
                                                     </tr>
                                                 </ng-container>
