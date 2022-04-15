@@ -2673,14 +2673,14 @@ export class AddSettlementComponent implements OnInit {
         this.settlementData.fuelDed += Number(v.amount);
       }
     });
-    // this.prevSelectEntries.map((v) => {
-    //   this.settlementData.fuelData.push(v);
-    // });
-    // this.prevSelectedIds.map((v) => {
-    //   if (!this.settlementData.fuelIds.includes(v)) {
-    //     this.settlementData.fuelIds.push(v);
-    //   }
-    // });
+    this.prevSelectEntries.map((v) => {
+      this.settlementData.fuelData.push(v);
+    });
+    this.prevSelectedIds.map((v) => {
+      if (!this.settlementData.fuelIds.includes(v)) {
+        this.settlementData.fuelIds.push(v);
+      }
+    });
   }
 
   fuelTotal() {
