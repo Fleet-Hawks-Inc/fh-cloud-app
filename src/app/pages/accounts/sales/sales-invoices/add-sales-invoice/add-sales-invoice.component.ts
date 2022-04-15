@@ -19,7 +19,6 @@ export class AddSalesInvoiceComponent implements OnInit {
   submitDisabled = false;
   response: any = '';
   errors = {};
-
   saleData = {
     txnDate: moment().format('YYYY-MM-DD'),
     currency: 'CAD',
@@ -119,7 +118,8 @@ export class AddSalesInvoiceComponent implements OnInit {
   customers = [];
   stateTaxes = [];
 
-  customerCredits = []
+  customerCredits = [];
+  stlCreditsData = [];
 
   currentUser: any;
   saleID: string;
@@ -248,9 +248,11 @@ export class AddSalesInvoiceComponent implements OnInit {
     if (data.fullPayment) {
       this.customerCredits[index].paidAmount = data.balance.toFixed(2);
       this.customerCredits[index].paidStatus = true;
+      this.customerCredits[index].selected = true;
     } else {
       this.customerCredits[index].paidAmount = 0;
       this.customerCredits[index].paidStatus = false;
+      this.customerCredits[index].selected = false;
     }
     this.selectedCredits();
   }
@@ -448,7 +450,10 @@ export class AddSalesInvoiceComponent implements OnInit {
   selectedCredits() {
     this.saleData.creditIds = [];
     this.saleData.creditData = [];
+    console.log('customerCredits', this.customerCredits)
     for (const element of this.customerCredits) {
+      console.log('element.selected', element.selected)
+
       if (element.selected) {
         if (!this.saleData.creditIds.includes(element.creditID)) {
           let obj = {
@@ -469,6 +474,7 @@ export class AddSalesInvoiceComponent implements OnInit {
         }
       }
     }
+    console.log('473', this.saleData)
     this.creditCalculation();
     this.calculateFinalTotal();
   }
@@ -492,8 +498,12 @@ export class AddSalesInvoiceComponent implements OnInit {
             }
           }
         });
+      } else {
+        this.saleData.total.customerCredit = this.saleData.total.customerCredit - Number(element.paidAmount);
       }
     }
+    // this.saleData.total.customerCredit += customerCredit;
+    console.log('customerCredit', this.saleData.total.customerCredit)
   }
 
   changeTaxExempt() {
@@ -570,27 +580,71 @@ export class AddSalesInvoiceComponent implements OnInit {
     this.saleData.paymentTerm = result.paymentTerm;
     this.saleData.dueDate = result.dueDate;
     this.saleData.salePerson = result.salePerson;
+
     this.saleData.creditData = result.creditData;
     this.saleData.creditIds = result.creditIds;
 
     this.saleData.charges = result.charges;
     this.saleData.remarks = result.remarks;
 
-
     await this.fetchAccounts();
     await this.getCustomerOrders(result.customerID);
-    this.saleData.sOrderNo = result.sOrderNo;
+    this.saleData.sOrderNo = result.sOrderNumber;
     await this.getOrderDetail(result.sOrderNo);
-    this.saleData.sOrderDetails = result.sOrderDetails;
-    this.saleData.creditIds.forEach(elem => {
-      this.customerCredits.map(item => {
-        if (item.creditID === elem) {
-          item.selected = true;
-        }
-      })
-    })
+    if (this.saleData.creditIds.length > 0) {
+
+      await this.fetchStlCreditsData(this.saleData.creditIds);
+    }
+
+    // this.saleData.sOrderDetails = result.sOrderDetails;
+    // this.saleData.creditIds.forEach(elem => {
+    //   this.customerCredits.map(item => {
+    //     if (item.creditID === elem) {
+    //       item.selected = true;
+    //     }
+    //   })
+    // })
     this.saleData.total = result.total;
 
+  }
+
+  async fetchStlCreditsData(creditIds) {
+    let ids = encodeURIComponent(JSON.stringify(creditIds));
+    let result = await this.accountService.getData(`customer-credits/get/selected?entities=${ids}`).toPromise();
+    console.log('result', result);
+    console.log('creditData', this.saleData.creditData);
+    if (result && result.length > 0) {
+      let settledCredits = [];
+      if (this.saleData.creditData.length > 0) {
+        for (let i = 0; i < result.length; i++) {
+          const elem1 = result[i];
+          for (let index = 0; index < this.saleData.creditData.length; index++) {
+            const elem2 = this.saleData.creditData[index];
+            if (elem1.creditID === elem2.creditID) {
+              console.log('eme')
+              let obj = {
+                cCrNo: elem1.cCrNo,
+                creditID: elem1.creditID,
+                currency: elem1.currency,
+                status: elem1.status,
+                txnDate: elem1.txnDate,
+                sRef: elem1.crRef,
+                fullPayment: elem1.status == 'deducted' ? true : false,
+                prevPaidAmount: elem2.paidAmount,
+                paidAmount: elem2.paidAmount,
+                balance: elem2.pendingAmount,
+                totalAmt: elem2.totalAmount,
+                selected: true
+              }
+              this.customerCredits.push(obj);
+            }
+          }
+        }
+        this.stlCreditsData = settledCredits;
+        console.log('stlCreditsData', this.stlCreditsData)
+        console.log('customerCredits', this.customerCredits)
+      }
+    }
   }
 
   updateInvoice() {
