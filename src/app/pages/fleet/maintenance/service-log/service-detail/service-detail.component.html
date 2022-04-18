@@ -297,339 +297,226 @@
    </div>
 </div>
 
-
-
 <ng-template #logModal let-modal>
-   <div class="modal-content">
-      <div class="modal-header">
-         <h2 class="modal-title"><b>Log </b></h2>
-         <button type="button" class="close" (click)="modal.dismiss()">
-            &times;
-         </button>
-      </div>
-      <!-- <div class="modal-body text-dark text-capitalize">
-        
-      </div> -->
-      <form>
-         <div class="modal-body" id="log_wrap">
-            <section class="cheque-wrapper" id="log_wrap">
-               <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
-                  <tbody>
-                     <tr>
-                        <td width="50%">
-                           <h2 class="text-dark" id="modal-basic-title " style="font-size:26px; margin-bottom: 0px;">
-                              Service Log Details
-                           </h2>
-                           <!-- <button type="button" style="color: #000;" class="close" (click)="modal.dismiss()">
-                              &times;
-                           </button> -->
-                        </td>
-                        <!-- </tr> -->
-                        <!-- <tr> -->
-                        <td width="50%" align="right"> <img crossorigin="anonymous" *ngIf="companyLogo"
-                              [src]="companyLogo" alt="logo" style="max-width: 100px; padding-right: 10px; ">
-                        </td>
-                     </tr>
-                  </tbody>
-               </table>
-            </section>
-            <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+   <div class="modal-header">
+      <h2 class="modal-title"><b>Log </b></h2>
+      <button type="button" class="close" (click)="modal.dismiss()">
+         &times;
+      </button>
+   </div>
+   <div class="modal-body" id="log_wrap">
+
+      <section class="cheque-wrapper" id="log_wrap">
+         <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+            <tbody>
                <tr>
-                  <td valign="top">
-                     <table width="99%" style=" border: 1px solid #adadad; color: #000000;
-                             border-right: 0px solid #adadad; font-size: 13px; margin-bottom: 10px;
-                           " cellpadding="0" cellspacing="0" bordercolor="#adadad">
-                        <tbody>
-                           <tr>
-                              <div>
-                                 <td style="border-right: 1px solid #adadad; 
-                                 border-bottom: 1px solid #adadad; 
-                                 padding-left: 10px; padding-right: 90px;">
+                  <td width="50%">
+                     <h2 class="text-dark" id="modal-basic-title " style="font-size:26px; margin-bottom: 0px;">
+                        Service Log Details
+                     </h2>
 
-                                    <p style="font-weight: 600; margin-bottom: 4px; color: #000000; ">
-                                       Unit Type:
-                                    </p>
-                                    <p style="font-weight: 600; margin-bottom: 4px; color: #000000; ">
-                                       Vehicle#
-                                    </p>
-                                    <p style="font-weight: 600; margin-bottom: 4px; color: #000000; ">
-                                       Odometer Miles:
-                                    </p>
-                                 </td>
-
-                                 <td style=" 
-                                           border-bottom: 1px solid #adadad; 
-                                           padding-left: 10px;">
-                                    <p style="margin-bottom: 4px; color: #000000">
-                                       {{
-                                       logsData.unitType
-                                       }}
-                                    </p>
-
-                                    <p style="margin-bottom: 4px; color: #000000">
-                                       {{vehiclesObject[vehicle]}}
-                                    </p>
-
-                                    <p style="margin-bottom: 4px; color: #000000">
-                                       {{odometer ? odometer : '-'}}
-                                    </p>
-
-                                 </td>
-                              </div>
-                              <!-- <div> -->
-                              <td style="border-right: 1px solid #adadad; 
-                              border-bottom: 1px solid #adadad;
-                              padding-left: 10px; padding-right: 90px;">
-
-                                 <p style="font-weight: 600; margin-bottom: 4px; color: #000000; ">
-                                    Completion Date:
-                                 </p>
-
-                                 <p style="font-weight: 600; margin-bottom: 4px; color: #000000; ">
-                                    BIll#
-                                 </p>
-
-                                 <p style="font-weight: 600; margin-bottom: 4px; color: #000000; ">
-                                    Vendor:
-                                 </p>
-                              </td>
-                              <td style="border-right: 1px solid #adadad; 
-                                           border-bottom: 1px solid #adadad; 
-                                           padding-left: 10px;">
-                                 <p style="margin-bottom: 4px; color: #000000">
-                                    {{completionDate ? (completionDate
-                                    |
-                                    date:'yyyy/MM/dd') : '-'}}
-                                 </p>
-
-                                 <p style="margin-bottom: 4px; color: #000000">
-                                    {{reference ? reference : '-'}}
-                                 </p>
-
-                                 <p style="margin-bottom: 4px; color: #000000">
-                                    {{vendorID ?
-                                    vendorsObject[vendorID] :
-                                    '-'}}
-                                 </p>
-
-                              </td>
-                              <!-- </div> -->
-                           </tr>
-                        </tbody>
-                     </table>
-
-               <tr>
-                  <td colspan="2">
-                     <h5 style="color:#231F20;"><b>Issue Details</b></h5>
+                  </td>
+                  <td width="50%" align="right"> <img crossorigin="anonymous" *ngIf="companyLogo" [src]="companyLogo"
+                        alt="logo" style="max-width: 100px;">
                   </td>
                </tr>
+            </tbody>
+         </table>
+
+         <table width="100%" class="table-bordered" style="color: #000000; font-size: 13px; margin-bottom: 10px;
+      " cellpadding="0" cellspacing="0">
+            <tbody>
                <tr>
-                  <td colspan="2">
-                     <table width="99%" style=" border: 1px solid #adadad; color: #000000;
-                     border-right: 0px solid #adadad; font-size: 13px; margin-bottom: 10px;
-                     " bordercolor="#adadad">
-                        <tbody>
-                           <col style="width:50%">
-                           <col style="width:50%">
-                           <tr>
-                              <td width="50%" style="font-size: 13px;
-                              border-bottom: 1px solid ;  background-color: 	#E8E8E8;
-                              border-right: 1px solid ;
-                              padding-left: 10px;  padding-right: 550px; padding-top: 10p; padding-bottom: 10px">
-                                 Issue
-                              </td>
-                              <td width="50%" style="font-size: 13px;
-                              border-bottom: 1px solid; background-color: 	#E8E8E8;
-                              border-right: 1px solid;
-                              padding-left: 10px;  padding-right: 10px;
-                              padding-bottom: 10px;  padding-top: 10px
-                            ">
-                                 Assigned To
-                              </td>
-                           </tr>
-                           <tr *ngIf="issuesObject?.length == 0">
-                              <td colspan="5" style="padding-top: 10px; padding-bottom: 10px;" align="center">
-                                 -</td>
-                           </tr>
-                           <tr *ngFor='let data of issuesObject'>
-                              <td width="50%" style="font-size: 13px;
-                             border-right: 1px solid #adadad;
-                             padding-right: 10px; padding-left: 10px;
-                             padding-top: 10px; padding-bottom: 10px;
+
+                  <td style=" 
+                     padding-left: 10px; padding-right: 150px;">
+
+                     <p style="font-weight: 600; margin-bottom: 4px;  ">
+                        <span style="font-weight: 500; color: #000000; ">Unit Type: </span> {{
+                        logsData.unitType
+                        }}
+                     </p>
+                     <p style="font-weight: 600; margin-bottom: 4px;  ">
+                        <span style="font-weight: 500; color: #000000; ">Vehicle#:</span> {{vehiclesObject[vehicle]}}
+                     </p>
+                     <p style="font-weight: 600; margin-bottom: 4px; ">
+                        <span style="font-weight: 500; color: #000000; ">Odometer Miles:</span> {{odometer ? odometer :
+                        '-'}}
+                     </p>
+                  </td>
+
+
+
+                  <td style="
+                  padding-left: 10px; padding-right: 15px;">
+
+                     <p style="font-weight: 50; margin-bottom: 4px; ">
+                        <span style="font-weight: 500; color: #000000; ">Completion Date:</span> {{completionDate ?
+                        (completionDate
+                        |
+                        date:'yyyy/MM/dd') : '-'}}
+                     </p>
+
+                     <p style="font-weight: 50; margin-bottom: 4px; ">
+                        <span style="font-weight: 500; color: #000000; ">BIll#: </span> {{reference ? reference : '-'}}
+                     </p>
+
+                     <p style=" margin-bottom: 4px; ">
+                        <span style="font-weight: 500; color: #000000; ">Vendor: </span> {{vendorID ?
+                        vendorsObject[vendorID] :
+                        '-'}}
+                     </p>
+                  </td>
+
+               </tr>
+            </tbody>
+         </table>
+
+         <h5 style="color:#231F20;"><b>Issue Details</b></h5>
+         <table width="100%" style="color: #000000;
+                  font-size: 13px; margin-bottom: 10px;border: 1px solid black;
+                  ">
+            <thead>
+               <tr>
+                  <td width="50%" style="font-size: 13px;
+                            background-color: 	#E8E8E8;
+                            padding-left: 10px;  padding-right: 10px; 
+                            padding-top: 10p; padding-bottom: 10px">
+                     Issue:
+                  </td>
+                  <td width="50%" style="font-size: 13px;
+                            background-color: 	#E8E8E8;
+                           padding-left: 10px;  padding-right: 10px;
+                           padding-bottom: 10px;  padding-top: 10px
                            ">
-                                 {{data.issueName}}
-                              </td>
-                              <td width="50%" style="font-size: 13px;
-                             border-right: 1px solid #adadad;
-                               padding-left: 10px;
-                             padding-top: 10px; padding-bottom: 10px;
-                           ">
-                                 {{users[data.assignedTo]}}</td>
-                           </tr>
-                     </table>
-
+                     Assigned To
                   </td>
                </tr>
+            </thead>
+            <tbody>
+               <tr *ngIf="issuesObject?.length == 0">
+                  <td colspan="" style="padding-top: 10px; padding-bottom: 10px;" align="center">
+                     -</td>
+               </tr>
+               <tr *ngFor='let data of issuesObject'>
+                  <td width="50%" style="font-size: 13px;
+                           padding-right: 10px; padding-left: 10px;
+                           padding-top: 10px; padding-bottom: 10px;
+                        ">
+                     {{data.issueName}}
+                  </td>
+                  <td width="50%" style="font-size: 13px;
+                              padding-left: 10px;
+                           padding-top: 10px; padding-bottom: 10px;
+                        ">
+                     {{users[data.assignedTo]}}</td>
+               </tr>
+         </table>
+
+         <h5 style="color:#231F20;"><b>Service Tasks</b></h5>
+         <table width="100%" style="color: #000000;border: 1px solid black; font-size: 13px; margin-bottom: 10px;
+                  ">
+            <thead>
+               <tr>
+                  <td style="font-size: 13px;
+                         background-color: 	#E8E8E8;
+                        padding-left: 10px;  padding-right: 10px;">
+                     Task
+                  </td>
+                  <td style="font-size: 13px;
+                        background-color:#E8E8E8;
+                        padding-left: 10px;  padding-right: 10px;
+                        padding-bottom: 10px;  padding-top: 10px
+                        ">
+                     Labor
+                  </td>
+               </tr>
+            </thead>
+            <tbody>
+
+
+               <tr *ngIf="allServiceTasks?.length == 0">
+                  <td colspan="" style="padding-top: 10px; padding-bottom: 10px;" align="center">
+                     {{noRecordMessage}}</td>
+               </tr>
+               <tr *ngFor='let data of allServiceTasks'>
+                  <td height="25" style="font-size: 13px;
+                           
+                           padding-left: 10px;
+                        ">
+                     {{data.taskName}}
+                  </td>
+                  <td style="font-size: 13px;
+                           
+                           padding-left: 10px; padding-right: 10px;
+                        "> {{data.laborCost}},{{currency}}</td>
+               </tr>
+         </table>
+
+         <h5 style="color:#231F20;"><b>Service Parts</b></h5>
+         <table width="99%" style=" border: 1px solid #adadad; color: #000000;
+         border-right: 0px solid #adadad; font-size: 13px; margin-bottom: 10px;
+         " bordercolor="#adadad">
+            <tbody>
 
                <tr>
-                  <td colspan="2">
-                     <h5 style="color:#231F20;"><b>Service Tasks</b></h5>
+                  <td width="50%" style="font-size: 13px;
+                  border-bottom: 1px solid ;
+                  border-right: 1px solid ; background-color: 	#E8E8E8;
+                  padding-left: 10px;  padding-right: 550px;">
+                     Task
+                  </td>
+                  <td width="50%" style="font-size: 13px;
+                  border-bottom: 1px solid;  background-color:#E8E8E8;
+                  border-right: 1px solid;
+                  padding-left: 10px;  padding-right: 10px;
+                  padding-bottom: 10px;  padding-top: 10px
+                  ">
+                     Labor
                   </td>
                </tr>
-               <tr>
-                  <td colspan=" 2">
-                     <table width="99%" style=" border: 1px solid #adadad; color: #000000;
-                     border-right: 0px solid #adadad; font-size: 13px; margin-bottom: 10px;
-                     " bordercolor="#adadad">
-                        <tbody>
-                           <col style="width:50%">
-                           <col style="width:50%">
-                           <tr>
-                              <td width="50%" style="font-size: 13px;
-                              border-bottom: 1px solid ;
-                              border-right: 1px solid ; background-color: 	#E8E8E8;
-                              padding-left: 10px;  padding-right: 550px;">
-                                 Task
-                              </td>
-                              <td width="50%" style="font-size: 13px;
-                              border-bottom: 1px solid;  background-color:#E8E8E8;
-                              border-right: 1px solid;
-                              padding-left: 10px;  padding-right: 10px;
-                              padding-bottom: 10px;  padding-top: 10px
-                            ">
-                                 Labor
-                              </td>
-                           </tr>
-                           <tr *ngIf="allServiceTasks?.length == 0">
-                              <td colspan="5" style="padding-top: 10px; padding-bottom: 10px;" align="center">
-                                 {{noRecordMessage}}</td>
-                           </tr>
-                           <tr *ngFor='let data of allServiceTasks'>
-                              <td height="25" style="font-size: 13px;
-                             border-right: 1px solid #adadad;
-                             padding-left: 10px;
-                           ">
-                                 {{data.taskName}}
-                              </td>
-                              <td style="font-size: 13px;
-                             border-right: 1px solid #adadad;
-                             padding-left: 10px; padding-right: 590px;
-                           "> {{data.laborCost}} {{currency}}</td>
-                           </tr>
-                     </table>
+               <tr *ngIf="allServiceParts?.length == 0">
+                  <td colspan="5" style="padding-top: 10px; padding-bottom: 10px;" align="center">
+                     {{noRecordMessage}}</td>
+               </tr>
+               <tr *ngFor='let data of allServiceParts'>
+                  <td height="25" style="font-size: 13px;
+                  border-right: 1px solid #adadad;
+                  padding-left: 10px;
+               ">
+                     {{data.partNumber}}
+                  </td>
+                  <td style="font-size: 13px;
+                  border-right: 1px solid #adadad;
+                  padding-left: 10px; padding-right: 10px;
+               "> {{data.partCost}},{{currency}}</td>
+               </tr>
+         </table>
 
-                  </td>
-               </tr>
+         <h5 style="color:#231F20;"><b> Description</b></h5>
+         <table width="100%" style="color: #000000;
+            font-size: 13px; margin-bottom: 10px;
+            ">
+            <tbody>
 
                <tr>
-                  <td colspan="2">
-                     <h5 style="color:#231F20;"><b>Service Parts</b></h5>
+                  <td width="50%" style=" border: 1px solid black;
+                     padding-left: 10px;  padding-right: 10px;">
+                     {{description ? description : '-'}}
                   </td>
+
                </tr>
-               <tr>
-                  <td colspan="2">
-                     <table width="99%" style=" border: 1px solid #adadad; color: #000000;
-                     border-right: 0px solid #adadad; font-size: 13px; margin-bottom: 10px;
-                     " bordercolor="#adadad">
-                        <tbody>
-                           <col style="width:50%">
-                           <col style="width:50%">
-                           <tr>
-                              <td width="50%" style="font-size: 13px;
-                              border-bottom: 1px solid ;
-                              border-right: 1px solid ; background-color: 	#E8E8E8;
-                              padding-left: 10px;  padding-right: 550px;">
-                                 Task
-                              </td>
-                              <td width="50%" style="font-size: 13px;
-                              border-bottom: 1px solid;  background-color:#E8E8E8;
-                              border-right: 1px solid;
-                              padding-left: 10px;  padding-right: 10px;
-                              padding-bottom: 10px;  padding-top: 10px
-                            ">
-                                 Labor
-                              </td>
-                           </tr>
-                           <tr *ngIf="allServiceParts?.length == 0">
-                              <td colspan="5" style="padding-top: 10px; padding-bottom: 10px;" align="center">
-                                 {{noRecordMessage}}</td>
-                           </tr>
-                           <tr *ngFor='let data of allServiceParts'>
-                              <td height="25" style="font-size: 13px;
-                             border-right: 1px solid #adadad;
-                             padding-left: 10px;
-                           ">
-                                 {{data.partNumber}}
-                              </td>
-                              <td style="font-size: 13px;
-                             border-right: 1px solid #adadad;
-                             padding-left: 10px; padding-right: 10px;
-                           "> {{data.partCost}} {{currency}}</td>
-                           </tr>
-                     </table>
+            </tbody>
 
-                  </td>
-               </tr>
+         </table>
+      </section>
+   </div>
 
+   <div class="modal-footer">
 
-               <tr>
-                  <td colspan="2">
-                     <h5><b> Description</b></h5>
-                  </td>
-               </tr>
-               <tr>
-                  <td colspan="2">
-                     <table width="99%" style=" border: 1px solid #adadad; color: #000000;
-                     border-right: 0px solid #adadad; font-size: 13px; margin-bottom: 10px;
-                     " bordercolor="#adadad">
-                        <tbody>
-                           <col style="width:50%">
-                           <col style="width:50%">
-                           <tr>
-                              <td width="50%" style="
-                              border-bottom: 1px solid ;
-                              border-right: 1px solid ; 
-                              padding-left: 10px;  padding-right: 550px;">
-                                 {{description ? description : '-'}}
-                              </td>
-
-                           </tr>
-                        </tbody>
-
-                     </table>
-
-                  </td>
-               </tr>
-
-
-
-               </td>
-               </tr>
-
-               <tr>
-                  <td colspan="2">
-                     <table border="0" align="center" cellpadding="0" cellspacing="0">
-                        <tbody>
-                           <tr>
-                              <td align="center">
-                                 <h2 class="text-dark" style="font-size:13px;">Powered By
-                                 </h2>
-                                 <img src="assets/img/logo.png" width="207" height="28">
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                  </td>
-               </tr>
-            </table>
-         </div>
-         <div class="modal-footer">
-
-            <button type="button" class="btn btn-default" (click)="modal.dismiss()">
-               Close
-            </button>
-            <button type="button" class="btn btn-success" (click)="downloadPdf()">Download</button>
-         </div>
-      </form>
+      <button type="button" class="btn btn-default" (click)="modal.dismiss()">
+         Close
+      </button>
+      <button type="button" class="btn btn-success" (click)="downloadPdf()">Download</button>
    </div>
 </ng-template>
