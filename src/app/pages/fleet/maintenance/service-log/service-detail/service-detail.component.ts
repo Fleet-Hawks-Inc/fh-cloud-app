@@ -1,16 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ApiService } from '../../../../../services';
+import { ApiService, ListService } from '../../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import Constants from '../../../constants';
-
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import * as html2pdf from "html2pdf.js";
 @Component({
   selector: 'app-service-detail',
   templateUrl: './service-detail.component.html',
   styleUrls: ['./service-detail.component.css']
 })
 export class ServiceDetailComponent implements OnInit {
+  @ViewChild("previewExpTransaction", { static: true })
+  previewExpTransaction: TemplateRef<any>;
+  @ViewChild("logModal", { static: true })
+  logModal: TemplateRef<any>;
   logurl = this.apiService.AssetUrl;
   noRecordMessage: string = Constants.NO_RECORDS_FOUND;
   private logID;
@@ -55,7 +60,12 @@ export class ServiceDetailComponent implements OnInit {
 
   logImages = []
   logDocs = [];
-
+  logModalRef: any;
+  showModal = false;
+  downloadDisabledpdf = true;
+  companyLogo = "";
+  tagLine: "";
+  companyName: any = "";
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   constructor(
@@ -63,11 +73,14 @@ export class ServiceDetailComponent implements OnInit {
     private apiService: ApiService,
     private route: ActivatedRoute,
     private domSanitizer: DomSanitizer,
+    private modalService: NgbModal,
+    private listService: ListService,
   ) { }
 
   ngOnInit() {
     this.logID = this.route.snapshot.params['logID'];
     this.fetchProgramByID();
+    this.getCurrentuser();
     this.fetchAllVehiclesIDs();
     this.fetchAllVendorsIDs();
     // this.fetchAllIssuesIDs();
@@ -83,10 +96,17 @@ export class ServiceDetailComponent implements OnInit {
       next: (result: any) => {
         this.logsData = result.Items[0];
 
-
+        // console.log('this.logsData--', this.logsData)
         this.fetchSelectedIssues(this.logsData.selectedIssues);
 
         result = result.Items[0];
+        // console.log('result--', result)
+        // this.companyLogo = result.carrierDtl.logo;
+        // this.tagLine = result.carrierDtl.tagLine;
+        // this.carrierName = result.carrierDtl.carrierName;
+        // console.log('companylofog', this.companyLogo)
+        // console.log('this.tagLine', this.tagLine)
+        // console.log(' this.carrierName', this.carrierName)
         this.vehicle = result.unitID;
         this.assetID = result.unitID;
         this.vendorID = result.vendorID;
@@ -156,6 +176,7 @@ export class ServiceDetailComponent implements OnInit {
       this.apiService.getData('issues/fetch/selected?issueIds=' + issueIDs)
         .subscribe((result: any) => {
           this.issuesObject = result;
+          // console.log('isse0', this.issuesObject)
         });
     }
   }
@@ -195,4 +216,57 @@ export class ServiceDetailComponent implements OnInit {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }
   }
+
+  openModal() {
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "log-order",
+    };
+    this.logModalRef = this.modalService.open(this.logModal, ngbModalOptions)
+  }
+
+  downloadPaymentPdf() {
+    this.showModal = true;
+    let obj = {
+      showModal: this.showModal,
+      data: this.logsData,
+    };
+    this.listService.triggerDownloadPaymentPdf(obj);
+    // this.downloadDisabledpdf = true;
+
+    setTimeout(() => {
+      this.downloadDisabledpdf = false;
+    }, 15000);
+  }
+
+  downloadPdf() {
+    var data = document.getElementById("log_wrap");
+    html2pdf(data, {
+      margin: 0.5,
+      pagebreak: { mode: 'avoid-all', before: "log_wrap" },
+      filename: "serviceLog.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        dpi: 192,
+        letterRendering: true,
+        allowTaint: true,
+        useCORS: true,
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    });
+    this.logModalRef.close();
+  }
+  getCurrentuser = async () => {
+    // this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+    // const carrierID = this.currentUser.carrierID;
+    const carrierID = localStorage.getItem('xfhCarrierId');
+    let result: any = await this.apiService
+      .getData(`carriers/detail/${carrierID}`)
+      .toPromise();
+    this.companyName = result.companyName;
+    this.companyLogo = result.logo;
+    this.tagLine = result.tagLine;
+  };
+
 }
