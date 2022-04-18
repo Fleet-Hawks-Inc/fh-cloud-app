@@ -170,15 +170,15 @@
                                   </td>
                                   <td>{{ data.crRef ? data.crRef : '-' }}</td>
                                   <td>
-                                    {{ data.totalAmount | number: "1.2-2" }}
+                                    {{ data.totalAmt | number: "1.2-2" }}
                                     {{ data.currency }}
                                   </td>
                                   <td>
-                                    {{ data.pendingAmount | number: "1.2-2" }}
+                                    {{ data.balance | number: "1.2-2" }}
                                     {{ data.currency }}
                                   </td>
                                   <td>
-                                    {{ data.paidAmount | number: "1.2-2" }}
+                                    {{ data.prevPaidAmount | number: "1.2-2" }}
                                   </td>
                                   <td>
                                     <span class="badge badge-dark p-1 text-uppercase">
@@ -192,7 +192,7 @@
                                   </td>
                                   <td class="text-center">
                                     <input type="checkbox" [(ngModel)]="data.fullPayment" name="cnf{{ i }}"
-                                      (change)="assignFullPayment(i, data)" />
+                                      (change)="assignFullPayment(i, data, 'stl')" />
                                   </td>
                                   <td>
                                     <input type="text" class="form-control" [(ngModel)]="data.paidAmount"
@@ -274,7 +274,7 @@
                                   </td>
                                   <td class="text-center">
                                     <input type="checkbox" [(ngModel)]="data.fullPayment" name="advfinal{{ i }}"
-                                      (change)="assignFullPayment(i, data)" />
+                                      (change)="assignFullPayment(i, data, 'unstl')" />
                                   </td>
                                   <td>
                                     <input type="text" class="form-control" [(ngModel)]="data.paidAmount"

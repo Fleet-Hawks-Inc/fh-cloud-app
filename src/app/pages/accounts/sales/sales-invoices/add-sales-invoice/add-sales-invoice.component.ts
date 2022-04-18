@@ -244,17 +244,31 @@ export class AddSalesInvoiceComponent implements OnInit {
     }
   }
 
-  assignFullPayment(index, data) {
+  assignFullPayment(index, data, type: string) {
+
     if (data.fullPayment) {
-      this.customerCredits[index].paidAmount = data.balance.toFixed(2);
-      this.customerCredits[index].paidStatus = true;
-      this.customerCredits[index].selected = true;
+      if (type === 'unstl') {
+        this.customerCredits[index].paidAmount = data.balance.toFixed(2);
+        this.customerCredits[index].paidStatus = true;
+        this.customerCredits[index].selected = true;
+      } else {
+        this.stlCreditsData[index].paidAmount = data.balance.toFixed(2);
+        this.stlCreditsData[index].paidStatus = true;
+        this.stlCreditsData[index].selected = true;
+      }
     } else {
-      this.customerCredits[index].paidAmount = 0;
-      this.customerCredits[index].paidStatus = false;
-      this.customerCredits[index].selected = false;
+      if (type === 'unstl') {
+        this.customerCredits[index].paidAmount = 0;
+        this.customerCredits[index].paidStatus = false;
+        this.customerCredits[index].selected = false;
+      } else {
+        this.stlCreditsData[index].paidAmount = 0;
+        this.stlCreditsData[index].paidStatus = false;
+        this.stlCreditsData[index].selected = false;
+      }
+
     }
-    this.selectedCredits();
+    this.selectedCredits(type);
   }
 
   changeCur() {
@@ -447,63 +461,109 @@ export class AddSalesInvoiceComponent implements OnInit {
   }
 
 
-  selectedCredits() {
+  selectedCredits(type: string) {
     this.saleData.creditIds = [];
     this.saleData.creditData = [];
-    console.log('customerCredits', this.customerCredits)
-    for (const element of this.customerCredits) {
-      console.log('element.selected', element.selected)
-
-      if (element.selected) {
-        if (!this.saleData.creditIds.includes(element.creditID)) {
-          let obj = {
-            creditID: element.creditID,
-            status: element.status,
-            paidAmount:
-              element.status === "not_deducted"
-                ? element.paidAmount
-                : Number(element.totalAmt) - Number(element.balance),
-            totalAmount:
-              element.status === "not_deducted"
-                ? element.amount
-                : element.balance,
-            pendingAmount: element.balance,
-          };
-          this.saleData.creditIds.push(element.creditID);
-          this.saleData.creditData.push(obj);
+    if (type === 'unstl') {
+      for (const element of this.customerCredits) {
+        if (element.selected) {
+          if (!this.saleData.creditIds.includes(element.creditID)) {
+            let obj = {
+              creditID: element.creditID,
+              status: element.status,
+              paidAmount:
+                element.status === "not_deducted"
+                  ? element.paidAmount
+                  : Number(element.totalAmt) - Number(element.balance),
+              totalAmount:
+                element.status === "not_deducted"
+                  ? element.amount
+                  : element.balance,
+              pendingAmount: element.balance,
+            };
+            this.saleData.creditIds.push(element.creditID);
+            this.saleData.creditData.push(obj);
+          }
+        }
+      }
+    } else {
+      console.log('this.stlCreditsData', this.stlCreditsData)
+      for (const element of this.stlCreditsData) {
+        if (element.selected) {
+          if (!this.saleData.creditIds.includes(element.creditID)) {
+            let obj = {
+              creditID: element.creditID,
+              status: element.status,
+              paidAmount:
+                element.status === "deducted"
+                  ? element.paidAmount
+                  : Number(element.paidAmount) - Number(element.balance),
+              totalAmount:
+                element.status === "deducted"
+                  ? element.amount
+                  : element.balance,
+              pendingAmount: element.balance,
+            };
+            this.saleData.creditIds.push(element.creditID);
+            this.saleData.creditData.push(obj);
+          }
         }
       }
     }
     console.log('473', this.saleData)
-    this.creditCalculation();
+    this.creditCalculation(type);
     this.calculateFinalTotal();
   }
 
-  creditCalculation() {
-    this.saleData.total.customerCredit = 0;
-    for (const element of this.customerCredits) {
-      if (element.selected) {
-        this.saleData.total.customerCredit += Number(element.paidAmount);
-        this.saleData.creditData.map((v) => {
-          if (element.creditID === v.creditID) {
-            v.paidAmount = Number(element.paidAmount);
-            v.pendingAmount =
-              Number(element.balance) - Number(element.paidAmount);
-            if (Number(element.paidAmount) === Number(element.balance)) {
-              v.status = "deducted";
-            } else if (Number(element.paidAmount) < Number(element.balance)) {
-              v.status = "partially_deducted";
-            } else {
-              v.status = "not_deducted";
+  creditCalculation(type: string) {
+    if (type === 'unstl') {
+      this.saleData.total.customerCredit = 0;
+      for (const element of this.customerCredits) {
+        if (element.selected) {
+          this.saleData.total.customerCredit += Number(element.paidAmount);
+          this.saleData.creditData.map((v) => {
+            if (element.creditID === v.creditID) {
+              v.paidAmount = Number(element.paidAmount);
+              v.pendingAmount =
+                Number(element.balance) - Number(element.paidAmount);
+              if (Number(element.paidAmount) === Number(element.balance)) {
+                v.status = "deducted";
+              } else if (Number(element.paidAmount) < Number(element.balance)) {
+                v.status = "partially_deducted";
+              } else {
+                v.status = "not_deducted";
+              }
             }
-          }
-        });
-      } else {
-        this.saleData.total.customerCredit = this.saleData.total.customerCredit - Number(element.paidAmount);
+          });
+        } else {
+          this.saleData.total.customerCredit = this.saleData.total.customerCredit - Number(element.paidAmount);
+        }
+      }
+    } else {
+      this.saleData.total.customerCredit = 0;
+      for (const element of this.stlCreditsData) {
+        if (element.selected) {
+          this.saleData.total.customerCredit += Number(element.paidAmount);
+          this.saleData.creditData.map((v) => {
+            if (element.creditID === v.creditID) {
+              v.paidAmount = Number(element.paidAmount);
+              v.pendingAmount =
+                Number(element.balance) - Number(element.paidAmount);
+              if (Number(element.paidAmount) === Number(element.balance)) {
+                v.status = "deducted";
+              } else if (Number(element.paidAmount) < Number(element.balance)) {
+                v.status = "partially_deducted";
+              } else {
+                v.status = "not_deducted";
+              }
+            }
+          });
+        } else {
+          this.saleData.total.customerCredit = this.saleData.total.customerCredit - Number(element.paidAmount);
+        }
       }
     }
-    // this.saleData.total.customerCredit += customerCredit;
-    console.log('customerCredit', this.saleData.total.customerCredit)
+
   }
 
   changeTaxExempt() {
@@ -611,8 +671,7 @@ export class AddSalesInvoiceComponent implements OnInit {
   async fetchStlCreditsData(creditIds) {
     let ids = encodeURIComponent(JSON.stringify(creditIds));
     let result = await this.accountService.getData(`customer-credits/get/selected?entities=${ids}`).toPromise();
-    console.log('result', result);
-    console.log('creditData', this.saleData.creditData);
+
     if (result && result.length > 0) {
       let settledCredits = [];
       if (this.saleData.creditData.length > 0) {
@@ -621,7 +680,6 @@ export class AddSalesInvoiceComponent implements OnInit {
           for (let index = 0; index < this.saleData.creditData.length; index++) {
             const elem2 = this.saleData.creditData[index];
             if (elem1.creditID === elem2.creditID) {
-              console.log('eme')
               let obj = {
                 cCrNo: elem1.cCrNo,
                 creditID: elem1.creditID,
@@ -636,13 +694,12 @@ export class AddSalesInvoiceComponent implements OnInit {
                 totalAmt: elem2.totalAmount,
                 selected: true
               }
-              this.customerCredits.push(obj);
+              settledCredits.push(obj);
             }
           }
         }
         this.stlCreditsData = settledCredits;
-        console.log('stlCreditsData', this.stlCreditsData)
-        console.log('customerCredits', this.customerCredits)
+
       }
     }
   }
