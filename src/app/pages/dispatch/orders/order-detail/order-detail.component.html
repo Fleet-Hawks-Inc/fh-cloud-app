@@ -1749,7 +1749,8 @@
                                 <span style="font-size: 12px">
                                   <b>Invoice Date</b>
                                 </span>
-                                {{ today | date: "yyyy/MM/dd" }}
+                          <span *ngIf="invDate">{{ invDate | date: "yyyy/MM/dd" }}</span>
+                          <span *ngIf="!invDate">{{ today | date: "yyyy/MM/dd" }}</span>
                               </p>
                               <p style="margin: 0; color: #000">
                                 <span style="font-size: 12px">
