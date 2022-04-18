@@ -152,20 +152,14 @@ export class LoginComponent implements OnInit {
             return
           }
           else {
-            console.log('isActivatedUser.userRoles', isActivatedUser.userRoles)
             let carrierID = await this.apiService.getCarrierID();
-            console.log('carrierID', carrierID)
             localStorage.setItem('xfhCarrierId', carrierID);
             if(isActivatedUser.userRoles != "orgAdmin") {
               this.router.navigate(['/Map-Dashboard'])
               localStorage.setItem("subCompany", 'no')
             } else {
-              // let carrierID = await this.apiService.getCarrierID();
-              // console.log('carrierID', carrierID)
-              // localStorage.setItem('xfhCarrierId', carrierID);
               this.apiService.getData(`carriers/${carrierID}`).subscribe((res) => {
                 if(res.Items.length > 0) {
-                  console.log('res.Items[0]', res.Items[0])
                   if ('isProfileComplete' in res.Items[0]) {
                     if (res.Items[0].isProfileComplete) {
                       if(res.Items[0].subCompIDs && res.Items[0].subCompIDs.length > 0) {
