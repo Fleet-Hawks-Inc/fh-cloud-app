@@ -2639,7 +2639,6 @@ export class AddSettlementComponent implements OnInit {
         this.prevSelectEntries.splice(ind, 1);
       }
     });
-
     if (!this.deletedFuelEnteries.includes(fuelID)) {
       this.deletedFuelEnteries.push(fuelID);
       // let ind = this.settlementData.fuelIds.indexOf(fuelID);
@@ -2651,13 +2650,15 @@ export class AddSettlementComponent implements OnInit {
         if (v.fuelID === fuelID) {
           let ind = this.settlementData.fuelData.indexOf(v);
           this.settlementData.fuelData.splice(ind, 1);
+
+          this.preFuelEntriesTotal();
         }
       });
       // this.prevSelectEntries = this.settlementData.fuelData;
       // this.prevSelectedIds = this.settlementData.fuelIds;
       // this.fuelTotal();
       // this.settlementData.fuelData = [];
-      this.preFuelEntriesTotal();
+      
       this.dummyDelEntry.push(this.selectedFuelEnteries[index]);
       this.fuelEnteries.push(this.selectedFuelEnteries[index]);
       this.selectedFuelEnteries.splice(index, 1);
