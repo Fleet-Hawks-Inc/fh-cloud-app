@@ -8,7 +8,7 @@ import { HereMapService } from '../../../../services';
 import { environment } from '../../../../../environments/environment';
 import * as moment from 'moment';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
-
+import {RouteManagementServiceService} from 'src/app/services/route-management-service.service'
 
 declare var H: any;
 declare var $: any;
@@ -117,7 +117,7 @@ export class FuelEntryDetailsComponent implements OnInit {
   driverList: any = {};
   wexCategories: any = {};
   Error = '';
-
+  sessionID:string;
   Success = '';
   constructor(
     private apiService: ApiService,
@@ -125,8 +125,10 @@ export class FuelEntryDetailsComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService, private HereMap: HereMapService,
     private httpClient: HttpClient,
-    private countryStateCity: CountryStateCityService
+    private countryStateCity: CountryStateCityService,
+    private routeManagementService:RouteManagementServiceService
   ) {
+    this.sessionID=this.routeManagementService.fuelUpdateSessionID
   }
 
   ngOnInit() {
