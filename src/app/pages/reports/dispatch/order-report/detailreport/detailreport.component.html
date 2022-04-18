@@ -263,13 +263,11 @@
                                     <span
                                       *ngFor="let pickup of shipper.pickupPoint"
                                     >
-                                      {{ pickup.address.address }}&nbsp;{{
-                                        pickup.address.cityName
-                                      }}&nbsp;
-                                      {{ pickup.address.stateName }}&nbsp;{{
-                                        pickup.address.countryCode
-                                      }}&nbsp; {{ pickup.address.zipCode
-                                      }}<br />
+                                      {{ pickup.address.address }}
+                                      {{ pickup.address.cityName }}
+                                      {{ pickup.address.stateName }}
+                                      {{ pickup.address.countryCode }}
+                                      {{ pickup.address.zipCode }}<br />
 
                                       <span>{{ pickup.dateAndTime }}</span
                                       ><br />
@@ -295,12 +293,11 @@
                             <div *ngFor="let receiver of item.receivers">
                               {{ customers[receiver.receiverID] }}
                               <span *ngFor="let drop of receiver.dropPoint">
-                                {{ drop.address.address }}&nbsp;{{
-                                  drop.address.cityName
-                                }}
-                                &nbsp; {{ drop.address.stateName }}&nbsp;{{
-                                  drop.address.countryCode
-                                }}&nbsp; {{ drop.address.zipCode }}<br />
+                                {{ drop.address.address
+                                }}{{ drop.address.cityName }}
+                                {{ drop.address.stateName
+                                }}{{ drop.address.countryCode }}
+                                {{ drop.address.zipCode }}<br />
                                 <span>{{ drop.dateAndTime }}</span> <br />
                                 <span *ngIf="drop.commodity.length > 0">
                                   <span
