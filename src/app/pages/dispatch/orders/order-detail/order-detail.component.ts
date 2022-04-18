@@ -424,7 +424,7 @@ export class OrderDetailComponent implements OnInit {
         if (result.invData && result.invData.invID && result.invData.invID != '') {
           this.invoiceID = result.invData.invID;
           this.invDate = await this.getInvDate(this.invoiceID)
-          
+
         }
         if (
           result.invoiceGenerate ||
@@ -438,7 +438,7 @@ export class OrderDetailComponent implements OnInit {
           this.hideEdit = false;
         }
         this.orderStatus = result.orderStatus;
-        if(this.orderStatus != 'attached' && this.orderStatus != 'confirmed' && this.orderStatus != 'created') {
+        if (this.orderStatus != 'attached' && this.orderStatus != 'confirmed' && this.orderStatus != 'created') {
           this.invBtnDisableStat = false;
         }
         this.cusAddressID = result.cusAddressID;
@@ -754,11 +754,6 @@ export class OrderDetailComponent implements OnInit {
   }
   async generatePDF() {
     this.isShow = true;
-
-
-    // await this.saveInvoice();
-    // await this.invoiceGenerated();
-    // await this.fetchOrder();
     this.generateBtnDisabled = true;
     await this.saveInvoice();
 
@@ -871,16 +866,6 @@ export class OrderDetailComponent implements OnInit {
     });
   }
 
-  // async invoiceGenerated() {
-  //   this.invGenStatus = true;
-  //   let result = await this.apiService
-  //     .getData(
-  //       `orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`
-  //     )
-  //     .toPromise();
-  //   this.isInvoice = result.Attributes.invoiceGenerate;
-  // }
-
   previewModal() {
     $("#templateSelectionModal").modal("hide");
     setTimeout(function () {
@@ -890,13 +875,7 @@ export class OrderDetailComponent implements OnInit {
 
   // delete uploaded images and documents
   async delete(type: string, name: string, index) {
-    // let record = {
-    //   eventID: this.orderID,
-    //   type: type,
-    //   name: name,
-    //   date: this.createdDate,
-    //   time: this.createdTime
-    // }
+
     if (confirm("Are you sure you want to delete?") === true) {
       await this.apiService
         .deleteData(`orders/uploadDelete/${this.orderID}/${name}/${type}`)
@@ -949,91 +928,11 @@ export class OrderDetailComponent implements OnInit {
 
     let result: any = await this.apiService
       .postData(`orders/uploadDocs/${this.orderID}/${this.docType}`, formData, true).toPromise()
+    this.uploadedDocs = [];
     if (result && result.length > 0) {
       await this.showDocs(result)
     }
   }
-
-  /*
-   * Selecting files before uploading
-   */
-  async selectDocuments(event) {
-
-    let files = [];
-    this.uploadedDocs = [];
-    files = [...event.target.files];
-    let totalCount = this.docs.length + files.length;
-
-    if (totalCount > 4) {
-      this.uploadedDocs = [];
-      $("#bolUpload").val("");
-      this.toastr.error("Only 4 documents can be uploaded");
-      return false;
-    } else {
-      for (let i = 0; i < files.length; i++) {
-        const element = files[i];
-        let name = element.name.split(".");
-        let ext = name[name.length - 1];
-
-        if (ext != "jpg" && ext != "jpeg" && ext != "png" && ext != "pdf") {
-          $("#bolUpload").val("");
-          this.toastr.error("Only image and pdf files are allowed");
-          return false;
-        }
-      }
-      for (let i = 0; i < files.length; i++) {
-        this.uploadedDocs.push(files[i]);
-      }
-      // create form data instance
-      const formData = new FormData();
-
-      // append photos if any
-      for (let i = 0; i < this.uploadedDocs.length; i++) {
-        formData.append("uploadedDocs", this.uploadedDocs[i]);
-      }
-
-      let result: any = await this.apiService
-        .postData(`orders/uploadDocs/${this.orderID}`, formData, true).toPromise()
-      this.invDocs = [];
-      this.uploadedDocs = [];
-      if (result.length > 0) {
-        result.forEach((x: any) => {
-          let obj: any = {};
-          if (
-            x.storedName.split(".")[1] === "jpg" ||
-            x.storedName.split(".")[1] === "png" ||
-            x.storedName.split(".")[1] === "jpeg"
-          ) {
-            obj = {
-              imgPath: `${x.urlPath}`,
-              docPath: `${x.urlPath}`,
-              displayName: x.displayName,
-              name: x.storedName,
-              ext: x.storedName.split(".")[1],
-              type: x.type ? x.type : 'other'
-            };
-          } else {
-            obj = {
-              imgPath: "assets/img/icon-pdf.png",
-              docPath: `${x.urlPath}`,
-              displayName: x.displayName,
-              name: x.storedName,
-              ext: x.storedName.split(".")[1],
-              type: x.type ? x.type : 'other'
-            };
-          }
-          this.invDocs.push(obj);
-        });
-      }
-      this.attachedDocs = this.invDocs;
-      this.newInvDocs = this.invDocs;
-      this.toastr.success("BOL/POD uploaded successfully");
-      this.uploadBol.nativeElement.value = "";
-      await this.fetchOrder();
-    }
-  }
-
-  setSrcValue() { }
 
   caretClickShipper(i, j) {
     if (
