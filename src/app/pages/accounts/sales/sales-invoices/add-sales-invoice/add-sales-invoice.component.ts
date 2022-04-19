@@ -19,6 +19,8 @@ export class AddSalesInvoiceComponent implements OnInit {
   submitDisabled = false;
   response: any = '';
   errors = {};
+  creditIds = [];
+  creditData = [];
   saleData = {
     txnDate: moment().format('YYYY-MM-DD'),
     currency: 'CAD',
@@ -260,11 +262,9 @@ export class AddSalesInvoiceComponent implements OnInit {
       if (type === 'unstl') {
         this.customerCredits[index].paidAmount = 0;
         this.customerCredits[index].paidStatus = false;
-        this.customerCredits[index].selected = false;
       } else {
         this.stlCreditsData[index].paidAmount = 0;
         this.stlCreditsData[index].paidStatus = false;
-        this.stlCreditsData[index].selected = false;
       }
 
     }
@@ -462,8 +462,7 @@ export class AddSalesInvoiceComponent implements OnInit {
 
 
   selectedCredits(type: string) {
-    this.saleData.creditIds = [];
-    this.saleData.creditData = [];
+
     if (type === 'unstl') {
       for (const element of this.customerCredits) {
         if (element.selected) {
@@ -481,13 +480,15 @@ export class AddSalesInvoiceComponent implements OnInit {
                   : element.balance,
               pendingAmount: element.balance,
             };
-            this.saleData.creditIds.push(element.creditID);
-            this.saleData.creditData.push(obj);
+            this.creditIds = [...this.creditIds, element.creditID];
+            this.creditData = [...this.creditData, obj];
           }
+        } else {
+
         }
       }
-    } else {
-      console.log('this.stlCreditsData', this.stlCreditsData)
+    } else if (type === 'stl') {
+
       for (const element of this.stlCreditsData) {
         if (element.selected) {
           if (!this.saleData.creditIds.includes(element.creditID)) {
@@ -500,69 +501,66 @@ export class AddSalesInvoiceComponent implements OnInit {
                   : Number(element.paidAmount) - Number(element.balance),
               totalAmount:
                 element.status === "deducted"
-                  ? element.amount
-                  : element.balance,
-              pendingAmount: element.balance,
+                  ? element.totalAmt
+                  : Number(element.paidAmount) - Number(element.balance),
+              pendingAmount: element.status === "deducted"
+                ? element.totalAmt
+                : Number(element.paidAmount) - Number(element.balance),
             };
-            this.saleData.creditIds.push(element.creditID);
-            this.saleData.creditData.push(obj);
+            this.creditIds = [...this.creditIds, element.creditID];
+            this.creditData = [...this.creditData, obj];
           }
         }
       }
     }
-    console.log('473', this.saleData)
-    this.creditCalculation(type);
+    this.saleData.creditIds = this.creditIds;
+    this.saleData.creditData = this.creditData;
+    this.creditCalculation();
     this.calculateFinalTotal();
   }
 
-  creditCalculation(type: string) {
-    if (type === 'unstl') {
-      this.saleData.total.customerCredit = 0;
-      for (const element of this.customerCredits) {
-        if (element.selected) {
-          this.saleData.total.customerCredit += Number(element.paidAmount);
-          this.saleData.creditData.map((v) => {
-            if (element.creditID === v.creditID) {
-              v.paidAmount = Number(element.paidAmount);
-              v.pendingAmount =
-                Number(element.balance) - Number(element.paidAmount);
-              if (Number(element.paidAmount) === Number(element.balance)) {
-                v.status = "deducted";
-              } else if (Number(element.paidAmount) < Number(element.balance)) {
-                v.status = "partially_deducted";
-              } else {
-                v.status = "not_deducted";
-              }
+  creditCalculation() {
+    this.saleData.total.customerCredit = 0;
+    let creditTotal = 0;
+    for (const element of this.customerCredits) {
+      if (element.selected) {
+        creditTotal += Number(element.paidAmount);
+        this.saleData.creditData.map((v) => {
+          if (element.creditID === v.creditID) {
+            v.paidAmount = Number(element.paidAmount);
+            v.pendingAmount =
+              Number(element.balance) - Number(element.paidAmount);
+            if (Number(element.paidAmount) === Number(element.balance)) {
+              v.status = "deducted";
+            } else if (Number(element.paidAmount) < Number(element.balance)) {
+              v.status = "partially_deducted";
+            } else {
+              v.status = "not_deducted";
             }
-          });
-        } else {
-          this.saleData.total.customerCredit = this.saleData.total.customerCredit - Number(element.paidAmount);
-        }
-      }
-    } else {
-      this.saleData.total.customerCredit = 0;
-      for (const element of this.stlCreditsData) {
-        if (element.selected) {
-          this.saleData.total.customerCredit += Number(element.paidAmount);
-          this.saleData.creditData.map((v) => {
-            if (element.creditID === v.creditID) {
-              v.paidAmount = Number(element.paidAmount);
-              v.pendingAmount =
-                Number(element.balance) - Number(element.paidAmount);
-              if (Number(element.paidAmount) === Number(element.balance)) {
-                v.status = "deducted";
-              } else if (Number(element.paidAmount) < Number(element.balance)) {
-                v.status = "partially_deducted";
-              } else {
-                v.status = "not_deducted";
-              }
-            }
-          });
-        } else {
-          this.saleData.total.customerCredit = this.saleData.total.customerCredit - Number(element.paidAmount);
-        }
+          }
+        });
       }
     }
+    for (const element of this.stlCreditsData) {
+      if (element.selected) {
+        creditTotal += Number(element.paidAmount);
+        this.saleData.creditData.map((v) => {
+          if (element.creditID === v.creditID) {
+            v.paidAmount = Number(element.paidAmount);
+            v.pendingAmount =
+              Number(element.totalAmt) - Number(element.balance);
+            if (Number(element.paidAmount) === Number(element.prevPaidAmount)) {
+              v.status = "deducted";
+            } else if (Number(element.paidAmount) < Number(element.prevPaidAmount)) {
+              v.status = "partially_deducted";
+            } else {
+              v.status = "not_deducted";
+            }
+          }
+        });
+      }
+    }
+    this.saleData.total.customerCredit = creditTotal;
 
   }
 
@@ -643,6 +641,8 @@ export class AddSalesInvoiceComponent implements OnInit {
 
     this.saleData.creditData = result.creditData;
     this.saleData.creditIds = result.creditIds;
+    this.creditIds = result.creditIds;
+    this.creditData = result.creditData;
 
     this.saleData.charges = result.charges;
     this.saleData.remarks = result.remarks;
@@ -656,14 +656,8 @@ export class AddSalesInvoiceComponent implements OnInit {
       await this.fetchStlCreditsData(this.saleData.creditIds);
     }
 
-    // this.saleData.sOrderDetails = result.sOrderDetails;
-    // this.saleData.creditIds.forEach(elem => {
-    //   this.customerCredits.map(item => {
-    //     if (item.creditID === elem) {
-    //       item.selected = true;
-    //     }
-    //   })
-    // })
+    this.saleData.sOrderDetails = result.sOrderDetails;
+
     this.saleData.total = result.total;
 
   }
