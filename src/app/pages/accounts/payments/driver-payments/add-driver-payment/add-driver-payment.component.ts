@@ -724,7 +724,8 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
       isVendorPayment: this.isVendor,
       vendorId: this.paymentData.vendorId,
       gstHstPer: this.paymentData.gstHstPer,
-      gstHstAmt: this.paymentData.gstHstAmt
+      gstHstAmt: this.paymentData.gstHstAmt,
+      settlementIds: this.paymentData.settlementIds
     };
 
     this.listService.openPaymentChequeModal(obj);
