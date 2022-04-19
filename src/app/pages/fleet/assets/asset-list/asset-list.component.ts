@@ -191,6 +191,7 @@ export class AssetListComponent implements OnInit {
           if (result.length > 0) {
              this.suggestedAssets = result;
                     } else {
+                      this.suggestedAssets = [];
               }
         });
     } else {
