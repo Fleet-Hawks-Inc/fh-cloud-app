@@ -15,7 +15,7 @@ import { ListService } from "../../../../services";
 
 import { HttpClient } from "@angular/common/http";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
-
+import {RouteManagementServiceService} from 'src/app/services/route-management-service.service'
 declare var $: any;
 
 @Component({
@@ -109,6 +109,7 @@ export class AddFuelEntryComponent implements OnInit {
   Success = "";
   submitDisabled = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
+  sessionID:string;
 
   constructor(
     private apiService: ApiService,
@@ -119,7 +120,9 @@ export class AddFuelEntryComponent implements OnInit {
     private dateAdapter: NgbDateAdapter<string>,
     private listService: ListService,
     private httpClient: HttpClient,
-    private countryStateCity: CountryStateCityService
+    private countryStateCity: CountryStateCityService,
+    private routeManagementService:RouteManagementServiceService
+
   ) {
     this.selectedFileNames = new Map<any, any>();
     const date = new Date();
@@ -128,6 +131,7 @@ export class AddFuelEntryComponent implements OnInit {
       month: 12,
       day: date.getDate(),
     };
+    this.sessionID=this.routeManagementService.fuelUpdateSessionID;
   }
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;

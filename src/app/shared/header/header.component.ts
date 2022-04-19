@@ -203,8 +203,9 @@ export class HeaderComponent implements OnInit {
   }
 
   getCurrentuser = async () => {
+    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     const selectedCarrier = localStorage.getItem('xfhCarrierId');
-    if (selectedCarrier) {
+    if (selectedCarrier && this.currentUser.userRoles === "orgAdmin") {
       const res = await this.apiService.getData(`carriers/get/detail/${selectedCarrier}`).toPromise()
       this.userRole = 'Super Admin';
       this.currentUser = `${res.Items[0].firstName} ${res.Items[0].lastName}`;

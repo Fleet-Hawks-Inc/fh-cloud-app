@@ -89,9 +89,9 @@ const routes: Routes = [
     data: { title: "Add Fuel" },
   },
   {
-    path: "list",
+    path: "list/:sessionID",
     component: FuelEntryListComponent,
-    data: { title: "Fuel List" },
+    data: { title: "Fuel List", reuseRoute: true },
   },
   {
     path: "edit/:fuelID",

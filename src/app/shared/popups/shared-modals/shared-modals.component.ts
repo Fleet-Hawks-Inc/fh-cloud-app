@@ -549,18 +549,9 @@ export class SharedModalsComponent implements OnInit {
       });
     }
   }
-
   fetchTasks() {
-    this.apiService.getData("tasks").subscribe({
-      error: () => { },
-      next: (result: any) => {
-        // this.tasks = result.Items;
-        result.Items.forEach((element) => {
-          if (element.taskType === "service") {
-            this.tasks.push(element);
-          }
-        });
-      },
+    this.apiService.getData(`tasks?type=service`).subscribe((result: any) => {
+      this.tasks = result;
     });
   }
 
