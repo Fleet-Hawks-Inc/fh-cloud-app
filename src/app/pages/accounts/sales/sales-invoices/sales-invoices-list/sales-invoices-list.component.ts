@@ -82,7 +82,7 @@ export class SalesInvoicesListComponent implements OnInit {
             } else {
               this.lastItemSK = 'end';
             }
-            // this.loaded = true;
+            this.loaded = true;
 
           }
         });
