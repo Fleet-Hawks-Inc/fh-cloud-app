@@ -196,7 +196,7 @@
                                   </td>
                                   <td>
                                     <input type="text" class="form-control" [(ngModel)]="data.paidAmount"
-                                      (input)="selectedCredits()" name="cns{{ i }}" [disabled]="data.paidStatus" />
+                                      (input)="selectedCredits('stl')" name="cns{{ i }}" [disabled]="data.paidStatus" />
                                     <label id="stlErr{{ i }}" class="error">
                                       <!-- {{data.errText}} -->
                                     </label>
@@ -278,7 +278,7 @@
                                   </td>
                                   <td>
                                     <input type="text" class="form-control" [(ngModel)]="data.paidAmount"
-                                      (input)="selectedCredits()" name="advPaidAmount{{ i }}"
+                                      (input)="selectedCredits('unstl')" name="advPaidAmount{{ i }}"
                                       [disabled]="data.paidStatus" />
                                     <label id="stlErr{{ i }}" class="error">
                                       <!-- {{data.errText}} -->
