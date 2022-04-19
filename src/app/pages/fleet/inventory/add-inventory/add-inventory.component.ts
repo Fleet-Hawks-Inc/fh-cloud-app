@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService, ListService } from '../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
+import { NgForm } from "@angular/forms";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { from, Subject, throwError } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
-
+import { ModalService } from "../../../../services/modal.service";
 import { HttpClient } from '@angular/common/http';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
 
 declare var $: any;
 
@@ -17,6 +20,8 @@ declare var $: any;
   styleUrls: ['./add-inventory.component.css'],
 })
 export class AddInventoryComponent implements OnInit {
+  @ViewChild('inventoryF') inventoryF: NgForm;
+  takeUntil$ = new Subject();
   Asseturl = this.apiService.AssetUrl;
   /**
    * form props
@@ -82,6 +87,7 @@ export class AddInventoryComponent implements OnInit {
   cityName = '';
   zipCode = '';
   address = '';
+  isSubmitted = false;
   warehoseForm = '';
   hasWarehouseSuccess = false;
   warehouseSuccess = '';
@@ -106,6 +112,8 @@ export class AddInventoryComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private toastr: ToastrService,
     private httpClient: HttpClient,
+    private modalService: NgbModal,
+    private modalServiceOwn: ModalService,
     private listService: ListService,
     private countryStateCity: CountryStateCityService
   ) {
@@ -123,6 +131,25 @@ export class AddInventoryComponent implements OnInit {
     }
     this.disableButton()
   }
+
+  canLeave(): boolean {
+     if (this.inventoryF.dirty && !this.isSubmitted) {
+       if (!this.modalService.hasOpenModals()) {
+         let ngbModalOptions: NgbModalOptions = {
+           backdrop: "static",
+           keyboard: false,
+           size: "sm",
+         };
+         this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
+       }
+       return false;
+     }
+     this.modalServiceOwn.triggerRedirect.next(true);
+     this.takeUntil$.next();
+    this.takeUntil$.complete();
+    return true;
+  }
+
 
   /*
   * Selecting files before uploading
@@ -362,6 +389,7 @@ export class AddInventoryComponent implements OnInit {
           this.warrantyTime = '',
             this.warrantyUnit = ''
           this.toastr.success('Inventory Added Successfully');
+          this.isSubmitted = true;
           this.router.navigateByUrl('/fleet/inventory/list');
           if (this.requiredItem) {
             this.deleteRequiredItem(this.requiredItem);
@@ -462,6 +490,7 @@ export class AddInventoryComponent implements OnInit {
         } else {
 
           this.response = res;
+           this.isSubmitted = true;
           this.toastr.success('Inventory Updated Successfully');
           this.router.navigateByUrl('/fleet/inventory/list');
         }

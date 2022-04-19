@@ -24,6 +24,7 @@ const routes: Routes = [
   {
     path: "add",
     component: AddInventoryComponent,
+    canDeactivate: [unsavedChangesGuard],
     data: { title: "Add Inventory" },
   },
   {
@@ -119,8 +120,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     InfiniteScrollModule,
     ChartsModule,
   ],
-  providers: [
-    unsavedChangesGuard,
+  providers: [unsavedChangesGuard,
     { provide: NgbDateAdapter, useClass: CustomAdapter },
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
