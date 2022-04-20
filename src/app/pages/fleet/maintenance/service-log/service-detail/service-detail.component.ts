@@ -95,18 +95,9 @@ export class ServiceDetailComponent implements OnInit {
       error: () => { },
       next: (result: any) => {
         this.logsData = result.Items[0];
-
-        // console.log('this.logsData--', this.logsData)
         this.fetchSelectedIssues(this.logsData.selectedIssues);
 
         result = result.Items[0];
-        // console.log('result--', result)
-        // this.companyLogo = result.carrierDtl.logo;
-        // this.tagLine = result.carrierDtl.tagLine;
-        // this.carrierName = result.carrierDtl.carrierName;
-        // console.log('companylofog', this.companyLogo)
-        // console.log('this.tagLine', this.tagLine)
-        // console.log(' this.carrierName', this.carrierName)
         this.vehicle = result.unitID;
         this.assetID = result.unitID;
         this.vendorID = result.vendorID;
@@ -176,7 +167,6 @@ export class ServiceDetailComponent implements OnInit {
       this.apiService.getData('issues/fetch/selected?issueIds=' + issueIDs)
         .subscribe((result: any) => {
           this.issuesObject = result;
-          // console.log('isse0', this.issuesObject)
         });
     }
   }
@@ -225,21 +215,6 @@ export class ServiceDetailComponent implements OnInit {
     };
     this.logModalRef = this.modalService.open(this.logModal, ngbModalOptions)
   }
-
-  downloadPaymentPdf() {
-    this.showModal = true;
-    let obj = {
-      showModal: this.showModal,
-      data: this.logsData,
-    };
-    this.listService.triggerDownloadPaymentPdf(obj);
-    // this.downloadDisabledpdf = true;
-
-    setTimeout(() => {
-      this.downloadDisabledpdf = false;
-    }, 15000);
-  }
-
   downloadPdf() {
     var data = document.getElementById("log_wrap");
     html2pdf(data, {
@@ -258,8 +233,6 @@ export class ServiceDetailComponent implements OnInit {
     this.logModalRef.close();
   }
   getCurrentuser = async () => {
-    // this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    // const carrierID = this.currentUser.carrierID;
     const carrierID = localStorage.getItem('xfhCarrierId');
     let result: any = await this.apiService
       .getData(`carriers/detail/${carrierID}`)
