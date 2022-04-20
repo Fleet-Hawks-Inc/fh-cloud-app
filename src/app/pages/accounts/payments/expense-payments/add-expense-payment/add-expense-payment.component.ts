@@ -471,6 +471,7 @@ export class AddExpensePaymentComponent implements OnInit {
       finalAmount: this.paymentData.finalAmount,
       txnDate: this.paymentData.txnDate,
       page: "addForm",
+      settlementIds: this.paymentData.settlementIds
     };
     this.listService.openPaymentChequeModal(obj);
   }
