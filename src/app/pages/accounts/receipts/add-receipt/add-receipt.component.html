@@ -208,7 +208,7 @@
                               type="number"
                               [(ngModel)]="invOrder.discount"
                               name="invOrder.discount{{ i }}"
-                              class="form-control input-sm p-0"
+                              class="form-control input-sm"
                               min="0"
                               (change)="applyDiscount(i, 'order')"
                             />
@@ -230,7 +230,7 @@
                               max="{{ invOrder.balance }}"
                               min="0"
                               (change)="applyDiscount(i, 'order')"
-                              class="form-control input-sm p-0"
+                              class="form-control input-sm"
                             />
                           </td>
                         </tr>
@@ -263,7 +263,7 @@
                               name="inv.discount{{ j }}"
                               min="0"
                               (change)="applyDiscount(j, 'inv')"
-                              class="form-control input-sm p-0"
+                              class="form-control input-sm"
                             />
                           </td>
                           <td class="text-center">
@@ -283,7 +283,7 @@
                               min="0"
                               [disabled]="inv.payDisable"
                               (change)="applyDiscount(j, 'inv')"
-                              class="form-control input-sm p-0"
+                              class="form-control input-sm"
                             />
                           </td>
                         </tr>
@@ -329,7 +329,9 @@
                         >
                           <td>{{ data.charge }}</td>
                           <td>{{ data.desc }}</td>
-                          <td>{{ data.amount }} {{ receiptData.recAmountCur }}</td>
+                          <td>
+                            {{ data.amount }} {{ receiptData.recAmountCur }}
+                          </td>
                           <td>
                             <span
                               class="badge badge-dark p-2"
@@ -444,7 +446,9 @@
                         >
                           <td>{{ data.charge }}</td>
                           <td>{{ data.desc }}</td>
-                          <td>{{ data.amount }} {{ receiptData.recAmountCur }}</td>
+                          <td>
+                            {{ data.amount }} {{ receiptData.recAmountCur }}
+                          </td>
                           <td>
                             <span
                               class="badge badge-dark p-2"
@@ -634,7 +638,8 @@
                         <div
                           class="row"
                           *ngIf="
-                            receiptData.recAmountCur !== receiptData.recAmountCur
+                            receiptData.recAmountCur !==
+                            receiptData.recAmountCur
                           "
                         >
                           <div class="col-lg-12">

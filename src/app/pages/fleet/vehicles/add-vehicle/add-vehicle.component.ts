@@ -394,16 +394,6 @@ export class AddVehicleComponent implements OnInit {
           programsList.push(element2);
           ids.push(element2.programID);
         }
-
-        if (
-          element2.isDeleted === 1 &&
-          this.servicePrograms.includes(element2.programID)
-        ) {
-          let ind = this.servicePrograms.indexOf(
-            this.servicePrograms[element2.programID]
-          );
-          this.servicePrograms.splice(ind, 1);
-        }
       });
     });
   }
