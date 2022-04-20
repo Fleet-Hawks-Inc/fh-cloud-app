@@ -2,7 +2,7 @@
   <div class="inner-wrapper">
     <section role="main" class="content-body">
       <header class="page-header pr19 pl7">
-        <form class="form-horizontal" method="get">
+        <form class="form-horizontal" method="get" autocomplete="off">
           <div class="row" style="padding-top: 10px">
             <div class="col-md-2 col-lg-2">
               <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">
@@ -763,7 +763,7 @@
                         >
                         <ng-select
                           [multiple]="true"
-                          class="form-control populate"
+                          class="form-control"
                           [(ngModel)]="userData.userLoginData.userRoles"
                           name="userRoles"
                           placeholder="Select User Type"
@@ -838,6 +838,7 @@
                             [type]="fieldTextType ? 'text' : 'password'"
                             (input)="validatePassword($event.target.value)"
                             class="form-control"
+                            autocomplete="off"
                           />
                           <div class="input-group-append">
                             <span class="input-group-text eye">

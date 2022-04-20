@@ -36,7 +36,7 @@ export class PaymentPdfsComponent implements OnInit {
   };
   settlements = [];
   // paymentInfo: any;
-  paymentSelected=[]
+  paymentSelected = []
   currency: string;
   payPeriod: any;
   paymentData = {
@@ -117,11 +117,13 @@ export class PaymentPdfsComponent implements OnInit {
   modelRef: any;
   subTotal = 0;
   totalSettmnt: any;
-  paymentAbr={"ppm": "Pay Per Mile",
-  "pp":"Percentage",
-  "ppd":"Pay Per Delivery",
-  "pph":"Pay Per Hour",
-  "pfr":"Pay Flat Rate"}
+  paymentAbr = {
+    "ppm": "Pay Per Mile",
+    "pp": "Percentage",
+    "ppd": "Pay Per Delivery",
+    "pph": "Pay Per Hour",
+    "pfr": "Pay Flat Rate"
+  }
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
       async (res: any) => {
@@ -340,25 +342,27 @@ export class PaymentPdfsComponent implements OnInit {
         `driver-payments/annual/payment/${this.paymentData.entityId}/${this.pdfDetails.payYear}`
       )
       .toPromise();
-    this.annualResult = result[0];
-    if (this.annualResult.regEarning === undefined) {
-      this.annualResult.regEarning = 0;
-    }
-    if (this.annualResult.vacationPay === undefined) {
-      this.annualResult.vacationPay = 0;
-    }
-    if (this.annualResult.workerBenefit === undefined) {
-      this.annualResult.workerBenefit = 0;
-    }
+    if (result && result.length > 0) {
+      this.annualResult = result[0];
+      if (this.annualResult.regEarning === undefined) {
+        this.annualResult.regEarning = 0;
+      }
+      if (this.annualResult.vacationPay === undefined) {
+        this.annualResult.vacationPay = 0;
+      }
+      if (this.annualResult.workerBenefit === undefined) {
+        this.annualResult.workerBenefit = 0;
+      }
 
-    this.annualResult.eiInsurable =
-      Number(this.annualResult.regEarning) +
-      Number(this.annualResult.vacationPay);
+      this.annualResult.eiInsurable =
+        Number(this.annualResult.regEarning) +
+        Number(this.annualResult.vacationPay);
 
-    // eiInsurable
-    this.annualResult.incomeTax =
-      Number(this.annualResult.federalTax) +
-      Number(this.annualResult.provincialTax);
+      // eiInsurable
+      this.annualResult.incomeTax =
+        Number(this.annualResult.federalTax) +
+        Number(this.annualResult.provincialTax);
+    }
   }
 
   async fetchTrips() {
