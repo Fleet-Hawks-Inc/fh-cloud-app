@@ -228,14 +228,14 @@ export class AddVendorPaymentComponent implements OnInit {
   }
 
   billsTotal() {
-    this.paymentData.total.subTotal = 0;
+    let subtotal = 0;
     this.paymentData.billIds = [];
     this.paymentData.billData = [];
 
     for (let i = 0; i < this.bills.length; i++) {
       const element = this.bills[i];
       if (element.selected) {
-        this.paymentData.total.subTotal += Number(element.paidAmount);
+        subtotal += Number(element.paidAmount);
 
         let status = "";
         if (Number(element.paidAmount) === Number(element.balance)) {
@@ -263,11 +263,13 @@ export class AddVendorPaymentComponent implements OnInit {
         }
       }
     }
+    this.paymentData.total.subTotal = subtotal + this.paymentData.total.detailTotal;
     this.calculateFinalTotal();
   }
 
   calculateFinalTotal() {
-    this.paymentData.total.finalTotal = this.paymentData.total.detailTotal +
+
+    this.paymentData.total.finalTotal =
       this.paymentData.total.subTotal - this.paymentData.total.advTotal;
   }
 
@@ -392,7 +394,7 @@ export class AddVendorPaymentComponent implements OnInit {
     this.paymentData.detail.forEach((element) => {
       this.paymentData.total.detailTotal += Number(element.amount);
     });
-    this.calculateFinalTotal();
+    this.billsTotal();
   }
 
   calcDetailAmount(index: number) {
