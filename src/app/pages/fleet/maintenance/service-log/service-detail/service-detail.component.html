@@ -310,9 +310,27 @@
                      </h2>
 
                   </td>
-                  <td width="50%" align="right" style="padding-bottom: 1em; "> <img crossorigin="anonymous" *ngIf="companyLogo" [src]="companyLogo"
-                        alt="logo" style="max-width: 100px;">
+                  <td>
+
                   </td>
+                  <!-- <td width="50%" align="right" style="padding-bottom: 1em; "> <img crossorigin="anonymous" *ngIf="companyLogo" [src]="companyLogo"
+                        alt="logo" style="max-width: 100px;">
+                  </td> -->
+                  <td width="50%" align="right">
+                     <h2 class="text-dark mb-0 font-weight-bold text-5 mt-0">
+                       {{ carrier.carrierName | titlecase }}
+                     </h2>
+                     <p class="text-dark">
+                       {{ carrierAddress.address }},{{
+                         carrierAddress.cityName
+                       }}, {{ carrierAddress.stateName }},
+                       {{ carrierAddress.countryName }},
+                       {{ carrierAddress.zipCode }}
+                       <br />
+                       <strong>Phone:</strong> {{ carrier.phone }}<br />
+                       <strong>Email:</strong> {{ carrier.email }}
+                     </p>
+                   </td>
                </tr>
             </tbody>
          </table>

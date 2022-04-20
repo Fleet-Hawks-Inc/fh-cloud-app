@@ -6,6 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import Constants from '../../../constants';
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import * as html2pdf from "html2pdf.js";
+import { CountryStateCityService } from "src/app/services/country-state-city.service";
 @Component({
   selector: 'app-service-detail',
   templateUrl: './service-detail.component.html',
@@ -57,7 +58,11 @@ export class ServiceDetailComponent implements OnInit {
   photos: any = [];
   docs: any = [];
   users: any = [];
-
+  carrier = {
+    carrierName: "",
+    phone: "",
+    email: "",
+  };
   logImages = []
   logDocs = [];
   logModalRef: any;
@@ -66,6 +71,16 @@ export class ServiceDetailComponent implements OnInit {
   companyLogo = "";
   tagLine: "";
   companyName: any = "";
+  carrierAddress = {
+    address: "",
+    userLocation: "",
+    manual: "",
+    stateName: "",
+    countryName: "",
+    cityName: "",
+    zipCode: "",
+  };
+  showDetails = false;
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   constructor(
@@ -75,6 +90,7 @@ export class ServiceDetailComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private modalService: NgbModal,
     private listService: ListService,
+    private countryStateCity: CountryStateCityService
   ) { }
 
   ngOnInit() {
@@ -86,6 +102,7 @@ export class ServiceDetailComponent implements OnInit {
     // this.fetchAllIssuesIDs();
     this.fetchAllAssetsIDs();
     this.fetchUsers();
+    this.fetchCarrier()
   }
 
   fetchProgramByID() {
@@ -242,4 +259,34 @@ export class ServiceDetailComponent implements OnInit {
     this.tagLine = result.tagLine;
   };
 
+  fetchCarrier() {
+    
+    const carrierID = localStorage.getItem('xfhCarrierId');
+    this.apiService
+      .getData(`carriers/${carrierID}`)
+      .subscribe((result: any) => {
+        this.carrier = result.Items[0];
+        console.log('this0', this.carrier)
+        this.fetchAddress(this.carrier[`addressDetails`]);
+      });
+  }
+  async fetchAddress(address: any) {
+    for (const adr of address) {
+      if (adr.addressType === "yard" && adr.defaultYard === true) {
+        if (adr.manual) {
+          adr.countryName =
+            await this.countryStateCity.GetSpecificCountryNameByCode(
+              adr.countryCode
+            );
+          adr.stateName = await this.countryStateCity.GetStateNameFromCode(
+            adr.stateCode,
+            adr.countryCode
+          );
+        }
+        this.carrierAddress = adr;
+        this.showDetails = true;
+        break;
+      }
+    }
+  }
 }
