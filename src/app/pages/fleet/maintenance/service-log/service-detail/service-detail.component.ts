@@ -228,7 +228,7 @@ export class ServiceDetailComponent implements OnInit {
     let ngbModalOptions: NgbModalOptions = {
       keyboard: false,
       backdrop: "static",
-      windowClass: "log-order",
+      windowClass: "log-order logs-model" ,
     };
     this.logModalRef = this.modalService.open(this.logModal, ngbModalOptions)
   }

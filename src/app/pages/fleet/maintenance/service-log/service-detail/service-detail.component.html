@@ -305,9 +305,9 @@
             <tbody>
                <tr>
                   <td width="50%">
-                     <h2 class="text-dark" id="modal-basic-title " style="font-size:26px; margin-bottom: 5px;">
+                     <h3 class="text-dark" style="font-size:26px; margin-bottom: 5px;">
                         Service Log Details
-                     </h2>
+                     </h3>
 
                   </td>
                   <td>
@@ -342,23 +342,23 @@
 
                   <td style=" width: 65%;
                         padding-left: 10px; padding-right: 150px;">
-                     <p style="font-weight: 600; margin-bottom: 4px; padding: 4px; ">
+                     <p style="font-weight: 600; margin-bottom: 4px;  ">
                         <span style="font-weight: 500; color: #000000; ">Unit Type:- </span> {{
                         logsData.unitType
                         }}
                      </p>
-                     <p style="font-weight: 600; margin-bottom: 4px;  padding: 4px;">
+                     <p style="font-weight: 600; margin-bottom: 4px;  ">
                         <span *ngIf="logsData.unitType != 'asset'" style=" font-weight: 500; color: #000000; ">Vehicle:-
                         </span> {{vehiclesObject[vehicle]}}
                      </p>
                      <p *ngIf="logsData.unitType != 'asset'"
-                        style=" font-weight: 600; margin-bottom: 4px; padding: 4px;">
+                        style=" font-weight: 600; margin-bottom: 4px; ">
                         <span style="font-weight: 500; color: #000000; ">Odometer Miles:- </span> {{odometer ?
                         odometer
                         :
                         '-'}}
                      </p>
-                     <p style=" font-weight: 600; margin-bottom: 4px; padding: 4px;">
+                     <p style=" font-weight: 600; margin-bottom: 4px; ">
                         <span *ngIf="logsData.unitType == 'asset'" style=" font-weight: 500; color: #000000; ">Asset:-
                         </span> {{assetsObject[assetID]}}
                      </p>
@@ -366,17 +366,17 @@
 
                   <td style="width: 45%;
                      padding-left: 10px; padding-right: 15px;">
-                     <p style="font-weight: 600; margin-bottom: 4px; padding: 4px; ">
+                     <p style="font-weight: 600; margin-bottom: 4px;  ">
                         <span style="font-weight: 500; color: #000000; ">Completion Date:- </span> {{completionDate ?
                         (completionDate
                         |
                         date:'yyyy/MM/dd') : '-'}}
                      </p>
-                     <p style="font-weight: 600; margin-bottom: 4px;  padding: 4px;">
+                     <p style="font-weight: 600; margin-bottom: 4px;  ">
                         <span style="font-weight: 500; color: #000000; ">BIll#:- </span> {{reference ?
                         reference : '-'}}
                      </p>
-                     <p style="font-weight: 600; margin-bottom: 4px; padding: 4px;">
+                     <p style="font-weight: 600; margin-bottom: 4px;">
                         <span style="font-weight: 500; color: #000000; ">Vendor:- </span> {{vendorID ?
                         vendorsObject[vendorID] :
                         '-'}}
@@ -394,19 +394,19 @@
                   ">
             <thead>
                <tr>
-                  <td width="75%" style="font-size: 13px;
-                            background-color: 	#E8E8E8;
-                            border: 1px solid #999999;
-                            padding-left: 10px;  padding-right: 10px; 
-                            padding-top: 10p; padding-bottom: 10px">
+                  <td width="65%" style="font-size: 13px;
+                  background-color: 	#E8E8E8;
+                  border: 1px solid #999999;
+                  padding-left: 10px;  padding-right: 10px;
+                    padding-bottom: 10px;  padding-top: 10px">
                      Issue:
                   </td>
-                  <td width="25%" style="font-size: 13px;
-                            background-color: 	#E8E8E8;
-                            border: 1px solid #999999;
-                           padding-left: 10px;  padding-right: 10px;
-                           padding-bottom: 10px;  padding-top: 10px
-                           ">
+                  <td width="35%" style="font-size: 13px;
+                  background-color:#E8E8E8;
+                  border: 1px solid #999999;
+                  padding-left: 10px;  padding-right: 10px;
+                  padding-bottom: 10px;  padding-top: 10px
+                  ">
                      Assigned To
                   </td>
                </tr>
@@ -419,19 +419,14 @@
 
                <tr *ngFor='let data of issuesObject'>
 
-                  <td width="75%" style="font-size: 13px;
-                  border-right: 1px solid #999999;
-                           padding-right: 10px; padding-left: 10px;
-                           padding-top: 10px; padding-bottom: 10px;
+                    <td height="25" style="font-size: 13px;border-right: 1px solid #999999;
+                           padding-left: 10px;
                         ">
 
                      {{data.issueName}}
                   </td>
-                  <td width="25%" style="font-size: 13px;
-                              padding-left: 10px;
-                           padding-top: 10px; padding-bottom: 10px;
-                           border-right: 1px solid #999999;
-                        ">
+                  <td style="font-size: 13px;
+                  padding-left: 10px; padding-right: 10px; ">
                      {{users[data.assignedTo]}}</td>
                </tr>
          </table>
@@ -441,14 +436,14 @@
          <table width="100%" style="color: #000000;border: 1px solid #999999; font-size: 13px; margin-bottom: 10px;">
             <thead>
                <tr>
-                  <td width="75%" style="font-size: 13px;
+                  <td width="65%" style="font-size: 13px;
                          background-color: 	#E8E8E8;
                          border: 1px solid #999999;
                          padding-left: 10px;  padding-right: 10px;
                            padding-bottom: 10px;  padding-top: 10px">
                      Task
                   </td>
-                  <td width="25%" style="font-size: 13px;
+                  <td width="35%" style="font-size: 13px;
                         background-color:#E8E8E8;
                         border: 1px solid #999999;
                         padding-left: 10px;  padding-right: 10px;
@@ -471,9 +466,7 @@
                         ">
                      {{data.taskName}}
                   </td>
-                  <td style="font-size: 13px;
-                           
-                           padding-left: 10px; padding-right: 10px;
+                  <td style="font-size: 13px; padding-left: 10px; padding-right: 10px;
                         "> {{data.laborCost}} {{currency}}</td>
                </tr>
          </table>
@@ -483,13 +476,13 @@
          <table width="100%" style="color: #000000;border: 1px solid #999999; font-size: 13px; margin-bottom: 10px;">
             <thead>
                <tr>
-                  <td width="75%" style="font-size: 13px;
+                  <td width="65%" style="font-size: 13px;
                          background-color: 	#E8E8E8;
                          border: 1px solid #999999;
                         padding-left: 10px;  padding-right: 10px;">
                      Task
                   </td>
-                  <td width="25%" style="font-size: 13px;
+                  <td width="35%" style="font-size: 13px;
                         background-color:#E8E8E8;
                         border: 1px solid #999999;
                         padding-left: 10px;  padding-right: 10px;
