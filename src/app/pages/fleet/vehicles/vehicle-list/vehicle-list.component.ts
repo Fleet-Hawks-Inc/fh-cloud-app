@@ -121,7 +121,6 @@ export class VehicleListComponent implements OnInit {
     // this.fetchVehicleModelList();
     // this.fetchVehicleManufacturerList();
     this.fetchDriversList();
-    this.fetchServiceProgramsList();
     this.fetchVendorList();
     await this.initDataTable()
 
@@ -222,14 +221,6 @@ export class VehicleListComponent implements OnInit {
       this.driversList = result;
     });
   }
-
-
-  fetchServiceProgramsList() {
-    this.apiService.getData('servicePrograms/get/list').subscribe((result: any) => {
-      this.serviceProgramsList = result;
-    });
-  }
-
   fetchVendorList() {
     this.apiService.getData('contacts/get/list/vendor').subscribe((result: any) => {
       this.vendorsList = result;
