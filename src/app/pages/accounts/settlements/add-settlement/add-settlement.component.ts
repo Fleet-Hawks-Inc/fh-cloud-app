@@ -349,7 +349,7 @@ export class AddSettlementComponent implements OnInit {
 
   }
   setPaymentOption(data: any) {
-
+    this.settlementData.paymentSelected = [];
     data.paymentOption.forEach(element => {
       if (element.default) {
         const type = this.paymentOptions.find(el => el.value == element.pType)
@@ -409,13 +409,7 @@ export class AddSettlementComponent implements OnInit {
         // element.paymentSelected=this.settlementData.paymentSelected;
         switch (element.paymentSelected[0].pType) {
           case "ppm":
-            let amt: any = 0;
-            if (element.entityDriver && element.entityDriver.length == 1) {
-              amt = (element.entityMiles * element.paymentSelected[0].loadedMiles).toFixed(2);
-            } else {
-              amt = (element.entityMiles * element.paymentSelected[0].loadedMilesTeam).toFixed(2);
-            }
-            element.amount = amt;
+            element.amount = (element.entityMiles * element.paymentSelected[0].loadedMiles).toFixed(2)
             element.paymentSelected = [this.ppm]
             break;
           case "pfr":
@@ -548,10 +542,8 @@ export class AddSettlementComponent implements OnInit {
                     element.entityDriver.push(plan.driverID);
                   }
 
-                  if (plan.coDriverID != undefined && plan.coDriverID != null && plan.coDriverID != '') {
-                    if (!element.entityDriver.includes(plan.coDriverID)) {
-                      element.entityDriver.push(plan.coDriverID);
-                    }
+                  if (!element.entityDriver.includes(plan.coDriverID)) {
+                    element.entityDriver.push(plan.coDriverID);
                   }
                 }
 
@@ -586,10 +578,9 @@ export class AddSettlementComponent implements OnInit {
                 if (!element.entityDriver.includes(plan.driverID)) {
                   element.entityDriver.push(plan.driverID);
                 }
-                if (plan.coDriverID != undefined && plan.coDriverID != null && plan.coDriverID != '') {
-                  if (!element.entityDriver.includes(plan.coDriverID)) {
-                    element.entityDriver.push(plan.coDriverID);
-                  }
+
+                if (!element.entityDriver.includes(plan.coDriverID)) {
+                  element.entityDriver.push(plan.coDriverID);
                 }
 
                 if (!element.entityVehicle.includes(plan.vehicleID)) {
@@ -1582,6 +1573,9 @@ export class AddSettlementComponent implements OnInit {
         if (this.settlementData.type === "driver") {
           this.driverId = this.settlementData.entityId;
         }
+        if (this.settlementData.type === "owner_operator") {
+          this.fetchCarrierDetails(this.settlementData.entityId)
+        }
         this.prevSelectEntries = this.settlementData.fuelData;
         this.prevSelectedIds = this.settlementData.fuelIds;
 
@@ -1664,18 +1658,21 @@ export class AddSettlementComponent implements OnInit {
         if (!element.entityDriver.includes(plan.driverID)) {
           element.entityDriver.push(plan.driverID);
         }
-
-        if (!element.entityDriver.includes(plan.coDriverID)) {
-          element.entityDriver.push(plan.coDriverID);
+        if (plan.coDriverID != undefined && plan.coDriverID != null && plan.coDriverID != '') {
+          if (!element.entityDriver.includes(plan.coDriverID)) {
+            element.entityDriver.push(plan.coDriverID);
+          }
         }
 
         if (!element.entityVehicle.includes(plan.vehicleID)) {
           element.entityVehicle.push(plan.vehicleID);
         }
-
-        if (!element.entityCarrier.includes(plan.carrierID)) {
-          element.entityCarrier.push(plan.carrierID);
+        if (plan.carrierID != undefined && plan.carrierID != null && plan.carrierID != '') {
+          if (!element.entityCarrier.includes(plan.carrierID)) {
+            element.entityCarrier.push(plan.carrierID);
+          }
         }
+
 
         for (let f = 0; f < plan.assetID.length; f++) {
           const elemAsset = plan.assetID[f];
@@ -1733,7 +1730,7 @@ export class AddSettlementComponent implements OnInit {
           this.assignFuelVehicleIDs(plan);
         }
 
-        if (plan.carrierID !== "") {
+        if (plan.carrierID != undefined && plan.carrierID != null && plan.carrierID != '') {
           if (!element.carrID.includes(plan.carrierID)) {
             element.carrID.push(plan.carrierID);
           }
@@ -1859,6 +1856,7 @@ export class AddSettlementComponent implements OnInit {
       });
     }
     this.settledTrips = result;
+
     if (trpData.length > 0 && this.settledTrips.length > 0) {
       for (const stl of this.settledTrips) {
         for (const trp of trpData) {
@@ -1869,6 +1867,7 @@ export class AddSettlementComponent implements OnInit {
         }
       }
     }
+
     this.dummySettledTrips = result;
     let stlObj = result.reduce((a: any, b: any) => {
       return (
@@ -2650,7 +2649,6 @@ export class AddSettlementComponent implements OnInit {
         this.prevSelectEntries.splice(ind, 1);
       }
     });
-
     if (!this.deletedFuelEnteries.includes(fuelID)) {
       this.deletedFuelEnteries.push(fuelID);
       // let ind = this.settlementData.fuelIds.indexOf(fuelID);
@@ -2662,13 +2660,15 @@ export class AddSettlementComponent implements OnInit {
         if (v.fuelID === fuelID) {
           let ind = this.settlementData.fuelData.indexOf(v);
           this.settlementData.fuelData.splice(ind, 1);
+
+          this.preFuelEntriesTotal();
         }
       });
       // this.prevSelectEntries = this.settlementData.fuelData;
       // this.prevSelectedIds = this.settlementData.fuelIds;
       // this.fuelTotal();
       // this.settlementData.fuelData = [];
-      this.preFuelEntriesTotal();
+
       this.dummyDelEntry.push(this.selectedFuelEnteries[index]);
       this.fuelEnteries.push(this.selectedFuelEnteries[index]);
       this.selectedFuelEnteries.splice(index, 1);
@@ -2684,14 +2684,14 @@ export class AddSettlementComponent implements OnInit {
         this.settlementData.fuelDed += Number(v.amount);
       }
     });
-    // this.prevSelectEntries.map((v) => {
-    //   this.settlementData.fuelData.push(v);
-    // });
-    // this.prevSelectedIds.map((v) => {
-    //   if (!this.settlementData.fuelIds.includes(v)) {
-    //     this.settlementData.fuelIds.push(v);
-    //   }
-    // });
+    this.prevSelectEntries.map((v) => {
+      this.settlementData.fuelData.push(v);
+    });
+    this.prevSelectedIds.map((v) => {
+      if (!this.settlementData.fuelIds.includes(v)) {
+        this.settlementData.fuelIds.push(v);
+      }
+    });
   }
 
   fuelTotal() {
