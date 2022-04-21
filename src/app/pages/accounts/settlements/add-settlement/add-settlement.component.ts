@@ -586,9 +586,10 @@ export class AddSettlementComponent implements OnInit {
                 if (!element.entityDriver.includes(plan.driverID)) {
                   element.entityDriver.push(plan.driverID);
                 }
-
-                if (!element.entityDriver.includes(plan.coDriverID)) {
-                  element.entityDriver.push(plan.coDriverID);
+                if (plan.coDriverID != undefined && plan.coDriverID != null && plan.coDriverID != '') {
+                  if (!element.entityDriver.includes(plan.coDriverID)) {
+                    element.entityDriver.push(plan.coDriverID);
+                  }
                 }
 
                 if (!element.entityVehicle.includes(plan.vehicleID)) {
