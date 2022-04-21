@@ -4,7 +4,7 @@ import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ReactiveFormConfig, RxFormBuilder, RxwebValidators } from '@rxweb/reactive-form-validators';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ApiService } from 'src/app/services';
@@ -14,7 +14,7 @@ import { DashCamLocationStreamService } from 'src/app/services/dash-cam-location
   selector: 'app-vehicle-dash-cam-tracker',
   templateUrl: './vehicle-dash-cam-tracker.component.html',
   styleUrls: ['./vehicle-dash-cam-tracker.component.css'],
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService]
 })
 export class VehicleDashCamTrackerComponent implements OnInit {
   @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
@@ -86,7 +86,8 @@ export class VehicleDashCamTrackerComponent implements OnInit {
     private apiService: ApiService,
     private messageService: MessageService,
     private formBuilder: RxFormBuilder,
-    protected _sanitizer: DomSanitizer) {
+    protected _sanitizer: DomSanitizer,
+    protected confirmService: ConfirmationService) {
 
 
     this.deviceSerial = this.route.snapshot.params.deviceSerial;
@@ -269,6 +270,28 @@ export class VehicleDashCamTrackerComponent implements OnInit {
       }
 
     })
+
+  }
+
+  restartDevice() {
+
+    this.confirmService.confirm({
+      message: 'Are you sure that you want to RESTART the DashCam?  Make sure driver is not driving the vehicle as restart sound may create distraction.',
+      header: 'Safety Warning',
+
+      accept: async () => {
+        this.apiService.getData(`devices/dashCam/restart/${this.deviceInfo.deviceSrNo.split('#')[1]}`).subscribe((resultData: any) => {
+
+          if (resultData.status === "SUCCESS") {
+            this.messageService.add({ severity: 'info', summary: 'Restart command sent to device.', detail: 'Please allow a minute for device to restart.' })
+
+          }
+
+        })
+      }
+    });
+
+
 
   }
 
