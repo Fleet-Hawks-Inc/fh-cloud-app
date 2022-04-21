@@ -134,11 +134,6 @@ export class ImportDriversComponent implements OnInit {
           }
         },
         {
-          name: 'citizenship', inputName: 'citizenship', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
-            return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
-          },
-        },
-        {
           name: 'cdl', inputName: 'cdl', required: true, unique: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           },
@@ -147,6 +142,7 @@ export class ImportDriversComponent implements OnInit {
     };
     CSVFileValidator($event.srcElement.files[0], data)
       .then(csvData => {
+        console.log('csvData.data', csvData)
         if (csvData.data.length !== 0 && csvData.data.length < 200) {
           if (csvData.inValidMessages.length === 0) {
             this.validData = csvData.data;
