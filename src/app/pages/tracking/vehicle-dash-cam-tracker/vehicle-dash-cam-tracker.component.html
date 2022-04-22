@@ -1,4 +1,5 @@
 <p-toast position="top-right"></p-toast>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pr-0 pt-0 pl-0">
@@ -107,6 +108,6 @@
     </div><br>
 
     <ng-template pTemplate="footer">
-
+        <button id="btnShareLocation" type="button" pButton class="mr-1" tooltipPosition="left" pTooltip="Restart Device" (click)="restartDevice()">Restart DashCam</button>
     </ng-template>
 </p-dialog>
