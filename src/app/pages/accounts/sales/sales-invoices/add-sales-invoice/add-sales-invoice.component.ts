@@ -21,6 +21,7 @@ export class AddSalesInvoiceComponent implements OnInit {
   errors = {};
   creditIds = [];
   creditData = [];
+  sOrderID: any;
   saleData = {
     txnDate: moment().format('YYYY-MM-DD'),
     currency: 'CAD',
@@ -413,13 +414,16 @@ export class AddSalesInvoiceComponent implements OnInit {
     let result = await this.apiService.getData("stateTaxes").toPromise();
     this.stateTaxes = result.Items;
   }
-
-  taxExempt(value: boolean) {
-    if (value === true) {
-      this.saleData.total.finalTotal = this.saleData.total.subTotal;
-    }
+  async taxExempt() {
+    this.saleData.charges.taxes.map((v) => {
+      v.tax = 0;
+    });
+    this.saleData.stateTaxID = null;
+    this.allTax();
+    this.taxTotal();
     this.calculateFinalTotal();
   }
+
 
   getCurrentUser = async () => {
     this.saleData.salePerson = localStorage.getItem("currentUserName");
@@ -484,7 +488,7 @@ export class AddSalesInvoiceComponent implements OnInit {
             this.creditData = [...this.creditData, obj];
           }
         } else {
-
+          this.removeElements(element.creditID)
         }
       }
     } else if (type === 'stl') {
@@ -510,13 +514,29 @@ export class AddSalesInvoiceComponent implements OnInit {
             this.creditIds = [...this.creditIds, element.creditID];
             this.creditData = [...this.creditData, obj];
           }
+        } else {
+          this.removeElements(element.creditID)
         }
       }
     }
+    console.log('this.creditData', this.creditData)
     this.saleData.creditIds = this.creditIds;
     this.saleData.creditData = this.creditData;
     this.creditCalculation();
     this.calculateFinalTotal();
+  }
+
+  removeElements(id: string) {
+    console.log('edit', id)
+    let index = this.creditIds.indexOf(id);
+    console.log('index', index)
+    if (index != -1) {
+      this.creditIds.splice(index, 1);
+    }
+    var index1 = this.creditData.findIndex(p => p.creditID == id);
+    if (index1 != -1) {
+      this.creditData.splice(index1, 1);
+    }
   }
 
   creditCalculation() {
@@ -650,6 +670,8 @@ export class AddSalesInvoiceComponent implements OnInit {
     await this.fetchAccounts();
     await this.getCustomerOrders(result.customerID);
     this.saleData.sOrderNo = result.sOrderNumber;
+    this.sOrderID = result.sOrderNo;
+
     await this.getOrderDetail(result.sOrderNo);
     if (this.saleData.creditIds.length > 0) {
 
@@ -707,6 +729,9 @@ export class AddSalesInvoiceComponent implements OnInit {
     })
 
     this.submitDisabled = true;
+    this.saleData.sOrderNo = this.sOrderID;
+    console.log('this.saleData', this.saleData)
+    return
     this.accountService.putData(`sales-invoice/update/${this.saleID}`, this.saleData).subscribe({
       complete: () => { },
       error: (err: any) => {
