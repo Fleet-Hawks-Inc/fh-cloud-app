@@ -25,6 +25,7 @@ const routes: Routes = [
     path: "add",
     component: AddInventoryComponent,
     data: { title: "Add Inventory" },
+    canDeactivate: [unsavedChangesGuard]
   },
   {
     path: "edit/:itemID",

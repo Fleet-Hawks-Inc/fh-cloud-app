@@ -1619,35 +1619,7 @@
                       </tr>
                     </tbody>
                   </table>
-                  <table class="invoice-iner__wrapper" width="100%" style="border-top: none">
-                    <tbody>
-                      <tr *ngFor="let newDoc of newInvDocs">
-                        <td>
-                          <table>
-                            <tbody>
-                              <tr *ngIf="newDoc.ext === 'pdf'">
-                                <td>
-                                  <pdf-viewer [src]="newDoc.docPath" [fit-to-page]="false" [show-all]="true"
-                                    [render-text]="true" [original-size]="false" [autoresize]="true"
-                                    style="max-width: 700px; display: block">
-                                  </pdf-viewer>
-                                </td>
-                              </tr>
-                              <tr *ngIf="
-                                  newDoc.ext === 'jpg' ||
-                                  newDoc.ext === 'jpeg' ||
-                                  newDoc.ext === 'png'
-                                ">
-                                <td>
-                                  <img crossorigin="anonymous" [src]="newDoc.docPath" width="100%" />
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+
                 </div>
               </td>
             </tr>
@@ -1685,16 +1657,9 @@
       <button class="btn btn-default" (click)="modal.dismiss('Cross click')">
         Cancel
       </button>
-      <button class="btn btn-success" *ngIf="docs.length != 0" (click)="openDocumentModal('print')">Print</button>
-      <button *ngIf="docs.length != 0 && isGenerate" [disabled]="generateBtnDisabled"
-        (click)="openDocumentModal('generate')" class="btn btn-success">
-        Generate & Print
-      </button>
 
-
-      <button class="btn btn-success" *ngIf="docs.length == 0" (click)="generate()">Print</button>
-      <button *ngIf="docs.length == 0 && isGenerate" [disabled]="generateBtnDisabled" (click)="generatePDF()"
-        class="btn btn-success">
+      <button class="btn btn-success" (click)="generate()">Print</button>
+      <button *ngIf="isGenerate" [disabled]="generateBtnDisabled" (click)="generatePDF()" class="btn btn-success">
         Generate & Print
       </button>
     </div>
@@ -1749,8 +1714,8 @@
                                 <span style="font-size: 12px">
                                   <b>Invoice Date</b>
                                 </span>
-                          <span *ngIf="invDate">{{ invDate | date: "yyyy/MM/dd" }}</span>
-                          <span *ngIf="!invDate">{{ today | date: "yyyy/MM/dd" }}</span>
+                                <span *ngIf="invDate">{{ invDate | date: "yyyy/MM/dd" }}</span>
+                                <span *ngIf="!invDate">{{ today | date: "yyyy/MM/dd" }}</span>
                               </p>
                               <p style="margin: 0; color: #000">
                                 <span style="font-size: 12px">

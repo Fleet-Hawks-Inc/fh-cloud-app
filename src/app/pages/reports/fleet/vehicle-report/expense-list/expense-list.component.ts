@@ -45,7 +45,6 @@ export class ExpenseListComponent implements OnInit {
   ngOnInit() {
     this.fetchGroups();
     this.fetchDriversList();
-    this.fetchServiceProgramsList();
     this.fetchVendorList();
     this.initDataTable()
   }
@@ -81,12 +80,6 @@ export class ExpenseListComponent implements OnInit {
     });
   }
 
-
-  fetchServiceProgramsList() {
-    this.apiService.getData('servicePrograms/get/list').subscribe((result: any) => {
-      this.serviceProgramsList = result;
-    });
-  }
 
   fetchVendorList() {
     this.apiService.getData('contacts/get/list/vendor').subscribe((result: any) => {

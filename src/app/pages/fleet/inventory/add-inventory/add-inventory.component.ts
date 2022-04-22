@@ -1,13 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ApiService, ListService } from '../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
+import { NgForm } from "@angular/forms";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { from, Subject, throwError } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
-
+import { ModalService } from "../../../../services/modal.service";
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+  takeUntil
+} from "rxjs/operators";
 import { HttpClient } from '@angular/common/http';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
 
 declare var $: any;
 
@@ -16,7 +26,10 @@ declare var $: any;
   templateUrl: './add-inventory.component.html',
   styleUrls: ['./add-inventory.component.css'],
 })
-export class AddInventoryComponent implements OnInit {
+export class AddInventoryComponent implements OnInit, OnDestroy
+{
+  @ViewChild('inventoryF') inventoryF: NgForm;
+  takeUntil$ = new Subject();
   Asseturl = this.apiService.AssetUrl;
   /**
    * form props
@@ -82,6 +95,7 @@ export class AddInventoryComponent implements OnInit {
   cityName = '';
   zipCode = '';
   address = '';
+  isSubmitted = false;
   warehoseForm = '';
   hasWarehouseSuccess = false;
   warehouseSuccess = '';
@@ -106,9 +120,26 @@ export class AddInventoryComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private toastr: ToastrService,
     private httpClient: HttpClient,
+    private modalService: NgbModal,
+    private modalServiceOwn: ModalService,
     private listService: ListService,
     private countryStateCity: CountryStateCityService
   ) {
+      this.modalServiceOwn.triggerRedirect.next(false);
+    this.router.events.pipe(takeUntil(this.takeUntil$)).subscribe((v: any) => {
+      if (v.url !== "undefined" || v.url !== "") {
+        this.modalServiceOwn.setUrlToNavigate(v.url);
+      }
+    });
+    this.modalServiceOwn.triggerRedirect$
+      .pipe(takeUntil(this.takeUntil$))
+      .subscribe((v) => {
+        if (v) {
+          this.router.navigateByUrl(
+            this.modalServiceOwn.urlToRedirect.getValue()
+          );
+        }
+      });
     this.itemID = this.route.snapshot.params[`itemID`];
     this.requiredItem = this.route.snapshot.params[`item`];
     if (this.itemID) {
@@ -123,6 +154,25 @@ export class AddInventoryComponent implements OnInit {
     }
     this.disableButton()
   }
+
+  canLeave(): boolean {
+     if (this.inventoryF.dirty && !this.isSubmitted) {
+       if (!this.modalService.hasOpenModals()) {
+         let ngbModalOptions: NgbModalOptions = {
+           backdrop: "static",
+           keyboard: false,
+           size: "sm",
+         };
+         this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
+       }
+       return false;
+     }
+     this.modalServiceOwn.triggerRedirect.next(true);
+     this.takeUntil$.next();
+    this.takeUntil$.complete();
+    return true;
+  }
+
 
   /*
   * Selecting files before uploading
@@ -362,6 +412,10 @@ export class AddInventoryComponent implements OnInit {
           this.warrantyTime = '',
             this.warrantyUnit = ''
           this.toastr.success('Inventory Added Successfully');
+          this.isSubmitted = true;
+          this.modalServiceOwn.triggerRedirect.next(true);
+          this.takeUntil$.next();
+          this.takeUntil$.complete();
           this.router.navigateByUrl('/fleet/inventory/list');
           if (this.requiredItem) {
             this.deleteRequiredItem(this.requiredItem);
@@ -462,6 +516,7 @@ export class AddInventoryComponent implements OnInit {
         } else {
 
           this.response = res;
+           this.isSubmitted = true;
           this.toastr.success('Inventory Updated Successfully');
           this.router.navigateByUrl('/fleet/inventory/list');
         }
@@ -543,6 +598,13 @@ export class AddInventoryComponent implements OnInit {
     localStorage.setItem('isOpen', 'true');
     this.listService.changeButton(false);
   }
+
+  ngOnDestroy(): void {
+    this.takeUntil$.next();
+    this.takeUntil$.complete();
+  }
+
+
 
   disableButton() {
     if (this.partNumber == '' || this.costUnit == '' || this.costUnit == null || this.costUnitType == '' || this.costUnitType == null ||

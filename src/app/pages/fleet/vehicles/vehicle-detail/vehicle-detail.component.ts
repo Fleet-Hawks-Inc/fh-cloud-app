@@ -654,11 +654,10 @@ export class VehicleDetailComponent implements OnInit {
         });
     }
 
-
     fetchProgramDetails() {
         if (this.serviceProgramID.length > 0) {
             let serviceProgramID = JSON.stringify(this.serviceProgramID);
-            this.apiService.getData('servicePrograms/fetch/selectedPrograms?programIds=' + serviceProgramID).subscribe((result: any) => {
+            this.apiService.getData('servicePrograms/get/list?programID=' + serviceProgramID).subscribe((result: any) => {
                 this.servicePrograms = result;
 
             })
