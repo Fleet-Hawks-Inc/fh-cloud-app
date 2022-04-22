@@ -4327,6 +4327,9 @@ input:checked + .sliderbtn:before {
   max-width: 700px !important;
 }
 
+.logs-model .modal-dialog {
+  max-width: 900px !important;
+}
 .header-title {
   margin-left: 10px;
   margin-top: 5px;
