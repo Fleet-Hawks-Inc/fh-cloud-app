@@ -110,6 +110,11 @@ export class TrialBalanceComponent implements OnInit {
                          
                         const newArray: any = _.sortBy(this.accounts, ["accountNo"]);
                         this.accounts = newArray;
+                        for(let i=0; i<this.accounts.length;i++){
+                            if(this.accounts[i].debit === 0 || this.accounts[i].credit === 0) {
+                                this.dataMessage = Constants.NO_RECORDS_FOUND;
+                            }
+                        }
                           for(let i = 0;i<this.accounts.length;i++)
                         {
                              if(this.currTab === 'CAD'){
@@ -147,7 +152,6 @@ export class TrialBalanceComponent implements OnInit {
                              }
                              }
                         }
-                         
                           for(let i=0;i<=this.accounts.length;i++) {
                               if(this.currTab === 'CAD') {
                                   this.currency = 'CAD';
@@ -174,7 +178,7 @@ export class TrialBalanceComponent implements OnInit {
                            }
                          }
                 });
-    }
+               }
    
     searchFilter() { 
         if (this.filter.startDate !== null || this.filter.endDate !== null) {
@@ -198,11 +202,10 @@ export class TrialBalanceComponent implements OnInit {
         }
     }
 
-
     resetFilter() {
         this.dataMessage = Constants.FETCHING_DATA;
-        this.start = null;
-        this.end = null;
+        this.filter.endDate = moment().format("YYYY-MM-DD");
+        this.filter.startDate = moment().subtract(15, 'day').format('YYYY-MM-DD');
         this.cadDebitTotal = 0;
         this.cadCreditTotal = 0;
         this.usdDebitTotal = 0;
@@ -212,9 +215,6 @@ export class TrialBalanceComponent implements OnInit {
         this.debTotal = [];
         this.fetchAccounts();
     }
-
-
-
 
     fetchAccountClassByIDs() {
         this.accountService
