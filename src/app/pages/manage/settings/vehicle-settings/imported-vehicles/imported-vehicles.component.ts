@@ -82,6 +82,12 @@ export class ImportedVehiclesComponent implements OnInit {
       reader.readAsBinaryString(event.target.files[0]);
     }
   }
+
+  isStatusValid = (status) => {
+    return status == 'Active' || status == 'inActive' || status == 'sold' || status == 'outOfService' 
+  }
+
+  
   validateCSV($event) {
 
     const data: ValidatorConfig = {
@@ -92,11 +98,6 @@ export class ImportedVehiclesComponent implements OnInit {
           }, validate: function (name: string) {
             const vname = /^[a-zA-Z0-9\s]+$/;
             return vname.test(name)
-          }
-        },
-        {
-          name: 'vehicle_type', inputName: 'vehicletype', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
-            return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
           }
         },
         {
@@ -121,22 +122,7 @@ export class ImportedVehiclesComponent implements OnInit {
           }
         },
         {
-          name: 'make', inputName: 'make', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
-            return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
-          }
-        },
-        {
-          name: 'country', inputName: 'country', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
-            return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
-          }
-        },
-        {
-          name: 'province', inputName: 'provincestate', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
-            return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
-          }
-        },
-        {
-          name: 'status', inputName: 'status', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'status', inputName: 'status', required: true, validate: this.isStatusValid,  requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
           }
         },
@@ -164,11 +150,13 @@ export class ImportedVehiclesComponent implements OnInit {
               } else if (item.includes('year')) {
                 joinStr = item + '.  Please enter the year in the format: YYYY';
                 this.inValidMessages.push(joinStr)
+              } else if (item.includes('status')) {
+                joinStr = item + '.  Status should be active, inActive, outOfService or sold';
+                this.inValidMessages.push(joinStr)
               } else {
                 this.inValidMessages.push(item)
               }
             }
-            console.log('this.inValidMessages', this.inValidMessages)
           }
           csvData.data
         } else if (csvData.data.length == 0) {
