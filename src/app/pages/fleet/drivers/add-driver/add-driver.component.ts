@@ -158,7 +158,7 @@ export class AddDriverComponent
       fastExpiry: null,
       csa: false,
     },
-    paymentOption:[],
+    paymentOption: [],
     payPeriod: null,
     SIN: "",
     CDL_Number: "",
@@ -191,8 +191,8 @@ export class AddDriverComponent
       phone: "",
     },
   };
-  
-  
+
+
   public searchTerm = new Subject<string>();
   public searchResults: any;
   localAbsDocs = [];
@@ -298,44 +298,44 @@ export class AddDriverComponent
   pageType = "add";
   groupsData: any = [];
   sessionID: string;
-  paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"},{name:"Flat Rate", value:"pfr"}]
+  paymentOptions = [{ name: "Pay Per Mile", value: "ppm" }, { name: "Percentage", value: "pp" }, { name: "Pay Per Hour", value: "pph" }, { name: "Pay Per Delivery", value: "ppd" }, { name: "Flat Rate", value: "pfr" }]
 
-  paymentType="ppm"
+  paymentType = "ppm"
 
-  payPerMile={
-    pType:"ppm",
-    loadedMiles:null,
-    currency:null,
-    emptyMiles:null,
-    emptyMilesTeam:null,
-    loadedMilesTeam:null,
-    default:false
+  payPerMile = {
+    pType: "ppm",
+    loadedMiles: null,
+    currency: null,
+    emptyMiles: null,
+    emptyMilesTeam: null,
+    loadedMilesTeam: null,
+    default: false
   }
-  payPerHour={
-    pType:"pph",
-    rate:null,
-    currency:null,
-    waitingPay:null,
-    waitingHourAfter:null,
-    default:false
+  payPerHour = {
+    pType: "pph",
+    rate: null,
+    currency: null,
+    waitingPay: null,
+    waitingHourAfter: null,
+    default: false
   }
-  payPercentage={
-    pType:"pp",
-    loadPayPercentage:null,
-    loadPayPercentageOf:null,
-    default:false
+  payPercentage = {
+    pType: "pp",
+    loadPayPercentage: null,
+    loadPayPercentageOf: null,
+    default: false
   }
-  payPerDelivery={
-    pType:"ppd",
-    deliveryRate:null,
-    currency:null,
-    default:false
+  payPerDelivery = {
+    pType: "ppd",
+    deliveryRate: null,
+    currency: null,
+    default: false
   }
-  payFlatRate={
-    pType:"pfr",
-    flatRate:null,
-    currency:null,
-    default:false
+  payFlatRate = {
+    pType: "pfr",
+    flatRate: null,
+    currency: null,
+    default: false
   }
   constructor(
     private apiService: ApiService,
@@ -697,8 +697,10 @@ export class AddDriverComponent
   async fetchDocStates(docs) {
     for (let d = 0; d < docs.length; d++) {
       let countryCode = this.driverData.documentDetails[d].issuingCountry;
-      this.driverData.documentDetails[d].docStates =
-        await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+      if (countryCode! = null && countryCode != '') {
+        this.driverData.documentDetails[d].docStates =
+          await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+      }
     }
   }
   fetchDocuments() {
@@ -902,26 +904,26 @@ export class AddDriverComponent
       this.hasError = false;
       this.hasSuccess = false;
       this.hideErrors();
-      switch(this.paymentType){
+      switch (this.paymentType) {
         case "ppd":
-          this.payPerDelivery.default=true
+          this.payPerDelivery.default = true
           break;
         case "pph":
-          this.payPerHour.default=true
+          this.payPerHour.default = true
           break;
         case "pp":
-          this.payPercentage.default=true
+          this.payPercentage.default = true
           break;
         case "ppm":
-          this.payPerMile.default=true
+          this.payPerMile.default = true
           break;
         case "pfr":
-          this.payFlatRate.default=true
+          this.payFlatRate.default = true
           break;
-        default: 
-        this.payPerMile.default=true
+        default:
+          this.payPerMile.default = true
       }
-      this.driverData.paymentOption=[this.payPerMile,this.payPerDelivery,this.payPerHour,this.payPercentage,this.payFlatRate]
+      this.driverData.paymentOption = [this.payPerMile, this.payPerDelivery, this.payPerHour, this.payPercentage, this.payFlatRate]
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
       this.driverData[`deletedUploads`] = this.deletedUploads;
@@ -1142,9 +1144,12 @@ export class AddDriverComponent
       .toPromise();
 
     result = result.Items[0];
-    this.fetchLicStates(result.licenceDetails.issuedCountry);
-    this.driverData.address = result.address;
+    if (result.licenceDetails.issuedCountry && result.licenceDetails.issuedCountry != '') {
+      this.fetchLicStates(result.licenceDetails.issuedCountry);
+    }
+
     if (result.address !== undefined) {
+      this.driverData.address = result.address;
       for (let a = 0; a < this.driverData.address.length; a++) {
         if (this.driverData.address[a].manual) {
           this.driverData.address[a].isSuggest = false;
@@ -1197,25 +1202,26 @@ export class AddDriverComponent
     this.driverData.startDate = _.isEmpty(result.startDate)
       ? null
       : result.startDate;
+
+
     this.driverData.terminationDate = _.isEmpty(result.terminationDate)
       ? null
       : result.terminationDate;
+
     this.driverData.contractStart = _.isEmpty(result.contractStart)
       ? null
       : result.contractStart;
     this.driverData.contractEnd = _.isEmpty(result.contractEnd)
       ? null
       : result.contractEnd;
-    this.driverData.crossBorderDetails.fastExpiry = _.isEmpty(
-      result.crossBorderDetails.fastExpiry
-    )
-      ? null
-      : result.crossBorderDetails.fastExpiry;
-    this.driverData.licenceDetails.licenceExpiry = _.isEmpty(
-      result.licenceDetails.licenceExpiry
-    )
-      ? null
-      : result.licenceDetails.licenceExpiry;
+
+    if (result.licenceDetails.licenceExpiry && result.licenceDetails.licenceExpiry != '') {
+      this.driverData.licenceDetails.licenceExpiry = _.isEmpty(
+        result.licenceDetails.licenceExpiry
+      )
+        ? null
+        : result.licenceDetails.licenceExpiry;
+    }
     this.driverData.citizenship = result.citizenship;
     this.driverData.assignedVehicle = result.assignedVehicle;
     this.driverData.groupID = result.groupID;
@@ -1266,47 +1272,55 @@ export class AddDriverComponent
     }
     this.driverData.documentDetails = this.newDocuments;
     this.fetchDocStates(this.newDocuments);
-    this.driverData.crossBorderDetails.ACI_ID =
-      result.crossBorderDetails.ACI_ID;
-    this.driverData.crossBorderDetails.ACE_ID =
-      result.crossBorderDetails.ACE_ID;
-    this.driverData.crossBorderDetails.fast_ID =
-      result.crossBorderDetails.fast_ID;
-    this.driverData.crossBorderDetails.fastExpiry =
-      result.crossBorderDetails.fastExpiry;
-    this.driverData.crossBorderDetails.csa = result.crossBorderDetails.csa;
-    result.paymentOption.forEach(element => {
-      if(element.default){
-      this.paymentType =
-      element.pType;
-      }
-      if(element.pType=="pph"){
-          this.payPerHour.currency=element.currency
-          this.payPerHour.rate=element.rate
-          this.payPerHour.waitingHourAfter=element.waitingHourAfter
-          this.payPerHour.waitingPay=element.waitingPay
-      }
-      if(element.pType=="pfr"){
-        this.payFlatRate.flatRate=element.flatRate
-        this.payFlatRate.currency=element.currency
-      }
-      if(element.pType=="ppm"){
-        this.payPerMile.loadedMiles=element.loadedMiles
-        this.payPerMile.currency=element.currency
-        this.payPerMile.emptyMiles=element.emptyMiles
-        this.payPerMile.emptyMilesTeam=element.emptyMilesTeam
-        this.payPerMile.loadedMilesTeam=element.loadedMilesTeam
-      }
-      if(element.pType=="pp"){
-        this.payPercentage.loadPayPercentage=element.loadPayPercentage
-        this.payPercentage.loadPayPercentageOf=element.loadPayPercentageOf
-      }
-      if(element.pType=="ppd"){
-        this.payPerDelivery.currency=element.currency
-        this.payPerDelivery.deliveryRate=element.deliveryRate
-      }
-    });
-     
+    if (result.crossBorderDetails) {
+      this.driverData.crossBorderDetails.fastExpiry = _.isEmpty(
+        result.crossBorderDetails.fastExpiry
+      )
+        ? null
+        : result.crossBorderDetails.fastExpiry;
+      this.driverData.crossBorderDetails.ACI_ID =
+        result.crossBorderDetails.ACI_ID ? result.crossBorderDetails.ACI_ID : '';
+      this.driverData.crossBorderDetails.ACE_ID =
+        result.crossBorderDetails.ACE_ID ? result.crossBorderDetails.ACE_ID : '';
+      this.driverData.crossBorderDetails.fast_ID =
+        result.crossBorderDetails.fast_ID ? result.crossBorderDetails.fast_ID : '';
+      this.driverData.crossBorderDetails.fastExpiry =
+        result.crossBorderDetails.fastExpiry ? result.crossBorderDetails.fastExpiry : null;
+      this.driverData.crossBorderDetails.csa = result.crossBorderDetails.csa ? result.crossBorderDetails.csa : false;
+    }
+    if (result.paymentOption && result.paymentOption.length > 0) {
+      result.paymentOption.forEach(element => {
+        if (element.default) {
+          this.paymentType =
+            element.pType;
+        }
+        if (element.pType == "pph") {
+          this.payPerHour.currency = element.currency
+          this.payPerHour.rate = element.rate
+          this.payPerHour.waitingHourAfter = element.waitingHourAfter
+          this.payPerHour.waitingPay = element.waitingPay
+        }
+        if (element.pType == "pfr") {
+          this.payFlatRate.flatRate = element.flatRate
+          this.payFlatRate.currency = element.currency
+        }
+        if (element.pType == "ppm") {
+          this.payPerMile.loadedMiles = element.loadedMiles
+          this.payPerMile.currency = element.currency
+          this.payPerMile.emptyMiles = element.emptyMiles
+          this.payPerMile.emptyMilesTeam = element.emptyMilesTeam
+          this.payPerMile.loadedMilesTeam = element.loadedMilesTeam
+        }
+        if (element.pType == "pp") {
+          this.payPercentage.loadPayPercentage = element.loadPayPercentage
+          this.payPercentage.loadPayPercentageOf = element.loadPayPercentageOf
+        }
+        if (element.pType == "ppd") {
+          this.payPerDelivery.currency = element.currency
+          this.payPerDelivery.deliveryRate = element.deliveryRate
+        }
+      });
+    }
     this.driverData.SIN = result.SIN;
     this.driverData.payPeriod = result.payPeriod;
     this.driverData.CDL_Number = result.CDL_Number;
@@ -1330,23 +1344,26 @@ export class AddDriverComponent
 
     this.driverData.licenceDetails.vehicleType =
       result.licenceDetails.vehicleType;
-
-    this.driverData.hosDetails.hosStatus = result.hosDetails.hosStatus;
-    this.driverData.hosDetails.type = result.hosDetails.type;
-    this.driverData.hosDetails.hosRemarks = result.hosDetails.hosRemarks;
-    this.driverData.hosDetails.hosCycleName = result.hosDetails.hosCycleName;
-    this.driverData.hosDetails.homeTerminal =
-      result.hosDetails.homeTerminal.addressID;
-    this.driverData.hosDetails.pcAllowed = result.hosDetails.pcAllowed;
-    this.driverData.hosDetails.ymAllowed = result.hosDetails.ymAllowed;
-    this.driverData.hosDetails.timezone = result.hosDetails.timezone;
-    this.driverData.hosDetails.optZone = result.hosDetails.optZone;
-
-    this.driverData.emergencyDetails.name = result.emergencyDetails.name;
-    this.driverData.emergencyDetails.relationship =
-      result.emergencyDetails.relationship;
-    this.driverData.emergencyDetails.phone = result.emergencyDetails.phone;
+    if (result.hosDetails) {
+      this.driverData.hosDetails.hosStatus = result.hosDetails.hosStatus;
+      this.driverData.hosDetails.type = result.hosDetails.type;
+      this.driverData.hosDetails.hosRemarks = result.hosDetails.hosRemarks;
+      this.driverData.hosDetails.hosCycleName = result.hosDetails.hosCycleName;
+      this.driverData.hosDetails.homeTerminal =
+        result.hosDetails.homeTerminal.addressID;
+      this.driverData.hosDetails.pcAllowed = result.hosDetails.pcAllowed;
+      this.driverData.hosDetails.ymAllowed = result.hosDetails.ymAllowed;
+      this.driverData.hosDetails.timezone = result.hosDetails.timezone;
+      this.driverData.hosDetails.optZone = result.hosDetails.optZone;
+    }
+    if (result.emergencyDetails) {
+      this.driverData.emergencyDetails.name = result.emergencyDetails.name;
+      this.driverData.emergencyDetails.relationship =
+        result.emergencyDetails.relationship;
+      this.driverData.emergencyDetails.phone = result.emergencyDetails.phone;
+    }
     this.driverData[`timeCreated`] = result.timeCreated;
+
   }
 
   async onUpdateDriver() {
@@ -1354,29 +1371,29 @@ export class AddDriverComponent
       this.hasError = false;
       this.hasSuccess = false;
       this.hideErrors();
-      this.payPerDelivery.default=false
-      this.payPerHour.default=false
-      this.payPerMile.default=false
-      this.payPercentage.default=false
-      this.payFlatRate.default=false
-      switch(this.paymentType){
+      this.payPerDelivery.default = false
+      this.payPerHour.default = false
+      this.payPerMile.default = false
+      this.payPercentage.default = false
+      this.payFlatRate.default = false
+      switch (this.paymentType) {
         case "ppd":
-          this.payPerDelivery.default=true
+          this.payPerDelivery.default = true
           break;
         case "pph":
-          this.payPerHour.default=true
+          this.payPerHour.default = true
           break;
         case "pp":
-          this.payPercentage.default=true
+          this.payPercentage.default = true
           break;
         case "ppm":
-          this.payPerMile.default=true
+          this.payPerMile.default = true
           break;
         case "pfr":
-          this.payFlatRate.default=true
+          this.payFlatRate.default = true
           break
       }
-      this.driverData.paymentOption=[this.payPerMile,this.payPerDelivery,this.payPerHour,this.payPercentage,this.payFlatRate]
+      this.driverData.paymentOption = [this.payPerMile, this.payPerDelivery, this.payPerHour, this.payPercentage, this.payFlatRate]
       this.driverData[`driverID`] = this.driverID;
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
@@ -1490,7 +1507,7 @@ export class AddDriverComponent
   }
 
   changePaymentModeForm(value) {
-   
+
   }
   changeCurrency(currency: any) {
     // this.driverData.paymentDetails.loadedMilesUnit = currency;

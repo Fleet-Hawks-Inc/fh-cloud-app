@@ -1,4 +1,4 @@
-import { Component, OnInit,  Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -19,7 +19,7 @@ declare var $: any;
 })
 export class AssetListComponent implements OnInit {
   @ViewChild('dt') table: Table;
-  
+
   @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
@@ -104,27 +104,28 @@ export class AssetListComponent implements OnInit {
   contactsObjects = [];
   loaded = false
   lastItemSK = ''
-  
+
   loadMsg: string = Constants.NO_LOAD_DATA;
   assetOptions: any[];
   _selectedColumns: any[];
   get = _.get;
   isSearch = false;
-  
-  dataColumns = [
-        { field: 'assetIdentification', header: 'Asset Name/Number', type: "text" },
-        { field: 'VIN', header: 'VIN', type: "text" },
-        { field: 'assetType', header: 'Asset Type', type: "text" },
-        { field: 'assetDetails.manufacturer', header: 'Make', type: "text" },
-        { field: 'assetDetails.licencePlateNumber', header: 'Licence Plate Number', type: "text" },
-        { field: 'assetDetails.year', header: 'Year', type: "text" },
-        { field: 'assetDetails.ownerShip', header: 'Ownership', type: "text" },
-        { field: 'assetDetails.ownCname', header: 'Company Name', type: "text" },
-        { field: 'assetDetails.annualSafetyDate', header: 'Annual Safety Date', type: "text" },
-        { field: "currentStatus", header: 'Status', type: 'text' },
 
-    ];
-  
+  dataColumns = [
+    { field: 'assetIdentification', header: 'Asset Name/Number', type: "text" },
+    { field: 'VIN', header: 'VIN', type: "text" },
+    { field: 'assetType', header: 'Asset Type', type: "text" },
+    { field: 'manufacturer', header: 'Make', type: "text" },
+    { field: 'licencePlateNumber', header: 'Licence Plate Number', type: "text" },
+    { field: 'year', header: 'Year', type: "text" },
+    { field: 'ownerShip', header: 'Ownership', type: "text" },
+    { field: 'ownCname', header: 'Company Name', type: "text" },
+    { field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
+    { field: "currentStatus", header: 'Status', type: 'text' },
+    { field: 'isImport', header: 'Added By', type: "text" },
+
+  ];
+
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
@@ -142,39 +143,39 @@ export class AssetListComponent implements OnInit {
     this.fetchContacts();
 
   }
-  
+
   setToggleOptions() {
-        this.selectedColumns = this.dataColumns;
-    }
-    setAssetOptions() {
-        this.assetOptions = [{ "value": "container", "name": "Container" }, 
-        { "value": "double_drop", "name": "Double Drop" }, 
-        { "value": "dump_trailer", "name": "Dump Trailer" },
-        { "value": "flat_bed", "name": "Flat bed" },
-        { "value": "lowboy", "name": "Lowboy" },
-        { "value": "stepDeck", "name": "StepDeck" },
-        { "value": "removable_gooseneck", "name": "Removable Gooseneck" },
-        { "value": "dry_van", "name": "Dry Van" },
-        { "value": "reefer", "name": "Reefer" },
-        { "value": "power_only", "name": "Power Only" },
-        { "value": "conestoga_trailer", "name": "Conestoga Trailer" },
-        { "value": "side_kit_trailer", "name": "Side Kit Trailer" },
-        { "value": "enclosed_trailer", "name": "Enclosed Trailer" },
-        { "value": "scrap_trailer", "name": "Scrap Trailer" },
-        { "value": "semi_trailer", "name": "Semi Trailer" },
-        { "value": "chassis", "name": "Chassis" },
-        { "value": "tank_trailer", "name": "Tank Trailer" },
-        ];
-    }
-    @Input() get selectedColumns(): any[] {
-        return this._selectedColumns;
-    }
+    this.selectedColumns = this.dataColumns;
+  }
+  setAssetOptions() {
+    this.assetOptions = [{ "value": "container", "name": "Container" },
+    { "value": "double_drop", "name": "Double Drop" },
+    { "value": "dump_trailer", "name": "Dump Trailer" },
+    { "value": "flat_bed", "name": "Flat bed" },
+    { "value": "lowboy", "name": "Lowboy" },
+    { "value": "stepDeck", "name": "StepDeck" },
+    { "value": "removable_gooseneck", "name": "Removable Gooseneck" },
+    { "value": "dry_van", "name": "Dry Van" },
+    { "value": "reefer", "name": "Reefer" },
+    { "value": "power_only", "name": "Power Only" },
+    { "value": "conestoga_trailer", "name": "Conestoga Trailer" },
+    { "value": "side_kit_trailer", "name": "Side Kit Trailer" },
+    { "value": "enclosed_trailer", "name": "Enclosed Trailer" },
+    { "value": "scrap_trailer", "name": "Scrap Trailer" },
+    { "value": "semi_trailer", "name": "Semi Trailer" },
+    { "value": "chassis", "name": "Chassis" },
+    { "value": "tank_trailer", "name": "Tank Trailer" },
+    ];
+  }
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
 
-    set selectedColumns(val: any[]) {
-        //restore original order
-        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
 
-    }
+  }
 
   getSuggestions = _.debounce(function (value) {
     value = value.toLowerCase();
@@ -183,16 +184,16 @@ export class AssetListComponent implements OnInit {
       this.apiService
         .getData(`assets/suggestion/${value}`)
         .subscribe((result) => {
-           if (result.length === 0) {
-         this.suggestedAssets = [];
-        this.loadMsg = Constants.NO_LOAD_FOUND;
-         }
-         
+          if (result.length === 0) {
+            this.suggestedAssets = [];
+            this.loadMsg = Constants.NO_LOAD_FOUND;
+          }
+
           if (result.length > 0) {
-             this.suggestedAssets = result;
-                    } else {
-                      this.suggestedAssets = [];
-              }
+            this.suggestedAssets = result;
+          } else {
+            this.suggestedAssets = [];
+          }
         });
     } else {
       this.suggestedAssets = [];
@@ -200,10 +201,10 @@ export class AssetListComponent implements OnInit {
   }, 800);
 
   setAsset(assetIdentification: any) {
-     if (assetIdentification != undefined && assetIdentification != '') {
-            this.assetIdentification = assetIdentification;
-        }
-     this.loadMsg = Constants.NO_LOAD_DATA;
+    if (assetIdentification != undefined && assetIdentification != '') {
+      this.assetIdentification = assetIdentification;
+    }
+    this.loadMsg = Constants.NO_LOAD_DATA;
     //this.suggestedAssets = [];
   }
 
@@ -270,29 +271,29 @@ export class AssetListComponent implements OnInit {
   }
 
   async initDataTable() {
-        if (this.lastEvaluatedKey !== 'end') {
-            let result = await this.apiService.getData('assets/fetch/records?asset=' + this.assetIdentification + '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey).toPromise();
-            if (result.Items.length === 0) {
-                this.dataMessage = Constants.NO_RECORDS_FOUND;
-                this.loaded = true;
-            }
-            result.Items.map((v) => {
-                v.url = `/fleet/assets/detail/${v.assetID}`;
-            });
-            if (result.LastEvaluatedKey !== undefined) {
-              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].assetSK);
-            }
-            else {
-              this.lastEvaluatedKey = 'end'
-            }
-            this.allData = this.allData.concat(result.Items)
-            this.loaded = true;
-            this.isSearch = false;
-        }
+    if (this.lastEvaluatedKey !== 'end') {
+      let result = await this.apiService.getData('assets/fetch/records?asset=' + this.assetIdentification + '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey).toPromise();
+      if (result.data.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND;
+        this.loaded = true;
+      }
+      result.data.map((v) => {
+        v.url = `/fleet/assets/detail/${v.assetID}`;
+      });
+      if (result.nextPage !== undefined) {
+        this.lastEvaluatedKey = encodeURIComponent(result.nextPage);
+      }
+      else {
+        this.lastEvaluatedKey = 'end'
+      }
+      this.allData = this.allData.concat(result.data)
+      this.loaded = true;
+      this.isSearch = false;
     }
-  
-  
-  onScroll = async(event: any) => {
+  }
+
+
+  onScroll = async (event: any) => {
     if (this.loaded) {
       this.initDataTable();
     }
@@ -300,7 +301,7 @@ export class AssetListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.assetIdentification !== '' ||  this.assetType !== null) {
+    if (this.assetIdentification !== '' || this.assetType !== null) {
       this.assetIdentification = this.assetIdentification.toLowerCase();
       if (this.assetID == '') {
         this.assetID = this.assetIdentification;
@@ -316,14 +317,14 @@ export class AssetListComponent implements OnInit {
     }
   }
 
-   clearInput() {
-        this.suggestedAssets = null;
-    }
+  clearInput() {
+    this.suggestedAssets = null;
+  }
 
-    clearSuggestions() {
-        this.assetIdentification = '';
-    }
- 
+  clearSuggestions() {
+    this.assetIdentification = '';
+  }
+
   resetFilter() {
     if (this.assetIdentification !== '' || this.assetType !== null) {
       this.assetID = '';
@@ -353,8 +354,8 @@ export class AssetListComponent implements OnInit {
     this.dataMessage = Constants.FETCHING_DATA;
 
   }
-  
-   clear(table: Table) {
-        table.clear();
-    }
+
+  clear(table: Table) {
+    table.clear();
+  }
 }
