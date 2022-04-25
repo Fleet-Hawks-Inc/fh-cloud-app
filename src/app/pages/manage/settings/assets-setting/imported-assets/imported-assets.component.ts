@@ -104,6 +104,11 @@ export class ImportedAssetsComponent implements OnInit {
     this.loaded = true;
   }
 
+  isStatusValid = (status) => {
+    return status == 'active' || status == 'inActive' || status == 'sold' || status == 'outOfService'
+  }
+
+
   validateCSV($event) {
     const data: ValidatorConfig = {
       headers: [
@@ -129,12 +134,7 @@ export class ImportedAssetsComponent implements OnInit {
           }
         },
         {
-          name: 'asset_type', inputName: 'assettype', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
-            return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
-          }
-        },
-        {
-          name: 'status', inputName: 'status', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'status', inputName: 'status', required: true, validate: this.isStatusValid, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
           }
         },
@@ -144,16 +144,6 @@ export class ImportedAssetsComponent implements OnInit {
           }, validate: function (date: string) {
             const dateformat = /^\d{4}$/;
             return dateformat.test(date)
-          }
-        },
-        {
-          name: 'licence_country', inputName: 'licencecountry', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
-            return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
-          }
-        },
-        {
-          name: 'licence_province', inputName: 'licenceprovince/state', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
-            return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
           }
         },
         {
@@ -189,6 +179,9 @@ export class ImportedAssetsComponent implements OnInit {
                 this.inValidMessages.push(joinStr)
               } else if (item.includes('vin')) {
                 joinStr = item + '. VIN must be between 17-18 alphanumeric characters eg.2G1WH55K5Y9322458.';
+                this.inValidMessages.push(joinStr)
+              } else if (item.includes('status')) {
+                joinStr = item + '.  Status should be active, inActive, outOfService or sold';
                 this.inValidMessages.push(joinStr)
               } else {
                 this.inValidMessages.push(item)

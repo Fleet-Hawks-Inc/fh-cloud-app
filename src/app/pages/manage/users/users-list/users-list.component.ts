@@ -44,6 +44,7 @@ export class UsersListComponent implements OnInit {
   }
   newRoles = [];
   searchValue = '';
+  queryValue = '';
   lastItemSK = "";
   loaded: boolean = false;
   roles: any = [];
@@ -90,6 +91,7 @@ export class UsersListComponent implements OnInit {
   setUser(data: any) {
     this.searchValue = `${data.firstName} ${data.lastName}`;
     this.searchValue = this.searchValue.toLowerCase().trim();
+
     this.contactID = data.contactID;
     this.suggestedUsers = [];
   }
@@ -182,7 +184,10 @@ export class UsersListComponent implements OnInit {
 
   initDataTable() {
     if (this.lastItemSK !== 'end') {
-      this.apiService.getData(`contacts/fetch/employee/records?searchValue=${this.searchValue}&lastKey=${this.lastItemSK}`)
+      if (this.searchValue != '') {
+        this.queryValue = this.searchValue;
+      }
+      this.apiService.getData(`contacts/fetch/employee/records?searchValue=${encodeURIComponent(this.queryValue)}&lastKey=${this.lastItemSK}`)
         .subscribe((result: any) => {
           if (result.Items.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -206,6 +211,7 @@ export class UsersListComponent implements OnInit {
     this.lastItemSK = '';
     this.users = [];
     this.suggestedUsers = [];
+    this.dataMessage = Constants.FETCHING_DATA;
     this.initDataTable();
   }
 
@@ -223,6 +229,7 @@ export class UsersListComponent implements OnInit {
       this.users = [];
       this.lastItemSK = '';
       this.suggestedUsers = [];
+      this.dataMessage = Constants.NO_RECORDS_FOUND;
       this.initDataTable();
     } else {
       return false;

@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
   findingWay: any;
   confirmPassword: any;
   signInRef: any;
-
+  showLogin = false;
 
   constructor(private apiService: ApiService,
     private router: Router,
@@ -140,7 +140,7 @@ export class LoginComponent implements OnInit {
         this.userName = this.userName.trim();
         let loginResponse = await Auth.signIn(this.userName, this.password);
         if (loginResponse) {
-
+          const isActivatedUser = (await Auth.currentSession()).getIdToken().payload;
           let allow = await this.apiService.checkIfUserActive();
           await this.apiService.checkAccess()
           if (!allow) {
@@ -154,35 +154,41 @@ export class LoginComponent implements OnInit {
           else {
             let carrierID = await this.apiService.getCarrierID();
             localStorage.setItem('xfhCarrierId', carrierID);
-            this.apiService.getData(`carriers/${carrierID}`).subscribe((res) => {
-              if(res.Items.length > 0) {
-                if ('isProfileComplete' in res.Items[0]) {
-                  if (res.Items[0].isProfileComplete) {
-                    if(res.Items[0].subCompIDs && res.Items[0].subCompIDs.length > 0) {
+            if (isActivatedUser.userRoles != "orgAdmin") {
+              this.router.navigate(['/Map-Dashboard'])
+              localStorage.setItem("subCompany", 'no')
+            } else {
+              this.apiService.getData(`carriers/${carrierID}`).subscribe((res) => {
+                if (res.Items.length > 0) {
+                  if ('isProfileComplete' in res.Items[0]) {
+                    if (res.Items[0].isProfileComplete) {
+                      if (res.Items[0].subCompIDs && res.Items[0].subCompIDs.length > 0) {
+                        this.router.navigate(['/organizations'])
+                        localStorage.setItem("subCompany", 'yes')
+                      } else {
+                        this.router.navigate(['/Map-Dashboard'])
+                        localStorage.setItem("subCompany", 'no')
+                      }
+
+                    } else {
+                      this.router.navigate(['/onboard'])
+                    }
+                    localStorage.setItem("isProfileComplete", res.Items[0].isProfileComplete)
+                  } else {
+                    if (res.Items[0].subCompIDs && res.Items[0].subCompIDs.length > 0) {
                       this.router.navigate(['/organizations'])
                       localStorage.setItem("subCompany", 'yes')
                     } else {
                       this.router.navigate(['/Map-Dashboard'])
                       localStorage.setItem("subCompany", 'no')
                     }
-                    
-                  } else {
-                    this.router.navigate(['/onboard'])
-                  }
-                  localStorage.setItem("isProfileComplete", res.Items[0].isProfileComplete)
-                } else {
-                  if(res.Items[0].subCompIDs && res.Items[0].subCompIDs.length > 0) {
-                    this.router.navigate(['/organizations'])
-                    localStorage.setItem("subCompany", 'yes')
-                  } else {
-                    this.router.navigate(['/Map-Dashboard'])
-                    localStorage.setItem("subCompany", 'no')
                   }
                 }
-              }
-            })
+              })
+            }
+
           }
-          const isActivatedUser = (await Auth.currentSession()).getIdToken().payload;
+
           const jwt = (await Auth.currentSession()).getIdToken().getJwtToken();
           const at = (await Auth.currentSession()).getAccessToken().getJwtToken()
           localStorage.setItem('congnitoAT', at);
@@ -220,7 +226,7 @@ export class LoginComponent implements OnInit {
               localStorage.setItem('signOut', 'false'); //trigger flag
               localStorage.setItem('accessToken', jwt);//save token in session storage
               // await this.router.navigate(['/Map-Dashboard']);
-              
+
               this.listService.triggerModal('');
               localStorage.setItem('user', JSON.stringify(user));
             }
@@ -370,14 +376,6 @@ export class LoginComponent implements OnInit {
   }
 
   openLogin() {
-    let ngbModalOptions: NgbModalOptions = {
-      keyboard: false,
-      backdrop: "static",
-      windowClass: "login-modal-outer",
-      size: 'lg',
-      centered: true
-    };
-    this.signInRef = this.modalService.open(this.SignInModal, ngbModalOptions)
-
+    this.showLogin = true;
   }
 }
