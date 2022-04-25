@@ -560,8 +560,8 @@
                           <div class="row mt-3 align-items-center">
                             <div class="col-lg-5 pl-3 mb-2">
                               <div class="checkbox-custom checkbox-default">
-                                <input [(ngModel)]="saleData.taxExempt" name="taxExempt" type="checkbox"
-                                  id="ZeroRated" />
+                                <input (change)="taxExempt()" [(ngModel)]="saleData.taxExempt" name="taxExempt"
+                                  type="checkbox" id="ZeroRated" />
                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                   for="ZeroRated">Tax Exempt</label>
                               </div>

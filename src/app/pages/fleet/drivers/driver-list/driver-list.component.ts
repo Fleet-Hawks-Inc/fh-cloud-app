@@ -96,7 +96,8 @@ export class DriverListComponent implements OnInit {
         { field: 'companyName', header: 'Company', type: "text" },
         { field: 'startDate', header: 'Start Date', type: "text" },
         { field: 'CDL_Number', header: 'CDL#', type: "text" },
-        { field: 'licenceDetails.licenceExpiry', header: 'CDL Expiry', type: "text" },
+        { field: 'licenceExpiry', header: 'CDL Expiry', type: "text" },
+        { field: 'isImport', header: 'Added By', type: "text" },
         { field: "driverStatus", header: 'Status', type: 'text' },
 
     ];

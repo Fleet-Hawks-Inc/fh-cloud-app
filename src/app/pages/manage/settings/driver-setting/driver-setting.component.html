@@ -7,11 +7,8 @@
             <h2 class="font-weight-bold pl-0">Driver Settings</h2>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1 pt-2">
-            <a
-              routerLink="/manage/settings/overview"
-              class="btn btn-success btn-sm"
-              ><i class="fas fa-arrow-left"></i> Go Back</a
-            >
+            <a routerLink="/manage/settings/driver-overview" class="btn btn-success btn-sm"><i
+                class="fas fa-arrow-left"></i> Go Back</a>
           </div>
         </div>
       </header>
@@ -28,26 +25,16 @@
                   <a class="nav-link" href="#dstatusset" data-toggle="tab">Driver Status</a>
                 </li> -->
                 <li class="nav-item active">
-                  <a
-                    class="nav-link active"
-                    href="#deletedDrivers"
-                    data-toggle="tab"
-                    >Deleted Drivers</a
-                  >
+                  <a class="nav-link active" href="#deletedDrivers" data-toggle="tab">Deleted Drivers</a>
                 </li>
               </ul>
 
-              <div
-                class="tab-content mt-3"
-                style="box-shadow: none; border: none"
-              >
+              <div class="tab-content mt-3" style="box-shadow: none; border: none">
                 <!-- driver listing -->
                 <div id="drlistset" class="tab-pane">
                   <div class="row pt-2 text-dark">
                     <div class="col-12">
-                      <p
-                        class="text-4 font-weight-bold back-color-gray p-2 text-dark"
-                      >
+                      <p class="text-4 font-weight-bold back-color-gray p-2 text-dark">
                         Set the visibility of driver listing to
                       </p>
                     </div>
@@ -55,36 +42,21 @@
                     <div class="col-5 offset-lg-1">
                       <div class="radio">
                         <label>
-                          <input
-                            type="radio"
-                            name="ds"
-                            id="ds"
-                            class="driver-type"
-                            checked="checked"
-                          />
+                          <input type="radio" name="ds" id="ds" class="driver-type" checked="checked" />
                           Active Drivers
                         </label>
                       </div>
-                      <span class="text-2"
-                        >Show only active drivers in the listing</span
-                      >
+                      <span class="text-2">Show only active drivers in the listing</span>
                     </div>
 
                     <div class="col-5">
                       <div class="radio">
                         <label>
-                          <input
-                            type="radio"
-                            name="ad"
-                            id="ad"
-                            class="driver-type"
-                          />
+                          <input type="radio" name="ad" id="ad" class="driver-type" />
                           Active/Inactive Drivers
                         </label>
                       </div>
-                      <span class="text-2"
-                        >Show all drivers in the listing</span
-                      >
+                      <span class="text-2">Show all drivers in the listing</span>
                     </div>
                   </div>
                 </div>
@@ -99,11 +71,8 @@
                       </p>
                     </div>
                     <div class="col-2 text-right">
-                      <a
-                        routerLink="/manage/settings/driver"
-                        class="btn btn-success btn-sm modal-with-form"
-                        ><i class="fas fa-plus"></i> Assign New Status</a
-                      >
+                      <a routerLink="/manage/settings/driver" class="btn btn-success btn-sm modal-with-form"><i
+                          class="fas fa-plus"></i> Assign New Status</a>
                     </div>
 
                     <!--
@@ -150,9 +119,7 @@
                             -->
 
                     <div class="col-12">
-                      <table
-                        class="table table-striped table-bordered simple-table"
-                      >
+                      <table class="table table-striped table-bordered simple-table">
                         <thead>
                           <tr style="background-color: #ccc">
                             <th>Driver</th>
@@ -226,36 +193,22 @@
                         <div class="row" style="padding-top: 10px">
                           <div class="col-md-2 col-lg-2 pr-0">
                             <div class="input-group input-group-md">
-                              <input
-                                type="text"
-                                autocomplete="off"
-                                name="driverName"
-                                [(ngModel)]="driverName"
-                                placeholder="Search driver by name"
-                                class="form-control"
-                                (input)="getSuggestions($event.target.value)"
-                              />
+                              <input type="text" autocomplete="off" name="driverName" [(ngModel)]="driverName"
+                                placeholder="Search driver by name" class="form-control"
+                                (input)="getSuggestions($event.target.value)" />
                             </div>
-                            <div
-                              *ngIf="suggestedDrivers?.length > 0"
-                              class="result-suggestions"
-                            >
+                            <div *ngIf="suggestedDrivers?.length > 0" class="result-suggestions">
                               <ul>
-                                <li
-                                  *ngFor="
+                                <li *ngFor="
                                     let suggestedDriver of suggestedDrivers
-                                  "
-                                  class="cursorpoint"
-                                  (click)="
+                                  " class="cursorpoint" (click)="
                                     setDriver(
                                       suggestedDriver.driverID,
                                       suggestedDriver.firstName,
                                       suggestedDriver.lastName,
                                       suggestedDriver.middleName
                                     )
-                                  "
-                                  class="text-capitalize"
-                                >
+                                  " class="text-capitalize">
                                   {{ suggestedDriver.firstName }}
                                   {{ suggestedDriver.middleName }}
                                   {{ suggestedDriver.lastName }}
@@ -264,54 +217,29 @@
                             </div>
                           </div>
                           <div class="col-md-2 col-lg-2 pl-2 pr-0">
-                            <ng-select
-                              [(ngModel)]="driverType"
-                              name="driverType"
-                              placeholder="Driver type"
-                              class="form-control form-control-sm populate"
-                            >
-                              <ng-option value="contractor"
-                                >Contractor</ng-option
-                              >
+                            <ng-select [(ngModel)]="driverType" name="driverType" placeholder="Driver type"
+                              class="form-control form-control-sm populate">
+                              <ng-option value="contractor">Contractor</ng-option>
                               <ng-option value="employee">Employee</ng-option>
                             </ng-select>
                           </div>
 
                           <div class="col-md-2 col-lg-2 pl-2">
-                            <button
-                              type="submit"
-                              (click)="searchFilter()"
-                              class="btn btn-sm btn-success mr-2"
-                            >
+                            <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-2">
                               Search
                             </button>
-                            <button
-                              type="button"
-                              (click)="resetFilter()"
-                              class="btn btn-sm btn-success"
-                            >
+                            <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">
                               Reset
                             </button>
                           </div>
 
-                          <div
-                            class="col-md-6 text-right pr-1 page-buttons"
-                          ></div>
+                          <div class="col-md-6 text-right pr-1 page-buttons"></div>
                         </div>
                       </div>
                       <div class="col-12">
-                        <div
-                          class="table-responsive"
-                          infiniteScroll
-                          [infiniteScrollDistance]="1"
-                          [infiniteScrollUpDistance]="1"
-                          [infiniteScrollThrottle]="5"
-                          (scrolled)="onScroll()"
-                        >
-                          <table
-                            id="diverTbl"
-                            class="row-border hover table table-bordered table-striped mb-0"
-                          >
+                        <div class="table-responsive" infiniteScroll [infiniteScrollDistance]="1"
+                          [infiniteScrollUpDistance]="1" [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                          <table id="diverTbl" class="row-border hover table table-bordered table-striped mb-0">
                             <thead>
                               <tr>
                                 <th>Name</th>
@@ -327,20 +255,14 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr
-                                *ngIf="drivers.length == 0"
-                                class="text-center"
-                              >
+                              <tr *ngIf="drivers.length == 0" class="text-center">
                                 <td colspan="10">{{ dataMessage }}</td>
                               </tr>
                               <tr *ngFor="let driver of drivers; let i = index">
                                 <td>
-                                  <span
-                                    class="font-weight-bold line-height-lg text-capitalize"
-                                  >
+                                  <span class="font-weight-bold line-height-lg text-capitalize">
                                     {{ driver.firstName }}
-                                    {{ driver.lastName }}</span
-                                  >
+                                    {{ driver.lastName }}</span>
                                 </td>
                                 <td>{{ driver.email }}</td>
                                 <td>{{ driver.phone }}</td>
@@ -348,63 +270,42 @@
                                   {{ driver.driverType }}
                                 </td>
                                 <td>
-                                  <span
-                                    *ngIf="driver.driverType != 'contractor'"
-                                    >{{
-                                      driver.startDate | date: "yyyy/MM/dd"
-                                    }}</span
-                                  >
-                                  <span
-                                    *ngIf="driver.driverType == 'contractor'"
-                                    >{{
-                                      driver.contractStart | date: "yyyy/MM/dd"
-                                    }}</span
-                                  >
+                                  <span *ngIf="driver.driverType != 'contractor'">{{
+                                    driver.startDate | date: "yyyy/MM/dd"
+                                    }}</span>
+                                  <span *ngIf="driver.driverType == 'contractor'">{{
+                                    driver.contractStart | date: "yyyy/MM/dd"
+                                    }}</span>
                                 </td>
                                 <td>{{ driver.CDL_Number }}</td>
                                 <td>
                                   {{
-                                    driver.licenceDetails.licenceExpiry
-                                      | date: "yyyy/MM/dd"
+                                  driver.licenceDetails.licenceExpiry
+                                  | date: "yyyy/MM/dd"
                                   }}
                                 </td>
                                 <td>
                                   {{
-                                    driver.licenceDetails.licStateName
-                                      ? driver.licenceDetails.licStateName
-                                      : "-"
+                                  driver.licenceDetails.licStateName
+                                  ? driver.licenceDetails.licStateName
+                                  : "-"
                                   }}
                                 </td>
                                 <td>
-                                  <span
-                                    class="badge badge-dark p-1 text-uppercase"
-                                    >{{ driver.driverStatus }}</span
-                                  >
+                                  <span class="badge badge-dark p-1 text-uppercase">{{ driver.driverStatus }}</span>
                                 </td>
                                 <td class="border-0">
                                   <div class="dropdown dropright">
-                                    <button
-                                      class="bg-transparent border-0"
-                                      type="button"
-                                      id="dropdownMenuButton-{{ i }}"
-                                      data-toggle="dropdown"
-                                      aria-haspopup="true"
-                                      aria-expanded="false"
-                                    >
+                                    <button class="bg-transparent border-0" type="button"
+                                      id="dropdownMenuButton-{{ i }}" data-toggle="dropdown" aria-haspopup="true"
+                                      aria-expanded="false">
                                       <i class="fas fa-ellipsis-v"></i>
                                     </button>
-                                    <div
-                                      class="dropdown-menu"
-                                      attr.aria-labelledby="dropdownMenuButton-{{
+                                    <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{
                                         i
-                                      }}"
-                                    >
-                                      <a
-                                        href="javascript:;"
-                                        class="dropdown-item"
-                                        (click)="restoreDriver(driver)"
-                                        >Restore</a
-                                      >
+                                      }}">
+                                      <a href="javascript:;" class="dropdown-item"
+                                        (click)="restoreDriver(driver)">Restore</a>
                                     </div>
                                   </div>
                                 </td>
@@ -412,17 +313,10 @@
                             </tbody>
                           </table>
                         </div>
-                        <div
-                          class="col-lg-12 mt-3 text-center"
-                          *ngIf="
+                        <div class="col-lg-12 mt-3 text-center" *ngIf="
                             lastEvaluatedKey !== 'end' && drivers.length !== 0
-                          "
-                        >
-                          <button
-                            type="button"
-                            (click)="onScroll()"
-                            class="btn btn-success btn-sm text-light"
-                          >
+                          ">
+                          <button type="button" (click)="onScroll()" class="btn btn-success btn-sm text-light">
                             Load More..
                           </button>
                         </div>

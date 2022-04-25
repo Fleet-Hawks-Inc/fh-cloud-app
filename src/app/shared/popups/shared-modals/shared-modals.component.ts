@@ -190,6 +190,7 @@ export class SharedModalsComponent implements OnInit {
   activeTab = 1;
 
   subscription: any;
+  docSubscribe: any;
   users = [];
 
   getDocsLength: any;
@@ -202,7 +203,7 @@ export class SharedModalsComponent implements OnInit {
       keyboard: false,
       windowClass: "doc-type__main",
     };
-    this.subscription = this.listService.docModalList.subscribe((res: any) => {
+    this.docSubscribe = this.listService.docModalList.subscribe((res: any) => {
       if (res.type === 'order' || res.type === 'trip') {
         this.documentType = res.type;
         this.getDocsLength = res.docLength;
@@ -288,6 +289,7 @@ export class SharedModalsComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.docSubscribe.unsubscribe();
   }
 
   fetchGroups() {
