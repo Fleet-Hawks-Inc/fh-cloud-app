@@ -84,10 +84,10 @@ export class ImportedVehiclesComponent implements OnInit {
   }
 
   isStatusValid = (status) => {
-    return status == 'Active' || status == 'inActive' || status == 'sold' || status == 'outOfService' 
+    return status == 'active' || status == 'inActive' || status == 'sold' || status == 'outOfService'
   }
 
-  
+
   validateCSV($event) {
 
     const data: ValidatorConfig = {
@@ -122,7 +122,7 @@ export class ImportedVehiclesComponent implements OnInit {
           }
         },
         {
-          name: 'status', inputName: 'status', required: true, validate: this.isStatusValid,  requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'status', inputName: 'status', required: true, validate: this.isStatusValid, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
           }
         },
@@ -227,9 +227,9 @@ export class ImportedVehiclesComponent implements OnInit {
   }
 
   refreshData() {
-   this.importVehicles = []
-   this.fetchVehicleImport();
-   this.dataMessage = Constants.FETCHING_DATA;
+    this.importVehicles = []
+    this.fetchVehicleImport();
+    this.dataMessage = Constants.FETCHING_DATA;
   }
 
   /**

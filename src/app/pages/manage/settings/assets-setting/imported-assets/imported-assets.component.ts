@@ -105,7 +105,7 @@ export class ImportedAssetsComponent implements OnInit {
   }
 
   isStatusValid = (status) => {
-    return status == 'Active' || status == 'inActive' || status == 'sold' || status == 'outOfService' 
+    return status == 'active' || status == 'inActive' || status == 'sold' || status == 'outOfService'
   }
 
 

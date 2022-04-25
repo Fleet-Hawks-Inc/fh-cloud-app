@@ -840,7 +840,6 @@ export class AddVehicleComponent implements OnInit {
     let result: any = await this.apiService
       .getData("vehicles/" + this.vehicleID)
       .toPromise();
-    // .subscribe((result: any) => {
     this.editDisabled = true;
     result = result.Items[0];
     this.vehicleIdentification = result.vehicleIdentification;
@@ -877,162 +876,181 @@ export class AddVehicleComponent implements OnInit {
     this.inspectionFormID = result.inspectionFormID;
     this.createdDate = result.createdDate;
     this.createdTime = result.createdTime;
-    this.lifeCycle = {
-      inServiceDate: _.isEmpty(result.lifeCycle.inServiceDate)
-        ? null
-        : result.lifeCycle.inServiceDate,
-      inServiceOdometer: result.lifeCycle.inServiceOdometer,
-      startDate: _.isEmpty(result.lifeCycle.startDate)
-        ? null
-        : result.lifeCycle.startDate,
-      estimatedServiceYears: result.lifeCycle.estimatedServiceYears,
-      estimatedServiceMonths: result.lifeCycle.estimatedServiceMonths,
-      estimatedServiceMiles: result.lifeCycle.estimatedServiceMiles,
-      estimatedResaleValue: result.lifeCycle.estimatedResaleValue,
-      outOfServiceDate: _.isEmpty(result.lifeCycle.outOfServiceDate)
-        ? null
-        : result.lifeCycle.outOfServiceDate,
-      outOfServiceOdometer: result.lifeCycle.outOfServiceOdometer,
-    };
-    this.specifications = {
-      height: result.specifications.height,
-      heightUnit: result.specifications.heightUnit,
-      width: result.specifications.width,
-      widthUnit: result.specifications.widthUnit,
-      length: result.specifications.length,
-      lengthUnit: result.specifications.lengthUnit,
-      interiorVolume: result.specifications.interiorVolume,
-      passangerVolume: result.specifications.passangerVolume,
-      groundClearnce: result.specifications.groundClearnce,
-      groundClearnceUnit: result.specifications.groundClearnceUnit,
-      bedLength: result.specifications.bedLength,
-      bedLengthUnit: result.specifications.bedLengthUnit,
-      cargoVolume: result.specifications.cargoVolume,
-      tareWeight: result.specifications.tareWeight,
-      grossVehicleWeightRating: result.specifications.grossVehicleWeightRating,
-      towingCapacity: result.specifications.towingCapacity,
-      maxPayload: result.specifications.maxPayload,
-      EPACity: result.specifications.EPACity,
-      EPACombined: result.specifications.EPACombined,
-      EPAHighway: result.specifications.EPAHighway,
-    };
-    this.insurance = {
-      dateOfIssue: _.isEmpty(result.insurance.dateOfIssue)
-        ? null
-        : result.insurance.dateOfIssue,
-      premiumAmount: result.insurance.premiumAmount,
-      premiumCurrency: result.insurance.premiumCurrency,
-      vendorID: result.insurance.vendorID,
-      dateOfExpiry: _.isEmpty(result.insurance.dateOfExpiry)
-        ? null
-        : result.insurance.dateOfExpiry,
-      reminder: result.insurance.reminder,
-      remiderEvery: result.insurance.remiderEvery,
-      policyNumber: result.insurance.policyNumber,
-      amount: result.insurance.amount,
-      amountCurrency: result.insurance.amountCurrency,
-    };
-    this.fluid = {
-      fuelType: result.fluid.fuelType,
-      fuelTankOneCapacity: result.fluid.fuelTankOneCapacity,
-      fuelTankOneType: result.fluid.fuelTankOneType,
-      fuelQuality: result.fluid.fuelQuality,
-      fuelTankTwoCapacity: result.fluid.fuelTankTwoCapacity,
-      fuelTankTwoType: result.fluid.fuelTankTwoType,
-      oilCapacity: result.fluid.oilCapacity,
-      oilCapacityType: result.fluid.oilCapacityType,
-      def: result.fluid.def,
-      defType: result.fluid.defType,
-    };
-    this.wheelsAndTyres = {
-      numberOfTyres: result.wheelsAndTyres.numberOfTyres,
-      driveType: result.wheelsAndTyres.driveType,
-      brakeSystem: result.wheelsAndTyres.brakeSystem,
-      wheelbase: result.wheelsAndTyres.wheelbase,
-      rearAxle: result.wheelsAndTyres.rearAxle,
-      frontTyreType: result.wheelsAndTyres.frontTyreType,
-      rearTyreType: result.wheelsAndTyres.rearTyreType,
-      frontTrackWidth: result.wheelsAndTyres.frontTrackWidth,
-      rearTrackWidth: result.wheelsAndTyres.rearTrackWidth,
-      frontWheelDiameter: result.wheelsAndTyres.frontWheelDiameter,
-      rearWheelDiameter: result.wheelsAndTyres.rearWheelDiameter,
-      frontTyrePSI: result.wheelsAndTyres.frontTyrePSI,
-      rearTyrePSI: result.wheelsAndTyres.rearTyrePSI,
-    };
-    this.engine = {
-      engineSummary: result.engine.engineSummary,
-      engineBrand: result.engine.engineBrand,
-      aspiration: result.engine.aspiration,
-      blockType: result.engine.blockType,
-      bore: result.engine.bore,
-      camType: result.engine.camType,
-      stroke: result.engine.stroke,
-      valves: result.engine.valves,
-      compression: result.engine.compression,
-      cylinders: result.engine.cylinders,
-      displacement: result.engine.displacement,
-      fuelIndication: result.engine.fuelIndication,
-      fuelQuality: result.engine.fuelQuality,
-      maxHP: result.engine.maxHP,
-      maxTorque: result.engine.maxTorque,
-      readlineRPM: result.engine.readlineRPM,
-      transmissionSummary: result.engine.transmissionSummary,
-      transmissionType: result.engine.transmissionType,
-      transmissonBrand: result.engine.transmissonBrand,
-      transmissionGears: result.engine.transmissionGears,
-    };
-    this.purchase = {
-      purchaseVendorID: result.purchase.purchaseVendorID,
-      warrantyExpirationDate: _.isEmpty(result.purchase.warrantyExpirationDate)
-        ? null
-        : result.purchase.warrantyExpirationDate,
-      warrantyExpirationDateReminder:
-        result.purchase.warrantyExpirationDateReminder,
-      purchasePrice: result.purchase.purchasePrice,
-      purchasePriceCurrency: result.purchase.purchasePriceCurrency,
-      warrantyExpirationMeter: result.purchase.warrantyExpirationMeter,
-      purchaseDate: _.isEmpty(result.purchase.purchaseDate)
-        ? null
-        : result.purchase.purchaseDate,
-      purchaseComments: result.purchase.purchaseComments,
-      purchaseOdometer: result.purchase.purchaseOdometer,
-      gstInc: result.purchase.gstInc,
-    };
-    this.loan = {
-      loanVendorID: result.loan.loanVendorID,
-      amountOfLoan: result.loan.amountOfLoan,
-      amountOfLoanCurrency: result.loan.amountOfLoanCurrency,
-      aspiration: result.loan.aspiration,
-      annualPercentageRate: result.loan.annualPercentageRate,
-      gstInc: result.loan.gstInc,
-      downPayment: result.loan.downPayment,
-      downPaymentCurrency: result.loan.downPaymentCurrency,
-      dateOfLoan: _.isEmpty(result.loan.dateOfLoan)
-        ? null
-        : result.loan.dateOfLoan,
-      monthlyPayment: result.loan.monthlyPayment,
-      monthlyPaymentCurrency: result.loan.monthlyPaymentCurrency,
-      firstPaymentDate: _.isEmpty(result.loan.firstPaymentDate)
-        ? null
-        : result.loan.firstPaymentDate,
-      numberOfPayments: result.loan.numberOfPayments,
-      loadEndDate: _.isEmpty(result.loan.loadEndDate)
-        ? null
-        : result.loan.loadEndDate,
-      accountNumber: result.loan.accountNumber,
-      generateExpenses: result.loan.generateExpenses,
-      notes: result.loan.notes,
-      loanDueDate: result.loan.loanDueDate,
-      lReminder: result.loan.lReminder,
-    };
-    this.settings = {
-      primaryMeter: result.settings.primaryMeter,
-      fuelUnit: result.settings.fuelUnit,
-      hardBreakingParams: result.settings.hardBreakingParams,
-      hardAccelrationParams: result.settings.hardAccelrationParams,
-      turningParams: result.settings.turningParams,
-      measurmentUnit: result.settings.measurmentUnit,
-    };
+    if (result.lifeCycle) {
+
+      this.lifeCycle = {
+        inServiceDate: _.isEmpty(result.lifeCycle.inServiceDate)
+          ? null
+          : result.lifeCycle.inServiceDate,
+        inServiceOdometer: result.lifeCycle.inServiceOdometer,
+        startDate: _.isEmpty(result.lifeCycle.startDate)
+          ? null
+          : result.lifeCycle.startDate,
+        estimatedServiceYears: result.lifeCycle.estimatedServiceYears,
+        estimatedServiceMonths: result.lifeCycle.estimatedServiceMonths,
+        estimatedServiceMiles: result.lifeCycle.estimatedServiceMiles,
+        estimatedResaleValue: result.lifeCycle.estimatedResaleValue,
+        outOfServiceDate: _.isEmpty(result.lifeCycle.outOfServiceDate)
+          ? null
+          : result.lifeCycle.outOfServiceDate,
+        outOfServiceOdometer: result.lifeCycle.outOfServiceOdometer,
+      };
+    }
+    if (result.specifications) {
+      this.specifications = {
+        height: result.specifications.height,
+        heightUnit: result.specifications.heightUnit,
+        width: result.specifications.width,
+        widthUnit: result.specifications.widthUnit,
+        length: result.specifications.length,
+        lengthUnit: result.specifications.lengthUnit,
+        interiorVolume: result.specifications.interiorVolume,
+        passangerVolume: result.specifications.passangerVolume,
+        groundClearnce: result.specifications.groundClearnce,
+        groundClearnceUnit: result.specifications.groundClearnceUnit,
+        bedLength: result.specifications.bedLength,
+        bedLengthUnit: result.specifications.bedLengthUnit,
+        cargoVolume: result.specifications.cargoVolume,
+        tareWeight: result.specifications.tareWeight,
+        grossVehicleWeightRating: result.specifications.grossVehicleWeightRating,
+        towingCapacity: result.specifications.towingCapacity,
+        maxPayload: result.specifications.maxPayload,
+        EPACity: result.specifications.EPACity,
+        EPACombined: result.specifications.EPACombined,
+        EPAHighway: result.specifications.EPAHighway,
+      };
+    }
+    if (result.insurance) {
+      this.insurance = {
+        dateOfIssue: _.isEmpty(result.insurance.dateOfIssue)
+          ? null
+          : result.insurance.dateOfIssue,
+        premiumAmount: result.insurance.premiumAmount,
+        premiumCurrency: result.insurance.premiumCurrency,
+        vendorID: result.insurance.vendorID,
+        dateOfExpiry: _.isEmpty(result.insurance.dateOfExpiry)
+          ? null
+          : result.insurance.dateOfExpiry,
+        reminder: result.insurance.reminder,
+        remiderEvery: result.insurance.remiderEvery,
+        policyNumber: result.insurance.policyNumber,
+        amount: result.insurance.amount,
+        amountCurrency: result.insurance.amountCurrency,
+      };
+    }
+    if (result.fluid) {
+      this.fluid = {
+        fuelType: result.fluid.fuelType,
+        fuelTankOneCapacity: result.fluid.fuelTankOneCapacity,
+        fuelTankOneType: result.fluid.fuelTankOneType,
+        fuelQuality: result.fluid.fuelQuality,
+        fuelTankTwoCapacity: result.fluid.fuelTankTwoCapacity,
+        fuelTankTwoType: result.fluid.fuelTankTwoType,
+        oilCapacity: result.fluid.oilCapacity,
+        oilCapacityType: result.fluid.oilCapacityType,
+        def: result.fluid.def,
+        defType: result.fluid.defType,
+      };
+    }
+    if (result.wheelsAndTyres) {
+      this.wheelsAndTyres = {
+        numberOfTyres: result.wheelsAndTyres.numberOfTyres,
+        driveType: result.wheelsAndTyres.driveType,
+        brakeSystem: result.wheelsAndTyres.brakeSystem,
+        wheelbase: result.wheelsAndTyres.wheelbase,
+        rearAxle: result.wheelsAndTyres.rearAxle,
+        frontTyreType: result.wheelsAndTyres.frontTyreType,
+        rearTyreType: result.wheelsAndTyres.rearTyreType,
+        frontTrackWidth: result.wheelsAndTyres.frontTrackWidth,
+        rearTrackWidth: result.wheelsAndTyres.rearTrackWidth,
+        frontWheelDiameter: result.wheelsAndTyres.frontWheelDiameter,
+        rearWheelDiameter: result.wheelsAndTyres.rearWheelDiameter,
+        frontTyrePSI: result.wheelsAndTyres.frontTyrePSI,
+        rearTyrePSI: result.wheelsAndTyres.rearTyrePSI,
+      };
+    }
+    if (result.engine) {
+      this.engine = {
+        engineSummary: result.engine.engineSummary,
+        engineBrand: result.engine.engineBrand,
+        aspiration: result.engine.aspiration,
+        blockType: result.engine.blockType,
+        bore: result.engine.bore,
+        camType: result.engine.camType,
+        stroke: result.engine.stroke,
+        valves: result.engine.valves,
+        compression: result.engine.compression,
+        cylinders: result.engine.cylinders,
+        displacement: result.engine.displacement,
+        fuelIndication: result.engine.fuelIndication,
+        fuelQuality: result.engine.fuelQuality,
+        maxHP: result.engine.maxHP,
+        maxTorque: result.engine.maxTorque,
+        readlineRPM: result.engine.readlineRPM,
+        transmissionSummary: result.engine.transmissionSummary,
+        transmissionType: result.engine.transmissionType,
+        transmissonBrand: result.engine.transmissonBrand,
+        transmissionGears: result.engine.transmissionGears,
+      };
+    }
+    if (result.purchase) {
+      this.purchase = {
+        purchaseVendorID: result.purchase.purchaseVendorID,
+        warrantyExpirationDate: _.isEmpty(result.purchase.warrantyExpirationDate)
+          ? null
+          : result.purchase.warrantyExpirationDate,
+        warrantyExpirationDateReminder:
+          result.purchase.warrantyExpirationDateReminder,
+        purchasePrice: result.purchase.purchasePrice,
+        purchasePriceCurrency: result.purchase.purchasePriceCurrency,
+        warrantyExpirationMeter: result.purchase.warrantyExpirationMeter,
+        purchaseDate: _.isEmpty(result.purchase.purchaseDate)
+          ? null
+          : result.purchase.purchaseDate,
+        purchaseComments: result.purchase.purchaseComments,
+        purchaseOdometer: result.purchase.purchaseOdometer,
+        gstInc: result.purchase.gstInc,
+      };
+    }
+    if (result.loan) {
+      this.loan = {
+        loanVendorID: result.loan.loanVendorID,
+        amountOfLoan: result.loan.amountOfLoan,
+        amountOfLoanCurrency: result.loan.amountOfLoanCurrency,
+        aspiration: result.loan.aspiration,
+        annualPercentageRate: result.loan.annualPercentageRate,
+        gstInc: result.loan.gstInc,
+        downPayment: result.loan.downPayment,
+        downPaymentCurrency: result.loan.downPaymentCurrency,
+        dateOfLoan: _.isEmpty(result.loan.dateOfLoan)
+          ? null
+          : result.loan.dateOfLoan,
+        monthlyPayment: result.loan.monthlyPayment,
+        monthlyPaymentCurrency: result.loan.monthlyPaymentCurrency,
+        firstPaymentDate: _.isEmpty(result.loan.firstPaymentDate)
+          ? null
+          : result.loan.firstPaymentDate,
+        numberOfPayments: result.loan.numberOfPayments,
+        loadEndDate: _.isEmpty(result.loan.loadEndDate)
+          ? null
+          : result.loan.loadEndDate,
+        accountNumber: result.loan.accountNumber,
+        generateExpenses: result.loan.generateExpenses,
+        notes: result.loan.notes,
+        loanDueDate: result.loan.loanDueDate,
+        lReminder: result.loan.lReminder,
+      };
+    }
+    if (result.settings) {
+      this.settings = {
+        primaryMeter: result.settings.primaryMeter,
+        fuelUnit: result.settings.fuelUnit,
+        hardBreakingParams: result.settings.hardBreakingParams,
+        hardAccelrationParams: result.settings.hardAccelrationParams,
+        turningParams: result.settings.turningParams,
+        measurmentUnit: result.settings.measurmentUnit,
+      };
+    }
     this.existingPhotos = result.uploadedPhotos;
     this.existingDocs = result.uploadedDocs;
     this.existPDocs = result.purchaseDocs;
@@ -1085,7 +1103,6 @@ export class AddVehicleComponent implements OnInit {
       this.settings.hardAccelrationParams
     );
     $("#turningParametersValue").html(this.settings.turningParams);
-    // });
   }
   async onUpdateVehicle() {
     this.hasError = false;
