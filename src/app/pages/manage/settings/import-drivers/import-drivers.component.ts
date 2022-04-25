@@ -75,6 +75,10 @@ export class ImportDriversComponent implements OnInit {
 
   }
 
+  isStatusValid = (status) => {
+    return status == 'active' || status == 'inActive';
+  }
+
   validateCSV($event) {
     const data: ValidatorConfig = {
       headers: [
@@ -138,6 +142,11 @@ export class ImportDriversComponent implements OnInit {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           },
         },
+        {
+          name: 'status', inputName: 'status', required: true, validate: this.isStatusValid, requiredError: function (headerName, rowNumber, columnNumber) {
+            return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
+          }
+        },
       ]
     };
     CSVFileValidator($event.srcElement.files[0], data)
@@ -158,6 +167,9 @@ export class ImportDriversComponent implements OnInit {
               let joinStr = '';
               if (item.includes('birth_date') || item.includes('start_date')) {
                 joinStr = item + '. Please enter the date in the format: YYYY-MM-DD';
+                this.inValidMessages.push(joinStr)
+              } else if (item.includes('status')) {
+                joinStr = item + '.  Status should be active or inActive';
                 this.inValidMessages.push(joinStr)
               } else {
                 this.inValidMessages.push(item)
