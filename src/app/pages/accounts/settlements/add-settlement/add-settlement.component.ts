@@ -566,7 +566,30 @@ export class AddSettlementComponent implements OnInit {
               } else {
                 element.loadedMiles += Number(plan.miles);
               }
+            } else if (this.settlementData.type === "owner_operator") {
+              if (
+                this.operatorDriversList.includes(plan.driverID) ||
+                this.operatorDriversList.includes(plan.coDriverID)
+              ) {
+                element.pickupLocation += `${pickCount}) <strong>${plan.type
+                  }</strong>: ${plan.location} <br>
+                  <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${plan.type === "Pickup" ? "Pickup" : "Drop"
+                  } Time</u>: ${plan.type === "Pickup" ? plan.pickupTime : plan.dropTime
+                  } <br>`;
+                pickCount++;
+                element.entityMiles += Number(plan.miles);
 
+                if (!element.entityDriver.includes(plan.driverID)) {
+                  element.entityDriver.push(plan.driverID);
+                }
+                if (plan.coDriverID != undefined && plan.coDriverID != null && plan.coDriverID != '') {
+                  if (!element.entityDriver.includes(plan.coDriverID)) {
+                    element.entityDriver.push(plan.coDriverID);
+                  }
+                }
+              } else {
+                element.emptyMiles += Number(plan.miles);
+              }
             } else {
               if (this.settlementData.type === 'driver') {
                 if (plan.coDriverID && plan.driverID) {
