@@ -33,7 +33,7 @@
                       class="nav-link active"
                       href="#deletedAssets"
                       data-toggle="tab"
-                      >Deleted Customer</a
+                      >Deleted Customers</a
                     >
                   </li>
                 </ul>
@@ -182,13 +182,13 @@
                       </div>
 
                       <div class="col-lg-12">
-                        <div class="row" style="padding-top: 10px">
-                          <div class="col-md-2 col-lg-2 pl-2 pr-0">
-                            <div class="mb-3">
+                        <div class="row" style="padding-top: 8px">
+                          <div class="col-md-2 col-lg-2 pl-3 pr-0">
+                            <div class="mb-2">   
                                 <ng-select
                                [(ngModel)]="company"
                                name="company"
-                               placeholder="Select company"
+                               placeholder="Select Company"
                                class="form-control form-control-sm populate">
                             <ng-option *ngFor ="let item of customers" value = {{item.cName}}>{{item.cName}}</ng-option>
                            </ng-select>
