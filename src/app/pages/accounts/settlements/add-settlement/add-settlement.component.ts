@@ -563,20 +563,20 @@ export class AddSettlementComponent implements OnInit {
               this.settlementData.entityId === plan.driverID ||
               this.settlementData.entityId === plan.coDriverID
             ) {
-              if (!element.entityDriver.includes(plan.driverID)) {
+              if (plan.driverID && !element.entityDriver.includes(plan.driverID)) {
                 element.entityDriver.push(plan.driverID);
               }
 
-              if (!element.entityDriver.includes(plan.coDriverID)) {
+              if (plan.coDriverID && !element.entityDriver.includes(plan.coDriverID)) {
                 element.entityDriver.push(plan.coDriverID);
               }
             }
 
-            if (!element.entityVehicle.includes(plan.vehicleID)) {
+            if (plan.vehicleID && !element.entityVehicle.includes(plan.vehicleID)) {
               element.entityVehicle.push(plan.vehicleID);
             }
 
-            if (!element.entityCarrier.includes(plan.carrierID)) {
+            if (plan.carrierID && !element.entityCarrier.includes(plan.carrierID)) {
               element.entityCarrier.push(plan.carrierID);
             }
 
@@ -625,19 +625,19 @@ export class AddSettlementComponent implements OnInit {
             pickCount++;
             element.entityMiles += Number(plan.miles);
 
-            if (!element.entityDriver.includes(plan.driverID)) {
+            if (!element.entityDriver.includes(plan.driverID) && plan.driverID) {
               element.entityDriver.push(plan.driverID);
             }
 
-            if (!element.entityDriver.includes(plan.coDriverID)) {
+            if (!element.entityDriver.includes(plan.coDriverID) && plan.coDriverID) {
               element.entityDriver.push(plan.coDriverID);
             }
 
-            if (!element.entityVehicle.includes(plan.vehicleID)) {
+            if (!element.entityVehicle.includes(plan.vehicleID) && plan.vehicleID) {
               element.entityVehicle.push(plan.vehicleID);
             }
 
-            if (!element.entityCarrier.includes(plan.carrierID)) {
+            if (!element.entityCarrier.includes(plan.carrierID) && plan.carrierID) {
               element.entityCarrier.push(plan.carrierID);
             }
             for (let f = 0; f < plan.assetID.length; f++) {
@@ -650,7 +650,7 @@ export class AddSettlementComponent implements OnInit {
         }
 
         if (plan.carrierID !== "") {
-          if (!element.carrID.includes(plan.carrierID)) {
+          if (!element.carrID.includes(plan.carrierID) && plan.carrierID) {
             element.carrID.push(plan.carrierID);
           }
         }
@@ -1797,19 +1797,19 @@ export class AddSettlementComponent implements OnInit {
       for (let j = 0; j < element.tripPlanning.length; j++) {
         const plan = element.tripPlanning[j];
 
-        if (!element.entityDriver.includes(plan.driverID)) {
+        if (!element.entityDriver.includes(plan.driverID) && plan.driverID) {
           element.entityDriver.push(plan.driverID);
         }
 
-        if (!element.entityDriver.includes(plan.coDriverID)) {
+        if (!element.entityDriver.includes(plan.coDriverID) && plan.coDriverID) {
           element.entityDriver.push(plan.coDriverID);
         }
 
-        if (!element.entityVehicle.includes(plan.vehicleID)) {
+        if (!element.entityVehicle.includes(plan.vehicleID) && plan.vehicleID) {
           element.entityVehicle.push(plan.vehicleID);
         }
 
-        if (!element.entityCarrier.includes(plan.carrierID)) {
+        if (!element.entityCarrier.includes(plan.carrierID) && plan.carrierID) {
           element.entityCarrier.push(plan.carrierID);
         }
 
