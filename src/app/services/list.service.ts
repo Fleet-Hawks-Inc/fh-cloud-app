@@ -181,8 +181,8 @@ export class ListService {
   }
 
   fetchServicePrograms() {
-    this.apiService.getData(`servicePrograms`).subscribe((result: any) => {
-      this.serviceProgramDataSource.next(result.Items);
+    this.apiService.getData('servicePrograms').subscribe((result: any) => {
+      this.serviceProgramDataSource.next(result);
     });
   }
 

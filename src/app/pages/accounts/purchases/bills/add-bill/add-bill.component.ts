@@ -353,7 +353,6 @@ export class AddBillComponent implements OnInit {
 
   async fetchPurchaseDetails() {
     this.vendorCredits = [];
-    this.fetchVendorCredits();
     let result: any = await this.accountService
       .getData(`purchase-orders/details/${this.orderData.purchaseID}`)
       .toPromise();

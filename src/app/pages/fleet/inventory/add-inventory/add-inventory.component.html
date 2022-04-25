@@ -50,6 +50,9 @@
                           placeholder=" eg. 123AZ"
                           #iPart="ngModel"
                           required
+                    [ngClass]="{
+                  error: inventoryF.submitted && iPart.invalid
+                                }"
                           pattern="^[a-zA-Z0-9\s]+$"
                         />
                         <div

@@ -10,12 +10,21 @@
                 <form class="formgrid grid">
                     <div class="row">
                         <div class="col" style="margin-left: 20px;margin-top: 5px;">
-                            <p-autoComplete #autoComp id="autoCmpSugAsset" [placeholder]="'Type Assets Name'" class="mr-2" [forceSelection]="true" emptyMessage="No data found." [(ngModel)]="assetIdentification" [suggestions]="suggestedAssets" [minLength]="2" (completeMethod)="getSuggestions($event.query)"
-                                (onSelect)="setAsset($event.assetIdentification)" field="assetIdentification"> </p-autoComplete>
-                            <p-dropdown id="drpDvrType" [style]="{minWidth: '200px'}" [options]="assetOptions" class="mr-2" placeholder="Select a Assets Type" [(ngModel)]="assetType" optionLabel="name" optionValue="value">
+                            <p-autoComplete #autoComp id="autoCmpSugAsset" [forceSelection]="true"
+                                [placeholder]="'Type Assets Name'" class="mr-2" [forceSelection]="true"
+                                emptyMessage="No data found." [(ngModel)]="assetIdentification"
+                                [suggestions]="suggestedAssets" [minLength]="1"
+                                (completeMethod)="getSuggestions($event.query)"
+                                (onSelect)="setAsset($event.assetIdentification)" field="assetIdentification">
+                            </p-autoComplete>
+                            <p-dropdown id="drpDvrType" [style]="{minWidth: '200px'}" [options]="assetOptions"
+                                class="mr-2" placeholder="Select a Assets Type" [(ngModel)]="assetType"
+                                optionLabel="name" optionValue="value">
                             </p-dropdown>
-                            <button id="btnSearch" type="button" [disabled]="isSearch" pButton class="mr-2" icon="pi pi-search" pTooltip="Search" (click)="searchFilter()"></button>
-                            <button id="btnResetFilter" type="button" [disabled]="isSearch" pButton class="mr-2" icon="pi pi-refresh" pTooltip="Reset" (click)="resetFilter()"></button>
+                            <button id="btnSearch" type="button" [disabled]="isSearch" pButton class="mr-2"
+                                icon="pi pi-search" pTooltip="Search" (click)="searchFilter()"></button>
+                            <button id="btnResetFilter" type="button" [disabled]="isSearch" pButton class="mr-2"
+                                icon="pi pi-refresh" pTooltip="Reset" (click)="resetFilter()"></button>
                         </div>
                         <div class="col">
                         </div>
@@ -28,8 +37,10 @@
                         <div class="bg-white p-3 text-dark">
                             <div class="form-group row pt-3">
                                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
-                                    <p-table #dt [value]="allData" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true" [loading]="!loaded"
-                                        scrollHeight="100%">
+                                    <p-table #dt [value]="allData" [resizableColumns]="true" columnResizeMode="expand"
+                                        scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
+                                        styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                                        [scrollable]="true" [loading]="!loaded" scrollHeight="100%">
                                         <!-- Caption template of data table -->
                                         <ng-template pTemplate="caption">
 
@@ -38,11 +49,21 @@
                                                     <h3 class="m-0"> Assets </h3>
                                                 </div>
                                                 <div class="text-right">
-                                                    <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
-                                                    <button type="button" pButton pTooltip="Add" routerLink="/fleet/assets/add" class="p-button-outlined mr-2" icon="pi pi-plus"></button>
-                                                    <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
-                                                    <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
-                                                    <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" placeholder="Choose Columns">
+                                                    <button type="button" pButton (click)="refreshData()"
+                                                        pTooltip="Refresh" class="p-button-outlined mr-2"
+                                                        icon="fas fa-sync"></button>
+                                                    <button type="button" pButton pTooltip="Add"
+                                                        routerLink="/fleet/assets/add" class="p-button-outlined mr-2"
+                                                        icon="pi pi-plus"></button>
+                                                    <button pButton pRipple pTooltip="Clear Filter"
+                                                        class="p-button-outlined mr-2" icon="pi pi-filter-slash"
+                                                        (click)="clear(dt)"></button>
+                                                    <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                                                        icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()"
+                                                        pTooltip="Excel"></button>
+                                                    <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns"
+                                                        optionLabel="header" selectedItemsLabel="{0} columns selected"
+                                                        [style]="{minWidth: '200px'}" placeholder="Choose Columns">
                                                     </p-multiSelect>
                                                 </div>
                                             </div>
@@ -50,7 +71,9 @@
                                         <!-- Header template of DataTable -->
                                         <ng-template pTemplate="header" let-columns>
                                             <tr>
-                                                <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn style="width:10%">
+                                                <th *ngFor="let dataColumns of columns"
+                                                    [pSortableColumn]="dataColumns.field" pResizableColumn
+                                                    style="width:10%">
                                                     <div [ngSwitch]="dataColumns.field">
                                                         <!-- Asset Status Filter Customization -->
                                                         <span *ngSwitchCase="'currentStatus'">
@@ -58,97 +81,129 @@
                                                                 alignFrozen="left" pFrozenColumn [frozen]="true">
                                                                 {{dataColumns.header}}
                                                                 <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
-                                        <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field" [showOperator]="false" matchMode="contains" [showMatchModes]="false" [showAddButton]="false" display="menu">                                                          
-                                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                            <p-multiSelect [options]="[ { name:'Active', value:'active'}, {name: 'InActive', value:'inActive'}]" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name" optionValue="value">
-                                                <ng-template let-option pTemplate="item">
-                                                    <div>
-                                                        <span class="ml-1">{{option.name }}</span>
-                                                    </div>
-                                        </ng-template>
-                                        </p-multiSelect>
-                                        </ng-template>
-                                        </p-columnFilter>
-                                </div>
-                                </span>
-                                <span *ngSwitchDefault>
+                                                                <p-columnFilter [type]="dataColumns.type"
+                                                                    [field]="dataColumns.field" [showOperator]="false"
+                                                                    matchMode="contains" [showMatchModes]="false"
+                                                                    [showAddButton]="false" display="menu">
+                                                                    <ng-template pTemplate="filter" let-value
+                                                                        let-filter="filterCallback">
+                                                                        <p-multiSelect
+                                                                            [options]="[ { name:'Active', value:'active'}, {name: 'InActive', value:'inActive'}]"
+                                                                            placeholder="Any"
+                                                                            (onChange)="filter($event.value)"
+                                                                            optionLabel="name" optionValue="value">
+                                                                            <ng-template let-option pTemplate="item">
+                                                                                <div>
+                                                                                    <span class="ml-1">{{option.name
+                                                                                        }}</span>
+                                                                                </div>
+                                                                            </ng-template>
+                                                                        </p-multiSelect>
+                                                                    </ng-template>
+                                                                </p-columnFilter>
+                                                            </div>
+                                                        </span>
+                                                        <span *ngSwitchDefault>
                                                             <div class="flex justify-content-center align-items-center"
                                                                 alignFrozen="right" pFrozenColumn [frozen]="true">
                                                                 {{dataColumns.header}}
                                                                 <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
-                                                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field" matchMode="contains" [showMatchModes]="false" 
-                                                                    [showOperator]="false" [showAddButton]="false" 
-                                                                    display="menu"></p-columnFilter>
+                                                                <p-columnFilter [type]="dataColumns.type"
+                                                                    [field]="dataColumns.field" matchMode="contains"
+                                                                    [showMatchModes]="false" [showOperator]="false"
+                                                                    [showAddButton]="false" display="menu">
+                                                                </p-columnFilter>
                                                             </div>
                                                         </span>
-                            </div>
-                            </th>
-                            <th style="width:100px" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
+                                                    </div>
+                                                </th>
+                                                <th style="width:100px" alignFrozen="right" pFrozenColumn
+                                                    [frozen]="true">Actions</th>
 
-                            </tr>
+                                            </tr>
 
-                            </ng-template>
+                                        </ng-template>
 
-                            <!-- Body Template of Data Table -->
-                            <ng-template pTemplate="body" let-asset let-columns="columns" let-rowIndex="rowIndex">
+                                        <!-- Body Template of Data Table -->
+                                        <ng-template pTemplate="body" let-asset let-columns="columns"
+                                            let-rowIndex="rowIndex">
 
-                                <tr>
-                                    <td *ngFor="let dataColumns of columns" style="width:10%;cursor: pointer;" routerLink="/fleet/assets/detail/{{asset.assetID}}">
-                                        <div [ngSwitch]="dataColumns.field">
-                                            <span *ngSwitchCase = "'assetIdentification'">{{asset.assetIdentification | titlecase }}</span>
-                                       <span *ngSwitchCase = "'VIN'">
-                                             {{asset.assetDetails.ownerShip !== "interchange" ? asset.VIN: "-"}}
-                                       </span>        
-                                            <span *ngSwitchCase = "'assetType'"> {{((asset.assetType) ? asset.assetType : '-') | titlecase}}</span>
-                                            <span *ngSwitchCase = "'assetDetails.manufacturer'"> {{((asset.assetDetails.manufacturer) ? asset.assetDetails.manufacturer : '-') | titlecase}}</span>
-                                            <span *ngSwitchCase = "'assetDetails.year'"> {{((asset.assetDetails.year) ? asset.assetDetails.year : '-') | titlecase}}</span>
-                                            <span *ngSwitchCase = "'assetDetails.ownerShip'"> {{((asset.assetDetails.ownerShip) ? asset.assetDetails.ownerShip : "-") | titlecase}} </span>
-                                        <span *ngSwitchCase = "'assetDetails.ownCname'">{{((asset.assetDetails.ownCname) ? asset.assetDetails.ownCname : "-") | titlecase}}</span>
-                                         <span *ngSwitchCase = "'currentStatus'">{{ asset.currentStatus | titlecase }}</span>
-                                            <span *ngSwitchDefault> {{get(asset,dataColumns.field)}}</span>
-                                        </div>
-                                    </td>
-                                    <td style=" text-align: center; width: 100px;" pFrozenColumn alignFrozen="right" [frozen]="true">
+                                            <tr>
+                                                <td *ngFor="let dataColumns of columns"
+                                                    style="width:10%;cursor: pointer;"
+                                                    routerLink="/fleet/assets/detail/{{asset.assetID}}">
+                                                    <div [ngSwitch]="dataColumns.field">
+                                                        <span
+                                                            *ngSwitchCase="'assetIdentification'">{{asset.assetIdentification
+                                                            | titlecase }}</span>
+                                                        <span *ngSwitchCase="'VIN'">
+                                                            {{asset.ownerShip !== "interchange" ? asset.VIN: "-"}}
+                                                        </span>
+                                                        <span *ngSwitchCase="'assetType'"> {{((asset.assetType) ?
+                                                            asset.assetType : '-') | titlecase}}</span>
+                                                        <span *ngSwitchCase="'manufacturer'"> {{((asset.manufacturer) ?
+                                                            asset.manufacturer : '-') | titlecase}}</span>
+                                                        <span *ngSwitchCase="'year'"> {{((asset.year) ? asset.year :
+                                                            '-') | titlecase}}</span>
+                                                        <span *ngSwitchCase="'ownerShip'"> {{((asset.ownerShip) ?
+                                                            asset.ownerShip : "-") | titlecase}} </span>
+                                                        <span *ngSwitchCase="'ownCname'">{{((asset.ownCname) ?
+                                                            asset.ownCname : "-") | titlecase}}</span>
+                                                        <span *ngSwitchCase="'currentStatus'">{{ asset.currentStatus |
+                                                            titlecase }}</span>
+                                                        <span *ngSwitchDefault> {{get(asset,dataColumns.field)}}</span>
+                                                    </div>
+                                                </td>
+                                                <td style=" text-align: center; width: 100px;" pFrozenColumn
+                                                    alignFrozen="right" [frozen]="true">
 
-                                        <button id="btnEdit" pButton routerLink="/fleet/assets/edit/{{asset.assetID}}" type="button" icon="fas fa-user-pen" class="p-button-rounded p-button-text"></button>
-                                        <button id="btnDelete" (click)="deleteAsset(asset)" pButton type="button" icon="fas fa-user-slash" class="p-button-rounded p-button-danger p-button-text"></button>
-                                    </td>
-                                </tr>
-                            </ng-template>
-                            <!-- Empty Template -->
+                                                    <button id="btnEdit" pButton
+                                                        routerLink="/fleet/assets/edit/{{asset.assetID}}" type="button"
+                                                        icon="fas fa-user-pen"
+                                                        class="p-button-rounded p-button-text"></button>
+                                                    <button id="btnDelete" (click)="deleteAsset(asset)" pButton
+                                                        type="button" icon="fas fa-user-slash"
+                                                        class="p-button-rounded p-button-danger p-button-text"></button>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                        <!-- Empty Template -->
 
-                            <ng-template pTemplate="emptymessage" let-columns>
-                                <div class="col-lg-12 mt-3 text-center">
-                                    {{dataMessage}}
-                                    <br /><br>
-                                </div>
-                            </ng-template>
-                            <!-- Summary Section with Load More button -->
+                                        <ng-template pTemplate="emptymessage" let-columns>
+                                            <div class="col-lg-12 mt-3 text-center">
+                                                {{dataMessage}}
+                                                <br /><br>
+                                            </div>
+                                        </ng-template>
+                                        <!-- Summary Section with Load More button -->
 
-                            <ng-template pTemplate="summary" let-columns>
-                                <div class="col-lg-12 mt-3 text-center " *ngIf="lastEvaluatedKey !=='end' && allData.length !==0 ">
-                                    <button type="button " (click)="onScroll($event) " class="btn btn-success btn-sm text-light ">Load
+                                        <ng-template pTemplate="summary" let-columns>
+                                            <div class="col-lg-12 mt-3 text-center "
+                                                *ngIf="lastEvaluatedKey !=='end' && allData.length !==0 ">
+                                                <button type="button " (click)="onScroll($event) "
+                                                    class="btn btn-success btn-sm text-light ">Load
                                                     More..</button>
 
-                                    <br /><br>
+                                                <br /><br>
+                                            </div>
+                                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey ==='end'">
+                                                Total Records: {{allData.length}}</div>
+                                        </ng-template>
+
+
+                                    </p-table>
+
+
                                 </div>
-                                <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey ==='end'">Total Records: {{allData.length}}</div>
-                            </ng-template>
 
-
-                            </p-table>
-
-
+                            </div>
                         </div>
 
                     </div>
                 </div>
-
-    </div>
-    </div>
-    </section>
+            </section>
 
 
-    </section>
+        </section>
     </div>
 </section>

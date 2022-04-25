@@ -5,5 +5,9 @@
   {
     "name": "Order-Delete",
     "role": "role_order_delete"
+  },
+  {
+    "name": "Trip-Alarms",
+    "role": "role_trip_alarm"
   }
 ]

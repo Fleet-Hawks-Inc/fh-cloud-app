@@ -95,7 +95,7 @@ export class VehicleListComponent implements OnInit {
   dataColumns = [
     { field: 'vehicleIdentification', header: 'Name/Number', type: "text" },
     { field: 'VIN', header: 'VIN', type: "text" },
-    { field: 'lifeCycle.startDate', header: 'Start Date', type: "text" },
+    { field: 'startDate', header: 'Start Date', type: "text" },
     { field: 'manufacturerID', header: 'Make', type: "text" },
     { field: 'modelID', header: 'Model', type: "text" },
     { field: 'year', header: 'Year', type: "text" },
@@ -106,6 +106,7 @@ export class VehicleListComponent implements OnInit {
     { field: 'plateNumber', header: 'Plate Number', type: "text" },
     { field: 'dashCamSerNo', header: 'DashCam', type: "text" },
     { field: 'currentStatus', header: 'Status', type: 'text' },
+    { field: 'isImport', header: 'Added By', type: "text" },
   ];
 
   constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService,
@@ -118,10 +119,7 @@ export class VehicleListComponent implements OnInit {
     this.setToggleOptions();
     this.setVehiclesOptions();
     this.fetchGroups();
-    // this.fetchVehicleModelList();
-    // this.fetchVehicleManufacturerList();
     this.fetchDriversList();
-    this.fetchServiceProgramsList();
     this.fetchVendorList();
     await this.initDataTable()
 
@@ -211,25 +209,11 @@ export class VehicleListComponent implements OnInit {
     });
   }
 
-  // fetchVehicleManufacturerList() {
-  //   this.apiService.getData('manufacturers/get/list').subscribe((result: any) => {
-  //     this.vehicleManufacturersList = result;
-  //   });
-  // }
-
   fetchDriversList() {
     this.apiService.getData('drivers/get/list').subscribe((result: any) => {
       this.driversList = result;
     });
   }
-
-
-  fetchServiceProgramsList() {
-    this.apiService.getData('servicePrograms/get/list').subscribe((result: any) => {
-      this.serviceProgramsList = result;
-    });
-  }
-
   fetchVendorList() {
     this.apiService.getData('contacts/get/list/vendor').subscribe((result: any) => {
       this.vendorsList = result;
@@ -262,21 +246,21 @@ export class VehicleListComponent implements OnInit {
   async initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
       let result = await this.apiService.getData('vehicles/fetch/records?vehicle=' + this.vehicleID + '&status=' + this.currentStatus + '&lastKey=' + this.lastEvaluatedKey).toPromise();
-      if (result.Items.length === 0) {
+      if (result.data.length === 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND;
         this.loaded = true;
       }
-      result.Items.map((v) => {
+      result.data.map((v) => {
         v.url = `/fleet/vehicles/detail/${v.vehicleID}`;
       });
       this.suggestedVehicles = [];
-      if (result.LastEvaluatedKey !== undefined) {
-        this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].vehicleSK);
+      if (result.nextPage !== undefined) {
+        this.lastEvaluatedKey = encodeURIComponent(result.nextPage);
       }
       else {
         this.lastEvaluatedKey = 'end'
       }
-      this.vehicles = this.vehicles.concat(result.Items)
+      this.vehicles = this.vehicles.concat(result.data)
       this.loaded = true;
       this.isSearch = false;
       await this.getDashCamConnection(this.vehicles);

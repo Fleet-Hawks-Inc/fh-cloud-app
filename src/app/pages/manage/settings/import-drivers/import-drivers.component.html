@@ -62,16 +62,18 @@
                         <td>{{driver.displayName}}</td>
                         <td>{{driver.timeCreated | date : 'dd/MM/yyyy hh:mm:ss a '}}</td>
                         <td>{{driver.module}}</td>
-                        <td><span class="badge badge-dark">{{driver.fileStatus}}</span></td>
+                        <td><span class="badge badge-dark">{{driver.fileStatus.replace('_', ' ')}}</span></td>
                       </tr>
                     </ng-template>
                     <!-- Empty Template -->
 
                     <ng-template pTemplate="emptymessage" let-columns>
-                      <div class="col-lg-12 mt-3 text-center">
-                        {{dataMessage}}
-                        <br /><br>
-                      </div>
+                      <tr>
+                        <td colspan="4" class="text-center">
+                          {{dataMessage}}
+                        </td>
+                      </tr>
+
                     </ng-template>
                     <ng-template pTemplate="summary" let-columns>
 

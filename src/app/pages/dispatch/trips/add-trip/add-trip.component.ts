@@ -314,10 +314,8 @@ export class AddTripComponent implements OnInit {
     if (this.orderId != undefined) {
        await this.fetchOrderDetails([this.orderId])
        this.changeMapRoute('order')
-      this.temporaryOrderIDs.push(this.orderId);
+       this.temporaryOrderIDs.push(this.orderId);
        this.temporaryOrderNumber.push(this.orderNum);
-       await this.fetchFTLOrders();
-       await this.fetchLTLOrders();
        await this.saveSelectOrderIDS();
       }
     });

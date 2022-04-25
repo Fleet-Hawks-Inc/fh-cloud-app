@@ -45,7 +45,6 @@ export class ActivityListComponent implements OnInit {
   ngOnInit() {
     this.fetchGroups();
     this.fetchDriversList();
-    this.fetchServiceProgramsList();
     this.fetchVendorList();
     this.initDataTable()
   }
@@ -78,13 +77,6 @@ export class ActivityListComponent implements OnInit {
   fetchDriversList() {
     this.apiService.getData('drivers/get/list').subscribe((result: any) => {
       this.driversList = result;
-    });
-  }
-
-
-  fetchServiceProgramsList() {
-    this.apiService.getData('servicePrograms/get/list').subscribe((result: any) => {
-      this.serviceProgramsList = result;
     });
   }
 

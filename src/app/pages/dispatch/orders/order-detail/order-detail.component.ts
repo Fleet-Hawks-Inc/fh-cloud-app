@@ -361,20 +361,14 @@ export class OrderDetailComponent implements OnInit {
     this.txnDate = new Date().toISOString().slice(0, 10);
   }
 
-  ngOnInit() {
-    this.listService.getDocsModalList.subscribe((res: any) => {
-      if (res && res.docType != null && res.docType != '') {
-        if (res.module === 'order') {
-          this.docType = res.docType;
-          this.uploadBolPods(res);
-        }
-      }
-    })
+  async ngOnInit() {
+
 
     this.orderID = this.route.snapshot.params["orderID"];
 
-    this.fetchOrder();
-    this.fetchInvoiceData();
+    await this.fetchOrder();
+    await this.fetchBolDocs();
+    await this.fetchInvoiceData();
     this.fetchOrderLogs();
     this.getCurrentUser();
   }
@@ -383,6 +377,17 @@ export class OrderDetailComponent implements OnInit {
     let currentUser = (await Auth.currentSession()).getIdToken().payload;
     this.carrierEmail = currentUser.email;
   };
+
+  async fetchBolDocs() {
+    this.listService.getDocsModalList.subscribe((res: any) => {
+      if (res && res.docType != null && res.docType != '') {
+        if (res.module === 'order') {
+          this.docType = res.docType;
+          this.uploadBolPods(res);
+        }
+      }
+    })
+  }
 
   /**
    * fetch order data
@@ -978,7 +983,7 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  fetchInvoiceData() {
+  async fetchInvoiceData() {
     this.apiService
       .getData(`orders/invoice/${this.orderID}`)
       .subscribe((result: any) => {
