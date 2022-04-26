@@ -8,7 +8,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import {
   NgbCalendar,
   NgbDateAdapter,
-  NgbModal
+  NgbModal,
+  NgbModalOptions
 } from "@ng-bootstrap/ng-bootstrap";
 import { Auth } from "aws-amplify";
 import { passwordStrength } from "check-password-strength";
@@ -34,6 +35,7 @@ import {
 } from "../../../../services";
 import { ModalService } from "../../../../services/modal.service";
 import Constants from "../../constants";
+import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
 
 
 declare var $: any;
@@ -406,27 +408,24 @@ export class AddDriverComponent
       }
     }, 1500);
   }
-  /**
-   * Unsaved Changes
-  //  */
-  // Disable it temporary.
-  // canLeave(): boolean {
-  //   if (this.driverF.dirty && !this.isSubmitted) {
-  //     if (!this.modalService.hasOpenModals()) {
-  //       let ngbModalOptions: NgbModalOptions = {
-  //         backdrop: "static",
-  //         keyboard: false,
-  //         size: "sm",
-  //       };
-  //       this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
-  //     }
-  //     return false;
-  //   }
-  //   this.modalServiceOwn.triggerRedirect.next(true);
-  //   this.takeUntil$.next();
-  //   this.takeUntil$.complete();
-  //   return true;
-  // }
+  //Unsaved Changes Pop Up
+   canLeave(): boolean {
+     if (this.driverF.dirty && !this.isSubmitted) {
+       if (!this.modalService.hasOpenModals()) {
+         let ngbModalOptions: NgbModalOptions = {
+           backdrop: "static",
+           keyboard: false,
+           size: "sm",
+         };
+         this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
+       }
+       return false;
+     }
+     this.modalServiceOwn.triggerRedirect.next(true);
+     this.takeUntil$.next();
+     this.takeUntil$.complete();
+     return true;
+   }
 
   onChangeHideErrors(fieldname: any) {
     $('[name="' + fieldname + '"]')
