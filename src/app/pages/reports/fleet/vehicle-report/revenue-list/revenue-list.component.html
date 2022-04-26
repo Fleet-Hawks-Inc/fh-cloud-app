@@ -90,7 +90,7 @@
                                                         </td>
 
                                                         <td class="cursorpoint" [routerLink]="vehicle.url">{{
-                                                            vehicle.lifeCycle.startDate | date:"yyyy/MM/dd" }}</td>
+                                                            vehicle.startDate | date:"yyyy/MM/dd" }}</td>
                                                         <td *ngIf="vehicleManufacturersList[vehicle.manufacturerID]  "
                                                             class="cursorpoint" [routerLink]="vehicle.url">
                                                             {{vehicleManufacturersList[vehicle.manufacturerID] |
