@@ -93,6 +93,8 @@ export class AddVendorPaymentComponent implements OnInit {
   Error: string = "";
   Success: string = "";
 
+  showModal = false;
+
   constructor(
     private listService: ListService,
     private accountService: AccountService,
@@ -421,5 +423,24 @@ export class AddVendorPaymentComponent implements OnInit {
       });
   }
 
+  showCheque() {
+    this.showModal = true;
+    let obj = {
+      entityId: this.paymentData.vendorID,
+      chequeDate: this.paymentData.payModeDate,
+      chequeAmount: this.paymentData.total.finalTotal,
+      type: "purchasePayment",
+      paymentTo: 'vendor',
+      chequeNo: this.paymentData.payModeNo,
+      currency: this.paymentData.currency,
+      showModal: this.showModal,
+      fromDate: this.paymentData.txnDate,
+      finalAmount: this.paymentData.total.finalTotal,
+      txnDate: this.paymentData.txnDate,
+      page: "addForm",
+    };
+    console.log('obj', obj)
+    this.listService.openPaymentChequeModal(obj);
+  }
 
 }

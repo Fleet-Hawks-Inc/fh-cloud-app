@@ -121,6 +121,7 @@ export class PaymentChequeComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.listService.paymentModelList.subscribe(
       async (res: any) => {
+        console.log('res', res, res.length)
         if (res.showModal && res.length != 0) {
           // empty fields
           if (res.page && res.page == 'detail') {
@@ -130,13 +131,13 @@ export class PaymentChequeComponent implements OnInit {
             this.downloadTitle = 'Download & Save';
             this.openFrom = 'addForm';
           }
-
+          console.log('134')
           this.showIssue = false;
           this.corporateDrver = false;
           this.cheqdata.entityName = "";
           this.carrierID = null;
           this.cheqdata.companyAddress = null;
-
+          console.log('140')
           this.getCarriers();
           this.getCurrentuser();
           this.paydata = res;
@@ -182,7 +183,7 @@ export class PaymentChequeComponent implements OnInit {
 
           }
 
-          if (this.paydata.type === "advancePayment") {
+          if (this.paydata.type === "advancePayment" || this.paydata.type === "purchasePayment") {
             this.paydata.payYear = formatDate(
               this.paydata.fromDate,
               "yyyy",
@@ -257,7 +258,7 @@ export class PaymentChequeComponent implements OnInit {
             this.paydata.type === "employee" ||
             this.paydata.type === "owner_operator" ||
             this.paydata.type === "carrier" ||
-            this.paydata.type === "vendor"
+            this.paydata.type === "vendor" || this.paydata.type === "purchasePayment"
           ) {
             this.fetchContact();
           }

@@ -169,19 +169,19 @@
                                   <thead>
                                     <tr>
                                       <th style="width: 180px;">
-                                        Commodity<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                        Commodity
                                       </th>
                                       <th style="width: 200px;">
-                                        Quantity<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                        Quantity
                                       </th>
                                       <th style="width: 200px;">
-                                        Rate<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                        Rate
                                       </th>
                                       <th style="width: 120px;">
-                                        Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                        Amount
                                       </th>
                                       <th style="width: 180px;">
-                                        Account<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                        Account
                                       </th>
                                       <th style="width: 180px;">Description</th>
                                       <th style="width: 80px;">Action</th>
@@ -204,23 +204,12 @@
                                             <input type="text" name="qty{{ idt }}" [(ngModel)]="detail.qty"
                                               class="form-control" placeholder="Enter
                                                                                   quantity"
-                                              (input)="calcDetailAmount(idt)" pattern="^[1-9]\d*(\.\d+)?$"
-                                              #qtyy="ngModel" />
-                                            <div *ngIf="
-                                                qtyy.invalid &&
-                                                (qtyy.dirty || qtyy.touched)
-                                              " class="text-danger">
-                                              <div *ngIf="qtyy.errors.required">
-                                                Quantity is required.
-                                              </div>
-                                              <div *ngIf="qtyy.errors.pattern">
-                                                Please enter valid number
-                                              </div>
-                                            </div>
+                                              (input)="calcDetailAmount(idt)" pattern="^[1-9]\d*(\.\d+)?$" />
+
                                           </div>
                                           <div class="col-lg-5 pl-0">
                                             <ng-select [(ngModel)]="detail.qtyTyp" name="quanType{{ idt }}" placeholder="Select
-                                                                                  type" #quanType="ngModel"
+                                                                                  type"
                                               (change)="setQuanType($event, idt)">
                                               <ng-option *ngFor="let qtype of quantityTypes" value="{{ qtype.value }}">
                                                 {{
@@ -235,19 +224,7 @@
                                             <input type="text" name="rate{{ idt }}" [(ngModel)]="detail.rate"
                                               class="form-control" placeholder="Enter
                                                                                   rate" (input)="calcDetailAmount(idt)"
-                                              pattern="^[1-9]\d*(\.\d+)?$" #rateQ="ngModel" />
-
-                                            <div *ngIf="
-                                                rateQ.invalid &&
-                                                (rateQ.dirty || rateQ.touched)
-                                              " class="text-danger">
-                                              <div *ngIf="rateQ.errors.required">
-                                                Rate is required.
-                                              </div>
-                                              <div *ngIf="rateQ.errors.pattern">
-                                                Please enter valid amount
-                                              </div>
-                                            </div>
+                                              pattern="^[1-9]\d*(\.\d+)?$" />
                                           </div>
                                           <div class="col-lg-1 pr-0 pl-0">
                                             <label>per</label>
@@ -255,7 +232,7 @@
 
                                           <div class="col-lg-5 pl-0">
                                             <ng-select [(ngModel)]="detail.rateTyp" name="rateTyp{{ idt }}" placeholder="Select
-                                                                                  type" #rateTyp="ngModel"
+                                                                                  type"
                                               (change)="setQuanType($event, idt)">
                                               <ng-option *ngFor="let qtype of quantityTypes" value="{{ qtype.value }}">
                                                 {{
@@ -271,19 +248,13 @@
                                       </td>
                                       <td>
                                         <ng-select [(ngModel)]="detail.accountID" name="accountID{{ idt }}" placeholder="Select
-                                                                          account" #acc="ngModel" required>
+                                                                          account">
                                           <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">
                                             {{ data.actNo }} -
                                             {{ data.actName | titlecase }}
                                           </ng-option>
                                         </ng-select>
-                                        <div *ngIf="
-                                              acc.invalid && (acc.dirty || acc.touched)
-                                            " class="text-danger">
-                                          <div *ngIf="acc.errors.required">
-                                            Account is required.
-                                          </div>
-                                        </div>
+
                                       </td>
                                       <td>
                                         <input type="text" name="description{{ idt }}" [(ngModel)]="detail.description"
@@ -511,6 +482,11 @@
                       <button routerLink="/accounts/purchases/vendor-payments/list" type="button"
                         class="btn btn-default mr-2">
                         Cancel
+                      </button>
+                      <button type="button" class="btn btn-success modal-with-form mr-2"
+                        *ngIf="paymentData.payMode == 'cheque'" [disabled]="!venPayForm.form.valid || submitDisabled"
+                        (click)="showCheque()">
+                        Cheque preview
                       </button>
                       <button (click)="addRecord()" [disabled]="!venPayForm.form.valid || submitDisabled" type="submit"
                         class="btn btn-success">
