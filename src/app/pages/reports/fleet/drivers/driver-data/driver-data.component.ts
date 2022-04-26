@@ -243,11 +243,11 @@ export class DriverDataComponent implements OnInit {
 
               this.dataMessage = Constants.NO_RECORDS_FOUND
             }
-                if (result.nextPage !== undefined) {
-                this.lastEvaluatedKey = encodeURIComponent(result.nextPage);
+            if (result.nextPage !== undefined) {
+              this.lastEvaluatedKey = encodeURIComponent(result.nextPage);
             }
             else {
-                this.lastEvaluatedKey = 'end'
+              this.lastEvaluatedKey = 'end'
             }
             this.drivers = this.drivers.concat(result.data);
             this.loaded = true;
