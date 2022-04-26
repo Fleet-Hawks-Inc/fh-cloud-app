@@ -264,9 +264,8 @@
                             >
                               <h5 class="font-weight-bold">
                                 {{
-                                  settlementData.type === "driver"
-                                    ? "Driver"
-                                    : "Owneroperator"
+                                  settlementData.type === "owner_operator"
+                                    ? "Owner operator" : settlementData.type
                                 }}
                                 payment details
                               </h5>
@@ -283,7 +282,7 @@
                                   : "NA"
                               }}
                               <a
-                                (click)="openPaymentModal()"
+                                (click)="openPaymentModal()" *ngIf="settlementData.paymentSelected[0]"
                                 style="
                                   font-size: 13px;
                                   text-decoration: underline;
