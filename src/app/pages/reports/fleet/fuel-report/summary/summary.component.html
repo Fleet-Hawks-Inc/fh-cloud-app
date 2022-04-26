@@ -151,8 +151,8 @@
                     <div>
                         <h2 class="m-0 text-5 font-weight-bold">Total Fuel Consumed</h2>
                     </div>
-                    <h4 class="m-0 text-5 font-weight-bold">{{fuelCount.l_quantity | number : '1.2-2' }} LTR</h4>
-                    <h4 class="m-0 text-5 font-weight-bold">{{fuelCount.g_quantity | number : '1.2-2' }} GL</h4>
+                    <h4 class="m-0 text-5 font-weight-bold">{{this.fuelCostL | number : '1.2-2' }} LTR</h4>
+                    <h4 class="m-0 text-5 font-weight-bold">{{this.fuelCostG | number : '1.2-2' }} GL</h4>
                 </div>
             </div>
             <div class="col-3 mb-2">
@@ -160,8 +160,8 @@
                     <div>
                         <h2 class="m-0 text-5 font-weight-bold">Total Fuel Cost</h2>
                     </div>
-                    <h4 class="m-0 text-5 font-weight-bold">{{fuelCount.cad_amount | number : '1.2-2'}} CAD</h4>
-                    <h4 class="m-0 text-5 font-weight-bold">{{fuelCount.usd_amount | number : '1.2-2'}} USD</h4>
+                    <h4 class="m-0 text-5 font-weight-bold">{{fuelAmtCAD | number : '1.2-2'}} CAD</h4>
+                    <h4 class="m-0 text-5 font-weight-bold">{{fuelAmtUSD | number : '1.2-2'}} USD</h4>
                 </div>
             </div>
         </div>

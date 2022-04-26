@@ -20,7 +20,7 @@ export class SummaryComponent implements OnInit {
     vehiclesList = [];
     vehicleList: any = {};
     vehicles = [];
-    fuelList = [];
+    fuelList: any = [];
     unitID = null;
     assetUnitID = null;
     allAssets: any = [];
@@ -49,7 +49,17 @@ export class SummaryComponent implements OnInit {
     dateMinLimit = { year: 1950, month: 1, day: 1 };
     date = new Date();
     futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-
+    fuelCountData = [];   
+    fuelCostG = 0
+    fuelCostL = 0
+    fuelAmtCAD = 0
+    fuelAmtUSD = 0
+        
+        
+        
+        
+        
+        
     constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
     ngOnInit() {
@@ -129,14 +139,47 @@ export class SummaryComponent implements OnInit {
         element.dateTime = date
       });
              this.fuelList = this.fuelList.concat(result.Items);
+             for(let i=0;i<this.fuelList.length;i++){
+             this.fuelCountData.push(this.fuelList[i].data);
+             }
+             for(let j=0;j<this.fuelCountData.length;j++){
+             if(this.fuelCountData[j].uom === 'G'){
+             if(this.fuelCountData[j].qty > 0){
+             this.fuelCostG = this.fuelCostG + Number(this.fuelCountData[j].qty)
+             }
+             }
+             if(this.fuelCountData[j].uom === 'L'){
+             if(this.fuelCountData[j].qty > 0){
+             this.fuelCostL = this.fuelCostL + Number(this.fuelCountData[j].qty)
+             }
+             }
+             console.log('CALG',this.fuelCostG);
+             console.log('CALL',this.fuelCostL);
+             if(this.fuelCountData[j].currency === 'CAD'){
+             if(this.fuelCountData[j].amt > 0){
+             this.fuelAmtCAD = this.fuelAmtCAD + Number(this.fuelCountData[j].amt)
+             }
+             }
+             if(this.fuelCountData[j].currency === 'USD'){
+             if(this.fuelCountData[j].amt > 0){
+             this.fuelAmtUSD = this.fuelAmtUSD + Number(this.fuelCountData[j].amt)
+             }
+             }
+             }
              this.loaded = true;
+             console.log('Data',this.fuelCountData);
             }
         }
     }
 
     onScroll() {
         if (this.loaded) {
-            this.fetchFuelReport();
+             this.fuelCountData = [];
+             this.fuelCostG = 0;
+             this.fuelCostL = 0;
+             this.fuelAmtCAD = 0;
+             this.fuelAmtUSD = 0;
+             this.fetchFuelReport();
         }
         this.loaded = false;
     }
@@ -158,13 +201,23 @@ export class SummaryComponent implements OnInit {
             else {
                 this.dataMessage = Constants.FETCHING_DATA;
                 this.fuelList = [];
+                this.fuelCostG = 0
+                this.fuelCostL = 0
+                this.fuelAmtCAD = 0
+                this.fuelAmtUSD = 0
                 this.lastItemSK = '';
+                this.fuelCountData = [];
                 this.fetchFuelReport();
             }
         } else {
             return false;
         }
     }
+
+  
+
+
+
 
     resetFilter() {
         if (this.unitID !== null || this.assetUnitID !== null || this.start !== null || this.end !== null) {
@@ -173,6 +226,11 @@ export class SummaryComponent implements OnInit {
             this.start = null;
             this.end = null;
             this.fuelList = [];
+            this.fuelCountData = [];
+            this.fuelCostG = 0
+            this.fuelCostL = 0
+            this.fuelAmtCAD = 0
+            this.fuelAmtUSD = 0
             this.lastItemSK = '';
             this.dataMessage = Constants.FETCHING_DATA;
             this.fetchFuelReport();
