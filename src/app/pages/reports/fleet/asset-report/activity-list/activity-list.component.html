@@ -6,63 +6,39 @@
           <div class="row" style="padding-top: 10px">
             <div class="col-md-2 col-lg-2 pr-0">
               <div class="input-group input-group-md mb-3">
-                <input
-                  type="text"
-                  autocomplete="off"
-                  placeholder="Search Asset"
-                  name="assetIdentification"
-                  [(ngModel)]="assetIdentification"
-                  class="form-control"
-                  (input)="getSuggestions($event.target.value)"
-                />
+                <input type="text" autocomplete="off" placeholder="Search Asset" name="assetIdentification"
+                  [(ngModel)]="assetIdentification" class="form-control"
+                  (input)="getSuggestions($event.target.value)" />
               </div>
 
-              <div
-                *ngIf="suggestedAssets?.length > 0"
-                class="result-suggestions"
-              >
+              <div *ngIf="suggestedAssets?.length > 0" class="result-suggestions">
                 <ul>
-                  <li
-                    *ngFor="let suggestedAsset of suggestedAssets"
-                    style="cursor: pointer"
-                    (click)="
+                  <li *ngFor="let suggestedAsset of suggestedAssets" style="cursor: pointer" (click)="
                       setAsset(
                         suggestedAsset.assetID,
                         suggestedAsset.assetIdentification
                       )
-                    "
-                  >
+                    ">
                     {{ suggestedAsset.assetIdentification }}
                   </li>
                 </ul>
               </div>
             </div>
             <div class="col-md-2 col-lg-2 pl-2 pr-0">
-              <ng-select
-                class="form-control custom"
-                name="assetType"
-                [(ngModel)]="assetType"
-                placeholder="Select Type"
-              >
+              <ng-select class="form-control custom" name="assetType" [(ngModel)]="assetType" placeholder="Select Type">
                 <ng-option value="container">Container</ng-option>
                 <ng-option value="double_drop">Double Drop</ng-option>
                 <ng-option value="dump_trailer">Dump Trailer</ng-option>
                 <ng-option value="flat_bed">Flat bed</ng-option>
                 <ng-option value="lowboy">Lowboy</ng-option>
                 <ng-option value="stepDeck">StepDeck</ng-option>
-                <ng-option value="removable_gooseneck"
-                  >Removable Gooseneck</ng-option
-                >
+                <ng-option value="removable_gooseneck">Removable Gooseneck</ng-option>
                 <ng-option value="dry_van">Dry Van</ng-option>
                 <ng-option value="reefer">Reefer</ng-option>
                 <ng-option value="power_only">Power Only</ng-option>
-                <ng-option value="conestoga_trailer"
-                  >Conestoga Trailer</ng-option
-                >
+                <ng-option value="conestoga_trailer">Conestoga Trailer</ng-option>
                 <ng-option value="side_kit_trailer">Side Kit Trailer</ng-option>
-                <ng-option value="specialized_trailer"
-                  >Specialized Trailer</ng-option
-                >
+                <ng-option value="specialized_trailer">Specialized Trailer</ng-option>
                 <ng-option value="enclosed_trailer">Enclosed Trailer</ng-option>
                 <ng-option value="scrap_trailer">Scrap Trailer</ng-option>
                 <ng-option value="semi_trailer">Semi Trailer</ng-option>
@@ -71,41 +47,23 @@
               </ng-select>
             </div>
             <div class="col-md-3 col-lg-3 pl-2">
-              <button
-                type="submit"
-                [disabled]="disableSearch"
-                (click)="searchFilter()"
-                class="btn btn-sm btn-success mr-2"
-              >
+              <button type="submit" [disabled]="disableSearch" (click)="searchFilter()"
+                class="btn btn-sm btn-success mr-2">
                 Search
               </button>
-              <button
-                type="button"
-                [disabled]="disableSearch"
-                (click)="resetFilter()"
-                class="btn btn-sm btn-success"
-              >
+              <button type="button" [disabled]="disableSearch" (click)="resetFilter()" class="btn btn-sm btn-success">
                 Reset
               </button>
             </div>
             <div class="col-md-5 col-lg-5 text-right pr-1">
-              <a
-                routerLink="/reports/fleet/asset/overview"
-                class="btn btn-sm btn-success"
-                >Back</a
-              >
+              <a routerLink="/reports/fleet/asset/overview" class="btn btn-sm btn-success">Back</a>
             </div>
           </div>
         </form>
       </header>
 
-      <div
-        infiniteScroll
-        [infiniteScrollDistance]="1"
-        [infiniteScrollUpDistance]="1"
-        [infiniteScrollThrottle]="5"
-        (scrolled)="onScroll()"
-      >
+      <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1" [infiniteScrollThrottle]="5"
+        (scrolled)="onScroll()">
         <section class="m-2">
           <div class="row mb-3">
             <div class="col-lg-12">
@@ -114,9 +72,7 @@
                   <div class="col-lg-12">
                     <!-- LIST VIEW OF ASSETS  -->
                     <div class="table-responsive">
-                      <table
-                        class="row-border hover table table-bordered table-striped mb-0"
-                      >
+                      <table class="row-border hover table table-bordered table-striped mb-0">
                         <thead>
                           <tr>
                             <th>Asset Name/Number</th>
@@ -136,22 +92,17 @@
                           <tr *ngIf="allData.length == 0" class="text-center">
                             <td colspan="15">{{ dataMessage }}</td>
                           </tr>
-                          <tr
-                            class="cursorpoint text-capitalize"
-                            *ngFor="let item of allData; let i = index"
-                          >
+                          <tr class="cursorpoint text-capitalize" *ngFor="let item of allData; let i = index">
                             <td [routerLink]="item.url">
-                              <span
-                                class="font-weight-bold line-height-lg text-capitalize"
-                                >{{ item.assetIdentification }}</span
-                              >
+                              <span class="font-weight-bold line-height-lg text-capitalize">{{ item.assetIdentification
+                                }}</span>
                             </td>
 
                             <td [routerLink]="item.url">
                               {{
-                                item.assetDetails.ownerShip !== "interchange"
-                                  ? item.VIN
-                                  : "-"
+                              item.ownerShip !== "interchange"
+                              ? item.VIN
+                              : "-"
                               }}
                             </td>
                             <td [routerLink]="item.url">
@@ -159,67 +110,58 @@
                             </td>
                             <td [routerLink]="item.url">
                               {{
-                                item.assetDetails.manufacturer
-                                  ? item.assetDetails.manufacturer
-                                  : "-"
+                              item.manufacturer
+                              ? item.manufacturer
+                              : "-"
                               }}
                             </td>
 
                             <td [routerLink]="item.url">
-                              {{ item.assetDetails.licencePlateNumber }}
+                              {{ item.licencePlateNumber }}
                             </td>
                             <td [routerLink]="item.url">
                               {{
-                                item.assetDetails.ownerShip !== "interchange"
-                                  ? item.assetDetails.year
-                                  : "-"
+                              item.ownerShip !== "interchange"
+                              ? item.year
+                              : "-"
                               }}
                             </td>
 
                             <td [routerLink]="item.url">
                               {{
-                                item.assetDetails.ownerShip
-                                  ? item.assetDetails.ownerShip
-                                  : "-"
+                              item.ownerShip
+                              ? item.ownerShip
+                              : "-"
                               }}
                             </td>
                             <td [routerLink]="item.url">
-                              <span
-                                *ngIf="
-                                  item.assetDetails.ownerShip ===
+                              <span *ngIf="
+                                  item.ownerShip ===
                                   'ownerOperator'
-                                "
-                                >{{
-                                  item.assetDetails.ownerOperator
-                                    ? contactsObjects[
-                                        item.assetDetails.ownerOperator
-                                      ]
-                                    : "-"
-                                }}</span
-                              >
-                              <span
-                                *ngIf="item.assetDetails.ownerShip === 'rented'"
-                                >{{
-                                  item.assetDetails.rentCompany
-                                    ? item.assetDetails.rentCompany
-                                    : "-"
-                                }}</span
-                              >
-                              <span
-                                *ngIf="
-                                  item.assetDetails.ownerShip === 'owned' ||
-                                  item.assetDetails.ownerShip === 'leased' ||
-                                  item.assetDetails.ownerShip === 'interchange'
-                                "
-                                >-</span
-                              >
+                                ">{{
+                                item.ownerOperator
+                                ? contactsObjects[
+                                item.ownerOperator
+                                ]
+                                : "-"
+                                }}</span>
+                              <span *ngIf="item.ownerShip === 'rented'">{{
+                                item.rentCompany
+                                ? item.rentCompany
+                                : "-"
+                                }}</span>
+                              <span *ngIf="
+                                  item.ownerShip === 'owned' ||
+                                  item.ownerShip === 'leased' ||
+                                  item.ownerShip === 'interchange'
+                                ">-</span>
                             </td>
                             <td [routerLink]="item.url">
                               {{
-                                item.assetDetails.ownerShip !== "interchange"
-                                  ? (item.assetDetails.annualSafetyDate
-                                    | date: "yyyy/MM/dd")
-                                  : "-"
+                              item.ownerShip !== "interchange"
+                              ? (item.annualSafetyDate
+                              | date: "yyyy/MM/dd")
+                              : "-"
                               }}
                             </td>
                           </tr>
@@ -234,15 +176,8 @@
         </section>
       </div>
 
-      <div
-        class="col-lg-12 mt-3 text-center"
-        *ngIf="lastEvaluatedKey !== 'end' && allData.length !== 0"
-      >
-        <button
-          type="button"
-          class="btn btn-success btn-sm text-light"
-          (click)="onScroll()"
-        >
+      <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey !== 'end' && allData.length !== 0">
+        <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
           Load More..
         </button>
       </div>

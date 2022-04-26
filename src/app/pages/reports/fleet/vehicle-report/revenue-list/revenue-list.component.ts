@@ -78,22 +78,22 @@ export class RevenueListComponent implements OnInit {
       this.apiService.getData('vehicles/fetch/records?vehicle=' + this.vehicleID + '&status=' + this.currentStatus + '&lastKey=' + this.lastEvaluatedKey)
         .subscribe(async (result: any) => {
           this.dataMessage = Constants.FETCHING_DATA
-          if (result.Items.length === 0) {
+          if (result.data.length === 0) {
             this.disableSearch = false;
             this.dataMessage = Constants.NO_RECORDS_FOUND
           }
-          result[`Items`].map((v: any) => {
+          result[`data`].map((v: any) => {
             v.url = `/reports/fleet/vehicles/revenue-detail/${v.vehicleID}`;
           })
-          if (result.Items.length > 0) {
+          if (result.data.length > 0) {
             this.disableSearch = false;
             if (result.LastEvaluatedKey !== undefined) {
-              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].vehicleSK);
+              this.lastEvaluatedKey = encodeURIComponent(result.nextPage);
             }
             else {
               this.lastEvaluatedKey = 'end'
             }
-            this.vehicles = this.vehicles.concat(result.Items)
+            this.vehicles = this.vehicles.concat(result.data)
 
             this.loaded = true;
           }
