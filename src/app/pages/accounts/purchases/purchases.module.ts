@@ -25,6 +25,8 @@ import { AddVendorCreditNoteComponent } from "./vendor-credit-notes/add-vendor-c
 import { AddBillComponent } from "./bills/add-bill/add-bill.component";
 import { BillDetailsComponent } from "./bills/bill-details/bill-details.component";
 import { BillListComponent } from "./bills/bill-list/bill-list.component";
+import { PaymentChequeComponent } from "../payment-cheque/payment-cheque.component";
+
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -182,6 +184,7 @@ const routes: Routes = [
     AddBillComponent,
     BillDetailsComponent,
     BillListComponent,
+    PaymentChequeComponent
   ],
   imports: [
     CommonModule,
@@ -194,4 +197,4 @@ const routes: Routes = [
     InfiniteScrollModule,
   ],
 })
-export class PurchasesModule {}
+export class PurchasesModule { }

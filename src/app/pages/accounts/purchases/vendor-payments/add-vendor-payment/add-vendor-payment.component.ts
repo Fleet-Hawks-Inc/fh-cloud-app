@@ -438,8 +438,9 @@ export class AddVendorPaymentComponent implements OnInit {
       finalAmount: this.paymentData.total.finalTotal,
       txnDate: this.paymentData.txnDate,
       page: "addForm",
+      advance: this.paymentData.total.advTotal
     };
-    console.log('obj', obj)
+
     this.listService.openPaymentChequeModal(obj);
   }
 

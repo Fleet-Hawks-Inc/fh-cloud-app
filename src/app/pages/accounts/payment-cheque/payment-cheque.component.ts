@@ -121,7 +121,6 @@ export class PaymentChequeComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.listService.paymentModelList.subscribe(
       async (res: any) => {
-        console.log('res', res, res.length)
         if (res.showModal && res.length != 0) {
           // empty fields
           if (res.page && res.page == 'detail') {
@@ -131,13 +130,11 @@ export class PaymentChequeComponent implements OnInit {
             this.downloadTitle = 'Download & Save';
             this.openFrom = 'addForm';
           }
-          console.log('134')
           this.showIssue = false;
           this.corporateDrver = false;
           this.cheqdata.entityName = "";
           this.carrierID = null;
           this.cheqdata.companyAddress = null;
-          console.log('140')
           this.getCarriers();
           this.getCurrentuser();
           this.paydata = res;
@@ -242,7 +239,7 @@ export class PaymentChequeComponent implements OnInit {
           // this if cond. only in the case of expense payment
           if (
             this.paydata.type === "expensePayment" ||
-            this.paydata.type === "advancePayment"
+            this.paydata.type === "advancePayment" || this.paydata.type === "purchasePayment"
           ) {
             this.cheqdata.regularPay = this.paydata.finalAmount;
             if (this.paydata.paymentTo == "driver") {

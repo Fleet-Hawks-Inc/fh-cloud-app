@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import Constants from "src/app/pages/fleet/constants";
-import { AccountService, ApiService } from "src/app/services";
+import { AccountService, ApiService, ListService } from "src/app/services";
 
 @Component({
   selector: "app-vendor-payment-detail",
@@ -34,11 +34,15 @@ export class VendorPaymentDetailComponent implements OnInit {
   vendorName = "";
   paymentID;
   bills = {};
+  downloadDisabled = true;
+
+  showModal = false;
 
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private listService: ListService,
   ) { }
 
   async ngOnInit() {
@@ -52,6 +56,7 @@ export class VendorPaymentDetailComponent implements OnInit {
     let result: any = await this.accountService
       .getData(`purchase-payments/details/${this.paymentID}`)
       .toPromise();
+    this.downloadDisabled = false;
     this.paymentData = result[0];
     this.paymentData.payMode = this.paymentData.payMode.replace("_", " ");
   }
@@ -70,6 +75,27 @@ export class VendorPaymentDetailComponent implements OnInit {
       .getData(`bills/get/list`)
       .toPromise();
     this.bills = result;
+  }
+
+  showCheque() {
+    this.showModal = true;
+    let obj = {
+      entityId: this.paymentData.vendorID,
+      chequeDate: this.paymentData.payModeDate,
+      chequeAmount: this.paymentData.total.finalTotal,
+      type: "purchasePayment",
+      paymentTo: 'vendor',
+      chequeNo: this.paymentData.payModeNo,
+      currency: this.paymentData.currency,
+      showModal: this.showModal,
+      fromDate: this.paymentData.txnDate,
+      finalAmount: this.paymentData.total.finalTotal,
+      txnDate: this.paymentData.txnDate,
+      page: "detail",
+      advance: this.paymentData.total.advTotal
+    };
+    this.downloadDisabled = true;
+    this.listService.openPaymentChequeModal(obj);
   }
 
 }
