@@ -155,7 +155,7 @@ export class ActivityListComponent implements OnInit {
 
       if (result.data.length > 0) {
         this.disableSearch = false;
-        if (result.LastEvaluatedKey !== undefined) {
+        if (result.nextPage !== undefined) {
           this.lastEvaluatedKey = encodeURIComponent(result.nextPage);
         }
         else {
@@ -163,11 +163,6 @@ export class ActivityListComponent implements OnInit {
         }
         this.allData = this.allData.concat(result.data)
         this.loaded = true;
-      }
-
-      if (result.LastEvaluatedKey == undefined) {
-        this.lastEvaluatedKey = 'end';
-
       }
 
     }
