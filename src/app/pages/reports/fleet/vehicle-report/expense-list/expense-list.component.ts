@@ -107,7 +107,7 @@ export class ExpenseListComponent implements OnInit {
           })
           if (result.data.length > 0) {
             this.disableSearch = false;
-            if (result.LastEvaluatedKey !== undefined) {
+            if (result.nextPage !== undefined) {
               this.lastEvaluatedKey = encodeURIComponent(result.nextPage);
             }
             else {
