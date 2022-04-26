@@ -1493,6 +1493,9 @@ export class AddDriverComponent
             this.submitDisabled = false;
             this.dashboardUtilityService.refreshDrivers = true;
             this.toastr.success("Driver updated successfully");
+            this.modalServiceOwn.triggerRedirect.next(true);
+            this.takeUntil$.next();
+            this.takeUntil$.complete();
             this.cancel();
           },
         });

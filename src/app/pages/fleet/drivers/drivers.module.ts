@@ -74,7 +74,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 }
 const routes: Routes = [
   { path: 'add', component: AddDriverComponent, canDeactivate: [unsavedChangesGuard], data: { title: 'Add Driver' } },
-  { path: 'edit/:driverID', component: AddDriverComponent, data: { title: 'Edit Driver' } },
+  { path: 'edit/:driverID', component: AddDriverComponent, canDeactivate: [unsavedChangesGuard], data: { title: 'Edit Driver' } },
   { path: 'list/:sessionID', component: DriverListComponent, data: { title: 'Drivers List', reuseRoute: true } },
   { path: 'detail/:driverID', component: DriverDetailComponent, data: { title: 'Driver Detail' } }
 ];
