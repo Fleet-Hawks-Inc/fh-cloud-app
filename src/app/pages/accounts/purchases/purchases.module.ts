@@ -184,7 +184,7 @@ const routes: Routes = [
     AddBillComponent,
     BillDetailsComponent,
     BillListComponent,
-    PaymentChequeComponent
+    // PaymentChequeComponent
   ],
   imports: [
     CommonModule,

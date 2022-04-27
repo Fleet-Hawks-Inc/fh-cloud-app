@@ -9,9 +9,9 @@ var converter = require("number-to-words");
 declare var $: any;
 
 @Component({
-  selector: "app-payment-cheque",
-  templateUrl: "./payment-cheque.component.html",
-  styleUrls: ["./payment-cheque.component.css"],
+  selector: 'app-payment-cheque',
+  templateUrl: './payment-cheque.component.html',
+  styleUrls: ['./payment-cheque.component.css']
 })
 export class PaymentChequeComponent implements OnInit {
   @ViewChild("chekOptions", { static: true }) modalContent: TemplateRef<any>;
@@ -119,170 +119,171 @@ export class PaymentChequeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.subscription = this.listService.paymentModelList.subscribe(
-    //   async (res: any) => {
-    //     if (res.showModal && res.length != 0) {
-    //       // empty fields
-    //       if (res.page && res.page == 'detail') {
-    //         this.downloadTitle = 'Download'
-    //         this.openFrom = res.page;
-    //       } else {
-    //         this.downloadTitle = 'Download & Save';
-    //         this.openFrom = 'addForm';
-    //       }
-    //       this.showIssue = false;
-    //       this.corporateDrver = false;
-    //       this.cheqdata.entityName = "";
-    //       this.carrierID = null;
-    //       this.cheqdata.companyAddress = null;
-    //       this.getCarriers();
-    //       this.getCurrentuser();
-    //       this.paydata = res;
-    //       this.settlementIDs = res.settlementIds;
-    //       this.paydata.gstHstAmt = this.paydata.gstHstAmt === undefined ? 0 : this.paydata.gstHstAmt;
-    //       this.paydata.gstHstPer = this.paydata.gstHstAmt === undefined ? 0 : this.paydata.gstHstPer;
-    //       this.paydata.isVendorPayment = this.paydata.isVendorPayment === undefined ? false : this.paydata.isVendorPayment;
-    //       this.cheqdata.payDate = formatDate(
-    //         this.paydata.txnDate,
-    //         "dd-MM-yyyy",
-    //         this.locale
-    //       );
-    //       this.cheqdata.currency = this.paydata.currency;
+    this.subscription = this.listService.paymentModelList.subscribe(
+      async (res: any) => {
+        console.log('res', res)
+        if (res.showModal && res.length != 0) {
+          // empty fields
+          if (res.page && res.page == 'detail') {
+            this.downloadTitle = 'Download'
+            this.openFrom = res.page;
+          } else {
+            this.downloadTitle = 'Download & Save';
+            this.openFrom = 'addForm';
+          }
+          this.showIssue = false;
+          this.corporateDrver = false;
+          this.cheqdata.entityName = "";
+          this.carrierID = null;
+          this.cheqdata.companyAddress = null;
+          this.getCarriers();
+          this.getCurrentuser();
+          this.paydata = res;
+          this.settlementIDs = res.settlementIds;
+          this.paydata.gstHstAmt = this.paydata.gstHstAmt === undefined ? 0 : this.paydata.gstHstAmt;
+          this.paydata.gstHstPer = this.paydata.gstHstAmt === undefined ? 0 : this.paydata.gstHstPer;
+          this.paydata.isVendorPayment = this.paydata.isVendorPayment === undefined ? false : this.paydata.isVendorPayment;
+          this.cheqdata.payDate = formatDate(
+            this.paydata.txnDate,
+            "dd-MM-yyyy",
+            this.locale
+          );
+          this.cheqdata.currency = this.paydata.currency;
 
-    //       if (this.cheqdata.currency === "CAD") {
-    //         this.cheqdata.currencyText = "Amount in Canadian Dollars";
-    //       } else if (this.cheqdata.currency === "USD") {
-    //         this.cheqdata.currencyText = "Amount in US Dollars";
-    //       }
-    //       if (
-    //         this.paydata.type === "driver" ||
-    //         this.paydata.type === "employee" ||
-    //         this.paydata.type === "owner_operator" ||
-    //         this.paydata.type === "carrier" ||
-    //         this.paydata.type === "expensePayment"
-    //       ) {
-    //         this.paydata.payYear = formatDate(
-    //           this.paydata.toDate,
-    //           "yyyy",
-    //           this.locale
-    //         );
-    //         // let startDate = formatDate(
-    //         //   this.paydata.fromDate,
-    //         //   "dd-MM-yyyy",
-    //         //   this.locale
-    //         // );
-    //         // let endDate = formatDate(
-    //         //   this.paydata.toDate,
-    //         //   "dd-MM-yyyy",
-    //         //   this.locale
-    //         // );
-    //         this.cheqdata.payPeriod = await this.getSettlementData(this.settlementIDs);
+          if (this.cheqdata.currency === "CAD") {
+            this.cheqdata.currencyText = "Amount in Canadian Dollars";
+          } else if (this.cheqdata.currency === "USD") {
+            this.cheqdata.currencyText = "Amount in US Dollars";
+          }
+          if (
+            this.paydata.type === "driver" ||
+            this.paydata.type === "employee" ||
+            this.paydata.type === "owner_operator" ||
+            this.paydata.type === "carrier" ||
+            this.paydata.type === "expensePayment"
+          ) {
+            this.paydata.payYear = formatDate(
+              this.paydata.toDate,
+              "yyyy",
+              this.locale
+            );
+            // let startDate = formatDate(
+            //   this.paydata.fromDate,
+            //   "dd-MM-yyyy",
+            //   this.locale
+            // );
+            // let endDate = formatDate(
+            //   this.paydata.toDate,
+            //   "dd-MM-yyyy",
+            //   this.locale
+            // );
+            this.cheqdata.payPeriod = await this.getSettlementData(this.settlementIDs);
 
-    //       }
+          }
 
-    //       if (this.paydata.type === "advancePayment" || this.paydata.type === "purchasePayment") {
-    //         this.paydata.payYear = formatDate(
-    //           this.paydata.fromDate,
-    //           "yyyy",
-    //           this.locale
-    //         );
-    //         let startDate = formatDate(
-    //           this.paydata.fromDate,
-    //           "dd-MM-yyyy",
-    //           this.locale
-    //         );
-    //         this.cheqdata.payPeriod = `${startDate}`;
-    //       }
+          if (this.paydata.type === "advancePayment" || this.paydata.type === "purchasePayment") {
+            this.paydata.payYear = formatDate(
+              this.paydata.fromDate,
+              "yyyy",
+              this.locale
+            );
+            let startDate = formatDate(
+              this.paydata.fromDate,
+              "dd-MM-yyyy",
+              this.locale
+            );
+            this.cheqdata.payPeriod = `${startDate}`;
+          }
 
-    //       this.cheqdata.chqNo = this.paydata.chequeNo;
-    //       if (
-    //         this.paydata.type === "driver" ||
-    //         this.paydata.type === "employee"
-    //       ) {
-    //         this.cheqdata.regularPay = this.paydata.settledAmount + this.paydata.gstHstAmt;
-    //         this.cheqdata.vacationPay = this.paydata.vacPayAmount;
-    //         this.cheqdata.grossPay =
-    //           Number(this.cheqdata.regularPay) +
-    //           Number(this.cheqdata.vacationPay);
-    //         this.cheqdata.cpp = this.paydata.taxdata.cpp;
-    //         this.cheqdata.ei = this.paydata.taxdata.ei;
-    //         this.cheqdata.tax =
-    //           Number(this.paydata.taxdata.federalTax) +
-    //           Number(this.paydata.taxdata.provincialTax);
-    //         this.cheqdata.withHeld =
-    //           Number(this.cheqdata.cpp) +
-    //           Number(this.cheqdata.ei) +
-    //           Number(this.cheqdata.tax);
-    //         this.cheqdata.netPay =
-    //           Number(this.cheqdata.grossPay) - Number(this.cheqdata.withHeld);
-    //         // minus advance
-    //         if (this.paydata.advance > 0) {
-    //           this.cheqdata.netPay -= this.paydata.advance;
-    //         }
-    //       } else if (
-    //         this.paydata.type === "owner_operator" ||
-    //         this.paydata.type === "carrier" ||
-    //         this.paydata.type === "vendor"
-    //       ) {
-    //         this.cheqdata.regularPay = this.paydata.finalAmount + this.paydata.gstHstAmt;
-    //         this.cheqdata.grossPay = this.paydata.finalAmount;
-    //         if (this.paydata.type === "vendor") {
-    //           this.cheqdata.invoices = this.paydata.invoices;
-    //         }
-    //       }
+          this.cheqdata.chqNo = this.paydata.chequeNo;
+          if (
+            this.paydata.type === "driver" ||
+            this.paydata.type === "employee"
+          ) {
+            this.cheqdata.regularPay = this.paydata.settledAmount + this.paydata.gstHstAmt;
+            this.cheqdata.vacationPay = this.paydata.vacPayAmount;
+            this.cheqdata.grossPay =
+              Number(this.cheqdata.regularPay) +
+              Number(this.cheqdata.vacationPay);
+            this.cheqdata.cpp = this.paydata.taxdata.cpp;
+            this.cheqdata.ei = this.paydata.taxdata.ei;
+            this.cheqdata.tax =
+              Number(this.paydata.taxdata.federalTax) +
+              Number(this.paydata.taxdata.provincialTax);
+            this.cheqdata.withHeld =
+              Number(this.cheqdata.cpp) +
+              Number(this.cheqdata.ei) +
+              Number(this.cheqdata.tax);
+            this.cheqdata.netPay =
+              Number(this.cheqdata.grossPay) - Number(this.cheqdata.withHeld);
+            // minus advance
+            if (this.paydata.advance > 0) {
+              this.cheqdata.netPay -= this.paydata.advance;
+            }
+          } else if (
+            this.paydata.type === "owner_operator" ||
+            this.paydata.type === "carrier" ||
+            this.paydata.type === "vendor"
+          ) {
+            this.cheqdata.regularPay = this.paydata.finalAmount + this.paydata.gstHstAmt;
+            this.cheqdata.grossPay = this.paydata.finalAmount;
+            if (this.paydata.type === "vendor") {
+              this.cheqdata.invoices = this.paydata.invoices;
+            }
+          }
 
-    //       if (this.paydata.isVendorPayment) {
-    //         this.cheqdata.regularPay = this.paydata.totalAmount;
-    //         this.cheqdata.grossPay = this.paydata.totalAmount;
-    //       }
+          if (this.paydata.isVendorPayment) {
+            this.cheqdata.regularPay = this.paydata.totalAmount;
+            this.cheqdata.grossPay = this.paydata.totalAmount;
+          }
 
-    //       // this if cond. only in the case of expense payment
-    //       if (
-    //         this.paydata.type === "expensePayment" ||
-    //         this.paydata.type === "advancePayment" || this.paydata.type === "purchasePayment"
-    //       ) {
-    //         this.cheqdata.regularPay = this.paydata.finalAmount;
-    //         if (this.paydata.paymentTo == "driver") {
-    //           this.fetchDriver();
-    //         } else {
-    //           this.fetchContact();
-    //         }
-    //       }
+          // this if cond. only in the case of expense payment
+          if (
+            this.paydata.type === "expensePayment" ||
+            this.paydata.type === "advancePayment" || this.paydata.type === "purchasePayment"
+          ) {
+            this.cheqdata.regularPay = this.paydata.finalAmount;
+            if (this.paydata.paymentTo == "driver") {
+              this.fetchDriver();
+            } else {
+              this.fetchContact();
+            }
+          }
 
-    //       if (this.paydata.type == "driver") {
-    //         this.fetchDriver();
-    //       } else if (
-    //         this.paydata.type === "employee" ||
-    //         this.paydata.type === "owner_operator" ||
-    //         this.paydata.type === "carrier" ||
-    //         this.paydata.type === "vendor" || this.paydata.type === "purchasePayment"
-    //       ) {
-    //         this.fetchContact();
-    //       }
-    //       if (
-    //         this.paydata.type === "driver" ||
-    //         this.paydata.type === "employee" ||
-    //         this.paydata.type === "owner_operator" ||
-    //         this.paydata.type === "carrier"
-    //       ) {
-    //         this.getUserAnnualTax();
-    //       }
+          if (this.paydata.type == "driver") {
+            this.fetchDriver();
+          } else if (
+            this.paydata.type === "employee" ||
+            this.paydata.type === "owner_operator" ||
+            this.paydata.type === "carrier" ||
+            this.paydata.type === "vendor" || this.paydata.type === "purchasePayment"
+          ) {
+            this.fetchContact();
+          }
+          if (
+            this.paydata.type === "driver" ||
+            this.paydata.type === "employee" ||
+            this.paydata.type === "owner_operator" ||
+            this.paydata.type === "carrier"
+          ) {
+            this.getUserAnnualTax();
+          }
 
-    //       let ngbModalOptions: NgbModalOptions = {
-    //         backdrop: "static",
-    //         keyboard: false,
-    //         windowClass: "chekOptions-prog__main",
-    //       };
-    //       res.showModal = false;
-    //       this.modalService
-    //         .open(this.modalContent, ngbModalOptions)
-    //         .result.then(
-    //           (result) => { },
-    //           (reason) => { }
-    //         );
-    //     }
-    //   }
-    // );
+          let ngbModalOptions: NgbModalOptions = {
+            backdrop: "static",
+            keyboard: false,
+            windowClass: "chekOptions-prog__main",
+          };
+          res.showModal = false;
+          this.modalService
+            .open(this.modalContent, ngbModalOptions)
+            .result.then(
+              (result) => { },
+              (reason) => { }
+            );
+        }
+      }
+    );
   }
 
   prevCheck() {
@@ -548,4 +549,6 @@ export class PaymentChequeComponent implements OnInit {
     return newDates.join(", ");
 
   }
+
+
 }

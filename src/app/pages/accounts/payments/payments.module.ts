@@ -202,7 +202,7 @@ const routes: Routes = [
     EmployeePaymentDetailComponent,
     AddEmployeePaymentComponent,
     EmployeePaymentListComponent,
-    PaymentChequeComponent,
+    // PaymentChequeComponent,
     PaymentPdfsComponent,
     AddVendorPaymentComponent,
     VendorPaymentListComponent,
