@@ -306,7 +306,7 @@ export class TrialBalanceComponent implements OnInit {
                 this.exportLoading = false
             }
             else {
-                this.toaster.success("No Data Found")
+                this.toaster.error("No Data Found")
                 this.exportLoading = false
             }
         } catch (error) {
