@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { Component, Input, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { ApiService } from "../../../../services/api.service";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
@@ -10,7 +10,7 @@ import * as moment from "moment";
 import { ListService } from "src/app/services/list.service";
 import * as _ from "lodash";
 import { DashboardUtilityService } from "src/app/services/dashboard-utility.service";
-
+import { Table } from 'primeng/table';
 declare var $: any;
 @Component({
   selector: "app-orders-list",
@@ -20,6 +20,7 @@ declare var $: any;
 export class OrdersListComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
+  @ViewChild('dt') table: Table;
   @ViewChild("confirmEmailModal", { static: true })
   confirmEmailModal: TemplateRef<any>;
 
@@ -212,6 +213,21 @@ export class OrdersListComponent implements OnInit {
   loaded = false;
   isLoad: boolean = false;
   isLoadText = "Load More...";
+  _selectedColumns: any[];
+
+
+  dataColumns = [
+    { field: 'orderNumber', header: 'Order#', type: "text" },
+    { field: 'orderMode', header: 'Type', type: "text" },
+    { field: 'createdDate', header: 'Date', type: 'Date' },
+    { field: 'customerName', header: 'Customer', type: 'text' },
+    { field: 'dateAndTime', header: ' Pickup Location', type: 'text' },
+    { field: 'address', header: 'Drop Off Location', type: 'text' },
+    // { field: 'Commodity', header: 'Commodity', type: 'text' },
+    // { field: 'Amount', header: 'Amount', type: 'text' },
+    // { field: 'Status', header: 'Status', type: 'text' }
+    // {field:'Amount', header:'Amount',type:'text'}
+  ]
 
   constructor(
     private apiService: ApiService,
@@ -225,8 +241,27 @@ export class OrdersListComponent implements OnInit {
   async ngOnInit() {
     this.initDataTable();
     this.customersObjects = await this.dashboardUtilityService.getCustomers();
+    this.setToggleOptions()
+    $(document).ready(() => {
+      setTimeout(() => {
+        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+      }, 1800);
+    });
   }
 
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+  }
   fetchTabData(tabType) {
     this.activeTab = tabType;
   }
@@ -358,10 +393,10 @@ export class OrdersListComponent implements OnInit {
   }
 
   filterOrders() {
-   // if (this.orderFiltr.category == null || this.orderFiltr.category == "") {
-  //    this.toastr.error("Please select category");
-  //    return false;
-  //  }
+    // if (this.orderFiltr.category == null || this.orderFiltr.category == "") {
+    //    this.toastr.error("Please select category");
+    //    return false;
+    //  }
     if (this.orderFiltr.startDate === null) this.orderFiltr.startDate = "";
     if (this.orderFiltr.endDate === null) this.orderFiltr.endDate = "";
     if (
