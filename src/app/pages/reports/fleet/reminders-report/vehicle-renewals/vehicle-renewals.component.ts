@@ -148,7 +148,7 @@ export class VehicleRenewalsComponent implements OnInit {
         let obj = {}
         obj["Vehicle"] = this.vehiclesList[element.entityID]
         obj["Renewal Type"] = this.tasksData[element.tasks.taskID] + " " + element.status
-        obj["Due Date"] = element.tasks.dueDat
+        obj["Due Date"] = element.tasks.dueDate
         obj["Send Reminder"] = element.tasks.time + " " + element.tasks.timeUnit
         obj["Subscribers"] = element.subscribers
         dataObject.push(obj)
