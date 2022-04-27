@@ -21,6 +21,7 @@ export class HeaderComponent implements OnInit {
   isSafetyEnabled = environment.isSafetyEnabled;
   isAccountsEnabled = environment.isAccountsEnabled;
   isReportsEnabled = environment.isReportsEnabled;
+  isAddressBook=environment.isAddressBook;
 
   Asseturl = this.apiService.AssetUrl;
   @Output() navClicked = new EventEmitter<any>();
@@ -142,7 +143,13 @@ export class HeaderComponent implements OnInit {
     this.isAccountsEnabled = localStorage.getItem("isAccountsEnabled")
       ? JSON.parse(localStorage.getItem("isAccountsEnabled"))
       : environment.isAccountsEnabled;
+      
     environment.isAccountsEnabled;
+    
+    this.isAddressBook = localStorage.getItem("isAddressBook")
+      ? JSON.parse(localStorage.getItem("isAddressBook"))
+      : environment.isAddressBook;
+      
     this.isReportsEnabled = environment.isReportsEnabled;
   }
   onNavSelected(nav: string) {

@@ -31,32 +31,21 @@
                         </div>
 
                         <div class="col-md-3 col-lg-3 pl-2">
-                          <button
-                            type="submit"
-                            [disabled]="isSearch"
-                            (click)="searchFilter()"
-                            class="btn btn-sm btn-success mr-2"
-                          >
-                            Search
-                          </button>
-                          <button
-                            type="button"
-                            [disabled]="isSearch"
-                            (click)="resetFilter()"
-                            class="btn btn-sm btn-success"
-                          >
-                            Reset
-                          </button>
+                            <button type="submit" [disabled]="isSearch" (click)="searchFilter()"
+                                class="btn btn-sm btn-success mr-2">
+                                Search
+                            </button>
+                            <button type="button" [disabled]="isSearch" (click)="resetFilter()"
+                                class="btn btn-sm btn-success">
+                                Reset
+                            </button>
                         </div>
-                      
+
                         <div class="col-md-5 col-lg-5 text-right pr-1">
-                          <a
-                            routerLink="/reports/fleet/drivers"
-                            class="btn btn-sm btn-success"
-                            >Back
-                          </a>
+                            <a routerLink="/reports/fleet/drivers" class="btn btn-sm btn-success">Back
+                            </a>
                         </div>
-                      
+
                         <div class="col-md-6 text-right pr-1 page-buttons">
                             <div class="btn-group flex-wrap" style="min-width:190px;" *ngIf="!environment">
                                 <button type="button" class="mr-3 driverbtn btn btn-default
@@ -228,11 +217,11 @@
                                                         <td class="cursorpoint" [routerLink]="driver.url">{{
                                                             driver.CDL_Number }}</td>
                                                         <td class="cursorpoint" [routerLink]="driver.url">
-                                                            {{ driver.licenceDetails.licenceExpiry | date:
+                                                            {{ driver.licenceExpiry | date:
                                                             "yyyy/MM/dd" }}</td>
                                                         <td class="cursorpoint" [routerLink]="driver.url">
-                                                            {{ (driver.licenceDetails.licStateName) ?
-                                                            driver.licenceDetails.licStateName : '-' }}</td>
+                                                            {{ (driver.licStateName) ?
+                                                            driver.licStateName : '-' }}</td>
                                                         <td [routerLink]="driver.url" class="cursorpoint"
                                                             *ngIf="hideShow.currVehicle">
                                                             {{driver.assignedVehicle ?

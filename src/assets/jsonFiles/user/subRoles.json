@@ -9,5 +9,9 @@
   {
     "name": "Trip-Alarms",
     "role": "role_trip_alarm"
+  },
+  {
+    "name":"Address-Book",
+    "role":"role_address_book"
   }
 ]
