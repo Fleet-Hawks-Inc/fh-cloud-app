@@ -212,6 +212,7 @@ export class OrdersListComponent implements OnInit {
   loaded = false;
   isLoad: boolean = false;
   isLoadText = "Load More...";
+  isOrderPriceEnabled=environment.isOrderPriceEnabled
 
   constructor(
     private apiService: ApiService,
@@ -224,6 +225,11 @@ export class OrdersListComponent implements OnInit {
 
   async ngOnInit() {
     this.initDataTable();
+
+    this.isOrderPriceEnabled = localStorage.getItem("isOrderPriceEnabled")
+    ? JSON.parse(localStorage.getItem("isOrderPriceEnabled"))
+    : environment.isOrderPriceEnabled;
+    
     this.customersObjects = await this.dashboardUtilityService.getCustomers();
   }
 
