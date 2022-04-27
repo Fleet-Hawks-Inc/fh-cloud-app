@@ -220,13 +220,12 @@ export class OrdersListComponent implements OnInit {
     { field: 'orderNumber', header: 'Order#', type: "text" },
     { field: 'orderMode', header: 'Type', type: "text" },
     { field: 'createdDate', header: 'Date', type: 'Date' },
-    { field: 'customerName', header: 'Customer', type: 'text' },
-    { field: 'dateAndTime', header: ' Pickup Location', type: 'text' },
-    { field: 'address', header: 'Drop Off Location', type: 'text' },
-    // { field: 'Commodity', header: 'Commodity', type: 'text' },
-    // { field: 'Amount', header: 'Amount', type: 'text' },
-    // { field: 'Status', header: 'Status', type: 'text' }
-    // {field:'Amount', header:'Amount',type:'text'}
+    // { field: 'customersObjects.customerID', header: 'Customer', type: 'text' },
+    // { field: 'dateAndTime', header: ' Pickup Location', type: 'text' },
+    // { field: 'dateAndTime', header: 'Drop Off Location', type: 'text' },
+    // { field: 'name', header: 'Commodity', type: 'text' },
+    // { field: 'currency', header: 'Amount', type: 'text' },
+    // { field: 'invStatus', header: 'Status', type: 'text' },
   ]
 
   constructor(
@@ -244,13 +243,14 @@ export class OrdersListComponent implements OnInit {
     this.setToggleOptions()
     $(document).ready(() => {
       setTimeout(() => {
-        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+       $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
     });
   }
 
   setToggleOptions() {
     this.selectedColumns = this.dataColumns;
+    console.log('this.selec',this.selectedColumns)
   }
 
   @Input() get selectedColumns(): any[] {
@@ -309,6 +309,7 @@ export class OrdersListComponent implements OnInit {
     }
     this.spinner.show();
     // this.orders = [];
+
     if (this.lastEvaluatedKey !== "end") {
       this.orderFiltr.searchValue = this.orderFiltr.searchValue.trim();
       this.apiService
