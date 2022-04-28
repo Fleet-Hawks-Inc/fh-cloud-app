@@ -178,9 +178,11 @@ export class ApiService {
       localStorage.setItem("isAccountsEnabled", "true")
       localStorage.setItem("isManageEnabled", "true")
       localStorage.setItem("isAddressBook","true")
+      localStorage.setItem("isOrderPriceEnabled","true")
       return
     }
     localStorage.setItem("isAddressBook","false")
+    localStorage.setItem("isOrderPriceEnabled","false")
     
     if (user.userRoles.includes("role_safety")) {
       localStorage.setItem("isComplianceEnabled", "false")
@@ -194,6 +196,9 @@ export class ApiService {
     }
     if (user.userRoles.includes("role_address_book")) {
       localStorage.setItem("isAddressBook", "true")
+    }
+    if (user.userRoles.includes("role_order_price")) {
+      localStorage.setItem("isOrderPriceEnabled", "true")
     }
     
   }
