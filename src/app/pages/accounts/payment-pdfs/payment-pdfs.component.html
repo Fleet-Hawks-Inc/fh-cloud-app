@@ -59,9 +59,9 @@
                   </h2>
                   <div class="text-dark" *ngIf="paymentData.paymentTo === 'driver'"
                     style="font-size: 12px; margin-bottom: 2px">
-                    <!-- <strong>Payment Type:</strong> {{ paymentSelected ? paymentAbr[paymentSelected[0].pType] : '' }} -->
-                    <!-- <br /> -->
-                    <!-- <div class="text-dark" *ngIf="paymentSelected && paymentSelected[0].pType === 'ppm'">
+                    <strong>Payment Type:</strong> {{ paymentSelected ? paymentAbr[paymentSelected[0].pType] : '' }}
+                    <br />
+                    <div class="text-dark" *ngIf="paymentSelected && paymentSelected[0].pType === 'ppm'">
                       <strong>Loaded Miles: </strong>{{ paymentSelected[0].loadedMiles }} {{ paymentSelected[0].currency
                       }},
                       <span class="ml-2"><strong>Team Loaded Miles:</strong>
@@ -70,7 +70,7 @@
                       {{ currency }},
                       <span class="ml-2"><strong>Team Empty Miles:</strong>
                         {{ paymentSelected[0].emptyMilesTeam }} {{ paymentSelected[0].currency }}</span>
-                    </div> -->
+                    </div>
                   </div>
                   <p class="text-dark" style="font-size: 12px; margin-bottom: 2px">
                     <strong>Address:</strong>
@@ -452,18 +452,6 @@
                                 <td>
                                   <p class="text-dark mb-2 text-3">
                                     <strong>Trip#:</strong> {{ data.tripNo }}
-                                  </p>
-                                </td>
-                                <td>
-                                  <p class="text-dark mb-2 text-3">
-                                    <strong> Payment Method:</strong> {{ data.tripNo }}
-                                  </p>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <p class="text-dark mb-2 text-3">
-                                    <strong>Payment:</strong> {{ data.tripNo }}
                                   </p>
                                 </td>
                               </tr>
