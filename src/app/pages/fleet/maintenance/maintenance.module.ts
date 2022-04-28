@@ -27,6 +27,15 @@ import {
   AddIssueComponent,
   IssueDetailComponent,
 } from "./index";
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+
 
 
 const COMPONENTS = [
@@ -188,6 +197,14 @@ const routes: Routes = [
     NgxSpinnerModule,
     SlickCarouselModule,
     InfiniteScrollModule,
+    TableModule,
+    ButtonModule,
+    MultiSelectModule,
+    TooltipModule,
+    MenuModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule
   ],
   exports: [...COMPONENTS],
   providers: [
