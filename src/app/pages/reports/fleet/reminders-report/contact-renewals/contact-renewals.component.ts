@@ -173,7 +173,7 @@ export class ContactRenewalsComponent implements OnInit {
       let csvArray = []
       this.data.forEach(element => {
         let obj = {}
-        obj["Contact"] = this.empName[element.entityID]
+        obj["Contact"] = this.mergedList[element.entityID]
         obj["Renewal Type"] = this.tasks[element.tasks.taskID] + " " + element.status
         obj["Send Reminder"] = element.tasks.time + " " + element.tasks.timeUnit
         obj["Expiration Date"] = element.tasks.dueDate
@@ -207,4 +207,5 @@ export class ContactRenewalsComponent implements OnInit {
       this.toastr.error("No Records found")
     }
   }
+  
 }
