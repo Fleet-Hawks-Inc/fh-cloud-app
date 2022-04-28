@@ -11,6 +11,7 @@ import { ListService } from "src/app/services/list.service";
 import * as _ from "lodash";
 import { DashboardUtilityService } from "src/app/services/dashboard-utility.service";
 import { Table } from 'primeng/table';
+import { NgSelectComponent } from "@ng-select/ng-select";
 declare var $: any;
 @Component({
   selector: "app-orders-list",
@@ -21,6 +22,7 @@ export class OrdersListComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
   @ViewChild('dt') table: Table;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   @ViewChild("confirmEmailModal", { static: true })
   confirmEmailModal: TemplateRef<any>;
 
@@ -217,15 +219,15 @@ export class OrdersListComponent implements OnInit {
 
 
   dataColumns = [
-    { field: 'orderNumber', header: 'Order#', type: "text" },
+    { field: 'Number', header: 'Order#', type: "text" },
     { field: 'orderMode', header: 'Type', type: "text" },
     { field: 'createdDate', header: 'Date', type: 'Date' },
-    // { field: 'customersObjects.customerID', header: 'Customer', type: 'text' },
-    // { field: 'dateAndTime', header: ' Pickup Location', type: 'text' },
-    // { field: 'dateAndTime', header: 'Drop Off Location', type: 'text' },
-    // { field: 'name', header: 'Commodity', type: 'text' },
-    // { field: 'currency', header: 'Amount', type: 'text' },
-    // { field: 'invStatus', header: 'Status', type: 'text' },
+    { field: 'customersObjects.customerID', header: 'Customer', type: 'text' },
+    { field: 'dateAndTime', header: ' Pickup Location', type: 'text' },
+    { field: 'dateAndTime', header: 'Drop Off Location', type: 'text' },
+    { field: 'name', header: 'Commodity', type: 'text' },
+    { field: 'currency', header: 'Amount', type: 'text' },
+    { field: 'invStatus', header: 'Status', type: 'text' },
   ]
 
   constructor(
