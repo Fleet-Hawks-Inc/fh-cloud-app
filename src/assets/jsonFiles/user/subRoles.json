@@ -9,5 +9,13 @@
   {
     "name": "Trip-Alarms",
     "role": "role_trip_alarm"
+  },
+  {
+    "name":"Address-Book",
+    "role":"role_address_book"
+  },
+  {
+    "name":"Order-Price",
+    "role":"role_order_price"
   }
 ]
