@@ -374,13 +374,15 @@ export class PaymentPdfsComponent implements OnInit {
     this.trips = result;
 
     this.settlements.forEach((element) => {
+      console.log('element.trpDat', element.trpData)
       element.trpData.map((v) => {
         this.trips.map((trip) => {
           if (v.id === trip.tripID) {
             let obj = {
               tripNo: trip.tripNo,
               date: trip.dateCreated,
-              plans: []
+              plans: [],
+              paymentSelected: v.paymentSelected ? v.paymentSelected[0] : {}
             };
             if (v.plan.length > 0) {
               // if sub trip is settled
@@ -423,7 +425,7 @@ export class PaymentPdfsComponent implements OnInit {
       }
       this.grandTotal += item.totalMiles;
     }
-
+    console.log('paymentTrips', this.paymentTrips)
   }
 
   fetchDriverDetails() {
