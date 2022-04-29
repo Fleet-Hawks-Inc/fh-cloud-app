@@ -74,7 +74,7 @@ export class IssueListComponent implements OnInit {
       // columns of data table
   dataColumns = [
         { field: 'unitType', header: 'Unit Type', type: "text" },
-          { field: 'vehicle_asset', header: 'Vehicle/Asset', type: "text" },
+          { field: 'vehicleasset', header: 'Vehicle/Asset', type: "text" },
           { field: 'issueName', header: 'Issue Name', type: "text" },
           { field: 'reportedDate', header: 'Reported On', type: "text" },
           { field: 'reportedBy', header: 'Reported By', type: "text" },
