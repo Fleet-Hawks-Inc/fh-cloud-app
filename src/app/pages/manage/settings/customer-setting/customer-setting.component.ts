@@ -20,6 +20,7 @@ export class CustomerSettingComponent implements OnInit {
     loaded: boolean = false;
     customers = [];
     addressBookList: any = [];
+    array = [];
 
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
@@ -31,16 +32,23 @@ export class CustomerSettingComponent implements OnInit {
     if( this.lastItemSK !== 'end'){
     this.apiService.getData(`contacts/deleted/fetch/records?company=${this.company}&type=${this.type}&lastKey=${this.lastItemSK}`)
       .subscribe((result: any) => {
+      
         if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-    
         if (result.Items.length > 0) {
                 if (result.LastEvaluatedKey !== undefined) {
                     this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.contactSK);
                 }
                 else {
                     this.lastItemSK = 'end'
+                }
+                
+                for (var i = 0; i < result.Items.length; i++) {
+                for (var j = 0; j< result.Items[i].eTypes.length; j++) {
+                 result.Items[i].eTypes[j] =result.Items[i].eTypes[j].replace('_',' ');
+                }
+                result.Items[i].eTypes = result.Items[i].eTypes.join( ', ' );
                 }
                 this.customers =this.customers.concat(result.Items);
                 this.loaded = true;
