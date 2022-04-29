@@ -754,7 +754,7 @@
                   <div class="col-xl-12 col-12 mb-3">
                     <div class="boxshadow1 maindisbox w100 pull-left">
                       <div class="widgetload">
-                        <div class="widgettbload">
+                        <div  *ngIf="isOrderPriceEnabled" class="widgettbload">
                           <span class="pull-right text-3 mt-2 text-dark">
                           </span>
                           <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
@@ -762,7 +762,7 @@
                           </h2>
                         </div>
 
-                        <div class="widgetlinfo">
+                        <div *ngIf="isOrderPriceEnabled" class="widgetlinfo">
                           <div class="col-lg-2 pull-left">
                             <img src="assets/img/icon-cur.png" class="img-fluid" alt="shipper" />
                           </div>

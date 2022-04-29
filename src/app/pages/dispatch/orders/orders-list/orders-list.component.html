@@ -365,7 +365,7 @@
                               <th>Pickup Location</th>
                               <th>Drop Off Location</th>
                               <th>Commodity</th>
-                              <th>Amount</th>
+                              <th *ngIf="isOrderPriceEnabled">Amount</th>
                               <th class="custom-w-160">Status</th>
                               <th>Actions</th>
                             </tr>
@@ -509,7 +509,7 @@
                                 : ""
                                 }}
                               </td>
-                              <td [routerLink]="order.url">
+                              <td *ngIf="isOrderPriceEnabled" [routerLink]="order.url">
                                 {{ order.charges.freightFee.currency }}
                                 {{ order.totalAmount }}<br />
                               </td>

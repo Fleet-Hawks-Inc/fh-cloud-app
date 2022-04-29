@@ -227,6 +227,7 @@ export class OrdersListComponent implements OnInit {
     // { field: 'currency', header: 'Amount', type: 'text' },
     // { field: 'invStatus', header: 'Status', type: 'text' },
   ]
+  isOrderPriceEnabled=environment.isOrderPriceEnabled
 
   constructor(
     private apiService: ApiService,
@@ -239,6 +240,11 @@ export class OrdersListComponent implements OnInit {
 
   async ngOnInit() {
     this.initDataTable();
+
+    this.isOrderPriceEnabled = localStorage.getItem("isOrderPriceEnabled")
+    ? JSON.parse(localStorage.getItem("isOrderPriceEnabled"))
+    : environment.isOrderPriceEnabled;
+    
     this.customersObjects = await this.dashboardUtilityService.getCustomers();
     this.setToggleOptions()
     $(document).ready(() => {
