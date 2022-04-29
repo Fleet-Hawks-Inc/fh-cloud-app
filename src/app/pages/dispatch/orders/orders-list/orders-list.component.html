@@ -171,7 +171,7 @@
                         <td style="width:12%">
                           {{ customersObjects[order.customerID] }}
                         </td>
-                        <td style="width:12%">
+                        <!-- <td style="width:12%">
                           Date:
                           {{
                           order.shippersReceiversInfo[0].shippers[0]
@@ -268,7 +268,7 @@
                             .dropPoint - 1
                             }}
                           </span>
-                        </td>
+                        </td> -->
                         <td style="width:12%">
                           {{
                           order.shippersReceiversInfo[0].shippers[0]
@@ -306,12 +306,28 @@
                             order.orderID
                             }}" type="button" icon="fas fa-user-pen" class="p-button-rounded p-button-text"></button>
 
-                          <!-- <button *ngIf="order.orderStatus === 'confirmed'" id="btnEdit" pButton routerLink="/dispatch/orders/edit/{{
-                              order.orderID
-                              }}" type="button" icon="fas fa-user-pen" class="p-button-rounded p-button-text"></button> -->
-                          <button *ngIf="order.orderStatus == 'created' ||
-                          order.orderStatus == 'confirmed'" (click)="deactivateOrder(order)" id="btnDelete" pButton
+
+                          <button *ngIf="order.orderStatus === 'confirmed'"
+                            [routerLink]="['/dispatch','trips','add-trip']"
+                            [queryParams]="{orderId:order.orderID,orderNum:order.orderNumber}" id="btnDelete" pButton
+                            type="button" icon="fas fa-user-slash" class="btn btn-primary"></button>
+
+                          <button *ngIf="order.orderStatus === 'created'" (click)="confirmEmail(order, i)" pButton
                             type="button" icon="fas fa-user-slash"
+                            class="p-button-rounded p-button-info p-button-text"></button>
+
+
+                          <button *ngIf="order.orderStatus === 'created' ||
+                            order.orderStatus === 'confirmed'"
+                            (click)="showBrokerageModal(order,ordersDraw, i, 'all' )" pButton type="button"
+                            icon="fas fa-user-slash" class="p-button-rounded  p-button-primary p-button-text"></button>
+
+                          <button [routerLink]="['/dispatch','orders','add']" [queryParams]="{cloneID: order.orderID}"
+                            pButton type="button" icon="fas fa-user-slash"
+                            class="p-button-rounded p-button-warning p-button-text"></button>
+
+                          <button *ngIf=" order.orderStatus=='created' || order.orderStatus=='confirmed'" (click)="
+                            deactivateOrder(order)" id="btnDelete" pButton type="button" icon="fas fa-user-slash"
                             class="p-button-rounded p-button-danger p-button-text"></button>
                         </td>
                       </tr>
@@ -2183,7 +2199,7 @@
   </div>
 </div>
 
-<app-brokerage-pdf></app-brokerage-pdf>
+<app-brokerage-pdf></app-brokerage-pdf>-->
 
 <ng-template #confirmEmailModal let-modal>
   <div class="modal-header">
@@ -2237,4 +2253,4 @@
       </button>
     </div>
   </form>
-</ng-template> -->
+</ng-template>
