@@ -42,6 +42,12 @@ export class CustomerSettingComponent implements OnInit {
                 else {
                     this.lastItemSK = 'end'
                 }
+                for (var i = 0; i < result.Items.length; i++) {
+                for (var j = 0; j< result.Items[i].eTypes.length; j++) {
+                 result.Items[i].eTypes[j] =result.Items[i].eTypes[j].replace('_',' ');
+                }
+                result.Items[i].eTypes = result.Items[i].eTypes.join( ', ' );
+                }
                 this.customers =this.customers.concat(result.Items);
                 this.loaded = true;
         }
