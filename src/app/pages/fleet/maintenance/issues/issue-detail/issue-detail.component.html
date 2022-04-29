@@ -11,7 +11,7 @@
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
             <a
-              [routerLink]="['/fleet', 'maintenance', 'issues', 'list']"
+              routerLink="/fleet/maintenance/issues/list/{{sessionID}}"
               class="btn btn-sm btn-default mr-2"
               ><i class="fas fa-list"></i> Issues List</a
             >
