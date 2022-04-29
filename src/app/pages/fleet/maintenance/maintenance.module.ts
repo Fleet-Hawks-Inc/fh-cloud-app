@@ -160,9 +160,9 @@ const routes: Routes = [
     path: "issues",
     children: [
       {
-        path: "list",
+        path: "list/:sessionID",
         component: IssueListComponent,
-        data: { title: "Issues List" },
+        data: { title: "Issues List", reuseRoute: true },
       },
       {
         path: "add",

@@ -8,25 +8,67 @@
         <section role="main" class="content-body pl-1 pt-0 pr-0">
             <header class="page-header flex align-items-center justify-content-start">
                 <form class="formgrid grid">
-                    <div class="row">
-                        <div class="col" style="margin-left: 20px;margin-top: 5px;">
-                            <p-autoComplete #autoComp id="autoCmpSugDriver" [placeholder]="'Type Issues Name'"
-                                class="mr-2" [forceSelection]="true" emptyMessage="No data found."
-                                [(ngModel)]="issueName" [suggestions]="suggestedIssues" [minLength]="2"
-                                (completeMethod)="getSuggestions($event.query)" (onSelect)="setIssue($event.issueName)"
-                                field="fullName"> </p-autoComplete>
-                         <!--       
-                            <p-dropdown id="drpDvrType" [style]="{minWidth: '200px'}" [options]="employeeOptions"
-                                class="mr-2" placeholder="Select a Driver Type" [(ngModel)]="driverType"
-                                optionLabel="name" optionValue="value">
-                            </p-dropdown>
-                            -->
-                            <button id="btnSearch" type="button" [disabled]="isSearch" pButton class="mr-2"
-                                icon="pi pi-search" pTooltip="Search" (click)="searchFilter()"></button>
-                            <button id="btnResetFilter" type="button" [disabled]="isSearch" pButton class="mr-2"
-                                icon="pi pi-refresh" pTooltip="Reset" (click)="resetFilter()"></button>
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-md-2 col-lg-2 pr-1">
+                            <ng-select [(ngModel)]="category" name="category" placeholder="Search by Category"
+                                (change)="categoryChange()">
+                                <ng-option *ngFor="let data of categoryFilter" value="{{ data.value }}">
+                                    {{ data.name }}
+                                </ng-option>
+                            </ng-select>
                         </div>
-                        <div class="col">
+                        <div class="col-md-2 col-lg-2 pr-1">
+                            <div class="input-group input-group-md mb-3" *ngIf="
+                                category != 'vehicle' &&
+                                category != 'asset' &&
+                                category != 'task'
+                              ">
+                                <input type="text" class="form-control" placeholder="Search" name="searchValue"
+                                    [(ngModel)]="searchValue" />
+                            </div>
+
+                            <ng-select [(ngModel)]="searchValue" name="searchValue" placeholder="Search By Vehicle"
+                                *ngIf="category == 'vehicle'">
+                                <ng-option *ngFor="let data of vehicleList | keyvalue" value="{{ data.key }}">
+                                    {{ data.value }}
+                                </ng-option>
+                            </ng-select>
+
+                            <ng-select [(ngModel)]="searchValue" name="searchValue" placeholder="Search By Asset"
+                                *ngIf="category == 'asset'">
+                                <ng-option *ngFor="let data of assetList | keyvalue" value="{{ data.key }}">
+                                    {{ data.value }}
+                                </ng-option>
+                            </ng-select>
+                        </div>
+
+
+             
+                        <div class="col-md-2 col-lg-2 pl-0">
+                            <div class="input-group input-group-sm mb-3">
+                                <input type="text" name="issueName" [(ngModel)]="issueName" class="form-control"
+                                    placeholder="Search Issue by Name" (input)="getSuggestions($event.target.value)" />
+                            </div>
+                            <div *ngIf="suggestedIssues?.length > 0" class="result-suggestions">
+                                <ul>
+                                    <li *ngFor="let data of suggestedIssues" style="cursor: pointer;"
+                                        (click)="setIssue(data.issueName)">{{
+                                        data.issueName }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-lg-2 pl-0 pr-0">
+                            <ng-select placeholder="Search issue by status" name="issueStatus"
+                                [(ngModel)]="issueStatus">
+                                <ng-option value="OPEN">OPEN</ng-option>
+                                <ng-option value="RESOLVED">RESOLVED</ng-option>
+                                <ng-option value="CLOSED">CLOSED</ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <button type="button" class="btn btn-sm btn-success mr-3"
+                                (click)="searchFilter()">Search</button>
+                            <button type="button" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
                         </div>
                     </div>
                 </form>
@@ -73,40 +115,8 @@
                                             <tr>
                                                 <th *ngFor="let dataColumns of columns"
                                                     [pSortableColumn]="dataColumns.field" pResizableColumn
-                                                    style="width:10%">
+                                                    style="width:14%">
                                                     <div [ngSwitch]="dataColumns.field">
-                                                        <!-- Driver Status Filter Customization -->
-                                                        <!--
-                                                        <span *ngSwitchCase="'driverStatus'">
-                                                            <div class="flex justify-content-center align-items-center"
-                                                                alignFrozen="left" pFrozenColumn [frozen]="true">
-                                                                {{dataColumns.header}}
-                                                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
-                                                                <p-columnFilter [type]="dataColumns.type"
-                                                                    [field]="dataColumns.field" [showOperator]="false"
-                                                                    matchMode="contains" [showMatchModes]="false"
-                                                                    [showAddButton]="false" display="menu">
-                                                                    
-                                                                    <ng-template pTemplate="filter" let-value
-                                                                        let-filter="filterCallback">
-                                                                        <p-multiSelect
-                                                                            [options]="[ { name:'Active', value:'active'}, {name: 'InActive', value:'inActive'}]"
-                                                                            placeholder="Any"
-                                                                            (onChange)="filter($event.value)"
-                                                                            optionLabel="name" optionValue="value">
-                                                                            <ng-template let-option pTemplate="item">
-                                                                                <div>
-                                                                                    <span class="ml-1">{{option.name
-                                                                                        }}</span>
-                                                                                </div>
-                                                                            </ng-template>
-                                                                        </p-multiSelect>
-                                                                    </ng-template>
-                                                                    
-                                                                </p-columnFilter>
-                                                            </div>
-                                                        </span>
-                                                        -->
                                                         <span *ngSwitchDefault>
                                                             <div class="flex justify-content-center align-items-center"
                                                                 alignFrozen="right" pFrozenColumn [frozen]="true">
@@ -130,9 +140,28 @@
                                             let-rowIndex="rowIndex">
                                             <tr>
                                                 <td *ngFor="let dataColumns of columns"
-                                                    style="width:10%;cursor: pointer;"
+                                                    style="width:14%;cursor: pointer;"
                                                     routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
                                                     <div [ngSwitch]="dataColumns.field">
+                                                         <span *ngSwitchCase="'unitType'">
+                                                            <span>{{get(issue,dataColumns.field) | titlecase}}</span>
+                                                        </span>
+                                                          <span *ngSwitchCase="'issueName'">
+                                                            <span>{{get(issue,dataColumns.field) | titlecase}}</span>
+                                                        </span>
+                                                        <span *ngSwitchCase="'vehicle_asset'">
+                                                            <span *ngIf="issue.unitType === 'asset'">{{assetList[issue.unitID] | titlecase}}</span>
+                                                            <span *ngIf="issue.unitType === 'vehicle'">{{vehicleList[issue.unitID] | titlecase}}</span>
+                                                        </span>    
+                                                        <span *ngSwitchCase="'reportedBy'">
+                                                            <span>{{ usersList[issue.reportedBy] | titlecase}}</span>
+                                                        </span>
+                                                        <span *ngSwitchCase="'assignedTo'">
+                                                            <span>{{ usersList[issue.assignedTo] | titlecase}}</span>
+                                                        </span>
+                                                           <span *ngSwitchCase="'currentStatus'">
+                                                              <span>{{issue.currentStatus | uppercase}}</span>
+                                                            </span>
                                                         <span *ngSwitchDefault> {{get(issue,dataColumns.field)}}</span>
                                                     </div>
                                                 </td>

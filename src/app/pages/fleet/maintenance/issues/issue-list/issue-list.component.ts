@@ -25,6 +25,7 @@ export class IssueListComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
   title = 'Issues List';
   issues = [];
+  get = _.get;
   driverList: any = {};
   vehicleList: any = {};
   assetList: any = {};
@@ -73,9 +74,12 @@ export class IssueListComponent implements OnInit {
       // columns of data table
   dataColumns = [
         { field: 'unitType', header: 'Unit Type', type: "text" },
-          { field: 'unitID', header: 'Vehicle/Asset', type: "text" },
+          { field: 'vehicle_asset', header: 'Vehicle/Asset', type: "text" },
           { field: 'issueName', header: 'Issue Name', type: "text" },
           { field: 'reportedDate', header: 'Reported On', type: "text" },
+          { field: 'reportedBy', header: 'Reported By', type: "text" },
+          { field: 'assignedTo', header: 'Assigned To', type: "text" },
+          { field: 'currentStatus', header: 'Status', type: "text" },
     ];
   constructor(private apiService: ApiService,private modalService: NgbModal, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
@@ -103,12 +107,15 @@ export class IssueListComponent implements OnInit {
         this.selectedColumns = this.dataColumns;
     }
     setEmployeeOptions() {
-        this.employeeOptions = [{ "value": "contractor", "name": "Contractor" }, { "name": "Employee", "value": "employee" }, { "name": "All", "value": "null" }];
+        this.employeeOptions = [
+                                 {'value': 'vehicle', 'name': 'Vehicle' },
+                                 {'value': 'asset',   'name': 'Asset' }
+                              ];
     }
    
-    //@Input() get selectedColumns(): any[] {
-      //  return this._selectedColumns;
-    //}
+    @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
 
     set selectedColumns(val: any[]) {
        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
