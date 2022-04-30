@@ -14,6 +14,8 @@ import { Location } from "@angular/common";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 declare var $: any;
 import * as moment from "moment";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+
 
 @Component({
   selector: "app-add-issue",
@@ -60,6 +62,8 @@ clone = false;
   hasSuccess = false;
   submitDisabled = false;
   Error = "";
+      sessionID: string;
+
   errors = {};
   Success = "";
   docs: SafeResourceUrl;
@@ -81,9 +85,11 @@ clone = false;
     private location: Location,
     private domSanitizer: DomSanitizer,
     private ngbCalendar: NgbCalendar,
-    private dateAdapter: NgbDateAdapter<string>
+    private dateAdapter: NgbDateAdapter<string>,
+    private routerMgmtService: RouteManagementServiceService
   ) {
     this.selectedFileNames = new Map<any, any>();
+    this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
   }
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
@@ -221,6 +227,8 @@ clone = false;
         this.response = res;
         this.submitDisabled = false;
         this.toaster.success("Issue Added successfully");
+        this.router.navigateByUrl("/fleet/maintenance/issues/list");
+        this.router.navigateByUrl('/fleet/maintenance/issues/list/${this.routerMgmtService.maintainanceUpdated()}');
         this.cancel();
       },
     });
@@ -392,7 +400,8 @@ clone = false;
         this.response = res;
         this.submitDisabled = false;
         this.toaster.success("Issue Updated Successfully");
-        this.router.navigateByUrl("/fleet/maintenance/issues/list");
+        //this.router.navigateByUrl("/fleet/maintenance/issues/list");
+        this.router.navigateByUrl('/fleet/maintenance/issues/list/${this.routerMgmtService.maintainanceUpdated()}');
       },
     });
   }

@@ -4,6 +4,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../../environments/environment';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+
 @Component({
   selector: 'app-issue-detail',
   templateUrl: './issue-detail.component.html',
@@ -18,6 +20,7 @@ export class IssueDetailComponent implements OnInit {
   issueName: string;
   unitID: string;
   unitType: string;
+  sessionID: string;
   unitName: string;
   currentStatus: string;
   reportedDate: string;
@@ -46,7 +49,11 @@ export class IssueDetailComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private domSanitizer: DomSanitizer) { }
+    private domSanitizer: DomSanitizer,
+    private routerMgmtService: RouteManagementServiceService
+    ) {
+    this.sessionID = this.routerMgmtService.maintainanceSessionID;
+    }
 
   ngOnInit() {
     this.issueID = this.route.snapshot.params[`issueID`];
