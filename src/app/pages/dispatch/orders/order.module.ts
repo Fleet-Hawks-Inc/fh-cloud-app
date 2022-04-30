@@ -19,16 +19,27 @@ import { BrokeragePdfComponent } from "./brokerage-pdf/brokerage-pdf.component";
 import { BolPdfComponent } from "./bol-pdf/bol-pdf.component";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { SlickCarouselModule } from "ngx-slick-carousel";
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
-import { MultiSelectModule } from 'primeng/multiselect';
+
+
+
+
 import { MenuModule } from 'primeng/menu';
 import { SplitButtonModule } from 'primeng/splitbutton';
-import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { DropdownModule } from 'primeng/dropdown';
 import { TooltipModule } from 'primeng/tooltip';
-
+import {TableModule} from 'primeng/table';
+import {ToastModule} from 'primeng/toast';
+import {CalendarModule} from 'primeng/calendar';
+import {SliderModule} from 'primeng/slider';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {ContextMenuModule} from 'primeng/contextmenu';
+import {DialogModule} from 'primeng/dialog';
+import {ButtonModule} from 'primeng/button';
+import {DropdownModule} from 'primeng/dropdown';
+import {ProgressBarModule} from 'primeng/progressbar';
+import {InputTextModule} from 'primeng/inputtext';
+import {RatingModule} from 'primeng/rating';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 const routes: Routes = [
   {
     path: "order-list/:sessionId",
@@ -87,6 +98,16 @@ const routes: Routes = [
     DropdownModule,
     ButtonModule,
     TooltipModule,
+    ToastModule,
+    FormsModule,
+    RatingModule,
+    SliderModule,
+    DialogModule,
+    ContextMenuModule,
+    InputTextModule,
+    ProgressBarModule,
+    OverlayPanelModule
+
   ],
   providers: [unsavedChangesGuard],
 })

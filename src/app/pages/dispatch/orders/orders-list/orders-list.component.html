@@ -121,8 +121,10 @@
                     </ng-template>
 
                     <!-- Header template of DataTable -->
-                    <ng-template pTemplate="header" let-columns>
+                    <ng-template pTemplate="header">
                       <tr>
+                        <th style="width: 3rem"></th>
+
                         <th *ngFor="let column of dataColumns" [pSortableColumn]="column.field" pResizableColumn
                           style="width:12%">
                           <span>
@@ -156,19 +158,23 @@
                     </ng-template>
 
                     <!-- Body Template of Data Table -->
-                    <ng-template pTemplate="body" let-order let-columns="columns" let-rowIndex="rowIndex">
-                      <tr style="cursor: pointer;" routerLink="order.url">
-
-                        <td style="width:12%">
+                    <ng-template pTemplate="body" let-order let-expanded="expanded">
+                      <tr style="cursor: pointer;">
+                        <td>
+                          <button type="button" pButton pRipple [pRowToggler]="order"
+                            class="p-button-text p-button-rounded p-button-plain"
+                            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                        </td>
+                        <td routerLink="order.url" style="width:12%">
                           {{order.orderNumber}}
                         </td>
-                        <td style="width:12%">
+                        <td routerLink="order.url" style="width:12%">
                           {{order.orderMode}}
                         </td>
-                        <td style="width:12%">
+                        <td routerLink="order.url" style="width:12%">
                           {{ order.createdDate | date: "yyyy/MM/dd" }}
                         </td>
-                        <td style="width:12%">
+                        <td routerLink="order.url" style="width:12%">
                           {{ customersObjects[order.customerID] }}
                         </td>
                         <!-- <td style="width:12%">
@@ -295,45 +301,199 @@
                           {{ order.totalAmount }}<br />
                         </td>
                         <td style="width:12%">
-                          <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
+                          <!-- <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br> -->
                           <b>Invoiced: </b> {{order.invoicedTime ? 'Yes' : 'No'}} <br>
                           <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
+                        </td>
+                        <td style="width:12%">
+                          <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
                         </td>
                         <td style=" text-align: center; width: 100px;" pFrozenColumn alignFrozen="right"
                           [frozen]="true">
 
-                          <button *ngIf="order.orderStatus!= 'delivered'" id="btnEdit" pButton routerLink="/dispatch/orders/edit/{{
-                            order.orderID
-                            }}" type="button" icon="fas fa-user-pen" class="p-button-rounded p-button-text"></button>
+                          <p-button icon="pi pi-ellipsis-v" (click)="op.toggle($event)"
+                            class="p-button-raised p-button-rounded">
+                          </p-button>
 
-
-                          <button *ngIf="order.orderStatus === 'confirmed'"
-                            [routerLink]="['/dispatch','trips','add-trip']"
-                            [queryParams]="{orderId:order.orderID,orderNum:order.orderNumber}" id="btnDelete" pButton
-                            type="button" icon="fas fa-user-slash" class="btn btn-primary"></button>
-
-                          <button *ngIf="order.orderStatus === 'created'" (click)="confirmEmail(order, i)" pButton
-                            type="button" icon="fas fa-user-slash"
-                            class="p-button-rounded p-button-info p-button-text"></button>
-
-
-                          <button *ngIf="order.orderStatus === 'created' ||
-                            order.orderStatus === 'confirmed'"
-                            (click)="showBrokerageModal(order,ordersDraw, i, 'all' )" pButton type="button"
-                            icon="fas fa-user-slash" class="p-button-rounded  p-button-primary p-button-text"></button>
-
-                          <button [routerLink]="['/dispatch','orders','add']" [queryParams]="{cloneID: order.orderID}"
-                            pButton type="button" icon="fas fa-user-slash"
-                            class="p-button-rounded p-button-warning p-button-text"></button>
-
-                          <button *ngIf=" order.orderStatus=='created' || order.orderStatus=='confirmed'" (click)="
-                            deactivateOrder(order)" id="btnDelete" pButton type="button" icon="fas fa-user-slash"
-                            class="p-button-rounded p-button-danger p-button-text"></button>
+                          <p-overlayPanel #op [showCloseIcon]="false">
+                            <ng-template pTemplate>
+                              <a *ngIf="order.orderStatus!= 'delivered'" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
+                                order.orderID
+                                }}">Edit</a>
+                              <a *ngIf="order.orderStatus === 'confirmed'" class="dropdown-item"
+                                [routerLink]="['/dispatch','trips','add-trip']"
+                                [queryParams]="{orderId:order.orderID,orderNum:order.orderNumber}">Create Trip</a>
+                              <a *ngIf="order.orderStatus == 'created' ||
+                                order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
+                                (click)="deactivateOrder(order)">Delete</a>
+                              <a *ngIf="order.orderStatus === 'created'" class="dropdown-item"
+                                (click)="confirmEmail(order, i)">Confirm</a>
+                              <a *ngIf="order.orderStatus === 'created' ||
+                                order.orderStatus === 'confirmed'" class="dropdown-item" (click)="showBrokerageModal(
+                                order,
+                                ordersDraw,
+                                i,
+                                'all'
+                                )">Brokerage</a>
+                              <a *ngIf="order.orderStatus === 'brokerage'" class="dropdown-item" (click)="updateCreatedStatus(order,
+                                ordersDraw, i)">Cancel Brokerage</a>
+                              <a class="dropdown-item" [routerLink]="[
+                                '/dispatch',
+                                'orders',
+                                'add'
+                                ]" [queryParams]="{
+                                cloneID: order.orderID
+                                }">Clone</a>
+                              <a *ngIf="order.canRecall" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
+                                order.orderID
+                                }}" [queryParams]="{
+                                state: 'recall'
+                                }">Recall</a>
+                            </ng-template>
+                          </p-overlayPanel>
                         </td>
                       </tr>
 
                     </ng-template>
+                    <ng-template pTemplate="rowexpansion" let-order>
+                      <tr>
+                        <td colspan="7">
+                          <div class="p-p-3">
+                            <table>
+                              <ng-template pTemplate="header">
+                                <!-- <tr>
+                              <th pSortableColumn="id">Pickup Location <p-sortIcon field="price"></p-sortIcon>
+                              </th>
+                              <th pSortableColumn="customer">Drop Off Location <p-sortIcon field="customer">
+                                </p-sortIcon>
+                              </th>
+                          
+                            </tr> -->
+                                <thead>
+                                  <tr>
+                                    <th>Pickup Location</th>
+                                    <th>Drop Off Location</th>
+                                  </tr>
+                                </thead>
 
+                              </ng-template>
+                              <ng-template pTemplate="body" let-order>
+                                <tbody>
+                                  <tr>
+                                    <td style="width:12%">
+                                      Date:
+                                      {{
+                                      order.shippersReceiversInfo[0].shippers[0]
+                                      .pickupPoint[0].dateAndTime
+                                      | date
+                                      : "yyyy/MM/dd
+                                      hh:mm a"
+                                      }}<br />
+                                      Location:
+                                      <span *ngIf="order.shippersReceiversInfo[0].shippers[0]
+                                                .pickupPoint[0].address.manual">
+                                        {{
+                                        order.shippersReceiversInfo[0].shippers[0]
+                                        .pickupPoint[0].address.address
+                                        }},
+                                        {{
+                                        order.shippersReceiversInfo[0].shippers[0]
+                                        .pickupPoint[0].address.city
+                                        }},
+                                        {{
+                                        order.shippersReceiversInfo[0].shippers[0]
+                                        .pickupPoint[0].address.state
+                                        }},
+                                        {{
+                                        order.shippersReceiversInfo[0].shippers[0]
+                                        .pickupPoint[0].address.country
+                                        }}
+                                        {{
+                                        order.shippersReceiversInfo[0].shippers[0]
+                                        .pickupPoint[0].address.zipCode
+                                        }}
+                                      </span>
+                                      <span *ngIf="!order.shippersReceiversInfo[0].shippers[0]
+                                                .pickupPoint[0].address.manual">
+                                        {{
+                                        order.shippersReceiversInfo[0].shippers[0]
+                                        .pickupPoint[0].address.pickupLocation
+                                        }}
+                                      </span>
+                                      <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0]
+                                                .pickupPoint.length> 1
+                                                  ">
+                                        +{{
+                                        order.shippersReceiversInfo[0].shippers[0]
+                                        .pickupPoint.length - 1
+                                        }}
+                                      </span>
+                                    </td>
+                                    <td style="width:12%">
+                                      Date:-
+                                      {{
+                                      order.shippersReceiversInfo[0].receivers[0]
+                                      .dropPoint[0].dateAndTime
+                                      | date
+                                      : "yyyy/MM/dd
+                                      hh:mm a"
+                                      }}<br />
+                                      Location: -
+                                      <span *ngIf="order.shippersReceiversInfo[0].receivers[0]
+                                                .dropPoint[0].address.manual">
+                                        {{
+                                        order.shippersReceiversInfo[0].receivers[0]
+                                        .dropPoint[0].address.address
+                                        }},
+                                        {{
+                                        order.shippersReceiversInfo[0].receivers[0]
+                                        .dropPoint[0].address.city
+                                        }},
+                                        {{
+                                        order.shippersReceiversInfo[0].receivers[0]
+                                        .dropPoint[0].address.state
+                                        }},
+                                        {{
+                                        order.shippersReceiversInfo[0].receivers[0]
+                                        .dropPoint[0].address.country
+                                        }}
+                                        {{
+                                        order.shippersReceiversInfo[0].receivers[0]
+                                        .dropPoint[0].address.zipCode
+                                        }}
+                                      </span>
+                                      <span *ngIf="!order.shippersReceiversInfo[0].receivers[0]
+                                                .dropPoint[0].address.manual">
+                                        {{
+                                        order.shippersReceiversInfo[0].receivers[0]
+                                        .dropPoint[0].address.dropOffLocation
+                                        }}
+                                      </span>
+                                      <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0]
+                                                .dropPoint> 1">
+                                        +{{
+                                        order.shippersReceiversInfo[0].receivers[0]
+                                        .dropPoint - 1
+                                        }}
+                                      </span>
+                                    </td>
+
+                                    <!-- <td>
+                            <p-button type="button" icon="pi pi-search"></p-button>
+                          </td> -->
+                                  </tr>
+                                </tbody>
+                              </ng-template>
+                              <ng-template pTemplate="emptymessage">
+                                <tr>
+                                  <td colspan="6">There are no data for this order yet.</td>
+                                </tr>
+                              </ng-template>
+                            </table>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
                       <div class="col-lg-12 mt-3 text-center">
                         {{dataMessage}}
@@ -341,7 +501,6 @@
                       </div>
                     </ng-template>
                   </p-table>
-
                 </div>
               </div>
 
@@ -2124,7 +2283,7 @@
       </section>
     </section>
   </div>
-</section>
+</section>-->
 
 <div class="modal fade" id="orderStatusModal" role="dialog" tabindex="-1">
   <div class="modal-dialog" role="document" style="max-width: 500px">
@@ -2199,7 +2358,7 @@
   </div>
 </div>
 
-<app-brokerage-pdf></app-brokerage-pdf>-->
+<app-brokerage-pdf></app-brokerage-pdf>
 
 <ng-template #confirmEmailModal let-modal>
   <div class="modal-header">

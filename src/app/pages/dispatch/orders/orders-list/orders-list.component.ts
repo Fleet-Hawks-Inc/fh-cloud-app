@@ -228,6 +228,7 @@ export class OrdersListComponent implements OnInit {
     { field: 'name', header: 'Commodity', type: 'text' },
     { field: 'currency', header: 'Amount', type: 'text' },
     { field: 'invStatus', header: 'Status', type: 'text' },
+    { field: 'tripStatus', header: 'Trip Status', type: 'text' },
   ]
   isOrderPriceEnabled=environment.isOrderPriceEnabled
 
