@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input} from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
+import { NgSelectComponent } from "@ng-select/ng-select";
 declare var $: any;
 import { ToastrService } from 'ngx-toastr';
+import { Table } from 'primeng/table';
 import { NgxSpinnerService } from 'ngx-spinner';
 import Constants from '../../constants';
 import { ListService } from '../../../../services';
@@ -15,6 +17,8 @@ import { environment } from '../../../../../environments/environment';
     styleUrls: ['./inventory-list.component.css']
 })
 export class InventoryListComponent implements OnInit {
+    @ViewChild('dt') table: Table;
+    @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
     environment = environment.isFeatureEnabled;
     dataMessage: string = Constants.FETCHING_DATA;
     dataMessageReq: string = Constants.FETCHING_DATA;
@@ -103,10 +107,34 @@ export class InventoryListComponent implements OnInit {
     dateMinLimit = { year: 1950, month: 1, day: 1 };
     date1: any = new Date();
     futureDatesLimit = { year: this.date1.getFullYear() + 30, month: 12, day: 31 };
+    employeeOptions: any[];
+    _selectedColumns: any[];
+    get = _.get;
 
+
+   
+        // columns of data table
+    dataColumns = [
+        { field: 'firstName', header: 'First Name', type: "text" },
+        { field: 'lastName', header: 'Last Name', type: "text" },
+        { field: 'email', header: 'Email', type: "text" },
+        { field: 'phone', header: 'Phone', type: "text" },
+        { field: 'userName', header: 'Username', type: "text" },
+        { field: 'driverType', header: 'Type', type: "text" },
+        { field: 'companyName', header: 'Company', type: "text" },
+        { field: 'startDate', header: 'Start Date', type: "text" },
+        { field: 'CDL_Number', header: 'CDL#', type: "text" },
+        { field: 'licenceExpiry', header: 'CDL Expiry', type: "text" },
+        { field: 'isImport', header: 'Added By', type: "text" },
+        { field: "driverStatus", header: 'Status', type: 'text' },
+
+    ];
+  
     constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private listService: ListService) { }
 
     ngOnInit() {
+        this.setToggleOptions();
+        this.setEmployeeOptions();
         this.fetchWarehouses();
         this.fetchAllItemsList();
         this.initDataTable();
@@ -115,6 +143,23 @@ export class InventoryListComponent implements OnInit {
         this.listService.fetchVendors();
         this.disableButton();
         this.allVendors = this.listService.vendorList;
+    }
+    
+    
+        setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    setEmployeeOptions() {
+        this.employeeOptions = [{ "value": "contractor", "name": "Contractor" }, { "name": "Employee", "value": "employee" }, { "name": "All", "value": "null" }];
+    }
+    @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
+
+    set selectedColumns(val: any[]) {
+        //restore original order
+        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
     }
 
     getItemSuggestions = _.debounce(function (value, type) {
@@ -167,6 +212,14 @@ export class InventoryListComponent implements OnInit {
             this.requiredItemID = itemName;
             this.requiredSuggestedItems = [];
         }
+    }
+    
+    clearInput() {
+       // this.suggestedDrivers = null;
+    }
+
+    clearSuggestions() {
+       // this.driverName = null;
     }
 
     resetFilter() {
@@ -528,4 +581,14 @@ export class InventoryListComponent implements OnInit {
         this.dataMessageReq = Constants.FETCHING_DATA;
         this.initDataTableRequired();
     }
+    
+    
+        /**
+     * Clears the table filters
+     * @param table Table 
+     */
+    clear(table: Table) {
+        table.clear();
+    }
+
 }
