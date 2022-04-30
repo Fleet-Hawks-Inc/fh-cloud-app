@@ -41,7 +41,7 @@ export class DriverSummaryComponent implements OnInit {
     loadMsg: string = Constants.NO_LOAD_DATA;
     isSearch = false;
     _selectedColumns: any[];
-    driverOptions: any[];
+    statusOptions: any[];
     listView = true;
     visible = true;
     get = _.get;
@@ -73,7 +73,7 @@ export class DriverSummaryComponent implements OnInit {
         this.fetchDriversCount();
         this.fetchPagination();
         this.setToggleOptions();
-        this.setDriverOptions();
+        this.setAssetOptions();
     }
     
 
@@ -82,8 +82,8 @@ export class DriverSummaryComponent implements OnInit {
         this.selectedColumns = this.dataColumns;
     }
     
-    setDriverOptions() {
-    this.driverOptions = [{ "value": "active", "name": "Active" },
+    setAssetOptions() {
+    this.statusOptions = [{ "value": "active", "name": "Active" },
     { "value": "inActive", "name": "InActive" },
     ];
     }
