@@ -31,6 +31,7 @@ import { AutoCompleteModule } from "primeng/autocomplete";
 import { DropdownModule } from "primeng/dropdown";
 import { AssetsSettingComponent } from "./assets-setting/assets-setting.component";
 import { DialogModule } from 'primeng/dialog';
+import { DeletedCustomerComponent } from './customer-setting/deleted-customer/deleted-customer.component';
 
 const routes: Routes = [
   { path: "overview", component: SettingsOverviewComponent },
@@ -127,6 +128,7 @@ const routes: Routes = [
     ImportDriversComponent,
     VehicleSettingsComponent,
     AssetsSettingComponent,
+    DeletedCustomerComponent,
     // DeletedAssetsComponent,
     // ImportedAssetsComponent,
   ],
