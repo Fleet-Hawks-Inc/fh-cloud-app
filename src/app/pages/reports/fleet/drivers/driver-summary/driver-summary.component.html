@@ -11,12 +11,11 @@
                     <div class="row">
                         <div class="col" style="margin-left: 20px;margin-top: 5px;">
 
-                            <p-autoComplete #autoComp id="autoCmpSugDriver" [options]="assetOptions" class="mr-2"
-                                placeholder="Search driver by name" [notFoundText]="loadMsg"
-                                [suggestions]="suggestedDrivers" [(ngModel)]="driverName" [forceSelection]="true"
+                            <p-autoComplete #autoComp id="autoCmpSugDriver" [options]="driverOptions" class="mr-2"
+                                placeholder="Search driver by name"  [suggestions]="suggestedDrivers" [(ngModel)]="driverName" [forceSelection]="true"
                                 [minLength]="2" emptyMessage="No data found." [editable]="true"
                                 (onSelect)="setDriver($event.driverID)" field="fullName"
-                                (completeMethod)="getSuggestions($event.query)" optionLabel="name" optionValue="value">
+                                (completeMethod)="getSuggestions($event.query)">
                             </p-autoComplete>
                             <p-dropdown id="drpDvrType" [style]="{minWidth: '200px'}" [options]="statusOptions"
                                 class="mr-2" placeholder="Driver Status" [(ngModel)]="driverStatus" optionLabel="name"
@@ -206,13 +205,13 @@
 
                                         <ng-template pTemplate="summary" let-columns>
                                             <div class="col-lg-12 mt-3 text-center "
-                                                *ngIf="lastEvaluatedKey !=='end' && drivers.length !==0 ">
+                                                *ngIf="lastItemSK !=='end' && drivers.length !==0 ">
                                                 <button type="button " (click)="onScroll($event) "
                                                     class="btn btn-success btn-sm text-light ">Load
                                                     More..</button>
                                                 <br /><br>
                                             </div>
-                                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey ==='end'">
+                                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK ==='end'">
                                                 Total Records: {{drivers.length}}</div>
                                         </ng-template>
 
