@@ -224,65 +224,6 @@ export class DriverSummaryComponent implements OnInit {
 
     }
     
-    generateDriverCSV() {
-        if (this.fullExportDriver.length > 0) {
-            let dataObject = []
-            let csvArray = []
-            this.fullExportDriver.forEach(element => {
-                let obj = {}
-                obj["Name"] = element.firstName + "  " + element.middleName + " " + element.lastName
-                obj["Email"] = element.email
-                obj["UserName"] = element.userName
-                obj["driverType"] = element.driverType
-                obj["Start Date"] = element.startDate ? element.startDate : '--'
-                obj["Date of Birth"] = element.DOB
-                obj["Gender"] = element.gender === "M" ? 'Male' : 'Female'
-                obj["CDL#"] = element.CDL_Number
-                obj["Licence Expiry"] = element.licenceDetails.licenceExpiry
-                obj["Licence Province"] = element.licenceDetails.licStateName
-                obj["Phone"] = element.phone
-                obj["Status"] = element.driverStatus
-                dataObject.push(obj)
-            });
-            let headers = Object.keys(dataObject[0]).join(',')
-            headers += '\n'
-            csvArray.push(headers)
-            dataObject.forEach(element => {
-                let obj = Object.values(element).join(',')
-                obj += '\n'
-                csvArray.push(obj)
-            });
-            const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            if (link.download !== undefined) {
-                const url = URL.createObjectURL(blob);
-                link.setAttribute('href', url);
-                link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Driver-Report.csv`);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        }
-        else {
-            this.toastr.error("No Records found")
-        }
-    }
-
-    requiredExport() {
-        this.apiService.getData(`drivers/get/getFull/export`).subscribe((result: any) => {
-            this.fullExportDriver = result.Items;
-            this.generateDriverCSV();
-        })
-    }
-
-    requiredCSV() {
-        if (this.driverName !== '' || this.driverStatus !== null) {
-            this.fullExportDriver = this.drivers
-            this.generateDriverCSV();
-        } else {
-            this.requiredExport();
-        }
-    }
     
     /**
      * Clears the table filters

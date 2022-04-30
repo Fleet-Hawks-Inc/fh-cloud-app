@@ -4,80 +4,75 @@
     }
 </style>
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pt-0 pr-0 pl-1">
-      <header class="page-header flex align-items-center justify-content-start">
-        <form class="formgrid grid">
-          <div class="row">
-             <div class="col" style="margin-left: 20px;margin-top: 5px;">
-            
-            <p-autoComplete #autoComp id="autoCmpSugDriver" [options]="assetOptions"
-               class="mr-2" placeholder="Search driver by name" [notFoundText]="loadMsg" [suggestions]="suggestedDrivers" [(ngModel)]="driverName"
-               [forceSelection]="true" [minLength]="2" emptyMessage="No data found."
-                [editable]="true" (onSelect)="setDriver($event.driverID)" field="fullName" (completeMethod)="getSuggestions($event.query)" optionLabel="name" optionValue="value">
-                </p-autoComplete>
-                <p-dropdown id="drpDvrType" [style]="{minWidth: '200px'}" [options]="statusOptions"
-                class="mr-2" placeholder="Driver Status" [(ngModel)]="driverStatus"
-                  optionLabel="name" optionValue="value">
-                  </p-dropdown>
-                  <button id="btnSearch" type="button" [disabled]="isSearch" pButton class="mr-2" 
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pt-0 pr-0 pl-1">
+            <header class="page-header flex align-items-center justify-content-start">
+                <form class="formgrid grid">
+                    <div class="row">
+                        <div class="col" style="margin-left: 20px;margin-top: 5px;">
+
+                            <p-autoComplete #autoComp id="autoCmpSugDriver" [options]="assetOptions" class="mr-2"
+                                placeholder="Search driver by name" [notFoundText]="loadMsg"
+                                [suggestions]="suggestedDrivers" [(ngModel)]="driverName" [forceSelection]="true"
+                                [minLength]="2" emptyMessage="No data found." [editable]="true"
+                                (onSelect)="setDriver($event.driverID)" field="fullName"
+                                (completeMethod)="getSuggestions($event.query)" optionLabel="name" optionValue="value">
+                            </p-autoComplete>
+                            <p-dropdown id="drpDvrType" [style]="{minWidth: '200px'}" [options]="statusOptions"
+                                class="mr-2" placeholder="Driver Status" [(ngModel)]="driverStatus" optionLabel="name"
+                                optionValue="value">
+                            </p-dropdown>
+                            <button id="btnSearch" type="button" [disabled]="isSearch" pButton class="mr-2"
                                 icon="pi pi-search" pTooltip="Search" (click)="searchDriver()"></button>
-                  <button id="btnResetFilter" type="button" [disabled]="isSearch" pButton class="mr-2"
+                            <button id="btnResetFilter" type="button" [disabled]="isSearch" pButton class="mr-2"
                                 icon="pi pi-refresh" pTooltip="Reset" (click)="resetDriver()"></button>
-            </div> 
-            <div class="col">
                         </div>
-          </div>
-        </form>
-      </header>
-      
-      
-       
-      
-      
-      <div class="col-lg-12">
-            <div class="m-1 text-dark">
-              <div class="form-group row pt-3">
-                <div class="col-3 mb-3">
-                  <div class="p-3 bg-white">
-                    <div>
-                      <h4 class="m-0 text-4 font-weight-bold">Total Drivers</h4>
-                      <h3 class="mt-1 mb-0 font-weight-bold">
-                        {{ driversCount.total }}
-                      </h3>
+                        <div class="col">
+                        </div>
                     </div>
-                  </div>
-                </div>
-                <div class="col-3 mb-3">
-                  <div class="p-3 bg-white">
-                    <div>
-                      <h4 class="m-0 text-4 font-weight-bold">
-                        Total Active Drivers
-                      </h4>
-                      <h3 class="mt-1 mb-0 font-weight-bold">
-                        {{ driversCount.active }}
-                      </h3>
+                </form>
+            </header>
+            <div class="col-lg-12">
+                <div class="m-1 text-dark">
+                    <div class="form-group row pt-3">
+                        <div class="col-3 mb-3">
+                            <div class="p-3 bg-white">
+                                <div>
+                                    <h4 class="m-0 text-4 font-weight-bold">Total Drivers</h4>
+                                    <h3 class="mt-1 mb-0 font-weight-bold">
+                                        {{ driversCount.total }}
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3 mb-3">
+                            <div class="p-3 bg-white">
+                                <div>
+                                    <h4 class="m-0 text-4 font-weight-bold">
+                                        Total Active Drivers
+                                    </h4>
+                                    <h3 class="mt-1 mb-0 font-weight-bold">
+                                        {{ driversCount.active }}
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3 mb-3">
+                            <div class="p-3 bg-white">
+                                <div>
+                                    <h4 class="m-0 text-4 font-weight-bold">
+                                        Total Inactive Drivers
+                                    </h4>
+                                    <h3 class="mt-1 mb-0 font-weight-bold">
+                                        {{ driversCount.inactive }}
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-                <div class="col-3 mb-3">
-                  <div class="p-3 bg-white">
-                    <div>
-                      <h4 class="m-0 text-4 font-weight-bold">
-                        Total Inactive Drivers
-                      </h4>
-                      <h3 class="mt-1 mb-0 font-weight-bold">
-                        {{ driversCount.inactive }}
-                      </h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
-      
-      
-      <section class="m-2">
+            <section class="m-2">
                 <div class="row mb-3">
                     <div class="col-lg-12">
                         <div class="bg-white p-3 text-dark">
@@ -95,8 +90,6 @@
                                                 <div>
                                                     <h3 class="m-0"> Driver Summary </h3>
                                                 </div>
-
-
                                                 <div class="text-right">
                                                     <button type="button" pButton (click)="refreshData()"
                                                         pTooltip="Refresh" class="p-button-outlined mr-2"
@@ -119,7 +112,6 @@
                                         <!-- Header template of DataTable -->
                                         <ng-template pTemplate="header" let-columns>
                                             <tr>
-
                                                 <th *ngFor="let dataColumns of columns"
                                                     [pSortableColumn]="dataColumns.field" pResizableColumn
                                                     style="width:10%">
@@ -151,12 +143,9 @@
                                                                         </p-multiSelect>
                                                                     </ng-template>
 
-
                                                                 </p-columnFilter>
                                                             </div>
                                                         </span>
-
-
 
                                                         <span *ngSwitchDefault>
                                                             <div class="flex justify-content-center align-items-center"
@@ -171,27 +160,17 @@
                                                             </div>
                                                         </span>
                                                     </div>
-
-
-
-
                                                 </th>
-                                               
-
                                             </tr>
-
                                         </ng-template>
 
                                         <!-- Body Template of Data Table -->
                                         <ng-template pTemplate="body" let-driver let-columns="columns"
                                             let-rowIndex="rowIndex">
-
                                             <tr>
-
                                                 <td *ngFor="let dataColumns of columns"
-                                                    style="width:10%; height:40px; cursor: pointer;" 
-                                                    >
-                                                    <div [ngSwitch]="dataColumns.field" >
+                                                    style="width:10%; height:40px; cursor: pointer;">
+                                                    <div [ngSwitch]="dataColumns.field">
                                                         <span *ngSwitchCase="'firstName'">
                                                             <b> {{get(driver,dataColumns.field) | titlecase}}</b>
                                                         </span>
@@ -201,7 +180,8 @@
                                                         <span *ngSwitchCase="'driverType'">
                                                             {{driver[dataColumns.field] | titlecase}}
                                                         </span>
-                                                        <span *ngSwitchCase="'driverStatus'" class="badge badge-dark p-1 text-uppercase">
+                                                        <span *ngSwitchCase="'driverStatus'"
+                                                            class="badge badge-dark p-1 text-uppercase">
                                                             {{driver[dataColumns.field] | titlecase}}
                                                         </span>
                                                         <span *ngSwitchCase="'companyName'">
@@ -212,7 +192,6 @@
                                                     </div>
 
                                                 </td>
-                                                 
                                             </tr>
                                         </ng-template>
                                         <!-- Empty Template -->
@@ -231,27 +210,20 @@
                                                 <button type="button " (click)="onScroll($event) "
                                                     class="btn btn-success btn-sm text-light ">Load
                                                     More..</button>
-
                                                 <br /><br>
                                             </div>
                                             <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey ==='end'">
                                                 Total Records: {{drivers.length}}</div>
                                         </ng-template>
 
-
                                     </p-table>
-
-
                                 </div>
 
                             </div>
                         </div>
-
                     </div>
                 </div>
             </section>
-      
-     
-    </section>
-  </div>
+        </section>
+    </div>
 </section>
