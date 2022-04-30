@@ -10,14 +10,13 @@
                 <form class="formgrid grid">
                     <div class="row">
                         <div class="col" style="margin-left: 20px;margin-top: 5px;">
-
-                            <p-autoComplete #autoComp id="autoCmpSugDriver" [options]="driverOptions" class="mr-2"
-                                placeholder="Search driver by name"  [suggestions]="suggestedDrivers" [(ngModel)]="driverName" [forceSelection]="true"
-                                [minLength]="2" emptyMessage="No data found." [editable]="true"
-                                (onSelect)="setDriver($event.driverID)" field="fullName"
-                                (completeMethod)="getSuggestions($event.query)">
-                            </p-autoComplete>
-                            <p-dropdown id="drpDvrType" [style]="{minWidth: '200px'}" [options]="statusOptions"
+                            
+                             <p-autoComplete #autoComp id="autoCmpSugDriver" [placeholder]="'Search driver by name'"
+                                class="mr-2" [forceSelection]="true" emptyMessage="No data found."
+                                [(ngModel)]="driverName" [suggestions]="suggestedDrivers" [minLength]="2"
+                                (completeMethod)="getSuggestions($event.query)" (onSelect)="setDriver($event.driverID)"
+                                field="fullName"> </p-autoComplete>
+                            <p-dropdown id="drpDvrType" [style]="{minWidth: '200px'}" [options]="driverOptions"
                                 class="mr-2" placeholder="Driver Status" [(ngModel)]="driverStatus" optionLabel="name"
                                 optionValue="value">
                             </p-dropdown>
