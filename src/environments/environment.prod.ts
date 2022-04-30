@@ -11,6 +11,8 @@ export const environment = {
   isUserRoles:true,
 
   isReportsEnabled: true,
+  isAddressBook:true,
+  isOrderPriceEnabled:true,
 
   BaseUrl: 'https://service.cloud.fleethawks.com/api/v1/',
 

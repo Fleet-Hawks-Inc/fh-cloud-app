@@ -401,7 +401,7 @@ export class NewAddressBookComponent implements OnInit {
     if (value != '') {
       value = value.toLowerCase()
       this.apiService
-        .getData(`contacts/suggestion/${value}`)
+        .getData(`address-book/suggestion/${value}`)
         .subscribe((result) => {
           this.suggestions = _.uniqBy(result.Items, 'cName');
         });
@@ -413,7 +413,7 @@ export class NewAddressBookComponent implements OnInit {
     if (value != '') {
       value = value.toLowerCase()
       this.apiService
-        .getData(`contacts/similar/cName/suggestion/${value}`)
+        .getData(`address-book/similar/cName/suggestion/${value}`)
         .subscribe((result) => {
           this.actualSuggestions = _.uniqBy(result.Items, 'cName');
           this.similarSuggestions = _.uniqBy(result.Items, 'cName');
@@ -1216,7 +1216,7 @@ export class NewAddressBookComponent implements OnInit {
       // create form data instance
       const formData = new FormData();
       formData.append('data', JSON.stringify(this.unitData));
-      this.apiService.postData('contacts', formData, true).
+      this.apiService.postData('address-book', formData, true).
         subscribe({
           complete: () => { },
           error: (err: any) => {
@@ -1297,7 +1297,7 @@ export class NewAddressBookComponent implements OnInit {
   deactivate(id) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-        .deleteData(`contacts/delete/CONT/${id}`)
+        .deleteData(`address-book/delete/CONT/${id}`)
         .subscribe(async (result: any) => {
           this.lastKey = '';
           this.dataMessage = Constants.FETCHING_DATA;
@@ -1405,7 +1405,7 @@ export class NewAddressBookComponent implements OnInit {
         }
       }
       formData.append('data', JSON.stringify(this.unitData));
-      this.apiService.putData('contacts', formData, true).subscribe({
+      this.apiService.putData('address-book', formData, true).subscribe({
         complete: () => { },
         error: (err: any) => {
           this.unitDisabled = false;
@@ -1484,7 +1484,7 @@ export class NewAddressBookComponent implements OnInit {
   fetchUnits() {
     this.dataMessage = Constants.FETCHING_DATA;
     if (this.lastKey !== 'end') {
-      this.apiService.getData(`contacts/fetch/records?lastKey=${this.lastKey}&updatedKey=${this.updatedKey}&companyName=` + this.filterVal.cName).subscribe(res => {
+      this.apiService.getData(`address-book/fetch/records?lastKey=${this.lastKey}&updatedKey=${this.updatedKey}&companyName=` + this.filterVal.cName).subscribe(res => {
         if (res.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
@@ -1556,7 +1556,7 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   newEditUnit(item: any) {
-    this.apiService.getData(`contacts/detail/${item.contactID}`).subscribe(res => {
+    this.apiService.getData(`address-book/detail/${item.contactID}`).subscribe(res => {
       res = res.Items[0];
 
       this.unitData.eTypes = res.eTypes;

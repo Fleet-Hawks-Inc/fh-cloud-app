@@ -93,7 +93,7 @@
         </p-sidebar>
 
 
-        <a href="javascript:;" (click)="openModal('list')" class="modal-with-form address-book-icon" title="Address Book">
+        <a *ngIf="isAddressBook" href="javascript:;" (click)="openModal('list')" class="modal-with-form address-book-icon" title="Address Book">
             <i class="far fa-address-book text-dark" style="font-size: 18px"></i>
         </a>
 

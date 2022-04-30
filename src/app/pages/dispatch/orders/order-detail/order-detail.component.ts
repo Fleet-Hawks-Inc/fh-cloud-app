@@ -346,6 +346,7 @@ export class OrderDetailComponent implements OnInit {
   printBtnType: string;
   invDate: any = '';
   invBtnDisableStat = true;
+  isOrderPriceEnabled=environment.isOrderPriceEnabled
 
   constructor(
     private apiService: ApiService,
@@ -363,7 +364,9 @@ export class OrderDetailComponent implements OnInit {
 
   async ngOnInit() {
 
-
+    this.isOrderPriceEnabled = localStorage.getItem("isOrderPriceEnabled")
+    ? JSON.parse(localStorage.getItem("isOrderPriceEnabled"))
+    : environment.isOrderPriceEnabled;
     this.orderID = this.route.snapshot.params["orderID"];
 
     await this.fetchOrder();
