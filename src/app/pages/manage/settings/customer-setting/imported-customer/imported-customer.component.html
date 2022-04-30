@@ -1,10 +1,10 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pl-1 pr-0 pt-0">
-            <header class="page-header pr19 pl11">
+            <header class="page-header pr27 pl18">
                 <div class="row">
-                    <div class=" col-lg-12 font-weight-bold text-4 text-dark">
-                        <h2 class="font-weight-bold pl-0">Import Assets</h2>
+                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                        <h2 class="font-weight-bold pl-0">Import Customers</h2>
                     </div>
                 </div>
             </header>
@@ -14,14 +14,14 @@
                         <div class="bg-white p-3 text-dark">
                             <div class="form-group row pt-3">
                                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
-                                    <p-table #dt class="text-capitalize" [loading]="!loaded" [columns]="selectedColumns"
-                                        [value]="importAssets">
+                                    <p-table #dt class="text-capitalize" [loading]="!loaded" [value]="importVehicles"
+                                        [columns]="selectedColumns">
                                         <!-- Caption template of data table -->
                                         <ng-template pTemplate="caption">
 
                                             <div class="p-d-flex d-flex justify-content-between align-items-center">
                                                 <div>
-                                                    <h3 class="m-0"> Import Assets </h3>
+                                                    <h3 class="m-0"> Import Customers </h3>
                                                 </div>
 
 
@@ -29,7 +29,7 @@
                                                     <button type="button" pButton (click)="refreshData()"
                                                         pTooltip="Refresh" class="p-button-outlined mr-2"
                                                         icon="fas fa-sync"></button>
-                                                    <button type="button" pButton pTooltip="Import Assets"
+                                                    <button type="button" pButton pTooltip="Import Vehicles"
                                                         (click)="openModal()" class="p-button-outlined mr-2"
                                                         icon="pi pi-plus"></button>
                                                     <button pButton pRipple pTooltip="Clear Filter"
@@ -55,19 +55,19 @@
                                                 <th pSortableColumn="module">Module <p-sortIcon field="module">
                                                     </p-sortIcon>
                                                 </th>
-                                                <th pSortableColumn="status">Status <p-sortIcon field="status">
+                                                <th pSortableColumn="fileStatus">Status <p-sortIcon field="fileStatus">
                                                     </p-sortIcon>
                                                 </th>
 
 
                                             </tr>
                                         </ng-template>
-                                        <ng-template pTemplate="body" let-asset>
+                                        <ng-template pTemplate="body" let-vehicle>
                                             <tr>
-                                                <td>{{asset.displayName}}</td>
-                                                <td>{{asset.timeCreated | date : 'dd/MM/yyyy hh:mm:ss a'}}</td>
-                                                <td>{{asset.module}}</td>
-                                                <td><span class="badge badge-dark">{{asset.fileStatus}}</span></td>
+                                                <td>{{vehicle.displayName}}</td>
+                                                <td>{{vehicle.timeCreated | date : 'dd/MM/yyyy hh:mm:ss a '}}</td>
+                                                <td>{{vehicle.module}}</td>
+                                                <td><span class="badge badge-dark">{{vehicle.fileStatus}}</span></td>
                                             </tr>
                                         </ng-template>
                                         <!-- Empty Template -->
@@ -82,32 +82,29 @@
                                         <ng-template pTemplate="summary" let-columns>
 
                                             <div class="col-lg-12 mt-3 text-center">Total Records:
-                                                {{importAssets.length}}</div>
+                                                {{importVehicles.length}}</div>
                                         </ng-template>
                                     </p-table>
-
-
                                 </div>
-
                             </div>
                         </div>
 
                     </div>
                 </div>
             </section>
-
-
         </section>
+
     </div>
 </section>
 
-<p-dialog header="Import Asset" (onHide)="cancel()" [(visible)]="display" [style]="{width: '40vw'}" position="top">
+
+<p-dialog header="Import Customers" (onHide)="cancel()" [(visible)]="display" [style]="{width: '40vw'}" position="top">
     <div class="row">
         <div class="col-lg-12">
-            <span>To successfully import asset data please make sure your file conforms following:</span>
-            <ul style="margin:0px">
+            <span>To successfully import customer data please make sure your file conforms following:​</span>
+            ​<ul style="margin:0px">
                 <li> File must have all the headers. <strong><a class="text-success"
-                            href='assets/asset_import_template.csv'>Click
+                            href='assets/customer_import_template.csv'>Click
                             Here</a></strong> to download the template file.</li>
                 <li> File must be comma seperated.</li>
                 <li> File must have all the predefined header with valid data.</li>
@@ -118,8 +115,8 @@
                     <label class="control-label font-weight-bold label mb text-3 text-dark">Choose File
                         <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                     </label>
-                    <input class="form-control choosefileLH" #myInput (change)="selectDoc($event)"
-                        (change)="validateCSV($event)" accept=".csv" id="uploadedDocs" type="file">
+                    <input class="form-control choosefileLH" (change)="chooseFile($event)"
+                        (change)="validateCSV($event)" #myInput accept=".csv" id="importDocs" type="file">
                     <div *ngIf="inValidMessages.length > 0">
                         <br><span><b>Below are the errors in the uploaded file. Please rectify them and upload
                                 the file again.</b></span>
@@ -128,13 +125,11 @@
                         </ul>
                     </div>
                 </div>
-
                 <div class="form-group col-lg-1 mt-5 mb-3">
                     <i class="pi pi-refresh mt-4 pt-2" (click)="cancel()" style="font-size: 1.5rem"></i>
 
                 </div>
             </div>
-
         </div>
     </div>
     <ng-template pTemplate="footer">

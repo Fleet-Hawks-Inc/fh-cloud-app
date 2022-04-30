@@ -15,7 +15,6 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule } from "@angular/forms";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
-import { CustomerSettingComponent } from "./customer-setting/customer-setting.component";
 import { DoverviewComponent } from "./settings-overview/doverview/doverview.component";
 import { ImportDriversComponent } from "./import-drivers/import-drivers.component";
 
@@ -31,7 +30,6 @@ import { AutoCompleteModule } from "primeng/autocomplete";
 import { DropdownModule } from "primeng/dropdown";
 import { AssetsSettingComponent } from "./assets-setting/assets-setting.component";
 import { DialogModule } from 'primeng/dialog';
-import { DeletedCustomerComponent } from './customer-setting/deleted-customer/deleted-customer.component';
 
 const routes: Routes = [
   { path: "overview", component: SettingsOverviewComponent },
@@ -98,8 +96,11 @@ const routes: Routes = [
   },
   {
     path: "customer",
-    component: CustomerSettingComponent,
-    data: { title: "Deleted Customer" },
+    loadChildren: () =>
+      import("./customer-setting/customer-setting.modules").then(
+        (m) => m.CustomerSettingsModules
+      ),
+    data: { title: "Assets Settings" },
   },
   {
     path: "assets",
@@ -123,12 +124,10 @@ const routes: Routes = [
     DispatchSettingComponent,
     ComplianceSettingComponent,
     SafetySettingComponent,
-    CustomerSettingComponent,
     DoverviewComponent,
     ImportDriversComponent,
     VehicleSettingsComponent,
     AssetsSettingComponent,
-    DeletedCustomerComponent,
     // DeletedAssetsComponent,
     // ImportedAssetsComponent,
   ],
