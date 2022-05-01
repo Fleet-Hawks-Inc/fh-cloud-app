@@ -87,6 +87,7 @@ const routes: Routes = [
     path: "add",
     component: AddFuelEntryComponent,
     data: { title: "Add Fuel" },
+    canDeactivate: [unsavedChangesGuard],
   },
   {
     path: "list/:sessionID",
@@ -97,6 +98,7 @@ const routes: Routes = [
     path: "edit/:fuelID",
     component: AddFuelEntryComponent,
     data: { title: "Edit Fuel" },
+    canDeactivate: [unsavedChangesGuard],
   },
   {
     path: "detail/:fuelID",
