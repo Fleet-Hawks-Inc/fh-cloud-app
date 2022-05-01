@@ -573,7 +573,6 @@ export class AddSettlementComponent implements OnInit {
                 element.emptyMiles += Number(plan.miles);
               }
             }
-
             element.pickupLocation += `${pickCount}) <strong>${plan.type
               }</strong>: ${plan.location} <br>
                     <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${plan.type === "Pickup" ? "Pickup" : "Drop"
@@ -602,7 +601,6 @@ export class AddSettlementComponent implements OnInit {
             if (plan.carrierID && !element.entityCarrier.includes(plan.carrierID)) {
               element.entityCarrier.push(plan.carrierID);
             }
-
             for (let f = 0; f < plan.assetID.length; f++) {
               const elemAsset = plan.assetID[f];
               if (!element.entityAsset.includes(elemAsset)) {
@@ -678,7 +676,6 @@ export class AddSettlementComponent implements OnInit {
           }
         }
       }
-
       // calculate whole trip amount
       if (element.paymentSelected[0] && element.paymentSelected[0].pType) {
         if (element.paymentSelected[0].pType === 'ppm') {
@@ -703,8 +700,8 @@ export class AddSettlementComponent implements OnInit {
           element.paymentselected = [this.ppd]
         }
       }
-      element.amount = Number(element.amount.toFixed(2))
-
+      element.amount = Number(element.amount)
+      element.amount = element.amount.toFixed(2)
       if (element.split && element.split.length > 0) {
         element.split.map((main) => {
           let arrr = {
@@ -850,6 +847,7 @@ export class AddSettlementComponent implements OnInit {
         });
       }
     }
+
   }
 
   setTripLoc(trp) {
@@ -2497,7 +2495,7 @@ export class AddSettlementComponent implements OnInit {
           this.submitDisabled = false;
           this.response = res;
           this.toaster.success("Settlement updated successfully.");
-          // this.cancel();
+          this.cancel();
         },
       });
   }
