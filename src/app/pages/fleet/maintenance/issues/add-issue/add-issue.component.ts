@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ApiService } from "../../../../../services";
 import { Router, ActivatedRoute } from "@angular/router";
 import {
@@ -7,14 +7,25 @@ import {
   NgbDateStruct,
 } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
-import { from } from "rxjs";
-import { map } from "rxjs/operators";
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+  takeUntil
+  } from "rxjs/operators";
+import { from, Subject, throwError } from 'rxjs';
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { ModalService } from "../../../../../services/modal.service";
+import { NgForm } from "@angular/forms";
 import { NgxSpinnerService } from "ngx-spinner";
 import { Location } from "@angular/common";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 declare var $: any;
 import * as moment from "moment";
-import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 
 
 @Component({
@@ -23,6 +34,8 @@ import { RouteManagementServiceService } from 'src/app/services/route-management
   styleUrls: ["./add-issue.component.css"],
 })
 export class AddIssueComponent implements OnInit {
+  @ViewChild("issueF") issueF: NgForm;
+  takeUntil$ = new Subject();
   Asseturl = this.apiService.AssetUrl;
   title: string;
   fileName = "";
@@ -33,6 +46,7 @@ export class AddIssueComponent implements OnInit {
    */
 clone = false;
   issueName = "";
+  isSubmitted = false;
   unitID = null;
   unitType = "vehicle";
   currentStatus = "OPEN";
@@ -85,12 +99,49 @@ clone = false;
     private location: Location,
     private domSanitizer: DomSanitizer,
     private ngbCalendar: NgbCalendar,
+    private modalService: NgbModal,
+     private modalServiceOwn: ModalService,
     private dateAdapter: NgbDateAdapter<string>,
     private routerMgmtService: RouteManagementServiceService
   ) {
+     this.modalServiceOwn.triggerRedirect.next(false);
+    this.router.events.pipe(takeUntil(this.takeUntil$)).subscribe((v: any) => {
+      if (v.url !== 'undefined' || v.url !== '') {
+        this.modalServiceOwn.setUrlToNavigate(v.url);
+      }
+    });
+    this.modalServiceOwn.triggerRedirect$
+      .pipe(takeUntil(this.takeUntil$))
+      .subscribe((v) => {
+        if (v) {
+          this.router.navigateByUrl(
+            this.modalServiceOwn.urlToRedirect.getValue()
+          );
+        }
+      });
+   
     this.selectedFileNames = new Map<any, any>();
     this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
   }
+  
+   canLeave(): boolean {
+     if (this.issueF.dirty && !this.isSubmitted) {
+       if (!this.modalService.hasOpenModals()) {
+         let ngbModalOptions: NgbModalOptions = {
+           backdrop: "static",
+           keyboard: false,
+           size: "sm",
+         };
+         this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
+       }
+       return false;
+     }
+     this.modalServiceOwn.triggerRedirect.next(true);
+     this.takeUntil$.next();
+    this.takeUntil$.complete();
+    return true;
+  }
+  
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -226,6 +277,10 @@ clone = false;
       next: (res) => {
         this.response = res;
         this.submitDisabled = false;
+        this.modalServiceOwn.triggerRedirect.next(true);
+        this.takeUntil$.next();
+        this.takeUntil$.complete();
+        this.isSubmitted = true;
         this.toaster.success("Issue Added successfully");
         this.router.navigateByUrl("/fleet/maintenance/issues/list");
         this.router.navigateByUrl('/fleet/maintenance/issues/list/${this.routerMgmtService.maintainanceUpdated()}');
@@ -399,6 +454,10 @@ clone = false;
       next: (res) => {
         this.response = res;
         this.submitDisabled = false;
+         this.modalServiceOwn.triggerRedirect.next(true);
+          this.takeUntil$.next();
+          this.takeUntil$.complete();
+          this.isSubmitted = true;
         this.toaster.success("Issue Updated Successfully");
         //this.router.navigateByUrl("/fleet/maintenance/issues/list");
         this.router.navigateByUrl('/fleet/maintenance/issues/list/${this.routerMgmtService.maintainanceUpdated()}');

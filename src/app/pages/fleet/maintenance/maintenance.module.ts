@@ -35,6 +35,7 @@ import { MenuModule } from 'primeng/menu';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
+import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
 
 
 
@@ -166,7 +167,8 @@ const routes: Routes = [
       },
       {
         path: "add",
-        component: AddIssueComponent,
+        component: AddIssueComponent, 
+        canDeactivate: [unsavedChangesGuard],
         data: { title: "Add Issues" },
       },
       {
@@ -176,7 +178,8 @@ const routes: Routes = [
       },
       {
         path: "edit/:issueID",
-        component: AddIssueComponent,
+        component: AddIssueComponent, 
+        canDeactivate: [unsavedChangesGuard],
         data: { title: "Edit Issues" },
       },
     ],
@@ -207,7 +210,7 @@ const routes: Routes = [
     DropdownModule
   ],
   exports: [...COMPONENTS],
-  providers: [
+  providers: [unsavedChangesGuard,
     { provide: NgbDateAdapter, useClass: CustomAdapter },
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
