@@ -410,12 +410,12 @@ export class AddInventoryComponent implements OnInit, OnDestroy
           this.time = '';
           this.notes = '';
           this.warrantyTime = '',
-            this.warrantyUnit = ''
-          this.toastr.success('Inventory Added Successfully');
-          this.isSubmitted = true;
+          this.warrantyUnit = ''
           this.modalServiceOwn.triggerRedirect.next(true);
           this.takeUntil$.next();
           this.takeUntil$.complete();
+          this.toastr.success('Inventory Added Successfully');
+          this.isSubmitted = true;
           this.router.navigateByUrl('/fleet/inventory/list');
           if (this.requiredItem) {
             this.deleteRequiredItem(this.requiredItem);
@@ -517,6 +517,9 @@ export class AddInventoryComponent implements OnInit, OnDestroy
 
           this.response = res;
            this.isSubmitted = true;
+          this.modalServiceOwn.triggerRedirect.next(true);
+          this.takeUntil$.next();
+          this.takeUntil$.complete();
           this.toastr.success('Inventory Updated Successfully');
           this.router.navigateByUrl('/fleet/inventory/list');
         }
@@ -575,6 +578,7 @@ export class AddInventoryComponent implements OnInit, OnDestroy
         this.address = '';
         this.fetchWarehouses();
         $('#warehouseModal').modal('hide');
+        
         this.toastr.success('Warehouse Added successfully');
       },
     });
