@@ -160,7 +160,7 @@
                                                             <span>{{ usersList[issue.assignedTo] | titlecase}}</span>
                                                         </span>
                                                            <span *ngSwitchCase="'currentStatus'">
-                                                              <span>{{issue.currentStatus | uppercase}}</span>
+                                                              <span class="badge badge-dark p-1">{{issue.currentStatus | uppercase}}</span>
                                                             </span>
                                                         <span *ngSwitchDefault> {{get(issue,dataColumns.field)}}</span>
                                                     </div>
