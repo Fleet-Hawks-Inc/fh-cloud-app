@@ -117,11 +117,13 @@ const routes: Routes = [
       {
         path: "add-service",
         component: AddServiceComponent,
+        canDeactivate: [unsavedChangesGuard],
         data: { title: "Add Service Log" },
       },
       {
         path: "edit/:logID",
         component: AddServiceComponent,
+        canDeactivate: [unsavedChangesGuard],
         data: { title: "Edit Service Log" },
       },
 
@@ -138,6 +140,7 @@ const routes: Routes = [
       {
         path: "add",
         component: AddServiceProgramComponent,
+        canDeactivate: [unsavedChangesGuard],
         data: { title: "Add Service Program" },
       },
       {
@@ -148,6 +151,7 @@ const routes: Routes = [
       {
         path: "edit/:programID",
         component: AddServiceProgramComponent,
+        canDeactivate: [unsavedChangesGuard],
         data: { title: "Edit Service Program" },
       },
       {
