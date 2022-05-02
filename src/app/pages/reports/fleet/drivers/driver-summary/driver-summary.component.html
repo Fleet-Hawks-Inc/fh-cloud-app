@@ -97,7 +97,7 @@
                                                         (click)="clear(dt)"></button>
 
                                                     <button type="button" pButton pRipple class="p-button-outlined mr-2"
-                                                        icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()"
+                                                        icon="fas fa-regular fa-file-excel" (click)="requiredCSV()"
                                                         pTooltip="Excel"></button>
 
                                                     <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns"
@@ -169,14 +169,23 @@
                                                 <td *ngFor="let dataColumns of columns"
                                                     style="width:10%; height:40px; cursor: pointer;">
                                                     <div [ngSwitch]="dataColumns.field">
-                                                        <span *ngSwitchCase="'firstName'">
-                                                            <b> {{get(driver,dataColumns.field) | titlecase}}</b>
-                                                        </span>
-                                                        <span *ngSwitchCase="'lastName'">
-                                                            {{get(driver,dataColumns.field) | titlecase}}
-                                                        </span>
+                                                      
+                                                      <span class="font-weight-bold line-height-lg text-capitalize" *ngSwitchCase="'firstName'" >
+                                                         {{ driver.firstName }}
+                                                         {{ driver.middleName }}
+                                                        {{ driver.lastName }}
+                                                      </span>
                                                         <span *ngSwitchCase="'driverType'">
                                                             {{driver[dataColumns.field] | titlecase}}
+                                                        </span>
+                                                         <span *ngSwitchCase="'startDate'">
+                                                            {{driver[dataColumns.field] ? driver[dataColumns.field] : "-"}}
+                                                        </span>
+                                                         <span *ngSwitchCase="'licenceExpiry'">
+                                                            {{driver[dataColumns.field] ? driver[dataColumns.field] : "-"}}
+                                                        </span>
+                                                        <span *ngSwitchCase="'licStateName'">
+                                                            {{driver[dataColumns.field] ? driver[dataColumns.field] : "-"}}
                                                         </span>
                                                         <span *ngSwitchCase="'driverStatus'"
                                                             class="badge badge-dark p-1 text-uppercase">
