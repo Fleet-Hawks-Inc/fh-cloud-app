@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { ApiService } from "../../../../services/api.service";
 import { NgxSpinnerService } from "ngx-spinner";
-import { ToastrService } from "ngx-toastr";
+import { Overlay, ToastrService } from "ngx-toastr";
 import Constants from "../../../fleet/constants";
 import { environment } from "src/environments/environment";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
@@ -11,17 +11,22 @@ import { ListService } from "src/app/services/list.service";
 import * as _ from "lodash";
 import { DashboardUtilityService } from "src/app/services/dashboard-utility.service";
 import { Table } from 'primeng/table';
+import { trigger,state,style,transition,animate } from '@angular/animations';
 import { NgSelectComponent } from "@ng-select/ng-select";
+import { OverlayPanel } from "primeng/overlaypanel";
+import { Router } from "@angular/router";
 declare var $: any;
 @Component({
   selector: "app-orders-list",
   templateUrl: "./orders-list.component.html",
   styleUrls: ["./orders-list.component.css"],
+  
 })
 export class OrdersListComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
   @ViewChild('dt') table: Table;
+  @ViewChild('op') overlaypanel: OverlayPanel;
   @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   @ViewChild("confirmEmailModal", { static: true })
   confirmEmailModal: TemplateRef<any>;
@@ -238,7 +243,8 @@ export class OrdersListComponent implements OnInit {
     private modalService: NgbModal,
     private spinner: NgxSpinnerService,
     private listService: ListService,
-    private dashboardUtilityService: DashboardUtilityService
+    private dashboardUtilityService: DashboardUtilityService,
+    private router:Router
   ) { }
 
   async ngOnInit() {
@@ -791,4 +797,18 @@ export class OrdersListComponent implements OnInit {
     }
     this.loaded = false;
   }
-}
+  closePanel(op:OverlayPanel,) {
+    console.log('op--',op)
+    // console.log('url--',url)
+    // alert();
+
+    op.hide();
+    this.router.navigate(['/dispatch','trips','add-trip'])
+  }
+
+  openPanel(op:OverlayPanel, event:any) {
+    console.log('op--111',op)
+    // alert();
+    op.show(event);
+  }
+  }
