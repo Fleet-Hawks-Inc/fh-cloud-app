@@ -284,7 +284,7 @@
                                                         routerLink="/fleet/inventory/edit/{{exItems.itemID}}"
                                                         type="button" icon="fas fa-user-pen"
                                                         class="p-button-rounded p-button-text"></button>
-                                                    <button id="btnDelete" (click)="deleteIssue(exItems.issueID, exItems.issueName)" pButton
+                                                    <button id="btnDelete" (click)="deleteItem(exItems)" pButton
                                                         type="button" icon="fas fa-user-slash"
                                                         class="p-button-rounded p-button-danger p-button-text"></button>
                                                 </td>
@@ -407,7 +407,7 @@
                                                         routerLink="/fleet/inventory/add/required/{{reqItems.itemID}}"
                                                         type="button" icon="fas fa-user-pen"
                                                         class="p-button-rounded p-button-text"></button>
-                                                    <button id="btnDelete" (click)="deleteIssue(reqItems.issueID, reqItems.issueName)" pButton
+                                                    <button id="btnDelete" (click)="deleteRequiredItem(reqItems)" pButton
                                                         type="button" icon="fas fa-user-slash"
                                                         class="p-button-rounded p-button-danger p-button-text"></button>
                                                 </td>
