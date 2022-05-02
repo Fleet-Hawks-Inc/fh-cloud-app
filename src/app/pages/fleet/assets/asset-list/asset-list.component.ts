@@ -286,6 +286,9 @@ export class AssetListComponent implements OnInit {
       else {
         this.lastEvaluatedKey = 'end'
       }
+      for (var i = 0; i < result.data.length; i++) {
+        result.data[i].assetType = result.data[i].assetType.replace('_',' ');
+      }
       this.allData = this.allData.concat(result.data)
       this.loaded = true;
       this.isSearch = false;

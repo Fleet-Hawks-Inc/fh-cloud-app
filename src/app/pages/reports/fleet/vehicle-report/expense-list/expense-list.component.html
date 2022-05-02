@@ -32,32 +32,20 @@
                             </ng-select>
                         </div>
 
-                       <div class="col-md-3 col-lg-3 pl-2">
-                        <button
-                          type="submit"
-                          [disabled]="disableSearch"
-                          (click)="searchFilter()"
-                          class="btn btn-sm btn-success mr-2"
-                        >
-                          Search
-                        </button>
-                        <button
-                          type="button"
-                          [disabled]="disableSearch"
-                          (click)="resetFilter()"
-                          class="btn btn-sm btn-success"
-                        >
-                          Reset
-                        </button>
-                      </div>
+                        <div class="col-md-3 col-lg-3 pl-2">
+                            <button type="submit" [disabled]="disableSearch" (click)="searchFilter()"
+                                class="btn btn-sm btn-success mr-2">
+                                Search
+                            </button>
+                            <button type="button" [disabled]="disableSearch" (click)="resetFilter()"
+                                class="btn btn-sm btn-success">
+                                Reset
+                            </button>
+                        </div>
 
-                      <div class="col-md-5 col-lg-5 text-right pr-1">
-                        <a
-                          routerLink="/reports/fleet/vehicles/overview"
-                          class="btn btn-sm btn-success"
-                          >Back</a
-                        >
-                      </div>
+                        <div class="col-md-5 col-lg-5 text-right pr-1">
+                            <a routerLink="/reports/fleet/vehicles/overview" class="btn btn-sm btn-success">Back</a>
+                        </div>
 
                     </div>
                 </form>
@@ -109,7 +97,7 @@
                                                         </td>
 
                                                         <td class="cursorpoint" [routerLink]="vehicle.url">{{
-                                                            vehicle.lifeCycle.startDate | date:"yyyy/MM/dd" }}</td>
+                                                            vehicle.startDate | date:"yyyy/MM/dd" }}</td>
                                                         <td *ngIf="vehicleManufacturersList[vehicle.manufacturerID]  "
                                                             class="cursorpoint" [routerLink]="vehicle.url">
                                                             {{vehicleManufacturersList[vehicle.manufacturerID] |
