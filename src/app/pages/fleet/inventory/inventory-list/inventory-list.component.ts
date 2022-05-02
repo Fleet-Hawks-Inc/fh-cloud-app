@@ -109,34 +109,36 @@ export class InventoryListComponent implements OnInit {
     futureDatesLimit = { year: this.date1.getFullYear() + 30, month: 12, day: 31 };
     employeeOptions: any[];
     _selectedColumns: any[];
+    _reqSelectedColumns: any[];
     get = _.get;
 
 
    
         // columns of data table
     dataColumns = [
-        { field: 'firstName', header: 'First Name', type: "text" },
-        { field: 'lastName', header: 'Last Name', type: "text" },
-        { field: 'email', header: 'Email', type: "text" },
-        { field: 'phone', header: 'Phone', type: "text" },
-        { field: 'userName', header: 'Username', type: "text" },
-        { field: 'driverType', header: 'Type', type: "text" },
-        { field: 'companyName', header: 'Company', type: "text" },
-        { field: 'startDate', header: 'Start Date', type: "text" },
-        { field: 'CDL_Number', header: 'CDL#', type: "text" },
-        { field: 'licenceExpiry', header: 'CDL Expiry', type: "text" },
-        { field: 'isImport', header: 'Added By', type: "text" },
-        { field: "driverStatus", header: 'Status', type: 'text' },
-
+        { field: 'partNumber', header: 'Part#', type: "text" },
+        { field: 'itemName', header: 'Item Name', type: "text" },
+        { field: 'category', header: 'Category', type: "text" },
+        { field: 'vendor', header: 'Vendor', type: "text" },
+        { field: 'unitcost', header: 'Unit Cost', type: "text" },
+        { field: 'tax', header: 'Tax', type: "text" },
+        { field: 'quantity', header: 'Quantity', type: "text" },
+        { field: 'totalCost', header: 'Total Cost', type: "text" },
+        { field: 'warehouseDetails', header: 'Warehouse Details', type: "text" },
     ];
-  
+    reqDataColumns = [
+        { field: 'partNumber', header: 'Part#', type: "text" },
+        { field: 'reqItemName', header: 'Item Name', type: "text" },
+        { field: 'vendor', header: 'Vendor', type: "text" },
+        { field: 'quantity', header: 'Quantity', type: "text" },
+    ];
     constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private listService: ListService) { }
 
     ngOnInit() {
         this.setToggleOptions();
-        this.setEmployeeOptions();
         this.fetchWarehouses();
         this.fetchAllItemsList();
+        this.setreqToggleOptions();
         this.initDataTable();
         this.initDataTableRequired();
         this.fetchVendors();
@@ -144,23 +146,39 @@ export class InventoryListComponent implements OnInit {
         this.disableButton();
         this.allVendors = this.listService.vendorList;
     }
-    
-    
+        
+        
+        //Existing Inventory
         setToggleOptions() {
         this.selectedColumns = this.dataColumns;
     }
-    setEmployeeOptions() {
-        this.employeeOptions = [{ "value": "contractor", "name": "Contractor" }, { "name": "Employee", "value": "employee" }, { "name": "All", "value": "null" }];
-    }
-    @Input() get selectedColumns(): any[] {
+        @Input() get selectedColumns(): any[] {
         return this._selectedColumns;
     }
-
+    
     set selectedColumns(val: any[]) {
         //restore original order
         this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
-
     }
+    
+        //Required Inventory
+     setreqToggleOptions() {
+        this.reqSelectedColumns = this.reqDataColumns;
+    }
+        @Input() get reqSelectedColumns(): any[] {
+        return this._reqSelectedColumns;
+    }
+    
+    set reqSelectedColumns(val: any[]) {
+        //restore original order
+        this._reqSelectedColumns = this.reqDataColumns.filter(col => val.includes(col));
+    }
+    
+    
+    
+    
+
+
 
     getItemSuggestions = _.debounce(function (value, type) {
         if (value != '') {
