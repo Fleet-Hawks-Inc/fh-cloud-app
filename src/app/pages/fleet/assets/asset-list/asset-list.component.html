@@ -149,8 +149,9 @@
                                                             asset.ownerShip : "-") | titlecase}} </span>
                                                         <span *ngSwitchCase="'ownCname'">{{((asset.ownCname) ?
                                                             asset.ownCname : "-") | titlecase}}</span>
-                                                        <span *ngSwitchCase="'currentStatus'">{{ asset.currentStatus |
-                                                            titlecase }}</span>
+                                                        <span *ngSwitchCase="'currentStatus'">
+                                                         <span class="badge badge-dark p-1">{{ asset.currentStatus | titlecase }}</span>   
+                                                            </span>
                                                         <span *ngSwitchDefault> {{get(asset,dataColumns.field)}}</span>
                                                     </div>
                                                 </td>
