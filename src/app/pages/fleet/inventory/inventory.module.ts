@@ -19,6 +19,15 @@ import { AddInventoryComponent } from "./add-inventory/add-inventory.component";
 import { InventoryListComponent } from "./inventory-list/inventory-list.component";
 import { InventoryDetailComponent } from "./inventory-detail/inventory-detail.component";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
 
 const routes: Routes = [
   {
@@ -121,6 +130,15 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgxSpinnerModule,
     InfiniteScrollModule,
     ChartsModule,
+    TableModule,
+    ButtonModule,
+    MultiSelectModule,
+    TooltipModule,
+    MenuModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule
   ],
   providers: [
     unsavedChangesGuard,
