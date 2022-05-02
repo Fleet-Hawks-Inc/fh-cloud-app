@@ -498,7 +498,7 @@ export class InventoryListComponent implements OnInit {
         });
     }
 
-    onScroll() {
+    onScroll = async(event: any) => {
         if (this.loaded) {
             this.initDataTable();
             this.initDataTableRequired();
