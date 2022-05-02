@@ -145,23 +145,31 @@
               <!-- Body Template of Data Table -->
               <ng-template pTemplate="body" let-fuel let-columns="columns" let-rowIndex="rowIndex">
 
-                <tr style="cursor: pointer;" routerLink="/fleet/fuel/detail/{{fuel.data.fuelID}}">
+                <tr>
 
                   <td style="width:12%">
-                    {{fuel.dateTime}}
+                    <span  style="cursor: pointer;" routerLink="/fleet/fuel/detail/{{fuel.data.fuelID}}">{{fuel.dateTime}}</span>
                   </td>
                   <td style="width:12%">
-                    {{fuel.data.cardNo}}
+                    <span  style="cursor: pointer;" routerLink="/fleet/fuel/detail/{{fuel.data.fuelID}}">{{(fuel.data.cardNo) ? (fuel.data.cardNo) : '-'}}</span>
                   </td>
                   <td style="width:12%">
-                    {{(vehicleList[fuel.unitID]?vehicleList[fuel.unitID]:'')}}
-                    {{(assetList[fuel.unitID]?assetList[fuel.unitID]:'')}}
+         <span  style="cursor: pointer;" routerLink="/fleet/fuel/detail/{{fuel.data.fuelID}}">{{(vehicleList[fuel.unitID]?vehicleList[fuel.unitID]:'') | titlecase}}
+                    {{(assetList[fuel.unitID]?assetList[fuel.unitID]:'') | titlecase}}</span>           
                   </td>
-                  <td style="width:12%">{{fuel.data.useType}}</td>
-                  <td style="width:12%">{{fuel.data.type}}</td>
-                  <td style="width:12%">{{fuel.data.amt}}</td>
-                  <td style="width:12%">{{fuel.data.site}}</td>
-                  <td style="width:12%">{{fuel.data.city}},{{fuel.data.state}},{{fuel.data.country}}</td>
+                  <td style="width:12%">
+                    <span  style="cursor: pointer;" routerLink="/fleet/fuel/detail/{{fuel.data.fuelID}}">{{((fuel.data.useType) ? (fuel.data.useType): '-') | titlecase}}</span>
+                    </td>
+                  <td style="width:12%">
+                    <span  style="cursor: pointer;" routerLink="/fleet/fuel/detail/{{fuel.data.fuelID}}">{{fuel.data.type}}</span>
+                    </td>
+                  <td style="width:12%">
+                    <span  style="cursor: pointer;" routerLink="/fleet/fuel/detail/{{fuel.data.fuelID}}">{{fuel.data.amt}}</span></td>
+                  <td style="width:12%">
+                    <span  style="cursor: pointer;" routerLink="/fleet/fuel/detail/{{fuel.data.fuelID}}">{{(fuel.data.site) ? (fuel.data.site) : '-'}}</span>
+                    </td>
+                  <td style="width:12%">
+                    <span  style="cursor: pointer;" routerLink="/fleet/fuel/detail/{{fuel.data.fuelID}}">{{fuel.data.city}},{{fuel.data.state}},{{fuel.data.country}}</span></td>
                   <td style=" text-align: center; width: 100px;" pFrozenColumn alignFrozen="right" [frozen]="true">
 
                     <button id="btnEdit" pButton routerLink="/fleet/fuel/edit/{{fuel.data.fuelID}}" type="button"

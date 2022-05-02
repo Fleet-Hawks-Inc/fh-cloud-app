@@ -27,6 +27,16 @@ import {
   AddIssueComponent,
   IssueDetailComponent,
 } from "./index";
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
+
 
 
 const COMPONENTS = [
@@ -107,11 +117,13 @@ const routes: Routes = [
       {
         path: "add-service",
         component: AddServiceComponent,
+        canDeactivate: [unsavedChangesGuard],
         data: { title: "Add Service Log" },
       },
       {
         path: "edit/:logID",
         component: AddServiceComponent,
+        canDeactivate: [unsavedChangesGuard],
         data: { title: "Edit Service Log" },
       },
 
@@ -128,6 +140,7 @@ const routes: Routes = [
       {
         path: "add",
         component: AddServiceProgramComponent,
+        canDeactivate: [unsavedChangesGuard],
         data: { title: "Add Service Program" },
       },
       {
@@ -138,6 +151,7 @@ const routes: Routes = [
       {
         path: "edit/:programID",
         component: AddServiceProgramComponent,
+        canDeactivate: [unsavedChangesGuard],
         data: { title: "Edit Service Program" },
       },
       {
@@ -151,13 +165,14 @@ const routes: Routes = [
     path: "issues",
     children: [
       {
-        path: "list",
+        path: "list/:sessionID",
         component: IssueListComponent,
-        data: { title: "Issues List" },
+        data: { title: "Issues List", reuseRoute: true },
       },
       {
         path: "add",
-        component: AddIssueComponent,
+        component: AddIssueComponent, 
+        canDeactivate: [unsavedChangesGuard],
         data: { title: "Add Issues" },
       },
       {
@@ -167,7 +182,8 @@ const routes: Routes = [
       },
       {
         path: "edit/:issueID",
-        component: AddIssueComponent,
+        component: AddIssueComponent, 
+        canDeactivate: [unsavedChangesGuard],
         data: { title: "Edit Issues" },
       },
     ],
@@ -188,9 +204,17 @@ const routes: Routes = [
     NgxSpinnerModule,
     SlickCarouselModule,
     InfiniteScrollModule,
+    TableModule,
+    ButtonModule,
+    MultiSelectModule,
+    TooltipModule,
+    MenuModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule
   ],
   exports: [...COMPONENTS],
-  providers: [
+  providers: [unsavedChangesGuard,
     { provide: NgbDateAdapter, useClass: CustomAdapter },
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],

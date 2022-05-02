@@ -170,7 +170,7 @@
                                                             {{driver[dataColumns.field] | titlecase}}
                                                         </span>
                                                         <span *ngSwitchCase="'driverStatus'">
-                                                            {{driver[dataColumns.field] | titlecase}}
+                                                       <span class="badge badge-dark p-1">{{driver[dataColumns.field] | titlecase}}</span>     
                                                         </span>
                                                         <span *ngSwitchCase="'companyName'">
                                                             {{driver[dataColumns.field] | uppercase}}

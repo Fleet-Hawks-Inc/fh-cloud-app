@@ -47,6 +47,7 @@ const routes: Routes = [
     path: "add/required/:item",
     component: AddInventoryComponent,
     data: { title: "Add Inventory" },
+    canDeactivate: [unsavedChangesGuard]
   },
 ];
 /**
