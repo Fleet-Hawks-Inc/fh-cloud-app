@@ -144,6 +144,7 @@ export class AddFuelEntryComponent implements OnInit {
     private routeManagementService:RouteManagementServiceService
 
   ) {
+  
         this.modalServiceOwn.triggerRedirect.next(false);
     this.router.events.pipe(takeUntil(this.takeUntil$)).subscribe((v: any) => {
       if (v.url !== "undefined" || v.url !== "") {
@@ -424,7 +425,6 @@ export class AddFuelEntryComponent implements OnInit {
           this.takeUntil$.next();
           this.takeUntil$.complete();
                     this.isSubmitted = true;
-
         this.toaster.success("Fuel Entry Added Successfully.");
         this.location.back();
       },
@@ -547,10 +547,12 @@ export class AddFuelEntryComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
+        
         this.modalServiceOwn.triggerRedirect.next(true);
           this.takeUntil$.next();
           this.takeUntil$.complete();
                     this.isSubmitted = true;
+                    
         this.toaster.success("Fuel Entry Updated successfully");
         this.cancel();
       },
