@@ -132,6 +132,7 @@
                               [maxDate]="futureDatesLimit"
                               required
                               #frDate="ngModel"
+                              (dateSelect)="fetchPayments()"
                               readonly
                             />
                             <div
