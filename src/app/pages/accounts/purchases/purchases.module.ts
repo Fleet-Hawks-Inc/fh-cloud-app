@@ -25,7 +25,8 @@ import { AddVendorCreditNoteComponent } from "./vendor-credit-notes/add-vendor-c
 import { AddBillComponent } from "./bills/add-bill/add-bill.component";
 import { BillDetailsComponent } from "./bills/bill-details/bill-details.component";
 import { BillListComponent } from "./bills/bill-list/bill-list.component";
-import { PaymentChequeComponent } from "../payment-cheque/payment-cheque.component";
+import { PaymentChequeComponent } from "../../..//shared/payment-cheque/payment-cheque.component";
+import { SharedModule } from "src/app/shared/shared.module";
 
 
 /**
@@ -184,7 +185,6 @@ const routes: Routes = [
     AddBillComponent,
     BillDetailsComponent,
     BillListComponent,
-    // PaymentChequeComponent
   ],
   imports: [
     CommonModule,
@@ -195,6 +195,7 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule,
     InfiniteScrollModule,
+    SharedModule
   ],
 })
 export class PurchasesModule { }

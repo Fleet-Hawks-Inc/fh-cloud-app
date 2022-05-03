@@ -94,7 +94,6 @@ export class VendorPaymentDetailComponent implements OnInit {
       page: "detail",
       advance: this.paymentData.total.advTotal
     };
-    this.downloadDisabled = true;
     this.listService.openPaymentChequeModal(obj);
   }
 
