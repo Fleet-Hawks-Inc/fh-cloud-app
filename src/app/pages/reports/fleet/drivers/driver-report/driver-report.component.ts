@@ -104,7 +104,7 @@ export class DriverReportComponent implements OnInit {
 
 
   fetchFullExport() {
-    this.apiService.getData(`trips/fetch/driverActivity/list?driver=${this.drivIDs}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
+    this.apiService.getData(`common/trips/fetch/driverActivity/list?driver=${this.drivIDs}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.exportData = result.Items;
       for (let driv of this.exportData) {
         let dataa = driv
