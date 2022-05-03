@@ -40,6 +40,7 @@ import {ProgressBarModule} from 'primeng/progressbar';
 import {InputTextModule} from 'primeng/inputtext';
 import {RatingModule} from 'primeng/rating';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { BadgeModule } from "primeng/badge";
 const routes: Routes = [
   {
     path: "order-list/:sessionId",
@@ -106,7 +107,8 @@ const routes: Routes = [
     ContextMenuModule,
     InputTextModule,
     ProgressBarModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    BadgeModule
 
   ],
   providers: [unsavedChangesGuard],

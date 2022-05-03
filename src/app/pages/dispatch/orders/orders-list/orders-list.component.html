@@ -88,7 +88,7 @@
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark">
+            <div class="bg-white p-3 text-dark text-capitalize">
               <div class="form-group row pt-3">
                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
                   <p-table #dt [value]="orders" [resizableColumns]="true" columnResizeMode="expand"
@@ -121,7 +121,7 @@
                     <!-- Header template of DataTable -->
                     <ng-template pTemplate="header">
                       <tr>
-                        <th style="width: 12%"></th>
+                        <th style="width: 5%"></th>
 
                         <th *ngFor="let column of dataColumns" [pSortableColumn]="column.field" pResizableColumn
                           style="width:12%">
@@ -136,7 +136,7 @@
                             </div>
                           </span>
                         </th>
-                        <th style="width:100px" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
+                        <!-- <th style="width: 12%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th> -->
                       </tr>
 
                     </ng-template>
@@ -144,25 +144,25 @@
                     <!-- Body Template of Data Table -->
                     <ng-template pTemplate="body" let-order let-rowIndex="rowIndex" let-expanded="expanded">
                       <tr style="cursor: pointer;">
-                        <td style="width:12%">
+                        <td style="width:5%">
                           <button type="button" pButton [pRowToggler]="order"
                             class="p-button-text p-button-rounded p-button-plain"
                             [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                         </td>
-                        <td routerLink="order.url" style="width:12%">
-                          {{rowIndex}} {{order.orderNumber}}
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:12%">
+                          {{order.orderNumber}}
                         </td>
-                        <td routerLink="order.url" style="width:12%">
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:12%">
                           {{order.orderMode}}
                         </td>
-                        <td routerLink="order.url" style="width:12%">
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:12%">
                           {{ order.createdDate | date: "yyyy/MM/dd" }}
                         </td>
-                        <td routerLink="order.url" style="width:12%">
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:12%">
                           {{ customersObjects[order.customerID] }}
                         </td>
 
-                        <td style="width:12%">
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:12%">
                           {{
                           order.shippersReceiversInfo[0].shippers[0]
                           .pickupPoint[0].commodity[0].name
@@ -183,16 +183,28 @@
                           : ""
                           }}
                         </td>
-                        <td style="width:12%">
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:12%">
                           {{ order.charges.freightFee.currency }}
                           {{ order.totalAmount }}<br />
                         </td>
-                        <td style="width:12%">
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:12%">
                           <!-- <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br> -->
-                          <b>Invoiced: </b> {{order.invoicedTime ? 'Yes' : 'No'}} <br>
-                          <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
+
+                          <div class="badges ">
+                            <b>Invoiced: </b>
+                            <p-badge [value]="order.invoicedTime ? 'Yes' : 'No'" styleClass="p-mr-2" severity="info">
+                            </p-badge><br>
+                            <div class="mt-2">
+                              <b>Payment:</b>
+                              <p-badge class="p-badges"
+                                [value]="order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'" styleClass="p-mr-2"
+                                severity="success"></p-badge>
+                            </div>
+                            <!-- <b>Invoiced: </b> {{order.invoicedTime ? 'Yes' : 'No'}} <br> -->
+                            <!-- <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}} -->
+                          </div>
                         </td>
-                        <td style="width:12%">
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:12%">
                           <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
                         </td>
                         <!-- <td class="popc" style=" text-align: center; width: 100px;" pFrozenColumn alignFrozen="right"
@@ -243,7 +255,7 @@
                             </ng-template>
                           </p-overlayPanel> -->
                         <!-- </td> -->
-                        <td style="width:12%">
+                        <td style="width:12%;overflow: inherit !important;">
                           <div class="dropdown dropright" style="z-index: 1000">
                             <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{ i
                               }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -292,150 +304,167 @@
                     </ng-template>
                     <ng-template pTemplate="rowexpansion" let-order>
                       <tr>
-                        <td colspan="9">
-                          <!-- <div class="p-p-3"> -->
-                          <p-table [value]="order.shippersReceiversInfo"
-                            styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
-                            <ng-template pTemplate="header">
+                        <td width="50%" class="p-0 custom-bg-light border-0">
+                          <div class="p-3">
+                            <p-table [value]="order.shippersReceiversInfo"
+                              styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
+                              <ng-template pTemplate="header">
 
-                              <thead>
-                                <tr>
-                                  <th style="width:12%">Pickup Location</th>
-                                  <th style="width:12%">Drop Off Location</th>
-                                </tr>
-                              </thead>
+                      <tr>
+                        <th class="border-0 p-0">Pickup Location</th>
 
-                            </ng-template>
-                            <ng-template pTemplate="body" let-ord>
-                              <tbody>
-                                <tr>
-
-
-
-                                  <td style="width:12%">
-                                    Date:
-                                    {{
-                                    ord.shippers[0]
-                                    .pickupPoint[0].dateAndTime
-                                    | date
-                                    : "yyyy/MM/dd
-                                    hh:mm a"
-                                    }}<br />
-                                    Location:
-                                    <span *ngIf="ord.shippers[0]
-                                              .pickupPoint[0].address.manual">
-                                      {{
-                                      ord.shippers[0]
-                                      .pickupPoint[0].address.address
-                                      }},
-                                      {{
-                                      ord.shippers[0]
-                                      .pickupPoint[0].address.city
-                                      }},
-                                      {{
-                                      ord.shippers[0]
-                                      .pickupPoint[0].address.state
-                                      }},
-                                      {{
-                                      ord.shippers[0]
-                                      .pickupPoint[0].address.country
-                                      }}
-                                      {{
-                                      ord.shippers[0]
-                                      .pickupPoint[0].address.zipCode
-                                      }}
-                                    </span>
-                                    <span *ngIf="!ord.shippers[0]
-                                              .pickupPoint[0].address.manual">
-                                      {{
-                                      ord.shippers[0]
-                                      .pickupPoint[0].address.pickupLocation
-                                      }}
-                                    </span>
-                                    <span class="badge badge-dark" *ngIf="ord.shippers[0]
-                                              .pickupPoint.length> 1
-                                                ">
-                                      +{{
-                                      ord.shippers[0]
-                                      .pickupPoint.length - 1
-                                      }}
-                                    </span>
-                                  </td>
-                                  <td style="width:12%">
-                                    Date:-
-                                    {{
-                                    ord.receivers[0]
-                                    .dropPoint[0].dateAndTime
-                                    | date
-                                    : "yyyy/MM/dd
-                                    hh:mm a"
-                                    }}<br />
-                                    Location: -
-                                    <span *ngIf="ord.receivers[0]
-                                              .dropPoint[0].address.manual">
-                                      {{
-                                      ord.receivers[0]
-                                      .dropPoint[0].address.address
-                                      }},
-                                      {{
-                                      ord.receivers[0]
-                                      .dropPoint[0].address.city
-                                      }},
-                                      {{
-                                      ord.receivers[0]
-                                      .dropPoint[0].address.state
-                                      }},
-                                      {{
-                                      ord.receivers[0]
-                                      .dropPoint[0].address.country
-                                      }}
-                                      {{
-                                      ord.receivers[0]
-                                      .dropPoint[0].address.zipCode
-                                      }}
-                                    </span>
-                                    <span *ngIf="!ord.receivers[0]
-                                              .dropPoint[0].address.manual">
-                                      {{
-                                      ord.receivers[0]
-                                      .dropPoint[0].address.dropOffLocation
-                                      }}
-                                    </span>
-                                    <span class="badge badge-dark" *ngIf="ord.receivers[0]
-                                              .dropPoint> 1">
-                                      +{{
-                                      ord.receivers[0]
-                                      .dropPoint - 1
-                                      }}
-                                    </span>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </ng-template>
-
-                          </p-table>
-                          <!-- </div> -->
-                        </td>
                       </tr>
+
                     </ng-template>
-                    <ng-template pTemplate="emptymessage" let-columns>
-                      <div class="col-lg-12 mt-3 text-center">
-                        {{dataMessage}}
-                        <br /><br>
-                      </div>
+                    <ng-template pTemplate="body" let-ord>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <b>Date: </b>
+                            {{
+                            ord.shippers[0]
+                            .pickupPoint[0].dateAndTime
+                            | date
+                            : "yyyy/MM/dd
+                            hh:mm a"
+                            }}<br />
+                            <b>Location: </b>
+                            <span *ngIf="ord.shippers[0]
+                                                .pickupPoint[0].address.manual">
+                              {{
+                              ord.shippers[0]
+                              .pickupPoint[0].address.address
+                              }},
+                              {{
+                              ord.shippers[0]
+                              .pickupPoint[0].address.cityName
+                              }},
+                              {{
+                              ord.shippers[0]
+                              .pickupPoint[0].address.stateName
+                              }},
+                              {{
+                              ord.shippers[0]
+                              .pickupPoint[0].address.countryName
+                              }}
+                              {{
+                              ord.shippers[0]
+                              .pickupPoint[0].address.zipCode
+                              }}
+                            </span>
+                            <span *ngIf="!ord.shippers[0]
+                                                .pickupPoint[0].address.manual">
+                              {{
+                              ord.shippers[0]
+                              .pickupPoint[0].address.pickupLocation
+                              }}
+                            </span>
+                            <span class="badge badge-dark" *ngIf="ord.shippers[0]
+                                                .pickupPoint.length> 1
+                                                ">
+                              +{{
+                              ord.shippers[0]
+                              .pickupPoint.length - 1
+                              }}
+                            </span>
+                          </td>
+
+                        </tr>
+                      </tbody>
                     </ng-template>
                   </p-table>
                 </div>
-              </div>
+                </td>
+                <td width="50%" class="p-0 custom-bg-light border-0">
+                  <div class="p-3 ">
+                    <p-table [value]="order.shippersReceiversInfo"
+                      styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
+                      <ng-template pTemplate="header">
 
+                        <tr>
+                          <th class="border-0 p-0">Drop Off Location</th>
+                        </tr>
+
+                      </ng-template>
+                      <ng-template pTemplate="body" let-ord>
+                        <tbody>
+                          <tr>
+                            <td> <b>Date: </b>
+                              {{
+                              ord.receivers[0]
+                              .dropPoint[0].dateAndTime
+                              | date
+                              : "yyyy/MM/dd
+                              hh:mm a"
+                              }}<br />
+                              <b>Location: </b>
+                              <span *ngIf="ord.receivers[0]
+                                              .dropPoint[0].address.manual">
+                                {{
+                                ord.receivers[0]
+                                .dropPoint[0].address.address
+                                }},
+                                {{
+                                ord.receivers[0]
+                                .dropPoint[0].address.cityName
+                                }},
+                                {{
+                                ord.receivers[0]
+                                .dropPoint[0].address.stateName
+                                }},
+                                {{
+                                ord.receivers[0]
+                                .dropPoint[0].address.countryName
+                                }}
+                                {{
+                                ord.receivers[0]
+                                .dropPoint[0].address.zipCode
+                                }}
+                              </span>
+                              <span *ngIf="!ord.receivers[0]
+                                              .dropPoint[0].address.manual">
+                                {{
+                                ord.receivers[0]
+                                .dropPoint[0].address.dropOffLocation
+                                }}
+                              </span>
+                              <span class="badge badge-dark" *ngIf="ord.receivers[0]
+                                              .dropPoint> 1
+                                              ">
+                                +{{
+                                ord.receivers[0]
+                                .dropPoint - 1
+                                }}
+                              </span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </td>
+                </tr>
+
+
+                </ng-template>
+                <ng-template pTemplate="emptymessage" let-columns>
+                  <div class="col-lg-12 mt-3 text-center">
+                    {{dataMessage}}
+                    <br /><br>
+                  </div>
+                </ng-template>
+                </p-table>
+              </div>
             </div>
+
           </div>
         </div>
-      </section>
-
-
-    </section>
   </div>
+</section>
+
+
+</section>
+</div>
 </section>
 <!-- <section class="body">
   <div class="inner-wrapper">

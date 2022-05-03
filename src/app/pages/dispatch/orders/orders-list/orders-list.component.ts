@@ -221,19 +221,20 @@ export class OrdersListComponent implements OnInit {
   isLoad: boolean = false;
   isLoadText = "Load More...";
   _selectedColumns: any[];
-
+detailUrl = []
 
   dataColumns = [
-    { field: 'Number', header: 'Order#', type: "text" },
+    { field: 'orderNumber', header: 'Order#', type: "text" },
     { field: 'orderMode', header: 'Type', type: "text" },
-    { field: 'createdDate', header: 'Date', type: 'Date' },
-    { field: 'customersObjects.customerID', header: 'Customer', type: 'text' },
+    { field: 'createdDate', header: 'Date', type: "date" },
+    { field: 'customerName', header: 'Customer', type: 'text' },
     // { field: 'dateAndTime', header: ' Pickup Location', type: 'text' },
     // { field: 'dateAndTime', header: 'Drop Off Location', type: 'text' },
-    { field: 'name', header: 'Commodity', type: 'text' },
-    { field: 'currency', header: 'Amount', type: 'text' },
+    { field: 'shippersReceiversInfo.quantityUnit', header: 'Commodity', type: 'text' },
+    { field: 'totalAmount', header: 'Amount', type: 'text' },
     { field: 'invStatus', header: 'Status', type: 'text' },
-    { field: 'tripStatus', header: 'Trip Status', type: 'text' },
+    { field: 'orderStatus', header: 'Trip Status', type: 'text' },
+    { field: 'action', header: 'Actions', type: 'text' },
   ]
   isOrderPriceEnabled=environment.isOrderPriceEnabled
 
@@ -248,6 +249,7 @@ export class OrdersListComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.setToggleOptions()
     this.initDataTable();
 
     this.isOrderPriceEnabled = localStorage.getItem("isOrderPriceEnabled")
@@ -255,17 +257,16 @@ export class OrdersListComponent implements OnInit {
     : environment.isOrderPriceEnabled;
     
     this.customersObjects = await this.dashboardUtilityService.getCustomers();
-    this.setToggleOptions()
-    $(document).ready(() => {
-      setTimeout(() => {
-       $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
-      }, 1800);
-    });
+    
+    // $(document).ready(() => {
+    //   setTimeout(() => {
+    //    $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+    //   }, 1800);
+    // });
   }
 
   setToggleOptions() {
     this.selectedColumns = this.dataColumns;
-    console.log('this.selec',this.selectedColumns)
   }
 
   @Input() get selectedColumns(): any[] {
@@ -350,6 +351,8 @@ export class OrdersListComponent implements OnInit {
             }
             result.Items.map((v) => {
               v.url = `/dispatch/orders/detail/${v.orderID}`;
+              this.detailUrl = v.url
+              console.log('this.orders.url',this.detailUrl)
             });
             this.fetchedRecordsCount += result.Count;
             this.getStartandEndVal("all");
