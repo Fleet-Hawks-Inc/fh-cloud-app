@@ -15,7 +15,6 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule } from "@angular/forms";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
-import { CustomerSettingComponent } from "./customer-setting/customer-setting.component";
 import { DoverviewComponent } from "./settings-overview/doverview/doverview.component";
 import { ImportDriversComponent } from "./import-drivers/import-drivers.component";
 
@@ -97,8 +96,11 @@ const routes: Routes = [
   },
   {
     path: "customer",
-    component: CustomerSettingComponent,
-    data: { title: "Deleted Customer" },
+    loadChildren: () =>
+      import("./customer-setting/customer-setting.modules").then(
+        (m) => m.CustomerSettingsModules
+      ),
+    data: { title: "Assets Settings" },
   },
   {
     path: "assets",
@@ -122,7 +124,6 @@ const routes: Routes = [
     DispatchSettingComponent,
     ComplianceSettingComponent,
     SafetySettingComponent,
-    CustomerSettingComponent,
     DoverviewComponent,
     ImportDriversComponent,
     VehicleSettingsComponent,

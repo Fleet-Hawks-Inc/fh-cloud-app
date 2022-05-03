@@ -1,10 +1,18 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ApiService, DashboardUtilityService } from "../../../../services";
 import { Router } from "@angular/router";
-import { map } from "rxjs/operators";
-import { from } from "rxjs";
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+  takeUntil
+} from "rxjs/operators";import { from, Subject, throwError } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
+import { ModalService } from "../../../../services/modal.service";
 import { ActivatedRoute } from "@angular/router";
 import { Location } from "@angular/common";
 import { ListService } from "../../../../services";
@@ -14,9 +22,9 @@ import * as _ from "lodash";
 import { NgForm } from "@angular/forms";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
+import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
 
 declare var $: any;
-
 @Component({
   selector: "app-add-vehicle",
   templateUrl: "./add-vehicle.component.html",
@@ -25,6 +33,7 @@ declare var $: any;
 })
 export class AddVehicleComponent implements OnInit {
   @ViewChild("vehicleF") vehicleF: NgForm;
+  takeUntil$ = new Subject();
   showDriverModal = false;
   createdDate = "";
   createdTime = "";
@@ -66,6 +75,8 @@ export class AddVehicleComponent implements OnInit {
   vehicleType = null;
   VIN = "";
   DOT = "";
+    isSubmitted = false;
+
   year = null;
   manufacturerID = null;
   modelID = null;
@@ -296,13 +307,50 @@ export class AddVehicleComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private countryStateCity: CountryStateCityService,
     private dashboardUtilityService: DashboardUtilityService,
-    private routerMgmtService: RouteManagementServiceService
+    private routerMgmtService: RouteManagementServiceService,
+    private modalService: NgbModal,
+    private modalServiceOwn: ModalService
   ) {
+  
+        this.modalServiceOwn.triggerRedirect.next(false);
+    this.router.events.pipe(takeUntil(this.takeUntil$)).subscribe((v: any) => {
+      if (v.url !== 'undefined' || v.url !== '') {
+        this.modalServiceOwn.setUrlToNavigate(v.url);
+      }
+    });
+    this.modalServiceOwn.triggerRedirect$
+      .pipe(takeUntil(this.takeUntil$))
+      .subscribe((v) => {
+        if (v) {
+          this.router.navigateByUrl(
+            this.modalServiceOwn.urlToRedirect.getValue()
+          );
+        }
+      });
+  
+  
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
       // this.vehicleForm = $('#vehicleForm').validate();
     });
     this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
+  }
+    canLeave(): boolean {
+     if (this.vehicleF.dirty && !this.isSubmitted) {
+       if (!this.modalService.hasOpenModals()) {
+         let ngbModalOptions: NgbModalOptions = {
+           backdrop: "static",
+           keyboard: false,
+           size: "sm",
+         };
+         this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
+       }
+       return false;
+     }
+     this.modalServiceOwn.triggerRedirect.next(true);
+     this.takeUntil$.next();
+    this.takeUntil$.complete();
+    return true;
   }
 
   async ngOnInit() {
@@ -746,6 +794,10 @@ export class AddVehicleComponent implements OnInit {
             this.response = res;
             this.Success = "";
             this.submitDisabled = false;
+          this.modalServiceOwn.triggerRedirect.next(true);
+          this.takeUntil$.next();
+          this.takeUntil$.complete();
+          this.isSubmitted = true;
             this.toastr.success("Vehicle Added Successfully");
             this.router.navigateByUrl("/fleet/vehicles/list");
             this.dashboardUtilityService.refreshVehicles = true;
@@ -1339,6 +1391,10 @@ export class AddVehicleComponent implements OnInit {
             this.submitDisabled = false;
             this.response = res;
             this.Success = "";
+              this.modalServiceOwn.triggerRedirect.next(true);
+          this.takeUntil$.next();
+          this.takeUntil$.complete();
+          this.isSubmitted = true;
             this.toastr.success("Vehicle Updated successfully");
             this.dashboardUtilityService.refreshVehicles = true;
             this.cancel();

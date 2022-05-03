@@ -337,6 +337,9 @@ export class AddSettlementComponent implements OnInit {
       }
     }
     this.resetCal()
+    if(this.settlementID) {
+      this.paymentCalculation(this.settledTrips, "settled");
+    }
     if (this.trips.length > 0) {
       this.fetchTrips();
     } else {
@@ -435,7 +438,6 @@ export class AddSettlementComponent implements OnInit {
           this.trip.paymentSelected = [this.pp]
           break;
       }
-
       for (const trp of this.trips) {
 
         if (trp.tripID == this.trip.tripID) {
@@ -1978,7 +1980,8 @@ export class AddSettlementComponent implements OnInit {
           element.paymentselected = [this.ppd]
         }
       }
-      element.amount = Number(element.amount.toFixed(2))
+      element.amount = Number(element.amount)
+      element.amount = element.amount.toFixed(2)
 
       if (this.settlementData.trpData) {
         for (let k = 0; k < this.settlementData.trpData.length; k++) {
@@ -2508,9 +2511,9 @@ export class AddSettlementComponent implements OnInit {
         .subscribe((result: any) => {
           result.Items[0].data.map((v) => {
             let curKey = Object.keys(v);
-            if(!this.settlementID) {
+            // if(!this.settlementID) {
               this.isEntity = true;
-            }
+            // }
             if (this.settlementData.type === "carrier") {
               if (curKey[0] === "carrierData") {
                 this.contactDetail = v;
