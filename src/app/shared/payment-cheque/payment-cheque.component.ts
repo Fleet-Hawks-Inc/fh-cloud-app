@@ -9,9 +9,9 @@ var converter = require("number-to-words");
 declare var $: any;
 
 @Component({
-  selector: "app-payment-cheque",
-  templateUrl: "./payment-cheque.component.html",
-  styleUrls: ["./payment-cheque.component.css"],
+  selector: 'app-payment-cheque',
+  templateUrl: './payment-cheque.component.html',
+  styleUrls: ['./payment-cheque.component.css']
 })
 export class PaymentChequeComponent implements OnInit {
   @ViewChild("chekOptions", { static: true }) modalContent: TemplateRef<any>;
@@ -178,12 +178,12 @@ export class PaymentChequeComponent implements OnInit {
             //   "dd-MM-yyyy",
             //   this.locale
             // );
-            if(this.settlementIDs) {
+            if (this.settlementIDs) {
               this.cheqdata.payPeriod = await this.getSettlementData(this.settlementIDs);
             } else {
               this.cheqdata.payPeriod = `${this.paydata.fromDate} To ${this.paydata.toDate}`
             }
-            
+
 
           }
 
@@ -246,7 +246,7 @@ export class PaymentChequeComponent implements OnInit {
           // this if cond. only in the case of expense payment
           if (
             this.paydata.type === "expensePayment" ||
-            this.paydata.type === "advancePayment"
+            this.paydata.type === "advancePayment" || this.paydata.type === "purchasePayment"
           ) {
             this.cheqdata.regularPay = this.paydata.finalAmount;
             if (this.paydata.paymentTo == "driver") {
@@ -512,7 +512,7 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   async getSettlementData(stlIds) {
-    if(stlIds) {
+    if (stlIds) {
       let ids = encodeURIComponent(
         JSON.stringify(stlIds)
       );
@@ -522,9 +522,9 @@ export class PaymentChequeComponent implements OnInit {
       let newDates = []
       for (let index = 0; index < result.length; index++) {
         const element = result[index];
-  
+
         if (element.prStart != undefined && element.prEnd != undefined) {
-  
+
           let startDate = formatDate(
             element.prStart,
             "dd-MM-yyyy",
@@ -550,12 +550,14 @@ export class PaymentChequeComponent implements OnInit {
           );
           newDates.push(`${startDate} To ${endDate}`);
         }
-  
-  
+
+
       }
       return newDates.join(", ");
     }
-    
+
 
   }
+
+
 }
