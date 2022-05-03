@@ -337,6 +337,9 @@ export class AddSettlementComponent implements OnInit {
       }
     }
     this.resetCal()
+    if (this.settlementID) {
+      this.paymentCalculation(this.settledTrips, "settled");
+    }
     if (this.trips.length > 0) {
       this.fetchTrips();
     } else {
@@ -407,7 +410,7 @@ export class AddSettlementComponent implements OnInit {
   openPaymentModelFor(trip: any) {
     this.trip = []
     this.trip = trip;
-    this.paymentType = this.trip.paymentSelected[0].pType 
+    this.paymentType = this.trip.paymentSelected[0].pType
     let ngbModalOptions: NgbModalOptions = {
       keyboard: true,
       windowClass: "payModal"
@@ -435,7 +438,6 @@ export class AddSettlementComponent implements OnInit {
           this.trip.paymentSelected = [this.pp]
           break;
       }
-
       for (const trp of this.trips) {
 
         if (trp.tripID == this.trip.tripID) {
@@ -734,14 +736,14 @@ export class AddSettlementComponent implements OnInit {
                           if (trp.type === 'Delivery') {
                             arrr.delivCount += 1;
                           }
-                  
+
                           if (trp.mileType === 'loaded') {
                             if (trp.coDriverID && trp.driverID) {
                               arrr.loadedMilesTeam += Number(trp.miles);
                             } else {
                               arrr.loadedMiles += Number(trp.miles);
                             }
-                  
+
                           } else {
                             if (trp.coDriverID && trp.driverID) {
                               arrr.emptyMilesTeam += Number(trp.miles);
@@ -806,7 +808,7 @@ export class AddSettlementComponent implements OnInit {
                             } else {
                               arrr.emptyMiles += Number(trp.miles);
                             }
-                            
+
                             trp.planLoc = this.setTripLoc(trp);
                             arrr.trips.push(trp);
                           }
@@ -1219,13 +1221,13 @@ export class AddSettlementComponent implements OnInit {
   setArray(element) {
     if (!this.settlementData.tripIds.includes(element.tripID)) {
       this.settlementData.tripIds.push(element.tripID);
-      
+
       let tripAmount = 0;
       // split is selected
-      if(element.indeterminate) {
+      if (element.indeterminate) {
         for (const iterator of element.splitArr) {
-          if(iterator.selected) {
-            tripAmount += iterator.amount 
+          if (iterator.selected) {
+            tripAmount += iterator.amount
           }
         }
       } else {
@@ -1786,7 +1788,7 @@ export class AddSettlementComponent implements OnInit {
       });
   }
 
-  async fetchSettledTrips(tripIds, trpData) { 
+  async fetchSettledTrips(tripIds, trpData) {
     let result: any = await this.apiService
       .getData(`common/trips/driver/settled?entities=${tripIds}`)
       .toPromise();
@@ -1978,7 +1980,8 @@ export class AddSettlementComponent implements OnInit {
           element.paymentselected = [this.ppd]
         }
       }
-      element.amount = Number(element.amount.toFixed(2))
+      element.amount = Number(element.amount)
+      element.amount = element.amount.toFixed(2)
 
       if (this.settlementData.trpData) {
         for (let k = 0; k < this.settlementData.trpData.length; k++) {
@@ -2038,14 +2041,14 @@ export class AddSettlementComponent implements OnInit {
                           if (trp.type === 'Delivery') {
                             arrr.delivCount += 1;
                           }
-                  
+
                           if (trp.mileType === 'loaded') {
                             if (trp.coDriverID && trp.driverID) {
                               arrr.loadedMilesTeam += Number(trp.miles);
                             } else {
                               arrr.loadedMiles += Number(trp.miles);
                             }
-                  
+
                           } else {
                             if (trp.coDriverID && trp.driverID) {
                               arrr.emptyMilesTeam += Number(trp.miles);
@@ -2206,7 +2209,7 @@ export class AddSettlementComponent implements OnInit {
         tripId: tripID,
         split: [],
         entityId: this.settlementData.entityId,
-        type: this.settlementData.type, 
+        type: this.settlementData.type,
         oprDrivers: this.operatorDriversList
       };
       if (splitID !== "" && splitID !== undefined) {
@@ -2239,7 +2242,7 @@ export class AddSettlementComponent implements OnInit {
     }
   }
 
-  formatRemovedTrip( 
+  formatRemovedTrip(
     selectedTrip: any,
     splitID: any,
     isExist: boolean,
@@ -2508,9 +2511,9 @@ export class AddSettlementComponent implements OnInit {
         .subscribe((result: any) => {
           result.Items[0].data.map((v) => {
             let curKey = Object.keys(v);
-            if(!this.settlementID) {
-              this.isEntity = true;
-            }
+            //if (!this.settlementID) {
+            this.isEntity = true;
+            // }
             if (this.settlementData.type === "carrier") {
               if (curKey[0] === "carrierData") {
                 this.contactDetail = v;

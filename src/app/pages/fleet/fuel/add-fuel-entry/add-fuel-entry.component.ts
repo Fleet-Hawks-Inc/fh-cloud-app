@@ -1,8 +1,17 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ApiService } from "../../../../services/api.service";
-import { ActivatedRoute } from "@angular/router";
-import { map } from "rxjs/operators";
-import { from } from "rxjs";
+import { Router, ActivatedRoute } from "@angular/router";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+  takeUntil
+} from "rxjs/operators";
+import { NgForm } from "@angular/forms";
+import { from, Subject, throwError } from 'rxjs';
 import {
   NgbCalendar,
   NgbDateAdapter,
@@ -11,11 +20,14 @@ import {
 import { ToastrService } from "ngx-toastr";
 import { Location } from "@angular/common";
 import * as _ from "lodash";
+import { ModalService } from "../../../../services/modal.service";
 import { ListService } from "../../../../services";
 
 import { HttpClient } from "@angular/common/http";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import {RouteManagementServiceService} from 'src/app/services/route-management-service.service'
+import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
+
 declare var $: any;
 
 @Component({
@@ -24,6 +36,10 @@ declare var $: any;
   styleUrls: ["./add-fuel-entry.component.css"],
 })
 export class AddFuelEntryComponent implements OnInit {
+  @ViewChild('fuelF') fuelF: NgForm;
+  takeUntil$ = new Subject();
+
+
   title = "Add Fuel Entry";
   Asseturl = this.apiService.AssetUrl;
   public fuelID;
@@ -65,6 +81,7 @@ export class AddFuelEntryComponent implements OnInit {
       excRate: "0",
     },
   };
+    isSubmitted = false;
   fetchedUnitID;
   fetcheduseType;
   // fuelQtyUnit = 'litre';
@@ -116,14 +133,34 @@ export class AddFuelEntryComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private toaster: ToastrService,
+        private router: Router,
     private ngbCalendar: NgbCalendar,
     private dateAdapter: NgbDateAdapter<string>,
     private listService: ListService,
+     private modalService: NgbModal,
+    private modalServiceOwn: ModalService,
     private httpClient: HttpClient,
     private countryStateCity: CountryStateCityService,
     private routeManagementService:RouteManagementServiceService
 
   ) {
+  
+        this.modalServiceOwn.triggerRedirect.next(false);
+    this.router.events.pipe(takeUntil(this.takeUntil$)).subscribe((v: any) => {
+      if (v.url !== "undefined" || v.url !== "") {
+        this.modalServiceOwn.setUrlToNavigate(v.url);
+      }
+    });
+    this.modalServiceOwn.triggerRedirect$
+      .pipe(takeUntil(this.takeUntil$))
+      .subscribe((v) => {
+        if (v) {
+          this.router.navigateByUrl(
+            this.modalServiceOwn.urlToRedirect.getValue()
+          );
+        }
+      });
+  
     this.selectedFileNames = new Map<any, any>();
     const date = new Date();
     this.getcurrentDate = {
@@ -133,6 +170,25 @@ export class AddFuelEntryComponent implements OnInit {
     };
     this.sessionID=this.routeManagementService.fuelUpdateSessionID;
   }
+  
+    canLeave(): boolean {
+     if (this.fuelF.dirty && !this.isSubmitted) {
+       if (!this.modalService.hasOpenModals()) {
+         let ngbModalOptions: NgbModalOptions = {
+           backdrop: "static",
+           keyboard: false,
+           size: "sm",
+         };
+         this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
+       }
+       return false;
+     }
+     this.modalServiceOwn.triggerRedirect.next(true);
+     this.takeUntil$.next();
+    this.takeUntil$.complete();
+    return true;
+  }
+  
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -365,6 +421,10 @@ export class AddFuelEntryComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
+        this.modalServiceOwn.triggerRedirect.next(true);
+          this.takeUntil$.next();
+          this.takeUntil$.complete();
+                    this.isSubmitted = true;
         this.toaster.success("Fuel Entry Added Successfully.");
         this.location.back();
       },
@@ -487,6 +547,12 @@ export class AddFuelEntryComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
+        
+        this.modalServiceOwn.triggerRedirect.next(true);
+          this.takeUntil$.next();
+          this.takeUntil$.complete();
+                    this.isSubmitted = true;
+                    
         this.toaster.success("Fuel Entry Updated successfully");
         this.cancel();
       },

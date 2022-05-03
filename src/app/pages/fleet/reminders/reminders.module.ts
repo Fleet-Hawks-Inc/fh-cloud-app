@@ -89,11 +89,13 @@ const routes: Routes = [
         path: "add",
         component: AddReminderComponent,
         data: { title: "Add Service Reminder" },
+        canDeactivate: [unsavedChangesGuard],
       },
       {
         path: "edit/:reminderID",
         component: AddReminderComponent,
         data: { title: "Edit Service Reminder" },
+        canDeactivate: [unsavedChangesGuard],
       },
     ],
   },
@@ -109,11 +111,14 @@ const routes: Routes = [
         path: "add",
         component: VehicleRenewAddComponent,
         data: { title: "Add Vehicle Renewals" },
+                canDeactivate: [unsavedChangesGuard],
       },
       {
         path: "edit/:reminderID",
         component: VehicleRenewAddComponent,
         data: { title: "Edit Vehicle Renewals" },
+                canDeactivate: [unsavedChangesGuard],
+
       },
     ],
   },
@@ -129,11 +134,15 @@ const routes: Routes = [
         path: "add",
         component: AddContactRenewComponent,
         data: { title: "Add Contact Renewals" },
+                canDeactivate: [unsavedChangesGuard],
+
       },
       {
         path: "edit/:reminderID",
         component: AddContactRenewComponent,
         data: { title: "Edit Contact Renewals" },
+                canDeactivate: [unsavedChangesGuard],
+
       },
     ],
   },

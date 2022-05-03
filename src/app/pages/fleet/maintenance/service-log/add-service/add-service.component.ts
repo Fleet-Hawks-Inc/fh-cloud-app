@@ -1,23 +1,28 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ApiService } from "../../../../../services";
 import { Router, ActivatedRoute } from "@angular/router";
-import { map } from "rxjs/operators";
 import { from, Subject, throwError } from "rxjs";
 import { ToastrService } from "ngx-toastr";
 import { NgxSpinnerService } from "ngx-spinner";
 import { NgbCalendar, NgbDateAdapter } from "@ng-bootstrap/ng-bootstrap";
 import { HereMapService } from "../../../../../services";
-import {
-  debounceTime,
-  distinctUntilChanged,
-  switchMap,
-  catchError,
-} from "rxjs/operators";
 import { ListService } from "../../../../../services/list.service";
 import { isTemplateHead } from "typescript";
 import { DomSanitizer } from "@angular/platform-browser";
 import constants from "../../../constants";
 import { promise } from "protractor";
+import { NgForm } from "@angular/forms";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { ModalService } from "../../../../../services/modal.service";
+import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+  takeUntil
+} from "rxjs/operators";
 declare var $: any;
 
 @Component({
@@ -26,7 +31,10 @@ declare var $: any;
   styleUrls: ["./add-service.component.css"],
 })
 export class AddServiceComponent implements OnInit {
+  @ViewChild('serviceaddF') serviceaddF: NgForm;
+    takeUntil$ = new Subject();
   logurl = this.apiService.AssetUrl;
+  isSubmitted = false;
   groups;
   vendors;
   vehicles = [];
@@ -159,12 +167,50 @@ export class AddServiceComponent implements OnInit {
     private dateAdapter: NgbDateAdapter<string>,
     private hereMap: HereMapService,
     private domSanitizer: DomSanitizer,
-    private listService: ListService
+    private listService: ListService,
+    private modalService: NgbModal,
+    private modalServiceOwn: ModalService,
   ) {
+    
+      this.modalServiceOwn.triggerRedirect.next(false);
+    this.router.events.pipe(takeUntil(this.takeUntil$)).subscribe((v: any) => {
+      if (v.url !== "undefined" || v.url !== "") {
+        this.modalServiceOwn.setUrlToNavigate(v.url);
+      }
+    });
+    this.modalServiceOwn.triggerRedirect$
+      .pipe(takeUntil(this.takeUntil$))
+      .subscribe((v) => {
+        if (v) {
+          this.router.navigateByUrl(
+            this.modalServiceOwn.urlToRedirect.getValue()
+          );
+        }
+      });
+
+  
     this.selectedFileNames = new Map<any, any>();
     // localStorage.setItem('serviceLogs', JSON.stringify(this.serviceData));
   }
 
+   canLeave(): boolean {
+     if (this.serviceaddF.dirty && !this.isSubmitted) {
+       if (!this.modalService.hasOpenModals()) {
+         let ngbModalOptions: NgbModalOptions = {
+           backdrop: "static",
+           keyboard: false,
+           size: "sm",
+         };
+         this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
+       }
+       return false;
+     }
+     this.modalServiceOwn.triggerRedirect.next(true);
+     this.takeUntil$.next();
+    this.takeUntil$.complete();
+    return true;
+  }
+  
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -299,6 +345,10 @@ export class AddServiceComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.submitDisabled = false;
+        this.modalServiceOwn.triggerRedirect.next(true);
+        this.takeUntil$.next();
+        this.takeUntil$.complete();
+        this.isSubmitted = true;
         this.toastr.success("Service log added successfully");
         this.router.navigateByUrl("/fleet/maintenance/service-log/list");
         this.spinner.hide();
@@ -956,6 +1006,10 @@ export class AddServiceComponent implements OnInit {
         this.response = res;
         this.submitDisabled = false;
         this.hasSuccess = true;
+        this.modalServiceOwn.triggerRedirect.next(true);
+        this.takeUntil$.next();
+        this.takeUntil$.complete();
+        this.isSubmitted = true;
         this.toastr.success("Service log Updated Successfully");
         this.router.navigateByUrl("/fleet/maintenance/service-log/list");
       },
