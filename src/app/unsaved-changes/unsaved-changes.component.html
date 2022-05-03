@@ -1,14 +1,17 @@
 
+<!--
 <div class="modal-header">
   <h4 class="modal-title" id="modal-basic-title">Confirmation</h4>
   <button type="button" class="close" aria-label="Close" (click)="close()">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
+-->
 <div class="modal-body">
- <h4>You have Unsaved Changes. Are you sure you want to continue?</h4>
+ <h2 style="background-color:powderblack;">Do you want to leave this page?</h2>
+ <h4>Changes you made may not be saved.</h4>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-dark" (click)="no()">No</button>
-  <button type="button" class="btn btn-dark" (click)="yes()">Yes</button>
+  <button type="button" class="btn btn-success btn-sm" (click)="no()">Stay</button>
+  <button type="button" class="btn btn-success btn-sm" (click)="yes()">Leave</button>
 </div>

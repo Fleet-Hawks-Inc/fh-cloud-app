@@ -33,7 +33,7 @@ import { TableModule } from 'primeng/table';
 
   const routes: Routes = [
   { path: 'add', component: AddAssetsComponent, canDeactivate: [unsavedChangesGuard], data: { title: 'Add Asset' } },
-  { path: 'edit/:assetID', component: AddAssetsComponent, data: { title: 'Edit Asset' } },
+  { path: 'edit/:assetID', component: AddAssetsComponent,canDeactivate: [unsavedChangesGuard], data: { title: 'Edit Asset' } },
   { path: 'list/:sessionID', component: AssetListComponent, data: { title: 'Asset List', reuseRoute: true } },
   { path: 'detail/:assetID', component: AssetDetailComponent, data: { title: 'Asset Detail' } }
 ];
