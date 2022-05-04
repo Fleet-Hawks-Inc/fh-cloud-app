@@ -43,7 +43,7 @@ export class ForgotPasswordComponent implements OnInit {
       }
       )
       .catch(err => {
-        console.log(typeof err);
+
         this.hasError = true;
         if (err && err.message.includes('Attempt')) {
           this.Error = 'OTP limit exceeded - Please try after 15 mins.'
