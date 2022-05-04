@@ -109,7 +109,8 @@ const routes: Routes = [
         (m) => m.AssetsSettingsModules
       ),
     data: { title: "Assets Settings" },
-  },
+  }
+
 ];
 
 @NgModule({
@@ -128,8 +129,7 @@ const routes: Routes = [
     ImportDriversComponent,
     VehicleSettingsComponent,
     AssetsSettingComponent,
-    // DeletedAssetsComponent,
-    // ImportedAssetsComponent,
+
   ],
   imports: [
     CommonModule,

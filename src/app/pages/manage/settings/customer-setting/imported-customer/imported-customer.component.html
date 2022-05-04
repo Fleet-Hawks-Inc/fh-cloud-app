@@ -14,7 +14,7 @@
                         <div class="bg-white p-3 text-dark">
                             <div class="form-group row pt-3">
                                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
-                                    <p-table #dt class="text-capitalize" [loading]="!loaded" [value]="importVehicles"
+                                    <p-table #dt class="text-capitalize" [loading]="!loaded" [value]="importCustomers"
                                         [columns]="selectedColumns">
                                         <!-- Caption template of data table -->
                                         <ng-template pTemplate="caption">
@@ -29,7 +29,7 @@
                                                     <button type="button" pButton (click)="refreshData()"
                                                         pTooltip="Refresh" class="p-button-outlined mr-2"
                                                         icon="fas fa-sync"></button>
-                                                    <button type="button" pButton pTooltip="Import Vehicles"
+                                                    <button type="button" pButton pTooltip="Import Customers"
                                                         (click)="openModal()" class="p-button-outlined mr-2"
                                                         icon="pi pi-plus"></button>
                                                     <button pButton pRipple pTooltip="Clear Filter"
@@ -62,12 +62,12 @@
 
                                             </tr>
                                         </ng-template>
-                                        <ng-template pTemplate="body" let-vehicle>
+                                        <ng-template pTemplate="body" let-customer>
                                             <tr>
-                                                <td>{{vehicle.displayName}}</td>
-                                                <td>{{vehicle.timeCreated | date : 'dd/MM/yyyy hh:mm:ss a '}}</td>
-                                                <td>{{vehicle.module}}</td>
-                                                <td><span class="badge badge-dark">{{vehicle.fileStatus}}</span></td>
+                                                <td>{{customer.displayName}}</td>
+                                                <td>{{customer.timeCreated}}</td>
+                                                <td>{{customer.module}}</td>
+                                                <td><span class="badge badge-dark">{{customer.fileStatus}}</span></td>
                                             </tr>
                                         </ng-template>
                                         <!-- Empty Template -->
@@ -82,7 +82,7 @@
                                         <ng-template pTemplate="summary" let-columns>
 
                                             <div class="col-lg-12 mt-3 text-center">Total Records:
-                                                {{importVehicles.length}}</div>
+                                                {{importCustomers.length}}</div>
                                         </ng-template>
                                     </p-table>
                                 </div>
@@ -101,7 +101,7 @@
 <p-dialog header="Import Customers" (onHide)="cancel()" [(visible)]="display" [style]="{width: '40vw'}" position="top">
     <div class="row">
         <div class="col-lg-12">
-            <span>To successfully import customer data please make sure your file conforms following:​</span>
+            <span>To successfully import customer data please make sure your file confirms following:​</span>
             ​<ul style="margin:0px">
                 <li> File must have all the headers. <strong><a class="text-success"
                             href='assets/customer_import_template.csv'>Click

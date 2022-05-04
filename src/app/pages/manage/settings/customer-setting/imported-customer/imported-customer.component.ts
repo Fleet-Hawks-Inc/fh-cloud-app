@@ -20,7 +20,7 @@ export class ImportedCustomerComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
   loaded = false;
   validData = [];
-  importVehicles = [];
+  importCustomers = [];
 
   isFileValid = false;
   inValidMessages = [];
@@ -29,7 +29,8 @@ export class ImportedCustomerComponent implements OnInit {
   submitDisabled: boolean = true;
 
   importData = {
-    module: 'customer',
+    module: 'contact',
+    eType: 'customer'
   }
 
   // columns of data table
@@ -47,7 +48,7 @@ export class ImportedCustomerComponent implements OnInit {
 
   ngOnInit(): void {
     this.setToggleOptions();
-    this.fetchVehicleImport()
+    this.fetchCustomersImport()
   }
 
   setToggleOptions() {
@@ -151,14 +152,14 @@ export class ImportedCustomerComponent implements OnInit {
     this.inValidMessages = [];
   }
 
-  async fetchVehicleImport() {
-    let result = await this.apiService.getData('importer/get?type=customer').toPromise();
+  async fetchCustomersImport() {
+    let result = await this.apiService.getData('importer/get?type=contact').toPromise();
     if (result.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
       this.loaded = true;
     }
     if (result && result.length > 0) {
-      this.importVehicles = result;
+      this.importCustomers = result;
     }
     this.loaded = true;
   }
@@ -185,7 +186,7 @@ export class ImportedCustomerComponent implements OnInit {
             this.toastr.success("The file has been scheduled for processing and you will be notified via email once it is completed")
             $('#importDocs').val('');
             this.display = false;
-            this.fetchVehicleImport();
+            this.fetchCustomersImport();
           }
         })
       }
@@ -202,8 +203,8 @@ export class ImportedCustomerComponent implements OnInit {
   }
 
   refreshData() {
-    this.importVehicles = []
-    this.fetchVehicleImport();
+    this.importCustomers = []
+    this.fetchCustomersImport();
     this.dataMessage = Constants.FETCHING_DATA;
   }
 
