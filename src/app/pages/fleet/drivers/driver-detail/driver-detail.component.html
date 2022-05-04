@@ -198,6 +198,7 @@
                                                                     }}
                                                                     <b class="text-success">{{
                                                                         data.firstName}} {{data.lastName}}</b>
+                                                                    ({{data.isImport}})
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -1079,7 +1080,8 @@
                                             Loaded Miles:
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                            {{ payPerMile.loadedMiles ? payPerMile.loadedMiles : '0' }} {{ payPerMile.currency }}
+                                            {{ payPerMile.loadedMiles ? payPerMile.loadedMiles : '0' }} {{
+                                            payPerMile.currency }}
                                         </div>
                                     </div>
                                     <div class="row m-0" *ngIf="paymentType === 'Pay Per Mile'">
@@ -1093,7 +1095,8 @@
                                             Loaded Miles (Team):
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                            {{ payPerMile.loadedMilesTeam ? payPerMile.loadedMilesTeam : '0' }} {{ payPerMile.currency }}
+                                            {{ payPerMile.loadedMilesTeam ? payPerMile.loadedMilesTeam : '0' }} {{
+                                            payPerMile.currency }}
                                         </div>
                                     </div>
                                     <div class="row m-0" *ngIf="paymentType === 'Pay Per Mile'">
@@ -1107,7 +1110,8 @@
                                             Empty Miles:
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                            {{ payPerMile.emptyMiles ? payPerMile.emptyMiles : '0' }} {{ payPerMile.currency }}
+                                            {{ payPerMile.emptyMiles ? payPerMile.emptyMiles : '0' }} {{
+                                            payPerMile.currency }}
                                         </div>
                                     </div>
                                     <div class="row m-0" *ngIf="paymentType === 'Pay Per Mile'">
@@ -1121,7 +1125,8 @@
                                             Empty Miles (Team):
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                            {{ payPerMile.emptyMilesTeam ? payPerMile.emptyMilesTeam : '0' }} {{ payPerMile.currency }}
+                                            {{ payPerMile.emptyMilesTeam ? payPerMile.emptyMilesTeam : '0' }} {{
+                                            payPerMile.currency }}
                                         </div>
                                     </div>
                                     <div class="row m-0" *ngIf="paymentType === 'Percentage'">
@@ -1135,7 +1140,8 @@
                                             Load Pay Percentage:
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                            {{ payPercentage.loadPayPercentage ? payPercentage.loadPayPercentage : '-' }}
+                                            {{ payPercentage.loadPayPercentage ? payPercentage.loadPayPercentage : '-'
+                                            }}
                                         </div>
                                     </div>
                                     <div class="row m-0" *ngIf="paymentType === 'Percentage'">
@@ -1149,7 +1155,8 @@
                                             Load Pay Percentage Of:
                                         </div>
                                         <div class="col-lg-6 p-2 bor_half text-capitalize">
-                                            {{ payPercentage.loadPayPercentageOf ? payPercentage.loadPayPercentageOf : '-' }}
+                                            {{ payPercentage.loadPayPercentageOf ? payPercentage.loadPayPercentageOf :
+                                            '-' }}
                                         </div>
                                     </div>
                                     <div class="row m-0" *ngIf="paymentType === 'Pay Per Hour'">
