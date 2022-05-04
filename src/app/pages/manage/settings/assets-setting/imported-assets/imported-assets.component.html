@@ -65,7 +65,7 @@
                                         <ng-template pTemplate="body" let-asset>
                                             <tr>
                                                 <td>{{asset.displayName}}</td>
-                                                <td>{{asset.timeCreated | date : 'dd/MM/yyyy hh:mm:ss a'}}</td>
+                                                <td>{{asset.timeCreated}}</td>
                                                 <td>{{asset.module}}</td>
                                                 <td><span class="badge badge-dark">{{asset.fileStatus}}</span></td>
                                             </tr>
@@ -107,8 +107,8 @@
             <span>To successfully import asset data please make sure your file conforms following:</span>
             <ul style="margin:0px">
                 <li> File must have all the headers. <strong><a class="text-success"
-                            href='assets/asset_import_template.csv'>Click
-                            Here</a></strong> to download the template file.</li>
+                            href='assets/asset_import_template.csv'><u>Click
+                                Here</u></a></strong> to download the template file.</li>
                 <li> File must be comma seperated.</li>
                 <li> File must have all the predefined header with valid data.</li>
                 <li> File must not contain more than 200 records. </li>
