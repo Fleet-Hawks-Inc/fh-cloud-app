@@ -358,8 +358,8 @@ export class AddDriverComponent
     private dashboardUtilityService: DashboardUtilityService,
     private routeMgmntService: RouteManagementServiceService
   ) {
+   /*
     this.modalServiceOwn.triggerRedirect.next(false);
-
     this.router.events.pipe(takeUntil(this.takeUntil$)).subscribe((v: any) => {
       if (v.url !== "undefined" || v.url !== "") {
         this.modalServiceOwn.setUrlToNavigate(v.url);
@@ -374,6 +374,7 @@ export class AddDriverComponent
           );
         }
       });
+    */  
     this.selectedFileNames = new Map<any, any>();
     const date = new Date();
     this.getcurrentDate = {
@@ -408,6 +409,8 @@ export class AddDriverComponent
       }
     }, 1500);
   }
+  
+  /*
   //Unsaved Changes Pop Up
    canLeave(): boolean {
      if (this.driverF.dirty && !this.isSubmitted) {
@@ -426,7 +429,7 @@ export class AddDriverComponent
      this.takeUntil$.complete();
      return true;
    }
-
+   */
   onChangeHideErrors(fieldname: any) {
     $('[name="' + fieldname + '"]')
       .removeClass("error")
@@ -1020,10 +1023,10 @@ export class AddDriverComponent
             this.dashboardUtilityService.refreshDrivers = true;
             this.submitDisabled = false;
             this.toastr.success("Driver added successfully");
-            this.isSubmitted = true;
-            this.modalServiceOwn.triggerRedirect.next(true);
-            this.takeUntil$.next();
-            this.takeUntil$.complete();
+            //this.isSubmitted = true;
+            //this.modalServiceOwn.triggerRedirect.next(true);
+            //this.takeUntil$.next();
+            //this.takeUntil$.complete();
             this.spinner.hide();
             this.router.navigateByUrl(`/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`);
           },
@@ -1490,12 +1493,12 @@ export class AddDriverComponent
             this.response = res;
             this.hasSuccess = true;
             this.isSubmitted = true;
-            this.submitDisabled = false;
+            //this.submitDisabled = false;
             this.dashboardUtilityService.refreshDrivers = true;
             this.toastr.success("Driver updated successfully");
-            this.modalServiceOwn.triggerRedirect.next(true);
-            this.takeUntil$.next();
-            this.takeUntil$.complete();
+            //this.modalServiceOwn.triggerRedirect.next(true);
+            //this.takeUntil$.next();
+            //this.takeUntil$.complete();
             this.cancel();
           },
         });
