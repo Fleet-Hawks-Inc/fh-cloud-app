@@ -64,7 +64,7 @@ export class FuelEntryListComponent implements OnInit {
   start: any = '';
   end: any = '';
   lastTimeCreated = ''
-  totalRecords = 20;
+  totalRecords = 0;
   pageLength = 10;
   lastEvaluatedKey = '';
   error={
@@ -110,7 +110,7 @@ export class FuelEntryListComponent implements OnInit {
   }
   ngOnInit() {
     this.fetchVendorList();
-    // this.fuelEntriesCount();
+  //   this.fuelEntriesCount();
     this.fetchVehicleList();
     this.fetchAssetList();
     this.fetchWEXCode();
@@ -340,7 +340,6 @@ export class FuelEntryListComponent implements OnInit {
 
 
       this.fuelList = this.fuelList.concat(_.orderBy(result.Items, [(obj) => new Date(obj.data.date)], ['desc']))
-
       if (result.LastEvaluatedKey.fuelSK !== undefined) {
         // for prev button
         this.lastEvaluatedKey = encodeURIComponent(result.LastEvaluatedKey.fuelSK)
@@ -349,7 +348,7 @@ export class FuelEntryListComponent implements OnInit {
         }
         this.loaded = true
       } else {
-        this.lastEvaluatedKey = '';
+        this.lastEvaluatedKey = 'end';
       }
     })
   }
@@ -381,6 +380,8 @@ export class FuelEntryListComponent implements OnInit {
     this.end = '';
     this.dataMessage = Constants.FETCHING_DATA;
     this.fuelList = [];
+    this.lastEvaluatedKey=''
+    this.lastTimeCreated=''
     this.initDataTable();
     //this.fuelEntriesCount();
     //this.resetCountResult();
@@ -447,6 +448,7 @@ export class FuelEntryListComponent implements OnInit {
     this.lastEvaluatedKey = '';
     this.dataMessage = Constants.FETCHING_DATA;
     this.fuelList = [];
+    this.totalRecords=0;
     this.initDataTable();
     // this.fuelEntriesCount();
     this.resetCountResult();
