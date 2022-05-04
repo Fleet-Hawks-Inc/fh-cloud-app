@@ -57,8 +57,46 @@
                       Customers</a>
                   </li>
                   <li>
-                    <a routerLink="/manage/settings/brokers/overview"><i class="fas fa-chevron-right"></i>
+                    <a routerLink="/manage/settings/contacts-import" [queryParams]="{
+                      entity: 'broker'
+                    }"><i class="fas fa-chevron-right"></i>
                       Brokers</a>
+                  </li>
+                  <li>
+                    <a routerLink="/manage/settings/contacts-import" [queryParams]="{
+                      entity: 'shipper'
+                    }"><i class="fas fa-chevron-right"></i>
+                      Shippers</a>
+                  </li>
+                  <li>
+                    <a routerLink="/manage/settings/contacts-import" [queryParams]="{
+                      entity: 'receiver'
+                    }"><i class="fas fa-chevron-right"></i>
+                      Receivers</a>
+                  </li>
+                  <li>
+                    <a routerLink="/manage/settings/contacts-import" [queryParams]="{
+                      entity: 'vendor'
+                    }"><i class="fas fa-chevron-right"></i>
+                      Vendors</a>
+                  </li>
+                  <li>
+                    <a routerLink="/manage/settings/contacts-import" [queryParams]="{
+                      entity: 'carrier'
+                    }"><i class="fas fa-chevron-right"></i>
+                      Carriers</a>
+                  </li>
+                  <li>
+                    <a routerLink="/manage/settings/contacts-import" [queryParams]="{
+                      entity: 'fc'
+                    }"><i class="fas fa-chevron-right"></i>
+                      Factoring Company</a>
+                  </li>
+                  <li>
+                    <a routerLink="/manage/settings/contacts-import" [queryParams]="{
+                      entity: 'owner_operator'
+                    }"><i class="fas fa-chevron-right"></i>
+                      Owner Operator </a>
                   </li>
                 </ul>
               </div>
