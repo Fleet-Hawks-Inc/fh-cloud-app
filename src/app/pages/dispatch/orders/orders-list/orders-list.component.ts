@@ -234,7 +234,6 @@ detailUrl = []
     { field: 'totalAmount', header: 'Amount', type: 'text' },
     { field: 'invStatus', header: 'Status', type: 'text' },
     { field: 'orderStatus', header: 'Trip Status', type: 'text' },
-    { field: 'action', header: 'Actions', type: 'text' },
   ]
   isOrderPriceEnabled=environment.isOrderPriceEnabled
 
@@ -814,4 +813,13 @@ detailUrl = []
     // alert();
     op.show(event);
   }
+  
+
+     /**
+     * Clears the table filters
+     * @param table Table 
+     */
+  clear(table: Table) {
+    table.clear();
+}
   }

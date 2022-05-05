@@ -105,10 +105,16 @@
                         <div class="text-right">
                           <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
                             class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+
                           <button type="button" pButton pTooltip="Add" routerLink="/dispatch/orders/add"
                             class="p-button-outlined mr-2" icon="pi pi-plus"></button>
+
                           <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
-                            icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+                            (click)="clear(dt)" icon="pi pi-filter-slash"></button>
+
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+
                           <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header"
                             selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}"
                             placeholder="Choose Columns">
@@ -136,7 +142,7 @@
                             </div>
                           </span>
                         </th>
-                        <!-- <th style="width: 12%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th> -->
+                        <th style="width: 5%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
                       </tr>
 
                     </ng-template>
@@ -188,74 +194,18 @@
                           {{ order.totalAmount }}<br />
                         </td>
                         <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:12%">
-                          <!-- <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br> -->
-
                           <div class="badges ">
                             <b>Invoiced: </b>
-                            <p-badge [value]="order.invoicedTime ? 'Yes' : 'No'" styleClass="p-mr-2" severity="info">
-                            </p-badge><br>
-                            <div class="mt-2">
-                              <b>Payment:</b>
-                              <p-badge class="p-badges"
-                                [value]="order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'" styleClass="p-mr-2"
-                                severity="success"></p-badge>
-                            </div>
-                            <!-- <b>Invoiced: </b> {{order.invoicedTime ? 'Yes' : 'No'}} <br> -->
-                            <!-- <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}} -->
+                            <span class="badge badge-success" *ngIf="order.invStatus"><i class="fa fa-check"></i></span>
+                            <span class="badge badge-info" *ngIf="!order.invStatus"><i
+                                class="fa fa-close"></i></span><br>
+                            <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
                           </div>
                         </td>
                         <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:12%">
                           <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
                         </td>
-                        <!-- <td class="popc" style=" text-align: center; width: 100px;" pFrozenColumn alignFrozen="right"
-                          [frozen]="true"> -->
-
-                        <!-- <button type="text" class="p-button-text" style="color: black;" pButton
-                            icon="pi pi-ellipsis-v" (click)="openPanel(op,$event)"></button> -->
-
-                        <!-- <button type="button" class="btn btn-outline-secondary mr-2" placement="right"
-                            ngbPopover="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-                            popoverTitle="Popover on bottom" popoverClass="popc">
-                            P
-                          </button> -->
-
-                        <!-- <p-overlayPanel [id]="rowIndex" #op [showCloseIcon]="false" [showTransitionOptions]="'0ms'"
-                            [hideTransitionOptions]="'0ms'">
-                            <ng-template pTemplate>
-                              <a *ngIf="order.orderStatus!= 'delivered'" class="dropdown-item"
-                                (click)="closePanel(op)">Edit</a>
-                              <a *ngIf="order.orderStatus === 'confirmed'" class="dropdown-item"
-                                (mouseleave)="op.hide()" (click)="closePanel(op)">Create Trip</a>
-                              <a *ngIf="order.orderStatus == 'created' ||
-                                order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
-                                (click)="deactivateOrder(order)">Delete</a>
-                              <a *ngIf="order.orderStatus === 'created'" class="dropdown-item"
-                                (click)="confirmEmail(order, i)">Confirm</a>
-                              <a *ngIf="order.orderStatus === 'created' ||
-                                order.orderStatus === 'confirmed'" class="dropdown-item" (click)="showBrokerageModal(
-                                order,
-                                ordersDraw,
-                                i,
-                                'all'
-                                )">Brokerage</a>
-                              <a *ngIf="order.orderStatus === 'brokerage'" class="dropdown-item" (click)="updateCreatedStatus(order,
-                                ordersDraw, i)">Cancel Brokerage</a>
-                              <a class="dropdown-item" [routerLink]="[
-                                '/dispatch',
-                                'orders',
-                                'add'
-                                ]" [queryParams]="{
-                                cloneID: order.orderID
-                                }" (click)="closePanel(op)">Clone</a>
-                              <a *ngIf="order.canRecall" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
-                                order.orderID
-                                }}" [queryParams]="{
-                                state: 'recall'
-                                }">Recall</a>
-                            </ng-template>
-                          </p-overlayPanel> -->
-                        <!-- </td> -->
-                        <td style="width:12%;overflow: inherit !important;">
+                        <td style="width:5%;overflow: inherit !important;">
                           <div class="dropdown dropright" style="z-index: 1000">
                             <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{ i
                               }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -452,6 +402,20 @@
                     {{dataMessage}}
                     <br /><br>
                   </div>
+                </ng-template>
+
+
+                <!-- Summary Section with Load More button -->
+
+                <ng-template pTemplate="summary" let-columns>
+                  <div class="col-lg-12 mt-3 text-center " *ngIf="lastEvaluatedKey !=='end' && orders.length !==0 ">
+                    <button type="button " (click)="onScroll($event) " class="btn btn-success btn-sm text-light ">Load
+                      More..</button>
+
+                    <br /><br>
+                  </div>
+                  <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey ==='end'">
+                    Total Records: {{orders.length}}</div>
                 </ng-template>
                 </p-table>
               </div>
