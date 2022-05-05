@@ -124,6 +124,8 @@ export class PaymentPdfsComponent implements OnInit {
     "pph": "Pay Per Hour",
     "pfr": "Pay Flat Rate"
   }
+  multiPay = false;
+
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
       async (res: any) => {
@@ -273,6 +275,10 @@ export class PaymentPdfsComponent implements OnInit {
     for (let index = 0; index < this.settlements.length; index++) {
       const element = this.settlements[index];
 
+      if(element.paymentSelected) {
+        this.multiPay = true;
+      }
+
       // addCharges
       element.addition.map((add) => {
         this.addCharges.push(add);
@@ -380,7 +386,8 @@ export class PaymentPdfsComponent implements OnInit {
             let obj = {
               tripNo: trip.tripNo,
               date: trip.dateCreated,
-              plans: []
+              plans: [],
+              paymentSelected: v.paymentSelected ? v.paymentSelected[0] : '' 
             };
             if (v.plan.length > 0) {
               // if sub trip is settled
@@ -423,7 +430,6 @@ export class PaymentPdfsComponent implements OnInit {
       }
       this.grandTotal += item.totalMiles;
     }
-
   }
 
   fetchDriverDetails() {
