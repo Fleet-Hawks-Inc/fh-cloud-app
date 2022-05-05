@@ -240,6 +240,14 @@ export class AddSettlementComponent implements OnInit {
     currency: 'CAD',
     default: false,
   }
+
+  totalPay = {
+    miles: 0,
+    delivery: 0,
+    percentage: 0,
+    flat: 0,
+    hourly: 0
+  }
   constructor(
     private listService: ListService,
     private route: ActivatedRoute,
@@ -968,6 +976,8 @@ export class AddSettlementComponent implements OnInit {
   }
 
   calculateFinalTotal() {
+    this.calculateOverallTotal();
+
     this.settlementData.taxes = 0;
     this.settlementData.subTotal =
       this.settlementData.paymentTotal +
@@ -1028,6 +1038,48 @@ export class AddSettlementComponent implements OnInit {
       this.submitDisabled = false;
     }
     this.limitDecimals();
+  }
+
+  calculateOverallTotal() {
+    this.totalPay = {
+      miles: 0,
+      delivery: 0,
+      percentage: 0,
+      flat: 0,
+      hourly: 0
+    }
+    for (const iterator of this.trips) {
+        if(iterator.paymentSelected && iterator.selected) {
+          if(iterator.paymentSelected[0].pType === 'ppm') {
+            this.totalPay.miles += Number(iterator.amount) 
+          } else if(iterator.paymentSelected[0].pType === 'pp') {
+            this.totalPay.percentage += Number(iterator.amount) 
+          } else if(iterator.paymentSelected[0].pType === 'ppd') {
+            this.totalPay.delivery += Number(iterator.amount) 
+          } else if(iterator.paymentSelected[0].pType === 'pph') {
+            this.totalPay.hourly += Number(iterator.amount) 
+          } else if(iterator.paymentSelected[0].pType === 'pfr') {
+            this.totalPay.flat += Number(iterator.amount) 
+          }
+        }
+    }
+
+    for (const iterator of this.settledTrips ) {
+      if(iterator.paymentSelected && iterator.selected) {
+        if(iterator.paymentSelected[0].pType === 'ppm') {
+          this.totalPay.miles += Number(iterator.amount) 
+        } else if(iterator.paymentSelected[0].pType === 'pp') {
+          this.totalPay.percentage += Number(iterator.amount) 
+        } else if(iterator.paymentSelected[0].pType === 'ppd') {
+          this.totalPay.delivery += Number(iterator.amount) 
+        } else if(iterator.paymentSelected[0].pType === 'pph') {
+          this.totalPay.hourly += Number(iterator.amount) 
+        } else if(iterator.paymentSelected[0].pType === 'pfr') {
+          this.totalPay.flat += Number(iterator.amount) 
+        }
+      }
+    }
+
   }
 
   limitDecimals() {
@@ -2066,6 +2118,7 @@ export class AddSettlementComponent implements OnInit {
         }
       }
     }
+    this.calculateOverallTotal()
     this.dummySettledTrips = result;
     let stlObj = result.reduce((a: any, b: any) => {
       return (
@@ -2076,6 +2129,7 @@ export class AddSettlementComponent implements OnInit {
     }, {});
     this.tripsObject = _.merge(this.tripsObject, stlObj);
     await this.fetchFuelExpenses();
+    
   }
 
   remStldTrip(tripID: string, splitID: string, index: number, splitIndex: any) {
