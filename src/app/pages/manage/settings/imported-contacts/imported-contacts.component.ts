@@ -52,7 +52,7 @@ export class ImportedContactsComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.importData.eType = params.entity;
-      this.entity = params.entity + 's';
+      this.entity = (params.entity + 's').replace('_', ' ');
 
     });
 
@@ -162,7 +162,7 @@ export class ImportedContactsComponent implements OnInit {
   }
 
   async fetchCustomersImport() {
-    let result = await this.apiService.getData('importer/get?type=contact').toPromise();
+    let result = await this.apiService.getData(`importer/get?type=contact&entity=${this.importData.eType}`).toPromise();
     if (result.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
       this.loaded = true;
