@@ -27,6 +27,7 @@ export class PurchaseOrderDetailComponent implements OnInit {
   purchaseID;
   vendorName: "";
   emailDisabled = false;
+  documents: any = [];
 
   constructor(
     private accountService: AccountService,
@@ -56,6 +57,43 @@ export class PurchaseOrderDetailComponent implements OnInit {
     this.status = result[0].status;
     this.billStatus = result[0].billStatus;
     this.commDetails = result[0].detail;
+    if (result[0].docs.length > 0) {
+      result[0].docs.forEach((x: any) => {
+        let obj: any = {};
+        if (
+          x.storedName.split(".")[1] === "jpg" ||
+          x.storedName.split(".")[1] === "png" ||
+          x.storedName.split(".")[1] === "jpeg"
+        ) {
+          obj = {
+            imgPath: `${x.storedName}`,
+            docPath: `${x.storedName}`,
+            displayName: x.displayName,
+            name: x.storedName,
+            ext: x.storedName.split(".")[1],
+          };
+        } else {
+          obj = {
+            imgPath: "assets/img/icon-pdf.png",
+            docPath: `${x.storedName}`,
+            displayName: x.displayName,
+            name: x.storedName,
+            ext: x.storedName.split(".")[1],
+          };
+        }
+        this.documents.push(obj);
+      });
+    }
+  }
+
+
+  deleteDocument(name: string, index: number) {
+    this.accountService
+      .deleteData(`purchase-orders/uploadDelete/${this.purchaseID}/${name}`)
+      .subscribe((result: any) => {
+        this.documents.splice(index, 1);
+        this.toaster.success("Attachment deleted successfully.");
+      });
   }
 
   async fetchVendor(vendorID: string) {
