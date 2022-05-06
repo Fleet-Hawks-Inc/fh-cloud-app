@@ -66,8 +66,8 @@ export class PurchaseOrderDetailComponent implements OnInit {
           x.storedName.split(".")[1] === "jpeg"
         ) {
           obj = {
-            imgPath: `${x.storedName}`,
-            docPath: `${x.storedName}`,
+            imgPath: `${x.urlPath}`,
+            docPath: `${x.urlPath}`,
             displayName: x.displayName,
             name: x.storedName,
             ext: x.storedName.split(".")[1],
@@ -75,7 +75,7 @@ export class PurchaseOrderDetailComponent implements OnInit {
         } else {
           obj = {
             imgPath: "assets/img/icon-pdf.png",
-            docPath: `${x.storedName}`,
+            docPath: `${x.urlPath}`,
             displayName: x.displayName,
             name: x.storedName,
             ext: x.storedName.split(".")[1],
