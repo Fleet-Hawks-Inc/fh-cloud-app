@@ -99,40 +99,10 @@ export class AddContactRenewComponent implements OnInit {
     private location: Location,
     private dateAdapter: NgbDateAdapter<string>
   ) {
-  this.modalServiceOwn.triggerRedirect.next(false);
-    this.router.events.pipe(takeUntil(this.takeUntil$)).subscribe((v: any) => {
-      if (v.url !== "undefined" || v.url !== "") {
-        this.modalServiceOwn.setUrlToNavigate(v.url);
-      }
-    });
-    this.modalServiceOwn.triggerRedirect$
-      .pipe(takeUntil(this.takeUntil$))
-      .subscribe((v) => {
-        if (v) {
-          this.router.navigateByUrl(
-            this.modalServiceOwn.urlToRedirect.getValue()
-          );
-        }
-      });
+
   }
   
-   canLeave(): boolean {
-     if (this.contactF.dirty && !this.isSubmitted) {
-       if (!this.modalService.hasOpenModals()) {
-         let ngbModalOptions: NgbModalOptions = {
-           backdrop: "static",
-           keyboard: false,
-           size: "sm",
-         };
-         this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
-       }
-       return false;
-     }
-     this.modalServiceOwn.triggerRedirect.next(true);
-     this.takeUntil$.next();
-    this.takeUntil$.complete();
-    return true;
-  }
+
   
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
@@ -239,10 +209,7 @@ export class AddContactRenewComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-        this.modalServiceOwn.triggerRedirect.next(true);
-          this.takeUntil$.next();
-          this.takeUntil$.complete();
-                    this.isSubmitted = true;
+    
         this.toastr.success("Contact Renewal Reminder Added Successfully!");
         this.cancel();
         this.reminderData = {
@@ -361,10 +328,7 @@ export class AddContactRenewComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-        this.modalServiceOwn.triggerRedirect.next(true);
-          this.takeUntil$.next();
-          this.takeUntil$.complete();
-                    this.isSubmitted = true;
+      
         this.toastr.success("Contact Renewal Reminder Updated Successfully");
         this.router.navigateByUrl("/fleet/reminders/contact-renewals/list");
         this.Success = "";
