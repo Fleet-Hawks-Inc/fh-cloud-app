@@ -4,7 +4,7 @@
             <header class="page-header pr27 pl18">
                 <div class="row">
                     <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                        <h2 class="font-weight-bold pl-0">Import Customers</h2>
+                        <h2 class="font-weight-bold pl-0">Import {{entity}}</h2>
                     </div>
                 </div>
             </header>
@@ -21,7 +21,7 @@
 
                                             <div class="p-d-flex d-flex justify-content-between align-items-center">
                                                 <div>
-                                                    <h3 class="m-0"> Import Customers </h3>
+                                                    <h3 class="m-0"> Import {{entity}} </h3>
                                                 </div>
 
 
@@ -66,7 +66,7 @@
                                             <tr>
                                                 <td>{{customer.displayName}}</td>
                                                 <td>{{customer.timeCreated}}</td>
-                                                <td>{{customer.module}}</td>
+                                                <td>{{customer.eType}}</td>
                                                 <td><span class="badge badge-dark">{{customer.fileStatus}}</span></td>
                                             </tr>
                                         </ng-template>
@@ -98,13 +98,14 @@
 </section>
 
 
-<p-dialog header="Import Customers" (onHide)="cancel()" [(visible)]="display" [style]="{width: '40vw'}" position="top">
+<p-dialog header="Import {{entity}}" (onHide)="cancel()" [(visible)]="display" [style]="{width: '40vw'}" position="top">
     <div class="row">
         <div class="col-lg-12">
-            <span>To successfully import customer data please make sure your file confirms following:​</span>
+            <span>To successfully import {{entity}} data please make sure your file confirms
+                following:​</span>
             ​<ul style="margin:0px">
                 <li> File must have all the headers. <strong><a class="text-success"
-                            href='assets/customer_import_template.csv'>Click
+                            href='assets/contact_import_template.csv'>Click
                             Here</a></strong> to download the template file.</li>
                 <li> File must be comma seperated.</li>
                 <li> File must have all the predefined header with valid data.</li>

@@ -81,41 +81,11 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     private modalServiceOwn: ModalService,
   ) { 
    
-     this.modalServiceOwn.triggerRedirect.next(false);
-    this.router.events.pipe(takeUntil(this.takeUntil$)).subscribe((v: any) => {
-      if (v.url !== "undefined" || v.url !== "") {
-        this.modalServiceOwn.setUrlToNavigate(v.url);
-      }
-    });
-    this.modalServiceOwn.triggerRedirect$
-      .pipe(takeUntil(this.takeUntil$))
-      .subscribe((v) => {
-        if (v) {
-          this.router.navigateByUrl(
-            this.modalServiceOwn.urlToRedirect.getValue()
-          );
-        }
-      });
+
 
   }
  
-  canLeave(): boolean {
-     if (this.serviceProgramF.dirty && !this.isSubmitted) {
-       if (!this.modalService.hasOpenModals()) {
-         let ngbModalOptions: NgbModalOptions = {
-           backdrop: "static",
-           keyboard: false,
-           size: "sm",
-         };
-         this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
-       }
-       return false;
-     }
-     this.modalServiceOwn.triggerRedirect.next(true);
-     this.takeUntil$.next();
-    this.takeUntil$.complete();
-    return true;
-  }
+
 
   async ngOnInit() {
     this.programID = this.route.snapshot.params['programID'];
@@ -207,10 +177,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-        this.modalServiceOwn.triggerRedirect.next(true);
-        this.takeUntil$.next();
-        this.takeUntil$.complete();
-        this.isSubmitted = true;
+
         this.toastr.success('Service added successfully');
         this.router.navigateByUrl('/fleet/maintenance/service-program/list');
 
@@ -308,10 +275,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
         this.response = res;
         this.hasSuccess = true;
         this.submitDisabled = false;
-        this.modalServiceOwn.triggerRedirect.next(true);
-        this.takeUntil$.next();
-        this.takeUntil$.complete();
-        this.isSubmitted = true;
+  
         this.toastr.success('Service Updated Successfully');
         this.router.navigateByUrl('/fleet/maintenance/service-program/list');
       },
