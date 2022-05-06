@@ -127,16 +127,32 @@
                     <!-- Header template of DataTable -->
                     <ng-template pTemplate="header">
                       <tr>
-                        <th style="width: 5%"></th>
+                        <th style="width: 5%" alignFrozen="left" pFrozenColumn [frozen]="true"></th>
 
                         <th *ngFor="let column of dataColumns" [pSortableColumn]="column.field" pResizableColumn
-                          style="width:12%">
+                          style="width:12%" [hidden]="column.field === 'newStatus'">
                           <span>
                             <div class="flex justify-content-center align-items-center" alignFrozen="right"
                               pFrozenColumn [frozen]="true">
                               {{column.header}}
-                              <p-sortIcon [field]="column.field"></p-sortIcon>
+                              <p-sortIcon [field]="column.field" [hidden]="column.field === 'invStatus'">
+                              </p-sortIcon>
                               <p-columnFilter [type]="column.type" [field]="column.field" matchMode="contains"
+                                [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu"
+                                [hidden]="column.field === 'invStatus'">
+                              </p-columnFilter>
+                            </div>
+                          </span>
+
+                        </th>
+
+                        <th pSortableColumn="newStatus" style="width: 10%" alignFrozen="right" pFrozenColumn
+                          [frozen]="true">
+                          <span>
+                            <div class="flex justify-content-center align-items-center">
+                              Order Status
+                              <p-sortIcon field="newStatus"></p-sortIcon>
+                              <p-columnFilter type="text" field="newStatus" matchMode="contains"
                                 [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
                               </p-columnFilter>
                             </div>
@@ -150,7 +166,7 @@
                     <!-- Body Template of Data Table -->
                     <ng-template pTemplate="body" let-order let-rowIndex="rowIndex" let-expanded="expanded">
                       <tr style="cursor: pointer;">
-                        <td style="width:5%">
+                        <td alignFrozen="left" pFrozenColumn [frozen]="true" style="width:5%">
                           <button type="button" pButton [pRowToggler]="order"
                             class="p-button-text p-button-rounded p-button-plain"
                             [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
@@ -196,16 +212,19 @@
                         <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:12%">
                           <div class="badges ">
                             <b>Invoiced: </b>
-                            <span class="badge badge-success" *ngIf="order.invStatus"><i class="fa fa-check"></i></span>
-                            <span class="badge badge-info" *ngIf="!order.invStatus"><i
+                            <span class="badge badge-success" *ngIf="order.invoicedTime"><i
+                                class="fa fa-check"></i></span>
+                            <span class="badge badge-info" *ngIf="!order.invoicedTime"><i
                                 class="fa fa-close"></i></span><br>
                             <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
                           </div>
                         </td>
-                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:12%">
+                        <td alignFrozen="right" pFrozenColumn [frozen]="true"
+                          routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:10%">
                           <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
                         </td>
-                        <td style="width:5%;overflow: inherit !important;">
+                        <td style="width:5%;overflow: inherit !important; " pFrozenColumn alignFrozen="right"
+                          [frozen]="true">
                           <div class="dropdown dropright" style="z-index: 1000">
                             <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{ i
                               }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

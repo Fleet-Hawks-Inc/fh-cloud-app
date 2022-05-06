@@ -15,6 +15,7 @@ import { trigger,state,style,transition,animate } from '@angular/animations';
 import { NgSelectComponent } from "@ng-select/ng-select";
 import { OverlayPanel } from "primeng/overlaypanel";
 import { Router } from "@angular/router";
+
 declare var $: any;
 @Component({
   selector: "app-orders-list",
@@ -226,14 +227,14 @@ detailUrl = []
   dataColumns = [
     { field: 'orderNumber', header: 'Order#', type: "text" },
     { field: 'orderMode', header: 'Type', type: "text" },
-    { field: 'createdDate', header: 'Date', type: "date" },
+    { field: 'createdDate', header: 'Date', type: "text" },
     { field: 'customerName', header: 'Customer', type: 'text' },
     // { field: 'dateAndTime', header: ' Pickup Location', type: 'text' },
     // { field: 'dateAndTime', header: 'Drop Off Location', type: 'text' },
     { field: 'shippersReceiversInfo.quantityUnit', header: 'Commodity', type: 'text' },
     { field: 'totalAmount', header: 'Amount', type: 'text' },
     { field: 'invStatus', header: 'Status', type: 'text' },
-    { field: 'orderStatus', header: 'Trip Status', type: 'text' },
+    { field: 'newStatus', header: 'Order Status', type: 'text' },
   ]
   isOrderPriceEnabled=environment.isOrderPriceEnabled
 
@@ -785,7 +786,7 @@ detailUrl = []
     }
   }
 
-  onScroll() {
+  onScroll = async (event: any) => {
     if (this.loaded) {
       this.orderFiltr.searchValue = "",
         this.orderFiltr.startDate = "",
