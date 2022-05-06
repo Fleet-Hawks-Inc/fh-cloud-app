@@ -312,21 +312,7 @@ export class AddVehicleComponent implements OnInit {
     private modalServiceOwn: ModalService
   ) {
   
-        this.modalServiceOwn.triggerRedirect.next(false);
-    this.router.events.pipe(takeUntil(this.takeUntil$)).subscribe((v: any) => {
-      if (v.url !== 'undefined' || v.url !== '') {
-        this.modalServiceOwn.setUrlToNavigate(v.url);
-      }
-    });
-    this.modalServiceOwn.triggerRedirect$
-      .pipe(takeUntil(this.takeUntil$))
-      .subscribe((v) => {
-        if (v) {
-          this.router.navigateByUrl(
-            this.modalServiceOwn.urlToRedirect.getValue()
-          );
-        }
-      });
+
   
   
     this.selectedFileNames = new Map<any, any>();
@@ -335,23 +321,7 @@ export class AddVehicleComponent implements OnInit {
     });
     this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
   }
-    canLeave(): boolean {
-     if (this.vehicleF.dirty && !this.isSubmitted) {
-       if (!this.modalService.hasOpenModals()) {
-         let ngbModalOptions: NgbModalOptions = {
-           backdrop: "static",
-           keyboard: false,
-           size: "sm",
-         };
-         this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
-       }
-       return false;
-     }
-     this.modalServiceOwn.triggerRedirect.next(true);
-     this.takeUntil$.next();
-    this.takeUntil$.complete();
-    return true;
-  }
+
 
   async ngOnInit() {
     this.getYears();
@@ -794,10 +764,6 @@ export class AddVehicleComponent implements OnInit {
             this.response = res;
             this.Success = "";
             this.submitDisabled = false;
-          this.modalServiceOwn.triggerRedirect.next(true);
-          this.takeUntil$.next();
-          this.takeUntil$.complete();
-          this.isSubmitted = true;
             this.toastr.success("Vehicle Added Successfully");
             this.router.navigateByUrl("/fleet/vehicles/list");
             this.dashboardUtilityService.refreshVehicles = true;
@@ -1391,10 +1357,6 @@ export class AddVehicleComponent implements OnInit {
             this.submitDisabled = false;
             this.response = res;
             this.Success = "";
-              this.modalServiceOwn.triggerRedirect.next(true);
-          this.takeUntil$.next();
-          this.takeUntil$.complete();
-          this.isSubmitted = true;
             this.toastr.success("Vehicle Updated successfully");
             this.dashboardUtilityService.refreshVehicles = true;
             this.cancel();
