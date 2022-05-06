@@ -10,7 +10,17 @@
               >
             </h4>
           </div>
-          <div class="col-md-10 col-lg-10 pr-1 text-right">
+          <div class="col-md-8 col-lg-8 pr-1">
+            <span>Payment Currency: {{ settlementData.currency }}</span>,
+            <span class="ml-3">Total Payment: {{ settlementData.paymentTotal }}</span>, 
+            <span class="ml-3">Addition: {{ settlementData.additionTotal }}</span>,
+            <span class="ml-3">Deduction: {{ settlementData.deductionTotal }}</span>,
+            <span class="ml-3">Fuel Addition: {{ settlementData.fuelAdd }}</span>,
+            <span class="ml-3">Fuel Deduction: {{ settlementData.fuelDed }}</span>,
+            <span class="ml-3">Taxes: {{ settlementData.taxes }}</span>,
+            <span class="ml-3">Grand Total: {{ settlementData.finalTotal }}</span>
+          </div>
+          <div class="col-md-2 col-lg-2 pr-1 text-right">
             <a
               routerLink="/accounts/settlements/list"
               class="btn btn-default btn-sm"
@@ -1479,6 +1489,108 @@
                         </div>
                       </div>
                     </div>
+
+                    <!-- general overview -->
+                    <div
+                      class="row pt-2"
+                      *ngIf="settlementData.type == 'driver'"
+                    >
+                      <div class="tripdiv20">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold"
+                              >Miles Payment</label
+                            >
+                          </div>
+                          <div class="col-lg-6">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="totalPay.miles"
+                              [(ngModel)]="totalPay.miles"
+                              disabled
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="tripdiv20">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold"
+                              >Delivery Payment</label
+                            >
+                          </div>
+                          <div class="col-lg-6">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="totalPay.delivery"
+                              [(ngModel)]="totalPay.delivery"
+                              disabled
+                            />
+                          </div>
+                        </div>
+                        
+                      </div>
+                      <div class="tripdiv20">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold"
+                              >Percentage Payment</label
+                            >
+                          </div>
+                          <div class="col-lg-6">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="totalPay.percentage"
+                              [(ngModel)]="totalPay.percentage"
+                              disabled
+                            />
+                          </div>
+                        </div>
+                        
+                      </div>
+                      <div class="tripdiv20">
+                        <div class="row pt-2">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold"
+                              >Flat Payment</label
+                            >
+                          </div>
+                          <div class="col-lg-6">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="totalPay.flat"
+                              [(ngModel)]="totalPay.flat"
+                              disabled
+                            />
+                          </div>
+                        </div>
+                        
+                      </div>
+                      <div class="tripdiv20">
+                        <div class="row pt-2">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold"
+                              >Hour Payment</label
+                            >
+                          </div>
+                          <div class="col-lg-6">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="totalPay.hourly"
+                              [(ngModel)]="totalPay.hourly"
+                              disabled
+                            />
+                          </div>
+                        </div>
+                        
+                      </div>
+                    </div>
+
                     <!-- DRIVER 1  -->
                     <div *ngIf="settlementData.type == 'owner_operator'">
                       <div

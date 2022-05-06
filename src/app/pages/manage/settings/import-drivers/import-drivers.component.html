@@ -60,9 +60,9 @@
                     <ng-template pTemplate="body" let-driver>
                       <tr>
                         <td>{{driver.displayName}}</td>
-                        <td>{{driver.timeCreated | date : 'dd/MM/yyyy hh:mm:ss a '}}</td>
+                        <td>{{driver.timeCreated}}</td>
                         <td>{{driver.module}}</td>
-                        <td><span class="badge badge-dark">{{driver.fileStatus.replace('_', ' ')}}</span></td>
+                        <td><span class="badge badge-dark">{{driver.fileStatus}}</span></td>
                       </tr>
                     </ng-template>
                     <!-- Empty Template -->
@@ -101,7 +101,7 @@
       <span>To successfully import driver data please make sure your file confirms following:​</span>
       ​<ul style="margin:0px">
         <li> File must have all the headers. <strong><a class="text-success"
-              href='assets/driver_import_template.csv'>Click Here</a></strong> to
+              href='assets/driver_import_template.csv'><u>Click Here</u></a></strong> to
           download the template file.</li>
         <li> File must be comma seperated.</li>
         <li> File must have all the predefined header with valid data.</li>

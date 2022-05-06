@@ -19,17 +19,11 @@ import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
 import { DeletedCustomerComponent } from "./deleted-customer/deleted-customer.component";
 import { CustomerSettingComponent } from "./customer-setting.component";
-import { ImportedCustomerComponent } from "./imported-customer/imported-customer.component";
 const routes: Routes = [
   {
     path: "deleted-customers",
     component: DeletedCustomerComponent,
     data: { title: "Deleted Customer" },
-  },
-  {
-    path: "imported-customers",
-    component: ImportedCustomerComponent,
-    data: { title: "Imported Customer" },
   },
   {
     path: "overview",
@@ -39,7 +33,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [DeletedCustomerComponent, CustomerSettingComponent, ImportedCustomerComponent],
+  declarations: [DeletedCustomerComponent, CustomerSettingComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),

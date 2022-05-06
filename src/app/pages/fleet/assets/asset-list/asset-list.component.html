@@ -88,7 +88,7 @@
                                                                     <ng-template pTemplate="filter" let-value
                                                                         let-filter="filterCallback">
                                                                         <p-multiSelect
-                                                                            [options]="[ { name:'Active', value:'active'}, {name: 'InActive', value:'inActive'}]"
+                                                                            [options]="[ { name:'Active', value:'active'},{name: 'InActive', value:'inactive'}]"
                                                                             placeholder="Any"
                                                                             (onChange)="filter($event.value)"
                                                                             optionLabel="name" optionValue="value">
@@ -140,7 +140,7 @@
                                                             {{asset.ownerShip !== "interchange" ? asset.VIN: "-"}}
                                                         </span>
                                                         <span *ngSwitchCase="'assetType'"> {{((asset.assetType) ?
-                                                            asset.assetType : '-') | titlecase}}</span>
+                                                            (asset.assetType.replace('_',' ')) : '-') | titlecase}}</span>
                                                         <span *ngSwitchCase="'manufacturer'"> {{((asset.manufacturer) ?
                                                             asset.manufacturer : '-') | titlecase}}</span>
                                                         <span *ngSwitchCase="'year'"> {{((asset.year) ? asset.year :

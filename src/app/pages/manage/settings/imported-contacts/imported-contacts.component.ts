@@ -1,17 +1,19 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import CSVFileValidator, { ValidatorConfig } from 'csv-file-validator';
 import { Table } from 'primeng/table';
-import Constants from '../../../constants';
+import Constants from '../../constants';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/services';
+import { ActivatedRoute } from '@angular/router';
 declare var $: any;
 
 @Component({
-  selector: 'app-imported-customer',
-  templateUrl: './imported-customer.component.html',
-  styleUrls: ['./imported-customer.component.css']
+  selector: 'app-imported-contacts',
+  templateUrl: './imported-contacts.component.html',
+  styleUrls: ['./imported-contacts.component.css']
 })
-export class ImportedCustomerComponent implements OnInit {
+export class ImportedContactsComponent implements OnInit {
+
   @ViewChild('dt') table: Table;
 
   @ViewChild('myInput')
@@ -32,6 +34,7 @@ export class ImportedCustomerComponent implements OnInit {
     module: 'contact',
     eType: 'customer'
   }
+  entity: string;
 
   // columns of data table
   dataColumns = [
@@ -44,9 +47,15 @@ export class ImportedCustomerComponent implements OnInit {
   _selectedColumns: any[];
   display = false;
 
-  constructor(private apiService: ApiService, private toastr: ToastrService) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService) { }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.importData.eType = params.entity;
+      this.entity = (params.entity + 's').replace('_', ' ');
+
+    });
+
     this.setToggleOptions();
     this.fetchCustomersImport()
   }
@@ -153,7 +162,7 @@ export class ImportedCustomerComponent implements OnInit {
   }
 
   async fetchCustomersImport() {
-    let result = await this.apiService.getData('importer/get?type=contact').toPromise();
+    let result = await this.apiService.getData(`importer/get?type=contact&entity=${this.importData.eType}`).toPromise();
     if (result.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
       this.loaded = true;
@@ -215,4 +224,5 @@ export class ImportedCustomerComponent implements OnInit {
   clear(table: Table) {
     table.clear();
   }
+
 }

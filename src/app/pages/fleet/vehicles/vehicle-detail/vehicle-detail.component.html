@@ -7,38 +7,14 @@
             <label class="mt-0 mb-0">Vehicle Details</label>
           </div>
           <div class="col header-buttons">
-            <button
-              id="btnLocation"
-              *ngIf="deviceInfo.deviceType"
-              type="button"
-              pButton
-              class="mr-1"
-              tooltipPosition="left"
-              (click)="locationDetails()"
-              icon="fas fa-light fa-location-crosshairs"
-              pTooltip="See Live Location"
-            ></button>
+            <button id="btnLocation" *ngIf="deviceInfo.deviceType" type="button" pButton class="mr-1"
+              tooltipPosition="left" (click)="locationDetails()" icon="fas fa-light fa-location-crosshairs"
+              pTooltip="See Live Location"></button>
 
-            <button
-              id="btnVehicleEdit"
-              routerLink="/fleet/vehicles/edit/{{ vehicleID }}"
-              type="button"
-              pButton
-              class="mr-1"
-              tooltipPosition="left"
-              icon="fas fa-light fa-pen"
-              pTooltip="Edit"
-            ></button>
-            <button
-              id="btnVehicleList"
-              routerLink="/fleet/vehicles/list/{{sessionID}}"
-              type="button"
-              pButton
-              class="mr-1"
-              tooltipPosition="left"
-              icon="fas fa-light fa-list"
-              pTooltip="List"
-            ></button>
+            <button id="btnVehicleEdit" routerLink="/fleet/vehicles/edit/{{ vehicleID }}" type="button" pButton
+              class="mr-1" tooltipPosition="left" icon="fas fa-light fa-pen" pTooltip="Edit"></button>
+            <button id="btnVehicleList" routerLink="/fleet/vehicles/list/{{sessionID}}" type="button" pButton
+              class="mr-1" tooltipPosition="left" icon="fas fa-light fa-list" pTooltip="List"></button>
           </div>
         </div>
       </header>
@@ -49,10 +25,7 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row justify-content-between pl-2 pr-2">
                 <div class="col-lg-10">
-                  <label
-                    class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                    >Basic Details</label
-                  >
+                  <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Basic Details</label>
                 </div>
 
                 <div class="col-lg-3">
@@ -64,9 +37,7 @@
                       </div>
                     </div>
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Vehicle Name/Number:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -74,9 +45,7 @@
                       </div>
                     </div>
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Vehicle Type:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -84,17 +53,13 @@
                       </div>
                     </div>
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         VIN:
                       </div>
                       <div class="col-lg-8 p-2 border-box">{{ VIN }}</div>
                     </div>
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Plate Number:
                       </div>
                       <div class="col-lg-8 p-2 border-box">
@@ -102,57 +67,37 @@
                       </div>
                     </div>
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Year:
                       </div>
                       <div class="col-lg-8 p-2 border-box">{{ year }}</div>
                     </div>
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Make:
                       </div>
-                      <div
-                        *ngIf="vehicleManufacturersList[manufacturerID]"
-                        class="col-lg-8 p-2 border-box"
-                      >
+                      <div *ngIf="vehicleManufacturersList[manufacturerID]" class="col-lg-8 p-2 border-box">
                         {{
-                          vehicleManufacturersList[manufacturerID] | titlecase
+                        vehicleManufacturersList[manufacturerID] | titlecase
                         }}
                       </div>
-                      <div
-                        *ngIf="!vehicleManufacturersList[manufacturerID]"
-                        class="col-lg-8 p-2 border-box"
-                      >
+                      <div *ngIf="!vehicleManufacturersList[manufacturerID]" class="col-lg-8 p-2 border-box">
                         {{ manufacturerID | titlecase }}
                       </div>
                     </div>
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Model:
                       </div>
-                      <div
-                        *ngIf="vehicleModelList[modelID]"
-                        class="col-lg-8 p-2 border-box"
-                      >
+                      <div *ngIf="vehicleModelList[modelID]" class="col-lg-8 p-2 border-box">
                         {{ vehicleModelList[modelID] | titlecase }}
                       </div>
-                      <div
-                        *ngIf="!vehicleModelList[modelID]"
-                        class="col-lg-8 p-2 border-box"
-                      >
+                      <div *ngIf="!vehicleModelList[modelID]" class="col-lg-8 p-2 border-box">
                         {{ modelID | titlecase }}
                       </div>
                     </div>
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Country:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -160,9 +105,7 @@
                       </div>
                     </div>
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Province/State:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -170,9 +113,7 @@
                       </div>
                     </div>
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Assign Driver:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -180,9 +121,7 @@
                       </div>
                     </div>
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Driver's Team:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -195,9 +134,7 @@
                         <div class="col-lg-8 p-2 border-box">Heavy Duty Maintenance</div>
                       </div> -->
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Annual Safety Date:
                       </div>
                       <div class="col-lg-8 p-2 border-box">
@@ -206,9 +143,7 @@
                     </div>
 
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Status:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -216,9 +151,7 @@
                       </div>
                     </div>
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Group:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -226,9 +159,7 @@
                       </div>
                     </div>
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Ownership:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -237,9 +168,7 @@
                     </div>
 
                     <div class="row m-0" *ngIf="ownership == 'ownerOperator'">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Owner Operator:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -248,9 +177,7 @@
                     </div>
 
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Enable IFTA Reporting:
                       </div>
                       <div class="col-lg-8 p-2 border-box">
@@ -259,9 +186,7 @@
                     </div>
 
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Color:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -270,19 +195,13 @@
                     </div>
 
                     <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Inspection Form:
                       </div>
                       <div class="col-lg-8 p-2 border-box">
-                        <a
-                          href="#inspectionFormModal"
-                          data-toggle="modal"
-                          data-target="#inspectionFormModal"
-                          class="modal-with-form font-weight-bold text-capitalize"
-                          >{{ inspectionForms.inspectionFormName }}</a
-                        >
+                        <a href="#inspectionFormModal" data-toggle="modal" data-target="#inspectionFormModal"
+                          class="modal-with-form font-weight-bold text-capitalize">{{ inspectionForms.inspectionFormName
+                          }}</a>
                       </div>
                     </div>
                   </div>
@@ -292,39 +211,24 @@
                       <div class="vehicle-common-box p-3 mb-3">
                         <div class="row">
                           <div class="col-lg-6">
-                            <label class="control-label font-weight-bold text-3"
-                              >Photo(s)</label
-                            >
+                            <label class="control-label font-weight-bold text-3">Photo(s)</label>
                           </div>
                         </div>
                         <hr class="solid mt-3" />
                         <div class="row">
-                          <div
-                            class="col-lg-6"
-                            *ngFor="let item of slides; let i = index"
-                          >
+                          <div class="col-lg-6" *ngFor="let item of slides; let i = index">
                             <div class="vehicle-photo-box">
-                              <img
-                                [src]="item.path"
-                                width="100%"
-                                class="img-fluid"
-                                style="height: 180px; object-fit: cover"
-                              />
+                              <img [src]="item.path" width="100%" class="img-fluid"
+                                style="height: 180px; object-fit: cover" />
                               <!-- <iframe [src]="item" width="100px" height="100px" frameborder="0"></iframe> -->
                               <hr class="m-3" />
                               <div class="row">
                                 <div class="col-lg-8">Image {{ i + 1 }}</div>
                                 <div class="col-lg-4 text-right">
-                                  <a
-                                    href="javascript:;"
-                                    class="modal-with-form"
-                                  >
-                                    <i
-                                      class="fas fa-times text-danger"
-                                      (click)="
+                                  <a href="javascript:;" class="modal-with-form">
+                                    <i class="fas fa-times text-danger" (click)="
                                         deleteDocument('image', item.name, i)
-                                      "
-                                    ></i>
+                                      "></i>
                                   </a>
                                 </div>
                               </div>
@@ -361,12 +265,8 @@
                           <div class="col-lg-12 p-2 font-weight-bold text-4">
                             Open Issues
 
-                            <a
-                              href="javascript:;"
-                              routerLink="/fleet/maintenance/issues/add"
-                              class="btn btn-xs btn-default pull-right"
-                              ><i class="fas fa-plus"></i> Add Issue</a
-                            >
+                            <a href="javascript:;" routerLink="/fleet/maintenance/issues/add"
+                              class="btn btn-xs btn-default pull-right"><i class="fas fa-plus"></i> Add Issue</a>
                           </div>
                         </div>
 
@@ -381,22 +281,16 @@
                             </thead>
 
                             <tbody>
-                              <tr
-                                *ngIf="issues.length == 0"
-                                style="text-align: center"
-                              >
+                              <tr *ngIf="issues.length == 0" style="text-align: center">
                                 <td colspan="3">{{ noRecordMsg }}</td>
                               </tr>
-                              <tr
-                                *ngFor="let data of issues"
-                                class="text-capitalize"
-                              >
+                              <tr *ngFor="let data of issues" class="text-capitalize">
                                 <td>{{ data.issueName }}</td>
                                 <td>
                                   {{
-                                    data.description != ""
-                                      ? data.description
-                                      : "-"
+                                  data.description != ""
+                                  ? data.description
+                                  : "-"
                                   }}
                                 </td>
                                 <td>{{ data.currentStatus }}</td>
@@ -413,13 +307,9 @@
                           <div class="col-lg-12 p-2 font-weight-bold text-4">
                             Service Reminders
 
-                            <a
-                              href="javascript:;"
-                              routerLink="/fleet/reminders/service-reminder/add"
-                              class="btn btn-xs btn-default pull-right"
-                              ><i class="fas fa-plus"></i> Add Service
-                              Reminders</a
-                            >
+                            <a href="javascript:;" routerLink="/fleet/reminders/service-reminder/add"
+                              class="btn btn-xs btn-default pull-right"><i class="fas fa-plus"></i> Add Service
+                              Reminders</a>
                           </div>
                         </div>
 
@@ -435,30 +325,23 @@
                             </thead>
 
                             <tbody>
-                              <tr
-                                *ngIf="serviceReminders.length == 0"
-                                style="text-align: center"
-                              >
+                              <tr *ngIf="serviceReminders.length == 0" style="text-align: center">
                                 <td colspan="4">{{ noRecordMsg }}</td>
                               </tr>
                               <tr *ngFor="let data of serviceReminders">
                                 <td>
                                   {{
-                                    data.nextServiceDate | date: "yyyy/MM/dd"
+                                  data.nextServiceDate | date: "yyyy/MM/dd"
                                   }}
                                 </td>
                                 <td>
-                                  <span
-                                    *ngIf="data.tasks.remindByUnit == 'time'"
-                                  >
+                                  <span *ngIf="data.tasks.remindByUnit == 'time'">
                                     Every {{ data.tasks.time }}
                                     {{ data.tasks.timeUnit }}(s)
                                   </span>
-                                  <span
-                                    *ngIf="
+                                  <span *ngIf="
                                       data.tasks.remindByUnit == 'odometer'
-                                    "
-                                  >
+                                    ">
                                     Every {{ data.tasks.odometer }} miles
                                   </span>
                                 </td>
@@ -479,13 +362,9 @@
                           <div class="col-lg-12 p-2 font-weight-bold text-4">
                             Renewal Reminders
 
-                            <a
-                              href="javascript:;"
-                              routerLink="/fleet/reminders/vehicle-renewals/add"
-                              class="btn btn-xs btn-default pull-right"
-                              ><i class="fas fa-plus"></i> Add Renewal
-                              Reminders</a
-                            >
+                            <a href="javascript:;" routerLink="/fleet/reminders/vehicle-renewals/add"
+                              class="btn btn-xs btn-default pull-right"><i class="fas fa-plus"></i> Add Renewal
+                              Reminders</a>
                           </div>
                         </div>
 
@@ -501,10 +380,7 @@
                             </thead>
 
                             <tbody>
-                              <tr
-                                *ngIf="renewalReminders.length == 0"
-                                style="text-align: center"
-                              >
+                              <tr *ngIf="renewalReminders.length == 0" style="text-align: center">
                                 <td colspan="4">{{ noRecordMsg }}</td>
                               </tr>
                               <tr *ngFor="let data of renewalReminders">
@@ -545,16 +421,10 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr
-                            *ngIf="servicePrograms.length == 0"
-                            style="text-align: center"
-                          >
+                          <tr *ngIf="servicePrograms.length == 0" style="text-align: center">
                             <td colspan="2">{{ noRecordMsg }}</td>
                           </tr>
-                          <tr
-                            *ngFor="let progran of servicePrograms"
-                            class="text-capitalize"
-                          >
+                          <tr *ngFor="let progran of servicePrograms" class="text-capitalize">
                             <td>{{ progran.programName }}</td>
                             <td>{{ progran.description }}</td>
                           </tr>
@@ -565,47 +435,27 @@
                   <div class="col-lg-12 mt-2 p-0">
                     <div class="vehicle-common-box mt-4">
                       <div class="row m-0">
-                        <div
-                          class="col-lg-12 p-2 back-color-gray font-weight-bold border-0 text-4"
-                        >
+                        <div class="col-lg-12 p-2 back-color-gray font-weight-bold border-0 text-4">
                           Document(s)
                         </div>
                       </div>
                       <table class="table table-responsive-lg mb-0">
                         <tbody>
-                          <tr
-                            *ngIf="docs.length == 0"
-                            style="text-align: center"
-                          >
+                          <tr *ngIf="docs.length == 0" style="text-align: center">
                             <td colspan="2">{{ noRecordMsg }}</td>
                           </tr>
                           <tr *ngFor="let data of docs; let i = index">
                             <td width="80%">
-                              <a href="{{ data.path }}" target="_blank"
-                                >Document {{ i + 1 }}</a
-                              >
+                              <a href="{{ data.path }}" target="_blank">Document {{ i + 1 }}</a>
                             </td>
                             <td width="20%">
-                              <a
-                                href="javascript:;"
-                                class="btn btn-deafault pull-right btn-xs"
-                                (click)="deleteDocument('doc', data.name, i)"
-                                ><i class="fas fa-trash-alt"></i
-                              ></a>
-                              <a
-                                class="btn btn-deafault pull-right btn-xs"
-                                href="{{ data.path }}"
-                                target="_blank"
-                                ><i class="fas fa-download"></i
-                              ></a>
-                              <a
-                                href="{{ data.path }}"
-                                class="btn btn-deafault pull-right btn-xs"
-                                (click)="setPDFSrc(data.path)"
-                                data-toggle="modal"
-                                data-target="#viewDocModal"
-                                ><i class="fas fa-eye"></i
-                              ></a>
+                              <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                                (click)="deleteDocument('doc', data.name, i)"><i class="fas fa-trash-alt"></i></a>
+                              <a class="btn btn-deafault pull-right btn-xs" href="{{ data.path }}" target="_blank"><i
+                                  class="fas fa-download"></i></a>
+                              <a href="{{ data.path }}" class="btn btn-deafault pull-right btn-xs"
+                                (click)="setPDFSrc(data.path)" data-toggle="modal" data-target="#viewDocModal"><i
+                                  class="fas fa-eye"></i></a>
                             </td>
                           </tr>
                         </tbody>
@@ -623,17 +473,12 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row justify-content-between pl-2 pr-2">
                 <div class="col-lg-10">
-                  <label
-                    class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                    >Lifecycle Details</label
-                  >
+                  <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Lifecycle Details</label>
                 </div>
 
                 <div class="col-lg-6">
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Start Date:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -641,9 +486,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       In-Service Odometer in Miles:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -651,9 +494,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Service Life in Years:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -661,9 +502,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Service Life in Months:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -674,9 +513,7 @@
 
                 <div class="col-lg-6">
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Service Life in Miles:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -684,9 +521,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Depreciation Value:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -694,9 +529,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Out-of-Service Date:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -704,9 +537,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Out-of-Service Odometer in Miles:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -724,10 +555,7 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row justify-content-between pl-2 pr-2">
                 <div class="col-lg-10">
-                  <label
-                    class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                    >Specifications</label
-                  >
+                  <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Specifications</label>
                 </div>
 
                 <div class="col-lg-6">
@@ -739,9 +567,7 @@
                   </div>
 
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Height:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -750,9 +576,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Ground Clearance:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -770,30 +594,26 @@
                     <!-- <div class="col-lg-8 p-2 text-right" ><a href="edit-vehicle.php" class="btn btn-xs btn-default"><i class="fas fa-pencil-alt"></i>Edit</a></div> -->
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Tare Weight:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
                       {{
-                        specifications.tareWeight
-                          ? specifications.tareWeight + " kg"
-                          : ""
+                      specifications.tareWeight
+                      ? specifications.tareWeight + " kg"
+                      : ""
                       }}
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Gross Vehicle Weight Rating:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
                       {{
-                        specifications.grossVehicleWeightRating
-                          ? specifications.grossVehicleWeightRating + " kg"
-                          : ""
+                      specifications.grossVehicleWeightRating
+                      ? specifications.grossVehicleWeightRating + " kg"
+                      : ""
                       }}
                     </div>
                   </div>
@@ -808,16 +628,11 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row justify-content-between pl-2 pr-2">
                 <div class="col-lg-10">
-                  <label
-                    class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                    >Insurance Details</label
-                  >
+                  <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Insurance Details</label>
                 </div>
                 <div class="col-lg-6">
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Insurance Vendor:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -825,9 +640,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Date of Issue:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -835,9 +648,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Premium Amount:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -846,9 +657,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Date of Expiry:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -859,31 +668,21 @@
 
                 <div class="col-lg-6">
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Reminder:
                     </div>
-                    <div
-                      class="col-lg-8 p-2 border-box"
-                      *ngIf="
+                    <div class="col-lg-8 p-2 border-box" *ngIf="
                         insurance.reminder != null && insurance.reminder != ''
-                      "
-                    >
+                      ">
                       Every {{ insurance.reminder }}
                       {{ insurance.remiderEvery }}
                     </div>
-                    <div
-                      class="col-lg-8 p-2 border-box"
-                      *ngIf="
+                    <div class="col-lg-8 p-2 border-box" *ngIf="
                         insurance.reminder == null || insurance.reminder == ''
-                      "
-                    ></div>
+                      "></div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Insurance Policy#:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -891,9 +690,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Insurance Amount:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -911,17 +708,13 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row justify-content-between pl-2 pr-2">
                 <div class="col-lg-10">
-                  <label
-                    class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                    >Engine &amp; Transmission</label
-                  >
+                  <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Engine &amp;
+                    Transmission</label>
                 </div>
 
                 <div class="col-lg-6">
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Engine Summary:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -929,9 +722,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Engine Brand:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -939,9 +730,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Cylinders:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -949,9 +738,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Stroke:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -959,9 +746,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Valves:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -972,9 +757,7 @@
                 <!-- Transmission DIV -->
                 <div class="col-lg-6">
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Transmission Summary:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -983,9 +766,7 @@
                   </div>
 
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Transmission Type:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -993,9 +774,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Transmission Gears:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1013,17 +792,12 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row justify-content-between pl-2 pr-2">
                 <div class="col-lg-10">
-                  <label
-                    class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                    >Wheels &amp; Tires</label
-                  >
+                  <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Wheels &amp; Tires</label>
                 </div>
 
                 <div class="col-lg-12">
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Number of Tires:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1031,9 +805,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Drive Type:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -1041,9 +813,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Brake System:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -1061,10 +831,7 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row justify-content-between pl-2 pr-2">
                 <div class="col-lg-10">
-                  <label
-                    class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                    >Fluids</label
-                  >
+                  <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Fluids</label>
                 </div>
 
                 <div class="col-lg-6">
@@ -1075,9 +842,7 @@
                     <!-- <div class="col-lg-8 p-2 text-right" ><a href="edit-vehicle.php" class="btn btn-xs btn-default"><i class="fas fa-pencil-alt"></i>Edit</a></div> -->
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Fuel Type:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -1085,9 +850,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Fuel Tank 1 Capacity:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1096,21 +859,13 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Fuel Tank 2 Capacity:
                     </div>
-                    <div
-                      class="col-lg-8 p-2 border-box"
-                      *ngIf="fluid.fuelTankTwoCapacity == 0"
-                    >
+                    <div class="col-lg-8 p-2 border-box" *ngIf="fluid.fuelTankTwoCapacity == 0">
                       -
                     </div>
-                    <div
-                      class="col-lg-8 p-2 border-box"
-                      *ngIf="fluid.fuelTankTwoCapacity != 0"
-                    >
+                    <div class="col-lg-8 p-2 border-box" *ngIf="fluid.fuelTankTwoCapacity != 0">
                       {{ fluid.fuelTankTwoCapacity }}
                       {{ fluid.fuelTankTwoType }}
                     </div>
@@ -1124,9 +879,7 @@
                   </div>
 
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Oil Capacity:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1134,9 +887,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       DEF(Diesel Exhaust Fluid) Capacity:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1154,17 +905,12 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row justify-content-between pl-2 pr-2">
                 <div class="col-lg-10">
-                  <label
-                    class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                    >Purchase Details</label
-                  >
+                  <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Purchase Details</label>
                 </div>
 
                 <div class="col-lg-6">
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Purchase Vendor:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -1172,9 +918,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Purchase Price :
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1183,9 +927,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       GST Included :
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1194,9 +936,7 @@
                   </div>
 
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Purchase Date:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1204,9 +944,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Purchase Odometer in Miles:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1215,47 +953,27 @@
                   </div>
                   <div class="vehicle-common-box mt-4">
                     <div class="row m-0">
-                      <div
-                        class="col-lg-12 p-2 back-color-gray font-weight-bold border-0 text-4"
-                      >
+                      <div class="col-lg-12 p-2 back-color-gray font-weight-bold border-0 text-4">
                         Purchase Document(s)
                       </div>
                     </div>
                     <table class="table table-responsive-lg mb-0">
                       <tbody>
-                        <tr
-                          *ngIf="pDocs.length == 0"
-                          style="text-align: center"
-                        >
+                        <tr *ngIf="pDocs.length == 0" style="text-align: center">
                           <td colspan="2">{{ noRecordMsg }}</td>
                         </tr>
                         <tr *ngFor="let data of pDocs; let i = index">
                           <td width="80%">
-                            <a href="{{ data.path }}" target="_blank"
-                              >Document {{ i + 1 }}</a
-                            >
+                            <a href="{{ data.path }}" target="_blank">Document {{ i + 1 }}</a>
                           </td>
                           <td width="20%">
-                            <a
-                              href="javascript:;"
-                              class="btn btn-deafault pull-right btn-xs"
-                              (click)="deleteDocument('purchase', data.name, i)"
-                              ><i class="fas fa-trash-alt"></i
-                            ></a>
-                            <a
-                              class="btn btn-deafault pull-right btn-xs"
-                              href="{{ data.path }}"
-                              target="_blank"
-                              ><i class="fas fa-download"></i
-                            ></a>
-                            <a
-                              href="javascript:;"
-                              class="btn btn-deafault pull-right btn-xs"
-                              (click)="setPDFSrc(data.path)"
-                              data-toggle="modal"
-                              data-target="#viewDocModal"
-                              ><i class="fas fa-eye"></i
-                            ></a>
+                            <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="deleteDocument('purchase', data.name, i)"><i class="fas fa-trash-alt"></i></a>
+                            <a class="btn btn-deafault pull-right btn-xs" href="{{ data.path }}" target="_blank"><i
+                                class="fas fa-download"></i></a>
+                            <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="setPDFSrc(data.path)" data-toggle="modal" data-target="#viewDocModal"><i
+                                class="fas fa-eye"></i></a>
                           </td>
                         </tr>
                       </tbody>
@@ -1265,9 +983,7 @@
 
                 <div class="col-lg-6">
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Warranty Expiration Date:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1275,9 +991,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Warranty Expiration Meter:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1285,9 +999,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Purchase Comments:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -1305,17 +1017,12 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row justify-content-between pl-2 pr-2">
                 <div class="col-lg-10">
-                  <label
-                    class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                    >Loan Details</label
-                  >
+                  <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Loan Details</label>
                 </div>
 
                 <div class="col-lg-6">
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Loan Vendor:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -1323,9 +1030,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Amount of Loan:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1333,23 +1038,19 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Annual Percentage Rate:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
                       {{
-                        loan.annualPercentageRate != ""
-                          ? loan.annualPercentageRate + "%"
-                          : ""
+                      loan.annualPercentageRate != ""
+                      ? loan.annualPercentageRate + "%"
+                      : ""
                       }}
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       GST Included :
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1357,9 +1058,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Down Payment:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1367,9 +1066,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Date of Loan:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1378,47 +1075,27 @@
                   </div>
                   <div class="vehicle-common-box mt-4">
                     <div class="row m-0">
-                      <div
-                        class="col-lg-12 p-2 back-color-gray font-weight-bold border-0 text-4"
-                      >
+                      <div class="col-lg-12 p-2 back-color-gray font-weight-bold border-0 text-4">
                         Loan Document(s)
                       </div>
                     </div>
                     <table class="table table-responsive-lg mb-0">
                       <tbody>
-                        <tr
-                          *ngIf="lDocs.length == 0"
-                          style="text-align: center"
-                        >
+                        <tr *ngIf="lDocs.length == 0" style="text-align: center">
                           <td colspan="2">{{ noRecordMsg }}</td>
                         </tr>
                         <tr *ngFor="let data of lDocs; let i = index">
                           <td width="80%">
-                            <a href="{{ data.path }}" target="_blank"
-                              >Document {{ i + 1 }}</a
-                            >
+                            <a href="{{ data.path }}" target="_blank">Document {{ i + 1 }}</a>
                           </td>
                           <td width="20%">
-                            <a
-                              href="javascript:;"
-                              class="btn btn-deafault pull-right btn-xs"
-                              (click)="deleteDocument('loan', data.name, i)"
-                              ><i class="fas fa-trash-alt"></i
-                            ></a>
-                            <a
-                              class="btn btn-deafault pull-right btn-xs"
-                              href="{{ data.path }}"
-                              target="_blank"
-                              ><i class="fas fa-download"></i
-                            ></a>
-                            <a
-                              href="javascript:;"
-                              class="btn btn-deafault pull-right btn-xs"
-                              (click)="setPDFSrc(data.path)"
-                              data-toggle="modal"
-                              data-target="#viewDocModal"
-                              ><i class="fas fa-eye"></i
-                            ></a>
+                            <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="deleteDocument('loan', data.name, i)"><i class="fas fa-trash-alt"></i></a>
+                            <a class="btn btn-deafault pull-right btn-xs" href="{{ data.path }}" target="_blank"><i
+                                class="fas fa-download"></i></a>
+                            <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="setPDFSrc(data.path)" data-toggle="modal" data-target="#viewDocModal"><i
+                                class="fas fa-eye"></i></a>
                           </td>
                         </tr>
                       </tbody>
@@ -1428,9 +1105,7 @@
 
                 <div class="col-lg-6">
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Loan End Date:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1438,9 +1113,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Loan Due Date:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1448,9 +1121,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Loan Due Date Reminder:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1459,9 +1130,7 @@
                   </div>
 
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Number of Payments:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1469,9 +1138,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Monthly Payment:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
@@ -1480,9 +1147,7 @@
                     </div>
                   </div>
                   <div class="row m-0">
-                    <div
-                      class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                    >
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Notes:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -1497,34 +1162,24 @@
                         <div class="boxshadow1">
                           <div class="widgetload">
                             <div class="widgettbload">
-                              <h2
-                                class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"
-                              >
+                              <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
                                 <i class="fas fa-user"></i> Vehicle Log
                               </h2>
                             </div>
                           </div>
-                          <div
-                            class="timeline timeline-simple changelog"
-                            style="
+                          <div class="timeline timeline-simple changelog" style="
                               max-height: 497px;
                               overflow-x: auto;
                               width: 100%;
-                            "
-                          >
-                            <div
-                              class="tm-body text-dark"
-                              *ngIf="vehicleLogs.length > 0"
-                            >
+                            ">
+                            <div class="tm-body text-dark" *ngIf="vehicleLogs.length > 0">
                               <ol class="tm-items">
                                 <li *ngFor="let data of vehicleLogs">
                                   <div class="tm-box">
-                                    <span class="release-date"
-                                      >{{
-                                        data.createdDate | date: "yyyy/MM/dd"
+                                    <span class="release-date">{{
+                                      data.createdDate | date: "yyyy/MM/dd"
                                       }}
-                                      - {{ data.createdTime }}</span
-                                    >
+                                      - {{ data.createdTime }}</span>
                                     <ul class="list-unstyled">
                                       <li>
                                         {{ data.userFirstName | titlecase }}
@@ -1533,17 +1188,14 @@
                                         {{ data.eventParams.type }}
                                         <b class="text-success">{{
                                           data.entityNumber
-                                        }}</b>
+                                          }}</b> ({{data.isImport}})
                                       </li>
                                     </ul>
                                   </div>
                                 </li>
                               </ol>
                             </div>
-                            <div
-                              class="mt-3 mb-3 text-center"
-                              *ngIf="vehicleLogs.length == 0"
-                            >
+                            <div class="mt-3 mb-3 text-center" *ngIf="vehicleLogs.length == 0">
                               {{ noRecordMsg }}
                             </div>
                           </div>
@@ -1562,24 +1214,13 @@
 </section>
 
 <!-- VIEW DOCUMENT MODAL -->
-<div
-  class="modal fade"
-  id="viewDocModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="viewDocModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -1603,26 +1244,15 @@
 </div>
 
 <!-- view inspection form -->
-<div
-  class="modal fade"
-  id="inspectionFormModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="inspectionFormModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="inspectionFormModal" tabindex="-1" role="dialog" aria-labelledby="inspectionFormModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="inspectionFormModalLabel">
           Vehicle Inspection Detail
         </h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -1648,12 +1278,8 @@
                 </div>
                 <div class="col-lg-9">
                   <span *ngIf="inspectionForms">
-                    <span *ngIf="inspectionForms.isDefaultInspectionType == '0'"
-                      >NO</span
-                    >
-                    <span *ngIf="inspectionForms.isDefaultInspectionType == '1'"
-                      >YES</span
-                    >
+                    <span *ngIf="inspectionForms.isDefaultInspectionType == '0'">NO</span>
+                    <span *ngIf="inspectionForms.isDefaultInspectionType == '1'">YES</span>
                   </span>
                 </div>
               </div>
@@ -1675,12 +1301,10 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr
-                    *ngFor="
+                  <tr *ngFor="
                       let data of inspectionForms.parameters;
                       let i = index
-                    "
-                  >
+                    ">
                     <td>{{ i + 1 }}</td>
                     <td class="font-weight-bold text-capitalize">
                       {{ data.name }}

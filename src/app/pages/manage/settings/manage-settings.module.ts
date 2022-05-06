@@ -30,6 +30,7 @@ import { AutoCompleteModule } from "primeng/autocomplete";
 import { DropdownModule } from "primeng/dropdown";
 import { AssetsSettingComponent } from "./assets-setting/assets-setting.component";
 import { DialogModule } from 'primeng/dialog';
+import { ImportedContactsComponent } from './imported-contacts/imported-contacts.component';
 
 const routes: Routes = [
   { path: "overview", component: SettingsOverviewComponent },
@@ -95,6 +96,11 @@ const routes: Routes = [
     data: { title: "Safety Settings" },
   },
   {
+    path: "contacts-import",
+    component: ImportedContactsComponent,
+    data: { title: "Contacts Imports" },
+  },
+  {
     path: "customer",
     loadChildren: () =>
       import("./customer-setting/customer-setting.modules").then(
@@ -109,7 +115,8 @@ const routes: Routes = [
         (m) => m.AssetsSettingsModules
       ),
     data: { title: "Assets Settings" },
-  },
+  }
+
 ];
 
 @NgModule({
@@ -128,8 +135,8 @@ const routes: Routes = [
     ImportDriversComponent,
     VehicleSettingsComponent,
     AssetsSettingComponent,
-    // DeletedAssetsComponent,
-    // ImportedAssetsComponent,
+    ImportedContactsComponent,
+
   ],
   imports: [
     CommonModule,

@@ -174,7 +174,6 @@ export class AssetListComponent implements OnInit {
   set selectedColumns(val: any[]) {
     //restore original order
     this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
-
   }
 
   getSuggestions = _.debounce(function (value) {
@@ -286,9 +285,6 @@ export class AssetListComponent implements OnInit {
       else {
         this.lastEvaluatedKey = 'end'
       }
-      for (var i = 0; i < result.data.length; i++) {
-        result.data[i].assetType = result.data[i].assetType.replace('_',' ');
-      }
       this.allData = this.allData.concat(result.data)
       this.loaded = true;
       this.isSearch = false;
@@ -349,7 +345,7 @@ export class AssetListComponent implements OnInit {
     this.allData = [];
     this.assetID = '';
     this.assetIdentification = '';
-    this.assetType = null;
+    this.assetType = [];
     this.suggestedAssets = [];
     this.lastEvaluatedKey = '';
     this.loaded = false;
