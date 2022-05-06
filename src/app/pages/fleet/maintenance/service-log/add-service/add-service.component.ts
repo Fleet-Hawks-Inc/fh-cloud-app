@@ -172,44 +172,14 @@ export class AddServiceComponent implements OnInit {
     private modalServiceOwn: ModalService,
   ) {
     
-      this.modalServiceOwn.triggerRedirect.next(false);
-    this.router.events.pipe(takeUntil(this.takeUntil$)).subscribe((v: any) => {
-      if (v.url !== "undefined" || v.url !== "") {
-        this.modalServiceOwn.setUrlToNavigate(v.url);
-      }
-    });
-    this.modalServiceOwn.triggerRedirect$
-      .pipe(takeUntil(this.takeUntil$))
-      .subscribe((v) => {
-        if (v) {
-          this.router.navigateByUrl(
-            this.modalServiceOwn.urlToRedirect.getValue()
-          );
-        }
-      });
+
 
   
     this.selectedFileNames = new Map<any, any>();
     // localStorage.setItem('serviceLogs', JSON.stringify(this.serviceData));
   }
 
-   canLeave(): boolean {
-     if (this.serviceaddF.dirty && !this.isSubmitted) {
-       if (!this.modalService.hasOpenModals()) {
-         let ngbModalOptions: NgbModalOptions = {
-           backdrop: "static",
-           keyboard: false,
-           size: "sm",
-         };
-         this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
-       }
-       return false;
-     }
-     this.modalServiceOwn.triggerRedirect.next(true);
-     this.takeUntil$.next();
-    this.takeUntil$.complete();
-    return true;
-  }
+
   
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
