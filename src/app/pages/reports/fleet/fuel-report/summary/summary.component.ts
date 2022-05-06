@@ -36,7 +36,7 @@ export class SummaryComponent implements OnInit {
         usd_amount: 0,
         l_quantity: 0,
         g_quantity: 0,
-        }
+    }
     vehicleSet = []
     assetsSet = []
     exportList: any = [];
@@ -49,6 +49,27 @@ export class SummaryComponent implements OnInit {
     dateMinLimit = { year: 1950, month: 1, day: 1 };
     date = new Date();
     futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+
+    fuelResult: any = [];
+    fuelConsumeLTR = 0;
+    fuelConsumeGL = 0;
+    fuelCostCAD = 0;
+    fuelCostUSD = 0;
+    fuelCAD = [];
+    fuelUSD = [];
+    fuelData = [];
+    searchActive = false;
+    finalFuelRunningCAD = 0;
+    finalFuelRunningUSD = 0;
+    finalFuelConsumedLTR = 0;
+    finalFuelConsumedGL = 0;
+    emptyVariable = [];
+    fuelQtyLitres = [];
+    fuelQtyGallons = [];
+    fuelQty = [];
+
+
+
 
     constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
@@ -93,6 +114,10 @@ export class SummaryComponent implements OnInit {
     fetchFuelCount() {
         this.apiService.getData('fuelEntries/fetch/fuel/count').subscribe((result: any) => {
             this.fuelCount = result;
+            this.finalFuelRunningCAD = this.fuelCount.cad_amount;
+            this.finalFuelRunningUSD = this.fuelCount.usd_amount;
+            this.finalFuelConsumedLTR = this.fuelCount.l_quantity;
+            this.finalFuelConsumedGL = this.fuelCount.g_quantity;
         })
     }
 
@@ -113,36 +138,103 @@ export class SummaryComponent implements OnInit {
                 else {
                     this.lastItemSK = 'end';
                 }
-                   result[`Items`].forEach(element => {
-        let date: any = moment(element.data.date)
-        if (element.data.time) {
-          let time = moment(element.data.time, 'h mm a')
-          date.set({
-            hour: time.get('hour'),
-            minute: time.get('minute')
-          })
-          date = date.format('MMM Do YYYY, h:mm a')
-        }
-        else {
-          date = date.format('MMM Do YYYY')
-        }
-        element.dateTime = date
-      });
-             this.fuelList = this.fuelList.concat(result.Items);
-             this.loaded = true;
+                result[`Items`].forEach(element => {
+                    let date: any = moment(element.data.date)
+                    if (element.data.time) {
+                        let time = moment(element.data.time, 'h mm a')
+                        date.set({
+                            hour: time.get('hour'),
+                            minute: time.get('minute')
+                        })
+                        date = date.format('MMM Do YYYY, h:mm a')
+                    }
+                    else {
+                        date = date.format('MMM Do YYYY')
+                    }
+                    element.dateTime = date
+                });
+                this.fuelList = this.fuelList.concat(result.Items);
+                this.loaded = true;
+                if (this.searchActive === true) {
+                    this.calCulateAmt();
+                    this.finalFuelRunningCAD = this.fuelCostCAD;
+                    this.finalFuelRunningUSD = this.fuelCostUSD;
+                }
+                if (this.searchActive === true) {
+                    this.calculateQTY();
+                    this.finalFuelConsumedLTR = this.fuelConsumeLTR;
+                    this.finalFuelConsumedGL = this.fuelConsumeGL;
+                }
             }
         }
     }
 
+    calCulateAmt() {
+        this.fuelCAD = [];
+        this.fuelUSD = [];
+        this.fuelData = [];
+        for (let i = 0; i < this.fuelList.length; i++) {
+            this.fuelData.push(this.fuelList[i].data)
+        }
+        this.fuelData.map((e: any) => {
+            if (e.currency === 'CAD') {
+                this.fuelCAD.push(e);
+            } else {
+                this.fuelUSD.push(e);
+            }
+        })
+        if (this.fuelCAD.length > 0 || this.fuelUSD.length > 0) {
+            for (const element of this.fuelCAD) {
+                this.fuelCostCAD = this.fuelCostCAD + Number(element.amt);
+            }
+            for (const element of this.fuelUSD) {
+                this.fuelCostUSD = this.fuelCostUSD + Number(element.amt);
+            }
+        }
+    }
+
+
+    calculateQTY() {
+        this.fuelQtyLitres = [];
+        this.fuelQtyGallons = [];
+        this.fuelQty = []
+        for (let i = 0; i < this.fuelList.length; i++) {
+            this.fuelQty.push(this.fuelList[i].data)
+        }
+        this.fuelQty.map((x: any) => {
+            if (x.uom === 'L' || x.uom === 'litre') {
+                this.fuelQtyLitres.push(x);
+            } else {
+                this.fuelQtyGallons.push(x);
+            }
+        })
+        if (this.fuelQtyLitres.length > 0 || this.fuelQtyGallons.length > 0) {
+            for (const element of this.fuelQtyLitres) {
+                this.fuelConsumeLTR = this.fuelConsumeLTR + Number(element.qty);
+            }
+            for (const element of this.fuelQtyGallons) {
+                this.fuelConsumeGL = this.fuelConsumeGL + Number(element.qty);
+            }
+        }
+    }
+
+
+
     onScroll() {
-        if (this.loaded) {
+        if (this.loaded === true) {
             this.fetchFuelReport();
+            this.fuelCAD = [];
+            this.fuelUSD = [];
+            this.fuelQtyLitres = [];
+            this.fuelQtyGallons = [];
+            this.searchActive = false;
         }
         this.loaded = false;
     }
     searchFilter() {
+        this.finalFuelRunningCAD = 0;
+        this.finalFuelRunningUSD = 0;
         if (this.unitID !== null || this.assetUnitID !== null || this.start !== null || this.end !== null) {
-
             if (this.start != null && this.end == null) {
                 this.toastr.error('Please select both start and end dates.');
                 return false;
@@ -157,11 +249,28 @@ export class SummaryComponent implements OnInit {
             }
             else {
                 this.dataMessage = Constants.FETCHING_DATA;
-                this.fuelList = [];
                 this.lastItemSK = '';
+                this.searchActive = true;
+                this.finalFuelRunningCAD = 0;
+                this.finalFuelRunningUSD = 0;
+                this.finalFuelConsumedLTR = 0;
+                this.finalFuelConsumedGL = 0;
+                this.fuelConsumeLTR = 0;
+                this.fuelConsumeGL = 0;
+                this.fuelCostCAD = 0;
+                this.fuelCostUSD = 0;
+                //this.finalFuelRunningCAD = this.fuelCount.cad_amount;
+                //this.finalFuelRunningUSD = this.fuelCount.usd_amount;
+
+                this.fuelCAD = [];
+                this.fuelUSD = [];
+                this.fuelQtyLitres = [];
+                this.fuelQtyGallons = [];
+                this.fuelList = [];
                 this.fetchFuelReport();
             }
-        } else {
+        }
+        else {
             return false;
         }
     }
@@ -172,7 +281,23 @@ export class SummaryComponent implements OnInit {
             this.assetUnitID = null;
             this.start = null;
             this.end = null;
+            this.searchActive = false;
+            this.fuelCAD = [];
+            this.fuelCostCAD = 0;
+            this.fuelCostUSD = 0
+            this.fuelUSD = [];
             this.fuelList = [];
+            this.fetchFuelCount();
+            this.fuelQtyLitres = [];
+            this.fuelQtyGallons = [];
+            this.finalFuelRunningCAD = 0;
+            this.finalFuelRunningUSD = 0;
+            this.finalFuelConsumedLTR = 0;
+            this.finalFuelConsumedGL = 0;
+            this.finalFuelRunningCAD = this.fuelCount.cad_amount;
+            this.finalFuelRunningUSD = this.fuelCount.usd_amount;
+            this.finalFuelConsumedLTR = this.fuelCount.l_quantity;
+            this.finalFuelConsumedGL = this.fuelCount.g_quantity;
             this.lastItemSK = '';
             this.dataMessage = Constants.FETCHING_DATA;
             this.fetchFuelReport();
@@ -180,29 +305,37 @@ export class SummaryComponent implements OnInit {
             return false;
         }
     }
- 
+
     generateFuelCSV() {
         if (this.exportList.length > 0) {
             let dataObject = []
             let csvArray = []
             this.exportList.forEach(element => {
-                let obj = {} 
+                let obj = {}
                 let retailCADTotal = [];
                 let retailUSDTotal = [];
-                if(element.data.currency === 'CAD'){
-                retailCADTotal = element.data.amt
+                if (element.data.currency === 'CAD') {
+                    retailCADTotal = element.data.amt
                 }
-                if(element.data.currency === 'USD'){
-                retailUSDTotal = element.data.amt
+                if (element.data.currency === 'USD') {
+                    retailUSDTotal = element.data.amt
                 }
-                obj['Date/Time'] = element.dateTime.replace(/, /g, ' &');                                                                          
+                obj['Date/Time'] = element.dateTime.replace(/, /g, ' &');
                 obj['Use Type'] = element.data.useType
                 obj['Unit Name'] = this.assetList[element.unitID] || this.vehicleList[element.unitID]
                 obj['Fuel Card#'] = element.data.cardNo
                 obj['City'] = element.data.city
                 obj['Fuel Type'] = element.data.type
-                obj['Fuel Quantity'] = element.data.qty + " " 
-                obj['Liters or Gallons'] = element.data.uom ==="L" ? 'LTR' : 'GL'
+                obj['Fuel Quantity'] = element.data.qty + " "
+                if (element.data.uom === 'L') {
+                    obj['Liters or Gallons'] = element.data.uom === 'L' ? 'LTR' : null
+                }
+                if (element.data.uom === 'litre') {
+                    obj['Liters or Gallons'] = element.data.uom === 'litre' ? 'LTR' : null
+                }
+                if (element.data.uom === 'G') {
+                    obj['Liters or Gallons'] = element.data.uom === 'G' ? 'GL' : null
+                }
                 obj['Odometer'] = element.data.odometer
                 obj['Retail Price Per L'] = element.data.rPpu + ' ' + element.data.currency
                 obj['Retail Amount Before Tax'] = element.data.rBeforeTax + ' ' + element.data.currency
@@ -237,21 +370,21 @@ export class SummaryComponent implements OnInit {
 
     getSetExport() {
         this.apiService.getData("fuelEntries/get/export").subscribe((result: any) => {
-        result[`Items`].forEach(element => {
-        let date: any = moment(element.data.date)
-        if (element.data.time) {
-          let time = moment(element.data.time, 'h mm a')
-          date.set({
-            hour: time.get('hour'),
-            minute: time.get('minute')
-          })
-          date = date.format('MMM Do YYYY h:mm a')
-        }
-        else {
-          date = date.format('MMM Do YYYY')
-        }
-        element.dateTime = date
-      });    
+            result[`Items`].forEach(element => {
+                let date: any = moment(element.data.date)
+                if (element.data.time) {
+                    let time = moment(element.data.time, 'h mm a')
+                    date.set({
+                        hour: time.get('hour'),
+                        minute: time.get('minute')
+                    })
+                    date = date.format('MMM Do YYYY h:mm a')
+                }
+                else {
+                    date = date.format('MMM Do YYYY')
+                }
+                element.dateTime = date
+            });
             this.exportList = result.Items;
             this.generateFuelCSV();
         })
