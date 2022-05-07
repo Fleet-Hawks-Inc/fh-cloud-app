@@ -36,12 +36,12 @@ import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes
 })
 export class AddAssetsComponent implements OnInit {
   @ViewChild('assetF') assetF: NgForm;
-    takeUntil$ = new Subject();
+  takeUntil$ = new Subject();
 
   Asseturl = this.apiService.AssetUrl;
   allAssetTypes: any;
   public assetID;
-    isSubmitted = false;
+  isSubmitted = false;
 
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
@@ -80,7 +80,7 @@ export class AddAssetsComponent implements OnInit {
       ownCname: "",
       ownAmt: "",
       ownCurr: "",
-      ownDate: "",
+      ownDate: null,
       ownRec: true,
       ownFrq: "",
       licenceCountryCode: null,
@@ -183,19 +183,19 @@ export class AddAssetsComponent implements OnInit {
   groupSubmitDisabled = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
-  futureDatesLimit = { 
-    year: this.date.getFullYear() + 30, 
-    month: 12, 
+  futureDatesLimit = {
+    year: this.date.getFullYear() + 30,
+    month: 12,
     day: 31
-    };
+  };
   editDisabled = false;
   companyLabel = "";
   sessionID: string;
 
   isEdit: boolean = false;
-  groupsData:any = [];
-  
-   retInterval = [
+  groupsData: any = [];
+
+  retInterval = [
     {
       value: 'weekly',
       name: 'Weekly'
@@ -216,12 +216,12 @@ export class AddAssetsComponent implements OnInit {
       value: 'annually',
       name: 'Annually'
     },
-     {
+    {
       value: 'semi-monthly',
       name: 'Semi-Monthly'
     },
   ];
-  
+
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
@@ -240,43 +240,11 @@ export class AddAssetsComponent implements OnInit {
     private dashboardUtilityService: DashboardUtilityService,
     private routerMgmtService: RouteManagementServiceService
   ) {
-  
-        this.modalServiceOwn.triggerRedirect.next(false);
-    this.router.events.pipe(takeUntil(this.takeUntil$)).subscribe((v: any) => {
-      if (v.url !== "undefined" || v.url !== "") {
-        this.modalServiceOwn.setUrlToNavigate(v.url);
-      }
-    });
-    this.modalServiceOwn.triggerRedirect$
-      .pipe(takeUntil(this.takeUntil$))
-      .subscribe((v) => {
-        if (v) {
-          this.router.navigateByUrl(
-            this.modalServiceOwn.urlToRedirect.getValue()
-          );
-        }
-      });
-  
+
     this.selectedFileNames = new Map<any, any>();
     this.sessionID = this.routerMgmtService.assetUpdateSessionID;
   }
-  canLeave(): boolean {
-     if (this.assetF.dirty && !this.isSubmitted) {
-       if (!this.modalService.hasOpenModals()) {
-         let ngbModalOptions: NgbModalOptions = {
-           backdrop: "static",
-           keyboard: false,
-           size: "sm",
-         };
-         this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
-       }
-       return false;
-     }
-     this.modalServiceOwn.triggerRedirect.next(true);
-     this.takeUntil$.next();
-    this.takeUntil$.complete();
-    return true;
-  }
+
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -441,10 +409,11 @@ export class AddAssetsComponent implements OnInit {
   }
 
   changeComp(value) {
+
     if (!this.assetID) {
       if (value === "interchange") {
         this.isRequired = false;
-        this.assetsData.assetDetails.annualSafetyDate = "";
+        this.assetsData.assetDetails.annualSafetyDate = null;
         this.assetsData.VIN = "";
         this.assetsData.assetDetails.year = null;
         this.assetsData.assetDetails.licenceCountryCode = null;
@@ -456,7 +425,7 @@ export class AddAssetsComponent implements OnInit {
       if (value === "interchange") {
         this.isRequired = false;
         this.isEdit = false;
-        this.assetsData.assetDetails.annualSafetyDate = "";
+        this.assetsData.assetDetails.annualSafetyDate = null;
         this.assetsData.VIN = "";
         this.assetsData.assetDetails.year = null;
         this.assetsData.assetDetails.licenceCountryCode = null;
@@ -471,11 +440,13 @@ export class AddAssetsComponent implements OnInit {
         this.isRequired = true;
       }
     }
-     if(value === 'rented') {
-        this.companyLabel = 'Rented';
-      }  else if(value === 'leased') {
+    if (value === 'rented') {
+      this.companyLabel = 'Rented';
+      this.assetsData.assetDetails.ownDate = null;
+    } else if (value === 'leased') {
       this.companyLabel = 'Leased';
-      }
+      this.assetsData.assetDetails.ownDate = null;
+    }
   }
 
   /*
@@ -514,10 +485,10 @@ export class AddAssetsComponent implements OnInit {
         ownerShip: this.assetsData.assetDetails.ownerShip,
         ownCname: this.assetsData.assetDetails.ownCname,
         ownAmt: this.assetsData.assetDetails.ownAmt,
-        ownCurr:this.assetsData.assetDetails.ownCurr,
-        ownDate:this.assetsData.assetDetails.ownDate,
-        ownRec:this.assetsData.assetDetails.ownRec,
-        ownFrq:this.assetsData.assetDetails.ownFrq,
+        ownCurr: this.assetsData.assetDetails.ownCurr,
+        ownDate: this.assetsData.assetDetails.ownDate,
+        ownRec: this.assetsData.assetDetails.ownRec,
+        ownFrq: this.assetsData.assetDetails.ownFrq,
         ownerOperator: this.assetsData.assetDetails.ownerOperator,
         licenceCountryCode: this.assetsData.assetDetails.licenceCountryCode,
         licenceStateCode: this.assetsData.assetDetails.licenceStateCode,
@@ -644,10 +615,6 @@ export class AddAssetsComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-        this.modalServiceOwn.triggerRedirect.next(true);
-          this.takeUntil$.next();
-          this.takeUntil$.complete();
-                    this.isSubmitted = true;
         this.toastr.success("Asset added successfully.");
         this.dashboardUtilityService.refreshAssets = true;
         this.router.navigateByUrl(`/fleet/assets/list/${this.routerMgmtService.assetUpdated()}`);
@@ -729,7 +696,7 @@ export class AddAssetsComponent implements OnInit {
           this.assetsData.assetDetails.ownerOperator =
             result.assetDetails.ownerOperator;
         }
-         if (result.assetDetails.ownerShip === "interchange") {
+        if (result.assetDetails.ownerShip === "interchange") {
           this.isRequired = false;
           this.isEdit = true;
         } else {
@@ -816,41 +783,41 @@ export class AddAssetsComponent implements OnInit {
           result.uploadedPhotos !== undefined &&
           result.uploadedPhotos.length > 0
         ) {
-         // this.assetsImages = result.uploadedPhotos.map((x: any) => ({
-         //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
-         //    name: x,
-         // }));
-            this.assetsImages = result.uploadedPhotosLinks;
+          // this.assetsImages = result.uploadedPhotos.map((x: any) => ({
+          //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
+          //    name: x,
+          // }));
+          this.assetsImages = result.uploadedPhotosLinks;
         }
 
         if (
           result.uploadedDocs !== undefined &&
           result.uploadedDocs.length > 0
         ) {
-         // this.assetsDocs = result.uploadedDocs.map((x) => ({
-         //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
-         //   name: x,
-         // }));
-            this.assetsDocs = result.uploadedDocsLinks;
+          // this.assetsDocs = result.uploadedDocs.map((x) => ({
+          //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
+          //   name: x,
+          // }));
+          this.assetsDocs = result.uploadedDocsLinks;
         }
 
         if (result.loanDocs !== undefined && result.loanDocs.length > 0) {
-        // this.lDocs = result.loanDocs.map((x) => ({
-        //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
-        //   name: x,
-        //  }));
-            this.lDocs = result.loanDocsLinks;
+          // this.lDocs = result.loanDocs.map((x) => ({
+          //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
+          //   name: x,
+          //  }));
+          this.lDocs = result.loanDocsLinks;
         }
 
         if (
           result.purchaseDocs !== undefined &&
           result.purchaseDocs.length > 0
         ) {
-        //  this.pDocs = result.purchaseDocs.map((x) => ({
-        //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
-        //    name: x,
-        //  }));
-            this.pDocs = result.purchaseDocsLinks;
+          //  this.pDocs = result.purchaseDocs.map((x) => ({
+          //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
+          //    name: x,
+          //  }));
+          this.pDocs = result.purchaseDocsLinks;
         }
 
         this.spinner.hide(); // loader hide
@@ -1022,10 +989,6 @@ export class AddAssetsComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.hasSuccess = true;
-          this.modalServiceOwn.triggerRedirect.next(true);
-          this.takeUntil$.next();
-          this.takeUntil$.complete();
-                    this.isSubmitted = true;
         this.toastr.success("Asset updated successfully.");
         this.dashboardUtilityService.refreshAssets = true;
         this.cancel();
@@ -1206,7 +1169,7 @@ export class AddAssetsComponent implements OnInit {
       groupMembers: [],
     };
   }
-  
+
   fetchGroupsList() {
     this.apiService.getData('groups/get/list/type?type=assets').subscribe((result: any) => {
       this.groupsData = result;

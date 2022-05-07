@@ -94,40 +94,8 @@ export class AddReminderComponent implements OnInit {
   private modalServiceOwn: ModalService,
   private location: Location
     ) { 
-          this.modalServiceOwn.triggerRedirect.next(false);
-    this.router.events.pipe(takeUntil(this.takeUntil$)).subscribe((v: any) => {
-      if (v.url !== "undefined" || v.url !== "") {
-        this.modalServiceOwn.setUrlToNavigate(v.url);
       }
-    });
-    this.modalServiceOwn.triggerRedirect$
-      .pipe(takeUntil(this.takeUntil$))
-      .subscribe((v) => {
-        if (v) {
-          this.router.navigateByUrl(
-            this.modalServiceOwn.urlToRedirect.getValue()
-          );
-        }
-      });
-      }
- 
-    canLeave(): boolean {
-     if (this.serviceF.dirty && !this.isSubmitted) {
-       if (!this.modalService.hasOpenModals()) {
-         let ngbModalOptions: NgbModalOptions = {
-           backdrop: "static",
-           keyboard: false,
-           size: "sm",
-         };
-         this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
-       }
-       return false;
-     }
-     this.modalServiceOwn.triggerRedirect.next(true);
-     this.takeUntil$.next();
-    this.takeUntil$.complete();
-    return true;
-  }
+
   async ngOnInit() {
     this.reminderID = this.route.snapshot.params[`reminderID`];
     this.fetchServiceTasks();
@@ -238,10 +206,7 @@ export class AddReminderComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-        this.modalServiceOwn.triggerRedirect.next(true);
-          this.takeUntil$.next();
-          this.takeUntil$.complete();
-          this.isSubmitted = true;
+       
         this.toastr.success('Service Reminder Added Successfully!');
         this.cancel();
       },
@@ -324,10 +289,7 @@ export class AddReminderComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.submitDisabled = false;
-        this.modalServiceOwn.triggerRedirect.next(true);
-          this.takeUntil$.next();
-          this.takeUntil$.complete();
-          this.isSubmitted = true;
+       
         this.toastr.success('Service reminder updated successfully!');
         this.Success = '';
         this.cancel();
