@@ -11,7 +11,7 @@ import { ListService } from "src/app/services/list.service";
 import * as _ from "lodash";
 import { DashboardUtilityService } from "src/app/services/dashboard-utility.service";
 import { Table } from 'primeng/table';
-import { trigger,state,style,transition,animate } from '@angular/animations';
+
 import { NgSelectComponent } from "@ng-select/ng-select";
 import { OverlayPanel } from "primeng/overlaypanel";
 import { Router } from "@angular/router";
@@ -21,7 +21,7 @@ declare var $: any;
   selector: "app-orders-list",
   templateUrl: "./orders-list.component.html",
   styleUrls: ["./orders-list.component.css"],
-  
+
 })
 export class OrdersListComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
@@ -222,7 +222,8 @@ export class OrdersListComponent implements OnInit {
   isLoad: boolean = false;
   isLoadText = "Load More...";
   _selectedColumns: any[];
-detailUrl = []
+  detailUrl = []
+  pData = []
 
   dataColumns = [
     { field: 'orderNumber', header: 'Order#', type: "text" },
@@ -231,12 +232,12 @@ detailUrl = []
     { field: 'customerName', header: 'Customer', type: 'text' },
     // { field: 'dateAndTime', header: ' Pickup Location', type: 'text' },
     // { field: 'dateAndTime', header: 'Drop Off Location', type: 'text' },
-    { field: 'shippersReceiversInfo.quantityUnit', header: 'Commodity', type: 'text' },
-    { field: 'totalAmount', header: 'Amount', type: 'text' },
+    { field: 'commodityName', header: 'Commodity', type: 'text' },
+    { field: 'currency', header: 'Amount', type: 'text' },
     { field: 'invStatus', header: 'Status', type: 'text' },
     { field: 'newStatus', header: 'Order Status', type: 'text' },
   ]
-  isOrderPriceEnabled=environment.isOrderPriceEnabled
+  isOrderPriceEnabled = environment.isOrderPriceEnabled
 
   constructor(
     private apiService: ApiService,
@@ -245,7 +246,7 @@ detailUrl = []
     private spinner: NgxSpinnerService,
     private listService: ListService,
     private dashboardUtilityService: DashboardUtilityService,
-    private router:Router
+    private router: Router
   ) { }
 
   async ngOnInit() {
@@ -253,11 +254,11 @@ detailUrl = []
     this.initDataTable();
 
     this.isOrderPriceEnabled = localStorage.getItem("isOrderPriceEnabled")
-    ? JSON.parse(localStorage.getItem("isOrderPriceEnabled"))
-    : environment.isOrderPriceEnabled;
-    
+      ? JSON.parse(localStorage.getItem("isOrderPriceEnabled"))
+      : environment.isOrderPriceEnabled;
+
     this.customersObjects = await this.dashboardUtilityService.getCustomers();
-    
+    // this.generateCSV();
     // $(document).ready(() => {
     //   setTimeout(() => {
     //    $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -352,11 +353,12 @@ detailUrl = []
             result.Items.map((v) => {
               v.url = `/dispatch/orders/detail/${v.orderID}`;
               this.detailUrl = v.url
-              console.log('this.orders.url',this.detailUrl)
+
             });
             this.fetchedRecordsCount += result.Count;
             this.getStartandEndVal("all");
             // this.orders.push(result['Items']);
+
             this.allignOrders(result[`Items`]);
             this.loaded = true;
             if (
@@ -384,6 +386,35 @@ detailUrl = []
               this.ordersEndPoint = this.totalRecords;
             }
 
+            // this.pData.push(result.Items)
+            for (let res of result.Items) {
+              res.commodityName = ''
+              res.commoQuantity = 0
+              res.commoQuantityUnit = ''
+              res.currency = ''
+
+              for (let shipArr of res.shippersReceiversInfo) {
+                for (let ship of shipArr.shippers) {
+                  for (let shipPickUp of ship.pickupPoint)
+                    for (let commoD of shipPickUp.commodity) {
+
+                      res.commodityName = commoD.name
+                      res.commoQuantity = commoD.quantity
+                      res.commoQuantityUnit = commoD.quantityUnit
+
+                    }
+
+                }
+
+              }
+              res.currency = res.charges.freightFee.currency
+
+            }
+            // for (let data of result.Items) {
+
+            //   
+
+            // }
             // disable prev btn
             if (this.ordersDraw == 0) {
               this.ordersPrev = true;
@@ -800,27 +831,85 @@ detailUrl = []
     }
     this.loaded = false;
   }
-  closePanel(op:OverlayPanel,) {
-    console.log('op--',op)
-    // console.log('url--',url)
+  closePanel(op: OverlayPanel,) {
     // alert();
 
     op.hide();
-    this.router.navigate(['/dispatch','trips','add-trip'])
+    this.router.navigate(['/dispatch', 'trips', 'add-trip'])
   }
 
-  openPanel(op:OverlayPanel, event:any) {
-    console.log('op--111',op)
+  openPanel(op: OverlayPanel, event: any) {
     // alert();
     op.show(event);
   }
-  
+  generateCSV() {
+    if (this.orders.length > 0) {
+      let dataObject = []
+      let csvArray = []
+      this.orders.forEach(element => {
+        let invTime = '';
+        let payStatus = ''
+        console.log('elee--', element)
+        if (element.invoicedTime) {
+          invTime = 'yes'
+        }
+        else if (!element.invoicedTime) {
+          invTime = 'No'
+        }
 
-     /**
-     * Clears the table filters
-     * @param table Table 
-     */
+        if (element.invStatus) {
+          payStatus = element.invStatus.replace('_', ' ')
+        }
+        else if (!element.invStatus) {
+          payStatus = 'NA'
+        }
+
+
+
+        let obj = {}
+
+        obj["Order#"] = element.orderNumber;
+        obj["Type"] = element.orderMode;
+        obj["Date"] = element.createdDate;
+        obj["Customer"] = this.customersObjects[element.customerID];
+        obj["Commodity"] = "Name:-" + element.commodityName + " & " + "Qty:-" + element.commoQuantity + element.commoQuantityUnit;
+        obj["Amount"] = element.currency + " " + element.totalAmount;
+        obj["Status"] = invTime + " & " + payStatus;
+        obj["Order Status"] = element.newStatus;
+
+
+        dataObject.push(obj)
+      });
+
+      let headers = Object.keys(dataObject[0]).join(',')
+      headers += ' \n'
+      csvArray.push(headers)
+      dataObject.forEach(element => {
+        let obj = Object.values(element).join(',')
+        obj += ' \n'
+        csvArray.push(obj)
+      });
+      const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}order-list.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+    else {
+      this.toastr.error("No Records found")
+    }
+  }
+  /**
+  * Clears the table filters
+  * @param table Table 
+  */
   clear(table: Table) {
     table.clear();
-}
   }
+}

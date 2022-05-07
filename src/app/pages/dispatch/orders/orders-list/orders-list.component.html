@@ -113,7 +113,7 @@
                             (click)="clear(dt)" icon="pi pi-filter-slash"></button>
 
                           <button type="button" pButton pRipple class="p-button-outlined mr-2"
-                            icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+                            icon="fas fa-regular fa-file-excel" (click)="generateCSV()" pTooltip="Excel"></button>
 
                           <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header"
                             selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}"
@@ -125,7 +125,7 @@
                     </ng-template>
 
                     <!-- Header template of DataTable -->
-                    <ng-template pTemplate="header">
+                    <ng-template pTemplate="header" let-dataColumns>
                       <tr>
                         <th style="width: 5%" alignFrozen="left" pFrozenColumn [frozen]="true"></th>
 
@@ -162,15 +162,15 @@
                       </tr>
 
                     </ng-template>
-
-                    <!-- Body Template of Data Table -->
-                    <ng-template pTemplate="body" let-order let-rowIndex="rowIndex" let-expanded="expanded">
+                    <ng-template pTemplate="body" let-order let-dataColumns="dataColumns" let-rowIndex="rowIndex"
+                      let-expanded="expanded">
                       <tr style="cursor: pointer;">
                         <td alignFrozen="left" pFrozenColumn [frozen]="true" style="width:5%">
                           <button type="button" pButton [pRowToggler]="order"
                             class="p-button-text p-button-rounded p-button-plain"
                             [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                         </td>
+
                         <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:12%">
                           {{order.orderNumber}}
                         </td>
@@ -186,27 +186,22 @@
 
                         <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:12%">
                           {{
-                          order.shippersReceiversInfo[0].shippers[0]
-                          .pickupPoint[0].commodity[0].name
+                          order.commodityName
                           ? "Name: " +
-                          order.shippersReceiversInfo[0].shippers[0]
-                          .pickupPoint[0].commodity[0].name
+                          order.commodityName
                           : "-"
                           }}<br />
                           {{
-                          order.shippersReceiversInfo[0].shippers[0]
-                          .pickupPoint[0].commodity[0].quantity
+                          order.commoQuantity
                           ? "Qty:" +
-                          order.shippersReceiversInfo[0].shippers[0]
-                          .pickupPoint[0].commodity[0].quantity +
+                          order.commoQuantity +
                           " " +
-                          order.shippersReceiversInfo[0].shippers[0]
-                          .pickupPoint[0].commodity[0].quantityUnit
+                          order.commoQuantityUnit
                           : ""
                           }}
                         </td>
                         <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:12%">
-                          {{ order.charges.freightFee.currency }}
+                          {{ order.currency }}
                           {{ order.totalAmount }}<br />
                         </td>
                         <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:12%">
@@ -416,7 +411,9 @@
 
 
                 </ng-template>
-                <ng-template pTemplate="emptymessage" let-columns>
+
+                <!-- Empty Template -->
+                <ng-template pTemplate="emptymessage" let-dataColumns>
                   <div class="col-lg-12 mt-3 text-center">
                     {{dataMessage}}
                     <br /><br>
@@ -426,7 +423,7 @@
 
                 <!-- Summary Section with Load More button -->
 
-                <ng-template pTemplate="summary" let-columns>
+                <ng-template pTemplate="summary" let-dataColumns>
                   <div class="col-lg-12 mt-3 text-center " *ngIf="lastEvaluatedKey !=='end' && orders.length !==0 ">
                     <button type="button " (click)="onScroll($event) " class="btn btn-success btn-sm text-light ">Load
                       More..</button>
