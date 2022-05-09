@@ -47,7 +47,7 @@ export class AddSalesInvoiceComponent implements OnInit {
       cName: "Adjustments",
       cType: "add",
       cAmount: 0,
-
+      accountID: null,
       discount: 0,
       discountUnit: '%',
       taxes: [
@@ -76,6 +76,7 @@ export class AddSalesInvoiceComponent implements OnInit {
       detailTotal: 0,
       subTotal: 0,
       taxes: 0,
+      feeTotal: 0,
       finalTotal: 0,
       customerCredit: 0,
       discountAmount: 0
@@ -375,11 +376,11 @@ export class AddSalesInvoiceComponent implements OnInit {
   }
 
   accessorialFeeTotal() {
-    // if (this.saleData.charges.cType === "add") {
-    //   this.saleData.total.feeTotal = Number(this.saleData.charges.cAmount);
-    // } else if (this.saleData.charges.cType === "ded") {
-    //   this.saleData.total.feeTotal = -Number(this.saleData.charges.cAmount);
-    // }
+    if (this.saleData.charges.cType === "add") {
+      this.saleData.total.feeTotal = Number(this.saleData.charges.cAmount);
+    } else if (this.saleData.charges.cType === "ded") {
+      this.saleData.total.feeTotal = -Number(this.saleData.charges.cAmount);
+    }
     this.calculateFinalTotal();
   }
 
@@ -607,7 +608,6 @@ export class AddSalesInvoiceComponent implements OnInit {
         return false;
       }
     };
-
 
     this.accountService.postData(`sales-invoice`, this.saleData).subscribe({
       complete: () => { },
