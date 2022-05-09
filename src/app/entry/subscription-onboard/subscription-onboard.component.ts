@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { alphaAsync, compare, numericAsync, password, pattern, prop, ReactiveFormConfig, required, RxFormBuilder } from '@rxweb/reactive-form-validators';
+import { alphaAsync, compare, numeric, numericAsync, password, pattern, prop, ReactiveFormConfig, required, RxFormBuilder } from '@rxweb/reactive-form-validators';
 import { Auth } from 'aws-amplify';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/services';
@@ -46,7 +46,9 @@ export class SubscriptionOnboardComponent implements OnInit {
       'validationMessage': {
         "required": "This field is required",
         "email": "Email is invalid.",
-        "compare": "Passwords does not match."
+        "compare": "Passwords does not match.",
+        "password": "Input does not match the password requirements"
+
       }
     })
   }
@@ -163,7 +165,9 @@ class UserInfo {
 
   @required()
   @prop()
-  @password({ validation: { maxLength: 15, minLength: 8, upperCase: true, digit: true, alphabet: true, specialCharacter: true }, message: "Password must be of length 8 or more with combination of uppercase, lowercase, numbers & special characters." })
+  @pattern({
+    expression: { 'onlyAlpha': /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,15}$/ }, message: "Password must be of length 8 or more with combination of uppercase, lowercase, numbers & special characters."
+  })
   password: string;
 
   @required()
