@@ -367,6 +367,8 @@ export class AddOrdersComponent implements OnInit {
   cloneID: any;
   recalledState = false;
 
+  orderPrefix: string = '';
+
   constructor(
     private apiService: ApiService,
     private ngbCalendar: NgbCalendar,
@@ -508,7 +510,7 @@ export class AddOrdersComponent implements OnInit {
         this.shippersObjects = res;
       });
     }
-
+    this.getOrderPrefix()
     this.httpClient.get("assets/packagingUnit.json").subscribe((data) => {
       this.packagingUnitsList = data;
     });
@@ -3254,6 +3256,15 @@ export class AddOrdersComponent implements OnInit {
             this.submitDisabled = false;
           }
         });
+    }
+  }
+
+  async getOrderPrefix() {
+    let result: any = await this.apiService
+      .getData(`carriers/get/showPrefix?type=${'order'}`)
+      .toPromise();
+    if (result && result.length > 0) {
+      this.orderPrefix = `${result[0].prefix}${result[0].sequence}`;
     }
   }
 }
