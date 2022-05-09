@@ -3,6 +3,7 @@ import CSVFileValidator, { ValidatorConfig } from 'csv-file-validator';
 import { Table } from 'primeng/table';
 import Constants from '../../constants';
 import { ToastrService } from 'ngx-toastr';
+import { Location } from "@angular/common";
 import { ApiService } from 'src/app/services';
 import { ActivatedRoute } from '@angular/router';
 declare var $: any;
@@ -47,12 +48,15 @@ export class ImportedContactsComponent implements OnInit {
   _selectedColumns: any[];
   display = false;
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private location: Location, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.importData.eType = params.entity;
-      this.entity = (params.entity + 's').replace('_', ' ');
+      this.entity = (params.entity + 's').replace('_', ' ').charAt(0).toUpperCase() + params.entity.slice(1);
+      if (this.entity == 'Fc') {
+        this.entity = 'Factoring Company';
+      }
 
     });
 
@@ -223,6 +227,10 @@ export class ImportedContactsComponent implements OnInit {
     */
   clear(table: Table) {
     table.clear();
+  }
+
+  backPage() {
+    this.location.back()
   }
 
 }
