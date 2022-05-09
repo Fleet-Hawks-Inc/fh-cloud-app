@@ -37,11 +37,19 @@ export class ForgotPasswordComponent implements OnInit {
   sendCode() {
     Auth.forgotPassword(this.userName)
       .then(data => {
+        this.hasError = false;
         this.toastr.success("Verification Email has sent ")
         this.isEmailSent = true
       }
       )
-      .catch(err => console.log(err))
+      .catch(err => {
+
+        this.hasError = true;
+        if (err && err.message.includes('Attempt')) {
+          this.Error = 'OTP limit exceeded - Please try after 15 mins.'
+        }
+
+      })
   }
 
   resetPassword() {
