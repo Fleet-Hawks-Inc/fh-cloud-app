@@ -221,9 +221,10 @@ export class OrdersListComponent implements OnInit {
   loaded = false;
   isLoad: boolean = false;
   isLoadText = "Load More...";
+
+  get = _.get;
   _selectedColumns: any[];
   detailUrl = []
-  pData = []
 
   dataColumns = [
     { field: 'orderNumber', header: 'Order#', type: "text" },
@@ -258,7 +259,6 @@ export class OrdersListComponent implements OnInit {
       : environment.isOrderPriceEnabled;
 
     this.customersObjects = await this.dashboardUtilityService.getCustomers();
-    // this.generateCSV();
     // $(document).ready(() => {
     //   setTimeout(() => {
     //    $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -284,10 +284,11 @@ export class OrdersListComponent implements OnInit {
   }
 
   allignOrders(orders) {
+
     for (let i = 0; i < orders.length; i++) {
       const element = orders[i];
 
-      this.orders.push(element);
+
       element.canRecall = false;
       if (element.orderStatus === "delivered") {
         element.canRecall = true;
@@ -300,22 +301,23 @@ export class OrdersListComponent implements OnInit {
       if (element.recall) {
         element.newStatus = `${element.orderStatus} (R)`;
       }
-      if (element.orderStatus === "confirmed") {
-        this.confirmOrders.push(element);
-      } else if (element.orderStatus == "dispatched") {
-        this.dispatchOrders.push(element);
-      } else if (element.orderStatus == "invoiced") {
-        this.invoicedOrders.push(element);
-      } else if (element.orderStatus == "partiallyPaid") {
-        this.partiallyOrders.push(element);
-      } else if (element.orderStatus == "cancelled") {
-        this.cancelledOrders.push(element);
-      } else if (element.orderStatus == "delivered") {
-        this.deliveredOrders.push(element);
-      } else if (element.orderStatus == "tonu") {
-        element.orderStatus = element.orderStatus.toUpperCase();
-        this.tonuOrders.push(element);
-      }
+      this.orders = [...this.orders, element];
+      // if (element.orderStatus === "confirmed") {
+      //   this.confirmOrders.push(element);
+      // } else if (element.orderStatus == "dispatched") {
+      //   this.dispatchOrders.push(element);
+      // } else if (element.orderStatus == "invoiced") {
+      //   this.invoicedOrders.push(element);
+      // } else if (element.orderStatus == "partiallyPaid") {
+      //   this.partiallyOrders.push(element);
+      // } else if (element.orderStatus == "cancelled") {
+      //   this.cancelledOrders.push(element);
+      // } else if (element.orderStatus == "delivered") {
+      //   this.deliveredOrders.push(element);
+      // } else if (element.orderStatus == "tonu") {
+      //   element.orderStatus = element.orderStatus.toUpperCase();
+      //   this.tonuOrders.push(element);
+      // }
     }
   }
 
@@ -357,7 +359,6 @@ export class OrdersListComponent implements OnInit {
             });
             this.fetchedRecordsCount += result.Count;
             this.getStartandEndVal("all");
-            // this.orders.push(result['Items']);
 
             this.allignOrders(result[`Items`]);
             this.loaded = true;
@@ -386,7 +387,7 @@ export class OrdersListComponent implements OnInit {
               this.ordersEndPoint = this.totalRecords;
             }
 
-            // this.pData.push(result.Items)
+            // commodity and amount data
             for (let res of result.Items) {
               res.commodityName = ''
               res.commoQuantity = 0
@@ -410,11 +411,7 @@ export class OrdersListComponent implements OnInit {
               res.currency = res.charges.freightFee.currency
 
             }
-            // for (let data of result.Items) {
 
-            //   
-
-            // }
             // disable prev btn
             if (this.ordersDraw == 0) {
               this.ordersPrev = true;
