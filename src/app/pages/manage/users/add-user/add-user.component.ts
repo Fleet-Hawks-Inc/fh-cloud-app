@@ -34,6 +34,7 @@ export class AddUserComponent implements OnInit {
     firstName: '',
     lastName: '',
     employeeID: '',
+    //contractorID: '',
     dateOfBirth: null,
     workPhone: '',
     workEmail: '',
@@ -373,13 +374,10 @@ export class AddUserComponent implements OnInit {
     }
   }
   async onAddUser() {
-
     this.hasError = false;
     this.hasSuccess = false;
-
     this.hideErrors();
     // this.spinner.show();
-
     if (this.subRole.length > 0) {
       this.userData.userLoginData.userRoles = this.userData.userLoginData.userRoles.concat(this.subRole)
     }
