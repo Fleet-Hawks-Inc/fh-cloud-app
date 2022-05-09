@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, Input } from "@angular/core";
 import { ApiService } from 'src/app/services';
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -8,8 +8,9 @@ import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import Constants from 'src/app/pages/fleet/constants';
 import { environment } from 'src/environments/environment';
-
+import * as moment from 'moment'
 import * as _ from "lodash";
+import { Table } from 'primeng/table';
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { NgSelectComponent } from "@ng-select/ng-select";
 declare var $: any;
@@ -20,8 +21,9 @@ declare var $: any;
   styleUrls: ['./driver-data.component.css']
 })
 export class DriverDataComponent implements OnInit {
-
-  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
+ @ViewChild('dt') table: Table;
+ 
+ @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   environment = environment.isFeatureEnabled;
   allDocumentsTypes: any;
   documentsTypesObects: any = {};
@@ -90,7 +92,22 @@ export class DriverDataComponent implements OnInit {
 
   loadMsg: string = Constants.NO_LOAD_DATA;
   isSearch = false;
-
+    _selectedColumns: any[];
+    driverTypeOption: any[];
+    get = _.get;
+    
+    dataColumns = [
+        { field: 'firstName', header: 'Name', type: "text" },
+        { field: 'email', header: 'Email', type: "text" },
+        { field: 'phone', header: 'Phone', type: "text" },   
+        { field: 'employeeContractorId', header: 'Employee ID', type: "text" }, 
+        { field: 'userName', header: 'User Name', type: "text" },
+        { field: 'driverType', header: 'Driver Type', type: "text" },
+        { field: 'startDate', header: 'Start Date', type: "text" },
+        { field: 'CDL_Number', header: 'CDL#', type: "text" },
+        { field: 'licenceExpiry', header: 'Licence Expiry', type: "text" }, 
+        { field: 'licStateName', header: 'Licence Province', type: "text" },
+    ];
 
   constructor(
     private apiService: ApiService,
@@ -102,11 +119,14 @@ export class DriverDataComponent implements OnInit {
     private countryStateCity: CountryStateCityService
   ) { }
 
-  ngOnInit(): void {
+ async ngOnInit(): Promise<void> {
     this.fetchAllDocumentsTypes();
-    this.initDataTable();
+     await this.initDataTable();
     this.fetchAllVehiclesIDs();
     this.fetchAllGrorups();
+    this.setdriverTypeOption();
+    this.setToggleOptions();
+    
     $(document).ready(() => {
       setTimeout(() => {
         $("#DataTables_Table_0_wrapper .dt-buttons")
@@ -185,6 +205,23 @@ export class DriverDataComponent implements OnInit {
 
   }
 
+   setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    
+    setdriverTypeOption() {
+        this.driverTypeOption = [{ "value": "contractor", "name": "Contractor" }, { "name": "Employee", "value": "employee" }, { "name": "All", "value": "null" }];
+    }
+    
+      @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+  
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+  }
 
   fetchAllGrorups() {
     this.apiService.getData("groups/get/list").subscribe((result: any) => {
@@ -228,7 +265,7 @@ export class DriverDataComponent implements OnInit {
   }
 
 
-  initDataTable() {
+  async initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
       this.apiService
         .getData(
@@ -255,12 +292,13 @@ export class DriverDataComponent implements OnInit {
           });
     }
   }
-  onScroll() {
+  onScroll = async(event:any) => {
     if (this.loaded) {
       this.initDataTable();
     }
     this.loaded = false;
   }
+  
   fetchAddress(drivers: any) {
     for (let d = 0; d < drivers.length; d++) {
       drivers.map(async (e: any) => {
@@ -320,12 +358,37 @@ export class DriverDataComponent implements OnInit {
       this.driverType = null;
       this.dataMessage = Constants.FETCHING_DATA;
       this.lastEvaluatedKey = '';
-      this.initDataTable();
       this.driverDraw = 0;
       this.initDataTable();
     } else {
       return false;
     }
   }
+  
+  clearInput() {
+    this.suggestedDrivers = null;
+  }
+  
+   refreshData() {
+        this.drivers = [];
+        this.driverID = '';
+        this.dutyStatus = '';
+        this.driverName = '';
+        this.driverType = null;
+        this.lastEvaluatedKey = '';
+        this.loaded = false;
+        this.initDataTable();
+        this.dataMessage = Constants.FETCHING_DATA;
+
+    }
+
+  
+  clearSuggestions() {
+    this.driverName = '';
+  }
+  
+   clear(table: Table) {
+        table.clear();
+    }
 
 }
