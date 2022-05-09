@@ -15,7 +15,6 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule } from "@angular/forms";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
-import { CustomerSettingComponent } from "./customer-setting/customer-setting.component";
 import { DoverviewComponent } from "./settings-overview/doverview/doverview.component";
 import { ImportDriversComponent } from "./import-drivers/import-drivers.component";
 
@@ -31,6 +30,7 @@ import { AutoCompleteModule } from "primeng/autocomplete";
 import { DropdownModule } from "primeng/dropdown";
 import { AssetsSettingComponent } from "./assets-setting/assets-setting.component";
 import { DialogModule } from 'primeng/dialog';
+import { ImportedContactsComponent } from './imported-contacts/imported-contacts.component';
 
 const routes: Routes = [
   { path: "overview", component: SettingsOverviewComponent },
@@ -96,9 +96,17 @@ const routes: Routes = [
     data: { title: "Safety Settings" },
   },
   {
+    path: "contacts-import",
+    component: ImportedContactsComponent,
+    data: { title: "Contacts Imports" },
+  },
+  {
     path: "customer",
-    component: CustomerSettingComponent,
-    data: { title: "Deleted Customer" },
+    loadChildren: () =>
+      import("./customer-setting/customer-setting.modules").then(
+        (m) => m.CustomerSettingsModules
+      ),
+    data: { title: "Assets Settings" },
   },
   {
     path: "assets",
@@ -107,7 +115,8 @@ const routes: Routes = [
         (m) => m.AssetsSettingsModules
       ),
     data: { title: "Assets Settings" },
-  },
+  }
+
 ];
 
 @NgModule({
@@ -122,13 +131,12 @@ const routes: Routes = [
     DispatchSettingComponent,
     ComplianceSettingComponent,
     SafetySettingComponent,
-    CustomerSettingComponent,
     DoverviewComponent,
     ImportDriversComponent,
     VehicleSettingsComponent,
     AssetsSettingComponent,
-    // DeletedAssetsComponent,
-    // ImportedAssetsComponent,
+    ImportedContactsComponent,
+
   ],
   imports: [
     CommonModule,

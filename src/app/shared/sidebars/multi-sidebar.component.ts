@@ -322,6 +322,9 @@ export class CommonSideBarComponent implements OnInit {
   generateFuelSessionID() {
     return this.routeManagement.fuelUpdateSessionID;
   }
+  generateMaintainanceSessionID(){
+  return this.routeManagement.maintainanceSessionID;
+  }
 }
 
 @Component({

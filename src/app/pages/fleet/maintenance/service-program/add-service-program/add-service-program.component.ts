@@ -1,10 +1,22 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService, ListService } from '../../../../../services';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
+import { NgForm } from "@angular/forms";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+  takeUntil
+} from "rxjs/operators";
+import { from, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ModalService } from "../../../../../services/modal.service";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
+import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
 
 declare var $: any;
 
@@ -15,6 +27,9 @@ declare var $: any;
   styleUrls: ['./add-service-program.component.css']
 })
 export class AddServiceProgramComponent implements OnInit, AfterViewInit {
+ @ViewChild('serviceProgramF') serviceProgramF: NgForm;
+  takeUntil$ = new Subject();
+  isSubmitted = false;
   pageTitle: string;
   vehicleModal: boolean = false;
   vehicles: any;
@@ -61,8 +76,15 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     private toastr: ToastrService,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
-    private listService: ListService
-  ) { }
+    private listService: ListService,
+    private modalService: NgbModal,
+    private modalServiceOwn: ModalService,
+  ) { 
+   
+
+
+  }
+ 
 
 
   async ngOnInit() {
@@ -155,6 +177,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
+
         this.toastr.success('Service added successfully');
         this.router.navigateByUrl('/fleet/maintenance/service-program/list');
 
@@ -252,6 +275,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
         this.response = res;
         this.hasSuccess = true;
         this.submitDisabled = false;
+  
         this.toastr.success('Service Updated Successfully');
         this.router.navigateByUrl('/fleet/maintenance/service-program/list');
       },

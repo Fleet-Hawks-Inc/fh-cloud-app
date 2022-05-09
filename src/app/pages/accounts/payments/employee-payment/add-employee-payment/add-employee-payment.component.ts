@@ -32,8 +32,8 @@ export class AddEmployeePaymentComponent implements OnInit {
       hours: 0,
       perHour: 0,
     },
-    fromDate: "",
-    toDate: "",
+    fromDate: null,
+    toDate: null,
     accountID: null,
     payMode: null,
     payModeNo: "",
@@ -237,8 +237,14 @@ export class AddEmployeePaymentComponent implements OnInit {
           }
         });
       this.fetchLastAdded();
-      this.fetchAdvancePayments();
+      this.fetchPayments();
       this.calculatePayroll();
+    }
+  }
+
+  fetchPayments() {
+    if(this.paymentData.fromDate && this.paymentData.toDate) {
+      this.fetchAdvancePayments();
     }
   }
 
@@ -499,7 +505,7 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.advancePayments = [];
     this.dataMessage = Constants.FETCHING_DATA;
     this.accountService
-      .getData(`advance/entity/${this.paymentData.entityId}?from=null&to=null`)
+      .getData(`advance/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}&curr=${this.paymentData.currency}`)
       .subscribe((result: any) => {
         if (result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;

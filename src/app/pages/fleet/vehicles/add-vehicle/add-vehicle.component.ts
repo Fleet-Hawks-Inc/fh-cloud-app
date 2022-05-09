@@ -1,10 +1,18 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ApiService, DashboardUtilityService } from "../../../../services";
 import { Router } from "@angular/router";
-import { map } from "rxjs/operators";
-import { from } from "rxjs";
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+  takeUntil
+} from "rxjs/operators";import { from, Subject, throwError } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
+import { ModalService } from "../../../../services/modal.service";
 import { ActivatedRoute } from "@angular/router";
 import { Location } from "@angular/common";
 import { ListService } from "../../../../services";
@@ -14,9 +22,9 @@ import * as _ from "lodash";
 import { NgForm } from "@angular/forms";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
+import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
 
 declare var $: any;
-
 @Component({
   selector: "app-add-vehicle",
   templateUrl: "./add-vehicle.component.html",
@@ -25,6 +33,7 @@ declare var $: any;
 })
 export class AddVehicleComponent implements OnInit {
   @ViewChild("vehicleF") vehicleF: NgForm;
+  takeUntil$ = new Subject();
   showDriverModal = false;
   createdDate = "";
   createdTime = "";
@@ -66,6 +75,8 @@ export class AddVehicleComponent implements OnInit {
   vehicleType = null;
   VIN = "";
   DOT = "";
+    isSubmitted = false;
+
   year = null;
   manufacturerID = null;
   modelID = null;
@@ -296,14 +307,21 @@ export class AddVehicleComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private countryStateCity: CountryStateCityService,
     private dashboardUtilityService: DashboardUtilityService,
-    private routerMgmtService: RouteManagementServiceService
+    private routerMgmtService: RouteManagementServiceService,
+    private modalService: NgbModal,
+    private modalServiceOwn: ModalService
   ) {
+  
+
+  
+  
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
       // this.vehicleForm = $('#vehicleForm').validate();
     });
     this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
   }
+
 
   async ngOnInit() {
     this.getYears();

@@ -358,7 +358,6 @@ export class AddDriverComponent
     private dashboardUtilityService: DashboardUtilityService,
     private routeMgmntService: RouteManagementServiceService
   ) {
-    this.modalServiceOwn.triggerRedirect.next(false);
     this.selectedFileNames = new Map<any, any>();
     const date = new Date();
     this.getcurrentDate = {
@@ -1453,7 +1452,7 @@ export class AddDriverComponent
           next: (res) => {
             this.response = res;
             this.hasSuccess = true;
-          
+
             this.submitDisabled = false;
             this.dashboardUtilityService.refreshDrivers = true;
             this.toastr.success("Driver updated successfully");
