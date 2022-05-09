@@ -3,12 +3,7 @@ import { ApiService } from "../../../../services/api.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import {
-  catchError,
-  debounceTime,
-  distinctUntilChanged,
   map,
-  switchMap,
-  takeUntil
 } from "rxjs/operators";
 import { NgForm } from "@angular/forms";
 import { from, Subject, throwError } from 'rxjs';
@@ -26,7 +21,6 @@ import { ListService } from "../../../../services";
 import { HttpClient } from "@angular/common/http";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import {RouteManagementServiceService} from 'src/app/services/route-management-service.service'
-import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
 
 declare var $: any;
 
@@ -84,9 +78,6 @@ export class AddFuelEntryComponent implements OnInit {
     isSubmitted = false;
   fetchedUnitID;
   fetcheduseType;
-  // fuelQtyUnit = 'litre';
-  // DEFFuelQtyUnit = 'litre';
-  // costPerUnit = 0;
   date: NgbDateStruct;
 
   selectedFiles: FileList;
@@ -133,11 +124,10 @@ export class AddFuelEntryComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private toaster: ToastrService,
-        private router: Router,
     private ngbCalendar: NgbCalendar,
     private dateAdapter: NgbDateAdapter<string>,
     private listService: ListService,
-     private modalService: NgbModal,
+    private modalService: NgbModal,
     private modalServiceOwn: ModalService,
     private httpClient: HttpClient,
     private countryStateCity: CountryStateCityService,

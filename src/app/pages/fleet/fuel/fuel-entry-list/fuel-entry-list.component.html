@@ -5,16 +5,18 @@
         <form class="form-horizontal" method="get" name="form" id="form_">
           <div class="row" style="padding-top: 10px">
             <div class="col-md-2 col-lg-2 pr-1">
-              <ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%" placeholder="Search by vehicle">
+              <ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%" placeholder="Search by Unit">
                 <ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{ data.vehicleIdentification }}
+                  
                 </ng-option>
+                <ng-option *ngFor="let data of allAssets" [value]="data.assetID">{{data.assetIdentification}}</ng-option>
               </ng-select>
             </div>
             <!-- <div class="col-md-2 col-lg-2 pr-0 pl-2">
               <div class="input-group input-group-sm mb-3">
                 <ng-select [(ngModel)]="assetUnitID" name="assetUnitID" style="width: 100%;"
                   placeholder="Search by reefer">
-                  <ng-option *ngFor="let data of allAssets" [value]="data.assetID">{{data.assetIdentification}}
+                 
                   </ng-option>
                 </ng-select>
               </div>
