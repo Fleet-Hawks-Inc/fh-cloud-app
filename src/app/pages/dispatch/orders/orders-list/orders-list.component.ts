@@ -222,22 +222,13 @@ export class OrdersListComponent implements OnInit {
   isLoad: boolean = false;
   isLoadText = "Load More...";
 
-  get = _.get;
-  _selectedColumns: any[];
+
   detailUrl = []
 
-  dataColumns = [
-    { field: 'orderNumber', header: 'Order#', type: "text" },
-    { field: 'orderMode', header: 'Type', type: "text" },
-    { field: 'createdDate', header: 'Date', type: "text" },
-    { field: 'customerName', header: 'Customer', type: 'text' },
-    // { field: 'dateAndTime', header: ' Pickup Location', type: 'text' },
-    // { field: 'dateAndTime', header: 'Drop Off Location', type: 'text' },
-    { field: 'commodityName', header: 'Commodity', type: 'text' },
-    { field: 'currency', header: 'Amount', type: 'text' },
-    { field: 'invStatus', header: 'Status', type: 'text' },
-    { field: 'newStatus', header: 'Order Status', type: 'text' },
-  ]
+  dataColumns: any[];
+  get = _.get;
+  _selectedColumns: any[];
+
   isOrderPriceEnabled = environment.isOrderPriceEnabled
 
   constructor(
@@ -251,8 +242,24 @@ export class OrdersListComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.setToggleOptions()
     this.initDataTable();
+    this.dataColumns = [
+      { width: '7%', field: 'orderNumber', header: 'Order#', type: "text", },
+      { width: '6%', field: 'orderMode', header: 'Type', type: "text" },
+      { width: '8%', field: 'createdDate', header: 'Date', type: "text" },
+      { width: '8%', field: 'customerName', header: 'Customer', type: 'text' },
+      { width: '14%', field: 'shipRecDate', header: ' Pickup Location', type: 'text' },
+      { width: '14%', field: 'recDropDate', header: 'Drop Off Location', type: 'text' },
+      { width: '8%', field: 'commodityName', header: 'Commodity', type: 'text' },
+      { width: '8%', field: 'currency', header: 'Amount', type: 'text' },
+      { width: '7%', field: 'invStatus', header: 'Status', type: 'text' },
+      { width: '10%', field: 'newStatus', header: 'Order Status', type: 'text' },
+    ];
+    this._selectedColumns = this.dataColumns;
+
+
+    // this.setToggleOptions()
+
 
     this.isOrderPriceEnabled = localStorage.getItem("isOrderPriceEnabled")
       ? JSON.parse(localStorage.getItem("isOrderPriceEnabled"))
@@ -266,9 +273,9 @@ export class OrdersListComponent implements OnInit {
     // });
   }
 
-  setToggleOptions() {
-    this.selectedColumns = this.dataColumns;
-  }
+  // setToggleOptions() {
+  //   this.selectedColumns = this.dataColumns;
+  // }
 
   @Input() get selectedColumns(): any[] {
     return this._selectedColumns;
@@ -393,17 +400,32 @@ export class OrdersListComponent implements OnInit {
               res.commoQuantity = 0
               res.commoQuantityUnit = ''
               res.currency = ''
-
+              res.shipRecDate = ''
+              res.recDropDate = ''
               for (let shipArr of res.shippersReceiversInfo) {
                 for (let ship of shipArr.shippers) {
-                  for (let shipPickUp of ship.pickupPoint)
-                    for (let commoD of shipPickUp.commodity) {
+                  for (let shipPickUp of ship.pickupPoint) {
+                    let shipDate = shipPickUp
+                    for (let commoD of shipDate.commodity) {
 
                       res.commodityName = commoD.name
                       res.commoQuantity = commoD.quantity
                       res.commoQuantityUnit = commoD.quantityUnit
 
                     }
+                    res.shipRecDate = shipPickUp.dateAndTime
+
+                  }
+
+                  for (let receiver of shipArr.receivers) {
+                    for (let receiveDropOf of receiver.dropPoint) {
+
+                      res.recDropDate = receiveDropOf.dateAndTime
+
+                    }
+                  }
+
+
 
                 }
 
