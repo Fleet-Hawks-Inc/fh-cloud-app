@@ -228,9 +228,9 @@
             </div>
 
             <div class="col-md-4 col-lg-4 text-right pr-1">
-              <button
-                *ngIf="exporting"
-                class="btn btn-success btn-sm"
+               <button
+                *ngIf="exportLoading"
+                class="btn btn-success btn-sm ml-2"
                 type="button"
                 disabled
               >
@@ -242,12 +242,15 @@
                 Exporting...
               </button>
               <button
-                *ngIf="!exporting"
-                class="btn btn-sm btn-success dropdown-toggle"
+                type="button"
+                *ngIf="!exportLoading"
+                class="btn btn-success btn-sm ml-2 dropdown-toggle"
                 data-toggle="dropdown"
                 aria-expanded="false"
               >
-                Export<span class="caret"></span>
+                <i class="fas fa-file-export"></i> Export<span
+                  class="caret"
+                ></span>
               </button>
               <div
                 *ngIf="!exporting"
@@ -262,7 +265,9 @@
                   transform: translate3d(0px, 38px, 0px);
                 "
               >
+                 <a class="dropdown-item text-1" (click)="generateRequiredCSV()">CSV</a>
                 <a class="dropdown-item text-1" (click)="showPDF()">PDF</a>
+                
                 <!-- <a *ngIf="customer!=''" class="dropdown-item text-1" (click)="showReport(); isModalShow= true">PDF</a> -->
               </div>
             </div>
