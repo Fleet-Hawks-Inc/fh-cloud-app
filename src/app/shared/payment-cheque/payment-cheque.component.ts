@@ -436,7 +436,7 @@ export class PaymentChequeComponent implements OnInit {
       this.apiService
         .getData(`contacts/detail/${this.paydata.entityId}`)
         .subscribe((result: any) => {
-          this.cheqdata.entityName = result.Items[0].cName;
+          this.cheqdata.entityName = result.Items[0].firstName+" "+result.Items[0].lastName;
           this.dummyEntity = result.Items[0].cName;
           let addr = result.Items[0].adrs[0];
           if (addr.manual) {
