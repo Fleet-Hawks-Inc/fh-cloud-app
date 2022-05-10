@@ -150,7 +150,6 @@ export class ActivityListComponent implements OnInit {
 
       result[`data`].map((v: any) => {
         v.url = `/reports/fleet/asset/activity/${v.assetID}`;
-        v.assetType = v.assetType.replace("_", " ")
       })
 
       if (result.data.length > 0) {
