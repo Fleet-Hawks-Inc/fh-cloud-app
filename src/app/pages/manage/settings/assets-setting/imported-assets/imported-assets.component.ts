@@ -105,7 +105,7 @@ export class ImportedAssetsComponent implements OnInit {
   }
 
   isStatusValid = (status) => {
-    return status == 'active' || status == 'inActive' || status == 'sold' || status == 'outOfService'
+    return status == 'active' || status == 'inActive';
   }
 
 
@@ -180,8 +180,11 @@ export class ImportedAssetsComponent implements OnInit {
               } else if (item.includes('vin')) {
                 joinStr = item + '. VIN must be between 17-18 alphanumeric characters eg.2G1WH55K5Y9322458.';
                 this.inValidMessages.push(joinStr)
+              } else if (item.includes('licence_plate_number')) {
+                joinStr = item + '. Licence must be between 6-8 alphanumeric characters eg.K5Y932.';
+                this.inValidMessages.push(joinStr)
               } else if (item.includes('status')) {
-                joinStr = item + '.  Status should be active, inActive, outOfService or sold';
+                joinStr = item + '.  Status should be active or inActive';
                 this.inValidMessages.push(joinStr)
               } else {
                 this.inValidMessages.push(item)

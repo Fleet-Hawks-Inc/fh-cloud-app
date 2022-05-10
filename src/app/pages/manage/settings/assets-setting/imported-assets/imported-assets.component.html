@@ -3,8 +3,10 @@
         <section role="main" class="content-body pl-1 pr-0 pt-0">
             <header class="page-header pr19 pl11">
                 <div class="row">
-                    <div class=" col-lg-12 font-weight-bold text-4 text-dark">
+                    <div class=" col-md-12 col-lg-12 font-weight-bold text-4 text-dark pr-0 ">
                         <h2 class="font-weight-bold pl-0">Import Assets</h2>
+                        <button type="button" class="ml-auto pull-right btn btn-success btn-sm mt-2"
+                            routerLink="/manage/settings/assets/overview">Back</button>
                     </div>
                 </div>
             </header>
@@ -65,7 +67,7 @@
                                         <ng-template pTemplate="body" let-asset>
                                             <tr>
                                                 <td>{{asset.displayName}}</td>
-                                                <td>{{asset.timeCreated | date : 'dd/MM/yyyy hh:mm:ss a'}}</td>
+                                                <td>{{asset.timeCreated}}</td>
                                                 <td>{{asset.module}}</td>
                                                 <td><span class="badge badge-dark">{{asset.fileStatus}}</span></td>
                                             </tr>
@@ -73,10 +75,11 @@
                                         <!-- Empty Template -->
 
                                         <ng-template pTemplate="emptymessage" let-columns>
-                                            <div class="col-lg-12 mt-3 text-center">
-                                                {{dataMessage}}
-                                                <br /><br>
-                                            </div>
+                                            <tr>
+                                                <td colspan="4" class="text-center">
+                                                    {{dataMessage}}
+                                                </td>
+                                            </tr>
                                         </ng-template>
                                         <ng-template pTemplate="summary" let-columns>
 
@@ -105,8 +108,9 @@
         <div class="col-lg-12">
             <span>To successfully import asset data please make sure your file conforms following:</span>
             <ul style="margin:0px">
-                <li> File must have all the headers. <a href='assets/asset_import_template.csv'>Click
-                        Here</a> to download the template file.</li>
+                <li> File must have all the headers. <strong><a class="text-success"
+                            href='assets/asset_import_template.csv'><u>Click
+                                Here</u></a></strong> to download the template file.</li>
                 <li> File must be comma seperated.</li>
                 <li> File must have all the predefined header with valid data.</li>
                 <li> File must not contain more than 200 records. </li>

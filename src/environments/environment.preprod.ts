@@ -9,7 +9,7 @@ export const environment = {
   isAccountsEnabled: false,
   isReportsEnabled: true,
   isUserRoles:true,
-  isAddressBook:true,
+  isAddressBook:false,
   isOrderPriceEnabled:true,
 
   BaseUrl: 'https://fleetservice.us-east-2.fleethawks.com/api/v1/',

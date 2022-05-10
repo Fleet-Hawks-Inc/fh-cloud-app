@@ -15,15 +15,27 @@ import { DriverSummaryComponent } from "./driver-summary/driver-summary.componen
 import { DriverReportComponent } from "./driver-report/driver-report.component";
 
 import { NgSelectModule } from "@ng-select/ng-select";
+import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { NgxSpinnerModule } from "ngx-spinner";
 import { ChartsModule } from "ng2-charts";
 import { unsavedChangesGuard } from "src/app/guards/unsaved-changes.guard";
 import { Injectable } from "@angular/core";
+import { GoogleMapsModule } from "@angular/google-maps";
 import { DriverDetailComponent } from "./driver-detail/driver-detail.component";
 import { DriverLogsComponent } from "./driver-logs/driver-logs.component";
 import { TripComponent } from "./trip/trip.component";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { DriverDataComponent } from "./driver-data/driver-data.component";
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
+
 const routes: Routes = [
   { path: "", component: OverviewComponent, data: { title: "Driver Reports" } },
   {
@@ -130,6 +142,17 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgxSpinnerModule,
     ChartsModule,
     InfiniteScrollModule,
+    NgxDatatableModule,
+    GoogleMapsModule,
+    TableModule,
+    ButtonModule,
+    MultiSelectModule,
+    TooltipModule,
+    MenuModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule,
   ],
   providers: [
     unsavedChangesGuard,

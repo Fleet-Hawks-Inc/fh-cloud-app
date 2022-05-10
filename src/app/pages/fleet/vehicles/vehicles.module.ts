@@ -57,7 +57,7 @@ const routes: Routes = [
 */
 const routes: Routes = [
   { path: 'add', component: AddVehicleComponent, canDeactivate: [unsavedChangesGuard], data: { title: 'Add Vehicle' } },
-  { path: 'edit/:vehicleID', component: AddVehicleComponent, data: { title: 'Edit Vehicle' } },
+  { path: 'edit/:vehicleID', component: AddVehicleComponent,canDeactivate: [unsavedChangesGuard], data: { title: 'Edit Vehicle' } },
   { path: 'list/:sessionID', component: VehicleListComponent, data: { title: 'Vehicles List', reuseRoute: true } },
   { path: 'detail/:vehicleID', component: VehicleDetailComponent, data: { title: 'Vehicle Detail' } }
 ];

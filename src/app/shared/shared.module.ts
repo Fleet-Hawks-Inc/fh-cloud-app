@@ -30,6 +30,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { SidebarModule } from 'primeng/sidebar';
+import { PaymentChequeComponent } from './payment-cheque/payment-cheque.component';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -112,7 +113,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     AllCarriersComponent,
     MustMatchDirective,
     AbsoluteValuePipe,
-    NewAddressBookComponent
+    NewAddressBookComponent,
+    PaymentChequeComponent
 
   ],
   exports: [
@@ -127,8 +129,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     SidebarComponent,
     FixedRightSidebarComponent,
     MustMatchDirective,
-    AbsoluteValuePipe
-
+    AbsoluteValuePipe,
+    PaymentChequeComponent
   ],
   providers: [NgSelectConfig, ɵs,
     { provide: NgbDateAdapter, useClass: CustomAdapter },

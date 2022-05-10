@@ -57,7 +57,7 @@
                   <h2 style="font-size: 18px; margin-top: 1px; font-weight: 600" class="text-dark mb-0 text-capitalize">
                     {{ pdfDetails.name }}
                   </h2>
-                  <div class="text-dark" *ngIf="paymentData.paymentTo === 'driver'"
+                  <div class="text-dark" *ngIf="paymentData.paymentTo === 'driver' && !multiPay"
                     style="font-size: 12px; margin-bottom: 2px">
                     <strong>Payment Type:</strong> {{ paymentSelected ? paymentAbr[paymentSelected[0].pType] : '' }}
                     <br />
@@ -279,37 +279,6 @@
                         <td class="pr-3 pt-2 text-right">&nbsp;</td>
                         <td class="pr-3 pt-2 text-right">&nbsp;</td>
                       </tr>
-                      <tr *ngFor="let add of addCharges">
-                        <td class="pl-3 pt-2">
-                          <p class="text-3 text-dark mb-2 text-capitalize">
-                            {{ add.chargeName }}
-                          </p>
-                        </td>
-                        <td class="pr-3 pt-2 text-right">
-                          <p class="text-3 text-dark mb-2">
-                            {{ add.amount | number: "1.2-2" }}
-                          </p>
-                        </td>
-                        <td class="pr-3 pt-2 text-right">
-                          <p class="text-3 text-dark mb-2">-</p>
-                        </td>
-                      </tr>
-
-                      <tr *ngFor="let ded of dedCharges">
-                        <td class="pl-3 pt-2">
-                          <p class="text-3 text-dark mb-2 text-capitalize">
-                            {{ ded.chargeName }}
-                          </p>
-                        </td>
-                        <td class="pr-3 pt-2 text-right">
-                          <p class="text-3 text-dark mb-2">
-                            - {{ ded.amount | number: "1.2-2" }}
-                          </p>
-                        </td>
-                        <td class="pr-3 pt-2 text-right">
-                          <p class="text-3 text-dark mb-2">-</p>
-                        </td>
-                      </tr>
 
                       <tr *ngFor="let ded of paymentData.advData">
                         <td class="pl-3 pt-2">
@@ -473,6 +442,53 @@
                           </table>
                         </td>
                       </tr>
+                      <tr *ngIf="data.paymentSelected">
+                        <td>
+                          <table border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p class="text-dark mb-2 text-3">
+                                    <strong>Payment Type:</strong> {{ data.paymentSelected ?
+                                    paymentAbr[data.paymentSelected.pType] : '' }}, <br>
+                                    <span *ngIf="data.paymentSelected.pType === 'ppm'">
+                                      <strong> Loaded Miles: </strong>{{ data.paymentSelected.loadedMiles }} {{
+                                      data.paymentSelected.currency }}, <strong class="ml-2"> Empty Miles: </strong>{{
+                                      data.paymentSelected.emptyMiles }} {{
+                                      data.paymentSelected.currency }}, <br>
+                                      <strong> Team Loaded Miles: </strong>{{ data.paymentSelected.loadedMilesTeam }} {{
+                                      data.paymentSelected.currency }},
+                                      <strong class="ml-2"> Team Empty Miles: </strong>{{
+                                      data.paymentSelected.emptyMilesTeam }} {{
+                                      data.paymentSelected.currency }}
+                                    </span>
+                                    <span *ngIf="data.paymentSelected.pType === 'pfr'">
+                                      <strong> Rate: </strong> {{ data.paymentSelected.flatRate }} {{
+                                      data.paymentSelected.currency }}
+                                    </span>
+                                    <span *ngIf="data.paymentSelected.pType === 'ppd'">
+                                      <strong> Rate: </strong> {{ data.paymentSelected.deliveryRate }} {{
+                                      data.paymentSelected.currency }}
+                                    </span>
+                                    <span *ngIf="data.paymentSelected.pType === 'pp'">
+                                      <strong> Rate: </strong> {{ data.paymentSelected.loadPayPercentage }}% of {{
+                                      data.paymentSelected.loadPayPercentageOf }}
+                                    </span>
+                                    <span *ngIf="data.paymentSelected.pType === 'pph'">
+                                      <strong> Rate: </strong> {{ data.paymentSelected.rate }} {{
+                                      data.paymentSelected.currency }}
+                                      <strong> Waiting period pay: </strong> {{ data.paymentSelected.waitingPay }} {{
+                                      data.paymentSelected.currency }}
+                                      <strong> Waiting period start after: </strong> {{
+                                      data.paymentSelected.waitingHourAfter }} {{ data.paymentSelected.currency }}
+                                    </span>
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                   <table width="100%" border="1" bordercolor="#adadad" cellspacing="0" cellpadding="0">
@@ -520,6 +536,110 @@
                             <strong>{{
                               data.totalMiles | number: "1.2-2"
                               }}</strong>
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr *ngIf="addCharges.length > 0">
+                <td colspan="2">&nbsp;</td>
+              </tr>
+              <tr *ngIf="addCharges.length > 0">
+                <td colspan="2">
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 15px">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <table border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p class="text-dark mb-2 text-3">
+                                    <strong>Additions</strong>
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table width="100%" border="1" bordercolor="#adadad" cellspacing="0" cellpadding="0">
+                    <tbody>
+                      <tr>
+                        <td width="50%" class="pl-3 pt-2">
+                          <p class="text-3 font-weight-bold text-dark mb-2">
+                            Charge Name
+                          </p>
+                        </td>
+                        <td width="50%" class="pl-3 pt-2">
+                          <p class="text-3 font-weight-bold text-dark mb-2">
+                            Amount
+                          </p>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let add of addCharges">
+                        <td class="pl-3 pt-2">
+                          <p class="text-3 text-dark mb-2">{{ add.chargeName }}</p>
+                        </td>
+                        <td class="pl-3 pt-2">
+                          <p class="text-3 text-dark mb-2">
+                            {{ add.amount | number: "1.2-2" }}
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr *ngIf="dedCharges.length > 0">
+                <td colspan="2">&nbsp;</td>
+              </tr>
+              <tr *ngIf="dedCharges.length > 0">
+                <td colspan="2">
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 15px">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <table border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p class="text-dark mb-2 text-3">
+                                    <strong>Deductions</strong>
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table width="100%" border="1" bordercolor="#adadad" cellspacing="0" cellpadding="0">
+                    <tbody>
+                      <tr>
+                        <td width="50%" class="pl-3 pt-2">
+                          <p class="text-3 font-weight-bold text-dark mb-2">
+                            Charge Name
+                          </p>
+                        </td>
+                        <td width="50%" class="pl-3 pt-2">
+                          <p class="text-3 font-weight-bold text-dark mb-2">
+                            Amount
+                          </p>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let add of dedCharges">
+                        <td class="pl-3 pt-2">
+                          <p class="text-3 text-dark mb-2">{{ add.chargeName }}</p>
+                        </td>
+                        <td class="pl-3 pt-2">
+                          <p class="text-3 text-dark mb-2">
+                            {{ add.amount | number: "1.2-2" }}
                           </p>
                         </td>
                       </tr>
@@ -662,6 +782,52 @@
                                 <td>
                                   <p class="text-dark mb-0 text-4">
                                     <strong>Trip Date:</strong> {{ data.date | date: "dd-MM-yyyy" }}
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr *ngIf="data.paymentSelected">
+                        <td>
+                          <table border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p class="text-dark mb-2 text-3">
+                                    <strong>Payment Type:</strong> {{ data.paymentSelected ?
+                                    paymentAbr[data.paymentSelected.pType] : '' }},
+                                    <span *ngIf="data.paymentSelected.pType === 'ppm'">
+                                      <strong> Loaded Miles: </strong>{{ data.paymentSelected.loadedMiles }} {{
+                                      data.paymentSelected.currency }},
+                                      <strong> Team Loaded Miles: </strong>{{ data.paymentSelected.loadedMilesTeam }} {{
+                                      data.paymentSelected.currency }},
+                                      <strong> Empty Miles: </strong>{{ data.paymentSelected.emptyMiles }} {{
+                                      data.paymentSelected.currency }},
+                                      <strong> Team Empty Miles: </strong>{{ data.paymentSelected.emptyMilesTeam }} {{
+                                      data.paymentSelected.currency }}
+                                    </span>
+                                    <span *ngIf="data.paymentSelected.pType === 'pfr'">
+                                      <strong> Rate: </strong> {{ data.paymentSelected.flatRate }} {{
+                                      data.paymentSelected.currency }}
+                                    </span>
+                                    <span *ngIf="data.paymentSelected.pType === 'ppd'">
+                                      <strong> Rate: </strong> {{ data.paymentSelected.deliveryRate }} {{
+                                      data.paymentSelected.currency }}
+                                    </span>
+                                    <span *ngIf="data.paymentSelected.pType === 'pp'">
+                                      <strong> Rate: </strong> {{ data.paymentSelected.loadPayPercentage }}% of {{
+                                      data.paymentSelected.loadPayPercentageOf }}
+                                    </span>
+                                    <span *ngIf="data.paymentSelected.pType === 'pph'">
+                                      <strong> Rate: </strong> {{ data.paymentSelected.rate }} {{
+                                      data.paymentSelected.currency }}
+                                      <strong> Waiting period pay: </strong> {{ data.paymentSelected.waitingPay }} {{
+                                      data.paymentSelected.currency }}
+                                      <strong> Waiting period start after: </strong> {{
+                                      data.paymentSelected.waitingHourAfter }} {{ data.paymentSelected.currency }}
+                                    </span>
                                   </p>
                                 </td>
                               </tr>

@@ -12,7 +12,7 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
 import { AddAccountModule } from "../add-account/add-account.module";
-import { PaymentChequeComponent } from "../payment-cheque/payment-cheque.component";
+import { PaymentChequeComponent } from "../../../shared/payment-cheque/payment-cheque.component";
 import { PaymentPdfsComponent } from "../payment-pdfs/payment-pdfs.component";
 import { AddAdvancePaymentComponent } from "./advance-payments/add-advance-payment/add-advance-payment.component";
 import { AdvancePaymentsDetailComponent } from "./advance-payments/advance-payments-detail/advance-payments-detail.component";
@@ -29,6 +29,7 @@ import { ExpensePaymentListComponent } from "./expense-payments/expense-payment-
 import { AddVendorPaymentComponent } from "./vendor-payment/add-vendor-payment/add-vendor-payment.component";
 import { VendorPaymentDetailComponent } from "./vendor-payment/vendor-payment-detail/vendor-payment-detail.component";
 import { VendorPaymentListComponent } from "./vendor-payment/vendor-payment-list/vendor-payment-list.component";
+import { SharedModule } from "src/app/shared/shared.module";
 
 
 
@@ -202,7 +203,7 @@ const routes: Routes = [
     EmployeePaymentDetailComponent,
     AddEmployeePaymentComponent,
     EmployeePaymentListComponent,
-    PaymentChequeComponent,
+    // PaymentChequeComponent,
     PaymentPdfsComponent,
     AddVendorPaymentComponent,
     VendorPaymentListComponent,
@@ -221,7 +222,7 @@ const routes: Routes = [
     NgSelectModule,
     AddAccountModule,
     InfiniteScrollModule,
-
+    SharedModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },

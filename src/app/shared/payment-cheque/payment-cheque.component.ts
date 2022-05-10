@@ -9,9 +9,9 @@ var converter = require("number-to-words");
 declare var $: any;
 
 @Component({
-  selector: "app-payment-cheque",
-  templateUrl: "./payment-cheque.component.html",
-  styleUrls: ["./payment-cheque.component.css"],
+  selector: 'app-payment-cheque',
+  templateUrl: './payment-cheque.component.html',
+  styleUrls: ['./payment-cheque.component.css']
 })
 export class PaymentChequeComponent implements OnInit {
   @ViewChild("chekOptions", { static: true }) modalContent: TemplateRef<any>;
@@ -178,7 +178,12 @@ export class PaymentChequeComponent implements OnInit {
             //   "dd-MM-yyyy",
             //   this.locale
             // );
-            this.cheqdata.payPeriod = await this.getSettlementData(this.settlementIDs);
+            if (this.settlementIDs) {
+              this.cheqdata.payPeriod = await this.getSettlementData(this.settlementIDs);
+            } else {
+              this.cheqdata.payPeriod = `${this.paydata.fromDate} To ${this.paydata.toDate}`
+            }
+
 
           }
 
@@ -241,7 +246,7 @@ export class PaymentChequeComponent implements OnInit {
           // this if cond. only in the case of expense payment
           if (
             this.paydata.type === "expensePayment" ||
-            this.paydata.type === "advancePayment"
+            this.paydata.type === "advancePayment" || this.paydata.type === "purchasePayment"
           ) {
             this.cheqdata.regularPay = this.paydata.finalAmount;
             if (this.paydata.paymentTo == "driver") {
@@ -507,47 +512,52 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   async getSettlementData(stlIds) {
-    let ids = encodeURIComponent(
-      JSON.stringify(stlIds)
-    );
-    let result: any = await this.accountService
-      .getData(`settlement/get/selected?entities=${ids}`)
-      .toPromise();
-    let newDates = []
-    for (let index = 0; index < result.length; index++) {
-      const element = result[index];
+    if (stlIds) {
+      let ids = encodeURIComponent(
+        JSON.stringify(stlIds)
+      );
+      let result: any = await this.accountService
+        .getData(`settlement/get/selected?entities=${ids}`)
+        .toPromise();
+      let newDates = []
+      for (let index = 0; index < result.length; index++) {
+        const element = result[index];
 
-      if (element.prStart != undefined && element.prEnd != undefined) {
+        if (element.prStart != undefined && element.prEnd != undefined) {
 
-        let startDate = formatDate(
-          element.prStart,
-          "dd-MM-yyyy",
-          this.locale
-        );
-        let endDate = formatDate(
-          element.prEnd,
-          "dd-MM-yyyy",
-          this.locale
-        );
-        newDates.push(`${startDate} To ${endDate}`);
+          let startDate = formatDate(
+            element.prStart,
+            "dd-MM-yyyy",
+            this.locale
+          );
+          let endDate = formatDate(
+            element.prEnd,
+            "dd-MM-yyyy",
+            this.locale
+          );
+          newDates.push(`${startDate} To ${endDate}`);
+        }
+        else {
+          let startDate = formatDate(
+            element.fromDate,
+            "dd-MM-yyyy",
+            this.locale
+          );
+          let endDate = formatDate(
+            element.toDate,
+            "dd-MM-yyyy",
+            this.locale
+          );
+          newDates.push(`${startDate} To ${endDate}`);
+        }
+
+
       }
-      else {
-        let startDate = formatDate(
-          element.fromDate,
-          "dd-MM-yyyy",
-          this.locale
-        );
-        let endDate = formatDate(
-          element.toDate,
-          "dd-MM-yyyy",
-          this.locale
-        );
-        newDates.push(`${startDate} To ${endDate}`);
-      }
-
-
+      return newDates.join(", ");
     }
-    return newDates.join(", ");
+
 
   }
+
+
 }

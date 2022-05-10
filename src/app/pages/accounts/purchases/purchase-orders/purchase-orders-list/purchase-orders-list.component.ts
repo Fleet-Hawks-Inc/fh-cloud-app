@@ -36,12 +36,8 @@ export class PurchaseOrdersListComponent implements OnInit {
       value: 'sent'
     },
     {
-      name: 'Closed',
-      value: 'closed'
-    },
-    {
-      name: 'Cancelled',
-      value: 'cancelled'
+      name: 'Billed',
+      value: 'billed'
     }
   ];
   constructor(

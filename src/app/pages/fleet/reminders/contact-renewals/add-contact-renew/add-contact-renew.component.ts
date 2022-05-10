@@ -1,7 +1,19 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { ModalService } from "../../../../../services/modal.service";
+import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
+
 import { ApiService } from "../../../../../services/api.service";
-import { from } from "rxjs";
-import { map } from "rxjs/operators";
+import { from, Subject, throwError } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+  takeUntil
+} from "rxjs/operators";
 import { ToastrService } from "ngx-toastr";
 import { Router, ActivatedRoute } from "@angular/router";
 import { NgbCalendar, NgbDateAdapter } from "@ng-bootstrap/ng-bootstrap";
@@ -16,8 +28,13 @@ declare var $: any;
   styleUrls: ["./add-contact-renew.component.css"],
 })
 export class AddContactRenewComponent implements OnInit {
+  @ViewChild('contactF') contactF: NgForm;
+  takeUntil$ = new Subject();
+
   reminderID;
   pageTitle;
+    isSubmitted = false;
+
   entityID = null;
   taskID = null;
   reminderData = {
@@ -77,9 +94,16 @@ export class AddContactRenewComponent implements OnInit {
     private toastr: ToastrService,
     private listService: ListService,
     private ngbCalendar: NgbCalendar,
+        private modalService: NgbModal,
+    private modalServiceOwn: ModalService,
     private location: Location,
     private dateAdapter: NgbDateAdapter<string>
-  ) { }
+  ) {
+
+  }
+  
+
+  
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -185,6 +209,7 @@ export class AddContactRenewComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
+    
         this.toastr.success("Contact Renewal Reminder Added Successfully!");
         this.cancel();
         this.reminderData = {
@@ -303,6 +328,7 @@ export class AddContactRenewComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
+      
         this.toastr.success("Contact Renewal Reminder Updated Successfully");
         this.router.navigateByUrl("/fleet/reminders/contact-renewals/list");
         this.Success = "";
