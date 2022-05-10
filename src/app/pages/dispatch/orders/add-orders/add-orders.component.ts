@@ -1552,6 +1552,9 @@ export class AddOrdersComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
+              if (path.includes("order")) {
+                this.toastr.error(val.message);
+              }
               const key = val.message.match(/"([^']+)"/)[1];
               val.message = val.message.replace(/".*"/, "This Field");
               this.errors[key] = val.message;
@@ -1576,7 +1579,7 @@ export class AddOrdersComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.toastr.success("Order added successfully");
-        this.goBack();
+        // this.goBack();
       },
     });
   }
@@ -3034,7 +3037,9 @@ export class AddOrdersComponent implements OnInit {
           if (
             res.Items[0].adrs.length === 1 &&
             (res.Items[0].adrs[0].aType === "" ||
-              res.Items[0].adrs[0].aType === null)
+              res.Items[0].adrs[0].aType === null) &&
+            (res.Items[0].adrs[0].cCode === "" ||
+              res.Items[0].adrs[0].cCode === null)
           ) {
             this.receiverAddresses = [];
           } else {
@@ -3264,7 +3269,7 @@ export class AddOrdersComponent implements OnInit {
       .getData(`carriers/get/showPrefix?type=${'order'}`)
       .toPromise();
     if (result && result.length > 0) {
-      this.orderPrefix = `${result[0].prefix}${result[0].sequence}`;
+      this.orderData.orderNumber = `${result[0].prefix}${result[0].sequence}`;
     }
   }
 }
