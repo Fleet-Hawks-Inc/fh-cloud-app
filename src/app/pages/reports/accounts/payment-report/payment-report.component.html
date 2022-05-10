@@ -228,9 +228,9 @@
             </div>
 
             <div class="col-md-4 col-lg-4 text-right pr-1">
-               <button
-                *ngIf="exportLoading"
-                class="btn btn-success btn-sm ml-2"
+              <button
+                *ngIf="exporting"
+                class="btn btn-success btn-sm"
                 type="button"
                 disabled
               >
@@ -242,15 +242,12 @@
                 Exporting...
               </button>
               <button
-                type="button"
-                *ngIf="!exportLoading"
-                class="btn btn-success btn-sm ml-2 dropdown-toggle"
+                *ngIf="!exporting"
+                class="btn btn-sm btn-success dropdown-toggle"
                 data-toggle="dropdown"
                 aria-expanded="false"
               >
-                <i class="fas fa-file-export"></i> Export<span
-                  class="caret"
-                ></span>
+                Export<span class="caret"></span>
               </button>
               <div
                 *ngIf="!exporting"
