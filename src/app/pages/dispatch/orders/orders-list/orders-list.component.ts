@@ -283,7 +283,6 @@ export class OrdersListComponent implements OnInit {
   }
 
   set selectedColumns(val: any[]) {
-    //restore original order
     this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
 
   }
@@ -310,22 +309,6 @@ export class OrdersListComponent implements OnInit {
         element.newStatus = `${element.orderStatus} (R)`;
       }
       this.orders = [...this.orders, element];
-      // if (element.orderStatus === "confirmed") {
-      //   this.confirmOrders.push(element);
-      // } else if (element.orderStatus == "dispatched") {
-      //   this.dispatchOrders.push(element);
-      // } else if (element.orderStatus == "invoiced") {
-      //   this.invoicedOrders.push(element);
-      // } else if (element.orderStatus == "partiallyPaid") {
-      //   this.partiallyOrders.push(element);
-      // } else if (element.orderStatus == "cancelled") {
-      //   this.cancelledOrders.push(element);
-      // } else if (element.orderStatus == "delivered") {
-      //   this.deliveredOrders.push(element);
-      // } else if (element.orderStatus == "tonu") {
-      //   element.orderStatus = element.orderStatus.toUpperCase();
-      //   this.tonuOrders.push(element);
-      // }
     }
   }
 
@@ -407,19 +390,19 @@ export class OrdersListComponent implements OnInit {
                   for (let shipPickUp of ship.pickupPoint) {
                     let shipDate = shipPickUp
                     for (let commoD of shipDate.commodity) {
-                      res.commodityData = 'Name:- ' + commoD.name + '\n'
-                        + 'Qty:- ' + commoD.quantity + commoD.quantityUnit
+                      res.commodityData = "<strong> Name:- </strong>" + commoD.name + '\n'
+                        + "<strong> Qty:- </strong>" + commoD.quantity + commoD.quantityUnit
 
                     }
                     if (shipPickUp.address.manual) {
-                      res.pickupLocData = 'Date:- ' + shipPickUp.dateAndTime + '\n'
-                        + 'Location:- ' + shipPickUp.address.address + ' ' +
+                      res.pickupLocData = "<strong> Date:- </strong>" + shipPickUp.dateAndTime + '\n'
+                        + "<strong> Location:- </strong>" + shipPickUp.address.address + ' ' +
                         + ' ' + shipPickUp.address.cityName + ' ' + shipPickUp.address.stateName + ' ' +
                         shipPickUp.address.countryName + ' ' + shipPickUp.address.zipCode
                     }
                     else if (!shipPickUp.address.manual) {
-                      res.pickupLocData = 'Date:- ' + shipPickUp.dateAndTime + '\n'
-                        + 'Location:- ' + shipPickUp.address.pickupLocation
+                      res.pickupLocData = "<strong> Date:- </strong>" + shipPickUp.dateAndTime + '\n'
+                        + "<strong> Location:- </strong>" + shipPickUp.address.pickupLocation
                     }
                     else if (shipPickUp.length > 1) {
                       res.pickupLocData = shipPickUp.length - 1
@@ -429,14 +412,14 @@ export class OrdersListComponent implements OnInit {
                   for (let receiver of shipArr.receivers) {
                     for (let receiveDropOf of receiver.dropPoint) {
                       if (receiveDropOf.address.manual) {
-                        res.dropLocData = 'Date:- ' + receiveDropOf.dateAndTime + '\n'
-                          + 'Location:- ' + receiveDropOf.address.address + ' ' +
+                        res.dropLocData = "<strong> Date:- </strong>" + receiveDropOf.dateAndTime + '\n'
+                          + "<strong> Location:- </strong>" + receiveDropOf.address.address + ' ' +
                           + ' ' + receiveDropOf.address.cityName + ' ' + receiveDropOf.address.stateName + ' ' +
                           receiveDropOf.address.countryName + ' ' + receiveDropOf.address.zipCode
                       }
                       else if (!receiveDropOf.address.manual) {
-                        res.dropLocData = 'Date:- ' + receiveDropOf.dateAndTime + '\n'
-                          + 'Location:- ' + receiveDropOf.address.dropOffLocation
+                        res.dropLocData = "<strong> Date:- </strong>" + receiveDropOf.dateAndTime + '\n'
+                          + "<strong> Location:- </strong>" + receiveDropOf.address.dropOffLocation
                       }
                       else if (receiveDropOf.length > 1) {
                         res.dropLocData = receiveDropOf.length - 1
@@ -460,7 +443,7 @@ export class OrdersListComponent implements OnInit {
                 res.invoiceData += 'Payment:-' + 'NA'
               }
 
-              res.customerData = res.customerName + "\n" + "Confirmation#: "
+              res.customerData = res.customerName + "\n" + "<strong> Confirmation:- </strong>"
                 + res.cusConfirmation
 
             }
