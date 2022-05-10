@@ -228,7 +228,7 @@ export class OrdersListComponent implements OnInit {
   dataColumns: any[];
   get = _.get;
   _selectedColumns: any[];
-
+  // pickupLocData = []
   isOrderPriceEnabled = environment.isOrderPriceEnabled
 
   constructor(
@@ -247,18 +247,15 @@ export class OrdersListComponent implements OnInit {
       { width: '7%', field: 'orderNumber', header: 'Order#', type: "text", },
       { width: '6%', field: 'orderMode', header: 'Type', type: "text" },
       { width: '8%', field: 'createdDate', header: 'Date', type: "text" },
-      { width: '8%', field: 'customerName', header: 'Customer', type: 'text' },
-      { width: '15%', field: 'shipRecDate', header: ' Pickup Location', type: 'text' },
-      { width: '15%', field: 'recDropDate', header: 'Drop Off Location', type: 'text' },
-      { width: '8%', field: 'commodityName', header: 'Commodity', type: 'text' },
-      { width: '8%', field: 'currency', header: 'Amount', type: 'text' },
-      { width: '7%', field: 'invStatus', header: 'Status', type: 'text' },
-      { width: '11%', field: 'newStatus', header: 'Order Status', type: 'text' },
+      { width: '9%', field: 'customerData', header: 'Customer', type: 'text' },
+      { width: '15%', field: 'pickupLocData', header: ' Pickup Location', type: 'text' },
+      { width: '15%', field: 'dropLocData', header: 'Drop Off Location', type: 'text' },
+      { width: '9%', field: 'commodityData', header: 'Commodity', type: 'text' },
+      { width: '8%', field: 'amount', header: 'Amount', type: 'text' },
+      { width: '7%', field: 'invoiceData', header: 'Status', type: 'text' },
+      { width: '10%', field: 'newStatus', header: 'Order Status', type: 'text' },
     ];
     this._selectedColumns = this.dataColumns;
-
-
-    // this.setToggleOptions()
 
 
     this.isOrderPriceEnabled = localStorage.getItem("isOrderPriceEnabled")
@@ -266,26 +263,8 @@ export class OrdersListComponent implements OnInit {
       : environment.isOrderPriceEnabled;
 
     this.customersObjects = await this.dashboardUtilityService.getCustomers();
-    // $(document).ready(() => {
-    //   setTimeout(() => {
-    //    $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
-    //   }, 1800);
-    // });
   }
 
-  // setToggleOptions() {
-  //   this.selectedColumns = this.dataColumns;
-  // }
-
-  @Input() get selectedColumns(): any[] {
-    return this._selectedColumns;
-  }
-
-  set selectedColumns(val: any[]) {
-    //restore original order
-    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
-
-  }
   fetchTabData(tabType) {
     this.activeTab = tabType;
   }
@@ -394,45 +373,76 @@ export class OrdersListComponent implements OnInit {
               this.ordersEndPoint = this.totalRecords;
             }
 
-            // commodity and amount data
+            // multiple data for csv
             for (let res of result.Items) {
-              res.commodityName = ''
-              res.commoQuantity = 0
-              res.commoQuantityUnit = ''
-              res.currency = ''
-              res.shipRecDate = ''
-              res.recDropDate = ''
+              res.commodityData = ''
+              res.amount = ''
+              res.pickupLocData = ''
+              res.dropLocData = ''
+              res.customerData = ''
               for (let shipArr of res.shippersReceiversInfo) {
                 for (let ship of shipArr.shippers) {
                   for (let shipPickUp of ship.pickupPoint) {
                     let shipDate = shipPickUp
                     for (let commoD of shipDate.commodity) {
-
-                      res.commodityName = commoD.name
-                      res.commoQuantity = commoD.quantity
-                      res.commoQuantityUnit = commoD.quantityUnit
+                      res.commodityData = 'Name:- ' + commoD.name + '\n'
+                        + 'Qty:- ' + commoD.quantity + commoD.quantityUnit
 
                     }
-                    res.shipRecDate = shipPickUp.dateAndTime
+                    if (shipPickUp.address.manual) {
+                      res.pickupLocData = 'Date:- ' + shipPickUp.dateAndTime + '\n'
+                        + 'Location:- ' + shipPickUp.address.address + ' ' +
+                        + ' ' + shipPickUp.address.cityName + ' ' + shipPickUp.address.stateName + ' ' +
+                        shipPickUp.address.countryName + ' ' + shipPickUp.address.zipCode
+                    }
+                    else if (!shipPickUp.address.manual) {
+                      res.pickupLocData = 'Date:- ' + shipPickUp.dateAndTime + '\n'
+                        + 'Location:- ' + shipPickUp.address.pickupLocation
+                    }
+                    else if (shipPickUp.length > 1) {
+                      res.pickupLocData = shipPickUp.length - 1
+                    }
 
                   }
-
                   for (let receiver of shipArr.receivers) {
                     for (let receiveDropOf of receiver.dropPoint) {
-
-                      res.recDropDate = receiveDropOf.dateAndTime
-
+                      if (receiveDropOf.address.manual) {
+                        res.dropLocData = 'Date:- ' + receiveDropOf.dateAndTime + '\n'
+                          + 'Location:- ' + receiveDropOf.address.address + ' ' +
+                          + ' ' + receiveDropOf.address.cityName + ' ' + receiveDropOf.address.stateName + ' ' +
+                          receiveDropOf.address.countryName + ' ' + receiveDropOf.address.zipCode
+                      }
+                      else if (!receiveDropOf.address.manual) {
+                        res.dropLocData = 'Date:- ' + receiveDropOf.dateAndTime + '\n'
+                          + 'Location:- ' + receiveDropOf.address.dropOffLocation
+                      }
+                      else if (receiveDropOf.length > 1) {
+                        res.dropLocData = receiveDropOf.length - 1
+                      }
                     }
                   }
-
-
-
                 }
 
               }
-              res.currency = res.charges.freightFee.currency
+              res.amount = res.charges.freightFee.currency + " " + res.totalAmount;
+              if (res.invoicedTime) {
+                res.invoiceData = 'Invoiced:-' + 'yes'
+              }
+              else if (!res.invoicedTime) {
+                res.invoiceData = 'Invoiced:-' + 'No'
+              }
+              if (res.invStatus) {
+                res.invoiceData += " Payment:- " + res.invStatus.replace('_', ' ')
+              }
+              else if (!res.invStatus) {
+                res.invoiceData += 'Payment:-' + 'NA'
+              }
+
+              res.customerData = res.customerName + "\n" + "Confirmation#: "
+                + res.cusConfirmation
 
             }
+
 
             // disable prev btn
             if (this.ordersDraw == 0) {
@@ -849,80 +859,6 @@ export class OrdersListComponent implements OnInit {
       this.initDataTable();
     }
     this.loaded = false;
-  }
-  closePanel(op: OverlayPanel,) {
-    // alert();
-
-    op.hide();
-    this.router.navigate(['/dispatch', 'trips', 'add-trip'])
-  }
-
-  openPanel(op: OverlayPanel, event: any) {
-    // alert();
-    op.show(event);
-  }
-  generateCSV() {
-    if (this.orders.length > 0) {
-      let dataObject = []
-      let csvArray = []
-      this.orders.forEach(element => {
-        let invTime = '';
-        let payStatus = ''
-        console.log('elee--', element)
-        if (element.invoicedTime) {
-          invTime = 'yes'
-        }
-        else if (!element.invoicedTime) {
-          invTime = 'No'
-        }
-
-        if (element.invStatus) {
-          payStatus = element.invStatus.replace('_', ' ')
-        }
-        else if (!element.invStatus) {
-          payStatus = 'NA'
-        }
-
-
-
-        let obj = {}
-
-        obj["Order#"] = element.orderNumber;
-        obj["Type"] = element.orderMode;
-        obj["Date"] = element.createdDate;
-        obj["Customer"] = this.customersObjects[element.customerID];
-        obj["Commodity"] = "Name:-" + element.commodityName + " & " + "Qty:-" + element.commoQuantity + element.commoQuantityUnit;
-        obj["Amount"] = element.currency + " " + element.totalAmount;
-        obj["Status"] = invTime + " & " + payStatus;
-        obj["Order Status"] = element.newStatus;
-
-
-        dataObject.push(obj)
-      });
-
-      let headers = Object.keys(dataObject[0]).join(',')
-      headers += ' \n'
-      csvArray.push(headers)
-      dataObject.forEach(element => {
-        let obj = Object.values(element).join(',')
-        obj += ' \n'
-        csvArray.push(obj)
-      });
-      const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      if (link.download !== undefined) {
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}order-list.csv`);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-    }
-    else {
-      this.toastr.error("No Records found")
-    }
   }
   /**
   * Clears the table filters
