@@ -35,6 +35,7 @@ export class OrdersListComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
   noOrdersMsg = Constants.NO_RECORDS_FOUND;
   orders = [];
+  abcText
   confirmOrders = [];
   dispatchOrders = [];
   deliveredOrders = [];
@@ -258,13 +259,34 @@ export class OrdersListComponent implements OnInit {
     this._selectedColumns = this.dataColumns;
 
 
+    this.setToggleOptions()
+
+
     this.isOrderPriceEnabled = localStorage.getItem("isOrderPriceEnabled")
       ? JSON.parse(localStorage.getItem("isOrderPriceEnabled"))
       : environment.isOrderPriceEnabled;
 
     this.customersObjects = await this.dashboardUtilityService.getCustomers();
+    // $(document).ready(() => {
+    //   setTimeout(() => {
+    //    $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+    //   }, 1800);
+    // });
   }
 
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+  }
   fetchTabData(tabType) {
     this.activeTab = tabType;
   }
@@ -860,6 +882,80 @@ export class OrdersListComponent implements OnInit {
     }
     this.loaded = false;
   }
+  closePanel(op: OverlayPanel,) {
+    // alert();
+
+    op.hide();
+    this.router.navigate(['/dispatch', 'trips', 'add-trip'])
+  }
+
+  openPanel(op: OverlayPanel, event: any) {
+    // alert();
+    op.show(event);
+  }
+  // generateCSV() {
+  //   if (this.orders.length > 0) {
+  //     let dataObject = []
+  //     let csvArray = []
+  //     this.orders.forEach(element => {
+  //       let invTime = '';
+  //       let payStatus = ''
+
+  //       if (element.invoicedTime) {
+  //         invTime = 'yes'
+  //       }
+  //       else if (!element.invoicedTime) {
+  //         invTime = 'No'
+  //       }
+
+  //       if (element.invStatus) {
+  //         payStatus = element.invStatus.replace('_', ' ')
+  //       }
+  //       else if (!element.invStatus) {
+  //         payStatus = 'NA'
+  //       }
+
+
+
+  //       let obj = {}
+
+  //       obj["Order#"] = element.orderNumber;
+  //       obj["Type"] = element.orderMode;
+  //       obj["Date"] = element.createdDate;
+  //       obj["Customer"] = this.customersObjects[element.customerID];
+  //       obj["Commodity"] = "Name:-" + element.commodityData + " & " + "Qty:-" + element.commoQuantity + element.commoQuantityUnit;
+  //       obj["Amount"] = element.currency + " " + element.totalAmount;
+  //       obj["Status"] = invTime + " & " + payStatus;
+  //       obj["Order Status"] = element.newStatus;
+
+
+  //       dataObject.push(obj)
+  //     });
+
+  //     let headers = Object.keys(dataObject[0]).join(',')
+  //     headers += ' \n'
+  //     csvArray.push(headers)
+  //     dataObject.forEach(element => {
+  //       let obj = Object.values(element).join(',')
+  //       obj += ' \n'
+  //       csvArray.push(obj)
+  //     });
+  //     const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
+  //     const link = document.createElement('a');
+  //     if (link.download !== undefined) {
+  //       const url = URL.createObjectURL(blob);
+  //       link.setAttribute('href', url);
+  //       link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}order-list.csv`);
+  //       link.style.visibility = 'hidden';
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       document.body.removeChild(link);
+  //     }
+  //   }
+  //   else {
+  //     this.toastr.error("No Records found")
+  //   }
+  // }
   /**
   * Clears the table filters
   * @param table Table 
