@@ -267,11 +267,6 @@ export class OrdersListComponent implements OnInit {
       : environment.isOrderPriceEnabled;
 
     this.customersObjects = await this.dashboardUtilityService.getCustomers();
-    // $(document).ready(() => {
-    //   setTimeout(() => {
-    //    $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
-    //   }, 1800);
-    // });
   }
 
   setToggleOptions() {
