@@ -248,12 +248,12 @@ export class OrdersListComponent implements OnInit {
       { width: '6%', field: 'orderMode', header: 'Type', type: "text" },
       { width: '8%', field: 'createdDate', header: 'Date', type: "text" },
       { width: '8%', field: 'customerName', header: 'Customer', type: 'text' },
-      { width: '14%', field: 'shipRecDate', header: ' Pickup Location', type: 'text' },
-      { width: '14%', field: 'recDropDate', header: 'Drop Off Location', type: 'text' },
+      { width: '15%', field: 'shipRecDate', header: ' Pickup Location', type: 'text' },
+      { width: '15%', field: 'recDropDate', header: 'Drop Off Location', type: 'text' },
       { width: '8%', field: 'commodityName', header: 'Commodity', type: 'text' },
       { width: '8%', field: 'currency', header: 'Amount', type: 'text' },
       { width: '7%', field: 'invStatus', header: 'Status', type: 'text' },
-      { width: '10%', field: 'newStatus', header: 'Order Status', type: 'text' },
+      { width: '11%', field: 'newStatus', header: 'Order Status', type: 'text' },
     ];
     this._selectedColumns = this.dataColumns;
 
