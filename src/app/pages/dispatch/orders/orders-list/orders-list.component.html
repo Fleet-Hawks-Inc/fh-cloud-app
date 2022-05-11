@@ -89,7 +89,7 @@
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark text-capitalize">
-              <div class="form-group row pt-3"> {{abcText}}
+              <div class="form-group row pt-3">
                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
                   <p-table #dt [value]="orders" [resizableColumns]="true" columnResizeMode="expand"
                     scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
@@ -161,23 +161,27 @@
                         </td>
                         <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:9%">
                           <div style="white-space: pre-line;">
-                            <div [innerHTML]="order.customerData"></div>
+                            {{order.customerData}}
+
                           </div>
                         </td>
-                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:15%">
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:14%">
                           <div style="white-space: pre-line;">
-                            <div [innerHTML]="order.pickupLocData"></div>
+                            {{order.pickupLocData}}
+
                           </div>
                         </td>
 
-                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:15%">
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:14%">
                           <div style="white-space: pre-line;">
-                            <div [innerHTML]="order.dropLocData"></div>
+                            {{order.dropLocData}}
+
                           </div>
                         </td>
                         <td routerLink='/dispatch/orders/detail/{{order.orderID}}'
                           style="width:9%; white-space: pre-line">
-                          <div [innerHTML]="order.commodityData"></div>
+                          {{order.commodityData}}
+
                         </td>
                         <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:8%">
                           {{ order.amount }}
