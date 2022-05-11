@@ -89,7 +89,7 @@
 
                                                 <th *ngFor="let dataColumns of columns"
                                                     [pSortableColumn]="dataColumns.field" pResizableColumn
-                                                    style="width:10%">
+                                                    [ngStyle]="{'width': dataColumns.width}">
 
                                                     <div [ngSwitch]="dataColumns.field">
                                                         <!-- Driver Status Filter Customization -->
@@ -157,7 +157,7 @@
                                             <tr>
 
                                                 <td *ngFor="let dataColumns of columns"
-                                                    style="width:10%;cursor: pointer;"
+                                                    [ngStyle]="{'width': dataColumns.width}" style="cursor: pointer;"
                                                     routerLink="/fleet/drivers/detail/{{driver.driverID}}">
                                                     <div [ngSwitch]="dataColumns.field">
                                                         <span *ngSwitchCase="'firstName'">
@@ -170,7 +170,9 @@
                                                             {{driver[dataColumns.field] | titlecase}}
                                                         </span>
                                                         <span *ngSwitchCase="'driverStatus'">
-                                                       <span class="badge badge-dark p-1">{{driver[dataColumns.field] | titlecase}}</span>     
+                                                            <span
+                                                                class="badge badge-dark p-1">{{driver[dataColumns.field]
+                                                                | titlecase}}</span>
                                                         </span>
                                                         <span *ngSwitchCase="'companyName'">
                                                             {{driver[dataColumns.field] | uppercase}}
