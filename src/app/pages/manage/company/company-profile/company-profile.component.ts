@@ -83,6 +83,8 @@ export class CompanyProfileComponent implements OnInit {
   subCompanies = [];
   showSubCompany = false;
 
+  accountSettings = [];
+
   constructor(private route: ActivatedRoute,
     private apiService: ApiService,
     private toastr: ToastrService,
@@ -233,6 +235,10 @@ export class CompanyProfileComponent implements OnInit {
       .subscribe((result: any) => {
         if (result.Items && result.Items.length > 0) {
           this.carriers = result.Items[0];
+
+          if (this.carriers.accountSettings && this.carriers.accountSettings != undefined) {
+            this.accountSettings = this.carriers.accountSettings;
+          }
 
           if (!this.carriers.referral && this.carriers.findingWay === 'Referral') {
             this.carriers.referral = {};
