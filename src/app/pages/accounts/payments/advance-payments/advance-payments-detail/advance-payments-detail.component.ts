@@ -116,7 +116,8 @@ export class AdvancePaymentsDetailComponent implements OnInit {
 
   fetchDriverDetail(driverID) {
     this.apiService.getData(`drivers/${driverID}`).subscribe((result: any) => {
-      this.entityName = `${result.Items[0].firstName} ${result.Items[0].lastName} `;
+      console.log('result.Items[0]', result.Items[0])
+      this.entityName = `${result.Items[0].firstName} ${result.Items[0].middleName} ${result.Items[0].lastName} `;
     });
   }
 
