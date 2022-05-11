@@ -367,6 +367,8 @@ export class AddOrdersComponent implements OnInit {
   cloneID: any;
   recalledState = false;
 
+  orderPrefix: string = '';
+
   constructor(
     private apiService: ApiService,
     private ngbCalendar: NgbCalendar,
@@ -508,7 +510,7 @@ export class AddOrdersComponent implements OnInit {
         this.shippersObjects = res;
       });
     }
-
+    this.getOrderPrefix()
     this.httpClient.get("assets/packagingUnit.json").subscribe((data) => {
       this.packagingUnitsList = data;
     });
@@ -1550,6 +1552,9 @@ export class AddOrdersComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
+              if (path.includes("order")) {
+                this.toastr.error(val.message);
+              }
               const key = val.message.match(/"([^']+)"/)[1];
               val.message = val.message.replace(/".*"/, "This Field");
               this.errors[key] = val.message;
@@ -3032,7 +3037,9 @@ export class AddOrdersComponent implements OnInit {
           if (
             res.Items[0].adrs.length === 1 &&
             (res.Items[0].adrs[0].aType === "" ||
-              res.Items[0].adrs[0].aType === null)
+              res.Items[0].adrs[0].aType === null) &&
+            (res.Items[0].adrs[0].cCode === "" ||
+              res.Items[0].adrs[0].cCode === null)
           ) {
             this.receiverAddresses = [];
           } else {
@@ -3254,6 +3261,15 @@ export class AddOrdersComponent implements OnInit {
             this.submitDisabled = false;
           }
         });
+    }
+  }
+
+  async getOrderPrefix() {
+    let result: any = await this.apiService
+      .getData(`carriers/get/showPrefix?type=${'order'}`)
+      .toPromise();
+    if (result && result.length > 0) {
+      this.orderData.orderNumber = `${result[0].prefix}${result[0].sequence}`;
     }
   }
 }

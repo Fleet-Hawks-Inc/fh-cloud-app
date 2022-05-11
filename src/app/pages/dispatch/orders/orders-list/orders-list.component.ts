@@ -1,7 +1,7 @@
-import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { Component, Input, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { ApiService } from "../../../../services/api.service";
 import { NgxSpinnerService } from "ngx-spinner";
-import { ToastrService } from "ngx-toastr";
+import { Overlay, ToastrService } from "ngx-toastr";
 import Constants from "../../../fleet/constants";
 import { environment } from "src/environments/environment";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
@@ -10,22 +10,32 @@ import * as moment from "moment";
 import { ListService } from "src/app/services/list.service";
 import * as _ from "lodash";
 import { DashboardUtilityService } from "src/app/services/dashboard-utility.service";
+import { Table } from 'primeng/table';
+
+import { NgSelectComponent } from "@ng-select/ng-select";
+import { OverlayPanel } from "primeng/overlaypanel";
+import { Router } from "@angular/router";
 
 declare var $: any;
 @Component({
   selector: "app-orders-list",
   templateUrl: "./orders-list.component.html",
   styleUrls: ["./orders-list.component.css"],
+
 })
 export class OrdersListComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
+  @ViewChild('dt') table: Table;
+  @ViewChild('op') overlaypanel: OverlayPanel;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   @ViewChild("confirmEmailModal", { static: true })
   confirmEmailModal: TemplateRef<any>;
 
   dataMessage: string = Constants.FETCHING_DATA;
   noOrdersMsg = Constants.NO_RECORDS_FOUND;
   orders = [];
+
   confirmOrders = [];
   dispatchOrders = [];
   deliveredOrders = [];
@@ -212,7 +222,15 @@ export class OrdersListComponent implements OnInit {
   loaded = false;
   isLoad: boolean = false;
   isLoadText = "Load More...";
-  isOrderPriceEnabled=environment.isOrderPriceEnabled
+
+
+  detailUrl = []
+
+  dataColumns: any[];
+  get = _.get;
+  _selectedColumns: any[];
+  // pickupLocData = []
+  isOrderPriceEnabled = environment.isOrderPriceEnabled
 
   constructor(
     private apiService: ApiService,
@@ -220,28 +238,59 @@ export class OrdersListComponent implements OnInit {
     private modalService: NgbModal,
     private spinner: NgxSpinnerService,
     private listService: ListService,
-    private dashboardUtilityService: DashboardUtilityService
+    private dashboardUtilityService: DashboardUtilityService,
+    private router: Router
   ) { }
 
   async ngOnInit() {
     this.initDataTable();
+    this.dataColumns = [
+      { width: '7%', field: 'orderNumber', header: 'Order#', type: "text", },
+      { width: '6%', field: 'orderMode', header: 'Type', type: "text" },
+      { width: '8%', field: 'createdDate', header: 'Date', type: "text" },
+      { width: '9%', field: 'customerData', header: 'Customer', type: 'text' },
+      { width: '14%', field: 'pickupLocData', header: ' Pickup Location', type: 'text' },
+      { width: '14%', field: 'dropLocData', header: 'Drop Off Location', type: 'text' },
+      { width: '9%', field: 'commodityData', header: 'Commodity', type: 'text' },
+      { width: '8%', field: 'amount', header: 'Amount', type: 'text' },
+      { width: '7%', field: 'invoiceData', header: 'Status', type: 'text' },
+      { width: '10%', field: 'newStatus', header: 'Order Status', type: 'text' },
+    ];
+    this._selectedColumns = this.dataColumns;
+
+
+    this.setToggleOptions()
+
 
     this.isOrderPriceEnabled = localStorage.getItem("isOrderPriceEnabled")
-    ? JSON.parse(localStorage.getItem("isOrderPriceEnabled"))
-    : environment.isOrderPriceEnabled;
-    
+      ? JSON.parse(localStorage.getItem("isOrderPriceEnabled"))
+      : environment.isOrderPriceEnabled;
+
     this.customersObjects = await this.dashboardUtilityService.getCustomers();
   }
 
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+  }
   fetchTabData(tabType) {
     this.activeTab = tabType;
   }
 
   allignOrders(orders) {
+
     for (let i = 0; i < orders.length; i++) {
       const element = orders[i];
 
-      this.orders.push(element);
+
       element.canRecall = false;
       if (element.orderStatus === "delivered") {
         element.canRecall = true;
@@ -254,22 +303,7 @@ export class OrdersListComponent implements OnInit {
       if (element.recall) {
         element.newStatus = `${element.orderStatus} (R)`;
       }
-      if (element.orderStatus === "confirmed") {
-        this.confirmOrders.push(element);
-      } else if (element.orderStatus == "dispatched") {
-        this.dispatchOrders.push(element);
-      } else if (element.orderStatus == "invoiced") {
-        this.invoicedOrders.push(element);
-      } else if (element.orderStatus == "partiallyPaid") {
-        this.partiallyOrders.push(element);
-      } else if (element.orderStatus == "cancelled") {
-        this.cancelledOrders.push(element);
-      } else if (element.orderStatus == "delivered") {
-        this.deliveredOrders.push(element);
-      } else if (element.orderStatus == "tonu") {
-        element.orderStatus = element.orderStatus.toUpperCase();
-        this.tonuOrders.push(element);
-      }
+      this.orders = [...this.orders, element];
     }
   }
 
@@ -280,6 +314,7 @@ export class OrdersListComponent implements OnInit {
     }
     this.spinner.show();
     // this.orders = [];
+
     if (this.lastEvaluatedKey !== "end") {
       this.orderFiltr.searchValue = this.orderFiltr.searchValue.trim();
       this.apiService
@@ -305,10 +340,12 @@ export class OrdersListComponent implements OnInit {
             }
             result.Items.map((v) => {
               v.url = `/dispatch/orders/detail/${v.orderID}`;
+              this.detailUrl = v.url
+
             });
             this.fetchedRecordsCount += result.Count;
             this.getStartandEndVal("all");
-            // this.orders.push(result['Items']);
+
             this.allignOrders(result[`Items`]);
             this.loaded = true;
             if (
@@ -335,6 +372,77 @@ export class OrdersListComponent implements OnInit {
               this.lastEvaluatedKey = "end";
               this.ordersEndPoint = this.totalRecords;
             }
+
+            // multiple data for csv
+            for (let res of result.Items) {
+              res.commodityData = ''
+              res.amount = ''
+              res.pickupLocData = ''
+              res.dropLocData = ''
+              res.customerData = ''
+              for (let shipArr of res.shippersReceiversInfo) {
+                for (let ship of shipArr.shippers) {
+                  for (let shipPickUp of ship.pickupPoint) {
+                    let shipDate = shipPickUp
+                    for (let commoD of shipDate.commodity) {
+                      res.commodityData = " Name:-" + commoD.name + '\n'
+                        + " Qty:-" + commoD.quantity + commoD.quantityUnit
+
+                    }
+                    if (shipPickUp.address.manual) {
+                      res.pickupLocData = " Date:-" + shipPickUp.dateAndTime + '\n'
+                        + " Location:-" + shipPickUp.address.address + ' ' +
+                        + ' ' + shipPickUp.address.cityName + ' ' + shipPickUp.address.stateName + ' ' +
+                        shipPickUp.address.countryName + ' ' + shipPickUp.address.zipCode
+                    }
+                    else if (!shipPickUp.address.manual) {
+                      res.pickupLocData = " Date:-" + shipPickUp.dateAndTime + '\n'
+                        + " Location:-" + shipPickUp.address.pickupLocation
+                    }
+                    else if (shipPickUp.length > 1) {
+                      res.pickupLocData = shipPickUp.length - 1
+                    }
+
+                  }
+                  for (let receiver of shipArr.receivers) {
+                    for (let receiveDropOf of receiver.dropPoint) {
+                      if (receiveDropOf.address.manual) {
+                        res.dropLocData = " Date:-" + receiveDropOf.dateAndTime + '\n'
+                          + " Location:-" + receiveDropOf.address.address + ' ' +
+                          + ' ' + receiveDropOf.address.cityName + ' ' + receiveDropOf.address.stateName + ' ' +
+                          receiveDropOf.address.countryName + ' ' + receiveDropOf.address.zipCode
+                      }
+                      else if (!receiveDropOf.address.manual) {
+                        res.dropLocData = " Date:-" + receiveDropOf.dateAndTime + '\n'
+                          + " Location:-" + receiveDropOf.address.dropOffLocation
+                      }
+                      else if (receiveDropOf.length > 1) {
+                        res.dropLocData = receiveDropOf.length - 1
+                      }
+                    }
+                  }
+                }
+
+              }
+              res.amount = res.charges.freightFee.currency + " " + res.totalAmount;
+              if (res.invoicedTime) {
+                res.invoiceData = 'Invoiced:-' + 'yes'
+              }
+              else if (!res.invoicedTime) {
+                res.invoiceData = 'Invoiced:-' + 'No'
+              }
+              if (res.invStatus) {
+                res.invoiceData += " Payment:- " + res.invStatus.replace('_', ' ')
+              }
+              else if (!res.invStatus) {
+                res.invoiceData += 'Payment:-' + 'NA'
+              }
+
+              res.customerData = res.customerName + "\n" + " Confirmation:-"
+                + res.cusConfirmation
+
+            }
+
 
             // disable prev btn
             if (this.ordersDraw == 0) {
@@ -364,10 +472,10 @@ export class OrdersListComponent implements OnInit {
   }
 
   filterOrders() {
-   // if (this.orderFiltr.category == null || this.orderFiltr.category == "") {
-  //    this.toastr.error("Please select category");
-  //    return false;
-  //  }
+    // if (this.orderFiltr.category == null || this.orderFiltr.category == "") {
+    //    this.toastr.error("Please select category");
+    //    return false;
+    //  }
     if (this.orderFiltr.startDate === null) this.orderFiltr.startDate = "";
     if (this.orderFiltr.endDate === null) this.orderFiltr.endDate = "";
     if (
@@ -738,7 +846,7 @@ export class OrdersListComponent implements OnInit {
     }
   }
 
-  onScroll() {
+  onScroll = async (event: any) => {
     if (this.loaded) {
       this.orderFiltr.searchValue = "",
         this.orderFiltr.startDate = "",
@@ -751,5 +859,12 @@ export class OrdersListComponent implements OnInit {
       this.initDataTable();
     }
     this.loaded = false;
+  }
+  /**
+  * Clears the table filters
+  * @param table Table 
+  */
+  clear(table: Table) {
+    table.clear();
   }
 }
