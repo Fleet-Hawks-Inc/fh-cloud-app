@@ -484,14 +484,36 @@
                         <label
                           class="control-label font-weight-bold text-lg-right pt-2 text-capitalize">{{account.type}}
                           (Prefix +
-                          Sequence)</label>
-                        <div class="row">
-                          <div class="col-3">
-                            <input type="text" class="form-control" [(ngModel)]="account.prefix" name="prefix_{{i}}">
+                          Sequence) <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <div class="row align-items-top">
+                          <div class="col-3 pr-0">
+                            <input type="text" class="form-control" [(ngModel)]="account.prefix" #prefix="ngModel"
+                              required pattern="[a-zA-Z._^%$#!~@,-]+"
+                              [ngClass]="{ 'error' : cForm.submitted && prefix.invalid }" name="prefix_{{i}}">
+                            <div *ngIf="prefix.invalid && cForm.submitted" class="text-danger">
+                              <div *ngIf="prefix.errors.required">
+                                {{account.type}} prefix is required.
+                              </div>
+                              <div *ngIf="prefix.errors.pattern">
+                                {{account.type}} must contain alphabets and special characters.
+                              </div>
+                            </div>
                           </div>
-                          <div class="col-6">
-                            <input type="text" class="form-control" [(ngModel)]="account.sequence"
-                              name="sequence_{{i}}">
+                          <div class="col-1 p-0 text-center">
+                            -
+                          </div>
+                          <div class="col-6 pl-0">
+                            <input type="text" class="form-control" [(ngModel)]="account.sequence" name="sequence_{{i}}"
+                              #sequence="ngModel" required pattern="^(0|[1-9][0-9]*)$"
+                              [ngClass]="{ 'error' : cForm.submitted && sequence.invalid }">
+                            <div *ngIf="sequence.invalid && cForm.submitted" class="text-danger">
+                              <div *ngIf="sequence.errors.required">
+                                {{account.type}} sequence is required.
+                              </div>
+                              <div *ngIf="sequence.errors.pattern">
+                                {{account.type}} contains numbers only.
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>

@@ -253,7 +253,17 @@ export class EditProfileComponent implements OnInit {
         this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
 
         if (this.carriers.accountSettings != undefined) {
-          this.accountSettings = this.carriers.accountSettings;
+          for (let index = 0; index < this.carriers.accountSettings.length; index++) {
+            const element = this.carriers.accountSettings[index];
+            if (element.prefix) {
+              let prefixLength = element.prefix.length;
+              if (element.prefix.charAt(prefixLength - 1) == '-') {
+                element.prefix = element.prefix.substring(0, prefixLength - 1);
+              }
+            }
+            this.accountSettings.push(element)
+
+          }
         }
       });
   }
