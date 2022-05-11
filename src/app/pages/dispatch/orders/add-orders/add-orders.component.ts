@@ -1579,7 +1579,7 @@ export class AddOrdersComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.toastr.success("Order added successfully");
-        // this.goBack();
+        this.goBack();
       },
     });
   }
