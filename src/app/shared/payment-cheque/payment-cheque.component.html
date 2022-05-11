@@ -1087,8 +1087,7 @@
                                              </table>
                                           </td>
                                        </tr>
-                                       <tr *ngIf="paydata.type !== 'employee' && paydata.type !== 'owner_operator' && paydata.type !== 'carrier' && paydata.type !== 'vendor'
-                                                               && paydata.type !== 'driver'">
+                                       <tr *ngIf="paydata.type === 'expensePayment'">
                                           <td>
                                              <table width="100%" border="0" cellspacing="0" cellpadding="0" height="276"
                                                 class="class_border">
