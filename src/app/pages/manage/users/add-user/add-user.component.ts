@@ -425,6 +425,7 @@ export class AddUserComponent implements OnInit {
 
     // append other fields
     formData.append('data', JSON.stringify(this.userData));
+    console.log('dd',this.userData)
     this.submitDisabled = true;
     // this.lastEvaluatedKeyStaff = '';
     this.apiService.postData('contacts/user/add', formData, true).
@@ -483,6 +484,7 @@ export class AddUserComponent implements OnInit {
   fetchUserByID() {
     this.apiService.getData('contacts/detail/' + this.contactID).subscribe(async (result: any) => {
       result = result.Items[0];
+      console.log('result data',result.Items)
       this.userData = {
         cName: result.cName,
         dba: result.dba,
@@ -495,6 +497,7 @@ export class AddUserComponent implements OnInit {
         loginEnabled: result.loginEnabled,
         profileImg: result.profileImg,
         currentStatus: result.currentStatus,
+        
         paymentDetails: {
           payrollType: result.paymentDetails.payrollType,
           payrollRate: result.paymentDetails.payrollRate,

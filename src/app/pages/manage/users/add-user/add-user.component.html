@@ -278,6 +278,7 @@
                         </label>
                         <ng-select [(ngModel)]="item.aType" name="aType{{ i }}" class="form-control populate"
                           placeholder="Select Address Type">
+                          <ng-option value="Home Address">Home Address</ng-option>
                           <ng-option value="Billing Address">Billing Address</ng-option>
                           <ng-option value="Office">Office</ng-option>
                           <ng-option value="Other">Other</ng-option>
@@ -695,10 +696,46 @@
                         <input [(ngModel)]="userData.paymentDetails.WCB" name="WCB" type="text" class="form-control"
                           placeholder="7 digits , 1 is alphabetical and 6 is numeric , eg. A123456" />
                       </div>
+                      
+                      
+
+                          <div class="col-lg-12">
+                            <label
+                              class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2"
+                              >Notes</label
+                            >
+                            <textarea
+                              class="form-control heighta"
+                              rows="3"
+                              name="notes"
+                              [(ngModel)]="notes"
+                              placeholder="Enter notes about warranty of inventory part"
+                              #notes1="ngModel"
+                              pattern="^[\s\S]{1,500}$"
+                            ></textarea>
+                            <div
+                              *ngIf="
+                                notes1.invalid &&
+                                (notes1.dirty || notes1.touched)
+                              "
+                              class="text-danger"
+                            >
+                              <div *ngIf="notes1.errors.pattern">
+                                Only 500 characters are allowed.
+                              </div>
+                            </div>
+                          </div>
+                  
+                      
+                      
+                      
+                      
+                      
+                      
                     </div>
                   </div>
                   <div class="col-lg-5 offset-lg-1 mb-3">
-                    <div class="row">
+                    <div class="row mt-2">
                       <div class="col-lg-6">
                         <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Pay Period
                         </label>
@@ -737,6 +774,11 @@
                           name="healthCare"
                           placeholder="total 13 digits , 11 is numeric and 2 is alphabets , eg. 12345678923AB" />
                       </div>
+                      
+                      
+
+                        
+                      
                     </div>
                   </div>
                   <div class="col-lg-11 text-right mb-3">
