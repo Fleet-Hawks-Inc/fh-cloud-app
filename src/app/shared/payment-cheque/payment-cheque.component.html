@@ -1087,7 +1087,7 @@
                                              </table>
                                           </td>
                                        </tr>
-                                       <tr *ngIf="paydata.type === 'expensePayment'">
+                                       <tr *ngIf="paydata.type == 'expensePayment'">
                                           <td>
                                              <table width="100%" border="0" cellspacing="0" cellpadding="0" height="276"
                                                 class="class_border">
@@ -2429,7 +2429,7 @@
                                              </table>
                                           </td>
                                        </tr>
-                                       <tr *ngIf="paydata.type === 'vendor'">
+                                       <tr *ngIf="paydata.type == 'vendor'">
                                           <td>
                                              <table width="100%" border="0" cellspacing="0" cellpadding="0" height="276"
                                                 class="class_border">
@@ -2472,9 +2472,7 @@
                                                                               <td width="25%"></td>
                                                                               <td align="right">Amount Paid</td>
                                                                            </tr>
-                                                                           <tr *ngFor="
-                                 let dataInv of cheqdata.invoices
-                                 ">
+                                                                           <tr *ngFor="let dataInv of cheqdata.invoices">
                                                                               <td>{{ dataInv.invoiceNo }}</td>
                                                                               <td>&nbsp;</td>
                                                                               <td align="right">
