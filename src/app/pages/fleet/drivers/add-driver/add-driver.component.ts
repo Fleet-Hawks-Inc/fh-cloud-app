@@ -192,6 +192,7 @@ export class AddDriverComponent
       relationship: "",
       phone: "",
     },
+    isImport: false
   };
 
 
@@ -1330,6 +1331,7 @@ export class AddDriverComponent
       this.driverData.emergencyDetails.phone = result.emergencyDetails.phone;
     }
     this.driverData[`timeCreated`] = result.timeCreated;
+    this.driverData.isImport = result.isImport;
 
   }
 

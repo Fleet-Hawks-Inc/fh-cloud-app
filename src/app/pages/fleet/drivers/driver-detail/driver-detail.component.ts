@@ -667,12 +667,13 @@ export class DriverDetailComponent implements OnInit {
                             }
                         }
                     });
-                    this.driverLogs.sort((a, b) => {
-                        return (new Date(b.dateAndTime).valueOf() -
-                            new Date(a.dateAndTime).valueOf()
-                        );
-                    });
+                    // this.driverLogs.sort((a, b) => {
+                    //     return (new Date(b.dateAndTime).valueOf() -
+                    //         new Date(a.dateAndTime).valueOf()
+                    //     );
+                    // });
                 }
+                console.log('this.driverLogs', this.driverLogs)
             });
     }
 }
