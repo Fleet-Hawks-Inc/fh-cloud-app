@@ -1,1804 +1,289 @@
+<style>
+  .extra {
+    display: none;
+  }
+</style>
 <section class="body">
   <div class="inner-wrapper">
-    <section role="main" class="content-body pl-0 pr-0 pt-0">
-      <header class="page-header pr19 pl11">
-        <form class="form-horizontal" method="get">
-          <div class="row" style="padding-top: 9px">
-            <div class="col-md-2 col-lg-2 pr-1">
-              <ng-select [(ngModel)]="orderFiltr.category" name="category" placeholder="Search by Category"
-                (change)="categoryChange($event)">
-                <ng-option *ngFor="let data of categoryFilter" value="{{
-                  data.value }}">
-                  {{ data.name }}</ng-option>
-              </ng-select>
-            </div>
-
-            <div class="col-md-2 col-lg-2 pr-1">
-              <div class="input-group input-group-md mb-3" *ngIf="orderFiltr.category
-                != 'customer' &&
-                orderFiltr.category != 'orderType' &&
-                orderFiltr.category != 'orderStatus'">
-                <input type="text" class="form-control" name="searchValue" [(ngModel)]="orderFiltr.searchValue"
-                  placeholder="Search" />
-              </div>
-
-              <ng-select [(ngModel)]="orderFiltr.searchValue" name="searchValue" placeholder="Search By
-                Customer" *ngIf="orderFiltr.category == 'customer'">
-                <ng-option *ngFor="let data of customersObjects | keyvalue" value="{{ data.key }}">
-                  {{ data.value }}</ng-option>
-              </ng-select>
-
-              <ng-select [(ngModel)]="orderFiltr.searchValue" name="searchValue" placeholder="Search By Order
-                Status" *ngIf="orderFiltr.category == 'orderStatus'">
-                <ng-option *ngFor="let data of statusData" value="{{ data.value
-                  }}">
-                  {{ data.name }}</ng-option>
-              </ng-select>
-
-              <ng-select [(ngModel)]="orderFiltr.searchValue" name="searchValue" placeholder="Search By Order
-                Type" *ngIf="orderFiltr.category == 'orderType'">
-                <ng-option value="FTL"> FTL</ng-option>
-                <ng-option value="LTL"> LTL</ng-option>
-              </ng-select>
-            </div>
-
-            <div class="col-lg-3 col-md-3 pr-1">
-              <div class="input-daterange input-group">
-                <span class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fas fa-calendar-alt"></i>
-                  </span>
-                </span>
-                <input [(ngModel)]="orderFiltr.startDate" name="fromDate" type="text" placeholder="yyyy/mm/dd"
-                  (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off"
-                  [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
-                <span class="input-group-text
-                  border-left-0 border-right-0
-                  rounded-0">
-                  to
-                </span>
-                <input [(ngModel)]="orderFiltr.endDate" name="toDate" type="text" placeholder="yyyy/mm/dd"
-                  (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off"
-                  [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
-              </div>
-            </div>
-
-            <div class="col-md-2 col-lg-2">
-              <button type="submit" class="btn btn-sm btn-success mr-3" [disabled]="isSearch" (click)="filterOrders()">
-                Search
-              </button>
-              <button type="submit" class="btn btn-sm btn-success" [disabled]="isSearch" (click)="resetFilter()">
-                Reset
-              </button>
-            </div>
-            <div class="col-md-3 col-lg-3 pr-1 text-right">
-              <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
-                <button type="button" class="btn btn-success btn-sm
-                  dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                  Actions<span class="caret"></span>
-                </button>
-                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute;
-                  will-change: transform;
-                  top: 0px;
-                  left: 0px;
-                  transform: translate3d(0px, 38px, 0px);">
-                  <a class="dropdown-item text-1" href="">Import</a>
-                  <a class="dropdown-item text-1" href="">Export</a>
+    <section role="main" class="content-body pl-1 pt-0 pr-0">
+      <header class="page-header flex align-items-center justify-content-start">
+        <form class="formgrid grid">
+          <div class="row">
+            <div class="col" style="margin-left: 20px;margin-top: 5px;">
+              <div class="row" style="padding-top: 9px">
+                <div class="col-md-2 col-lg-2 pr-1">
+                  <ng-select [(ngModel)]="orderFiltr.category" name="category" placeholder="Search by Category"
+                    (change)="categoryChange($event)">
+                    <ng-option *ngFor="let data of categoryFilter" value="{{
+                      data.value }}">
+                      {{ data.name }}</ng-option>
+                  </ng-select>
                 </div>
+
+                <div class="col-md-2 col-lg-2 pr-1">
+                  <div class="input-group input-group-md mb-3" *ngIf="orderFiltr.category
+                    != 'customer' &&
+                    orderFiltr.category != 'orderType' &&
+                    orderFiltr.category != 'orderStatus'">
+                    <input type="text" class="form-control" name="searchValue" [(ngModel)]="orderFiltr.searchValue"
+                      placeholder="Search" />
+                  </div>
+
+                  <ng-select [(ngModel)]="orderFiltr.searchValue" name="searchValue" placeholder="Search By
+                    Customer" *ngIf="orderFiltr.category == 'customer'">
+                    <ng-option *ngFor="let data of customersObjects | keyvalue" value="{{ data.key }}">
+                      {{ data.value }}</ng-option>
+                  </ng-select>
+
+                  <ng-select [(ngModel)]="orderFiltr.searchValue" name="searchValue" placeholder="Search By Order
+                    Status" *ngIf="orderFiltr.category == 'orderStatus'">
+                    <ng-option *ngFor="let data of statusData" value="{{ data.value
+                      }}">
+                      {{ data.name }}</ng-option>
+                  </ng-select>
+
+                  <ng-select [(ngModel)]="orderFiltr.searchValue" name="searchValue" placeholder="Search By Order
+                    Type" *ngIf="orderFiltr.category == 'orderType'">
+                    <ng-option value="FTL"> FTL</ng-option>
+                    <ng-option value="LTL"> LTL</ng-option>
+                  </ng-select>
+                </div>
+
+                <div class="col-lg-3 col-md-3 pr-1">
+                  <div class="input-daterange input-group">
+                    <span class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-calendar-alt"></i>
+                      </span>
+                    </span>
+                    <input [(ngModel)]="orderFiltr.startDate" name="fromDate" type="text" placeholder="yyyy/mm/dd"
+                      (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control"
+                      autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                    <span class="input-group-text
+                      border-left-0 border-right-0
+                      rounded-0">
+                      to
+                    </span>
+                    <input [(ngModel)]="orderFiltr.endDate" name="toDate" type="text" placeholder="yyyy/mm/dd"
+                      (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off"
+                      [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                  </div>
+                </div>
+
+                <div class="col-md-2 col-lg-2">
+                  <button type="submit" class="btn btn-sm btn-success mr-3" [disabled]="isSearch"
+                    (click)="filterOrders()">
+                    Search
+                  </button>
+                  <button type="submit" class="btn btn-sm btn-success" [disabled]="isSearch" (click)="resetFilter()">
+                    Reset
+                  </button>
+                </div>
+
               </div>
-              <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data"
-                class="btn btn-success btn-sm modal-with-form mr-2">
-                <i class="fas fa-sync"></i>
-              </a>
-              <a routerLink="/dispatch/orders/add" href="javascript:;" class="btn btn-success btn-sm modal-with-form"
-                style="color: white"><i class="fas fa-plus"></i> Add Order
-              </a>
             </div>
           </div>
         </form>
       </header>
-
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark">
-              <div class="form-group row">
-                <div class="col-lg-12 pl-0 pr-0">
-                  <div class="m-2">
-                    <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                      <li class="nav-item">
-                        <a class="nav-link navtabs" id="allOrders-tab" href="javascript:;"
-                          [ngClass]="{ active: activeTab == 'all' }" (click)="fetchTabData('all')">All</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link navtabs" id="confirmed-tab" href="javascript:;"
-                          [ngClass]="{ active: activeTab == 'confirmed' }" (click)="fetchTabData('confirmed')">Confirmed
-                          : {{ confirmOrders.length }}</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link navtabs" id="dispatched-tab" href="javascript:;"
-                          [ngClass]="{ active: activeTab == 'dispatched' }"
-                          (click)="fetchTabData('dispatched')">Dispatched : {{
-                          dispatchOrders.length }}</a>
-                      </li>
+            <div class="bg-white p-3 text-dark text-capitalize">
+              <div class="form-group row pt-3"> {{abcText}}
+                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
+                  <p-table #dt [value]="orders" [resizableColumns]="true" columnResizeMode="expand"
+                    scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
+                    styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped" [scrollable]="true"
+                    [loading]="!loaded" scrollHeight="100%" dataKey="orderNumber" responsiveLayout="scroll">
 
-                      <li class="nav-item">
-                        <a class="nav-link navtabs" id="cancelledDispatch-tab" href="javascript:;"
-                          [ngClass]="{ active: activeTab == 'cancelled' }" (click)="fetchTabData('cancelled')">Cancelled
-                          Dispatch : {{ cancelledOrders.length }}</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link navtabs" id="delivered-tab" href="javascript:;"
-                          [ngClass]="{ active: activeTab == 'delivered' }" (click)="fetchTabData('delivered')">Delivered
-                          : {{ deliveredOrders.length }}</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link navtabs" id="tonu-tab" href="javascript:;"
-                          [ngClass]="{ active: activeTab == 'tonu' }" (click)="fetchTabData('tonu')">TONU : {{
-                          tonuOrders.length }}</a>
-                      </li>
-                      <!-- <li class="nav-item">
-                                            <a class="nav-link navtabs" id="invoiced-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'invoiced'}"
-                                                (click)="fetchTabData('invoiced')">Invoiced : {{ invoicedOrders.length }}</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link navtabs" id="partiallyPaid-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'partiallyPaid'}"
-                                                (click)="fetchTabData('partiallyPaid')">Partially Paid :
-                                                {{ partiallyOrders.length }}</a>
-                                        </li> -->
-                    </ul>
-                  </div>
-                  <div class="tab-content" id="myTabContent" style="box-shadow:
-                    none; border: none">
-                    <div class="tab-pane show active" id="allOrders" role="tabpanel" aria-labelledby="allOrders-tab"
-                      [ngClass]="{ 'show active': activeTab == 'all' }" *ngIf="activeTab == 'all'">
-                      <div class="col-lg-12" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                        [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
-                        <table class="row-border
-                          hover
-                          table table-bordered table-striped
-                          mb-0">
-                          <thead>
-                            <tr>
-                              <th>Order#</th>
-                              <th>Type</th>
-                              <th>Date</th>
-                              <th>Customer</th>
-                              <th>Pickup Location</th>
-                              <th>Drop Off Location</th>
-                              <th>Commodity</th>
-                              <th *ngIf="isOrderPriceEnabled">Amount</th>
-                              <th class="custom-w-160">Status</th>
-                              <th>Actions</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngIf="orders.length === 0" class="text-center">
-                              <td colspan="12">{{ dataMessage }}</td>
-                            </tr>
-                            <tr class="cursorpoint" *ngFor="let order of
-                              orders;
-                              let i= index">
-                              <td [routerLink]="order.url" class="font-weight-bold">
-                                {{ order.orderNumber }}
-                              </td>
-                              <td [routerLink]="order.url">
-                                {{ order.orderMode }}
-                              </td>
-                              <td [routerLink]="order.url">
-                                {{ order.createdDate | date: "yyyy/MM/dd" }}
-                              </td>
-                              <td [routerLink]="order.url" class="text-capitalize">
-                                {{ order.customerName }} <br />
-                                <b>Confirmation#: </b> {{order.cusConfirmation}}
-                              </td>
-                              <td [routerLink]="order.url">
-                                <b>Date: </b>
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].dateAndTime
-                                | date
-                                : "yyyy/MM/dd
-                                hh:mm a"
-                                }}<br />
-                                <b>Location: </b>
-                                <span *ngIf="order.shippersReceiversInfo[0].shippers[0]
-                                  .pickupPoint[0].address.manual">
-                                  {{
-                                  order.shippersReceiversInfo[0].shippers[0]
-                                  .pickupPoint[0].address.address
-                                  }},
-                                  {{
-                                  order.shippersReceiversInfo[0].shippers[0]
-                                  .pickupPoint[0].address.cityName
-                                  }},
-                                  {{
-                                  order.shippersReceiversInfo[0].shippers[0]
-                                  .pickupPoint[0].address.stateName
-                                  }},
-                                  {{
-                                  order.shippersReceiversInfo[0].shippers[0]
-                                  .pickupPoint[0].address.countryName
-                                  }}
-                                  {{
-                                  order.shippersReceiversInfo[0].shippers[0]
-                                  .pickupPoint[0].address.zipCode
-                                  }}
-                                </span>
-                                <span *ngIf="!order.shippersReceiversInfo[0].shippers[0]
-                                  .pickupPoint[0].address.manual">
-                                  {{
-                                  order.shippersReceiversInfo[0].shippers[0]
-                                  .pickupPoint[0].address.pickupLocation
-                                  }}
-                                </span>
-                                <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0]
-                                  .pickupPoint.length> 1
-                                  ">
-                                  +{{
-                                  order.shippersReceiversInfo[0].shippers[0]
-                                  .pickupPoint.length - 1
-                                  }}
-                                </span>
-                              </td>
-                              <td [routerLink]="order.url">
-                                <b>Date: </b>
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].dateAndTime
-                                | date
-                                : "yyyy/MM/dd
-                                hh:mm a"
-                                }}<br />
-                                <b>Location: </b>
-                                <span *ngIf="order.shippersReceiversInfo[0].receivers[0]
-                                  .dropPoint[0].address.manual">
-                                  {{
-                                  order.shippersReceiversInfo[0].receivers[0]
-                                  .dropPoint[0].address.address
-                                  }},
-                                  {{
-                                  order.shippersReceiversInfo[0].receivers[0]
-                                  .dropPoint[0].address.cityName
-                                  }},
-                                  {{
-                                  order.shippersReceiversInfo[0].receivers[0]
-                                  .dropPoint[0].address.stateName
-                                  }},
-                                  {{
-                                  order.shippersReceiversInfo[0].receivers[0]
-                                  .dropPoint[0].address.countryName
-                                  }}
-                                  {{
-                                  order.shippersReceiversInfo[0].receivers[0]
-                                  .dropPoint[0].address.zipCode
-                                  }}
-                                </span>
-                                <span *ngIf="!order.shippersReceiversInfo[0].receivers[0]
-                                  .dropPoint[0].address.manual">
-                                  {{
-                                  order.shippersReceiversInfo[0].receivers[0]
-                                  .dropPoint[0].address.dropOffLocation
-                                  }}
-                                </span>
-                                <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0]
-                                  .dropPoint> 1
-                                  ">
-                                  +{{
-                                  order.shippersReceiversInfo[0].receivers[0]
-                                  .dropPoint - 1
-                                  }}
-                                </span>
-                              </td>
-                              <td [routerLink]="order.url">
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].commodity[0].name
-                                ? "Name: " +
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].commodity[0].name
-                                : "-"
-                                }}<br />
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].commodity[0].quantity
-                                ? "Qty:" +
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].commodity[0].quantity +
-                                " " +
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].commodity[0].quantityUnit
-                                : ""
-                                }}
-                              </td>
-                              <td *ngIf="isOrderPriceEnabled" [routerLink]="order.url">
-                                {{ order.charges.freightFee.currency }}
-                                {{ order.totalAmount }}<br />
-                              </td>
 
-                              <td class="text-capitalize" [routerLink]="order.url">
-                                <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
-                                <b>Invoiced: </b> {{order.invoicedTime ? 'Yes' : 'No'}} <br>
-                                <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
-                              </td>
-                              <td>
-                                <div class="dropdown dropright">
-                                  <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{ i
-                                    }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                  </button>
-                                  <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{
-                                    i
-                                    }}">
-                                    <a *ngIf="order.orderStatus!= 'delivered'" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
-                                      order.orderID
-                                      }}">Edit</a>
-                                          <a *ngIf="order.orderStatus === 'confirmed'"
-                                       class="dropdown-item" [routerLink]="['/dispatch','trips','add-trip']"
-                              [queryParams]="{orderId:order.orderID,orderNum:order.orderNumber}">Create Trip</a>
-                                    <a *ngIf="order.orderStatus == 'created' ||
-                                      order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
-                                      (click)="deactivateOrder(order)">Delete</a>
-                                    <a *ngIf="order.orderStatus === 'created'" class="dropdown-item"
-                                      (click)="confirmEmail(order, i)">Confirm</a>
-                                    <a *ngIf="order.orderStatus === 'created' ||
-                                      order.orderStatus === 'confirmed'" class="dropdown-item" (click)="showBrokerageModal(
-                                      order,
-                                      ordersDraw,
-                                      i,
-                                      'all'
-                                      )">Brokerage</a>
-                                    <a *ngIf="order.orderStatus === 'brokerage'" class="dropdown-item" (click)="updateCreatedStatus(order,
-                                      ordersDraw, i)">Cancel Brokerage</a>
-                                    <a class="dropdown-item" [routerLink]="[
-                                      '/dispatch',
-                                      'orders',
-                                      'add'
-                                      ]" [queryParams]="{
-                                      cloneID: order.orderID
-                                      }">Clone</a>
-                                    <a *ngIf="order.canRecall" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
-                                      order.orderID
-                                      }}" [queryParams]="{
-                                      state: 'recall'
-                                      }">Recall</a>
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey !== 'end' && orders.length
-                        !==
-                        0">
-                        <button type="button" class="btn btn-success
-                          btn-sm text-light" (click)="onScroll()"><i class="fa
-                            fa-spinner fa-spin" *ngIf="isLoad">
-                          </i> {{isLoadText}}</button>
-                      </div>
-                      <!-- <div class="row mt-3 dtPaginate" *ngIf="records">
-                        <div class="col-6">
-                          Showing {{ ordersStartPoint }} to
-                          {{ ordersEndPoint }} of {{ totalRecords }}
-                          enteries
+                    <ng-template pTemplate="caption">
+                      <div class="p-d-flex d-flex justify-content-between align-items-center">
+                        <div>
+                          <h3 class="m-0"> Orders </h3>
                         </div>
-                        <div class="col-6 text-right">
-                          <button type="button" class="btn btn-default mr-2" (click)="prevResults('all')"
-                            [disabled]="ordersPrev">
-                            Prev
-                          </button>
-                          <button type="button" class="btn btn-default" (click)="nextResults('all')"
-                            [disabled]="ordersNext">
-                            Next
-                          </button>
+                        <div class="text-right">
+                          <span>Showing {{orders.length}} enteries</span> &nbsp;
+                          <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
+                            class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+
+                          <button type="button" pButton pTooltip="Add" routerLink="/dispatch/orders/add"
+                            class="p-button-outlined mr-2" icon="pi pi-plus"></button>
+
+                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                            (click)="clear(dt)" icon="pi pi-filter-slash"></button>
+
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+
                         </div>
-                      </div> -->
-                    </div>
-                    <div class="tab-pane show" id="confirmedOrders" role="tabpanel"
-                      aria-labelledby="confirmedOrders-tab" [ngClass]="{ 'show
-                      active': activeTab == 'confirmed' }" *ngIf="activeTab ==
-                      'confirmed'">
-                      <table class="row-border
-                        hover
-                        table table-bordered table-striped
-                        mb-0">
-                        <thead>
-                          <tr>
-                            <th>Order#</th>
-                            <th>Type</th>
+                      </div>
+                    </ng-template>
 
-                            <th>Date</th>
-                            <th>Customer</th>
-                            <th>Pickup Location</th>
-                            <th>Drop Off Location</th>
-                            <th>Commodity</th>
-                            <th>Amount</th>
-                            <th class="custom-w-160">Status</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngIf="confirmOrders.length == 0" class="text-center">
-                            <td colspan="10">{{ noOrdersMsg }}</td>
-                          </tr>
-                          <tr class="cursorpoint" *ngFor="let order of
-                            confirmOrders; let i= index">
-                            <td [routerLink]="order.url" class="font-weight-bold">
-                              {{ order.orderNumber }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.orderMode }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.createdDate | date: "yyyy/MM/dd" }}
-                            </td>
-                            <td class="text-capitalize" [routerLink]="order.url">
-                              {{ customersObjects[order.customerID] }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              Date:
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].dateAndTime
-                              | date
-                              : "yyyy/MM/dd
-                              hh:mm a"
-                              }}<br />
-                              Location:
-                              <span *ngIf="order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.address
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.city
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.state
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.country
-                                }}
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.zipCode
-                                }}
-                              </span>
-                              <span *ngIf="!order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.pickupLocation
-                                }}
-                              </span>
-                              <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint.length> 1
-                                ">
-                                +{{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint.length - 1
-                                }}
-                              </span>
-                            </td>
-                            <td [routerLink]="order.url">
-                              Date:-
-                              {{
-                              order.shippersReceiversInfo[0].receivers[0]
-                              .dropPoint[0].dateAndTime
-                              | date
-                              : "yyyy/MM/dd
-                              hh:mm a"
-                              }}<br />
-                              Location: -
-                              <span *ngIf="order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.address
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.city
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.state
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.country
-                                }}
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.zipCode
-                                }}
-                              </span>
-                              <span *ngIf="!order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.dropOffLocation
-                                }}
-                              </span>
-                              <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint> 1
-                                ">
-                                +{{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint - 1
-                                }}
-                              </span>
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].name
-                              ? "Name: " +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].name
-                              : "-"
-                              }}<br />
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantity
-                              ? "Qty:" +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantity +
-                              " " +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantityUnit
-                              : ""
-                              }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.charges.freightFee.currency }}
-                              {{ order.totalAmount }}<br />
-                            </td>
-                            <td class="text-capitalize" [routerLink]="order.url">
-                              <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
-                              <b>Invoiced: </b> {{order.invoicedTime ? 'Yes' : 'No'}} <br>
-                              <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
-                            </td>
-                            <td>
-                              <div class="dropdown dropright">
-                                <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{ i }}"
-                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{
-                                  i
-                                  }}">
-                                  <a *ngIf="order.orderStatus!='delivered'" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
-                                    order.orderID
-                                    }}">Edit</a>
-                                     <a *ngIf="order.orderStatus!='delivered'"
-                                                                        class="dropdown-item" [routerLink]="[
-                                      '/dispatch',
-                                      'trips',
-                                      'add-trip'
-                                      ]" [queryParams]="{orderId:order.orderID,orderNum:order.orderNumber}">
-                                                                        Create Trip</a>
-                                  <a class="dropdown-item" [routerLink]="[
-                                    '/dispatch',
-                                    'orders',
-                                    'add'
-                                    ]" [queryParams]="{
-                                    cloneID: order.orderID
-                                    }">Clone</a>
-                                    <a *ngIf="order.orderStatus == 'created' ||
-                                    order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
-                                    (click)="deactivateOrder(order)">Delete</a>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div class="tab-pane show" id="dispatchedOrders" role="tabpanel"
-                      aria-labelledby="dispatchedOrders-tab" [ngClass]="{ 'show
-                      active': activeTab == 'dispatched' }" *ngIf="activeTab ==
-                      'dispatched'">
-                      <table class="row-border
-                        hover
-                        table table-bordered table-striped
-                        mb-0">
-                        <thead>
-                          <tr>
-                            <th>Order#</th>
-                            <th>Type</th>
-                            <th>Date</th>
-                            <th>Customer</th>
-                            <th>Pickup Location</th>
-                            <th>Drop Off Location</th>
-                            <th>Commodity</th>
-                            <th>Amount</th>
-                            <th class="custom-w-160">Status</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngIf="dispatchOrders.length == 0" class="text-center">
-                            <td colspan="10">{{ noOrdersMsg }}</td>
-                          </tr>
-                          <tr class="cursorpoint" *ngFor="let order of
-                            dispatchOrders; let i= index">
-                            <td [routerLink]="order.url" class="font-weight-bold">
-                              {{ order.orderNumber }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.orderMode }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.createdDate | date: "yyyy/MM/dd" }}
-                            </td>
-                            <td class="text-capitalize" [routerLink]="order.url">
-                              {{ customersObjects[order.customerID] }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              Date:
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].dateAndTime
-                              | date
-                              : "yyyy/MM/dd
-                              hh:mm a"
-                              }}<br />
-                              Location:
-                              <span *ngIf="order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.address
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.city
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.state
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.country
-                                }}
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.zipCode
-                                }}
-                              </span>
-                              <span *ngIf="!order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.pickupLocation
-                                }}
-                              </span>
-                              <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint.length> 1
-                                ">
-                                +{{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint.length - 1
-                                }}
-                              </span>
-                            </td>
-                            <td [routerLink]="order.url">
-                              Date:-
-                              {{
-                              order.shippersReceiversInfo[0].receivers[0]
-                              .dropPoint[0].dateAndTime
-                              | date
-                              : "yyyy/MM/dd
-                              hh:mm a"
-                              }}<br />
-                              Location: -
-                              <span *ngIf="order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.address
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.city
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.state
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.country
-                                }}
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.zipCode
-                                }}
-                              </span>
-                              <span *ngIf="!order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.dropOffLocation
-                                }}
-                              </span>
-                              <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint> 1
-                                ">
-                                +{{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint - 1
-                                }}
-                              </span>
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].name
-                              ? "Name: " +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].name
-                              : "-"
-                              }}<br />
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantity
-                              ? "Qty:" +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantity +
-                              " " +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantityUnit
-                              : ""
-                              }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.charges.freightFee.currency }}
-                              {{ order.totalAmount }}<br />
-                            </td>
-                            <td class="text-capitalize" [routerLink]="order.url">
-                              <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
-                              <b>Invoiced: </b> {{order.invoicedTime ? 'Yes' : 'No'}} <br>
-                              <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
-                            </td>
-                            <td>
-                              <div class="dropdown dropright">
-                                <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{ i }}"
-                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{
-                                  i
-                                  }}">
-                                  <a *ngIf="order.orderStatus!='delivered'" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
-                                    order.orderID
-                                    }}">Edit</a>
-                                  <a *ngIf="order.orderStatus == 'created' ||
-                                    order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
-                                    (click)="deactivateOrder(order)">Delete</a>
-                                  <a class="dropdown-item" [routerLink]="[
-                                    '/dispatch',
-                                    'orders',
-                                    'add'
-                                    ]" [queryParams]="{
-                                    cloneID: order.orderID
-                                    }">Clone</a>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div class="tab-pane show" id="deliveredOrders" role="tabpanel"
-                      aria-labelledby="deliveredOrders-tab" [ngClass]="{ 'show
-                      active': activeTab == 'delivered' }" *ngIf="activeTab ==
-                      'delivered'">
-                      <table class="row-border
-                        hover
-                        table table-bordered table-striped
-                        mb-0">
-                        <thead>
-                          <tr>
-                            <th>Order#</th>
-                            <th>Type</th>
-                            <th>Date</th>
-                            <th>Customer</th>
-                            <th>Pickup Location</th>
-                            <th>Drop Off Location</th>
-                            <th>Commodity</th>
-                            <th>Amount</th>
-                            <th class="custom-w-160">Status</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngIf="deliveredOrders.length == 0" class="text-center">
-                            <td colspan="10">{{ noOrdersMsg }}</td>
-                          </tr>
-                          <tr class="cursorpoint" *ngFor="let order of
-                            deliveredOrders; let i= index">
-                            <td [routerLink]="order.url" class="font-weight-bold">
-                              {{ order.orderNumber }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.orderMode }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.createdDate | date: "yyyy/MM/dd" }}
-                            </td>
-                            <td class="text-capitalize" [routerLink]="order.url">
-                              {{ customersObjects[order.customerID] }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              Date:
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].dateAndTime
-                              | date
-                              : "yyyy/MM/dd
-                              hh:mm a"
-                              }}<br />
-                              Location:
-                              <span *ngIf="order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.address
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.city
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.state
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.country
-                                }}
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.zipCode
-                                }}
-                              </span>
-                              <span *ngIf="!order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.pickupLocation
-                                }}
-                              </span>
-                              <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint.length> 1
-                                ">
-                                +{{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint.length - 1
-                                }}
-                              </span>
-                            </td>
-                            <td [routerLink]="order.url">
-                              Date:-
-                              {{
-                              order.shippersReceiversInfo[0].receivers[0]
-                              .dropPoint[0].dateAndTime
-                              | date
-                              : "yyyy/MM/dd
-                              hh:mm a"
-                              }}<br />
-                              Location: -
-                              <span *ngIf="order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.address
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.city
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.state
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.country
-                                }}
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.zipCode
-                                }}
-                              </span>
-                              <span *ngIf="!order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.dropOffLocation
-                                }}
-                              </span>
-                              <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint> 1
-                                ">
-                                +{{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint - 1
-                                }}
-                              </span>
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].name
-                              ? "Name: " +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].name
-                              : "-"
-                              }}<br />
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantity
-                              ? "Qty:" +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantity +
-                              " " +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantityUnit
-                              : ""
-                              }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.charges.freightFee.currency }}
-                              {{ order.totalAmount }}<br />
-                            </td>
-                            <td class="text-capitalize" [routerLink]="order.url">
-                              <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
-                              <b>Invoiced: </b> {{order.invoicedTime ? 'Yes' : 'No'}} <br>
-                              <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
-                            </td>
-                            <td>
-                              <div class="dropdown dropright">
-                                <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{ i }}"
-                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{
-                                  i
-                                  }}">
-                                  <a *ngIf="order.orderStatus!='delivered'" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
-                                    order.orderID
-                                    }}">Edit</a>
-                                  <a *ngIf="order.orderStatus == 'created' ||
-                                    order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
-                                    (click)="deactivateOrder(order)">Delete</a>
-                                  <a class="dropdown-item" [routerLink]="[
-                                    '/dispatch',
-                                    'orders',
-                                    'add'
-                                    ]" [queryParams]="{
-                                    cloneID: order.orderID
-                                    }">Clone</a>
-                                  <a *ngIf="order.canRecall" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
-                                    order.orderID
-                                    }}" [queryParams]="{
-                                    state: 'recall'
-                                    }">Recall</a>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div class="tab-pane show" id="cancelledOrders" role="tabpanel"
-                      aria-labelledby="cancelledOrders-tab" [ngClass]="{ 'show
-                      active': activeTab == 'cancelled' }" *ngIf="activeTab ==
-                      'cancelled'">
-                      <table class="row-border
-                        hover
-                        table table-bordered table-striped
-                        mb-0">
-                        <thead>
-                          <tr>
-                            <th>Order#</th>
-                            <th>Type</th>
-                            <th>Date</th>
-                            <th>Customer</th>
-                            <th>Pickup Location</th>
-                            <th>Drop Off Location</th>
-                            <th>Commodity</th>
-                            <th>Amount</th>
-                            <th class="custom-w-160">Status</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngIf="cancelledOrders.length == 0" class="text-center">
-                            <td colspan="10">{{ noOrdersMsg }}</td>
-                          </tr>
-                          <tr class="cursorpoint" *ngFor="let order of
-                            cancelledOrders; let i= index">
-                            <td [routerLink]="order.url" class="font-weight-bold">
-                              {{ order.orderNumber }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.orderMode }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.createdDate | date: "yyyy/MM/dd" }}
-                            </td>
-                            <td [routerLink]="order.url" class="text-capitalize">
-                              {{ customersObjects[order.customerID] }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              Date:
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].dateAndTime
-                              | date
-                              : "yyyy/MM/dd
-                              hh:mm a"
-                              }}<br />
-                              Location:
-                              <span *ngIf="order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.address
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.city
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.state
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.country
-                                }}
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.zipCode
-                                }}
-                              </span>
-                              <span *ngIf="!order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.pickupLocation
-                                }}
-                              </span>
-                              <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint.length> 1
-                                ">
-                                +{{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint.length - 1
-                                }}
-                              </span>
-                            </td>
-                            <td [routerLink]="order.url">
-                              Date:-
-                              {{
-                              order.shippersReceiversInfo[0].receivers[0]
-                              .dropPoint[0].dateAndTime
-                              | date
-                              : "yyyy/MM/dd
-                              hh:mm a"
-                              }}<br />
-                              Location: -
-                              <span *ngIf="order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.address
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.city
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.state
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.country
-                                }}
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.zipCode
-                                }}
-                              </span>
-                              <span *ngIf="!order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.dropOffLocation
-                                }}
-                              </span>
-                              <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint> 1
-                                ">
-                                +{{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint - 1
-                                }}
-                              </span>
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].name
-                              ? "Name: " +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].name
-                              : "-"
-                              }}<br />
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantity
-                              ? "Qty:" +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantity +
-                              " " +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantityUnit
-                              : ""
-                              }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.charges.freightFee.currency }}
-                              {{ order.totalAmount }}<br />
-                            </td>
-                            <td class="text-capitalize" [routerLink]="order.url">
-                              <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
-                              <b>Invoiced: </b> {{order.invoicedTime ? 'Yes' : 'No'}} <br>
-                              <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
-                            </td>
-                            <td>
-                              <div class="dropdown dropright">
-                                <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{ i }}"
-                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{
-                                  i
-                                  }}">
-                                  <a *ngIf="order.orderStatus!='delivered'" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
-                                    order.orderID
-                                    }}">Edit</a>
-                                  <a *ngIf="order.orderStatus == 'created' ||
-                                    order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
-                                    (click)="deactivateOrder(order)">Delete</a>
-                                  <a class="dropdown-item" [routerLink]="[
-                                    '/dispatch',
-                                    'orders',
-                                    'add'
-                                    ]" [queryParams]="{
-                                    cloneID: order.orderID
-                                    }">Clone</a>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div class="tab-pane show" id="invoicedOrders" role="tabpanel" aria-labelledby="invoicedOrders-tab"
-                      [ngClass]="{ 'show active': activeTab == 'invoiced' }" *ngIf="activeTab == 'invoiced'">
-                      <table class="row-border
-                        hover
-                        table table-bordered table-striped
-                        mb-0">
-                        <thead>
-                          <tr>
-                            <th>Order#</th>
-                            <th>Type</th>
-                            <th>Date</th>
-                            <th>Customer</th>
-                            <th>Pickup Location</th>
-                            <th>Drop Off Location</th>
-                            <th>Commodity</th>
-                            <th>Amount</th>
-                            <th class="custom-w-160">Status</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngIf="invoicedOrders.length == 0" class="text-center">
-                            <td colspan="10">{{ noOrdersMsg }}</td>
-                          </tr>
-                          <tr class="cursorpoint" *ngFor="let order of
-                            invoicedOrders; let i= index">
-                            <td [routerLink]="order.url" class="font-weight-bold">
-                              {{ order.orderNumber }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.orderMode }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.createdDate | date: "yyyy/MM/dd" }}
-                            </td>
-                            <td class="text-capitalize" [routerLink]="order.url">
-                              {{ customersObjects[order.customerID] }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              Date:
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].dateAndTime
-                              | date
-                              : "yyyy/MM/dd
-                              hh:mm a"
-                              }}<br />
-                              Location:
-                              <span *ngIf="order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.address
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.city
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.state
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.country
-                                }}
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.zipCode
-                                }}
-                              </span>
-                              <span *ngIf="!order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.pickupLocation
-                                }}
-                              </span>
-                              <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint.length> 1
-                                ">
-                                +{{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint.length - 1
-                                }}
-                              </span>
-                            </td>
-                            <td [routerLink]="order.url">
-                              Date:-
-                              {{
-                              order.shippersReceiversInfo[0].receivers[0]
-                              .dropPoint[0].dateAndTime
-                              | date
-                              : "yyyy/MM/dd
-                              hh:mm a"
-                              }}<br />
-                              Location: -
-                              <span *ngIf="order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.address
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.city
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.state
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.country
-                                }}
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.zipCode
-                                }}
-                              </span>
-                              <span *ngIf="!order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.dropOffLocation
-                                }}
-                              </span>
-                              <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint> 1
-                                ">
-                                +{{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint - 1
-                                }}
-                              </span>
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].name
-                              ? "Name: " +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].name
-                              : "-"
-                              }}<br />
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantity
-                              ? "Qty:" +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantity +
-                              " " +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantityUnit
-                              : ""
-                              }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.charges.freightFee.currency }}
-                              {{ order.totalAmount }}<br />
-                            </td>
-                            <td class="text-capitalize" [routerLink]="order.url">
-                              <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
-                              <b>Invoiced: </b> {{order.invoicedTime ? 'Yes' : 'No'}} <br>
-                              <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
-                            </td>
-                            <td>
-                              <div class="dropdown dropright">
-                                <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{ i }}"
-                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{
-                                  i
-                                  }}">
-                                  <a *ngIf="order.orderStatus!='delivered'" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
-                                    order.orderID
-                                    }}">Edit</a>
-                                  <a *ngIf="order.orderStatus == 'created' ||
-                                    order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
-                                    (click)="deactivateOrder(order)">Delete</a>
-                                  <a class="dropdown-item" [routerLink]="[
-                                    '/dispatch',
-                                    'orders',
-                                    'add'
-                                    ]" [queryParams]="{
-                                    cloneID: order.orderID
-                                    }">Clone</a>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div class="tab-pane show" id="partiallyPaidOrders" role="tabpanel"
-                      aria-labelledby="partiallyPaidOrders-tab" [ngClass]="{
-                      'show active': activeTab == 'partiallyPaid'
-                      }" *ngIf="activeTab == 'partiallyPaid'">
-                      <table class="row-border
-                        hover
-                        table table-bordered table-striped
-                        mb-0">
-                        <thead>
-                          <tr>
-                            <th>Order#</th>
-                            <th>Type</th>
-                            <th>Date</th>
-                            <th>Customer</th>
-                            <th>Pickup Location</th>
-                            <th>Drop Off Location</th>
-                            <th>Commodity</th>
-                            <th>Amount</th>
-                            <th class="custom-w-160">Status</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngIf="partiallyOrders.length == 0" class="text-center">
-                            <td colspan="10">{{ noOrdersMsg }}</td>
-                          </tr>
-                          <tr class="cursorpoint" *ngFor="let order of
-                            partiallyOrders; let i= index">
-                            <td [routerLink]="order.url" class="font-weight-bold">
-                              {{ order.orderNumber }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.orderMode }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.createdDate | date: "yyyy/MM/dd" }}
-                            </td>
-                            <td [routerLink]="order.url" class="text-capitalize">
-                              {{ customersObjects[order.customerID] }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              Date:
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].dateAndTime
-                              | date
-                              : "yyyy/MM/dd
-                              hh:mm a"
-                              }}<br />
-                              Location:
-                              <span *ngIf="order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.address
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.city
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.state
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.country
-                                }}
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.zipCode
-                                }}
-                              </span>
-                              <span *ngIf="!order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.pickupLocation
-                                }}
-                              </span>
-                              <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint.length> 1
-                                ">
-                                +{{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint.length - 1
-                                }}
-                              </span>
-                            </td>
-                            <td [routerLink]="order.url">
-                              Date:-
-                              {{
-                              order.shippersReceiversInfo[0].receivers[0]
-                              .dropPoint[0].dateAndTime
-                              | date
-                              : "yyyy/MM/dd
-                              hh:mm a"
-                              }}<br />
-                              Location: -
-                              <span *ngIf="order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.address
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.city
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.state
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.country
-                                }}
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.zipCode
-                                }}
-                              </span>
-                              <span *ngIf="!order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.dropOffLocation
-                                }}
-                              </span>
-                              <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint> 1
-                                ">
-                                +{{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint - 1
-                                }}
-                              </span>
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].name
-                              ? "Name: " +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].name
-                              : "-"
-                              }}<br />
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantity
-                              ? "Qty:" +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantity +
-                              " " +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantityUnit
-                              : ""
-                              }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.charges.freightFee.currency }}
-                              {{ order.totalAmount }}<br />
-                            </td>
-                            <td class="text-capitalize" [routerLink]="order.url">
-                              <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
-                              <b>Invoiced: </b> {{order.invoicedTime ? 'Yes' : 'No'}} <br>
-                              <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
-                            </td>
-                            <td>
-                              <div class="dropdown dropright">
-                                <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{ i }}"
-                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{
-                                  i
-                                  }}">
-                                  <a *ngIf="order.orderStatus!='delivered'" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
-                                    order.orderID
-                                    }}">Edit</a>
-                                  <a *ngIf="order.orderStatus == 'created' ||
-                                    order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
-                                    (click)="deactivateOrder(order)">Delete</a>
-                                  <a class="dropdown-item" [routerLink]="[
-                                    '/dispatch',
-                                    'orders',
-                                    'add'
-                                    ]" [queryParams]="{
-                                    cloneID: order.orderID
-                                    }">Clone</a>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
+                    <!-- Header template of DataTable -->
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
 
-                    <div class="tab-pane show" id="tonuOrders" role="tabpanel" aria-labelledby="tonu-tab"
-                      [ngClass]="{ 'show active': activeTab == 'tonu' }" *ngIf="activeTab == 'tonu'">
-                      <table class="row-border
-                        hover
-                        table table-bordered table-striped
-                        mb-0">
-                        <thead>
-                          <tr>
-                            <th>Order#</th>
-                            <th>Type</th>
-                            <th>Date</th>
-                            <th>Customer</th>
-                            <th>Pickup Location</th>
-                            <th>Drop Off Location</th>
-                            <th>Commodity</th>
-                            <th>Amount</th>
-                            <th class="custom-w-160">Status</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngIf="tonuOrders.length == 0" class="text-center">
-                            <td colspan="10">{{ noOrdersMsg }}</td>
-                          </tr>
-                          <tr class="cursorpoint" *ngFor="let order of
-                            tonuOrders; let i= index">
-                            <td [routerLink]="order.url" class="font-weight-bold">
-                              {{ order.orderNumber }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.orderMode }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.createdDate | date: "yyyy/MM/dd" }}
-                            </td>
-                            <td [routerLink]="order.url" class="text-capitalize">
-                              {{ customersObjects[order.customerID] }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              Date:
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].dateAndTime
-                              | date
-                              : "yyyy/MM/dd
-                              hh:mm a"
-                              }}<br />
-                              Location:
-                              <span *ngIf="order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.address
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.city
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.state
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.country
-                                }}
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.zipCode
-                                }}
-                              </span>
-                              <span *ngIf="!order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint[0].address.pickupLocation
-                                }}
-                              </span>
-                              <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint.length> 1
-                                ">
-                                +{{
-                                order.shippersReceiversInfo[0].shippers[0]
-                                .pickupPoint.length - 1
-                                }}
-                              </span>
-                            </td>
-                            <td [routerLink]="order.url">
-                              Date:-
-                              {{
-                              order.shippersReceiversInfo[0].receivers[0]
-                              .dropPoint[0].dateAndTime
-                              | date
-                              : "yyyy/MM/dd
-                              hh:mm a"
-                              }}<br />
-                              Location: -
-                              <span *ngIf="order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.address
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.city
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.state
-                                }},
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.country
-                                }}
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.zipCode
-                                }}
-                              </span>
-                              <span *ngIf="!order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.manual">
-                                {{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint[0].address.dropOffLocation
-                                }}
-                              </span>
-                              <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint> 1
-                                ">
-                                +{{
-                                order.shippersReceiversInfo[0].receivers[0]
-                                .dropPoint - 1
-                                }}
-                              </span>
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].name
-                              ? "Name: " +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].name
-                              : "-"
-                              }}<br />
-                              {{
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantity
-                              ? "Qty:" +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantity +
-                              " " +
-                              order.shippersReceiversInfo[0].shippers[0]
-                              .pickupPoint[0].commodity[0].quantityUnit
-                              : ""
-                              }}
-                            </td>
-                            <td [routerLink]="order.url">
-                              {{ order.charges.freightFee.currency }}
-                              {{ order.totalAmount }}<br />
-                            </td>
-                            <td class="text-capitalize" [routerLink]="order.url">
-                              <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
-                              <b>Invoiced: </b> {{order.invoicedTime ? 'Yes' : 'No'}} <br>
-                              <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
-                            </td>
-                            <td>
-                              <div class="dropdown dropright">
-                                <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{ i }}"
-                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{
-                                  i
-                                  }}">
-                                  <a *ngIf="order.orderStatus!='delivered'" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
-                                    order.orderID
-                                    }}">Edit</a>
-                                  <a *ngIf="order.orderStatus == 'created' ||
-                                    order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
-                                    (click)="deactivateOrder(order)">Delete</a>
-                                  <a class="dropdown-item" [routerLink]="[
-                                    '/dispatch',
-                                    'orders',
-                                    'add'
-                                    ]" [queryParams]="{
-                                    cloneID: order.orderID
-                                    }">Clone</a>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
+
+                        <th *ngFor="let column of dataColumns" [pSortableColumn]="column.field" pResizableColumn
+                          [ngStyle]="{'width': column.width}">
+                          <span>
+                            <div class="flex justify-content-center align-items-center" alignFrozen="right"
+                              pFrozenColumn [frozen]="true">
+                              {{column.header}}
+                              <p-sortIcon [field]="column.field" [hidden]="column.field === 'invStatus'">
+                              </p-sortIcon>
+                              <p-columnFilter [type]="column.type" [field]="column.field" matchMode="contains"
+                                [showMatchModes]="false" [hidden]="column.field === 'invStatus'" [showOperator]="false"
+                                [showAddButton]="false" display="menu">
+                              </p-columnFilter>
+                            </div>
+                          </span>
+
+                        </th>
+                        <th style="width: 7%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
+                      </tr>
+
+                    </ng-template>
+                    <ng-template pTemplate="body" let-order let-columns="columns" let-rowIndex="rowIndex"
+                      let-expanded="expanded">
+                      <tr style="cursor: pointer;">
+
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:7%"
+                          class="font-weight-bold">
+                          {{order.orderNumber}}
+                        </td>
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:6%">
+                          {{order.orderMode}}
+                        </td>
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:8%">
+                          {{ order.createdDate | date: "yyyy/MM/dd" }}
+                        </td>
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:9%">
+                          <div style="white-space: pre-line;">
+                            <div [innerHTML]="order.customerData"></div>
+                          </div>
+                        </td>
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:15%">
+                          <div style="white-space: pre-line;">
+                            <div [innerHTML]="order.pickupLocData"></div>
+                          </div>
+                        </td>
+
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:15%">
+                          <div style="white-space: pre-line;">
+                            <div [innerHTML]="order.dropLocData"></div>
+                          </div>
+                        </td>
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}'
+                          style="width:9%; white-space: pre-line">
+                          <div [innerHTML]="order.commodityData"></div>
+                        </td>
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:8%">
+                          {{ order.amount }}
+                          <br />
+                        </td>
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:7%">
+                          <div class="badges ">
+                            <b>Invoiced: </b>
+                            <span class="badge badge-success" *ngIf="order.invoicedTime"><i
+                                class="fa fa-check"></i></span>
+                            <span style="background: #000000a1;" class="badge badge-info" *ngIf="!order.invoicedTime"><i
+                                class="fa fa-close"></i></span><br>
+                            <b>Payment:</b> {{order.invStatus ? order.invStatus.replace('_', ' ') : 'NA'}}
+                          </div>
+                        </td>
+
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:10%">
+                          <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
+                        </td>
+                        <td style="width:7%;overflow: inherit !important; " pFrozenColumn alignFrozen="right"
+                          [frozen]="true">
+                          <div class="dropdown dropright" style="z-index: 1000">
+                            <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{rowIndex
+                              }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{
+                           rowIndex
+                              }}">
+                              <a *ngIf="order.orderStatus!= 'delivered'" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
+                                order.orderID
+                                }}">Edit</a>
+                              <a *ngIf="order.orderStatus === 'confirmed'" class="dropdown-item"
+                                [routerLink]="['/dispatch','trips','add-trip']"
+                                [queryParams]="{orderId:order.orderID,orderNum:order.orderNumber}">Create Trip</a>
+                              <a *ngIf="order.orderStatus == 'created' ||
+                                order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
+                                (click)="deactivateOrder(order)">Delete</a>
+                              <a *ngIf="order.orderStatus === 'created'" class="dropdown-item"
+                                (click)="confirmEmail(order,rowIndex)">Confirm</a>
+                              <a *ngIf="order.orderStatus === 'created' ||
+                                order.orderStatus === 'confirmed'" class="dropdown-item" (click)="showBrokerageModal(
+                                order,
+                                ordersDraw,
+                                rowIndex,
+                                'all'
+                                )">Brokerage</a>
+                              <a *ngIf="order.orderStatus === 'brokerage'" class="dropdown-item" (click)="updateCreatedStatus(order,
+                                ordersDraw, rowIndex)">Cancel Brokerage</a>
+                              <a class="dropdown-item" [routerLink]="[
+                                '/dispatch',
+                                'orders',
+                                'add'
+                                ]" [queryParams]="{
+                                cloneID: order.orderID
+                                }">Clone</a>
+                              <a *ngIf="order.canRecall" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
+                                order.orderID
+                                }}" [queryParams]="{
+                                state: 'recall'
+                                }">Recall</a>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+
+                    </ng-template>
+
+                    <!-- Empty Template -->
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <div class="col-lg-12 mt-3 text-center">
+                        {{dataMessage}}
+                        <br /><br>
+                      </div>
+                    </ng-template>
+                    <!-- Summary Section with Load More button -->
+
+                    <ng-template pTemplate="summary" let-columns>
+                      <div class="col-lg-12 mt-3 text-center " *ngIf="lastEvaluatedKey !=='end' && orders.length !==0 ">
+                        <button type="button " (click)="onScroll($event) "
+                          class="btn btn-success btn-sm text-light ">Load
+                          More..</button>
+
+                        <br /><br>
+                      </div>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey ==='end'">
+                        Total Records: {{orders.length}}</div>
+                    </ng-template>
+
+
+                  </p-table>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
       </section>
+
+
     </section>
   </div>
 </section>
 
-<!-- brokerage modal -->
 <div class="modal fade" id="orderStatusModal" role="dialog" tabindex="-1">
   <div class="modal-dialog" role="document" style="max-width: 500px">
-    <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Brokerage Order</h4>
