@@ -348,31 +348,31 @@ export class SummaryComponent implements OnInit {
             
             
             let totObjFuelConsumed = {
-            ['Total fuel consumed LTR'] : 'Total fuel consumed and Cost',
+            ['Total fuel consumed LTR'] : 'Total fuel consumed',
             ['Total fuel consumed GL'] : ''
             }
             if(this.searchActive === true){
             totObjFuelConsumed['Total fuel consumed LTRR'] = this.finalFuelConsumedLTR.toFixed() + ' LTR'
-            totObjFuelConsumed['Total fuel consumed GLL'] =  this.finalFuelConsumedGL.toFixed() + 'GL'
+            totObjFuelConsumed['Total fuel consumed GLL'] =  this.finalFuelConsumedGL.toFixed() + 'GL' + '\n'
             }else{
             this.searchActive = false;
             totObjFuelConsumed['Total fuel consumed LTRR'] = this.finalFuelConsumedLTR.toFixed() + ' LTR'
-            totObjFuelConsumed['Total fuel consumed GLL'] =  this.finalFuelConsumedGL.toFixed() + ' GL'
+            totObjFuelConsumed['Total fuel consumed GLL'] =  this.finalFuelConsumedGL.toFixed() + ' GL' + '\n'
             }
-            dataObject.push(totObjFuelConsumed)
-
+            dataObject.push('\n',totObjFuelConsumed)
+            
 
             let totObjFinalTotal = {
-            //['Total fuel Cost CAD'] : 'Total fuel Cost',
-            //['Total fuel Cost USD'] : ' '
+              ['Total fuel cost CAD'] : 'Total fuel Cost',
+              ['Total fuel cost USD'] : ''
             }
             if(this.searchActive === true){
-            totObjFuelConsumed['Total Fuel Cost CAD'] = this.finalFuelRunningCAD.toFixed() + ' CAD'
-            totObjFuelConsumed['Total Fuel Cost USD'] = this.finalFuelRunningUSD.toFixed() + ' USD'
+            totObjFinalTotal['Total Fuel Cost CAD'] = this.finalFuelRunningCAD.toFixed() + ' CAD'
+            totObjFinalTotal['Total Fuel Cost USD'] = this.finalFuelRunningUSD.toFixed() + ' USD'
             }else{
             this.searchActive = false;
-            totObjFuelConsumed['Total Fuel Cost CAD'] = this.finalFuelRunningCAD.toFixed() + ' CAD'
-            totObjFuelConsumed['Total Fuel Cost USD'] = this.finalFuelRunningUSD.toFixed() + ' USD'
+            totObjFinalTotal['Total Fuel Cost CAD'] = this.finalFuelRunningCAD.toFixed() + ' CAD'
+            totObjFinalTotal['Total Fuel Cost USD'] = this.finalFuelRunningUSD.toFixed() + ' USD'
             }
             dataObject.push(totObjFinalTotal)
             
@@ -424,6 +424,7 @@ export class SummaryComponent implements OnInit {
 
     csvExport() {
         if (this.unitID !== null || this.assetUnitID !== null || this.start !== null || this.end !== null) {
+            this.searchActive = false
             this.exportList = this.fuelList
             this.generateFuelCSV();
         } else {
