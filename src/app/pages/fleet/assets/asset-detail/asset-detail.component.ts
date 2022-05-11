@@ -232,7 +232,7 @@ export class AssetDetailComponent implements OnInit {
         private countryStateCity: CountryStateCityService,
         private routerMgmtService: RouteManagementServiceService
     ) {
-        
+
         this.sessionID = this.routerMgmtService.assetUpdateSessionID;
     }
 
@@ -262,7 +262,7 @@ export class AssetDetailComponent implements OnInit {
                     // if (!result.hasOwnProperty('devices')) {
                     //   result['devices'] = [];
                     // }
-                    result.assetType = result.assetType.replace("_", " ");
+                    result.assetType = result.assetType ? result.assetType.replace("_", " ") : '';
                     if (
                         result.inspectionFormID !== "" &&
                         result.inspectionFormID !== undefined
@@ -285,15 +285,17 @@ export class AssetDetailComponent implements OnInit {
                     this.currentStatus = result.currentStatus;
                     this.annualSafetyDate = result.assetDetails.annualSafetyDate;
                     this.licencePlateNumber = result.assetDetails.licencePlateNumber;
-                    this.licenceCountryName =
-                        await this.countryStateCity.GetSpecificCountryNameByCode(
-                            result.assetDetails.licenceCountryCode
-                        );
-                    this.licenceStateName =
-                        await this.countryStateCity.GetStateNameFromCode(
-                            result.assetDetails.licenceStateCode,
-                            result.assetDetails.licenceCountryCode
-                        );
+                    if (result.assetDetails.licenceCountryCode) {
+                        this.licenceCountryName =
+                            await this.countryStateCity.GetSpecificCountryNameByCode(
+                                result.assetDetails.licenceCountryCode
+                            );
+                        this.licenceStateName =
+                            await this.countryStateCity.GetStateNameFromCode(
+                                result.assetDetails.licenceStateCode,
+                                result.assetDetails.licenceCountryCode
+                            );
+                    }
                     this.year = result.assetDetails.year;
                     this.manufacturer = result.assetDetails.manufacturer;
                     this.model = result.assetDetails.model;
