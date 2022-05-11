@@ -87,18 +87,18 @@ export class DriverListComponent implements OnInit {
 
     // columns of data table
     dataColumns = [
-        { field: 'firstName', header: 'First Name', type: "text" },
-        { field: 'lastName', header: 'Last Name', type: "text" },
-        { field: 'email', header: 'Email', type: "text" },
-        { field: 'phone', header: 'Phone', type: "text" },
-        { field: 'userName', header: 'Username', type: "text" },
-        { field: 'driverType', header: 'Type', type: "text" },
-        { field: 'companyName', header: 'Company', type: "text" },
-        { field: 'startDate', header: 'Start Date', type: "text" },
-        { field: 'CDL_Number', header: 'CDL#', type: "text" },
-        { field: 'licenceExpiry', header: 'CDL Expiry', type: "text" },
-        { field: 'isImport', header: 'Added By', type: "text" },
-        { field: "driverStatus", header: 'Status', type: 'text' },
+        { width: '8%', field: 'firstName', header: 'First Name', type: "text" },
+        { width: '8%', field: 'lastName', header: 'Last Name', type: "text" },
+        { width: '8%', field: 'email', header: 'Email', type: "text" },
+        { width: '7%', field: 'phone', header: 'Phone', type: "text" },
+        { width: '8%', field: 'userName', header: 'Username', type: "text" },
+        { width: '7%', field: 'driverType', header: 'Type', type: "text" },
+        { width: '8%', field: 'companyName', header: 'Company', type: "text" },
+        { width: '8%', field: 'startDate', header: 'Start Date', type: "text" },
+        { width: '8%', field: 'CDL_Number', header: 'CDL#', type: "text" },
+        { width: '9%', field: 'licenceExpiry', header: 'CDL Expiry', type: "text" },
+        { width: '8%', field: 'isImport', header: 'Added By', type: "text" },
+        { width: '7%', field: "driverStatus", header: 'Status', type: 'text' },
 
     ];
 

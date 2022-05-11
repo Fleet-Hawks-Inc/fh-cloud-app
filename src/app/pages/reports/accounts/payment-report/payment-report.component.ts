@@ -4,7 +4,7 @@ import {AccountService,ApiService} from 'src/app/services'
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import * as html2pdf from "html2pdf.js";
 import { DashboardUtilityService } from 'src/app/services';
-
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-payment-report',
@@ -15,7 +15,11 @@ export class PaymentReportComponent implements OnInit {
 
   @ViewChild("previewModal",{static:false}) previewModal:TemplateRef<any>;
 
-  constructor(private accountService:AccountService,private modalService: NgbModal,private dashboardUtilityService:DashboardUtilityService,private apiService:ApiService) { }
+  constructor(private accountService:AccountService,
+  private modalService: NgbModal,
+  private dashboardUtilityService:DashboardUtilityService,
+  private apiService:ApiService,
+  private toastr: ToastrService) { }
 
   allPayments=[]
   allExportData=[]
@@ -310,6 +314,48 @@ async resetFilter(){
     this.modalService.open(this.previewModal,ngbModalOptions)
     this.exporting=false;
   }
+  
+  generateRequiredCSV() {
+        if (this.allPayments.length > 0) {
+            let DataObject = []
+            let CsvArray = []
+            this.allPayments.forEach(element => {
+                let obj = {}
+                obj['Transaction Date'] = element.txnDate
+                obj['Payment ID'] = element.paymentNo
+                obj['Payment Mode'] = element.payMode
+                obj['Cheque/ Cash No'] = element.payModeNo
+                obj['Cheque/Cash Date'] = element.payModeDate
+                obj['Type Of Payment'] = element.type +' '+ ':'+ ' ' + element.advType
+                obj['Receiver'] = element.paymentTo + ' ' + ':' + ' ' + element.entityName
+                obj['Currency'] = element.currency
+                obj['Amount'] = element.amount
+                DataObject.push(obj)
+            });
+            let headers = Object.keys(DataObject[0]).join(',')
+            headers += '\n'
+            CsvArray.push(headers)
+            DataObject.forEach(element => {
+                let obj = Object.values(element).join(',')
+                obj += '\n'
+                CsvArray.push(obj)
+            });
+            const blob = new Blob(CsvArray, { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `Required-Inventory-Report.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+        else {
+            this.toastr.error('No Records found');
+        }
+    }
+
 
   generatePDF(){
     this.printing=true;

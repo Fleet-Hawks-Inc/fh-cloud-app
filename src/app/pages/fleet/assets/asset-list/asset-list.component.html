@@ -73,7 +73,7 @@
                                             <tr>
                                                 <th *ngFor="let dataColumns of columns"
                                                     [pSortableColumn]="dataColumns.field" pResizableColumn
-                                                    style="width:10%">
+                                                    [ngStyle]="{'width': dataColumns.width}">
                                                     <div [ngSwitch]="dataColumns.field">
                                                         <!-- Asset Status Filter Customization -->
                                                         <span *ngSwitchCase="'currentStatus'">
@@ -117,7 +117,7 @@
                                                         </span>
                                                     </div>
                                                 </th>
-                                                <th style="width:100px" alignFrozen="right" pFrozenColumn
+                                                <th style="width: 130px;" alignFrozen="right" pFrozenColumn
                                                     [frozen]="true">Actions</th>
 
                                             </tr>
@@ -130,7 +130,7 @@
 
                                             <tr>
                                                 <td *ngFor="let dataColumns of columns"
-                                                    style="width:10%;cursor: pointer;"
+                                                    [ngStyle]="{'width': dataColumns.width}" style="cursor: pointer;"
                                                     routerLink="/fleet/assets/detail/{{asset.assetID}}">
                                                     <div [ngSwitch]="dataColumns.field">
                                                         <span
@@ -140,7 +140,8 @@
                                                             {{asset.ownerShip !== "interchange" ? asset.VIN: "-"}}
                                                         </span>
                                                         <span *ngSwitchCase="'assetType'"> {{((asset.assetType) ?
-                                                            (asset.assetType.replace('_',' ')) : '-') | titlecase}}</span>
+                                                            (asset.assetType.replace('_',' ')) : '-') |
+                                                            titlecase}}</span>
                                                         <span *ngSwitchCase="'manufacturer'"> {{((asset.manufacturer) ?
                                                             asset.manufacturer : '-') | titlecase}}</span>
                                                         <span *ngSwitchCase="'year'"> {{((asset.year) ? asset.year :
@@ -150,12 +151,13 @@
                                                         <span *ngSwitchCase="'ownCname'">{{((asset.ownCname) ?
                                                             asset.ownCname : "-") | titlecase}}</span>
                                                         <span *ngSwitchCase="'currentStatus'">
-                                                         <span class="badge badge-dark p-1">{{ asset.currentStatus | titlecase }}</span>   
-                                                            </span>
+                                                            <span class="badge badge-dark p-1">{{ asset.currentStatus |
+                                                                titlecase }}</span>
+                                                        </span>
                                                         <span *ngSwitchDefault> {{get(asset,dataColumns.field)}}</span>
                                                     </div>
                                                 </td>
-                                                <td style=" text-align: center; width: 100px;" pFrozenColumn
+                                                <td style=" text-align: center; width: 130px;" pFrozenColumn
                                                     alignFrozen="right" [frozen]="true">
 
                                                     <button id="btnEdit" pButton

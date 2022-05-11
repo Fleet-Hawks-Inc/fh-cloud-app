@@ -43,7 +43,7 @@
                         </div>
 
 
-             
+
                         <div class="col-md-2 col-lg-2 pl-0">
                             <div class="input-group input-group-sm mb-3">
                                 <input type="text" name="issueName" [(ngModel)]="issueName" class="form-control"
@@ -94,8 +94,8 @@
                                                         pTooltip="Refresh" class="p-button-outlined mr-2"
                                                         icon="fas fa-sync"></button>
                                                     <button type="button" pButton pTooltip="Add"
-                                                        [routerLink]="['/fleet', 'maintenance', 'issues', 'add']" class="p-button-outlined mr-2"
-                                                        icon="pi pi-plus"></button>
+                                                        [routerLink]="['/fleet', 'maintenance', 'issues', 'add']"
+                                                        class="p-button-outlined mr-2" icon="pi pi-plus"></button>
                                                     <button pButton pRipple pTooltip="Clear Filter"
                                                         class="p-button-outlined mr-2" icon="pi pi-filter-slash"
                                                         (click)="clear(dt)"></button>
@@ -115,7 +115,7 @@
                                             <tr>
                                                 <th *ngFor="let dataColumns of columns"
                                                     [pSortableColumn]="dataColumns.field" pResizableColumn
-                                                    style="width:14%">
+                                                    [ngStyle]="{'width': dataColumns.width}">
                                                     <div [ngSwitch]="dataColumns.field">
                                                         <span *ngSwitchDefault>
                                                             <div class="flex justify-content-center align-items-center"
@@ -140,28 +140,33 @@
                                             let-rowIndex="rowIndex">
                                             <tr>
                                                 <td *ngFor="let dataColumns of columns"
-                                                    style="width:14%;cursor: pointer;"
+                                                    [ngStyle]="{'width': dataColumns.width}" style="cursor: pointer;"
                                                     routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
                                                     <div [ngSwitch]="dataColumns.field">
-                                                         <span *ngSwitchCase="'unitType'">
+                                                        <span *ngSwitchCase="'unitType'">
                                                             <span>{{get(issue,dataColumns.field) | titlecase}}</span>
                                                         </span>
-                                                          <span *ngSwitchCase="'issueName'">
+                                                        <span *ngSwitchCase="'issueName'">
                                                             <span>{{get(issue,dataColumns.field) | titlecase}}</span>
                                                         </span>
                                                         <span *ngSwitchCase="'vehicleasset'">
-                                                            <span *ngIf="issue.unitType === 'asset'">{{assetList[issue.unitID] | titlecase}}</span>
-                                                            <span *ngIf="issue.unitType === 'vehicle'">{{vehicleList[issue.unitID] | titlecase}}</span>
-                                                        </span>    
+                                                            <span
+                                                                *ngIf="issue.unitType === 'asset'">{{assetList[issue.unitID]
+                                                                | titlecase}}</span>
+                                                            <span
+                                                                *ngIf="issue.unitType === 'vehicle'">{{vehicleList[issue.unitID]
+                                                                | titlecase}}</span>
+                                                        </span>
                                                         <span *ngSwitchCase="'reportedBy'">
                                                             <span>{{ usersList[issue.reportedBy] | titlecase}}</span>
                                                         </span>
                                                         <span *ngSwitchCase="'assignedTo'">
                                                             <span>{{ usersList[issue.assignedTo] | titlecase}}</span>
                                                         </span>
-                                                           <span *ngSwitchCase="'currentStatus'">
-                                                              <span class="badge badge-dark p-1">{{issue.currentStatus | uppercase}}</span>
-                                                            </span>
+                                                        <span *ngSwitchCase="'currentStatus'">
+                                                            <span class="badge badge-dark p-1">{{issue.currentStatus |
+                                                                uppercase}}</span>
+                                                        </span>
                                                         <span *ngSwitchDefault> {{get(issue,dataColumns.field)}}</span>
                                                     </div>
                                                 </td>
@@ -171,7 +176,8 @@
                                                         routerLink="/fleet/maintenance/issues/edit/{{issue.issueID}}"
                                                         type="button" icon="fas fa-user-pen"
                                                         class="p-button-rounded p-button-text"></button>
-                                                    <button id="btnDelete" (click)="deleteIssue(issue.issueID, issue.issueName)" pButton
+                                                    <button id="btnDelete"
+                                                        (click)="deleteIssue(issue.issueID, issue.issueName)" pButton
                                                         type="button" icon="fas fa-user-slash"
                                                         class="p-button-rounded p-button-danger p-button-text"></button>
                                                 </td>
