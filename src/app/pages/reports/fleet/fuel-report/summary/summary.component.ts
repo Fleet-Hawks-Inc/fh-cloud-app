@@ -67,7 +67,7 @@ export class SummaryComponent implements OnInit {
     fuelQtyLitres = [];
     fuelQtyGallons = [];
     fuelQty = [];
-
+    emptyObject = [];
 
 
 
@@ -308,8 +308,9 @@ export class SummaryComponent implements OnInit {
 
     generateFuelCSV() {
         if (this.exportList.length > 0) {
-            let dataObject = []
+            let dataObject: any = []
             let csvArray = []
+            
             this.exportList.forEach(element => {
                 let obj = {}
                 let retailCADTotal = [];
@@ -325,8 +326,8 @@ export class SummaryComponent implements OnInit {
                 obj['Unit Name'] = this.assetList[element.unitID] || this.vehicleList[element.unitID]
                 obj['Fuel Card#'] = element.data.cardNo
                 obj['City'] = element.data.city
-                obj['Fuel Type'] = element.data.type
-                obj['Fuel Quantity'] = element.data.qty + " "
+                obj['Fuel Type'] = element.data.type.replace(/, /g, ' &');
+                obj['Fuel Quantity'] = element.data.qty + ' '
                 if (element.data.uom === 'L') {
                     obj['Liters or Gallons'] = element.data.uom === 'L' ? 'LTR' : null
                 }
@@ -337,13 +338,44 @@ export class SummaryComponent implements OnInit {
                     obj['Liters or Gallons'] = element.data.uom === 'G' ? 'GL' : null
                 }
                 obj['Odometer'] = element.data.odometer
-                obj['Retail Price Per L'] = element.data.rPpu + ' ' + element.data.currency
-                obj['Retail Amount Before Tax'] = element.data.rBeforeTax + ' ' + element.data.currency
+                obj['Retail Price Per L'] = element.data.rPpu
+                obj['Retail Amount Before Tax'] = element.data.rBeforeTax
                 obj['Total Discount'] = element.data.discAmt
-                obj['Retail Amount CAD'] = retailCADTotal
-                obj['Retail Amount USD'] = retailUSDTotal
+                obj['Retail Amount'] = element.data.amt
+                obj['Currency'] = element.data.currency
                 dataObject.push(obj)
             });
+            
+            
+            let totObjFuelConsumed = {
+            ['Total fuel consumed LTR'] : 'Total fuel consumed',
+            ['Total fuel consumed GL'] : ''
+            }
+            if(this.searchActive === true){
+            totObjFuelConsumed['Total fuel consumed LTRR'] = this.finalFuelConsumedLTR.toFixed() + ' LTR'
+            totObjFuelConsumed['Total fuel consumed GLL'] =  this.finalFuelConsumedGL.toFixed() + 'GL' + '\n'
+            }else{
+            this.searchActive = false;
+            totObjFuelConsumed['Total fuel consumed LTRR'] = this.finalFuelConsumedLTR.toFixed() + ' LTR'
+            totObjFuelConsumed['Total fuel consumed GLL'] =  this.finalFuelConsumedGL.toFixed() + ' GL' + '\n'
+            }
+            dataObject.push('\n',totObjFuelConsumed)
+            
+
+            let totObjFinalTotal = {
+              ['Total fuel cost CAD'] : 'Total fuel Cost',
+              ['Total fuel cost USD'] : ''
+            }
+            if(this.searchActive === true){
+            totObjFinalTotal['Total Fuel Cost CAD'] = this.finalFuelRunningCAD.toFixed() + ' CAD'
+            totObjFinalTotal['Total Fuel Cost USD'] = this.finalFuelRunningUSD.toFixed() + ' USD'
+            }else{
+            this.searchActive = false;
+            totObjFinalTotal['Total Fuel Cost CAD'] = this.finalFuelRunningCAD.toFixed() + ' CAD'
+            totObjFinalTotal['Total Fuel Cost USD'] = this.finalFuelRunningUSD.toFixed() + ' USD'
+            }
+            dataObject.push(totObjFinalTotal)
+            
             let headers = Object.keys(dataObject[0]).join(',')
             headers += '\n'
             csvArray.push(headers)
@@ -391,7 +423,8 @@ export class SummaryComponent implements OnInit {
     }
 
     csvExport() {
-        if (this.unitID !== null || this.assetUnitID !== null) {
+        if (this.unitID !== null || this.assetUnitID !== null || this.start !== null || this.end !== null) {
+            this.searchActive = false
             this.exportList = this.fuelList
             this.generateFuelCSV();
         } else {
