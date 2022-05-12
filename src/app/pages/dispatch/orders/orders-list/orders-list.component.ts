@@ -35,7 +35,6 @@ export class OrdersListComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
   noOrdersMsg = Constants.NO_RECORDS_FOUND;
   orders = [];
-  abcText
   confirmOrders = [];
   dispatchOrders = [];
   deliveredOrders = [];

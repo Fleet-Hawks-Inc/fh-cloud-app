@@ -114,12 +114,8 @@
                             (click)="clear(dt)" icon="pi pi-filter-slash"></button>
 
                           <button type="button" pButton pRipple class="p-button-outlined mr-2"
-                            icon="fas fa-regular fa-file-excel" (click)="generateCSV()" pTooltip="Excel"></button>
+                            icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
 
-                          <!-- <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header"
-                            selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}"
-                            placeholder="Choose Columns">
-                          </p-multiSelect> -->
                         </div>
                       </div>
                     </ng-template>
