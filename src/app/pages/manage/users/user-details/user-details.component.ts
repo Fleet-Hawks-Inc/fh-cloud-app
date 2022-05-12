@@ -19,6 +19,7 @@ export class UserDetailsComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   contactID = '';
   contactsObject: any = {};
+  vendor: any;
   profilePath = '';
   userData = {
     companyName: '',
