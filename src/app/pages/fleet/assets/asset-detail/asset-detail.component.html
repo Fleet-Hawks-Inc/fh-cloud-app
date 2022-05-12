@@ -73,7 +73,8 @@
                                                         <td class="back-color-gray font-weight-bold">
                                                             Asset Type
                                                         </td>
-                                                        <td class="text-capitalize">{{ assetType }}</td>
+                                                        <td class="text-capitalize">{{ assetType ? assetType : '-' }}
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">
@@ -88,7 +89,8 @@
                                                             Annual Safety Date
                                                         </td>
                                                         <td class="text-capitalize">
-                                                            {{ annualSafetyDate | date: "yyyy/MM/dd" }}
+                                                            {{ annualSafetyDate ? (annualSafetyDate | date:
+                                                            "yyyy/MM/dd") : '-' }}
                                                         </td>
                                                     </tr>
 
@@ -97,7 +99,8 @@
                                                             Licence Province/State & Country
                                                         </td>
                                                         <td class="text-capitalize">
-                                                            {{ licenceStateName }}, {{ licenceCountryName }}
+                                                            {{ licenceStateName ? licenceStateName + ',' : '-' }} {{
+                                                            licenceCountryName ? licenceCountryName : '' }}
                                                         </td>
                                                     </tr>
                                                     <tr>

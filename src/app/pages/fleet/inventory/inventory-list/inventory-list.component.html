@@ -267,15 +267,24 @@
                                                     routerLink="/fleet/inventory/detail/{{exItems.itemID}}">
                                                     <div [ngSwitch]="dataColumns.field">
                                                         <span *ngSwitchCase="'vendor'">
-                                                            <span>{{vendors[exItems.warehouseVendorID]}}</span>
+                                                            <span>{{vendors[exItems.warehouseVendorID] | titlecase}}</span>
+                                                       </span>
+                                                       <span *ngSwitchCase="'partNumber'">
+                                                            <span>{{get(exItems,dataColumns.field) | titlecase}}</span>
+                                                       </span>
+                                                        <span *ngSwitchCase="'itemName'">
+                                                            <span>{{get(exItems,dataColumns.field) | titlecase}}</span>
+                                                       </span>
+                                                        <span *ngSwitchCase="'category'">
+                                                            <span>{{get(exItems,dataColumns.field) | titlecase}}</span>
                                                        </span>
                                                         <span *ngSwitchCase="'unitcost'">
                                                             <span>{{exItems.cost}} {{exItems.costUnitType}}</span>
                                                        </span>
                                                        <span *ngSwitchCase="'warehouseDetails'">
-                                                            <span>{{warehouses[exItems.warehouseID]}}</span>
+                                                            <span>{{warehouses[exItems.warehouseID] | titlecase}}</span>
                                                        </span>
-                                                    <span *ngSwitchDefault> {{get(exItems,dataColumns.field)}}</span>
+                                                    <span *ngSwitchDefault> {{get(exItems,dataColumns.field) }}</span>
                                                     </div>
                                                 </td>
                                                 <td style=" text-align: center; width: 100px;" pFrozenColumn

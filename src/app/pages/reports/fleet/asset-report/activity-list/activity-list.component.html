@@ -106,7 +106,7 @@
                               }}
                             </td>
                             <td [routerLink]="item.url">
-                              {{ item.assetType | titlecase }}
+                             {{((item.assetType) ? (item.assetType.replace('_',' ')) : '-') | titlecase}}
                             </td>
                             <td [routerLink]="item.url">
                               {{

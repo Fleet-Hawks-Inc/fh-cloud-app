@@ -4371,11 +4371,3 @@ input:checked+.sliderbtn:before {
   font-family: Roboto, Arial;
   font-size: 13px;
 }
-
-.custom-bg-light {
-  background-color: #f8f9fa;
-}
-
-.overflow-visible {
-  overflow: inherit !important;
-}
