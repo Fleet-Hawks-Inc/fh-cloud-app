@@ -61,6 +61,10 @@ export class PaymentChequeComponent implements OnInit {
     isVendorPayment: false,
     vendorId: "",
     gstHstPer: 0,
+<<<<<<< HEAD
+=======
+    payType: null
+>>>>>>> 5bb4c6d70e7e99cdf8c8e865cd0e6fd589e25af7
   };
 
   cheqdata = {
