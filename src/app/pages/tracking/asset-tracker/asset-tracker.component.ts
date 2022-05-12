@@ -160,7 +160,7 @@ export class AssetTrackerComponent implements OnInit {
    * update map data with selected duration
    */
   async updateAssetData() {
-
+    this.locationData = [];
     await this.getDeviceEventsForDuration(this.selectedDuration.value);
   }
 
@@ -168,6 +168,7 @@ export class AssetTrackerComponent implements OnInit {
    * Gets Sensor data
    */
   async updateSensorData() {
+    this.sensorData = [];
     await this.getSensorData(this.selectedSensorDuration.value);
   }
 
