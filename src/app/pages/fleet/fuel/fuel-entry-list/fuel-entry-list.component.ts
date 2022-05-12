@@ -319,9 +319,9 @@ export class FuelEntryListComponent implements OnInit {
       result[`Items`].forEach(element => {
 
 
-        let date: any = moment(element.data.date)
-        if (element.data.time) {
-          let time = moment(element.data.time, 'h mm a')
+        let date: any = moment(element.date)
+        if (element.time) {
+          let time = moment(element.time, 'h mm a')
           date.set({
             hour: time.get('hour'),
             minute: time.get('minute')
