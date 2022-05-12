@@ -18,6 +18,7 @@ export class UserDetailsComponent implements OnInit {
   @ViewChild('driverF') driverF: NgForm;
   Asseturl = this.apiService.AssetUrl;
   contactID = '';
+  contactsObject: any = {};
   profilePath = '';
   userData = {
     companyName: '',
@@ -28,6 +29,11 @@ export class UserDetailsComponent implements OnInit {
     dateOfBirth: '',
     workPhone: '',
     workEmail: '',
+    userType: '',
+    corporationType: null,
+    vendor: null,
+    corporation: '',
+    notes: '',
     profileImg: '',
     loginEnabled: false,
     paymentDetails: {
@@ -98,6 +104,7 @@ export class UserDetailsComponent implements OnInit {
   ngOnInit() {
     this.contactID = this.route.snapshot.params[`contactID`];
     this.fetchUserByID();
+    this.fetchAllContacts();
   }
 
   toggleFieldTextType() {
@@ -175,6 +182,16 @@ export class UserDetailsComponent implements OnInit {
     }
   }
 
+
+  fetchAllContacts() {
+        this.apiService.getData('contacts/get/list')
+            .subscribe((result: any) => {
+                this.contactsObject = result;
+            });
+    }
+
+
+
   onChangePassword() {
     this.submitDisabled = false;
     const data = {
@@ -244,6 +261,11 @@ export class UserDetailsComponent implements OnInit {
         dateOfBirth: result.dateOfBirth,
         workPhone: result.workPhone,
         workEmail: result.workEmail,
+        notes: result.notes,
+        userType: result.userType,
+        corporationType: result.corporationType,
+        vendor: result.vendor,
+        corporation: result.corporation,
         loginEnabled: result.loginEnabled,
         profileImg: result.profileImg,
         currentStatus: result.currentStatus,
