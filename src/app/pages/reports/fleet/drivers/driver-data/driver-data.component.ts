@@ -336,34 +336,37 @@ export class DriverDataComponent implements OnInit {
       this.drivers = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.lastEvaluatedKey = ''
-      this.suggestedDrivers = [];
+      this.suggestedDrivers = []
       this.initDataTable();
     } else {
       return false;
     }
   }
+  
+   resetFilter() {
 
-  resetFilter() {
-    if (
-      this.driverID !== "" ||
-      this.dutyStatus !== "" ||
-      this.driverType !== null
-    ) {
-      this.isSearch = true;
-      this.ngSelectComponent.handleClearClick();
-      this.drivers = [];
-      this.driverID = "";
-      this.dutyStatus = "";
-      this.driverName = "";
-      this.driverType = null;
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.lastEvaluatedKey = '';
-      this.driverDraw = 0;
-      this.initDataTable();
-    } else {
-      return false;
+        if (
+            this.driverID !== '' ||
+            this.dutyStatus !== '' ||
+            this.driverType !== null
+        ) {
+
+
+            this.isSearch = true;
+            this.driverID = '';
+            this.dutyStatus = '';
+            this.driverName = null;
+            this.driverType = null;
+            this.drivers = [];
+            this.loaded = false;
+            this.lastEvaluatedKey = '';
+            this.suggestedDrivers = null;
+            this.initDataTable();
+
+        } else {
+            return false;
+        }
     }
-  }
   
   clearInput() {
     this.suggestedDrivers = null;
@@ -384,7 +387,7 @@ export class DriverDataComponent implements OnInit {
 
   
   clearSuggestions() {
-    this.driverName = '';
+    this.driverName = null;
   }
   
    clear(table: Table) {
