@@ -10,36 +10,30 @@
         <section role="main" class="content-body pl-1 pt-0 pr-0">
             <header class="page-header flex align-items-center justify-content-start">
                 <form class="formgrid grid">
-                    <div class="row">
+                    <div class="row" style="padding-top: 10px">
                         <div class="col" style="margin-left: 20px;margin-top: 5px;">
-                             <p-autoComplete #autoComp id="autoCmpSugDriver" [placeholder]="'Search driver by name'"
+                            <p-autoComplete #autoComp id="autoCmpSugDriver" [placeholder]="'Type Drivers Name'"
                                 class="mr-2" [forceSelection]="true" emptyMessage="No data found."
                                 [(ngModel)]="driverName" [suggestions]="suggestedDrivers" [minLength]="2"
                                 (completeMethod)="getSuggestions($event.query)" (onSelect)="setDriver($event.driverID)"
                                 field="fullName"> </p-autoComplete>
-                                <p-dropdown id="drpDvrType" [style]="{minWidth: '200px'}" [options]="driverTypeOption"
+                              <p-dropdown id="drpDvrType" [style]="{minWidth: '200px'}" [options]="driverTypeOption"
                                 class="mr-2" placeholder="Select a Driver Type" [(ngModel)]="driverType"
                                 optionLabel="name" optionValue="value">
                             </p-dropdown>
-                             <button id="btnSearch" type="button" [disabled]="isSearch" pButton class="mr-2"
+                            
+                              <button id="btnSearch" type="button" [disabled]="isSearch" pButton class="mr-2"
                                 icon="pi pi-search" pTooltip="Search" (click)="searchFilter()"></button>
                             <button id="btnResetFilter" type="button" [disabled]="isSearch" pButton class="mr-2"
                                 icon="pi pi-refresh" pTooltip="Reset" (click)="resetFilter()"></button>
-                                <div class="col-md-9 col-lg-9 text-right pr-1"
-                           routerLink="/reports/fleet/drivers" class="btn btn-sm btn-success">Back
-                             </div>
-                            </div>
-                            
-                            
-                           <div class="col">
+                        <div style="float: right;">
+                        <button  pButton class="mr-2 align-items-end" 
+                           routerLink="/reports/fleet/drivers" >Back
+                        </button>
                         </div>
-
-
                     </div>
-
+                    </div>
                 </form>
-
-
             </header>
 
                          
@@ -62,7 +56,7 @@
                                                     <button type="button" pButton (click)="refreshData()"
                                                         pTooltip="Refresh" class="p-button-outlined mr-2"
                                                         icon="fas fa-sync"></button>
-                                                    <button pButton pRipple pTooltip="Clear Filter"
+                                                          <button pButton pRipple pTooltip="Clear Filter"
                                                         class="p-button-outlined mr-2" icon="pi pi-filter-slash"
                                                         (click)="clear(dt)"></button>
                                                     <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns"
