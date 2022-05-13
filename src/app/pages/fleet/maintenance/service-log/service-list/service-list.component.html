@@ -176,7 +176,7 @@
                                                         
                                                         <span *ngSwitchCase="'dateOdometer'">
                                                             {{vehicle.completionDate | date:'yyyy/MM/dd'}}<br>
-                                                        <span *ngIf="item?.vehicleID" class="font-size-12">
+                                                        <span *ngIf="vehicle?.vehicleID" class="font-size-12">
                                                             {{vehicle.odometer}} miles
                                                         </span>
                                                         </span>
