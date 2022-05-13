@@ -133,7 +133,7 @@ export class AlarmComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
     }
     
-     generateDriverCSV() {
+     generateAlarmsCSV() {
         if (this.alarm.length > 0) {
             let dataObject = []
             let csvArray = []
