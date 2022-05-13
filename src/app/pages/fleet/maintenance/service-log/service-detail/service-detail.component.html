@@ -493,16 +493,16 @@
             <tbody>
 
 
-               <tr *ngIf="allServiceTasks?.length == 0">
+               <tr *ngIf="allServiceParts?.length == 0">
                   <td colspan="" style="padding-top: 10px; padding-bottom: 10px;" align="center">
                      {{noRecordMessage}}</td>
                </tr>
-               <tr *ngFor='let data of allServiceTasks'>
+               <tr *ngFor='let data of allServiceParts'>
                   <td height="25" style="font-size: 13px;border-right: 1px solid #999999;padding-left: 10px;">
-                     {{data.taskName}}
+                     {{data.partNumber}}
                   </td>
                   <td style="font-size: 13px;border-right: 1px solid #999999; padding-left: 10px; padding-right: 10px;">
-                     {{data.laborCost}} {{currency}}</td>
+                     {{data.partCost}} {{currency}}</td>
                </tr>
          </table>
 

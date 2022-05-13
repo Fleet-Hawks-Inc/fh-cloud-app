@@ -17,6 +17,7 @@ export class PaymentChequeComponent implements OnInit {
   @ViewChild("chekOptions", { static: true }) modalContent: TemplateRef<any>;
   @ViewChild("previewCheque", { static: true }) previewCheque: TemplateRef<any>;
 
+  showDollor = true;
   openFrom: any;
   carriers = [];
   addresses = [];
@@ -562,5 +563,12 @@ export class PaymentChequeComponent implements OnInit {
 
   }
 
+  changeDollor(value) {
+    if (value) {
+      this.showDollor = false;
+    } else {
+      this.showDollor = true;
+    }
+  }
 
 }

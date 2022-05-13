@@ -290,9 +290,9 @@ export class FuelEntryDetailsComponent implements OnInit {
           ]
         }
 
-        let date: any = moment(result.data.date)
-        if (result.data.time) {
-          let time = moment(result.data.time, 'h mm a')
+        let date: any = moment(result.date)
+        if (result.time) {
+          let time = moment(result.time, 'h mm a')
           date.set({
             hour: time.get('hour'),
             minute: time.get('minute')
@@ -318,7 +318,7 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData.retailAmount = result.data.rAmt;
         this.fuelData.rBeforeTax=result.data.rBeforeTax;
         this.fuelData.fuelType = result.data.type
-        this.fuelData.transactionID = result.data.transID;
+        this.fuelData.transactionID = result.transID;
         this.fuelData.fuelProvider = result.data.fuelProvider;
         this.fuelData.amountPaid = result.data.amt;
         this.fuelData.fuelDateTime = date;
@@ -336,7 +336,7 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData.fuelProvider = result.data.fuelProvider;
 
 
-        this.fuelData.reference = result.data.transID;
+        this.fuelData.reference = result.transID;
 
 
         this.fuelData.taxes = tax;
