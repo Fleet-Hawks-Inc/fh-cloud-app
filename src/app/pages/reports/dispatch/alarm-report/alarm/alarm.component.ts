@@ -132,6 +132,44 @@ export class AlarmComponent implements OnInit {
         this.initDataTable();
         this.dataMessage = Constants.FETCHING_DATA;
     }
+    
+     generateDriverCSV() {
+        if (this.alarm.length > 0) {
+            let dataObject = []
+            let csvArray = []
+            this.alarm.forEach(element => {
+                let obj = {}
+                obj["Alarm Name"] = element.alAssetName
+                obj["Device Number"] = element.alDeviceNo
+                obj["Trip Number"] = element.alTripNo
+                obj["Hight Temp"] = element.highTemp
+                obj["Low Temp"] = element.lowTemp 
+                dataObject.push(obj)
+            });
+            let headers = Object.keys(dataObject[0]).join(',')
+            headers += '\n'
+            csvArray.push(headers)
+            dataObject.forEach(element => {
+                let obj = Object.values(element).join(',')
+                obj += '\n'
+                csvArray.push(obj)
+            });
+            const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Driver-Report.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+        else {
+            this.toastr.error("No Records found")
+        }
+    }
+    
 
     someClickHandler(info: any): void {
         this.message = info.id + ' - ' + info.firstName;

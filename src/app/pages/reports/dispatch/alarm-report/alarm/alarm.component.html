@@ -45,7 +45,11 @@
                                                     <button pButton pRipple pTooltip="Clear Filter"
                                                         class="p-button-outlined mr-2" icon="pi pi-filter-slash"
                                                         (click)="clear(dt)"></button>
-
+                                                   
+                                                   <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                                                        icon="fas fa-regular fa-file-excel" (click)="generateDriverCSV()"
+                                                        pTooltip="Excel"></button>        
+                                                        
                                                     <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns"
                                                         optionLabel="header" selectedItemsLabel="{0} columns selected"
                                                         [style]="{minWidth: '200px'}" placeholder="Choose Columns">
