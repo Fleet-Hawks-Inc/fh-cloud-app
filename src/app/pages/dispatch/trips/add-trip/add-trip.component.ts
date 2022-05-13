@@ -46,7 +46,7 @@ export class AddTripComponent implements OnInit {
   @ViewChild("orderModal", { static: true })
   orderModal: TemplateRef<any>;
 
-  
+
   orderModalRef: any = undefined;
 
   newCoords = [];
@@ -275,9 +275,9 @@ export class AddTripComponent implements OnInit {
   planComm = [];
   currentCarrID = "";
   tripsObject: any = {};
-  orderId:string;
-  orderType:string;
-  orderNum:string;
+  orderId: string;
+  orderType: string;
+  orderNum: string;
 
   constructor(
     private apiService: ApiService,
@@ -291,7 +291,7 @@ export class AddTripComponent implements OnInit {
     private countryStateCity: CountryStateCityService,
     private el: ElementRef, // public selectionType: SelectionType, // public columnMode: ColumnMode,
     private routeMnagementSvc: RouteManagementServiceService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.tripID = this.route.snapshot.params["tripID"];
@@ -307,19 +307,19 @@ export class AddTripComponent implements OnInit {
         this.recalledState = true;
       }
     });
-    
-    this.route.queryParams.subscribe( async(params) => {
-    this.orderId = params.orderId;
-    this.orderNum = params.orderNum;
-    if (this.orderId != undefined) {
-       await this.fetchOrderDetails([this.orderId])
-       this.changeMapRoute('order')
-       this.temporaryOrderIDs.push(this.orderId);
-       this.temporaryOrderNumber.push(this.orderNum);
-       await this.saveSelectOrderIDS();
+
+    this.route.queryParams.subscribe(async (params) => {
+      this.orderId = params.orderId;
+      this.orderNum = params.orderNum;
+      if (this.orderId != undefined) {
+        await this.fetchOrderDetails([this.orderId])
+        this.changeMapRoute('order')
+        this.temporaryOrderIDs.push(this.orderId);
+        this.temporaryOrderNumber.push(this.orderNum);
+        await this.saveSelectOrderIDS();
       }
     });
-    
+
     this.fetchCarriers();
     this.orderFTLInit();
     this.mapShow();
@@ -328,6 +328,7 @@ export class AddTripComponent implements OnInit {
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
+    this.getTripPrefix();
     await this.fetchCountries();
 
     if (this.tripID != undefined) {
@@ -617,8 +618,8 @@ export class AddTripComponent implements OnInit {
     if (this.permanentRoutes.length === 0) {
       this.spinner.show();
       this.apiService.getData("routes").subscribe({
-        complete: () => {},
-        error: () => {},
+        complete: () => { },
+        error: () => { },
         next: (result: any) => {
           this.spinner.hide();
           this.permanentRoutes = result["Items"];
@@ -746,9 +747,9 @@ export class AddTripComponent implements OnInit {
 
   async saveSelectOrderIDS() {
     this.OrderIDs = this.temporaryOrderIDs;
-    if(this.orderModalRef) {
-     this.orderModalRef.close();
-     }
+    if (this.orderModalRef) {
+      this.orderModalRef.close();
+    }
     this.orderNo = this.temporaryOrderNumber.toString();
     let tripPlans = [];
     let current = this;
@@ -1603,11 +1604,14 @@ export class AddTripComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.apiService.postData("trips", this.tripData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
+              if (val.path.includes("trip")) {
+                this.toastr.error(val.message);
+              }
               val.message = val.message.replace(/".*"/, "This Field");
               this.errors[val.context.key] = val.message;
             })
@@ -1621,7 +1625,7 @@ export class AddTripComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -1640,12 +1644,12 @@ export class AddTripComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -2583,7 +2587,7 @@ export class AddTripComponent implements OnInit {
     }
 
     this.apiService.putData(url, this.tripData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -2601,7 +2605,7 @@ export class AddTripComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -3231,7 +3235,7 @@ export class AddTripComponent implements OnInit {
     this.apiService
       .postData("assets/addManualAsset", this.assetData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           this.submitDisabled = false;
           from(err.error)
@@ -3244,8 +3248,8 @@ export class AddTripComponent implements OnInit {
               complete: () => {
                 this.throwErrors();
               },
-              error: () => {},
-              next: () => {},
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {
@@ -3353,6 +3357,15 @@ export class AddTripComponent implements OnInit {
         this.trips[index].lat = "";
         this.trips[index].lng = "";
       }
+    }
+  }
+
+  async getTripPrefix() {
+    let result: any = await this.apiService
+      .getData(`carriers/get/showPrefix?type=${'trip'}`)
+      .toPromise();
+    if (result && result.length > 0) {
+      this.tripData.tripNo = `${result[0].prefix}${result[0].sequence}`;
     }
   }
 }
