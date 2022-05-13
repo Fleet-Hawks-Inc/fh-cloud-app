@@ -44,6 +44,9 @@ export class AddFuelEntryComponent implements OnInit {
     unitID: "",
     driverID: "",
     fuelProvider: "Manual",
+    date: "",
+    time: "",
+    transID: "",
     data: {
       useType: "vehicle",
       currency: "CAD",
@@ -55,8 +58,6 @@ export class AddFuelEntryComponent implements OnInit {
       rPpu: "0",
       rAmt: "0",
       rBeforeTax:"0",
-      date: "",
-      time: "",
       type: "",
       country: "",
       state: "",
@@ -70,7 +71,6 @@ export class AddFuelEntryComponent implements OnInit {
       ],
       discRate: "0",
       cardNo: "",
-      transID: "",
       odometer: "",
       excRate: "0",
     },
@@ -353,7 +353,7 @@ export class AddFuelEntryComponent implements OnInit {
       this.fuelData.data.type = "DEF";
     }
     this.fuelData.timeCreated = new Date(
-      `${this.fuelData.data.date}T${this.fuelData.data.time}`
+      `${this.fuelData.date}T${this.fuelData.time}`
     ).getTime();
     // append other fields
     
@@ -455,15 +455,15 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelData.data.discAmt = result.data.discAmt;
     this.fuelData.data.ppu = result.data.ppu;
     this.fuelData.data.tax = result.data.tax;
-    this.fuelData.data.date = result.data.date;
-    this.fuelData.data.time = result.data.time;
+    this.fuelData.date = result.date;
+    this.fuelData.time = result.time;
     this.fuelData.data.type = result.data.type;
     this.fuelData.data.rPpu = result.data.rPpu;
     this.fuelData.data.rAmt = result.data.rAmt;
     this.fuelData.data.rBeforeTax=result.data.rBeforeTax
     this.fuelData.driverID = result.driverID;
     this.fuelData.data.cardNo = result.data.cardNo;
-    this.fuelData.data.transID = result.data.transID;
+    this.fuelData.transID = result.transID;
     this.fuelData.data.country = result.data.country;
     this.fuelData.data.state = result.data.state;
     this.fuelData.data.site=result.data.site;
@@ -481,7 +481,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.submitDisabled = true;
     this.hideErrors();
     this.fuelData.timeCreated = new Date(
-      `${this.fuelData.data.date}T${this.fuelData.data.time}`
+      `${this.fuelData.date}T${this.fuelData.time}`
     ).getTime();
     this.apiService.putData("fuelEntries", this.fuelData).subscribe({
       complete: () => { },

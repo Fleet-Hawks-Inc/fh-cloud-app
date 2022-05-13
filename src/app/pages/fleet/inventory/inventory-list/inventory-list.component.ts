@@ -314,6 +314,7 @@ export class InventoryListComponent implements OnInit {
             this.apiService.getData('items/fetch/records?item=' + this.itemID + "&vendorID=" + this.vendorID + "&category=" + this.category + "&lastKey=" + this.lastItemSK).subscribe((result: any) => {
                 if (result.Items.length === 0) {
                     this.dataMessage = Constants.NO_RECORDS_FOUND
+                    this.loaded = true
                 }
                 if (result.Items.length > 0) {
                     if (result.LastEvaluatedKey !== undefined) {
@@ -333,6 +334,7 @@ export class InventoryListComponent implements OnInit {
             this.apiService.getData('items/fetch/required/records?item=' + this.requiredItemID + '&vendorID=' + this.requiredVendorID + '&partNo=' + this.requiredPartNumber + '&lastKey=' + this.lastSK).subscribe((result: any) => {
                 if (result.Items.length === 0) {
                     this.dataMessage = Constants.NO_RECORDS_FOUND
+                    this.loaded = true
                 }
                 if (result.Items.length > 0) {
                     if (result.LastEvaluatedKey !== undefined) {
