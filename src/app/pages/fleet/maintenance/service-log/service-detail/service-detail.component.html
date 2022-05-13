@@ -194,6 +194,15 @@
                                           <td> {{item.rate}} {{currency}}</td>
                                           <td>{{item.partCost}} {{currency}}</td>
                                        </tr>
+                                       <tr *ngFor="let item of allServiceParts;">
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td>Total</td>
+                                          <td> {{(item.allServiceParts.total).toFixed(2)
+                                             }}
+                                             {{item.allServiceParts.currency}}</td>
+                                       </tr>
                                     </tbody>
                                  </table>
                               </div>
@@ -504,6 +513,7 @@
                   <td style="font-size: 13px;border-right: 1px solid #999999; padding-left: 10px; padding-right: 10px;">
                      {{data.partCost}} {{currency}}</td>
                </tr>
+
          </table>
 
          <h5 style="color:#231F20;"><b> Description</b></h5>
