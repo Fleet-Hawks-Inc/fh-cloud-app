@@ -122,6 +122,7 @@ export class PaymentChequeComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.listService.paymentModelList.subscribe(
       async (res: any) => {
+        console.log('res', res);
         if (res.showModal && res.length != 0) {
           // empty fields
           if (res.page && res.page == 'detail') {
