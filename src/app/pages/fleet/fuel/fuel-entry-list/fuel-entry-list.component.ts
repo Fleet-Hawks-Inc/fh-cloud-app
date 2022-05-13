@@ -309,7 +309,7 @@ export class FuelEntryListComponent implements OnInit {
     }
   }
   initDataTable() {
-    this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey + '&timeCreated=' + this.lastTimeCreated).subscribe((result: any) => {
+    this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey + '&date=' + this.lastTimeCreated).subscribe((result: any) => {
       this.loaded = true
       if (result.Items.length == 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -343,8 +343,8 @@ export class FuelEntryListComponent implements OnInit {
       if (result.LastEvaluatedKey.fuelSK !== undefined) {
         // for prev button
         this.lastEvaluatedKey = encodeURIComponent(result.LastEvaluatedKey.fuelSK)
-        if (result.LastEvaluatedKey.timeCreated !== undefined) {
-          this.lastTimeCreated = result.LastEvaluatedKey.timeCreated
+        if (result.LastEvaluatedKey.date !== undefined) {
+          this.lastTimeCreated = result.LastEvaluatedKey.date
         }
         this.loaded = true
       } else {
