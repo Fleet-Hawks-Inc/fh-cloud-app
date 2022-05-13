@@ -115,7 +115,6 @@
 
                           <button type="button" pButton pRipple class="p-button-outlined mr-2"
                             icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
-
                         </div>
                       </div>
                     </ng-template>
@@ -148,7 +147,6 @@
                       <tr style="cursor: pointer;">
 
                         <td alignFrozen="left" pFrozenColumn [frozen]="true" style="width:7%">
-                          <!-- {{find(columns,{field:'orderNumber'}).width}} -->
                           <button type="button" pButton [pRowToggler]="order"
                             class="p-button-text p-button-rounded p-button-plain"
                             [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
@@ -177,6 +175,7 @@
                           [ngStyle]="{'width': find(columns,{field:'commodityData'}).width}"
                           style=" white-space: pre-line">
                           {{order.commodityData}}
+
                         </td>
                         <td routerLink='/dispatch/orders/detail/{{order.orderID}}'
                           [ngStyle]="{'width': find(columns,{field:'amount'}).width}">
@@ -273,7 +272,7 @@
                       <tr>
                         <td width="50%" class="p-0 custom-bg-light border-0">
                           <div class="p-3">
-                            <p-table [value]="order"
+                            <p-table [value]="order.shippersReceiversInfo"
                               styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
                               <ng-template pTemplate="header">
 
@@ -411,7 +410,6 @@
                   </div>
                 </td>
                 </tr>
-
 
                 </ng-template>
                 </p-table>
