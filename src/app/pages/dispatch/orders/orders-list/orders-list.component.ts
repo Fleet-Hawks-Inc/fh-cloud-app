@@ -35,7 +35,6 @@ export class OrdersListComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
   noOrdersMsg = Constants.NO_RECORDS_FOUND;
   orders = [];
-  abcText
   confirmOrders = [];
   dispatchOrders = [];
   deliveredOrders = [];
@@ -228,6 +227,7 @@ export class OrdersListComponent implements OnInit {
 
   dataColumns: any[];
   get = _.get;
+  find = _.find;
   _selectedColumns: any[];
   // pickupLocData = []
   isOrderPriceEnabled = environment.isOrderPriceEnabled
@@ -245,16 +245,14 @@ export class OrdersListComponent implements OnInit {
   async ngOnInit() {
     this.initDataTable();
     this.dataColumns = [
-      { width: '7%', field: 'orderNumber', header: 'Order#', type: "text", },
-      { width: '6%', field: 'orderMode', header: 'Type', type: "text" },
-      { width: '8%', field: 'createdDate', header: 'Date', type: "text" },
-      { width: '9%', field: 'customerData', header: 'Customer', type: 'text' },
-      { width: '15%', field: 'pickupLocData', header: ' Pickup Location', type: 'text' },
-      { width: '15%', field: 'dropLocData', header: 'Drop Off Location', type: 'text' },
-      { width: '9%', field: 'commodityData', header: 'Commodity', type: 'text' },
-      { width: '8%', field: 'amount', header: 'Amount', type: 'text' },
-      { width: '7%', field: 'invoiceData', header: 'Status', type: 'text' },
-      { width: '10%', field: 'newStatus', header: 'Order Status', type: 'text' },
+      { width: '10%', field: 'orderNumber', header: 'Order#', type: "text", },
+      { width: '9%', field: 'orderMode', header: 'Type', type: "text" },
+      { width: '9%', field: 'createdDate', header: 'Date', type: "text" },
+      { width: '12%', field: 'customerData', header: 'Customer', type: 'text' },
+      { width: '12%', field: 'commodityData', header: 'Commodity', type: 'text' },
+      { width: '11%', field: 'amount', header: 'Amount', type: 'text' },
+      { width: '11%', field: 'invoiceData', header: 'Status', type: 'text' },
+      { width: '11%', field: 'newStatus', header: 'Order Status', type: 'text' },
     ];
     this._selectedColumns = this.dataColumns;
 
@@ -385,19 +383,19 @@ export class OrdersListComponent implements OnInit {
                   for (let shipPickUp of ship.pickupPoint) {
                     let shipDate = shipPickUp
                     for (let commoD of shipDate.commodity) {
-                      res.commodityData = "<strong> Name:- </strong>" + commoD.name + '\n'
-                        + "<strong> Qty:- </strong>" + commoD.quantity + commoD.quantityUnit
+                      res.commodityData = " Name:-" + commoD.name + '\n'
+                        + " Qty:-" + commoD.quantity + commoD.quantityUnit
 
                     }
                     if (shipPickUp.address.manual) {
-                      res.pickupLocData = "<strong> Date:- </strong>" + shipPickUp.dateAndTime + '\n'
-                        + "<strong> Location:- </strong>" + shipPickUp.address.address + ' ' +
+                      res.pickupLocData = " Date:-" + shipPickUp.dateAndTime + '\n'
+                        + " Location:-" + shipPickUp.address.address + ' ' +
                         + ' ' + shipPickUp.address.cityName + ' ' + shipPickUp.address.stateName + ' ' +
                         shipPickUp.address.countryName + ' ' + shipPickUp.address.zipCode
                     }
                     else if (!shipPickUp.address.manual) {
-                      res.pickupLocData = "<strong> Date:- </strong>" + shipPickUp.dateAndTime + '\n'
-                        + "<strong> Location:- </strong>" + shipPickUp.address.pickupLocation
+                      res.pickupLocData = " Date:-" + shipPickUp.dateAndTime + '\n'
+                        + " Location:-" + shipPickUp.address.pickupLocation
                     }
                     else if (shipPickUp.length > 1) {
                       res.pickupLocData = shipPickUp.length - 1
@@ -407,14 +405,14 @@ export class OrdersListComponent implements OnInit {
                   for (let receiver of shipArr.receivers) {
                     for (let receiveDropOf of receiver.dropPoint) {
                       if (receiveDropOf.address.manual) {
-                        res.dropLocData = "<strong> Date:- </strong>" + receiveDropOf.dateAndTime + '\n'
-                          + "<strong> Location:- </strong>" + receiveDropOf.address.address + ' ' +
+                        res.dropLocData = " Date:-" + receiveDropOf.dateAndTime + '\n'
+                          + " Location:-" + receiveDropOf.address.address + ' ' +
                           + ' ' + receiveDropOf.address.cityName + ' ' + receiveDropOf.address.stateName + ' ' +
                           receiveDropOf.address.countryName + ' ' + receiveDropOf.address.zipCode
                       }
                       else if (!receiveDropOf.address.manual) {
-                        res.dropLocData = "<strong> Date:- </strong>" + receiveDropOf.dateAndTime + '\n'
-                          + "<strong> Location:- </strong>" + receiveDropOf.address.dropOffLocation
+                        res.dropLocData = " Date:-" + receiveDropOf.dateAndTime + '\n'
+                          + " Location:-" + receiveDropOf.address.dropOffLocation
                       }
                       else if (receiveDropOf.length > 1) {
                         res.dropLocData = receiveDropOf.length - 1
@@ -438,7 +436,7 @@ export class OrdersListComponent implements OnInit {
                 res.invoiceData += 'Payment:-' + 'NA'
               }
 
-              res.customerData = res.customerName + "\n" + "<strong> Confirmation:- </strong>"
+              res.customerData = res.customerName + "\n" + "Confirmation:-"
                 + res.cusConfirmation
 
             }

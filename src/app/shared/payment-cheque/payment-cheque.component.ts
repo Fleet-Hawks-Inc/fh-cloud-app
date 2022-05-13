@@ -438,7 +438,7 @@ export class PaymentChequeComponent implements OnInit {
             this.cheqdata.entityName = result.Items[0].firstName + " " + result.Items[0].lastName;
           }
           else {
-            this.cheqdata.entityName = result.Items[0].cName
+            this.cheqdata.entityName = result.Items[0].cName;
           }
           this.dummyEntity = result.Items[0].cName;
           let addr = result.Items[0].adrs[0];

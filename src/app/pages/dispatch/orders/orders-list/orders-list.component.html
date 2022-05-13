@@ -89,11 +89,11 @@
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark text-capitalize">
-              <div class="form-group row pt-3"> {{abcText}}
+              <div class="form-group row pt-3">
                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
                   <p-table #dt [value]="orders" [resizableColumns]="true" columnResizeMode="expand"
                     scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
-                    styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped" [scrollable]="true"
+                    styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
                     [loading]="!loaded" scrollHeight="100%" dataKey="orderNumber" responsiveLayout="scroll">
 
 
@@ -115,33 +115,30 @@
 
                           <button type="button" pButton pRipple class="p-button-outlined mr-2"
                             icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
-
                         </div>
                       </div>
                     </ng-template>
 
-                    <!-- Header template of DataTable -->
                     <ng-template pTemplate="header" let-columns>
                       <tr>
 
-
+                        <th style="width: 7%" alignFrozen="left" pFrozenColumn [frozen]="true"></th>
                         <th *ngFor="let column of dataColumns" [pSortableColumn]="column.field" pResizableColumn
                           [ngStyle]="{'width': column.width}">
                           <span>
                             <div class="flex justify-content-center align-items-center" alignFrozen="right"
                               pFrozenColumn [frozen]="true">
                               {{column.header}}
-                              <p-sortIcon [field]="column.field" [hidden]="column.field === 'invStatus'">
+                              <p-sortIcon [field]="column.field">
                               </p-sortIcon>
                               <p-columnFilter [type]="column.type" [field]="column.field" matchMode="contains"
-                                [showMatchModes]="false" [hidden]="column.field === 'invStatus'" [showOperator]="false"
-                                [showAddButton]="false" display="menu">
+                                [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
                               </p-columnFilter>
                             </div>
                           </span>
 
                         </th>
-                        <th style="width: 7%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
+                        <th style="width: 8%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
                       </tr>
 
                     </ng-template>
@@ -149,41 +146,44 @@
                       let-expanded="expanded">
                       <tr style="cursor: pointer;">
 
-                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:7%"
-                          class="font-weight-bold">
+                        <td alignFrozen="left" pFrozenColumn [frozen]="true" style="width:7%">
+                          <button type="button" pButton [pRowToggler]="order"
+                            class="p-button-text p-button-rounded p-button-plain"
+                            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                        </td>
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' class="font-weight-bold"
+                          [ngStyle]="{'width': find(columns,{field:'orderNumber'}).width}">
+
                           {{order.orderNumber}}
                         </td>
-                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:6%">
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}'
+                          [ngStyle]="{'width': find(columns,{field:'orderMode'}).width}">
                           {{order.orderMode}}
                         </td>
-                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:8%">
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}'
+                          [ngStyle]="{'width': find(columns,{field:'createdDate'}).width}">
                           {{ order.createdDate | date: "yyyy/MM/dd" }}
                         </td>
-                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:9%">
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}'
+                          [ngStyle]="{'width': find(columns,{field:'customerData'}).width}">
                           <div style="white-space: pre-line;">
-                            <div [innerHTML]="order.customerData"></div>
-                          </div>
-                        </td>
-                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:15%">
-                          <div style="white-space: pre-line;">
-                            <div [innerHTML]="order.pickupLocData"></div>
-                          </div>
-                        </td>
+                            {{order.customerData}}
 
-                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:15%">
-                          <div style="white-space: pre-line;">
-                            <div [innerHTML]="order.dropLocData"></div>
                           </div>
                         </td>
                         <td routerLink='/dispatch/orders/detail/{{order.orderID}}'
-                          style="width:9%; white-space: pre-line">
-                          <div [innerHTML]="order.commodityData"></div>
+                          [ngStyle]="{'width': find(columns,{field:'commodityData'}).width}"
+                          style=" white-space: pre-line">
+                          {{order.commodityData}}
+
                         </td>
-                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:8%">
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}'
+                          [ngStyle]="{'width': find(columns,{field:'amount'}).width}">
                           {{ order.amount }}
                           <br />
                         </td>
-                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:7%">
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}'
+                          [ngStyle]="{'width': find(columns,{field:'invoiceData'}).width}">
                           <div class="badges ">
                             <b>Invoiced: </b>
                             <span class="badge badge-success" *ngIf="order.invoicedTime"><i
@@ -194,51 +194,52 @@
                           </div>
                         </td>
 
-                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}' style="width:10%">
+                        <td routerLink='/dispatch/orders/detail/{{order.orderID}}'
+                          [ngStyle]="{'width': find(columns,{field:'newStatus'}).width}">
                           <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
                         </td>
-                        <td style="width:7%;overflow: inherit !important; " pFrozenColumn alignFrozen="right"
+                        <td style="width:8%;overflow: inherit !important; " pFrozenColumn alignFrozen="right"
                           [frozen]="true">
                           <div class="dropdown dropright" style="z-index: 1000">
                             <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{rowIndex
-                              }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               <i class="fas fa-ellipsis-v"></i>
                             </button>
                             <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{
-                           rowIndex
-                              }}">
+                         rowIndex
+                            }}">
                               <a *ngIf="order.orderStatus!= 'delivered'" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
-                                order.orderID
-                                }}">Edit</a>
+                              order.orderID
+                              }}">Edit</a>
                               <a *ngIf="order.orderStatus === 'confirmed'" class="dropdown-item"
                                 [routerLink]="['/dispatch','trips','add-trip']"
                                 [queryParams]="{orderId:order.orderID,orderNum:order.orderNumber}">Create Trip</a>
                               <a *ngIf="order.orderStatus == 'created' ||
-                                order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
+                              order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
                                 (click)="deactivateOrder(order)">Delete</a>
                               <a *ngIf="order.orderStatus === 'created'" class="dropdown-item"
                                 (click)="confirmEmail(order,rowIndex)">Confirm</a>
                               <a *ngIf="order.orderStatus === 'created' ||
-                                order.orderStatus === 'confirmed'" class="dropdown-item" (click)="showBrokerageModal(
-                                order,
-                                ordersDraw,
-                                rowIndex,
-                                'all'
-                                )">Brokerage</a>
+                              order.orderStatus === 'confirmed'" class="dropdown-item" (click)="showBrokerageModal(
+                              order,
+                              ordersDraw,
+                              rowIndex,
+                              'all'
+                              )">Brokerage</a>
                               <a *ngIf="order.orderStatus === 'brokerage'" class="dropdown-item" (click)="updateCreatedStatus(order,
-                                ordersDraw, rowIndex)">Cancel Brokerage</a>
+                              ordersDraw, rowIndex)">Cancel Brokerage</a>
                               <a class="dropdown-item" [routerLink]="[
-                                '/dispatch',
-                                'orders',
-                                'add'
-                                ]" [queryParams]="{
-                                cloneID: order.orderID
-                                }">Clone</a>
+                              '/dispatch',
+                              'orders',
+                              'add'
+                              ]" [queryParams]="{
+                              cloneID: order.orderID
+                              }">Clone</a>
                               <a *ngIf="order.canRecall" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
-                                order.orderID
-                                }}" [queryParams]="{
-                                state: 'recall'
-                                }">Recall</a>
+                              order.orderID
+                              }}" [queryParams]="{
+                              state: 'recall'
+                              }">Recall</a>
                             </div>
                           </div>
                         </td>
@@ -267,19 +268,162 @@
                         Total Records: {{orders.length}}</div>
                     </ng-template>
 
+                    <ng-template pTemplate="rowexpansion" let-order>
+                      <tr>
+                        <td width="50%" class="p-0 custom-bg-light border-0">
+                          <div class="p-3">
+                            <p-table [value]="order.shippersReceiversInfo"
+                              styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
+                              <ng-template pTemplate="header">
 
+                      <tr>
+                        <th class="border-0 p-0">Pickup Location</th>
+
+                      </tr>
+
+                    </ng-template>
+                    <ng-template pTemplate="body" let-ord>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <b>Date: </b>
+                            {{
+                            ord.shippers[0]
+                            .pickupPoint[0].dateAndTime
+                            | date
+                            : "yyyy/MM/dd
+                            hh:mm a"
+                            }}<br />
+                            <b>Location: </b>
+                            <span *ngIf="ord.shippers[0]
+                                                .pickupPoint[0].address.manual">
+                              {{
+                              ord.shippers[0]
+                              .pickupPoint[0].address.address
+                              }},
+                              {{
+                              ord.shippers[0]
+                              .pickupPoint[0].address.cityName
+                              }},
+                              {{
+                              ord.shippers[0]
+                              .pickupPoint[0].address.stateName
+                              }},
+                              {{
+                              ord.shippers[0]
+                              .pickupPoint[0].address.countryName
+                              }}
+                              {{
+                              ord.shippers[0]
+                              .pickupPoint[0].address.zipCode
+                              }}
+                            </span>
+                            <span *ngIf="!ord.shippers[0]
+                                                .pickupPoint[0].address.manual">
+                              {{
+                              ord.shippers[0]
+                              .pickupPoint[0].address.pickupLocation
+                              }}
+                            </span>
+                            <span class="badge badge-dark" *ngIf="ord.shippers[0]
+                                                .pickupPoint.length> 1
+                                                ">
+                              +{{
+                              ord.shippers[0]
+                              .pickupPoint.length - 1
+                              }}
+                            </span>
+                          </td>
+
+                        </tr>
+                      </tbody>
+                    </ng-template>
                   </p-table>
                 </div>
-              </div>
+                </td>
+                <td width="50%" class="p-0 custom-bg-light border-0">
+                  <div class="p-3 ">
+                    <p-table [value]="order.shippersReceiversInfo"
+                      styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
+                      <ng-template pTemplate="header">
 
+                        <tr>
+                          <th class="border-0 p-0">Drop Off Location</th>
+                        </tr>
+
+                      </ng-template>
+                      <ng-template pTemplate="body" let-ord>
+                        <tbody>
+                          <tr>
+                            <td> <b>Date: </b>
+                              {{
+                              ord.receivers[0]
+                              .dropPoint[0].dateAndTime
+                              | date
+                              : "yyyy/MM/dd
+                              hh:mm a"
+                              }}<br />
+                              <b>Location: </b>
+                              <span *ngIf="ord.receivers[0]
+                                              .dropPoint[0].address.manual">
+                                {{
+                                ord.receivers[0]
+                                .dropPoint[0].address.address
+                                }},
+                                {{
+                                ord.receivers[0]
+                                .dropPoint[0].address.cityName
+                                }},
+                                {{
+                                ord.receivers[0]
+                                .dropPoint[0].address.stateName
+                                }},
+                                {{
+                                ord.receivers[0]
+                                .dropPoint[0].address.countryName
+                                }}
+                                {{
+                                ord.receivers[0]
+                                .dropPoint[0].address.zipCode
+                                }}
+                              </span>
+                              <span *ngIf="!ord.receivers[0]
+                                              .dropPoint[0].address.manual">
+                                {{
+                                ord.receivers[0]
+                                .dropPoint[0].address.dropOffLocation
+                                }}
+                              </span>
+                              <span class="badge badge-dark" *ngIf="ord.receivers[0]
+                                              .dropPoint> 1
+                                              ">
+                                +{{
+                                ord.receivers[0]
+                                .dropPoint - 1
+                                }}
+                              </span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </td>
+                </tr>
+
+                </ng-template>
+                </p-table>
+              </div>
             </div>
+
           </div>
         </div>
-      </section>
-
-
-    </section>
   </div>
+</section>
+
+
+</section>
+</div>
 </section>
 
 <div class="modal fade" id="orderStatusModal" role="dialog" tabindex="-1">

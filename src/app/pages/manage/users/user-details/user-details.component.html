@@ -1,345 +1,402 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pl-0 pt-0">
-      <header class="page-header pr19 pl11">
-        <form class="form-horizontal" method="get">
-          <div class="row" style="padding-top:10px;">
-            <div class="col-md-1 col-lg-1 pr-0">
-              <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">User Details</h4>
-            </div>
-            <div class="col-md-11 col-lg-11 pr-1 text-right">
-               <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal"
-              data-target="#userPasswordModal" href="javascript:;">Change Password</a>
-              <a [routerLink]="['/manage','users','list']" class="btn btn-default btn-sm"><i class="fas fa-list"></i>
-                Users List</a>
-            </div>
-          </div>
-        </form>
-      </header>
-      <section class="m-2">
-        <div class="row mb-3">
-          <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark">
-              <div class="form-group row adddriverpl">
-                <div class="col-lg-9">
-                  <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Basic
-                    Details</label>
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-0 pt-0">
+            <header class="page-header pr19 pl11">
+                <form class="form-horizontal" method="get">
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-md-1 col-lg-1 pr-0">
+                            <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">User Details</h4>
+                        </div>
+                        <div class="col-md-11 col-lg-11 pr-1 text-right">
+                            <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal"
+                                data-target="#userPasswordModal" href="javascript:;">Change Password</a>
+                            <a [routerLink]="['/manage','users','list']" class="btn btn-default btn-sm"><i
+                                    class="fas fa-list"></i>
+                                Users List</a>
+                        </div>
+                    </div>
+                </form>
+            </header>
+            <section class="m-2">
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <div class="bg-white p-3 text-dark">
+                            <div class="form-group row adddriverpl">
+                                <div class="col-lg-9">
+                                    <label
+                                        class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Basic
+                                        Details</label>
+                                </div>
+                                <div class="col-lg-2 mb-2 text-right">
+                                    <button type="button" data-toggle="modal" data-target="#userProfileModal"
+                                        *ngIf="profilePath !== ''" class="btn btn-sm btn-success"><i
+                                            class="fas fa-eye text-light"></i>View Photo</button>
+                                </div>
+                                <div class="col-lg-5 mb-1">
+                                    <table class="table table-bordered m-0">
+                                        <tbody>
+                                            <tr>
+                                                <th width="40%" class="back-color-gray">First Name:</th>
+                                                <td class="text-capitalize">{{userData.firstName ? userData.firstName :
+                                                    '-'}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th width="40%" class="back-color-gray">Last Name:</th>
+                                                <td class="text-capitalize">{{userData.lastName ? userData.lastName :
+                                                    '-'}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th width="40%" class="back-color-gray">User Type:</th>
+                                                <td class="text-capitalize">{{userData.userType}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th width="40%" class="back-color-gray">Employee ID:</th>
+                                                <td>{{userData.employeeID}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th width="40%" class="back-color-gray">Vendor:</th>
+                                                <td>{{ contactsObject[vendor] | titlecase }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-lg-5 offset-lg-1 mb-1">
+                                    <table class="table table-bordered m-0">
+                                        <tbody>
+                                            <tr>
+                                                <th width="40%" class="back-color-gray">Date of Birth:</th>
+                                                <td>{{userData.dateOfBirth | date:'yyyy/MM/dd'}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th width="40%" class="back-color-gray">Phone:</th>
+                                                <td>{{userData.workPhone ? userData.workPhone : '-'}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th width="40%" class="back-color-gray">Email:</th>
+                                                <td>{{userData.workEmail ? userData.workEmail : '-'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-lg-2 mb-2 text-right">
-                  <button type="button" data-toggle="modal" data-target="#userProfileModal" *ngIf="profilePath !== ''"
-                    class="btn btn-sm btn-success"><i class="fas fa-eye text-light"></i>View Photo</button>
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <div class="bg-white p-3 text-dark">
+                            <div class="form-group row adddriverpl">
+                                <div class="col-lg-10">
+                                    <label
+                                        class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Address</label>
+                                </div>
+                            </div>
+                            <div class="row adddriverpl" *ngFor="let address of userData.adrs">
+                                <div class="col-lg-5 mb-1">
+                                    <table class="table table-bordered table-responsive-lg mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <td width="40%" class="back-color-gray font-weight-bold">Address Type
+                                                </td>
+                                                <td width="60%" class="text-capitalize">{{address.aType ? address.aType
+                                                    : '-'}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="back-color-gray font-weight-bold">Address 1</td>
+                                                <td class="text-capitalize"><span>{{address.add1 ? address.add1:
+                                                        '-'}}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="back-color-gray font-weight-bold">Address 2</td>
+                                                <td class="text-capitalize">{{address.add2 ? address.add2 : '-'}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="40%" class="back-color-gray font-weight-bold">Country</td>
+                                                <td width="60%" class="text-capitalize">{{address.cName ? address.cName
+                                                    : '-'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-lg-5 offset-lg-1 mb-1">
+                                    <table class="table table-bordered table-responsive-lg mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <td width="40%" class="back-color-gray font-weight-bold">Province/State
+                                                </td>
+                                                <td width="60%" class="text-capitalize">{{address.sName ? address.sName
+                                                    : '-'}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="40%" class="back-color-gray font-weight-bold">City</td>
+                                                <td width="60%" class="text-capitalize">{{address.ctyName ?
+                                                    address.ctyName : '-'}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="40%" class="back-color-gray font-weight-bold">Zip Code</td>
+                                                <td width="60%">{{address.zip ? address.zip : '-'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-lg-5 mb-1">
-                  <table class="table table-bordered m-0">
-                    <tbody>
-                      <tr>
-                        <th width="40%" class="back-color-gray">First Name:</th>
-                        <td class="text-capitalize">{{userData.firstName ? userData.firstName : '-'}}</td>
-                      </tr>
-                      <tr>
-                        <th width="40%" class="back-color-gray">Last Name:</th>
-                        <td class="text-capitalize">{{userData.lastName ? userData.lastName : '-'}}</td>
-                      </tr>
-                      <tr>
-                        <th width="40%" class="back-color-gray">Employee ID:</th>
-                        <td>{{userData.employeeID}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <div class="bg-white p-3 text-dark">
+                            <div class="form-group row adddriverpl">
+                                <div class="col-lg-10">
+                                    <label
+                                        class="control-label font-weight-bold font-weight-bold text-lg-right text-5">User
+                                        Account</label>
+                                </div>
+                                <div class="col-lg-5 mb-1">
+                                    <table class="table table-bordered table-responsive-lg mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <td width="40%" class="back-color-gray font-weight-bold">Contract Start
+                                                    Date</td>
+                                                <td width="60%">{{userData.userAccount.contractStartDate ?
+                                                    (userData.userAccount.contractStartDate | date:'yyyy/MM/dd') : '-'}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="back-color-gray font-weight-bold">Contract End Date</td>
+                                                <td>{{userData.userAccount.contractEndDate ?
+                                                    (userData.userAccount.contractEndDate| date:'yyyy/MM/dd') : '-'}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="back-color-gray font-weight-bold">Username</td>
+                                                <td class="text-lowercase">{{userData.userLoginData.userName ?
+                                                    userData.userLoginData.userName : '-'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-lg-5 offset-lg-1 mb-1">
+                                    <table class="table table-bordered table-responsive-lg mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <td width="40%" class="back-color-gray font-weight-bold">Department</td>
+                                                <td width="60%" class="text-capitalize">
+                                                    {{userData.userAccount.department ? userData.userAccount.department
+                                                    : '-'}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="back-color-gray font-weight-bold">Designation</td>
+                                                <td class="text-capitalize">{{userData.userAccount.designation ?
+                                                    userData.userAccount.designation : '-'}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="back-color-gray font-weight-bold">User Roles</td>
+                                                <td class="text-capitalize"><span
+                                                        *ngFor="let role of newRoles; let i=index;">{{role}}<span
+                                                            *ngIf="i !== newRoles.length-1">, </span></span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-lg-5 offset-lg-1 mb-1">
-                  <table class="table table-bordered m-0">
-                    <tbody>
-                      <tr>
-                        <th width="40%" class="back-color-gray">Date of Birth:</th>
-                        <td>{{userData.dateOfBirth | date:'yyyy/MM/dd'}}</td>
-                      </tr>
-                      <tr>
-                        <th width="40%" class="back-color-gray">Phone:</th>
-                        <td>{{userData.workPhone ? userData.workPhone : '-'}}</td>
-                      </tr>
-                      <tr>
-                        <th width="40%" class="back-color-gray">Email:</th>
-                        <td>{{userData.workEmail ? userData.workEmail : '-'}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <div class="bg-white p-3 text-dark">
+                            <div class="form-group row adddriverpl">
+                                <div class="col-lg-10">
+                                    <label
+                                        class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Payment
+                                        Details</label>
+                                </div>
+                                <div class="col-lg-5 mb-1">
+                                    <table class="table table-bordered table-responsive-lg mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <td width="40%" class="back-color-gray font-weight-bold">Payroll type
+                                                </td>
+                                                <td width="60%" class="text-capitalize">
+                                                    {{userData.paymentDetails.payrollType ?
+                                                    userData.paymentDetails.payrollType : '-'}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="back-color-gray font-weight-bold">Pay Period</td>
+                                                <td class="text-capitalize">{{userData.paymentDetails.payPeriod ?
+                                                    userData.paymentDetails.payPeriod : '-'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-lg-5 offset-lg-1 mb-1">
+                                    <table class="table table-bordered table-responsive-lg mb-0">
+                                        <tbody>
+                                            <tr>
+                                                <td width="40%" class="back-color-gray font-weight-bold">Rate</td>
+                                                <td width="60%">{{userData.paymentDetails.payrollRate}}
+                                                    {{userData.paymentDetails.payrollRateUnit}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="back-color-gray font-weight-bold">SIN</td>
+                                                <td>{{userData.paymentDetails.SIN ? userData.paymentDetails.SIN : '-'}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th width="60%" class="back-color-gray"
+                                                    style="height: 100px;overflow: scroll;">Notes:</th>
+                                                <td>{{userData.notes ? userData.notes : '-'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark">
-              <div class="form-group row adddriverpl">
-                <div class="col-lg-10">
-                  <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Address</label>
-                </div>
-              </div>
-              <div class="row adddriverpl" *ngFor="let address of userData.adrs">
-                <div class="col-lg-5 mb-1">
-                  <table class="table table-bordered table-responsive-lg mb-0">
-                    <tbody>
-                      <tr>
-                        <td width="40%" class="back-color-gray font-weight-bold">Address Type</td>
-                        <td width="60%" class="text-capitalize">{{address.aType ? address.aType : '-'}}</td>
-                      </tr>
-                      <tr>
-                        <td class="back-color-gray font-weight-bold">Address 1</td>
-                        <td class="text-capitalize"><span>{{address.add1 ? address.add1: '-'}}</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="back-color-gray font-weight-bold">Address 2</td>
-                        <td class="text-capitalize">{{address.add2 ? address.add2 : '-'}}</td>
-                      </tr>
-                      <tr>
-                        <td width="40%" class="back-color-gray font-weight-bold">Country</td>
-                        <td width="60%" class="text-capitalize">{{address.cName ? address.cName : '-'}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="col-lg-5 offset-lg-1 mb-1">
-                  <table class="table table-bordered table-responsive-lg mb-0">
-                    <tbody>
-                      <tr>
-                        <td width="40%" class="back-color-gray font-weight-bold">Province/State</td>
-                        <td width="60%" class="text-capitalize">{{address.sName ? address.sName : '-'}}</td>
-                      </tr>
-                      <tr>
-                        <td width="40%" class="back-color-gray font-weight-bold">City</td>
-                        <td width="60%" class="text-capitalize">{{address.ctyName ? address.ctyName : '-'}}</td>
-                      </tr>
-                      <tr>
-                        <td width="40%" class="back-color-gray font-weight-bold">Zip Code</td>
-                        <td width="60%">{{address.zip ? address.zip : '-'}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark">
-              <div class="form-group row adddriverpl">
-                <div class="col-lg-10">
-                  <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">User
-                    Account</label>
-                </div>
-                <div class="col-lg-5 mb-1">
-                  <table class="table table-bordered table-responsive-lg mb-0">
-                    <tbody>
-                      <tr>
-                        <td width="40%" class="back-color-gray font-weight-bold">Contract Start Date</td>
-                        <td width="60%">{{userData.userAccount.contractStartDate ? (userData.userAccount.contractStartDate | date:'yyyy/MM/dd') : '-'}}</td>
-                      </tr>
-                      <tr>
-                        <td class="back-color-gray font-weight-bold">Contract End Date</td>
-                        <td>{{userData.userAccount.contractEndDate ? (userData.userAccount.contractEndDate| date:'yyyy/MM/dd') : '-'}}</td>
-                      </tr>
-                      <tr>
-                        <td class="back-color-gray font-weight-bold">Username</td>
-                        <td class="text-lowercase">{{userData.userLoginData.userName ? userData.userLoginData.userName : '-'}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="col-lg-5 offset-lg-1 mb-1">
-                  <table class="table table-bordered table-responsive-lg mb-0">
-                    <tbody>
-                      <tr>
-                        <td width="40%" class="back-color-gray font-weight-bold">Department</td>
-                        <td width="60%" class="text-capitalize">{{userData.userAccount.department ? userData.userAccount.department : '-'}}</td>
-                      </tr>
-                      <tr>
-                        <td class="back-color-gray font-weight-bold">Designation</td>
-                        <td class="text-capitalize">{{userData.userAccount.designation ? userData.userAccount.designation : '-'}}</td>
-                      </tr>
-                      <tr>
-                        <td class="back-color-gray font-weight-bold">User Roles</td>
-                        <td class="text-capitalize"><span *ngFor="let role of newRoles; let i=index;">{{role}}<span *ngIf="i !== newRoles.length-1">, </span></span></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark">
-              <div class="form-group row adddriverpl">
-                <div class="col-lg-10">
-                  <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Payment
-                    Details</label>
-                </div>
-                <div class="col-lg-5 mb-1">
-                  <table class="table table-bordered table-responsive-lg mb-0">
-                    <tbody>
-                      <tr>
-                        <td width="40%" class="back-color-gray font-weight-bold">Payroll type</td>
-                        <td width="60%" class="text-capitalize">{{userData.paymentDetails.payrollType ? userData.paymentDetails.payrollType : '-'}}</td>
-                      </tr>
-                      <tr>
-                        <td class="back-color-gray font-weight-bold">Pay Period</td>
-                        <td class="text-capitalize">{{userData.paymentDetails.payPeriod ? userData.paymentDetails.payPeriod : '-'}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="col-lg-5 offset-lg-1 mb-1">
-                  <table class="table table-bordered table-responsive-lg mb-0">
-                    <tbody>
-                      <tr>
-                        <td width="40%" class="back-color-gray font-weight-bold">Rate</td>
-                        <td width="60%">{{userData.paymentDetails.payrollRate}}
-                          {{userData.paymentDetails.payrollRateUnit}}</td>
-                      </tr>
-                      <tr>
-                        <td class="back-color-gray font-weight-bold">SIN</td>
-                        <td>{{userData.paymentDetails.SIN ? userData.paymentDetails.SIN : '-'}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </section>
-  </div>
+            </section>
+        </section>
+    </div>
 </section>
 <div class="modal fade" id="userProfileModal" tabindex="-1" role="dialog" aria-labelledby="userProfileModal"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document" style="width: 250px;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">User Profile Image</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-        </button>
-      </div>
-      <div class="modal-body text-dark">
-        <div class="row">
-          <div class="col-lg-12">
-            <img [src]="profilePath" class="img-fluid rounded" height="200px" width="100%">
-          </div>
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="width: 250px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">User Profile Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body text-dark">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <img [src]="profilePath" class="img-fluid rounded" height="200px" width="100%">
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
 <!--change password-->
-<div class="modal fade" id="userPasswordModal" tabindex="-1" role="dialog"
-  aria-labelledby="userPasswordModal" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Change Password</h5>
-        <button type="button" class="close" (click)="pwdModalClose()" aria-label="Close">
-          <i class="far fa-window-close" style="font-size:25px;"> </i>
-        </button>
-      </div>
-      <div class="modal-body text-dark" style="max-height: 500px;overflow: scroll;">
-        <form id="driverForm" class="form-horizontal form-bordered text-capitalize" name="driverForm"  [mustMatch]="['password', 'confirmPassword']"
-        (ngSubmit)="driverF.form.valid && onChangePassword()" novalidate #driverF="ngForm" ngNativeValidate >
-        <div class="row">
-          <div class="col-lg-12">
-            <label class="control-label font-weight-bold text-lg-right pt-2">Password <span
-                class="mandfield text-2 ml-1"><sup>*</sup></span>
-            </label>
-            <div class="input-group">
-              <input  id="pd"  [(ngModel)]="user.password"  placeholder="eg.  $John@01"
-                (change)="onChangeHideErrors('password')" name="password"
-                 #pwd="ngModel" required [ngClass]="{ 'error' : driverF.submitted && pwd.invalid }"
-                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"
-                  (input) ="validatePassword($event.target.value)" class="form-control"
-                />
-                <div class="input-group-append">
-                  <span class="input-group-text eye">
-                    <i class="fa" [ngClass]="{
+<div class="modal fade" id="userPasswordModal" tabindex="-1" role="dialog" aria-labelledby="userPasswordModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Change Password</h5>
+                <button type="button" class="close" (click)="pwdModalClose()" aria-label="Close">
+                    <i class="far fa-window-close" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body text-dark" style="max-height: 500px;overflow: scroll;">
+                <form id="driverForm" class="form-horizontal form-bordered text-capitalize" name="driverForm"
+                    [mustMatch]="['password', 'confirmPassword']" (ngSubmit)="driverF.form.valid && onChangePassword()"
+                    novalidate #driverF="ngForm" ngNativeValidate>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Password <span
+                                    class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
+                            <div class="input-group">
+                                <input id="pd" [(ngModel)]="user.password" placeholder="eg.  $John@01"
+                                    (change)="onChangeHideErrors('password')" name="password" #pwd="ngModel" required
+                                    [ngClass]="{ 'error' : driverF.submitted && pwd.invalid }"
+                                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"
+                                    [type]="fieldTextType ? 'text' : 'password'"
+                                    (input)="validatePassword($event.target.value)" class="form-control" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text eye">
+                                        <i class="fa" [ngClass]="{
                       'fa-eye-slash': !fieldTextType,
                       'fa-eye': fieldTextType
-                    }"
-                    (click)="toggleFieldTextType()"></i>
-                  </span>
-               </div>
-            </div>
-              <div *ngIf="pwd.invalid && driverF.submitted" class="text-danger">
-                <div *ngIf="pwd.errors.required">
-                  Password is required.
-                </div>
-                <div *ngIf="pwd.errors.pattern">
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
-                          <i [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']"> </i></span> 8 characters minimum</p>
-                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
-                          <i [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']"> </i></span> atleast 1 number
-                      </p>
-                    </div>
-                    <div class="col-lg-12">
-                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
-                          <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1  uppercase</p>
+                    }" (click)="toggleFieldTextType()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div *ngIf="pwd.invalid && driverF.submitted" class="text-danger">
+                                <div *ngIf="pwd.errors.required">
+                                    Password is required.
+                                </div>
+                                <div *ngIf="pwd.errors.pattern">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                                    [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
+                                                    <i
+                                                        [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']">
+                                                    </i></span> 8 characters minimum</p>
+                                            <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                                    [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
+                                                    <i
+                                                        [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']">
+                                                    </i></span> atleast 1 number
+                                            </p>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                                    [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
+                                                    <i
+                                                        [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']">
+                                                    </i></span> atleast 1 uppercase</p>
 
-                      <p class="text-dark pt-2 mb-0"> <span class="pr-1"
-                          [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
-                            [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1 lowercase</p>
+                                            <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                                    [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
+                                                        [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']">
+                                                    </i></span> atleast 1 lowercase</p>
 
-                    </div>
-                    <div class="col-lg-12">
-                      <p class="text-dark pt-2 mb-0"><span class="pr-1"
-                          [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']"> <i
-                            [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span> atleast 1 special character(!@#$%^&*.-)</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          </div>
-          <div class="col-lg-12">
-            <label class="control-label font-weight-bold text-lg-right pt-2">Confirm Password <span
-                class="mandfield text-2 ml-1"><sup>*</sup></span>
-            </label>
-              <div class="input-group">
-                <input  id="cnf" [(ngModel)]="user.confirmPassword" name="confirmPassword"
-                (change)="onChangeHideErrors('confirmPassword')"  #cpwd="ngModel" required
-                 [ngClass]="{ 'error' : driverF.submitted && cpwd.invalid }"
-                  [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control"
-                  />
-                  <div class="input-group-append">
-                    <span class="input-group-text eye">
-                      <i class="fa" [ngClass]="{
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <p class="text-dark pt-2 mb-0"><span class="pr-1"
+                                                    [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']">
+                                                    <i
+                                                        [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span>
+                                                atleast 1 special character(!@#$%^&*.-)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Confirm Password <span
+                                    class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
+                            <div class="input-group">
+                                <input id="cnf" [(ngModel)]="user.confirmPassword" name="confirmPassword"
+                                    (change)="onChangeHideErrors('confirmPassword')" #cpwd="ngModel" required
+                                    [ngClass]="{ 'error' : driverF.submitted && cpwd.invalid }"
+                                    [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password"
+                                    class="form-control" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text eye">
+                                        <i class="fa" [ngClass]="{
                         'fa-eye-slash': !cpwdfieldTextType,
                         'fa-eye': cpwdfieldTextType
-                      }"
-                      (click)="togglecpwdfieldTextType()"></i>
-                    </span>
-                 </div>
-              </div>
-            <div *ngIf="cpwd.invalid && driverF.submitted" class="text-danger">
-              <div *ngIf="cpwd.errors.required">
-                Confirm password is required.
-              </div>
-              <div *ngIf="cpwd.errors.mustMatch">Passwords must match</div>
+                      }" (click)="togglecpwdfieldTextType()"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div *ngIf="cpwd.invalid && driverF.submitted" class="text-danger">
+                                <div *ngIf="cpwd.errors.required">
+                                    Confirm password is required.
+                                </div>
+                                <div *ngIf="cpwd.errors.mustMatch">Passwords must match</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-lg-12 text-right">
+                            <button type="button" class="cus-btn-padd btn btn-default mr-2"
+                                (click)="pwdModalClose()">Cancel</button>
+                            <button type="submit" class="cus-btn-padd btn btn-success"
+                                [disabled]="submitDisabled">Save</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-          </div>
         </div>
-        <div class="row mt-3">
-          <div class="col-lg-12 text-right">
-            <button type="button" class="cus-btn-padd btn btn-default mr-2" (click)="pwdModalClose()">Cancel</button>
-            <button type="submit" class="cus-btn-padd btn btn-success"  [disabled]="submitDisabled">Save</button>
-          </div>
-        </div>
-        </form>
-      </div>
     </div>
-  </div>
 </div>

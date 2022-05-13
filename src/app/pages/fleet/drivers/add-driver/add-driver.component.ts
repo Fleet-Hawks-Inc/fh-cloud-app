@@ -358,7 +358,6 @@ export class AddDriverComponent
     private dashboardUtilityService: DashboardUtilityService,
     private routeMgmntService: RouteManagementServiceService
   ) {
-
     this.selectedFileNames = new Map<any, any>();
     const date = new Date();
     this.getcurrentDate = {
@@ -988,10 +987,6 @@ export class AddDriverComponent
             this.dashboardUtilityService.refreshDrivers = true;
             this.submitDisabled = false;
             this.toastr.success("Driver added successfully");
-            this.isSubmitted = true;
-            this.modalServiceOwn.triggerRedirect.next(true);
-            this.takeUntil$.next();
-            this.takeUntil$.complete();
             this.spinner.hide();
             this.router.navigateByUrl(`/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`);
           },
@@ -1457,13 +1452,10 @@ export class AddDriverComponent
           next: (res) => {
             this.response = res;
             this.hasSuccess = true;
-            this.isSubmitted = true;
+
             this.submitDisabled = false;
             this.dashboardUtilityService.refreshDrivers = true;
             this.toastr.success("Driver updated successfully");
-            this.modalServiceOwn.triggerRedirect.next(true);
-            this.takeUntil$.next();
-            this.takeUntil$.complete();
             this.cancel();
           },
         });
