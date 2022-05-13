@@ -11,6 +11,7 @@
             &times;
          </button>
       </div>
+
       <form>
          <div class="modal-body">
             <div class="form-group col-lg-12 col-md-12">
@@ -28,7 +29,7 @@
                                        <ng-select [items]="carriers" name="carriers" bindLabel="cName"
                                           (change)="selectedCarrier($event)" bindValue="contactID"
                                           [(ngModel)]="carrierID" placeholder="Select
-                                                        Company" class="text-capitalize">
+                                    Company" class="text-capitalize">
                                        </ng-select>
                                     </td>
                                  </tr>
@@ -38,11 +39,12 @@
                                     </td>
                                     <td width="50%">
                                        <ng-select placeholder="Select
-                                                        Company Address" name="carrAddr"
-                                          [(ngModel)]="cheqdata.companyAddress" #mVehicle="ngModel" required>
+                                    Company Address" name="carrAddr" [(ngModel)]="cheqdata.companyAddress"
+                                          #mVehicle="ngModel" required>
                                           <ng-container *ngFor="let data of addresses">
                                              <ng-option *ngIf="data.fullAddr" value="{{ data.fullAddr }}">
-                                                {{ data.fullAddr }}</ng-option>
+                                                {{ data.fullAddr }}
+                                             </ng-option>
                                           </ng-container>
                                        </ng-select>
                                     </td>
@@ -51,7 +53,7 @@
                                     <td width="50%" class="back-color-gray font-weight-bold">
                                        Recipient Name
                                     </td>
-                                    <td width="50%" class="text-uppercase">
+                                    <td width="50%" class="text-capitalize">
                                        {{ cheqdata.entityName }}
                                     </td>
                                  </tr>
@@ -75,81 +77,16 @@
                </div>
             </div>
          </div>
-         <form>
-            <div class="modal-body">
-               <div class="form-group col-lg-12 col-md-12">
-                  <div class="row">
-                     <div class="col-lg-12">
-                        <div class="row">
-                           <div class="col-lg-12">
-                              <table class="table table-bordered">
-                                 <tbody>
-                                    <tr>
-                                       <td width="50%" class="back-color-gray font-weight-bold">
-                                          Select Company
-                                       </td>
-                                       <td width="50%">
-                                          <ng-select [items]="carriers" name="carriers" bindLabel="cName"
-                                             (change)="selectedCarrier($event)" bindValue="contactID"
-                                             [(ngModel)]="carrierID" placeholder="Select
-                                       Company" class="text-capitalize">
-                                          </ng-select>
-                                       </td>
-                                    </tr>
-                                    <tr>
-                                       <td width="50%" class="back-color-gray font-weight-bold">
-                                          Select Address
-                                       </td>
-                                       <td width="50%">
-                                          <ng-select placeholder="Select
-                                       Company Address" name="carrAddr" [(ngModel)]="cheqdata.companyAddress"
-                                             #mVehicle="ngModel" required>
-                                             <ng-container *ngFor="let data of addresses">
-                                                <ng-option *ngIf="data.fullAddr" value="{{ data.fullAddr }}">
-                                                   {{ data.fullAddr }}
-                                                </ng-option>
-                                             </ng-container>
-                                          </ng-select>
-                                       </td>
-                                    </tr>
-                                    <tr>
-                                       <td width="50%" class="back-color-gray font-weight-bold">
-                                          Recipient Name
-                                       </td>
-                                       <td width="50%" class="text-capitalize">
-                                          {{ cheqdata.entityName }}
-                                       </td>
-                                    </tr>
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">
-                                          Cheque Date
-                                       </td>
-                                       <td>{{ paydata.chequeDate | date: "yyyy/MM/dd" }}</td>
-                                    </tr>
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">
-                                          Cheque Amount
-                                       </td>
-                                       <td>{{ paydata.chequeAmount | number: "1.2-2" }}</td>
-                                    </tr>
-                                 </tbody>
-                              </table>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
 
-            <div class="modal-footer">
-               <button type="button" class="btn btn-default" (click)="modal.dismiss()">
-                  Close
-               </button>
-               <button type="button" class="btn btn-success" (click)="prevCheck()">
-                  Preview Cheque
-               </button>
-            </div>
-         </form>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="modal.dismiss()">
+               Close
+            </button>
+            <button type="button" class="btn btn-success" (click)="prevCheck()">
+               Preview Cheque
+            </button>
+         </div>
+      </form>
    </div>
 </ng-template>
 <!-- cheque preview modal driver-->
@@ -173,8 +110,6 @@
                <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
 
                   <tbody>
-
-
 
                      <tr>
                         <td>
@@ -1152,6 +1087,9 @@
                                  </tr>
                               </tbody>
                            </table>
+                        </td>
+                     </tr>
+
 
                      <tr *ngIf="paydata.type === 'vendor'">
                         <td>
@@ -3226,6 +3164,8 @@
                            </table>
                         </td>
                      </tr>
+                  </tbody>
+               </table>
             </section>
          </div>
          <div class="modal-footer">
