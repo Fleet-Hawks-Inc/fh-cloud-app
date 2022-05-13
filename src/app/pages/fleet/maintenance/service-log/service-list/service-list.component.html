@@ -65,17 +65,6 @@
                                     <a class="dropdown-item text-1" href="javascript:;">Export</a>
                                 </div>
                             </div>
-
-                            <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data"
-                                class="btn btn-success btn-sm modal-with-form
-                                        mr-2">
-                                <i class="fas fa-sync"></i>
-                            </a>
-
-                            <a routerLink="/fleet/maintenance/service-log/add-service"
-                                class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i>
-                                Add
-                                Service Log</a>
                         </div>
 
 
@@ -109,194 +98,153 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div class="tab-content p-0 border-0
-                                            shadow-none" id="myTabContent">
-                                            <div class="tab-pane show active" id="service-log" role="tabpanel"
-                                                aria-labelledby="service-log-tab">
-                                                <div class="row">
-                                                    <div class="col pr-0">
-                                                        <section class="card">
-                                                            <div class="card-body
-                                                                p-0">
-                                                                <div class="table-responsive">
-                                                                    <table class="row-border
-                                                                        hover
-                                                                        table
-                                                                        table-bordered
-                                                                        table-striped
-                                                                        mb-0">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th width="10%">Unit
-                                                                                    Type</th>
-                                                                                <th width="20%">Vehicle/Asset</th>
-                                                                                <th width="15%">Completion
-                                                                                    Date/Odometer
-                                                                                </th>
-                                                                                <th width="40%">Details</th>
-                                                                                <th width="15%">Total</th>
-                                                                                <th>Actions</th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            <tr *ngIf="logs.length
-                                                                                ==
-                                                                                0" class="text-center">
-                                                                                <td colspan="6">{{dataMessage}}</td>
-                                                                            </tr>
-                                                                            <tr class="cursorpoint" *ngFor="let
-                                                                                item
-                                                                                of
-                                                                                logs;
-                                                                                let
-                                                                                i=
-                                                                                index;">
-                                                                                <td
-                                                                                    routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
-                                                                                    {{item.unitType}}
-                                                                                </td>
-                                                                                <td
-                                                                                    routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
-                                                                                    {{
-                                                                                    item.unitName}}
-                                                                                    <br>
-                                                                                    <span class="text-success"
-                                                                                        [ngClass]="{'text-danger':
-                                                                                        item.currentStatus
-                                                                                        ==
-                                                                                        'sold',
-                                                                                        'text-muted'
-                                                                                        :
-                                                                                        item.currentStatus
-                                                                                        ===
-                                                                                        'outOfService'}">
-                                                                                        {{item.entityStatus}}
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td
-                                                                                    routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
-                                                                                    {{item.completionDate
-                                                                                    |
-                                                                                    date:
-                                                                                    'yyyy/MM/dd'}}<br><span
-                                                                                        *ngIf="item?.vehicleID"
-                                                                                        class="font-size-12">{{item.odometer}}
-                                                                                        miles</span></td>
-                                                                                <td
-                                                                                    routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
-                                                                                    <div>
-                                                                                        <span
-                                                                                            class="font-weight-bold">Service
-                                                                                            Task(s):
-                                                                                        </span>
-                                                                                        <span title="Service
-                                                                                            Task" *ngFor="let
-                                                                                            task
-                                                                                            of
-                                                                                            item.allServiceTasks.serviceTaskList;let
-                                                                                            j=
-                                                                                            index;
-                                                                                            let
-                                                                                            $last=
-                                                                                            last">{{task.taskName
-                                                                                            ?
-                                                                                            task.taskName
-                                                                                            :
-                                                                                            '-'}}<span *ngIf="!$last"
-                                                                                                class="list-format">,
-                                                                                            </span>
-                                                                                        </span>
-                                                                                        <span *ngIf="item.allServiceTasks.serviceTaskList
-                                                                                            ==
-                                                                                            0;">-
-                                                                                        </span>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <span
-                                                                                            class="font-weight-bold">Issue(s):
-                                                                                        </span>
-                                                                                        <a title="Issue" class="text-info
-                                                                                            font-size-12" *ngFor="let
-                                                                                            issue
-                                                                                            of
-                                                                                            item.selectedIssues;let
-                                                                                            $last=
-                                                                                            last">
-                                                                                            <span
-                                                                                                (click)="gotoIssue(issue)">{{issuesObject[issue]}}</span>
-                                                                                            <span *ngIf="!$last"
-                                                                                                class="list-format">,
-                                                                                            </span>
-                                                                                        </a>
-                                                                                        <span *ngIf="item.selectedIssues.length
-                                                                                            ==
-                                                                                            0;">-
-                                                                                        </span>
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <span
-                                                                                            class="font-weight-bold">Vendor:
-                                                                                        </span>
-                                                                                        <a (click)="openComponent(item.vendorID)"
-                                                                                            class="text-info
-                                                                                            font-size-12"
-                                                                                            href="javascript:;"
-                                                                                            title="Vendor">
-                                                                                            {{vendorsObject[item.vendorID]}}
-                                                                                        </a>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td
-                                                                                    routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
-                                                                                    {{
-                                                                                    (item.allServiceParts.total
-                                                                                    +
-                                                                                    item.allServiceTasks.total).toFixed(2)
-                                                                                    }}
-                                                                                    {{item.allServiceParts.currency}}
-                                                                                </td>
-                                                                                <td>
-                                                                                    <div class="dropdown
-                                                                                        dropright">
-                                                                                        <button class="bg-transparent
-                                                                                            border-0" type="button"
-                                                                                            id="dropdownMenuButton-{{i}}"
-                                                                                            data-toggle="dropdown"
-                                                                                            aria-haspopup="true"
-                                                                                            aria-expanded="false">
-                                                                                            <i class="fas
-                                                                                                fa-ellipsis-v"></i>
-                                                                                        </button>
-                                                                                        <div class="dropdown-menu"
-                                                                                            attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                                            <a class="dropdown-item"
-                                                                                                routerLink="/fleet/maintenance/service-log/edit/{{item.logID}}">Edit</a>
-                                                                                            <a class="dropdown-item"
-                                                                                                (click)="deleteProgram(item)"
-                                                                                                href="javascript:;">Delete</a>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-
-                                                            </div>
-                                                        </section>
-                                                    </div>
+                                        
+                                      
+                                        
+                                        
+                             
+                                    <p-table #dt [value]="logs" [resizableColumns]="true" columnResizeMode="expand"
+                                        scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
+                                        styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                                        [scrollable]="true" [loading]="!loaded" scrollHeight="100%">
+                                         Caption template of data table 
+                                        <ng-template pTemplate="caption">
+                                            <div class="p-d-flex d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h3 class="m-0"> Service Logs </h3>
+                                                </div>
+                                                <div class="text-right">
+                                                    <button type="button" pButton (click)="refreshData()"
+                                                        pTooltip="Refresh" class="p-button-outlined mr-2"
+                                                        icon="fas fa-sync"></button>
+                                                    <button type="button" pButton pTooltip="Add"
+                                                        routerLink="/fleet/maintenance/service-log/add-service" class="p-button-outlined mr-2"
+                                                        icon="pi pi-plus"></button>
+                                                    <button pButton pRipple pTooltip="Clear Filter"
+                                                        class="p-button-outlined mr-2" icon="pi pi-filter-slash"
+                                                        (click)="clear(dt)"></button>
+                                                        
+                                                    <!--<button type="button" pButton pRipple class="p-button-outlined mr-2"-->
+                                                    <!--    icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()"-->
+                                                    <!--    pTooltip="Excel"></button> -->
+                                                    <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns"
+                                                        optionLabel="header" selectedItemsLabel="{0} columns selected"
+                                                        [style]="{minWidth: '200px'}" placeholder="Choose Columns">
+                                                    </p-multiSelect>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </ng-template>
+                                        
+                                        <ng-template pTemplate="header" let-columns>
+                                            <tr>
+                                                <th *ngFor="let dataColumns of columns"
+                                                    [pSortableColumn]="dataColumns.field" pResizableColumn
+                                                    [ngStyle]="{'width':dataColumns.width}">
+                                                    <div [ngSwitch]="dataColumns.field">
+                                                        <span *ngSwitchDefault>
+                                                            <div class="flex justify-content-center align-items-center"
+                                                                alignFrozen="right" pFrozenColumn [frozen]="true">
+                                                                {{dataColumns.header}}
+                                                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                                                <p-columnFilter [type]="dataColumns.type"
+                                                                    [field]="dataColumns.field" matchMode="contains"
+                                                                    [showMatchModes]="false" [showOperator]="false"
+                                                                    [showAddButton]="false" display="menu">
+                                                                </p-columnFilter>
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th style="width:130px" alignFrozen="right" pFrozenColumn
+                                                    [frozen]="true">Actions</th>
+                                            </tr>
+                                        </ng-template>
 
+                                        
+                                        <ng-template pTemplate="body" let-vehicle let-columns="columns"
+                                            let-rowIndex="rowIndex">
+                                            <tr>
+                                                <td *ngFor="let dataColumns of columns"
+                                                    [ngStyle]="{'width': dataColumns.width}"
+                                                    routerLink="/fleet/maintenance/service-log/detail/{{vehicle.logID}}"
+                                                    style="cursor: pointer;">
+                                                    <div [ngSwitch]="dataColumns.field">
+                                                        
+                                                        <span *ngSwitchCase="'unitType'">
+                                                            {{get(vehicle,dataColumns.field) | titlecase}}
+                                                        </span>
+                                                        
+                                                        <span *ngSwitchCase="'dateOdometer'">
+                                                            {{vehicle.completionDate | date:'yyyy/MM/dd'}}<br>
+                                                        <span *ngIf="item?.vehicleID" class="font-size-12">
+                                                            {{vehicle.odometer}} miles
+                                                        </span>
+                                                        </span>
+                <span *ngSwitchCase="'detailsLogs'">
+                    <div>
+                        <span class="font-weight-bold">Service Task(s): </span>
+                        <span title="Service Task" *ngFor="let task of vehicle.allServiceTasks.serviceTaskList;let j=index;let $last=last">
+                            {{task.taskName ? task.taskName : '-'}}<span *ngIf="!$last" class="list-format">,</span></span>
+                        <span *ngIf="vehicle.allServiceTasks.serviceTaskList ==0;">-</span>
+                    </div>
+                    <div>
+                        <span class="font-weight-bold">Issue(s):</span>
+                        <a title="Issue" class="text-info font-size-12" *ngFor="let issue of vehicle.selectedIssues;let $last=last">
+                            <span (click)="gotoIssue(issue)">{{issuesObject[issue]}}</span>
+                            <span *ngIf="!$last" class="list-format">,</span></a>
+                        <span *ngIf="vehicle.selectedIssues.length == 0;">-
+                        </span>
+                    </div>
+                    <div>
+                        <span class="font-weight-bold">Vendor:</span>
+                        <a (click)="openComponent(vehicle.vendorID)" class="text-info font-size-12" href="javascript:;" title="Vendor">
+                            {{vendorsObject[vehicle.vendorID]}}
+                        </a>
+                    </div>
+                </span>
+                <span *ngSwitchCase="'totalLogs'">
+                    <span>
+                        {{(vehicle.allServiceParts.total + vehicle.allServiceTasks.total).toFixed(2)}}
+                                                {{vehicle.allServiceParts.currency}}
+                    </span>
+                </span>
+                                                        <span *ngSwitchDefault>
+                                                            {{get(vehicle,dataColumns.field)}}
+                                                        </span>
+                                                    </div>
+
+                                                </td>
+                                                <td style=" text-align: center; width: 130px;" pFrozenColumn
+                                                    alignFrozen="right" [frozen]="true">
+                                                    <button id="btnEdit" pButton
+                                                        routerLink="/fleet/maintenance/service-log/edit/{{vehicle.logID}}"
+                                                        type="button" icon="fas fa-user-pen"
+                                                        class="p-button-rounded p-button-text"></button>
+                                                    <button id="btnDelete" (click)="deleteProgram(vehicle)" pButton
+                                                        type="button" icon="fas fa-user-slash"
+                                                        class="p-button-rounded p-button-danger p-button-text"></button>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                         Empty Template 
+                                        <ng-template pTemplate="emptymessage" let-columns>
+                                            <div class="col-lg-12 mt-3 text-center">
+                                                {{dataMessage}}
+                                                <br /><br>
+                                            </div>
+                                        </ng-template>
+                                    
+                                        <ng-template pTemplate="summary" let-columns>
+                                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey ==='end'">
+                                                Total Records: {{logs.length}}</div>
+                                        </ng-template>
+                                    </p-table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
             </section>
 
             <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey !==
