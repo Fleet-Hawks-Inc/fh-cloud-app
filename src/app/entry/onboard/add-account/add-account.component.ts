@@ -525,7 +525,7 @@ export class AddAccountComponent implements OnInit {
             sequence: 1000
           },
           {
-            type: 'trips',
+            type: 'trip',
             prefix: 'TRP-',
             sequence: 1000
           },
