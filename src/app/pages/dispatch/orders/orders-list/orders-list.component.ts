@@ -245,13 +245,14 @@ export class OrdersListComponent implements OnInit {
   async ngOnInit() {
     this.initDataTable();
     this.dataColumns = [
-      { width: '10%', field: 'orderNumber', header: 'Order#', type: "text", },
-      { width: '9%', field: 'orderMode', header: 'Type', type: "text" },
-      { width: '9%', field: 'createdDate', header: 'Date', type: "text" },
-      { width: '12%', field: 'customerData', header: 'Customer', type: 'text' },
-      { width: '12%', field: 'commodityData', header: 'Commodity', type: 'text' },
-      { width: '11%', field: 'amount', header: 'Amount', type: 'text' },
-      { width: '11%', field: 'invoiceData', header: 'Status', type: 'text' },
+      { width: '7%', field: 'orderNumber', header: 'Order#', type: "text", },
+      { width: '7%', field: 'orderMode', header: 'Type', type: "text" },
+      { width: '7%', field: 'createdDate', header: 'Date', type: "text" },
+      { width: '12%', field: 'customerName', header: 'Customer', type: 'text' },
+      { width: '13%', field: 'cusConfirmation', header: 'Cust Confirmation', type: 'text' },
+      { width: '8%', field: 'amount', header: 'Amount', type: 'text' },
+      { width: '10%', field: 'invoiceData', header: 'Invoice ', type: 'text' },
+      { width: '10%', field: 'paymentData', header: 'Payment ', type: 'text' },
       { width: '11%', field: 'newStatus', header: 'Order Status', type: 'text' },
     ];
     this._selectedColumns = this.dataColumns;
@@ -424,16 +425,16 @@ export class OrdersListComponent implements OnInit {
               }
               res.amount = res.charges.freightFee.currency + " " + res.totalAmount;
               if (res.invoicedTime) {
-                res.invoiceData = 'Invoiced:-' + 'yes'
+                res.invoiceData =  'Invoiced'
               }
               else if (!res.invoicedTime) {
-                res.invoiceData = 'Invoiced:-' + 'No'
+                res.invoiceData =  'Pending'
               }
               if (res.invStatus) {
-                res.invoiceData += " Payment:- " + res.invStatus.replace('_', ' ')
+                res.paymentData =   res.invStatus.replace('_', ' ')
               }
               else if (!res.invStatus) {
-                res.invoiceData += 'Payment:-' + 'NA'
+                res.paymentData = 'NA'
               }
 
               res.customerData = res.customerName + "\n" + "Confirmation:-"
