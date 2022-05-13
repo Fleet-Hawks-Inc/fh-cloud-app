@@ -528,13 +528,7 @@ export class AddAccountComponent implements OnInit {
             type: 'trip',
             prefix: 'TRP-',
             sequence: 1000
-          },
-          {
-            type: 'invoice',
-            prefix: 'INV-',
-            sequence: 1000
-          },
-
+          }
         ]
       };
       if (this.parentID) {
