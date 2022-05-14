@@ -532,7 +532,6 @@ export class AddOrdersComponent implements OnInit {
       }
     });
     if (!this.getOrderID) {
-      console.log("this.getOrderID", this.getOrderID, this.cloneID);
       this.getOrderPrefix();
     }
 
