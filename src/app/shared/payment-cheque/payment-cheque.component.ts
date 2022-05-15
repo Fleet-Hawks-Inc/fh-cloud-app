@@ -122,7 +122,6 @@ export class PaymentChequeComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.listService.paymentModelList.subscribe(
       async (res: any) => {
-        console.log('res', res);
         if (res.showModal && res.length != 0) {
           // empty fields
           if (res.page && res.page == 'detail') {
@@ -405,8 +404,12 @@ export class PaymentChequeComponent implements OnInit {
       .getData(`drivers/cheque/data/${this.paydata.entityId}`)
       .subscribe((result: any) => {
         this.driverData = result.Items[0];
-        this.dummyEntity =
-          this.driverData.firstName + " " + this.driverData.lastName;
+        if(this.driverData.middleName) {
+          this.dummyEntity = `${this.driverData.firstName} ${this.driverData.middleName} ${this.driverData.lastName}`;
+        } else {
+          this.dummyEntity = `${this.driverData.firstName} ${this.driverData.lastName}`;
+        }
+        
         this.cheqdata.entityName =
           this.driverData.firstName + " " + this.driverData.lastName;
         let addr = result.Items[0].address[0];

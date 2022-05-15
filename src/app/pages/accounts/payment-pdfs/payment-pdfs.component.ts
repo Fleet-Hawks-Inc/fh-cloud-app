@@ -462,6 +462,7 @@ export class PaymentPdfsComponent implements OnInit {
         result = result.Items[0];
         this.pdfDetails.name = `${result.firstName} ${result.lastName}`;
         this.pdfDetails.email = result.workEmail;
+        this.pdfDetails.userID = result.employeeID;
         if (result.adrs[0].manual) {
           if (result.adrs[0].add1 !== "") {
             this.pdfDetails.address = `${result.adrs[0].add1} ${result.adrs[0].add2} ${result.adrs[0].ctyName}, ${result.adrs[0].sName}, ${result.adrs[0].cName}`;
