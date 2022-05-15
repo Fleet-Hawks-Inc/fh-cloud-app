@@ -57,6 +57,9 @@ export class EmployeePaymentDetailComponent implements OnInit {
     advData: [],
     transactionLog: [],
     isFeatEnabled: false,
+    gstper: 0,
+    gstHstAmt: 0,
+    vendorId: ''
   };
   employees = [];
   empdetail = {
@@ -157,6 +160,8 @@ export class EmployeePaymentDetailComponent implements OnInit {
     this.showModal = true;
     this.paymentData[`advData`] = [];
     this.paymentData[`paymentTo`] = "employee";
+    this.paymentData[`totalAmount`]= this.paymentData.finalTotal;
+    this.paymentData['isVendorPayment'] = this.paymentData.vendorId ? true : false
     let obj = {
       showModal: this.showModal,
       data: this.paymentData,
@@ -191,6 +196,10 @@ export class EmployeePaymentDetailComponent implements OnInit {
       advance: this.paymentData.advance,
       txnDate: this.paymentData.txnDate,
       page: "detail",
+      isVendorPayment: this.paymentData.vendorId ? true : false,
+      vendorId: this.paymentData.vendorId,
+      gstHstPer: this.paymentData.gstper,
+      gstHstAmt: this.paymentData.gstHstAmt,
     };
     this.listService.openPaymentChequeModal(obj);
   }
