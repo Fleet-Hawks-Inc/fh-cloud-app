@@ -150,6 +150,13 @@
                         </tbody>
                       </table>
                     </div>
+                    <div class="col-lg-12" *ngIf="paymentData.vendorId">
+                      <div
+                      class="alert alert-secondary"
+                    >
+                      NOTE : This payment was issued to Employee's Vendor.
+                    </div>
+                    </div>
                   </div>
                 </div>
                 <div class="col-lg-6 pl-0">
@@ -186,7 +193,7 @@
                             <td
                               class="back-color-gray font-weight-bold text-capitalize"
                             >
-                              {{ paymentData.payMode }} Reference
+                              {{ paymentData.payMode }} Reference 
                             </td>
                             <td class="text-capitalize">
                               {{ paymentData.payModeNo }}
