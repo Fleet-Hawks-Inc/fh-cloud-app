@@ -247,13 +247,15 @@ export class OrdersListComponent implements OnInit {
     this.dataColumns = [
       { width: '7%', field: 'orderNumber', header: 'Order#', type: "text", },
       { width: '7%', field: 'orderMode', header: 'Type', type: "text" },
-      { width: '7%', field: 'createdDate', header: 'Date', type: "text" },
+      { width: '6%', field: 'createdDate', header: 'Date', type: "text" },
       { width: '12%', field: 'customerName', header: 'Customer', type: 'text' },
-      { width: '13%', field: 'cusConfirmation', header: 'Cust Confirmation', type: 'text' },
+      { width: '11%', field: 'cusConfirmation', header: 'Cust Confirmation', type: 'text' },
+      { width: '8%', field: 'shipperName', header: 'Shipper', type: "text" },
+      { width: '8%', field: 'receiverName', header: 'Receiver', type: 'text' },
       { width: '8%', field: 'amount', header: 'Amount', type: 'text' },
-      { width: '10%', field: 'invoiceData', header: 'Invoice ', type: 'text' },
-      { width: '10%', field: 'paymentData', header: 'Payment ', type: 'text' },
-      { width: '11%', field: 'newStatus', header: 'Order Status', type: 'text' },
+      { width: '7%', field: 'invoiceData', header: 'Invoice ', type: 'text' },
+      { width: '7%', field: 'paymentData', header: 'Payment ', type: 'text' },
+      { width: '9%', field: 'newStatus', header: 'Order Status', type: 'text' },
     ];
     this._selectedColumns = this.dataColumns;
 
@@ -376,49 +378,16 @@ export class OrdersListComponent implements OnInit {
             for (let res of result.Items) {
               res.commodityData = ''
               res.amount = ''
-              res.pickupLocData = ''
-              res.dropLocData = ''
+              res.shipperName = ''
+              res.receiverName = ''
               res.customerData = ''
               for (let shipArr of res.shippersReceiversInfo) {
                 for (let ship of shipArr.shippers) {
-                  for (let shipPickUp of ship.pickupPoint) {
-                    let shipDate = shipPickUp
-                    for (let commoD of shipDate.commodity) {
-                      res.commodityData = " Name:-" + commoD.name + '\n'
-                        + " Qty:-" + commoD.quantity + commoD.quantityUnit
+                res.shipperName = ship.shiperName
 
-                    }
-                    if (shipPickUp.address.manual) {
-                      res.pickupLocData = " Date:-" + shipPickUp.dateAndTime + '\n'
-                        + " Location:-" + shipPickUp.address.address + ' ' +
-                        + ' ' + shipPickUp.address.cityName + ' ' + shipPickUp.address.stateName + ' ' +
-                        shipPickUp.address.countryName + ' ' + shipPickUp.address.zipCode
-                    }
-                    else if (!shipPickUp.address.manual) {
-                      res.pickupLocData = " Date:-" + shipPickUp.dateAndTime + '\n'
-                        + " Location:-" + shipPickUp.address.pickupLocation
-                    }
-                    else if (shipPickUp.length > 1) {
-                      res.pickupLocData = shipPickUp.length - 1
-                    }
-
-                  }
                   for (let receiver of shipArr.receivers) {
-                    for (let receiveDropOf of receiver.dropPoint) {
-                      if (receiveDropOf.address.manual) {
-                        res.dropLocData = " Date:-" + receiveDropOf.dateAndTime + '\n'
-                          + " Location:-" + receiveDropOf.address.address + ' ' +
-                          + ' ' + receiveDropOf.address.cityName + ' ' + receiveDropOf.address.stateName + ' ' +
-                          receiveDropOf.address.countryName + ' ' + receiveDropOf.address.zipCode
-                      }
-                      else if (!receiveDropOf.address.manual) {
-                        res.dropLocData = " Date:-" + receiveDropOf.dateAndTime + '\n'
-                          + " Location:-" + receiveDropOf.address.dropOffLocation
-                      }
-                      else if (receiveDropOf.length > 1) {
-                        res.dropLocData = receiveDropOf.length - 1
-                      }
-                    }
+                   res.receiverName = receiver.receiverName
+
                   }
                 }
 
