@@ -1,22 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import {  Router } from '@angular/router';
-import { timeStamp } from 'console';
-import { ApiService } from 'src/app/services';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { ApiService, HereMapService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
 import Constants from 'src/app/pages/fleet/constants';
-import { result } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as _ from 'lodash';
+import { NgSelectComponent } from "@ng-select/ng-select";
+import { Table } from 'primeng/table';
+import { ActivatedRoute, Router } from '@angular/router';
+declare var $: any;
+
 @Component({
     selector: 'app-summary',
     templateUrl: './summary.component.html',
     styleUrls: ['./summary.component.css']
 })
 export class SummaryComponent implements OnInit {
+    @ViewChild('dt') table: Table;
+
+    @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
+    environment = environment.isFeatureEnabled;
     dataMessage: string = Constants.FETCHING_DATA;
     vehicles = [];
+    title = "Driver List";
     vehicleIdentification = '';
     suggestedVehicles = [];
     vehicleManufacturersList: any = {};
@@ -40,12 +48,45 @@ export class SummaryComponent implements OnInit {
     sold: '',
   };
     vehicleID: any;
-
-    constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
-    ngOnInit() {
+    mapView = false;
+  listView = true;
+  actualSrNo;
+  visible = true;
+  loadMsg: string = Constants.NO_LOAD_DATA;
+  isSearch = false;
+  get = _.get;
+  _selectedColumns: any[];
+  liveModalTimeout: any;
+  liveStreamVehicle: string;
+  url: any;
+  currentView = 'list';
+ 
+  dataColumns = [
+    { width: '8%', field: 'vehicleIdentification', header: 'Vehicle Name/Number', type: "text" },
+    { width: '6%', field: 'VIN', header: 'VIN', type: "text" },
+    { width: '5%', field: 'year', header: 'Year', type: "text" },
+    { width: '5%', field: 'manufacturerID', header: 'Make', type: "text" },
+    { width: '5%', field: 'modelID', header: 'Model', type: "text" },
+    { width: '9%', field: 'vehicleType', header: 'Type', type: "text" },
+    { width: '7%', field: 'ownership', header: 'Ownership', type: "text" },
+    { width: '7%', field: 'plateNumber', header: 'Plate Number', type: "text" },
+    { width: '5%', field: 'currentStatus', header: 'Status', type: 'text' },
+    
+  ];
+  
+    constructor(private apiService: ApiService,
+    private httpClient: HttpClient,
+    private router: Router,
+    private toastr: ToastrService,
+    private hereMap: HereMapService,
+    private spinner: NgxSpinnerService) { }
+    
+   async ngOnInit(): Promise<void> {
         this.getVehiclePage();
         this.fetchVehiclesCount();
+        this.setToggleOptions();
     }
+  
     async getVehiclePage(refresh?: boolean) {
         if (refresh === true) {
             this.lastItemSK = '';
@@ -127,6 +168,33 @@ export class SummaryComponent implements OnInit {
       return false;
     }
   }
+  
+   refreshData() {
+    this.vehicleID = '';
+    this.suggestedVehicles = [];
+    this.vehicleIdentification = '';
+    this.currentStatus = null;
+    this.vehicles = [];
+    this.lastItemSK = '';
+    this.loaded = false;
+    this.getVehiclePage();
+    this.dataMessage = Constants.FETCHING_DATA;
+  }
+  
+   setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    
+     @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+  
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+  }
+  
     generateVehicleCSV() {
         if (this.exportList.length > 0) {
             let dataObject = []
@@ -168,6 +236,18 @@ export class SummaryComponent implements OnInit {
         }
     }
     
+     changeView() {
+    if (this.currentView == 'list') {
+      this.currentView = 'map'
+      setTimeout(() => {
+        this.hereMap.mapInit();
+      }, 500);
+    } else {
+      this.currentView = 'list';
+    }
+  }
+    
+    
     vehicleExport() {
         this.apiService.getData(`vehicles/fetch/export`).subscribe((result: any) => {
             this.exportList = result.Items;
@@ -182,5 +262,14 @@ export class SummaryComponent implements OnInit {
         } else {
             this.vehicleExport();
         }
+    }
+    
+     clearVideoTimeout() {
+    clearTimeout(this.liveModalTimeout);
+  }
+
+    
+     clear(table: Table) {
+        table.clear();
     }
 }
