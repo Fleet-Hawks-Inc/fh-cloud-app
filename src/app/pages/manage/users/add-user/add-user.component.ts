@@ -26,6 +26,7 @@ export class AddUserComponent implements OnInit {
     carrierID: '';
     userForm;
     suggestedUsers = [];
+    showUploadedPicModal = false;
     vendors: any;
     searchUserName = '';
     userData = {
@@ -364,6 +365,7 @@ export class AddUserComponent implements OnInit {
             this.uploadedPhotos.push(files[0]);
             for (let i = 0; i < files.length; i++) {
                 const reader = new FileReader();
+                this.showUploadedPicModal = true;
                 reader.onload = (e: any) => {
                     this.profilePath = e.target.result;
                 };
@@ -376,6 +378,7 @@ export class AddUserComponent implements OnInit {
             this.uploadedPhotos.push(files[0]);
             for (let i = 0; i < files.length; i++) {
                 const reader = new FileReader();
+                this.showUploadedPicModal = true;
                 reader.onload = (e: any) => {
                     this.profilePath = e.target.result;
                 };
@@ -392,6 +395,7 @@ export class AddUserComponent implements OnInit {
         } else if (type === 'profile') {
             this.userData.profileImg = '';
             this.profilePath = '';
+            this.showUploadedPicModal = false;
             this.uploadedPhotos = [];
             this.imageText = 'Add';
             this.deletedUploads.push(name);
