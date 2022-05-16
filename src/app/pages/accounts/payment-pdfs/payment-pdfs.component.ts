@@ -275,7 +275,7 @@ export class PaymentPdfsComponent implements OnInit {
     for (let index = 0; index < this.settlements.length; index++) {
       const element = this.settlements[index];
 
-      if(element.paymentSelected) {
+      if (element.paymentSelected) {
         this.multiPay = true;
       }
 
@@ -387,7 +387,7 @@ export class PaymentPdfsComponent implements OnInit {
               tripNo: trip.tripNo,
               date: trip.dateCreated,
               plans: [],
-              paymentSelected: v.paymentSelected ? v.paymentSelected[0] : '' 
+              paymentSelected: v.paymentSelected ? v.paymentSelected[0] : ''
             };
             if (v.plan.length > 0) {
               // if sub trip is settled
@@ -437,7 +437,11 @@ export class PaymentPdfsComponent implements OnInit {
       .getData(`drivers/get/details/${this.paymentData.entityId}`)
       .subscribe((result: any) => {
         result = result.Items[0];
-        this.pdfDetails.name = `${result.firstName} ${result.lastName}`;
+        if (result.middleName != undefined && result.middleName != '') {
+          this.pdfDetails.name = `${result.firstName} ${result.middleName} ${result.lastName}`;
+        } else {
+          this.pdfDetails.name = `${result.firstName} ${result.lastName}`;
+        }
         this.pdfDetails.email = result.email;
         this.pdfDetails.phone = result.phone;
         this.pdfDetails.userID = result.employeeContractorId;
@@ -456,8 +460,9 @@ export class PaymentPdfsComponent implements OnInit {
       .getData(`contacts/detail/${this.paymentData.entityId}`)
       .subscribe((result: any) => {
         result = result.Items[0];
-        this.pdfDetails.name = result.cName;
+        this.pdfDetails.name = `${result.firstName} ${result.lastName}`;
         this.pdfDetails.email = result.workEmail;
+        this.pdfDetails.userID = result.employeeID;
         if (result.adrs[0].manual) {
           if (result.adrs[0].add1 !== "") {
             this.pdfDetails.address = `${result.adrs[0].add1} ${result.adrs[0].add2} ${result.adrs[0].ctyName}, ${result.adrs[0].sName}, ${result.adrs[0].cName}`;

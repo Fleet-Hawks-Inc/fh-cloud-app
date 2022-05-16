@@ -17,6 +17,7 @@ export class PaymentChequeComponent implements OnInit {
   @ViewChild("chekOptions", { static: true }) modalContent: TemplateRef<any>;
   @ViewChild("previewCheque", { static: true }) previewCheque: TemplateRef<any>;
 
+  showDollor = true;
   openFrom: any;
   carriers = [];
   addresses = [];
@@ -403,8 +404,12 @@ export class PaymentChequeComponent implements OnInit {
       .getData(`drivers/cheque/data/${this.paydata.entityId}`)
       .subscribe((result: any) => {
         this.driverData = result.Items[0];
-        this.dummyEntity =
-          this.driverData.firstName + " " + this.driverData.lastName;
+        if(this.driverData.middleName) {
+          this.dummyEntity = `${this.driverData.firstName} ${this.driverData.middleName} ${this.driverData.lastName}`;
+        } else {
+          this.dummyEntity = `${this.driverData.firstName} ${this.driverData.lastName}`;
+        }
+        
         this.cheqdata.entityName =
           this.driverData.firstName + " " + this.driverData.lastName;
         let addr = result.Items[0].address[0];
@@ -436,12 +441,14 @@ export class PaymentChequeComponent implements OnInit {
       this.apiService
         .getData(`contacts/detail/${this.paydata.entityId}`)
         .subscribe((result: any) => {
-          if(this.paydata.type === "employee"){
-            this.cheqdata.entityName = result.Items[0].firstName+" "+result.Items[0].lastName;
-            }
-            else{
-              this.cheqdata.entityName=result.Items[0].cName;
-            }
+
+          if (this.paydata.type === "employee") {
+            this.cheqdata.entityName = result.Items[0].firstName + " " + result.Items[0].lastName;
+          }
+          else {
+            this.cheqdata.entityName = result.Items[0].cName;
+          }
+
           this.dummyEntity = result.Items[0].cName;
           let addr = result.Items[0].adrs[0];
           if (addr.manual) {
@@ -564,5 +571,12 @@ export class PaymentChequeComponent implements OnInit {
 
   }
 
+  changeDollor(value) {
+    if (value) {
+      this.showDollor = false;
+    } else {
+      this.showDollor = true;
+    }
+  }
 
 }

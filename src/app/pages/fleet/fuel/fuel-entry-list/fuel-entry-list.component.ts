@@ -10,7 +10,7 @@ import * as moment from 'moment'
 import * as _ from 'lodash'
 import { ViewEncapsulation } from '@angular/core';
 import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
-import {Router} from '@angular/router'
+import { Router } from '@angular/router'
 import { Table } from 'primeng/table';
 
 declare var $: any;
@@ -34,8 +34,8 @@ export class FuelEntryListComponent implements OnInit {
   uploadedDocs = []
   disable = false;
   vehicles = [];
-  reviewing=false;
-  csvHeader=[]
+  reviewing = false;
+  csvHeader = []
   vehicleList: any = {};
   assetList: any = {};
   driverList: any = {};
@@ -67,10 +67,10 @@ export class FuelEntryListComponent implements OnInit {
   totalRecords = 0;
   pageLength = 10;
   lastEvaluatedKey = '';
-  error={
-    hasError:false,
-    message:'',
-    attributes:[]
+  error = {
+    hasError: false,
+    message: '',
+    attributes: []
   }
   fuelNext = false;
   fuelPrev = true;
@@ -89,15 +89,15 @@ export class FuelEntryListComponent implements OnInit {
   pageLimit = 10
   loaded = false;
   _selectedColumns: any[];
-  dataColumns=[
-    {field:'data.date', header: 'Date Time', type:"date"},
-    {field:'data.cardNo',header:'Fuel Card #',type:"text"},
-    {field:'data.unitNo', header: 'Unit #',type:'text'},
-    {field:'data.useType',header:'Use Type',type:'text'},
-    {field:'data.type',header:' Type',type:'text'},
-    {field:'data.amt',header:'Fuel Amount',type:'text'},
-    {field:'data.site', header:'Site', type:'text'},
-    {field:'data.city', header:'Province',type:'text'}
+  dataColumns = [
+    { width: '12%', field: 'data.date', header: 'Date Time', type: "date" },
+    { width: '12%', field: 'data.cardNo', header: 'Fuel Card #', type: "text" },
+    { width: '12%', field: 'data.unitNo', header: 'Unit #', type: 'text' },
+    { width: '12%', field: 'data.useType', header: 'Use Type', type: 'text' },
+    { width: '12%', field: 'data.type', header: ' Type', type: 'text' },
+    { width: '12%', field: 'data.amt', header: 'Fuel Amount', type: 'text' },
+    { width: '10%', field: 'data.site', header: 'Site', type: 'text' },
+    { width: '12%', field: 'data.city', header: 'Province', type: 'text' }
   ]
 
   constructor(
@@ -106,11 +106,11 @@ export class FuelEntryListComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private httpClient: HttpClient,
     private el: ElementRef,
-    private router:Router) {
+    private router: Router) {
   }
   ngOnInit() {
     this.fetchVendorList();
-  //   this.fuelEntriesCount();
+    //   this.fuelEntriesCount();
     this.fetchVehicleList();
     this.fetchAssetList();
     this.fetchWEXCode();
@@ -127,9 +127,9 @@ export class FuelEntryListComponent implements OnInit {
     });
   }
 
-  onFuelSelect(event){
-    let value=event.selected[0]
-    let fuelID=value.fuelSK.split('#')[1]
+  onFuelSelect(event) {
+    let value = event.selected[0]
+    let fuelID = value.fuelSK.split('#')[1]
     this.router.navigate([`/fleet/fuel/detail/${fuelID}`])
 
   }
@@ -309,8 +309,8 @@ export class FuelEntryListComponent implements OnInit {
     }
   }
   initDataTable() {
-    this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey + '&timeCreated=' + this.lastTimeCreated).subscribe((result: any) => {
-      this.loaded=true
+    this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey + '&date=' + this.lastTimeCreated).subscribe((result: any) => {
+      this.loaded = true
       if (result.Items.length == 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND;
       }
@@ -319,9 +319,9 @@ export class FuelEntryListComponent implements OnInit {
       result[`Items`].forEach(element => {
 
 
-        let date: any = moment(element.data.date)
-        if (element.data.time) {
-          let time = moment(element.data.time, 'h mm a')
+        let date: any = moment(element.date)
+        if (element.time) {
+          let time = moment(element.time, 'h mm a')
           date.set({
             hour: time.get('hour'),
             minute: time.get('minute')
@@ -343,8 +343,8 @@ export class FuelEntryListComponent implements OnInit {
       if (result.LastEvaluatedKey.fuelSK !== undefined) {
         // for prev button
         this.lastEvaluatedKey = encodeURIComponent(result.LastEvaluatedKey.fuelSK)
-        if (result.LastEvaluatedKey.timeCreated !== undefined) {
-          this.lastTimeCreated = result.LastEvaluatedKey.timeCreated
+        if (result.LastEvaluatedKey.date !== undefined) {
+          this.lastTimeCreated = result.LastEvaluatedKey.date
         }
         this.loaded = true
       } else {
@@ -380,8 +380,8 @@ export class FuelEntryListComponent implements OnInit {
     this.end = '';
     this.dataMessage = Constants.FETCHING_DATA;
     this.fuelList = [];
-    this.lastEvaluatedKey=''
-    this.lastTimeCreated=''
+    this.lastEvaluatedKey = ''
+    this.lastTimeCreated = ''
     this.initDataTable();
     //this.fuelEntriesCount();
     //this.resetCountResult();
@@ -448,15 +448,15 @@ export class FuelEntryListComponent implements OnInit {
     this.lastEvaluatedKey = '';
     this.dataMessage = Constants.FETCHING_DATA;
     this.fuelList = [];
-    this.totalRecords=0;
+    this.totalRecords = 0;
     this.initDataTable();
     // this.fuelEntriesCount();
     this.resetCountResult();
   }
   selectDoc(event) {
-    this.error.hasError=false
-    this.error.message=''
-    this.error.attributes=[]
+    this.error.hasError = false
+    this.error.message = ''
+    this.error.attributes = []
     let files = event.target.files;
     let condition = true;
     for (let i = 0; i < files.length; i++) {
@@ -475,159 +475,161 @@ export class FuelEntryListComponent implements OnInit {
       this.uploadedDocs = []
       this.uploadedDocs = files
       const reader = new FileReader();
-    reader.addEventListener('load', (event:any) => {
-    let csvdata = event.target.result;
-    this.csvHeader= this.parseCSV(csvdata);
-  });
-  reader.readAsBinaryString(event.target.files[0]);
+      reader.addEventListener('load', (event: any) => {
+        let csvdata = event.target.result;
+        this.csvHeader = this.parseCSV(csvdata);
+      });
+      reader.readAsBinaryString(event.target.files[0]);
       //this.postDocument();
 
-      
+
     }
-    else{
-      this.error.hasError=true;
-      this.error.message="Unable to upload"
+    else {
+      this.error.hasError = true;
+      this.error.message = "Unable to upload"
     }
 
   }
-  parseCSV(data:any){
-    this.csvHeader=[]
-        let newLinebrk = data.split("\n");
-    let csvHeader=newLinebrk[0].split(',')
+  parseCSV(data: any) {
+    this.csvHeader = []
+    let newLinebrk = data.split("\n");
+    let csvHeader = newLinebrk[0].split(',')
     return csvHeader
   }
 
-  validateCSV(){
-    const data=["Exchange Rate", "Card #", "Site City", "Site Name","Prov/St Abb.",'DEF AMT',"DEF QTY","Odometer","Unit #","UOM","Date","Time","Driver Id","Discount Rate","Reefer AMT","Tractor","Tractor AMT","Billed Price", "Reefer QTY","Retail Price"]
-    let match=true
-    const parsedData:any=this.csvHeader.map(element=>element.includes('\r')?element.replace('\r',''):element)
-    if(parsedData && parsedData.length>0){
-    data.forEach(element=>{
-      if(!parsedData.includes(element)){
-        this.error.attributes.push(element)
-        match=false
-      }
-    })
-  }
-return match
+  validateCSV() {
+    const data = ["Exchange Rate", "Card #", "Site City", "Site Name", "Prov/St Abb.", 'DEF AMT', "DEF QTY", "Odometer", "Unit #", "UOM", "Date", "Time", "Driver Id", "Discount Rate", "Reefer AMT", "Tractor", "Tractor AMT", "Billed Price", "Reefer QTY", "Retail Price"]
+    let match = true
+    const parsedData: any = this.csvHeader.map(element => element.includes('\r') ? element.replace('\r', '') : element)
+    if (parsedData && parsedData.length > 0) {
+      data.forEach(element => {
+        if (!parsedData.includes(element)) {
+          this.error.attributes.push(element)
+          match = false
+        }
+      })
+    }
+    return match
   }
 
-  
+
   postDocument() {
-    this.error.hasError=false
-    this.error.message=''
-    if(this.validateCSV()){
-    if (this.uploadedDocs.length > 0) {
-      this.reviewing=true;
-      const formData = new FormData();
-      for (let i = 0; i < this.uploadedDocs.length; i++) {
-        formData.append("uploadedDocs", this.uploadedDocs[i])
-      }
-      this.apiService.postData('fuelEntries/import/BVD', formData, true).subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          this.reviewing=false
-          this.error.hasError=true
-          this.error.message=err
-        },
-        next: (res) => {
-          this.error.hasError=false
-          this.error.message=''
-          this.error.attributes=[]
-          this.toastr.success("Uploaded Successfully")
-          $('#uploadedDocs').val('');
-          this.reviewing=false
+    this.error.hasError = false
+    this.error.message = ''
+    if (this.validateCSV()) {
+      if (this.uploadedDocs.length > 0) {
+        this.reviewing = true;
+        const formData = new FormData();
+        for (let i = 0; i < this.uploadedDocs.length; i++) {
+          formData.append("uploadedDocs", this.uploadedDocs[i])
         }
-      })
+        this.apiService.postData('fuelEntries/import/BVD', formData, true).subscribe({
+          complete: () => { },
+          error: (err: any) => {
+            this.reviewing = false
+            this.error.hasError = true
+            this.error.message = err
+          },
+          next: (res) => {
+            this.error.hasError = false
+            this.error.message = ''
+            this.error.attributes = []
+            this.toastr.success("Uploaded Successfully")
+            $('#uploadedDocs').val('');
+            this.reviewing = false
+          }
+        })
+      }
+
     }
-   
-  }
-  else{
-    this.error.hasError=true;
-    if(this.error.attributes.length>0){
-      this.error.message+=this.error.attributes.join(',')
+    else {
+      this.error.hasError = true;
+      if (this.error.attributes.length > 0) {
+        this.error.message += this.error.attributes.join(',')
+      }
+      this.error.message += " CSV Headers are missing"
+      this.reviewing = false
+      this.uploadedDocs = []
     }
-    this.error.message+=" CSV Headers are missing"
-    this.reviewing=false
-    this.uploadedDocs=[]
-  }
   }
 
-  validatePetro(){
-    const data=["Sales Date","Sales Time", "Card #", "City", "Province","Product","Volume","Net Unit Price","FET + FCT","Prov. TAX","GST/HST","PST","Amount","Odometer","Doc ID","Driver Name"]
-    let match=true
-    try{
-    const parseData:any=this.csvHeader.map(element=>{
-      if(element){
-       return JSON.parse(element)}
-      else{
-        return element
-      }})
-    if(parseData && parseData.length>0){
-    data.forEach(element=>{
-      if(!parseData.includes(element)){
-        this.error.attributes.push(element)
-        match=false
-      }
-    })
-  }
-  else{
-    match=false
-  }
-return match
-    }
-    catch(err){
-      this.error.hasError=true
-      this.error.message="Unable to Parse"
-      this.reviewing=false
-    }
-  }
-  
-  async postPetroDoc(){
-    this.reviewing=true;
-    this.error.hasError=false
-    this.error.message=''
-    const val=await this.validatePetro()
-    if(val){
-    if (this.uploadedDocs.length > 0) {
-      const formData = new FormData();
-      for (let i = 0; i < this.uploadedDocs.length; i++) {
-        formData.append("uploadedDocs", this.uploadedDocs[i])
-      }
-      this.apiService.postData('fuelEntries/import/petro', formData, true).subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          this.reviewing=false
-          this.error.hasError=true
-          this.error.message=err
-        },
-        next: (res) => {
-          this.error.hasError=false
-          this.error.message=''
-          this.error.attributes=[]
-          this.toastr.success("Uploaded Successfully")
-          $('#petroDocs').val('');
-          this.reviewing=false
+  validatePetro() {
+    const data = ["Sales Date", "Sales Time", "Card #", "City", "Province", "Product", "Volume", "Net Unit Price", "FET + FCT", "Prov. TAX", "GST/HST", "PST", "Amount", "Odometer", "Doc ID", "Driver Name"]
+    let match = true
+    try {
+      const parseData: any = this.csvHeader.map(element => {
+        if (element) {
+          return JSON.parse(element)
+        }
+        else {
+          return element
         }
       })
+      if (parseData && parseData.length > 0) {
+        data.forEach(element => {
+          if (!parseData.includes(element)) {
+            this.error.attributes.push(element)
+            match = false
+          }
+        })
+      }
+      else {
+        match = false
+      }
+      return match
     }
-   
-  }
-  else{
-    this.error.hasError=true;
-    if(this.error.attributes.length>0){
-      this.error.message=`CSV Headers are missing: ${this.error.attributes.join(',')}`
+    catch (err) {
+      this.error.hasError = true
+      this.error.message = "Unable to Parse"
+      this.reviewing = false
     }
-    this.reviewing=false
-    this.uploadedDocs=[]
   }
+
+  async postPetroDoc() {
+    this.reviewing = true;
+    this.error.hasError = false
+    this.error.message = ''
+    const val = await this.validatePetro()
+    if (val) {
+      if (this.uploadedDocs.length > 0) {
+        const formData = new FormData();
+        for (let i = 0; i < this.uploadedDocs.length; i++) {
+          formData.append("uploadedDocs", this.uploadedDocs[i])
+        }
+        this.apiService.postData('fuelEntries/import/petro', formData, true).subscribe({
+          complete: () => { },
+          error: (err: any) => {
+            this.reviewing = false
+            this.error.hasError = true
+            this.error.message = err
+          },
+          next: (res) => {
+            this.error.hasError = false
+            this.error.message = ''
+            this.error.attributes = []
+            this.toastr.success("Uploaded Successfully")
+            $('#petroDocs').val('');
+            this.reviewing = false
+          }
+        })
+      }
+
+    }
+    else {
+      this.error.hasError = true;
+      if (this.error.attributes.length > 0) {
+        this.error.message = `CSV Headers are missing: ${this.error.attributes.join(',')}`
+      }
+      this.reviewing = false
+      this.uploadedDocs = []
+    }
   }
-   /**
-     * Clears the table filters
-     * @param table Table 
-     */
-    clear(table: Table) {
-      table.clear();
+  /**
+    * Clears the table filters
+    * @param table Table 
+    */
+  clear(table: Table) {
+    table.clear();
   }
 
 }
