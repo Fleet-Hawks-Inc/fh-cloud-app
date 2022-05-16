@@ -57,7 +57,7 @@ export class AlarmComponent implements OnInit {
         { field: 'alAssetName', header: 'Alarm Name', type: "text" },
         { field: 'alDeviceNo', header: 'Device Number', type: "text" },
         { field: 'alTripNo', header: 'Trip Number', type: "text" },
-        { field: 'highTemp', header: 'Hight Temp', type: "text" },
+        { field: 'highTemp', header: 'High Temp', type: "text" },
         { field: 'lowTemp', header: 'Low Temp', type: "text" },
     ];
 
@@ -142,7 +142,7 @@ export class AlarmComponent implements OnInit {
                 obj["Alarm Name"] = element.alAssetName
                 obj["Device Number"] = element.alDeviceNo
                 obj["Trip Number"] = element.alTripNo
-                obj["Hight Temp"] = element.highTemp
+                obj["High Temp"] = element.highTemp
                 obj["Low Temp"] = element.lowTemp 
                 dataObject.push(obj)
             });

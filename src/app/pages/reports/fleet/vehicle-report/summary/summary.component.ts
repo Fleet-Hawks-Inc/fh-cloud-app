@@ -76,7 +76,7 @@ export class SummaryComponent implements OnInit {
       this.vehiclesCount = result;
     })
   }
-    onScroll() {
+    onScroll= async (event: any) => {
         if (this.loaded) {
             this.getVehiclePage();
         }
