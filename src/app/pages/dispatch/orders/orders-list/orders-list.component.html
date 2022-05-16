@@ -120,7 +120,7 @@
                 <ng-template pTemplate="header" let-columns>
                   <tr>
 
-                    <th style="width: 7%" alignFrozen="left" pFrozenColumn [frozen]="true"></th>
+                    <th style="width: 5%" alignFrozen="left" pFrozenColumn [frozen]="true"></th>
                     <th *ngFor="let column of dataColumns" [pSortableColumn]="column.field" pResizableColumn
                       [ngStyle]="{'width': column.width}">
                       <span>
@@ -144,7 +144,7 @@
                   let-expanded="expanded">
                   <tr style="cursor: pointer;">
 
-                    <td alignFrozen="left" pFrozenColumn [frozen]="true" style="width:7%">
+                    <td alignFrozen="left" pFrozenColumn [frozen]="true" style="width:5%">
                       <button type="button" pButton [pRowToggler]="order"
                         class="p-button-text p-button-rounded p-button-plain"
                         [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
@@ -176,6 +176,24 @@
 
                       </div>
                     </td>
+
+                    <td routerLink='/dispatch/orders/detail/{{order.orderID}}'
+                      [ngStyle]="{'width': find(columns,{field:'shipperName'}).width}">
+                      <div style="white-space: pre-line;">
+                        {{order.shipperName}}
+
+                      </div>
+                    </td>
+
+                    <td routerLink='/dispatch/orders/detail/{{order.orderID}}'
+                      [ngStyle]="{'width': find(columns,{field:'receiverName'}).width}">
+                      <div style="white-space: pre-line;">
+                        {{order.receiverName}}
+
+                      </div>
+                    </td>
+
+
                     <td routerLink='/dispatch/orders/detail/{{order.orderID}}'
                       [ngStyle]="{'width': find(columns,{field:'amount'}).width}">
                       {{ order.amount }}
@@ -183,8 +201,8 @@
                     </td>
                     <td routerLink='/dispatch/orders/detail/{{order.orderID}}'
                       [ngStyle]="{'width': find(columns,{field:'invoiceData'}).width}">
-                      <span class="badge badge-success" *ngIf="!order.invoicedTime">Pending</span>
-                      <span class="badge badge-danger" *ngIf="order.invoicedTime">Invoiced</span>
+                      <span class="badge badge-danger" *ngIf="!order.invoicedTime">Pending</span>
+                      <span class="badge badge-success" *ngIf="order.invoicedTime">Invoiced</span>
 
                       <br />
                     </td>

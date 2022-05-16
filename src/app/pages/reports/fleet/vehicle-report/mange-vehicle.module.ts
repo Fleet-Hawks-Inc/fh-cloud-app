@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { Component, NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
@@ -15,13 +15,13 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { ChartsModule } from "ng2-charts";
 import { unsavedChangesGuard } from "src/app/guards/unsaved-changes.guard";
 import { Injectable } from "@angular/core";
+
 import { OverviewComponent } from "./overview/overview.component";
 import { SummaryComponent } from "./summary/summary.component";
 import { DetailComponent } from "./detail/detail.component";
 import { UtilizationComponent } from "./utilization/utilization.component";
 import { InspectionComponent } from "./inspection/inspection.component";
 import { MaintenanceComponent } from "./maintenance/maintenance.component";
-import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { ActivityListComponent } from "./activity-list/activity-list.component";
 import { ActivityComponent } from "./activity/activity.component";
 import { ProvinceMilesComponent } from "./province-miles/province-miles.component";
@@ -30,6 +30,21 @@ import { RevenueListComponent } from './revenue-list/revenue-list.component';
 import { RevenueDetailComponent } from './revenue-detail/revenue-detail.component';
 import { ExpenseListComponent } from './expense-list/expense-list.component';
 import { ExpenseComponent } from './expense/expense.component';
+
+
+import { NgxDatatableModule } from "@swimlane/ngx-datatable";
+import { GoogleMapsModule } from "@angular/google-maps";
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
+
 const routes: Routes = [
   {
     path: "overview",
@@ -188,6 +203,17 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgxSpinnerModule,
     ChartsModule,
     InfiniteScrollModule,
+    NgxDatatableModule,
+    GoogleMapsModule,
+    TableModule,
+    ButtonModule,
+    MultiSelectModule,
+    TooltipModule,
+    MenuModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule,
   ],
   providers: [
     unsavedChangesGuard,
