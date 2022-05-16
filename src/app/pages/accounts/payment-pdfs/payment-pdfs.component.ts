@@ -386,7 +386,7 @@ export class PaymentPdfsComponent implements OnInit {
             let obj = {
               tripNo: trip.tripNo,
               date: trip.dateCreated,
-              plans: []
+              plans: [],
               paymentSelected: v.paymentSelected ? v.paymentSelected[0] : '',
               finalRate: 0
             };
