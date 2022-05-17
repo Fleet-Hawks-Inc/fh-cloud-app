@@ -216,7 +216,6 @@ export class ServiceListComponent implements OnInit {
               this.lastEvaluatedKey = "end";
             }
             this.logs = this.logs.concat(result.Items);
-
             this.loaded = true;
           }
         });
@@ -226,13 +225,6 @@ export class ServiceListComponent implements OnInit {
     this.searchValue = null;
 
   }
-  onScroll() {
-    if (this.loaded) {
-      this.initDataTable();
-    }
-    this.loaded = false;
-  }
-
   searchFilter() {
     if (this.searchValue != null || this.category != null || this.taskID != null) {
       if (this.searchValue != null && this.category == null) {
