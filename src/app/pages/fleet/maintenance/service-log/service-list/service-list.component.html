@@ -98,11 +98,6 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                        
-                                      
-                                        
-                                        
-                             
                                     <p-table #dt [value]="logs" [resizableColumns]="true" columnResizeMode="expand"
                                         scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
                                         styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
@@ -246,12 +241,6 @@
                     </div>
                 </div>
             </section>
-
-            <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey !==
-                'end' && logs.length !== 0">
-                <button type="button" class="btn btn-success btn-sm text-light" (click)="initDataTable()">Load
-                    More..</button>
-            </div>
         </section>
     </div>
 </section>
