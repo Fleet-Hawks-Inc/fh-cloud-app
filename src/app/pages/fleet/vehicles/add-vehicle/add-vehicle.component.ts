@@ -279,6 +279,7 @@ export class AddVehicleComponent implements OnInit {
     autoplaySpeed: 1500,
   };
 
+  isImport = false;
   vendorModalStatus = false;
   submitDisabled = false;
   groupSubmitDisabled = false;
@@ -873,7 +874,7 @@ export class AddVehicleComponent implements OnInit {
     (this.annualSafetyDate = _.isEmpty(result.annualSafetyDate)
       ? null
       : result.annualSafetyDate),
-      (this.annualSafetyReminder = result.annualSafetyReminder),
+      (this.annualSafetyReminder = result.annualSafetyReminder ? result.annualSafetyReminder : false),
       (this.currentStatus = result.currentStatus);
     this.ownership = result.ownership;
     this.ownerOperatorID = result.ownerOperatorID;
@@ -1113,6 +1114,7 @@ export class AddVehicleComponent implements OnInit {
       this.documentSlides = result.uploadDocument;
     }
     this.timeCreated = result.timeCreated;
+    this.isImport = result.isImport;
 
     $("#hardBreakingParametersValue").html(this.settings.hardBreakingParams);
     $("#hardAccelrationParametersValue").html(
@@ -1300,7 +1302,8 @@ export class AddVehicleComponent implements OnInit {
       purchaseDocs: this.existPDocs,
       loanDocs: this.existLDocs,
       activeTab: this.activeTab,
-      deviceInfo: this.deviceInfo
+      deviceInfo: this.deviceInfo,
+      isImport: this.isImport
     };
     // create form data instance
     const formData = new FormData();

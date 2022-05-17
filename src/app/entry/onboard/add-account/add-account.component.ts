@@ -141,7 +141,7 @@ export class AddAccountComponent implements OnInit {
     length: false
   };
   siteKey = '6LckOPUdAAAAAInZHt4GWtTfwWJkhUa5RNlH22ud';
-  parentID= null;
+  parentID = null;
 
   constructor(private apiService: ApiService,
     private toaster: ToastrService,
@@ -517,9 +517,21 @@ export class AddAccountComponent implements OnInit {
           trailers: this.fleets.trailers,
           trucks: this.fleets.trucks
         },
-        banks: this.banks
+        banks: this.banks,
+        accountSettings: [
+          {
+            type: 'order',
+            prefix: 'ORD-',
+            sequence: 1000
+          },
+          {
+            type: 'trip',
+            prefix: 'TRP-',
+            sequence: 1000
+          }
+        ]
       };
-      if(this.parentID) {
+      if (this.parentID) {
         data['parentID'] = this.parentID;
       }
       if (this.findingWay === 'Referral') {

@@ -10,11 +10,11 @@
                     </div>
                     <div class="col-md-10 col-lg-10 text-right pr-1">
 
-                        <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal" data-target="#addCompanyModal" href="javascript:;" *ngIf="showSubCompany && subCompanies.length < 5"><i class="fas fa-plus"></i> Sub Company</a>
+                        <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal" data-target="#addCompanyModal" href="javascript:;" *ngIf="showSubCompany && subCompanies.length < 5"><i class="fas fa-plus"></i> Sub
+              Company</a>
 
                         <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal" data-target="#changePasswordModal" href="javascript:;">Change Password</a>
-                        <a routerLink="/manage/company/edit/{{carriers.carrierID}}" class="btn btn-dark btn-sm" style="color: #ffffff;"><i
-                class="fas fa-plus"></i> Edit
+                        <a routerLink="/manage/company/edit/{{carriers.carrierID}}" class="btn btn-dark btn-sm" style="color: #ffffff;"><i class="fas fa-plus"></i> Edit
               Company
               Detail</a>
                     </div>
@@ -26,8 +26,7 @@
                         <div class="bg-white">
                             <div class="row p-3">
                                 <div class="col-2" *ngIf="carriers.uploadedLogo != '' && carriers.uploadedLogo != undefined">
-                                    <span><img [src]="logoSrc"
-                      class="img-fluid"></span>
+                                    <span><img [src]="logoSrc" class="img-fluid"></span>
                                 </div>
                                 <div class="col-10 text-dark">
                                     <h1 class="font-weight-semibold text-7 text-capitalize mt-0">{{carriers.carrierName}}</h1>
@@ -152,6 +151,17 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <div class="col-lg-6" *ngIf="accountSettings.length > 0">
+                                    <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Account Settings</h2>
+                                    <table class="table table-bordered table-responsive-lg">
+                                        <tbody>
+                                            <tr class="text-capitalize" *ngFor="let account of accountSettings">
+                                                <td width="20%" class="back-color-gray">{{account.type}} (Prefix + Sequence) </td>
+                                                <td width="30%">{{account.prefix}}{{account.sequence}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                                 <div class="col-lg-12">
                                     <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Address</h2>
                                     <table class="table table-bordered table-responsive-lg" *ngFor="let address of carriers.addressDetails">
@@ -177,7 +187,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-
                                 <!-- Subscription Details start -->
                                 <div class="col-lg-12" *ngIf="!subscriptions">
                                     <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Subscription Info not found.</h2>
@@ -212,6 +221,7 @@
                                 </div>
 
                                 <!-- Subscription Details end -->
+
 
                                 <div class="col-lg-12" *ngIf="carriers.banks.length > 0">
                                     <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Bank Details</h2>
@@ -269,36 +279,8 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="col-lg-12" *ngIf="carriers.banks.length > 0">
-                                    <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Bank Details</h2>
-                                    <table class="table table-bordered table-responsive-lg" *ngFor="let bank of carriers.banks">
-                                        <tbody>
-                                            <tr class="text-capitalize">
-                                                <td width="20%" class="back-color-gray">Bank Name</td>
-                                                <td width="30%"><span *ngIf="carriers.banks != undefined">{{bank.branchName ? bank.branchName :
-                            '-'}}</span></td>
-                                                <td width="20%" class="back-color-gray">Routing#</td>
-                                                <td width="30%"><span *ngIf="carriers.banks != undefined">{{bank.routingNumber ?
-                            bank.routingNumber : '-'}}</span>
-                                                </td>
-                                            </tr>
-                                            <tr class="text-capitalize">
-                                                <td class="back-color-gray">Account#</td>
-                                                <td><span *ngIf="carriers.banks != undefined">{{bank.accountNumber ? bank.accountNumber :
-                            '-'}}</span>
-                                                </td>
-                                                <td class="back-color-gray">Transit#</td>
-                                                <td><span *ngIf="carriers.banks != undefined">{{bank.transitNumber ? bank.transitNumber :
-                            '-'}}</span>
-                                                </td>
-                                            </tr>
-                                            <tr class="text-capitalize">
-                                                <td class="back-color-gray">Institution#</td>
-                                                <td><span *ngIf="carriers.banks != undefined">{{bank.institutionNumber ? bank.institutionNumber
-                            : '-'}}</span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
+                                <div class="col-lg-12">
+                                    <table class="table table-bordered table-responsive-lg">
                                         <tbody>
                                             <tr>
                                                 <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Terms and Conditions</h2>

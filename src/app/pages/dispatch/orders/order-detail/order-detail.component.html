@@ -66,7 +66,7 @@
             <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
               <div>
                 <h4 class="m-0 font-weight-bold">
-                  {{ orderMode }} - ORD{{ orderNumber }}
+                  {{ orderMode }} - {{ orderNumber }}
                   <span class="badge p-1 badge-dark mt-2 mb-0 text-uppercase" *ngIf="orderStatus">
                     {{ orderStatus }} <span *ngIf="recallStatus">(R) </span>
                   </span>
@@ -754,7 +754,7 @@
                   <div class="col-xl-12 col-12 mb-3">
                     <div class="boxshadow1 maindisbox w100 pull-left">
                       <div class="widgetload">
-                        <div  *ngIf="isOrderPriceEnabled" class="widgettbload">
+                        <div *ngIf="isOrderPriceEnabled" class="widgettbload">
                           <span class="pull-right text-3 mt-2 text-dark">
                           </span>
                           <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
@@ -996,7 +996,7 @@
                         <img crossorigin="anonymous" *ngIf="companyLogoSrc" [src]="companyLogoSrc" alt="logo"
                           style="max-width: 100px" />
                         <p *ngIf="
-                            invoiceData.carrierData.termsInfo.tagLine &&
+                        invoiceData.carrierData && invoiceData.carrierData.termsInfo.tagLine &&
                             invoiceData.carrierData.termsInfo.tagLine != ''
                           " class="m-0 font-weight-bold text-dark">
                           {{ invoiceData.carrierData.termsInfo.tagLine }}

@@ -110,6 +110,7 @@ export class EditProfileComponent implements OnInit {
     }]
   }];
 
+  accountSettings = [];
 
   termsTruck: ""
   termsCarrier: ""
@@ -206,7 +207,7 @@ export class EditProfileComponent implements OnInit {
         this.phone = this.carriers.phone;
         this.fax = this.carriers.fax;
         this.bizCountry = this.carriers.bizCountry;
-        if(this.bizCountry) {
+        if (this.bizCountry) {
           this.businessCountryStat = true;
         }
         // uploadedLogo = '';
@@ -250,6 +251,10 @@ export class EditProfileComponent implements OnInit {
         }
         this.uploadedLogo = this.carriers.uploadedLogo;
         this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
+
+        if (this.carriers.accountSettings != undefined) {
+          this.accountSettings = this.carriers.accountSettings;
+        }
       });
   }
   // UPDATE PART
@@ -596,7 +601,8 @@ export class EditProfileComponent implements OnInit {
         banks: this.banks,
         uploadedLogo: this.uploadedLogo,
         subCompIDs: this.subCompIDs,
-        subCompInfo: this.subCompInfo
+        subCompInfo: this.subCompInfo,
+        accountSettings: this.accountSettings
       };
       if (this.findingWay == "Referral") {
         data["referral"] = this.referral;
