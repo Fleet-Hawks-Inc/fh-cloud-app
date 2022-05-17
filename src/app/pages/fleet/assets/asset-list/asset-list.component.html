@@ -148,6 +148,7 @@
                                                             '-') | titlecase}}</span>
                                                         <span *ngSwitchCase="'ownerShip'"> {{((asset.ownerShip) ?
                                                             asset.ownerShip : "-") | titlecase}} </span>
+                                                            
                                                      <span *ngSwitchCase="'operatorCompany'">
                                                    <span *ngIf="asset.ownerShip === 'ownerOperator'">
                                                       {{asset.ownerOperator ? contactsObjects[asset.ownerOperator]: "-"}}
@@ -158,6 +159,8 @@
                                                          <span *ngIf="asset.ownerShip === 'leased'">
                                                          {{asset.ownCname ? asset.ownCname: "-"}} </span>
                                                                   </span>
+                                                                  
+                                                                  
                                                         <span *ngSwitchCase="'currentStatus'">
                                                             <span class="badge badge-dark p-1">{{ asset.currentStatus |
                                                                 titlecase }}</span>
@@ -189,14 +192,6 @@
                                         <!-- Summary Section with Load More button -->
 
                                         <ng-template pTemplate="summary" let-columns>
-                                            <div class="col-lg-12 mt-3 text-center "
-                                                *ngIf="lastEvaluatedKey !=='end' && allData.length !==0 ">
-                                                <button type="button " (click)="onScroll($event) "
-                                                    class="btn btn-success btn-sm text-light ">Load
-                                                    More..</button>
-
-                                                <br /><br>
-                                            </div>
                                             <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey ==='end'">
                                                 Total Records: {{allData.length}}</div>
                                         </ng-template>
