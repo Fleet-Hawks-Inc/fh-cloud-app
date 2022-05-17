@@ -1,28 +1,21 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { ApiService, DashboardUtilityService } from "../../../../services";
-import { Router } from "@angular/router";
-import {
-  catchError,
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  switchMap,
-  takeUntil
-} from "rxjs/operators"; import { from, Subject, throwError } from 'rxjs';
-import { HttpClient } from "@angular/common/http";
-import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
-import { ToastrService } from "ngx-toastr";
-import { ModalService } from "../../../../services/modal.service";
-import { ActivatedRoute } from "@angular/router";
 import { Location } from "@angular/common";
-import { ListService } from "../../../../services";
-import { DomSanitizer } from "@angular/platform-browser";
-import * as moment from 'moment'
-import * as _ from "lodash";
+import { HttpClient } from "@angular/common/http";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
+import { DomSanitizer } from "@angular/platform-browser";
+import { ActivatedRoute, Router } from "@angular/router";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import * as _ from "lodash";
+import * as moment from 'moment';
+import { ToastrService } from "ngx-toastr";
+import { from, Subject } from 'rxjs';
+import {
+  map
+} from "rxjs/operators";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
-import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
+import { ApiService, DashboardUtilityService, ListService } from "../../../../services";
+import { ModalService } from "../../../../services/modal.service";
 
 declare var $: any;
 @Component({
@@ -238,6 +231,7 @@ export class AddVehicleComponent implements OnInit {
     turningParams: 0,
     measurmentUnit: "imperial",
   };
+  deviceInfo = {};
 
   ownerOperators: any = [];
   serviceProgramss: any = [];
@@ -895,6 +889,10 @@ export class AddVehicleComponent implements OnInit {
     this.inspectionFormID = result.inspectionFormID;
     this.createdDate = result.createdDate;
     this.createdTime = result.createdTime;
+    // Device Info
+    if (result.deviceInfo) {
+      this.deviceInfo = result.deviceInfo;
+    }
     if (result.lifeCycle) {
 
       this.lifeCycle = {
@@ -1304,6 +1302,7 @@ export class AddVehicleComponent implements OnInit {
       purchaseDocs: this.existPDocs,
       loanDocs: this.existLDocs,
       activeTab: this.activeTab,
+      deviceInfo: this.deviceInfo,
       isImport: this.isImport
     };
     // create form data instance
