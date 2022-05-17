@@ -148,8 +148,16 @@
                                                             '-') | titlecase}}</span>
                                                         <span *ngSwitchCase="'ownerShip'"> {{((asset.ownerShip) ?
                                                             asset.ownerShip : "-") | titlecase}} </span>
-                                                        <span *ngSwitchCase="'ownCname'">{{((asset.ownCname) ?
-                                                            asset.ownCname : "-") | titlecase}}</span>
+                                                     <span *ngSwitchCase="'operatorCompany'">
+                                                   <span *ngIf="asset.ownerShip === 'ownerOperator'">
+                                                      {{asset.ownerOperator ? contactsObjects[asset.ownerOperator]: "-"}}
+                                                                </span>
+                                                      <span *ngIf="asset.ownerShip === 'rented'">
+                                                          {{asset.ownCname ? asset.ownCname: "-"}}
+                                                                </span>
+                                                         <span *ngIf="asset.ownerShip === 'leased'">
+                                                         {{asset.ownCname ? asset.ownCname: "-"}} </span>
+                                                                  </span>
                                                         <span *ngSwitchCase="'currentStatus'">
                                                             <span class="badge badge-dark p-1">{{ asset.currentStatus |
                                                                 titlecase }}</span>
