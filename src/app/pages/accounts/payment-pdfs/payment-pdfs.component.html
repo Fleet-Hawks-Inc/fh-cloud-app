@@ -144,8 +144,9 @@
                                       margin-bottom: 4px;
                                       margin-top: 4px;
                                     ">
-                                    <strong>Pay Period:</strong>
-                                    {{ payPeriod ? payPeriod : "NA" }}
+                                    <span style="display: inline-block; width: 70px;"><strong>Pay
+                                        Period:</strong></span>
+                                    <span style="display: inline-block;">{{ payPeriod ? payPeriod : "NA" }}</span>
                                   </p>
                                 </td>
                               </tr>
@@ -494,19 +495,44 @@
                   <table width="100%" border="1" bordercolor="#adadad" cellspacing="0" cellpadding="0">
                     <tbody>
                       <tr>
-                        <td width="20%" class="pl-3 pt-2">
+                        <td width="10%" class="pl-3 pt-2">
                           <p class="text-3 font-weight-bold text-dark mb-2">
                             Location Type
                           </p>
                         </td>
-                        <td width="60%" class="pl-3 pt-2">
+                        <td width="25%" class="pl-3 pt-2">
                           <p class="text-3 font-weight-bold text-dark mb-2">
                             Location
                           </p>
                         </td>
-                        <td width="20%" class="pl-3 pt-2">
+                        <td width="10%" class="pl-3 pt-2">
+                          <p class="text-3 font-weight-bold text-dark mb-2">
+                            Driver
+                          </p>
+                        </td>
+                        <td width="10%" class="pl-3 pt-2">
+                          <p class="text-3 font-weight-bold text-dark mb-2">
+                            Co-driver
+                          </p>
+                        </td>
+                        <td width="10%" class="pl-3 pt-2">
+                          <p class="text-3 font-weight-bold text-dark mb-2">
+                            Vehicle
+                          </p>
+                        </td>
+                        <td width="10%" class="pl-3 pt-2">
+                          <p class="text-3 font-weight-bold text-dark mb-2">
+                            Asset(s)
+                          </p>
+                        </td>
+                        <td width="10%" class="pl-3 pt-2">
                           <p class="text-3 font-weight-bold text-dark mb-2">
                             Total Miles
+                          </p>
+                        </td>
+                        <td width="5%" class="pl-3 pt-2">
+                          <p class="text-3 font-weight-bold text-dark mb-2">
+                            Rate
                           </p>
                         </td>
                       </tr>
@@ -521,12 +547,37 @@
                         </td>
                         <td class="pl-3 pt-2">
                           <p class="text-3 text-dark mb-2">
-                            {{ plan.miles }}
+                            {{ plan.driverName }}
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-2">
+                          <p class="text-3 text-dark mb-2">
+                            {{ plan.codriverName }}
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-2">
+                          <p class="text-3 text-dark mb-2">
+                            {{ plan.vehicleName }}
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-2">
+                          <p class="text-3 text-dark mb-2">
+                            {{ plan.assetNames }}
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-2">
+                          <p class="text-3 text-dark mb-2">
+                            {{ plan.showMiles }}
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-2">
+                          <p class="text-3 text-dark mb-2">
+                            {{ plan.rate }}
                           </p>
                         </td>
                       </tr>
                       <tr>
-                        <td colspan="2" class="pl-3 pt-2">
+                        <td colspan="6" class="pl-3 pt-2">
                           <p class="text-3 text-dark mb-2">
                             <strong>Total</strong>
                           </p>
@@ -535,6 +586,13 @@
                           <p class="text-3 text-dark mb-2">
                             <strong>{{
                               data.totalMiles | number: "1.2-2"
+                              }}</strong>
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-2">
+                          <p class="text-3 text-dark mb-2">
+                            <strong>{{
+                              data.finalRate | number: "1.2-2"
                               }}</strong>
                           </p>
                         </td>

@@ -8,7 +8,7 @@ import {
   map,
   switchMap,
   takeUntil
-} from "rxjs/operators";import { from, Subject, throwError } from 'rxjs';
+} from "rxjs/operators"; import { from, Subject, throwError } from 'rxjs';
 import { HttpClient } from "@angular/common/http";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
@@ -75,7 +75,7 @@ export class AddVehicleComponent implements OnInit {
   vehicleType = null;
   VIN = "";
   DOT = "";
-    isSubmitted = false;
+  isSubmitted = false;
 
   year = null;
   manufacturerID = null;
@@ -285,6 +285,7 @@ export class AddVehicleComponent implements OnInit {
     autoplaySpeed: 1500,
   };
 
+  isImport = false;
   vendorModalStatus = false;
   submitDisabled = false;
   groupSubmitDisabled = false;
@@ -311,10 +312,10 @@ export class AddVehicleComponent implements OnInit {
     private modalService: NgbModal,
     private modalServiceOwn: ModalService
   ) {
-  
 
-  
-  
+
+
+
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
       // this.vehicleForm = $('#vehicleForm').validate();
@@ -879,7 +880,7 @@ export class AddVehicleComponent implements OnInit {
     (this.annualSafetyDate = _.isEmpty(result.annualSafetyDate)
       ? null
       : result.annualSafetyDate),
-      (this.annualSafetyReminder = result.annualSafetyReminder),
+      (this.annualSafetyReminder = result.annualSafetyReminder ? result.annualSafetyReminder : false),
       (this.currentStatus = result.currentStatus);
     this.ownership = result.ownership;
     this.ownerOperatorID = result.ownerOperatorID;
@@ -1115,6 +1116,7 @@ export class AddVehicleComponent implements OnInit {
       this.documentSlides = result.uploadDocument;
     }
     this.timeCreated = result.timeCreated;
+    this.isImport = result.isImport;
 
     $("#hardBreakingParametersValue").html(this.settings.hardBreakingParams);
     $("#hardAccelrationParametersValue").html(
@@ -1302,6 +1304,7 @@ export class AddVehicleComponent implements OnInit {
       purchaseDocs: this.existPDocs,
       loanDocs: this.existLDocs,
       activeTab: this.activeTab,
+      isImport: this.isImport
     };
     // create form data instance
     const formData = new FormData();
