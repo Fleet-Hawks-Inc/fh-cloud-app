@@ -998,7 +998,7 @@ export class OrderDetailComponent implements OnInit {
         this.orderInvData = result[0];
         this.carrierDetails = result[0].carrierData;
         this.isInvoice = true;
-        if (this.orderInvData.carrierData.termsInfo.logo && this.orderInvData.carrierData.termsInfo.logo != "") {
+        if (this.orderInvData.carrierData && this.orderInvData.carrierData.termsInfo.logo && this.orderInvData.carrierData.termsInfo.logo != "") {
           this.companyLogoSrc = `${this.orderInvData.carrierData.termsInfo.logo}`;
         }
         if (this.invoiceData.assets != undefined) {
