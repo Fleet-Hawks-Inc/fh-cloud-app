@@ -49,6 +49,7 @@ export class AddAssetsComponent implements OnInit {
   errors = {};
   form;
   quantumSelected = "";
+  isImport = false;
   pDocs = [];
   lDocs = [];
   assetsData = {
@@ -819,6 +820,7 @@ export class AddAssetsComponent implements OnInit {
           //  }));
           this.pDocs = result.purchaseDocsLinks;
         }
+        this.isImport = result.isImport
 
         this.spinner.hide(); // loader hide
       });
@@ -920,6 +922,7 @@ export class AddAssetsComponent implements OnInit {
       uploadedDocs: this.existingDocs,
       purchaseDocs: this.existPDocs,
       loanDocs: this.existLDocs,
+      isImport: this.isImport,
     };
     data.assetDetails.year =
       data.assetDetails.ownerShip === "interchange"

@@ -23,7 +23,7 @@ export class PaymentChequeComponent implements OnInit {
   addresses = [];
   currCarrId = "";
   carrierID = null;
-  paydata = {
+  paydata: any = {
     entityName: "",
     entityId: "",
     chequeDate: "",
@@ -404,14 +404,14 @@ export class PaymentChequeComponent implements OnInit {
       .getData(`drivers/cheque/data/${this.paydata.entityId}`)
       .subscribe((result: any) => {
         this.driverData = result.Items[0];
+
         if(this.driverData.middleName) {
           this.dummyEntity = `${this.driverData.firstName} ${this.driverData.middleName} ${this.driverData.lastName}`;
         } else {
           this.dummyEntity = `${this.driverData.firstName} ${this.driverData.lastName}`;
         }
         
-        this.cheqdata.entityName =
-          this.driverData.firstName + " " + this.driverData.lastName;
+        this.cheqdata.entityName =this.dummyEntity;
         let addr = result.Items[0].address[0];
         if (addr.manual) {
           this.cheqdata.entityAddress = `${addr.address}, ${addr.stateName}, ${addr.cityName}, ${addr.countryName}, ${addr.zipCode}`;
