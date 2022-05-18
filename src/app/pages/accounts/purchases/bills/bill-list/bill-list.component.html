@@ -86,7 +86,7 @@
                             {{ dataMessage }}
                           </td>
                         </tr>
-                        <tr *ngFor="let data of payOrders">
+                        <tr *ngFor="let data of payOrders; let i = index;">
                           <td class="cursorpoint" [routerLink]="data.url">
                             {{ data.txnDate | date: "yyyy/MM/dd" }}
                           </td>
@@ -125,8 +125,11 @@
                           <td>
                             <div class="btn-group p-0
                                                             flex-wrap">
-                              <button type="button" class="mb-1 mt-1
-                                                                mr-1 btn" data-toggle="dropdown"><i class="fas
+                              <button type="button" class="p-0 btn" [disabled]="
+                                                                data.status === 'paid' ||
+                                        data.status === 'voided' ||
+                                        data.status === 'partially paid'
+                                                              " data-toggle="dropdown"><i class="fas
                                                                     fa-ellipsis-v"></i></button>
                               <div class="dropdown-menu" role="menu">
                                 <a class="dropdown-item
@@ -134,7 +137,7 @@
                                   [routerLink]="data.editUrl">Edit</a>
                                 <a class="dropdown-item
                                                                     text-1" href="javascript:;"
-                                  (click)="voidBill(data)">Void</a>
+                                  (click)="voidBill(data, i)">Void</a>
                               </div>
                             </div>
                           </td>
