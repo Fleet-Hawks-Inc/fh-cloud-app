@@ -11,6 +11,12 @@ const routes: Routes = [
     data: { title: "All Orders" },
   },
   {
+    path: "scheduler",
+    loadChildren: () =>
+      import("./scheduler/scheduler.module").then((m) => m.SchedularModule),
+    data: { title: "All Schedules" },
+  },
+  {
     path: "trips",
     loadChildren: () => import("./trips/trip.module").then((m) => m.TripModule),
     data: { title: "All Trips" },

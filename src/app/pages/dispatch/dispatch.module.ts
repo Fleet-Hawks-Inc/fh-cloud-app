@@ -17,7 +17,6 @@ import { HttpClientModule } from '@angular/common/http';
 
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { DispatchOverviewComponent } from './home/dispatch-overview/dispatch-overview.component';
-
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */

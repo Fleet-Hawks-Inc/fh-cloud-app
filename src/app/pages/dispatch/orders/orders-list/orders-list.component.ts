@@ -32,6 +32,8 @@ export class OrdersListComponent implements OnInit {
   @ViewChild("confirmEmailModal", { static: true })
   confirmEmailModal: TemplateRef<any>;
 
+  @ViewChild("schedularModal", {static:true}) schedularModal:TemplateRef<any>
+
   dataMessage: string = Constants.FETCHING_DATA;
   noOrdersMsg = Constants.NO_RECORDS_FOUND;
   orders = [];
@@ -231,6 +233,12 @@ export class OrdersListComponent implements OnInit {
   _selectedColumns: any[];
   // pickupLocData = []
   isOrderPriceEnabled = environment.isOrderPriceEnabled
+  scheduler={
+    name:null,
+    time:null,
+    type:null,
+    range:null
+  }
 
   constructor(
     private apiService: ApiService,
@@ -834,5 +842,16 @@ export class OrdersListComponent implements OnInit {
   */
   clear(table: Table) {
     table.clear();
+  }
+
+  openSchedulerModal(){
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: true,
+      windowClass: "schedular--modal",
+    };
+    this.confirmRef = this.modalService.open(
+      this.schedularModal,
+      ngbModalOptions
+    );
   }
 }
