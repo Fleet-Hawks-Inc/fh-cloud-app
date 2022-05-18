@@ -230,6 +230,7 @@ export class CompanyProfileComponent implements OnInit {
       .remove('label');
   }
 
+  subscriptions: ISubscriptionInfo[];
   fetchCarrier() {
     this.apiService.getData(`carriers/${this.companyID}`)
       .subscribe((result: any) => {
@@ -256,6 +257,10 @@ export class CompanyProfileComponent implements OnInit {
           }
           if (!this.carriers.parentID) {
             this.showSubCompany = true;
+          }
+          if (result.subscriptions && result.subscriptions.length > 0) {
+            this.subscriptions = result.subscriptions as ISubscriptionInfo[];
+            console.log(this.subscriptions);
           }
         }
       });
@@ -382,4 +387,14 @@ class UserInfo {
 
   @required()
   carrierName: string
+}
+
+
+interface ISubscriptionInfo {
+  name: string,
+  activated_at: string;
+  plan_code: string;
+  last_billing_at: string;
+  next_billing_at: string;
+  amount: number
 }
