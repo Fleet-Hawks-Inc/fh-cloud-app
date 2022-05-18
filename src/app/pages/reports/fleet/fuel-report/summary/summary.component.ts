@@ -496,35 +496,6 @@ def_ConsumedGL = 0;
                 dataObject.push(obj)
             });
             
-            let totObjFuelConsumed = {
-            ['Total fuel consumed LTR'] : 'Total fuel consumed',
-            ['Total fuel consumed GL'] : ''
-            }
-            if(this.searchActive === true){
-            totObjFuelConsumed['Total fuel consumed LTRR'] = this.disel_ConsumedLTR.toFixed() + ' LTR'
-            totObjFuelConsumed['Total fuel consumed GLL'] =  this.disel_ConsumedGL.toFixed() + 'GL' + '\n'
-            }else{
-            this.searchActive = false;
-            totObjFuelConsumed['Total fuel consumed LTRR'] = this.disel_ConsumedLTR.toFixed() + ' LTR'
-            totObjFuelConsumed['Total fuel consumed GLL'] =  this.disel_ConsumedGL.toFixed() + ' GL' + '\n'
-            }
-            dataObject.push('\n',totObjFuelConsumed)
-            
-
-            let totObjFinalTotal = {
-              ['Total fuel cost CAD'] : 'Total fuel Cost',
-              ['Total fuel cost USD'] : ''
-            }
-            if(this.searchActive === true){
-            totObjFinalTotal['Total Fuel Cost CAD'] = this.finalFuelRunningCAD.toFixed() + ' CAD'
-            totObjFinalTotal['Total Fuel Cost USD'] = this.finalFuelRunningUSD.toFixed() + ' USD'
-            }else{
-            this.searchActive = false;
-            totObjFinalTotal['Total Fuel Cost CAD'] = this.finalFuelRunningCAD.toFixed() + ' CAD'
-            totObjFinalTotal['Total Fuel Cost USD'] = this.finalFuelRunningUSD.toFixed() + ' USD'
-            }
-            dataObject.push(totObjFinalTotal)
-            
             let headers = Object.keys(dataObject[0]).join(',')
             headers += '\n'
             csvArray.push(headers)
