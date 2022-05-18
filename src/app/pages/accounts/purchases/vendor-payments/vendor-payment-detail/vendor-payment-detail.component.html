@@ -8,6 +8,10 @@
                      Payment# - {{ paymentData.paymentNo }}</h4>
                </div>
                <div class="col-md-8 col-lg-8 text-right pr-1">
+                  <button type="button" [disabled]="downloadDisabled" class="btn btn-success btn-sm mr-2"
+                     (click)="openModal()">
+                     Payment PDF
+                  </button>
                   <button type="button" (click)="showCheque()" [disabled]="downloadDisabled"
                      class="btn btn-success btn-sm mr-3">
                      <i class="fas fa-download"></i> Cheque
@@ -79,6 +83,7 @@
                                           <td width="40%" class="back-color-gray
                                              font-weight-bold">Purchase Bill(s)</td>
                                           <td width="60%">
+                                             <span *ngIf="paymentData.billData.length === 0">-</span>
                                              <span *ngFor="let data of
                                                 paymentData.billData; let
                                                 i=index">
@@ -229,4 +234,197 @@
       </section>
    </div>
 </section>
+
+<ng-template #previewVenPayment let-modal>
+   <div class="modal-content">
+      <div class="modal-body text-dark">
+         <table width="98%" border="0" id="print-adv-pay" align="center" cellpadding="0" cellspacing="0">
+            <tbody>
+               <tr>
+                  <td colspan="2">&nbsp;</td>
+               </tr>
+               <tr>
+                  <td>
+                     <h1 style="font-size: 26px; color: #212529">Vendor Payment</h1>
+                  </td>
+                  <td align="right">
+                     <img crossorigin="anonymous" *ngIf="companyLogo" [src]="companyLogo" alt="logo"
+                        style="max-width: 100px" />
+                     <p *ngIf="tagLine" class="mb-0" style="font-size: 18px; margin-top: 10px; font-weight: 600">
+                        {{ tagLine }}
+                     </p>
+                  </td>
+               </tr>
+               <tr>
+                  <td>&nbsp;</td>
+                  <td width="50%">&nbsp;</td>
+               </tr>
+               <tr>
+                  <td colspan="2" height="3" bgcolor="#dddddd"></td>
+               </tr>
+               <tr>
+                  <td width="50%" valign="top">
+                     <p class="mt-3 mb-0 text-dark" style="font-size: 13px; margin-bottom: 10px">
+                        Company
+                     </p>
+                     <h2 class="text-capitalize" style="
+                   color: #212529;
+                   font-size: 20px;
+                   margin-top: 0px;
+                   margin-bottom: 10px;
+                 ">
+                        {{ carrierName ? carrierName : "NA" }}
+                     </h2>
+                  </td>
+                  <td valign="top">
+                     <table width="80%" border="0" align="right" cellpadding="0" cellspacing="0">
+                        <tbody>
+                           <tr>
+                              <td align="right">
+                                 <p class="mt-3 mb-0 text-dark" style="font-size: 13px; margin-bottom: 10px">
+                                    Vendor Payment#
+                                    <span style="
+                             font-size: 16px;
+                             font-weight: 600;
+                             margin-top: 0px;
+                           ">{{ paymentData.paymentNo }}</span>
+                                 </p>
+                                 <p class="mt-3 mb-0 text-dark" style="font-size: 13px; margin-bottom: 10px">
+                                    Amount:
+                                    <span style="
+                             font-size: 16px;
+                             font-weight: 600;
+                             margin-top: 0px;
+                           ">{{ paymentData.total.finalTotal | number: "1.2-2" }}
+                                       {{ paymentData.currency }}</span>
+                                 </p>
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2" height="3" bgcolor="#dddddd"></td>
+               </tr>
+               <tr>
+                  <td colspan="2">&nbsp;</td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table class="table table-bordered">
+                        <thead>
+                           <tr class="">
+                              <th width="20%">Payment Date</th>
+
+                              <th width="20%">Paid To</th>
+                              <th width="20%">Advance Payment</th>
+                              <th width="20%">Balance Amount</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td>
+                                 {{ paymentData.txnDate | date: "yyyy/MM/dd" }}
+                              </td>
+                              <td>
+                                 {{ vendorName }}
+                              </td>
+                              <td>
+                                 {{ paymentData.total.advTotal | number: "1.2-2" }}
+                                 {{ paymentData.currency }}
+                              </td>
+                              <td>
+                                 {{ pendingAmt | number: "1.2-2" }}
+                                 {{ paymentData.currency }}
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tbody>
+                           <tr>
+                              <td>
+                                 <table border="0" cellpadding="0" cellspacing="0">
+                                    <tbody>
+                                       <tr>
+                                          <td>
+                                             <p style="font-size: 16px; color: #212529">
+                                                <strong>Other Detail</strong>
+                                             </p>
+                                          </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </td>
+                              <td width="50%">&nbsp;</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr valign="top">
+                  <td colspan="2">
+                     <table class="table table-bordered text-capitalize">
+                        <thead>
+                           <tr class="">
+                              <th width="30%">Payment Mode</th>
+                              <th width="30%">{{ paymentData.payMode }} Date</th>
+                              <th width="20%">{{ paymentData.payMode }} Reference#</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td>
+                                 {{ paymentData.payMode }}
+                              </td>
+                              <td>
+                                 {{ paymentData.payModeDate | date: "yyyy/MM/dd" }}
+                              </td>
+                              <td>
+                                 {{ paymentData.payModeNo }}
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">
+                     <table border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tbody>
+                           <tr>
+                              <td align="center">
+                                 <h2 style="font-size: 13px; color: #212529">
+                                    Powered By
+                                 </h2>
+                                 <img alt="Fleet Hawks Inc." src="assets/img/logo.png" width="207" height="28" />
+                              </td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </td>
+               </tr>
+               <tr>
+                  <td colspan="2">&nbsp;</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-default" (click)="modal.dismiss()">
+            Close
+         </button>
+         <button type="button" class="btn btn-success" (click)="generatePaymentPDF()">
+            Download PDF
+         </button>
+      </div>
+   </div>
+</ng-template>
+
+
 <app-payment-cheque></app-payment-cheque>

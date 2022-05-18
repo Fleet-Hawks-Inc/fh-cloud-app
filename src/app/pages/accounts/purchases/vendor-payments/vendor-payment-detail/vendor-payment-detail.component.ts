@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService, ListService } from "src/app/services";
 
@@ -9,7 +10,11 @@ import { AccountService, ApiService, ListService } from "src/app/services";
   styleUrls: ["./vendor-payment-detail.component.css"],
 })
 export class VendorPaymentDetailComponent implements OnInit {
+  @ViewChild("previewVenPayment", { static: true })
+  previewVenPayment: TemplateRef<any>;
+
   dataMessage: string = Constants.NO_RECORDS_FOUND;
+  pendingAmt: any;
   paymentData = {
     paymentNo: "",
     txnDate: null,
@@ -35,14 +40,17 @@ export class VendorPaymentDetailComponent implements OnInit {
   paymentID;
   bills = {};
   downloadDisabled = true;
+  downloadDisabledpdf = true;
 
   showModal = false;
+  venPayRef: any;
 
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
     private route: ActivatedRoute,
     private listService: ListService,
+    private modalService: NgbModal,
   ) { }
 
   async ngOnInit() {
@@ -57,7 +65,9 @@ export class VendorPaymentDetailComponent implements OnInit {
       .getData(`purchase-payments/details/${this.paymentID}`)
       .toPromise();
     this.downloadDisabled = false;
+    this.downloadDisabledpdf = false;
     this.paymentData = result[0];
+    this.pendingAmt = this.paymentData.total.finalTotal - this.paymentData.total.advTotal;
     this.paymentData.payMode = this.paymentData.payMode.replace("_", " ");
   }
 
@@ -95,6 +105,15 @@ export class VendorPaymentDetailComponent implements OnInit {
       advance: this.paymentData.total.advTotal
     };
     this.listService.openPaymentChequeModal(obj);
+  }
+
+  openModal() {
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "preview-adv-pay",
+    };
+    this.venPayRef = this.modalService.open(this.previewVenPayment, ngbModalOptions)
   }
 
 }

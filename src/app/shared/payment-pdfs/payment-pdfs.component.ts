@@ -9,9 +9,9 @@ import { Auth } from "aws-amplify";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
-  selector: "app-payment-pdfs",
-  templateUrl: "./payment-pdfs.component.html",
-  styleUrls: ["./payment-pdfs.component.css"],
+  selector: 'app-payment-pdfs',
+  templateUrl: './payment-pdfs.component.html',
+  styleUrls: ['./payment-pdfs.component.css']
 })
 export class PaymentPdfsComponent implements OnInit {
   constructor(
@@ -129,15 +129,18 @@ export class PaymentPdfsComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
       async (res: any) => {
-
+        console.log('res', res)
         if (res.showModal && res.length != 0) {
           res.showModal = false;
+          console.log('135')
           this.paymentData = res.data;
 
           this.paymentData.workerBenefit = 0;
-          this.paymentData.incomeTax =
-            Number(this.paymentData.taxdata.federalTax) +
-            Number(this.paymentData.taxdata.provincialTax);
+          if (this.paymentData.taxdata) {
+            this.paymentData.incomeTax =
+              Number(this.paymentData.taxdata.federalTax) +
+              Number(this.paymentData.taxdata.provincialTax);
+          }
           this.paymentData.payMode = this.paymentData.payMode.replace("_", " ");
           this.paymentData.eiInsurable = this.paymentData.totalAmount;
 
@@ -153,7 +156,7 @@ export class PaymentPdfsComponent implements OnInit {
           } else if (
             this.paymentData.paymentTo === "owner_operator" ||
             this.paymentData.paymentTo === "carrier" ||
-            this.paymentData.paymentTo === "employee"
+            this.paymentData.paymentTo === "employee" || this.paymentData.paymentTo === "vendor"
           ) {
             this.fetchCarrierDetails();
           }
@@ -375,7 +378,7 @@ export class PaymentPdfsComponent implements OnInit {
     let tripIDs = encodeURIComponent(JSON.stringify(this.setlTripIds));
     this.paymentTrips = [];
     let result: any = await this.apiService
-      .getData(`trips/driver/settled?entities=${tripIDs}`) 
+      .getData(`trips/driver/settled?entities=${tripIDs}`)
       .toPromise();
     this.trips = result;
 
@@ -406,26 +409,26 @@ export class PaymentPdfsComponent implements OnInit {
                       assetNames: plan.assetNames ? plan.assetNames.toString() : '',
                       showMiles: `${plan.mileType} - ${plan.miles}`,
                     };
-                    if(v.paymentSelected) {
-                      if(v.paymentSelected[0].pType == 'pfr') {
+                    if (v.paymentSelected) {
+                      if (v.paymentSelected[0].pType == 'pfr') {
                         planObj.rate = ''
                         obj.finalRate = v.paymentSelected[0].flatRate
-                      } else if(v.paymentSelected[0].pType == 'ppm') {
-                          if(plan.mileType === 'loaded') {
-                            if(plan.driverID || plan.coDriverID) {
-                              planObj.rate = v.paymentSelected[0].loadedMiles
-                            } else if(plan.driverID && plan.coDriverID) {
-                              planObj.rate = v.paymentSelected[0].loadedMilesTeam
-                            }
-
-                          } else {
-                            if(plan.driverID || plan.coDriverID) {
-                              planObj.rate = v.paymentSelected[0].emptyMiles
-                            } else if(plan.driverID && plan.coDriverID) {
-                              planObj.rate = v.paymentSelected[0].emptyMilesTeam
-                            }
+                      } else if (v.paymentSelected[0].pType == 'ppm') {
+                        if (plan.mileType === 'loaded') {
+                          if (plan.driverID || plan.coDriverID) {
+                            planObj.rate = v.paymentSelected[0].loadedMiles
+                          } else if (plan.driverID && plan.coDriverID) {
+                            planObj.rate = v.paymentSelected[0].loadedMilesTeam
                           }
-                          obj.finalRate = v.amount
+
+                        } else {
+                          if (plan.driverID || plan.coDriverID) {
+                            planObj.rate = v.paymentSelected[0].emptyMiles
+                          } else if (plan.driverID && plan.coDriverID) {
+                            planObj.rate = v.paymentSelected[0].emptyMilesTeam
+                          }
+                        }
+                        obj.finalRate = v.amount
                       }
                     }
                     obj.plans.push(planObj);
@@ -448,22 +451,22 @@ export class PaymentPdfsComponent implements OnInit {
                   showMiles: `${plan.mileType} - ${plan.miles}`,
                 };
 
-                if(v.paymentSelected) {
-                  if(v.paymentSelected[0].pType == 'pfr') {
+                if (v.paymentSelected) {
+                  if (v.paymentSelected[0].pType == 'pfr') {
                     planObj.rate = ''
                     obj.finalRate = v.paymentSelected[0].flatRate
-                  } else if(v.paymentSelected[0].pType == 'ppm') {
-                    if(plan.mileType === 'loaded') {
-                      if(plan.driverID || plan.coDriverID) {
+                  } else if (v.paymentSelected[0].pType == 'ppm') {
+                    if (plan.mileType === 'loaded') {
+                      if (plan.driverID || plan.coDriverID) {
                         planObj.rate = v.paymentSelected[0].loadedMiles
-                      } else if(plan.driverID && plan.coDriverID) {
+                      } else if (plan.driverID && plan.coDriverID) {
                         planObj.rate = v.paymentSelected[0].loadedMilesTeam
                       }
 
                     } else {
-                      if(plan.driverID || plan.coDriverID) {
+                      if (plan.driverID || plan.coDriverID) {
                         planObj.rate = v.paymentSelected[0].emptyMiles
-                      } else if(plan.driverID && plan.coDriverID) {
+                      } else if (plan.driverID && plan.coDriverID) {
                         planObj.rate = v.paymentSelected[0].emptyMilesTeam
                       }
                     }
@@ -486,14 +489,14 @@ export class PaymentPdfsComponent implements OnInit {
       for (const plan of item.plans) {
         item.totalMiles += parseFloat(plan.miles);
       }
-      if(item.paymentSelected) {
-        if(item.paymentSelected && item.paymentSelected.pType == 'ppm') {
+      if (item.paymentSelected) {
+        if (item.paymentSelected && item.paymentSelected.pType == 'ppm') {
           this.grandTotal += item.totalMiles;
         }
       } else {
         this.grandTotal += item.totalMiles;
       }
-      
+
     }
   }
 
@@ -608,4 +611,5 @@ export class PaymentPdfsComponent implements OnInit {
     this.companyLogo = result.logo;
     this.tagLine = result.tagLine;
   };
+
 }

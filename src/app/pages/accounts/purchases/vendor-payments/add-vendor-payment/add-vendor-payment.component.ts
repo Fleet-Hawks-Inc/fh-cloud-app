@@ -24,6 +24,7 @@ export class AddVendorPaymentComponent implements OnInit {
 
   paymentData = {
     txnDate: moment().format("YYYY-MM-DD"),
+    paymentTo: null,
     vendorID: null,
     refNo: "",
     currency: "CAD",
@@ -316,6 +317,7 @@ export class AddVendorPaymentComponent implements OnInit {
 
   addRecord() {
     this.submitDisabled = true;
+    this.paymentData.paymentTo = 'vendor';
     this.accountService
       .postData("purchase-payments", this.paymentData)
       .subscribe({

@@ -12,8 +12,6 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
 import { AddAccountModule } from "../add-account/add-account.module";
-import { PaymentChequeComponent } from "../../../shared/payment-cheque/payment-cheque.component";
-import { PaymentPdfsComponent } from "../payment-pdfs/payment-pdfs.component";
 import { AddAdvancePaymentComponent } from "./advance-payments/add-advance-payment/add-advance-payment.component";
 import { AdvancePaymentsDetailComponent } from "./advance-payments/advance-payments-detail/advance-payments-detail.component";
 import { AdvancePaymentsListComponent } from "./advance-payments/advance-payments-list/advance-payments-list.component";
@@ -203,8 +201,6 @@ const routes: Routes = [
     EmployeePaymentDetailComponent,
     AddEmployeePaymentComponent,
     EmployeePaymentListComponent,
-    // PaymentChequeComponent,
-    PaymentPdfsComponent,
     AddVendorPaymentComponent,
     VendorPaymentListComponent,
     VendorPaymentDetailComponent,
