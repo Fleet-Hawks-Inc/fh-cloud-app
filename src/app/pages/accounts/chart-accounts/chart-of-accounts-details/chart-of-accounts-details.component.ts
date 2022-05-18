@@ -186,9 +186,9 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
         if (res[res.length - 1].sk !== undefined) {
           this.lastKey = encodeURIComponent(res[res.length - 1].sk);
         }
-        if (res[res.length - 1].trxCreated !== undefined) {
+        if (res[res.length - 1].logDate !== undefined) {
           this.lastTimestamp = encodeURIComponent(
-            res[res.length - 1].trxCreated
+            res[res.length - 1].logDate
           );
         }
       }
