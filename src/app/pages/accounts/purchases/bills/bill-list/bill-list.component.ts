@@ -83,15 +83,14 @@ export class BillListComponent implements OnInit {
     this.purchaseOrders = result;
   }
 
-  voidBill(data) {
+  voidBill(data, i) {
     if (confirm("Are you sure you want to void?") === true) {
       this.accountService.deleteData(`bills/void/${data.billID}`).subscribe({
         complete: () => { },
         error: () => { },
         next: (result: any) => {
           this.dataMessage = Constants.FETCHING_DATA;
-          this.payOrders = [];
-          this.fetchBills();
+          this.payOrders[i].status = 'voided';
           this.toastr.success("Bill voided successfully");
         },
       });
