@@ -391,7 +391,6 @@ export class AddEmployeePaymentComponent implements OnInit {
       this.toaster.error("Please enter valid amount");
       return false;
     }
-
     this.submitDisabled = true;
     this.accountService
       .postData("employee-payments", this.paymentData)
@@ -786,6 +785,16 @@ export class AddEmployeePaymentComponent implements OnInit {
       this.paymentData.taxes = 0;
       this.paymentData.vacPayPer = 0
       this.paymentData.vacPayAmount = 0;
+
+      this.paymentData.taxdata.emplCPP = 0;
+      this.paymentData.taxdata.emplEI = 0;
+      this.paymentData.taxdata.federalCode = '';
+      this.paymentData.taxdata.federalTax = 0;
+      this.paymentData.taxdata.payPeriod = '';
+      this.paymentData.taxdata.provincialCode = '';
+      this.paymentData.taxdata.provincialTax = 0;
+      this.paymentData.taxdata.stateCode = '';
+
       this.paymentData.vendorId = this.empDetails.vendorID;
     } else {
       this.isVendor = false;
