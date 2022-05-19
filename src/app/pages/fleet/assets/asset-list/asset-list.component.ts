@@ -119,7 +119,7 @@ export class AssetListComponent implements OnInit {
     { width: '12%', field: 'licencePlateNumber', header: 'Licence Plate Number', type: "text" },
     { width: '6%', field: 'year', header: 'Year', type: "text" },
     { width: '8%', field: 'ownerShip', header: 'Ownership', type: "text" },
-    { width: '10%', field: 'ownCname', header: 'Company Name', type: "text" },
+    { width: '10%', field: 'operatorCompany', header: 'Company Name', type: "text" },
     { width: '10%', field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
     { width: '6%', field: "currentStatus", header: 'Status', type: 'text' },
     { width: '8%', field: 'isImport', header: 'Added By', type: "text" },

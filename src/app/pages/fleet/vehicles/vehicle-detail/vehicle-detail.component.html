@@ -49,7 +49,7 @@
                         Vehicle Type:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
-                        {{ vehicleTypeObects[vehicleType] }}
+                        {{ vehicleType ? vehicleTypeObects[vehicleType] : '-'}}
                       </div>
                     </div>
                     <div class="row m-0">
@@ -78,11 +78,11 @@
                       </div>
                       <div *ngIf="vehicleManufacturersList[manufacturerID]" class="col-lg-8 p-2 border-box">
                         {{
-                        vehicleManufacturersList[manufacturerID] | titlecase
+                        manufacturerID ? vehicleManufacturersList[manufacturerID] : '-' | titlecase
                         }}
                       </div>
                       <div *ngIf="!vehicleManufacturersList[manufacturerID]" class="col-lg-8 p-2 border-box">
-                        {{ manufacturerID | titlecase }}
+                        {{ (manufacturerID ? manufacturerID : '-') | titlecase }}
                       </div>
                     </div>
                     <div class="row m-0">
@@ -90,10 +90,10 @@
                         Model:
                       </div>
                       <div *ngIf="vehicleModelList[modelID]" class="col-lg-8 p-2 border-box">
-                        {{ vehicleModelList[modelID] | titlecase }}
+                        {{ (modelID ? vehicleModelList[modelID] : '-') | titlecase }}
                       </div>
                       <div *ngIf="!vehicleModelList[modelID]" class="col-lg-8 p-2 border-box">
-                        {{ modelID | titlecase }}
+                        {{ (modelID ? modelID : '-') | titlecase }}
                       </div>
                     </div>
                     <div class="row m-0">
@@ -101,7 +101,7 @@
                         Country:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
-                        {{ countryName }}
+                        {{ countryName ? countryName : '-' }}
                       </div>
                     </div>
                     <div class="row m-0">
@@ -109,7 +109,7 @@
                         Province/State:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
-                        {{ stateName }}
+                        {{ stateName ? stateName : '-' }}
                       </div>
                     </div>
                     <div class="row m-0">
@@ -117,7 +117,7 @@
                         Assign Driver:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
-                        {{ driversList[driverID] }}
+                        {{driverID ? driversList[driverID] : '-'}}
                       </div>
                     </div>
                     <div class="row m-0">
@@ -125,7 +125,7 @@
                         Driver's Team:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
-                        {{ driversList[teamDriverID] }}
+                        {{ teamDriverID ? driversList[teamDriverID] : '-'}}
                       </div>
                     </div>
 
@@ -138,7 +138,7 @@
                         Annual Safety Date:
                       </div>
                       <div class="col-lg-8 p-2 border-box">
-                        {{ annualSafetyDate | date: "yyyy/MM/dd" }}
+                        {{ annualSafetyDate ? (annualSafetyDate | date: "yyyy/MM/dd") : '-'}}
                       </div>
                     </div>
 
@@ -163,7 +163,7 @@
                         Ownership:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
-                        {{ ownership }}
+                        {{ ownership ? ownership : '-' }}
                       </div>
                     </div>
 
@@ -172,7 +172,7 @@
                         Owner Operator:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
-                        {{ contactsObjects[ownerOperatorName] }}
+                        {{ ownerOperatorName ? contactsObjects[ownerOperatorName] : '-' }}
                       </div>
                     </div>
 
@@ -190,7 +190,7 @@
                         Color:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
-                        {{ vehicleColor }}
+                        {{ vehicleColor ? vehicleColor : '-' }}
                       </div>
                     </div>
 
@@ -199,8 +199,10 @@
                         Inspection Form:
                       </div>
                       <div class="col-lg-8 p-2 border-box">
-                        <a href="#inspectionFormModal" data-toggle="modal" data-target="#inspectionFormModal"
-                          class="modal-with-form font-weight-bold text-capitalize">{{ inspectionForms.inspectionFormName
+                        <span *ngIf="!inspectionForms.inspectionFormName">-</span>
+                        <a href="#inspectionFormModal" *ngIf="inspectionForms.inspectionFormName" data-toggle="modal"
+                          data-target="#inspectionFormModal" class="modal-with-form font-weight-bold text-capitalize">{{
+                          inspectionForms.inspectionFormName
                           }}</a>
                       </div>
                     </div>
@@ -482,7 +484,7 @@
                       Start Date:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ lifeCycle.startDate | date: "yyyy/MM/dd" }}
+                      {{ lifeCycle.startDate ? (lifeCycle.startDate | date: "yyyy/MM/dd") : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -490,7 +492,7 @@
                       In-Service Odometer in Miles:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ lifeCycle.inServiceOdometer }}
+                      {{ lifeCycle.inServiceOdometer ? lifeCycle.inServiceOdometer : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -498,7 +500,7 @@
                       Service Life in Years:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ lifeCycle.estimatedServiceYear }}
+                      {{ lifeCycle.estimatedServiceYear ? lifeCycle.estimatedServiceYear : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -506,7 +508,7 @@
                       Service Life in Months:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ lifeCycle.estimatedServiceMonths }}
+                      {{ lifeCycle.estimatedServiceMonths ? lifeCycle.estimatedServiceMonths : '-' }}
                     </div>
                   </div>
                 </div>
@@ -517,7 +519,7 @@
                       Service Life in Miles:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ lifeCycle.estimatedServiceMiles }}
+                      {{ lifeCycle.estimatedServiceMiles ? lifeCycle.estimatedServiceMiles : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -525,7 +527,7 @@
                       Depreciation Value:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ lifeCycle.estimatedResaleValue }}
+                      {{ lifeCycle.estimatedResaleValue ? lifeCycle.estimatedResaleValue : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -533,7 +535,7 @@
                       Out-of-Service Date:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ lifeCycle.outOfServiceDate | date: "yyyy/MM/dd" }}
+                      {{ lifeCycle.outOfServiceDate ? (lifeCycle.outOfServiceDate | date: "yyyy/MM/dd") : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -541,7 +543,7 @@
                       Out-of-Service Odometer in Miles:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ lifeCycle.outOfServiceOdometer }}
+                      {{ lifeCycle.outOfServiceOdometer ? lifeCycle.outOfServiceOdometer : '-' }}
                     </div>
                   </div>
                 </div>
@@ -571,7 +573,7 @@
                       Height:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
-                      {{ specifications.height }}
+                      {{ specifications.height ? specifications.height : '0' }}
                       {{ specifications.heightUnit }}
                     </div>
                   </div>
@@ -580,7 +582,7 @@
                       Ground Clearance:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
-                      {{ specifications.groundClearnce }}
+                      {{ specifications.groundClearnce ? specifications.groundClearnce : '0' }}
                       {{ specifications.groundClearnceUnit }}
                     </div>
                   </div>
@@ -601,7 +603,7 @@
                       {{
                       specifications.tareWeight
                       ? specifications.tareWeight + " kg"
-                      : ""
+                      : "-"
                       }}
                     </div>
                   </div>
@@ -613,7 +615,7 @@
                       {{
                       specifications.grossVehicleWeightRating
                       ? specifications.grossVehicleWeightRating + " kg"
-                      : ""
+                      : "-"
                       }}
                     </div>
                   </div>
@@ -636,7 +638,7 @@
                       Insurance Vendor:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
-                      {{ contactsObjects[insurance.vendorID] }}
+                      {{ insurance.vendorID ? contactsObjects[insurance.vendorID] : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -644,7 +646,7 @@
                       Date of Issue:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ insurance.dateOfIssue | date: "yyyy/MM/dd" }}
+                      {{ insurance.dateOfIssue ? (insurance.dateOfIssue | date: "yyyy/MM/dd") : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -652,7 +654,7 @@
                       Premium Amount:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ insurance.premiumAmount }}
+                      {{ insurance.premiumAmount ? insurance.premiumAmount : '-'}}
                       {{ insurance.premiumCurrency }}
                     </div>
                   </div>
@@ -661,7 +663,7 @@
                       Date of Expiry:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ insurance.dateOfExpiry | date: "yyyy/MM/dd" }}
+                      {{ insurance.dateOfExpiry ? (insurance.dateOfExpiry | date: "yyyy/MM/dd") : '-' }}
                     </div>
                   </div>
                 </div>
@@ -679,14 +681,14 @@
                     </div>
                     <div class="col-lg-8 p-2 border-box" *ngIf="
                         insurance.reminder == null || insurance.reminder == ''
-                      "></div>
+                      ">-</div>
                   </div>
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Insurance Policy#:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ insurance.policyNumber }}
+                      {{ insurance.policyNumber ? insurance.policyNumber : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -694,7 +696,7 @@
                       Insurance Amount:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ insurance.amount }} {{ insurance.amountCurrency }}
+                      {{ insurance.amount ? insurance.amount : '-'}} {{ insurance.amountCurrency }}
                     </div>
                   </div>
                 </div>
@@ -718,7 +720,7 @@
                       Engine Summary:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
-                      {{ engine.engineSummary }}
+                      {{ engine.engineSummary ? engine.engineSummary : '-'}}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -726,7 +728,7 @@
                       Engine Brand:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
-                      {{ engine.engineBrand }}
+                      {{ engine.engineBrand ? engine.engineBrand : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -734,7 +736,7 @@
                       Cylinders:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
-                      {{ engine.cylinders }}
+                      {{ engine.cylinders ? engine.cylinders : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -742,7 +744,7 @@
                       Stroke:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ engine.stroke }}
+                      {{ engine.stroke ? engine.stroke : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -750,18 +752,18 @@
                       Valves:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ engine.valves }}
+                      {{ engine.valves ? engine.valves : '-'}}
                     </div>
                   </div>
                 </div>
-                <!-- Transmission DIV -->
+                <!-- Transmission DIV  -->
                 <div class="col-lg-6">
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Transmission Summary:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
-                      {{ engine.transmissionSummary }}
+                      {{ engine.transmissionSummary ? engine.transmissionSummary : '-' }}
                     </div>
                   </div>
 
@@ -770,7 +772,7 @@
                       Transmission Type:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
-                      {{ engine.transmissionType }}
+                      {{ engine.transmissionType ? engine.transmissionType : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -778,7 +780,7 @@
                       Transmission Gears:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ engine.transmissionGears }}
+                      {{ engine.transmissionGears ? engine.transmissionGears : '-' }}
                     </div>
                   </div>
                 </div>
@@ -801,7 +803,7 @@
                       Number of Tires:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ wheelsAndTyres.numberOfTyres }}
+                      {{ wheelsAndTyres.numberOfTyres ? wheelsAndTyres.numberOfTyres : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -809,7 +811,7 @@
                       Drive Type:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
-                      {{ wheelsAndTyres.driveType }}
+                      {{ wheelsAndTyres.driveType ? wheelsAndTyres.driveType : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -817,7 +819,7 @@
                       Brake System:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
-                      {{ wheelsAndTyres.brakeSystem }}
+                      {{ wheelsAndTyres.brakeSystem ? wheelsAndTyres.brakeSystem : '-' }}
                     </div>
                   </div>
                 </div>
@@ -839,14 +841,13 @@
                     <div class="col-lg-4 p-2 font-weight-bold text-5">
                       Fuel Tanks
                     </div>
-                    <!-- <div class="col-lg-8 p-2 text-right" ><a href="edit-vehicle.php" class="btn btn-xs btn-default"><i class="fas fa-pencil-alt"></i>Edit</a></div> -->
                   </div>
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                       Fuel Type:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
-                      {{ fluid.fuelType }}
+                      {{ fluid.fuelType ? fluid.fuelType : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -854,7 +855,7 @@
                       Fuel Tank 1 Capacity:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ fluid.fuelTankOneCapacity }}
+                      {{ fluid.fuelTankOneCapacity ? fluid.fuelTankOneCapacity : '-' }}
                       {{ fluid.fuelTankOneType }}
                     </div>
                   </div>
@@ -866,16 +867,16 @@
                       -
                     </div>
                     <div class="col-lg-8 p-2 border-box" *ngIf="fluid.fuelTankTwoCapacity != 0">
-                      {{ fluid.fuelTankTwoCapacity }}
+                      {{ fluid.fuelTankTwoCapacity ? fluid.fuelTankTwoCapacity : '-' }}
                       {{ fluid.fuelTankTwoType }}
                     </div>
                   </div>
                 </div>
-                <!-- WEIGHT DIV -->
+
                 <div class="col-lg-6">
                   <div class="row m-0 back-color-gray">
                     <div class="col-lg-4 p-2 font-weight-bold text-5">Oil</div>
-                    <!-- <div class="col-lg-8 p-2 text-right" ><a href="edit-vehicle.php" class="btn btn-xs btn-default"><i class="fas fa-pencil-alt"></i>Edit</a></div> -->
+
                   </div>
 
                   <div class="row m-0">
@@ -883,7 +884,7 @@
                       Oil Capacity:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ fluid.oilCapacity }} {{ fluid.oilCapacityType }}
+                      {{ fluid.oilCapacity ? fluid.oilCapacity : '-' }} {{ fluid.oilCapacityType }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -891,7 +892,7 @@
                       DEF(Diesel Exhaust Fluid) Capacity:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ fluid.def }} {{ fluid.defType }}
+                      {{ fluid.def ? fluid.def : '-' }} {{ fluid.defType }}
                     </div>
                   </div>
                 </div>
@@ -914,7 +915,7 @@
                       Purchase Vendor:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
-                      {{ contactsObjects[purchase.purchaseVendorID] }}
+                      {{ purchase.purchaseVendorID ? contactsObjects[purchase.purchaseVendorID] : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -922,7 +923,7 @@
                       Purchase Price :
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ purchase.purchasePrice }}
+                      {{ purchase.purchasePrice ? purchase.purchasePrice : '-' }}
                       {{ purchase.purchasePriceCurrency }}
                     </div>
                   </div>
@@ -940,7 +941,7 @@
                       Purchase Date:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ purchase.purchaseDate | date: "yyyy/MM/dd" }}
+                      {{ purchase.purchaseDate ? (purchase.purchaseDate | date: "yyyy/MM/dd") : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -948,7 +949,7 @@
                       Purchase Odometer in Miles:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ purchase.purchaseOdometer }}
+                      {{ purchase.purchaseOdometer ? purchase.purchaseOdometer : '-'}}
                     </div>
                   </div>
                   <div class="vehicle-common-box mt-4">
@@ -987,7 +988,8 @@
                       Warranty Expiration Date:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ purchase.warrantyExpirationDate | date: "yyyy/MM/dd" }}
+                      {{ purchase.warrantyExpirationDate ? (purchase.warrantyExpirationDate | date: "yyyy/MM/dd") : '-'
+                      }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -995,7 +997,7 @@
                       Warranty Expiration Meter:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ purchase.warrantyExpirationMeter }}
+                      {{ purchase.warrantyExpirationMeter ? purchase.warrantyExpirationMeter : '-'}}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -1003,7 +1005,7 @@
                       Purchase Comments:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
-                      {{ purchase.purchaseComments }}
+                      {{ purchase.purchaseComments ? purchase.purchaseComments : '-' }}
                     </div>
                   </div>
                 </div>
@@ -1026,7 +1028,7 @@
                       Loan Vendor:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
-                      {{ contactsObjects[loan.loanVendorID] }}
+                      {{ loan.loanVendorID ? contactsObjects[loan.loanVendorID] : '-'}}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -1034,7 +1036,7 @@
                       Amount of Loan:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ loan.amountOfLoan }} {{ loan.amountOfLoanCurrency }}
+                      {{ loan.amountOfLoan ? loan.amountOfLoan : '-' }} {{ loan.amountOfLoanCurrency }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -1045,7 +1047,7 @@
                       {{
                       loan.annualPercentageRate != ""
                       ? loan.annualPercentageRate + "%"
-                      : ""
+                      : "-"
                       }}
                     </div>
                   </div>
@@ -1062,7 +1064,7 @@
                       Down Payment:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ loan.downPayment }} {{ loan.downPaymentCurrency }}
+                      {{ loan.downPayment ? loan.downPayment : '-' }} {{ loan.downPaymentCurrency }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -1070,7 +1072,7 @@
                       Date of Loan:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ loan.dateOfLoan | date: "yyyy/MM/dd" }}
+                      {{ loan.dateOfLoan ? (loan.dateOfLoan | date: "yyyy/MM/dd") : '-'}}
                     </div>
                   </div>
                   <div class="vehicle-common-box mt-4">
@@ -1109,7 +1111,7 @@
                       Loan End Date:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ loan.loadEndDate | date: "yyyy/MM/dd" }}
+                      {{ loan.loadEndDate ? (loan.loadEndDate | date: "yyyy/MM/dd") : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -1117,7 +1119,7 @@
                       Loan Due Date:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ loan.loanDueDate | date: "yyyy/MM/dd" }}
+                      {{ loan.loanDueDate ? (loan.loanDueDate | date: "yyyy/MM/dd") : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -1125,7 +1127,7 @@
                       Loan Due Date Reminder:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ loan.lReminder }}
+                      {{ loan.lReminder ? 'Yes' : 'No' }}
                     </div>
                   </div>
 
@@ -1134,7 +1136,7 @@
                       Number of Payments:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ loan.numberOfPayments }}
+                      {{ loan.numberOfPayments ? loan.numberOfPayments : '-' }}
                     </div>
                   </div>
                   <div class="row m-0">
@@ -1142,7 +1144,7 @@
                       Monthly Payment:
                     </div>
                     <div class="col-lg-8 p-2 border-box">
-                      {{ loan.monthlyPayment }}
+                      {{ loan.monthlyPayment ? loan.monthlyPayment: '-' }}
                       {{ loan.monthlyPaymentCurrency }}
                     </div>
                   </div>
@@ -1151,7 +1153,7 @@
                       Notes:
                     </div>
                     <div class="col-lg-8 p-2 border-box text-capitalize">
-                      {{ loan.notes }}
+                      {{ loan.notes ? loan.notes : '-' }}
                     </div>
                   </div>
 

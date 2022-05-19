@@ -49,6 +49,7 @@
                                                     <h3 class="m-0"> Assets </h3>
                                                 </div>
                                                 <div class="text-right">
+                                                    <span>Showing {{allData.length}} entries </span> &nbsp;
                                                     <button type="button" pButton (click)="refreshData()"
                                                         pTooltip="Refresh" class="p-button-outlined mr-2"
                                                         icon="fas fa-sync"></button>
@@ -148,8 +149,19 @@
                                                             '-') | titlecase}}</span>
                                                         <span *ngSwitchCase="'ownerShip'"> {{((asset.ownerShip) ?
                                                             asset.ownerShip : "-") | titlecase}} </span>
-                                                        <span *ngSwitchCase="'ownCname'">{{((asset.ownCname) ?
-                                                            asset.ownCname : "-") | titlecase}}</span>
+                                                            
+                                                     <span *ngSwitchCase="'operatorCompany'">
+                                                   <span *ngIf="asset.ownerShip === 'ownerOperator'">
+                                                      {{asset.ownerOperator ? contactsObjects[asset.ownerOperator]: "-"}}
+                                                                </span>
+                                                      <span *ngIf="asset.ownerShip === 'rented'">
+                                                          {{asset.ownCname ? asset.ownCname: "-"}}
+                                                                </span>
+                                                         <span *ngIf="asset.ownerShip === 'leased'">
+                                                         {{asset.ownCname ? asset.ownCname: "-"}} </span>
+                                                                  </span>
+                                                                  
+                                                                  
                                                         <span *ngSwitchCase="'currentStatus'">
                                                             <span class="badge badge-dark p-1">{{ asset.currentStatus |
                                                                 titlecase }}</span>
@@ -181,14 +193,6 @@
                                         <!-- Summary Section with Load More button -->
 
                                         <ng-template pTemplate="summary" let-columns>
-                                            <div class="col-lg-12 mt-3 text-center "
-                                                *ngIf="lastEvaluatedKey !=='end' && allData.length !==0 ">
-                                                <button type="button " (click)="onScroll($event) "
-                                                    class="btn btn-success btn-sm text-light ">Load
-                                                    More..</button>
-
-                                                <br /><br>
-                                            </div>
                                             <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey ==='end'">
                                                 Total Records: {{allData.length}}</div>
                                         </ng-template>

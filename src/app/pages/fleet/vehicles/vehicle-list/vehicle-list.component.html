@@ -48,6 +48,7 @@
                                                     <h3 class="m-0"> Vehicles </h3>
                                                 </div>
                                                 <div class="text-right">
+                                                    <span>Showing {{vehicles.length}} entries </span> &nbsp;
                                                     <button type="button" pButton (click)="refreshData()"
                                                         pTooltip="Refresh" class="p-button-outlined mr-2"
                                                         icon="fas fa-sync"></button>
@@ -171,20 +172,19 @@
                                                                 routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{((vehicle.ownership)
                                                                 ? vehicle.ownership : '-') | titlecase}}</span>
                                                         </span>
-                                                        <span *ngSwitchCase="'driverList.driverID'">
+                                                        <span *ngSwitchCase="'driverName'">
                                                             <span>
                                                                 <span
-                                                                    routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{((driversList[vehicle.driverID])
-                                                                    ? driversList[vehicle.driverID]: '-') | titlecase
+                                                                    routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{(vehicle.driverName
+                                                                    ? vehicle.driverName : '-')
                                                                     }}</span>
                                                             </span>
                                                         </span>
-                                                        <span *ngSwitchCase="'driverList.teamDriverID'">
+                                                        <span *ngSwitchCase="'teamDriverName'">
                                                             <span>
                                                                 <span
-                                                                    routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{((driversList[vehicle.teamDriverID])
-                                                                    ? driversList[vehicle.teamDriverID]: '-') |
-                                                                    titlecase }}</span>
+                                                                    routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{(vehicle.teamDriverName
+                                                                    ? vehicle.teamDriverName : '-') }}</span>
                                                             </span>
                                                         </span>
                                                         <span *ngSwitchCase="'currentStatus'">
