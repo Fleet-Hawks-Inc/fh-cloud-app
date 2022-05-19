@@ -67,7 +67,6 @@ export class ServiceDetailComponent implements OnInit {
   logDocs = [];
   logModalRef: any;
   showModal = false;
-  downloadDisabledpdf = true;
   companyLogo = "";
   tagLine: "";
   companyName: any = "";
@@ -81,6 +80,10 @@ export class ServiceDetailComponent implements OnInit {
     zipCode: "",
   };
   showDetails = false;
+  vehiclePlateNo: any
+  vehicleVIN = ''
+  assetPlateNo: any;
+  assetVin: any;
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   constructor(
@@ -112,6 +115,7 @@ export class ServiceDetailComponent implements OnInit {
       error: () => { },
       next: (result: any) => {
         this.logsData = result.Items[0];
+        console.log('logs---', this.logsData)
         this.fetchSelectedIssues(this.logsData.selectedIssues);
 
         result = result.Items[0];
@@ -144,6 +148,10 @@ export class ServiceDetailComponent implements OnInit {
         this.currency = result.allServiceParts.currency;
         this.logImages = result.uploadedPics;
         this.logDocs = result.uploadDocument;
+        this.vehiclePlateNo = result.vehPlateNo;
+        this.vehicleVIN = result.vehicleVin;
+        this.assetPlateNo = result.assetPlateNo;
+        this.assetVin = result.assetVin;
 
         /*
        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
@@ -228,7 +236,7 @@ export class ServiceDetailComponent implements OnInit {
     let ngbModalOptions: NgbModalOptions = {
       keyboard: false,
       backdrop: "static",
-      windowClass: "log-order logs-model" ,
+      windowClass: "log-order logs-model",
     };
     this.logModalRef = this.modalService.open(this.logModal, ngbModalOptions)
   }
@@ -260,13 +268,13 @@ export class ServiceDetailComponent implements OnInit {
   };
 
   fetchCarrier() {
-    
+
     const carrierID = localStorage.getItem('xfhCarrierId');
     this.apiService
       .getData(`carriers/${carrierID}`)
       .subscribe((result: any) => {
         this.carrier = result.Items[0];
-        console.log('this0', this.carrier)
+        // console.log('this0', this.carrier)
         this.fetchAddress(this.carrier[`addressDetails`]);
       });
   }
