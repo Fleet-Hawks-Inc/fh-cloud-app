@@ -9,20 +9,21 @@ var converter = require("number-to-words");
 declare var $: any;
 
 @Component({
-  selector: "app-payment-cheque",
-  templateUrl: "./payment-cheque.component.html",
-  styleUrls: ["./payment-cheque.component.css"],
+  selector: 'app-payment-cheque',
+  templateUrl: './payment-cheque.component.html',
+  styleUrls: ['./payment-cheque.component.css']
 })
 export class PaymentChequeComponent implements OnInit {
   @ViewChild("chekOptions", { static: true }) modalContent: TemplateRef<any>;
   @ViewChild("previewCheque", { static: true }) previewCheque: TemplateRef<any>;
 
+  showDollor = true;
   openFrom: any;
   carriers = [];
   addresses = [];
   currCarrId = "";
   carrierID = null;
-  paydata = {
+  paydata: any = {
     entityName: "",
     entityId: "",
     chequeDate: "",
@@ -60,8 +61,7 @@ export class PaymentChequeComponent implements OnInit {
     gstHstAmt: 0,
     isVendorPayment: false,
     vendorId: "",
-    gstHstPer: 0
-
+    gstHstPer: 0,
   };
 
   cheqdata = {
@@ -95,6 +95,8 @@ export class PaymentChequeComponent implements OnInit {
     invoices: [],
     currency: "",
     currencyText: "",
+    gstHst: 0,
+    gstHstYTD: 0
   };
   driverData;
   corporateDrver = false;
@@ -108,7 +110,8 @@ export class PaymentChequeComponent implements OnInit {
   subscription: Subscription;
   locale = "en-US";
   isDownload = false;
-
+  settlementIDs = new Array();
+  payPeriod: any;
   constructor(
     private listService: ListService,
     private apiService: ApiService,
@@ -118,7 +121,7 @@ export class PaymentChequeComponent implements OnInit {
 
   ngOnInit() {
     this.subscription = this.listService.paymentModelList.subscribe(
-      (res: any) => {
+      async (res: any) => {
         if (res.showModal && res.length != 0) {
           // empty fields
           if (res.page && res.page == 'detail') {
@@ -138,6 +141,7 @@ export class PaymentChequeComponent implements OnInit {
           this.getCarriers();
           this.getCurrentuser();
           this.paydata = res;
+          this.settlementIDs = res.settlementIds;
           this.paydata.gstHstAmt = this.paydata.gstHstAmt === undefined ? 0 : this.paydata.gstHstAmt;
           this.paydata.gstHstPer = this.paydata.gstHstAmt === undefined ? 0 : this.paydata.gstHstPer;
           this.paydata.isVendorPayment = this.paydata.isVendorPayment === undefined ? false : this.paydata.isVendorPayment;
@@ -165,17 +169,23 @@ export class PaymentChequeComponent implements OnInit {
               "yyyy",
               this.locale
             );
-            let startDate = formatDate(
-              this.paydata.fromDate,
-              "dd-MM-yyyy",
-              this.locale
-            );
-            let endDate = formatDate(
-              this.paydata.toDate,
-              "dd-MM-yyyy",
-              this.locale
-            );
-            this.cheqdata.payPeriod = `${startDate} To ${endDate}`;
+            // let startDate = formatDate(
+            //   this.paydata.fromDate,
+            //   "dd-MM-yyyy",
+            //   this.locale
+            // );
+            // let endDate = formatDate(
+            //   this.paydata.toDate,
+            //   "dd-MM-yyyy",
+            //   this.locale
+            // );
+            if (this.settlementIDs) {
+              this.cheqdata.payPeriod = await this.getSettlementData(this.settlementIDs);
+            } else {
+              this.cheqdata.payPeriod = `${this.paydata.fromDate} To ${this.paydata.toDate}`
+            }
+
+
           }
 
           if (this.paydata.type === "advancePayment") {
@@ -229,10 +239,15 @@ export class PaymentChequeComponent implements OnInit {
             }
           }
 
+          if (this.paydata.isVendorPayment) {
+            this.cheqdata.regularPay = this.paydata.totalAmount;
+            this.cheqdata.grossPay = this.paydata.totalAmount;
+          }
+
           // this if cond. only in the case of expense payment
           if (
             this.paydata.type === "expensePayment" ||
-            this.paydata.type === "advancePayment"
+            this.paydata.type === "advancePayment" || this.paydata.type === "purchasePayment"
           ) {
             this.cheqdata.regularPay = this.paydata.finalAmount;
             if (this.paydata.paymentTo == "driver") {
@@ -321,8 +336,8 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   getCurrentuser = async () => {
-    let data = (await Auth.currentSession()).getIdToken().payload;
-    this.getCurrentCarrDetail(data.carrierID);
+    const carrID = localStorage.getItem('xfhCarrierId');
+    this.getCurrentCarrDetail(carrID);
   };
 
   getCurrentCarrDetail(carrierID) {
@@ -389,10 +404,14 @@ export class PaymentChequeComponent implements OnInit {
       .getData(`drivers/cheque/data/${this.paydata.entityId}`)
       .subscribe((result: any) => {
         this.driverData = result.Items[0];
-        this.dummyEntity =
-          this.driverData.firstName + " " + this.driverData.lastName;
-        this.cheqdata.entityName =
-          this.driverData.firstName + " " + this.driverData.lastName;
+
+        if(this.driverData.middleName) {
+          this.dummyEntity = `${this.driverData.firstName} ${this.driverData.middleName} ${this.driverData.lastName}`;
+        } else {
+          this.dummyEntity = `${this.driverData.firstName} ${this.driverData.lastName}`;
+        }
+        
+        this.cheqdata.entityName =this.dummyEntity;
         let addr = result.Items[0].address[0];
         if (addr.manual) {
           this.cheqdata.entityAddress = `${addr.address}, ${addr.stateName}, ${addr.cityName}, ${addr.countryName}, ${addr.zipCode}`;
@@ -422,7 +441,14 @@ export class PaymentChequeComponent implements OnInit {
       this.apiService
         .getData(`contacts/detail/${this.paydata.entityId}`)
         .subscribe((result: any) => {
-          this.cheqdata.entityName = result.Items[0].cName;
+
+          if (this.paydata.type === "employee") {
+            this.cheqdata.entityName = result.Items[0].firstName + " " + result.Items[0].lastName;
+          }
+          else {
+            this.cheqdata.entityName = result.Items[0].cName;
+          }
+
           this.dummyEntity = result.Items[0].cName;
           let addr = result.Items[0].adrs[0];
           if (addr.manual) {
@@ -454,9 +480,13 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   async getUserAnnualTax() {
+    let entityID = this.paydata.entityId;
+    if (this.paydata.isVendorPayment) {
+      entityID = this.paydata.vendorId;
+    }
     let result: any = await this.accountService
       .getData(
-        `driver-payments/annual/payment/${this.paydata.entityId}/${this.paydata.payYear}`
+        `driver-payments/annual/payment/${entityID}/${this.paydata.payYear}`
       )
       .toPromise();
     this.cheqdata.vacationPayYTD = result[0].vacationPay
@@ -483,13 +513,70 @@ export class PaymentChequeComponent implements OnInit {
       this.cheqdata.taxYTD =
         Number(this.cheqdata.taxYTD) + Number(this.cheqdata.tax);
     }
-
+    this.cheqdata.gstHstYTD = Number(result[0].gstHst);
     this.cheqdata.grossPayYTD =
       Number(this.cheqdata.vacationPayYTD) +
       Number(this.cheqdata.regularPayYTD);
     this.cheqdata.withHeldYTD =
       Number(this.cheqdata.cppYTD) + Number(this.cheqdata.eiYTD);
-    this.cheqdata.netPayYTD =
-      Number(this.cheqdata.grossPayYTD) - Number(this.cheqdata.withHeldYTD);
+    this.cheqdata.netPayYTD = Number(this.cheqdata.grossPayYTD) - Number(this.cheqdata.withHeldYTD) + Number(this.cheqdata.gstHstYTD);
+    this.cheqdata.gstHst = this.paydata.gstHstAmt;
   }
+
+  async getSettlementData(stlIds) {
+    if (stlIds) {
+      let ids = encodeURIComponent(
+        JSON.stringify(stlIds)
+      );
+      let result: any = await this.accountService
+        .getData(`settlement/get/selected?entities=${ids}`)
+        .toPromise();
+      let newDates = []
+      for (let index = 0; index < result.length; index++) {
+        const element = result[index];
+
+        if (element.prStart != undefined && element.prEnd != undefined) {
+
+          let startDate = formatDate(
+            element.prStart,
+            "dd-MM-yyyy",
+            this.locale
+          );
+          let endDate = formatDate(
+            element.prEnd,
+            "dd-MM-yyyy",
+            this.locale
+          );
+          newDates.push(`${startDate} To ${endDate}`);
+        }
+        else {
+          let startDate = formatDate(
+            element.fromDate,
+            "dd-MM-yyyy",
+            this.locale
+          );
+          let endDate = formatDate(
+            element.toDate,
+            "dd-MM-yyyy",
+            this.locale
+          );
+          newDates.push(`${startDate} To ${endDate}`);
+        }
+
+
+      }
+      return newDates.join(", ");
+    }
+
+
+  }
+
+  changeDollor(value) {
+    if (value) {
+      this.showDollor = false;
+    } else {
+      this.showDollor = true;
+    }
+  }
+
 }

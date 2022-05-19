@@ -4,7 +4,7 @@
       <header class="page-header pr19 pl11">
         <form class="form-horizontal" method="get">
           <div class="row" style="padding-top: 10px">
-            <div class="col-md-2 col-lg-2">
+            <div class="col-md-2 col-lg-2 pr-0">
               <div class="input-group input-group-md mb-3">
                 <input
                   type="text"
@@ -52,7 +52,7 @@
                             </ng-select>
                         </div> -->
 
-            <div class="col-md-3 col-lg-3 pl-0 pr-0">
+            <div class="col-md-3 col-lg-3 pl-2 pr-0">
               <div
                 class="input-daterange input-group input-group-sm"
                 data-plugin-datepicker=""
@@ -96,10 +96,10 @@
               </div>
             </div>
 
-            <div class="col-md-2 col-lg-2 pl-2">
+            <div class="col-md-3 col-lg-3 pl-2">
               <button
                 type="button"
-                class="btn btn-sm btn-success mr-3"
+                class="btn btn-sm btn-success mr-2"
                 (click)="searchFilter()"
               >
                 Search
@@ -113,7 +113,7 @@
               </button>
             </div>
 
-            <div class="col-md-5 col-lg-5 text-right pr-1">
+            <div class="col-md-4 col-lg-4 text-right pr-1">
               <div class="btn-group flex-wrap ml-2">
                 <button
                   type="button"
@@ -208,7 +208,6 @@
                           <td>{{ item.orderName }}</td>
                           <td>{{ item.createdDate }}</td>
 
-
                           <td>
                             <span *ngIf="item.provinceData.length === 0"
                               >-</span
@@ -225,7 +224,7 @@
                             >
                             <span *ngFor="let item1 of item.provinceData">
                               <span *ngFor="let item2 of item1.usProvince">
-                                {{ item2.Total }}<br />
+                                {{ item2.Total | number: "1.2-2" }}<br />
                               </span>
                             </span>
                           </td>
@@ -246,7 +245,7 @@
                             >
                             <span *ngFor="let item1 of item.provinceData">
                               <span *ngFor="let item2 of item1.canProvince">
-                                {{ item2.Total }}<br />
+                                {{ item2.Total | number: "1.2-2" }}<br />
                               </span>
                             </span>
                           </td>

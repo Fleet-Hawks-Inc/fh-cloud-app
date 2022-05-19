@@ -295,6 +295,7 @@ export class CommonSideBarComponent implements OnInit {
     environment.isAccountsEnabled;
     this.isReportsEnabled = environment.isReportsEnabled;
   }
+
   Logout() {
 
     // localStorage.removeItem('LoggedIn');
@@ -311,6 +312,18 @@ export class CommonSideBarComponent implements OnInit {
   }
   generateDriverSessionID() {
     return this.routeManagement.driverUpdateSessionID;
+  }
+    generateVehicleSessionID() {
+   return this.routeManagement.vehicleUpdateSessionID;
+  }
+  generateAssetSessionID() {
+   return this.routeManagement.assetUpdateSessionID;
+  }
+  generateFuelSessionID() {
+    return this.routeManagement.fuelUpdateSessionID;
+  }
+  generateMaintainanceSessionID(){
+  return this.routeManagement.maintainanceSessionID;
   }
 }
 

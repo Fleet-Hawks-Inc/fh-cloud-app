@@ -19,6 +19,15 @@ import { AddFuelEntryComponent } from "./add-fuel-entry/add-fuel-entry.component
 import { FuelEntryListComponent } from "./fuel-entry-list/fuel-entry-list.component";
 import { FuelEntryDetailsComponent } from "./fuel-entry-details/fuel-entry-details.component";
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -78,16 +87,18 @@ const routes: Routes = [
     path: "add",
     component: AddFuelEntryComponent,
     data: { title: "Add Fuel" },
+    canDeactivate: [unsavedChangesGuard],
   },
   {
-    path: "list",
+    path: "list/:sessionID",
     component: FuelEntryListComponent,
-    data: { title: "Fuel List" },
+    data: { title: "Fuel List", reuseRoute: true },
   },
   {
     path: "edit/:fuelID",
     component: AddFuelEntryComponent,
     data: { title: "Edit Fuel" },
+    canDeactivate: [unsavedChangesGuard],
   },
   {
     path: "detail/:fuelID",
@@ -113,6 +124,13 @@ const routes: Routes = [
     NgxSpinnerModule,
     ChartsModule,
     NgxDatatableModule,
+    TableModule,
+    MenuModule,
+    ButtonModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule
   ],
   providers: [
     unsavedChangesGuard,

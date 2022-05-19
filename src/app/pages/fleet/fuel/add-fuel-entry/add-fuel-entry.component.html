@@ -10,7 +10,7 @@
           </div>
           <div class="col-md-6 col-lg-6 text-right pr-1">
             <a
-              [routerLink]="['/fleet', 'fuel', 'list']"
+              routerLink="/fleet/fuel/list/{{sessionID}}"
               class="btn btn-default btn-sm"
               ><i class="fas fa-list"></i> Fuel Entries List</a
             >
@@ -714,7 +714,7 @@
                           placeholder="yyyy/mm/dd"
                           name="date"
                           [maxDate]="getcurrentDate"
-                          [(ngModel)]="fuelData.data.date"
+                          [(ngModel)]="fuelData.date"
                           (click)="d.toggle()"
                           ngbDatepicker
                           #d="ngbDatepicker"
@@ -746,7 +746,7 @@
                           type="time"
                           class="form-control"
                           name="time"
-                          [(ngModel)]="fuelData.data.time"
+                          [(ngModel)]="fuelData.time"
                         />
                       </div>
                     </div>
@@ -883,7 +883,7 @@
                           type="text"
                           class="form-control"
                           name="reference"
-                          [(ngModel)]="fuelData.data.transID"
+                          [(ngModel)]="fuelData.transID"
                           placeholder="Eg. FP1234"
                           #reference="ngModel"
                           required

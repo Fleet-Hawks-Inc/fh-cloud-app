@@ -16,10 +16,19 @@ import { VehicleListComponent } from "./vehicle-list/vehicle-list.component";
 import { SlickCarouselModule } from "ngx-slick-carousel";
 import { VehicleDetailComponent } from "./vehicle-detail/vehicle-detail.component";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
-
+import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
 import { NgSelectModule } from "@ng-select/ng-select";
-import { TooltipModule } from "primeng/tooltip";
-import { ButtonModule } from "primeng/button";
+import { TooltipModule } from 'primeng/tooltip';
+
+/*
 const routes: Routes = [
   {
     path: "add",
@@ -34,13 +43,23 @@ const routes: Routes = [
   {
     path: "list",
     component: VehicleListComponent,
-    data: { title: "Vehicle List" },
+    data:
+    {
+    title: "Vehicle List",
+    },
   },
   {
     path: "detail/:vehicleID",
     component: VehicleDetailComponent,
     data: { title: "Vehicle Detail" },
   },
+];
+*/
+const routes: Routes = [
+  { path: 'add', component: AddVehicleComponent, canDeactivate: [unsavedChangesGuard], data: { title: 'Add Vehicle' } },
+  { path: 'edit/:vehicleID', component: AddVehicleComponent,canDeactivate: [unsavedChangesGuard], data: { title: 'Edit Vehicle' } },
+  { path: 'list/:sessionID', component: VehicleListComponent, data: { title: 'Vehicles List', reuseRoute: true } },
+  { path: 'detail/:vehicleID', component: VehicleDetailComponent, data: { title: 'Vehicle Detail' } }
 ];
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -114,10 +133,17 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     SlickCarouselModule,
     InfiniteScrollModule,
     TooltipModule,
+    TableModule,
+    MultiSelectModule,
+    MenuModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule,
     ButtonModule
   ],
   exports: [],
-  providers: [
+  providers: [unsavedChangesGuard,
     { provide: NgbDateAdapter, useClass: CustomAdapter },
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],

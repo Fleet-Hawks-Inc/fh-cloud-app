@@ -295,7 +295,7 @@
                           }}</span>
                         </td>
                         <td>{{ dt.type | titlecase }}</td>
-                        <td>{{ dt.desc }}</td>
+                        <td [innerHTML]="dt.desc"></td>
                         <td>
                           <span *ngIf="dt.trxType === 'debit'"
                             >{{ dt.amount | number: "1.2-2" }}&nbsp;
@@ -574,7 +574,7 @@
             </tr>
 
             <tr
-              *ngIf="
+              *ngIf=" 
                 receiptData.charges && receiptData.charges.addition.length > 0
               "
             >

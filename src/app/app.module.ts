@@ -22,6 +22,8 @@ import { NavOpenedDirective } from "./directives/nav-opened.directive";
 import { SharedModule } from "./shared/shared.module";
 import { ChartsModule } from "ng2-charts";
 import { ToastrModule } from "ngx-toastr";
+import { BadgeModule } from 'primeng/badge';
+import { DialogModule } from 'primeng/dialog';
 
 // JWT interceptors
 import { HttpInterceptorProviders } from "./interceptors/interceptor.provider";
@@ -127,6 +129,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     AutoCompleteModule,
     DropdownModule,
     TrackingModule,
+    BadgeModule,
+    DialogModule
   ],
   providers: [
     HttpInterceptorProviders,
@@ -140,4 +144,4 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

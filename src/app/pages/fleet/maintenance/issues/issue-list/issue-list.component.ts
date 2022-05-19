@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Table } from 'primeng/table';
+import { NgSelectComponent } from "@ng-select/ng-select";
 import Constants from '../../../constants';
 import { environment } from '../../../../../../environments/environment';
 import * as _ from 'lodash';
@@ -15,11 +19,13 @@ declare var $: any;
   styleUrls: ['./issue-list.component.css']
 })
 export class IssueListComponent implements OnInit {
-
+  @ViewChild('dt') table: Table;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   title = 'Issues List';
   issues = [];
+  get = _.get;
   driverList: any = {};
   vehicleList: any = {};
   assetList: any = {};
@@ -52,6 +58,9 @@ export class IssueListComponent implements OnInit {
   loaded = false
   searchValue = null;
   category = null;
+  _selectedColumns: any[];
+  employeeOptions: any[];
+
   categoryFilter = [
     {
       'name': 'Vehicle',
@@ -62,10 +71,22 @@ export class IssueListComponent implements OnInit {
       'value': 'asset'
     },
   ]
-  constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
+  // columns of data table
+  dataColumns = [
+    { width: '14%', field: 'unitType', header: 'Unit Type', type: "text" },
+    { width: '14%', field: 'vehicleasset', header: 'Vehicle/Asset', type: "text" },
+    { width: '14%', field: 'issueName', header: 'Issue Name', type: "text" },
+    { width: '14%', field: 'reportedDate', header: 'Reported On', type: "text" },
+    { width: '14%', field: 'reportedBy', header: 'Reported By', type: "text" },
+    { width: '14%', field: 'assignedTo', header: 'Assigned To', type: "text" },
+    { width: '10%', field: 'currentStatus', header: 'Status', type: "text" },
+  ];
+  constructor(private apiService: ApiService, private modalService: NgbModal, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
-  ngOnInit() {
-    this.initDataTable();
+  async ngOnInit(): Promise<void> {
+    this.setToggleOptions();
+    this.setEmployeeOptions();
+    await this.initDataTable();
     this.fetchVehicleList();
     this.fetchDriverList();
     this.fetchAssetList();
@@ -79,6 +100,27 @@ export class IssueListComponent implements OnInit {
       }, 1800);
     });
   }
+
+
+
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+  setEmployeeOptions() {
+    this.employeeOptions = [
+      { 'value': 'vehicle', 'name': 'Vehicle' },
+      { 'value': 'asset', 'name': 'Asset' }
+    ];
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+  }
+
 
   getSuggestions = _.debounce(function (searchvalue) {
     searchvalue = searchvalue.toLowerCase();
@@ -137,12 +179,13 @@ export class IssueListComponent implements OnInit {
   }
 
 
-  initDataTable() {
+  async initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
       this.apiService.getData('issues/fetch/records?searchValue=' + this.searchValue + '&category=' + this.category + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&lastKey=' + this.lastEvaluatedKey)
         .subscribe((result: any) => {
           if (result.Items.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND
+            this.loaded = true
           }
           this.suggestedIssues = [];
           if (result.Items.length > 0) {
@@ -163,7 +206,7 @@ export class IssueListComponent implements OnInit {
     this.searchValue = null;
 
   }
-  onScroll() {
+  onScroll = async (event: any) => {
     if (this.loaded) {
       this.initDataTable();
     }
@@ -181,7 +224,7 @@ export class IssueListComponent implements OnInit {
       else {
         this.lastEvaluatedKey = ''
         this.issues = [];
-       
+
         this.dataMessage = Constants.FETCHING_DATA;
         this.initDataTable();
       }
@@ -189,6 +232,14 @@ export class IssueListComponent implements OnInit {
     else {
       return false;
     }
+  }
+
+  clearInput() {
+    this.suggestedIssues = null;
+  }
+
+  clearSuggestions() {
+    this.issueName = null;
   }
 
   resetFilter() {
@@ -237,5 +288,13 @@ export class IssueListComponent implements OnInit {
   }
 
   cloneIssue(id: string) {
+  }
+
+  /**
+ * Clears the table filters
+ * @param table Table 
+ */
+  clear(table: Table) {
+    table.clear();
   }
 }

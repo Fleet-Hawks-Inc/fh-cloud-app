@@ -35,7 +35,7 @@
           </div>
           <div class="col-md-4 col-lg-4 text-dark" *ngIf="getOrderID">
             <span class="font-weight-bold text-4"
-              >{{ pageTitle }} - #{{ getOrderNumber }}
+              >{{ pageTitle }} - {{ getOrderNumber }}
             </span>
             <span class="badge p-1 badge-dark mt-2 mb-0 text-uppercase">{{
               ifStatus
@@ -57,76 +57,6 @@
               novalidate
               #aOrder1="ngForm"
             >
-              <!--<div class="form-group row">
-
-                     <div class="col-lg-5 offset-lg-1">
-
-                     </div>
-                     <div class="col-lg-6">
-
-                        <div class="row">
-                           <div class="col-lg-3 col-sm-12 col-xs-12 col-12 labelalign">
-                              <label class="control-label font-weight-bold mb-0 text-3 text-dark">Trip Type</label>
-                           </div>
-                           <div class="col-lg-6">
-                              <div class="btn-group-toggle" data-toggle="buttons">
-                                 <label class="btn btn-outline btn-fleet mr-2"
-                                    [class.active]="orderData.tripType === 'Regular'" style="width:110px;"
-                                    (click)="onChangeUnitType('trip', 'Regular')">
-                                    <input type="radio" [(ngModel)]="orderData.tripType" name="tripType" checked hidden
-                                       value="Regular"> Regular </label>
-                                 <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;"
-                                    [class.active]="orderData.tripType === 'Outsourced'"
-                                    (click)="onChangeUnitType('trip', 'Outsourced')">
-                                    <input type="radio" [(ngModel)]="orderData.tripType" name="tripType" hidden
-                                       value="Outsourced"> Outsourced </label>
-                              </div>
-                               <label class="d-inline mr-3">
-                                 <input [(ngModel)]="orderData.tripType" type="radio" name="tripType"
-                                    value="Regular">Regular
-                              </label>
-                              <label>
-                                 <input [(ngModel)]="orderData.tripType" type="radio" name="tripType"
-                                    value="Outsourced">Outsourced
-                              </label>
-                           </div>
-                        </div>
-                     -->
-              <!-- <div class="row justify-content-center">
-                        <div class="col-lg-8">
-                           <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                              Launch demo modal
-                           </button>
-                        </div>
-                     </div>
-
-
-
-
-                              <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-                                 aria-labelledby="myModalLabel" aria-hidden="true">
-                                 <div class="modal-dialog">
-                                    <div class="modal-content">
-                                       <div class="modal-header">
-                                          <button type="button" class="close" data-dismiss="modal"
-                                             aria-hidden="true">&times;</button>
-                                          <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                                       </div>
-                                       <div class="modal-body">
-                                         <app-pdfautomation></app-pdfautomation>
-
-                                       </div>
-                                       <div class="modal-footer">
-                                          <button type="button" class="btn btn-default"
-                                             data-dismiss="modal">Close</button>
-                                          <button type="button" class="btn btn-primary">Save changes</button>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-
-                     </div>
-                  </div>-->
               <div class="bg-white p-3 text-dark mb-3">
                 <div class="row pt-2">
                   <div class="col-lg-1 offset-lg-1 col-sm-12 col-xs-12 col-12">
@@ -135,7 +65,7 @@
                       >Load Type</label
                     >
                   </div>
-                  <div class="col-lg-6">
+                  <div class="col-lg-5">
                     <div class="btn-group-toggle" data-toggle="buttons">
                       <label
                         class="btn btn-outline btn-yesno mr-2 mb-2"
@@ -167,6 +97,11 @@
                         LTL
                       </label>
                     </div>
+                  </div>
+                  <div class="col-lg-5" *ngIf="orderData.orderNumber != ''">
+                    <h4>
+                      <b>Order Number: {{ orderData.orderNumber }}</b>
+                    </h4>
                   </div>
                 </div>
                 <div class="form-group row mt-3">

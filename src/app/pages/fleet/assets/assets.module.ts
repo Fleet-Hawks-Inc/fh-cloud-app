@@ -21,31 +21,22 @@ import { unsavedChangesGuard } from "src/app/guards/unsaved-changes.guard";
 import { Injectable } from "@angular/core";
 import { GoogleMapsModule } from "@angular/google-maps";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
 
-const routes: Routes = [
-  {
-    path: "add",
-    component: AddAssetsComponent,
-    canDeactivate: [unsavedChangesGuard],
-    data: { title: "Add Asset" },
-  },
-  {
-    path: "edit/:assetID",
-    component: AddAssetsComponent,
-    data: { title: "Edit Asset" },
-  },
-  {
-    path: "list",
-    component: AssetListComponent,
-    data: { title: "Asset List" },
-  },
-  {
-    path: "detail/:assetID",
-    component: AssetDetailComponent,
-    data: { title: "Asset Detail" },
-  },
+  const routes: Routes = [
+  { path: 'add', component: AddAssetsComponent, canDeactivate: [unsavedChangesGuard], data: { title: 'Add Asset' } },
+  { path: 'edit/:assetID', component: AddAssetsComponent,canDeactivate: [unsavedChangesGuard], data: { title: 'Edit Asset' } },
+  { path: 'list/:sessionID', component: AssetListComponent, data: { title: 'Asset List', reuseRoute: true } },
+  { path: 'detail/:assetID', component: AssetDetailComponent, data: { title: 'Asset Detail' } }
 ];
-
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -73,6 +64,7 @@ export class CustomAdapter extends NgbDateAdapter<string> {
       : null;
   }
 }
+
 
 /**
  * This Service handles how the date is rendered and parsed from keyboard i.e. in the bound input field.
@@ -116,6 +108,15 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgxDatatableModule,
     GoogleMapsModule,
     InfiniteScrollModule,
+    TableModule,
+    ButtonModule,
+    MultiSelectModule,
+    TooltipModule,
+    MenuModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule
   ],
   providers: [
     unsavedChangesGuard,

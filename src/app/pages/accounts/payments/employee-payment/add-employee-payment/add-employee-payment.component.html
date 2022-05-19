@@ -132,6 +132,7 @@
                               [maxDate]="futureDatesLimit"
                               required
                               #frDate="ngModel"
+                              (dateSelect)="fetchPayments()"
                               readonly
                             />
                             <div
@@ -174,6 +175,37 @@
                                 To date is required.
                               </div>
                             </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="row">
+                      <div class="col-lg-10 mt-3">
+                        <div class="form-check form-switch">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            (change)="issueToVendor($event)"
+                            id="flexSwitchCheckDefault"
+                          />
+                          <label
+                            class="form-check-label"
+                            for="flexSwitchCheckDefault"
+                            >Issue To Vendor?</label
+                          >
+                        </div>
+                        <div>
+                          <div *ngIf="isVendor">
+                            Vendor Details: <br />
+                            <b>{{ vendorCompanyName | uppercase }} </b> <br />
+                            <b> {{ vendorAddress }} </b>
+                            <p>
+                              Please make sure you update GST/HST as per Vendor
+                              province.
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -1056,6 +1088,7 @@
                             [(ngModel)]="paymentData.vacPayPer"
                             placeholder="e.g 150"
                             (input)="calculateVacationPay()"
+                            [disabled]="isVendor"
                           />
                         </div>
                       </div>
@@ -1134,11 +1167,11 @@
                           />
                         </div>
                         <div class="col-lg-6 offset-lg-6 pt-2">
-                          <a
-                            href="javascript:;"
+                          <button type="button"
                             (click)="openPayrollModel()"
                             class="btn btn-success font-weight-semibold modal-with-form mb-1 btn-sm"
-                            >Calculate Payroll</a
+                            [disabled]="isVendor"
+                            >Calculate Payroll</button
                           >
                         </div>
                       </div>
@@ -1218,6 +1251,25 @@
                             disabled
                           />
                           <label class="error">{{ advErr }}</label>
+                        </div>
+                      </div>
+                      <div class="row pt-1" *ngIf="isVendor">
+                        <div class="col-lg-6 text-right">
+                          <label class="control-label font-weight-bold"
+                            >GST/HST (%)</label
+                          >
+                        </div>
+                        <div class="col-lg-6">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="gsthst"
+                            [(ngModel)]="paymentData.gstper"
+                            placeholder="e.g 2"
+                            (input)="
+                            calculateGstHst();
+                            "
+                          />
                         </div>
                       </div>
                       <div class="row pt-1">

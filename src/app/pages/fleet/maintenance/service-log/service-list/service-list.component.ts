@@ -1,9 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, Input } from "@angular/core";
 import { ApiService } from "../../../../../services";
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 declare var $: any;
+import { Table } from 'primeng/table';
 import { ToastrService } from "ngx-toastr";
+import * as _ from 'lodash';
 import Constants from "../../../constants";
 import { environment } from "../../../../../../environments/environment";
 import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
@@ -13,6 +15,10 @@ import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
   styleUrls: ["./service-list.component.css"],
 })
 export class ServiceListComponent implements OnInit {
+  @ViewChild('dt') table: Table;
+    get = _.get;
+  _selectedColumns: any[];
+
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   dataMessageVendorDtl: string = Constants.FETCHING_DATA;
@@ -63,6 +69,16 @@ export class ServiceListComponent implements OnInit {
       'value': 'asset'
     },
   ]
+  
+   // columns of data table
+  dataColumns = [
+    { width: '11%', field: 'unitType', header: 'Unit Type', type: 'text' },
+    { width: '11%', field: 'unitName', header: 'Vehicle/Asset', type: 'text' },
+    { width: '15%', field: 'dateOdometer', header: 'Completion Date/Odometer', type: 'text' },
+    { width: '40%', field: 'detailsLogs', header: 'Details', type: 'text' },
+    { width: '16%', field: 'totalLogs', header: 'Total', type: 'text' },
+  ];
+  
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -73,6 +89,7 @@ export class ServiceListComponent implements OnInit {
   ngOnInit() {
     this.initDataTable();
     this.fetchTasks();
+    this.setToggleOptions();
     this.fetchAllVehiclesIDs();
     this.fetchAllVendorsIDs();
     this.fetchAllIssuesIDs();
@@ -91,9 +108,25 @@ export class ServiceListComponent implements OnInit {
   setVehicle(vehicleID, vehicleIdentification) {
     this.vehicleIdentification = vehicleIdentification;
     this.vehicleID = vehicleID;
-
     this.suggestedVehicles = [];
   }
+
+
+
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+  }
+
+
 
   fetchAllVehiclesIDs() {
     this.apiService.getData('vehicles/list/minor').subscribe((result: any) => {
@@ -166,6 +199,7 @@ export class ServiceListComponent implements OnInit {
         .subscribe((result: any) => {
           if (result.Items.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.loaded = true;
           }
 
           if (result.Items.length > 0) {
@@ -182,7 +216,6 @@ export class ServiceListComponent implements OnInit {
               this.lastEvaluatedKey = "end";
             }
             this.logs = this.logs.concat(result.Items);
-
             this.loaded = true;
           }
         });
@@ -192,13 +225,6 @@ export class ServiceListComponent implements OnInit {
     this.searchValue = null;
 
   }
-  onScroll() {
-    if (this.loaded) {
-      this.initDataTable();
-    }
-    this.loaded = false;
-  }
-
   searchFilter() {
     if (this.searchValue != null || this.category != null || this.taskID != null) {
       if (this.searchValue != null && this.category == null) {
@@ -236,6 +262,19 @@ export class ServiceListComponent implements OnInit {
     }
   }
 
+
+
+  clearInput() {
+    this.suggestedVehicles = null;
+  }
+
+
+  clearSuggestions() {
+    this.vehicleIdentification = null;
+  }
+
+
+
   deleteProgram(eventData) {
     if (confirm("Are you sure you want to delete?") === true) {
       let record = {
@@ -267,4 +306,16 @@ export class ServiceListComponent implements OnInit {
     this.lastEvaluatedKey = "";
     this.initDataTable();
   }
+  
+  
+  
+  
+    /**
+ * Clears the table filters
+ * @param table Table 
+ */
+  clear(table: Table) {
+    table.clear();
+  }
+  
 }

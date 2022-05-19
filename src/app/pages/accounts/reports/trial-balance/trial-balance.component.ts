@@ -61,6 +61,8 @@ export class TrialBalanceComponent implements OnInit {
     cadCreditTotal = 0;
     usdDebitTotal = 0;
     usdCreditTotal = 0;
+    creTotal : any= [];
+    debTotal :any = [];
 
     accountsClassObjects = {};
     coaData = {}
@@ -77,6 +79,9 @@ export class TrialBalanceComponent implements OnInit {
     result = [];
     startDate: string;
     public endDate: string;
+    tempcredit :any= [];
+    tempdebit :any=[];
+    
 
 
     constructor(private accountService: AccountService, private toaster: ToastrService, private route: ActivatedRoute) { }
@@ -105,6 +110,11 @@ export class TrialBalanceComponent implements OnInit {
                          
                         const newArray: any = _.sortBy(this.accounts, ["accountNo"]);
                         this.accounts = newArray;
+                        for(let i=0; i<this.accounts.length;i++){
+                            if(this.accounts[i].debit === 0 || this.accounts[i].credit === 0) {
+                                this.dataMessage = Constants.NO_RECORDS_FOUND;
+                            }
+                        }
                           for(let i = 0;i<this.accounts.length;i++)
                         {
                              if(this.currTab === 'CAD'){
@@ -112,43 +122,48 @@ export class TrialBalanceComponent implements OnInit {
                              this.accounts = _.filter(this.accounts, function(o){
                              return o.debit != '0'|| o.credit != '0';
                              })
+                              
+                             if(this.accounts[i].credit > this.accounts[i].debit) {
+                                 this.tempcredit = this.accounts[i].credit - this.accounts[i].debit;
+                                 this.accounts[i].credit = this.tempcredit;
+                                this.accounts[i].debit = '0';
+                             } else if(this.accounts[i].credit < this.accounts[i].debit) {
+                                 this.tempdebit = this.accounts[i].debit - this.accounts[i].credit;
+                                 this.accounts[i].debit = this.tempdebit;
+                                 this.accounts[i].credit = '0';
                              }
+                             }
+                             
                             if(this.currTab === 'USD'){
                              this.currency = 'USD';
                              this.accounts = _.filter(this.accounts, function(o){
                              return o.debit != '0'|| o.credit != '0';
                              })
+                             
+                              if(this.accounts[i].credit > this.accounts[i].debit) {
+                                 this.tempcredit = this.accounts[i].credit - this.accounts[i].debit;
+                                 this.accounts[i].credit = this.tempcredit;
+                                 this.accounts[i].debit = '0';
+                                 
+                             } else if(this.accounts[i].credit < this.accounts[i].debit) {
+                                 this.tempdebit = this.accounts[i].debit - this.accounts[i].credit;
+                                 this.accounts[i].debit = this.tempdebit;
+                                 this.accounts[i].credit = '0';
+                             }
                              }
                         }
-                        for (var i = 0; i < result.data.length; i++) {
-                            if (this.currTab === 'CAD') {
-                                this.currency = 'CAD'
-                                if (result.data[i].debit != null) {
-                                    this.cadDebitTotal += parseFloat(result.data[i].debit);
-                                }
-                                if (result.data[i].credit != null) {
-                                    this.cadCreditTotal += parseFloat(result.data[i].credit);
-                                }
-                            }
-                            if (this.currTab === 'USD') {
-                                this.currency = 'USD'
-                                if (result.data[i].debit != null) {
-                                    this.usdDebitTotal += parseFloat(result.data[i].debit);
-                                }
-                                if (result.data[i].credit != null) {
-                                    this.usdCreditTotal += parseFloat(result.data[i].credit);
-                                }
-                            }
-                        }
-                        this.accounts = _.filter(this.accounts, function (o) {
-                            return o.actType != 'H';
-                        });
-                        this.accounts = _.filter(this.accounts, function (o) {
-                            return o.actType != 'S';
-                        });
-                        this.accounts = _.filter(this.accounts, function (o) {
-                            return o.actType != 'T';
-                        });
+                          for(let i=0;i<=this.accounts.length;i++) {
+                              if(this.currTab === 'CAD') {
+                                  this.currency = 'CAD';
+                                      this.cadCreditTotal += parseFloat(this.accounts[i].credit);
+                                      this.cadDebitTotal += parseFloat(this.accounts[i].debit);
+                              }
+                              if(this.currTab === 'USD') {
+                                  this.currency = 'USD';
+                                  this.usdCreditTotal += parseFloat(this.accounts[i].credit);
+                                  this.usdDebitTotal += parseFloat(this.accounts[i].debit);
+                              }
+                         }
                     }
                     if (this.currTab === 'CAD') {
                              this.currency = 'CAD'
@@ -162,42 +177,44 @@ export class TrialBalanceComponent implements OnInit {
                      this.dataMessage = Constants.NO_RECORDS_FOUND;
                            }
                          }
-                    
                 });
-    }
+               }
    
-
-
-    searchFilter() {
+    searchFilter() { 
         if (this.filter.startDate !== null || this.filter.endDate !== null) {
-            this.start = this.filter.startDate;
+           this.start = this.filter.startDate;
             this.end = this.filter.endDate;
+          if (this.start > this.end) {
+        this.toaster.error('Start Date should be less then end date.');
+        return false;
+          }
+          else{
             this.cadDebitTotal = 0;
             this.cadCreditTotal = 0;
             this.usdDebitTotal = 0;
             this.usdCreditTotal = 0;
             this.accounts = [];
+            this.creTotal = [];
+            this.debTotal = [];
             this.dataMessage = Constants.FETCHING_DATA;
             this.fetchAccounts();
+          }
         }
     }
 
-
-
     resetFilter() {
         this.dataMessage = Constants.FETCHING_DATA;
-        this.start = null;
-        this.end = null;
+        this.filter.endDate = moment().format("YYYY-MM-DD");
+        this.filter.startDate = moment().subtract(15, 'day').format('YYYY-MM-DD');
         this.cadDebitTotal = 0;
         this.cadCreditTotal = 0;
         this.usdDebitTotal = 0;
         this.usdCreditTotal = 0;
         this.accounts = [];
+        this.creTotal = [];
+        this.debTotal = [];
         this.fetchAccounts();
     }
-
-
-
 
     fetchAccountClassByIDs() {
         this.accountService
@@ -248,24 +265,23 @@ export class TrialBalanceComponent implements OnInit {
                 for (const element of this.accounts) {
                      let obj = {}
                     obj["Account Number"] = element.accountNo
-                    obj["Account Name"] = element.accountName,
-                    obj["Credit"] = element.credit
-                    obj["Debit"] = element.debit
+                    obj["Account Name"] = element.accountName
+                    obj["Debit"] = element.debit === '0' ? '-': element.debit.toFixed(2)
+                    obj["Credit"] = element.credit === '0' ? '-': element.credit.toFixed(2)
                     dataObject.push(obj)  
                 }
                  let totObj = {
-                   
-                    ["Credit"] : 'Total' ,
-                    ["Debit"] : " "
+                    ["Debit"]  : 'Total' ,
+                    ["Credit"] : " "
                  }
                   if(this.currency === 'CAD'){
-                      totObj["Total"] = this.cadCreditTotal 
-                      totObj["Total1"] = this.cadDebitTotal
+                      totObj["Total1"] = this.cadDebitTotal.toFixed(2)
+                      totObj["Total"] = this.cadCreditTotal.toFixed(2)
                       dataObject.push(totObj)
                  }
                 else if(this.currency === 'USD') {
-                      totObj["Total"] = this.usdCreditTotal 
-                      totObj["Total1"] = this.usdDebitTotal
+                      totObj["Total1"] = this.usdDebitTotal.toFixed(2)
+                      totObj["Total"] = this.usdCreditTotal.toFixed(2)
                       dataObject.push(totObj)
                   }
                 let headers = Object.keys(dataObject[0]).join(',')
@@ -290,7 +306,7 @@ export class TrialBalanceComponent implements OnInit {
                 this.exportLoading = false
             }
             else {
-                this.toaster.success("No Data Found")
+                this.toaster.error("No Records Found")
                 this.exportLoading = false
             }
         } catch (error) {

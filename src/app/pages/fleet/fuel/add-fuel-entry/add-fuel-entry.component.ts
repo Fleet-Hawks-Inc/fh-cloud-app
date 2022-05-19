@@ -1,8 +1,12 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ApiService } from "../../../../services/api.service";
-import { ActivatedRoute } from "@angular/router";
-import { map } from "rxjs/operators";
-import { from } from "rxjs";
+import { Router, ActivatedRoute } from "@angular/router";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import {
+  map,
+} from "rxjs/operators";
+import { NgForm } from "@angular/forms";
+import { from, Subject, throwError } from 'rxjs';
 import {
   NgbCalendar,
   NgbDateAdapter,
@@ -11,10 +15,12 @@ import {
 import { ToastrService } from "ngx-toastr";
 import { Location } from "@angular/common";
 import * as _ from "lodash";
+import { ModalService } from "../../../../services/modal.service";
 import { ListService } from "../../../../services";
 
 import { HttpClient } from "@angular/common/http";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
+import {RouteManagementServiceService} from 'src/app/services/route-management-service.service'
 
 declare var $: any;
 
@@ -24,6 +30,10 @@ declare var $: any;
   styleUrls: ["./add-fuel-entry.component.css"],
 })
 export class AddFuelEntryComponent implements OnInit {
+  @ViewChild('fuelF') fuelF: NgForm;
+  takeUntil$ = new Subject();
+
+
   title = "Add Fuel Entry";
   Asseturl = this.apiService.AssetUrl;
   public fuelID;
@@ -34,6 +44,9 @@ export class AddFuelEntryComponent implements OnInit {
     unitID: "",
     driverID: "",
     fuelProvider: "Manual",
+    date: "",
+    time: "",
+    transID: "",
     data: {
       useType: "vehicle",
       currency: "CAD",
@@ -45,8 +58,6 @@ export class AddFuelEntryComponent implements OnInit {
       rPpu: "0",
       rAmt: "0",
       rBeforeTax:"0",
-      date: "",
-      time: "",
       type: "",
       country: "",
       state: "",
@@ -60,16 +71,13 @@ export class AddFuelEntryComponent implements OnInit {
       ],
       discRate: "0",
       cardNo: "",
-      transID: "",
       odometer: "",
       excRate: "0",
     },
   };
+    isSubmitted = false;
   fetchedUnitID;
   fetcheduseType;
-  // fuelQtyUnit = 'litre';
-  // DEFFuelQtyUnit = 'litre';
-  // costPerUnit = 0;
   date: NgbDateStruct;
 
   selectedFiles: FileList;
@@ -109,6 +117,7 @@ export class AddFuelEntryComponent implements OnInit {
   Success = "";
   submitDisabled = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
+  sessionID:string;
 
   constructor(
     private apiService: ApiService,
@@ -118,9 +127,16 @@ export class AddFuelEntryComponent implements OnInit {
     private ngbCalendar: NgbCalendar,
     private dateAdapter: NgbDateAdapter<string>,
     private listService: ListService,
+    private modalService: NgbModal,
+    private modalServiceOwn: ModalService,
     private httpClient: HttpClient,
-    private countryStateCity: CountryStateCityService
+    private countryStateCity: CountryStateCityService,
+    private routeManagementService:RouteManagementServiceService
+
   ) {
+  
+
+  
     this.selectedFileNames = new Map<any, any>();
     const date = new Date();
     this.getcurrentDate = {
@@ -128,7 +144,11 @@ export class AddFuelEntryComponent implements OnInit {
       month: 12,
       day: date.getDate(),
     };
+    this.sessionID=this.routeManagementService.fuelUpdateSessionID;
   }
+  
+
+  
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -333,7 +353,7 @@ export class AddFuelEntryComponent implements OnInit {
       this.fuelData.data.type = "DEF";
     }
     this.fuelData.timeCreated = new Date(
-      `${this.fuelData.data.date}T${this.fuelData.data.time}`
+      `${this.fuelData.date}T${this.fuelData.time}`
     ).getTime();
     // append other fields
     
@@ -361,6 +381,10 @@ export class AddFuelEntryComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
+        this.modalServiceOwn.triggerRedirect.next(true);
+          this.takeUntil$.next();
+          this.takeUntil$.complete();
+                    this.isSubmitted = true;
         this.toaster.success("Fuel Entry Added Successfully.");
         this.location.back();
       },
@@ -431,15 +455,15 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelData.data.discAmt = result.data.discAmt;
     this.fuelData.data.ppu = result.data.ppu;
     this.fuelData.data.tax = result.data.tax;
-    this.fuelData.data.date = result.data.date;
-    this.fuelData.data.time = result.data.time;
+    this.fuelData.date = result.date;
+    this.fuelData.time = result.time;
     this.fuelData.data.type = result.data.type;
     this.fuelData.data.rPpu = result.data.rPpu;
     this.fuelData.data.rAmt = result.data.rAmt;
     this.fuelData.data.rBeforeTax=result.data.rBeforeTax
     this.fuelData.driverID = result.driverID;
     this.fuelData.data.cardNo = result.data.cardNo;
-    this.fuelData.data.transID = result.data.transID;
+    this.fuelData.transID = result.transID;
     this.fuelData.data.country = result.data.country;
     this.fuelData.data.state = result.data.state;
     this.fuelData.data.site=result.data.site;
@@ -457,7 +481,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.submitDisabled = true;
     this.hideErrors();
     this.fuelData.timeCreated = new Date(
-      `${this.fuelData.data.date}T${this.fuelData.data.time}`
+      `${this.fuelData.date}T${this.fuelData.time}`
     ).getTime();
     this.apiService.putData("fuelEntries", this.fuelData).subscribe({
       complete: () => { },
@@ -483,6 +507,12 @@ export class AddFuelEntryComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
+        
+        this.modalServiceOwn.triggerRedirect.next(true);
+          this.takeUntil$.next();
+          this.takeUntil$.complete();
+                    this.isSubmitted = true;
+                    
         this.toaster.success("Fuel Entry Updated successfully");
         this.cancel();
       },

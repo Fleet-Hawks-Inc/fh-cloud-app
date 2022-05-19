@@ -29,7 +29,7 @@ export class BillListComponent implements OnInit {
     private apiService: ApiService,
     private accountService: AccountService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     await this.fetchVendor();
@@ -83,16 +83,15 @@ export class BillListComponent implements OnInit {
     this.purchaseOrders = result;
   }
 
-  deleteBill(data) {
-    if (confirm("Are you sure you want to delete?") === true) {
-      this.accountService.deleteData(`bills/delete/${data.billID}`).subscribe({
-        complete: () => {},
-        error: () => {},
+  voidBill(data, i) {
+    if (confirm("Are you sure you want to void?") === true) {
+      this.accountService.deleteData(`bills/void/${data.billID}`).subscribe({
+        complete: () => { },
+        error: () => { },
         next: (result: any) => {
           this.dataMessage = Constants.FETCHING_DATA;
-          this.payOrders = [];
-          this.fetchBills();
-          this.toastr.success("Bill deleted successfully");
+          this.payOrders[i].status = 'voided';
+          this.toastr.success("Bill voided successfully");
         },
       });
     }

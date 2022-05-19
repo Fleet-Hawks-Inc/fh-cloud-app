@@ -10,6 +10,8 @@ import { CountryStateCityService } from 'src/app/services/country-state-city.ser
 import { environment } from '../../../../../environments/environment';
 import { ApiService } from '../../../../services';
 import Constants from '../../constants';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+
 declare var $: any;
 
 
@@ -58,6 +60,7 @@ export class VehicleDetailComponent implements OnInit {
     serviceProgramID: any = [];
     primaryMeter = '';
     repeatByTime = '';
+    sessionID: string;
     repeatByTimeUnit = '';
     reapeatbyOdometerMiles = '';
     currentStatus = '';
@@ -263,8 +266,11 @@ export class VehicleDetailComponent implements OnInit {
         private domSanitizer: DomSanitizer,
         private countryStateCity: CountryStateCityService,
         private modalService: NgbModal,
-        private formBuilder: RxFormBuilder
-    ) { }
+        private formBuilder: RxFormBuilder,
+        private routerMgmtService: RouteManagementServiceService
+    ) {
+        this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
+    }
 
     ngOnInit() {
         ReactiveFormConfig.set({
@@ -413,8 +419,8 @@ export class VehicleDetailComponent implements OnInit {
                 this.manufacturerID = vehicleResult.manufacturerID;
                 this.modelID = vehicleResult.modelID;
                 this.plateNumber = vehicleResult.plateNumber;
-                this.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(vehicleResult.countryID);
-                this.stateName = await this.countryStateCity.GetStateNameFromCode(vehicleResult.stateID, vehicleResult.countryID);
+                this.countryName = vehicleResult.countryID ? await this.countryStateCity.GetSpecificCountryNameByCode(vehicleResult.countryID) : '';
+                this.stateName = vehicleResult.stateID ? await this.countryStateCity.GetStateNameFromCode(vehicleResult.stateID, vehicleResult.countryID) : '';
                 this.driverID = vehicleResult.driverID;
                 this.teamDriverID = vehicleResult.teamDriverID;
                 this.serviceProgramID = vehicleResult.servicePrograms;
@@ -648,11 +654,10 @@ export class VehicleDetailComponent implements OnInit {
         });
     }
 
-
     fetchProgramDetails() {
         if (this.serviceProgramID.length > 0) {
             let serviceProgramID = JSON.stringify(this.serviceProgramID);
-            this.apiService.getData('servicePrograms/fetch/selectedPrograms?programIds=' + serviceProgramID).subscribe((result: any) => {
+            this.apiService.getData('servicePrograms/get/list?programID=' + serviceProgramID).subscribe((result: any) => {
                 this.servicePrograms = result;
 
             })

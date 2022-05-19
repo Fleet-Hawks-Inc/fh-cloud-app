@@ -13,6 +13,9 @@ declare var $: any;
 import { environment } from "src/environments/environment";
 import Constants from "src/app/pages/fleet/constants";
 import { Location } from "@angular/common";
+import * as _ from "lodash";
+
+
 @Component({
   selector: "app-trip-detail",
   templateUrl: "./trip-detail.component.html",
@@ -35,6 +38,7 @@ export class TripDetailComponent implements OnInit {
     private hereMap: HereMapService,
     private location: Location,
     private listService: ListService,
+
   ) {
     this.selectedFileNames = new Map<any, any>();
   }
@@ -116,6 +120,14 @@ export class TripDetailComponent implements OnInit {
   companyLogoSrc: string;
   customerData = [];
   isEmail: boolean = false;
+  metricSelected: string = 'F';
+  metrics = [
+    { name: 'F', value: 'F' },
+    { name: 'C', value: 'C' },
+
+  ];
+  isCelsius = false;
+  get = _.get;
   ngOnInit() {
 
     this.listService.getDocsModalList.subscribe((res: any) => {
@@ -188,6 +200,8 @@ export class TripDetailComponent implements OnInit {
     });
   }
 
+  assetNamesList = [];
+  tempNamesList = [];
   async fetchTripDetail() {
     this.tripID = this.route.snapshot.params["tripID"];
     let locations = [];
@@ -322,7 +336,28 @@ export class TripDetailComponent implements OnInit {
           this.plannedMiles += parseFloat(element.miles);
           this.newCoords.push(`${element.lat},${element.lng}`);
           this.trips.push(obj);
+
+          // create Asset Object
+          for (let i = 0; i < element.assetID.length; i++) {
+            const assetObj = {
+              assetID: element.assetID[i],
+              assetName: element.assetNames[i],
+
+            };
+            this.assetNamesList.push(assetObj);
+
+          }
+
+
+
         }
+        // filter out duplicates
+        this.assetNamesList = _.uniqBy(this.assetNamesList, function (e) {
+          return e.assetID;
+        });
+        this.tempNamesList = _.uniqBy(this.assetNamesList, function (e) {
+          return e.assetID;
+        });
 
         let documents = result.tripDocs;
 
@@ -386,6 +421,8 @@ export class TripDetailComponent implements OnInit {
           this.tagLine = result.termsInfo.tagLine ? result.termsInfo.tagLine : '';
         }
       });
+
+
   }
 
   /**
@@ -599,159 +636,46 @@ export class TripDetailComponent implements OnInit {
     let result: any = await this.apiService
       .postData(`trips/update/bol/${this.tripID}/${this.docType}`, formData, true).toPromise()
     if (result && result.length > 0) {
-      this.tripData.documents = res;
+      this.tripData.documents = result;
       this.uploadedDocSrc = [];
       this.uploadedDocs = [];
-      if (res.length > 0) {
-        for (let k = 0; k < res.length; k++) {
-          const element = res[k];
-          // this.uploadedDocSrc.push(`${this.Asseturl}/${this.tripData.carrierID}/${element}`);
-          let name = element.storedName;
-          let ext = element.storedName.split('.')[1];
-          let obj = {
-            imgPath: '',
-            docPath: '',
-            displayName: '',
-            name: '',
-            ext: '',
-            type: ''
+      for (let k = 0; k < result.length; k++) {
+        const element = result[k];
+        let name = element.storedName;
+        let ext = element.storedName.split('.')[1];
+        let obj = {
+          imgPath: '',
+          docPath: '',
+          displayName: '',
+          name: '',
+          ext: '',
+          type: ''
+        };
+        if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+          obj = {
+            imgPath: `${element.urlPath}`,
+            docPath: `${element.urlPath}`,
+            displayName: element.displayName,
+            name: name,
+            ext: ext,
+            type: element.type ? element.type : 'other'
           };
-          if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
-            obj = {
-              imgPath: `${ext.urlPath}`,
-              docPath: `${ext.urlPath}`,
-              displayName: element.displayName,
-              name: name,
-              ext: ext,
-              type: ext.type ? ext.type : 'other'
-            };
-          } else {
-            obj = {
-              imgPath: 'assets/img/icon-pdf.png',
-              docPath: `${ext.urlPath}`,
-              displayName: element.displayName,
-              name: name,
-              ext: ext,
-              type: ext.type ? ext.type : 'other'
-            };
-          }
-          this.uploadedDocSrc.push(obj);
+        } else {
+          obj = {
+            imgPath: 'assets/img/icon-pdf.png',
+            docPath: `${element.urlPath}`,
+            displayName: element.displayName,
+            name: name,
+            ext: ext,
+            type: element.type ? element.type : 'other'
+          };
         }
+        this.uploadedDocSrc.push(obj);
       }
       this.toastr.success('BOL/POD uploaded successfully');
-      this.fetchTripDetail();
     }
   }
 
-  /*
-   * Selecting files before uploading
-   */
-  async selectDocuments(event) {
-    let files = [];
-    this.uploadedDocs = [];
-    files = [...event.target.files];
-    let totalCount = this.tripData.documents.length + files.length;
-
-    if (totalCount > 4) {
-      this.uploadedDocs = [];
-      $("#bolUpload").val("");
-      this.toastr.error("Only 4 documents can be uploaded");
-      return false;
-    } else {
-      for (let i = 0; i < files.length; i++) {
-        const element = files[i];
-        let name = element.name.split(".");
-        let ext = name[name.length - 1];
-
-        if (ext != "jpg" && ext != "jpeg" && ext != "png" && ext != "pdf") {
-          $("#bolUpload").val("");
-          this.toastr.error("Only image and pdf files are allowed");
-          return false;
-        }
-      }
-
-      for (let i = 0; i < files.length; i++) {
-        this.uploadedDocs.push(files[i]);
-      }
-      // create form data instance
-      const formData = new FormData();
-
-      //   for (let i = 0; i < files.length; i++) {
-      //   const element = files[i];
-      //   this.uploadedDocs.push(element);
-      // }
-
-      //append docs if any
-      for (let j = 0; j < this.uploadedDocs.length; j++) {
-        // let file = this.uploadedDocs[j];
-        //  formData.append(`uploadedDocs-${j}`, file);
-        formData.append("uploadedDocs", this.uploadedDocs[j]);
-      }
-      formData.append("data", JSON.stringify(this.tripData.documents));
-      this.apiService
-        .postData('trips/update/bol/' + this.tripID, formData, true)
-        .subscribe({
-          complete: () => { },
-          error: (err: any) => {
-            from(err.error)
-              .pipe(
-                map((val: any) => {
-                  val.message = val.message.replace(/".*"/, "This Field");
-                  this.errors[val.context.label] = val.message;
-                  this.spinner.hide();
-                })
-              )
-              .subscribe({
-                complete: () => {
-                  this.spinner.hide();
-                },
-                error: () => { },
-                next: () => { },
-              });
-          },
-          next: (res: any) => {
-            this.tripData.documents = res;
-            this.uploadedDocSrc = [];
-            this.uploadedDocs = [];
-            if (res.length > 0) {
-              for (let k = 0; k < res.length; k++) {
-                const element = res[k];
-                // this.uploadedDocSrc.push(`${this.Asseturl}/${this.tripData.carrierID}/${element}`);
-                let name = element.storedName;
-                let ext = element.storedName.split('.')[1];
-                let obj = {
-                  imgPath: '',
-                  docPath: '',
-                  displayName: '',
-                  name: '',
-                  ext: '',
-                };
-                if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
-                  obj = {
-                    imgPath: `${ext.urlPath}`,
-                    docPath: `${ext.urlPath}`,
-                    displayName: element.displayName,
-                    name: name,
-                    ext: ext,
-                  };
-                } else {
-                  obj = {
-                    imgPath: 'assets/img/icon-pdf.png',
-                    docPath: `${ext.urlPath}`,
-                    displayName: element.displayName,
-                    name: name,
-                    ext: ext,
-                  };
-                }
-                this.uploadedDocSrc.push(obj);
-              }
-            }
-            this.toastr.success('BOL/POD uploaded successfully');
-            this.fetchTripDetail();
-          },
-        });
-    }
-  }
 
 
   openTripInfo() {
@@ -810,4 +734,142 @@ export class TripDetailComponent implements OnInit {
     }
     this.listService.openDocTypeMOdal(obj)
   }
+
+  alarmCols = [
+    { field: 'alAssetName', header: 'Asset Name' },
+    { field: 'highTemp', header: 'High' },
+    { field: 'lowTemp', header: 'Low' },
+    { field: 'alIsActivate', header: 'Is Activated?' },
+
+
+
+  ]
+  tripAlarms = []
+  selectedAssetAlarm;
+  async getTripAlarms() {
+    this.assetNamesList = [];
+    this.assetNamesList.push(...this.tempNamesList)
+    this.tripAlarms = await this.apiService.getData(`alarms/${this.tripData.tripNo}`).toPromise();
+    this.tripAlarms.forEach(element => {
+      // removing asset which has alarm set previously.
+      const assetObj = _.find(this.assetNamesList, { assetID: element.assetId });
+
+      if (assetObj) {
+        _.remove(this.assetNamesList, { assetID: assetObj.assetID });
+
+        this.selectedAlarmAlert = undefined
+
+      }
+      if (element.alTempCelsius == 0) {
+        element.highTemp = element.highTemp + ' F';
+        element.lowTemp = element.lowTemp + ' F';
+      } else {
+        element.highTemp = element.highTemp + ' C';
+        element.lowTemp = element.lowTemp + ' C'
+      }
+    });
+  }
+
+  alarmInput: IAddAlarmInput;
+  showAlerts = false;
+  highTemp: number = 10;
+  lowTemp: number = -10;
+  selectedAlarmAlert = {};
+  emails: string
+  async addAlerts() {
+    this.showAlerts = true;
+    await this.getTripAlarms();
+  }
+  assetAlert = undefined;
+  async addAlarmToAsset() {
+    this.assetAlert = undefined;
+    const assetObj = _.find(this.assetNamesList, { assetName: this.selectedAssetAlarm })
+    this.validateMultipleEmails();
+    if (!this.isEmailsValid) {
+      return;
+    }
+
+    this.alarmInput = {
+      tripID: this.tripID,
+      tripNo: this.tripData.tripNo,
+      assetID: assetObj.assetID,
+      assetName: assetObj.assetName,
+      highTemp: this.highTemp.toString(),
+      lowTemp: this.lowTemp.toString(),
+      emails: this.emails.split(','),
+      isCelsius: this.isCelsius === true ? 1 : 0, // Is in Celsius or Fahrenheit 
+      active: this.tripStatus == 'dispatched' || this.tripStatus == 'started' || this.tripStatus == 'enroute' ? 1 : 0
+
+
+    }
+    await this.apiService.postData('alarms', this.alarmInput).subscribe(async (data: any) => {
+      await this.getTripAlarms();
+
+    }, error => {
+      if (error && error.error && error.error.errorMessage.includes('Temperature sensor')) {
+        this.assetAlert = error.error.errorMessage;
+      }
+    });
+
+  }
+
+  async deleteAlarm(rowData) {
+
+    const decision = confirm('Do you want to Delete the Alarm?');
+    if (decision) {
+      await this.apiService.deleteData(`alarms/${rowData.alAlarmId}`).toPromise(); this.showAlerts = false;
+
+    }
+  }
+
+  isEmailsValid = true;
+  validateMultipleEmails() {
+    // Get value on emails input as a string
+
+
+    // Split string by comma into an array
+    let emailsValidate = this.emails.split(",");
+
+
+    const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    const invalidEmails = [];
+
+    for (let i = 0; i < emailsValidate.length; i++) {
+      // Trim whitespaces from email address
+      emailsValidate[i] = emailsValidate[i].trim();
+
+      // Check email against our regex to determine if email is valid
+      if (emailsValidate[i] == "" || !regex.test(emailsValidate[i])) {
+        invalidEmails.push(emailsValidate[i]);
+      }
+    }
+    if (invalidEmails.length > 0) {
+      this.isEmailsValid = false;
+    } else {
+      this.isEmailsValid = true;
+    }
+  }
+
+  changeMetric(e) {
+
+    if (e.value === 'F') {
+      this.isCelsius = false;
+    } else {
+      this.isCelsius = true;
+    }
+  }
+
+}
+
+interface IAddAlarmInput {
+  tripNo: string,
+  tripID: string,
+  assetID: string,
+  assetName: string,
+  highTemp: string,
+  lowTemp: string,
+  emails: string[],
+  isCelsius: number,
+  active: number
 }

@@ -7,7 +7,8 @@
             Order Details
           </div>
           <div class="col-md-8 col-lg-8 text-right" *ngIf="showBtns">
-            <span class="mr-2 text-dark"><b>Invoiced: </b> {{ isInvoiced ? "Yes" : "No" }}</span>
+            <span class="mr-2 text-dark"><b>Invoiced: </b> {{ invDate ? (invDate | date: "yyyy/MM/dd") : "No" }}
+            </span>
             <span class="mx-2 text-dark text-capitalize"><b>Payment:</b>
               {{ invStatus ? invStatus.replace("_", " ") : "NA" }}</span>
             <a *ngIf="orderStatus === 'delivered'" routerLink="/dispatch/orders/edit/{{ orderID }}"
@@ -17,7 +18,8 @@
             <button *ngIf="showInvBtn" (click)="openEmailInv()" class="btn btn-sm mr-2 btn-success">
               Email
             </button>
-            <button *ngIf="showInvBtn" (click)="showInv(); isModalShow = true" class="btn btn-success btn-sm mr-2">
+            <button *ngIf="showInvBtn" [disabled]="invBtnDisableStat" (click)="showInv(); isModalShow = true"
+              class="btn btn-success btn-sm mr-2">
               Invoice
             </button>
 
@@ -64,7 +66,7 @@
             <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
               <div>
                 <h4 class="m-0 font-weight-bold">
-                  {{ orderMode }} - ORD{{ orderNumber }}
+                  {{ orderMode }} - {{ orderNumber }}
                   <span class="badge p-1 badge-dark mt-2 mb-0 text-uppercase" *ngIf="orderStatus">
                     {{ orderStatus }} <span *ngIf="recallStatus">(R) </span>
                   </span>
@@ -752,7 +754,7 @@
                   <div class="col-xl-12 col-12 mb-3">
                     <div class="boxshadow1 maindisbox w100 pull-left">
                       <div class="widgetload">
-                        <div class="widgettbload">
+                        <div *ngIf="isOrderPriceEnabled" class="widgettbload">
                           <span class="pull-right text-3 mt-2 text-dark">
                           </span>
                           <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
@@ -760,7 +762,7 @@
                           </h2>
                         </div>
 
-                        <div class="widgetlinfo">
+                        <div *ngIf="isOrderPriceEnabled" class="widgetlinfo">
                           <div class="col-lg-2 pull-left">
                             <img src="assets/img/icon-cur.png" class="img-fluid" alt="shipper" />
                           </div>
@@ -815,17 +817,7 @@
                               <span class="pull-right">{{ totalCharges | number: "1.2-2" }}
                                 {{ charges.freightFee.currency }}</span>
                             </p>
-                            <!-- <p class="mb-0 text-dark bordtopdas">
-                              <strong>Advance Received</strong>
-                              <span class="pull-right">${{advances}}</span>
-                            </p> -->
-                            <!-- <p class="mb-0 text-dark bordtopdas">
-                              <strong>Balance</strong>
-                              <span class="pull-right"
-                                >{{ balance }}
-                                {{ charges.freightFee.currency }}</span
-                              >
-                            </p> -->
+
                           </div>
                         </div>
                       </div>
@@ -919,8 +911,6 @@
                             <div class="col-6 text-right">
                               <button [disabled]="docs.length == 4" class="btn btn-success btn-sm"
                                 (click)="openDocModal()">Add Document</button>
-                              <!-- <input type="file" #uploadBol (change)="selectDocuments($event)" multiple
-                                class="p-0 pull-right mb-0" id="bolUpload" /> -->
                             </div>
                           </div>
                         </div>
@@ -961,25 +951,7 @@
                                 </tr>
                               </tbody>
                             </table>
-                            <!-- <div class="row my-2 px-2" *ngFor="let doc of docs;let d= index">
-                              <div class="col-4">
-                                <a class="image-popup-no-margins" href="{{doc.docPath}}" target="_blank">
-                                  <img class="img_thumbnail" src="{{doc.imgPath}}">
-                                  <p>{{doc.displayName}}</p>
-                                </a>
-                                <a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
-                                  (click)="setPDFSrc(doc.path)">{{doc.displayName}}</a>
-                              </div>
-                              <div class="col-1 text-right">
-                                <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
-                                  data-target="#viewDocModal"></em>
-                                <a href="javascript:;" (click)="delete('docs',doc.name, d)" class="modal-with-form">
-                                  <em class="fas fa-times text-danger"></em></a>
-                              </div>
-                            </div> -->
-                            <!-- <div *ngIf="docs.length == 0;" class="my-2 px-2">
-                              <span>No document found</span>
-                            </div> -->
+
                           </div>
                         </div>
                       </div>
@@ -1024,7 +996,7 @@
                         <img crossorigin="anonymous" *ngIf="companyLogoSrc" [src]="companyLogoSrc" alt="logo"
                           style="max-width: 100px" />
                         <p *ngIf="
-                            invoiceData.carrierData.termsInfo.tagLine &&
+                        invoiceData.carrierData && invoiceData.carrierData.termsInfo.tagLine &&
                             invoiceData.carrierData.termsInfo.tagLine != ''
                           " class="m-0 font-weight-bold text-dark">
                           {{ invoiceData.carrierData.termsInfo.tagLine }}
@@ -1043,7 +1015,8 @@
                           <span style="font-size: 12px">
                             <b>Invoice Date</b>
                           </span>
-                          {{ today | date: "yyyy/MM/dd" }}
+                          <span *ngIf="invDate">{{ invDate | date: "yyyy/MM/dd" }}</span>
+                          <span *ngIf="!invDate">{{ today | date: "yyyy/MM/dd" }}</span>
                         </p>
                         <p style="margin: 0; color: #000">
                           <span style="font-size: 12px">
@@ -1646,35 +1619,7 @@
                       </tr>
                     </tbody>
                   </table>
-                  <table class="invoice-iner__wrapper" width="100%" style="border-top: none">
-                    <tbody>
-                      <tr *ngFor="let newDoc of newInvDocs">
-                        <td>
-                          <table>
-                            <tbody>
-                              <tr *ngIf="newDoc.ext === 'pdf'">
-                                <td>
-                                  <pdf-viewer [src]="newDoc.docPath" [fit-to-page]="false" [show-all]="true"
-                                    [render-text]="true" [original-size]="false" [autoresize]="true"
-                                    style="max-width: 700px; display: block">
-                                  </pdf-viewer>
-                                </td>
-                              </tr>
-                              <tr *ngIf="
-                                  newDoc.ext === 'jpg' ||
-                                  newDoc.ext === 'jpeg' ||
-                                  newDoc.ext === 'png'
-                                ">
-                                <td>
-                                  <img crossorigin="anonymous" [src]="newDoc.docPath" width="100%" />
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+
                 </div>
               </td>
             </tr>
@@ -1712,16 +1657,9 @@
       <button class="btn btn-default" (click)="modal.dismiss('Cross click')">
         Cancel
       </button>
-      <button class="btn btn-success" *ngIf="docs.length != 0" (click)="openDocumentModal('print')">Print</button>
-      <button *ngIf="docs.length != 0 && isGenerate" [disabled]="generateBtnDisabled"
-        (click)="openDocumentModal('generate')" class="btn btn-success">
-        Generate & Print
-      </button>
 
-
-      <button class="btn btn-success" *ngIf="docs.length == 0" (click)="generate()">Print</button>
-      <button *ngIf="docs.length == 0 && isGenerate" [disabled]="generateBtnDisabled" (click)="generatePDF()"
-        class="btn btn-success">
+      <button class="btn btn-success" (click)="generate()">Print</button>
+      <button *ngIf="isGenerate" [disabled]="generateBtnDisabled" (click)="generatePDF()" class="btn btn-success">
         Generate & Print
       </button>
     </div>
@@ -1776,7 +1714,8 @@
                                 <span style="font-size: 12px">
                                   <b>Invoice Date</b>
                                 </span>
-                                {{ today | date: "yyyy/MM/dd" }}
+                                <span *ngIf="invDate">{{ invDate | date: "yyyy/MM/dd" }}</span>
+                                <span *ngIf="!invDate">{{ today | date: "yyyy/MM/dd" }}</span>
                               </p>
                               <p style="margin: 0; color: #000">
                                 <span style="font-size: 12px">
@@ -2524,14 +2463,14 @@
               <label class="form-check-label" for="inlineCheckbox_{{i}}">{{item.docName}}</label>
             </div>
           </div>
-          <!-- <div class="col-12 mt-2">
+          <div class="col-12 mt-2">
             <div class="form-check form-check-inline">
               <input class="form-check-input" name="checkbox" [(ngModel)]="emailData.isSingle" type="checkbox"
                 id="inlineCheckbox1" [disabled]="singleDisabled">
               <label class="form-check-label" for="inlineCheckbox1">Single file (All documents will be merged in single
                 file.) </label>
             </div>
-          </div> -->
+          </div>
 
           <div class="col-12 mt-3">
             <p>

@@ -7,334 +7,457 @@
     <div class="inner-wrapper">
         <section role="main" class="content-body pl-1 pt-0 pr-0">
             <header class="page-header pr19 pl11">
-                                <form class="form-horizontal" method="get">
-                <div class="row" *ngIf="currentTab == 'inv'" style="padding-top: 10px">
-                    <div class="col-md-2 col-lg-2">
-                        <div class="input-group input-group-sm mb-3">
-                            <input autocomplete="off" type="text" name="itemName" [(ngModel)]="itemName"
-                                class="form-control" (input)="getItemSuggestions($event.target.value,'inv')"
-                                placeholder="Search items by name" />
-                        </div>
-                        <div *ngIf="suggestedItems?.length > 0" class="result-suggestions">
-                            <ul>
-                                <li *ngFor="let suggestedItem of suggestedItems" style="cursor: pointer;"
-                                    (click)="setItem(suggestedItem.itemID, suggestedItem.itemName,'inv')"> {{ suggestedItem.itemName }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-2 col-lg-2 pr-1">
-                       
-                            <ng-select [(ngModel)]="vendorID" name="vendorID" style="width: 100%;" placeholder="Search items by vendor">
-                                <ng-option *ngFor="let data of allVendors | async" [value]="data.contactID">{{data.companyName}}</ng-option>
-                            </ng-select>
-                        
-                    </div>
-                    <div class="col-md-2 col-lg-2 pr-1">
-                       
-                            <ng-select [(ngModel)]="category" name="category" style="width: 100%;" placeholder="Search items by category">
-                                <ng-option value="hardware">Hardware</ng-option>
-                                <ng-option value="brakes">Brakes</ng-option>
-                            </ng-select>
-                      
-                    </div>
-                    <div class="col-md-2 col-lg-2">
-                        <button type="submit" (click)="searchFilter()"
-                            class="btn btn-sm btn-success mr-3">Search</button>
-                        <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
-                    </div>
-
-                    <div class="col-md-4 col-lg-4 text-right pr-1 page-buttons">
-                        <div class="btn-group flex-wrap mr-3" style="min-width:190px;" *ngIf="!environment">
-                            <button type="button" class="mb-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright"
-                                data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
-                            <div class="dropdown-menu dutystatwd colvisi-scrollbar" role="menu" x-placement="bottom-start"
-                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" disabled [(ngModel)]="hideShow.part" name="part" (change)="hideShowColumn()"> Part#
-                                    </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" disabled [(ngModel)]="hideShow.name" name="name" (change)="hideShowColumn()"> Item Name
-                                    </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" disabled [(ngModel)]="hideShow.category" name="category" (change)="hideShowColumn()">
-                                        Category </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" disabled [(ngModel)]="hideShow.vendor" name="vendor" (change)="hideShowColumn()">
-                                        Vendor </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" disabled [(ngModel)]="hideShow.quantity" name="quantity" (change)="hideShowColumn()">
-                                        Quantity </label>
-                                </a>
-                                
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" disabled [(ngModel)]="hideShow.unitCost" name="unitCost" (change)="hideShowColumn()">
-                                        Unit Cost </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" disabled [(ngModel)]="hideShow.warehouse" name="warehouse" (change)="hideShowColumn()">
-                                        Warehouse Details </label>
-                                </a>
-                                <a class="dropdown-item text-1" href="javascript:;">
-                                    <label><input type="checkbox" [(ngModel)]="hideShow.warranty" name="warranty" (change)="hideShowColumn()">
-                                        Warranty Time
-                                    </label>
-                                </a>
-                                
+                <form class="form-horizontal" method="get">
+                    <div class="row" *ngIf="currentTab == 'inv'" style="padding-top: 10px">
+                        <div class="col-md-2 col-lg-2">
+                            <div class="input-group input-group-sm mb-3">
+                                <input autocomplete="off" type="text" name="itemName" [(ngModel)]="itemName"
+                                    class="form-control" (input)="getItemSuggestions($event.target.value,'inv')"
+                                    placeholder="Search items by name" />
+                            </div>
+                            <div *ngIf="suggestedItems?.length > 0" class="result-suggestions">
+                                <ul>
+                                    <li *ngFor="let suggestedItem of suggestedItems" style="cursor: pointer;"
+                                        (click)="setItem(suggestedItem.itemID, suggestedItem.itemName,'inv')"> {{
+                                        suggestedItem.itemName }}</li>
+                                </ul>
                             </div>
                         </div>
-                        
-                        <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
-                            <i class="fas fa-sync"></i>
-                        </a>
+                        <div class="col-md-2 col-lg-2 pr-1">
 
-                        <a [routerLink]="" (click)="openTransferModal()"
-                            class="modal-with-form btn btn-success btn-sm mr-3"><i class="fas fa-exchange-alt"></i>
-                            Transfer</a>
-                        <a routerLink="/fleet/inventory/add" class="btn btn-success btn-sm" style="color: white"><i
-                                class="fas fa-plus"></i> Add Inventory</a>
+                            <ng-select [(ngModel)]="vendorID" name="vendorID" style="width: 100%;"
+                                placeholder="Search items by vendor">
+                                <ng-option *ngFor="let data of allVendors | async" [value]="data.contactID">
+                                    {{data.companyName}}</ng-option>
+                            </ng-select>
+
+                        </div>
+                        <div class="col-md-2 col-lg-2 pr-1">
+
+                            <ng-select [(ngModel)]="category" name="category" style="width: 100%;"
+                                placeholder="Search items by category">
+                                <ng-option value="belts">belts</ng-option>
+                                <ng-option value="brakes">Brakes</ng-option>
+                                <ng-option value="electrical">Electrical</ng-option>
+                                <ng-option value="filters">Filters</ng-option>
+                                <ng-option value="fluids">Fluids</ng-option>
+                                <ng-option value="miscellaneous">Miscellaneous</ng-option>
+                                <ng-option value="suspension">Suspension</ng-option>
+                                <ng-option value="tires">Tires</ng-option>
+
+
+                            </ng-select>
+
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <button type="submit" (click)="searchFilter()"
+                                class="btn btn-sm btn-success mr-3">Search</button>
+                            <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
+                        </div>
+
+                        <div class="col-md-4 col-lg-4 text-right pr-1 page-buttons">
+                            <div class="btn-group flex-wrap mr-3" style="min-width:190px;" *ngIf="!environment">
+                                <button type="button"
+                                    class="mb-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright"
+                                    data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
+                                <div class="dropdown-menu dutystatwd colvisi-scrollbar" role="menu"
+                                    x-placement="bottom-start"
+                                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" disabled [(ngModel)]="hideShow.part" name="part"
+                                                (change)="hideShowColumn()"> Part#
+                                        </label>
+                                    </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" disabled [(ngModel)]="hideShow.name" name="name"
+                                                (change)="hideShowColumn()"> Item Name
+                                        </label>
+                                    </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" disabled [(ngModel)]="hideShow.category"
+                                                name="category" (change)="hideShowColumn()">
+                                            Category </label>
+                                    </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" disabled [(ngModel)]="hideShow.vendor"
+                                                name="vendor" (change)="hideShowColumn()">
+                                            Vendor </label>
+                                    </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" disabled [(ngModel)]="hideShow.quantity"
+                                                name="quantity" (change)="hideShowColumn()">
+                                            Quantity </label>
+                                    </a>
+
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" disabled [(ngModel)]="hideShow.unitCost"
+                                                name="unitCost" (change)="hideShowColumn()">
+                                            Unit Cost </label>
+                                    </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" disabled [(ngModel)]="hideShow.warehouse"
+                                                name="warehouse" (change)="hideShowColumn()">
+                                            Warehouse Details </label>
+                                    </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" [(ngModel)]="hideShow.warranty" name="warranty"
+                                                (change)="hideShowColumn()">
+                                            Warranty Time
+                                        </label>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="row" *ngIf="currentTab == 'rinv'" style="padding-top: 10px">
-                    <div class="col-md-2 col-lg-2">
-                        <!-- <div class="input-group input-group-sm mb-3">
+                    <div class="row" *ngIf="currentTab == 'rinv'" style="padding-top: 10px">
+                        <div class="col-md-2 col-lg-2">
+                            <!-- <div class="input-group input-group-sm mb-3">
                             <ng-select [(ngModel)]="requiredItemID" name="requiredItemID" style="width: 100%;" placeholder="Search items by name">
                                 <ng-option *ngFor="let data of searchItems" [value]="data.partNumber">{{data.itemName}}</ng-option>
                             </ng-select>
                         </div> -->
-                        <div class="input-group input-group-sm mb-3">
-                          <input autocomplete="off" type="text" name="requiredItemName" [(ngModel)]="requiredItemName"
-                              class="form-control" (input)="getItemSuggestions($event.target.value,'req')"
-                              placeholder="Search items by name" />
-                      </div>
-                      <div *ngIf="requiredSuggestedItems?.length > 0" class="result-suggestions">
-                          <ul>
-                              <li *ngFor="let suggestedItem of requiredSuggestedItems" style="cursor: pointer;"
-                                  (click)="setItem(suggestedItem.itemID, suggestedItem.itemName,'req')"> {{ suggestedItem.itemName }}</li>
-                          </ul>
-                      </div>
-                    </div>
-                    <div class="col-md-2 col-lg-2 pr-1">
-                            <ng-select [(ngModel)]="requiredVendorID" name="requiredVendorID" style="width: 100%;" placeholder="Search items by vendor">
-                                <ng-option *ngFor="let data of allVendors | async" [value]="data.contactID">{{data.companyName}}</ng-option>
+                            <div class="input-group input-group-sm mb-3">
+                                <input autocomplete="off" type="text" name="requiredItemName"
+                                    [(ngModel)]="requiredItemName" class="form-control"
+                                    (input)="getItemSuggestions($event.target.value,'req')"
+                                    placeholder="Search items by name" />
+                            </div>
+                            <div *ngIf="requiredSuggestedItems?.length > 0" class="result-suggestions">
+                                <ul>
+                                    <li *ngFor="let suggestedItem of requiredSuggestedItems" style="cursor: pointer;"
+                                        (click)="setItem(suggestedItem.itemID, suggestedItem.itemName,'req')"> {{
+                                        suggestedItem.itemName }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-lg-2 pr-1">
+                            <ng-select [(ngModel)]="requiredVendorID" name="requiredVendorID" style="width: 100%;"
+                                placeholder="Search items by vendor">
+                                <ng-option *ngFor="let data of allVendors | async" [value]="data.contactID">
+                                    {{data.companyName}}</ng-option>
                             </ng-select>
-                    </div>
-                    <div class="col-md-2 col-lg-2 pr-1">
-                            <input autocomplete="off" type="text" name="requiredPartNumber" [(ngModel)]="requiredPartNumber"
-                                class="form-control" (input)="getPartNumberSuggestions($event.target.value)" placeholder="Search by part#"/>
-                        <div *ngIf="requiredSuggestedPartNo?.length > 0" class="result-suggestions">
-                            <ul>
-                                <li *ngFor="let data of requiredSuggestedPartNo" style="cursor: pointer;"
-                                    (click)="setPartNo(data.partNumber)"> {{ data.partNumber }}</li>
-                            </ul>
+                        </div>
+                        <div class="col-md-2 col-lg-2 pr-1">
+                            <input autocomplete="off" type="text" name="requiredPartNumber"
+                                [(ngModel)]="requiredPartNumber" class="form-control"
+                                (input)="getPartNumberSuggestions($event.target.value)" placeholder="Search by part#" />
+                            <div *ngIf="requiredSuggestedPartNo?.length > 0" class="result-suggestions">
+                                <ul>
+                                    <li *ngFor="let data of requiredSuggestedPartNo" style="cursor: pointer;"
+                                        (click)="setPartNo(data.partNumber)"> {{ data.partNumber }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <button type="submit" (click)="searchRequiredFilter()"
+                                class="btn btn-sm btn-success mr-3">Search</button>
+                            <button type="button" (click)="resetRequiredFilter()"
+                                class="btn btn-sm btn-success">Reset</button>
+                        </div>
+
+                        <div class="col-md-4 col-lg-4 text-right pr-1 page-buttons">
+                            <!--
+                            <a href="javascript:;" (click)="refreshReqData()" data-toggle="tooltip" title="Refresh data"
+                                class="btn btn-success btn-sm modal-with-form mr-2">
+                                <i class="fas fa-sync"></i>
+                            </a>
+                            
+                            <a [routerLink]="" (click)="openTransferModal()"
+                                class="modal-with-form btn btn-success btn-sm mr-3"><i class="fas fa-exchange-alt"></i>
+                                Transfer</a>
+                            <a routerLink="/fleet/inventory/add" class="btn btn-success btn-sm" style="color: white"><i
+                                    class="fas fa-plus"></i> Add Inventory</a> -->
                         </div>
                     </div>
-                    <div class="col-md-2 col-lg-2">
-                        <button type="submit" (click)="searchRequiredFilter()" class="btn btn-sm btn-success mr-3">Search</button>
-                        <button type="button" (click)="resetRequiredFilter()" class="btn btn-sm btn-success">Reset</button>
-                    </div>
-
-                    <div class="col-md-4 col-lg-4 text-right pr-1 page-buttons">
-                        <a href="javascript:;" (click)="refreshReqData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
-                            <i class="fas fa-sync"></i>
-                        </a>
-                        <a [routerLink]="" (click)="openTransferModal()"
-                            class="modal-with-form btn btn-success btn-sm mr-3"><i class="fas fa-exchange-alt"></i>
-                            Transfer</a>
-                        <a routerLink="/fleet/inventory/add" class="btn btn-success btn-sm" style="color: white"><i
-                                class="fas fa-plus"></i> Add Inventory</a>
-                    </div>
-                </div>
                 </form>
             </header>
 
             <section class="m-2">
                 <div class="row mb-3">
-                   <div class="col-lg-12">
-                      <div class="bg-white p-3 text-dark">
-                         <div class="form-group row pt-1">
-                            <div class="col-lg-12">
-                                <div class="pb-3">
-                                    <ul class="nav nav-tabs top-tabs mb-1" id="top-tabs" role="tablist">
-                                        <li class="nav-item" style="cursor:pointer; ">
-                                            <a class="nav-link" [ngClass]="{'active': currentTab == 'inv'}" (click)="tabChange('inv')" id="all-tab" role="tab" aria-controls="allassets" aria-selected="true">Existing
-                                                Inventory</a>
-                                        </li>
-                                        <li class="nav-item" style="cursor:pointer;">
-                                            <a class="nav-link"  [ngClass]="{'active show': currentTab == 'rinv'}" (click)="tabChange('rinv')" role="tab" aria-controls="reefer" aria-selected="false">Required
-                                                Inventory</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="tab-content border-0 p-0 shadow-none" id="myTabContent">
-                                    <div class="tab-pane" [ngClass]="{'active show': currentTab == 'inv'}" id="einv" role="tabpanel"
-                                        aria-labelledby="all-tab">
-                                        <div>
-                                            <div infiniteScroll [infiniteScrollDistance]="1"
-                                                [infiniteScrollUpDistance]="1" [infiniteScrollThrottle]="5"
-                                                (scrolled)="onScroll()">
-                                            <table class="row-border hover table table-bordered table-striped mb-0">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="col1">Part#</th>
-                                                        <th class="col2">Item Name</th>
-                                                        <th class="col3">Category</th>
-                                                        <th class="col4">Vendor</th>
-                                                        <th class="col7">Unit Cost</th>
-                                                        <th class="col7">Tax</th>
-                                                        <th class="col5">Quantity</th>
-                                                        <th class="col7">Total Cost</th>
-                                                        <th class="col8">Warehouse Details</th>
-                                                        <th class="col9 extra">Warranty Time</th>
-                                                        <th class="col10 extra">Reorder Point</th>
-                                                        <th class="col11 extra">Reorder Quantity</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                    <tr *ngIf="items.length == 0" class="text-center">
-                                                        <td colspan="12">{{dataMessage}}</td>
-                                                    </tr>
-                                                    <tr class="cursorpoint" *ngFor="let item of items; let i = index">
-                                                        <td *ngIf="hideShow.part"
-                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            {{ item.partNumber}}
-
-                                                        </td>
-                                                        <td *ngIf="hideShow.name"
-                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            {{item.itemName}}
-                                                        </td>
-                                                        <td *ngIf="hideShow.category"
-                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            {{item.category}}
-                                                        </td>
-                                                        <td *ngIf="hideShow.vendor"
-                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            {{vendors[item.warehouseVendorID]}}
-                                                        </td>
-                                                          
-                                                        <td *ngIf="hideShow.unitCost"
-                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                             {{item.cost}} {{item.costUnitType}}
-                                                        </td>
-                                                          <td *ngIf="hideShow.unitCost"
-                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                             {{item.tax}} 
-                                                        </td>
-                                                        <td *ngIf="hideShow.quantity"
-                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            {{item.quantity}}
-                                                        </td>
-                                                         <td *ngIf="hideShow.quantity"
-                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            {{item.totalCost}}
-                                                        </td>
-                                                        <td *ngIf="hideShow.warehouse"
-                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            {{warehouses[item.warehouseID]}}
-                                                        </td>
-                                                        <!-- extra columns -->
-                                                        <td *ngIf="hideShow.warranty"
-                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                            {{item.warrantyTime ? item.warrantyTime : '-'}} {{item.warrantyUnit}}
-                                                        </td>
-                                                        <td>
-                                                            <div class="dropdown dropright">
-                                                                <button class="bg-transparent border-0" type="button"
-                                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                    aria-haspopup="true" aria-expanded="false">
-                                                                    <i class="fas fa-ellipsis-v"></i>
-                                                                </button>
-                                                                <div class="dropdown-menu"
-                                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                    <a class="dropdown-item"
-                                                                        routerLink="/fleet/inventory/edit/{{item.itemID}}">Edit</a>
-                                                                    <a href="javascript:;" class="dropdown-item"
-                                                                        (click)="deleteItem(item)">Delete</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                             <div class="row mt-3 dtPaginate">
-                                                    <div class="col-lg-12 mt-3 text-center"
-                                                        *ngIf="lastItemSK !== 'end' && items.length !== 0">
-                                                        <button type="button" (click)="onScroll()"
-                                                            class="btn btn-success btn-sm text-light">Load
-                                                            More..</button>
-                                                    </div>
-                                                </div>
-                                        </div>
-                                        </div>
+                    <div class="col-lg-12">
+                        <div class="bg-white p-3 text-dark">
+                            <div class="form-group row pt-1">
+                                <div class="col-lg-12">
+                                    <div class="pb-3">
+                                        <ul class="nav nav-tabs top-tabs mb-1" id="top-tabs" role="tablist">
+                                            <li class="nav-item" style="cursor:pointer; ">
+                                                <a class="nav-link" [ngClass]="{'active': currentTab == 'inv'}"
+                                                    (click)="tabChange('inv')" id="all-tab" role="tab"
+                                                    aria-controls="allassets" aria-selected="true">Existing
+                                                    Inventory</a>
+                                            </li>
+                                            <li class="nav-item" style="cursor:pointer;">
+                                                <a class="nav-link" [ngClass]="{'active show': currentTab == 'rinv'}"
+                                                    (click)="tabChange('rinv')" role="tab" aria-controls="reefer"
+                                                    aria-selected="false">Required
+                                                    Inventory</a>
+                                            </li>
+                                        </ul>
                                     </div>
-                                    <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 'rinv'}" id="rinv" role="tabpanel" aria-labelledby="reefer-tab">
-                                         <div infiniteScroll [infiniteScrollDistance]="1"
-                                                [infiniteScrollUpDistance]="1" [infiniteScrollThrottle]="5"
-                                                (scrolled)="onScroll()">
-                                        <table class="table table-bordered table-responsive-lg table-striped mb-0"
-                                            id="simple-table1">
-                                            <thead>
-                                                <tr>
-                                                    <th>Part#</th>
-                                                    <th>Item Name</th>
-                                                    <th>Vendor</th>
-                                                    <th>Quantity</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngIf="requiredItems.length == 0" class="text-center">
-                                                    <td colspan="5">{{dataMessageReq}}</td>
-                                                </tr>
-                                                <tr *ngFor="let item of requiredItems; let i = index">
-                                                    <td>{{ item.partNumber }}</td>
-                                                    <td>{{ allItems[item.partNumber] }}</td>
-                                                    <td>{{vendors[item.preferredVendorID]}}</td>
-                                                    <td>{{ item.quantity }}</td>
-                                                    <td>
-                                                        <div class="dropdown dropright">
-                                                            <button class="bg-transparent border-0" type="button"
-                                                                id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                aria-haspopup="true" aria-expanded="false">
-                                                                <i class="fas fa-ellipsis-v"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu"
-                                                                attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                <a class="dropdown-item" routerLink="/fleet/inventory/add/required/{{item.itemID}}"
-                                                                    >Add Inventory</a>
-                                                                <a href="javascript:;" class="dropdown-item"
-                                                                    (click)="deleteRequiredItem(item)">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                         <div class="row mt-3 dtPaginate">
-                                                    <div class="col-lg-12 mt-3 text-center"
-                                                        *ngIf="lastSK !== 'end' && requiredItems.length !== 0">
-                                                        <button type="button" (click)="onScroll()"
-                                                            class="btn btn-success btn-sm text-light">Load
-                                                            More..</button>
-                                                    </div>
+                                    
+                                    <div class="tab-content border-0 p-0 shadow-none" id="myTabContent">
+                                        <div class="tab-pane" [ngClass]="{'active show': currentTab == 'inv'}" id="einv"
+                                            role="tabpanel" aria-labelledby="all-tab">
+                                    <p-table #dt [value]="items" [resizableColumns]="true" columnResizeMode="expand"
+                                        scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
+                                        styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                                        [scrollable]="true" [loading]="!loaded" scrollHeight="100%">
+                                        <!-- Caption template of data table -->
+                                        <ng-template pTemplate="caption">
+                                            <div class="p-d-flex d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h3 class="m-0"> Inventory </h3>
                                                 </div>
-                                       </div>
-                                       </div>
+                                                <div class="text-right">
+                                                    <span>Showing {{items.length}} entries </span> &nbsp;
+                                                    <button type="button" pButton (click)="refreshData()"
+                                                        pTooltip="Refresh" class="p-button-outlined mr-2"
+                                                        icon="fas fa-sync"></button>
+                                                    <button type="button" pButton pTooltip="Add"
+                                                        [routerLink]="['/fleet', 'inventory', 'add']" class="p-button-outlined mr-2"
+                                                        icon="pi pi-plus"></button>
+                                                    <button pButton pRipple pTooltip="Transfer"
+                                                        class="p-button-outlined mr-2"
+                                                        (click)="openTransferModal()"><i class="fas fa-exchange-alt"></i></button>
+                                                    <button pButton pRipple pTooltip="Clear Filter"
+                                                        class="p-button-outlined mr-2" icon="pi pi-filter-slash"
+                                                        (click)="clear(dt)"></button>
+                                                    <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                                                        icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()"
+                                                        pTooltip="Excel"></button>
+                                                    <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns"
+                                                        optionLabel="header" selectedItemsLabel="{0} columns selected"
+                                                        [style]="{minWidth: '200px'}" placeholder="Choose Columns">
+                                                    </p-multiSelect>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <!-- Header template of DataTable -->
+                                        <ng-template pTemplate="header" let-columns>
+                                            <tr>
+                                                <th *ngFor="let dataColumns of columns"
+                                                    [pSortableColumn]="dataColumns.field" pResizableColumn
+                                                    style="width:14%">
+                                                    <div [ngSwitch]="dataColumns.field">
+                                                        <span *ngSwitchDefault>
+                                                            <div class="flex justify-content-center align-items-center"
+                                                                alignFrozen="right" pFrozenColumn [frozen]="true">
+                                                                {{dataColumns.header}}
+                                                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                                                <p-columnFilter [type]="dataColumns.type"
+                                                                    [field]="dataColumns.field" matchMode="contains"
+                                                                    [showMatchModes]="false" [showOperator]="false"
+                                                                    [showAddButton]="false" display="menu">
+                                                                </p-columnFilter>
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th style="width:100px" alignFrozen="right" pFrozenColumn
+                                                    [frozen]="true">Actions</th>
+                                            </tr>
+                                        </ng-template>
+                                        <!-- Body Template of Data Table -->
+                                        <ng-template pTemplate="body" let-exItems let-columns="columns"
+                                            let-rowIndex="rowIndex">
+                                            <tr>
+                                                <td *ngFor="let dataColumns of columns"
+                                                    style="width:14%;cursor: pointer;"
+                                                    routerLink="/fleet/inventory/detail/{{exItems.itemID}}">
+                                                    <div [ngSwitch]="dataColumns.field">
+                                                        <span *ngSwitchCase="'vendor'">
+                                                            <span>{{vendors[exItems.warehouseVendorID] | titlecase}}</span>
+                                                       </span>
+                                                       <span *ngSwitchCase="'partNumber'">
+                                                            <span>{{get(exItems,dataColumns.field) | titlecase}}</span>
+                                                       </span>
+                                                        <span *ngSwitchCase="'itemName'">
+                                                            <span>{{get(exItems,dataColumns.field) | titlecase}}</span>
+                                                       </span>
+                                                        <span *ngSwitchCase="'category'">
+                                                            <span>{{get(exItems,dataColumns.field) | titlecase}}</span>
+                                                       </span>
+                                                        <span *ngSwitchCase="'unitcost'">
+                                                            <span>{{exItems.cost}} {{exItems.costUnitType}}</span>
+                                                       </span>
+                                                       <span *ngSwitchCase="'warehouseDetails'">
+                                                            <span>{{warehouses[exItems.warehouseID] | titlecase}}</span>
+                                                       </span>
+                                                    <span *ngSwitchDefault> {{get(exItems,dataColumns.field) }}</span>
+                                                    </div>
+                                                </td>
+                                                <td style=" text-align: center; width: 100px;" pFrozenColumn
+                                                    alignFrozen="right" [frozen]="true">
+                                                    <button id="btnEdit" pButton
+                                                        routerLink="/fleet/inventory/edit/{{exItems.itemID}}"
+                                                        type="button" icon="fas fa-user-pen"
+                                                        class="p-button-rounded p-button-text"></button>
+                                                    <button id="btnDelete" (click)="deleteItem(exItems)" pButton
+                                                        type="button" icon="fas fa-user-slash"
+                                                        class="p-button-rounded p-button-danger p-button-text"></button>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                        <!-- Empty Template -->
+
+                                        <ng-template pTemplate="emptymessage" let-columns>
+                                            <div class="col-lg-12 mt-3 text-center">
+                                                {{dataMessage}}
+                                                <br /><br>
+                                            </div>
+                                        </ng-template>
+                                        <!-- Summary Section with Load More button -->
+
+                                        <ng-template pTemplate="summary" let-columns>
+                                            <div class="col-lg-12 mt-3 text-center "
+                                                *ngIf="lastEvaluatedKey !== 'end' && items.length !== 0">
+                                                <button type="button " (click)="onScroll($event) "
+                                                    class="btn btn-success btn-sm text-light ">Load
+                                                    More..</button>
+                                                <br /><br>
+                                            </div>
+                                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey ==='end'">
+                                                Total Records: {{items.length}}</div>
+                                        </ng-template>
+                                    </p-table>
+                                        </div>
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                         
+                                        <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 'rinv'}"
+                                            id="rinv" role="tabpanel" aria-labelledby="reefer-tab">
+                             <p-table #dt [value]="requiredItems" [resizableColumns]="true" columnResizeMode="expand"
+                                        scrollDirection="both" [columns]="reqSelectedColumns" [loading]="!loaded"
+                                        styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                                        [scrollable]="true" [loading]="!loaded" scrollHeight="100%">
+                                        <!-- Caption template of data table -->
+                                        <ng-template pTemplate="caption">
+                                            <div class="p-d-flex d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h3 class="m-0"> Inventory </h3>
+                                                </div>
+                                                <div class="text-right">
+                                                    <span>Showing {{requiredItems.length}} entries </span> &nbsp;
+                                                    <button type="button" pButton (click)="refreshReqData()"
+                                                        pTooltip="Refresh" class="p-button-outlined mr-2"
+                                                        icon="fas fa-sync"></button>
+                                                    <button type="button" pButton pTooltip="Add"
+                                                        [routerLink]="['/fleet', 'inventory', 'add']"  class="p-button-outlined mr-2"
+                                                        icon="pi pi-plus"></button>
+                                                    <button pButton pRipple pTooltip="Transfer"
+                                                        class="p-button-outlined mr-2"
+                                                        (click)="openTransferModal()"><i class="fas fa-exchange-alt"></i></button>
+                                                    <button pButton pRipple pTooltip="Clear Filter"
+                                                        class="p-button-outlined mr-2" icon="pi pi-filter-slash"
+                                                        (click)="clear(dt)"></button>
+                                                    <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                                                        icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()"
+                                                        pTooltip="Excel"></button>
+                                                    <p-multiSelect [options]="reqDataColumns" [(ngModel)]="reqSelectedColumns"
+                                                        optionLabel="header" selectedItemsLabel="{0} columns selected"
+                                                        [style]="{minWidth: '200px'}" placeholder="Choose Columns">
+                                                    </p-multiSelect>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <!-- Header template of DataTable -->
+                                        <ng-template pTemplate="header" let-columns>
+                                            <tr>
+                                                <th *ngFor="let reqDataColumns of columns"
+                                                    [pSortableColumn]="reqDataColumns.field" pResizableColumn
+                                                    style="width:25%">
+                                                    <div [ngSwitch]="reqDataColumns.field">
+                                                        <span *ngSwitchDefault>
+                                                            <div class="flex justify-content-center align-items-center"
+                                                                alignFrozen="right" pFrozenColumn [frozen]="true">
+                                                                {{reqDataColumns.header}}
+                                                                <p-sortIcon [field]="reqDataColumns.field"></p-sortIcon>
+                                                                <p-columnFilter [type]="reqDataColumns.type"
+                                                                    [field]="reqDataColumns.field" matchMode="contains"
+                                                                    [showMatchModes]="false" [showOperator]="false"
+                                                                    [showAddButton]="false" display="menu">
+                                                                </p-columnFilter>
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                                <th style="width:100px" alignFrozen="right" pFrozenColumn
+                                                    [frozen]="true">Actions</th>
+                                            </tr>
+                                        </ng-template>
+                                        <!-- Body Template of Data Table -->
+                                        <ng-template pTemplate="body" let-reqItems let-columns="columns"
+                                            let-rowIndex="rowIndex">
+                                            <tr>
+                                                <td *ngFor="let reqDataColumns of columns"
+                                                    style="width:25%;cursor: pointer;">
+                                                    <div [ngSwitch]="reqDataColumns.field">
+                                                        <span *ngSwitchCase="'reqItemName'">
+                                                            <span>{{ allItems[reqItems.partNumber] | titlecase}}</span>
+                                                        </span>
+                                                        <span *ngSwitchCase="'vendor'">
+                                                            <span>{{(vendors[reqItems.preferredVendorID] ? vendors[reqItems.preferredVendorID]: '-') | titlecase}}</span>
+                                                        </span>
+                                                    <span *ngSwitchDefault> {{(get(reqItems,reqDataColumns.field) ? get(reqItems,reqDataColumns.field): '-') | titlecase}}</span>
+                                                    </div>
+                                                </td>
+                                                <td style=" text-align: center; width: 100px;" pFrozenColumn
+                                                    alignFrozen="right" [frozen]="true">
+                                                    <button id="btnEdit" pButton
+                                                        routerLink="/fleet/inventory/add/required/{{reqItems.itemID}}"
+                                                        type="button" icon="fas fa-user-pen"
+                                                        class="p-button-rounded p-button-text"></button>
+                                                    <button id="btnDelete" (click)="deleteRequiredItem(reqItems)" pButton
+                                                        type="button" icon="fas fa-user-slash"
+                                                        class="p-button-rounded p-button-danger p-button-text"></button>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                        <!-- Empty Template -->
+
+                                        <ng-template pTemplate="emptymessage" let-columns>
+                                            <div class="col-lg-12 mt-3 text-center">
+                                                {{dataMessage}}
+                                                <br /><br>
+                                            </div>
+                                        </ng-template>
+                                        <!-- Summary Section with Load More button -->
+
+                                        <ng-template pTemplate="summary" let-columns>
+                                            <div class="col-lg-12 mt-3 text-center "
+                                                *ngIf="lastEvaluatedKey !== 'end' && requiredItems.length !== 0">
+                                                <button type="button " (click)="onScroll($event) "
+                                                    class="btn btn-success btn-sm text-light ">Load
+                                                    More..</button>
+                                                <br /><br>
+                                            </div>
+                                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey ==='end'">
+                                                Total Records: {{requiredItems.length}}</div>
+                                        </ng-template>
+                                    </p-table>
+                                        </div>
+                                        
+                                        
+                                        
+                                    </div>
                                 </div>
+
                             </div>
-                           
-                         </div>
-                      </div>
-                   </div>
+                        </div>
+                    </div>
                 </div>
-             </section>
+            </section>
         </section>
     </div>
 </section>
@@ -357,22 +480,23 @@
                         <div class="form-group col-lg-12">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">From Warehouse <span
-                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                    <ng-select #w1="ngModel" class="form-control populate"  placeholder="Select Warehouse" name="warehouseID1"
-                                        (change)="getWarehouseItems($event)"
-                                        [(ngModel)] ="transfer.warehouseID1">
-                                            <ng-option *ngFor="let warehouse of warehouses | keyvalue"
-                                                value="{{warehouse.key}}">
-                                                {{warehouse.value}}</ng-option>
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">From Warehouse
+                                        <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                    <ng-select #w1="ngModel" class="form-control populate"
+                                        placeholder="Select Warehouse" name="warehouseID1"
+                                        (change)="getWarehouseItems($event)" [(ngModel)]="transfer.warehouseID1">
+                                        <ng-option *ngFor="let warehouse of warehouses | keyvalue"
+                                            value="{{warehouse.key}}">
+                                            {{warehouse.value}}</ng-option>
                                     </ng-select>
-                                    <div *ngIf="w1.touched && (transfer.warehouseID1 == null || transfer.warehouseID1 == '')" class="text-danger">
+                                    <div *ngIf="w1.touched && (transfer.warehouseID1 == null || transfer.warehouseID1 == '')"
+                                        class="text-danger">
                                         Warehouse is required.
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">To Warehouse <span
-                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <ng-select #w2="ngModel" class="form-control populate" name="warehouseID2"
                                         [(ngModel)]="transfer.warehouseID2">
                                         <ng-container *ngFor="let warehouse of warehouses | keyvalue">
@@ -381,7 +505,8 @@
                                                 {{warehouse.value}}</ng-option>
                                         </ng-container>
                                     </ng-select>
-                                    <div *ngIf="w2.touched && (transfer.warehouseID2 == null || transfer.warehouseID2 == '')" class="text-danger">
+                                    <div *ngIf="w2.touched && (transfer.warehouseID2 == null || transfer.warehouseID2 == '')"
+                                        class="text-danger">
                                         Warehouse is required.
                                     </div>
                                 </div>
@@ -390,26 +515,30 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <label class="control-label font-weight-bold font-bold text-lg-right">Part# <span
-                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                    <ng-select #part="ngModel" (change)="getQuanity($event)" type="text" class="form-control" placeholder="eg. ACR301 etc" name="partNumber" 
-                                    [(ngModel)]="transfer.partNumber">
+                                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                    <ng-select #part="ngModel" (change)="getQuanity($event)" type="text"
+                                        class="form-control" placeholder="eg. ACR301 etc" name="partNumber"
+                                        [(ngModel)]="transfer.partNumber">
                                         <ng-option *ngFor="let item of allWarehouses" value={{item.partNumber}}>
                                             {{item.partNumber}} - {{item.warehouseVendorName}}
                                         </ng-option>
                                     </ng-select>
-                                    <div *ngIf="partQuantity >=0 && transfer.partNumber != ''">Existing quantity: {{partQuantity}}</div>
-                                    <div *ngIf="part.touched && (transfer.partNumber == null || transfer.partNumber == '')" class="text-danger">
+                                    <div *ngIf="partQuantity >=0 && transfer.partNumber != ''">Existing quantity:
+                                        {{partQuantity}}</div>
+                                    <div *ngIf="part.touched && (transfer.partNumber == null || transfer.partNumber == '')"
+                                        class="text-danger">
                                         Part number is required.
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <label
-                                        class="control-label font-weight-bold font-bold text-lg-right">Quantity to be transferred <span
-                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                    <input #tranQty="ngModel"  type="number" min="0" (blur)="checkQuanity($event.target.value)" class="form-control" 
-                                    placeholder="eg. 1,2,3 "name="transferQuantity" [(ngModel)]="transfer.transferQuantity">
-                                    <span class="text-danger" *ngIf="quantityError">You can't transfer more than existing quantity</span>
-                                    <!-- <span class="text-danger" *ngIf="transfer.transferQuantity <= 0">Value should be greater than 0</span> -->
+                                    <label class="control-label font-weight-bold font-bold text-lg-right">Quantity to be
+                                        transferred <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                    <input #tranQty="ngModel" type="number" min="0"
+                                        (blur)="checkQuanity($event.target.value)" class="form-control"
+                                        placeholder="eg. 1,2,3 " name="transferQuantity"
+                                        [(ngModel)]="transfer.transferQuantity">
+                                    <span class="text-danger" *ngIf="quantityError">You can't transfer more than
+                                        existing quantity</span>
                                     <div *ngIf="tranQty.touched && transfer.transferQuantity <= 0" class="text-danger">
                                         Value should be greater than 0
                                     </div>
@@ -417,22 +546,25 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <label
-                                        class="control-label font-weight-bold font-bold text-lg-right pt-2">Date <span
-                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                    <input #date="ngModel" type="text" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker" class="form-control" name="date"
-                                        [(ngModel)]="transfer.date" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-                                    <div *ngIf="date.touched && (transfer.date == null || transfer.date == '')" class="text-danger">
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Date
+                                        <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                    <input #date="ngModel" type="text" (click)="d2.toggle()" ngbDatepicker
+                                        #d2="ngbDatepicker" class="form-control" name="date" [(ngModel)]="transfer.date"
+                                        [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                                    <div *ngIf="date.touched && (transfer.date == null || transfer.date == '')"
+                                        class="text-danger">
                                         Date is required.
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes</label>
-                                    <textarea type="text" class="form-control h-auto" rows="4" placeholder="Enter part details"name="notes"
+                                    <label
+                                        class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes</label>
+                                    <textarea type="text" class="form-control h-auto" rows="4"
+                                        placeholder="Enter part details" name="notes"
                                         [(ngModel)]="transfer.notes"></textarea>
-                                        <div *ngIf="transfer.notes?.length > 500" class="text-danger">
-                                            Only 500 characters are allowed.
-                                          </div>
+                                    <div *ngIf="transfer.notes?.length > 500" class="text-danger">
+                                        Only 500 characters are allowed.
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -443,7 +575,8 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     Cancel
                 </button>
-                <button type="button" [disabled]="disableButton()" class="btn btn-success" (click)="transferInventory()">
+                <button type="button" [disabled]="disableButton()" class="btn btn-success"
+                    (click)="transferInventory()">
                     Save
                 </button>
             </div>

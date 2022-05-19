@@ -1,42 +1,37 @@
 <section class="body">
   <div class="inner-wrapper">
     <section role="main" class="content-body pt-0 pr-0 pl-0">
-
       <header class="page-header pr19 pl7">
         <div class="row" style="padding-top: 10px">
-
-          <div class="col-lg-5 col-md-5 pr-0 d-flex">
-            <span class="">
+          <!-- <div class="col-lg-1 col-md-1 pr-0 d-flex">
+            <span class="pr-2 pull-left">
               <span class="input-group-text">
                 <i class="fas fa-calendar-alt"></i>
               </span>
             </span>
-            <div class="col-md-5 col-lg-5 pr-0">
-              <div class="input-group input-group-md mb-3">
+          </div> -->
 
-                <ng-select [(ngModel)]="selectedMonth" class="col">
-                  <ng-option *ngFor="let month of months" [value]="month">{{
-                    month
-                  }}</ng-option>
-
-                </ng-select>
-              </div>
-            </div>
-
-            <div class="col-md-6 col-lg-6 pr-0">
-              <div class="input-group input-group-md mb-3">
-
-                <ng-select class="col" [(ngModel)]="selectedYear">
-                  <ng-option *ngFor="let year of years" [value]="year">{{
-                    year
-                  }}</ng-option>
-
-                </ng-select>
-              </div>
+          <div class="col-md-2 col-lg-2 pr-0">
+            <div class="input-group input-group-md mb-3">
+              <ng-select [(ngModel)]="selectedMonth" class="col">
+                <ng-option *ngFor="let month of months" [value]="month">{{
+                  month
+                }}</ng-option>
+              </ng-select>
             </div>
           </div>
-          <div class="col-md-2 col-lg-2">
 
+          <div class="col-md-2 col-lg-2 pl-2 pr-0">
+            <div class="input-group input-group-md mb-3">
+              <ng-select class="col" [(ngModel)]="selectedYear">
+                <ng-option *ngFor="let year of years" [value]="year">{{
+                  year
+                }}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+
+          <div class="col-md-2 col-lg-2 pl-2">
             <button class="btn btn-sm mr-2 btn-success" (click)="search()">
               Search
             </button>
@@ -45,7 +40,7 @@
             </button>
           </div>
 
-          <div class="col-md-5 col-lg-5 text-right pr-1">
+          <div class="col-md-6 col-lg-6 text-right pr-1">
             <div class="btn-group flex-wrap ml-2">
               <button
                 type="button"
@@ -67,28 +62,23 @@
                   transform: translate3d(0px, 38px, 0px);
                 "
               >
-
                 <a class="dropdown-item text-1" (click)="generateCSV()">CSV</a>
               </div>
             </div>
           </div>
         </div>
-
       </header>
 
       <div class="m-2">
-
         <div class="row text-dark">
           <div class="col-12 mb-3">
             <div class="bg-white p-3">
               <div class="row text-dark">
                 <div class="col-12">
                   <div>
-
                     <h4 class="mt-1 mb-0 font-weight-bold">
                       Order Detail Report
                     </h4>
-
                   </div>
                 </div>
               </div>
@@ -102,7 +92,6 @@
                 <h3 class="mt-1 mb-0 font-weight-bold">
                   {{ totalOrdersCount }}
                 </h3>
-
               </div>
             </div>
           </div>
@@ -115,7 +104,6 @@
                 <h3 class="mt-1 mb-0 font-weight-bold">
                   {{ dispatchedCount }}
                 </h3>
-
               </div>
             </div>
           </div>
@@ -125,7 +113,6 @@
                 <h4 class="m-0 text-4">Delivered Orders</h4>
 
                 <h3 class="mt-1 mb-0 font-weight-bold">{{ delieverdCount }}</h3>
-
               </div>
             </div>
           </div>
@@ -135,7 +122,6 @@
                 <h4 class="m-0 text-4">Canceled Orders</h4>
 
                 <h3 class="mt-1 mb-0 font-weight-bold">{{ canceledCount }}</h3>
-
               </div>
             </div>
           </div>
@@ -145,7 +131,6 @@
                 <h4 class="m-0 text-4">tonu Orders</h4>
 
                 <h3 class="mt-1 mb-0 font-weight-bold">{{ tonuCount }}</h3>
-
               </div>
             </div>
           </div>
@@ -154,7 +139,6 @@
               <div>
                 <h4 class="m-0 text-4">Deleted Orders</h4>
                 <h3 class="mt-1 mb-0 font-weight-bold">{{ deletedCount }}</h3>
-
               </div>
             </div>
           </div>
@@ -163,17 +147,12 @@
         <div class="col-12 pr-0 pl-0">
           <div class="card">
             <div class="card-body bor-radius0px">
-
               <!-- Driver Div  -->
 
               <section class="reports_div">
                 <div class="row">
-
                   <table
-                    class="
-                      table table-bordered table-responsive-lg table-striped
-                      mb-0
-                    "
+                    class="table table-bordered table-responsive-lg table-striped mb-0"
                     id="datatable-default"
                   >
                     <thead>
@@ -196,7 +175,6 @@
                         <th>Miles</th>
                         <th>Amount</th>
                         <th>Status</th>
-
                       </tr>
                     </thead>
                     <tbody>
@@ -285,13 +263,11 @@
                                     <span
                                       *ngFor="let pickup of shipper.pickupPoint"
                                     >
-                                      {{ pickup.address.address }}&nbsp;{{
-                                        pickup.address.cityName
-                                      }}&nbsp;
-                                      {{ pickup.address.stateName }}&nbsp;{{
-                                        pickup.address.countryCode
-                                      }}&nbsp; {{ pickup.address.zipCode
-                                      }}<br />
+                                      {{ pickup.address.address }}
+                                      {{ pickup.address.cityName }}
+                                      {{ pickup.address.stateName }}
+                                      {{ pickup.address.countryCode }}
+                                      {{ pickup.address.zipCode }}<br />
 
                                       <span>{{ pickup.dateAndTime }}</span
                                       ><br />
@@ -309,22 +285,19 @@
                                   </span>
                                 </div>
                               </div>
-
                             </div>
                           </div>
                         </td>
                         <td>
                           <div *ngFor="let item of order.shippersReceiversInfo">
                             <div *ngFor="let receiver of item.receivers">
-
                               {{ customers[receiver.receiverID] }}
                               <span *ngFor="let drop of receiver.dropPoint">
-                                {{ drop.address.address }}&nbsp;{{
-                                  drop.address.cityName
-                                }}
-                                &nbsp; {{ drop.address.stateName }}&nbsp;{{
-                                  drop.address.countryCode
-                                }}&nbsp; {{ drop.address.zipCode }}<br />
+                                {{ drop.address.address
+                                }}{{ drop.address.cityName }}
+                                {{ drop.address.stateName
+                                }}{{ drop.address.countryCode }}
+                                {{ drop.address.zipCode }}<br />
                                 <span>{{ drop.dateAndTime }}</span> <br />
                                 <span *ngIf="drop.commodity.length > 0">
                                   <span
@@ -334,13 +307,11 @@
                                   </span>
                                 </span>
                               </span>
-
                             </div>
                           </div>
                         </td>
 
                         <td>
-
                           {{ order.milesInfo.totalMiles }}
                         </td>
                         <td>
@@ -372,7 +343,6 @@
                 </div>
               </section>
             </div>
-
           </div>
         </div>
       </div>

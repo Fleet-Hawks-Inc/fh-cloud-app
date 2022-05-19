@@ -28,6 +28,7 @@ export class ServiceprogramComponent implements OnInit {
   serviceTasks: any[];
   record: any = [];
   disableSearch = false;
+  exportFull = []
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
 
@@ -37,11 +38,7 @@ export class ServiceprogramComponent implements OnInit {
 
   }
 
-  async fetchServiceVehicleList(refresh?: boolean) {
-    if (refresh === true) {
-      this.lastItemSK = '';
-      this.serviceProgramList = [];
-    }
+  async fetchServiceVehicleList() {
     if (this.lastItemSK !== 'end') {
       const result = await this.apiService.getData(`servicePrograms/fetch/report?vehicle=${this.vehicle}&programName=${this.programName}&lastKey=${this.lastItemSK}`).toPromise();
       this.dataMessage = Constants.FETCHING_DATA
@@ -50,7 +47,7 @@ export class ServiceprogramComponent implements OnInit {
       }
       if (result.Items.length > 0) {
         if (result.LastEvaluatedKey !== undefined) {
-          this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.programID);
+          this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.sk);
         }
         else {
           this.lastItemSK = 'end'
@@ -102,18 +99,40 @@ export class ServiceprogramComponent implements OnInit {
       return false;
     }
   }
+  fetchExportfullList() {
+    this.apiService.getData('servicePrograms/fetch/report/export').subscribe((result: any) => {
+      this.exportFull = result;
+      this.generateCSV();
+    })
 
+  }
+  csv() {
+    if (this.vehicle !== null || this.programName !== null) {
+      this.exportFull = this.serviceProgramList
+      this.generateCSV();
+    }
+    else {
+      this.fetchExportfullList()
+    }
+  }
+ 
   generateCSV() {
-    if (this.serviceProgramList.length > 0) {
+    if (this.exportFull.length > 0) {
       let dataObject = []
       let csvArray = []
-      this.serviceProgramList.forEach(element => {
+      this.exportFull.forEach(element => {
         let obj = {}
-        let allVehicles = []
+        let ab  = ''
+        let allVehicles:any = []
         for (const el of element.vehicles) {
           allVehicles.push(this.vehicles[el])
         }
-        obj["Vehicle"] = allVehicles.join(' ')
+        if(allVehicles.length > 1){
+         ab =  '& ';
+        }
+        let veh = ''
+        
+        obj["Vehicle"] = allVehicles.join(" & ")
         obj["Service Program Name"] = element.programName
         obj["Description"] = element.description
         dataObject.push(obj)
@@ -142,19 +161,5 @@ export class ServiceprogramComponent implements OnInit {
     }
   }
 
-  requiredExport() {
-    this.apiService.getData(`servicePrograms/get/getFull/export`).subscribe((result: any) => {
-      this.serviceProgramList = result.Items;
-      this.generateCSV();
-    })
-  }
-
-  requiredCSV() {
-    if (this.vehicle !== null || this.programName !== null) {
-      this.generateCSV();
-    } else {
-      this.requiredExport();
-    }
-  }
 
 }

@@ -46,6 +46,8 @@ export class AddBillComponent implements OnInit {
       cType: "add",
       cAmount: 0,
       accountID: null,
+      discount: 0,
+      discountUnit: '%',
       accFee: [
         {
           name: "",
@@ -86,6 +88,7 @@ export class AddBillComponent implements OnInit {
       vendorCredit: 0,
       taxes: 0,
       finalTotal: 0,
+      discountAmount: 0
     },
     status: "open",
     billType: null,
@@ -94,7 +97,7 @@ export class AddBillComponent implements OnInit {
     purchaseID: null,
     creditIds: [],
     creditData: [],
-    exempt: false,
+    exempt: true,
     stateID: null,
   };
   quantityTypes = [];
@@ -141,6 +144,7 @@ export class AddBillComponent implements OnInit {
   stateTaxes = [];
   productDisabled = false;
   uploadedDocs = [];
+  pageTitle: string = 'Add';
 
   constructor(
     private listService: ListService,
@@ -165,9 +169,12 @@ export class AddBillComponent implements OnInit {
     this.fetchAccounts();
     this.fetchStateTaxes();
     if (this.billID) {
+      this.pageTitle = 'Edit';
       this.editDisabled = true;
       await this.fetchDetails();
       await this.fetchAllPurchaseOrders();
+    } else {
+      this.pageTitle = 'Add';
     }
   }
 
@@ -310,10 +317,19 @@ export class AddBillComponent implements OnInit {
       Number(this.orderData.total.detailTotal) +
       Number(this.orderData.total.feeTotal)
     this.allTax();
+    let discount: number;
+    if (this.orderData.charges.discountUnit != '' && this.orderData.charges.discountUnit != null) {
+      if (this.orderData.charges.discountUnit === '%') {
+        discount = (this.orderData.total.subTotal * this.orderData.charges.discount) / 100;
+      } else {
+        discount = this.orderData.charges.discount;
+      }
+    }
+    this.orderData.total.discountAmount = discount;
     this.orderData.total.finalTotal =
       Number(this.orderData.total.subTotal) -
       Number(this.orderData.total.vendorCredit) +
-      Number(this.orderData.total.taxes);
+      Number(this.orderData.total.taxes) + Number(this.orderData.total.discountAmount);
   }
 
   accessorialFeeTotal() {
@@ -353,15 +369,22 @@ export class AddBillComponent implements OnInit {
 
   async fetchPurchaseDetails() {
     this.vendorCredits = [];
-    this.fetchVendorCredits();
     let result: any = await this.accountService
       .getData(`purchase-orders/details/${this.orderData.purchaseID}`)
       .toPromise();
 
     this.orderData.detail = result[0].detail;
-    this.orderData.charges.remarks = result[0].remarks;
-    this.orderData.total.subTotal = result[0].total.finalTotal;
-    this.orderData.total.detailTotal = result[0].total.finalTotal;
+    this.orderData.charges.remarks = result[0].charges.remarks;
+    this.orderData.charges.discount = result[0].charges.discount;
+    this.orderData.charges.discountUnit = result[0].charges.discountUnit;
+    this.orderData.total.detailTotal = result[0].total.detailTotal;
+    this.orderData.total.feeTotal = result[0].total.feeTotal;
+    this.orderData.total.vendorCredit = result[0].total.vendorCredit;
+    this.orderData.total.taxes = result[0].total.taxes;
+    this.orderData.total.subTotal = result[0].total.subTotal;
+    this.orderData.total.discountAmount = result[0].total.discountAmount;
+    this.orderData.total.finalTotal = result[0].total.finalTotal;
+
     this.orderData.refNo = result[0].refNo;
     this.orderData.currency = result[0].currency;
     this.orderData.vendorID = result[0].vendorID;
@@ -499,7 +522,7 @@ export class AddBillComponent implements OnInit {
       this.dataMessage = Constants.FETCHING_DATA;
       let result: any = await this.accountService
         .getData(
-          `vendor-credits/specific/${this.orderData.vendorID}?currency=${this.orderData.currency}&order=${this.orderData.purchaseID}`
+          `vendor-credits/specific/${this.orderData.vendorID}?currency=${this.orderData.currency}`
         )
         .toPromise();
       if (result.length === 0) {
@@ -522,6 +545,7 @@ export class AddBillComponent implements OnInit {
     this.vendorCredits = [];
     this.purchaseOrders = [];
     this.fetchPurchaseOrders();
+    this.fetchVendorCredits()
   }
 
   assignFullPayment(index, data) {
@@ -599,6 +623,7 @@ export class AddBillComponent implements OnInit {
     this.orderData.stateID = null;
     this.allTax();
     this.taxTotal();
+    this.calculateFinalTotal();
   }
 
   async selecteProvince(stateID = undefined) {

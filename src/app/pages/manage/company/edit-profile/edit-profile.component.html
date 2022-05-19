@@ -344,7 +344,7 @@
                         <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Business
                           Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select [(ngModel)]="bizCountry" name="bizCountry" required #bCountry="ngModel"
-                          [disabled]=true [ngClass]="{ 'error' : cForm.submitted && bCountry.invalid }"
+                          [disabled]="businessCountryStat" [ngClass]="{ 'error' : cForm.submitted && bCountry.invalid }"
                           placeholder="Select business operating country">
                           <ng-option value="CA">Canada</ng-option>
                           <ng-option value="US">United States of America</ng-option>
@@ -465,6 +465,59 @@
                                            of both the Canadian-American border and the trade chain."></i></label>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" *ngIf="accountSettings.length > 0">
+                  <div class="col-lg-12 mt-2">
+                    <hr class="solid mt-4">
+                  </div>
+                </div>
+                <div class="row" *ngIf="accountSettings.length > 0">
+                  <div class="col-lg-12">
+                    <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Account
+                      Settings</label>
+                  </div>
+                  <div class="col-lg-12">
+                    <div class="row">
+                      <div class="col-lg-4" *ngFor="let account of accountSettings;let i = index;">
+                        <label
+                          class="control-label font-weight-bold text-lg-right pt-2 text-capitalize">{{account.type}}
+                          (Prefix +
+                          Sequence) <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <div class="row align-items-top">
+                          <div class="col-3 pr-0">
+                            <input type="text" class="form-control" [(ngModel)]="account.prefix" #prefix="ngModel"
+                              required pattern="[a-zA-Z._^%$#!~@,-]+"
+                              [ngClass]="{ 'error' : cForm.submitted && prefix.invalid }" name="prefix_{{i}}">
+                            <div *ngIf="prefix.invalid && cForm.submitted" class="text-danger">
+                              <div *ngIf="prefix.errors.required">
+                                {{account.type}} prefix is required.
+                              </div>
+                              <div *ngIf="prefix.errors.pattern">
+                                {{account.type}} must contain alphabets and special characters.
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-1 p-0 text-center">
+                            -
+                          </div>
+                          <div class="col-6 pl-0">
+                            <input type="text" class="form-control" [(ngModel)]="account.sequence" name="sequence_{{i}}"
+                              #sequence="ngModel" required pattern="^(0|[1-9][0-9]*)$"
+                              [ngClass]="{ 'error' : cForm.submitted && sequence.invalid }">
+                            <div *ngIf="sequence.invalid && cForm.submitted" class="text-danger">
+                              <div *ngIf="sequence.errors.required">
+                                {{account.type}} sequence is required.
+                              </div>
+                              <div *ngIf="sequence.errors.pattern">
+                                {{account.type}} contains numbers only.
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -789,7 +842,7 @@
                                     Type</label>
                                   <ng-select [(ngModel)]="item.addressType"
                                     name="bank.addressDetails[{{i}}].addressType" placeholder="Select address type"
-                                    [disabled]="true">
+                                    [disabled]="businessCountryStat">
                                     <ng-option value="branch">Branch</ng-option>
                                   </ng-select>
                                 </div>

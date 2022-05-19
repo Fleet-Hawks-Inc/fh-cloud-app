@@ -1,16 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ApiService } from '../../../../../services';
+import { ApiService, ListService } from '../../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import Constants from '../../../constants';
-
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import * as html2pdf from "html2pdf.js";
+import { CountryStateCityService } from "src/app/services/country-state-city.service";
 @Component({
   selector: 'app-service-detail',
   templateUrl: './service-detail.component.html',
   styleUrls: ['./service-detail.component.css']
 })
 export class ServiceDetailComponent implements OnInit {
+  @ViewChild("previewExpTransaction", { static: true })
+  previewExpTransaction: TemplateRef<any>;
+  @ViewChild("logModal", { static: true })
+  logModal: TemplateRef<any>;
   logurl = this.apiService.AssetUrl;
   noRecordMessage: string = Constants.NO_RECORDS_FOUND;
   private logID;
@@ -52,10 +58,29 @@ export class ServiceDetailComponent implements OnInit {
   photos: any = [];
   docs: any = [];
   users: any = [];
-
+  carrier = {
+    carrierName: "",
+    phone: "",
+    email: "",
+  };
   logImages = []
   logDocs = [];
-
+  logModalRef: any;
+  showModal = false;
+  downloadDisabledpdf = true;
+  companyLogo = "";
+  tagLine: "";
+  companyName: any = "";
+  carrierAddress = {
+    address: "",
+    userLocation: "",
+    manual: "",
+    stateName: "",
+    countryName: "",
+    cityName: "",
+    zipCode: "",
+  };
+  showDetails = false;
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   constructor(
@@ -63,16 +88,21 @@ export class ServiceDetailComponent implements OnInit {
     private apiService: ApiService,
     private route: ActivatedRoute,
     private domSanitizer: DomSanitizer,
+    private modalService: NgbModal,
+    private listService: ListService,
+    private countryStateCity: CountryStateCityService
   ) { }
 
   ngOnInit() {
     this.logID = this.route.snapshot.params['logID'];
     this.fetchProgramByID();
+    this.getCurrentuser();
     this.fetchAllVehiclesIDs();
     this.fetchAllVendorsIDs();
     // this.fetchAllIssuesIDs();
     this.fetchAllAssetsIDs();
     this.fetchUsers();
+    this.fetchCarrier()
   }
 
   fetchProgramByID() {
@@ -82,8 +112,6 @@ export class ServiceDetailComponent implements OnInit {
       error: () => { },
       next: (result: any) => {
         this.logsData = result.Items[0];
-
-
         this.fetchSelectedIssues(this.logsData.selectedIssues);
 
         result = result.Items[0];
@@ -193,6 +221,72 @@ export class ServiceDetailComponent implements OnInit {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
+
+  openModal() {
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "log-order logs-model" ,
+    };
+    this.logModalRef = this.modalService.open(this.logModal, ngbModalOptions)
+  }
+  downloadPdf() {
+    var data = document.getElementById("log_wrap");
+    html2pdf(data, {
+      margin: 0.5,
+      pagebreak: { mode: 'avoid-all', before: "log_wrap" },
+      filename: "serviceLog.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        dpi: 192,
+        letterRendering: true,
+        allowTaint: true,
+        useCORS: true,
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    });
+    this.logModalRef.close();
+  }
+  getCurrentuser = async () => {
+    const carrierID = localStorage.getItem('xfhCarrierId');
+    let result: any = await this.apiService
+      .getData(`carriers/detail/${carrierID}`)
+      .toPromise();
+    this.companyName = result.companyName;
+    this.companyLogo = result.logo;
+    this.tagLine = result.tagLine;
+  };
+
+  fetchCarrier() {
+    
+    const carrierID = localStorage.getItem('xfhCarrierId');
+    this.apiService
+      .getData(`carriers/${carrierID}`)
+      .subscribe((result: any) => {
+        this.carrier = result.Items[0];
+        console.log('this0', this.carrier)
+        this.fetchAddress(this.carrier[`addressDetails`]);
+      });
+  }
+  async fetchAddress(address: any) {
+    for (const adr of address) {
+      if (adr.addressType === "yard" && adr.defaultYard === true) {
+        if (adr.manual) {
+          adr.countryName =
+            await this.countryStateCity.GetSpecificCountryNameByCode(
+              adr.countryCode
+            );
+          adr.stateName = await this.countryStateCity.GetStateNameFromCode(
+            adr.stateCode,
+            adr.countryCode
+          );
+        }
+        this.carrierAddress = adr;
+        this.showDetails = true;
+        break;
+      }
     }
   }
 }

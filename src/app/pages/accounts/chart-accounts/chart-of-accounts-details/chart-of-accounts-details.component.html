@@ -244,6 +244,7 @@
                               <th class="text-2">Name</th>
                               <th class="text-2">Type</th>
                               <th class="text-2">Description</th>
+                              <th class="text-2">Source</th>
                               <th class="text-2">Debit</th>
                               <th class="text-2">Credit</th>
                               <th class="text-2">Running Total</th>
@@ -252,7 +253,7 @@
                           <tbody>
                             <tr>
                               <td
-                                colspan="5"
+                                colspan="6"
                                 class="text-right font-weight-bold"
                               >
                                 Opening Balance
@@ -301,7 +302,7 @@
                                   >
                                 </td>
                                 <td>{{ trx.type | titlecase }}</td>
-                                <td>{{ trx.desc | titlecase }}</td>
+                                <td [innerHTML]="trx.desc"></td>
                                 <td>
                                   <span *ngIf="trx.trxType === 'debit'"
                                     >{{ trx.amount | number: "1.2-2" }}&nbsp;
@@ -339,13 +340,14 @@
                               >
                                 <td>{{ i + 1 }}</td>
                                 <td>
-                                  {{ trx.trxCreated | date: "yyyy/MM/dd" }}
+                                  {{ trx.logDate | date: "yyyy/MM/dd" }}
                                 </td>
                                 <td class="text-capitalize">
                                   {{ trx.uName ? trx.uName : "-" }}
                                 </td>
                                 <td>{{ trx.entityType | titlecase }}</td>
-                                <td>{{ trx.desc | titlecase }}</td>
+                                <td [innerHTML]="trx.desc"></td>
+                                <td [innerHTML]="trx.source"></td>
                                 <td>
                                   <span *ngIf="trx.trxType === 'debit'"
                                     >{{ trx.amount | number: "1.2-2" }}&nbsp;
@@ -373,7 +375,7 @@
                             </ng-container>
                             <tr>
                               <td
-                                colspan="7"
+                                colspan="8"
                                 class="text-right font-weight-bold"
                               >
                                 Closing Balance
@@ -394,7 +396,7 @@
                             </tr>
                             <tr>
                               <td
-                                colspan="7"
+                                colspan="8"
                                 class="text-right font-weight-bold"
                               >
                                 Period Variance
@@ -503,7 +505,7 @@
                                   >
                                 </td>
                                 <td>{{ trx.type | titlecase }}</td>
-                                <td>{{ trx.desc | titlecase }}</td>
+                                <td [innerHTML]="trx.desc"></td>
                                 <td>
                                   <span *ngIf="trx.trxType === 'debit'"
                                     >{{ trx.amount | number: "1.2-2" }}&nbsp;
@@ -545,7 +547,7 @@
                                   {{ trx.uName ? trx.uName : "-" }}
                                 </td>
                                 <td>{{ trx.entityType | titlecase }}</td>
-                                <td>{{ trx.desc | titlecase }}</td>
+                                <td [innerHTML]="trx.desc"></td>
                                 <td>
                                   <span *ngIf="trx.trxType === 'debit'"
                                     >{{ trx.amount | number: "1.2-2" }}&nbsp;

@@ -648,6 +648,7 @@
   .grightbox2 {
     right: 0px;
   }
+
   .gmainbox2 {
     float: left;
     overflow-x: scroll;
@@ -1890,7 +1891,7 @@
   color: #fff;
 }
 
-.filter-group input[type="checkbox"]:first-child + label {
+.filter-group input[type="checkbox"]:first-child+label {
   border-radius: 3px 3px 0 0;
 }
 
@@ -1903,7 +1904,7 @@
   display: none;
 }
 
-.filter-group input[type="checkbox"] + label {
+.filter-group input[type="checkbox"]+label {
   background-color: #3386c0;
   display: block;
   cursor: pointer;
@@ -1911,17 +1912,17 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 }
 
-.filter-group input[type="checkbox"] + label {
+.filter-group input[type="checkbox"]+label {
   background-color: #3386c0;
   text-transform: capitalize;
 }
 
-.filter-group input[type="checkbox"] + label:hover,
-.filter-group input[type="checkbox"]:checked + label {
+.filter-group input[type="checkbox"]+label:hover,
+.filter-group input[type="checkbox"]:checked+label {
   background-color: #4ea0da;
 }
 
-.filter-group input[type="checkbox"]:checked + label:before {
+.filter-group input[type="checkbox"]:checked+label:before {
   content: "âœ”";
   margin-right: 5px;
 }
@@ -2261,7 +2262,7 @@ td.loadid a {
   top: 10px;
 }
 
-.wizard-tabs ul > li.active .badge {
+.wizard-tabs ul>li.active .badge {
   background-color: #000 !important;
 }
 
@@ -4004,15 +4005,15 @@ input.placeholder-lowercase {
   transition: 0.4s;
 }
 
-input:checked + .sliderbtn {
+input:checked+.sliderbtn {
   background-color: #47a447;
 }
 
-input:focus + .sliderbtn {
+input:focus+.sliderbtn {
   box-shadow: 0 0 1px #797979;
 }
 
-input:checked + .sliderbtn:before {
+input:checked+.sliderbtn:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
@@ -4085,13 +4086,16 @@ input:checked + .sliderbtn:before {
 .assign-confirm__main.modal .modal-dialog {
   max-width: 500px;
 }
+
 .doc-type__main.modal .modal-dialog,
 .docs-selection__main.modal .modal-dialog {
   max-width: 500px;
 }
+
 .modal-open .docs-selection__main.modal {
   background: rgb(0 0 0 / 22%);
 }
+
 /* 04.09.21 account classes */
 
 .detailbox {
@@ -4325,6 +4329,10 @@ input:checked + .sliderbtn:before {
 
 .import-model--main .modal-dialog {
   max-width: 700px !important;
+}
+
+.logs-model .modal-dialog {
+  max-width: 900px !important;
 }
 
 .header-title {

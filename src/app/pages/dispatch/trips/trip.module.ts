@@ -1,28 +1,35 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { DragDropModule } from "@angular/cdk/drag-drop";
 import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
-import { DragDropModule } from "@angular/cdk/drag-drop";
+import { Injectable, NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { MatExpansionModule } from "@angular/material/expansion";
+import { RouterModule, Routes } from "@angular/router";
+
 import {
   NgbDateAdapter,
   NgbDateParserFormatter,
-  NgbDateStruct,
+  NgbDateStruct, NgbModule
 } from "@ng-bootstrap/ng-bootstrap";
-import { Injectable } from "@angular/core";
-import { NgxDatatableModule } from "@swimlane/ngx-datatable";
-import { SharedModule } from "../../../shared/shared.module";
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgSelectModule } from "@ng-select/ng-select";
-import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { ChartsModule } from "ng2-charts";
-import { unsavedChangesGuard } from "src/app/guards/unsaved-changes.guard";
-import { AddTripComponent } from "./add-trip/add-trip.component";
-import { TripListComponent } from "./trip-list/trip-list.component";
-import { TripDetailComponent } from "./trip-detail/trip-detail.component";
-import { MatExpansionModule } from "@angular/material/expansion";
-
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { NgxSpinnerModule } from "ngx-spinner";
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextModule } from 'primeng/inputtext';
+import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
+import { unsavedChangesGuard } from "src/app/guards/unsaved-changes.guard";
+import { SharedModule } from "../../../shared/shared.module";
+import { AddTripComponent } from "./add-trip/add-trip.component";
+import { TripDetailComponent } from "./trip-detail/trip-detail.component";
+import { TripListComponent } from "./trip-list/trip-list.component";
+import { SelectButtonModule } from 'primeng/selectbutton';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -128,6 +135,15 @@ const routes: Routes = [
     MatExpansionModule,
     NgxDatatableModule,
     InfiniteScrollModule,
+    DialogModule,
+    DropdownModule,
+    InputTextModule,
+    InputNumberModule,
+    ButtonModule,
+    TableModule,
+    ToastModule,
+    TooltipModule,
+    SelectButtonModule
   ],
   providers: [
     unsavedChangesGuard,
@@ -135,4 +151,4 @@ const routes: Routes = [
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
-export class TripModule {}
+export class TripModule { }

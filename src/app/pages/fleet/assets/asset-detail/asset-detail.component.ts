@@ -12,6 +12,8 @@ import Constants from "src/app/pages/manage/constants";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { environment } from "../../../../../environments/environment";
 import { ApiService } from "../../../../services";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+
 
 declare var $: any;
 
@@ -219,6 +221,7 @@ export class AssetDetailComponent implements OnInit {
     asset: any = '';
     groupName: any = '';
     groupId: any = '';
+    sessionID: string;
 
     constructor(
         private toastr: ToastrService,
@@ -226,8 +229,12 @@ export class AssetDetailComponent implements OnInit {
         private apiService: ApiService,
         private route: ActivatedRoute,
         private spinner: NgxSpinnerService,
-        private countryStateCity: CountryStateCityService
-    ) { }
+        private countryStateCity: CountryStateCityService,
+        private routerMgmtService: RouteManagementServiceService
+    ) {
+
+        this.sessionID = this.routerMgmtService.assetUpdateSessionID;
+    }
 
     ngOnInit() {
         this.assetID = this.route.snapshot.params[`assetID`]; // get asset Id from URL
@@ -255,7 +262,7 @@ export class AssetDetailComponent implements OnInit {
                     // if (!result.hasOwnProperty('devices')) {
                     //   result['devices'] = [];
                     // }
-                    result.assetType = result.assetType.replace("_", " ");
+                    result.assetType = result.assetType ? result.assetType.replace("_", " ") : '';
                     if (
                         result.inspectionFormID !== "" &&
                         result.inspectionFormID !== undefined
@@ -278,15 +285,17 @@ export class AssetDetailComponent implements OnInit {
                     this.currentStatus = result.currentStatus;
                     this.annualSafetyDate = result.assetDetails.annualSafetyDate;
                     this.licencePlateNumber = result.assetDetails.licencePlateNumber;
-                    this.licenceCountryName =
-                        await this.countryStateCity.GetSpecificCountryNameByCode(
-                            result.assetDetails.licenceCountryCode
-                        );
-                    this.licenceStateName =
-                        await this.countryStateCity.GetStateNameFromCode(
-                            result.assetDetails.licenceStateCode,
-                            result.assetDetails.licenceCountryCode
-                        );
+                    if (result.assetDetails.licenceCountryCode) {
+                        this.licenceCountryName =
+                            await this.countryStateCity.GetSpecificCountryNameByCode(
+                                result.assetDetails.licenceCountryCode
+                            );
+                        this.licenceStateName =
+                            await this.countryStateCity.GetStateNameFromCode(
+                                result.assetDetails.licenceStateCode,
+                                result.assetDetails.licenceCountryCode
+                            );
+                    }
                     this.year = result.assetDetails.year;
                     this.manufacturer = result.assetDetails.manufacturer;
                     this.model = result.assetDetails.model;

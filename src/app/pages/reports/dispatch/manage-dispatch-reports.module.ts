@@ -11,6 +11,14 @@ const routes: Routes = [
       ),
     data: { title: "Orders Reports" },
   },
+   {
+    path: "alarm-report",
+    loadChildren: () =>
+      import("./alarm-report/manage-alarm.module").then(
+        (m) => m.ManageAlarmModule
+      ),
+    data: { title: "Alarm Reports" },
+  },
   {
     path: "trips",
     loadChildren: () =>

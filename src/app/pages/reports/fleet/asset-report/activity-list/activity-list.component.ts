@@ -142,32 +142,26 @@ export class ActivityListComponent implements OnInit {
   async initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
       const result = await this.apiService.getData('assets/fetch/records?asset=' + this.assetIdentification + '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey).toPromise();
-      if (result.Items.length === 0) {
+      if (result.data.length === 0) {
         this.disableSearch = false;
         this.dataMessage = Constants.NO_RECORDS_FOUND;
       }
       this.suggestedAssets = [];
 
-      result[`Items`].map((v: any) => {
+      result[`data`].map((v: any) => {
         v.url = `/reports/fleet/asset/activity/${v.assetID}`;
-        v.assetType = v.assetType.replace("_", " ")
       })
 
-      if (result.Items.length > 0) {
+      if (result.data.length > 0) {
         this.disableSearch = false;
-        if (result.LastEvaluatedKey !== undefined) {
-          this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].assetSK);
+        if (result.nextPage !== undefined) {
+          this.lastEvaluatedKey = encodeURIComponent(result.nextPage);
         }
         else {
           this.lastEvaluatedKey = 'end';
         }
-        this.allData = this.allData.concat(result.Items)
+        this.allData = this.allData.concat(result.data)
         this.loaded = true;
-      }
-
-      if (result.LastEvaluatedKey == undefined) {
-        this.lastEvaluatedKey = 'end';
-
       }
 
     }

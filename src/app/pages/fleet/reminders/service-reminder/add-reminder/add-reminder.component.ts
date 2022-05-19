@@ -1,9 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
-import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { from, Subject, throwError } from 'rxjs';
+import { NgForm } from "@angular/forms";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { ModalService } from "../../../../../services/modal.service";
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+  takeUntil
+} from "rxjs/operators";
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
+import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
 import { Location } from '@angular/common';
 import * as _ from 'lodash';
 import constants from '../../../constants';
@@ -16,10 +27,13 @@ import { result } from 'lodash';
   styleUrls: ['./add-reminder.component.css']
 })
 export class AddReminderComponent implements OnInit {
+  @ViewChild('serviceF') serviceF: NgForm;
+  takeUntil$ = new Subject();
   reminderID;
   pageTitle;
   entityID = null;
   taskID = null;
+  isSubmitted = false;
   reminderData = {
     entityID: '',
     type: constants.REMINDER_SERVICE,
@@ -71,8 +85,16 @@ export class AddReminderComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
-    private location: Location) { }
+  constructor(
+  private apiService: ApiService,
+  private route: ActivatedRoute, 
+  private router: Router,
+  private toastr: ToastrService,
+  private modalService: NgbModal,
+  private modalServiceOwn: ModalService,
+  private location: Location
+    ) { 
+      }
 
   async ngOnInit() {
     this.reminderID = this.route.snapshot.params[`reminderID`];
@@ -184,6 +206,7 @@ export class AddReminderComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
+       
         this.toastr.success('Service Reminder Added Successfully!');
         this.cancel();
       },
@@ -266,6 +289,7 @@ export class AddReminderComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.submitDisabled = false;
+       
         this.toastr.success('Service reminder updated successfully!');
         this.Success = '';
         this.cancel();

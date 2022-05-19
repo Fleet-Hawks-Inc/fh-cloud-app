@@ -5,12 +5,14 @@ export const environment = {
   isDispatchEnabled: false,
   isComplianceEnabled: false,
 
-  isManageEnabled: true,
-  isSafetyEnabled: true,
-  isAccountsEnabled: true,
-  isUserRoles:false,
+  isManageEnabled: false,
+  isSafetyEnabled: false,
+  isAccountsEnabled: false,
+  isUserRoles:true,
 
   isReportsEnabled: true,
+  isAddressBook:false,
+  isOrderPriceEnabled:true,
 
   BaseUrl: 'https://service.cloud.fleethawks.com/api/v1/',
 

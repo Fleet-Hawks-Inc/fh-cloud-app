@@ -58,11 +58,12 @@ export class ApiService {
 
   postData(url: string, data, formData: boolean = false) {
     let headers: object;
+    let selectedCarrier = localStorage.getItem('xfhCarrierId') != null ? localStorage.getItem('xfhCarrierId') : '';
     if (formData) {
-      headers = { headers: {} }
+      headers = { headers: new HttpHeaders({'x-fleethawks-carrier-id': selectedCarrier }) }
     }
     else {
-      headers = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+      headers = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'x-fleethawks-carrier-id': selectedCarrier }) };
     }
 
     return this.http.post(this.BaseUrl + url, data, headers);
@@ -71,11 +72,12 @@ export class ApiService {
 
   putData(url: string, data, formData: boolean = false) {
     let headers: object;
+    let selectedCarrier = localStorage.getItem('xfhCarrierId') != null ? localStorage.getItem('xfhCarrierId') : '';
     if (formData) {
-      headers = { headers: {} }
+      headers = { headers: new HttpHeaders({'x-fleethawks-carrier-id': selectedCarrier }) };
     }
     else {
-      headers = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+      headers = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'x-fleethawks-carrier-id': selectedCarrier }) };
     }
 
     return this.http.put<any>(this.BaseUrl + url, data, headers);
@@ -86,8 +88,9 @@ export class ApiService {
     //   'x-auth-token': this.jwt})
     // };
     let isCarrier = localStorage.getItem('carrierID') != null ? localStorage.getItem('carrierID') : '';
+    let selectedCarrier = localStorage.getItem('xfhCarrierId') != null ? localStorage.getItem('xfhCarrierId') : '';
     const headers = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'fh-carrier-id': isCarrier })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'fh-carrier-id': isCarrier, 'x-fleethawks-carrier-id': selectedCarrier })
     };
 
     return this.http.get<any>(this.BaseUrl + url, headers);
@@ -98,8 +101,9 @@ export class ApiService {
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})
     // };
+    let selectedCarrier = localStorage.getItem('xfhCarrierId') != null ? localStorage.getItem('xfhCarrierId') : '';
     const headers = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'x-fleethawks-carrier-id': selectedCarrier })
     };
     return this.http.delete<any>(this.BaseUrl + url, headers);
   }
@@ -164,6 +168,7 @@ export class ApiService {
   async checkAccess() {
     if(this.isUserRoles){
     const user = (await Auth.currentSession()).getIdToken().payload;
+    console.log(user.userRoles)
     user.userRoles = user.userRoles.split(',')
 
     if (user.userRoles.includes("orgAdmin") || user.userRoles.includes("role_view_admin") || user.userRoles.includes("role_super_admin")) {
@@ -172,8 +177,13 @@ export class ApiService {
       localStorage.setItem("isSafetyEnabled", "true")
       localStorage.setItem("isAccountsEnabled", "true")
       localStorage.setItem("isManageEnabled", "true")
+      localStorage.setItem("isAddressBook","true")
+      localStorage.setItem("isOrderPriceEnabled","true")
       return
     }
+    localStorage.setItem("isAddressBook","false")
+    localStorage.setItem("isOrderPriceEnabled","false")
+    
     if (user.userRoles.includes("role_safety")) {
       localStorage.setItem("isComplianceEnabled", "false")
       localStorage.setItem("isSafetyEnabled", "true")
@@ -184,6 +194,12 @@ export class ApiService {
     if (user.userRoles.includes("role_accounts")) {
       localStorage.setItem("isAccountsEnabled", "true")
     }
+    if (user.userRoles.includes("role_address_book")) {
+      localStorage.setItem("isAddressBook", "true")
+    }
+    if (user.userRoles.includes("role_order_price")) {
+      localStorage.setItem("isOrderPriceEnabled", "true")
+    }
     
   }
   else{
@@ -192,6 +208,7 @@ export class ApiService {
     localStorage.setItem("isSafetyEnabled", "true")
     localStorage.setItem("isAccountsEnabled", "true")
     localStorage.setItem("isManageEnabled", "true")
+    localStorage.setItem("isAddressBook","true")
   }
     // switch(true){
     //   case user.userRoles.includes("role_safety"):

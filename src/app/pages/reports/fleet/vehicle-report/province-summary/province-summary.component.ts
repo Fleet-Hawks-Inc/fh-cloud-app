@@ -25,6 +25,7 @@ export class ProvinceSummaryComponent implements OnInit {
   // suggestedVehicles = [];
   vehicleIdentification = '';
   vehicleId = '';
+  dataM = []
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
   ngOnInit(): void {
 
@@ -54,7 +55,10 @@ export class ProvinceSummaryComponent implements OnInit {
   fetchProvinceMilesData() {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`vehicles/fetch/provinceMiles?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
-        this.allData = this.allData.concat(result.summaryResult);
+        if (result.Items.length !== 0) {
+          this.allData = this.allData.concat(result.summaryResult);
+        }
+        this.dataM = result.Items;
         if (result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND
         }
@@ -111,6 +115,7 @@ export class ProvinceSummaryComponent implements OnInit {
         this.lastItemSK = '';
         // this.suggestedVehicles = [];
         this.allData = [];
+        this.dataM = [];
         // this.dummyData = [];
         this.dataMessage = Constants.FETCHING_DATA;
 

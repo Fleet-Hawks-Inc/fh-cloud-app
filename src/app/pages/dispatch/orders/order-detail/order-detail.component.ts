@@ -344,6 +344,9 @@ export class OrderDetailComponent implements OnInit {
 
   docSelRef: any;
   printBtnType: string;
+  invDate: any = '';
+  invBtnDisableStat = true;
+  isOrderPriceEnabled = environment.isOrderPriceEnabled
 
   constructor(
     private apiService: ApiService,
@@ -359,20 +362,16 @@ export class OrderDetailComponent implements OnInit {
     this.txnDate = new Date().toISOString().slice(0, 10);
   }
 
-  ngOnInit() {
-    this.listService.getDocsModalList.subscribe((res: any) => {
-      if (res && res.docType != null && res.docType != '') {
-        if (res.module === 'order') {
-          this.docType = res.docType;
-          this.uploadBolPods(res);
-        }
-      }
-    })
+  async ngOnInit() {
 
+    this.isOrderPriceEnabled = localStorage.getItem("isOrderPriceEnabled")
+      ? JSON.parse(localStorage.getItem("isOrderPriceEnabled"))
+      : environment.isOrderPriceEnabled;
     this.orderID = this.route.snapshot.params["orderID"];
 
-    this.fetchOrder();
-    this.fetchInvoiceData();
+    await this.fetchOrder();
+    await this.fetchBolDocs();
+    await this.fetchInvoiceData();
     this.fetchOrderLogs();
     this.getCurrentUser();
   }
@@ -381,6 +380,17 @@ export class OrderDetailComponent implements OnInit {
     let currentUser = (await Auth.currentSession()).getIdToken().payload;
     this.carrierEmail = currentUser.email;
   };
+
+  async fetchBolDocs() {
+    this.listService.getDocsModalList.subscribe((res: any) => {
+      if (res && res.docType != null && res.docType != '') {
+        if (res.module === 'order') {
+          this.docType = res.docType;
+          this.uploadBolPods(res);
+        }
+      }
+    })
+  }
 
   /**
    * fetch order data
@@ -419,9 +429,10 @@ export class OrderDetailComponent implements OnInit {
         this.zeroRated = result.zeroRated;
         this.carrierID = result.carrierID;
         this.customerID = result.customerID;
-        if (result.invoiceGenerate && result.invData.invID && result.invData.invID != '') {
+        if (result.invData && result.invData.invID && result.invData.invID != '') {
           this.invoiceID = result.invData.invID;
-          this.today = await this.getInvDate(this.invoiceID)
+          this.invDate = await this.getInvDate(this.invoiceID)
+
         }
         if (
           result.invoiceGenerate ||
@@ -435,6 +446,9 @@ export class OrderDetailComponent implements OnInit {
           this.hideEdit = false;
         }
         this.orderStatus = result.orderStatus;
+        if (this.orderStatus != 'attached' && this.orderStatus != 'confirmed' && this.orderStatus != 'created') {
+          this.invBtnDisableStat = false;
+        }
         this.cusAddressID = result.cusAddressID;
         this.customerAddress = result.customerAddress;
         this.customerName = result.customerName;
@@ -619,11 +633,15 @@ export class OrderDetailComponent implements OnInit {
   async sendEmailInv() {
     let newDocs = [];
 
-    for (const item of this.emailDocs) {
-      newDocs.push({
-        filename: item.displayName,
-        path: item.docPath,
-      });
+    for (const item of this.documentsArr) {
+      for (const doc of this.emailDocs) {
+        if (item.checked && item.value === doc.type) {
+          newDocs.push({
+            filename: doc.displayName,
+            path: doc.docPath,
+          });
+        }
+      }
     }
 
     const data = {
@@ -631,6 +649,8 @@ export class OrderDetailComponent implements OnInit {
       emails: this.userEmails,
       subject: this.subject,
       sendCopy: this.isCopy,
+      isSingle: this.emailData.isSingle
+
     };
 
     let result = await this.apiService
@@ -746,11 +766,6 @@ export class OrderDetailComponent implements OnInit {
   }
   async generatePDF() {
     this.isShow = true;
-
-
-    // await this.saveInvoice();
-    // await this.invoiceGenerated();
-    // await this.fetchOrder();
     this.generateBtnDisabled = true;
     await this.saveInvoice();
 
@@ -863,16 +878,6 @@ export class OrderDetailComponent implements OnInit {
     });
   }
 
-  // async invoiceGenerated() {
-  //   this.invGenStatus = true;
-  //   let result = await this.apiService
-  //     .getData(
-  //       `orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`
-  //     )
-  //     .toPromise();
-  //   this.isInvoice = result.Attributes.invoiceGenerate;
-  // }
-
   previewModal() {
     $("#templateSelectionModal").modal("hide");
     setTimeout(function () {
@@ -882,13 +887,7 @@ export class OrderDetailComponent implements OnInit {
 
   // delete uploaded images and documents
   async delete(type: string, name: string, index) {
-    // let record = {
-    //   eventID: this.orderID,
-    //   type: type,
-    //   name: name,
-    //   date: this.createdDate,
-    //   time: this.createdTime
-    // }
+
     if (confirm("Are you sure you want to delete?") === true) {
       await this.apiService
         .deleteData(`orders/uploadDelete/${this.orderID}/${name}/${type}`)
@@ -941,91 +940,11 @@ export class OrderDetailComponent implements OnInit {
 
     let result: any = await this.apiService
       .postData(`orders/uploadDocs/${this.orderID}/${this.docType}`, formData, true).toPromise()
+    this.uploadedDocs = [];
     if (result && result.length > 0) {
       await this.showDocs(result)
     }
   }
-
-  /*
-   * Selecting files before uploading
-   */
-  async selectDocuments(event) {
-
-    let files = [];
-    this.uploadedDocs = [];
-    files = [...event.target.files];
-    let totalCount = this.docs.length + files.length;
-
-    if (totalCount > 4) {
-      this.uploadedDocs = [];
-      $("#bolUpload").val("");
-      this.toastr.error("Only 4 documents can be uploaded");
-      return false;
-    } else {
-      for (let i = 0; i < files.length; i++) {
-        const element = files[i];
-        let name = element.name.split(".");
-        let ext = name[name.length - 1];
-
-        if (ext != "jpg" && ext != "jpeg" && ext != "png" && ext != "pdf") {
-          $("#bolUpload").val("");
-          this.toastr.error("Only image and pdf files are allowed");
-          return false;
-        }
-      }
-      for (let i = 0; i < files.length; i++) {
-        this.uploadedDocs.push(files[i]);
-      }
-      // create form data instance
-      const formData = new FormData();
-
-      // append photos if any
-      for (let i = 0; i < this.uploadedDocs.length; i++) {
-        formData.append("uploadedDocs", this.uploadedDocs[i]);
-      }
-
-      let result: any = await this.apiService
-        .postData(`orders/uploadDocs/${this.orderID}`, formData, true).toPromise()
-      this.invDocs = [];
-      this.uploadedDocs = [];
-      if (result.length > 0) {
-        result.forEach((x: any) => {
-          let obj: any = {};
-          if (
-            x.storedName.split(".")[1] === "jpg" ||
-            x.storedName.split(".")[1] === "png" ||
-            x.storedName.split(".")[1] === "jpeg"
-          ) {
-            obj = {
-              imgPath: `${x.urlPath}`,
-              docPath: `${x.urlPath}`,
-              displayName: x.displayName,
-              name: x.storedName,
-              ext: x.storedName.split(".")[1],
-              type: x.type ? x.type : 'other'
-            };
-          } else {
-            obj = {
-              imgPath: "assets/img/icon-pdf.png",
-              docPath: `${x.urlPath}`,
-              displayName: x.displayName,
-              name: x.storedName,
-              ext: x.storedName.split(".")[1],
-              type: x.type ? x.type : 'other'
-            };
-          }
-          this.invDocs.push(obj);
-        });
-      }
-      this.attachedDocs = this.invDocs;
-      this.newInvDocs = this.invDocs;
-      this.toastr.success("BOL/POD uploaded successfully");
-      this.uploadBol.nativeElement.value = "";
-      await this.fetchOrder();
-    }
-  }
-
-  setSrcValue() { }
 
   caretClickShipper(i, j) {
     if (
@@ -1071,7 +990,7 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  fetchInvoiceData() {
+  async fetchInvoiceData() {
     this.apiService
       .getData(`orders/invoice/${this.orderID}`)
       .subscribe((result: any) => {
@@ -1079,7 +998,7 @@ export class OrderDetailComponent implements OnInit {
         this.orderInvData = result[0];
         this.carrierDetails = result[0].carrierData;
         this.isInvoice = true;
-        if (this.orderInvData.carrierData.termsInfo.logo && this.orderInvData.carrierData.termsInfo.logo != "") {
+        if (this.orderInvData.carrierData && this.orderInvData.carrierData.termsInfo.logo && this.orderInvData.carrierData.termsInfo.logo != "") {
           this.companyLogoSrc = `${this.orderInvData.carrierData.termsInfo.logo}`;
         }
         if (this.invoiceData.assets != undefined) {

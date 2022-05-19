@@ -112,7 +112,7 @@ export class AdvancePaymentsListComponent implements OnInit {
           this.payments = [];
           this.dataMessage = Constants.FETCHING_DATA;
           this.fetchPayments();
-          this.toaster.success("Advance payment deleted successfully.");
+          this.toaster.success("Advance payment voided successfully.");
         });
     }
   }

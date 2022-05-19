@@ -33,7 +33,7 @@ export class DriverDetailComponent implements OnInit {
     homeTerminal: string;
     cycle: string;
     public driverID: string;
-    currency=''
+    currency = ''
     private driverData: any;
     private driverDataUpdate: any;
     carrierID: any;
@@ -59,8 +59,8 @@ export class DriverDetailComponent implements OnInit {
     csa: any = false;
     group: any;
     assignedVehicle: any;
-    address: any;
-    documents: any;
+    address: any = [];
+    documents: any = [];
     licNotification: any = false;
     liceIssueSate: any;
     liceIssueCountry: any;
@@ -156,43 +156,43 @@ export class DriverDetailComponent implements OnInit {
     groupName: any = '';
     groupId: any = '';
     sessionId: string;
-    payPerMile={
-        pType:"ppm",
-        loadedMiles:null,
-        currency:null,
-        emptyMiles:null,
-        emptyMilesTeam:null,
-        loadedMilesTeam:null,
-        default:false
-      }
-      payPerHour={
-        pType:"pph",
-        rate:null,
-        currency:null,
-        waitingPay:null,
-        waitingHourAfter:null,
-        default:false
-      }
-      payPercentage={
-        pType:"pp",
-        loadPayPercentage:null,
-        loadPayPercentageOf:null,
-        default:false
-      }
-      payPerDelivery={
-        pType:"ppd",
-        deliveryRate:null,
-        currency:null,
-        default:false
-      }
+    payPerMile = {
+        pType: "ppm",
+        loadedMiles: null,
+        currency: null,
+        emptyMiles: null,
+        emptyMilesTeam: null,
+        loadedMilesTeam: null,
+        default: false
+    }
+    payPerHour = {
+        pType: "pph",
+        rate: null,
+        currency: null,
+        waitingPay: null,
+        waitingHourAfter: null,
+        default: false
+    }
+    payPercentage = {
+        pType: "pp",
+        loadPayPercentage: null,
+        loadPayPercentageOf: null,
+        default: false
+    }
+    payPerDelivery = {
+        pType: "ppd",
+        deliveryRate: null,
+        currency: null,
+        default: false
+    }
 
-      payFlatRate={
-        pType:"pfr",
-        flatRate:null,
-        currency:null,
-        default:false
-      }
-    
+    payFlatRate = {
+        pType: "pfr",
+        flatRate: null,
+        currency: null,
+        default: false
+    }
+
 
     constructor(
         private hereMap: HereMapService,
@@ -208,7 +208,7 @@ export class DriverDetailComponent implements OnInit {
         this.sessionId = this.routerMgmtService.driverUpdateSessionID;
 
     }
-    paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"}, {name:"Flat Rate",value:"pfr"}]
+    paymentOptions = [{ name: "Pay Per Mile", value: "ppm" }, { name: "Percentage", value: "pp" }, { name: "Pay Per Hour", value: "pph" }, { name: "Pay Per Delivery", value: "ppd" }, { name: "Flat Rate", value: "pfr" }]
 
     ngOnInit() {
 
@@ -393,52 +393,53 @@ export class DriverDetailComponent implements OnInit {
                     }
                     if (this.driverData.address !== undefined && this.driverData.address !== '') {
                         this.fetchCompleteAdd(this.driverData.address);
+                        this.address = this.driverData.address;
                     }
-
-                    this.cycle = this.driverData.hosDetails.hosCycleName;
+                    this.cycle = this.driverData.hosDetails.hosCycleName ? this.driverData.hosDetails.hosCycleName : '';
                     this.email = this.driverData.email;
                     this.phone = this.driverData.phone;
                     this.DOB = this.driverData.DOB;
                     this.CDL = this.driverData.CDL_Number;
-                    this.payPeriod=this.driverData.payPeriod
-                    this.driverData.paymentOption.forEach(element => {
-                        if(element.default){
-                        const type=this.paymentOptions.find(el=> el.value==element.pType)
-                        this.paymentType = type.name
-                        }
+                    this.payPeriod = this.driverData.payPeriod
+                    if (this.driverData.paymentOption) {
+                        this.driverData.paymentOption.forEach(element => {
+                            if (element.default) {
+                                const type = this.paymentOptions.find(el => el.value == element.pType)
+                                this.paymentType = type.name
+                            }
 
-                    if(element.pType=="pph"){
-                        this.payPerHour.currency=element.currency
-                        this.payPerHour.rate=element.rate
-                        this.payPerHour.waitingHourAfter=element.waitingHourAfter
-                        this.payPerHour.waitingPay=element.waitingPay
+                            if (element.pType == "pph") {
+                                this.payPerHour.currency = element.currency
+                                this.payPerHour.rate = element.rate
+                                this.payPerHour.waitingHourAfter = element.waitingHourAfter
+                                this.payPerHour.waitingPay = element.waitingPay
+                            }
+                            if (element.pType == "pfr") {
+                                this.payFlatRate.flatRate = element.flatRate
+                                this.payFlatRate.currency = element.currency
+                            }
+                            if (element.pType == "ppm") {
+                                this.payPerMile.loadedMiles = element.loadedMiles
+                                this.payPerMile.currency = element.currency
+                                this.payPerMile.emptyMiles = element.emptyMiles
+                                this.payPerMile.emptyMilesTeam = element.emptyMilesTeam
+                                this.payPerMile.loadedMilesTeam = element.loadedMilesTeam
+                            }
+                            if (element.pType == "pp") {
+                                this.payPercentage.loadPayPercentage = element.loadPayPercentage
+                                this.payPercentage.loadPayPercentageOf = element.loadPayPercentageOf
+                            }
+                            if (element.pType == "ppd") {
+                                this.payPerDelivery.currency = element.currency
+                                this.payPerDelivery.deliveryRate = element.deliveryRate
+                            }
+                        });
                     }
-                    if(element.pType=="pfr"){
-                        this.payFlatRate.flatRate=element.flatRate
-                        this.payFlatRate.currency=element.currency
-                    }
-                    if(element.pType=="ppm"){
-                      this.payPerMile.loadedMiles=element.loadedMiles
-                      this.payPerMile.currency=element.currency
-                      this.payPerMile.emptyMiles=element.emptyMiles
-                      this.payPerMile.emptyMilesTeam=element.emptyMilesTeam
-                      this.payPerMile.loadedMilesTeam=element.loadedMilesTeam
-                    }
-                    if(element.pType=="pp"){
-                      this.payPercentage.loadPayPercentage=element.loadPayPercentage
-                      this.payPercentage.loadPayPercentageOf=element.loadPayPercentageOf
-                    }
-                    if(element.pType=="ppd"){
-                      this.payPerDelivery.currency=element.currency
-                      this.payPerDelivery.deliveryRate=element.deliveryRate
-                    }
-                    });
                     if (this.driverData.middleName !== undefined && this.driverData.middleName !== null && this.driverData.middleName !== '') {
                         this.driverName = `${this.driverData.firstName} ${this.driverData.middleName} ${this.driverData.lastName}`;
                     } else {
                         this.driverName = `${this.driverData.firstName} ${this.driverData.lastName}`;
                     }
-
                     this.startDate = this.driverData.startDate;
                     this.terminationDate = this.driverData.terminationDate;
                     this.contractStart = this.driverData.contractStart;
@@ -462,19 +463,22 @@ export class DriverDetailComponent implements OnInit {
                     this.companyName = this.driverData.companyName;
                     this.driverStatus = this.driverData.driverStatus;
                     this.gender = this.driverData.gender;
-                    this.aceID = this.driverData.crossBorderDetails.ACE_ID;
-                    this.aciID = this.driverData.crossBorderDetails.ACI_ID;
-                    this.fastID = this.driverData.crossBorderDetails.fast_ID;
-                    this.fastExpiry = this.driverData.crossBorderDetails.fastExpiry;
-                    this.citizenship = await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.citizenship);
-                    this.csa = this.driverData.crossBorderDetails.csa;
+                    if (this.driverData.crossBorderDetails && this.driverData.crossBorderDetails != undefined) {
+
+                        this.aceID = this.driverData.crossBorderDetails.ACE_ID;
+                        this.aciID = this.driverData.crossBorderDetails.ACI_ID;
+                        this.fastID = this.driverData.crossBorderDetails.fast_ID;
+                        this.fastExpiry = this.driverData.crossBorderDetails.fastExpiry;
+                        this.citizenship = await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.citizenship);
+                        this.csa = this.driverData.crossBorderDetails.csa;
+                    }
                     this.groupId = this.driverData.groupID;
                     if (this.groupId != null) {
 
                         this.groupName = this.fetchGroups(this.groupId)[0].groupName
                     }
                     this.assignedVehicle = this.driverData.assignedVehicle;
-                    this.address = this.driverData.address;
+
                     let newDocuments = [];
                     if (this.driverData.documentDetails.length > 0) {
                         for (let i = 0; i < this.driverData.documentDetails.length; i++) {
@@ -486,8 +490,8 @@ export class DriverDetailComponent implements OnInit {
                                 documentType: this.driverData.documentDetails[i].documentType ? this.driverData.documentDetails[i].documentType : '',
                                 document: this.driverData.documentDetails[i].document ? this.driverData.documentDetails[i].document : '',
                                 issuingAuthority: this.driverData.documentDetails[i].issuingAuthority ? this.driverData.documentDetails[i].issuingAuthority : '',
-                                issuingCountry: this.driverData.documentDetails[i].issuingCountry ? await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.documentDetails[i].issuingCountry) : '',
-                                issuingState: this.driverData.documentDetails[i].issuingCountry ? await this.countryStateCity.GetStateNameFromCode(this.driverData.documentDetails[i].issuingState, this.driverData.documentDetails[i].issuingCountry) : '',
+                                issuingCountry: (this.driverData.documentDetails[i].issuingCountry && this.driverData.documentDetails[i].issuingCountry != '') ? await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.documentDetails[i].issuingCountry) : '',
+                                issuingState: (this.driverData.documentDetails[i].issuingCountry && this.driverData.documentDetails[i].issuingCountry != '') ? await this.countryStateCity.GetStateNameFromCode(this.driverData.documentDetails[i].issuingState, this.driverData.documentDetails[i].issuingCountry) : '',
                                 issueDate: this.driverData.documentDetails[i].issueDate ? this.driverData.documentDetails[i].issueDate : '',
                                 expiryDate: this.driverData.documentDetails[i].expiryDate ? this.driverData.documentDetails[i].expiryDate : '',
                                 uploadedDocs: docmnt
@@ -496,26 +500,29 @@ export class DriverDetailComponent implements OnInit {
                             //Presigned URL Using AWS S3
                             this.assetsDocs[i] = this.driverData.docuementUpload;
                         }
+                        this.documents = newDocuments;
                     }
-                    this.documents = newDocuments;
-                    this.liceIssueSate = await this.countryStateCity.GetStateNameFromCode(this.driverData.licenceDetails.issuedState, this.driverData.licenceDetails.issuedCountry),
+                    if (this.driverData.licenceDetails != undefined) {
+                        this.liceIssueSate = (this.driverData.licenceDetails.issuedState && this.driverData.licenceDetails.issuedState != '') ? await this.countryStateCity.GetStateNameFromCode(this.driverData.licenceDetails.issuedState, this.driverData.licenceDetails.issuedCountry) : '',
 
-                        this.liceIssueCountry = await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.licenceDetails.issuedCountry);
+                            this.liceIssueCountry = (this.driverData.licenceDetails.issuedCountry && this.driverData.licenceDetails.issuedCountry != '') ? await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.licenceDetails.issuedCountry) : '';
 
-                    this.licenceExpiry = this.driverData.licenceDetails.licenceExpiry;
-                    this.liceMedicalCardRenewal = this.driverData.licenceDetails.medicalCardRenewal;
-                    this.licNotification = this.driverData.licenceDetails.licenceNotification;
-                    this.liceWCB = this.driverData.licenceDetails.WCB;
-                    this.liceHealthCare = this.driverData.licenceDetails.healthCare;
-                    this.liceVehicleType = this.driverData.licenceDetails.vehicleType;
-                    this.liceContractStart = this.driverData.licenceDetails.contractStart;
-                    this.liceContractEnd = this.driverData.licenceDetails.contractEnd;
-                   
-                    
+                        this.licenceExpiry = this.driverData.licenceDetails.licenceExpiry;
+                        this.liceMedicalCardRenewal = this.driverData.licenceDetails.medicalCardRenewal;
+                        this.licNotification = this.driverData.licenceDetails.licenceNotification;
+                        this.liceWCB = this.driverData.licenceDetails.WCB;
+                        this.liceHealthCare = this.driverData.licenceDetails.healthCare;
+                        this.liceVehicleType = this.driverData.licenceDetails.vehicleType;
+                        this.liceContractStart = this.driverData.licenceDetails.contractStart;
+                        this.liceContractEnd = this.driverData.licenceDetails.contractEnd;
+                    }
+
                     this.SIN = this.driverData.SIN;
-                    this.loadPayPercentage = this.driverData.paymentDetails.loadPayPercentage;
-                    this.loadPayPercentageOf = this.driverData.paymentDetails.loadPayPercentageOf;
-                    this.payPeriod = this.driverData.paymentDetails.payPeriod.replace('_', ' ');
+                    if (this.driverData.paymentDetails && this.driverData.paymentDetails != undefined) {
+                        this.loadPayPercentage = this.driverData.paymentDetails.loadPayPercentage;
+                        this.loadPayPercentageOf = this.driverData.paymentDetails.loadPayPercentageOf;
+                        this.payPeriod = this.driverData.paymentDetails.payPeriod.replace('_', ' ');
+                    }
                     this.hosStatus = this.driverData.hosDetails.hosStatus;
                     this.hosRemarks = this.driverData.hosDetails.hosRemarks;
                     this.hosPcAllowed = this.driverData.hosDetails.pcAllowed;
@@ -524,13 +531,15 @@ export class DriverDetailComponent implements OnInit {
                     this.hosCycle = this.driverData.hosDetails.hosCycleName;
                     this.timezone = this.driverData.hosDetails.timezone;
                     this.optzone = this.driverData.hosDetails.optZone;
-                    this.emerName = this.driverData.emergencyDetails.name;
-                    this.emergencyAddress = this.driverData.emergencyDetails.emergencyAddress;
-                    this.emerPhone = this.driverData.emergencyDetails.phone;
-                    this.emerEmail = this.driverData.emergencyDetails.email;
-                    this.emerRelationship = this.driverData.emergencyDetails.relationship;
-                    this.spinner.hide();
+                    if (this.driverData.emergencyDetails && this.driverData.emergencyDetails != undefined) {
 
+                        this.emerName = this.driverData.emergencyDetails.name;
+                        this.emergencyAddress = this.driverData.emergencyDetails.emergencyAddress;
+                        this.emerPhone = this.driverData.emergencyDetails.phone;
+                        this.emerEmail = this.driverData.emergencyDetails.email;
+                        this.emerRelationship = this.driverData.emergencyDetails.relationship;
+                    }
+                    this.spinner.hide();
                 }
             }, (err) => {
 
@@ -636,10 +645,10 @@ export class DriverDetailComponent implements OnInit {
     deleteUploadedFile(name: string) { // delete from aws
         this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => { });
     }
-  fetchDriverTrips() {
+    fetchDriverTrips() {
         this.apiService.getData(`drivers/get/driver/active?driver=${this.driverID}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
             this.trips = result.Items;
-           });
+        });
     }
 
     fetchDriverLogs() {

@@ -39,13 +39,12 @@ export class ExpenseListComponent implements OnInit {
   lastItemSK = ''
   loaded = false
 
-  constructor(private apiService: ApiService, private httpClient: HttpClient, 
-     protected _sanitizer: DomSanitizer) {
+  constructor(private apiService: ApiService, private httpClient: HttpClient,
+    protected _sanitizer: DomSanitizer) {
   }
   ngOnInit() {
     this.fetchGroups();
     this.fetchDriversList();
-    this.fetchServiceProgramsList();
     this.fetchVendorList();
     this.initDataTable()
   }
@@ -82,12 +81,6 @@ export class ExpenseListComponent implements OnInit {
   }
 
 
-  fetchServiceProgramsList() {
-    this.apiService.getData('servicePrograms/get/list').subscribe((result: any) => {
-      this.serviceProgramsList = result;
-    });
-  }
-
   fetchVendorList() {
     this.apiService.getData('contacts/get/list/vendor').subscribe((result: any) => {
       this.vendorsList = result;
@@ -105,22 +98,22 @@ export class ExpenseListComponent implements OnInit {
       this.apiService.getData('vehicles/fetch/records?vehicle=' + this.vehicleID + '&status=' + this.currentStatus + '&lastKey=' + this.lastEvaluatedKey)
         .subscribe(async (result: any) => {
           this.dataMessage = Constants.FETCHING_DATA
-          if (result.Items.length === 0) {
+          if (result.data.length === 0) {
             this.disableSearch = false;
             this.dataMessage = Constants.NO_RECORDS_FOUND
           }
-          result[`Items`].map((v: any) => {
+          result[`data`].map((v: any) => {
             v.url = `/reports/fleet/vehicles/expense/${v.vehicleID}`;
           })
-          if (result.Items.length > 0) {
+          if (result.data.length > 0) {
             this.disableSearch = false;
-            if (result.LastEvaluatedKey !== undefined) {
-              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].vehicleSK);
+            if (result.nextPage !== undefined) {
+              this.lastEvaluatedKey = encodeURIComponent(result.nextPage);
             }
             else {
               this.lastEvaluatedKey = 'end'
             }
-            this.vehicles = this.vehicles.concat(result.Items)
+            this.vehicles = this.vehicles.concat(result.data)
 
             this.loaded = true;
           }

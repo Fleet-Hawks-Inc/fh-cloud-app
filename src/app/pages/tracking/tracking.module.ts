@@ -19,6 +19,8 @@ import { RippleModule } from 'primeng/ripple';
 import { SplitterModule } from 'primeng/splitter';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { AccordionModule } from 'primeng/accordion';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 // Import the echarts core module, which provides the necessary interfaces for using echarts.
 import * as echarts from 'echarts/core';
 // Import bar charts, all with Chart suffix
@@ -50,13 +52,16 @@ echarts.use([TitleComponent, TooltipComponent, ToolboxComponent, GridComponent, 
     DropdownModule,
     RippleModule,
     SplitterModule,
+    SelectButtonModule,
+    ConfirmDialogModule,
     NgxEchartsModule.forRoot({
 
       echarts
     }),
     TabViewModule,
     AccordionModule,
-    NgbModule
+    NgbModule,
+
   ]
 })
 export class TrackingModule { }

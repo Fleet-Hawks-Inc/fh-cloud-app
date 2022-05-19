@@ -1,53 +1,91 @@
 <section class="body">
   <div class="inner-wrapper">
-    <section role="main" class="content-body pt-0 pr-0 pl-0">
-      <header class="page-header pr19 pl7">
+    <section role="main" class="content-body pt-0 pr-0 pl-1">
+      <header class="page-header pr19 pl11">
         <div class="row" style="padding-top: 10px">
-          <div class="col-lg-5 col-md-5 pr-0 d-flex">
-            <span class="">
-              <!-- <span class="input-group-text">
-                <i class="fas fa-calendar-alt"></i>
-              </span> -->
-            </span>
-            <div class="col-md-5 col-lg-5 pr-0">
-              <div class="input-group input-group-md mb-3">
-                <input type="text" autocomplete="off" name="customerName"class="form-control" [(ngModel)]="customer" placeholder="Search By Customer" 
-                (input)="getSuggestions($event.target.value)"/>
-              </div>
-              <div *ngIf="suggestedCustomers?.length> 0" class="result-suggestions">
-                <ul>
-                  <li *ngFor="let suggestedCustomer of suggestedCustomers" class="cursorpoint" (click)="setCustomer(suggestedCustomer.cName)"> {{ suggestedCustomer.cName }}</li>
-                </ul>
-              </div>
+          <div class="col-md-2 col-lg-2 pr-0">
+            <div class="input-group input-group-md mb-3">
+              <input
+                type="text"
+                autocomplete="off"
+                name="customerName"
+                class="form-control"
+                [(ngModel)]="customer"
+                placeholder="Search By Customer"
+                (input)="getSuggestions($event.target.value)"
+              />
             </div>
+            <div
+              *ngIf="suggestedCustomers?.length > 0"
+              class="result-suggestions"
+            >
+              <ul>
+                <li
+                  *ngFor="let suggestedCustomer of suggestedCustomers"
+                  class="cursorpoint"
+                  (click)="setCustomer(suggestedCustomer.cName)"
+                >
+                  {{ suggestedCustomer.cName }}
+                </li>
+              </ul>
+            </div>
+          </div>
 
-            <div class="col-md-6 col-lg-6 pr-0">
-              <div class="input-group input-group-md mb-3">
-                <div class="input-daterange input-group">
-                  <span class="input-group-prepend">
-                    <span class="input-group-text">
-                      <i class="fas fa-calendar-alt"></i>
-                    </span>
+          <div class="col-md-2 col-lg-2 pl-2 pr-0">
+            <div class="input-group input-group-md mb-3">
+              <div class="input-daterange input-group">
+                <span class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-calendar-alt"></i>
                   </span>
+                </span>
 
-                  <input [(ngModel)]="customerFiltr.startDate" name="fromDate" type="text" placeholder="yyyy/mm/dd"
-                    (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off"
-                    [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
-                  <span class="
-                      input-group-text
-                      border-left-0 border-right-0
-                      rounded-0
-                    ">
-                    to
-                  </span>
-                  <input [(ngModel)]="customerFiltr.endDate" name="toDate" type="text" placeholder="yyyy/mm/dd"
-                    (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off"
-                    [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
-                </div>
+                <input
+                  [(ngModel)]="customerFiltr.startDate"
+                  name="fromDate"
+                  type="text"
+                  placeholder="yyyy/mm/dd"
+                  (click)="from.toggle()"
+                  ngbDatepicker
+                  #from="ngbDatepicker"
+                  class="form-control"
+                  autocomplete="off"
+                  [minDate]="dateMinLimit"
+                  [maxDate]="futureDatesLimit"
+                />
+                <span
+                  class="input-group-text border-left-0 border-right-0 rounded-0"
+                >
+                  to
+                </span>
+                <input
+                  [(ngModel)]="customerFiltr.endDate"
+                  name="toDate"
+                  type="text"
+                  placeholder="yyyy/mm/dd"
+                  (click)="to.toggle()"
+                  ngbDatepicker
+                  #to="ngbDatepicker"
+                  class="form-control"
+                  autocomplete="off"
+                  [minDate]="dateMinLimit"
+                  [maxDate]="futureDatesLimit"
+                />
               </div>
             </div>
           </div>
-          <div class="col-md-2 col-lg-2">
+
+          <!--
+          <div class="col-lg-5 col-md-5 pr-0 d-flex">
+            <span class="">
+              <span class="input-group-text">
+                <i class="fas fa-calendar-alt"></i>
+              </span> 
+            </span>
+          </div>
+          -->
+
+          <div class="col-md-2 col-lg-2 pl-2">
             <button class="btn btn-sm mr-2 btn-success" (click)="search()">
               Search
             </button>
@@ -55,31 +93,54 @@
               Reset
             </button>
           </div>
-          <div class="col-md-5 col-lg-5 text-right pr-1">
-            <div class="btn-group flex-wrap" style="margin-right: 20px;" >
-              <button *ngIf="exportLoading" class="btn btn-success btn-sm" type="button" disabled>
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-              Exporting...
+
+          <div class="col-md-6 col-lg-6 text-right pr-1">
+            <div class="btn-group flex-wrap">
+              <button
+                *ngIf="exportLoading"
+                class="btn btn-success btn-sm"
+                type="button"
+                disabled
+              >
+                <span
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                Exporting...
               </button>
-              <button type="button" *ngIf="!exportLoading" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                aria-expanded="false">
-                <i class="fas fa-file-export"></i> Export<span class="caret"></span>
+              <button
+                type="button"
+                *ngIf="!exportLoading"
+                class="btn btn-success btn-sm dropdown-toggle"
+                data-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="fas fa-file-export"></i> Export<span
+                  class="caret"
+                ></span>
               </button>
-              <div *ngIf="!exportLoading" class="dropdown-menu" role="menu" x-placement="bottom-start" style="
+              <div
+                *ngIf="!exportLoading"
+                class="dropdown-menu"
+                role="menu"
+                x-placement="bottom-start"
+                style="
                   position: absolute;
                   will-change: transform;
                   top: 0px;
                   left: 0px;
                   transform: translate3d(0px, 38px, 0px);
-                ">
+                "
+              >
                 <a class="dropdown-item text-1" (click)="generateCSV()">CSV</a>
-                <a class="dropdown-item text-1" (click)="allCustomerPDF()">PDF</a>
+                <a class="dropdown-item text-1" (click)="allCustomerPDF()"
+                  >PDF</a
+                >
                 <!-- <a *ngIf="customer!=''" class="dropdown-item text-1" (click)="showReport(); isModalShow= true">PDF</a> -->
-
               </div>
             </div>
           </div>
-          
         </div>
       </header>
 
@@ -104,20 +165,33 @@
               <div class="card-body bor-radius0px">
                 <section class="reports_div">
                   <div class="setHeight">
-                    <ngx-datatable #myTable class="bootstrap expandable fixedTable" [rows]="customerCollection"
-                      [rowHeight]="rowHeight" [scrollbarV]="true" [columnMode]="ColumnMode.standard" [messages]="{ emptyMessage: dataMessage }"
-                      (scroll)="onScroll($event.offsetY)">
-                      <ngx-datatable-row-detail [rowHeight]="400" #myDetailRow (toggle)="onDetailToggle($event)">
-                        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+                    <ngx-datatable
+                      #myTable
+                      class="bootstrap expandable fixedTable"
+                      [rows]="customerCollection"
+                      [rowHeight]="rowHeight"
+                      [scrollbarV]="true"
+                      [columnMode]="ColumnMode.standard"
+                      [messages]="{ emptyMessage: dataMessage }"
+                      (scroll)="onScroll($event.offsetY)"
+                    >
+                      <ngx-datatable-row-detail
+                        [rowHeight]="400"
+                        #myDetailRow
+                        (toggle)="onDetailToggle($event)"
+                      >
+                        <ng-template
+                          let-row="row"
+                          let-expanded="expanded"
+                          ngx-datatable-row-detail-template
+                        >
                           <div class="h-100" style="padding-left: 35px">
                             <div class="row h-100">
                               <div class="col-lg-5 h-100">
                                 <strong>Last 10 Orders</strong>
-                                <table class="
-                                    w-100
-                                    h-90
-                                    table-bordered table-striped
-                                  ">
+                                <table
+                                  class="w-100 h-90 table-bordered table-striped"
+                                >
                                   <thead>
                                     <tr>
                                       <th>Order#</th>
@@ -134,7 +208,10 @@
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr *ngIf="row.orders.length == 0" class="text-center">
+                                    <tr
+                                      *ngIf="row.orders.length == 0"
+                                      class="text-center"
+                                    >
                                       <td colspan="7">No Records Found</td>
                                     </tr>
                                     <tr *ngFor="let order of row.orders">
@@ -169,7 +246,11 @@
                                         <span *ngIf="!order.invNo">-</span>
                                       </td>
                                       <td>
-                                        <span *ngIf="order.invStat" class="badge badge-dark">{{ order.invStat }}</span>
+                                        <span
+                                          *ngIf="order.invStat"
+                                          class="badge badge-dark"
+                                          >{{ order.invStat }}</span
+                                        >
                                         <span *ngIf="!order.invStat">-</span>
                                       </td>
                                       <td>
@@ -245,19 +326,35 @@
                       </ngx-datatable-column> -->
 
                       <ngx-datatable-column name="Customer" prop="cName">
-                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
-                          let-row="row">
+                        <ng-template
+                          ngx-datatable-cell-template
+                          let-rowIndex="rowIndex"
+                          let-value="value"
+                          let-row="row"
+                        >
                           <span *ngIf="value == ''">-</span>
-                          <span *ngIf="value">{{ value|titlecase }}</span>
+                          <span *ngIf="value">{{ value | titlecase }}</span>
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Email" prop="workEmail" [width]="200" [sortable]="false">
+                      <ngx-datatable-column
+                        name="Email"
+                        prop="workEmail"
+                        [width]="200"
+                        [sortable]="false"
+                      >
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Phone" prop="workPhone" [sortable]="false">
+                      <ngx-datatable-column
+                        name="Phone"
+                        prop="workPhone"
+                        [sortable]="false"
+                      >
                       </ngx-datatable-column>
                       <ngx-datatable-column name="Orders" prop="totalOrders">
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Delivered" prop="deliveredOrders">
+                      <ngx-datatable-column
+                        name="Delivered"
+                        prop="deliveredOrders"
+                      >
                       </ngx-datatable-column>
                       <!-- <ngx-datatable-column name="Invoice Generated" prop="invoiceGenerated">
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
@@ -266,13 +363,23 @@
                           <span *ngIf="value != 0">{{ value }}</span>
                         </ng-template>
                       </ngx-datatable-column> -->
-                      <ngx-datatable-column name="Total Amount" prop="totalAmount" [sortable]="false">
-                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
-                          let-row="row">
-                          <span *ngIf="
+                      <ngx-datatable-column
+                        name="Total Amount"
+                        prop="totalAmount"
+                        [sortable]="false"
+                      >
+                        <ng-template
+                          ngx-datatable-cell-template
+                          let-rowIndex="rowIndex"
+                          let-value="value"
+                          let-row="row"
+                        >
+                          <span
+                            *ngIf="
                               value.cad == 0 && value.usd == 0;
                               else elseblock
-                            ">
+                            "
+                          >
                             -
                           </span>
                           <ng-template #elseblock>
@@ -280,18 +387,30 @@
                               value.cad | currency: "CAD"
                             }}</span>
                             <span *ngIf="value.cad == 0">-</span><br />
-                            <span *ngIf="value.usd != 0">US{{ value.usd | currency: "USD" }}</span>
+                            <span *ngIf="value.usd != 0"
+                              >US{{ value.usd | currency: "USD" }}</span
+                            >
                             <span *ngIf="value.usd == 0">-</span>
                           </ng-template>
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Amount Received" prop="amountReceived" [sortable]="false">
-                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
-                          let-row="row">
-                          <span *ngIf="
+                      <ngx-datatable-column
+                        name="Amount Received"
+                        prop="amountReceived"
+                        [sortable]="false"
+                      >
+                        <ng-template
+                          ngx-datatable-cell-template
+                          let-rowIndex="rowIndex"
+                          let-value="value"
+                          let-row="row"
+                        >
+                          <span
+                            *ngIf="
                               value.cad == 0 && value.usd == 0;
                               else elseblock
-                            ">
+                            "
+                          >
                             -
                           </span>
                           <ng-template #elseblock>
@@ -299,18 +418,30 @@
                               value.cad | currency: "CAD"
                             }}</span>
                             <span *ngIf="value.cad == 0">-</span><br />
-                            <span *ngIf="value.usd != 0">US{{ value.usd | currency: "USD" }}</span>
+                            <span *ngIf="value.usd != 0"
+                              >US{{ value.usd | currency: "USD" }}</span
+                            >
                             <span *ngIf="value.usd == 0">-</span>
                           </ng-template>
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Balance" prop="balance" [sortable]="false">
-                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
-                          let-row="row">
-                          <span *ngIf="
+                      <ngx-datatable-column
+                        name="Balance"
+                        prop="balance"
+                        [sortable]="false"
+                      >
+                        <ng-template
+                          ngx-datatable-cell-template
+                          let-rowIndex="rowIndex"
+                          let-value="value"
+                          let-row="row"
+                        >
+                          <span
+                            *ngIf="
                               value.cad == 0 && value.usd == 0;
                               else elseblock
-                            ">
+                            "
+                          >
                             -
                           </span>
                           <ng-template #elseblock>
@@ -318,18 +449,30 @@
                               value.cad | currency: "CAD"
                             }}</span>
                             <span *ngIf="value.cad == 0">-</span><br />
-                            <span *ngIf="value.usd != 0">US{{ value.usd | currency: "USD" }}</span>
+                            <span *ngIf="value.usd != 0"
+                              >US{{ value.usd | currency: "USD" }}</span
+                            >
                             <span *ngIf="value.usd == 0">-</span>
                           </ng-template>
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="30-45" prop="balanceAge30" [sortable]="false">
-                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
-                          let-row="row">
-                          <span *ngIf="
+                      <ngx-datatable-column
+                        name="30-45"
+                        prop="balanceAge30"
+                        [sortable]="false"
+                      >
+                        <ng-template
+                          ngx-datatable-cell-template
+                          let-rowIndex="rowIndex"
+                          let-value="value"
+                          let-row="row"
+                        >
+                          <span
+                            *ngIf="
                               value.cad == 0 && value.usd == 0;
                               else elseblock
-                            ">
+                            "
+                          >
                             -
                           </span>
                           <ng-template #elseblock>
@@ -337,18 +480,30 @@
                               value.cad | currency: "CAD"
                             }}</span>
                             <span *ngIf="value.cad == 0">-</span><br />
-                            <span *ngIf="value.usd != 0">US{{ value.usd | currency: "USD" }}</span>
+                            <span *ngIf="value.usd != 0"
+                              >US{{ value.usd | currency: "USD" }}</span
+                            >
                             <span *ngIf="value.usd == 0">-</span>
                           </ng-template>
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="45-60" prop="balanceAge45" [sortable]="false">
-                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
-                          let-row="row">
-                          <span *ngIf="
+                      <ngx-datatable-column
+                        name="45-60"
+                        prop="balanceAge45"
+                        [sortable]="false"
+                      >
+                        <ng-template
+                          ngx-datatable-cell-template
+                          let-rowIndex="rowIndex"
+                          let-value="value"
+                          let-row="row"
+                        >
+                          <span
+                            *ngIf="
                               value.cad == 0 && value.usd == 0;
                               else elseblock
-                            ">
+                            "
+                          >
                             -
                           </span>
                           <ng-template #elseblock>
@@ -356,18 +511,30 @@
                               value.cad | currency: "CAD"
                             }}</span>
                             <span *ngIf="value.cad == 0">-</span><br />
-                            <span *ngIf="value.usd != 0">US{{ value.usd | currency: "USD" }}</span>
+                            <span *ngIf="value.usd != 0"
+                              >US{{ value.usd | currency: "USD" }}</span
+                            >
                             <span *ngIf="value.usd == 0">-</span>
                           </ng-template>
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="60+" prop="balanceAge60" [sortable]="false">
-                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
-                          let-row="row">
-                          <span *ngIf="
+                      <ngx-datatable-column
+                        name="60+"
+                        prop="balanceAge60"
+                        [sortable]="false"
+                      >
+                        <ng-template
+                          ngx-datatable-cell-template
+                          let-rowIndex="rowIndex"
+                          let-value="value"
+                          let-row="row"
+                        >
+                          <span
+                            *ngIf="
                               value.cad == 0 && value.usd == 0;
                               else elseblock
-                            ">
+                            "
+                          >
                             -
                           </span>
                           <ng-template #elseblock>
@@ -375,15 +542,26 @@
                               value.cad | currency: "CAD"
                             }}</span>
                             <span *ngIf="value.cad == 0">-</span><br />
-                            <span *ngIf="value.usd != 0">US{{ value.usd | currency: "USD" }}</span>
+                            <span *ngIf="value.usd != 0"
+                              >US{{ value.usd | currency: "USD" }}</span
+                            >
                             <span *ngIf="value.usd == 0">-</span>
                           </ng-template>
                         </ng-template>
                       </ngx-datatable-column>
                       <ngx-datatable-column name="Actions" [sortable]="false">
-                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
-                          let-row="row">
-                          <button class="btn btn-dark" (click)="showReport($event,row)"> View</button>
+                        <ng-template
+                          ngx-datatable-cell-template
+                          let-rowIndex="rowIndex"
+                          let-value="value"
+                          let-row="row"
+                        >
+                          <button
+                            class="btn btn-dark"
+                            (click)="showReport($event, row)"
+                          >
+                            View
+                          </button>
                         </ng-template>
                       </ngx-datatable-column>
                     </ngx-datatable>
@@ -402,27 +580,40 @@
 <ng-template #previewReportModal let-modal>
   <div class="modal-content">
     <div class="modal-body p-0">
-      <section class="report-wrapper p-2" style="background-color: #fff; color:
-        #000" id="print_wrap">
-        <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <section
+        class="report-wrapper p-2"
+        style="background-color: #fff; color: #000"
+        id="print_wrap"
+      >
+        <table
+          width="90%"
+          border="0"
+          align="center"
+          cellpadding="0"
+          cellspacing="0"
+        >
           <tbody>
             <tr>
               <td colspan="2">
-                <h1 style="font-size:26px;text-align: center;">Customer Collection Report</h1>
+                <h1 style="font-size: 26px; text-align: center">
+                  Customer Collection Report
+                </h1>
               </td>
             </tr>
             <tr>
-              <td colspan="2" style="height:2px" bgcolor="#bbbbbb"></td>
+              <td colspan="2" style="height: 2px" bgcolor="#bbbbbb"></td>
             </tr>
             <tr>
               <td width="50%">
-                <span style="font-size:20px;">Customer:</span>
-                <span style="font-size:15px;"> <strong>{{printData.cName|titlecase}}</strong>
-                </span  >
+                <span style="font-size: 20px">Customer:</span>
+                <span style="font-size: 15px">
+                  <strong>{{ printData.cName | titlecase }}</strong>
+                </span>
               </td>
               <td align="right">
-                <p style="font-size:13px;"> <strong>Phone:</strong> {{printData.workPhone}}<br>
-                  <strong>Email:</strong> {{printData.workEmail}}<br>
+                <p style="font-size: 13px">
+                  <strong>Phone:</strong> {{ printData.workPhone }}<br />
+                  <strong>Email:</strong> {{ printData.workEmail }}<br />
                 </p>
               </td>
             </tr>
@@ -435,36 +626,57 @@
                   <tbody>
                     <tr>
                       <td width="40%">
-                        <table width="80%" border="0" cellpadding="0" cellspacing="0">
+                        <table
+                          width="80%"
+                          border="0"
+                          cellpadding="0"
+                          cellspacing="0"
+                        >
                           <tbody>
                             <tr>
                               <td>
-                                <p style="font-size:16px;"><strong>Total Orders:</strong>
-                                  {{printData.totalOrders}}</p>
+                                <p style="font-size: 16px">
+                                  <strong>Total Orders:</strong>
+                                  {{ printData.totalOrders }}
+                                </p>
                               </td>
                             </tr>
                           </tbody>
                         </table>
                       </td>
                       <td width="33%">
-                        <table width="90%" border="0" cellpadding="0" cellspacing="0">
+                        <table
+                          width="90%"
+                          border="0"
+                          cellpadding="0"
+                          cellspacing="0"
+                        >
                           <tbody>
                             <tr>
                               <td>
-                                <p style="font-size:16px;"><strong>Delivered Orders:</strong>
-                                  {{printData.deliveredOrders}}</p>
+                                <p style="font-size: 16px">
+                                  <strong>Delivered Orders:</strong>
+                                  {{ printData.deliveredOrders }}
+                                </p>
                               </td>
                             </tr>
                           </tbody>
                         </table>
                       </td>
                       <td>
-                        <table width="90%" border="0" cellpadding="0" cellspacing="0">
+                        <table
+                          width="90%"
+                          border="0"
+                          cellpadding="0"
+                          cellspacing="0"
+                        >
                           <tbody>
                             <tr>
                               <td>
-                                <p style="font-size:16px;"><strong>Inv. Generated:</strong>
-                                  {{printData.invoiceGenerated}}</p>
+                                <p style="font-size: 16px">
+                                  <strong>Inv. Generated:</strong>
+                                  {{ printData.invoiceGenerated }}
+                                </p>
                               </td>
                             </tr>
                           </tbody>
@@ -484,55 +696,102 @@
                   <tbody>
                     <tr>
                       <td width="40%">
-                        <table width="80%" border="0" cellpadding="0" cellspacing="0">
+                        <table
+                          width="80%"
+                          border="0"
+                          cellpadding="0"
+                          cellspacing="0"
+                        >
                           <tbody>
                             <tr>
                               <td>
-                                <p style="font-size:14px; margin-bottom:0px;"><strong>Total Amount:</strong>
+                                <p style="font-size: 14px; margin-bottom: 0px">
+                                  <strong>Total Amount:</strong>
                                 </p>
 
-                                <p style="font-size:16px; margin-top:10px;"><span *ngIf="
-                        printData.totalAmount.cad == 0 && printData.totalAmount.usd == 0;
-                        else elseblock
-                      ">
+                                <p style="font-size: 16px; margin-top: 10px">
+                                  <span
+                                    *ngIf="
+                                      printData.totalAmount.cad == 0 &&
+                                        printData.totalAmount.usd == 0;
+                                      else elseblock
+                                    "
+                                  >
                                     -
                                   </span>
                                   <ng-template #elseblock>
-                                    <span *ngIf="printData.totalAmount.cad != 0">{{
-                        printData.totalAmount.cad | currency: "CAD"
-                      }}</span>
-                                    <span *ngIf="printData.totalAmount.cad == 0">-</span><br />
                                     <span
-                                      *ngIf="printData.totalAmount.usd != 0">US{{ printData.totalAmount.usd | currency: "USD" }}</span>
-                                    <span *ngIf="printData.totalAmount.usd == 0">-</span>
+                                      *ngIf="printData.totalAmount.cad != 0"
+                                      >{{
+                                        printData.totalAmount.cad
+                                          | currency: "CAD"
+                                      }}</span
+                                    >
+                                    <span *ngIf="printData.totalAmount.cad == 0"
+                                      >-</span
+                                    ><br />
+                                    <span *ngIf="printData.totalAmount.usd != 0"
+                                      >US{{
+                                        printData.totalAmount.usd
+                                          | currency: "USD"
+                                      }}</span
+                                    >
+                                    <span *ngIf="printData.totalAmount.usd == 0"
+                                      >-</span
+                                    >
                                   </ng-template>
                                 </p>
-
                               </td>
                             </tr>
                           </tbody>
                         </table>
                       </td>
                       <td width="33%">
-                        <table width="90%" border="0" cellpadding="0" cellspacing="0">
+                        <table
+                          width="90%"
+                          border="0"
+                          cellpadding="0"
+                          cellspacing="0"
+                        >
                           <tbody>
                             <tr>
                               <td>
-                                <p style="font-size:14px; margin-bottom:0px;"><strong>Amount Received:</strong></p>
-                                <p style="font-size:16px; margin-top:10px;"><span *ngIf="
-                      printData.amountReceived.cad == 0 && printData.amountReceived.usd == 0;
-                      else elseblock1
-                    ">
+                                <p style="font-size: 14px; margin-bottom: 0px">
+                                  <strong>Amount Received:</strong>
+                                </p>
+                                <p style="font-size: 16px; margin-top: 10px">
+                                  <span
+                                    *ngIf="
+                                      printData.amountReceived.cad == 0 &&
+                                        printData.amountReceived.usd == 0;
+                                      else elseblock1
+                                    "
+                                  >
                                     -
                                   </span>
                                   <ng-template #elseblock1>
-                                    <span *ngIf="printData.amountReceived.cad != 0">{{
-                      printData.amountReceived.cad | currency: "CAD"
-                    }}</span>
-                                    <span *ngIf="printData.amountReceived.cad == 0">-</span><br />
                                     <span
-                                      *ngIf="printData.amountReceived.usd != 0">US{{ printData.amountReceived.usd | currency: "USD" }}</span>
-                                    <span *ngIf="printData.amountReceived.usd == 0">-</span>
+                                      *ngIf="printData.amountReceived.cad != 0"
+                                      >{{
+                                        printData.amountReceived.cad
+                                          | currency: "CAD"
+                                      }}</span
+                                    >
+                                    <span
+                                      *ngIf="printData.amountReceived.cad == 0"
+                                      >-</span
+                                    ><br />
+                                    <span
+                                      *ngIf="printData.amountReceived.usd != 0"
+                                      >US{{
+                                        printData.amountReceived.usd
+                                          | currency: "USD"
+                                      }}</span
+                                    >
+                                    <span
+                                      *ngIf="printData.amountReceived.usd == 0"
+                                      >-</span
+                                    >
                                   </ng-template>
                                 </p>
                               </td>
@@ -541,229 +800,455 @@
                         </table>
                       </td>
                       <td>
-                        <table width="90%" border="0" cellpadding="0" cellspacing="0">
+                        <table
+                          width="90%"
+                          border="0"
+                          cellpadding="0"
+                          cellspacing="0"
+                        >
                           <tbody>
                             <tr>
                               <td>
-                                <p style="font-size:14px; margin-bottom:0px;"><strong>Balance:</strong></p>
+                                <p style="font-size: 14px; margin-bottom: 0px">
+                                  <strong>Balance:</strong>
+                                </p>
 
-                                <p style="font-size:16px; margin-top:10px;"><span *ngIf="
-                        printData.balance.cad == 0 && printData.balance.usd == 0;
-                        else elseblock2
-                      ">
+                                <p style="font-size: 16px; margin-top: 10px">
+                                  <span
+                                    *ngIf="
+                                      printData.balance.cad == 0 &&
+                                        printData.balance.usd == 0;
+                                      else elseblock2
+                                    "
+                                  >
                                     -
                                   </span>
                                   <ng-template #elseblock2>
                                     <span *ngIf="printData.balance.cad != 0">{{
-                        printData.balance.cad | currency: "CAD"
-                      }}</span>
-                                    <span *ngIf="printData.balance.cad == 0">-</span><br />
-                                    <span
-                                      *ngIf="printData.balance.usd != 0">US{{ printData.balance.usd | currency: "USD" }}</span>
-                                    <span *ngIf="printData.balance.usd == 0">-</span>
+                                      printData.balance.cad | currency: "CAD"
+                                    }}</span>
+                                    <span *ngIf="printData.balance.cad == 0"
+                                      >-</span
+                                    ><br />
+                                    <span *ngIf="printData.balance.usd != 0"
+                                      >US{{
+                                        printData.balance.usd | currency: "USD"
+                                      }}</span
+                                    >
+                                    <span *ngIf="printData.balance.usd == 0"
+                                      >-</span
+                                    >
                                   </ng-template>
                                 </p>
                               </td>
-                              </tr>
-                              
-                            
+                            </tr>
                           </tbody>
                         </table>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        <p style="font-size:14px; margin-bottom:0px;"><strong>30-45</strong>
+                        <p style="font-size: 14px; margin-bottom: 0px">
+                          <strong>30-45</strong>
                         </p>
 
-                        <p style="font-size:16px; margin-top:10px;"><span *ngIf="
-                printData.balanceAge30.cad == 0 && printData.balanceAge30.usd == 0;
-                else elseblock3
-              ">
+                        <p style="font-size: 16px; margin-top: 10px">
+                          <span
+                            *ngIf="
+                              printData.balanceAge30.cad == 0 &&
+                                printData.balanceAge30.usd == 0;
+                              else elseblock3
+                            "
+                          >
                             -
                           </span>
                           <ng-template #elseblock3>
                             <span *ngIf="printData.balanceAge30.cad != 0">{{
-                printData.balanceAge30.cad | currency: "CAD"
-              }}</span>
-                            <span *ngIf="printData.balanceAge30.cad == 0">-</span><br />
-                            <span
-                              *ngIf="printData.balanceAge30.usd != 0">US{{ printData.balanceAge30.usd | currency: "USD" }}</span>
-                            <span *ngIf="printData.balanceAge30.usd == 0">-</span>
+                              printData.balanceAge30.cad | currency: "CAD"
+                            }}</span>
+                            <span *ngIf="printData.balanceAge30.cad == 0"
+                              >-</span
+                            ><br />
+                            <span *ngIf="printData.balanceAge30.usd != 0"
+                              >US{{
+                                printData.balanceAge30.usd | currency: "USD"
+                              }}</span
+                            >
+                            <span *ngIf="printData.balanceAge30.usd == 0"
+                              >-</span
+                            >
                           </ng-template>
                         </p>
-
                       </td>
                       <td>
-                        <p style="font-size:14px; margin-bottom:0px;"><strong>45-60</strong>
+                        <p style="font-size: 14px; margin-bottom: 0px">
+                          <strong>45-60</strong>
                         </p>
 
-                        <p style="font-size:16px; margin-top:10px;"><span *ngIf="
-                printData.balanceAge45.cad == 0 && printData.balanceAge45.usd == 0;
-                else elseblock4
-              ">
+                        <p style="font-size: 16px; margin-top: 10px">
+                          <span
+                            *ngIf="
+                              printData.balanceAge45.cad == 0 &&
+                                printData.balanceAge45.usd == 0;
+                              else elseblock4
+                            "
+                          >
                             -
                           </span>
                           <ng-template #elseblock4>
                             <span *ngIf="printData.balanceAge45.cad != 0">{{
-                printData.balanceAge45.cad | currency: "CAD"
-              }}</span>
-                            <span *ngIf="printData.balanceAge45.cad == 0">-</span><br />
-                            <span
-                              *ngIf="printData.balanceAge45.usd != 0">US{{ printData.balanceAge45.usd | currency: "USD" }}</span>
-                            <span *ngIf="printData.balanceAge45.usd == 0">-</span>
+                              printData.balanceAge45.cad | currency: "CAD"
+                            }}</span>
+                            <span *ngIf="printData.balanceAge45.cad == 0"
+                              >-</span
+                            ><br />
+                            <span *ngIf="printData.balanceAge45.usd != 0"
+                              >US{{
+                                printData.balanceAge45.usd | currency: "USD"
+                              }}</span
+                            >
+                            <span *ngIf="printData.balanceAge45.usd == 0"
+                              >-</span
+                            >
                           </ng-template>
                         </p>
-
                       </td>
                       <td>
-                        <p style="font-size:14px; margin-bottom:0px;"><strong>60+</strong>
+                        <p style="font-size: 14px; margin-bottom: 0px">
+                          <strong>60+</strong>
                         </p>
 
-                        <p style="font-size:16px; margin-top:10px;"><span *ngIf="
-                printData.balanceAge60.cad == 0 && printData.balanceAge60.usd == 0;
-                else elseblock5
-              ">
+                        <p style="font-size: 16px; margin-top: 10px">
+                          <span
+                            *ngIf="
+                              printData.balanceAge60.cad == 0 &&
+                                printData.balanceAge60.usd == 0;
+                              else elseblock5
+                            "
+                          >
                             -
                           </span>
                           <ng-template #elseblock5>
                             <span *ngIf="printData.balanceAge60.cad != 0">{{
-                printData.balanceAge60.cad | currency: "CAD"
-              }}</span>
-                            <span *ngIf="printData.balanceAge60.cad == 0">-</span><br />
-                            <span
-                              *ngIf="printData.balanceAge60.usd != 0">US{{ printData.balanceAge60.usd | currency: "USD" }}</span>
-                            <span *ngIf="printData.balanceAge60.usd == 0">-</span>
+                              printData.balanceAge60.cad | currency: "CAD"
+                            }}</span>
+                            <span *ngIf="printData.balanceAge60.cad == 0"
+                              >-</span
+                            ><br />
+                            <span *ngIf="printData.balanceAge60.usd != 0"
+                              >US{{
+                                printData.balanceAge60.usd | currency: "USD"
+                              }}</span
+                            >
+                            <span *ngIf="printData.balanceAge60.usd == 0"
+                              >-</span
+                            >
                           </ng-template>
                         </p>
-
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </td>
             </tr>
-            
+
             <tr valign="top">
               <td colspan="2">
-                <table width="100%" border="0" style="border:1px solid #000000; font-size:13px;" cellspacing="0"
-                  cellpadding="0">
+                <table
+                  width="100%"
+                  border="0"
+                  style="border: 1px solid #000000; font-size: 13px"
+                  cellspacing="0"
+                  cellpadding="0"
+                >
                   <tbody>
                     <tr bgcolor="#f3f3f3">
-                      <td width="8%"
-                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                        <p style="font-weight:600;">Date</p>
+                      <td
+                        width="8%"
+                        style="
+                          border-bottom: 1px solid #000000;
+                          border-right: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="font-weight: 600">Date</p>
                       </td>
-                      <td width="8%"
-                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                        <p style="font-weight:600;">Order#</p>
+                      <td
+                        width="8%"
+                        style="
+                          border-bottom: 1px solid #000000;
+                          border-right: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="font-weight: 600">Order#</p>
                       </td>
-                      <td width="8%"
-                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                        <p style="font-weight:600;">Confirmation#</p>
+                      <td
+                        width="8%"
+                        style="
+                          border-bottom: 1px solid #000000;
+                          border-right: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="font-weight: 600">Confirmation#</p>
                       </td>
-                      <td width="8%"
-                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                        <p style="font-weight:600;">Type</p>
+                      <td
+                        width="8%"
+                        style="
+                          border-bottom: 1px solid #000000;
+                          border-right: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="font-weight: 600">Type</p>
                       </td>
-                      <td width="6%"
-                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                        <p style="font-weight:600;">Miles</p>
+                      <td
+                        width="6%"
+                        style="
+                          border-bottom: 1px solid #000000;
+                          border-right: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="font-weight: 600">Miles</p>
                       </td>
-                      <td width="6%"
-                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                        <p style="font-weight:600;">Amount</p>
+                      <td
+                        width="6%"
+                        style="
+                          border-bottom: 1px solid #000000;
+                          border-right: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="font-weight: 600">Amount</p>
                       </td>
-                      <td width="8%"
-                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                        <p style="font-weight:600;">Status</p>
+                      <td
+                        width="8%"
+                        style="
+                          border-bottom: 1px solid #000000;
+                          border-right: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="font-weight: 600">Status</p>
                       </td>
-                      <td width="8%"
-                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                        <p style="font-weight:600;">Invoice</p>
+                      <td
+                        width="8%"
+                        style="
+                          border-bottom: 1px solid #000000;
+                          border-right: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="font-weight: 600">Invoice</p>
                       </td>
-                      <td width="8%"
-                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                        <p style="font-weight:600;">Inv. Date</p>
+                      <td
+                        width="8%"
+                        style="
+                          border-bottom: 1px solid #000000;
+                          border-right: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="font-weight: 600">Inv. Date</p>
                       </td>
-                      <td width="10%"
-                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                        <p style="font-weight:600;">Inv. #</p>
+                      <td
+                        width="10%"
+                        style="
+                          border-bottom: 1px solid #000000;
+                          border-right: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="font-weight: 600">Inv. #</p>
                       </td>
-                      <td width="6%"
-                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                        <p style="font-weight:600;">Inv. Status</p>
+                      <td
+                        width="6%"
+                        style="
+                          border-bottom: 1px solid #000000;
+                          border-right: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="font-weight: 600">Inv. Status</p>
                       </td>
-                      <td width="6%"
-                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                        <p style="font-weight:600;">Received</p>
+                      <td
+                        width="6%"
+                        style="
+                          border-bottom: 1px solid #000000;
+                          border-right: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="font-weight: 600">Received</p>
                       </td>
                     </tr>
-                    <tr *ngIf="printData.orders.length == 0" class="text-center">
+                    <tr
+                      *ngIf="printData.orders.length == 0"
+                      class="text-center"
+                    >
                       <td colspan="7">No Records Found</td>
                     </tr>
                     <tr *ngFor="let order of printData.orders">
-                      <td height="25"
-                        style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                        <p style="margin-top:0px; margin-bottom:0px;"> {{order.createdDate|date:'MMM dd'}}</p>
-                      </td>
-                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                        <p style="margin-top:0px; margin-bottom:0px;">{{order.orderNumber}}</p>
-                      </td>
-                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                        <p style="margin-top:0px; margin-bottom:0px;">{{ order.cusConfirmation }}</p>
-                      </td>
-                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                        <p style="margin-top:0px; margin-bottom:0px;">{{ order.orderMode }}</p>
-                      </td>
-                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                        <p style="margin-top:0px; margin-bottom:0px;">{{ order.milesInfo.totalMiles }}</p>
-                      </td>
-                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                        <p style="margin-top:0px; margin-bottom:0px;">{{
-                        order.finalAmount
-                          | currency
-                            : order.charges.freightFee
-                                .currency
-                      }}</p>
-                      </td>
-                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                        <p style="margin-top:0px; margin-bottom:0px;">{{
-                        order.orderStatus
-                      }}</p>
-                      </td>
-                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                        <p style="margin-top:0px; margin-bottom:0px;">{{ order.invoiceGenerate }}</p>
-                      </td>
-                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                        <p style="margin-top:0px; margin-bottom:0px;">{{order.invDate}}</p>
-                      </td>
-                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                        <p style="margin-top:0px; margin-bottom:0px;">{{order.invNo}}</p>
-                      </td>
-                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                        <p style="margin-top:5px; margin-bottom:5px;">{{ order.invStat }}<br>
+                      <td
+                        height="25"
+                        style="
+                          border-right: 1px solid #000000;
+                          border-bottom: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-top: 0px; margin-bottom: 0px">
+                          {{ order.createdDate | date: "MMM dd" }}
                         </p>
                       </td>
-                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                        <p style="margin-top:0px; margin-bottom:0px;">{{order.paid}}<br>
+                      <td
+                        style="
+                          border-right: 1px solid #000000;
+                          border-bottom: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-top: 0px; margin-bottom: 0px">
+                          {{ order.orderNumber }}
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #000000;
+                          border-bottom: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-top: 0px; margin-bottom: 0px">
+                          {{ order.cusConfirmation }}
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #000000;
+                          border-bottom: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-top: 0px; margin-bottom: 0px">
+                          {{ order.orderMode }}
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #000000;
+                          border-bottom: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-top: 0px; margin-bottom: 0px">
+                          {{ order.milesInfo.totalMiles }}
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #000000;
+                          border-bottom: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-top: 0px; margin-bottom: 0px">
+                          {{
+                            order.finalAmount
+                              | currency: order.charges.freightFee.currency
+                          }}
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #000000;
+                          border-bottom: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-top: 0px; margin-bottom: 0px">
+                          {{ order.orderStatus }}
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #000000;
+                          border-bottom: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-top: 0px; margin-bottom: 0px">
+                          {{ order.invoiceGenerate }}
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #000000;
+                          border-bottom: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-top: 0px; margin-bottom: 0px">
+                          {{ order.invDate }}
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #000000;
+                          border-bottom: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-top: 0px; margin-bottom: 0px">
+                          {{ order.invNo }}
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #000000;
+                          border-bottom: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-top: 5px; margin-bottom: 5px">
+                          {{ order.invStat }}<br />
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #000000;
+                          border-bottom: 1px solid #000000;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-top: 0px; margin-bottom: 0px">
+                          {{ order.paid }}<br />
                         </p>
                       </td>
                     </tr>
-
                   </tbody>
                 </table>
               </td>
             </tr>
             <tr>
               <td colspan="2">
-                <table border="0" align="center" cellpadding="0" cellspacing="0">
+                <table
+                  border="0"
+                  align="center"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
                   <tbody>
                     <tr>
                       <td align="center">
-                        <h2 style="font-size:13px;">Powered
-                          By</h2>
-                        <img src="assets/img/logo.png" width="207" height="28">
+                        <h2 style="font-size: 13px">Powered By</h2>
+                        <img
+                          src="assets/img/logo.png"
+                          width="207"
+                          height="28"
+                        />
                       </td>
                     </tr>
                   </tbody>
@@ -787,28 +1272,41 @@
 <ng-template #previewAllModal let-modal>
   <div class="modal-content">
     <div class="modal-body p-0">
-      <section class="report-wrapper p-2" style="background-color: #fff; color:
-        #000" id="print_all_wrap">
-        
-            <!-- <h1 style="font-size:26px;text-align: center;">Customer Collection Report</h1> -->
-          
+      <section
+        class="report-wrapper p-2"
+        style="background-color: #fff; color: #000"
+        id="print_all_wrap"
+      >
+        <!-- <h1 style="font-size:26px;text-align: center;">Customer Collection Report</h1> -->
+
         <div *ngFor="let element of allData">
-          
-          <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0" class="customerData">
+          <table
+            width="90%"
+            border="0"
+            align="center"
+            cellpadding="0"
+            cellspacing="0"
+            class="customerData"
+          >
             <tbody>
-              
               <tr>
-                <td colspan="2" style="height:2px;background-color: #000;" bgcolor="#bbbbbb"></td>
+                <td
+                  colspan="2"
+                  style="height: 2px; background-color: #000"
+                  bgcolor="#bbbbbb"
+                ></td>
               </tr>
               <tr>
                 <td width="50%">
-                  <span style="font-size:20px;">Customer: </span>
-                  <span style="font-size:15px;"> <strong>{{element.cName|titlecase}}</strong>
+                  <span style="font-size: 20px">Customer: </span>
+                  <span style="font-size: 15px">
+                    <strong>{{ element.cName | titlecase }}</strong>
                   </span>
                 </td>
                 <td align="right">
-                  <p style="font-size:13px;"> <strong>Phone:</strong> {{element.workPhone}}<br>
-                    <strong>Email:</strong> {{element.workEmail}}<br>
+                  <p style="font-size: 13px">
+                    <strong>Phone:</strong> {{ element.workPhone }}<br />
+                    <strong>Email:</strong> {{ element.workEmail }}<br />
                   </p>
                 </td>
               </tr>
@@ -817,40 +1315,66 @@
               </tr>
               <tr>
                 <td colspan="2">
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <table
+                    width="100%"
+                    border="0"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
                     <tbody>
                       <tr>
                         <td width="40%">
-                          <table width="80%" border="0" cellpadding="0" cellspacing="0">
+                          <table
+                            width="80%"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                          >
                             <tbody>
                               <tr>
                                 <td>
-                                  <p style="font-size:16px;"><strong>Total Orders:</strong>
-                                    {{element.totalOrders}}</p>
+                                  <p style="font-size: 16px">
+                                    <strong>Total Orders:</strong>
+                                    {{ element.totalOrders }}
+                                  </p>
                                 </td>
                               </tr>
                             </tbody>
                           </table>
                         </td>
                         <td width="33%">
-                          <table width="90%" border="0" cellpadding="0" cellspacing="0">
+                          <table
+                            width="90%"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                          >
                             <tbody>
                               <tr>
                                 <td>
-                                  <p style="font-size:16px;"><strong>Delivered Orders:</strong>
-                                    {{element.deliveredOrders}}</p>
+                                  <p style="font-size: 16px">
+                                    <strong>Delivered Orders:</strong>
+                                    {{ element.deliveredOrders }}
+                                  </p>
                                 </td>
                               </tr>
                             </tbody>
                           </table>
                         </td>
                         <td>
-                          <table width="90%" border="0" cellpadding="0" cellspacing="0">
+                          <table
+                            width="90%"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                          >
                             <tbody>
                               <tr>
                                 <td>
-                                  <p style="font-size:16px;"><strong>Inv. Generated:</strong>
-                                    {{element.invoiceGenerated}}</p>
+                                  <p style="font-size: 16px">
+                                    <strong>Inv. Generated:</strong>
+                                    {{ element.invoiceGenerated }}
+                                  </p>
                                 </td>
                               </tr>
                             </tbody>
@@ -866,59 +1390,115 @@
               </tr>
               <tr>
                 <td colspan="2">
-                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <table
+                    width="100%"
+                    border="0"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
                     <tbody>
                       <tr>
                         <td width="40%">
-                          <table width="80%" border="0" cellpadding="0" cellspacing="0">
+                          <table
+                            width="80%"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                          >
                             <tbody>
                               <tr>
                                 <td>
-                                  <p style="font-size:14px; margin-bottom:0px;"><strong>Total Amount:</strong>
+                                  <p
+                                    style="font-size: 14px; margin-bottom: 0px"
+                                  >
+                                    <strong>Total Amount:</strong>
                                   </p>
-  
-                                  <p style="font-size:16px; margin-top:10px;"><span *ngIf="
-                          element.totalAmount.cad == 0 && element.totalAmount.usd == 0;
-                          else elseblock
-                        ">
+
+                                  <p style="font-size: 16px; margin-top: 10px">
+                                    <span
+                                      *ngIf="
+                                        element.totalAmount.cad == 0 &&
+                                          element.totalAmount.usd == 0;
+                                        else elseblock
+                                      "
+                                    >
                                       -
                                     </span>
                                     <ng-template #elseblock>
-                                      <span *ngIf="element.totalAmount.cad != 0">{{
-                          element.totalAmount.cad | currency: "CAD"
-                        }}</span>
-                                      <span *ngIf="element.totalAmount.cad == 0">-</span><br />
                                       <span
-                                        *ngIf="element.totalAmount.usd != 0">US{{ element.totalAmount.usd | currency: "USD" }}</span>
-                                      <span *ngIf="element.totalAmount.usd == 0">-</span>
+                                        *ngIf="element.totalAmount.cad != 0"
+                                        >{{
+                                          element.totalAmount.cad
+                                            | currency: "CAD"
+                                        }}</span
+                                      >
+                                      <span *ngIf="element.totalAmount.cad == 0"
+                                        >-</span
+                                      ><br />
+                                      <span *ngIf="element.totalAmount.usd != 0"
+                                        >US{{
+                                          element.totalAmount.usd
+                                            | currency: "USD"
+                                        }}</span
+                                      >
+                                      <span *ngIf="element.totalAmount.usd == 0"
+                                        >-</span
+                                      >
                                     </ng-template>
                                   </p>
-  
                                 </td>
                               </tr>
                             </tbody>
                           </table>
                         </td>
                         <td width="33%">
-                          <table width="90%" border="0" cellpadding="0" cellspacing="0">
+                          <table
+                            width="90%"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                          >
                             <tbody>
                               <tr>
                                 <td>
-                                  <p style="font-size:14px; margin-bottom:0px;"><strong>Amount Received:</strong></p>
-                                  <p style="font-size:16px; margin-top:10px;"><span *ngIf="
-                        element.amountReceived.cad == 0 && element.amountReceived.usd == 0;
-                        else elseblock1
-                      ">
+                                  <p
+                                    style="font-size: 14px; margin-bottom: 0px"
+                                  >
+                                    <strong>Amount Received:</strong>
+                                  </p>
+                                  <p style="font-size: 16px; margin-top: 10px">
+                                    <span
+                                      *ngIf="
+                                        element.amountReceived.cad == 0 &&
+                                          element.amountReceived.usd == 0;
+                                        else elseblock1
+                                      "
+                                    >
                                       -
                                     </span>
                                     <ng-template #elseblock1>
-                                      <span *ngIf="element.amountReceived.cad != 0">{{
-                        element.amountReceived.cad | currency: "CAD"
-                      }}</span>
-                                      <span *ngIf="element.amountReceived.cad == 0">-</span><br />
                                       <span
-                                        *ngIf="element.amountReceived.usd != 0">US{{ element.amountReceived.usd | currency: "USD" }}</span>
-                                      <span *ngIf="element.amountReceived.usd == 0">-</span>
+                                        *ngIf="element.amountReceived.cad != 0"
+                                        >{{
+                                          element.amountReceived.cad
+                                            | currency: "CAD"
+                                        }}</span
+                                      >
+                                      <span
+                                        *ngIf="element.amountReceived.cad == 0"
+                                        >-</span
+                                      ><br />
+                                      <span
+                                        *ngIf="element.amountReceived.usd != 0"
+                                        >US{{
+                                          element.amountReceived.usd
+                                            | currency: "USD"
+                                        }}</span
+                                      >
+                                      <span
+                                        *ngIf="element.amountReceived.usd == 0"
+                                        >-</span
+                                      >
                                     </ng-template>
                                   </p>
                                 </td>
@@ -927,102 +1507,153 @@
                           </table>
                         </td>
                         <td>
-                          <table width="90%" border="0" cellpadding="0" cellspacing="0">
+                          <table
+                            width="90%"
+                            border="0"
+                            cellpadding="0"
+                            cellspacing="0"
+                          >
                             <tbody>
                               <tr>
                                 <td>
-                                  <p style="font-size:14px; margin-bottom:0px;"><strong>Balance:</strong></p>
-  
-                                  <p style="font-size:16px; margin-top:10px;"><span *ngIf="
-                          element.balance.cad == 0 && element.balance.usd == 0;
-                          else elseblock2
-                        ">
+                                  <p
+                                    style="font-size: 14px; margin-bottom: 0px"
+                                  >
+                                    <strong>Balance:</strong>
+                                  </p>
+
+                                  <p style="font-size: 16px; margin-top: 10px">
+                                    <span
+                                      *ngIf="
+                                        element.balance.cad == 0 &&
+                                          element.balance.usd == 0;
+                                        else elseblock2
+                                      "
+                                    >
                                       -
                                     </span>
                                     <ng-template #elseblock2>
                                       <span *ngIf="element.balance.cad != 0">{{
-                          element.balance.cad | currency: "CAD"
-                        }}</span>
-                                      <span *ngIf="element.balance.cad == 0">-</span><br />
-                                      <span
-                                        *ngIf="element.balance.usd != 0">US{{ element.balance.usd | currency: "USD" }}</span>
-                                      <span *ngIf="element.balance.usd == 0">-</span>
+                                        element.balance.cad | currency: "CAD"
+                                      }}</span>
+                                      <span *ngIf="element.balance.cad == 0"
+                                        >-</span
+                                      ><br />
+                                      <span *ngIf="element.balance.usd != 0"
+                                        >US{{
+                                          element.balance.usd | currency: "USD"
+                                        }}</span
+                                      >
+                                      <span *ngIf="element.balance.usd == 0"
+                                        >-</span
+                                      >
                                     </ng-template>
                                   </p>
                                 </td>
-                                </tr>
-                                
-                              
+                              </tr>
                             </tbody>
                           </table>
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <p style="font-size:14px; margin-bottom:0px;"><strong>30-45</strong>
+                          <p style="font-size: 14px; margin-bottom: 0px">
+                            <strong>30-45</strong>
                           </p>
-  
-                          <p style="font-size:16px; margin-top:10px;"><span *ngIf="
-                  element.balanceAge30.cad == 0 && element.balanceAge30.usd == 0;
-                  else elseblock3
-                ">
+
+                          <p style="font-size: 16px; margin-top: 10px">
+                            <span
+                              *ngIf="
+                                element.balanceAge30.cad == 0 &&
+                                  element.balanceAge30.usd == 0;
+                                else elseblock3
+                              "
+                            >
                               -
                             </span>
                             <ng-template #elseblock3>
                               <span *ngIf="element.balanceAge30.cad != 0">{{
-                  element.balanceAge30.cad | currency: "CAD"
-                }}</span>
-                              <span *ngIf="element.balanceAge30.cad == 0">-</span><br />
-                              <span
-                                *ngIf="element.balanceAge30.usd != 0">US{{ element.balanceAge30.usd | currency: "USD" }}</span>
-                              <span *ngIf="element.balanceAge30.usd == 0">-</span>
+                                element.balanceAge30.cad | currency: "CAD"
+                              }}</span>
+                              <span *ngIf="element.balanceAge30.cad == 0"
+                                >-</span
+                              ><br />
+                              <span *ngIf="element.balanceAge30.usd != 0"
+                                >US{{
+                                  element.balanceAge30.usd | currency: "USD"
+                                }}</span
+                              >
+                              <span *ngIf="element.balanceAge30.usd == 0"
+                                >-</span
+                              >
                             </ng-template>
                           </p>
-  
                         </td>
                         <td>
-                          <p style="font-size:14px; margin-bottom:0px;"><strong>45-60</strong>
+                          <p style="font-size: 14px; margin-bottom: 0px">
+                            <strong>45-60</strong>
                           </p>
-  
-                          <p style="font-size:16px; margin-top:10px;"><span *ngIf="
-                  element.balanceAge45.cad == 0 && element.balanceAge45.usd == 0;
-                  else elseblock4
-                ">
+
+                          <p style="font-size: 16px; margin-top: 10px">
+                            <span
+                              *ngIf="
+                                element.balanceAge45.cad == 0 &&
+                                  element.balanceAge45.usd == 0;
+                                else elseblock4
+                              "
+                            >
                               -
                             </span>
                             <ng-template #elseblock4>
                               <span *ngIf="element.balanceAge45.cad != 0">{{
-                  element.balanceAge45.cad | currency: "CAD"
-                }}</span>
-                              <span *ngIf="element.balanceAge45.cad == 0">-</span><br />
-                              <span
-                                *ngIf="element.balanceAge45.usd != 0">US{{ element.balanceAge45.usd | currency: "USD" }}</span>
-                              <span *ngIf="element.balanceAge45.usd == 0">-</span>
+                                element.balanceAge45.cad | currency: "CAD"
+                              }}</span>
+                              <span *ngIf="element.balanceAge45.cad == 0"
+                                >-</span
+                              ><br />
+                              <span *ngIf="element.balanceAge45.usd != 0"
+                                >US{{
+                                  element.balanceAge45.usd | currency: "USD"
+                                }}</span
+                              >
+                              <span *ngIf="element.balanceAge45.usd == 0"
+                                >-</span
+                              >
                             </ng-template>
                           </p>
-  
                         </td>
                         <td>
-                          <p style="font-size:14px; margin-bottom:0px;"><strong>60+</strong>
+                          <p style="font-size: 14px; margin-bottom: 0px">
+                            <strong>60+</strong>
                           </p>
-  
-                          <p style="font-size:16px; margin-top:10px;"><span *ngIf="
-                  element.balanceAge60.cad == 0 && element.balanceAge60.usd == 0;
-                  else elseblock5
-                ">
+
+                          <p style="font-size: 16px; margin-top: 10px">
+                            <span
+                              *ngIf="
+                                element.balanceAge60.cad == 0 &&
+                                  element.balanceAge60.usd == 0;
+                                else elseblock5
+                              "
+                            >
                               -
                             </span>
                             <ng-template #elseblock5>
                               <span *ngIf="element.balanceAge60.cad != 0">{{
-                  element.balanceAge60.cad | currency: "CAD"
-                }}</span>
-                              <span *ngIf="element.balanceAge60.cad == 0">-</span><br />
-                              <span
-                                *ngIf="element.balanceAge60.usd != 0">US{{ element.balanceAge60.usd | currency: "USD" }}</span>
-                              <span *ngIf="element.balanceAge60.usd == 0">-</span>
+                                element.balanceAge60.cad | currency: "CAD"
+                              }}</span>
+                              <span *ngIf="element.balanceAge60.cad == 0"
+                                >-</span
+                              ><br />
+                              <span *ngIf="element.balanceAge60.usd != 0"
+                                >US{{
+                                  element.balanceAge60.usd | currency: "USD"
+                                }}</span
+                              >
+                              <span *ngIf="element.balanceAge60.usd == 0"
+                                >-</span
+                              >
                             </ng-template>
                           </p>
-  
                         </td>
                       </tr>
                     </tbody>
@@ -1031,126 +1662,292 @@
               </tr>
               <tr valign="top">
                 <td colspan="2">
-                  <table width="100%" border="0" style="border:1px solid #000000; font-size:13px;" cellspacing="0"
-                    cellpadding="0">
+                  <table
+                    width="100%"
+                    border="0"
+                    style="border: 1px solid #000000; font-size: 13px"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
                     <tbody>
                       <tr bgcolor="#f3f3f3">
-                        <td width="8%"
-                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Date</p>
+                        <td
+                          width="8%"
+                          style="
+                            border-bottom: 1px solid #000000;
+                            border-right: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="font-weight: 600">Date</p>
                         </td>
-                        <td width="8%"
-                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Order#</p>
+                        <td
+                          width="8%"
+                          style="
+                            border-bottom: 1px solid #000000;
+                            border-right: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="font-weight: 600">Order#</p>
                         </td>
-                        <td width="8%"
-                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Confirmation#</p>
+                        <td
+                          width="8%"
+                          style="
+                            border-bottom: 1px solid #000000;
+                            border-right: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="font-weight: 600">Confirmation#</p>
                         </td>
-                        <td width="8%"
-                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Type</p>
+                        <td
+                          width="8%"
+                          style="
+                            border-bottom: 1px solid #000000;
+                            border-right: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="font-weight: 600">Type</p>
                         </td>
-                        <td width="6%"
-                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Miles</p>
+                        <td
+                          width="6%"
+                          style="
+                            border-bottom: 1px solid #000000;
+                            border-right: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="font-weight: 600">Miles</p>
                         </td>
-                        <td width="6%"
-                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Amount</p>
+                        <td
+                          width="6%"
+                          style="
+                            border-bottom: 1px solid #000000;
+                            border-right: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="font-weight: 600">Amount</p>
                         </td>
-                        <td width="8%"
-                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Status</p>
+                        <td
+                          width="8%"
+                          style="
+                            border-bottom: 1px solid #000000;
+                            border-right: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="font-weight: 600">Status</p>
                         </td>
-                        <td width="8%"
-                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Invoice</p>
+                        <td
+                          width="8%"
+                          style="
+                            border-bottom: 1px solid #000000;
+                            border-right: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="font-weight: 600">Invoice</p>
                         </td>
-                        <td width="8%"
-                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Inv. Date</p>
+                        <td
+                          width="8%"
+                          style="
+                            border-bottom: 1px solid #000000;
+                            border-right: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="font-weight: 600">Inv. Date</p>
                         </td>
-                        <td width="10%"
-                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Inv. #</p>
+                        <td
+                          width="10%"
+                          style="
+                            border-bottom: 1px solid #000000;
+                            border-right: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="font-weight: 600">Inv. #</p>
                         </td>
-                        <td width="6%"
-                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Inv. Status</p>
+                        <td
+                          width="6%"
+                          style="
+                            border-bottom: 1px solid #000000;
+                            border-right: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="font-weight: 600">Inv. Status</p>
                         </td>
-                        <td width="6%"
-                          style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
-                          <p style="font-weight:600;">Received</p>
+                        <td
+                          width="6%"
+                          style="
+                            border-bottom: 1px solid #000000;
+                            border-right: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="font-weight: 600">Received</p>
                         </td>
                       </tr>
-                      <tr *ngIf="element.orders.length == 0" class="text-center">
+                      <tr
+                        *ngIf="element.orders.length == 0"
+                        class="text-center"
+                      >
                         <td colspan="7">No Records Found</td>
                       </tr>
                       <tr *ngFor="let order of element.orders">
-                        <td height="25"
-                          style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;"> {{order.createdDate|date:'MMM dd'}}</p>
-                        </td>
-                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{order.orderNumber}}</p>
-                        </td>
-                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{ order.cusConfirmation }}</p>
-                        </td>
-                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{ order.orderMode }}</p>
-                        </td>
-                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{ order.milesInfo.totalMiles }}</p>
-                        </td>
-                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{
-                          order.finalAmount
-                            | currency
-                              : order.charges.freightFee
-                                  .currency
-                        }}</p>
-                        </td>
-                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{
-                          order.orderStatus
-                        }}</p>
-                        </td>
-                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{ order.invoiceGenerate }}</p>
-                        </td>
-                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{order.invDate}}</p>
-                        </td>
-                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{order.invNo}}</p>
-                        </td>
-                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:5px; margin-bottom:5px;">{{ order.invStat }}<br>
+                        <td
+                          height="25"
+                          style="
+                            border-right: 1px solid #000000;
+                            border-bottom: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="margin-top: 0px; margin-bottom: 0px">
+                            {{ order.createdDate | date: "MMM dd" }}
                           </p>
                         </td>
-                        <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
-                          <p style="margin-top:0px; margin-bottom:0px;">{{order.paid}}<br>
+                        <td
+                          style="
+                            border-right: 1px solid #000000;
+                            border-bottom: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="margin-top: 0px; margin-bottom: 0px">
+                            {{ order.orderNumber }}
+                          </p>
+                        </td>
+                        <td
+                          style="
+                            border-right: 1px solid #000000;
+                            border-bottom: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="margin-top: 0px; margin-bottom: 0px">
+                            {{ order.cusConfirmation }}
+                          </p>
+                        </td>
+                        <td
+                          style="
+                            border-right: 1px solid #000000;
+                            border-bottom: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="margin-top: 0px; margin-bottom: 0px">
+                            {{ order.orderMode }}
+                          </p>
+                        </td>
+                        <td
+                          style="
+                            border-right: 1px solid #000000;
+                            border-bottom: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="margin-top: 0px; margin-bottom: 0px">
+                            {{ order.milesInfo.totalMiles }}
+                          </p>
+                        </td>
+                        <td
+                          style="
+                            border-right: 1px solid #000000;
+                            border-bottom: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="margin-top: 0px; margin-bottom: 0px">
+                            {{
+                              order.finalAmount
+                                | currency: order.charges.freightFee.currency
+                            }}
+                          </p>
+                        </td>
+                        <td
+                          style="
+                            border-right: 1px solid #000000;
+                            border-bottom: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="margin-top: 0px; margin-bottom: 0px">
+                            {{ order.orderStatus }}
+                          </p>
+                        </td>
+                        <td
+                          style="
+                            border-right: 1px solid #000000;
+                            border-bottom: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="margin-top: 0px; margin-bottom: 0px">
+                            {{ order.invoiceGenerate }}
+                          </p>
+                        </td>
+                        <td
+                          style="
+                            border-right: 1px solid #000000;
+                            border-bottom: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="margin-top: 0px; margin-bottom: 0px">
+                            {{ order.invDate }}
+                          </p>
+                        </td>
+                        <td
+                          style="
+                            border-right: 1px solid #000000;
+                            border-bottom: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="margin-top: 0px; margin-bottom: 0px">
+                            {{ order.invNo }}
+                          </p>
+                        </td>
+                        <td
+                          style="
+                            border-right: 1px solid #000000;
+                            border-bottom: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="margin-top: 5px; margin-bottom: 5px">
+                            {{ order.invStat }}<br />
+                          </p>
+                        </td>
+                        <td
+                          style="
+                            border-right: 1px solid #000000;
+                            border-bottom: 1px solid #000000;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p style="margin-top: 0px; margin-bottom: 0px">
+                            {{ order.paid }}<br />
                           </p>
                         </td>
                       </tr>
-  
                     </tbody>
                   </table>
                 </td>
               </tr>
-              
-              
             </tbody>
           </table>
-          </div>
-            
-              <div style="text-align: center;">
-                      <h2 style="font-size:13px;">Powered
-                        By</h2>
-                      <img src="assets/img/logo.png" width="207" height="28">
-                   </div>
+        </div>
+
+        <div style="text-align: center">
+          <h2 style="font-size: 13px">Powered By</h2>
+          <img src="assets/img/logo.png" width="207" height="28" />
+        </div>
       </section>
     </div>
     <div class="modal-footer">

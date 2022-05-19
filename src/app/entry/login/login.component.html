@@ -1,57 +1,50 @@
 <div class="bg-light">
-  <div class="ml-none ml-0">
-    <div class="maindivleft">
-      <div class="row justify-content-center mtnew">
-        <div class="col-lg-9 offset-lg-3">
-          <h2 class="font-weight-bold text-light text-7 mb-0">
-            Dashboard Features
-          </h2>
-          <h2 class="font-weight-normal text-light text-5 mt-4 mb-0">
-            <i class="fas fa-check"></i> Fleet
-          </h2>
-          <h2 class="font-weight-normal text-light text-5 mt-1 mb-0">
-            <i class="fas fa-check"></i> Compliance ( HOS, DVIR, IFTA )
-          </h2>
-          <h2 class="font-weight-normal text-light mt-1 text-5 mb-0">
-            <i class="fas fa-check"></i> Routing & Dispatch
-          </h2>
-          <h2 class="font-weight-normal text-light mt-1 text-5 mb-0">
-            <i class="fas fa-check"></i> Safety
-          </h2>
-          <h2 class="font-weight-normal text-light mt-1 text-5 mb-0">
-            <i class="fas fa-check"></i> Accounting
-          </h2>
-          <h2 class="font-weight-normal text-light mt-1 text-5 mb-0">
-            <i class="fas fa-check"></i> Reports
-          </h2>
-          <!-- <h2 class="font-weight-normal text-light mt-1 text-5 mb-4">
-            <i class="fas fa-check"></i> ELD
-          </h2> -->
-        </div>
-      </div>
-    </div>
-    <div class="maindivright">
-      <div class="row justify-content-center mtnew">
-        <section class="signup-section">
-          <div class="">
-            <div class="col-sm-12 log">
-              <img src="./assets/img/logologin.png" alt="FH Admin" />
+    <div class="ml-none ml-0">
+        <div class="maindivleft">
+            <div class="row justify-content-center mtnew">
+                <div class="col-lg-9 offset-lg-3">
+                    <h2 class="font-weight-bold text-light text-7 mb-0">
+                        Dashboard Features
+                    </h2>
+                    <h2 class="font-weight-normal text-light text-5 mt-4 mb-0">
+                        <i class="fas fa-check"></i> Fleet
+                    </h2>
+                    <!--HOS change with ELD-->
+                    <h2 class="font-weight-normal text-light text-5 mt-1 mb-0">
+
+                        <i class="fas fa-check"></i> Compliance (ELD, DVIR, IFTA)
+
+                    </h2>
+                    <h2 class="font-weight-normal text-light mt-1 text-5 mb-0">
+                        <i class="fas fa-check"></i> Routing & Dispatch
+                    </h2>
+                    <h2 class="font-weight-normal text-light mt-1 text-5 mb-0">
+                        <i class="fas fa-check"></i> Safety
+                    </h2>
+                    <h2 class="font-weight-normal text-light mt-1 text-5 mb-0">
+                        <i class="fas fa-check"></i> Accounting
+                    </h2>
+                    <h2 class="font-weight-normal text-light mt-1 text-5 mb-0">
+                        <i class="fas fa-check"></i> Reports
+                    </h2>
+                </div>
             </div>
+        </div>
+        <div class="maindivright">
+            <div class="row justify-content-center mtnew">
+                <section class="signup-section">
+                    <div class="">
+                        <div class="col-sm-12 log">
+                            <img src="./assets/img/logologin.png" alt="FH Admin" />
+                        </div>
 
-            <div class="panel card-sign">
-              <div class="card-title-sign text-center">
-                <h2
-                  id="loginTitle"
-                  class="text-uppercase font-weight-bold mb-3 mt-2"
-                >
-                  Sign In
-                </h2>
+                        <div class="panel card-sign">
+                            <div class="card-title-sign text-center">
+                                <h2 id="loginTitle" class="text-uppercase font-weight-bold mb-3 mt-2">
+                                    Sign In
+                                </h2>
 
-                <a
-                  class="text-uppercase btn btn-md btn-block btn-dark mr-2"
-                  (click)="openLogin()"
-                  href="javascript:;"
-                  >Dashboard</a
+                                <a class="text-uppercase btn btn-md btn-block btn-dark mr-2" (click)="openLogin()" href="javascript:;">Dashboard</a
                 >
 
                 <a
@@ -61,73 +54,48 @@
                 >
                   ELD
                 </a>
-              </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
-          </div>
-        </section>
-      </div>
+        </div>
     </div>
-  </div>
 </div>
 
-<ng-template #SignInModal let-modal>
-  <div class="modal-header">
-    <h5 class="modal-title">Sign In</h5>
-    <button type="button" class="close" (click)="modal.dismiss()">
-      &times;
-    </button>
-  </div>
-  <div class="modal-body text-dark" style="max-height: 500px; overflow: scroll">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card-body">
-          <form action="select-vehicle.html" method="post" #loginForm="ngForm">
-            <div class="form-group mb-3">
-              <div class="input-group">
-                <div class="logiconm mr-3">
-                  <i class="fas fa-user logicon text-5"></i>
-                </div>
-                <input
-                  name="username"
-                  type="text"
-                  placeholder="Username"
-                  class="form-control login form-control-lg"
-                  [(ngModel)]="userName"
-                  #login="ngModel"
-                  required
-                />
-                <div
-                  *ngIf="login.invalid && (login.dirty || login.touched)"
-                  class="text-danger w100"
-                >
-                  <div class="pl-4 ml-2" *ngIf="login.errors.required">
-                    Username is required.
-                  </div>
-                  <!-- <div *ngIf="login.errors.pattern">
+<p-dialog header="Sign In" [style]="{width: '30vw'}" [modal]="true" [(visible)]="showLogin">
+
+    <div class="modal-body text-dark" style="max-height: 500px; overflow: scroll">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card-body">
+                    <form action="select-vehicle.html" method="post" #loginForm="ngForm">
+                        <div class="form-group mb-3">
+                            <div class="input-group">
+                                <div class="logiconm mr-3">
+                                    <i class="fas fa-user logicon text-5"></i>
+                                </div>
+                                <input name="username" type="text" placeholder="Username" class="form-control login form-control-lg" [(ngModel)]="userName" #login="ngModel" required />
+                                <div *ngIf="login.invalid && (login.dirty || login.touched)" class="text-danger w100">
+                                    <div class="pl-4 ml-2" *ngIf="login.errors.required">
+                                        Username is required.
+                                    </div>
+                                    <!-- <div *ngIf="login.errors.pattern">
                                             The length of  Username must be 6 characters and may contain combination of lowercase letters, numbers and special character(.).
                                         </div> -->
-                </div>
-              </div>
-            </div>
+                                </div>
+                            </div>
+                        </div>
 
-            <div class="form-group mb-3">
-              <div class="input-group">
-                <div class="logiconm mr-3">
-                  <i class="fa fa-lock logicon text-5"></i>
-                </div>
-                <input
-                  name="pwd"
-                  [type]="fieldTextType ? 'text' : 'password'"
-                  placeholder="Password"
-                  class="form-control login form-control-lg"
-                  [(ngModel)]="password"
-                  #password1="ngModel"
-                  required
-                  autocomplete="new-password"
-                />
+                        <div class="form-group mb-3">
+                            <div class="input-group">
+                                <div class="logiconm mr-3">
+                                    <i class="fa fa-lock logicon text-5"></i>
+                                </div>
+                                <input name="pwd" [type]="fieldTextType ? 'text' : 'password'" placeholder="Password" class="form-control login form-control-lg" [(ngModel)]="password" #password1="ngModel" required autocomplete="new-password" />
 
-                <div class="input-group-append">
-                  <span class="input-group-text eye">
+                                <div class="input-group-append">
+                                    <span class="input-group-text eye">
                     <i
                       class="fa"
                       [ngClass]="{
@@ -137,31 +105,27 @@
                       (click)="toggleFieldTextType()"
                     ></i>
                   </span>
-                </div>
-                <div
-                  *ngIf="
+                                </div>
+                                <div *ngIf="
                     password1.invalid && (password1.dirty || password1.touched)
-                  "
-                  class="text-danger w100"
-                >
-                  <div class="pl-4 ml-2" *ngIf="password1.errors.required">
-                    Password is required.
-                  </div>
-                  <!-- <div *ngIf="password1.errors.pattern">
+                  " class="text-danger w100">
+                                    <div class="pl-4 ml-2" *ngIf="password1.errors.required">
+                                        Password is required.
+                                    </div>
+                                    <!-- <div *ngIf="password1.errors.pattern">
                                         The length of Password must be 8 characters and must contain combination of letters, numbers and special characters(@,#,$,'.',&).
                                       </div> -->
-                </div>
-              </div>
-            </div>
+                                </div>
+                            </div>
+                        </div>
 
-            <div class="row">
-              <p *ngIf="hasError" class="text text-danger ml-5">
-                {{ Error }}
-              </p>
-            </div>
-            <div class="d-flex flex-row-reverse text-dark">
-              <a [routerLink]="['/forgotPassword']" data-dismiss="modal"
-                ><span class="text-dark font-weight-semibold modal-dismiss"
+                        <div class="row">
+                            <p *ngIf="hasError" class="text text-danger ml-5">
+                                {{ Error }}
+                            </p>
+                        </div>
+                        <div class="d-flex flex-row-reverse text-dark">
+                            <a [routerLink]="['/forgotPassword']" data-dismiss="modal"><span class="text-dark font-weight-semibold modal-dismiss"
                   >Forgot Password?</span
                 ></a
               >
@@ -197,4 +161,4 @@
       </div>
     </div>
   </div>
-</ng-template>
+</p-dialog>

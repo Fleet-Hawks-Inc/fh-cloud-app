@@ -32,8 +32,8 @@ export class AddEmployeePaymentComponent implements OnInit {
       hours: 0,
       perHour: 0,
     },
-    fromDate: "",
-    toDate: "",
+    fromDate: null,
+    toDate: null,
     accountID: null,
     payMode: null,
     payModeNo: "",
@@ -65,6 +65,9 @@ export class AddEmployeePaymentComponent implements OnInit {
     advancePayIds: [],
     advData: [],
     transactionLog: [],
+    gstper: 0,
+    gstHstAmt: 0,
+    vendorId: ''
   };
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -76,6 +79,9 @@ export class AddEmployeePaymentComponent implements OnInit {
       payrollRateUnit: "",
       payrollRate: "",
     },
+    venAddress: [],
+    vendorName: '',
+    vendorID: ''
   };
   additionRowData = {
     eventDate: null,
@@ -135,6 +141,9 @@ export class AddEmployeePaymentComponent implements OnInit {
   provincalClaimCodes = [];
   showModal = false;
   employeesObj: any = {};
+  vendorCompanyName = '';
+  vendorAddress = '';
+  isVendor = false;
 
   subscription: Subscription;
   constructor(
@@ -214,6 +223,13 @@ export class AddEmployeePaymentComponent implements OnInit {
         .getData(`contacts/detail/${this.paymentData.entityId}`)
         .subscribe((result: any) => {
           this.empDetails = result.Items[0];
+          this.empDetails.vendorID = result.Items[0].vendor ? result.Items[0].vendor : '';
+          if(this.empDetails.vendorName) {
+            this.vendorCompanyName = this.empDetails.vendorName;
+          }
+          if(this.empDetails.venAddress && this.empDetails.venAddress.length > 0) {
+            this.vendorAddress = this.empDetails.venAddress[0];
+          }
           let paymentInfo = this.empDetails.paymentDetails;
           this.paymentData.currency = paymentInfo.payrollRateUnit
             ? paymentInfo.payrollRateUnit
@@ -237,8 +253,14 @@ export class AddEmployeePaymentComponent implements OnInit {
           }
         });
       this.fetchLastAdded();
-      this.fetchAdvancePayments();
+      this.fetchPayments();
       this.calculatePayroll();
+    }
+  }
+
+  fetchPayments() {
+    if(this.paymentData.fromDate && this.paymentData.toDate) {
+      this.fetchAdvancePayments();
     }
   }
 
@@ -430,7 +452,8 @@ export class AddEmployeePaymentComponent implements OnInit {
       this.paymentData.additionTotal -
       this.paymentData.deductionTotal;
     this.paymentData.finalTotal =
-      this.paymentData.subTotal -
+      this.paymentData.subTotal + 
+      Number(this.paymentData.gstHstAmt) -
       this.paymentData.taxes -
       this.paymentData.taxdata.cpp -
       this.paymentData.taxdata.ei -
@@ -499,7 +522,7 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.advancePayments = [];
     this.dataMessage = Constants.FETCHING_DATA;
     this.accountService
-      .getData(`advance/entity/${this.paymentData.entityId}?from=null&to=null`)
+      .getData(`advance/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}&curr=${this.paymentData.currency}`)
       .subscribe((result: any) => {
         if (result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -752,5 +775,30 @@ export class AddEmployeePaymentComponent implements OnInit {
     } else {
       this.calculateFinalTotal();
     }
+  }
+
+  issueToVendor(event) {
+    if (event.target.checked) {
+      this.isVendor = true;
+
+      this.paymentData.taxdata.ei = 0;
+      this.paymentData.taxdata.cpp = 0;
+      this.paymentData.taxes = 0;
+      this.paymentData.vacPayPer = 0
+      this.paymentData.vacPayAmount = 0;
+      this.paymentData.vendorId = this.empDetails.vendorID;
+    } else {
+      this.isVendor = false;
+      this.paymentData.gstper = 0,
+      this.paymentData.gstHstAmt = 0
+      this.paymentData.vendorId = '';
+    }
+    this.calculateFinalTotal();
+  }
+
+  calculateGstHst() {
+    this.paymentData.gstHstAmt =
+      (this.paymentData.gstper / 100) * this.paymentData.paymentTotal;
+    this.calculateFinalTotal();
   }
 }

@@ -1,193 +1,237 @@
+<style>
+    .extra {
+        display: none;
+    }
+</style>
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pt-0 pr-0 pl-1">
-      <header class="page-header pr19 pl11">
-        <form class="form-horizontal" method="get">
-          <div class="row" style="padding-top: 10px">
-            <div class="col-md-0 col-lg-0 pr-0"></div>
-            <div class="col-md-2 col-lg-2 pr-0">
-              <ng-select autofocus placeholder="Search driver by name" [notFoundText]='loadMsg'
-                (input)="getSuggestions($event.target.value)" #ngSelectComponent [clearable]="false"
-                [(ngModel)]="driverName" (change)="setDriver($event)">
-                <ng-option *ngFor="let driver of suggestedDrivers" value="{{driver.driverID}}">
-                  {{driver.fullName}}
-                </ng-option>
-              </ng-select>
-            </div>
-            <div class="col-md-2 col-lg-2 pr-0">
-              <ng-select name="driverStatus" [(ngModel)]="driverStatus" placeholder="Driver Status"
-                class="form-control form-control-sm populate">
-                <ng-option value="active">Active </ng-option>
-                <ng-option value="inActive">Inactive </ng-option>
-              </ng-select>
-            </div>
-            <div class="col-md-2 col-lg-2">
-              <button type="submit" [disabled]="isSearch" (click)="searchDriver()" class="btn btn-sm btn-success mr-3">
-                Search
-              </button>
-              <button class="btn btn-sm btn-success" [disabled]="isSearch" type="submit" (click)="resetDriver()">
-                Reset
-              </button>
-            </div>
-            <div class="col-md-6 col-lg-6 text-right pr-1">
-              <div class="btn-group flex-wrap ml-2">
-                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                  aria-expanded="false">
-                  <i class="fas fa-upload"></i> Export<span class="caret"></span>
-                </button>
-                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
-                    position: absolute;
-                    will-change: transform;
-                    top: 0px;
-                    left: 0px;
-                    transform: translate3d(0px, 38px, 0px);
-                  ">
-                  <a class="dropdown-item text-1" (click)="requiredCSV()">CSV</a>
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pt-0 pr-0 pl-1">
+            <header class="page-header flex align-items-center justify-content-start">
+                <form class="formgrid grid">
+                    <div class="row">
+                        <div class="col" style="margin-left: 20px;margin-top: 5px;">
+                            
+                             <p-autoComplete #autoComp id="autoCmpSugDriver" [placeholder]="'Search driver by name'"
+                                class="mr-2" [forceSelection]="true" emptyMessage="No data found."
+                                [(ngModel)]="driverName" [suggestions]="suggestedDrivers" [minLength]="2"
+                                (completeMethod)="getSuggestions($event.query)" (onSelect)="setDriver($event.driverID)"
+                                field="fullName"> </p-autoComplete>
+                            <p-dropdown id="drpDvrType" [style]="{minWidth: '200px'}" [options]="driverOptions"
+                                class="mr-2" placeholder="Driver Status" [(ngModel)]="driverStatus" optionLabel="name"
+                                optionValue="value">
+                            </p-dropdown>
+                            <button id="btnSearch" type="button" [disabled]="isSearch" pButton class="mr-2"
+                                icon="pi pi-search" pTooltip="Search" (click)="searchDriver()"></button>
+                            <button id="btnResetFilter" type="button" [disabled]="isSearch" pButton class="mr-2"
+                                icon="pi pi-refresh" pTooltip="Reset" (click)="resetDriver()"></button>
+                        </div>
+                        <div class="col">
+                        </div>
+                    </div>
+                </form>
+            </header>
+            <div class="col-lg-12">
+                <div class="m-1 text-dark">
+                    <div class="form-group row pt-3">
+                        <div class="col-3 mb-3">
+                            <div class="p-3 bg-white">
+                                <div>
+                                    <h4 class="m-0 text-4 font-weight-bold">Total Drivers</h4>
+                                    <h3 class="mt-1 mb-0 font-weight-bold">
+                                        {{ driversCount.total }}
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3 mb-3">
+                            <div class="p-3 bg-white">
+                                <div>
+                                    <h4 class="m-0 text-4 font-weight-bold">
+                                        Total Active Drivers
+                                    </h4>
+                                    <h3 class="mt-1 mb-0 font-weight-bold">
+                                        {{ driversCount.active }}
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3 mb-3">
+                            <div class="p-3 bg-white">
+                                <div>
+                                    <h4 class="m-0 text-4 font-weight-bold">
+                                        Total Inactive Drivers
+                                    </h4>
+                                    <h3 class="mt-1 mb-0 font-weight-bold">
+                                        {{ driversCount.inactive }}
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-        </form>
-      </header>
-      <div class="m-1">
-        <div class="row text-dark">
-          <div class="col-12 mb-1">
-            <div class="bg-white p-3 m-1 text dark">
-              <div class="row text-dark">
-                <div class="col-12">
-                  <div>
-                    <h4 class="mt-1 mb-0 font-weight-bold">Driver Summary</h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+            <section class="m-2">
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <div class="bg-white p-3 text-dark">
+                            <div class="form-group row pt-2">
+                                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
 
-          <div class="col-lg-12">
-            <div class="m-1 text-dark">
-              <div class="form-group row">
-                <div class="col-3 mb-3">
-                  <div class="p-3 bg-white">
-                    <div>
-                      <h4 class="m-0 text-4 font-weight-bold">Total Drivers</h4>
-                      <h3 class="mt-1 mb-0 font-weight-bold">
-                        {{ driversCount.total }}
-                      </h3>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-3 mb-3">
-                  <div class="p-3 bg-white">
-                    <div>
-                      <h4 class="m-0 text-4 font-weight-bold">
-                        Total Active Drivers
-                      </h4>
-                      <h3 class="mt-1 mb-0 font-weight-bold">
-                        {{ driversCount.active }}
-                      </h3>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-3 mb-3">
-                  <div class="p-3 bg-white">
-                    <div>
-                      <h4 class="m-0 text-4 font-weight-bold">
-                        Total Inactive Drivers
-                      </h4>
-                      <h3 class="mt-1 mb-0 font-weight-bold">
-                        {{ driversCount.inactive }}
-                      </h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                                    <p-table #dt [value]="drivers" [resizableColumns]="true" columnResizeMode="expand"
+                                        scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
+                                        styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                                        [scrollable]="true" [loading]="!loaded" scrollHeight="100%">
+                                        <!-- Caption template of data table -->
+                                        <ng-template pTemplate="caption">
 
-          <div class="col">
-            <div class="card">
-              <div class="card-body bor-radius0px">
-                <section class="reports_div bg-white p-3 text-dark">
-                  <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                    [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
-                    <table id="diverTbl" class="
-                        row-border
-                        hover
-                        table table-bordered table-striped
-                        mb-0
-                      ">
-                      <thead>
-                        <tr>
-                          <th id="" class="col1 minWidth200">Name</th>
-                          <th id="" class="minWidth120">Email</th>
-                          <th id="" class="minWidth120">UserName</th>
-                          <th id="" class="minwidth120">Driver Type</th>
-                          <th id="" class="minwidth120">Start Date</th>
-                          <th id="" class="col12 extra">Date of Birth</th>
-                          <th id="" class="col12 extra">Gender</th>
-                          <th id="" class="col12 extra">CDL#</th>
-                          <th id="" class="col12 extra">Licence Expiry</th>
-                          <th id="" class="col12 extra">Licence Province</th>
-                          <th id="" class="col5 extra">Phone</th>
-                          <th id="" class="col5 extra">Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngIf="drivers.length == 0" class="text-center">
-                          <td colspan="14">{{ dataMessage }}</td>
-                        </tr>
-                        <tr *ngFor="let driver of drivers; let i = index">
-                          <td class="cursorpoint">
-                            <span class="
-                                font-weight-bold
-                                line-height-lg
-                                text-capitalize
-                              ">{{ driver.firstName }}
-                              {{ driver.middleName }}
-                              {{ driver.lastName }}</span>
-                          </td>
-                          <td class="cursorpoint">{{ driver.email }}</td>
-                          <td class="cursorpoint">{{ driver.userName }}</td>
-                          <td class="cursorpoint text-capitalize">
-                            {{ driver.driverType }}
-                          </td>
-                          <td class="cursorpoint text-capitalize">
-                            {{ driver.startDate ? driver.startDate : "--" }}
-                          </td>
-                          <td class="cursorpoint">{{ driver.DOB }}</td>
-                          <td class="cursorpoint">
-                            {{ driver.gender === "M" ? "Male" : "Female" }}
-                          </td>
-                          <td class="cursorpoint">{{ driver.CDL_Number }}</td>
-                          <td class="cursorpoint">
-                            {{ driver.licenceDetails.licenceExpiry }}
-                          </td>
-                          <td class="cursorpoint">
-                            {{ driver.licenceDetails.licStateName }}
-                          </td>
-                          <td class="cursorpoint">{{ driver.phone }}</td>
-                          <td class="cursorpoint">
-                            <span class="badge badge-dark p-1 text-uppercase">{{
-                              driver.driverStatus
-                              }}</span>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <div class="row mt-3 dtPaginate" *ngIf="drivers.length > 0">
-                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && drivers.length !== 0">
-                        <button type="button" (click)="onScroll()" class="btn btn-success btn-sm text-light">
-                          Load More..
-                        </button>
-                      </div>
+                                            <div class="p-d-flex d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h3 class="m-0"> Driver Summary </h3>
+                                                </div>
+                                                <div class="text-right">
+                                                    <span>Showing {{drivers.length}} entries </span> &nbsp;
+                                                    <button type="button" pButton (click)="refreshData()"
+                                                        pTooltip="Refresh" class="p-button-outlined mr-2"
+                                                        icon="fas fa-sync"></button>
+                                                    <button pButton pRipple pTooltip="Clear Filter"
+                                                        class="p-button-outlined mr-2" icon="pi pi-filter-slash"
+                                                        (click)="clear(dt)"></button>
+
+                                                    <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                                                        icon="fas fa-regular fa-file-excel" (click)="requiredCSV()"
+                                                        pTooltip="Excel"></button>
+
+                                                    <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns"
+                                                        optionLabel="header" selectedItemsLabel="{0} columns selected"
+                                                        [style]="{minWidth: '200px'}" placeholder="Choose Columns">
+                                                    </p-multiSelect>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                        <!-- Header template of DataTable -->
+                                        <ng-template pTemplate="header" let-columns>
+                                            <tr>
+                                                <th *ngFor="let dataColumns of columns"
+                                                    [pSortableColumn]="dataColumns.field" pResizableColumn
+                                                    style="width:10%">
+
+                                                    <div [ngSwitch]="dataColumns.field" style="width:10%">
+                                                        <!-- Driver Status Filter Customization -->
+                                                        <span *ngSwitchCase="'driverStatus'">
+                                                            <div class="flex justify-content-center align-items-center"
+                                                                alignFrozen="left" pFrozenColumn [frozen]="true">
+                                                                {{dataColumns.header}}
+                                                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                                                <p-columnFilter [type]="dataColumns.type"
+                                                                    [field]="dataColumns.field" [showOperator]="false"
+                                                                    matchMode="contains" [showMatchModes]="false"
+                                                                    [showAddButton]="false" display="menu">
+                                                                    <ng-template pTemplate="filter" let-value
+                                                                        let-filter="filterCallback">
+                                                                        <p-multiSelect
+                                                                            [options]="[ { name:'Active', value:'active'}, {name: 'InActive', value:'inActive'}]"
+                                                                            placeholder="Any"
+                                                                            (onChange)="filter($event.value)"
+                                                                            optionLabel="name" optionValue="value">
+                                                                            <ng-template let-option pTemplate="item">
+                                                                                <div>
+                                                                                    <span class="ml-1">{{option.name
+                                                                                        }}</span>
+                                                                                </div>
+                                                                            </ng-template>
+                                                                        </p-multiSelect>
+                                                                    </ng-template>
+
+                                                                </p-columnFilter>
+                                                            </div>
+                                                        </span>
+
+                                                        <span *ngSwitchDefault>
+                                                            <div class="flex justify-content-center align-items-center"
+                                                                alignFrozen="right" pFrozenColumn [frozen]="true">
+                                                                {{dataColumns.header}}
+                                                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                                                <p-columnFilter [type]="dataColumns.type"
+                                                                    [field]="dataColumns.field" matchMode="contains"
+                                                                    [showMatchModes]="false" [showOperator]="false"
+                                                                    [showAddButton]="false" display="menu">
+                                                                </p-columnFilter>
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+
+                                        <!-- Body Template of Data Table -->
+                                        <ng-template pTemplate="body" let-driver let-columns="columns"
+                                            let-rowIndex="rowIndex">
+                                            <tr>
+                                                <td *ngFor="let dataColumns of columns"
+                                                    style="width:10%; height:40px; cursor: pointer;">
+                                                    <div [ngSwitch]="dataColumns.field">
+                                                      
+                                                      <span class="font-weight-bold line-height-lg text-capitalize" *ngSwitchCase="'firstName'" >
+                                                         {{ driver.firstName }}
+                                                         {{ driver.middleName }}
+                                                        {{ driver.lastName }}
+                                                      </span>
+                                                        <span *ngSwitchCase="'driverType'">
+                                                            {{driver[dataColumns.field] | titlecase}}
+                                                        </span>
+                                                         <span *ngSwitchCase="'startDate'">
+                                                            {{driver[dataColumns.field] ? driver[dataColumns.field] : "-"}}
+                                                        </span>
+                                                         <span *ngSwitchCase="'licenceExpiry'">
+                                                            {{driver[dataColumns.field] ? driver[dataColumns.field] : "-"}}
+                                                        </span>
+                                                        <span *ngSwitchCase="'licStateName'">
+                                                            {{driver[dataColumns.field] ? driver[dataColumns.field] : "-"}}
+                                                        </span>
+                                                        <span *ngSwitchCase="'driverStatus'"
+                                                            class="badge badge-dark p-1 text-uppercase">
+                                                            {{driver[dataColumns.field] | titlecase}}
+                                                        </span>
+                                                        <span *ngSwitchCase="'companyName'">
+                                                            {{driver[dataColumns.field] | uppercase}}
+                                                        </span>
+
+                                                        <span *ngSwitchDefault> {{get(driver,dataColumns.field)}}</span>
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                        <!-- Empty Template -->
+
+                                        <ng-template pTemplate="emptymessage" let-columns>
+                                            <div class="col-lg-12 mt-3 text-center">
+                                                {{dataMessage}}
+                                                <br /><br>
+                                            </div>
+                                        </ng-template>
+                                        <!-- Summary Section with Load More button -->
+
+                                        <ng-template pTemplate="summary" let-columns>
+                                            <div class="col-lg-12 mt-3 text-center "
+                                                *ngIf="lastItemSK !=='end' && drivers.length !==0 ">
+                                                <button type="button " (click)="onScroll($event) "
+                                                    class="btn btn-success btn-sm text-light ">Load
+                                                    More..</button>
+                                                <br /><br>
+                                            </div>
+                                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK ==='end'">
+                                                Total Records: {{drivers.length}}</div>
+                                        </ng-template>
+
+                                    </p-table>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                </section>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
+                </div>
+            </section>
+        </section>
+    </div>
 </section>

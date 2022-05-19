@@ -5,7 +5,7 @@ import { ApiService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
 import { ToastrService } from 'ngx-toastr';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-
+import { ListService } from '../../../../../services';
 @Component({
   selector: 'app-contact-renewals',
   templateUrl: './contact-renewals.component.html',
@@ -29,15 +29,23 @@ export class ContactRenewalsComponent implements OnInit {
     dueSoon: '',
   };
   record = []
-  data: any = []
-  constructor(private apiService: ApiService, private toastr: ToastrService) { }
+  data: any = [];
+  driversList: any = {};
+  mergedList: any = {};
+  employees = [];
+  drivers: any;
+  constructor( private listService: ListService,private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
+    this.listService.fetchDrivers();
     this.fetchallitems();
     this.fectchTasks();
     this.fetchEmployees();
     this.fetchReminderCount();
     this.fetchVehicleIDs();
+    let driverList = new Array<any>();
+    this.getValidDrivers(driverList);
+    this.drivers = driverList;
   }
   fectchTasks() {
     this.apiService.getData("tasks/get/list?type=contact").subscribe((result: any) => {
@@ -58,12 +66,36 @@ export class ContactRenewalsComponent implements OnInit {
       })
     })
   }
+ //for search with contact name
+  fetchEmployeesData() {
+    this.apiService.getData('contacts/employee/records').subscribe((res) => {
+
+      this.employees = res.Items;
+    });
+  }
   fetchEmployees() {
     this.apiService.getData('contacts/get/emp/list').subscribe((res) => {
       this.empName = res;
+      if (res) {
+        this.apiService.getData('drivers/get/list').subscribe((result) => {
+          this.driversList = result;
+          this.mergedList = { ...res, ...result }; // merge id lists to one
+        });
+      }
     });
   }
-
+ //for search with contact name
+  private getValidDrivers(driverList: any[]) {
+    let ids = [];
+    this.listService.driversList.forEach((element) => {
+      element.forEach((element2) => {
+        if (element2.isDeleted === 0 && !ids.includes(element2.driverID)) {
+          driverList.push(element2);
+          ids.push(element2.driverID);
+        }
+      });
+    });
+  }
   fetchallitems() {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`reminders/fetch/records?reminderIdentification=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&lastKey=${this.lastItemSK}&reminderType=contact`)
@@ -141,7 +173,7 @@ export class ContactRenewalsComponent implements OnInit {
       let csvArray = []
       this.data.forEach(element => {
         let obj = {}
-        obj["Contact"] = this.empName[element.entityID]
+        obj["Contact"] = this.mergedList[element.entityID]
         obj["Renewal Type"] = this.tasks[element.tasks.taskID] + " " + element.status
         obj["Send Reminder"] = element.tasks.time + " " + element.tasks.timeUnit
         obj["Expiration Date"] = element.tasks.dueDate
@@ -175,4 +207,5 @@ export class ContactRenewalsComponent implements OnInit {
       this.toastr.error("No Records found")
     }
   }
+  
 }

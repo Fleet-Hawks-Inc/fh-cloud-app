@@ -120,6 +120,8 @@ export class SettlementsDetailComponent implements OnInit {
       .getData(`settlement/detail/${this.settlementID}`)
       .subscribe((result: any) => {
         this.settlementData = result[0];
+        this.showDetailBtn = true;
+
         if (!this.settlementData.prStart && !this.settlementData.prEnd) {
           this.settlementData.prStart = this.settlementData.fromDate;
           this.settlementData.prEnd = this.settlementData.toDate;

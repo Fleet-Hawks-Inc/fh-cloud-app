@@ -35,49 +35,55 @@ export class NewAddressBookComponent implements OnInit {
   closeResult = '';
   public searchTerm = new Subject<string>();
   public searchResults: any;
-  paymentOptions=[{name:"Pay Per Mile",value:"ppm"},{name:"Percentage",value:"pp"},{name:"Pay Per Hour",value:"pph"},{name:"Pay Per Delivery",value:"ppd"}]
-  mapPayment={ppm:"Pay Per Mile",pp:"Percentage",pph:"Pay Per Hour",ppd:"Pay Per Delivery"}
-  payPerMile={
-    pType:"ppm",
-    loadedMiles:null,
-    currency:null,
-    emptyMiles:null,
-    emptyMilesTeam:null,
-    loadedMilesTeam:null,
-    default:false
+  paymentOptions = [{ name: "Pay Per Mile", value: "ppm" }, { name: "Percentage", value: "pp" }, { name: "Pay Per Hour", value: "pph" }, { name: "Pay Per Delivery", value: "ppd" }, { name: "Pay Flat Rate", value: "pfr" }]
+  mapPayment = { ppm: "Pay Per Mile", pp: "Percentage", pph: "Pay Per Hour", ppd: "Pay Per Delivery", pfr: "Pay Flat Rate" }
+  payPerMile = {
+    pType: "ppm",
+    loadedMiles: null,
+    currency: null,
+    emptyMiles: null,
+    emptyMilesTeam: null,
+    loadedMilesTeam: null,
+    default: false
   }
-  payPerHour={
-    pType:"pph",
-    rate:null,
-    currency:null,
-    waitingPay:null,
-    waitingHourAfter:null,
-    default:false
+  payPerHour = {
+    pType: "pph",
+    rate: null,
+    currency: null,
+    waitingPay: null,
+    waitingHourAfter: null,
+    default: false
   }
-  payPercentage={
-    pType:"pp",
-    loadPayPercentage:null,
-    loadPayPercentageOf:null,
-    default:false
+  payPercentage = {
+    pType: "pp",
+    loadPayPercentage: null,
+    loadPayPercentageOf: null,
+    default: false
   }
-  payPerDelivery={
-    pType:"ppd",
-    deliveryRate:null,
-    currency:null,
-    default:false
+  payPerDelivery = {
+    pType: "ppd",
+    deliveryRate: null,
+    currency: null,
+    default: false
+  }
+  payFlatRate = {
+    pType: "pfr",
+    flatRate: null,
+    currency: null,
+    default: false
   }
   units: any = [];
   filterVal = {
     cName: '',
   }
-  
-    similarVal = {
+
+  similarVal = {
     cName: '',
   }
-  
-  
-  
-  
+
+
+
+
   updateButton: boolean = false;
   suggestions = [];
   actualSuggestions = [];
@@ -91,7 +97,7 @@ export class NewAddressBookComponent implements OnInit {
   fcCompanies = [];
   owners = [];
   allData = [];
-similarSuggestions = [];
+  similarSuggestions = [];
   additionalDisabled = false;
   unitDisabled = false;
 
@@ -315,35 +321,41 @@ similarSuggestions = [];
     this.modalSubscription.unsubscribe();
   }
 
-  resetPaymentOption(){
-    this.payPerMile={
-      pType:"ppm",
-      loadedMiles:null,
-      currency:null,
-      emptyMiles:null,
-      emptyMilesTeam:null,
-      loadedMilesTeam:null,
-      default:false
+  resetPaymentOption() {
+    this.payPerMile = {
+      pType: "ppm",
+      loadedMiles: null,
+      currency: null,
+      emptyMiles: null,
+      emptyMilesTeam: null,
+      loadedMilesTeam: null,
+      default: false
     }
-    this.payPerHour={
-      pType:"pph",
-      rate:null,
-      currency:null,
-      waitingPay:null,
-      waitingHourAfter:null,
-      default:false
+    this.payPerHour = {
+      pType: "pph",
+      rate: null,
+      currency: null,
+      waitingPay: null,
+      waitingHourAfter: null,
+      default: false
     }
-    this.payPercentage={
-      pType:"pp",
-      loadPayPercentage:null,
-      loadPayPercentageOf:null,
-      default:false
+    this.payPercentage = {
+      pType: "pp",
+      loadPayPercentage: null,
+      loadPayPercentageOf: null,
+      default: false
     }
-    this.payPerDelivery={
-      pType:"ppd",
-      deliveryRate:null,
-      currency:null,
-      default:false
+    this.payPerDelivery = {
+      pType: "ppd",
+      deliveryRate: null,
+      currency: null,
+      default: false
+    }
+    this.payFlatRate = {
+      pType: "pfr",
+      flatRate: null,
+      currency: null,
+      default: false
     }
   }
   /*
@@ -389,22 +401,22 @@ similarSuggestions = [];
     if (value != '') {
       value = value.toLowerCase()
       this.apiService
-        .getData(`contacts/suggestion/${value}`)
+        .getData(`address-book/suggestion/${value}`)
         .subscribe((result) => {
-          this.suggestions = _.uniqBy(result.Items,'cName');
+          this.suggestions = _.uniqBy(result.Items, 'cName');
         });
     }
   }, 800);
-  
+
   //For Similar Company Name Suggestions
-    getSimilarNamesSuggestions = _.debounce(function (value) {
+  getSimilarNamesSuggestions = _.debounce(function (value) {
     if (value != '') {
       value = value.toLowerCase()
       this.apiService
-        .getData(`contacts/similar/cName/suggestion/${value}`)
+        .getData(`address-book/similar/cName/suggestion/${value}`)
         .subscribe((result) => {
-          this.actualSuggestions = _.uniqBy(result.Items,'cName');
-          this.similarSuggestions = _.uniqBy(result.Items,'cName');
+          this.actualSuggestions = _.uniqBy(result.Items, 'cName');
+          this.similarSuggestions = _.uniqBy(result.Items, 'cName');
         });
     }
   }, 800);
@@ -691,10 +703,11 @@ similarSuggestions = [];
               lTax: '',
               fTax: '',
               pType: 'ppm',
-              ppd:this.payPerDelivery,
-              pph:this.payPerHour,
-              ppm:this.payPerMile,
-              pp:this.payPercentage,
+              ppd: this.payPerDelivery,
+              pph: this.payPerHour,
+              ppm: this.payPerMile,
+              pp: this.payPercentage,
+              pfr: this.payFlatRate,
               // pRate: '',
               // pRCurr: null,
               // pPnt: '',
@@ -808,10 +821,11 @@ similarSuggestions = [];
               fastExp: null,
               sin: '',
               pType: 'ppm',
-              ppd:this.payPerDelivery,
-              pph:this.payPerHour,
-              ppm:this.payPerMile,
-              pp:this.payPercentage,
+              ppd: this.payPerDelivery,
+              pph: this.payPerHour,
+              ppm: this.payPerMile,
+              pp: this.payPercentage,
+              pfr: this.payFlatRate,
               // pRate: '',
               // pRCur: null,
               // pPnt: '',
@@ -1119,155 +1133,155 @@ similarSuggestions = [];
 
   async addEntry() {
     const isValid = this.validatePopUp();
-    if(isValid)
-    {
-    this.hideErrors();
-    this.unitDisabled = true;
-    for (let i = 0; i < this.unitData.adrs.length; i++) {
-      const element = this.unitData.adrs[i];
-      if (element.manual === true) {
-        let data = {
-          address1: element.add1,
-          address2: element.add2,
-          cityName: element.ctyName,
-          stateName: element.sName,
-          countryName: element.cName,
-          zipCode: element.zip
-        }
-        $('#addressErr' + i).css('display', 'none');
-        let result = await this.newGeoCode(data);
-        if (result == null) {
-          $('#addressErr' + i).css('display', 'block');
-          this.unitDisabled = false;
-          return false;
-        }
-        if (result != undefined || result != null) {
-          element.geoCords = result;
-        }
-      } else {
-        $('#addressErr' + i).css('display', 'none');
-        if (element.isSuggest != true && element.userLoc != '') {
-          $('#addressErr' + i).css('display', 'block');
-          this.unitDisabled = false;
-          return;
-        }
-      }
-      delete element.states;
-      delete element.cities;
-    }
-    await this.checkCarrierBank(this.unitData);
-    for (let j = 0; j < this.unitData.addlCnt.length; j++) {
-      const element = this.unitData.addlCnt[j];
-      element.flName = element.fName + ' ' + element.lName;
-    }
-
-    if(this.unitData.data.length>0){
-    for(let element of this.unitData.data){
-      if(element.carrierData || element.opData){
-        const el=element.carrierData?element.carrierData:element.opData
-        el.ppd.default=false
-            el.pph.default=false
-            el.ppm.default=false
-            el.pp.default=false
-        switch(el.pType){
-          case "ppd":
-          el.ppd.default=true
-          break;
-        case "pph":
-          el.pph.default=true
-          break;
-        case "pp":
-          el.pp.default=true
-          break;
-        case "ppm":
-          el.ppm.default=true
-          break;
-
-        }
-        el.paymentOption=[el.pp,el.ppd,el.pph,el.ppm]
-        delete el.pType
-        delete el.pp
-        delete el.ppd
-        delete el.pph
-        delete el.ppm
-        if(element.carrierData) element.carrierData=el
-        if(element.opData)  element.opData=el
-      }
-    }
-  }
-    // create form data instance
-    const formData = new FormData();
-    formData.append('data', JSON.stringify(this.unitData));
-    this.apiService.postData('contacts', formData, true).
-      subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          this.unitDisabled = false;
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-                this.hasError = true;
-                this.Error = 'Please see the errors';
-              },
-              error: () => {
-                this.unitDisabled = false;
-              },
-              next: () => { },
-            });
-        },
-        next: (res) => {
-          // this.response = res;
-          this.hasSuccess = true;
-          this.unitDisabled = false;
-          this.dataMessage = Constants.FETCHING_DATA;
-          this.lastKey = '';
-          this.emptyTabs();
-          this.showMainModal();
-          this.listService.fetchContactsByIDs();
-          if (this.unitData.eTypes.includes('owner_operator')) {
-            this.listService.fetchOwnerOperators();
-          } else if (this.unitData.eTypes.includes('shipper')) {
-            this.listService.fetchShippers();
-          } else if (this.unitData.eTypes.includes('receiver')) {
-            this.listService.fetchReceivers();
-          } else if (this.unitData.eTypes.includes('vendor')) {
-            this.listService.fetchVendors();
-          } else if (this.unitData.eTypes.includes('customer')) {
-            this.listService.fetchCustomers();
+    if (isValid) {
+      this.hideErrors();
+      this.unitDisabled = true;
+      for (let i = 0; i < this.unitData.adrs.length; i++) {
+        const element = this.unitData.adrs[i];
+        if (element.manual === true) {
+          let data = {
+            address1: element.add1,
+            address2: element.add2,
+            cityName: element.ctyName,
+            stateName: element.sName,
+            countryName: element.cName,
+            zipCode: element.zip
           }
-          this.toastr.success('Entry added successfully');
+          $('#addressErr' + i).css('display', 'none');
+          let result = await this.newGeoCode(data);
+          if (result == null) {
+            $('#addressErr' + i).css('display', 'block');
+            this.unitDisabled = false;
+            return false;
+          }
+          if (result != undefined || result != null) {
+            element.geoCords = result;
+          }
+        } else {
+          $('#addressErr' + i).css('display', 'none');
+          if (element.isSuggest != true && element.userLoc != '') {
+            $('#addressErr' + i).css('display', 'block');
+            this.unitDisabled = false;
+            return;
+          }
         }
-      });
+        delete element.states;
+        delete element.cities;
       }
+      await this.checkCarrierBank(this.unitData);
+      for (let j = 0; j < this.unitData.addlCnt.length; j++) {
+        const element = this.unitData.addlCnt[j];
+        element.flName = element.fName + ' ' + element.lName;
+      }
+
+      if (this.unitData.data.length > 0) {
+        for (let element of this.unitData.data) {
+          if (element.carrierData || element.opData) {
+            const el = element.carrierData ? element.carrierData : element.opData
+            el.ppd.default = false
+            el.pph.default = false
+            el.ppm.default = false
+            el.pp.default = false
+            el.pfr.default = false
+            switch (el.pType) {
+              case "ppd":
+                el.ppd.default = true
+                break;
+              case "pph":
+                el.pph.default = true
+                break;
+              case "pp":
+                el.pp.default = true
+                break;
+              case "ppm":
+                el.ppm.default = true
+                break;
+              case "pfr":
+                el.pfr.default = true
+                break;
+
+            }
+            el.paymentOption = [el.pp, el.ppd, el.pph, el.ppm, el.pfr]
+            delete el.pType
+            delete el.pp
+            delete el.ppd
+            delete el.pph
+            delete el.ppm
+            delete el.pfr
+            if (element.carrierData) element.carrierData = el
+            if (element.opData) element.opData = el
+          }
+        }
+      }
+      // create form data instance
+      const formData = new FormData();
+      formData.append('data', JSON.stringify(this.unitData));
+      this.apiService.postData('address-book', formData, true).
+        subscribe({
+          complete: () => { },
+          error: (err: any) => {
+            this.unitDisabled = false;
+            from(err.error)
+              .pipe(
+                map((val: any) => {
+                  val.message = val.message.replace(/".*"/, 'This Field');
+                  this.errors[val.context.key] = val.message;
+                })
+              )
+              .subscribe({
+                complete: () => {
+                  this.throwErrors();
+                  this.hasError = true;
+                  this.Error = 'Please see the errors';
+                },
+                error: () => {
+                  this.unitDisabled = false;
+                },
+                next: () => { },
+              });
+          },
+          next: (res) => {
+            // this.response = res;
+            this.hasSuccess = true;
+            this.unitDisabled = false;
+            this.dataMessage = Constants.FETCHING_DATA;
+            this.lastKey = '';
+            this.emptyTabs();
+            this.showMainModal();
+            this.listService.fetchContactsByIDs();
+            if (this.unitData.eTypes.includes('owner_operator')) {
+              this.listService.fetchOwnerOperators();
+            } else if (this.unitData.eTypes.includes('shipper')) {
+              this.listService.fetchShippers();
+            } else if (this.unitData.eTypes.includes('receiver')) {
+              this.listService.fetchReceivers();
+            } else if (this.unitData.eTypes.includes('vendor')) {
+              this.listService.fetchVendors();
+            } else if (this.unitData.eTypes.includes('customer')) {
+              this.listService.fetchCustomers();
+            }
+            this.toastr.success('Entry added successfully');
+          }
+        });
+    }
   }
 
 
 
-validatePopUp()
-{
- const found = this.similarSuggestions.some(a=>a.cName.toLowerCase() === this.unitData.cName.toLowerCase())
- if(found)
- {
-      if(confirm('Company name is already exists ! Are you sure want to continue?') ===  true)
-  {
-     return true;
+  validatePopUp() {
+    const found = this.similarSuggestions.some(a => a.cName.toLowerCase() === this.unitData.cName.toLowerCase())
+    if (found) {
+      if (confirm('Company name is already exists ! Are you sure want to continue?') === true) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    else {
+      return true;
+    }
   }
-  else
-  {
-   return false;
-  }
- }
- else{
- return true;
- }
-}
 
 
   showMainModal() {
@@ -1283,7 +1297,7 @@ validatePopUp()
   deactivate(id) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-        .deleteData(`contacts/delete/CONT/${id}`)
+        .deleteData(`address-book/delete/CONT/${id}`)
         .subscribe(async (result: any) => {
           this.lastKey = '';
           this.dataMessage = Constants.FETCHING_DATA;
@@ -1303,135 +1317,139 @@ validatePopUp()
   }
 
   async updateEntry() {
-   const isValid = this.validatePopUp();
-    if(isValid)
-    {
-    this.hasError = false;
-    this.hasSuccess = false;
-    this.unitDisabled = true;
-    this.hideErrors();
-    for (let i = 0; i < this.unitData.adrs.length; i++) {
-      const element = this.unitData.adrs[i];
-      if (element.manual === true) {
-        let data = {
-          address1: element.add1,
-          address2: element.add2,
-          cityName: element.ctyName,
-          stateName: element.sName,
-          countryName: element.cName,
-          zipCode: element.zip
-        }
-        $('#addressErr' + i).css('display', 'none');
-        let result = await this.newGeoCode(data);
-
-        if (result == null) {
-          $('#addressErr' + i).css('display', 'block');
-          return false;
-        }
-        if (result != undefined || result != null) {
-          element.geoCords = result;
-        }
-      } else {
-        $('#addressErr' + i).css('display', 'none');
-        if (element.isSuggest != true && element.userLoc != '') {
-          $('#addressErr' + i).css('display', 'block');
-          return;
-        }
-      }
-      delete element.states;
-      delete element.cities;
-    }
-    for (let j = 0; j < this.unitData.addlCnt.length; j++) {
-      const element = this.unitData.addlCnt[j];
-      element.flName = element.fName + ' ' + element.lName;
-    }
-    // create form data instance
-    const formData = new FormData();
-    //append photos if any
-    for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-    }
-    //append other fields
-    if(this.unitData.data.length>0){
-      for(let element of this.unitData.data){
-        if(element.carrierData || element.opData){
-          const el=element.carrierData?element.carrierData:element.opData
-          el.ppd.default=false
-            el.pph.default=false
-            el.ppm.default=false
-            el.pp.default=false
-          switch(el.pType){
-            case "ppd":
-            el.ppd.default=true
-            break;
-          case "pph":
-            el.pph.default=true
-            break;
-          case "pp":
-            el.pp.default=true
-            break;
-          case "ppm":
-            el.ppm.default=true
-            break;
-  
+    const isValid = this.validatePopUp();
+    if (isValid) {
+      this.hasError = false;
+      this.hasSuccess = false;
+      this.unitDisabled = true;
+      this.hideErrors();
+      for (let i = 0; i < this.unitData.adrs.length; i++) {
+        const element = this.unitData.adrs[i];
+        if (element.manual === true) {
+          let data = {
+            address1: element.add1,
+            address2: element.add2,
+            cityName: element.ctyName,
+            stateName: element.sName,
+            countryName: element.cName,
+            zipCode: element.zip
           }
-          el.paymentOption=[el.pp,el.ppd,el.pph,el.ppm]
-          delete el.pType
-          delete el.pp
-          delete el.ppd
-          delete el.pph
-          delete el.ppm
-          if(element.carrierData) element.carrierData=el
-          if(element.opData)  element.opData=el
+          $('#addressErr' + i).css('display', 'none');
+          let result = await this.newGeoCode(data);
+
+          if (result == null) {
+            $('#addressErr' + i).css('display', 'block');
+            return false;
+          }
+          if (result != undefined || result != null) {
+            element.geoCords = result;
+          }
+        } else {
+          $('#addressErr' + i).css('display', 'none');
+          if (element.isSuggest != true && element.userLoc != '') {
+            $('#addressErr' + i).css('display', 'block');
+            return;
+          }
+        }
+        delete element.states;
+        delete element.cities;
+      }
+      for (let j = 0; j < this.unitData.addlCnt.length; j++) {
+        const element = this.unitData.addlCnt[j];
+        element.flName = element.fName + ' ' + element.lName;
+      }
+      // create form data instance
+      const formData = new FormData();
+      //append photos if any
+      for (let i = 0; i < this.uploadedPhotos.length; i++) {
+        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      }
+      //append other fields
+      if (this.unitData.data.length > 0) {
+        for (let element of this.unitData.data) {
+          if (element.carrierData || element.opData) {
+            const el = element.carrierData ? element.carrierData : element.opData
+           if(el.ppd) el.ppd.default = false
+            if(el.pph) el.pph.default = false
+            if(el.ppm) el.ppm.default = false
+            if(el.pp) el.pp.default = false
+            if(el.pfr) el.pfr.default = false
+            switch (el.pType) {
+              case "ppd":
+                el.ppd.default = true
+                break;
+              case "pph":
+                el.pph.default = true
+                break;
+              case "pp":
+                el.pp.default = true
+                break;
+              case "ppm":
+                el.ppm.default = true
+                break;
+              case "pfr":
+                el.pfr.default = true
+                break;
+
+            }
+            el.paymentOption = [el.pp, el.ppd, el.pph, el.ppm, el.pfr]
+           if(el.pType) delete el.pType
+           if(el.pp) delete el.pp
+            if(el.ppd) delete el.ppd
+            if(el.pph) delete el.pph
+            if(el.ppm) delete el.ppm
+            if(el.pfr) delete el.pfr
+            if (element.carrierData) element.carrierData = el
+            if (element.opData) element.opData = el
+          }
         }
       }
-    }
-    formData.append('data', JSON.stringify(this.unitData));
-    this.apiService.putData('contacts', formData, true).subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        this.unitDisabled = false;
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-              this.hasError = true;
-              this.unitDisabled = false;
-              this.Error = 'Please see the errors';
-            },
-            error: () => {
-              this.unitDisabled = false;
-            },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.hasSuccess = true;
-        this.unitDisabled = false;
-        this.dataMessage = Constants.FETCHING_DATA;
-        this.emptyTabs();
-        this.listService.fetchContactsByIDs();
-        if (this.unitData.eTypes.includes('owner_operator')) {
-          this.listService.fetchOwnerOperators();
-        } else if (this.unitData.eTypes.includes('shipper')) {
-          this.listService.fetchShippers();
-        } else if (this.unitData.eTypes.includes('receiver')) {
-          this.listService.fetchReceivers();
-        } else if (this.unitData.eTypes.includes('vendor')) {
-          this.listService.fetchVendors();
-        } else if (this.unitData.eTypes.includes('customer')) {
-          this.listService.fetchCustomers();
-        }
-        this.listService.triggerModal('list');
-        this.toastr.success('Entry updated successfully');
-      },
-    });
+      formData.append('data', JSON.stringify(this.unitData));
+      this.apiService.putData('address-book', formData, true).subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          this.unitDisabled = false;
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+                this.hasError = true;
+                this.unitDisabled = false;
+                this.Error = 'Please see the errors';
+              },
+              error: () => {
+                this.unitDisabled = false;
+              },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.hasSuccess = true;
+          this.unitDisabled = false;
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.emptyTabs();
+          this.listService.fetchContactsByIDs();
+          if (this.unitData.eTypes.includes('owner_operator')) {
+            this.listService.fetchOwnerOperators();
+          } else if (this.unitData.eTypes.includes('shipper')) {
+            this.listService.fetchShippers();
+          } else if (this.unitData.eTypes.includes('receiver')) {
+            this.listService.fetchReceivers();
+          } else if (this.unitData.eTypes.includes('vendor')) {
+            this.listService.fetchVendors();
+          } else if (this.unitData.eTypes.includes('customer')) {
+            this.listService.fetchCustomers();
+          }
+          this.listService.triggerModal('list');
+          this.toastr.success('Entry updated successfully');
+        },
+      });
     }
   }
 
@@ -1466,7 +1484,7 @@ validatePopUp()
   fetchUnits() {
     this.dataMessage = Constants.FETCHING_DATA;
     if (this.lastKey !== 'end') {
-      this.apiService.getData(`contacts/fetch/records?lastKey=${this.lastKey}&updatedKey=${this.updatedKey}&companyName=` + this.filterVal.cName).subscribe(res => {
+      this.apiService.getData(`address-book/fetch/records?lastKey=${this.lastKey}&updatedKey=${this.updatedKey}&companyName=` + this.filterVal.cName).subscribe(res => {
         if (res.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
@@ -1538,7 +1556,7 @@ validatePopUp()
   }
 
   newEditUnit(item: any) {
-    this.apiService.getData(`contacts/detail/${item.contactID}`).subscribe(res => {
+    this.apiService.getData(`address-book/detail/${item.contactID}`).subscribe(res => {
       res = res.Items[0];
 
       this.unitData.eTypes = res.eTypes;
@@ -1568,45 +1586,51 @@ validatePopUp()
       }
       this.unitData.addlCnt = res.addlCnt;
       this.unitData.data = res.data;
-      console.log(this.unitData.data)
-      for(const data of this.unitData.data){
-        if(data.carrierData){
-          let newData=data.carrierData
-          for(const element of data.carrierData.paymentOption){
-            if(element.default){
-              newData.pType=element.pType
+
+      for (const data of this.unitData.data) {
+        if (data.carrierData) {
+          let newData = data.carrierData
+          for (const element of data.carrierData.paymentOption) {
+            if (element.default) {
+              newData.pType = element.pType
             }
-            if(element.pType=="ppm"){
-              newData.ppm=element
+            if (element.pType == "ppm") {
+              newData.ppm = element
             }
-            if(element.pType=="pph"){
-              newData.pph=element
+            if (element.pType == "pph") {
+              newData.pph = element
             }
-            if(element.pType=="pp"){
-              newData.pp=element
+            if (element.pType == "pp") {
+              newData.pp = element
             }
-            if(element.pType=="ppd"){
-              newData.ppd=element
+            if (element.pType == "ppd") {
+              newData.ppd = element
+            }
+            if (element.pType == "pfr") {
+              newData.pfr = element
             }
           }
         }
-        if(data.opData){
-          let newData=data.opData
-          for(const element of data.opData.paymentOption){
-            if(element.default){
-              newData.pType=element.pType
+        if (data.opData) {
+          let newData = data.opData
+          for (const element of data.opData.paymentOption) {
+            if (element.default) {
+              newData.pType = element.pType
             }
-            if(element.pType=="ppm"){
-              newData.ppm=element
+            if (element.pType == "ppm") {
+              newData.ppm = element
             }
-            if(element.pType=="pph"){
-              newData.pph=element
+            if (element.pType == "pph") {
+              newData.pph = element
             }
-            if(element.pType=="pp"){
-              newData.pp=element
+            if (element.pType == "pp") {
+              newData.pp = element
             }
-            if(element.pType=="ppd"){
-              newData.ppd=element
+            if (element.pType == "ppd") {
+              newData.ppd = element
+            }
+            if (element.pType == "pfr") {
+              newData.pfr = element
             }
           }
         }
@@ -1670,7 +1694,7 @@ validatePopUp()
   emptyEntry() {
     this.newArr = [];
     this.similarVal = {
-    cName: '',
+      cName: '',
     }
     this.unitData = {
       cName: '',

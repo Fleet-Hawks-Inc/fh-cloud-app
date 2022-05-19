@@ -72,16 +72,7 @@ export class DetailPdfComponent implements OnInit {
     paymentLinked: false,
     pendingPayment: 0,
     currency: "CAD",
-    paymentInfo: {
-      lMiles: 0,
-      lMileTeam: 0,
-      eMileTeam: 0,
-      rate: 0,
-      eMiles: 0,
-      pRate: 0,
-      dRate: 0,
-      pType: "",
-    },
+    paymentSelected:[],
     fuelIds: [],
     fuelData: [],
   };
@@ -95,7 +86,11 @@ export class DetailPdfComponent implements OnInit {
   currentUser: any = "";
   companyName: any = "";
   companyLogo = "";
-
+  paymentAbr={"ppm": "Pay Per Mile",
+  "pp":"Percentage",
+  "ppd":"Pay Per Delivery",
+  "pph":"Pay Per Hour",
+  "pfr":"Pay Flat Rate"}
   constructor(
     private listService: ListService,
     private apiService: ApiService,
@@ -388,8 +383,8 @@ export class DetailPdfComponent implements OnInit {
   }
 
   getCurrentuser = async () => {
-    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    const carrierID = this.currentUser.carrierID;
+    const carrierID = localStorage.getItem('xfhCarrierId');
+
     let result: any = await this.apiService
       .getData(`carriers/detail/${carrierID}`)
       .toPromise();

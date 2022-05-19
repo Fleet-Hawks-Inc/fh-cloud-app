@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { Component, NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
@@ -15,19 +15,36 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { ChartsModule } from "ng2-charts";
 import { unsavedChangesGuard } from "src/app/guards/unsaved-changes.guard";
 import { Injectable } from "@angular/core";
+
 import { OverviewComponent } from "./overview/overview.component";
 import { SummaryComponent } from "./summary/summary.component";
 import { DetailComponent } from "./detail/detail.component";
 import { UtilizationComponent } from "./utilization/utilization.component";
 import { InspectionComponent } from "./inspection/inspection.component";
 import { MaintenanceComponent } from "./maintenance/maintenance.component";
-import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { ActivityListComponent } from "./activity-list/activity-list.component";
 import { ActivityComponent } from "./activity/activity.component";
 import { ProvinceMilesComponent } from "./province-miles/province-miles.component";
 import { ProvinceSummaryComponent } from "./province-summary/province-summary.component";
+import { RevenueListComponent } from './revenue-list/revenue-list.component';
+import { RevenueDetailComponent } from './revenue-detail/revenue-detail.component';
 import { ExpenseListComponent } from './expense-list/expense-list.component';
 import { ExpenseComponent } from './expense/expense.component';
+
+
+import { NgxDatatableModule } from "@swimlane/ngx-datatable";
+import { GoogleMapsModule } from "@angular/google-maps";
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
+
 const routes: Routes = [
   {
     path: "overview",
@@ -62,7 +79,7 @@ const routes: Routes = [
   {
     path: "activity/:vehicleId",
     component: ActivityComponent,
-    data: { title: "Vehicle Activity Reports" },
+    data: { title: "Vehicle Activity Detail Report" },
   },
   {
     path: "activity-list",
@@ -79,9 +96,27 @@ const routes: Routes = [
     component: ProvinceSummaryComponent,
     data: { title: "Vehicle Province Summary Reports" },
   },
-  { path: 'expense-list', component: ExpenseListComponent },
-  { path: 'expense/:vehicleId', component: ExpenseComponent },
- 
+  {
+    path: "revenue-list",
+    component: RevenueListComponent,
+    data: { title: "Vehicle Revenue Reports" },
+  },
+  {
+    path: "revenue-detail/:vehicleId",
+    component: RevenueDetailComponent,
+    data: { title: "Vehicle Revenue Detail Reports" },
+  },
+  {
+    path: "expense-list",
+    component: ExpenseListComponent,
+    data: { title: "Vehicle Expense List" },
+  },
+  {
+    path: "expense/:vehicleId",
+    component: ExpenseComponent,
+    data: { title: "Vehicle Expense Detail Report" },
+  },
+
 ];
 
 /**
@@ -105,10 +140,10 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     // from internal model -> your mode
     return date
       ? date.year +
-          this.DELIMITER +
-          ("0" + date.month).slice(-2) +
-          this.DELIMITER +
-          ("0" + date.day).slice(-2)
+      this.DELIMITER +
+      ("0" + date.month).slice(-2) +
+      this.DELIMITER +
+      ("0" + date.day).slice(-2)
       : null;
   }
 }
@@ -151,6 +186,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     ActivityComponent,
     ProvinceMilesComponent,
     ProvinceSummaryComponent,
+    RevenueListComponent,
+    RevenueDetailComponent,
     ExpenseListComponent,
     ExpenseComponent,
   ],
@@ -166,6 +203,17 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgxSpinnerModule,
     ChartsModule,
     InfiniteScrollModule,
+    NgxDatatableModule,
+    GoogleMapsModule,
+    TableModule,
+    ButtonModule,
+    MultiSelectModule,
+    TooltipModule,
+    MenuModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule,
   ],
   providers: [
     unsavedChangesGuard,
@@ -173,4 +221,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
-export class ManageVehicleModule {}
+
+
+export class ManageVehicleModule { }
+
+
