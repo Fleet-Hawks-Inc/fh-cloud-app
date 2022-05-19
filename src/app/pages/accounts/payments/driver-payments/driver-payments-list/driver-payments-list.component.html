@@ -226,7 +226,10 @@
                                   <th class="text-2">Payment#</th>
                                   <th class="text-2">Date</th>
                                   <th class="text-2">
-                                    Payment Mode Information
+                                    Payment Mode
+                                  </th>
+                                  <th class="text-2">
+                                    Reference No.
                                   </th>
                                   <th class="text-2">Settlement#</th>
                                   <th class="text-2">Paid To</th>
@@ -249,6 +252,9 @@
                                   </td>
                                   <td class="cursorpoint" [routerLink]="data.url">
                                     {{ data.payMode | titlecase }}
+                                  </td>
+                                  <td class="cursorpoint" [routerLink]="data.url">
+                                    {{ data.payModeNo }}
                                   </td>
                                   <td class="cursorpoint" [routerLink]="data.url">
                                     <span *ngFor="
