@@ -1,12 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../../services';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { ApiService, HereMapService } from '../../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import { ActivatedRoute } from "@angular/router";
 import Constants from 'src/app/pages/fleet/constants';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from '../../../../../../environments/environment';
-
 import * as _ from 'lodash';
+import { HttpClient } from '@angular/common/http';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { Table } from 'primeng/table/table';
+import { DomSanitizer } from '@angular/platform-browser';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-activity',
@@ -14,6 +19,10 @@ import * as _ from 'lodash';
     styleUrls: ['./activity.component.css']
 })
 export class ActivityComponent implements OnInit {
+    @ViewChild('dt') table: Table;
+    @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
+    environment = environment.isFeatureEnabled;
+    dataMessage: string = Constants.FETCHING_DATA;
     allData: any = [];
     states: any = [];
     vehicleData = [];
@@ -25,34 +34,79 @@ export class ActivityComponent implements OnInit {
     datee = '';
     loaded = false;
     dateMinLimit = { year: 1950, month: 1, day: 1 };
-    dataMessage = Constants.FETCHING_DATA;
     date = new Date();
     exportData = [];
+    listView = true;
+    visible = true;
+    loadMsg: string = Constants.NO_LOAD_DATA;
+    isSearch = false;
+    get = _.get;
+   _selectedColumns: any[];
     futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
     public vehicleId;
-    constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute) { }
+    
+     dataColumns = [
+        { field: 'vehicle', header: 'Vehicle', type: "text" },
+        { field: 'tripNo', header: 'Trip', type: "text" },
+        { field: 'orderName', header: 'Order', type: "text" },
+         { field: 'assetName', header: 'Assets', type: "text" },
+        { field: 'driverName', header: 'Drivers', type: "text" },
+        { field: 'locType', header: 'Location', type: "text" },
+        { field: 'dateType', header: 'Date', type: "text" },
+        { field: 'usState', header: 'Province(US)', type: "text" },
+        { field: 'uMiles', header: 'US Miles', type: "text" },
+        { field: 'usiles', header: 'US(Total)', type: "text" },
+        { field: 'canState', header: 'Province(Canada)', type: "text" },
+        { field: 'caMiles', header: 'Canada Miles', type: "text" },
+        { field: 'cMiles', header: 'Canada(Total)', type: "text" },
+        { field: 'miles', header: 'Total Miles', type: "text" },
+    ];
+    
+    constructor(private apiService: ApiService,
+    private httpClient: HttpClient,
+    private toastr: ToastrService,
+    private route: ActivatedRoute,
+    private spinner: NgxSpinnerService,
+    private hereMap: HereMapService,
+    protected _sanitizer: DomSanitizer,
+    private modalService: NgbModal, ) { }
 
 
-    ngOnInit(): void {
+    async ngOnInit(): Promise<void> {
         this.end = moment().format("YYYY-MM-DD");
         this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
         this.vehicleId = this.route.snapshot.params[`vehicleId`];
         this.fetchVehicleListing();
         this.fetchVehicleName();
+        this.setToggleOptions();
     }
 
     fetchVehicleName() {
         this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
             this.vehicleData = result.Items;
+            console.log('datatotal',this.vehicleData)
         });
     }
 
-    onScroll() {
+    onScroll = async (event: any) => {
         if (this.loaded) {
             this.fetchVehicleListing();
             this.fetchVehicleName();
         }
         this.loaded = false;
+    }
+    
+    setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    
+    @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
+    
+    set selectedColumns(val: any[]) {
+        //restore original order
+        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
     }
 
   fetchVehicleListing() {
@@ -62,6 +116,7 @@ export class ActivityComponent implements OnInit {
                 if (result.Items.length === 0) {
                     this.dataMessage = Constants.NO_RECORDS_FOUND
                 }
+                
                 if (result.LastEvaluatedKey !== undefined) {
                     this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
                     this.datee = encodeURIComponent(result.Items[result.Items.length - 1].dateCreated)
@@ -81,6 +136,7 @@ export class ActivityComponent implements OnInit {
                 if (result.Items.length === 0) {
                     this.dataMessage = Constants.NO_RECORDS_FOUND
                 }
+
             });
         }
     }
@@ -124,6 +180,17 @@ export class ActivityComponent implements OnInit {
             return false;
         }
     }
+    
+     refreshData() {
+        this.end = moment().format("YYYY-MM-DD");
+        this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
+        this.allData = []
+        this.lastItemSK = '';
+        this.loaded = false;
+        this.fetchVehicleListing();
+        this.fetchVehicleName();
+        this.dataMessage = Constants.FETCHING_DATA;
+    }
 
     generateCSV() {
         if (this.exportData.length > 0) {
@@ -131,11 +198,11 @@ export class ActivityComponent implements OnInit {
             let csvArray = []
             this.exportData.forEach(element => {
                 let location = ''
-                let date = ''
-                let usMiles = ''
+                let date = '';
+                let usMiles = '';
                 let canMiles = ''
-                let usState = ''
-                let canState = ''
+                let usState = '';
+                let canState = '';
                 for (let i = 0; i < element.tripPlanning.length; i++) {
                     const element2 = element.tripPlanning[i];
                     date += `"${element2.type} :-  ${element2.date}\n\"`
@@ -176,7 +243,9 @@ export class ActivityComponent implements OnInit {
                             obj["Canada(Total)"] = element.canMiles;
                             obj["Total Miles"] = element.miles;
                             dataObject.push(obj)
+                            console.log('export',dataObject);
                 });
+                console.log('export2',dataObject);
             let headers = Object.keys(dataObject[0]).join(',')
             headers += ' \n'
             csvArray.push(headers)
@@ -201,5 +270,9 @@ export class ActivityComponent implements OnInit {
         else {
             this.toastr.error("No Records found")
         }
+    }
+    
+    clear(table: Table) {
+        table.clear();
     }
 }
