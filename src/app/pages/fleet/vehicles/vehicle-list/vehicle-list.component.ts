@@ -253,7 +253,6 @@ export class VehicleListComponent implements OnInit {
       result.data.map((v) => {
         v.url = `/fleet/vehicles/detail/${v.vehicleID}`;
       });
-      this.suggestedVehicles = [];
       if (result.nextPage !== undefined) {
         this.lastEvaluatedKey = encodeURIComponent(result.nextPage);
       }
@@ -261,6 +260,10 @@ export class VehicleListComponent implements OnInit {
         this.lastEvaluatedKey = 'end'
       }
       this.vehicles = this.vehicles.concat(result.data)
+       this.loaded = true;
+      this.isSearch = false;
+      await this.getDashCamConnection(this.vehicles);
+      await this.getDashCamStatus(this.vehicles);
       for (const iterator of this.vehicles) {
         if (iterator.driverID) {
           let driverName = this.driversList[iterator.driverID];
@@ -274,10 +277,6 @@ export class VehicleListComponent implements OnInit {
           iterator.currentStatus = 'Out Of Service';
         }
       }
-      this.loaded = true;
-      this.isSearch = false;
-      await this.getDashCamConnection(this.vehicles);
-      await this.getDashCamStatus(this.vehicles);
     }
   }
 
