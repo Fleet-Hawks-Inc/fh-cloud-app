@@ -184,11 +184,10 @@ export class VehicleListComponent implements OnInit {
     }
   }, 800);
 
-  setVehicle(vehicleIdentification: any) {
-    if (vehicleIdentification != undefined && vehicleIdentification != '') {
-      this.vehicleIdentification = vehicleIdentification;
-    }
-    this.loadMsg = Constants.NO_LOAD_DATA;
+  setVehicle(vehicleID, vehicleIdentification) {
+    this.vehicleIdentification = vehicleIdentification;
+    this.vehicleID = vehicleIdentification;
+    this.suggestedVehicles = [];
   }
 
 
