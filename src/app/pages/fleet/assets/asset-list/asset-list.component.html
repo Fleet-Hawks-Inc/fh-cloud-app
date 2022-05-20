@@ -160,6 +160,11 @@
                             <!-- Summary Section with Load More button -->
 
                             <ng-template pTemplate="summary" let-columns>
+                            <div class="col-lg-12 mt-3 text-center " *ngIf="lastEvaluatedKey !=='end' && allData.length !==0 ">
+                                    <button type="button " (click)="onScroll($event) " class="btn btn-success btn-sm text-light ">Load
+                                                    More..</button>
+                                    <br /><br>
+                                </div>
                                 <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey ==='end'">
                                     Total Records: {{allData.length}}</div>
                             </ng-template>
