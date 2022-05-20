@@ -1428,9 +1428,8 @@ export class AddServiceComponent implements OnInit {
       }
     }
     // this.serviceData.total.discountAmount = discount;
-    this.serviceData.total.finalTotal =
-      Number(this.serviceData.total.subTotal) +
-      Number(this.serviceData.total.taxes);
+    this.serviceData.total.finalTotal = (this.totalLabors + this.totalPartsPrice) + this.serviceData.total.taxes
+   
   }
 
   async fetchStateTaxes() {
