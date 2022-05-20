@@ -143,6 +143,9 @@ export class LoginComponent implements OnInit {
         let loginResponse = await Auth.signIn(this.userName, this.password);
         if (loginResponse) {
           const isActivatedUser = (await Auth.currentSession()).getIdToken().payload;
+          const jwt = (await Auth.currentSession()).getIdToken().getJwtToken();
+          const at = (await Auth.currentSession()).getAccessToken().getJwtToken();
+          var decodedToken: any = jwt_decode(jwt);
           let allow = await this.apiService.checkIfUserActive();
           await this.apiService.checkAccess()
           if (!allow) {
@@ -154,6 +157,24 @@ export class LoginComponent implements OnInit {
             return
           }
           else {
+            // check if customer subscribes any plan and if check carrier exist in our whitelist category like DOT. if not then throw an error
+            let isAuthorize = false;
+            if (decodedToken.subCustomerID && decodedToken.subCustomerID === 'NA') {
+              if (this.whiteListCarriers.includes(decodedToken.carrierID)) {
+                isAuthorize = true;
+              } else {
+                isAuthorize = false;
+              }
+            } else {
+              isAuthorize = true;
+            }
+            if (!isAuthorize) {
+              this.submitDisabled = false;
+              Auth.signOut();
+              localStorage.clear();
+              this.hasError = true;
+              this.Error = 'No valid subscriptions found. Please subscribe one of the plans or contact support@fleethawks.com';
+            }
             let carrierID = await this.apiService.getCarrierID();
             localStorage.setItem('xfhCarrierId', carrierID);
             if (isActivatedUser.userRoles != "orgAdmin") {
@@ -190,30 +211,7 @@ export class LoginComponent implements OnInit {
             }
 
           }
-
-          const jwt = (await Auth.currentSession()).getIdToken().getJwtToken();
-          const at = (await Auth.currentSession()).getAccessToken().getJwtToken()
           localStorage.setItem('congnitoAT', at);
-          var decodedToken: any = jwt_decode(jwt);
-
-          // check if customer subscribes any plan and if check carrier exist in our whitelist category like DOT. if not then throw an error
-          let isAuthorize = false;
-          if (decodedToken.subCustomerID && decodedToken.subCustomerID === 'NA') {
-            if (this.whiteListCarriers.includes(decodedToken.carrierID)) {
-              isAuthorize = true;
-            } else {
-              isAuthorize = false;
-            }
-          } else {
-            isAuthorize = true;
-          }
-          if (!isAuthorize) {
-            this.submitDisabled = false;
-            Auth.signOut();
-            localStorage.clear();
-            this.hasError = true;
-            this.Error = 'No valid subscriptions found. Please subscribe one of the plans or contact support@fleethawks.com';
-          }
           if (decodedToken.userType == 'driver') {
             this.submitDisabled = false;
             Auth.signOut();

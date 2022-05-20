@@ -49,5 +49,5 @@ export const environment = {
     apiKey: 'AIzaSyDBkpMI6T1T-z_JRSd03vZ1Q-MSetM1UwI'
   },
   VSSServerWSS: 'wss://safety-cam.fleethawks.com:36301/wss',
-  whiteListCarriers: ['1y4CwKYhlU7I5FluMq2NOCCMZv1', '21zpEs5A3MWtK9LeFEkOcsc5Szc']
+  whiteListCarriers: ['1y4CwKYhlU7I5FluMq2NOCCMZvj', '21zpEs5A3MWtK9LeFEkOcsc5Szc']
 };
