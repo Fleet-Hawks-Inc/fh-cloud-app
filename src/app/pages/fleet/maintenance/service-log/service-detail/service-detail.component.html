@@ -23,19 +23,22 @@
                      <div class="form-group row">
                         <div class="col-lg-12">
                            <div class="row cmaindiv">
-                              <div class="col-md-2 col-lg-2">
+                              <div style="width:10%">
                                  <div class="text-center p-4 cerbor">
-                                    <p class="mb-0 text-5 font-weight-bold text-dark text-capitalize">UNIT TYPE</p>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">UNIT TYPE</p>
                                     <p class="mb-0 text-5">{{
                                        logsData.unitType }}</p>
                                  </div>
                               </div>
 
-                              <div class="col-md-2 col-lg-2">
+                              <div style="width:10%">
                                  <div class="text-center p-4 cerbor" *ngIf="logsData.unitType != 'asset'">
                                     <p class="mb-0 text-5 font-weight-bold text-dark">VEHICLE</p>
                                     <p class="mb-0 text-5">{{vehiclesObject[vehicle]}}</p>
+
                                  </div>
+
+
 
                                  <div class="text-center p-4 cerbor" *ngIf="logsData.unitType == 'asset'">
                                     <p class="mb-0 text-5 font-weight-bold text-dark">ASSET</p>
@@ -43,7 +46,49 @@
                                  </div>
                               </div>
 
-                              <div class="col-md-2 col-lg-2" *ngIf="logsData.unitType != 'asset'">
+
+
+                              <div style="width:12%">
+                                 <div class="text-center p-4 cerbor" *ngIf="logsData.unitType != 'asset'">
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">VEHICLE PlATE NO.</p>
+
+                                    <p class="mb-0 text-5">{{vehiclePlateNo ? vehiclePlateNo
+                                       : '-'}}</p>
+                                 </div>
+
+
+
+                                 <div class="text-center p-4 cerbor" *ngIf="logsData.unitType == 'asset'">
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">ASSET PlATE NO.</p>
+
+                                    <p class="mb-0 text-5">{{assetPlateNo ? assetPlateNo
+                                       : '-'}}</p>
+                                 </div>
+
+                              </div>
+
+
+
+                              <div style="width:15%">
+                                 <div class=" text-center p-4 cerbor" *ngIf="logsData.unitType != 'asset'">
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">VEHICLE VIN</p>
+
+                                    <p class="mb-0 text-5">{{vehicleVIN ? vehicleVIN
+                                       : '-'}}</p>
+                                 </div>
+
+
+
+                                 <div class="text-center p-4 cerbor" *ngIf="logsData.unitType == 'asset'">
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">ASSET VIN</p>
+
+                                    <p class="mb-0 text-5">{{assetVin ? assetVin
+                                       : '-'}}</p>
+                                 </div>
+
+                              </div>
+
+                              <div style="width:12%" *ngIf="logsData.unitType != 'asset'">
                                  <div class="text-center p-4 cerbor">
                                     <p class="mb-0 text-5 font-weight-bold text-dark">ODOMETER IN MILES</p>
                                     <p class="mb-0 text-5">{{odometer ? odometer : '-'}}</p>
@@ -51,7 +96,7 @@
                               </div>
 
 
-                              <div class="col-md-2 col-lg-2">
+                              <div style="width:14%">
                                  <div class="text-center p-4 cerbor">
                                     <p class="mb-0 text-5 font-weight-bold text-dark">COMPLETION DATE</p>
                                     <p class="mb-0 text-5">{{completionDate ? (completionDate
@@ -60,7 +105,7 @@
                                  </div>
                               </div>
 
-                              <div class="col-md-2 col-lg-2">
+                              <div style="width:14%">
                                  <div class="text-center p-4 cerbor">
                                     <p class="mb-0 text-5 font-weight-bold text-dark">BILL#</p>
                                     <p class="mb-0 text-5">{{reference ? reference : '-'}}
@@ -68,9 +113,9 @@
                                  </div>
                               </div>
 
-                              <div class="col-md-2 col-lg-2">
+                              <div style="width:12%">
                                  <div class="text-center p-4">
-                                    <p class="mb-0 text-5 font-weight-bold text-dark">VENDOR</p>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">Bill To</p>
                                     <p class="mb-0 text-5">{{vendorID ?
                                        vendorsObject[vendorID] :
                                        '-'}}</p>
@@ -109,8 +154,8 @@
                                           <td colspan="2">{{noRecordMessage}}</td>
                                        </tr>
                                        <tr *ngFor="let data of issuesObject">
-                                          <td>{{ data.issueName | titlecase}}</td>
-                                          <td>{{ users[data.assignedTo] | titlecase}}</td>
+                                          <td>{{ data.issueName }}</td>
+                                          <td>{{ users[data.assignedTo] }}</td>
                                        </tr>
                                     </tbody>
                                  </table>
@@ -139,7 +184,7 @@
                                     <thead>
                                        <tr>
                                           <th width="80%">Task</th>
-                                          <th width="20%">Labor</th>
+                                          <th width="20%">Total</th>
                                        </tr>
                                     </thead>
                                     <tbody>
@@ -180,7 +225,7 @@
                                           <th width="50%">Description</th>
                                           <th width="10%">Quantity</th>
                                           <th width="10%">Rate</th>
-                                          <th width="10%">Amount</th>
+                                          <th width="10%">Total</th>
                                        </tr>
                                     </thead>
                                     <tbody>
@@ -194,6 +239,7 @@
                                           <td> {{item.rate}} {{currency}}</td>
                                           <td>{{item.partCost}} {{currency}}</td>
                                        </tr>
+
                                     </tbody>
                                  </table>
                               </div>
@@ -259,10 +305,43 @@
                </div>
             </div>
 
+            ..
+            <div class="row mb-3">
+               <div class="col-lg-12">
+                  <div class="bg-white p-3 text-dark">
+                     <div class="form-group row pt-1">
+                        <div class="col-lg-12">
 
+                           <div class="row mt-2">
+                              <div class="col-lg-12">
+                                 <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+                                    <tbody>
+                                       <tr>
+                                          <td width="50%" align="right">
+                                             <p style="font-size: 15px;" class="text-dark">
+                                                <b>Sub Total:  </b><span style="padding-right: 4.5%;">
+                                                   {{(partsSubTotal + taskTotal).toFixed(2)}}
+                                                   {{currency}}<br>
+                                                </span>
+                                                <b>Taxes:  </b>
+                                                <span style="padding-right: 9%;">{{taxes ? taxes: '-'}}<br></span>
+                                                <b>Total Amount:  </b>
+                                                <span style="padding-right:6%;"> {{finalTotal ? finalTotal :
+                                                   '-'}}</span>
+
+                                             </p>
+                                          </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
          </section>
-
-
       </section>
    </div>
 </section>
@@ -360,6 +439,22 @@
                         <span *ngIf="logsData.unitType == 'asset'" style=" font-weight: 500; color: #000000; ">Asset:-
                         </span> {{assetsObject[assetID]}}
                      </p>
+                     <p style=" font-weight: 600; margin-bottom: 4px; ">
+                        <span *ngIf="logsData.unitType != 'asset'" style=" font-weight: 500; color: #000000; ">Vehicle
+                           Plate No.:-
+                        </span> {{vehiclePlateNo}}
+                     </p>
+
+                     <p style=" font-weight: 600; margin-bottom: 4px; ">
+                        <span *ngIf="logsData.unitType == 'asset'" style=" font-weight: 500; color: #000000; ">Asset
+                           Plate No.:-
+                        </span> {{assetPlateNo}}
+                     </p>
+                     <p style=" font-weight: 600; margin-bottom: 4px; ">
+                        <span *ngIf="logsData.unitType == 'asset'" style=" font-weight: 500; color: #000000; ">Asset
+                           Vin:-
+                        </span> {{assetVin}}
+                     </p>
                   </td>
 
                   <td style="width: 45%;
@@ -371,14 +466,21 @@
                         date:'yyyy/MM/dd') : '-'}}
                      </p>
                      <p style="font-weight: 600; margin-bottom: 4px;  ">
-                        <span style="font-weight: 500; color: #000000; ">BIll#:- </span> {{reference ?
+                        <span style="font-weight: 500; color: #000000; ">Bill#:- </span> {{reference ?
                         reference : '-'}}
                      </p>
                      <p style="font-weight: 600; margin-bottom: 4px;">
-                        <span style="font-weight: 500; color: #000000; ">Vendor:- </span> {{vendorID ?
+                        <span style="font-weight: 500; color: #000000; ">Bill To:- </span> {{vendorID ?
                         vendorsObject[vendorID] :
                         '-'}}
                      </p>
+                     <p style=" font-weight: 600; margin-bottom: 4px; ">
+                        <span *ngIf="logsData.unitType != 'asset'" style=" font-weight: 500; color: #000000; ">Vehicle
+                           Vin:-
+                        </span> {{vehicleVIN}}
+                     </p>
+
+
                   </td>
 
                </tr>
@@ -447,7 +549,7 @@
                         padding-left: 10px;  padding-right: 10px;
                         padding-bottom: 10px;  padding-top: 10px
                         ">
-                     Labor
+                     Total
                   </td>
                </tr>
             </thead>
@@ -478,7 +580,7 @@
                          background-color: 	#E8E8E8;
                          border: 1px solid #999999;
                         padding-left: 10px;  padding-right: 10px;">
-                     Task
+                     Items
                   </td>
                   <td width="35%" style="font-size: 13px;
                         background-color:#E8E8E8;
@@ -486,7 +588,7 @@
                         padding-left: 10px;  padding-right: 10px;
                         padding-bottom: 10px;  padding-top: 10px
                         ">
-                     Labor
+                     Total
                   </td>
                </tr>
             </thead>
@@ -504,19 +606,93 @@
                   <td style="font-size: 13px;border-right: 1px solid #999999; padding-left: 10px; padding-right: 10px;">
                      {{data.partCost}} {{currency}}</td>
                </tr>
+
          </table>
 
          <h5 style="color:#231F20;"><b> Description</b></h5>
          <table width="100%" style="color: #000000;border: 1px solid #999999; font-size: 13px; margin-bottom: 10px;">
 
-            <tbody>
-               <td
-                  style="font-size: 13px; border-right: 1px solid #999999; padding-top: 10px; padding-left: 10px;  padding-bottom: 56px; padding-right: 10px;  height: 80px;">
-                  {{description ? description : '-'}} </td>
-            </tbody>
+            <div class="row mb-3">
+               <div class="col-lg-12">
+                  <div class="bg-white p-3 text-dark">
+                     <div class="form-group row pt-1">
+                        <div class="col-lg-12">
+                           <p>
+                              {{description ? description : '-'}}
+                           </p>
+                        </div>
+                        <div class="col-lg-4" *ngIf="logImages?.length > 0">
+                           <label
+                              class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Photos</label>
+                           <div class="row">
+                              <div class="col-lg-6 mb-2" *ngFor="let item of logImages; let i=index;">
+                                 <div class="vehicle-photo-box">
+                                    <img [src]="item.path" width="100%" class="img-fluid"
+                                       style="height: 180px; object-fit: cover;">
+                                    <!-- <iframe [src]="item" width="100px" height="100px" frameborder="0"></iframe> -->
+                                    <hr class="m-3">
+                                    <div class="row">
+                                       <div style="width:50%"> Image {{i+1}}</div>
+                                       <div class="col-lg-4 text-right">
+                                          <a href="javascript:;" (click)="delete('image',item.name, i)"
+                                             class="modal-with-form">
+                                             <i class="fas fa-times text-danger"
+                                                (click)="delete('image',item.name, i)"></i>
+                                          </a>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-4" *ngIf="logDocs?.length > 0">
+                           <label
+                              class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Documents</label>
+                           <div class="row" *ngFor="let doc of logDocs;let d= index">
+                              <div class="col-lg-9"><a href="javascript:;" href="{{ doc.path }}" data-toggle="modal"
+                                    data-target="#viewDocModal" (click)="setPDFSrc(doc.path)">Document {{d+1}}</a>
+                              </div>
+                              <div class="col-lg-3 text-right">
+                                 <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
+                                    data-target="#viewDocModal"></em>
+                                 <a href="javascript:;" (click)="delete('doc',doc.name, d)" class="modal-with-form">
+                                    <em class="fas fa-times text-danger"></em></a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
 
          </table>
 
+         <div class="row mt-2">
+            <div class="col-lg-12">
+               <table width="100%"
+                  style="color: #000000;border: 1px solid #999999; font-size: 13px; margin-bottom: 10px;">
+                  <tbody>
+                     <tr>
+                        <td width="50%" align="right">
+                           <p style="font-size: 15px;" class="text-dark">
+                              <strong>Total:  </strong> <span style="padding-right: 7%;">
+                                 {{(partsSubTotal + taskTotal).toFixed(2)}}
+                                 {{currency}}<br>
+                              </span>
+                              <strong>Taxes:  </strong>
+                              <span style="padding-right: 13%;">{{taxes ? taxes: '-'}}<br></span>
+                              <strong>Total Amount: </strong>
+                              <span style="padding-right:2%;"> {{finalTotal ? finalTotal :
+                                 '-'}}<span *ngIf='finalTotal'> {{currency}}</span></span>
+
+
+                           </p>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
          <table width="100%" style="color: #000000; font-size: 13px; margin-bottom: 10px;">
             <tr>
                <td colspan="2">&nbsp;</td>
