@@ -896,6 +896,12 @@ export class OrderDetailComponent implements OnInit {
         this.attachments.splice(index, 1);
       } else {
         this.docs.splice(index, 1);
+        const indexOfObject = this.emailDocs.findIndex((object: any) => {
+          return object.name === name;
+        });
+        if (indexOfObject !== -1) {
+          this.emailDocs.splice(indexOfObject, 1);
+        }
         this.newInvDocs.splice(index, 1);
       }
       this.toastr.success("Document deleted successfully");

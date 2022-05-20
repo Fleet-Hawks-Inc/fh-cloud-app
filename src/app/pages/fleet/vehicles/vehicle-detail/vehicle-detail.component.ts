@@ -268,8 +268,8 @@ export class VehicleDetailComponent implements OnInit {
         private modalService: NgbModal,
         private formBuilder: RxFormBuilder,
         private routerMgmtService: RouteManagementServiceService
-    ) { 
-            this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
+    ) {
+        this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
     }
 
     ngOnInit() {
@@ -419,8 +419,8 @@ export class VehicleDetailComponent implements OnInit {
                 this.manufacturerID = vehicleResult.manufacturerID;
                 this.modelID = vehicleResult.modelID;
                 this.plateNumber = vehicleResult.plateNumber;
-                this.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(vehicleResult.countryID);
-                this.stateName = await this.countryStateCity.GetStateNameFromCode(vehicleResult.stateID, vehicleResult.countryID);
+                this.countryName = vehicleResult.countryID ? await this.countryStateCity.GetSpecificCountryNameByCode(vehicleResult.countryID) : '';
+                this.stateName = vehicleResult.stateID ? await this.countryStateCity.GetStateNameFromCode(vehicleResult.stateID, vehicleResult.countryID) : '';
                 this.driverID = vehicleResult.driverID;
                 this.teamDriverID = vehicleResult.teamDriverID;
                 this.serviceProgramID = vehicleResult.servicePrograms;

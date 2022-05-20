@@ -26,6 +26,7 @@
                               <div style="width:10%">
                                  <div class="text-center p-4 cerbor">
                                     <p class="mb-0 text-5 font-weight-bold text-dark">UNIT TYPE</p>
+
                                     <p class="mb-0 text-5">{{
                                        logsData.unitType }}</p>
                                  </div>
@@ -116,6 +117,7 @@
                               <div style="width:12%">
                                  <div class="text-center p-4">
                                     <p class="mb-0 text-5 font-weight-bold text-dark">Bill To</p>
+
                                     <p class="mb-0 text-5">{{vendorID ?
                                        vendorsObject[vendorID] :
                                        '-'}}</p>
@@ -154,8 +156,8 @@
                                           <td colspan="2">{{noRecordMessage}}</td>
                                        </tr>
                                        <tr *ngFor="let data of issuesObject">
-                                          <td>{{ data.issueName }}</td>
-                                          <td>{{ users[data.assignedTo] }}</td>
+                                          <td>{{ data.issueName | titlecase}}</td>
+                                          <td>{{ users[data.assignedTo] | titlecase}}</td>
                                        </tr>
                                     </tbody>
                                  </table>

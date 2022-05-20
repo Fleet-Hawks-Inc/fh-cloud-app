@@ -51,7 +51,7 @@
                                     <p-table #dt [value]="drivers" [resizableColumns]="true" columnResizeMode="expand"
                                         scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
                                         styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                                        [scrollable]="true" [loading]="!loaded" scrollHeight="100%">
+                                        [scrollable]="true"  scrollHeight="100%">
                                         <!-- Caption template of data table -->
                                         <ng-template pTemplate="caption">
 
@@ -62,6 +62,7 @@
 
 
                                                 <div class="text-right">
+                                                    <span>Showing {{drivers.length}} entries </span> &nbsp;
                                                     <button type="button" pButton (click)="refreshData()"
                                                         pTooltip="Refresh" class="p-button-outlined mr-2"
                                                         icon="fas fa-sync"></button>

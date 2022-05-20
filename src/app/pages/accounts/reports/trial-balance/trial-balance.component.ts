@@ -266,8 +266,8 @@ export class TrialBalanceComponent implements OnInit {
                      let obj = {}
                     obj["Account Number"] = element.accountNo
                     obj["Account Name"] = element.accountName
-                    obj["Debit"] = element.debit === '0' ? '-': element.debit
-                    obj["Credit"] = element.credit === '0' ? '-': element.credit
+                    obj["Debit"] = element.debit === '0' ? '-': element.debit.toFixed(2)
+                    obj["Credit"] = element.credit === '0' ? '-': element.credit.toFixed(2)
                     dataObject.push(obj)  
                 }
                  let totObj = {
