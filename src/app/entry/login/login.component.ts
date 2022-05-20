@@ -11,6 +11,7 @@ import { map } from 'rxjs/operators'
 import { ToastrService } from 'ngx-toastr'
 import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from "./../../../environments/environment";
 declare var $: any;
 
 @Component({
@@ -62,6 +63,7 @@ export class LoginComponent implements OnInit {
   confirmPassword: any;
   signInRef: any;
   showLogin = false;
+  whiteListCarriers = environment.whiteListCarriers;
 
   constructor(private apiService: ApiService,
     private router: Router,
@@ -194,6 +196,24 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('congnitoAT', at);
           var decodedToken: any = jwt_decode(jwt);
 
+          // check if customer subscribes any plan and if check carrier exist in our whitelist category like DOT. if not then throw an error
+          let isAuthorize = false;
+          if (decodedToken.subCustomerID && decodedToken.subCustomerID === 'NA') {
+            if (this.whiteListCarriers.includes(decodedToken.carrierID)) {
+              isAuthorize = true;
+            } else {
+              isAuthorize = false;
+            }
+          } else {
+            isAuthorize = true;
+          }
+          if (!isAuthorize) {
+            this.submitDisabled = false;
+            Auth.signOut();
+            localStorage.clear();
+            this.hasError = true;
+            this.Error = 'No valid subscriptions found. Please subscribe one of the plans or contact support@fleethawks.com';
+          }
           if (decodedToken.userType == 'driver') {
             this.submitDisabled = false;
             Auth.signOut();
