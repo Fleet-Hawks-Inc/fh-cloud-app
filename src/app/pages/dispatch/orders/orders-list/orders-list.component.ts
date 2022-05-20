@@ -234,11 +234,27 @@ export class OrdersListComponent implements OnInit {
   // pickupLocData = []
   isOrderPriceEnabled = environment.isOrderPriceEnabled
   scheduler={
+    orderID:null,
+    orderNumber:null,
     name:null,
     time:null,
-    type:null,
-    range:null
+    type:{
+      daysNo:'',
+      days:[]
+    },
+    range:{
+      dateRange:{
+        to:null,
+        from:null,
+      },
+      months:[]
+    }
   }
+
+  repeatType=null;
+  range=null;
+  days=["everyday","monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
+  months=["selectAll","january","february","march","april","may","june","july","august","september","october","november","december"]
 
   constructor(
     private apiService: ApiService,
@@ -844,7 +860,9 @@ export class OrdersListComponent implements OnInit {
     table.clear();
   }
 
-  openSchedulerModal(){
+  openSchedulerModal(orderID,orderNumber){
+    this.scheduler.orderID=orderID,
+    this.scheduler.orderNumber=orderNumber
     let ngbModalOptions: NgbModalOptions = {
       keyboard: true,
       windowClass: "schedular--modal",
@@ -853,5 +871,45 @@ export class OrdersListComponent implements OnInit {
       this.schedularModal,
       ngbModalOptions
     );
+  }
+
+  onCheckboxChange(data,isChecked){
+    if(isChecked){
+      this.scheduler.type.days.push(data)
+    }
+    else{
+      const index=this.scheduler.type.days.findIndex(x=>x==data);
+      this.scheduler.type.days.splice(index,1)
+    }
+  }
+
+  onRangeCheckboxChange(value,isChecked){
+    if(isChecked){
+      this.scheduler.range.months.push(value)
+    }
+    else{
+      const index=this.scheduler.range.months.findIndex(x=>x==value);
+      this.scheduler.type.days.splice(index,1)
+    }
+  }
+
+  async saveScheduler(){
+    const schduleData={
+      orderID:this.scheduler.orderID,
+      orderNumber:this.scheduler.orderNumber,
+      sName:this.scheduler.name,
+      sType:this.scheduler.type,
+      sTime:this.scheduler.time,
+      sRange:this.scheduler.range
+    }
+    this.apiService.postData('orders/schedule',schduleData).subscribe({
+      complete:()=>{},
+      error:(err)=>{},
+      next:(res)=>{
+        this.toastr.success("Schedule added successfully");
+        this.modalService.dismissAll();
+      }
+    })
+    
   }
 }
