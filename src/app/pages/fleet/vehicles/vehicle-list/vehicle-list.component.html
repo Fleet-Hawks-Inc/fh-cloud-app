@@ -6,23 +6,44 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pl-1 pt-0 pr-0">
-            <header class="page-header flex align-items-center justify-content-start">
-                <form class="formgrid grid">
-                    <div class="row">
-                        <div class="col" style="margin-left: 20px;margin-top: 5px;">
-                            <p-autoComplete #autoComp2 id="autoCmpSugVehicle" [forceSelection]="true" [placeholder]="'Type Vehicles Name'" class="mr-2" [forceSelection]="true" emptyMessage="No data found." [(ngModel)]="vehicleIdentification" [suggestions]="suggestedVehicles" [minLength]="2"
-                                (completeMethod)="getSuggestions($event.query)" (onSelect)="setVehicle($event.vehicleIdentification)" field="vehicleIdentification">
-                            </p-autoComplete>
-                            <p-dropdown id="drpVehType" [style]="{minWidth: '200px'}" [options]="vehStatus" class="mr-2" placeholder="Select a Vehicle Status" [(ngModel)]="currentStatus" optionLabel="name" optionValue="value">
-                            </p-dropdown>
-                            <button id="btnSearch" type="submit" [disabled]="isSearch" pButton class="mr-2" icon="pi pi-search" pTooltip="Search" (click)="searchFilter()"></button>
-                            <button id="btnResetFilter" type="button" [disabled]="isSearch" pButton class="mr-2" icon="pi pi-refresh" pTooltip="Reset" (click)="resetFilter()"></button>
+            <header class="page-header pr19 pl11">
+                <form class="form-horizontal" method="get">
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-md-2 col-lg-2">
+                            <div class="input-group input-group-md mb-3">
+                                <input type="text" autocomplete="off" name="vehicleIdentification"
+                                    placeholder="Search vehicle by name" [(ngModel)]="vehicleIdentification"
+                                    class="form-control"
+                                    (input)="getSuggestions($event.target.value); changeVehicleID()" />
+                            </div>
+                            <div *ngIf="suggestedVehicles?.length > 0" class="result-suggestions">
+                                <ul class="text-capitalize">
+                                    <li *ngFor="let suggestedVehicle of suggestedVehicles" style="cursor: pointer;"
+                                        (click)="setVehicle(suggestedVehicle.vehicleID, suggestedVehicle.vehicleIdentification)">
+                                        {{ suggestedVehicle.vehicleIdentification }}</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="col">
+
+                        <div class="col-md-2 col-lg-2 pl-0 pr-2">
+                            <ng-select class="form-control bgnone populate" name="currentStatus"
+                                [(ngModel)]="currentStatus" placeholder="Select status">
+                                <ng-option value="active">Active</ng-option>
+                                <ng-option value="inActive">Inactive</ng-option>
+                                <ng-option value="outOfService">Out of Service</ng-option>
+                                <ng-option value="sold">Sold</ng-option>
+                            </ng-select>
                         </div>
-                    </div>
-                </form>
-            </header>
+
+                        <div class="col-md-2 col-lg-2 pl-2">
+                            <button type="submit" (click)="searchFilter()"
+                                class="btn btn-sm btn-success mr-3">Search</button>
+                            <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
+                        </div>
+                            
+                                </div>
+                            </form>
+                        </header>
             <section class="m-2">
                 <div class="row mb-3">
                     <div class="col-lg-12">
@@ -150,16 +171,13 @@
                                             <span *ngSwitchCase="'driverName'">
                                                             <span>
                                                                 <span
-                                                                    routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{(vehicle.driverName
-                                                                    ? vehicle.driverName : '-')
-                                                                    }}</span>
+                                                                    routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{((driversList[vehicle.driverID]) ? driversList[vehicle.driverID]: '-') | titlecase }}</span>
                                             </span>
                                             </span>
                                             <span *ngSwitchCase="'teamDriverName'">
                                                             <span>
                                                                 <span
-                                                                    routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{(vehicle.teamDriverName
-                                                                    ? vehicle.teamDriverName : '-') }}</span>
+                                                                    routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">{{((driversList[vehicle.teamDriverID]) ? driversList[vehicle.teamDriverID]: '-') | titlecase }} </span>
                                             </span>
                                             </span>
                                             <span *ngSwitchCase="'currentStatus'">
