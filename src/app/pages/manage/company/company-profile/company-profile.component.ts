@@ -260,7 +260,8 @@ export class CompanyProfileComponent implements OnInit {
           }
           if (result.subscriptions && result.subscriptions.length > 0) {
             this.subscriptions = result.subscriptions as ISubscriptionInfo[];
-            console.log(this.subscriptions);
+          } else {
+            this.subscriptions = [];
           }
         }
       });
