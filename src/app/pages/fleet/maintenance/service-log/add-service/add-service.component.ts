@@ -119,13 +119,10 @@ export class AddServiceComponent implements OnInit {
       ],
     },
     total: {
-      detailTotal: 0,
-      feeTotal: 0,
+
       subTotal: 0,
-      vendorCredit: 0,
       taxes: 0,
       finalTotal: 0,
-      discountAmount: 0
     },
     selectedIssues: [],
     location: "",
@@ -136,6 +133,7 @@ export class AddServiceComponent implements OnInit {
     uploadedPhotos: [],
     uploadedDocs: [],
     stateID: null,
+    exempt: true,
   };
 
   uploadedPhotos = [];
@@ -1406,6 +1404,7 @@ export class AddServiceComponent implements OnInit {
   allTax() {
     this.serviceData.charges.taxes.forEach((element) => {
       element.amount = (element.tax * this.serviceData.total.subTotal) / 100;
+
     });
   }
 
@@ -1418,9 +1417,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   async calculateFinalTotal() {
-    // this.serviceData.total.subTotal =
-    //   Number(this.serviceData.total.detailTotal) +
-    //   Number(this.serviceData.total.feeTotal)
+    this.serviceData.total.subTotal = this.totalLabors + this.totalPartsPrice
     this.allTax();
     let discount: number;
     if (this.serviceData.charges.discountUnit != '' && this.serviceData.charges.discountUnit != null) {
@@ -1431,10 +1428,9 @@ export class AddServiceComponent implements OnInit {
       }
     }
     // this.serviceData.total.discountAmount = discount;
-    // this.serviceData.total.finalTotal =
-    //   Number( this.serviceData.total.subTotal) -
-    //   Number(this.serviceData.total.vendorCredit) +
-    //   Number(this.serviceData.total.taxes) + Number(this.serviceData.total.discountAmount);
+    this.serviceData.total.finalTotal =
+      Number(this.serviceData.total.subTotal) +
+      Number(this.serviceData.total.taxes);
   }
 
   async fetchStateTaxes() {
@@ -1450,9 +1446,7 @@ export class AddServiceComponent implements OnInit {
     this.taxTotal();
   }
   async taxExempt() {
-    // console.log('this.order', this.orderData)
     this.serviceData.charges.taxes.map((v) => {
-      console.log('this.v', v)
       v.tax = 0;
     });
     this.serviceData.stateID = null;

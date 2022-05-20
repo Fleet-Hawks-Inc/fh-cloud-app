@@ -85,7 +85,9 @@ export class ServiceDetailComponent implements OnInit {
   assetPlateNo: any;
   assetVin: any;
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
-
+  subTotal: 0;
+  taxes: any;
+  finalTotal: any;
   constructor(
     private spinner: NgxSpinnerService,
     private apiService: ApiService,
@@ -115,7 +117,6 @@ export class ServiceDetailComponent implements OnInit {
       error: () => { },
       next: (result: any) => {
         this.logsData = result.Items[0];
-        console.log('logs---', this.logsData)
         this.fetchSelectedIssues(this.logsData.selectedIssues);
 
         result = result.Items[0];
@@ -152,6 +153,9 @@ export class ServiceDetailComponent implements OnInit {
         this.vehicleVIN = result.vehicleVin;
         this.assetPlateNo = result.assetPlateNo;
         this.assetVin = result.assetVin;
+        this.subTotal = result.total.subTotal;
+        this.taxes = result.total.taxes;
+        this.finalTotal = result.total.finalTotal
 
         /*
        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
@@ -274,7 +278,6 @@ export class ServiceDetailComponent implements OnInit {
       .getData(`carriers/${carrierID}`)
       .subscribe((result: any) => {
         this.carrier = result.Items[0];
-        // console.log('this0', this.carrier)
         this.fetchAddress(this.carrier[`addressDetails`]);
       });
   }
