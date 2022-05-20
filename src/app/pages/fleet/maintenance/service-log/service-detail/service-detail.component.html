@@ -25,24 +25,24 @@
                            <div class="row cmaindiv">
                               <div style="width:10%">
                                  <div class="text-center p-4 cerbor">
-                                    <p class="mb-0">UNIT TYPE</p>
-                                    <p class="mb-0 text-5 font-weight-bold text-dark text-capitalize">{{
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">UNIT TYPE</p>
+                                    <p class="mb-0 text-5">{{
                                        logsData.unitType }}</p>
                                  </div>
                               </div>
 
                               <div style="width:10%">
                                  <div class="text-center p-4 cerbor" *ngIf="logsData.unitType != 'asset'">
-                                    <p class="mb-0">VEHICLE</p>
-                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{vehiclesObject[vehicle]}}</p>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">VEHICLE</p>
+                                    <p class="mb-0 text-5">{{vehiclesObject[vehicle]}}</p>
 
                                  </div>
 
 
 
                                  <div class="text-center p-4 cerbor" *ngIf="logsData.unitType == 'asset'">
-                                    <p class="mb-0">ASSET</p>
-                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{assetsObject[assetID]}}</p>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">ASSET</p>
+                                    <p class="mb-0 text-5">{{assetsObject[assetID]}}</p>
                                  </div>
                               </div>
 
@@ -50,18 +50,18 @@
 
                               <div style="width:12%">
                                  <div class="text-center p-4 cerbor" *ngIf="logsData.unitType != 'asset'">
-                                    <p class="mb-0">VEHICLE PlATE NO.</p>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">VEHICLE PlATE NO.</p>
 
-                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{vehiclePlateNo ? vehiclePlateNo
+                                    <p class="mb-0 text-5">{{vehiclePlateNo ? vehiclePlateNo
                                        : '-'}}</p>
                                  </div>
 
 
 
                                  <div class="text-center p-4 cerbor" *ngIf="logsData.unitType == 'asset'">
-                                    <p class="mb-0">ASSET PlATE NO.</p>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">ASSET PlATE NO.</p>
 
-                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{assetPlateNo ? assetPlateNo
+                                    <p class="mb-0 text-5">{{assetPlateNo ? assetPlateNo
                                        : '-'}}</p>
                                  </div>
 
@@ -71,18 +71,18 @@
 
                               <div style="width:15%">
                                  <div class=" text-center p-4 cerbor" *ngIf="logsData.unitType != 'asset'">
-                                    <p class="mb-0">VEHICLE VIN</p>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">VEHICLE VIN</p>
 
-                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{vehicleVIN ? vehicleVIN
+                                    <p class="mb-0 text-5">{{vehicleVIN ? vehicleVIN
                                        : '-'}}</p>
                                  </div>
 
 
 
                                  <div class="text-center p-4 cerbor" *ngIf="logsData.unitType == 'asset'">
-                                    <p class="mb-0">ASSET VIN</p>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">ASSET VIN</p>
 
-                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{assetVin ? assetVin
+                                    <p class="mb-0 text-5">{{assetVin ? assetVin
                                        : '-'}}</p>
                                  </div>
 
@@ -90,16 +90,16 @@
 
                               <div style="width:12%" *ngIf="logsData.unitType != 'asset'">
                                  <div class="text-center p-4 cerbor">
-                                    <p class="mb-0">ODOMETER IN MILES</p>
-                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{odometer ? odometer : '-'}}</p>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">ODOMETER IN MILES</p>
+                                    <p class="mb-0 text-5">{{odometer ? odometer : '-'}}</p>
                                  </div>
                               </div>
 
 
                               <div style="width:14%">
                                  <div class="text-center p-4 cerbor">
-                                    <p class="mb-0">COMPLETION DATE</p>
-                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{completionDate ? (completionDate
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">COMPLETION DATE</p>
+                                    <p class="mb-0 text-5">{{completionDate ? (completionDate
                                        |
                                        date:'yyyy/MM/dd') : '-'}}</p>
                                  </div>
@@ -107,16 +107,16 @@
 
                               <div style="width:14%">
                                  <div class="text-center p-4 cerbor">
-                                    <p class="mb-0">BILL#</p>
-                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{reference ? reference : '-'}}
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">BILL#</p>
+                                    <p class="mb-0 text-5">{{reference ? reference : '-'}}
                                     </p>
                                  </div>
                               </div>
 
                               <div style="width:12%">
                                  <div class="text-center p-4">
-                                    <p class="mb-0">Bill To</p>
-                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{vendorID ?
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">Bill To</p>
+                                    <p class="mb-0 text-5">{{vendorID ?
                                        vendorsObject[vendorID] :
                                        '-'}}</p>
                                  </div>
