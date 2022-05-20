@@ -32,7 +32,7 @@ declare var $: any;
 })
 export class AddServiceComponent implements OnInit {
   @ViewChild('serviceaddF') serviceaddF: NgForm;
-    takeUntil$ = new Subject();
+  takeUntil$ = new Subject();
   logurl = this.apiService.AssetUrl;
   isSubmitted = false;
   groups;
@@ -94,6 +94,36 @@ export class AddServiceComponent implements OnInit {
       total: 0,
       currency: "CAD",
     },
+    charges: {
+      discountUnit: '%',
+      discount: 0,
+      taxes: [
+        {
+          name: "GST",
+          tax: 0,
+          type: "prcnt",
+          amount: 0,
+        },
+        {
+          name: "PST",
+          tax: 0,
+          type: "prcnt",
+          amount: 0,
+        },
+        {
+          name: "HST",
+          tax: 0,
+          type: "prcnt",
+          amount: 0,
+        },
+      ],
+    },
+    total: {
+
+      subTotal: 0,
+      taxes: 0,
+      finalTotal: 0,
+    },
     selectedIssues: [],
     location: "",
     geoCords: {
@@ -102,6 +132,8 @@ export class AddServiceComponent implements OnInit {
     },
     uploadedPhotos: [],
     uploadedDocs: [],
+    stateID: null,
+    exempt: true,
   };
 
   uploadedPhotos = [];
@@ -156,7 +188,7 @@ export class AddServiceComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-
+  stateTaxes = [];
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
@@ -171,16 +203,16 @@ export class AddServiceComponent implements OnInit {
     private modalService: NgbModal,
     private modalServiceOwn: ModalService,
   ) {
-    
 
 
-  
+
+
     this.selectedFileNames = new Map<any, any>();
     // localStorage.setItem('serviceLogs', JSON.stringify(this.serviceData));
   }
 
 
-  
+
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -204,7 +236,7 @@ export class AddServiceComponent implements OnInit {
     this.fetchAllTasksIDs();
     this.fetchInventoryItems();
     this.fetchInventoryQuanitity();
-
+    this.fetchStateTaxes();
     this.fetchedLocalData = JSON.parse(window.localStorage.getItem("unit"));
     if (this.fetchedLocalData) {
       if (this.fetchedLocalData.unitType === "vehicle") {
@@ -1337,5 +1369,88 @@ export class AddServiceComponent implements OnInit {
 
   getTasks() {
     this.listService.fetchTasks();
+  }
+
+  async selectProvince(stateID = undefined) {
+    if (stateID != undefined) {
+
+      let taxObj = {
+        GST: "",
+        HST: "",
+        PST: "",
+        stateCode: "",
+        stateName: "",
+        stateTaxID: "",
+      };
+      this.stateTaxes.map((v) => {
+        if (v.stateTaxID === stateID) {
+          taxObj = v;
+        }
+      });
+
+      this.serviceData.charges.taxes.map((v) => {
+        if (v.name === "GST") {
+          v.tax = Number(taxObj.GST);
+        } else if (v.name === "HST") {
+          v.tax = Number(taxObj.HST);
+        } else if (v.name === "PST") {
+          v.tax = Number(taxObj.PST);
+        }
+      });
+      this.allTax();
+      this.taxTotal();
+    }
+  }
+  allTax() {
+    this.serviceData.charges.taxes.forEach((element) => {
+      element.amount = (element.tax * this.serviceData.total.subTotal) / 100;
+
+    });
+  }
+
+  taxTotal() {
+    this.serviceData.total.taxes = 0;
+    this.serviceData.charges.taxes.forEach((element) => {
+      this.serviceData.total.taxes += Number(element.amount);
+    });
+    this.calculateFinalTotal();
+  }
+
+  async calculateFinalTotal() {
+    this.serviceData.total.subTotal = this.totalLabors + this.totalPartsPrice
+    this.allTax();
+    let discount: number;
+    if (this.serviceData.charges.discountUnit != '' && this.serviceData.charges.discountUnit != null) {
+      if (this.serviceData.charges.discountUnit === '%') {
+        discount = (this.serviceData.total.subTotal * this.serviceData.charges.discount) / 100;
+      } else {
+        discount = this.serviceData.charges.discount;
+      }
+    }
+    // this.serviceData.total.discountAmount = discount;
+    this.serviceData.total.finalTotal = (this.totalLabors + this.totalPartsPrice) + this.serviceData.total.taxes
+   
+  }
+
+  async fetchStateTaxes() {
+    let result = await this.apiService.getData("stateTaxes").toPromise();
+    this.stateTaxes = result.Items;
+  }
+  taxcalculation(index) {
+    this.serviceData.charges.taxes[index].amount =
+      (this.serviceData.charges.taxes[index].tax *
+        this.serviceData.total.subTotal) /
+      100;
+
+    this.taxTotal();
+  }
+  async taxExempt() {
+    this.serviceData.charges.taxes.map((v) => {
+      v.tax = 0;
+    });
+    this.serviceData.stateID = null;
+    this.allTax();
+    this.taxTotal();
+    this.calculateFinalTotal();
   }
 }
