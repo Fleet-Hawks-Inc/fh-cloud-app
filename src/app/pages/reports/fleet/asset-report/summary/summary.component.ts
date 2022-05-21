@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
 import { environment } from '../../../../../../environments/environment';
 import * as moment from 'moment';
 import { ToastrService } from "ngx-toastr";
 import * as _ from 'lodash';
-
+import { Table } from 'primeng/table';
 @Component({
   selector: 'app-summary',
   templateUrl: './summary.component.html',
   styleUrls: ['./summary.component.css']
 })
 export class SummaryComponent implements OnInit {
-
+  @ViewChild('dt') table: Table;
   assetType = null;
   assetID = '';
   allData = [];
@@ -27,14 +27,45 @@ export class SummaryComponent implements OnInit {
   lastEvaluatedKey = ''
   loaded = false;
   data = [];
-
   suggestedAssets = [];
+  _selectedColumns: any[];
+  dataColumns: any[];
+  get = _.get;
+  find = _.find;
+
+
+
+
   constructor(private apiService: ApiService, private toastr: ToastrService) {
 
   }
   ngOnInit() {
     this.fetchAssetCount();
     this.fetchAssetsList();
+    this.dataColumns = [
+      { width: '17%', field: 'assetIdentification', header: 'Asset Name/Number', type: "text", },
+      { width: '15%', field: 'VIN', header: 'VIN', type: "text" },
+      { width: '15%', field: 'assetType', header: 'Asset Type', type: "text" },
+      { width: '13%', field: 'assetDetails.manufacturer', header: 'Make', type: 'text' },
+      { width: '12%', field: '-', header: 'Last Location', type: 'text' },
+      { width: '15%', field: 'assetDetails.licencePlateNumber', header: 'License Plate Number', type: "text" },
+      { width: '13%', field: 'currentStatus', header: 'Status', type: 'text' },
+    ]
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
   }
 
   fetchAssetCount() {
@@ -43,7 +74,7 @@ export class SummaryComponent implements OnInit {
     })
   }
 
-  onScroll() {
+  onScroll(event: any) {
     if (this.loaded) {
       this.fetchAssetsList();
     }
@@ -85,13 +116,13 @@ export class SummaryComponent implements OnInit {
           else {
             this.lastItemSK = 'end';
           }
-         this.allData = this.allData.concat(result.Items);
-        /*
-          result[`Items`].map((v: any) => {
-            v.assetType = v.assetType.replace("_", " ")
-            this.allData.push(v)
-          });
-          */
+          this.allData = this.allData.concat(result.Items);
+          /*
+            result[`Items`].map((v: any) => {
+              v.assetType = v.assetType.replace("_", " ")
+              this.allData.push(v)
+            });
+            */
           this.loaded = true;
         }
       });
@@ -143,7 +174,15 @@ export class SummaryComponent implements OnInit {
       this.fetchExportfullList()
     }
   }
-
+  refreshData() {
+    this.assetID = '';
+    this.assetIdentification = '';
+    this.assetType = '';
+    this.allData = [];
+    this.lastItemSK = '';
+    this.fetchAssetsList();
+    this.dataMessage = Constants.FETCHING_DATA;
+  }
   generateCSV() {
     if (this.data.length > 0) {
       let dataObject = []
@@ -181,5 +220,8 @@ export class SummaryComponent implements OnInit {
     else {
       this.toastr.error("No Records found")
     }
+  }
+  clear(table: Table) {
+    table.clear();
   }
 }

@@ -86,6 +86,7 @@ export class AddUserComponent implements OnInit {
         userLoginData: {
             userName: '',
             userRoles: [],
+            subRoles: [],
             password: '',
             confirmPassword: ''
         }
@@ -415,9 +416,6 @@ export class AddUserComponent implements OnInit {
         this.hasSuccess = false;
         this.hideErrors();
         // this.spinner.show();
-        if (this.subRole.length > 0) {
-            this.userData.userLoginData.userRoles = this.userData.userLoginData.userRoles.concat(this.subRole)
-        }
         for (let i = 0; i < this.userData.adrs.length; i++) {
             const element = this.userData.adrs[i];
             delete element.states;
@@ -571,6 +569,7 @@ export class AddUserComponent implements OnInit {
                 userLoginData: {
                     userName: result.userLoginData.userName,
                     userRoles: result.userLoginData.userRoles,
+                    subRoles: result.userLoginData.subRoles,
                     password: '',
                     confirmPassword: ''
                 }
@@ -661,9 +660,6 @@ export class AddUserComponent implements OnInit {
         this.hasSuccess = false;
         this.hideErrors();
         // this.spinner.show();
-        if (this.subRole.length > 0) {
-            this.userData.userLoginData.userRoles = this.userData.userLoginData.userRoles.concat(this.subRole)
-        }
         this.userData[`contactID`] = this.contactID;
         this.userData[`deletedUploads`] = this.deletedUploads;
         if (this.userData.loginEnabled === false) {
