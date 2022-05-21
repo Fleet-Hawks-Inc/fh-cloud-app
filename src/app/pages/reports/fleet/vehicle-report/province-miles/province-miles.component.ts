@@ -1,8 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../../services';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { ApiService, HereMapService} from '../../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
+import { ActivatedRoute } from "@angular/router";
 import Constants from 'src/app/pages/fleet/constants';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { environment } from '../../../../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { Table } from 'primeng/table/table';
+import { Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import * as _ from 'lodash';
 @Component({
@@ -11,6 +20,9 @@ import * as _ from 'lodash';
   styleUrls: ['./province-miles.component.css']
 })
 export class ProvinceMilesComponent implements OnInit {
+  @ViewChild('dt') table: Table;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
+  environment = environment.isFeatureEnabled;
   allData: any = [];
   docCountries = [];
   states = [];
@@ -31,12 +43,44 @@ export class ProvinceMilesComponent implements OnInit {
   suggestedVehicles = [];
   vehicleIdentification = '';
   vehicleId = '';
-  constructor(private apiService: ApiService, private toastr: ToastrService, private countryStateCity: CountryStateCityService,) { }
-  ngOnInit(): void {
-
+  loadMsg: string = Constants.NO_LOAD_DATA;
+  isSearch = false;
+  get = _.get;
+  _selectedColumns: any[];
+  listView = true;
+  visible = true;
+  
+  dataColumns = [
+        { field: 'vehicle', header: 'Vehicle', type: "text" },
+        { field: 'tripNo', header: 'Trip', type: "text" },
+        { field: 'orderName', header: 'Order', type: "text" },
+        { field: 'dateType', header: 'Date', type: "text" },
+        { field: 'usState', header: 'Province(US)', type: "text" },
+        { field: 'uMiles', header: 'US Province Miles', type: "text" },
+        { field: 'canState', header: 'Province(Canada)', type: "text" },
+        { field: 'caMiles', header: 'Canada Province Miles', type: "text" },
+        { field: 'cMiles', header: 'Canada Total Miles', type: "text" },
+        { field: 'usiles', header: 'US Total Miles', type: "text" },
+        { field: 'miles', header: 'Trip Miles', type: "text" },
+        { field: 'newStatus', header: 'Trip Status', type: "text" },
+    ];
+  
+  constructor(private apiService: ApiService, 
+  private toastr: ToastrService, 
+  private countryStateCity: CountryStateCityService,
+  private hereMap: HereMapService,
+  protected _sanitizer: DomSanitizer,
+  private modalService: NgbModal,
+  private route: ActivatedRoute,
+  private spinner: NgxSpinnerService,
+  private httpClient: HttpClient,) { }
+  
+  
+  async ngOnInit(): Promise<void> {
     this.end = moment().format("YYYY-MM-DD");
     this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
     this.fetchProvinceMilesData();
+    this.setToggleOptions();
   }
   // async fetchStates(countryCode: any) {
   //   this.states = await this.countryStateCity.GetStatesByCountryCode([
@@ -131,7 +175,7 @@ export class ProvinceMilesComponent implements OnInit {
     }
   }
 
-  onScroll() {
+  onScroll= async (event: any) => {
     if (this.loaded) {
       this.fetchProvinceMilesData();
     }
@@ -166,6 +210,31 @@ export class ProvinceMilesComponent implements OnInit {
       return false;
     }
   }
+  
+   refreshData() {
+        this.end = moment().format("YYYY-MM-DD");
+        this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
+        this.allData = []
+        this.lastItemSK = '';
+        this.loaded = false;
+        this.fetchProvinceMilesData();
+        this.dataMessage = Constants.FETCHING_DATA;
+    }
+  
+   setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    
+    @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
+    
+    set selectedColumns(val: any[]) {
+        //restore original order
+        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+    }
+    
+    
   reset() {
     if (this.vehicleIdentification !== '') {
       this.vehicleId = '';
@@ -292,4 +361,9 @@ export class ProvinceMilesComponent implements OnInit {
       this.toastr.error("No Records found")
     }
   }
+  
+  
+  clear(table: Table) {
+        table.clear();
+    }
 }
