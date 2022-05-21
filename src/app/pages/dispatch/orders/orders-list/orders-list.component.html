@@ -101,7 +101,7 @@
                       <h3 class="m-0"> Orders </h3>
                     </div>
                     <div class="text-right">
-                      <span>Showing {{orders.length}} enteries</span> &nbsp;
+                      <span>Showing {{orders.length}} entries</span> &nbsp;
                       <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
                         class="p-button-outlined mr-2" icon="fas fa-sync"></button>
 
@@ -120,7 +120,7 @@
                 <ng-template pTemplate="header" let-columns>
                   <tr>
 
-                    <th style="width: 5%" alignFrozen="left" pFrozenColumn [frozen]="true"></th>
+                    <th style="width: 3%" alignFrozen="left" pFrozenColumn [frozen]="true"></th>
                     <th *ngFor="let column of dataColumns" [pSortableColumn]="column.field" pResizableColumn
                       [ngStyle]="{'width': column.width}">
                       <span>
@@ -136,7 +136,7 @@
                       </span>
 
                     </th>
-                    <th style="width: 8%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
+                    <th style="width: 6%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
                   </tr>
 
                 </ng-template>
@@ -144,7 +144,7 @@
                   let-expanded="expanded">
                   <tr style="cursor: pointer;">
 
-                    <td alignFrozen="left" pFrozenColumn [frozen]="true" style="width:5%">
+                    <td alignFrozen="left" pFrozenColumn [frozen]="true" style="width:3%">
                       <button type="button" pButton [pRowToggler]="order"
                         class="p-button-text p-button-rounded p-button-plain"
                         [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
@@ -224,7 +224,7 @@
                       [ngStyle]="{'width': find(columns,{field:'newStatus'}).width}">
                       <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
                     </td>
-                    <td style="width:8%;overflow: inherit !important; " pFrozenColumn alignFrozen="right"
+                    <td style="width:6%;overflow: inherit !important; " pFrozenColumn alignFrozen="right"
                       [frozen]="true">
                       <div class="dropdown dropright" style="z-index: 1000">
                         <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{rowIndex

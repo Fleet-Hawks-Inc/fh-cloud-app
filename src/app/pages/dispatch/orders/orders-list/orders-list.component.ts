@@ -245,13 +245,13 @@ export class OrdersListComponent implements OnInit {
   async ngOnInit() {
     this.initDataTable();
     this.dataColumns = [
-      { width: '7%', field: 'orderNumber', header: 'Order#', type: "text", },
+      { width: '8%', field: 'orderNumber', header: 'Order#', type: "text", },
       { width: '7%', field: 'orderMode', header: 'Type', type: "text" },
-      { width: '6%', field: 'createdDate', header: 'Date', type: "text" },
-      { width: '12%', field: 'customerName', header: 'Customer', type: 'text' },
-      { width: '11%', field: 'cusConfirmation', header: 'Cust Confirmation', type: 'text' },
-      { width: '8%', field: 'shipperName', header: 'Shipper', type: "text" },
-      { width: '8%', field: 'receiverName', header: 'Receiver', type: 'text' },
+      { width: '8%', field: 'createdDate', header: 'Date', type: "text" },
+      { width: '10%', field: 'customerName', header: 'Customer', type: 'text' },
+      { width: '9%', field: 'cusConfirmation', header: 'Confirmation', type: 'text' },
+      { width: '9%', field: 'shipperName', header: 'Shipper', type: "text" },
+      { width: '9%', field: 'receiverName', header: 'Receiver', type: 'text' },
       { width: '8%', field: 'amount', header: 'Amount', type: 'text' },
       { width: '7%', field: 'invoiceData', header: 'Invoice ', type: 'text' },
       { width: '7%', field: 'paymentData', header: 'Payment ', type: 'text' },
@@ -383,10 +383,10 @@ export class OrdersListComponent implements OnInit {
               res.customerData = ''
               for (let shipArr of res.shippersReceiversInfo) {
                 for (let ship of shipArr.shippers) {
-                res.shipperName = ship.shiperName
+                  res.shipperName = ship.shiperName
 
                   for (let receiver of shipArr.receivers) {
-                   res.receiverName = receiver.receiverName
+                    res.receiverName = receiver.receiverName
 
                   }
                 }
@@ -394,13 +394,13 @@ export class OrdersListComponent implements OnInit {
               }
               res.amount = res.charges.freightFee.currency + " " + res.totalAmount;
               if (res.invoicedTime) {
-                res.invoiceData =  'Invoiced'
+                res.invoiceData = 'Invoiced'
               }
               else if (!res.invoicedTime) {
-                res.invoiceData =  'Pending'
+                res.invoiceData = 'Pending'
               }
               if (res.invStatus) {
-                res.paymentData =   res.invStatus.replace('_', ' ')
+                res.paymentData = res.invStatus.replace('_', ' ')
               }
               else if (!res.invStatus) {
                 res.paymentData = 'NA'

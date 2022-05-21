@@ -101,8 +101,8 @@ export class VehicleListComponent implements OnInit {
     { width: '5%', field: 'year', header: 'Year', type: "text" },
     { width: '9%', field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
     { width: '7%', field: 'ownership', header: 'Ownership', type: "text" },
-    { width: '8%', field: 'driverList.driverID', header: 'Driver Assigned', type: 'text' },
-    { width: '10%', field: 'driverList.teamDriverID', header: 'Team Driver Assigned', type: 'text' },
+    { width: '8%', field: 'driverName', header: 'Driver Assigned', type: 'text' },
+    { width: '10%', field: 'teamDriverName', header: 'Team Driver Assigned', type: 'text' },
     { width: '7%', field: 'plateNumber', header: 'Plate Number', type: "text" },
     { width: '6%', field: 'dashCamSerNo', header: 'DashCam', type: "text" },
     { width: '5%', field: 'currentStatus', header: 'Status', type: 'text' },
@@ -184,11 +184,10 @@ export class VehicleListComponent implements OnInit {
     }
   }, 800);
 
-  setVehicle(vehicleIdentification: any) {
-    if (vehicleIdentification != undefined && vehicleIdentification != '') {
-      this.vehicleIdentification = vehicleIdentification;
-    }
-    this.loadMsg = Constants.NO_LOAD_DATA;
+  setVehicle(vehicleID, vehicleIdentification) {
+    this.vehicleIdentification = vehicleIdentification;
+    this.vehicleID = vehicleIdentification;
+    this.suggestedVehicles = [];
   }
 
 
@@ -253,7 +252,6 @@ export class VehicleListComponent implements OnInit {
       result.data.map((v) => {
         v.url = `/fleet/vehicles/detail/${v.vehicleID}`;
       });
-      this.suggestedVehicles = [];
       if (result.nextPage !== undefined) {
         this.lastEvaluatedKey = encodeURIComponent(result.nextPage);
       }
@@ -261,10 +259,23 @@ export class VehicleListComponent implements OnInit {
         this.lastEvaluatedKey = 'end'
       }
       this.vehicles = this.vehicles.concat(result.data)
-      this.loaded = true;
+       this.loaded = true;
       this.isSearch = false;
       await this.getDashCamConnection(this.vehicles);
       await this.getDashCamStatus(this.vehicles);
+      for (const iterator of this.vehicles) {
+        if (iterator.driverID) {
+          let driverName = this.driversList[iterator.driverID];
+          iterator.driverName = driverName.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+        }
+        if (iterator.teamDriverID) {
+          let driverName = this.driversList[iterator.teamDriverID];
+          iterator.teamDriverName = driverName.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+        }
+        if (iterator.currentStatus === 'outOfService') {
+          iterator.currentStatus = 'Out Of Service';
+        }
+      }
     }
   }
 

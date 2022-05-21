@@ -125,6 +125,7 @@
                           <th class="text-2">Payment#</th>
                           <th class="text-2">Date</th>
                           <th class="text-2">Payment Mode</th>
+                          <th class="text-2">Reference No.</th>
                           <th class="text-2">Vendor</th>
                           <th class="text-2">Amount</th>
                           <!-- <th class="text-2">Action</th> -->
@@ -148,6 +149,9 @@
                           </td>
                           <td class="cursorpoint" [routerLink]="data.url">
                             {{ data.payMode | titlecase }}
+                          </td>
+                          <td class="cursorpoint" [routerLink]="data.url">
+                            {{ data.payModeNo }}
                           </td>
                           <td class="cursorpoint" [routerLink]="data.url">
                             {{ employees[data.entityId] }}

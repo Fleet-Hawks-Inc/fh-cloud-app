@@ -36,6 +36,14 @@ export class SummaryComponent implements OnInit {
         usd_amount: 0,
         l_quantity: 0,
         g_quantity: 0,
+        des_quantityLTR: 0,
+        des_quantityGL: 0,
+        def_quantityLTR: 0,
+        def_quantityGL: 0,
+        gas_quantityLTR: 0,
+        gas_quantityGL: 0,
+        prop_quantityLTR: 0,
+        prop_quantityGL: 0,
     }
     vehicleSet = []
     assetsSet = []
@@ -61,14 +69,41 @@ export class SummaryComponent implements OnInit {
     searchActive = false;
     finalFuelRunningCAD = 0;
     finalFuelRunningUSD = 0;
-    finalFuelConsumedLTR = 0;
-    finalFuelConsumedGL = 0;
+    
+    
+    
     emptyVariable = [];
-    fuelQtyLitres = [];
-    fuelQtyGallons = [];
+    fuelQtyLitres:any = [];
+    fuelQtyGallons:any = [];
     fuelQty = [];
     emptyObject = [];
+    
+    
+//Seprate For Disel,Propane,Gasoline,DEF    
+fuelConsumeDis_LTR = 0;
+fuelConsumeDis_GL = 0;
 
+fuelConsumeProp_LTR = 0;
+fuelConsumeProp_GL = 0;
+
+fuelConsumeGas_LTR = 0;
+fuelConsumeGas_GL = 0;
+
+fuelConsumeDEF_LTR = 0;
+fuelConsumeDEF_GL = 0;
+
+//Final Fuel Running Total
+disel_ConsumedLTR = 0;
+disel_ConsumedGL = 0;
+
+propane_ConsumedLTR = 0;
+propane_ConsumedGL = 0;
+
+gas_ConsumedLTR = 0;
+gas_ConsumedGL = 0;
+
+def_ConsumedLTR = 0;
+def_ConsumedGL = 0;
 
 
     constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
@@ -116,8 +151,18 @@ export class SummaryComponent implements OnInit {
             this.fuelCount = result;
             this.finalFuelRunningCAD = this.fuelCount.cad_amount;
             this.finalFuelRunningUSD = this.fuelCount.usd_amount;
-            this.finalFuelConsumedLTR = this.fuelCount.l_quantity;
-            this.finalFuelConsumedGL = this.fuelCount.g_quantity;
+            
+            this.disel_ConsumedLTR = this.fuelCount.des_quantityLTR;
+            this.disel_ConsumedGL = this.fuelCount.des_quantityGL;
+            
+            this.propane_ConsumedLTR = this.fuelCount.prop_quantityLTR;
+            this.propane_ConsumedGL = this.fuelCount.prop_quantityGL;
+            
+            this.gas_ConsumedLTR = this.fuelCount.gas_quantityLTR;
+            this.gas_ConsumedGL = this.fuelCount.gas_quantityGL;
+            
+            this.def_ConsumedLTR = this.fuelCount.def_quantityLTR;
+            this.def_ConsumedGL = this.fuelCount.def_quantityGL;
         })
     }
 
@@ -139,9 +184,9 @@ export class SummaryComponent implements OnInit {
                     this.lastItemSK = 'end';
                 }
                 result[`Items`].forEach(element => {
-                    let date: any = moment(element.data.date)
-                    if (element.data.time) {
-                        let time = moment(element.data.time, 'h mm a')
+                let date: any = moment(element.date)
+                    if (element.time) {
+                        let time = moment(element.time, 'h mm a')
                         date.set({
                             hour: time.get('hour'),
                             minute: time.get('minute')
@@ -162,8 +207,18 @@ export class SummaryComponent implements OnInit {
                 }
                 if (this.searchActive === true) {
                     this.calculateQTY();
-                    this.finalFuelConsumedLTR = this.fuelConsumeLTR;
-                    this.finalFuelConsumedGL = this.fuelConsumeGL;
+                    
+                    this.disel_ConsumedLTR = this.fuelConsumeDis_LTR;
+                    this.disel_ConsumedGL = this.fuelConsumeDis_GL;
+                    
+                    this.propane_ConsumedLTR = this.fuelConsumeProp_LTR;
+                    this.propane_ConsumedGL = this.fuelConsumeProp_GL;
+                    
+                    this.gas_ConsumedLTR = this.fuelConsumeGas_LTR;
+                    this.gas_ConsumedGL = this.fuelConsumeGas_GL;
+                    
+                    this.def_ConsumedLTR = this.fuelConsumeDEF_LTR;
+                    this.def_ConsumedGL = this.fuelConsumeDEF_GL;
                 }
             }
         }
@@ -194,6 +249,63 @@ export class SummaryComponent implements OnInit {
     }
 
 
+
+    calculateQTY() {
+        this.fuelQtyLitres = [];
+        this.fuelQtyGallons = [];
+        this.fuelQty = []
+        for (let i = 0; i < this.fuelList.length; i++) {
+            this.fuelQty.push(this.fuelList[i].data)
+        }
+        this.fuelQty.map((x: any) => {
+            if (x.uom === 'L' || x.uom === 'litre') {
+                this.fuelQtyLitres.push(x);
+            } else {
+                this.fuelQtyGallons.push(x);
+            }
+        })
+        if(this.fuelQtyLitres.length > 0 || this.fuelQtyGallons.length > 0){
+        
+        for(const element of this.fuelQtyLitres){
+        if(element.type === 'Diesel'){
+        this.fuelConsumeDis_LTR = this.fuelConsumeDis_LTR + Number(element.qty);
+        }
+        if(element.type === 'DEF'){
+        this.fuelConsumeDEF_LTR = this.fuelConsumeDEF_LTR + Number(element.qty);
+        console.log(this.fuelConsumeDEF_LTR)
+        }
+        if(element.type === 'Gasoline'){
+        this.fuelConsumeGas_LTR = this.fuelConsumeGas_LTR + Number(element.qty);
+        }
+        if(element.type === 'Propane'){
+        this.fuelConsumeProp_LTR = this.fuelConsumeProp_LTR + Number(element.qty);
+        }
+        }
+        
+        
+        for(const element of this.fuelQtyGallons){
+        if(element.type === 'Diesel'){
+        this.fuelConsumeDis_GL = this.fuelConsumeDis_GL + Number(element.qty);
+        }
+        
+        if(element.type === 'DEF'){
+        this.fuelConsumeDEF_GL = this.fuelConsumeDEF_GL + Number(element.qty);
+        }
+        
+        if(element.type === 'Gasoline'){
+        this.fuelConsumeGas_GL = this.fuelConsumeGas_GL + Number(element.qty);
+        }
+        
+        if(element.type === 'Propane'){
+        this.fuelConsumeProp_GL = this.fuelConsumeProp_GL + Number(element.qty);
+        }
+        }
+        }
+    }
+
+
+
+/*
     calculateQTY() {
         this.fuelQtyLitres = [];
         this.fuelQtyGallons = [];
@@ -215,10 +327,21 @@ export class SummaryComponent implements OnInit {
             for (const element of this.fuelQtyGallons) {
                 this.fuelConsumeGL = this.fuelConsumeGL + Number(element.qty);
             }
+            for (const element of this.fuelQtyLitres) {
+            if(element.type === 'Disel'){
+            this.fuelConsumeDis_LTR = this.fuelConsumeDis_LTR + Number(element.qty);
+            console.log('Disel LTR',this.fuelConsumeDis_LTR)
+            }
+            }
+            for (const element of this.fuelQtyGallons) {
+            if(element.type === 'Disel'){
+            this.fuelConsumeDis_GL = this.fuelConsumeDis_GL + Number(element.qty);
+            console.log('Disel GL',this.fuelConsumeDis_GL)
+            }
+            }
         }
     }
-
-
+*/
 
     onScroll() {
         if (this.loaded === true) {
@@ -253,8 +376,21 @@ export class SummaryComponent implements OnInit {
                 this.searchActive = true;
                 this.finalFuelRunningCAD = 0;
                 this.finalFuelRunningUSD = 0;
-                this.finalFuelConsumedLTR = 0;
-                this.finalFuelConsumedGL = 0;
+                //this.finalFuelConsumedLTR = 0;
+                //this.finalFuelConsumedGL = 0;
+                
+                this.disel_ConsumedLTR = 0;
+                this.disel_ConsumedGL = 0;
+                
+                this.gas_ConsumedLTR = 0;
+                this.gas_ConsumedGL = 0;
+                
+                this.propane_ConsumedLTR = 0;
+                this.propane_ConsumedGL = 0;
+                
+                this.def_ConsumedLTR = 0;
+                this.def_ConsumedGL = 0;
+                
                 this.fuelConsumeLTR = 0;
                 this.fuelConsumeGL = 0;
                 this.fuelCostCAD = 0;
@@ -292,12 +428,26 @@ export class SummaryComponent implements OnInit {
             this.fuelQtyGallons = [];
             this.finalFuelRunningCAD = 0;
             this.finalFuelRunningUSD = 0;
-            this.finalFuelConsumedLTR = 0;
-            this.finalFuelConsumedGL = 0;
+            //this.finalFuelConsumedLTR = 0;
+            //this.finalFuelConsumedGL = 0;
+            
+            this.disel_ConsumedLTR = 0;
+            this.disel_ConsumedGL = 0;
+            
+                this.gas_ConsumedLTR = 0;
+                this.gas_ConsumedGL = 0;
+                
+                this.propane_ConsumedLTR = 0;
+                this.propane_ConsumedGL = 0;
+                
+                this.def_ConsumedLTR = 0;
+                this.def_ConsumedGL = 0;
+            
+            
             this.finalFuelRunningCAD = this.fuelCount.cad_amount;
             this.finalFuelRunningUSD = this.fuelCount.usd_amount;
-            this.finalFuelConsumedLTR = this.fuelCount.l_quantity;
-            this.finalFuelConsumedGL = this.fuelCount.g_quantity;
+            this.disel_ConsumedLTR = this.fuelCount.l_quantity;
+            this.disel_ConsumedGL = this.fuelCount.g_quantity;
             this.lastItemSK = '';
             this.dataMessage = Constants.FETCHING_DATA;
             this.fetchFuelReport();
@@ -345,37 +495,6 @@ export class SummaryComponent implements OnInit {
                 obj['Currency'] = element.data.currency
                 dataObject.push(obj)
             });
-            
-            
-            let totObjFuelConsumed = {
-            ['Total fuel consumed LTR'] : 'Total fuel consumed',
-            ['Total fuel consumed GL'] : ''
-            }
-            if(this.searchActive === true){
-            totObjFuelConsumed['Total fuel consumed LTRR'] = this.finalFuelConsumedLTR.toFixed() + ' LTR'
-            totObjFuelConsumed['Total fuel consumed GLL'] =  this.finalFuelConsumedGL.toFixed() + 'GL' + '\n'
-            }else{
-            this.searchActive = false;
-            totObjFuelConsumed['Total fuel consumed LTRR'] = this.finalFuelConsumedLTR.toFixed() + ' LTR'
-            totObjFuelConsumed['Total fuel consumed GLL'] =  this.finalFuelConsumedGL.toFixed() + ' GL' + '\n'
-            }
-            dataObject.push('\n',totObjFuelConsumed)
-            
-
-            let totObjFinalTotal = {
-              ['Total fuel cost CAD'] : 'Total fuel Cost',
-              ['Total fuel cost USD'] : ''
-            }
-            if(this.searchActive === true){
-            totObjFinalTotal['Total Fuel Cost CAD'] = this.finalFuelRunningCAD.toFixed() + ' CAD'
-            totObjFinalTotal['Total Fuel Cost USD'] = this.finalFuelRunningUSD.toFixed() + ' USD'
-            }else{
-            this.searchActive = false;
-            totObjFinalTotal['Total Fuel Cost CAD'] = this.finalFuelRunningCAD.toFixed() + ' CAD'
-            totObjFinalTotal['Total Fuel Cost USD'] = this.finalFuelRunningUSD.toFixed() + ' USD'
-            }
-            dataObject.push(totObjFinalTotal)
-            
             let headers = Object.keys(dataObject[0]).join(',')
             headers += '\n'
             csvArray.push(headers)
