@@ -560,7 +560,7 @@ export class AssetTrackerComponent implements OnInit {
   }
 
   async getAssetTrackerById() {
-    let result = await this.apiService.getData(`assetTrackers/getDetails/${this.assetId}`).toPromise();
+    let result = await this.apiService.getData(`assetTrackers/getLastLocation/${this.assetId}`).toPromise();
     if (result && result.length > 0) {
       this.assetLoc = result[0].location ? result[0].location : 'NA'
     }
