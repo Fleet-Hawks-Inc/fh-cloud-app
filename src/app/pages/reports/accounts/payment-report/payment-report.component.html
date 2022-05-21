@@ -176,7 +176,9 @@
                               {{ element.txnDate | date: "YYYY-MM-dd" }}
                             </td>
                             <td>
-                              {{ element.paymentNo }}
+                              <a [routerLink]="element.url" target="_blank"
+                                style="color: #0000ff; text-decoration: none;">{{
+                                element.paymentNo }}</a>
                             </td>
                             <td>
                               {{ element.payMode | titlecase }}
