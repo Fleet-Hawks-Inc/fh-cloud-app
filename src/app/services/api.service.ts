@@ -171,7 +171,6 @@ export class ApiService {
   async checkAccess() {
     if (this.isUserRoles) {
       const user = (await Auth.currentSession()).getIdToken().payload;
-      console.log(user.userRoles)
       user.userRoles = user.userRoles.split(',')
 
       if (user.userRoles.includes("orgAdmin") || user.userRoles.includes("role_view_admin") || user.userRoles.includes("role_super_admin")) {
