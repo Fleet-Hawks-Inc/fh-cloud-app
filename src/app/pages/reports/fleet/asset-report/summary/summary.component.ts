@@ -74,7 +74,7 @@ export class SummaryComponent implements OnInit {
     })
   }
 
-  onScroll() {
+  onScroll(event: any) {
     if (this.loaded) {
       this.fetchAssetsList();
     }
