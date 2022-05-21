@@ -374,15 +374,8 @@ export class AddBillComponent implements OnInit {
       .toPromise();
 
     this.orderData.detail = result[0].detail;
-    this.orderData.charges.remarks = result[0].charges.remarks;
-    this.orderData.charges.discount = result[0].charges.discount;
-    this.orderData.charges.discountUnit = result[0].charges.discountUnit;
-    this.orderData.total.detailTotal = result[0].total.detailTotal;
-    this.orderData.total.feeTotal = result[0].total.feeTotal;
-    this.orderData.total.vendorCredit = result[0].total.vendorCredit;
-    this.orderData.total.taxes = result[0].total.taxes;
-    this.orderData.total.subTotal = result[0].total.subTotal;
-    this.orderData.total.discountAmount = result[0].total.discountAmount;
+    this.orderData.total.detailTotal = result[0].total.finalTotal;
+    this.orderData.total.subTotal = result[0].total.finalTotal;
     this.orderData.total.finalTotal = result[0].total.finalTotal;
 
     this.orderData.refNo = result[0].refNo;
@@ -545,7 +538,7 @@ export class AddBillComponent implements OnInit {
     this.vendorCredits = [];
     this.purchaseOrders = [];
     this.fetchPurchaseOrders();
-    this.fetchVendorCredits()
+    // this.fetchVendorCredits()
   }
 
   assignFullPayment(index, data) {
