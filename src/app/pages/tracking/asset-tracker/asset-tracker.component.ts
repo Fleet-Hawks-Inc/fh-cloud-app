@@ -102,6 +102,7 @@ export class AssetTrackerComponent implements OnInit {
   bounds = new google.maps.LatLngBounds();
 
   assetId: any;
+  assetLoc: string;
 
   /**
    * Constructor
@@ -140,7 +141,7 @@ export class AssetTrackerComponent implements OnInit {
     })
 
     await this.getSensorData(this.selectedSensorDuration.value || this.selectedSensorDuration.value);
-
+    this.getAssetTrackerById();
   }
 
   private extractQueryParams() {
@@ -556,6 +557,13 @@ export class AssetTrackerComponent implements OnInit {
       this.showFahrenheit = false;
     }
 
+  }
+
+  async getAssetTrackerById() {
+    let result = await this.apiService.getData(`assetTrackers/getDetails/${this.assetId}`).toPromise();
+    if (result && result.length > 0) {
+      this.assetLoc = result[0].location ? result[0].location : 'NA'
+    }
   }
 
 }
