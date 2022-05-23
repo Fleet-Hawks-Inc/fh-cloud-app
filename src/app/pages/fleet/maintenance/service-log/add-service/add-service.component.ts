@@ -930,11 +930,9 @@ export class AddServiceComponent implements OnInit {
     this.selectedIssues = result.selectedIssues;
     this.serviceData["timeCreated"] = result.timeCreated;
     this.serviceData.exempt = result.exempt;
-    this.serviceData.total.subTotal = result.total.subTotal,
-      this.serviceData.total.taxes = result.total.taxes,
-      this.serviceData.total.finalTotal = result.total.finalTotal,
+    this.serviceData.total = result.total,
 
-      this.serviceData.charges.taxes = result.charges.taxes
+      this.serviceData.charges = result.charges
 
     this.serviceData.stateID = result.stateID;
     // });
@@ -981,6 +979,10 @@ export class AddServiceComponent implements OnInit {
       location: this.serviceData.location,
       geoCords: this.serviceData.geoCords,
       uploadedPhotos: this.existingPhotos,
+      exempt: this.serviceData.exempt,
+      total: this.serviceData.total,
+      charges: this.serviceData.charges,
+      stateID: this.serviceData.stateID
     };
     // create form data instance
     const formData = new FormData();
@@ -996,7 +998,8 @@ export class AddServiceComponent implements OnInit {
     }
 
     //append other fields
-    formData.append("data", JSON.stringify(data));
+    formData.append("data", JSON.stringify(data))
+    
     this.apiService.putData("serviceLogs/", formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
