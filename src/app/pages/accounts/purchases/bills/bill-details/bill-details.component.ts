@@ -116,6 +116,13 @@ export class BillDetailsComponent implements OnInit {
       .toPromise();
     this.orderData = result[0];
 
+    for (const item of this.orderData.transactionLog) {
+      if (item.desc.includes('Vendor credits')) {
+        item.desc = ' (vendor credits applied)';
+      } else {
+        item.desc = '';
+      }
+    }
 
     if (
       result[0].attachments != undefined &&

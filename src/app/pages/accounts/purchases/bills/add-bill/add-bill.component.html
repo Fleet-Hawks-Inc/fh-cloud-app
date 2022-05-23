@@ -532,16 +532,16 @@
                           <span class="mr-5">Sub Total:</span>
                           {{ orderData.total.subTotal | number: "1.2-2" }}
                         </label>
-                        <div class="mt-2">
-                          <span class="font-weight-semibold mr-5">Discount Amount:
-                          </span>
-                          {{
-                          orderData.total.discountAmount
-                          ? (orderData.total.discountAmount
-                          | number: "1.2-2")
-                          : 0.0
-                          }}
+                        <div class="row">
+                          <div class="col-9 font-weight-semibold text-right">Discount Amount:</div>
+                          <div class="col-3 text-right">{{
+                            orderData.total.discountAmount
+                            ? (orderData.total.discountAmount
+                            | number: "1.2-2")
+                            : 0.0 | number: "1.2-2"
+                            }}</div>
                         </div>
+
                       </div>
 
                       <div class="col-lg-12" *ngIf="!orderData.exempt">
@@ -595,8 +595,8 @@
                         <div class="row mt-1">
                           <div class="col-lg-9 pt-1 pr-0">
                             <div class="bordtop">
-                              <h5 class="text-right font-weight-semibold text-4 text-dark mr-5">
-                                Vendor Credit
+                              <h5 class="font-weight-semibold text-4 text-dark mr-4">
+                                Vendor Credit:
                               </h5>
                             </div>
                           </div>
@@ -613,8 +613,8 @@
                         <div class="row">
                           <div class="col-lg-9 pt-1 pr-0">
                             <div class="bordtop">
-                              <h5 class="text-right font-weight-semibold text-4 text-dark mr-5">
-                                Total Amount
+                              <h5 class="font-weight-semibold text-4 text-dark mr-4">
+                                Total Amount:
                               </h5>
                             </div>
                           </div>

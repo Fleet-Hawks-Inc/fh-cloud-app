@@ -329,7 +329,7 @@ export class AddBillComponent implements OnInit {
     this.orderData.total.finalTotal =
       Number(this.orderData.total.subTotal) -
       Number(this.orderData.total.vendorCredit) +
-      Number(this.orderData.total.taxes) + Number(this.orderData.total.discountAmount);
+      Number(this.orderData.total.taxes) - Number(this.orderData.total.discountAmount);
   }
 
   accessorialFeeTotal() {
@@ -368,7 +368,6 @@ export class AddBillComponent implements OnInit {
   }
 
   async fetchPurchaseDetails() {
-    this.vendorCredits = [];
     let result: any = await this.accountService
       .getData(`purchase-orders/details/${this.orderData.purchaseID}`)
       .toPromise();
@@ -538,7 +537,7 @@ export class AddBillComponent implements OnInit {
     this.vendorCredits = [];
     this.purchaseOrders = [];
     this.fetchPurchaseOrders();
-    // this.fetchVendorCredits()
+    this.fetchVendorCredits()
   }
 
   assignFullPayment(index, data) {
