@@ -19,7 +19,7 @@ export class ServiceDetailComponent implements OnInit {
   logModal: TemplateRef<any>;
   logurl = this.apiService.AssetUrl;
   noRecordMessage: string = Constants.NO_RECORDS_FOUND;
-  private logID;
+  public logID;
   programs;
   logsData: any = {
     unitType: '-'
