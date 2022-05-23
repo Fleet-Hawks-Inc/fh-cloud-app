@@ -48,6 +48,7 @@ export class AddServiceComponent implements OnInit {
   selectedTasks = [];
   selectedParts = [];
   selectedIssues = [];
+  subTotal: any = 0;
   // private allServiceTasks = [];
   removeTask = false;
   selectedFiles: FileList;
@@ -189,6 +190,9 @@ export class AddServiceComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   stateTaxes = [];
+  newTaxes = [
+  ];
+
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
@@ -757,6 +761,18 @@ export class AddServiceComponent implements OnInit {
     }
     let discountAmount = (subTotal * discountPercent) / 100;
     this.serviceData.allServiceTasks.discountAmount = discountAmount;
+    // this.subTotal = this.totalLabors + this.totalPartsPrice;
+    // this.serviceData.total.taxes = 0;
+    // this.serviceData.total.finalTotal = (subTotal + amount).toFixed(2);
+    // console.log('subtot==', this.subTotal)
+    // this.newTaxes = this.serviceData.charges.taxes;
+    // this.serviceData.total.taxes = 0;
+    // if (this.subTotal > 0) {
+    this.allTax();
+    this.taxTotal();
+    // this.calculateFinalTotal();
+    // }
+
   }
 
   calculateParts() {
@@ -803,6 +819,15 @@ export class AddServiceComponent implements OnInit {
     this.serviceData.allServiceParts.taxAmount = taxAmount;
     this.serviceData.allServiceParts.total -= discountAmount;
     this.serviceData.allServiceParts.total += taxAmount;
+
+    // this.subTotal = this.totalLabors + this.totalPartsPrice;
+    // console.log('subtot==', this.subTotal)
+    // this.newTaxes = this.serviceData.charges.taxes;
+    // if (this.subTotal > 0) {
+    this.allTax();
+    this.taxTotal();
+    this.calculateFinalTotal();
+    // }
   }
 
   async fetchServiceByID() {
@@ -813,6 +838,7 @@ export class AddServiceComponent implements OnInit {
     // 
     // .subscribe(async (result: any) => {
     result = result.Items[0];
+    console.log('result--', result)
     this.serviceData["logID"] = this.logID;
     this.serviceData.unitType = result.unitType;
     if (result.unitType == "vehicle") {
@@ -835,6 +861,17 @@ export class AddServiceComponent implements OnInit {
 
     this.savedIssues = result.selectedIssues;
     this.serviceData.selectedIssues = result.selectedIssues;
+    this.serviceData.exempt = result.exempt;
+
+    this.serviceData.total.subTotal = result.total.subTotal,
+      // console.log('')
+      this.serviceData.total.taxes = result.total.taxes,
+      this.serviceData.total.finalTotal = result.total.finalTotal,
+
+      this.serviceData.charges.taxes = result.charges.taxes
+
+    this.serviceData.stateID = result.stateID;
+
 
     let newTasks = [];
     for (var i = 0; i < result.allServiceTasks.serviceTaskList.length; i++) {
@@ -1401,35 +1438,19 @@ export class AddServiceComponent implements OnInit {
       this.taxTotal();
     }
   }
-  allTax() {
-    this.serviceData.charges.taxes.forEach((element) => {
-      element.amount = (element.tax * this.serviceData.total.subTotal) / 100;
 
-    });
-  }
 
-  taxTotal() {
-    this.serviceData.total.taxes = 0;
-    this.serviceData.charges.taxes.forEach((element) => {
-      this.serviceData.total.taxes += Number(element.amount);
-    });
-    this.calculateFinalTotal();
-  }
+
 
   async calculateFinalTotal() {
+    console.log('subtotal', this.serviceData)
+    this.serviceData.total.finalTotal = 0;
     this.serviceData.total.subTotal = this.totalLabors + this.totalPartsPrice
     this.allTax();
-    let discount: number;
-    if (this.serviceData.charges.discountUnit != '' && this.serviceData.charges.discountUnit != null) {
-      if (this.serviceData.charges.discountUnit === '%') {
-        discount = (this.serviceData.total.subTotal * this.serviceData.charges.discount) / 100;
-      } else {
-        discount = this.serviceData.charges.discount;
-      }
-    }
-    // this.serviceData.total.discountAmount = discount;
-    this.serviceData.total.finalTotal = (this.totalLabors + this.totalPartsPrice) + this.serviceData.total.taxes
-   
+    // console.log('tax', this.serviceData.total.taxes)
+
+    this.serviceData.total.finalTotal = Number(this.serviceData.total.subTotal) + Number(this.serviceData.total.taxes)
+    // console.log('this.serviceData.total.finalTotal', this.serviceData.total.finalTotal)
   }
 
   async fetchStateTaxes() {
@@ -1444,13 +1465,34 @@ export class AddServiceComponent implements OnInit {
 
     this.taxTotal();
   }
+  allTax() {
+    this.serviceData.charges.taxes.forEach((element) => {
+      element.amount = (element.tax * this.serviceData.total.subTotal) / 100;
+      // console.log('amount -', element.amount)
+
+    });
+  }
+
+
+  taxTotal() {
+    let taxes = 0;
+    console.log('this.serviceData.total.taxes-', this.serviceData)
+    this.serviceData.charges.taxes.forEach((element) => {
+      console.log('Number(element.amount)', Number(element.amount))
+      taxes += Number(element.amount);
+    });
+    this.serviceData.total.taxes = taxes;
+    console.log('taxes', taxes)
+    this.calculateFinalTotal();
+  }
+
   async taxExempt() {
     this.serviceData.charges.taxes.map((v) => {
       v.tax = 0;
     });
     this.serviceData.stateID = null;
-    this.allTax();
     this.taxTotal();
+    this.allTax();
     this.calculateFinalTotal();
   }
 }

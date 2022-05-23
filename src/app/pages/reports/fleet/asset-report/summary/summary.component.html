@@ -62,24 +62,6 @@
                 Reset
               </button>
             </div>
-
-            <div class="col-md-4 col-lg-4 text-right pr-1">
-              <div class="btn-group flex-wrap ml-2">
-                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                  aria-expanded="false">
-                  <i class="fas fa-upload"></i> Export<span class="caret"></span>
-                </button>
-                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
-                    position: absolute;
-                    will-change: transform;
-                    top: 0px;
-                    left: 0px;
-                    transform: translate3d(0px, 38px, 0px);
-                  ">
-                  <a class="dropdown-item text-1" (click)="csv()">CSV</a>
-                </div>
-              </div>
-            </div>
           </div>
         </form>
       </header>
@@ -184,7 +166,8 @@
                 <!-- Body Template of Data Table -->
                 <ng-template pTemplate="body" let-asset let-columns="columns" let-rowIndex="rowIndex">
                   <tr>
-                    <td *ngFor="let dataColumns of columns" [ngStyle]="{'width': dataColumns.width}">
+                    <td *ngFor="let dataColumns of columns" [ngStyle]="{'width': dataColumns.width}"
+                      routerLink="/reports/fleet/asset/activity/${asset.assetID}">
                       <div [ngSwitch]="dataColumns.field">
                         <span *ngSwitchCase="'assetIdentification'">
                           <span>
@@ -196,7 +179,7 @@
                             {{get(asset,dataColumns.field)}}</span>
                         </span>
 
-                        <span *ngSwitchCase="'assetType'">
+                        <span *ngSwitchCase="' assetType'">
                           <span>
                             {{get(asset,dataColumns.field)}}</span>
                         </span>
