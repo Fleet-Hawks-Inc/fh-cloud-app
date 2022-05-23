@@ -433,11 +433,11 @@
                                                 (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
                                         </div>
                                         <div class="col-lg-3 text-right">
-                                            <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)"
-                                                data-toggle="modal" data-target="#viewDocModal"></i>
-
-                                            <!-- <a href="javascript:;" (click)="delete('abs',item.name, d,nullVar)" class="modal-with-form">
-                        <i class="fas fa-times text-danger"></i></a> -->
+                            <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="delete('abs',item.name, d,nullVar)"><i class="fas fa-trash-alt"></i></a>
+                                                 <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="setPDFSrc(item.path)" data-toggle="modal" data-target="#viewDocModal"><i
+                                class="fas fa-eye"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -1480,7 +1480,7 @@
             <div class="modal-body text-dark">
                 <div class="row">
                     <div class="col-lg-12">
-                        <img [src]="profile" class="img-fluid rounded" height="200px" width="100%" />
+                        <img [src]="profile[0].path" class="img-fluid rounded" height="200px" width="100%" />
                     </div>
                 </div>
             </div>
