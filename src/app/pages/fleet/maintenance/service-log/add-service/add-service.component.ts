@@ -996,7 +996,6 @@ export class AddServiceComponent implements OnInit {
     for (let j = 0; j < this.uploadedDocs.length; j++) {
       formData.append("uploadedDocs", this.uploadedDocs[j]);
     }
-
     //append other fields
     formData.append("data", JSON.stringify(data))
 
