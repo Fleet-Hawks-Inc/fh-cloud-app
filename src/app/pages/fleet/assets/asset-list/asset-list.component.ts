@@ -362,7 +362,7 @@ export class AssetListComponent implements OnInit {
                 obj["Asset Name/Number"] = element.assetIdentification
                 obj["VIN"] = element.VIN
                 obj["Asset Type"] = element.assetType
-                obj["Make"] = element.manufacturerID
+                obj["Make"] = element.manufacturer.toLowerCase() ? element.manufacturer.toLowerCase(): '-'
                 obj["year"] = element.year
                 obj["Ownership"] = element.ownerShip
                  if(element.ownerShip === 'rented') {
