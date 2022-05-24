@@ -10,6 +10,7 @@ import { OnboardDefaultService } from '../../../../services/onboard-default.serv
 import * as _ from 'lodash';
 import { Table } from 'primeng/table';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import * as moment from 'moment';
 declare var $: any;
 
 @Component({
@@ -351,6 +352,55 @@ export class AssetListComponent implements OnInit {
     this.dataMessage = Constants.FETCHING_DATA;
 
   }
+  
+   generateVehicleCSV() {
+        if (this.allData.length > 0) {
+            let dataObject = []
+            let csvArray = []
+            this.allData.forEach(element => {
+                let obj = {}
+                obj["Asset Name/Number"] = element.assetIdentification
+                obj["VIN"] = element.VIN
+                obj["Asset Type"] = element.assetType
+                obj["Make"] = element.manufacturerID
+                obj["year"] = element.year
+                obj["Ownership"] = element.ownerShip
+                 if(element.ownerShip === 'rented') {
+                   obj["Company Name"] = element.ownCname
+                 }
+                 else if(element.ownerShip === 'leased') {
+                   obj["Company Name"] = element.ownCname 
+                 }
+                 else if(element.ownerShip === 'ownerOperator') {
+                   obj["Company Name"] = this.contactsObjects[element.ownerOperator]
+                 }
+                obj["Annual Safety Date"] = element.annualSafetyDate
+                obj["Status"] = element.currentStatus
+                dataObject.push(obj)
+            });
+            let headers = Object.keys(dataObject[0]).join(',')
+            headers += '\n'
+            csvArray.push(headers)
+            dataObject.forEach(element => {
+                let obj = Object.values(element).join(',')
+                obj += '\n'
+                csvArray.push(obj)
+            });
+            const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Vehicle-Report.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+        else {
+            this.toastr.error("No Records found")
+        }
+    }
 
   clear(table: Table) {
     table.clear();
