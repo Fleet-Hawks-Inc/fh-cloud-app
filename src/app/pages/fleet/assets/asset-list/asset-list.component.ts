@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { ApiService } from '../../../../services';
+import { ApiService, ListService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services';
@@ -10,6 +10,7 @@ import { OnboardDefaultService } from '../../../../services/onboard-default.serv
 import * as _ from 'lodash';
 import { Table } from 'primeng/table';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import { Subscription } from 'rxjs/internal/Subscription';
 declare var $: any;
 
 @Component({
@@ -111,6 +112,8 @@ export class AssetListComponent implements OnInit {
   get = _.get;
   isSearch = false;
 
+  subscription: Subscription;
+
   dataColumns = [
     { width: '11%', field: 'assetIdentification', header: 'Asset Name/Number', type: "text" },
     { width: '8%', field: 'VIN', header: 'VIN', type: "text" },
@@ -131,6 +134,7 @@ export class AssetListComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private httpClient: HttpClient,
+    private listService: ListService,
     private hereMap: HereMapService,
     private onboard: OnboardDefaultService) { }
 
@@ -141,7 +145,16 @@ export class AssetListComponent implements OnInit {
     this.fetchGroups();
     await this.initDataTable();
     this.fetchContacts();
+    this.listService.maxUnit.subscribe(index => {
+      if (index) {
+        console.log('asset', index);
+      }
+    })
 
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   setToggleOptions() {

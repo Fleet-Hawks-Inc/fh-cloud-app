@@ -124,6 +124,8 @@ export class ListService {
 
   public popup: Subject<any> = new Subject<any>();
 
+  public maxUnit: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>(null);
+
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
@@ -325,5 +327,9 @@ export class ListService {
 
   showSettlementsDetailPreview(value) {
     this.settlementDetailsDataSource.next(value);
+  }
+
+  passMaxUnit(value) {
+    this.maxUnit.next(value);
   }
 }

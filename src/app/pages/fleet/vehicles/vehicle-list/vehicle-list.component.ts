@@ -10,9 +10,10 @@ import * as _ from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
-import { ApiService, HereMapService } from '../../../../services';
+import { ApiService, DashboardUtilityService, HereMapService, ListService } from '../../../../services';
 import { OnboardDefaultService } from '../../../../services/onboard-default.service';
 import Constants from '../../constants';
+import { Subscription } from 'rxjs';
 declare var $: any;
 @Component({
   selector: 'app-vehicle-list',
@@ -90,6 +91,8 @@ export class VehicleListComponent implements OnInit {
   vehicleTypeObects: any = {};
   lastItemSK = ''
   loaded = false
+  isUpgrade = false;
+  subscription: Subscription;
 
   // columns of data table
   dataColumns = [
@@ -110,7 +113,7 @@ export class VehicleListComponent implements OnInit {
   ];
 
   constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService,
-    private onboard: OnboardDefaultService, protected _sanitizer: DomSanitizer, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) {
+    private onboard: OnboardDefaultService, private listService: ListService, private dashboardUtilityService: DashboardUtilityService, protected _sanitizer: DomSanitizer, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) {
   }
 
 
@@ -121,6 +124,14 @@ export class VehicleListComponent implements OnInit {
     this.fetchGroups();
     this.fetchDriversList();
     this.fetchVendorList();
+    let curVehCount = await this.fetchVehiclesCount();
+    this.listService.maxUnit.subscribe((res: any) => {
+      for (const item of res) {
+        if (item.vehicles) {
+          this.isUpgrade = curVehCount > item.vehicles ? true : false;
+        }
+      }
+    })
     await this.initDataTable()
 
 
@@ -136,6 +147,10 @@ export class VehicleListComponent implements OnInit {
       }, {});
     });
 
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   setVehiclesOptions() {
@@ -259,7 +274,7 @@ export class VehicleListComponent implements OnInit {
         this.lastEvaluatedKey = 'end'
       }
       this.vehicles = this.vehicles.concat(result.data)
-       this.loaded = true;
+      this.loaded = true;
       this.isSearch = false;
       await this.getDashCamConnection(this.vehicles);
       await this.getDashCamStatus(this.vehicles);
@@ -382,11 +397,15 @@ export class VehicleListComponent implements OnInit {
         this.vehicleDraw = 0;
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
-        // this.fetchVehiclesCount();
         this.initDataTable();
         this.toastr.success('Vehicle Deleted Successfully!');
       });
     }
+  }
+
+  async fetchVehiclesCount() {
+    const vehicleCount = await this.apiService.getData(`vehicles/fetch/vehicleCount`).toPromise();
+    return vehicleCount.total;
   }
 
   hideShowColumn() {

@@ -1,7 +1,10 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
-
+import { HttpClient, HttpContext, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Subject } from "rxjs";
+import { MessageService } from "primeng/api";
+type Severities = 'success' | 'info' | 'warn' | 'error';
 @Injectable({
   providedIn: "root",
 })
@@ -15,6 +18,8 @@ export class DashboardUtilityService {
   public refreshEmployees = true;
   public refreshVendors = true;
   public refreshCountries = true;
+  public refreshPlans = true;
+  public refreshCarrier = true;
   carriers: any = {};
   drivers: any = {};
   assets: any = {};
@@ -25,7 +30,13 @@ export class DashboardUtilityService {
   employees: any = {};
   vendors: any = {};
   countries: any = {};
-  constructor(private apiService: ApiService, private countryStateCity: CountryStateCityService,) { }
+  carrierData: any = [];
+  subscriptionPlans: any = [];
+  notificationChange: BehaviorSubject<any> =
+    new BehaviorSubject([]);
+  notificationRes = this.notificationChange.asObservable();
+
+  constructor(private apiService: ApiService, private messageService: MessageService, private countryStateCity: CountryStateCityService, private http: HttpClient) { }
 
   public getCarriers = async (): Promise<any[]> => {
     var size = Object.keys(this.carriers).length;
@@ -133,4 +144,52 @@ export class DashboardUtilityService {
     }
     return this.employees;
   };
+
+  public getSubscriptionPlans = async () => {
+    if (this.refreshPlans) {
+      let result = await this.http.get("assets/jsonFiles/subscriptionPlans.json").toPromise()
+      this.subscriptionPlans = result;
+      this.refreshPlans = false;
+      return this.subscriptionPlans;
+    }
+  };
+
+  public getCarrierByID = async (ID: string) => {
+    if (this.refreshCarrier) {
+      let result = await this.apiService.getData(`carriers/${ID}`).toPromise()
+      this.carrierData = result;
+      this.refreshCarrier = false;
+    }
+    return this.carrierData;
+  };
+
+
+  // public checkSubscriptionPlans = async () => {
+  //   let subscribed = [];
+  //   console.log('this.carrierData.subscriptions', this.carrierData.subscriptions)
+  //   if (this.carrierData.subscriptions && this.carrierData.subscriptions.length > 0) {
+  //     for (const curPlan of this.carrierData.subscriptions) {
+  //       for (const plan of this.subscriptionPlans) {
+  //         if (curPlan.plan_code == plan.planCode) {
+  //           if (plan.maxVehicles) {
+  //             subscribed.push({ maxVehicles: plan.maxVehicles })
+  //           } if (plan.maxAsset) {
+  //             subscribed.push({ maxAsset: plan.maxAsset })
+  //           }
+  //         }
+  //       }
+  //     }
+  //     return subscribed;
+  //   } else {
+  //     return false
+  //   }
+  // }
+
+  notify(data) {
+    this.notificationChange.next(data);
+  }
+
+  clearToast() {
+    this.messageService.clear();
+  }
 }

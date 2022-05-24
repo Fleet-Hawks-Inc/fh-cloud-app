@@ -72,6 +72,9 @@ import { MultiSelectModule } from "primeng/multiselect";
 import { TrackingModule } from "./pages/tracking/tracking.module";
 import { VehicleDashCamTrackerComponent } from "./pages/tracking/vehicle-dash-cam-tracker/vehicle-dash-cam-tracker.component";
 import { AssetTrackerComponent } from "./pages/tracking/asset-tracker/asset-tracker.component";
+import { ToastMessagesComponent } from './toast-messages/toast-messages.component';
+import { MessageService } from "primeng/api";
+import { ToastModule } from 'primeng/toast';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
@@ -95,6 +98,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     LocationShareComponent,
     SubscriptionOnboardComponent,
     ListOrganizationsComponent,
+    ToastMessagesComponent,
   ],
   imports: [
     CommonModule,
@@ -130,12 +134,14 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     DropdownModule,
     TrackingModule,
     BadgeModule,
-    DialogModule
+    DialogModule,
+    ToastModule
   ],
   providers: [
     HttpInterceptorProviders,
     PreLoadStrategy,
     InvokeHeaderFnService,
+    MessageService,
     {
       provide: RouteReuseStrategy,
       useClass: CustomRouteReuseStrategy,
