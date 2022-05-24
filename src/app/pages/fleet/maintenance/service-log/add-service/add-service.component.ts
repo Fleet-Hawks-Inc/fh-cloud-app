@@ -532,7 +532,6 @@ export class AddServiceComponent implements OnInit {
     localStorage.setItem("issueVehicleID", JSON.stringify(id));
     this.spinner.show();
     const vehicleID = id;
-    console.log('vehicleid--', vehicleID)
     await this.getReminders(vehicleID);
     await this.getIssuesByVehicle(vehicleID);
 
@@ -821,7 +820,6 @@ export class AddServiceComponent implements OnInit {
     // 
     // .subscribe(async (result: any) => {
     result = result.Items[0];
-    console.log('resul===', result)
     this.serviceData["logID"] = this.logID;
     this.serviceData.unitType = result.unitType;
     if (result.unitType == "vehicle") {
@@ -931,12 +929,16 @@ export class AddServiceComponent implements OnInit {
 
     this.selectedIssues = result.selectedIssues;
     this.serviceData["timeCreated"] = result.timeCreated;
-    this.serviceData.exempt = result.exempt;
-    this.serviceData.total = result.total,
+    if (result.exempt || result.total || result.charges || result.stateID) {
+      this.serviceData.exempt = result.exempt;
+      this.serviceData.total = result.total,
 
-      this.serviceData.charges = result.charges
+        this.serviceData.charges = result.charges
 
-    this.serviceData.stateID = result.stateID;
+      this.serviceData.stateID = result.stateID;
+    }
+
+
     // });
   }
 
