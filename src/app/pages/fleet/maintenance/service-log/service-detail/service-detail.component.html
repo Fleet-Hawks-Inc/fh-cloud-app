@@ -831,7 +831,7 @@
 
 
           <tr>
-            <td height="25" style="
+            <td height="25" style=" width:35%;
                 font-size: 13px;
                 border-right: 1px solid #999999;
                 padding-left: 10px;
@@ -839,10 +839,14 @@
               {{ (partsSubTotal + taskTotal).toFixed(2) }}
               {{ currency }}
             </td>
-            <td style="font-size: 13px; padding-left: 10px; padding-right: 10px">
+            <td style=" width:30%; font-size: 13px; padding-left: 10px; padding-right: 10px">
               {{ taxes ? taxes : "-" }}
             </td>
-            <td style="font-size: 13px; padding-left: 10px; padding-right: 10px">
+            <td height="25" style="width:35%;
+                font-size: 13px;
+                border-left: 1px solid #999999;
+                padding-left: 10px;
+              ">
               {{ finalTotal ? finalTotal : "-"
               }}<span *ngIf="finalTotal"> {{ currency }}</span>
             </td>

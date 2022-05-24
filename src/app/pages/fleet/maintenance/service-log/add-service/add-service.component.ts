@@ -532,6 +532,7 @@ export class AddServiceComponent implements OnInit {
     localStorage.setItem("issueVehicleID", JSON.stringify(id));
     this.spinner.show();
     const vehicleID = id;
+    console.log('vehicleid--', vehicleID)
     await this.getReminders(vehicleID);
     await this.getIssuesByVehicle(vehicleID);
 
@@ -820,6 +821,7 @@ export class AddServiceComponent implements OnInit {
     // 
     // .subscribe(async (result: any) => {
     result = result.Items[0];
+    console.log('resul===', result)
     this.serviceData["logID"] = this.logID;
     this.serviceData.unitType = result.unitType;
     if (result.unitType == "vehicle") {
@@ -999,7 +1001,7 @@ export class AddServiceComponent implements OnInit {
 
     //append other fields
     formData.append("data", JSON.stringify(data))
-    
+
     this.apiService.putData("serviceLogs/", formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
