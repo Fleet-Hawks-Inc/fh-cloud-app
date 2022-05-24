@@ -665,7 +665,7 @@
                                 Customer Credits:
                               </span>
                               <span class="text-right m-0">
-                                - {{
+                                <span *ngIf="saleData.total.customerCredit > 0">-</span> {{
                                 saleData.total.customerCredit ? (saleData.total.customerCredit | number: "1.2-2") : 0
                                 }}
                               </span>

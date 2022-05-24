@@ -53,8 +53,8 @@ export class ImportedContactsComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.importData.eType = params.entity;
-      this.entity = (params.entity + 's').replace('_', ' ').charAt(0).toUpperCase() + params.entity.slice(1);
-      if (this.entity == 'Fc') {
+      this.entity = params.entity.charAt(0).toUpperCase() + params.entity.slice(1).replace('_', ' ') + 's';
+      if (this.entity == 'Fcs') {
         this.entity = 'Factoring Company';
       }
 

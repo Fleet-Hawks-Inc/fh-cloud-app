@@ -505,7 +505,7 @@
                                                 <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Sub
                                                     Role
                                                 </label>
-                                                <ng-select [multiple]="true" class="form-control populate" [(ngModel)]="subRole" name="sub role" placeholder="Select Sub roles">
+                                                <ng-select [multiple]="true" class="form-control populate" [(ngModel)]="userData.userLoginData.subRoles" name="sub role" placeholder="Select Sub roles">
                                                     <ng-option *ngFor="let userRole of allSubRoles" [value]="userRole.role">{{ userRole.name }}
                                                     </ng-option>
                                                 </ng-select>
