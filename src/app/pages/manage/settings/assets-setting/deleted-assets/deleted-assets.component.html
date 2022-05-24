@@ -229,7 +229,7 @@
                                   : "-"
                                   }}
                                 </td>
-                                <td>{{ item.assetType | titlecase }}</td>
+                                <td>{{((item.assetType)? (item.assetType.replace('_',' ')) : '_') | titlecase }}</td>
                                 <td>
                                   {{
                                   item.assetDetails.manufacturer

@@ -757,6 +757,9 @@ export class AddServiceComponent implements OnInit {
     }
     let discountAmount = (subTotal * discountPercent) / 100;
     this.serviceData.allServiceTasks.discountAmount = discountAmount;
+    this.calculateFinalTotal();
+    this.allTax();
+    this.taxTotal();
   }
 
   calculateParts() {
@@ -803,6 +806,10 @@ export class AddServiceComponent implements OnInit {
     this.serviceData.allServiceParts.taxAmount = taxAmount;
     this.serviceData.allServiceParts.total -= discountAmount;
     this.serviceData.allServiceParts.total += taxAmount;
+
+    this.calculateFinalTotal();
+    this.allTax();
+    this.taxTotal();
   }
 
   async fetchServiceByID() {
@@ -922,6 +929,15 @@ export class AddServiceComponent implements OnInit {
 
     this.selectedIssues = result.selectedIssues;
     this.serviceData["timeCreated"] = result.timeCreated;
+    if (result.exempt || result.total || result.charges || result.stateID) {
+      this.serviceData.exempt = result.exempt;
+      this.serviceData.total = result.total,
+
+        this.serviceData.charges = result.charges
+
+      this.serviceData.stateID = result.stateID;
+    }
+
     // });
   }
 
@@ -932,7 +948,6 @@ export class AddServiceComponent implements OnInit {
       delete this.serviceData.odometer;
     }
   }
-
   /*
    * Update Service Log
    */
@@ -966,6 +981,10 @@ export class AddServiceComponent implements OnInit {
       location: this.serviceData.location,
       geoCords: this.serviceData.geoCords,
       uploadedPhotos: this.existingPhotos,
+      exempt: this.serviceData.exempt,
+      total: this.serviceData.total,
+      charges: this.serviceData.charges,
+      stateID: this.serviceData.stateID
     };
     // create form data instance
     const formData = new FormData();
@@ -981,7 +1000,8 @@ export class AddServiceComponent implements OnInit {
     }
 
     //append other fields
-    formData.append("data", JSON.stringify(data));
+    formData.append("data", JSON.stringify(data))
+
     this.apiService.putData("serviceLogs/", formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -1404,10 +1424,8 @@ export class AddServiceComponent implements OnInit {
   allTax() {
     this.serviceData.charges.taxes.forEach((element) => {
       element.amount = (element.tax * this.serviceData.total.subTotal) / 100;
-
     });
   }
-
   taxTotal() {
     this.serviceData.total.taxes = 0;
     this.serviceData.charges.taxes.forEach((element) => {
@@ -1417,25 +1435,22 @@ export class AddServiceComponent implements OnInit {
   }
 
   async calculateFinalTotal() {
-    this.serviceData.total.subTotal = this.totalLabors + this.totalPartsPrice
+    this.serviceData.total.subTotal =
+      Number(this.totalLabors) +
+      Number(this.totalPartsPrice)
     this.allTax();
-    let discount: number;
-    if (this.serviceData.charges.discountUnit != '' && this.serviceData.charges.discountUnit != null) {
-      if (this.serviceData.charges.discountUnit === '%') {
-        discount = (this.serviceData.total.subTotal * this.serviceData.charges.discount) / 100;
-      } else {
-        discount = this.serviceData.charges.discount;
-      }
-    }
-    // this.serviceData.total.discountAmount = discount;
-    this.serviceData.total.finalTotal = (this.totalLabors + this.totalPartsPrice) + this.serviceData.total.taxes
-   
+    this.serviceData.total.finalTotal =
+      Number(this.serviceData.total.subTotal) +
+      Number(this.serviceData.total.taxes);
   }
+
 
   async fetchStateTaxes() {
     let result = await this.apiService.getData("stateTaxes").toPromise();
     this.stateTaxes = result.Items;
   }
+
+
   taxcalculation(index) {
     this.serviceData.charges.taxes[index].amount =
       (this.serviceData.charges.taxes[index].tax *
@@ -1452,5 +1467,36 @@ export class AddServiceComponent implements OnInit {
     this.allTax();
     this.taxTotal();
     this.calculateFinalTotal();
+  }
+
+  async selecteProvince(stateID = undefined) {
+    if (stateID != undefined) {
+
+      let taxObj = {
+        GST: "",
+        HST: "",
+        PST: "",
+        stateCode: "",
+        stateName: "",
+        stateTaxID: "",
+      };
+      this.stateTaxes.map((v) => {
+        if (v.stateTaxID === stateID) {
+          taxObj = v;
+        }
+      });
+
+      this.serviceData.charges.taxes.map((v) => {
+        if (v.name === "GST") {
+          v.tax = Number(taxObj.GST);
+        } else if (v.name === "HST") {
+          v.tax = Number(taxObj.HST);
+        } else if (v.name === "PST") {
+          v.tax = Number(taxObj.PST);
+        }
+      });
+      this.allTax();
+      this.taxTotal();
+    }
   }
 }
