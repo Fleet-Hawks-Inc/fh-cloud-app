@@ -932,13 +932,9 @@ export class AddServiceComponent implements OnInit {
     if (result.exempt || result.total || result.charges || result.stateID) {
       this.serviceData.exempt = result.exempt;
       this.serviceData.total = result.total,
-
         this.serviceData.charges = result.charges
-
       this.serviceData.stateID = result.stateID;
     }
-
-
     // });
   }
 
