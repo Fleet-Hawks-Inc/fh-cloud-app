@@ -938,7 +938,6 @@ export class AddServiceComponent implements OnInit {
       this.serviceData.stateID = result.stateID;
     }
 
-
     // });
   }
 
@@ -949,7 +948,6 @@ export class AddServiceComponent implements OnInit {
       delete this.serviceData.odometer;
     }
   }
-
   /*
    * Update Service Log
    */
