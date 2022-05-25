@@ -625,17 +625,33 @@
 <ng-template #schedularModal let-modal class="modal-block modal-block-lg2 modal-block-primary mfp-hide">
   <section class="card">
     <header class="card-header">
-      <h2 class="card-title font-weight-bold">Scheduler #{{scheduler.orderNumber}}</h2>
+      <h2 class="card-title font-weight-bold">Scheduler <span>#{{scheduler.orderNumber}}</span></h2>
     </header>
     <div class="card-body text-dark">
-      <form>
+      <form class="form-horizontal form-bordered" novalidate #scheduleModal="ngForm">
         <div class="form-row">
           <div class="form-group col-lg-12 col-md-12" id="manualDiv">
             <div class="row">
             
               <div class="col-lg-8">
-              <label> Schedule Name</label>
-              <input placeholder="Schedule Name" [(ngModel)]="scheduler.name" type="text" name="scheduleName" class="form-control">
+              <label> Schedule Name <span class="mandfield text-2 ml-1"
+                ><sup>*</sup></span
+              ></label>
+              <input placeholder="Schedule Name" [(ngModel)]="scheduler.name" type="text" name="scheduleName" class="form-control" #scheduleName="ngModel">
+              <div
+              *ngIf="
+                scheduleName.invalid &&
+                (scheduleName.dirty || scheduleName.touched)
+              "
+              class="text-danger"
+            >
+              <div>
+                <div *ngIf="scheduleName.errors.required">
+                  scheduleName is required.
+                </div>
+              </div>
+  </div>
+              
               </div>
               <div class="col-lg-4">
               <label> Time</label>
