@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { Table } from 'primeng/table';
+
 import * as _ from 'lodash';
 import Constants from '../../../constants';
 declare var $: any;
@@ -14,6 +16,7 @@ import { environment } from '../../../../../../environments/environment';
   styleUrls: ['./listing.component.css']
 })
 export class ListingComponent implements OnInit {
+  @ViewChild('dt') table: Table;
 
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
@@ -22,6 +25,8 @@ export class ListingComponent implements OnInit {
   vehicles = [];
   reminderIdentification = '';
   reminderID = '';
+  get = _.get;
+  _selectedColumns: any[];
   task: string;
   vehicleList: any = {};
   groups: any = {};
@@ -57,19 +62,57 @@ export class ListingComponent implements OnInit {
   allVehicles: any = [];
   users = [];
   loaded = false
+  
+    // columns of data table
+  dataColumns = [
+    { width: '17%', field: 'vehicleIdentification', header: 'Vehicle', type: 'text' },
+    { width: '20%', field: 'serviceTask', header: 'Service Task', type: 'text' },
+    { width: '20%', field: 'nextDue', header: 'Next Due', type: 'text' },
+    { width: '17%', field: 'lastServiceDate', header: 'Last Completed', type: 'text' },
+    { width: '20%', field: 'subscribers', header: 'Subscribers', type: 'text' },
+  ];
+  
+  
+  
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.initDataTable();
     this.fetchTasksList();
     this.fetchVehicleList();
-
+    this.setToggleOptions()
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
     });
   }
+
+
+
+
+
+
+
+
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+  }
+
+
+
+
+
 
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
@@ -125,9 +168,11 @@ export class ListingComponent implements OnInit {
         .subscribe((result: any) => {
 
           if (result.Items.length === 0) {
-
             this.dataMessage = Constants.NO_RECORDS_FOUND
+                        this.loaded = true;
+
           }
+          
           if (result.Items.length > 0) {
 
             if (result.LastEvaluatedKey !== undefined) {
@@ -143,7 +188,7 @@ export class ListingComponent implements OnInit {
         });
     }
   }
-  onScroll() {
+  onScroll = async(event: any) => {
     if (this.loaded) {
       this.initDataTable();
     }
@@ -174,6 +219,10 @@ export class ListingComponent implements OnInit {
       return false;
     }
   }
+  
+  
+  
+
 
   sendEmailNotification(value) {
 
@@ -197,4 +246,13 @@ export class ListingComponent implements OnInit {
     this.dataMessage = Constants.FETCHING_DATA;
     this.initDataTable();
   }
+  
+    /**
+ * Clears the table filters
+ * @param table Table 
+ */
+  clear(table: Table) {
+    table.clear();
+  }
+  
 }
