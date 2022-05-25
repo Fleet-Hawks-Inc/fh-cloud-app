@@ -667,8 +667,7 @@
                                 text-left
                               ">
                               <input class="w100" type="file" multiple name="uploadedPhotos" (change)="
-                                  selectDocuments($event, 'uploadedPhotos')
-                                " />
+                                  selectDocuments($event, 'uploadedPhotos')" accept=".jpg, .jpeg, .png"  />
                             </span>
 
                             <!-- <input (change)="selectDocuments($event,
@@ -712,7 +711,7 @@
                               ">
                               <input class="w100" type="file" multiple name="uploadedDocuments" (change)="
                                   selectDocuments($event, 'uploadedDocs')
-                                " />
+                                " accept=".doc, .docx, .pdf, .jpg, .jpeg .png"  />
                             </span>
 
                             <!-- <input
