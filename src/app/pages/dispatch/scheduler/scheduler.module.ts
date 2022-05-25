@@ -8,10 +8,19 @@ import { SharedModule } from "../../../shared/shared.module";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { BadgeModule } from "primeng/badge";
 
 const routes: Routes = [
     {
-      path: "scheduler-list/:sessionId",
+      path: "scheduler-list",
       component: SchedulerListComponent,
       data: {
         reuseRoute: true,
@@ -42,7 +51,16 @@ const routes: Routes = [
         HttpClientModule,
         FormsModule,
         ReactiveFormsModule,
-        NgbModule
+        NgbModule,
+        TableModule,
+        MenuModule,
+        SplitButtonModule,
+        AutoCompleteModule,
+        DropdownModule,
+        ButtonModule,
+        ToastModule,
+        FormsModule,
+        BadgeModule
     ]
 
 })
