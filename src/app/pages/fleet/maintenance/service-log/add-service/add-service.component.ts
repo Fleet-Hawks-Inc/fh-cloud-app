@@ -929,12 +929,15 @@ export class AddServiceComponent implements OnInit {
 
     this.selectedIssues = result.selectedIssues;
     this.serviceData["timeCreated"] = result.timeCreated;
-    this.serviceData.exempt = result.exempt;
-    this.serviceData.total = result.total,
+    if (result.exempt || result.total || result.charges || result.stateID) {
+      this.serviceData.exempt = result.exempt;
+      this.serviceData.total = result.total,
 
-      this.serviceData.charges = result.charges
+        this.serviceData.charges = result.charges
 
-    this.serviceData.stateID = result.stateID;
+      this.serviceData.stateID = result.stateID;
+    }
+
     // });
   }
 
@@ -945,7 +948,6 @@ export class AddServiceComponent implements OnInit {
       delete this.serviceData.odometer;
     }
   }
-
   /*
    * Update Service Log
    */
@@ -999,7 +1001,7 @@ export class AddServiceComponent implements OnInit {
 
     //append other fields
     formData.append("data", JSON.stringify(data))
-    
+
     this.apiService.putData("serviceLogs/", formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
