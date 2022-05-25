@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { ApiService, ListService } from '../../../../services';
+import { ApiService, DashboardUtilityService, ListService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services';
@@ -128,7 +128,7 @@ export class AssetListComponent implements OnInit {
     { width: '8%', field: 'isImport', header: 'Added By', type: "text" },
 
   ];
-
+  isUpgrade = false;
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
@@ -136,6 +136,7 @@ export class AssetListComponent implements OnInit {
     private httpClient: HttpClient,
     private listService: ListService,
     private hereMap: HereMapService,
+    private dashboardUtilityService: DashboardUtilityService,
     private onboard: OnboardDefaultService) { }
 
   async ngOnInit(): Promise<void> {
@@ -145,9 +146,31 @@ export class AssetListComponent implements OnInit {
     this.fetchGroups();
     await this.initDataTable();
     this.fetchContacts();
-    this.listService.maxUnit.subscribe(index => {
-      if (index) {
-        console.log('asset', index);
+    let curVehCount = await this.dashboardUtilityService.fetchVehiclesCount();
+    this.listService.maxUnit.subscribe((res: any) => {
+      if (res) {
+        let data = [];
+        for (const item of res) {
+          if (item.planCode.startsWith('TRA-') || item.planCode.startsWith('REF-')) {
+            data.push({ assets: item.assets, planCode: item.planCode })
+          }
+
+        }
+        if (data.length > 0) {
+
+          let assetTotal = Math.max(...data.map(o => o.assets))
+
+          this.isUpgrade = curVehCount < assetTotal ? true : false;
+          if (this.isUpgrade) {
+
+            let obj = {
+              summary: Constants.RoutingPlanExpired,
+              detail: 'You will not be able to add more assets.',
+              severity: 'error'
+            }
+            this.dashboardUtilityService.notify(obj);
+          }
+        }
       }
     })
 

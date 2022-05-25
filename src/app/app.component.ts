@@ -30,7 +30,6 @@ export class AppComponent implements OnInit, AfterContentChecked {
   loading = false;
   token: boolean = false;
   currentURL = "";
-  isUpgrade = false;
   constructor(
     private dashboardUtilityService: DashboardUtilityService,
     private router: Router,
@@ -106,25 +105,17 @@ export class AppComponent implements OnInit, AfterContentChecked {
     let subscriptions = await this.dashboardUtilityService.getSubscriptionPlans();
     if (carrierData.subscriptions && carrierData.subscriptions.length > 0 && subscriptions.length > 0) {
       let plans = await this.checkSubscriptionPlans(carrierData.subscriptions, subscriptions);
-      console.log('plans ', plans)
       if (plans && plans.length > 0) {
         let data = [];
         for (const iterator of plans) {
           if (iterator.maxVehicles) {
-            data.push({ vehicles: iterator.maxVehicles })
+            data.push({ planCode: iterator.planCode, vehicles: iterator.maxVehicles })
           } if (iterator.maxAsset) {
-            data.push({ assets: iterator.maxAsset })
+            data.push({ planCode: iterator.planCode, assets: iterator.maxAsset })
           }
         }
         this.listService.passMaxUnit(data)
-        let obj = {
-          summary: 'Subscription Expired',
-          detail: 'No valid subscriptions found. You will not be able to add more vehicles or assets. Please subscribe one of the plans or contact support@fleethawks.com',
-          severity: 'error'
-        }
-        this.dashboardUtilityService.notify(obj);
-      } else {
-        this.isUpgrade = false;
+
       }
     }
     window.addEventListener(
@@ -204,9 +195,9 @@ export class AppComponent implements OnInit, AfterContentChecked {
         for (const plan of plans) {
           if (curPlan.plan_code == plan.planCode) {
             if (plan.maxVehicles) {
-              subscribed.push({ maxVehicles: plan.maxVehicles })
+              subscribed.push({ planCode: plan.planCode, maxVehicles: plan.maxVehicles })
             } if (plan.maxAsset) {
-              subscribed.push({ maxAsset: plan.maxAsset })
+              subscribed.push({ planCode: plan.planCode, maxAsset: plan.maxAsset })
             }
           }
         }

@@ -20,6 +20,8 @@ export class DashboardUtilityService {
   public refreshCountries = true;
   public refreshPlans = true;
   public refreshCarrier = true;
+  public refreshVehCount = true;
+  vehCount: number;
   carriers: any = {};
   drivers: any = {};
   assets: any = {};
@@ -162,6 +164,38 @@ export class DashboardUtilityService {
     }
     return this.carrierData;
   };
+
+
+  async fetchVehiclesCount() {
+    if (this.refreshVehCount) {
+      let result = await this.apiService.getData(`vehicles/fetch/vehicleCount`).toPromise()
+      this.vehCount = result.total ? result.total : null;
+      this.refreshVehCount = false;
+    }
+    return this.vehCount;
+
+  }
+
+  async fetchAssetsCount() {
+    if (this.refreshVehCount) {
+      let result = await this.apiService.getData(`assets/fetch/assetCount`).toPromise()
+      this.vehCount = result.total ? result.total : null;
+      this.refreshVehCount = false;
+    }
+    return this.vehCount;
+
+  }
+
+  async fetchDevicesCount() {
+    if (this.refreshVehCount) {
+      let result = await this.apiService.getData(`devices/fetch/getCount?type='DashCam'`).toPromise()
+      this.vehCount = result.total ? result.total : null;
+      this.refreshVehCount = false;
+    }
+    return this.vehCount;
+
+  }
+
 
 
   // public checkSubscriptionPlans = async () => {

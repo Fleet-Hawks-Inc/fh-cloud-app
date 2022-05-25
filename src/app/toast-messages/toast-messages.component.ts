@@ -4,6 +4,7 @@ import { DashboardUtilityService } from '../services';
 import { MessageService } from 'primeng/api';
 import { PrimeNGConfig } from 'primeng/api';
 import * as _ from 'lodash';
+import Constants from '../pages/fleet/constants';
 @Component({
   selector: 'app-toast-messages',
   templateUrl: './toast-messages.component.html',
@@ -11,18 +12,19 @@ import * as _ from 'lodash';
 })
 export class ToastMessagesComponent implements OnInit {
   subscription: Subscription;
+  contactMsg = Constants.contactMsg;
+
   constructor(private dashboardService: DashboardUtilityService, private messageService: MessageService,
     private primengConfig: PrimeNGConfig) { this.primengConfig.ripple = true; }
 
   ngOnInit(): void {
     this.subscription = this.dashboardService.notificationRes
       .subscribe(notification => {
-        console.log('notification', notification)
         let check = _.isEmpty(notification)
         if (!check) {
           let obj = {
             summary: notification.summary,
-            detail: notification.detail,
+            detail: `${notification.detail} ${this.contactMsg}`,
             severity: notification.severity
           }
           this.showError(obj)

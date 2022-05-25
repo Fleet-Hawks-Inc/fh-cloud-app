@@ -124,11 +124,20 @@ export class VehicleListComponent implements OnInit {
     this.fetchGroups();
     this.fetchDriversList();
     this.fetchVendorList();
-    let curVehCount = await this.fetchVehiclesCount();
+    let curVehCount = await this.dashboardUtilityService.fetchVehiclesCount();
     this.listService.maxUnit.subscribe((res: any) => {
       for (const item of res) {
         if (item.vehicles) {
-          this.isUpgrade = curVehCount > item.vehicles ? true : false;
+          this.isUpgrade = curVehCount < item.vehicles ? true : false;
+          if (this.isUpgrade) {
+
+            let obj = {
+              summary: Constants.RoutingPlanExpired,
+              detail: 'You will not be able to add more vehicles.',
+              severity: 'error'
+            }
+            this.dashboardUtilityService.notify(obj);
+          }
         }
       }
     })
@@ -401,11 +410,6 @@ export class VehicleListComponent implements OnInit {
         this.toastr.success('Vehicle Deleted Successfully!');
       });
     }
-  }
-
-  async fetchVehiclesCount() {
-    const vehicleCount = await this.apiService.getData(`vehicles/fetch/vehicleCount`).toPromise();
-    return vehicleCount.total;
   }
 
   hideShowColumn() {
