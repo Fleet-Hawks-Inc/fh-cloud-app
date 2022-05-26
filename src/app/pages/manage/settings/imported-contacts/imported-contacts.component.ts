@@ -96,6 +96,9 @@ export class ImportedContactsComponent implements OnInit {
   isStatusValid = (status) => {
     return status == 'active' || status == 'inActive' || status == 'sold' || status == 'outOfService'
   }
+  isEmailDependsOnSomeDataInRow = (email, status) => {
+    return false
+  }
 
 
   validateCSV($event) {
@@ -111,7 +114,19 @@ export class ImportedContactsComponent implements OnInit {
           }
         },
         {
-          name: 'phone', inputName: 'phone', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'address', inputName: 'address', required: false
+        },
+        {
+          name: 'city', inputName: 'city', required: false
+        },
+        {
+          name: 'state', inputName: 'state', required: false
+        },
+        {
+          name: 'zip', inputName: 'zip', required: false
+        },
+        {
+          name: 'phone1', inputName: 'phone1', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           }, validate: function (phoneno: string) {
             const phoneformat = /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;
@@ -119,12 +134,33 @@ export class ImportedContactsComponent implements OnInit {
           }
         },
         {
-          name: 'email', inputName: 'email', required: true, unique: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'phone2', inputName: 'phone2', required: false
+        },
+        {
+          name: 'primary_email', inputName: 'primary_email', required: true, unique: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           }, validate: function (email: string) {
             const reqExp = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/
             return reqExp.test(email)
           }
+        },
+        {
+          name: 'secondary_emails', inputName: 'secondary_emails', isArray: true, optional: true,
+          // dependentValidate: function (primary_email, row) {
+          //   return false;
+          // }
+          // requiredError: function (headerName, rowNumber, columnNumber) {
+          //   return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
+          // }, validate: function (email: string) {
+
+          //   let emailsArr = email.split(',');
+          //   if (emailsArr.length == 0 && emailsArr[0] != '') {
+          //     const reqExp = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/
+          //     for (const item of emailsArr) {
+          //       return reqExp.test(item)
+          //     }
+          //   }
+          // }
         },
 
       ]
@@ -143,11 +179,8 @@ export class ImportedContactsComponent implements OnInit {
             this.isFileValid = false;
             this.check = false;
             this.submitDisabled = true;
-
             this.inValidMessages = csvData.inValidMessages
-
           }
-          csvData.data
         } else if (csvData.data.length == 0) {
           this.submitDisabled = true;
           this.toastr.error("There are no records in the file uploaded")
