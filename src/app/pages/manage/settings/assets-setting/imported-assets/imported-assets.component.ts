@@ -191,7 +191,6 @@ export class ImportedAssetsComponent implements OnInit {
               }
             }
           }
-          csvData.data
         } else if (csvData.data.length == 0) {
           this.submitDisabled = true;
           this.toastr.error("There are no records in the file uploaded.")
