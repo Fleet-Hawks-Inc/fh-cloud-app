@@ -4377,3 +4377,7 @@ input:checked + .sliderbtn:before {
   font-family: Roboto, Arial;
   font-size: 13px;
 }
+
+.orders-listing .p-datatable-scrollable .p-frozen-column {
+  position: relative !important;
+}
