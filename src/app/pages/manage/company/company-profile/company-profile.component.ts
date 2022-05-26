@@ -231,39 +231,39 @@ export class CompanyProfileComponent implements OnInit {
   }
 
   subscriptions: ISubscriptionInfo[];
-  fetchCarrier() {
-    this.apiService.getData(`carriers/${this.companyID}`)
-      .subscribe((result: any) => {
-        if (result.Items && result.Items.length > 0) {
-          this.carriers = result.Items[0];
+  async fetchCarrier() {
+    let result = await this.apiService.getData(`carriers/${this.companyID}`).toPromise()
+    if (result.Items && result.Items.length > 0) {
+      this.carriers = result.Items[0];
 
-          if (this.carriers.accountSettings && this.carriers.accountSettings != undefined) {
-            this.accountSettings = this.carriers.accountSettings;
-          }
+      if (this.carriers.accountSettings && this.carriers.accountSettings != undefined) {
+        this.accountSettings = this.carriers.accountSettings;
+      }
 
-          if (!this.carriers.referral && this.carriers.findingWay === 'Referral') {
-            this.carriers.referral = {};
-          }
-          if (result.Items.length > 0) {
-            this.showData = true;
-          }
-          if (this.carriers.uploadedLogo === '' || this.carriers.uploadedLogo === undefined) {
-            this.logoSrc = 'assets/img/logo.png';
-          } else {
-            this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
-          }
-          if (this.carriers.subCompInfo && this.carriers.subCompInfo.length > 0) {
-            this.subCompanies = this.carriers.subCompInfo;
-          }
-          if (!this.carriers.parentID) {
-            this.showSubCompany = true;
-          }
-          if (result.subscriptions && result.subscriptions.length > 0) {
-            this.subscriptions = result.subscriptions as ISubscriptionInfo[];
-            console.log(this.subscriptions);
-          }
-        }
-      });
+      if (!this.carriers.referral && this.carriers.findingWay === 'Referral') {
+        this.carriers.referral = {};
+      }
+      if (result.Items.length > 0) {
+        this.showData = true;
+      }
+      if (this.carriers.uploadedLogo === '' || this.carriers.uploadedLogo === undefined) {
+        this.logoSrc = 'assets/img/logo.png';
+      } else {
+        this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
+      }
+
+      if (this.carriers.subCompInfo && this.carriers.subCompInfo.length > 0) {
+        this.subCompanies = this.carriers.subCompInfo;
+      }
+      if (!this.carriers.parentID) {
+        this.showSubCompany = true;
+      }
+      if (result.subscriptions && result.subscriptions.length > 0) {
+        this.subscriptions = result.subscriptions as ISubscriptionInfo[];
+      } else {
+        this.subscriptions = [];
+      }
+    }
   }
 
   async addSubCompany() {
