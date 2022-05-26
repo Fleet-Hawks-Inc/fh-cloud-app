@@ -17,6 +17,7 @@ export class LoadInvoiceDetailComponent implements OnInit {
   };
   vehicles = [];
   assets = [];
+  customers = [];
   customersObjects = {};
   accountsObjects = {};
   accountsIntObjects = {};
@@ -80,6 +81,9 @@ export class LoadInvoiceDetailComponent implements OnInit {
     }
     if (result[0].vehicles != undefined) {
       this.vehicles = result[0].vehicles;
+    }
+    if(result != undefined){
+    this.customers = result;
     }
   }
 }
