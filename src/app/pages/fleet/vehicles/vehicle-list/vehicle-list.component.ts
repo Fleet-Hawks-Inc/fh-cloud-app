@@ -128,7 +128,7 @@ export class VehicleListComponent implements OnInit {
     this.listService.maxUnit.subscribe((res: any) => {
       for (const item of res) {
         if (item.vehicles) {
-          this.isUpgrade = curVehCount < item.vehicles ? true : false;
+          this.isUpgrade = curVehCount >= item.vehicles ? true : false;
           if (this.isUpgrade) {
 
             let obj = {

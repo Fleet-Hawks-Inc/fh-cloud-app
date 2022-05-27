@@ -50,5 +50,21 @@
   {
     "planCode": "TRA-ENT",
     "maxAsset": "no_limit"
+  },
+  {
+    "planCode": "SAF-BAS",
+    "maxVehicles": 3
+  },
+  {
+    "planCode": "SAF-STAN",
+    "maxVehicles": 25
+  },
+  {
+    "planCode": "SAF-PRO",
+    "maxVehicles": 75
+  },
+  {
+    "planCode": "SAF-ENT",
+    "maxVehicles": "no_limit"
   }
 ]

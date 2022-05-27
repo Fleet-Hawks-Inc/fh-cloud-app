@@ -21,6 +21,7 @@ export class DashboardUtilityService {
   public refreshPlans = true;
   public refreshCarrier = true;
   public refreshVehCount = true;
+  public refreshDeviceCount = true;
   vehCount: number;
   carriers: any = {};
   drivers: any = {};
@@ -34,6 +35,7 @@ export class DashboardUtilityService {
   countries: any = {};
   carrierData: any = [];
   subscriptionPlans: any = [];
+  deviceCount: any = [];
   notificationChange: BehaviorSubject<any> =
     new BehaviorSubject([]);
   notificationRes = this.notificationChange.asObservable();
@@ -186,38 +188,16 @@ export class DashboardUtilityService {
 
   }
 
-  async fetchDevicesCount() {
-    if (this.refreshVehCount) {
-      let result = await this.apiService.getData(`devices/fetch/getCount?type='DashCam'`).toPromise()
-      this.vehCount = result.total ? result.total : null;
-      this.refreshVehCount = false;
+  async fetchDevicesCount(type) {
+    if (this.refreshDeviceCount) {
+      let deviceType = type;
+      let result = await this.apiService.getData(`devices/fetch/getCount?type=${deviceType}`).toPromise();
+      this.deviceCount = result;
+      this.refreshDeviceCount = false;
     }
-    return this.vehCount;
+    return this.deviceCount;
 
   }
-
-
-
-  // public checkSubscriptionPlans = async () => {
-  //   let subscribed = [];
-  //   console.log('this.carrierData.subscriptions', this.carrierData.subscriptions)
-  //   if (this.carrierData.subscriptions && this.carrierData.subscriptions.length > 0) {
-  //     for (const curPlan of this.carrierData.subscriptions) {
-  //       for (const plan of this.subscriptionPlans) {
-  //         if (curPlan.plan_code == plan.planCode) {
-  //           if (plan.maxVehicles) {
-  //             subscribed.push({ maxVehicles: plan.maxVehicles })
-  //           } if (plan.maxAsset) {
-  //             subscribed.push({ maxAsset: plan.maxAsset })
-  //           }
-  //         }
-  //       }
-  //     }
-  //     return subscribed;
-  //   } else {
-  //     return false
-  //   }
-  // }
 
   notify(data) {
     this.notificationChange.next(data);

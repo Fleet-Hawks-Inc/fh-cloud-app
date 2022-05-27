@@ -6,6 +6,7 @@ import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import { ActivatedRoute, Router } from "@angular/router";
 import { DashboardUtilityService, ListService } from "src/app/services";
+import Constants from "../../constants";
 
 @Component({
   selector: "app-add-device",
@@ -60,11 +61,31 @@ export class AddDeviceComponent implements OnInit {
   public assets: any = [];
   attachedWith = "Vehicle";
   editMode = false;
+  isUpgrade = false;
 
   async ngOnInit() {
     let deviceType = this.route.snapshot.params["deviceType"];
     let deviceSerialNo = this.route.snapshot.params["deviceSerialNo"];
+    this.dashboardUtilityService.refreshDeviceCount = true;
+    let curDevCount = await this.dashboardUtilityService.fetchDevicesCount('DashCam');
+    if (curDevCount) {
+      this.listService.maxUnit.subscribe((res: any) => {
+        for (const item of res) {
+          if (item.vehicles) {
+            this.isUpgrade = curDevCount < item.vehicles ? true : false;
+            if (this.isUpgrade) {
 
+              let obj = {
+                summary: Constants.RoutingPlanExpired,
+                detail: 'You will not be able to add more vehicles.',
+                severity: 'error'
+              }
+              this.dashboardUtilityService.notify(obj);
+            }
+          }
+        }
+      })
+    }
     if (deviceType && deviceSerialNo) {
       this.editMode = true;
       this.deviceID = `${deviceType}/${deviceSerialNo}`;
@@ -73,23 +94,7 @@ export class AddDeviceComponent implements OnInit {
       // this.deviceID=encodeURIComponent(this.deviceID);
       this.fetchDevices();
     }
-    let curVehCount = await this.dashboardUtilityService.fetchDevicesCount();
-    // this.listService.maxUnit.subscribe((res: any) => {
-    //   for (const item of res) {
-    //     if (item.vehicles) {
-    //       this.isUpgrade = curVehCount < item.vehicles ? true : false;
-    //       if (this.isUpgrade) {
 
-    //         let obj = {
-    //           summary: Constants.RoutingPlanExpired,
-    //           detail: 'You will not be able to add more vehicles.',
-    //           severity: 'error'
-    //         }
-    //         this.dashboardUtilityService.notify(obj);
-    //       }
-    //     }
-    //   }
-    // })
     await this.deviceAttachedVehicle();
   }
 
