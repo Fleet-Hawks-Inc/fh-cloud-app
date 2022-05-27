@@ -2698,12 +2698,11 @@ td.loadid a {
 
 .btn-fleet {
   color: rgb(0, 0, 0);
-  background-color: #f0f1f2;
-  border-radius: 10px;
-  padding: 5px;
+  border-radius: 0px;
+  padding: 8px;
   background-image: none;
   font-size: 13px;
-  border-color: #f0f1f2;
+  border-color: #dedede;
   font-weight: 600;
 }
 
