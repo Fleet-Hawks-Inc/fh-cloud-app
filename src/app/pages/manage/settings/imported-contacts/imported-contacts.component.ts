@@ -27,6 +27,7 @@ export class ImportedContactsComponent implements OnInit {
 
   isFileValid = false;
   inValidMessages = [];
+  emailsErrs = [];
   importDocs = [];
   check: boolean = false;
   submitDisabled: boolean = true;
@@ -145,22 +146,7 @@ export class ImportedContactsComponent implements OnInit {
           }
         },
         {
-          name: 'secondary_emails', inputName: 'secondary_emails', isArray: true, optional: true,
-          // dependentValidate: function (primary_email, row) {
-          //   return false;
-          // }
-          // requiredError: function (headerName, rowNumber, columnNumber) {
-          //   return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
-          // }, validate: function (email: string) {
-
-          //   let emailsArr = email.split(',');
-          //   if (emailsArr.length == 0 && emailsArr[0] != '') {
-          //     const reqExp = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/
-          //     for (const item of emailsArr) {
-          //       return reqExp.test(item)
-          //     }
-          //   }
-          // }
+          name: 'secondary_emails', inputName: 'secondary_emails', isArray: true,
         },
 
       ]
@@ -168,7 +154,29 @@ export class ImportedContactsComponent implements OnInit {
     CSVFileValidator($event.srcElement.files[0], data)
       .then(csvData => {
         if (csvData.data.length !== 0 && csvData.data.length < 201) {
-          if (csvData.inValidMessages.length === 0) {
+          let errors = [];
+          for (let i = 0; i < csvData.data.length; i++) {
+            const element = csvData.data[i];
+            if (element.secondary_emails.length == 1 && element.secondary_emails[0] == '') {
+
+              element.secondary_emails = [];
+            }
+            if (element.secondary_emails.length > 0) {
+              for (let j = 0; j < element.secondary_emails.length; j++) {
+                const email = element.secondary_emails[j];
+
+                const reqExp = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/
+                let result = reqExp.test(email)
+                if (!result) {
+                  errors.push(`Email is not valid in the ${i + 1} row / 9 column.`)
+                }
+              }
+            }
+
+          }
+          this.emailsErrs = errors;
+          this.check = false;
+          if (csvData.inValidMessages.length === 0 && this.emailsErrs.length === 0) {
             this.validData = csvData.data;
             this.check = true;
 
@@ -245,6 +253,7 @@ export class ImportedContactsComponent implements OnInit {
 
   cancel() {
     this.inValidMessages = [];
+    this.emailsErrs = [];
     this.myInputVariable.nativeElement.value = "";
   }
 

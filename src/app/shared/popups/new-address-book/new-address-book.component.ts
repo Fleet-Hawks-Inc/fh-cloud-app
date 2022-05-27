@@ -1626,9 +1626,16 @@ export class NewAddressBookComponent implements OnInit {
       if (res.secondaryEmails && res.secondaryEmails.length > 0) {
         let emails = [];
         for (const iterator of res.secondaryEmails) {
-          emails.push({ label: iterator })
+          if (this.updateButton) {
+            emails.push({ label: iterator })
+          }
+          if (!this.updateButton) {
+            emails.push(iterator)
+          }
         }
         this.unitData.secondaryEmails = emails;
+      } else {
+        this.unitData.secondaryEmails = [];
       }
       this.unitData.adrs = res.adrs;
       for (let index = 0; index < this.unitData.adrs.length; index++) {

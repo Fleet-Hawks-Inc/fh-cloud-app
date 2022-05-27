@@ -988,7 +988,7 @@
                 </div>
                 <div class="col-lg-6">
                   <label class="control-label font-weight-bold text-lg-right pt-2">
-                    Secondary Email <small>(you can multiple emails)</small> </label>
+                    Secondary Email <small>(you can add multiple emails)</small> </label>
                   <ng-select multiple="true" notFoundText="Please type to add email" [addTag]="true"
                     placeholder="eg. johnsmith@gmail.com" [(ngModel)]="unitData.secondaryEmails" name="secondaryEmails"
                     type="text" class="form-control h-auto">
@@ -2357,8 +2357,12 @@
                 </tr>
 
                 <tr *ngIf="unitData.workPhone">
-                  <th width="40%" class="back-color-gray">Phone:</th>
-                  <td>{{ unitData.workPhone }}</td>
+                  <th width="40%" class="back-color-gray">Phone 1:</th>
+                  <td>{{ unitData.workPhone ? unitData.workPhone : '-' }}</td>
+                </tr>
+                <tr *ngIf="unitData.workPhone">
+                  <th width="40%" class="back-color-gray">Phone 2:</th>
+                  <td>{{ unitData.workPhone1 ? unitData.workPhone1 : '-' }}</td>
                 </tr>
               </tbody>
             </table>
@@ -2367,9 +2371,20 @@
             <table class="table table-bordered m-0">
               <tbody>
                 <tr *ngIf="unitData.workEmail">
-                  <th width="40%" class="back-color-gray">Email:</th>
+                  <th width="40%" class="back-color-gray">Primary Email:</th>
                   <td class="text-lowercase">{{ unitData.workEmail }}</td>
                 </tr>
+                <tr *ngIf="unitData.secondaryEmails">
+                  <th width="40%" class="back-color-gray">Secondary Email<span class="text-lowercase">(s)</span>:</th>
+                  <td class="text-lowercase" *ngIf="unitData.secondaryEmails.length > 0">
+                    <span *ngFor="let email of unitData.secondaryEmails;let isLast=last">{{email}} <span
+                        *ngIf="!isLast">,</span></span>
+                  </td>
+                  <td class="text-lowercase" *ngIf="unitData.secondaryEmails.length === 0">
+                    -
+                  </td>
+                </tr>
+
                 <tr *ngIf="unitData.dba">
                   <th width="40%" class="back-color-gray">DBA:</th>
                   <td class="text-capitalize">{{ unitData.dba }}</td>
