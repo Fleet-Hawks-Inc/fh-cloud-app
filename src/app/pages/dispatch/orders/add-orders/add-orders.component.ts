@@ -1324,6 +1324,10 @@ export class AddOrdersComponent implements OnInit {
         this.orderData.phone = element.phone;
         this.orderData.email = element.email;
       }
+      else{
+      this.orderData.phone = null;
+      this.orderData.email = null;
+      }
     }
   }
 
