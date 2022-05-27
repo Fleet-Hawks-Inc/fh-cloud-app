@@ -628,7 +628,7 @@
       <h2 class="card-title font-weight-bold">Scheduler <span>#{{scheduler.orderNumber}}</span></h2>
     </header>
     <div class="card-body text-dark">
-      <form class="form-horizontal form-bordered" novalidate #scheduleModal="ngForm">
+      <form class="form-horizontal form-bordered"  #scheduleModal="ngForm">
         <div class="form-row">
           <div class="form-group col-lg-12 col-md-12" id="manualDiv">
             <div class="row">
@@ -637,24 +637,11 @@
               <label> Schedule Name <span class="mandfield text-2 ml-1"
                 ><sup>*</sup></span
               ></label>
-              <input placeholder="Schedule Name" [(ngModel)]="scheduler.name" type="text" name="scheduleName" class="form-control" #scheduleName="ngModel">
-              <div
-              *ngIf="
-                scheduleName.invalid &&
-                (scheduleName.dirty || scheduleName.touched)
-              "
-              class="text-danger"
-            >
-              <div>
-                <div *ngIf="scheduleName.errors.required">
-                  scheduleName is required.
-                </div>
-              </div>
-  </div>
-              
+              <input placeholder="Schedule Name" [(ngModel)]="scheduler.name" type="text" name="scheduleName" class="form-control" #scheduleName="ngModel" > 
               </div>
               <div class="col-lg-4">
-              <label> Time</label>
+              <label> Time <span><sup>*</sup></span
+              ></label>
               <input placeholder="--:--:--" type="time" [(ngModel)]="scheduler.time" name="scheduleTime" class="form-control">
               </div>
             
@@ -782,7 +769,7 @@
             btn-default">
             Cancel
           </button>
-          <button (click)="saveScheduler()" class="btn
+          <button (click)="saveScheduler()" [disabled]="saveDisabled" class="btn
             btn-success">
             Save
           </button>

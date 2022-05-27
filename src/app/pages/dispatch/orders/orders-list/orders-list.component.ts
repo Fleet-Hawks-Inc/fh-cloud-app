@@ -251,6 +251,7 @@ export class OrdersListComponent implements OnInit {
     }
   }
 
+  saveDisabled=false;
   repeatType=null;
   range=null;
   days=["everyday","monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
@@ -894,6 +895,17 @@ export class OrdersListComponent implements OnInit {
   }
 
   async saveScheduler(){
+    this.saveDisabled=true;
+    if(this.scheduler.name==null){
+      this.toastr.error("Scheduler Name is required");
+      this.saveDisabled=false;
+      return 
+    }
+    if(this.scheduler.time==null){
+      this.toastr.error("Scheduler Time is required");
+      this.saveDisabled=false;
+      return;
+    }
     const schduleData={
       orderID:this.scheduler.orderID,
       orderNumber:this.scheduler.orderNumber,
@@ -901,7 +913,7 @@ export class OrdersListComponent implements OnInit {
       sType:this.scheduler.type,
       sTime:this.scheduler.time,
       sRange:this.scheduler.range
-    }
+  }
     this.apiService.postData('orders/schedule',schduleData).subscribe({
       complete:()=>{},
       error:(err)=>{},

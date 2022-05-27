@@ -60,4 +60,7 @@ export class SchedulerListComponent implements OnInit {
 this.schedules=this.schedules.concat(result.data)
 console.log(this.schedules)
   }
+  delete(){
+    
+  }
 }
