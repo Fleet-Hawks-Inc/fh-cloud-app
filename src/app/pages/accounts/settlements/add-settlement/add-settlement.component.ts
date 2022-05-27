@@ -2811,7 +2811,7 @@ export class AddSettlementComponent implements OnInit {
       this.fuelEnteries = this.fuelEnteries.concat(this.dummyDelEntry);
       this.fuelEnteries.map(async (elem) => {
         elem.fuelID = elem.data.fuelID;
-        elem.fuelDate = elem.data.date;
+        elem.fuelDate = elem.date;
         elem.unitNumber = this.vehicles[elem.unitID];
         elem.cityName = elem.data.city;
         elem.locationCountry = elem.data.country;
@@ -2934,7 +2934,7 @@ export class AddSettlementComponent implements OnInit {
         .toPromise();
       result.map((k) => {
         k.fuelID = k.data.fuelID;
-        k.fuelDate = k.data.date;
+        k.fuelDate = k.date;
         k.unitNumber = this.vehicles[k.unitID];
         k.cityName = k.data.city;
         k.locationCountry = k.data.country;
