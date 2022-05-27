@@ -404,7 +404,7 @@ export class PaymentPdfsComponent implements OnInit {
                       codriverName: plan.codriverName ? plan.codriverName : '',
                       vehicleName: plan.vehicleName ? plan.vehicleName : '',
                       assetNames: plan.assetNames ? plan.assetNames.toString() : '',
-                      showMiles: `${plan.mileType} - ${plan.miles}`,
+                      showMiles: `${plan.mileType === 'loaded' ? 'L' : 'E'} - ${plan.miles}`,
                     };
                     if(v.paymentSelected) {
                       if(v.paymentSelected[0].pType == 'pfr') {
@@ -445,7 +445,7 @@ export class PaymentPdfsComponent implements OnInit {
                   codriverName: plan.codriverName ? plan.codriverName : '',
                   vehicleName: plan.vehicleName ? plan.vehicleName : '',
                   assetNames: plan.assetNames ? plan.assetNames.toString() : '',
-                  showMiles: `${plan.mileType} - ${plan.miles}`,
+                  showMiles: `${plan.mileType === 'loaded' ? 'L' : 'E'} - ${plan.miles}`,
                 };
 
                 if(v.paymentSelected) {
