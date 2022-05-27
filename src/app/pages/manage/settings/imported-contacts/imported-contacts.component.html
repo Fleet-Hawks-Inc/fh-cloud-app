@@ -125,11 +125,14 @@
                     </label>
                     <input class="form-control choosefileLH" (change)="chooseFile($event)"
                         (change)="validateCSV($event)" #myInput accept=".csv" id="importDocs" type="file">
-                    <div *ngIf="inValidMessages.length > 0">
+                    <div *ngIf="inValidMessages.length > 0 || emailsErrs.length > 0">
                         <br><span><b>Below are the errors in the uploaded file. Please rectify them and upload
                                 the file again.</b></span>
-                        <ul>
+                        <ul class="m-0">
                             <li *ngFor="let error of inValidMessages"><span class="text-danger">{{error}}.</span></li>
+                        </ul>
+                        <ul>
+                            <li *ngFor="let error of emailsErrs"><span class="text-danger">{{error}}.</span></li>
                         </ul>
                     </div>
                 </div>
