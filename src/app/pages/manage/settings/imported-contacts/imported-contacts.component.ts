@@ -27,6 +27,7 @@ export class ImportedContactsComponent implements OnInit {
 
   isFileValid = false;
   inValidMessages = [];
+  emailsErrs = [];
   importDocs = [];
   check: boolean = false;
   submitDisabled: boolean = true;
@@ -96,6 +97,9 @@ export class ImportedContactsComponent implements OnInit {
   isStatusValid = (status) => {
     return status == 'active' || status == 'inActive' || status == 'sold' || status == 'outOfService'
   }
+  isEmailDependsOnSomeDataInRow = (email, status) => {
+    return false
+  }
 
 
   validateCSV($event) {
@@ -111,7 +115,19 @@ export class ImportedContactsComponent implements OnInit {
           }
         },
         {
-          name: 'phone', inputName: 'phone', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'address', inputName: 'address', required: false
+        },
+        {
+          name: 'city', inputName: 'city', required: false
+        },
+        {
+          name: 'state', inputName: 'state', required: false
+        },
+        {
+          name: 'zip', inputName: 'zip', required: false
+        },
+        {
+          name: 'phone1', inputName: 'phone1', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           }, validate: function (phoneno: string) {
             const phoneformat = /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;
@@ -119,12 +135,18 @@ export class ImportedContactsComponent implements OnInit {
           }
         },
         {
-          name: 'email', inputName: 'email', required: true, unique: true, requiredError: function (headerName, rowNumber, columnNumber) {
+          name: 'phone2', inputName: 'phone2', required: false
+        },
+        {
+          name: 'primary_email', inputName: 'primary_email', required: true, unique: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
           }, validate: function (email: string) {
             const reqExp = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/
             return reqExp.test(email)
           }
+        },
+        {
+          name: 'secondary_emails', inputName: 'secondary_emails', isArray: true,
         },
 
       ]
@@ -132,7 +154,29 @@ export class ImportedContactsComponent implements OnInit {
     CSVFileValidator($event.srcElement.files[0], data)
       .then(csvData => {
         if (csvData.data.length !== 0 && csvData.data.length < 201) {
-          if (csvData.inValidMessages.length === 0) {
+          let errors = [];
+          for (let i = 0; i < csvData.data.length; i++) {
+            const element = csvData.data[i];
+            if (element.secondary_emails.length == 1 && element.secondary_emails[0] == '') {
+
+              element.secondary_emails = [];
+            }
+            if (element.secondary_emails.length > 0) {
+              for (let j = 0; j < element.secondary_emails.length; j++) {
+                const email = element.secondary_emails[j];
+
+                const reqExp = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/
+                let result = reqExp.test(email)
+                if (!result) {
+                  errors.push(`Email is not valid in the ${i + 1} row / 9 column.`)
+                }
+              }
+            }
+
+          }
+          this.emailsErrs = errors;
+          this.check = false;
+          if (csvData.inValidMessages.length === 0 && this.emailsErrs.length === 0) {
             this.validData = csvData.data;
             this.check = true;
 
@@ -143,11 +187,8 @@ export class ImportedContactsComponent implements OnInit {
             this.isFileValid = false;
             this.check = false;
             this.submitDisabled = true;
-
             this.inValidMessages = csvData.inValidMessages
-
           }
-          csvData.data
         } else if (csvData.data.length == 0) {
           this.submitDisabled = true;
           this.toastr.error("There are no records in the file uploaded")
@@ -212,6 +253,7 @@ export class ImportedContactsComponent implements OnInit {
 
   cancel() {
     this.inValidMessages = [];
+    this.emailsErrs = [];
     this.myInputVariable.nativeElement.value = "";
   }
 

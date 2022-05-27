@@ -1,9 +1,16 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { HereMapService } from 'src/app/services/here-map.service';
 import * as _ from 'lodash';
+import * as moment from 'moment'
 import { environment } from '../../../../../../environments/environment';
 import { ApiService } from '../../../../../services';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { Table } from 'primeng/table';
 import { OnboardDefaultService } from '../../../../../services/onboard-default.service';
 import Constants from 'src/app/pages/fleet/constants';
 declare var $: any;
@@ -13,6 +20,8 @@ declare var $: any;
   styleUrls: ['./expense-list.component.css']
 })
 export class ExpenseListComponent implements OnInit {
+  @ViewChild('dt') table: Table;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   liveModalTimeout: any;
   liveStreamVehicle: string;
   environment = environment.isFeatureEnabled;
@@ -38,15 +47,44 @@ export class ExpenseListComponent implements OnInit {
   vehicleTypeObects: any = {};
   lastItemSK = ''
   loaded = false
+  isSearch = false;
+  _selectedColumns: any[];
+  driverOptions: any[];
+  listView = true;
+  visible = true;
+  get = _.get;
+  
+   dataColumns = [
+    { field: 'vehicleIdentification', header: 'Vehicle Name/Number', type: "text" },
+    { width: '6%', field: 'VIN', header: 'VIN', type: "text" },
+    { width: '5%', field: 'startDate', header: 'Start Date', type: "text" },
+    { width: '5%', field: 'manufacturerID', header: 'Make', type: "text" },
+    { width: '5%', field: 'modelID', header: 'Model', type: "text" },
+    { width: '5%', field: 'year', header: 'Year', type: "text" },
+    { width: '9%', field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
+    { width: '7%', field: 'ownership', header: 'Ownership', type: "text" },
+    { width: '8%', field: 'driverList.driverID', header: 'Driver Assigned', type: 'text' },
+    { width: '10%', field: 'driverList.teamDriverID', header: 'Team Driver Assigned', type: 'text' },
+    { width: '7%', field: 'plateNumber', header: 'Plate Number', type: "text" },
+    { width: '3%', field: 'currentStatus', header: 'Status', type: 'text' },
+  ];
+    
 
-  constructor(private apiService: ApiService, private httpClient: HttpClient,
-    protected _sanitizer: DomSanitizer) {
+  constructor(private apiService: ApiService, 
+  private httpClient: HttpClient,
+  private router: Router,
+  protected _sanitizer: DomSanitizer,
+  private toastr: ToastrService,
+  private spinner: NgxSpinnerService,
+  private hereMap: HereMapService,) {
   }
-  ngOnInit() {
+  
+   async ngOnInit(): Promise<void> {
     this.fetchGroups();
     this.fetchDriversList();
     this.fetchVendorList();
-    this.initDataTable()
+    this.initDataTable();
+    this.setToggleOptions();
   }
   getSuggestions = _.debounce(function (value) {
 
@@ -66,6 +104,20 @@ export class ExpenseListComponent implements OnInit {
     this.apiService.getData('groups/get/list').subscribe((result: any) => {
       this.groupsList = result;
     });
+  }
+
+   setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    
+     @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+  
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
   }
 
   fetchVehicleModelList() {
@@ -92,7 +144,8 @@ export class ExpenseListComponent implements OnInit {
     this.vehicleID = vehicleIdentification;
     this.suggestedVehicles = [];
   }
-
+  
+ 
   initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
       this.apiService.getData('vehicles/fetch/records?vehicle=' + this.vehicleID + '&status=' + this.currentStatus + '&lastKey=' + this.lastEvaluatedKey)
@@ -120,7 +173,8 @@ export class ExpenseListComponent implements OnInit {
         });
     }
   }
-  onScroll() {
+  
+  onScroll= async (event: any) =>{
     if (this.loaded) {
       this.initDataTable();
     }
@@ -143,6 +197,18 @@ export class ExpenseListComponent implements OnInit {
       return false;
     }
   }
+  
+  refreshData() {
+    this.vehicleID = '';
+    this.suggestedVehicles = [];
+    this.vehicleIdentification = '';
+    this.currentStatus = null;
+    this.vehicles = [];
+    this.lastEvaluatedKey = '';
+    this.loaded = false;
+    this.initDataTable();
+    this.dataMessage = Constants.FETCHING_DATA;
+  }
 
   resetFilter() {
     if (this.vehicleIdentification !== '' || this.currentStatus !== null) {
@@ -159,7 +225,8 @@ export class ExpenseListComponent implements OnInit {
       return false;
     }
   }
+   clear(table: Table) {
+        table.clear();
+    }
 
 }
-
-
