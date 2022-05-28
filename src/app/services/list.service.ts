@@ -115,6 +115,9 @@ export class ListService {
   bolPdfDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   bolPdfList = this.bolPdfDataSource.asObservable();
 
+  recallChequeSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  recallCheque = this.recallChequeSource.asObservable();
+
   settlementDetailsDataSource: BehaviorSubject<Array<any>> =
     new BehaviorSubject([]);
   settlementDetails = this.settlementDetailsDataSource.asObservable();
@@ -325,5 +328,9 @@ export class ListService {
 
   showSettlementsDetailPreview(value) {
     this.settlementDetailsDataSource.next(value);
+  }
+
+  triggerRecallCheque(value) {
+    this.recallChequeSource.next(value);
   }
 }

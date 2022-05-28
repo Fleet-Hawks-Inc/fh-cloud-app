@@ -209,7 +209,9 @@ export class AdvancePaymentsDetailComponent implements OnInit {
       finalAmount: this.paymentData.amount,
       txnDate: this.paymentData.txnDate,
       advType: this.paymentData.advType,
-      page: 'detail'
+      page: 'detail',
+      recall: false,
+      recordID: this.paymentID
     };
     this.listService.openPaymentChequeModal(obj);
   }
@@ -239,5 +241,27 @@ export class AdvancePaymentsDetailComponent implements OnInit {
     });
     this.advPayRef.close();
     this.downloadDisabled = false;
+  }
+
+  showRecallModal() {
+    this.showModal = true;
+    let obj = {
+      entityId: this.paymentData.entityId,
+      chequeDate: this.paymentData.payModeDate,
+      chequeAmount: this.paymentData.amount,
+      type: "advancePayment",
+      paymentTo: this.paymentData.paymentTo,
+      chequeNo: this.paymentData.payModeNo,
+      currency: this.paymentData.currency,
+      showModal: this.showModal,
+      fromDate: this.paymentData.txnDate,
+      finalAmount: this.paymentData.amount,
+      txnDate: this.paymentData.txnDate,
+      advType: this.paymentData.advType,
+      page: 'detail',
+      recall: true,
+      recordID: this.paymentID
+    };
+    this.listService.openPaymentChequeModal(obj);
   }
 }

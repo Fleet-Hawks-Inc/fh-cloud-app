@@ -3,8 +3,10 @@ import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { Auth } from "aws-amplify";
 import { AccountService, ApiService, ListService } from "src/app/services";
 import * as html2pdf from "html2pdf.js";
-import { Subscription } from "rxjs";
+import { from, Subscription } from "rxjs";
 import { formatDate } from "@angular/common";
+import { map } from "rxjs/operators";
+
 var converter = require("number-to-words");
 declare var $: any;
 
@@ -16,6 +18,7 @@ declare var $: any;
 export class PaymentChequeComponent implements OnInit {
   @ViewChild("chekOptions", { static: true }) modalContent: TemplateRef<any>;
   @ViewChild("previewCheque", { static: true }) previewCheque: TemplateRef<any>;
+  @ViewChild("recallChequeOptions", { static: true }) recallChequeOptions: TemplateRef<any>;
 
   showDollor = true;
   openFrom: any;
@@ -62,6 +65,8 @@ export class PaymentChequeComponent implements OnInit {
     isVendorPayment: false,
     vendorId: "",
     gstHstPer: 0,
+    recall: false,
+    recordID: '',
   };
 
   cheqdata = {
@@ -112,6 +117,12 @@ export class PaymentChequeComponent implements OnInit {
   isDownload = false;
   settlementIDs = new Array();
   payPeriod: any;
+  saveInfo = false;
+  errors = {};
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+
   constructor(
     private listService: ListService,
     private apiService: ApiService,
@@ -124,6 +135,8 @@ export class PaymentChequeComponent implements OnInit {
       async (res: any) => {
         if (res.showModal && res.length != 0) {
           // empty fields
+          console.log('pppppppppp', res)
+          this.saveInfo = res.recall ? res.recall : false;
           if (res.page && res.page == 'detail') {
             this.downloadTitle = 'Download'
             this.openFrom = res.page;
@@ -276,18 +289,33 @@ export class PaymentChequeComponent implements OnInit {
             this.getUserAnnualTax();
           }
 
-          let ngbModalOptions: NgbModalOptions = {
-            backdrop: "static",
-            keyboard: false,
-            windowClass: "chekOptions-prog__main",
-          };
-          res.showModal = false;
-          this.modalService
-            .open(this.modalContent, ngbModalOptions)
-            .result.then(
-              (result) => { },
-              (reason) => { }
-            );
+          if(res.recall) {
+            let ngbModalOptions: NgbModalOptions = {
+              backdrop: "static",
+              keyboard: false,
+              windowClass: "cheqRecallOptions-prog__main",
+            };
+            res.showModal = false;
+            this.modalService
+              .open(this.recallChequeOptions, ngbModalOptions)
+              .result.then(
+                (result) => { },
+                (reason) => { }
+              );
+          } else {
+            let ngbModalOptions: NgbModalOptions = {
+              backdrop: "static",
+              keyboard: false,
+              windowClass: "chekOptions-prog__main",
+            };
+            res.showModal = false;
+            this.modalService
+              .open(this.modalContent, ngbModalOptions)
+              .result.then(
+                (result) => { },
+                (reason) => { }
+              );
+          }
         }
       }
     );
@@ -461,6 +489,7 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   saveDownload() {
+    console.log('hettete')
     this.isDownload = true;
     let obj = {
       type: this.paydata.type,
@@ -471,6 +500,10 @@ export class PaymentChequeComponent implements OnInit {
 
       this.isDownload = false;
       this.modalService.dismissAll();
+      // save the cheque company and address
+      if(this.saveInfo) {
+        this.updateChequeCompany();
+      }
       this.generatePDF();
     }, 1500);
   }
@@ -577,6 +610,49 @@ export class PaymentChequeComponent implements OnInit {
     } else {
       this.showDollor = true;
     }
+  }
+
+  updateChequeCompany() {
+    console.log('carrierID', this.carrierID)
+    console.log('cheqdata.companyAddress', this.cheqdata.companyAddress)
+    const chequeData = {
+      comp: this.carrierID,
+      addr: this.cheqdata.companyAddress,
+      ref: this.paydata.chequeNo,
+      date: this.paydata.chequeDate
+    }
+    console.log('chequeData', chequeData)
+
+    // this.prevCheck()
+    this.accountService.putData(`advance/update/cheque/${this.paydata.recordID}`, chequeData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.saveInfo = false;
+              // this.throwErrors();
+            },
+            error: () => {
+              this.saveInfo = false;
+            },
+            next: () => {
+              
+            },
+          });
+      },
+      next: (res) => {
+        this.saveInfo = false;
+        this.cheqdata.chqNo = this.paydata.chequeNo
+        this.prevCheck()
+      },
+    });
   }
 
 }
