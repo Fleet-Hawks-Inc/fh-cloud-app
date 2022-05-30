@@ -124,20 +124,31 @@ export class VehicleListComponent implements OnInit {
     this.fetchGroups();
     this.fetchDriversList();
     this.fetchVendorList();
+    this.dashboardUtilityService.refreshVehCount = true;
+    this.dashboardUtilityService.refreshPlans = true;
     let curVehCount = await this.dashboardUtilityService.fetchVehiclesCount();
+    let data = [];
     this.listService.maxUnit.subscribe((res: any) => {
-      for (const item of res) {
-        if (item.vehicles) {
-          this.isUpgrade = curVehCount >= item.vehicles ? true : false;
-          if (this.isUpgrade) {
 
-            let obj = {
-              summary: Constants.RoutingPlanExpired,
-              detail: 'You will not be able to add more vehicles.',
-              severity: 'error'
-            }
-            this.dashboardUtilityService.notify(obj);
+      for (const item of res) {
+        if (item.planCode.startsWith('DIS-')) {
+          data.push({ vehicles: item.vehicles, planCode: item.planCode })
+        }
+      }
+
+      if (data.length > 0) {
+
+        let vehicleTotal = Math.max(...data.map(o => o.vehicles))
+        console.log('curVehCount', curVehCount, vehicleTotal)
+        this.isUpgrade = curVehCount >= vehicleTotal ? true : false;
+        if (this.isUpgrade) {
+
+          let obj = {
+            summary: Constants.RoutingPlanExpired,
+            detail: 'You will not be able to add more vehicles.',
+            severity: 'error'
           }
+          this.dashboardUtilityService.notify(obj);
         }
       }
     })

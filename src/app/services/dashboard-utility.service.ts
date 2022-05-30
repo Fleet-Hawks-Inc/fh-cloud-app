@@ -159,6 +159,7 @@ export class DashboardUtilityService {
   };
 
   public getCarrierByID = async (ID: string) => {
+    console.log('carrier count')
     if (this.refreshCarrier) {
       let result = await this.apiService.getData(`carriers/${ID}`).toPromise()
       this.carrierData = result;
@@ -169,7 +170,9 @@ export class DashboardUtilityService {
 
 
   async fetchVehiclesCount() {
+    console.log('count')
     if (this.refreshVehCount) {
+      console.log('count if')
       let result = await this.apiService.getData(`vehicles/fetch/vehicleCount`).toPromise()
       this.vehCount = result.total ? result.total : null;
       this.refreshVehCount = false;

@@ -70,18 +70,27 @@ export class AddDeviceComponent implements OnInit {
     let curDevCount = await this.dashboardUtilityService.fetchDevicesCount('DashCam');
     if (curDevCount) {
       this.listService.maxUnit.subscribe((res: any) => {
+        let data = [];
         for (const item of res) {
-          if (item.vehicles) {
-            this.isUpgrade = curDevCount < item.vehicles ? true : false;
-            if (this.isUpgrade) {
+          if (item.planCode.startsWith('SAF-')) {
+            data.push({ vehicles: item.vehicles, planCode: item.planCode })
+          }
 
-              let obj = {
-                summary: Constants.RoutingPlanExpired,
-                detail: 'You will not be able to add more vehicles.',
-                severity: 'error'
-              }
-              this.dashboardUtilityService.notify(obj);
+        }
+        if (data.length > 0) {
+
+          let vehicleTotal = Math.max(...data.map(o => o.vehicles))
+          this.isUpgrade = curDevCount <= vehicleTotal ? true : false;
+          if (this.isUpgrade) {
+            this.devicesTypes = this.devicesTypes.filter(elem => {
+              return elem.value != 'DashCam';
+            })
+            let obj = {
+              summary: Constants.SafetyPlanExpired,
+              detail: 'You will not be able to add more vehicles with DashCam device.',
+              severity: 'error'
             }
+            this.dashboardUtilityService.notify(obj);
           }
         }
       })

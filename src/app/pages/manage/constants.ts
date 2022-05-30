@@ -26,6 +26,9 @@ module Constants {
 
   export const contactMsg = 'Please subscribe one of the plans or contact support@fleethawks.com';
   export const RoutingPlanExpired = 'Routing & Dispatch Subscription Expired!';
+  export const SafetyPlanExpired = 'Safety Subscription Expired!';
+  export const TrackingPlanExpired = 'Asset Tracking Subscription Expired!';
+  export const ReeferPlanExpired = 'Reefer Monitoring Subscription Expired!';
 }
 
 export default Constants;

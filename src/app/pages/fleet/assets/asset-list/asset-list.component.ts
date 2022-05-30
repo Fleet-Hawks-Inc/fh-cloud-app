@@ -146,7 +146,7 @@ export class AssetListComponent implements OnInit {
     this.fetchGroups();
     await this.initDataTable();
     this.fetchContacts();
-    let curVehCount = await this.dashboardUtilityService.fetchVehiclesCount();
+    let curAstCount = await this.dashboardUtilityService.fetchAssetsCount();
     this.listService.maxUnit.subscribe((res: any) => {
       if (res) {
         let data = [];
@@ -159,8 +159,8 @@ export class AssetListComponent implements OnInit {
         if (data.length > 0) {
 
           let assetTotal = Math.max(...data.map(o => o.assets))
-
-          this.isUpgrade = curVehCount < assetTotal ? true : false;
+          console.log('curAstCount', curAstCount, assetTotal)
+          this.isUpgrade = curAstCount >= assetTotal ? true : false;
           if (this.isUpgrade) {
 
             let obj = {

@@ -114,6 +114,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
             data.push({ planCode: iterator.planCode, assets: iterator.maxAsset })
           }
         }
+        console.log('plans', data)
         this.listService.passMaxUnit(data)
 
       }
