@@ -67,6 +67,7 @@ export class PaymentChequeComponent implements OnInit {
     gstHstPer: 0,
     recall: false,
     recordID: '',
+    cheqData: {}
   };
 
   cheqdata = {
@@ -122,6 +123,9 @@ export class PaymentChequeComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  origCheqRef = '';
+  origCheqDate = '';
+  showRecallBtn = false;
 
   constructor(
     private listService: ListService,
@@ -135,7 +139,6 @@ export class PaymentChequeComponent implements OnInit {
       async (res: any) => {
         if (res.showModal && res.length != 0) {
           // empty fields
-          console.log('pppppppppp', res)
           this.saveInfo = res.recall ? res.recall : false;
           if (res.page && res.page == 'detail') {
             this.downloadTitle = 'Download'
@@ -150,10 +153,23 @@ export class PaymentChequeComponent implements OnInit {
           this.cheqdata.entityName = "";
           this.carrierID = null;
           this.cheqdata.companyAddress = null;
-
-          this.getCarriers();
+          
+          await this.getCarriers();
           this.getCurrentuser();
           this.paydata = res;
+
+          this.origCheqRef = this.paydata.chequeNo;
+          this.origCheqDate = this.paydata.chequeDate;
+
+          if(this.paydata.cheqData && this.paydata.cheqData.comp) {
+            this.carrierID = this.paydata.cheqData.comp;
+            this.cheqdata.companyAddress = this.paydata.cheqData.addr
+            for (const iterator of this.carriers) {
+              if(iterator.contactID === this.carrierID) {
+                this.selectedCarrier(iterator)
+              }
+            }
+          }
           this.settlementIDs = res.settlementIds;
           this.paydata.gstHstAmt = this.paydata.gstHstAmt === undefined ? 0 : this.paydata.gstHstAmt;
           this.paydata.gstHstPer = this.paydata.gstHstAmt === undefined ? 0 : this.paydata.gstHstPer;
@@ -350,17 +366,17 @@ export class PaymentChequeComponent implements OnInit {
     );
   }
 
-  getCarriers() {
+  async getCarriers() {
     this.carriers = [];
-    this.apiService
-      .getData(`contacts/get/records/carrier`)
-      .subscribe((result: any) => {
+    let result = await this.apiService
+      .getData(`contacts/get/records/carrier`).toPromise();
+      // .subscribe((result: any) => {
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
           element.type = "sub";
           this.carriers = [...this.carriers, element];
         }
-      });
+      // });
   }
 
   getCurrentuser = async () => {
@@ -489,7 +505,6 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   saveDownload() {
-    console.log('hettete')
     this.isDownload = true;
     let obj = {
       type: this.paydata.type,
@@ -613,46 +628,55 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   updateChequeCompany() {
-    console.log('carrierID', this.carrierID)
-    console.log('cheqdata.companyAddress', this.cheqdata.companyAddress)
-    const chequeData = {
-      comp: this.carrierID,
-      addr: this.cheqdata.companyAddress,
-      ref: this.paydata.chequeNo,
-      date: this.paydata.chequeDate
-    }
-    console.log('chequeData', chequeData)
+    if(this.paydata.chequeNo && this.paydata.chequeDate) {
+      const chequeData = {
+        comp: this.carrierID,
+        addr: this.cheqdata.companyAddress,
+        ref: this.paydata.chequeNo.trim(),
+        date: this.paydata.chequeDate.trim()
+      }
+      let updUrl = `advance/update/cheque/${this.paydata.recordID}`;
+      let updType = 'advPay';
 
-    // this.prevCheck()
-    this.accountService.putData(`advance/update/cheque/${this.paydata.recordID}`, chequeData).subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.saveInfo = false;
-              // this.throwErrors();
-            },
-            error: () => {
-              this.saveInfo = false;
-            },
-            next: () => {
-              
-            },
-          });
-      },
-      next: (res) => {
-        this.saveInfo = false;
-        this.cheqdata.chqNo = this.paydata.chequeNo
-        this.prevCheck()
-      },
-    });
+      this.accountService.putData(updUrl, chequeData).subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, "This Field");
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.saveInfo = false;
+                // this.throwErrors();
+              },
+              error: () => {
+                this.saveInfo = false;
+              },
+              next: () => {
+                
+              },
+            });
+        },
+        next: (res) => {
+          this.saveInfo = false;
+          this.cheqdata.chqNo = this.paydata.chequeNo
+          this.listService.triggerFetchPaymentDetail(updType)
+          this.prevCheck()
+        },
+      });
+    }
+  }
+  
+  checkChanges() {
+    if(this.origCheqRef != this.paydata.chequeNo || this.origCheqDate != this.paydata.chequeDate) {
+      this.showRecallBtn = true;
+    } else {
+      this.showRecallBtn = false;
+    }
   }
 
 }
