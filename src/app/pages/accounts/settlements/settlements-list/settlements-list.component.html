@@ -7,74 +7,144 @@
             <div class="col-lg-10 col-md-10">
               <div class="row">
                 <div class="col-md-2 col-lg-2 pr-0">
-                  <ng-select [(ngModel)]="filter.type" (change)="unitTypeChange()" name="SettlementType"
-                    placeholder="Select type">
-                    <ng-option value="settlementNo">Settlement Number</ng-option>
+                  <ng-select
+                    [(ngModel)]="filter.type"
+                    (change)="unitTypeChange()"
+                    name="SettlementType"
+                    placeholder="Select type"
+                  >
+                    <ng-option value="settlementNo"
+                      >Settlement Number</ng-option
+                    >
                     <ng-option value="driver">Driver</ng-option>
                     <ng-option value="carrier">Carrier</ng-option>
                     <ng-option value="owner_operator">Owner Operator</ng-option>
                   </ng-select>
                 </div>
-                <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'settlementNo'">
+                <div
+                  class="col-md-2 col-lg-2 pr-0"
+                  *ngIf="filter.type === 'settlementNo'"
+                >
                   <div class="input-group input-group-md mb-3">
-                    <input type="text" class="form-control" placeholder="Search by settlement number"
-                      name="settlementNo" [(ngModel)]="filter.searchValue" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Search by settlement number"
+                      name="settlementNo"
+                      [(ngModel)]="filter.searchValue"
+                    />
                   </div>
                 </div>
-                <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'driver'">
-                  <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Driver">
-                    <ng-option value="{{ data.key }}" *ngFor="let
-                      data of driversObject | keyvalue"> {{
-                      data.value }}
+                <div
+                  class="col-md-2 col-lg-2 pr-0"
+                  *ngIf="filter.type === 'driver'"
+                >
+                  <ng-select
+                    [(ngModel)]="filter.searchValue"
+                    name="searchValue"
+                    placeholder="Select Driver"
+                  >
+                    <ng-option
+                      value="{{ data.key }}"
+                      *ngFor="let data of driversObject | keyvalue"
+                    >
+                      {{ data.value }}
                     </ng-option>
                   </ng-select>
                 </div>
-                <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'carrier'">
-                  <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Carrier">
-                    <ng-option value="{{ data.key }}" *ngFor="let
-                      data of carriersObject | keyvalue"> {{
-                      data.value }}
+                <div
+                  class="col-md-2 col-lg-2 pr-0"
+                  *ngIf="filter.type === 'carrier'"
+                >
+                  <ng-select
+                    [(ngModel)]="filter.searchValue"
+                    name="searchValue"
+                    placeholder="Select Carrier"
+                  >
+                    <ng-option
+                      value="{{ data.key }}"
+                      *ngFor="let data of carriersObject | keyvalue"
+                    >
+                      {{ data.value }}
                     </ng-option>
                   </ng-select>
                 </div>
-                <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'owner_operator'">
-                  <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Owner Operator">
-                    <ng-option value="{{ data.key }}" *ngFor="let
-                      data of ownerOpObjects | keyvalue"> {{
-                      data.value }}
+                <div
+                  class="col-md-2 col-lg-2 pr-0"
+                  *ngIf="filter.type === 'owner_operator'"
+                >
+                  <ng-select
+                    [(ngModel)]="filter.searchValue"
+                    name="searchValue"
+                    placeholder="Select Owner Operator"
+                  >
+                    <ng-option
+                      value="{{ data.key }}"
+                      *ngFor="let data of ownerOpObjects | keyvalue"
+                    >
+                      {{ data.value }}
                     </ng-option>
                   </ng-select>
                 </div>
                 <div class="col-lg-3 col-md-3 pr-0">
-                  <div class="input-daterange input-group" data-plugin-datepicker>
+                  <div
+                    class="input-daterange input-group"
+                    data-plugin-datepicker
+                  >
                     <span class="input-group-prepend">
                       <span class="input-group-text">
                         <i class="fas fa-calendar-alt"></i>
                       </span>
                     </span>
-                    <input [(ngModel)]="filter.startDate" name="startDate" type="text" placeholder="yyyy/mm/dd"
-                      (click)="startDate.toggle()" ngbDatepicker #startDate="ngbDatepicker" class="form-control"
-                      autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
-                    <span class="
-                        input-group-text
-                        border-left-0 border-right-0
-                        rounded-0
-                      ">
+                    <input
+                      [(ngModel)]="filter.startDate"
+                      name="startDate"
+                      type="text"
+                      placeholder="yyyy/mm/dd"
+                      (click)="startDate.toggle()"
+                      ngbDatepicker
+                      #startDate="ngbDatepicker"
+                      class="form-control"
+                      autocomplete="off"
+                      [minDate]="dateMinLimit"
+                      [maxDate]="futureDatesLimit"
+                    />
+                    <span
+                      class="input-group-text border-left-0 border-right-0 rounded-0"
+                    >
                       to
                     </span>
-                    <input [(ngModel)]="filter.endDate" name="endDate" type="text" placeholder="yyyy/mm/dd"
-                      (click)="endDate.toggle()" ngbDatepicker #endDate="ngbDatepicker" class="form-control"
-                      autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                    <input
+                      [(ngModel)]="filter.endDate"
+                      name="endDate"
+                      type="text"
+                      placeholder="yyyy/mm/dd"
+                      (click)="endDate.toggle()"
+                      ngbDatepicker
+                      #endDate="ngbDatepicker"
+                      class="form-control"
+                      autocomplete="off"
+                      [minDate]="dateMinLimit"
+                      [maxDate]="futureDatesLimit"
+                    />
                   </div>
                 </div>
 
                 <div class="col-md-2 col-lg-2">
-                  <button type="submit" class="btn btn-sm btn-success mr-3" [disabled]="disableSearch"
-                    (click)="searchFilter()">
+                  <button
+                    type="submit"
+                    class="btn btn-sm btn-success mr-3"
+                    [disabled]="disableSearch"
+                    (click)="searchFilter()"
+                  >
                     Search
                   </button>
-                  <button type="submit" class="btn btn-sm btn-success" [disabled]="disableSearch"
-                    (click)="resetFilter()">
+                  <button
+                    type="submit"
+                    class="btn btn-sm btn-success"
+                    [disabled]="disableSearch"
+                    (click)="resetFilter()"
+                  >
                     Reset
                   </button>
                 </div>
@@ -82,12 +152,20 @@
             </div>
 
             <div class="col-md-2 col-lg-2 text-right pr-1">
-              <button (click)="refreshData()" data-toggle="tooltip" title="Refresh data" [disabled]="disableSearch"
-                class="btn btn-success btn-sm mr-2">
+              <button
+                (click)="refreshData()"
+                data-toggle="tooltip"
+                title="Refresh data"
+                [disabled]="disableSearch"
+                class="btn btn-success btn-sm mr-2"
+              >
                 <i class="fas fa-sync"></i>
               </button>
-              <a routerLink="/accounts/settlements/add" class="btn btn-success btn-sm ml-2" style="color: white"><i
-                  class="fas fa-plus"></i> Add Settlement
+              <a
+                routerLink="/accounts/settlements/add"
+                class="btn btn-success btn-sm ml-2"
+                style="color: white"
+                ><i class="fas fa-plus"></i> Add Settlement
               </a>
             </div>
           </div>
@@ -101,15 +179,18 @@
               <div class="form-group row">
                 <div class="col-lg-12">
                   <div class="main-panel">
-                    <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                      [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                    <div
+                      infiniteScroll
+                      [infiniteScrollDistance]="1"
+                      [infiniteScrollUpDistance]="1"
+                      [infiniteScrollThrottle]="5"
+                      (scrolled)="onScroll()"
+                    >
                       <div class="">
                         <div class="">
-                          <table class="
-                              table table-bordered table-striped
-                              mb-0
-                              simple-table
-                            ">
+                          <table
+                            class="table table-bordered table-striped mb-0 simple-table"
+                          >
                             <thead>
                               <tr class="">
                                 <th class="text-2">Settlement#</th>
@@ -124,18 +205,30 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr *ngIf="settlements.length === 0" class="text-center">
+                              <tr
+                                *ngIf="settlements.length === 0"
+                                class="text-center"
+                              >
                                 <td colspan="10">{{ dataMessage }}</td>
                               </tr>
-                              <tr *ngFor="let data of settlements; let i = index">
-                                <td class="cursorpoint font-weight-bold" [routerLink]="data.url">
+                              <tr
+                                *ngFor="let data of settlements; let i = index"
+                              >
+                                <td
+                                  class="cursorpoint font-weight-bold"
+                                  [routerLink]="data.url"
+                                >
                                   {{ data.setNo }}
                                 </td>
                                 <td class="cursorpoint" [routerLink]="data.url">
                                   {{ data.txnDate | date: "yyyy/MM/dd" }}
                                 </td>
-                                <td class="cursorpoint text-capitalize" [routerLink]="data.url">
-                                  <strong>{{ data.entityType }}</strong>:
+                                <td
+                                  class="cursorpoint text-capitalize"
+                                  [routerLink]="data.url"
+                                >
+                                  <strong>{{ data.entityType }}</strong
+                                  >:
                                   <span *ngIf="data.type === 'driver'">
                                     {{ data.entityName }}
                                   </span>
@@ -143,15 +236,21 @@
                                     {{ data.entityName }}
                                   </span>
                                   <span *ngIf="data.type === 'owner_operator'">
-                                    {{ data.entityName }}</span>
+                                    {{ data.entityName }}</span
+                                  >
                                 </td>
                                 <td class="cursorpoint" [routerLink]="data.url">
-                                  <span *ngFor="
+                                  <span
+                                    *ngFor="
                                       let trp of data.tripNames;
                                       let t = index
-                                    ">
-                                    {{ trp }}
-                                    <span *ngIf="t < data.tripNames.length - 1">,</span>
+                                    "
+                                  >
+                                    {{ trp
+                                    }}<span
+                                      *ngIf="t < data.tripNames.length - 1"
+                                      >,</span
+                                    >
                                   </span>
                                 </td>
                                 <td class="cursorpoint" [routerLink]="data.url">
@@ -170,23 +269,43 @@
                                   {{ data.currency }}
                                 </td>
                                 <td class="cursorpoint" [routerLink]="data.url">
-                                  <span class="badge badge-dark p-1 text-uppercase">{{ data.status }}</span>
+                                  <span
+                                    class="badge badge-dark p-1 text-uppercase"
+                                    >{{ data.status }}</span
+                                  >
                                 </td>
                                 <td>
                                   <div class="dropdown dropright">
-                                    <button class="bg-transparent border-0" type="button"
-                                      id="dropdownMenuButton-{{ i }}" data-toggle="dropdown" aria-haspopup="true"
-                                      aria-expanded="false" [disabled]="data.paymentLinked">
+                                    <button
+                                      class="bg-transparent border-0"
+                                      type="button"
+                                      id="dropdownMenuButton-{{ i }}"
+                                      data-toggle="dropdown"
+                                      aria-haspopup="true"
+                                      aria-expanded="false"
+                                      [disabled]="data.paymentLinked"
+                                    >
                                       <i class="fas fa-ellipsis-v"></i>
                                     </button>
-                                    <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{
+                                    <div
+                                      class="dropdown-menu"
+                                      attr.aria-labelledby="dropdownMenuButton-{{
                                         i
-                                      }}">
-                                      <a class="dropdown-item" routerLink="/accounts/settlements/edit/{{
+                                      }}"
+                                    >
+                                      <a
+                                        class="dropdown-item"
+                                        routerLink="/accounts/settlements/edit/{{
                                           data.sttlID
-                                        }}">Edit</a>
-                                      <a class="dropdown-item" href="javascript:;"
-                                        (click)="deleteSettlement(data.sttlID)">Delete</a>
+                                        }}"
+                                        >Edit</a
+                                      >
+                                      <a
+                                        class="dropdown-item"
+                                        href="javascript:;"
+                                        (click)="deleteSettlement(data.sttlID)"
+                                        >Delete</a
+                                      >
                                     </div>
                                   </div>
                                 </td>
@@ -194,10 +313,17 @@
                             </tbody>
                           </table>
                         </div>
-                        <div class="col-lg-12 mt-3 text-center" *ngIf="
+                        <div
+                          class="col-lg-12 mt-3 text-center"
+                          *ngIf="
                             lastItemSK !== 'end' && settlements.length !== 0
-                          ">
-                          <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
+                          "
+                        >
+                          <button
+                            type="button"
+                            class="btn btn-success btn-sm text-light"
+                            (click)="onScroll()"
+                          >
                             Load More..
                           </button>
                         </div>
