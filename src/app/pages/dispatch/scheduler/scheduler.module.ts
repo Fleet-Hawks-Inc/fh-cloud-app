@@ -17,6 +17,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { BadgeModule } from "primeng/badge";
+import { NgSelectModule } from "@ng-select/ng-select";
 
 const routes: Routes = [
     {
@@ -60,7 +61,8 @@ const routes: Routes = [
         ButtonModule,
         ToastModule,
         FormsModule,
-        BadgeModule
+        BadgeModule,
+        NgSelectModule,
     ]
 
 })

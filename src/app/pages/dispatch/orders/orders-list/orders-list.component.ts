@@ -239,7 +239,7 @@ export class OrdersListComponent implements OnInit {
     name:null,
     time:null,
     type:{
-      daysNo:'',
+      daysNo:0,
       days:[]
     },
     range:{
@@ -906,7 +906,30 @@ export class OrdersListComponent implements OnInit {
       this.saveDisabled=false;
       return;
     }
-    const schduleData={
+    if(this.repeatType==null){
+      this.toastr.error("Repeat Type is required");
+      this.saveDisabled=false;
+      return;
+    }
+    if(this.range==null){
+      this.toastr.error("Range is required");
+      this.saveDisabled=false;
+      return;
+    }
+    if(this.repeatType=="selectDaysNo"){
+      delete this.scheduler.type.days
+    }
+    else{
+      delete this.scheduler.type.daysNo
+    }
+
+    if(this.range=="date"){
+      delete this.scheduler.range.months;
+    }
+    else{
+      delete this.scheduler.range.dateRange
+    }
+    const scheduleData={
       orderID:this.scheduler.orderID,
       orderNumber:this.scheduler.orderNumber,
       sName:this.scheduler.name,
@@ -914,7 +937,7 @@ export class OrdersListComponent implements OnInit {
       sTime:this.scheduler.time,
       sRange:this.scheduler.range
   }
-    this.apiService.postData('orders/schedule',schduleData).subscribe({
+    this.apiService.postData('orders/schedule',scheduleData).subscribe({
       complete:()=>{},
       error:(err)=>{},
       next:(res)=>{

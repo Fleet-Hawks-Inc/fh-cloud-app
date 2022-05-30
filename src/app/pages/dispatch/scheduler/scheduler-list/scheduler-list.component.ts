@@ -21,9 +21,9 @@ export class SchedulerListComponent implements OnInit {
   ngOnInit(): void {
     this.initData();
     this.dataColumns=[
-      {width:'10%', field:'orderNumber',header:'Order#',type:'text'},
-      {width:'10%',field:'sName',header:'Scheduler Name',type:'text'},
-      {width:'10%',field:'sTime',header:'Scheduler Time',type:'text'}
+      {width:'30%', field:'orderNumber',header:'Order#',type:'text'},
+      {width:'30%',field:'sName',header:'Scheduler Name',type:'text'},
+      {width:'30%',field:'sTime',header:'Scheduler Time',type:'text'}
     ]
     this._selectedColumns=this.dataColumns;
   }

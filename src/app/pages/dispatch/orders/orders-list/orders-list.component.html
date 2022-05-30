@@ -628,7 +628,7 @@
       <h2 class="card-title font-weight-bold">Scheduler <span>#{{scheduler.orderNumber}}</span></h2>
     </header>
     <div class="card-body text-dark">
-      <form class="form-horizontal form-bordered"  #scheduleModal="ngForm">
+      <form class="form-horizontal form-bordered" #scheduleModal="ngForm">
         <div class="form-row">
           <div class="form-group col-lg-12 col-md-12" id="manualDiv">
             <div class="row">
@@ -650,34 +650,18 @@
               <h5 class="font-weight-bold text-5">Repeat Type</h5>
             </div>
             <div class="col-lg-12 borddas p-3">
-              <!-- <div class="row">
-                <div class="col-lg-9">
-                  <div class="radio">
-                    <label>
-                      <input type="radio" name="everyday" id="everyday"  value="option1" checked="">
-                      Every Day
-                    </label>
-                  </div>
-                </div>
-              </div> 
-
-              <div class="row">
-                <div class="col-lg-12">
-                  <hr class="solid">
-                </div>
-              </div> -->
 
               <div class="row">
                 <div class="col-lg-3">
                   <div class="radio">
                     <label>
-                      <input type="radio" name="repeatType" value="every" [(ngModel)]="repeatType">
+                      <input type="radio" name="repeatType" value="selectDaysNo" [(ngModel)]="repeatType">
                       Every
                     </label>
                   </div>
                 </div>
                 <div class="col-lg-2">
-                  <input type="number" class="form-control" value="0" id="inputDefault" [(ngModel)]="scheduler.type.daysNo">
+                  <input type="number" min='0' name="daysNo" class="form-control" [(ngModel)]="scheduler.type.daysNo">
                 </div>
                 <div class="col-lg-1">
                   day(s)
@@ -696,7 +680,7 @@
                 <div class="col-lg-3">
                   <div class="radio">
                     <label>
-                      <input type="radio" name="repeatType" value="select" [(ngModel)]="repeatType">
+                      <input type="radio" name="repeatType" value="days" [(ngModel)]="repeatType">
                       Select the days
                     </label>
                   </div>
@@ -726,13 +710,13 @@
                     From the date</label>
                 </div>
                 <div class="col-lg-2">
-                  <input type="text" #fromDate="ngbDatepicker" (click)="fromDate.toggle()" autocomplete="off" ngbDatepicker placeholder="yyyy/mm/dd" class="form-control">
+                  <input type="text" name="fromDate" [(ngModel)]="scheduler.range.dateRange.from" #fromDate="ngbDatepicker" (click)="fromDate.toggle()" autocomplete="off" ngbDatepicker placeholder="yyyy/mm/dd" class="form-control">
                 </div>
                 <div class="col-lg-2">
                   <label>To the date</label>
                 </div>
                 <div class="col-lg-2">
-                  <input type="text" #toDate="ngbDatepicker" (click)="toDate.toggle()" autocomplete="off" ngbDatepicker placeholder="yyyy/mm/dd" class="form-control">
+                  <input type="text" name="toDate" [(ngModel)]="scheduler.range.dateRange.to" #toDate="ngbDatepicker" (click)="toDate.toggle()" autocomplete="off" ngbDatepicker placeholder="yyyy/mm/dd" class="form-control">
                 </div>
               </div>
               <div class="row">

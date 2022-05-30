@@ -25,14 +25,14 @@
                         <button type="button" pButton  pTooltip="Refresh"
                           class="p-button-outlined mr-2" icon="fas fa-sync"></button>
   
-                        <button type="button" pButton pTooltip="Add" routerLink="/dispatch/orders/scheduler/add"
+                        <button type="button" pButton pTooltip="Add" routerLink="/dispatch/scheduler/add"
                           class="p-button-outlined mr-2" icon="pi pi-plus"></button>
   
                         <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" 
                           icon="pi pi-filter-slash"></button>
   
-                        <button type="button" pButton pRipple class="p-button-outlined mr-2"
-                          icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+                        <!-- <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                          icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button> -->
                       </div>
                     </div>
                   </ng-template>
@@ -61,17 +61,17 @@
                   let-expanded="expanded">
                   <tr style="cursor: pointer;">
                     <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}' class="font-weight-bold"
-                    style="width:10%">
+                    style="width:30%">
 
                     {{schedule.orderNumber}}
                   </td>
                   <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}' class="font-weight-bold"
-                  style="width:10%">
+                  style="width:30%">
 
                   {{schedule.sName |titlecase}}
                 </td>
                 <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}' class="font-weight-bold"
-                style="width:10%">
+                style="width:30%">
                 {{schedule.sTime}}
               </td>
               <td style="width:6%;overflow: inherit !important; " pFrozenColumn alignFrozen="right"
