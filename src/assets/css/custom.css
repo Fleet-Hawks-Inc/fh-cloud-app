@@ -2698,12 +2698,11 @@ td.loadid a {
 
 .btn-fleet {
   color: rgb(0, 0, 0);
-  background-color: #f0f1f2;
-  border-radius: 10px;
-  padding: 5px;
+  border-radius: 0px;
+  padding: 8px;
   background-image: none;
   font-size: 13px;
-  border-color: #f0f1f2;
+  border-color: #dedede;
   font-weight: 600;
 }
 
@@ -2871,7 +2870,7 @@ td.loadid a {
 /* width */
 
 .w100 {
-  width: 100%;
+  width: 100% !important;
 }
 
 .w25 {
@@ -4376,6 +4375,10 @@ input:checked + .sliderbtn:before {
   color: #333333;
   font-family: Roboto, Arial;
   font-size: 13px;
+}
+
+.orders-listing .p-datatable-resizable > .p-datatable-wrapper {
+  overflow: visible;
 }
 
 .orders-listing .p-datatable-scrollable .p-frozen-column {

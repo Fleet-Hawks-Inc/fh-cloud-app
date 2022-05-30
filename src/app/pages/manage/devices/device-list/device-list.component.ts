@@ -1,20 +1,12 @@
-import { Component, OnInit, ViewChild, Input  } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Console } from 'console';
-import { ApiService} from '../../../../services/api.service'
+import { ApiService } from '../../../../services/api.service'
 import { ToastrService } from 'ngx-toastr';
-import Constants from 'src/app/pages/fleet/constants';
+import Constants from '../../constants';
 import { Router } from '@angular/router';
-import * as moment from 'moment';
-import { ActivatedRoute } from "@angular/router";
-import { NgxSpinnerService } from 'ngx-spinner';
-import * as _ from 'lodash';
-import { HttpClient } from '@angular/common/http';
-import { NgSelectComponent } from '@ng-select/ng-select';
 import { Table } from 'primeng/table';
-import { DomSanitizer } from '@angular/platform-browser';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { environment } from 'src/environments/environment';
-import { HereMapService } from 'src/app/services';
+import * as _ from "lodash";
+
 
 @Component({
   selector: 'app-device-list',
@@ -23,44 +15,47 @@ import { HereMapService } from 'src/app/services';
 })
 
 export class DeviceListComponent implements OnInit {
-
-  next: any = '';
   @ViewChild('dt') table: Table;
-  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
-  environment = environment.isFeatureEnabled;
-  dataMessage: string = Constants.FETCHING_DATA;
-  public devices: any = [];
-  listView = true;
-  visible = true;
-  loadMsg: string = Constants.NO_LOAD_DATA;
-  isSearch = false;
   get = _.get;
   _selectedColumns: any[];
-  loaded = false;
-  
-   dataColumns = [
-        { width: '8%', field: 'type', header: 'Type', type: "text" },
-        { field: 'deviceSerialNo', header: 'Serial/IMEI', type: "text" },
-        { field: 'devicesName', header: 'Device Name', type: "text" },
-         { field: 'vehicleasset', header: '	Vehicle/Asset', type: "text" },
-        { field: 'deviceStatus', header: 'Status', type: "text" },
+      loaded = false;
+      dataColumns = [
+        { width: '20%', field: 'deviceType', header: 'Type', type: "text" },
+        { width: '20%', field: 'deviceSerialNo', header: 'Serial/IMEI', type: "text" },
+        { width: '20%', field: 'deviceName', header: 'Device Name', type: "text" },
+        { width: '20%', field: 'Vehicle/Asset', header: 'Vehicle/Asset', type: "text" },
+        { width: '20%', field: 'deviceStatus', header: 'Status', type: "text" },
     ];
-  
-   constructor(private apiService: ApiService,
-    private toastr: ToastrService,
-    private httpClient: HttpClient,
-    private spinner: NgxSpinnerService,
-    private hereMap: HereMapService,
-    protected _sanitizer: DomSanitizer,
-    private modalService: NgbModal,
-    private router: Router) { }
+    
+    constructor(private apiService: ApiService,
+    private toastr: ToastrService, private router: Router) { }
 
-  async ngOnInit(): Promise<void>  {
+  next: any = 'null';
+
+  dataMessage: string = Constants.FETCHING_DATA;
+  public devices: any = [];
+
+  async ngOnInit() {
+    this.setToggleOptions();
     this.next = 'null';
     this.devices = [];
     await this.fetchDevices();
-    this.setToggleOptions();
   }
+  setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+
+    @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
+
+    set selectedColumns(val: any[]) {
+        //restore original order
+        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+    }
+
+
 
   refreshData() {
     this.next = 'null';
@@ -68,27 +63,18 @@ export class DeviceListComponent implements OnInit {
     this.fetchDevices();
   }
 
-    setToggleOptions() {
-        this.selectedColumns = this.dataColumns;
-    }
-    
-    @Input() get selectedColumns(): any[] {
-        return this._selectedColumns;
-    }
-    
-    set selectedColumns(val: any[]) {
-        //restore original order
-        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
-    }
 
   private async fetchDevices() {
     try {
       if (this.next === 'end') {
-        return;
+       return;
       }
       this.dataMessage = Constants.FETCHING_DATA;
       const result: any = await this.apiService.getData(`devices/getDevices/${this.next}`).toPromise();
-
+      if(result.data.length === 0){
+        this.dataMessage = Constants.NO_RECORDS_FOUND;
+        this.loaded = true;
+      }
       if (result && result.data.length > 0) {
         result.data.forEach(device => {
           let deviceItem: any = {
@@ -116,16 +102,13 @@ export class DeviceListComponent implements OnInit {
             deviceItem.asset.assetIdentification = device.assetIdentification;
           }
           this.devices.push(deviceItem);
-
         });
         this.next = result.nextPage || 'end';
-
       } else {
         this.next = 'end'
         this.dataMessage = Constants.NO_RECORDS_FOUND;
       }
-                 this.loaded = true;
-            this.isSearch = false;
+        this.loaded = true;
     }
     catch (error) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -159,27 +142,22 @@ export class DeviceListComponent implements OnInit {
       }
     }
   }
-
-  onScroll= async (event: any) => {
-       if (this.loaded) {
-            this.fetchDevices();
+        onScroll(){
+        if (this.loaded) {
+         this.fetchDevices();
         }
-    
-    this.loaded = false;
+        this.loaded = false;
+    }
 
-  }
-
-  clear(table: Table) {
+   clear(table: Table) {
         table.clear();
     }
- 
+  
   gotoAssetTracker(device) {
-
     this.router.navigate(
       [`/fleet/tracking/asset-tracker/${device.asset.assetIdentification}`],
       {
         queryParams: { assetId: device.asset.assetID },
-
       }
     );
   }

@@ -513,7 +513,7 @@
                                     driverData.driverImage,
                                     imageTitle
                                   )
-                                " type="file" />
+                                " type="file" accept=".jpg, .jpeg, .png"/>
                             </div>
                           </div>
                         </div>
@@ -678,7 +678,7 @@
                               Document &nbsp;
                               <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                               <input (change)="selectDocuments($event, nullVar)" class="hidden_input1 w-100" name=""
-                                type="file" />
+                                type="file" accept=".doc, .docx, .pdf, .jpg, .jpeg .png"  />
                             </div>
                           </div>
                           <div class="col-lg-12 text-right" *ngIf="
@@ -1029,7 +1029,7 @@
 
                         <span class="btn btn-default btn-file btn-xs w100 text-left">
                           <input class="w100" type="file" multiple name="document.uploadedDocs{{ i }}"
-                            (change)="selectDocuments($event, i)" />
+                            (change)="selectDocuments($event, i)" accept=".doc, .docx, .pdf, .jpg, .jpeg .png"   />
                         </span>
                       </div>
                       <div class="col-lg-10 mt-2" *ngIf="assetsDocs[i]">
