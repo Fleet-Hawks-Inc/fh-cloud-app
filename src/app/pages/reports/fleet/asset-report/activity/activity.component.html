@@ -1,5 +1,297 @@
 <section class="body">
     <div class="inner-wrapper">
+        <section role="main" class="content-body pl-1 pt-0 pr-0">
+            <header class="page-header pr19 pl11">
+
+                <form class="form-horizontal" method="get">
+                    <div class="row" style="padding-top:10px;">
+
+                        <div class="col-md-3 col-lg-3 pr-0">
+                            <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </span>
+                                </span>
+                                <input [(ngModel)]="start" name="fromDate" type="text" placeholder="yyyy/mm/dd"
+                                    (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control"
+                                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                                <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                                    to
+                                </span>
+                                <input [(ngModel)]="end" name="toDate" type="text" placeholder="yyyy/mm/dd"
+                                    (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control"
+                                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-lg-2">
+                            <button type="button" (click)="searchFilter()"
+                                class="btn btn-sm btn-success mr-3">Search</button>
+                        </div>
+
+
+                        <div class="col-md-7 col-lg-7 text-right pr-1">
+                            <a routerLink="/reports/fleet/asset/activity-list" class="btn btn-sm btn-success">Asset
+                                List</a>
+
+                            <div class="btn-group flex-wrap ml-2">
+                                <button type="button" class="btn btn-success btn-sm dropdown-toggle"
+                                    data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i>
+                                    Export<span class="caret"></span></button>
+                                <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                    <a class="dropdown-item text-1" (click)="fetchFullExport() ">CSV</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </form>
+            </header>
+            <!-- </section>
+        <section class="m-2"> -->
+            <div class="row mb-3">
+                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
+                    <div class="bg-white p-3 text-dark text-capitalize">
+                        <p-table #dt [value]="allData" [resizableColumns]="true" columnResizeMode="expand"
+                            scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
+                            styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
+                            [loading]="!loaded" scrollHeight="100%" responsiveLayout="scroll">
+                            <ng-template pTemplate="caption">
+                                <div class="p-d-flex d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h3 class="m-0">Asset Activity{{tripNo}} </h3>
+                                    </div>
+                                    <div class="text-right">
+                                        <span>Showing {{allData.length}} entries</span> &nbsp;
+                                        <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
+                                            class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+
+                                        <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                                            (click)="clear(dt)" icon="pi pi-filter-slash"></button>
+
+                                        <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                                            icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()"
+                                            pTooltip="Excel"></button>
+
+                                        <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns"
+                                            optionLabel="header" selectedItemsLabel="{0} columns selected"
+                                            [style]="{minWidth: '200px'}" placeholder="Choose Columns">
+                                        </p-multiSelect>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <!-- Header template of DataTable -->
+                            <ng-template pTemplate="header" let-columns>
+                                <tr>
+
+                                    <!-- <th style="width: 5%" alignFrozen="left" pFrozenColumn [frozen]="true"></th> -->
+                                    <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field"
+                                        pResizableColumn [ngStyle]="{'width': dataColumns.width}">
+                                        <div [ngSwitch]="dataColumns.field">
+                                            <span>
+                                                <div class="flex justify-content-center align-items-center"
+                                                    alignFrozen="left" pFrozenColumn [frozen]="true">
+                                                    {{dataColumns.header}}
+                                                    <p-sortIcon [field]="dataColumns.field">
+                                                    </p-sortIcon>
+                                                    <p-columnFilter [type]="dataColumns.type"
+                                                        [field]="dataColumns.field" matchMode="contains"
+                                                        [showMatchModes]="false" [showOperator]="false"
+                                                        [showAddButton]="false" display="menu">
+                                                    </p-columnFilter>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </th>
+
+                                    <!-- <th style="width: 6%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th> -->
+                                </tr>
+
+                            </ng-template>
+
+                            <!-- Body Template of Data Table -->
+                            <ng-template pTemplate="body" let-asset let-columns="columns" let-rowIndex="rowIndex"
+                                let-expanded="expanded">
+                                <tr>
+                                    <!-- <td alignFrozen="left" pFrozenColumn [frozen]="true" style="width:5%">
+                                        <button type="button" pButton [pRowToggler]="order"
+                                            class="p-button-text p-button-rounded p-button-plain"
+                                            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                                    </td> -->
+                                    <td *ngFor="let dataColumns of columns" [ngStyle]="{'width': dataColumns.width}">
+
+                                        <div [ngSwitch]="dataColumns.field">
+                                            <span *ngSwitchCase="'assetName'">
+                                                <span>
+                                                    <b>{{get(asset,dataColumns.field)
+                                                        | titlecase}}</b></span>
+                                            </span>
+                                            <span *ngSwitchCase="'tripNo'">
+                                                <span>
+                                                    {{get(asset,dataColumns.field)}}</span>
+                                            </span>
+
+                                            <span *ngSwitchCase="'orderName'">
+                                                <span>
+                                                    {{get(asset,dataColumns.field)}}</span>
+                                            </span>
+                                            <span *ngSwitchCase="'vehicle'">
+                                                <span>
+                                                    {{(get(asset,dataColumns.field)
+                                                    ? get(asset,dataColumns.field) : '-') | titlecase
+                                                    }}</span>
+                                            </span>
+                                            <span *ngSwitchCase="'driverName'">
+                                                <span> {{(get(asset,dataColumns.field)
+                                                    ? get(asset,dataColumns.field) : '-') | titlecase
+                                                    }}</span>
+                                            </span>
+
+                                            <span *ngSwitchCase="'location'">
+                                                <span title="Location" *ngFor="let data of asset.tripPlanning">
+                                                    <b>
+                                                        {{data.type}}:
+                                                    </b>
+                                                    {{ data.location}} <br>
+                                                </span>
+                                            </span>
+                                            <span *ngSwitchCase="'date'">
+                                                <span>
+                                                    {{(get(asset,dataColumns.field)
+                                                    ? get(asset,dataColumns.field) : '-') | titlecase
+                                                    }}</span>
+                                            </span>
+
+
+                                            <span *ngSwitchCase="'usState'">
+                                                <span *ngFor="let item1 of asset.provinceData">
+                                                    <span *ngFor="let item2 of item1.usProvince">
+                                                        {{item2.StCntry}} <br>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                            <span *ngSwitchCase="'usStateMiles'">
+                                                <span *ngFor="let item1 of asset.provinceData">
+                                                    <span *ngFor="let item2 of item1.usProvince">
+                                                        {{item2.Total}} <br>
+                                                    </span>
+                                                </span>
+                                            </span>
+
+                                            <span *ngSwitchCase="'usMiles'">
+                                                <span>
+                                                    {{(get(asset,dataColumns.field | number : '1.2-2') ?
+                                                    get(asset,dataColumns.field) :
+                                                    '-')
+                                                    }}</span>
+                                            </span>
+                                            <span *ngSwitchCase="'canState'">
+                                                <span *ngFor="let item1 of asset.provinceData">
+                                                    <span *ngFor="let item2 of item1.canProvince">
+                                                        {{item2.StCntry}} <br>
+                                                    </span>
+                                                </span>
+                                            </span>
+
+                                            <span *ngSwitchCase="'canStateMiles'">
+                                                <span *ngFor="let item1 of asset.provinceData">
+                                                    <span *ngFor="let item2 of item1.canProvince">
+                                                        {{item2.Total}} <br>
+                                                    </span>
+                                                </span>
+                                            </span>
+
+                                            <span *ngSwitchCase="'canMiles'">
+                                                <span>
+                                                    {{asset.canMiles | number : '1.2-2'}}</span>
+                                            </span>
+
+                                            <span *ngSwitchCase="'miles'">
+                                                <span>
+                                                    {{(get(asset,dataColumns.field))
+                                                    }}</span>
+                                            </span>
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                            </ng-template>
+                            <!-- Empty Template -->
+                            <ng-template pTemplate="emptymessage" let-columns>
+                                <div class="col-lg-12 mt-3 text-center">
+                                    {{dataMessage}}
+                                    <br /><br>
+                                </div>
+                            </ng-template>
+                            <!-- Summary Section with Load More button -->
+
+                            <ng-template pTemplate="summary" let-columns>
+                                <div class="col-lg-12 mt-3 text-center "
+                                    *ngIf="lastItemSK !=='end' && allData.length !==0 ">
+                                    <button type="button " (click)="onScroll($event) "
+                                        class="btn btn-success btn-sm text-light ">Load
+                                        More..</button>
+
+                                    <br /><br>
+                                </div>
+                                <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK ==='end'">
+                                    Total Records: {{allData.length}}</div>
+                            </ng-template>
+                            <!-- <ng-template pTemplate="rowexpansion" let-asset dataKey="usProvince">
+                                <tr>
+                                    <td width="40%" class="p-0 custom-bg-light border-0">
+                                        <div class="p-3">
+                                            <p-table [value]="asset.provinceData"
+                                                styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
+                                                <ng-template pTemplate="header">
+
+                                <tr>
+                                    <th class="border-0 p-0">Province (US)</th>
+                                    <th class="border-0 p-0">US Miles</th>
+                                    <th class="border-0 p-0">US Total</th>
+                                    <th class="border-0 p-0">Province (Canada)</th>
+                                    <th class="border-0 p-0">Canada Miles</th>
+                                    <th class="border-0 p-0">Canada Total</th>
+
+                                </tr>
+
+                            </ng-template>
+                            <ng-template pTemplate="body" let-asst>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span *ngFor="let data of asst.usProvince">{{data.StCntry}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                            </ng-template>
+                        </p-table>
+                    </div>
+                    </td>
+                    </tr>
+                    </ng-template> -->
+                        </p-table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+<!-- <section class="body">
+    <div class="inner-wrapper">
         <section role="main" class="content-body pt-0 pr-0 pl-1">
             <header class="page-header pr19 pl11">
 
@@ -196,4 +488,4 @@
             </div>
         </section>
     </div>
-</section>
+</section> -->

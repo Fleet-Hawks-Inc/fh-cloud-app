@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input,ViewChild } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -8,13 +8,14 @@ import Constants from 'src/app/pages/fleet/constants';
 import { environment } from '../../../../../../environments/environment';
 import { OnboardDefaultService } from '../../../../../services/onboard-default.service';
 import * as _ from 'lodash';
-
+import { Table } from 'primeng/table';
 @Component({
   selector: 'app-activity-list',
   templateUrl: './activity-list.component.html',
   styleUrls: ['./activity-list.component.css']
 })
 export class ActivityListComponent implements OnInit {
+  @ViewChild('dt') table: Table;
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   allAssetTypes: any;
@@ -75,6 +76,22 @@ export class ActivityListComponent implements OnInit {
   assetEndPoint = this.pageLength;
   contactsObjects = [];
   loaded = false;
+  get = _.get;
+  find = _.find;
+  _selectedColumns: any[];
+  dataColumns = [
+    { width: '13%', field: 'assetIdentification', header: 'Asset Name/Number', type: "text", },
+    { width: '13%', field: 'VIN', header: 'VIN', type: "text" },
+    { width: '10%', field: 'assetType', header: 'Asset Type', type: "text" },
+    { width: '8%', field: 'manufacturer', header: 'Make', type: 'text' },
+    { width: '12%', field: 'licencePlateNumber', header: 'License Plate Number', type: "text" },
+    { width: '10%', field: 'year', header: 'Year', type: "text" },
+    { width: '10%', field: 'ownerShip', header: 'Ownership', type: "text" },
+    { width: '11%', field: 'operatorCompany', header: 'Company Name', type: "text" },
+    { width: '13%', field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
+  ]
+
+
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
@@ -87,8 +104,22 @@ export class ActivityListComponent implements OnInit {
     this.onboard.checkInspectionForms();
     this.fetchAssetsCount();
     this.fetchContacts();
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
 
   }
+
 
   getSuggestions = _.debounce(function (value) {
     value = value.toLowerCase();
@@ -198,6 +229,20 @@ export class ActivityListComponent implements OnInit {
       return false;
     }
   }
+  refreshData() {
+    this.allData = [];
+    this.assetID = '';
+    this.assetIdentification = '';
+    this.assetType = [];
+    this.suggestedAssets = [];
+    this.lastEvaluatedKey = '';
+    this.loaded = false;
+    this.initDataTable();
+    this.dataMessage = Constants.FETCHING_DATA;
 
+  }
+  clear(table: Table) {
+    table.clear();
+  }
 
 }
