@@ -34,35 +34,50 @@
                         <div class="col-md-7 col-lg-7 text-right pr-1">
                             <a routerLink="/reports/fleet/asset/activity-list" class="btn btn-sm btn-success">Asset
                                 List</a>
-
-                            <div class="btn-group flex-wrap ml-2">
-                                <button type="button" class="btn btn-success btn-sm dropdown-toggle"
-                                    data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i>
-                                    Export<span class="caret"></span></button>
-                                <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" (click)="fetchFullExport() ">CSV</a>
-                                </div>
-                            </div>
                         </div>
 
 
                     </div>
                 </form>
             </header>
-            <!-- </section>
-        <section class="m-2"> -->
+            <section class="m-2">
+                <div class="row mb-3">
+                    <div class="col-12 mb-4 ">
+                        <div class="bg-white p-3">
+                            <div class="row text-dark col-lg-3">
+                                <div class="col">
+                                    <div class="maindriverbox" style="box-shadow: 3px 3px
+                            5px;">
+                                        <div class="col-8">
+
+                                            <div>
+                                                <h4 class="mt-1 mb-0 font-weight-bold">Asset Name</h4>
+                                                <h3><span
+                                                        *ngFor="let data of assetData">{{data.assetIdentification}}</span>
+                                                </h3>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- </section> -->
+            <!-- <section class="m-2"> -->
             <div class="row mb-3">
                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
                     <div class="bg-white p-3 text-dark text-capitalize">
                         <p-table #dt [value]="allData" [resizableColumns]="true" columnResizeMode="expand"
                             scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
                             styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
-                            [loading]="!loaded" scrollHeight="100%" responsiveLayout="scroll">
+                            [loading]="!loaded" scrollHeight="100%">
                             <ng-template pTemplate="caption">
                                 <div class="p-d-flex d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h3 class="m-0">Asset Activity{{tripNo}} </h3>
+                                        <h3 class="m-0"> Activity Detail </h3>
                                     </div>
                                     <div class="text-right">
                                         <span>Showing {{allData.length}} entries</span> &nbsp;
@@ -151,57 +166,50 @@
                                             </span>
 
                                             <span *ngSwitchCase="'location'">
-                                                <span title="Location" *ngFor="let data of asset.tripPlanning">
-                                                    <b>
-                                                        {{data.type}}:
-                                                    </b>
-                                                    {{ data.location}} <br>
-                                                </span>
+                                                <span>
+                                                    {{(get(asset,dataColumns.field)
+                                                    )
+                                                    }}</span>
                                             </span>
                                             <span *ngSwitchCase="'date'">
                                                 <span>
                                                     {{(get(asset,dataColumns.field)
-                                                    ? get(asset,dataColumns.field) : '-') | titlecase
+                                                    )
                                                     }}</span>
                                             </span>
 
 
                                             <span *ngSwitchCase="'usState'">
-                                                <span *ngFor="let item1 of asset.provinceData">
-                                                    <span *ngFor="let item2 of item1.usProvince">
-                                                        {{item2.StCntry}} <br>
-                                                    </span>
-                                                </span>
+                                                <span>
+                                                    {{(get(asset,dataColumns.field)
+                                                    ? get(asset,dataColumns.field) : '-')
+                                                    }}</span>
                                             </span>
                                             <span *ngSwitchCase="'usStateMiles'">
-                                                <span *ngFor="let item1 of asset.provinceData">
-                                                    <span *ngFor="let item2 of item1.usProvince">
-                                                        {{item2.Total}} <br>
-                                                    </span>
-                                                </span>
+                                                <span>
+                                                    {{(get(asset,dataColumns.field)
+                                                    ? get(asset,dataColumns.field) : '-')
+                                                    }}</span>
                                             </span>
 
                                             <span *ngSwitchCase="'usMiles'">
                                                 <span>
-                                                    {{(get(asset,dataColumns.field | number : '1.2-2') ?
-                                                    get(asset,dataColumns.field) :
-                                                    '-')
-                                                    }}</span>
+
+                                                    {{asset.usMiles | number : '1.2-2'}} <br> </span>
                                             </span>
+
                                             <span *ngSwitchCase="'canState'">
-                                                <span *ngFor="let item1 of asset.provinceData">
-                                                    <span *ngFor="let item2 of item1.canProvince">
-                                                        {{item2.StCntry}} <br>
-                                                    </span>
-                                                </span>
+                                                <span>
+                                                    {{(get(asset,dataColumns.field)
+                                                    ? get(asset,dataColumns.field) : '-')
+                                                    }}</span>
                                             </span>
 
                                             <span *ngSwitchCase="'canStateMiles'">
-                                                <span *ngFor="let item1 of asset.provinceData">
-                                                    <span *ngFor="let item2 of item1.canProvince">
-                                                        {{item2.Total}} <br>
-                                                    </span>
-                                                </span>
+                                                <span>
+                                                    {{(get(asset,dataColumns.field)
+                                                    ? get(asset,dataColumns.field) : '-')
+                                                    }}</span>
                                             </span>
 
                                             <span *ngSwitchCase="'canMiles'">

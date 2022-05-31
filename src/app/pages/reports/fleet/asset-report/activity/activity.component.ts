@@ -117,30 +117,36 @@ export class ActivityComponent implements OnInit {
         for (let res of result.Items) {
 
           res.miles = 0
-          res.location = ''
-          res.date = ''
-          res.usState = ''
-          res.usStateMiles = ''
-          res.canState = ''
-          res.canStateMiles = ''
+          res.location = []
+          res.locationData
+          res.date = []
+          res.usState = []
+          res.usStateMiles = []
+          res.canState = []
+          res.canStateMiles = []
           for (let element of res.tripPlanning) {
             res.miles += Number(element.miles);
-            res.location = element.type + ": " + element.location
-            res.date = element.type + ": " + element.date
-          } if (res.tripPlanning > 1) {
-            res.location += ', ';
-          }
-
+            res.location.push(element.type + ": " + element.location)
+          //   if (res.tripPlanning.length > 1) {
+          //   res.location.push('& ');
+          // }
+            res.date.push(element.type + ": " + element.date)
+            // if (res.tripPlanning.length > 1) {
+            //   res.location.push('& ');
+            // }
+          } 
           for (let data of res.provinceData) {
             for (let provD of data.usProvince) {
-              res.usState = provD.StCntry
-              res.usStateMiles = provD.Total
+              res.usState.push(provD.StCntry)
+              res.usStateMiles.push( provD.Total)
             }
 
             for (let canProvD of data.canProvince) {
-              res.canState = canProvD.StCntry
-              res.canStateMiles = canProvD.Total
+              res.canState.push(canProvD.StCntry)
+              // console.log('res.canState-111-',res.canState)
+              res.canStateMiles.push(canProvD.Total)
             }
+            // console.log('res.canState-221-',res.canState)
             // console.log('state--'.res.usState/
           }
         }
@@ -193,12 +199,14 @@ export class ActivityComponent implements OnInit {
     table.clear();
   }
   refreshData() {
-    this.start = null;
-    this.end = null;
+    this.end = moment().format("YYYY-MM-DD");
+    this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
     this.allData = [];
     this.lastItemSK = '';
-    this.fetchAssetActivity();
+    this.loaded = false;
     this.dataMessage = Constants.FETCHING_DATA;
+    this.fetchAssetActivity()
+    this.fetchAsset();
   }
 
   generateCSV() {
