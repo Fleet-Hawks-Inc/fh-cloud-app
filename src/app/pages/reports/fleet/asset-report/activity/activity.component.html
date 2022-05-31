@@ -65,8 +65,6 @@
                     </div>
                 </div>
             </section>
-            <!-- </section> -->
-            <!-- <section class="m-2"> -->
             <div class="row mb-3">
                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
                     <div class="bg-white p-3 text-dark text-capitalize">
@@ -101,8 +99,6 @@
                             <!-- Header template of DataTable -->
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
-
-                                    <!-- <th style="width: 5%" alignFrozen="left" pFrozenColumn [frozen]="true"></th> -->
                                     <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field"
                                         pResizableColumn [ngStyle]="{'width': dataColumns.width}">
                                         <div [ngSwitch]="dataColumns.field">
@@ -121,8 +117,6 @@
                                             </span>
                                         </div>
                                     </th>
-
-                                    <!-- <th style="width: 6%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th> -->
                                 </tr>
 
                             </ng-template>
@@ -131,11 +125,6 @@
                             <ng-template pTemplate="body" let-asset let-columns="columns" let-rowIndex="rowIndex"
                                 let-expanded="expanded">
                                 <tr>
-                                    <!-- <td alignFrozen="left" pFrozenColumn [frozen]="true" style="width:5%">
-                                        <button type="button" pButton [pRowToggler]="order"
-                                            class="p-button-text p-button-rounded p-button-plain"
-                                            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
-                                    </td> -->
                                     <td *ngFor="let dataColumns of columns" [ngStyle]="{'width': dataColumns.width}">
 
                                         <div [ngSwitch]="dataColumns.field">
@@ -166,30 +155,24 @@
                                             </span>
 
                                             <span *ngSwitchCase="'location'">
-                                                <span>
-                                                    {{(get(asset,dataColumns.field)
-                                                    )
-                                                    }}</span>
+                                                <span *ngFor = 'let location of asset.location'>
+                                                    {{location
+                                                    }}<br/></span>
                                             </span>
                                             <span *ngSwitchCase="'date'">
-                                                <span>
-                                                    {{(get(asset,dataColumns.field)
-                                                    )
-                                                    }}</span>
+                                                <span *ngFor = 'let date of asset.date'>
+                                                    {{date
+                                                    }}<br></span>
                                             </span>
 
 
                                             <span *ngSwitchCase="'usState'">
-                                                <span>
-                                                    {{(get(asset,dataColumns.field)
-                                                    ? get(asset,dataColumns.field) : '-')
-                                                    }}</span>
+                                                <span *ngFor = 'let usState of asset.usState'>
+                                                   {{usState}}<br></span>
                                             </span>
                                             <span *ngSwitchCase="'usStateMiles'">
-                                                <span>
-                                                    {{(get(asset,dataColumns.field)
-                                                    ? get(asset,dataColumns.field) : '-')
-                                                    }}</span>
+                                                <span *ngFor = 'let usMiles of asset.usStateMiles'>
+                                                  {{usMiles}}</span>
                                             </span>
 
                                             <span *ngSwitchCase="'usMiles'">
@@ -199,17 +182,14 @@
                                             </span>
 
                                             <span *ngSwitchCase="'canState'">
-                                                <span>
-                                                    {{(get(asset,dataColumns.field)
-                                                    ? get(asset,dataColumns.field) : '-')
-                                                    }}</span>
+                                                <span *ngFor = 'let canState of asset.canState'>
+                                                   {{canState}}<br></span>
                                             </span>
 
                                             <span *ngSwitchCase="'canStateMiles'">
-                                                <span>
-                                                    {{(get(asset,dataColumns.field)
-                                                    ? get(asset,dataColumns.field) : '-')
-                                                    }}</span>
+                                                <span *ngFor = 'let canMiles of asset.canStateMiles'> 
+                                                    {{canMiles
+                                                    }}<br></span>
                                             </span>
 
                                             <span *ngSwitchCase="'canMiles'">
@@ -249,40 +229,7 @@
                                 <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK ==='end'">
                                     Total Records: {{allData.length}}</div>
                             </ng-template>
-                            <!-- <ng-template pTemplate="rowexpansion" let-asset dataKey="usProvince">
-                                <tr>
-                                    <td width="40%" class="p-0 custom-bg-light border-0">
-                                        <div class="p-3">
-                                            <p-table [value]="asset.provinceData"
-                                                styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
-                                                <ng-template pTemplate="header">
-
-                                <tr>
-                                    <th class="border-0 p-0">Province (US)</th>
-                                    <th class="border-0 p-0">US Miles</th>
-                                    <th class="border-0 p-0">US Total</th>
-                                    <th class="border-0 p-0">Province (Canada)</th>
-                                    <th class="border-0 p-0">Canada Miles</th>
-                                    <th class="border-0 p-0">Canada Total</th>
-
-                                </tr>
-
-                            </ng-template>
-                            <ng-template pTemplate="body" let-asst>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <span *ngFor="let data of asst.usProvince">{{data.StCntry}}</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-
-                            </ng-template>
-                        </p-table>
-                    </div>
-                    </td>
-                    </tr>
-                    </ng-template> -->
+                           
                         </p-table>
                     </div>
                 </div>
@@ -298,202 +245,3 @@
 
 
 
-<!-- <section class="body">
-    <div class="inner-wrapper">
-        <section role="main" class="content-body pt-0 pr-0 pl-1">
-            <header class="page-header pr19 pl11">
-
-                <form class="form-horizontal" method="get">
-                    <div class="row" style="padding-top:10px;">
-
-                        <div class="col-md-3 col-lg-3 pr-0">
-                            <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
-                                <span class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </span>
-                                </span>
-                                <input [(ngModel)]="start" name="fromDate" type="text" placeholder="yyyy/mm/dd"
-                                    (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control"
-                                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-                                <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                                    to
-                                </span>
-                                <input [(ngModel)]="end" name="toDate" type="text" placeholder="yyyy/mm/dd"
-                                    (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control"
-                                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-                            </div>
-                        </div>
-
-                        <div class="col-md-2 col-lg-2">
-                            <button type="button" (click)="searchFilter()"
-                                class="btn btn-sm btn-success mr-3">Search</button>
-                        </div>
-
-
-                        <div class="col-md-7 col-lg-7 text-right pr-1">
-                            <a routerLink="/reports/fleet/asset/activity-list" class="btn btn-sm btn-success">Asset
-                                List</a>
-
-                            <div class="btn-group flex-wrap ml-2">
-                                <button type="button" class="btn btn-success btn-sm dropdown-toggle"
-                                    data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i>
-                                    Export<span class="caret"></span></button>
-                                <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" (click)="fetchFullExport() ">CSV</a>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </form>
-            </header>
-            <section class="m-2">
-                <div class="row mb-3">
-                    <div class="col-12 mb-4 ">
-                        <div class="bg-white p-3">
-                            <div class="row text-dark col-lg-3">
-                                <div class="col">
-                                    <div class="maindriverbox" style="box-shadow: 3px 3px
-                            5px;">
-                                        <div class="col-8">
-
-                                            <div>
-                                                <h4 class="mt-1 mb-0 font-weight-bold">Asset Name</h4>
-                                                <h3><span
-                                                        *ngFor="let data of assetData">{{data.assetIdentification}}</span>
-                                                </h3>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <div class="row text-dark">
-                <div class="col pr-0">
-                    <div class="card">
-                        <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                            [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
-                            <div class="card-body">
-                                <section class="reports_div">
-                                    <table width="70%" class="row-border hover table table-bordered table-striped mb-0"
-                                        id="tonuTripsDT">
-                                        <col style="width:1%">
-                                        <col style="width:1%">
-                                        <col style="width:1%">
-                                        <col style="width:1%">
-                                        <col style="width:2%">
-                                        <col style="width:4%">
-                                        <col style="width:2%">
-                                        <col style="width:2%">
-                                        <col style="width:2%">
-                                        <col style="width:2%">
-                                        <col style="width:1%">
-                                        <col style="width:2%">
-                                        <col style="width:1%">
-                                        <col style="width:1%">
-                                        <thead>
-                                            <tr>
-                                                <th>Asset</th>
-                                                <th>Trip#</th>
-                                                <th>Order#</th>
-                                                <th>Vehicle</th>
-                                                <th>Driver</th>
-                                                <th>Location</th>
-                                                <th>Date</th>
-                                                <th>Province(US)</th>
-                                                <th>US Miles</th>
-                                                <th>US(Total)</th>
-                                                <th>Province(Canada)</th>
-                                                <th>Canada Miles</th>
-                                                <th>Canada(Total)</th>
-                                                <th>Total Miles</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngIf="allData.length === 0" class="text-center">
-                                                <td colspan="15">{{dataMessage}}</td>
-                                            </tr>
-                                            <tr *ngFor="let item of allData">
-                                                <td>{{item.assetName}}
-                                                <td>{{item.tripNo}}</td>
-                                                <td> {{item.orderName}}</td>
-                                                <td>{{item.vehicle}}</td>
-                                                <td>{{item.driverName |titlecase}}</td>
-                                                <td>
-                                                    <span title="Location" *ngFor="let data of item.tripPlanning">
-                                                        <b>
-                                                            {{data.type}}:
-                                                        </b>
-                                                        {{ data.location}} <br>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span title="Date" *ngFor="let data of item.tripPlanning">
-                                                        <b>
-                                                            {{data.type}}:
-                                                        </b>
-                                                        {{ data.date}} <br>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                     <span *ngIf="item.provinceData.length === 0 ">-</span>
-                                                       <span *ngFor="let item1 of item.provinceData">
-                                                     <span *ngFor="let item2 of item1.usProvince"> 
-                                                     {{item2.StCntry}} <br>
-                                                     </span>
-                                                    </span>
-                                                </td>
-                                                    <td>
-                                                         <span *ngIf="item.provinceData.length === 0 ">-</span>
-                                                       <span *ngFor="let item1 of item.provinceData">
-                                                     <span *ngFor="let item2 of item1.usProvince"> 
-                                                     {{item2.Total}} <br>
-                                                     </span>
-                                                    </span>
-                                                </td>
-                                               <td>   {{item.usMiles | number : '1.2-2'}} <br></td> 
-                                                   <td>
-                                                        <span *ngIf="item.provinceData.length === 0 ">-</span>
-                                                       <span *ngFor="let item1 of item.provinceData">
-                                                     <span *ngFor="let item2 of item1.canProvince"> 
-                                                     {{item2.StCntry}} <br>
-                                                     </span>
-                                                    </span>
-                                                </td>
-                                                    <td>
-                                                         <span *ngIf="item.provinceData.length === 0 ">-</span>
-                                                       <span *ngFor="let item1 of item.provinceData">
-                                                     <span *ngFor="let item2 of item1.canProvince"> 
-                                                     {{item2.Total}} <br>
-                                                     </span>
-                                                    </span>
-                                                </td>
-                                                <td>{{item.canMiles | number : '1.2-2'}}</td> 
-                                                <td>
-                                                    {{ item.miles | number : '1.2-2'}}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </section>
-                            </div>
-                            <div class="col-lg-12 mt-3 text-center"
-                                *ngIf="lastItemSK !== 'end' && datee !== 'end' && allData.length !== 0">
-                                <button type="button" class="btn btn-success btn-sm text-light"
-                                    (click)="onScroll() ">Load
-                                    More..</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-</section> -->

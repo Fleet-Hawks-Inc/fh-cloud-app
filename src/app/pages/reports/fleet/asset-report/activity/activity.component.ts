@@ -54,15 +54,14 @@ export class ActivityComponent implements OnInit {
       { width: '6%', field: 'vehicle', header: 'Vehicle', type: 'text' },
       { width: '13%', field: 'driverName', header: 'Driver', type: 'text' },
       { width: '25%', field: 'location', header: 'Location', type: "text" },
-      { width: '10%', field: 'date', header: 'Date', type: "text" },
-
-      { width: '10%', field: 'usState', header: 'Province (US)', type: 'text' },
-      { width: '10%', field: 'usStateMiles', header: 'US Miles', type: 'text' },
-      { width: '10%', field: 'usMiles', header: 'US Total', type: 'text' },
-      { width: '10%', field: 'canState', header: 'Province (Canada)', type: 'text' },
-      { width: '10%', field: 'canStateMiles', header: 'Canada Miles', type: 'text' },
-      { width: '10%', field: 'canMiles', header: 'Canada Total', type: 'text' },
-      { width: '10%', field: 'miles', header: 'Total Miles', type: 'text' },
+      { width: '8%', field: 'date', header: 'Date', type: "text" },
+      { width: '8%', field: 'usState', header: 'Province (US)', type: 'text' },
+      { width: '8%', field: 'usStateMiles', header: 'US Miles', type: 'text' },
+      { width: '7%', field: 'usMiles', header: 'US Total', type: 'text' },
+      { width: '9%', field: 'canState', header: 'Province (Canada)', type: 'text' },
+      { width: '8%', field: 'canStateMiles', header: 'Canada Miles', type: 'text' },
+      { width: '8%', field: 'canMiles', header: 'Canada Total', type: 'text' },
+      { width: '8%', field: 'miles', header: 'Total Miles', type: 'text' },
     ]
     this._selectedColumns = this.dataColumns;
     this.setToggleOptions()
@@ -126,14 +125,9 @@ export class ActivityComponent implements OnInit {
           res.canStateMiles = []
           for (let element of res.tripPlanning) {
             res.miles += Number(element.miles);
-            res.location.push(element.type + ": " + element.location)
-          //   if (res.tripPlanning.length > 1) {
-          //   res.location.push('& ');
-          // }
+            res.location.push(element.type + ": " + element.location )
+        
             res.date.push(element.type + ": " + element.date)
-            // if (res.tripPlanning.length > 1) {
-            //   res.location.push('& ');
-            // }
           } 
           for (let data of res.provinceData) {
             for (let provD of data.usProvince) {
@@ -143,11 +137,8 @@ export class ActivityComponent implements OnInit {
 
             for (let canProvD of data.canProvince) {
               res.canState.push(canProvD.StCntry)
-              // console.log('res.canState-111-',res.canState)
               res.canStateMiles.push(canProvD.Total)
             }
-            // console.log('res.canState-221-',res.canState)
-            // console.log('state--'.res.usState/
           }
         }
 
