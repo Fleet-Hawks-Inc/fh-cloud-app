@@ -96,6 +96,69 @@ export class AddSchedulerComponent implements OnInit {
     }
   }
 
+  async updateScheduler(){
+    this.saveDisabled=true;
+    if(this.scheduler.orderID) this.scheduler.orderNumber=this.orders[this.scheduler.orderID]
+    console.log(this.scheduler)
+    if(this.scheduler.orderID==null || this.scheduler.orderNumber==null)
+    {
+      this.toastr.error("Reference Order is required");
+      this.saveDisabled=false;
+      return 
+    }
+    if(this.scheduler.name==null){
+      this.toastr.error("Scheduler Name is required");
+      this.saveDisabled=false;
+      return 
+    }
+    if(this.scheduler.time==null){
+      this.toastr.error("Scheduler Time is required");
+      this.saveDisabled=false;
+      return;
+    }
+    if(this.repeatType==null){
+      this.toastr.error("Repeat Type is required");
+      this.saveDisabled=false;
+      return;
+    }
+    if(this.range==null){
+      this.toastr.error("Range is required");
+      this.saveDisabled=false;
+      return;
+    }
+    if(this.repeatType=="selectDaysNo"){
+      delete this.scheduler.type.days
+    }
+    else{
+      delete this.scheduler.type.daysNo
+    }
+
+    if(this.range=="date"){
+      delete this.scheduler.range.months;
+    }
+    else{
+      delete this.scheduler.range.dateRange
+    }
+    const scheduleData={
+      orderID:this.scheduler.orderID,
+      orderNumber:this.scheduler.orderNumber,
+      sName:this.scheduler.name,
+      sType:this.scheduler.type,
+      sTime:this.scheduler.time,
+      sRange:this.scheduler.range,
+      orderSK:`ORDSCH#`+this.schedulerID,
+      id:this.schedulerID
+  }
+    this.apiService.putData('orders/schedule',scheduleData).subscribe({
+      complete:()=>{},
+      error:(err)=>{},
+      next:(res)=>{
+        this.toastr.success("Schedule added successfully");
+        this.location.back();
+      }
+    })
+  }
+
   async saveScheduler(){
     this.saveDisabled=true;
     if(this.scheduler.orderID) this.scheduler.orderNumber=this.orders[this.scheduler.orderID]
