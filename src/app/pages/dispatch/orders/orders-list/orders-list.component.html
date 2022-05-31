@@ -242,7 +242,7 @@
                             [queryParams]="{orderId:order.orderID,orderNum:order.orderNumber}">Create Trip</a>
                             <a *ngIf="order.orderStatus === 'confirmed'" class="dropdown-item"
                             (click)="openSchedulerModal(order.orderID,order.orderNumber)"
-                            [queryParams]="{orderId:order.orderID,orderNum:order.orderNumber}">Scheduler</a>
+                            >Scheduler</a>
                           <a *ngIf="order.orderStatus == 'created' ||
                               order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
                             (click)="deactivateOrder(order)">Delete</a>
