@@ -22,6 +22,15 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { ChartsModule } from "ng2-charts";
 import { unsavedChangesGuard } from "src/app/guards/unsaved-changes.guard";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
+import { TooltipModule } from 'primeng/tooltip';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -168,6 +177,15 @@ const routes: Routes = [
     NgxSpinnerModule,
     ChartsModule,
     InfiniteScrollModule,
+    TooltipModule,
+    TableModule,
+    MultiSelectModule,
+    MenuModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule,
+    ButtonModule
   ],
   providers: [
     unsavedChangesGuard,
