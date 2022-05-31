@@ -254,6 +254,7 @@ export class NewAddressBookComponent implements OnInit {
           this.carriers = [];
         });
         this.lastKey = '';
+        this.updateButton = false;
         this.fetchUnits();
       } else if (res === 'form') {
         this.bType = false;
@@ -1625,6 +1626,7 @@ export class NewAddressBookComponent implements OnInit {
       this.unitData.workPhone1 = res.workPhone1 ? res.workPhone1 : '';
       if (res.secondaryEmails && res.secondaryEmails.length > 0) {
         let emails = [];
+        this.unitData.secondaryEmails = [];
         for (const iterator of res.secondaryEmails) {
           if (this.updateButton) {
             emails.push({ label: iterator })

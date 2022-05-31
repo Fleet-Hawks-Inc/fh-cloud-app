@@ -109,9 +109,6 @@ export class ImportedContactsComponent implements OnInit {
         {
           name: 'company_name', inputName: 'companyname', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
-          }, validate: function (name: string) {
-            const vname = /^[a-zA-Z0-9\s]+$/;
-            return vname.test(name)
           }
         },
         {
@@ -127,23 +124,13 @@ export class ImportedContactsComponent implements OnInit {
           name: 'zip', inputName: 'zip', required: false
         },
         {
-          name: 'phone1', inputName: 'phone1', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
-            return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
-          }, validate: function (phoneno: string) {
-            const phoneformat = /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;
-            return phoneformat.test(phoneno)
-          }
+          name: 'phone1', inputName: 'phone1', required: false
         },
         {
           name: 'phone2', inputName: 'phone2', required: false
         },
         {
-          name: 'primary_email', inputName: 'primary_email', required: true, unique: true, requiredError: function (headerName, rowNumber, columnNumber) {
-            return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
-          }, validate: function (email: string) {
-            const reqExp = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/
-            return reqExp.test(email)
-          }
+          name: 'primary_email', inputName: 'primary_email', required: false
         },
         {
           name: 'secondary_emails', inputName: 'secondary_emails', isArray: true,
@@ -155,7 +142,7 @@ export class ImportedContactsComponent implements OnInit {
       .then(csvData => {
         if (csvData.data.length !== 0 && csvData.data.length < 201) {
           let errors = [];
-          for (let i = 0; i < csvData.data.length; i++) {
+          for (let i = 1; i < csvData.data.length; i++) {
             const element = csvData.data[i];
             if (element.secondary_emails.length == 1 && element.secondary_emails[0] == '') {
 
@@ -164,8 +151,7 @@ export class ImportedContactsComponent implements OnInit {
             if (element.secondary_emails.length > 0) {
               for (let j = 0; j < element.secondary_emails.length; j++) {
                 const email = element.secondary_emails[j];
-
-                const reqExp = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/
+                const reqExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                 let result = reqExp.test(email)
                 if (!result) {
                   errors.push(`Email is not valid in the ${i + 1} row / 9 column.`)
@@ -195,7 +181,7 @@ export class ImportedContactsComponent implements OnInit {
         }
         else {
           this.submitDisabled = true;
-          this.toastr.error("'The file should contain a maximum of 200 records'")
+          this.toastr.error("The file should contain a maximum of 200 records")
         }
       })
       .catch(err => { })
