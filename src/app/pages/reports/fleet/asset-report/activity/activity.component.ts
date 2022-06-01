@@ -87,7 +87,7 @@ export class ActivityComponent implements OnInit {
       this.assetData = result.Items;
     });
   }
-  onScroll() {
+  onScroll(event: any) {
     if (this.loaded) {
       this.fetchAssetActivity();
     }
