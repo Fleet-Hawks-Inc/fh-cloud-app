@@ -923,8 +923,7 @@
               </label>
               <input [(ngModel)]="unitData.cName" name="cName" type="text" class="form-control"
                 placeholder="eg. Carroll Group" (input)="getSimilarNamesSuggestions($event.target.value)"
-                #customerName="ngModel" autocomplete="off" [ngClass]="{
-                  error: contactForm.submitted && customerName.invalid
+                #customerName="ngModel" autocomplete="off" [ngClass]="{ error: contactForm.submitted && customerName.invalid
                 }" required />
               <div *ngIf="actualSuggestions?.length > 0" class="result-suggestions text-capitalize">
                 <ul class="m-0">
