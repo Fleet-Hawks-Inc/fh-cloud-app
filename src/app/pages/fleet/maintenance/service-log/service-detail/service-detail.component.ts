@@ -7,6 +7,8 @@ import Constants from '../../../constants';
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import * as html2pdf from "html2pdf.js";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+
 @Component({
   selector: 'app-service-detail',
   templateUrl: './service-detail.component.html',
@@ -28,6 +30,8 @@ export class ServiceDetailComponent implements OnInit {
   allServiceParts: any = [];
   vehicle: any;
   assetID: any;
+  sessionID: string;
+
   completionDate: any;
   startDate: any;
   odometer: any;
@@ -95,8 +99,12 @@ export class ServiceDetailComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private modalService: NgbModal,
     private listService: ListService,
-    private countryStateCity: CountryStateCityService
-  ) { }
+    private countryStateCity: CountryStateCityService,
+    private routerMgmtService: RouteManagementServiceService
+
+  ) {
+    this.sessionID = this.routerMgmtService.serviceLogSessionID;
+   }
 
   ngOnInit() {
     this.logID = this.route.snapshot.params['logID'];

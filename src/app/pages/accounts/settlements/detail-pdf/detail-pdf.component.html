@@ -19,19 +19,12 @@
             <tr>
               <td width="50%">
                 <h1
-                  style="
-                    font-size: 20px;
-                    margin: 0;
-                    color: #000000;
-                    letter-spacing: unset;
-                  "
-                  class="text-capitalize"
+                  class="text-dark text-capitalize LH28 font-weight-bold text-6 mb-1 mt-1"
                 >
                   <b> Settlement#:</b> {{ settlementData.setNo }}
                 </h1>
                 <h1
-                  style="font-size: 20px; margin: 0; color: #000000"
-                  class="text-capitalize"
+                  class="text-dark text-capitalize LH28 font-weight-bold text-6 mb-2 mt-1"
                 >
                   <b>Company:</b> {{ companyName }}
                 </h1>
@@ -51,9 +44,7 @@
             </tr>
             <tr>
               <td valign="top">
-                <h2
-                  style="font-size: 20px; margin-bottom: 10px; color: #000000"
-                >
+                <h2 class="text-5 font-weight-semibold mb-2 mt-2 text-dark">
                   <span
                     class="text-capitalize"
                     *ngIf="
@@ -73,9 +64,7 @@
                 </h2>
               </td>
               <td valign="top" align="right">
-                <h2
-                  style="font-size: 20px; margin-bottom: 10px; color: #000000"
-                >
+                <h2 class="text-5 font-weight-semibold mb-2 mt-2 text-dark">
                   Pay Period:
                   {{ settlementData.prStart | date: "yyyy/MM/dd" }} to
                   {{ settlementData.prEnd | date: "yyyy/MM/dd" }}
@@ -88,9 +77,7 @@
 
             <tr>
               <td valign="top">
-                <h2 style="font-size: 16px; color: #000000">
-                  Pay Rate Information
-                </h2>
+                <h2 class="mt-2 text-dark text-4">Pay Rate Information</h2>
               </td>
               <td valign="top">&nbsp;</td>
             </tr>
@@ -138,7 +125,9 @@
                         "
                       >
                         <p style="margin-bottom: 4px; color: #000000">
-                          {{ paymentAbr[settlementData.paymentSelected[0].pType] }}
+                          {{
+                            paymentAbr[settlementData.paymentSelected[0].pType]
+                          }}
                         </p>
                       </td>
                     </tr>
@@ -193,9 +182,7 @@
                 >
                   <tbody>
                     <tr
-                      *ngIf="
-                        settlementData.paymentSelected[0].pType === 'ppm'
-                      "
+                      *ngIf="settlementData.paymentSelected[0].pType === 'ppm'"
                     >
                       <td
                         width="50%"
@@ -225,16 +212,15 @@
                       >
                         <p style="margin-bottom: 4px; color: #000000">
                           {{
-                            settlementData.paymentSelected[0].emptyMiles | number: "1.2-2"
+                            settlementData.paymentSelected[0].emptyMiles
+                              | number: "1.2-2"
                           }}
                           {{ settlementData.paymentSelected[0].currency }}
                         </p>
                       </td>
                     </tr>
                     <tr
-                      *ngIf="
-                        settlementData.paymentSelected[0].pType === 'ppm'
-                      "
+                      *ngIf="settlementData.paymentSelected[0].pType === 'ppm'"
                     >
                       <td
                         bgcolor="#f3f3f3"
@@ -263,7 +249,8 @@
                       >
                         <p style="margin-bottom: 4px; color: #000000">
                           {{
-                            settlementData.paymentSelected[0].loadedMiles | number: "1.2-2"
+                            settlementData.paymentSelected[0].loadedMiles
+                              | number: "1.2-2"
                           }}
                           {{ settlementData.paymentSelected[0].currency }}
                         </p>
@@ -350,9 +337,7 @@
                       </td>
                     </tr>
                     <tr
-                      *ngIf="
-                        settlementData.paymentSelected[0].pType === 'ppd'
-                      "
+                      *ngIf="settlementData.paymentSelected[0].pType === 'ppd'"
                     >
                       <td
                         bgcolor="#f3f3f3"
@@ -381,16 +366,15 @@
                       >
                         <p style="margin-bottom: 4px; color: #000000">
                           {{
-                            settlementData.paymentSelected[0].deliveryRate | number: "1.2-2"
+                            settlementData.paymentSelected[0].deliveryRate
+                              | number: "1.2-2"
                           }}
                           {{ settlementData.paymentSelected[0].currency }}
                         </p>
                       </td>
                     </tr>
                     <tr
-                      *ngIf="
-                        settlementData.paymentSelected[0].pType === 'pph'
-                      "
+                      *ngIf="settlementData.paymentSelected[0].pType === 'pph'"
                     >
                       <td
                         bgcolor="#f3f3f3"
@@ -419,7 +403,8 @@
                       >
                         <p style="margin-bottom: 4px; color: #000000">
                           {{
-                            settlementData.paymentSelected[0].rate | number: "1.2-2"
+                            settlementData.paymentSelected[0].rate
+                              | number: "1.2-2"
                           }}
                           {{ settlementData.paymentSelected[0].currency }}
                         </p>
@@ -1812,13 +1797,7 @@
                   <tbody>
                     <tr>
                       <td align="center">
-                        <h2
-                          style="
-                            font-size: 13px;
-                            margin-bottom: 4px;
-                            color: #000000;
-                          "
-                        >
+                        <h2 class="mb-0 text-dark text-4 font-weight-normal">
                           Powered By
                         </h2>
                         <img [src]="logoSrc" width="207" height="28" />
