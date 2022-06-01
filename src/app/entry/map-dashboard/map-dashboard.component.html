@@ -17,9 +17,9 @@
                     </div>
                     <div class="col header-buttons">
                         <button pButton pRipple type="button" *ngIf="driverPositions.length>0" class="p-button-text">{{driverPositions.length}} Drivers</button>
-                        <button pButton pRipple type="button" *ngIf="assetPositions.length>0" class="p-button-text">{{assetPositions.length}} Assets</button>
+                        <button pButton pRipple tourAnchor="vehiclePos" type="button" *ngIf="assetPositions.length>0" class="p-button-text">{{assetPositions.length}} Assets</button>
                         <button pButton pRipple type="button" *ngIf="vehicleDashPositions.length>0" class="p-button-text">{{vehicleDashPositions.length}} Vehicles</button>
-                        <button id="btnResetFilter" type="button" pButton class="pull-right" tooltipPosition="left" icon="pi pi-refresh" pTooltip="Refresh" (click)="refresh()"></button>
+                        <button id="btnResetFilter" tourAnchor="driverPos" type="button" pButton class="pull-right" tooltipPosition="left" icon="pi pi-refresh" pTooltip="Refresh" (click)="refresh()"></button>
                     </div>
 
                 </div>
@@ -30,7 +30,7 @@
 
 
             </header>
-            <div style="height: calc(100vh - 110px);width: 100%;">
+            <div style="height: calc(100vh - 110px);width: 100%;" tourAnchor="mapPos">
 
                 <google-map [options]='mapOptions' [width]="width" [height]="height">
                     <map-marker #marker="mapMarker" *ngFor="let driverPosition of driverPositions" [position]="driverPosition.position" [options]="driverMarkerOptions" (mapMouseover)="openInfoWindow(marker, driverPosition.data,'driver')"></map-marker>

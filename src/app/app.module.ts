@@ -48,7 +48,7 @@ import { NgxCaptchaModule } from "ngx-captcha";
 import { InvokeHeaderFnService } from "./services/invoke-header-fn.service";
 import { ForgotPasswordComponent } from "./entry/forgot-password/forgot-password.component";
 import { GoogleMapsModule } from "@angular/google-maps";
-import { RouteReuseStrategy } from "@angular/router";
+import { RouteReuseStrategy, RouterModule } from "@angular/router";
 import { CustomRouteReuseStrategy } from "./services/customRouteReuseService";
 import { LocationShareComponent } from "./entry/location-share/location-share.component";
 import { GlobalErrorHandler } from "./interceptors/GlobalErrorHandler";
@@ -70,8 +70,8 @@ import { AutoCompleteModule } from "primeng/autocomplete";
 import { MultiSelectModule } from "primeng/multiselect";
 
 import { TrackingModule } from "./pages/tracking/tracking.module";
-import { VehicleDashCamTrackerComponent } from "./pages/tracking/vehicle-dash-cam-tracker/vehicle-dash-cam-tracker.component";
-import { AssetTrackerComponent } from "./pages/tracking/asset-tracker/asset-tracker.component";
+
+import { TourMatMenuModule } from 'ngx-ui-tour-md-menu';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
@@ -130,7 +130,9 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     DropdownModule,
     TrackingModule,
     BadgeModule,
-    DialogModule
+    DialogModule,
+    TourMatMenuModule.forRoot(),
+    RouterModule
   ],
   providers: [
     HttpInterceptorProviders,

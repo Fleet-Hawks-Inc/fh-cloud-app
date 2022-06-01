@@ -1,4 +1,5 @@
 <ngx-loading-bar color="#47a447" includeSpinner="false" height="4px"></ngx-loading-bar>
+<tour-step-template></tour-step-template>
 <app-header *ngIf="getToken() && currentURL != '/Login' && currentURL != '/' && !currentURL.includes('/location-share') && !currentURL.includes('/subOnboard') && !currentURL.includes('/organizations')">
 </app-header>
 <app-sidebar *ngIf="getToken() && currentURL != '/Login' && !currentURL.includes('/location-share')  && !currentURL.includes('/subOnboard') && currentURL != '/'  && !currentURL.includes('/organizations')">

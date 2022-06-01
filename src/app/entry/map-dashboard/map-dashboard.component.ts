@@ -1,6 +1,7 @@
 import { animate, style, transition, trigger } from "@angular/animations";
 import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { MapInfoWindow, MapMarker } from "@angular/google-maps";
+import { TourService } from "ngx-ui-tour-md-menu";
 import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { ApiService } from "../../services";
@@ -66,14 +67,37 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
   activeTrips = [];
   constructor(
-    private apiService: ApiService
-  ) { }
+    private apiService: ApiService, private tourService: TourService
+  ) {
+    this.tourService.initialize([{
+      anchorId: 'driverPos',
+      content: 'Some content',
+      title: 'First',
+      enableBackdrop: true,
+      isAsync: true
+    }, {
+      anchorId: 'vehiclePos',
+      content: 'Other content',
+      title: 'Second',
+      enableBackdrop: true,
+      isAsync: true
+    },
+    {
+      anchorId: 'mapPos',
+      content: 'This shows all your assets, vehicles and drivers.',
+      title: 'Map Overview',
+      enableBackdrop: true,
+      isAsync: true
+    }]);
+  }
+
 
   async ngOnInit() {
     await this.getCurrentDriverLocation();
     await this.getCurrentAssetLocation();
     await this.getVehicleLocationByDashCam();
 
+    await this.tourService.start();
 
   }
 
@@ -169,7 +193,11 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
       }
 
 
+
+
     })
+
+
 
   }
 
