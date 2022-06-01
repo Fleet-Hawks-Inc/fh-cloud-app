@@ -144,14 +144,21 @@ export class ImportedContactsComponent implements OnInit {
           let errors = [];
           for (let i = 1; i < csvData.data.length; i++) {
             const element = csvData.data[i];
+            const reqExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            if (element.primary_email && element.primary_email != '') {
+              element.primary_email = element.primary_email.toLowerCase().trim();
+              let result = reqExp.test(element.primary_email)
+              if (!result) {
+                errors.push(`Primary Email is not valid in the ${i + 1} row / 9 column.`)
+              }
+            }
             if (element.secondary_emails.length == 1 && element.secondary_emails[0] == '') {
-
               element.secondary_emails = [];
             }
+
             if (element.secondary_emails.length > 0) {
               for (let j = 0; j < element.secondary_emails.length; j++) {
                 const email = element.secondary_emails[j];
-                const reqExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                 let result = reqExp.test(email)
                 if (!result) {
                   errors.push(`Email is not valid in the ${i + 1} row / 9 column.`)
