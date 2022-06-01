@@ -88,7 +88,7 @@
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
-            <div class="bg-white p-3 text-dark text-capitalize">
+            <div class="bg-white p-3 text-dark text-capitalize orders-listing">
               <p-table #dt [value]="orders" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both"
                 [columns]="selectedColumns" [loading]="!loaded"
                 styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
@@ -120,7 +120,7 @@
                 <ng-template pTemplate="header" let-columns>
                   <tr>
 
-                    <th style="width: 5%" alignFrozen="left" pFrozenColumn [frozen]="true"></th>
+                    <th style="width: 3%" alignFrozen="left" pFrozenColumn [frozen]="true"></th>
                     <th *ngFor="let column of dataColumns" [pSortableColumn]="column.field" pResizableColumn
                       [ngStyle]="{'width': column.width}">
                       <span>
@@ -136,7 +136,7 @@
                       </span>
 
                     </th>
-                    <th style="width: 8%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
+                    <th style="width: 6%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
                   </tr>
 
                 </ng-template>
@@ -144,7 +144,7 @@
                   let-expanded="expanded">
                   <tr style="cursor: pointer;">
 
-                    <td alignFrozen="left" pFrozenColumn [frozen]="true" style="width:5%">
+                    <td alignFrozen="left" pFrozenColumn [frozen]="true" style="width:3%">
                       <button type="button" pButton [pRowToggler]="order"
                         class="p-button-text p-button-rounded p-button-plain"
                         [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
@@ -224,9 +224,9 @@
                       [ngStyle]="{'width': find(columns,{field:'newStatus'}).width}">
                       <span class="badge badge-dark p-1">{{ order.newStatus }}</span> <br>
                     </td>
-                    <td style="width:8%;overflow: inherit !important; " pFrozenColumn alignFrozen="right"
+                    <td style="width:6%;overflow: inherit !important; " pFrozenColumn alignFrozen="right"
                       [frozen]="true">
-                      <div class="dropdown dropright" style="z-index: 1000">
+                      <div class="dropdown dropbottom">
                         <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{rowIndex
                             }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           <i class="fas fa-ellipsis-v"></i>
@@ -434,7 +434,7 @@
                 </p-table>
               </div>
             </td>
-            <td width="40%" class="p-0 custom-bg-light border-0">
+            <td width="20%" class="p-0 custom-bg-light border-0">
               <div class="p-3 ">
                 <p-table [value]="order.shippersReceiversInfo"
                   styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">

@@ -312,29 +312,18 @@
 
                                         <ng-template pTemplate="summary" let-columns>
                                             <div class="col-lg-12 mt-3 text-center "
-                                                *ngIf="lastEvaluatedKey !== 'end' && items.length !== 0">
+                                                *ngIf="lastItemSK !== 'end' && items.length !== 0">
                                                 <button type="button " (click)="onScroll($event) "
                                                     class="btn btn-success btn-sm text-light ">Load
                                                     More..</button>
                                                 <br /><br>
                                             </div>
-                                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey ==='end'">
+                                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK ==='end'">
                                                 Total Records: {{items.length}}</div>
                                         </ng-template>
                                     </p-table>
                                         </div>
                                         
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                         
                                         <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 'rinv'}"
                                             id="rinv" role="tabpanel" aria-labelledby="reefer-tab">
                              <p-table #dt [value]="requiredItems" [resizableColumns]="true" columnResizeMode="expand"
@@ -436,13 +425,13 @@
 
                                         <ng-template pTemplate="summary" let-columns>
                                             <div class="col-lg-12 mt-3 text-center "
-                                                *ngIf="lastEvaluatedKey !== 'end' && requiredItems.length !== 0">
+                                                *ngIf="lastSK !== 'end' && requiredItems.length !== 0">
                                                 <button type="button " (click)="onScroll($event) "
                                                     class="btn btn-success btn-sm text-light ">Load
                                                     More..</button>
                                                 <br /><br>
                                             </div>
-                                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey ==='end'">
+                                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastSK ==='end'">
                                                 Total Records: {{requiredItems.length}}</div>
                                         </ng-template>
                                     </p-table>

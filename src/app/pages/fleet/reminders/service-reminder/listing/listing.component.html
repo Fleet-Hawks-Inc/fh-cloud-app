@@ -104,7 +104,8 @@
                                                     </tr>
                                                     <tr *ngFor="let item of remindersData">
                                                         <td>{{vehicleList[item.entityID]}}</td>
-                                                        <td><span
+                                                        <td>
+                                                            <span
                                                                 class="text-warning font-weight-bold font-size-12 text-uppercase"
                                                                 *ngIf="item.status === 'dueSoon'">{{item.status}}<br></span>
                                                             <span
@@ -148,8 +149,8 @@
                                                                         (click)="resolveReminder(item.reminderIdentification)">Enter
                                                                         Service</a>
                                                                     <a class="dropdown-item text-1" href="javascript:;"
-                                                                        (click)="sendEmailNotification(item)">Send
-                                                                        Notifications</a>
+                                                                        (click)="sendEmailNotification(item)">
+                                                                        Send Notifications</a>
                                                                     <a routerLink="/fleet/reminders/service-reminder/edit/{{item.reminderID }}"
                                                                         class="dropdown-item text-1">Edit</a>
                                                                     <a href="javascript:;" class="dropdown-item text-1"

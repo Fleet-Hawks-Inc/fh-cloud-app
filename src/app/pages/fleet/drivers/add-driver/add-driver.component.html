@@ -513,7 +513,7 @@
                                     driverData.driverImage,
                                     imageTitle
                                   )
-                                " type="file" />
+                                " type="file" accept=".jpg, .jpeg, .png"/>
                             </div>
                           </div>
                         </div>
@@ -678,7 +678,7 @@
                               Document &nbsp;
                               <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                               <input (change)="selectDocuments($event, nullVar)" class="hidden_input1 w-100" name=""
-                                type="file" />
+                                type="file" accept=".doc, .docx, .pdf, .jpg, .jpeg .png"  />
                             </div>
                           </div>
                           <div class="col-lg-12 text-right" *ngIf="
@@ -721,10 +721,17 @@
                                 (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
                             </div>
                             <div class="col-lg-3 text-right">
-                              <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal"
-                                data-target="#viewDocModal"></i>
-                              <a href="javascript:;" (click)="delete('abs', item.name, d, nullVar)"
-                                class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
+                           
+                                
+                  
+                                
+                          <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="delete('abs', item.name, d, nullVar)"><i class="fas fa-trash-alt"></i></a>     
+                                
+                                <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="setPDFSrc(item.path)" data-toggle="modal" data-target="#viewDocModal"><i
+                                class="fas fa-eye"></i></a>
+                                
                             </div>
                           </div>
                         </div>
@@ -1022,7 +1029,7 @@
 
                         <span class="btn btn-default btn-file btn-xs w100 text-left">
                           <input class="w100" type="file" multiple name="document.uploadedDocs{{ i }}"
-                            (change)="selectDocuments($event, i)" />
+                            (change)="selectDocuments($event, i)" accept=".doc, .docx, .pdf, .jpg, .jpeg .png"   />
                         </span>
                       </div>
                       <div class="col-lg-10 mt-2" *ngIf="assetsDocs[i]">
