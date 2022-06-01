@@ -125,6 +125,8 @@ export class PaymentChequeComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   origCheqRef = '';
   origCheqDate = '';
+  origCompany = '';
+  origCompAddr = '';
   showRecallBtn = false;
 
   constructor(
@@ -162,13 +164,16 @@ export class PaymentChequeComponent implements OnInit {
           this.origCheqDate = this.paydata.chequeDate;
 
           if(this.paydata.cheqData && this.paydata.cheqData.comp) {
+            this.origCompany = this.paydata.cheqData.comp; 
+            this.origCompAddr = this.paydata.cheqData.addr;
+            console.log('this.origCompany', this.origCompany, this.origCompAddr)
             this.carrierID = this.paydata.cheqData.comp;
-            this.cheqdata.companyAddress = this.paydata.cheqData.addr
             for (const iterator of this.carriers) {
               if(iterator.contactID === this.carrierID) {
                 this.selectedCarrier(iterator)
               }
             }
+            this.cheqdata.companyAddress = this.paydata.cheqData.addr;
           }
           this.settlementIDs = res.settlementIds;
           this.paydata.gstHstAmt = this.paydata.gstHstAmt === undefined ? 0 : this.paydata.gstHstAmt;
@@ -399,6 +404,7 @@ export class PaymentChequeComponent implements OnInit {
 
   selectedCarrier(val) {
     this.cheqdata.companyName = val.companyName;
+    this.cheqdata.companyAddress = null;
     this.addresses = [];
     if (val.type === "main") {
       val.address.map((v) => {
@@ -510,7 +516,11 @@ export class PaymentChequeComponent implements OnInit {
     this.isDownload = true;
     let obj = {
       type: this.paydata.type,
-      openFrom: this.openFrom
+      openFrom: this.openFrom,
+      cheqdata: {
+        comp: this.carrierID,
+        addr: this.cheqdata.companyAddress,
+      }
     }
     this.listService.triggerPaymentSave(obj);
     setTimeout(() => {
@@ -630,7 +640,7 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   updateChequeCompany() {
-    if(this.paydata.chequeNo && this.paydata.chequeDate) {
+    if(this.paydata.chequeNo && this.paydata.chequeDate && this.carrierID && this.cheqdata.companyAddress) {
       const chequeData = {
         comp: this.carrierID,
         addr: this.cheqdata.companyAddress,
@@ -674,11 +684,10 @@ export class PaymentChequeComponent implements OnInit {
   }
   
   checkChanges() {
-    if(this.origCheqRef != this.paydata.chequeNo || this.origCheqDate != this.paydata.chequeDate) {
+    if(this.origCheqRef != this.paydata.chequeNo || this.origCheqDate != this.paydata.chequeDate || this.origCompany != this.carrierID || this.origCompAddr != this.cheqdata.companyAddress) {
       this.showRecallBtn = true;
     } else {
       this.showRecallBtn = false;
     }
   }
-
 }

@@ -40,7 +40,7 @@
                         </td>
                         <td width="50%">
                           <ng-select [items]="carriers" name="carriers" bindLabel="cName"
-                            (change)="selectedCarrier($event)" bindValue="contactID" [(ngModel)]="carrierID"
+                            (change)="selectedCarrier($event); checkChanges()" bindValue="contactID" [(ngModel)]="carrierID"
                             placeholder="Select Company" class="text-capitalize">
                           </ng-select>
                         </td>
@@ -51,7 +51,7 @@
                         </td>
                         <td width="50%">
                           <ng-select placeholder="Select Company Address" name="carrAddr"
-                            [(ngModel)]="cheqdata.companyAddress" #mVehicle="ngModel" required>
+                            [(ngModel)]="cheqdata.companyAddress" #mVehicle="ngModel" required (change)="checkChanges()">
                             <ng-container *ngFor="let data of addresses">
                               <ng-option *ngIf="data.fullAddr" value="{{ data.fullAddr }}">
                                 {{ data.fullAddr }}</ng-option>
@@ -118,123 +118,6 @@
           Preview Cheque
         </button>
         <button type="button" *ngIf="showRecallBtn" class="btn btn-success" (click)="updateChequeCompany()">
-          Update and Preview
-        </button>
-      </div>
-    </form>
-  </div>
-</ng-template>
-
-<ng-template #recallChequeOptions let-modal>
-  <div class="modal-content">
-    <div class="modal-header">
-      <h4 class="modal-title">Recall Cheque</h4>
-      <button type="button" class="close" (click)="modal.dismiss()">
-        &times;
-      </button>
-    </div>
-    <form>
-      <div class="modal-body">
-        <div class="form-group col-lg-12 col-md-12">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="row">
-                <div class="col-lg-12">
-                  <table class="table table-bordered">
-                    <tbody>
-                      <tr>
-                        <td width="50%" class="back-color-gray font-weight-bold">
-                          Recipient Name
-                        </td>
-                        <td width="50%" class="text-capitalize">
-                          {{ cheqdata.entityName }}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="back-color-gray font-weight-bold">
-                          Cheque Amount
-                        </td>
-                        <td>{{ paydata.chequeAmount | number: "1.2-2" }}</td>
-                      </tr>
-                      <tr>
-                        <td width="50%" class="back-color-gray font-weight-bold">
-                          Select Company
-                        </td>
-                        <td width="50%">
-                          <ng-select [items]="carriers" name="carriers" bindLabel="cName"
-                            (change)="selectedCarrier($event)" bindValue="contactID" [(ngModel)]="carrierID"
-                            placeholder="Select Company" class="text-capitalize">
-                          </ng-select>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td width="50%" class="back-color-gray font-weight-bold">
-                          Select Address
-                        </td>
-                        <td width="50%">
-                          <ng-select placeholder="Select Company Address" name="carrAddr"
-                            [(ngModel)]="cheqdata.companyAddress" #mVehicle="ngModel" required>
-                            <ng-container *ngFor="let data of addresses">
-                              <ng-option *ngIf="data.fullAddr" value="{{ data.fullAddr }}">
-                                {{ data.fullAddr }}</ng-option>
-                            </ng-container>
-                          </ng-select>
-                        </td>
-                      </tr>
-                      
-                      <tr>
-                        <td class="back-color-gray font-weight-bold">
-                          Cheque Date
-                        </td>
-                        <td>
-                          <input
-                          [(ngModel)]="paydata.chequeDate"
-                          name="payModeDate"
-                          type="text"
-                          placeholder="yyyy/mm/dd"
-                          (click)="payModeDate.toggle()"
-                          ngbDatepicker
-                          #payModeDate="ngbDatepicker"
-                          class="form-control"
-                          autocomplete="off"
-                          #payDate="ngModel"
-                          required
-                          [minDate]="dateMinLimit"
-                          [maxDate]="futureDatesLimit"
-                        />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="back-color-gray font-weight-bold">
-                          Cheque Reference
-                        </td>
-                        <td>
-                          <input
-                          [(ngModel)]="paydata.chequeNo"
-                          name="chequeNoa"
-                          type="text"
-                          placeholder="e.g 7845"
-                          class="form-control"
-                          autocomplete="off"
-                          #payref="ngModel"
-                          required
-                        />
-                        </td>
-                      </tr>
-                      
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="modal.dismiss()">
-          Close
-        </button>
-        <button type="button" class="btn btn-success" (click)="updateChequeCompany()">
           Update and Preview
         </button>
       </div>
