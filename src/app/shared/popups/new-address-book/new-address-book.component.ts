@@ -254,6 +254,7 @@ export class NewAddressBookComponent implements OnInit {
           this.carriers = [];
         });
         this.lastKey = '';
+        this.updateButton = false;
         this.fetchUnits();
       } else if (res === 'form') {
         this.bType = false;
@@ -478,7 +479,7 @@ export class NewAddressBookComponent implements OnInit {
           this.shippers.push(element)
         }
       });
-      if (this.carriers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+      if (this.shippers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
     } else if (item === 'receiver') {
       this.receivers = [];
       this.units.forEach(element => {
@@ -1557,6 +1558,15 @@ export class NewAddressBookComponent implements OnInit {
             this.owners.push(element);
           }
         });
+        if (this.customers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+        if (this.brokers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+        if (this.carriers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+        if (this.shippers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+        if (this.receivers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+        if (this.fcCompanies.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+        if (this.vendors.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+        if (this.owners.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+
         if (this.units.length > 0) {
           if (this.units[this.units.length - 1].contactSK != undefined) {
             this.lastKey = this.units[this.units.length - 1].contactSK.replace(/#/g, '--');
@@ -1564,6 +1574,7 @@ export class NewAddressBookComponent implements OnInit {
           } else {
             this.lastKey = 'end';
           }
+
           this.allData = this.units;
         }
         this.isSearched = false;
@@ -1625,10 +1636,18 @@ export class NewAddressBookComponent implements OnInit {
       this.unitData.workPhone1 = res.workPhone1 ? res.workPhone1 : '';
       if (res.secondaryEmails && res.secondaryEmails.length > 0) {
         let emails = [];
+        this.unitData.secondaryEmails = [];
         for (const iterator of res.secondaryEmails) {
-          emails.push({ label: iterator })
+          if (this.updateButton) {
+            emails.push({ label: iterator })
+          }
+          if (!this.updateButton) {
+            emails.push(iterator)
+          }
         }
         this.unitData.secondaryEmails = emails;
+      } else {
+        this.unitData.secondaryEmails = [];
       }
       this.unitData.adrs = res.adrs;
       for (let index = 0; index < this.unitData.adrs.length; index++) {

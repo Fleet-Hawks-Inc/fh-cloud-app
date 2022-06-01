@@ -116,7 +116,9 @@
                 <li> File must be comma seperated.</li>
                 <li> File must have all the predefined header with valid data.</li>
                 <li> File must not contain more than 200 records. </li>
-                <li> You can use multiple emails in secondary_emails column with comma separator. </li>
+                <li> Primary email allowing one email only. For multiple emails, you can use secondary_emails column
+                    with
+                    comma separator. </li>
             </ul>
             <div class="row">
                 <div class="form-group col-lg-11 mt-5 mb-3">
@@ -125,11 +127,14 @@
                     </label>
                     <input class="form-control choosefileLH" (change)="chooseFile($event)"
                         (change)="validateCSV($event)" #myInput accept=".csv" id="importDocs" type="file">
-                    <div *ngIf="inValidMessages.length > 0">
+                    <div *ngIf="inValidMessages.length > 0 || emailsErrs.length > 0">
                         <br><span><b>Below are the errors in the uploaded file. Please rectify them and upload
                                 the file again.</b></span>
+                        <ul class="m-0">
+                            <li *ngFor="let error of inValidMessages"><span class="text-danger">{{error}}</span></li>
+                        </ul>
                         <ul>
-                            <li *ngFor="let error of inValidMessages"><span class="text-danger">{{error}}.</span></li>
+                            <li *ngFor="let error of emailsErrs"><span class="text-danger">{{error}}</span></li>
                         </ul>
                     </div>
                 </div>

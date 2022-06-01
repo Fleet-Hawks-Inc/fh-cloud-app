@@ -345,6 +345,8 @@ export class PaymentChequeComponent implements OnInit {
     );
     this.cheqdata.amount = this.paydata.finalAmount;
     this.cheqdata.amountWords = converter.toWords(this.cheqdata.amount);
+    this.paydata.finalAmount = this.paydata.finalAmount.toFixed(2);
+    this.paydata.finalAmount = Number(this.paydata.finalAmount)
     let amountSplit = this.paydata.finalAmount.toString().split(".");
     let decimals = 0.0;
     if (amountSplit.length > 0) {
