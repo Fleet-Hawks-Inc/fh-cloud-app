@@ -3,6 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
+import { SharedModule } from "../../../../shared/shared.module";
 import {
   NgbDateAdapter,
   NgbDateParserFormatter,
@@ -20,6 +21,16 @@ import { SummaryComponent } from "./summary/summary.component";
 import { FvreportComponent } from "./fvreport/fvreport.component";
 import { FdreportComponent } from "./fdreport/fdreport.component";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
+import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 
 const routes: Routes = [
   {
@@ -102,6 +113,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     CommonModule,
     RouterModule.forChild(routes),
     HttpClientModule,
+    SharedModule,
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
@@ -109,6 +121,14 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgxSpinnerModule,
     ChartsModule,
     InfiniteScrollModule,
+    NgxDatatableModule,
+    TableModule,
+    MenuModule,
+    ButtonModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule
   ],
   providers: [
     unsavedChangesGuard,
