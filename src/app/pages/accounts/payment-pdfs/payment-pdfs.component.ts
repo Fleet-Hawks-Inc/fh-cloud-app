@@ -526,7 +526,11 @@ export class PaymentPdfsComponent implements OnInit {
       .getData(`contacts/detail/${this.paymentData.entityId}`)
       .subscribe((result: any) => {
         result = result.Items[0];
-        this.pdfDetails.name = `${result.firstName} ${result.lastName}`;
+        if(result.contactSK.includes('EMP#') ) {
+          this.pdfDetails.name = `${result.firstName} ${result.lastName}`;
+        } else {
+          this.pdfDetails.name = `${result.cName}`;
+        }
         this.pdfDetails.email = result.workEmail;
         this.pdfDetails.userID = result.employeeID;
         if (result.adrs[0].manual) {
