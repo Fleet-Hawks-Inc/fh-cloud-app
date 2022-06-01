@@ -347,7 +347,44 @@ _selectedColumns: any[];
         }
     }
 
-   
+   refreshData(){
+            this.unitID = null;
+            this.assetUnitID = null;
+            this.start = null;
+            this.end = null;
+            this.searchActive = false;
+            this.fuelCAD = [];
+            this.fuelCostCAD = 0;
+            this.fuelCostUSD = 0
+            this.fuelUSD = [];
+            this.fuelList = [];
+            this.fetchFuelCount();
+            this.fuelQtyLitres = [];
+            this.fuelQtyGallons = [];
+            this.finalFuelRunningCAD = 0;
+            this.finalFuelRunningUSD = 0;
+            this.disel_ConsumedLTR = 0;
+            this.disel_ConsumedGL = 0;
+            this.gas_ConsumedLTR = 0;
+            this.gas_ConsumedGL = 0;
+            this.propane_ConsumedLTR = 0;
+            this.propane_ConsumedGL = 0;
+            this.def_ConsumedLTR = 0;
+            this.def_ConsumedGL = 0;
+            this.finalFuelRunningCAD = this.fuelCount.cad_amount;
+            this.finalFuelRunningUSD = this.fuelCount.usd_amount;
+            this.disel_ConsumedLTR = this.fuelCount.des_quantityLTR;
+            this.disel_ConsumedGL = this.fuelCount.des_quantityGL;
+            this.propane_ConsumedLTR = this.fuelCount.prop_quantityLTR;
+            this.propane_ConsumedGL = this.fuelCount.prop_quantityGL;
+            this.gas_ConsumedLTR = this.fuelCount.gas_quantityLTR;
+            this.gas_ConsumedGL = this.fuelCount.gas_quantityGL;
+            this.def_ConsumedLTR = this.fuelCount.def_quantityLTR;
+            this.def_ConsumedGL = this.fuelCount.def_quantityGL;
+            this.lastItemSK = '';
+            this.dataMessage = Constants.FETCHING_DATA;
+            this.fetchFuelReport();
+   }
 
 
 
