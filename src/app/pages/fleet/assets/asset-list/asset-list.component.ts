@@ -199,12 +199,10 @@ export class AssetListComponent implements OnInit {
     }
   }, 800);
 
-  setAsset(assetIdentification: any) {
-    if (assetIdentification != undefined && assetIdentification != '') {
-      this.assetIdentification = assetIdentification;
-    }
-    this.loadMsg = Constants.NO_LOAD_DATA;
-    //this.suggestedAssets = [];
+  setAsset(assetID, assetIdentification) {
+    this.assetIdentification = assetIdentification;
+    this.assetID = assetIdentification;
+    this.suggestedAssets = [];
   }
 
   fetchGroups() {
