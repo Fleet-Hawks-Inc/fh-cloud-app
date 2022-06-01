@@ -1574,6 +1574,7 @@ export class NewAddressBookComponent implements OnInit {
           } else {
             this.lastKey = 'end';
           }
+
           this.allData = this.units;
         }
         this.isSearched = false;
