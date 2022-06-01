@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from 'src/app/services';
+import { Component, OnInit, ElementRef, ViewChild  } from '@angular/core';
+import { ApiService} from 'src/app/services';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { timeStamp } from 'console';
@@ -9,13 +9,26 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import Constants from 'src/app/pages/fleet/constants';
 import { result } from 'lodash';
 import * as _ from 'lodash';
+import { HttpClient } from '@angular/common/http';
+import { HereMapService } from 'src/app/services/here-map.service';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { Table } from 'primeng/table/table';
+import { DomSanitizer } from '@angular/platform-browser';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ViewEncapsulation } from '@angular/core';
+import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-summary',
     templateUrl: './summary.component.html',
-    styleUrls: ['./summary.component.css']
+    styleUrls: ['./summary.component.css'],
+    providers: [DatePipe],
+  encapsulation: ViewEncapsulation.None,
 })
 export class SummaryComponent implements OnInit {
+   @ViewChild('dt') table: Table;
+    environment = environment.isFeatureEnabled;
     dataMessage: string = Constants.FETCHING_DATA;
     vehiclesList = [];
     vehicleList: any = {};
@@ -104,9 +117,41 @@ gas_ConsumedGL = 0;
 
 def_ConsumedLTR = 0;
 def_ConsumedGL = 0;
+visible = true;
+loadMsg: string = Constants.NO_LOAD_DATA;
+isSearch = false;
+get = _.get;
+_selectedColumns: any[];
+  
+    
+     dataColumns = [
+        { width: '12%', field: 'dateTime', header: 'Date/Time', type: "text" },
+        { width: '12%', field: 'data.useType', header: 'Use Type', type: "text" },
+        { width: '12%', field: 'data.unitNo', header: 'Unit Name', type: "text" },
+        { width: '12%', field: 'data.cardNo', header: 'Fuel Card', type: "text" },
+        { width: '12%', field: 'data.city', header: 'City', type: "text" },
+        { width: '12%', field: 'data.type', header: 'Fuel Type', type: "text" },
+        { width: '12%', field: 'data.qty', header: 'Fuel Quantity', type: "text" },
+        { width: '12%', field: 'data.uom', header: 'Litres or Gallons', type: "text" },
+        { width: '12%', field: 'data.odometer', header: 'Odometer', type: "text" },
+        { width: '12%', field: 'data.rPpu', header: 'Retail Price Per L', type: "text" },
+        { width: '12%', field: 'data.rBeforeTax', header: 'Retail Amount Before Tax', type: "text" },
+        { width: '12%', field: 'data.discAmt', header: 'Total Discount', type: "text" },
+        { width: '12%', field: 'data.amt', header: 'Retail Amount', type: "text" },
+        { width: '12%', field: 'data.currency', header: 'Currency', type: "text" },
+       
+    ];
 
 
-    constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
+    constructor(private apiService: ApiService, 
+    private router: Router, 
+    private toastr: ToastrService, 
+    private spinner: NgxSpinnerService,
+    private hereMap: HereMapService,
+    protected _sanitizer: DomSanitizer,
+    private httpClient: HttpClient,
+     private el: ElementRef,
+    private modalService: NgbModal,) { }
 
     ngOnInit() {
         this.fetchFuelReport();
@@ -302,7 +347,7 @@ def_ConsumedGL = 0;
         }
     }
 
-
+   
 
 
 
@@ -509,6 +554,10 @@ def_ConsumedGL = 0;
         })
     }
 
+   clear(table: Table) {
+        table.clear();
+    }
+  
     csvExport() {
         if (this.unitID !== null || this.assetUnitID !== null || this.start !== null || this.end !== null) {
             this.searchActive = false
