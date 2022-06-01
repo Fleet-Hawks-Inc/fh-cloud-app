@@ -1320,9 +1320,13 @@ export class AddOrdersComponent implements OnInit {
   setAdditionalContact(event) {
     for (let i = 0; i < this.cusAdditionalContact.length; i++) {
       const element = this.cusAdditionalContact[i];
-      if (element.fullName == event) {
+      if (element.flName == event) {
         this.orderData.phone = element.phone;
         this.orderData.email = element.email;
+      }
+      else{
+      this.orderData.phone = null;
+      this.orderData.email = null;
       }
     }
   }

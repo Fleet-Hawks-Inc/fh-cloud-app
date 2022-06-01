@@ -272,7 +272,6 @@ def_ConsumedGL = 0;
         }
         if(element.type === 'DEF'){
         this.fuelConsumeDEF_LTR = this.fuelConsumeDEF_LTR + Number(element.qty);
-        console.log(this.fuelConsumeDEF_LTR)
         }
         if(element.type === 'Gasoline'){
         this.fuelConsumeGas_LTR = this.fuelConsumeGas_LTR + Number(element.qty);
@@ -305,43 +304,7 @@ def_ConsumedGL = 0;
 
 
 
-/*
-    calculateQTY() {
-        this.fuelQtyLitres = [];
-        this.fuelQtyGallons = [];
-        this.fuelQty = []
-        for (let i = 0; i < this.fuelList.length; i++) {
-            this.fuelQty.push(this.fuelList[i].data)
-        }
-        this.fuelQty.map((x: any) => {
-            if (x.uom === 'L' || x.uom === 'litre') {
-                this.fuelQtyLitres.push(x);
-            } else {
-                this.fuelQtyGallons.push(x);
-            }
-        })
-        if (this.fuelQtyLitres.length > 0 || this.fuelQtyGallons.length > 0) {
-            for (const element of this.fuelQtyLitres) {
-                this.fuelConsumeLTR = this.fuelConsumeLTR + Number(element.qty);
-            }
-            for (const element of this.fuelQtyGallons) {
-                this.fuelConsumeGL = this.fuelConsumeGL + Number(element.qty);
-            }
-            for (const element of this.fuelQtyLitres) {
-            if(element.type === 'Disel'){
-            this.fuelConsumeDis_LTR = this.fuelConsumeDis_LTR + Number(element.qty);
-            console.log('Disel LTR',this.fuelConsumeDis_LTR)
-            }
-            }
-            for (const element of this.fuelQtyGallons) {
-            if(element.type === 'Disel'){
-            this.fuelConsumeDis_GL = this.fuelConsumeDis_GL + Number(element.qty);
-            console.log('Disel GL',this.fuelConsumeDis_GL)
-            }
-            }
-        }
-    }
-*/
+
 
     onScroll() {
         if (this.loaded === true) {
@@ -357,6 +320,14 @@ def_ConsumedGL = 0;
     searchFilter() {
         this.finalFuelRunningCAD = 0;
         this.finalFuelRunningUSD = 0;
+        this.disel_ConsumedLTR = 0
+        this.disel_ConsumedGL = 0;
+        this.propane_ConsumedLTR = 0;
+        this.propane_ConsumedGL = 0;
+        this.def_ConsumedLTR = 0;
+        this.def_ConsumedGL = 0;
+        this.gas_ConsumedLTR = 0;
+        this.gas_ConsumedGL = 0;
         if (this.unitID !== null || this.assetUnitID !== null || this.start !== null || this.end !== null) {
             if (this.start != null && this.end == null) {
                 this.toastr.error('Please select both start and end dates.');
@@ -376,28 +347,27 @@ def_ConsumedGL = 0;
                 this.searchActive = true;
                 this.finalFuelRunningCAD = 0;
                 this.finalFuelRunningUSD = 0;
-                //this.finalFuelConsumedLTR = 0;
-                //this.finalFuelConsumedGL = 0;
-                
                 this.disel_ConsumedLTR = 0;
                 this.disel_ConsumedGL = 0;
-                
                 this.gas_ConsumedLTR = 0;
                 this.gas_ConsumedGL = 0;
-                
                 this.propane_ConsumedLTR = 0;
                 this.propane_ConsumedGL = 0;
-                
                 this.def_ConsumedLTR = 0;
                 this.def_ConsumedGL = 0;
-                
-                this.fuelConsumeLTR = 0;
-                this.fuelConsumeGL = 0;
-                this.fuelCostCAD = 0;
-                this.fuelCostUSD = 0;
+               
+               this.fuelConsumeDis_LTR = 0;
+               this.fuelConsumeDEF_LTR = 0;
+               this.fuelConsumeGas_LTR = 0;
+               this.fuelConsumeProp_LTR = 0;
+               this.fuelConsumeDis_GL = 0;
+               this.fuelConsumeDEF_GL = 0;
+               this.fuelConsumeGas_GL = 0;
+               this.fuelConsumeProp_GL = 0;
+               this.fuelCostCAD = 0;
+               this.fuelCostUSD = 0;
                 //this.finalFuelRunningCAD = this.fuelCount.cad_amount;
                 //this.finalFuelRunningUSD = this.fuelCount.usd_amount;
-
                 this.fuelCAD = [];
                 this.fuelUSD = [];
                 this.fuelQtyLitres = [];
@@ -428,26 +398,24 @@ def_ConsumedGL = 0;
             this.fuelQtyGallons = [];
             this.finalFuelRunningCAD = 0;
             this.finalFuelRunningUSD = 0;
-            //this.finalFuelConsumedLTR = 0;
-            //this.finalFuelConsumedGL = 0;
-            
             this.disel_ConsumedLTR = 0;
             this.disel_ConsumedGL = 0;
-            
-                this.gas_ConsumedLTR = 0;
-                this.gas_ConsumedGL = 0;
-                
-                this.propane_ConsumedLTR = 0;
-                this.propane_ConsumedGL = 0;
-                
-                this.def_ConsumedLTR = 0;
-                this.def_ConsumedGL = 0;
-            
-            
+            this.gas_ConsumedLTR = 0;
+            this.gas_ConsumedGL = 0;
+            this.propane_ConsumedLTR = 0;
+            this.propane_ConsumedGL = 0;
+            this.def_ConsumedLTR = 0;
+            this.def_ConsumedGL = 0;
             this.finalFuelRunningCAD = this.fuelCount.cad_amount;
             this.finalFuelRunningUSD = this.fuelCount.usd_amount;
-            this.disel_ConsumedLTR = this.fuelCount.l_quantity;
-            this.disel_ConsumedGL = this.fuelCount.g_quantity;
+            this.disel_ConsumedLTR = this.fuelCount.des_quantityLTR;
+            this.disel_ConsumedGL = this.fuelCount.des_quantityGL;
+            this.propane_ConsumedLTR = this.fuelCount.prop_quantityLTR;
+            this.propane_ConsumedGL = this.fuelCount.prop_quantityGL;
+            this.gas_ConsumedLTR = this.fuelCount.gas_quantityLTR;
+            this.gas_ConsumedGL = this.fuelCount.gas_quantityGL;
+            this.def_ConsumedLTR = this.fuelCount.def_quantityLTR;
+            this.def_ConsumedGL = this.fuelCount.def_quantityGL;
             this.lastItemSK = '';
             this.dataMessage = Constants.FETCHING_DATA;
             this.fetchFuelReport();
@@ -495,36 +463,6 @@ def_ConsumedGL = 0;
                 obj['Currency'] = element.data.currency
                 dataObject.push(obj)
             });
-            
-            let totObjFuelConsumed = {
-            ['Total fuel consumed LTR'] : 'Total fuel consumed',
-            ['Total fuel consumed GL'] : ''
-            }
-            if(this.searchActive === true){
-            totObjFuelConsumed['Total fuel consumed LTRR'] = this.disel_ConsumedLTR.toFixed() + ' LTR'
-            totObjFuelConsumed['Total fuel consumed GLL'] =  this.disel_ConsumedGL.toFixed() + 'GL' + '\n'
-            }else{
-            this.searchActive = false;
-            totObjFuelConsumed['Total fuel consumed LTRR'] = this.disel_ConsumedLTR.toFixed() + ' LTR'
-            totObjFuelConsumed['Total fuel consumed GLL'] =  this.disel_ConsumedGL.toFixed() + ' GL' + '\n'
-            }
-            dataObject.push('\n',totObjFuelConsumed)
-            
-
-            let totObjFinalTotal = {
-              ['Total fuel cost CAD'] : 'Total fuel Cost',
-              ['Total fuel cost USD'] : ''
-            }
-            if(this.searchActive === true){
-            totObjFinalTotal['Total Fuel Cost CAD'] = this.finalFuelRunningCAD.toFixed() + ' CAD'
-            totObjFinalTotal['Total Fuel Cost USD'] = this.finalFuelRunningUSD.toFixed() + ' USD'
-            }else{
-            this.searchActive = false;
-            totObjFinalTotal['Total Fuel Cost CAD'] = this.finalFuelRunningCAD.toFixed() + ' CAD'
-            totObjFinalTotal['Total Fuel Cost USD'] = this.finalFuelRunningUSD.toFixed() + ' USD'
-            }
-            dataObject.push(totObjFinalTotal)
-            
             let headers = Object.keys(dataObject[0]).join(',')
             headers += '\n'
             csvArray.push(headers)
