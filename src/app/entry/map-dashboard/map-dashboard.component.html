@@ -40,8 +40,9 @@
                                     <div style="font-size: 12px;">
                                         <strong>{{assets.data.location}}</strong><br/> Reported On: <strong>{{assets.data.time}}</strong><br/> Speed: {{assets.data.speed}} | Temp. {{assets.data.temp}} | Battery: {{assets.data.battery}}
                                         <br/>
-                                        <a class='link' target='_blank' href="{{ '#/fleet/tracking/asset-tracker/' + assets.data.assetIdentification + '?assetId=' + assets.data.assetID}}">Asset Report</a> |
-                                        <a href="{{'#/fleet/assets/detail/' + assets.data.assetID}}" target='_blank'>Asset Details</a>
+
+                                        <a style="color:rgb(13, 137, 186)" class="link" target='_blank' href="{{ '#/fleet/tracking/asset-tracker/' + assets.data.assetIdentification + '?assetId=' + assets.data.assetID}}">Asset Report</a> |
+                                        <a style="color:rgb(13, 137, 186)" href="{{'#/fleet/assets/detail/' + assets.data.assetID}}" target='_blank'>Asset Details</a>
 
                                     </div>
                                     <hr>
