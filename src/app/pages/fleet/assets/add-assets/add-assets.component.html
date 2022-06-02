@@ -876,6 +876,12 @@
                           Document(s)</label>
                         <input (change)="selectDocuments($event, 'purchase')" name="purchaseDocs" type="file" multiple
                           class="form-control border-0 p-0" accept=".doc, .docx, .pdf, .jpg, .jpeg .png"  />
+                                <span
+                              *ngIf="purchaseDocsError != ''"
+                              class="text-danger"
+                            >
+                              {{ purchaseDocsError }}
+                            </span>
                       </div>
                     </div>
                     <div class="row pr-3">
@@ -1067,6 +1073,12 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Add Loan Document(s)</label>
                         <input (change)="selectDocuments($event, 'loan')" name="loanDocs" type="file" multiple
                           class="form-control border-0 p-0" accept=".doc, .docx, .pdf, .jpg, .jpeg .png"  />
+                             <span
+                              *ngIf="loanDocsError  != ''"
+                              class="text-danger"
+                            >
+                              {{ loanDocsError  }}
+                            </span>
                       </div>
                       <div class="col-lg-10 mt-2" *ngIf="lDocs.length > 0">
                         <div class="vehicle-common-box p-3">
@@ -1206,6 +1218,12 @@
 
                         <input (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" type="file"
                           multiple class="form-control border-0 p-0" accept=".jpg, .jpeg, .png"/>
+                            <span
+                              *ngIf="photosError  != ''"
+                              class="text-danger"
+                            >
+                              {{ photosError  }}
+                            </span>
                       </div>
                     </div>
                     <div class="row mt-2" *ngIf="assetsImages?.length > 0">
@@ -1233,6 +1251,12 @@
                           Document</label>
                         <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs" type="file"
                           multiple class="form-control border-0 p-0" accept=".doc, .docx, .pdf, .jpg, .jpeg .png"  />
+                              <span
+                              *ngIf="uploadDocsError != ''"
+                              class="text-danger"
+                            >
+                              {{ uploadDocsError }}
+                            </span>
                       </div>
                     </div>
 
