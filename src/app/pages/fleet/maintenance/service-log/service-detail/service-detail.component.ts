@@ -118,12 +118,27 @@ export class ServiceDetailComponent implements OnInit {
     this.fetchCarrier()
   }
 
+  async getBase64ImageFromUrl(imageUrl) {
+    var res = await fetch(imageUrl);
+    var blob = await res.blob();
+    return new Promise((resolve, reject) => {
+      var reader  = new FileReader();
+      reader.addEventListener("load", function () {
+          resolve(reader.result);
+      }, false);
+      reader.onerror = () => {
+        return reject(this);
+      };
+      reader.readAsDataURL(blob);
+    })
+  }
+
   fetchProgramByID() {
     this.spinner.show(); // loader init
     this.apiService.getData(`serviceLogs/${this.logID}`).subscribe({
       complete: () => { },
       error: () => { },
-      next: (result: any) => {
+      next: async (result: any) => {
         this.logsData = result.Items[0];
         this.fetchSelectedIssues(this.logsData.selectedIssues);
 
@@ -155,7 +170,7 @@ export class ServiceDetailComponent implements OnInit {
         this.partsTotal = result.allServiceParts.total;
 
         this.currency = result.allServiceParts.currency;
-        this.logImages = result.uploadedPics;
+        // this.logImages = result.uploadedPics;
         this.logDocs = result.uploadDocument;
         this.vehiclePlateNo = result.vehPlateNo;
         this.vehicleVIN = result.vehicleVin;
@@ -163,8 +178,17 @@ export class ServiceDetailComponent implements OnInit {
         this.assetVin = result.assetVin;
         this.subTotal = result.total.subTotal;
         this.taxes = result.total.taxes;
-        this.finalTotal = result.total.finalTotal
-
+        this.finalTotal = result.total.finalTotal;
+        for (const image of result.uploadedPics) {
+            const base64 = await this.getBase64ImageFromUrl(image.path)
+            this.logImages.push(
+              {
+                path: base64,
+                name: image.name
+              }
+            )
+        }
+        
         /*
        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
           this.logImages = result.uploadedPhotos.map(x => ({

@@ -32,8 +32,7 @@ export class SummaryComponent implements OnInit {
   dataColumns: any[];
   get = _.get;
   find = _.find;
-
-
+columnFilter = false
 
 
   constructor(private apiService: ApiService, private toastr: ToastrService) {
@@ -117,12 +116,12 @@ export class SummaryComponent implements OnInit {
             this.lastItemSK = 'end';
           }
           this.allData = this.allData.concat(result.Items);
-          /*
+          
             result[`Items`].map((v: any) => {
               v.assetType = v.assetType.replace("_", " ")
               this.allData.push(v)
             });
-            */
+        
           this.loaded = true;
         }
       });
