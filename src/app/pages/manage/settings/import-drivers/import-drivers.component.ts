@@ -169,7 +169,16 @@ export class ImportDriversComponent implements OnInit {
                 joinStr = item + '. Please enter the date in the format: YYYY-MM-DD';
                 this.inValidMessages.push(joinStr)
               } else if (item.includes('status')) {
-                joinStr = item + '.  Status should be active or inActive';
+                joinStr = item + '. Status should be active or inActive';
+                this.inValidMessages.push(joinStr)
+              } else if (item.includes('username')) {
+                joinStr = item + '. Username should be at-least 6 characters long and can be a combination of numbers, letters and dot(.)';
+                this.inValidMessages.push(joinStr)
+              } else if (item.includes('phone')) {
+                joinStr = item + '. Enter valid phone number eg. 2234567891';
+                this.inValidMessages.push(joinStr)
+              } else if (item.includes('email')) {
+                joinStr = item + '. Enter valid email eg. johnsmith@gmail.com';
                 this.inValidMessages.push(joinStr)
               } else {
                 this.inValidMessages.push(item)

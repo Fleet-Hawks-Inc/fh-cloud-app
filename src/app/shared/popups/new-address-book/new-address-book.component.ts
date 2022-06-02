@@ -402,7 +402,7 @@ export class NewAddressBookComponent implements OnInit {
 
   getSuggestions = _.debounce(function (value) {
     if (value != '') {
-      value = value.toLowerCase()
+      value = encodeURIComponent(value.toLowerCase())
       this.apiService
         .getData(`address-book/suggestion/${value}`)
         .subscribe((result) => {
@@ -1534,7 +1534,7 @@ export class NewAddressBookComponent implements OnInit {
   fetchUnits() {
     this.dataMessage = Constants.FETCHING_DATA;
     if (this.lastKey !== 'end') {
-      this.apiService.getData(`address-book/fetch/records?lastKey=${this.lastKey}&updatedKey=${this.updatedKey}&companyName=` + this.filterVal.cName).subscribe(res => {
+      this.apiService.getData(`address-book/fetch/records?lastKey=${this.lastKey}&updatedKey=${this.updatedKey}&companyName=` + encodeURIComponent(this.filterVal.cName)).subscribe(res => {
         if (res.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
