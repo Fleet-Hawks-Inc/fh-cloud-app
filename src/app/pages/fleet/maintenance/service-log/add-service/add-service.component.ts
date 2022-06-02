@@ -982,6 +982,7 @@ export class AddServiceComponent implements OnInit {
       location: this.serviceData.location,
       geoCords: this.serviceData.geoCords,
       uploadedPhotos: this.existingPhotos,
+      uploadedDocs: this.existingDocs,
       exempt: this.serviceData.exempt,
       total: this.serviceData.total,
       charges: this.serviceData.charges,
