@@ -674,7 +674,7 @@
                   <div class="row">
                     <div class="col-lg-6 mb-2" *ngFor="let item of logImages; let i = index">
                       <div class="vehicle-photo-box">
-                        <img [src]="item.path" width="100%" class="img-fluid" style="height: 180px; object-fit: cover" />
+                        <img [src]="item.path" width="100%" id="logo_{{i}}" class="img-fluid" style="height: 180px; object-fit: cover" />
                         <!-- <iframe [src]="item" width="100px" height="100px" frameborder="0"></iframe> -->
                         <hr class="m-3" />
                         <div class="row">
