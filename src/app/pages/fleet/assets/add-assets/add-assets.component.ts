@@ -1070,7 +1070,7 @@ export class AddAssetsComponent implements OnInit {
         ) {
         this.uploadedPhotos.push(files[i]);
         } else {
-            this.photosError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+            this.photosError = 'Only .jpg, .jpeg and png files allowed.';
         }
       }
     }
