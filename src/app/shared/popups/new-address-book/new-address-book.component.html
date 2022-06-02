@@ -11,7 +11,7 @@
             <div class="col-4 ml-auto">
               <div class="input-group input-group-md mb-0">
                 <input type="text" [(ngModel)]="filterVal.cName" autocomplete="off" placeholder="Search By Company Name"
-                  class="form-control" (input)="getSuggestions($event.target.value)" />
+                  class="form-control text-capitalize" (input)="getSuggestions($event.target.value)" />
               </div>
 
               <div *ngIf="suggestions?.length > 0" class="result-suggestions text-capitalize">
