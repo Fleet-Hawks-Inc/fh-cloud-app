@@ -64,7 +64,7 @@ export class AdvancePaymentsDetailComponent implements OnInit {
 
   ngOnInit() {
     this.subscription = this.listService.paymentDetail.subscribe(async (res: any) => {
-      if(res == 'advPay') {
+      if(res == 'advance') {
         this.fetchPay();
       }
     })
@@ -224,9 +224,9 @@ export class AdvancePaymentsDetailComponent implements OnInit {
       txnDate: this.paymentData.txnDate,
       advType: this.paymentData.advType,
       page: 'detail',
-      recall: false,
       recordID: this.paymentID,
-      cheqData: this.paymentData.cheqdata
+      cheqData: this.paymentData.cheqdata,
+      module: 'advance',
     };
     this.listService.openPaymentChequeModal(obj);
   }

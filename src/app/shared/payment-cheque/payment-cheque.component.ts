@@ -18,7 +18,6 @@ declare var $: any;
 export class PaymentChequeComponent implements OnInit {
   @ViewChild("chekOptions", { static: true }) modalContent: TemplateRef<any>;
   @ViewChild("previewCheque", { static: true }) previewCheque: TemplateRef<any>;
-  @ViewChild("recallChequeOptions", { static: true }) recallChequeOptions: TemplateRef<any>;
 
   showDollor = true;
   openFrom: any;
@@ -65,7 +64,6 @@ export class PaymentChequeComponent implements OnInit {
     isVendorPayment: false,
     vendorId: "",
     gstHstPer: 0,
-    recall: false,
     recordID: '',
     cheqData: {}
   };
@@ -118,7 +116,6 @@ export class PaymentChequeComponent implements OnInit {
   isDownload = false;
   settlementIDs = new Array();
   payPeriod: any;
-  saveInfo = false;
   errors = {};
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -128,6 +125,7 @@ export class PaymentChequeComponent implements OnInit {
   origCompany = '';
   origCompAddr = '';
   showRecallBtn = false;
+  moduleType = '';
 
   constructor(
     private listService: ListService,
@@ -141,7 +139,6 @@ export class PaymentChequeComponent implements OnInit {
       async (res: any) => {
         if (res.showModal && res.length != 0) {
           // empty fields
-          this.saveInfo = res.recall ? res.recall : false;
           if (res.page && res.page == 'detail') {
             this.downloadTitle = 'Download'
             this.openFrom = res.page;
@@ -149,7 +146,7 @@ export class PaymentChequeComponent implements OnInit {
             this.downloadTitle = 'Download & Save';
             this.openFrom = 'addForm';
           }
-
+          this.moduleType = res.module;
           this.showIssue = false;
           this.corporateDrver = false;
           this.cheqdata.entityName = "";
@@ -309,34 +306,19 @@ export class PaymentChequeComponent implements OnInit {
           ) {
             this.getUserAnnualTax();
           }
-
-          if(res.recall) {
-            let ngbModalOptions: NgbModalOptions = {
-              backdrop: "static",
-              keyboard: false,
-              windowClass: "cheqRecallOptions-prog__main",
-            };
-            res.showModal = false;
-            this.modalService
-              .open(this.recallChequeOptions, ngbModalOptions)
-              .result.then(
-                (result) => { },
-                (reason) => { }
-              );
-          } else {
-            let ngbModalOptions: NgbModalOptions = {
-              backdrop: "static",
-              keyboard: false,
-              windowClass: "chekOptions-prog__main",
-            };
-            res.showModal = false;
-            this.modalService
-              .open(this.modalContent, ngbModalOptions)
-              .result.then(
-                (result) => { },
-                (reason) => { }
-              );
-          }
+          
+          let ngbModalOptions: NgbModalOptions = {
+            backdrop: "static",
+            keyboard: false,
+            windowClass: "chekOptions-prog__main",
+          };
+          res.showModal = false;
+          this.modalService
+            .open(this.modalContent, ngbModalOptions)
+            .result.then(
+              (result) => { },
+              (reason) => { }
+            );
         }
       }
     );
@@ -350,8 +332,8 @@ export class PaymentChequeComponent implements OnInit {
     );
     this.cheqdata.amount = this.paydata.finalAmount;
     this.cheqdata.amountWords = converter.toWords(this.cheqdata.amount);
-    this.paydata.finalAmount = this.paydata.finalAmount.toFixed(2);
-    this.paydata.finalAmount = Number(this.paydata.finalAmount)
+    // this.paydata.finalAmount = this.paydata.finalAmount.toFixed(2);
+    // this.paydata.finalAmount = Number(this.paydata.finalAmount)
     let amountSplit = this.paydata.finalAmount.toString().split(".");
     let decimals = 0.0;
     if (amountSplit.length > 0) {
@@ -428,6 +410,7 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   async generatePDF() {
+    console.log('--------------')
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
       margin: 0,
@@ -522,16 +505,15 @@ export class PaymentChequeComponent implements OnInit {
         addr: this.cheqdata.companyAddress,
       }
     }
-    this.listService.triggerPaymentSave(obj);
-    setTimeout(() => {
 
+    if(this.paydata.page !== 'detail') {
+      this.listService.triggerPaymentSave(obj);
+    }
+    
+    setTimeout(() => {
       this.isDownload = false;
-      this.modalService.dismissAll();
-      // save the cheque company and address
-      if(this.saveInfo) {
-        this.updateChequeCompany();
-      }
       this.generatePDF();
+      this.modalService.dismissAll();
     }, 1500);
   }
 
@@ -647,8 +629,7 @@ export class PaymentChequeComponent implements OnInit {
         ref: this.paydata.chequeNo.trim(),
         date: this.paydata.chequeDate.trim()
       }
-      let updUrl = `advance/update/cheque/${this.paydata.recordID}`;
-      let updType = 'advPay';
+      let updUrl = `${this.moduleType}/update/cheque/${this.paydata.recordID}`;
 
       this.accountService.putData(updUrl, chequeData).subscribe({
         complete: () => { },
@@ -662,11 +643,9 @@ export class PaymentChequeComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                this.saveInfo = false;
                 // this.throwErrors();
               },
               error: () => {
-                this.saveInfo = false;
               },
               next: () => {
                 
@@ -674,9 +653,8 @@ export class PaymentChequeComponent implements OnInit {
             });
         },
         next: (res) => {
-          this.saveInfo = false;
           this.cheqdata.chqNo = this.paydata.chequeNo
-          this.listService.triggerFetchPaymentDetail(updType)
+          this.listService.triggerFetchPaymentDetail(this.moduleType)
           this.prevCheck()
         },
       });
@@ -684,10 +662,12 @@ export class PaymentChequeComponent implements OnInit {
   }
   
   checkChanges() {
-    if(this.origCheqRef != this.paydata.chequeNo || this.origCheqDate != this.paydata.chequeDate || this.origCompany != this.carrierID || this.origCompAddr != this.cheqdata.companyAddress) {
-      this.showRecallBtn = true;
-    } else {
-      this.showRecallBtn = false;
+    if(this.paydata.page == 'detail') {
+      if(this.origCheqRef != this.paydata.chequeNo || this.origCheqDate != this.paydata.chequeDate || this.origCompany != this.carrierID || this.origCompAddr != this.cheqdata.companyAddress) {
+        this.showRecallBtn = true;
+      } else {
+        this.showRecallBtn = false;
+      }
     }
   }
 }
