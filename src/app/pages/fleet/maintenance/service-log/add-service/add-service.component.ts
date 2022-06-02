@@ -23,6 +23,7 @@ import {
   switchMap,
   takeUntil
 } from "rxjs/operators";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 declare var $: any;
 
 @Component({
@@ -47,6 +48,7 @@ export class AddServiceComponent implements OnInit {
   inventory = [];
   selectedTasks = [];
   selectedParts = [];
+  sessionID: string;
   selectedIssues = [];
   // private allServiceTasks = [];
   removeTask = false;
@@ -202,11 +204,9 @@ export class AddServiceComponent implements OnInit {
     private listService: ListService,
     private modalService: NgbModal,
     private modalServiceOwn: ModalService,
+    private routerMgmtService: RouteManagementServiceService
   ) {
-
-
-
-
+    this.sessionID = this.routerMgmtService.serviceLogSessionID;
     this.selectedFileNames = new Map<any, any>();
     // localStorage.setItem('serviceLogs', JSON.stringify(this.serviceData));
   }
@@ -352,7 +352,8 @@ export class AddServiceComponent implements OnInit {
         this.takeUntil$.complete();
         this.isSubmitted = true;
         this.toastr.success("Service log added successfully");
-        this.router.navigateByUrl("/fleet/maintenance/service-log/list");
+        //this.router.navigateByUrl("/fleet/maintenance/service-log/list");
+        this.router.navigateByUrl('/fleet/maintenance/service-log/list/${this.routerMgmtService.serviceLogUpdated()}');
         this.spinner.hide();
       },
     });
@@ -1034,7 +1035,8 @@ export class AddServiceComponent implements OnInit {
         this.takeUntil$.complete();
         this.isSubmitted = true;
         this.toastr.success("Service log Updated Successfully");
-        this.router.navigateByUrl("/fleet/maintenance/service-log/list");
+        //this.router.navigateByUrl("/fleet/maintenance/service-log/list");
+        this.router.navigateByUrl('/fleet/maintenance/service-log/list/${this.routerMgmtService.serviceLogUpdated()}');
       },
     });
   }
