@@ -88,7 +88,7 @@
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
-            <div class="bg-white p-3 text-dark text-capitalize orders-listing">
+            <div class="bg-white p-3 text-dark text-capitalize ">
               <p-table #dt [value]="orders" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both"
                 [columns]="selectedColumns" [loading]="!loaded"
                 styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
@@ -130,7 +130,8 @@
                           <p-sortIcon [field]="column.field">
                           </p-sortIcon>
                           <p-columnFilter [type]="column.type" [field]="column.field" matchMode="contains"
-                            [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
+                            [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu"
+                            columnFilter=true>
                           </p-columnFilter>
                         </div>
                       </span>
@@ -276,14 +277,15 @@
                 <!-- Empty Template -->
                 <ng-template pTemplate="emptymessage" let-columns>
                   <div class="col-lg-12 mt-3 text-center">
-                    {{dataMessage}}
+                    no
                     <br /><br>
                   </div>
                 </ng-template>
                 <!-- Summary Section with Load More button -->
 
                 <ng-template pTemplate="summary" let-columns>
-                  <div class="col-lg-12 mt-3 text-center " *ngIf="lastEvaluatedKey !=='end' && orders.length !==0 ">
+                  <div class="col-lg-12 mt-3 text-center "
+                    *ngIf="lastEvaluatedKey !=='end' && orders.length !==0 && columnFilter === 'false'">
                     <button type="button " (click)="onScroll($event) " class="btn btn-success btn-sm text-light ">Load
                       More..</button>
 
