@@ -5,6 +5,7 @@ import { ListService } from "src/app/services/list.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import * as html2pdf from "html2pdf.js";
+import { Subscription } from "rxjs";
 @Component({
   selector: "app-expense-payment-detail",
   templateUrl: "./expense-payment-detail.component.html",
@@ -37,6 +38,7 @@ export class ExpensePaymentDetailComponent implements OnInit {
     advTotal: 0,
     expTotal: 0,
     isFeatEnabled: false,
+    cheqdata: {}
   };
   showModal = false;
   paymentID = "";
@@ -46,6 +48,7 @@ export class ExpensePaymentDetailComponent implements OnInit {
   companyLogo: string;
   tagLine: string;
   carrierName: string;
+  subscription: Subscription;
 
   constructor(
     private accountService: AccountService,
@@ -55,6 +58,11 @@ export class ExpensePaymentDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.subscription = this.listService.paymentDetail.subscribe(async (res: any) => {
+      if(res == 'expense-payments') {
+        this.fetchPay();
+      }
+    })
     this.paymentID = this.route.snapshot.params["paymentID"];
     // this.fetchAccountsByIDs();
     this.fetchPayment();
@@ -76,7 +84,10 @@ export class ExpensePaymentDetailComponent implements OnInit {
       finalAmount: this.paymentData.finalAmount,
       txnDate: this.paymentData.txnDate, 
       page: "detail",
-      settlementIds: this.paymentData.settlementIds
+      settlementIds: this.paymentData.settlementIds,
+      recordID: this.paymentID,
+      cheqData: this.paymentData.cheqdata,
+      module: 'expense-payments',
     };
     this.listService.openPaymentChequeModal(obj);
   }
@@ -126,5 +137,12 @@ export class ExpensePaymentDetailComponent implements OnInit {
     });
     this.expPayRef.close();
     this.downloadDisabled = false;
+  }
+
+  async fetchPay() {
+    const result: any = await this.accountService
+      .getData(`expense-payments/detail/${this.paymentID}`)
+      .toPromise();
+    this.paymentData = result;
   }
 }

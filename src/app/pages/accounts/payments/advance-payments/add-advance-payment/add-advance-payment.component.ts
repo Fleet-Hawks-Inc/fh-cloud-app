@@ -29,6 +29,10 @@ export class AddAdvancePaymentComponent implements OnInit {
     status: "not_deducted",
     transactionLog: [],
     paymentLinked: false,
+    cheqdata: {
+      comp: '',
+      addr: ''
+    }
   };
   drivers = [];
   carriers = [];
@@ -65,6 +69,7 @@ export class AddAdvancePaymentComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.listService.paymentSaveList.subscribe((res: any) => {
       if (res.openFrom === "addForm") {
+        this.paymentData.cheqdata = res.cheqdata;
         this.addRecord();
       }
     });
