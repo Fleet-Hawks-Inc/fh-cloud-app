@@ -6,6 +6,8 @@ import { Table } from 'primeng/table';
 import Constants from '../../../constants';
 declare var $: any;
 import { environment } from '../../../../../../environments/environment';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+
 import * as _ from 'lodash';
 @Component({
   selector: 'app-service-program-list',
@@ -25,6 +27,7 @@ export class ServiceProgramListComponent implements OnInit {
   totalRecords = 20;
   pageLength = 10;
   lastItemSK = '';
+  sessionID: string;
   disableSearch = false;
   serviceProgramNext = false;
   serviceProgramPrev = true;
@@ -46,8 +49,12 @@ export class ServiceProgramListComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService
-  ) { }
+    private toastr: ToastrService,
+    private routerMgmtService: RouteManagementServiceService
+  ) {
+      this.sessionID = this.routerMgmtService.serviceLogSessionID;
+
+  }
 
   ngOnInit() {
     this.initDataTable();

@@ -144,14 +144,18 @@ export class ImportedVehiclesComponent implements OnInit {
             this.submitDisabled = true;
             for (let item of csvData.inValidMessages) {
               let joinStr = '';
+
               if (item.includes('vin')) {
                 joinStr = item + '. VIN must be between 17-18 alphanumeric characters eg.2G1WH55K5Y9322458.';
                 this.inValidMessages.push(joinStr)
               } else if (item.includes('year')) {
-                joinStr = item + '.  Please enter the year in the format: YYYY';
+                joinStr = item + '. Please enter the year in the format: YYYY';
+                this.inValidMessages.push(joinStr)
+              } else if (item.includes('vehicle_name')) {
+                joinStr = item + '. Vehicle name/number must contain alphanumeric characters.';
                 this.inValidMessages.push(joinStr)
               } else if (item.includes('status')) {
-                joinStr = item + '.  Status should be active, inActive, outOfService or sold';
+                joinStr = item + '. Status should be active, inActive, outOfService or sold';
                 this.inValidMessages.push(joinStr)
               } else {
                 this.inValidMessages.push(item)

@@ -325,6 +325,9 @@ export class CommonSideBarComponent implements OnInit {
   generateMaintainanceSessionID(){
   return this.routeManagement.maintainanceSessionID;
   }
+  generateServiceLogSessionID(){
+  return this.routeManagement.serviceLogSessionID;
+  }
 }
 
 @Component({
