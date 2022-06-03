@@ -60,17 +60,17 @@
                   <ng-template pTemplate="body" let-schedule let-columns="columns" let-rowIndex="rowIndex"
                   let-expanded="expanded">
                   <tr style="cursor: pointer;">
-                    <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}' class="font-weight-bold"
+                    <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}' 
                     style="width:30%">
 
                     {{schedule.orderNumber}}
                   </td>
-                  <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}' class="font-weight-bold"
+                  <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}' 
                   style="width:30%">
 
                   {{schedule.sName |titlecase}}
                 </td>
-                <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}' class="font-weight-bold"
+                <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}'
                 style="width:30%">
                 {{schedule.sTime}}
               </td>

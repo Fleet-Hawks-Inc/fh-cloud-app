@@ -860,8 +860,29 @@ export class OrdersListComponent implements OnInit {
   clear(table: Table) {
     table.clear();
   }
+  resetSchedule(){
+    this.scheduler={
+      orderID:null,
+      orderNumber:null,
+      name:null,
+      time:null,
+      type:{
+        daysNo:0,
+        days:[]
+      },
+      range:{
+        dateRange:{
+          to:null,
+          from:null,
+        },
+        months:[]
+      }
+    }
+
+  }
 
   openSchedulerModal(orderID,orderNumber){
+    this.resetSchedule();
     this.scheduler.orderID=orderID,
     this.scheduler.orderNumber=orderNumber
     let ngbModalOptions: NgbModalOptions = {
@@ -872,6 +893,9 @@ export class OrdersListComponent implements OnInit {
       this.schedularModal,
       ngbModalOptions
     );
+    this.repeatType=''
+    this.range=''
+  this.saveDisabled=false
   }
 
   onCheckboxChange(data,isChecked){
