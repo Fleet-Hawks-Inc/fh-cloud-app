@@ -404,7 +404,7 @@ export class PaymentPdfsComponent implements OnInit {
                       codriverName: plan.codriverName ? plan.codriverName : '',
                       vehicleName: plan.vehicleName ? plan.vehicleName : '',
                       assetNames: plan.assetNames ? plan.assetNames.toString() : '',
-                      showMiles: `${plan.mileType} - ${plan.miles}`,
+                      showMiles: `${plan.mileType === 'loaded' ? 'L' : 'E'} - ${plan.miles}`,
                     };
                     if(v.paymentSelected) {
                       if(v.paymentSelected[0].pType == 'pfr') {
@@ -445,7 +445,7 @@ export class PaymentPdfsComponent implements OnInit {
                   codriverName: plan.codriverName ? plan.codriverName : '',
                   vehicleName: plan.vehicleName ? plan.vehicleName : '',
                   assetNames: plan.assetNames ? plan.assetNames.toString() : '',
-                  showMiles: `${plan.mileType} - ${plan.miles}`,
+                  showMiles: `${plan.mileType === 'loaded' ? 'L' : 'E'} - ${plan.miles}`,
                 };
 
                 if(v.paymentSelected) {
@@ -526,7 +526,12 @@ export class PaymentPdfsComponent implements OnInit {
       .getData(`contacts/detail/${this.paymentData.entityId}`)
       .subscribe((result: any) => {
         result = result.Items[0];
-        this.pdfDetails.name = `${result.firstName} ${result.lastName}`;
+        if(result.contactSK.includes('EMP#') ) {
+          this.pdfDetails.name = `${result.firstName} ${result.lastName}`;
+        } else {
+          this.pdfDetails.name = `${result.cName}`;
+        }
+        
         this.pdfDetails.email = result.workEmail;
         this.pdfDetails.userID = result.employeeID;
         if (result.adrs[0].manual) {

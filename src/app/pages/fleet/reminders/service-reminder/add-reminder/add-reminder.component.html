@@ -247,7 +247,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input [(ngModel)]="reminderData.lastServiceOdometer"
                           placeholder="Approximate odometers of last service" name="lastServiceOdometer" type="number"
-                          class="form-control" min="0" #meter1="ngModel" [required]="
+                          class="form-control" min="1" #meter1="ngModel" [required]="
                             reminderData.tasks.remindByUnit == 'odometer'
                           " />
                         <div *ngIf="

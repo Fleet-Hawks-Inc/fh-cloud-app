@@ -24,7 +24,7 @@
               type="button"
               *ngIf="payModeLabel === 'Cheque'"
               (click)="showCheque()"
-              class="btn btn-success btn-sm mr-3"
+              class="btn btn-success btn-sm mr-2"
             >
               <i class="fas fa-download"></i> Cheque
             </button>
@@ -280,7 +280,9 @@
           </tr>
           <tr>
             <td>
-              <h1 style="font-size: 26px; color: #212529">Advance Payment</h1>
+              <h1 class="text-dark font-weight-bold text-6 mb-1 mt-1">
+                Advance Payment
+              </h1>
             </td>
             <td align="right">
               <img
@@ -299,29 +301,17 @@
               </p>
             </td>
           </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td width="50%">&nbsp;</td>
-          </tr>
+
           <tr>
             <td colspan="2" height="3" bgcolor="#dddddd"></td>
           </tr>
           <tr>
             <td width="50%" valign="top">
-              <p
-                class="mt-3 mb-0 text-dark"
-                style="font-size: 13px; margin-bottom: 10px"
-              >
+              <p class="mt-3 mb-0 text-dark text-5 font-weight-semibold">
                 Company
               </p>
               <h2
-                class="text-capitalize"
-                style="
-                  color: #212529;
-                  font-size: 20px;
-                  margin-top: 0px;
-                  margin-bottom: 10px;
-                "
+                class="text-capitalize text-dark text-5 font-weight-semibold mb-0 mt-0"
               >
                 {{ carrierName ? carrierName : "NA" }}
               </h2>
@@ -337,10 +327,7 @@
                 <tbody>
                   <tr>
                     <td align="right">
-                      <p
-                        class="mt-3 mb-0 text-dark"
-                        style="font-size: 13px; margin-bottom: 10px"
-                      >
+                      <p class="mt-3 mb-2 text-dark text-3">
                         Advance Payment#
                         <span
                           style="
@@ -351,10 +338,7 @@
                           >{{ paymentData.paymentNo }}</span
                         >
                       </p>
-                      <p
-                        class="mt-3 mb-0 text-dark"
-                        style="font-size: 13px; margin-bottom: 10px"
-                      >
+                      <p class="mt-2 mb-0 text-dark text-3">
                         Advance Amount:
                         <span
                           style="
@@ -380,39 +364,39 @@
           </tr>
           <tr>
             <td colspan="2">
-              <table class="table table-bordered">
+              <table class="w100 text-dark table-bordered">
                 <thead>
                   <tr class="">
-                    <th width="20%">Payment Date</th>
-                    <th width="20%">Type</th>
+                    <th width="15%" class="pl-3 pt-1 pb-1">Payment Date</th>
+                    <th width="11%" class="pl-3 pt-1">Type</th>
 
-                    <th width="20%">Paid To</th>
-                    <th width="20%">Advance Payment</th>
-                    <th width="20%">Deducted Amount</th>
-                    <th width="20%">Balance Amount</th>
+                    <th width="20%" class="pl-3 pt-1">Paid To</th>
+                    <th width="18%" class="pl-3 pt-1">Advance Payment</th>
+                    <th width="18%" class="pl-3 pt-1">Deducted Amount</th>
+                    <th width="18%" class="pl-3 pt-1">Balance Amount</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>
+                    <td class="pl-3 pt-1 pb-1">
                       {{ paymentData.txnDate | date: "yyyy/MM/dd" }}
                     </td>
-                    <td>
+                    <td class="pl-3 pt-1">
                       {{ paymentData.advType ? paymentData.advType : "-" }}
                     </td>
 
-                    <td>
+                    <td class="pl-3 pt-1">
                       {{ entityName }}
                     </td>
-                    <td>
+                    <td class="pl-3 pt-1">
                       {{ paymentData.amount | number: "1.2-2" }}
                       {{ paymentData.currency }}
                     </td>
-                    <td>
+                    <td class="pl-3 pt-1">
                       {{ deductedAmt | number: "1.2-2" }}
                       {{ paymentData.currency }}
                     </td>
-                    <td>
+                    <td class="pl-3 pt-1">
                       {{ pendingAmt | number: "1.2-2" }}
                       {{ paymentData.currency }}
                     </td>
@@ -431,7 +415,7 @@
                         <tbody>
                           <tr>
                             <td>
-                              <p style="font-size: 16px; color: #212529">
+                              <p class="text-dark text-4 mt-3 mb-2">
                                 <strong>Other Detail</strong>
                               </p>
                             </td>
@@ -450,20 +434,24 @@
               <table class="table table-bordered text-capitalize">
                 <thead>
                   <tr class="">
-                    <th width="30%">Payment Mode</th>
-                    <th width="30%">{{ paymentData.payMode }} Date</th>
-                    <th width="20%">{{ paymentData.payMode }} Reference#</th>
+                    <th width="30%" class="pl-3 pt-1 pb-1">Payment Mode</th>
+                    <th width="30%" class="pl-3 pt-1">
+                      {{ paymentData.payMode }} Date
+                    </th>
+                    <th width="20%" class="pl-3 pt-1">
+                      {{ paymentData.payMode }} Reference#
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>
+                    <td class="pl-3 pt-1 pb-1">
                       {{ paymentData.payMode }}
                     </td>
-                    <td>
+                    <td class="pl-3 pt-1">
                       {{ paymentData.payModeDate | date: "yyyy/MM/dd" }}
                     </td>
-                    <td>
+                    <td class="pl-3 pt-1">
                       {{ paymentData.payModeNo }}
                     </td>
                   </tr>
@@ -477,7 +465,7 @@
                 <tbody>
                   <tr>
                     <td align="center">
-                      <h2 style="font-size: 13px; color: #212529">
+                      <h2 class="mb-0 text-dark text-4 font-weight-normal">
                         Powered By
                       </h2>
                       <img

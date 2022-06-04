@@ -12,146 +12,123 @@
             </button>
             <a routerLink="/fleet/maintenance/service-log/edit/{{ logID }}" class="btn btn-default btn-sm mr-2"><i
                 class="fas fa-pencil-alt"></i> Edit Service Log</a>
-
             <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-sm btn-default"><i
                 class="fas fa-list"></i> Service Logs List</a>
-
           </div>
         </div>
       </header>
-
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
-            <div class="bg-white pr-3 pl-3 text-dark">
-              <div class="form-group row">
-                <div class="col-lg-12">
-                  <div class="row cmaindiv">
-                    <div style="width: 10%">
-                      <div class="text-center p-4 cerbor">
-                        <p class="mb-0 text-5 font-weight-bold text-dark">
-                          UNIT TYPE
-                        </p>
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row pt-1">
+                <div style="width: 10%">
+                  <div class="text-center p-4 cerbor">
+                    <p class="mb-0 text-4 font-weight-bold text-dark">
+                      Unit type
+                    </p>
+                    <p class="mb-0 text-3">{{ logsData.unitType | titlecase }}</p>
+                  </div>
+                </div>
+                <div style="width: 10%">
+                  <div class="text-center p-4 cerbor" *ngIf="logsData.unitType != 'asset'">
+                    <p class="mb-0 text-4 font-weight-bold text-dark">
+                      Vehicle
+                    </p>
+                    <p class="mb-0 text-3">{{ vehiclesObject[vehicle] | titlecase }}</p>
+                  </div>
+                  <div class="text-center p-4 cerbor" *ngIf="logsData.unitType == 'asset'">
+                    <p class="mb-0 text-4 font-weight-bold text-dark">
+                      Asset
+                    </p>
+                    <p class="mb-0 text-3">{{ assetsObject[assetID] | titlecase }}</p>
+                  </div>
+                </div>
+                <div style="width: 10%">
+                  <div class="text-center p-4 cerbor" *ngIf="logsData.unitType != 'asset'">
+                    <p class="mb-0 text-4 font-weight-bold text-dark">
+                      Vehicle plate no.
+                    </p>
+                    <p class="mb-0 text-3">
+                      {{ vehiclePlateNo ? vehiclePlateNo : "-" }}
+                    </p>
+                  </div>
+                  <div class="text-center p-4 cerbor" *ngIf="logsData.unitType == 'asset'">
+                    <p class="mb-0 text-4 font-weight-bold text-dark">
+                      Asset plate no.
+                    </p>
 
-                        <p class="mb-0 text-5">{{ logsData.unitType }}</p>
-                      </div>
-                    </div>
-
-                    <div style="width: 10%">
-                      <div class="text-center p-4 cerbor" *ngIf="logsData.unitType != 'asset'">
-                        <p class="mb-0 text-5 font-weight-bold text-dark">
-                          VEHICLE
-                        </p>
-                        <p class="mb-0 text-5">{{ vehiclesObject[vehicle] }}</p>
-                      </div>
-
-                      <div class="text-center p-4 cerbor" *ngIf="logsData.unitType == 'asset'">
-                        <p class="mb-0 text-5 font-weight-bold text-dark">
-                          ASSET
-                        </p>
-                        <p class="mb-0 text-5">{{ assetsObject[assetID] }}</p>
-                      </div>
-                    </div>
-
-                    <div style="width: 12%">
-                      <div class="text-center p-4 cerbor" *ngIf="logsData.unitType != 'asset'">
-                        <p class="mb-0 text-5 font-weight-bold text-dark">
-                          VEHICLE PlATE NO.
-                        </p>
-
-                        <p class="mb-0 text-5">
-                          {{ vehiclePlateNo ? vehiclePlateNo : "-" }}
-                        </p>
-                      </div>
-
-                      <div class="text-center p-4 cerbor" *ngIf="logsData.unitType == 'asset'">
-                        <p class="mb-0 text-5 font-weight-bold text-dark">
-                          ASSET PlATE NO.
-                        </p>
-
-                        <p class="mb-0 text-5">
-                          {{ assetPlateNo ? assetPlateNo : "-" }}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div style="width: 15%">
-                      <div class="text-center p-4 cerbor" *ngIf="logsData.unitType != 'asset'">
-                        <p class="mb-0 text-5 font-weight-bold text-dark">
-                          VEHICLE VIN
-                        </p>
-
-                        <p class="mb-0 text-5">
-                          {{ vehicleVIN ? vehicleVIN : "-" }}
-                        </p>
-                      </div>
-
-                      <div class="text-center p-4 cerbor" *ngIf="logsData.unitType == 'asset'">
-                        <p class="mb-0 text-5 font-weight-bold text-dark">
-                          ASSET VIN
-                        </p>
-
-                        <p class="mb-0 text-5">
-                          {{ assetVin ? assetVin : "-" }}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div style="width: 12%" *ngIf="logsData.unitType != 'asset'">
-                      <div class="text-center p-4 cerbor">
-                        <p class="mb-0 text-5 font-weight-bold text-dark">
-                          ODOMETER IN MILES
-                        </p>
-                        <p class="mb-0 text-5">
-                          {{ odometer ? odometer : "-" }}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div style="width: 14%">
-                      <div class="text-center p-4 cerbor">
-                        <p class="mb-0 text-5 font-weight-bold text-dark">
-                          COMPLETION DATE
-                        </p>
-                        <p class="mb-0 text-5">
-                          {{
-                          completionDate
-                          ? (completionDate | date: "yyyy/MM/dd")
-                          : "-"
-                          }}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div style="width: 14%">
-                      <div class="text-center p-4 cerbor">
-                        <p class="mb-0 text-5 font-weight-bold text-dark">
-                          BILL#
-                        </p>
-                        <p class="mb-0 text-5">
-                          {{ reference ? reference : "-" }}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div style="width: 12%">
-                      <div class="text-center p-4">
-                        <p class="mb-0 text-5 font-weight-bold text-dark">
-                          Bill To
-                        </p>
-
-                        <p class="mb-0 text-5">
-                          {{ vendorID ? vendorsObject[vendorID] : "-" }}
-                        </p>
-                      </div>
-                    </div>
+                    <p class="mb-0 text-3">
+                      {{ assetPlateNo ? assetPlateNo : "-" }}
+                    </p>
+                  </div>
+                </div>
+                <div style="width: 13%">
+                  <div class="text-center p-4 cerbor" *ngIf="logsData.unitType != 'asset'">
+                    <p class="mb-0 text-4 font-weight-bold text-dark">
+                      Vehicle VIN
+                    </p>
+                    <p class="mb-0 text-3">
+                      {{ vehicleVIN ? vehicleVIN : "-" }}
+                    </p>
+                  </div>
+                  <div class="text-center p-4 cerbor" *ngIf="logsData.unitType == 'asset'">
+                    <p class="mb-0 text-4 font-weight-bold text-dark">
+                      Asset VIN
+                    </p>
+                    <p class="mb-0 text-3">
+                      {{ assetVin ? assetVin : "-" }}
+                    </p>
+                  </div>
+                </div>
+                <div style="width: 12%" *ngIf="logsData.unitType != 'asset'">
+                  <div class="text-center p-4 cerbor">
+                    <p class="mb-0 text-4 font-weight-bold text-dark">
+                      Odometer in miles
+                    </p>
+                    <p class="mb-0 text-3">
+                      {{ odometer ? odometer : "-" }}
+                    </p>
+                  </div>
+                </div>
+                <div style="width: 14%">
+                  <div class="text-center p-4 cerbor">
+                    <p class="mb-0 text-4 font-weight-bold text-dark">
+                      Completion date
+                    </p>
+                    <p class="mb-0 text-3">
+                      {{
+                      completionDate
+                      ? (completionDate | date: "yyyy/MM/dd")
+                      : "-"
+                      }}
+                    </p>
+                  </div>
+                </div>
+                <div style="width: 12%">
+                  <div class="text-center p-4 cerbor">
+                    <p class="mb-0 text-4 font-weight-bold text-dark">
+                      Bill#
+                    </p>
+                    <p class="mb-0 text-3">
+                      {{ reference ? reference : "-" }}
+                    </p>
+                  </div>
+                </div>
+                <div style="width: 12%">
+                  <div class="text-center p-4">
+                    <p class="mb-0 text-4 font-weight-bold text-dark">
+                      Bill to
+                    </p>
+                    <p class="mb-0 text-3">
+                      {{ (vendorID ? vendorsObject[vendorID] : "-") | titlecase }}
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
@@ -188,7 +165,6 @@
             </div>
           </div>
         </div>
-
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
@@ -280,6 +256,16 @@
                     {{ description ? description : "-" }}
                   </p>
                 </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3" *ngIf="logImages?.length > 0 || logDocs?.length > 0">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row pt-1">
                 <div class="col-lg-4" *ngIf="logImages?.length > 0">
                   <label
                     class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Photos</label>
@@ -322,8 +308,6 @@
             </div>
           </div>
         </div>
-
-        ..
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
@@ -368,7 +352,8 @@
 
                           <tr>
                             <td>{{ (partsSubTotal + taskTotal).toFixed(2) }}
-                              {{ currency }}</td>
+                              {{ currency }}
+                            </td>
                             <td>{{ taxes ? taxes : "-" }}</td>
                             <td>{{ finalTotal ? finalTotal : "-" }} <span *ngIf=" finalTotal">{{currency}}</span></td>
                           </tr>
@@ -457,12 +442,12 @@
               <p class="text-dark mb-0" style="font-weight: 600">
                 <span style="font-weight: 500; color: #000000">Unit Type:-
                 </span>
-                {{ logsData.unitType }}
+                {{ logsData.unitType | titlecase }}
               </p>
               <p class="text-dark mb-0" style="font-weight: 600">
                 <span *ngIf="logsData.unitType != 'asset'" style="font-weight: 500; color: #000000">Vehicle:-
                 </span>
-                {{ vehiclesObject[vehicle] }}
+                {{ vehiclesObject[vehicle] | titlecase  }}
               </p>
               <p class="text-dark mb-0" *ngIf="logsData.unitType != 'asset'" style="font-weight: 600">
                 <span style="font-weight: 500; color: #000000">Odometer Miles:-
@@ -568,10 +553,10 @@
                 border-right: 1px solid #999999;
                 padding-left: 10px;
               ">
-              {{ data.issueName }}
+              {{ data.issueName | titlecase  }}
             </td>
             <td style="font-size: 13px; padding-left: 10px; padding-right: 10px">
-              {{ users[data.assignedTo] }}
+              {{ users[data.assignedTo] | titlecase  }}
             </td>
           </tr>
         </tbody>
@@ -622,7 +607,7 @@
                 border-right: 1px solid #999999;
                 padding-left: 10px;
               ">
-              {{ data.taskName }}
+              {{ data.taskName | titlecase  }}
             </td>
             <td style="font-size: 13px; padding-left: 10px; padding-right: 10px">
               {{ data.laborCost }} {{ currency }}
@@ -675,7 +660,7 @@
                 border-right: 1px solid #999999;
                 padding-left: 10px;
               ">
-              {{ data.partNumber }}
+              {{ data.partNumber | titlecase  }}
             </td>
             <td style="
                 font-size: 13px;
@@ -702,25 +687,40 @@
               <div class="form-group row">
                 <div class="col-lg-12">
                   <p class="mb-0">
-                    {{ description ? description : "-" }}
+                    {{ description  ? description : "-" }}
                   </p>
                 </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </table>
+
+      <table width="100%" style="
+          color: #000000;
+          border: 1px solid #999999;
+          font-size: 13px;
+          margin-bottom: 10px;
+        " *ngIf="logImages?.length > 0 || logDocs?.length > 0">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="bg-white p-1 text-dark">
+              <div class="form-group row pt-1">
                 <div class="col-lg-4" *ngIf="logImages?.length > 0">
                   <label
                     class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Photos</label>
                   <div class="row">
                     <div class="col-lg-6 mb-2" *ngFor="let item of logImages; let i = index">
-                      <div class="vehicle-photo-box">
-                        <img [src]="item.path" width="100%" class="img-fluid"
-                          style="height: 180px; object-fit: cover" />
+                      <div>
+                        <img [src]="item.path" class="img-fluid"
+                          style=" max-width: 200%; height: 200%; object-fit: cover" />
+                        <hr style="width:200%">
                         <!-- <iframe [src]="item" width="100px" height="100px" frameborder="0"></iframe> -->
-                        <hr class="m-3" />
                         <div class="row">
-                          <div style="width: 50%">Image {{ i + 1 }}</div>
+                          <div class="col-lg-8" style="text-align: center;">Image {{ i + 1 }}</div>
                           <div class="col-lg-4 text-right">
-                            <a href="javascript:;" (click)="delete('image', item.name, i)" class="modal-with-form">
-                              <i class="fas fa-times text-danger" (click)="delete('image', item.name, i)"></i>
-                            </a>
+                         
                           </div>
                         </div>
                       </div>
@@ -738,8 +738,7 @@
                     <div class="col-lg-3 text-right">
                       <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
                         data-target="#viewDocModal"></em>
-                      <a href="javascript:;" (click)="delete('doc', doc.name, d)" class="modal-with-form">
-                        <em class="fas fa-times text-danger"></em></a>
+                    
                     </div>
                   </div>
                 </div>
@@ -749,39 +748,6 @@
         </div>
       </table>
 
-      <!-- <div class="row mt-2">
-        <div class="col-lg-12">
-          <table width="100%" style="color: #000000; font-size: 13px; margin-bottom: 10px">
-            <tbody>
-              <tr>
-                <td width="33%" align="left">
-                  <p style="font-size: 15px" class="text-dark">
-                    <strong>Total: </strong>
-                    <span style="padding-right: 7%">
-                      {{ (partsSubTotal + taskTotal).toFixed(2) }}
-                      {{ currency }}<br />
-                    </span>
-                  </p>
-                </td>
-                <td width="33%" align="left">
-                  <p style="font-size: 15px" class="text-dark">
-                    <strong>Taxes: </strong>
-                    <span style="padding-right: 13%">{{ taxes ? taxes : "-" }}<br /></span>
-                  </p>
-                </td>
-                <td width="34%" align="left">
-                  <p style="font-size: 15px" class="text-dark">
-                    <strong>Total Amount: </strong>
-                    <span style="padding-right: 2%">
-                      {{ finalTotal ? finalTotal : "-"
-                      }}<span *ngIf="finalTotal"> {{ currency }}</span></span>
-                  </p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div> -->
       <h5 style="color: #231f20"><b> Total</b></h5>
       <table width="100%" style="
           color: #000000;

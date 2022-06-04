@@ -120,12 +120,13 @@
                           <th class="text-2">Reference#</th>
                           <th class="text-2">Vendor</th>
                           <th class="text-2">Payment Mode</th>
+                          <th class="text-2">Payment Mode Reference No.</th>
                           <th class="text-2">Amount</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr class="text-center" *ngIf="payments.length === 0">
-                          <td colspan="6">
+                          <td colspan="7">
                             {{ dataMessage }}
                           </td>
                         </tr>
@@ -147,6 +148,12 @@
                             [routerLink]="data.url"
                           >
                             {{ data.payMode }}
+                          </td>
+                          <td
+                            class="cursorpoint text-capitalize"
+                            [routerLink]="data.url"
+                          >
+                            {{ data.payModeNo }}
                           </td>
                           <td class="cursorpoint" [routerLink]="data.url">
                             {{ data.total.finalTotal | number: "1.2-2" }}

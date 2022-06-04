@@ -68,7 +68,9 @@ export const environment = {
     apiKey: "AIzaSyDRt9SGmd-mzAsC30SofiwDRtHw592Og5E",
   },
   VSSServerWSS: 'wss://safety-cam.fleethawks.com:36301/wss',
-  whiteListCarriers: ['1y4CwKYhlU7I5FluMq2NOCCMZvj', '21zpEs5A3MWtK9LeFEkOcsc5Szc','1y6913gTrXSlzcTlSEGpwBMe5Ay']
+
+  whiteListCarriers: ['1y4CwKYhlU7I5FluMq2NOCCMZvj', '21zpEs5A3MWtK9LeFEkOcsc5Szc','1y6913gTrXSlzcTlSEGpwBMe5Ay','23HFz4o1X79Xh3lcBEJumnolmnt']
+
 };
 
 /*

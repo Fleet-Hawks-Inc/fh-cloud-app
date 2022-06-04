@@ -7,7 +7,7 @@
             {{ pageTitle }}
           </div>
           <div class="col-md-8 col-lg-8 text-right">
-            <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-default btn-sm mx-2"
+            <a routerLink="/fleet/maintenance/service-log/list/{{sessionID}}" class="btn btn-default btn-sm mx-2"
               style="color: black"><i class="fas fa-list"></i> Service Logs List</a>
           </div>
         </div>
@@ -667,8 +667,7 @@
                                 text-left
                               ">
                               <input class="w100" type="file" multiple name="uploadedPhotos" (change)="
-                                  selectDocuments($event, 'uploadedPhotos')
-                                " />
+                                  selectDocuments($event, 'uploadedPhotos')" accept=".jpg, .jpeg, .png"  />
                             </span>
 
                             <!-- <input (change)="selectDocuments($event,
@@ -712,7 +711,7 @@
                               ">
                               <input class="w100" type="file" multiple name="uploadedDocuments" (change)="
                                   selectDocuments($event, 'uploadedDocs')
-                                " />
+                                " accept=".doc, .docx, .pdf, .jpg, .jpeg .png"  />
                             </span>
 
                             <!-- <input

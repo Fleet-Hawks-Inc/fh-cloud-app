@@ -412,6 +412,7 @@
                             multiple
                             name="uploadedPhotos"
                             (change)="selectDocuments($event, 'uploadedPhotos')"
+                            accept=".jpg, .jpeg, .png"
                           />
                         </span>
 
@@ -468,6 +469,7 @@
                             multiple
                             name="uploadedDocs"
                             (change)="selectDocuments($event, 'uploadedDocs')"
+                            accept=".doc, .docx, .pdf, .jpg, .jpeg .png" 
                           />
                         </span>
 
@@ -496,30 +498,15 @@
                             <div class="col-lg-6 text-right"></div>
                           </div>
                           <hr class="solid mt-2" />
-                          <div
-                            class="row mb-1"
-                            *ngFor="let doc of issueDocs; let d = index"
-                          >
-                            <div class="col-lg-9">
-                              <a href="{{ doc.path }}" target="_blank"
-                                >Document {{ d + 1 }}</a
-                              >
-                            </div>
-                            <div class="col-lg-3 text-right">
-                              <i
-                                class="far fa-file text-dak mr-1"
-                                (click)="setPDFSrc(doc.path)"
-                                data-toggle="modal"
-                                data-target="#viewDocModal"
-                              ></i>
-                              <a
-                                href="javascript:;"
-                                (click)="delete('doc', doc.name)"
-                                class="modal-with-form"
-                                ><i class="fas fa-times text-danger"></i
-                              ></a>
-                            </div>
-                          </div>
+                              <div class="row mb-1" *ngFor="let doc of issueDocs; let d = index">
+                                <div class="col-lg-9">
+                                  <a href="{{ doc.path }}" data-toggle="modal" data-target="#viewDocModal" (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
+                                </div>
+                                <div class="col-lg-3 text-right">
+                                  <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="delete('doc', doc.name)"><i class="fas fa-trash-alt"></i></a>
+                                  <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"><i class="fas fa-eye"></i></a>
+                                </div>
+                              </div> 
                         </div>
                       </div>
                     </div>

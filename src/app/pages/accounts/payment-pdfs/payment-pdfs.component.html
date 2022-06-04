@@ -73,13 +73,7 @@
               <tr>
                 <td width="50%" valign="top">
                   <h2
-                    style="
-                      font-size: 18px;
-                      margin-top: 1px;
-                      font-weight: 600;
-                      margin-bottom: 1px;
-                    "
-                    class="text-dark mb-0 text-capitalize"
+                    class="text-dark mb-0 text-capitalize mt-3 text-6 LH28 font-weight-semibold"
                   >
                     Company: {{ companyName }}
                   </h2>
@@ -549,99 +543,6 @@
                           </table>
                         </td>
                       </tr>
-                      <tr *ngIf="data.paymentSelected">
-                        <td>
-                          <table border="0" cellpadding="0" cellspacing="0">
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <p class="text-dark mb-2 text-3">
-                                    <strong>Payment Type:</strong>
-                                    {{
-                                      data.paymentSelected
-                                        ? paymentAbr[data.paymentSelected.pType]
-                                        : ""
-                                    }}, <br />
-                                    <span
-                                      *ngIf="
-                                        data.paymentSelected.pType === 'ppm'
-                                      "
-                                    >
-                                      <strong> Loaded Miles: </strong
-                                      >{{ data.paymentSelected.loadedMiles }}
-                                      {{ data.paymentSelected.currency }},
-                                      <strong class="ml-2">
-                                        Empty Miles: </strong
-                                      >{{ data.paymentSelected.emptyMiles }}
-                                      {{ data.paymentSelected.currency }},
-                                      <br />
-                                      <strong> Team Loaded Miles: </strong
-                                      >{{
-                                        data.paymentSelected.loadedMilesTeam
-                                      }}
-                                      {{ data.paymentSelected.currency }},
-                                      <strong class="ml-2">
-                                        Team Empty Miles: </strong
-                                      >{{ data.paymentSelected.emptyMilesTeam }}
-                                      {{ data.paymentSelected.currency }}
-                                    </span>
-                                    <span
-                                      *ngIf="
-                                        data.paymentSelected.pType === 'pfr'
-                                      "
-                                    >
-                                      <strong> Rate: </strong>
-                                      {{ data.paymentSelected.flatRate }}
-                                      {{ data.paymentSelected.currency }}
-                                    </span>
-                                    <span
-                                      *ngIf="
-                                        data.paymentSelected.pType === 'ppd'
-                                      "
-                                    >
-                                      <strong> Rate: </strong>
-                                      {{ data.paymentSelected.deliveryRate }}
-                                      {{ data.paymentSelected.currency }}
-                                    </span>
-                                    <span
-                                      *ngIf="
-                                        data.paymentSelected.pType === 'pp'
-                                      "
-                                    >
-                                      <strong> Rate: </strong>
-                                      {{
-                                        data.paymentSelected.loadPayPercentage
-                                      }}% of
-                                      {{
-                                        data.paymentSelected.loadPayPercentageOf
-                                      }}
-                                    </span>
-                                    <span
-                                      *ngIf="
-                                        data.paymentSelected.pType === 'pph'
-                                      "
-                                    >
-                                      <strong> Rate: </strong>
-                                      {{ data.paymentSelected.rate }}
-                                      {{ data.paymentSelected.currency }}
-                                      <strong> Waiting period pay: </strong>
-                                      {{ data.paymentSelected.waitingPay }}
-                                      {{ data.paymentSelected.currency }}
-                                      <strong>
-                                        Waiting period start after:
-                                      </strong>
-                                      {{
-                                        data.paymentSelected.waitingHourAfter
-                                      }}
-                                      {{ data.paymentSelected.currency }}
-                                    </span>
-                                  </p>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
-                      </tr>
                     </tbody>
                   </table>
                   <table
@@ -704,12 +605,12 @@
                           </p>
                         </td>
                         <td class="pl-3 pt-1">
-                          <p class="text-3 text-dark mb-1">
+                          <p class="text-3 text-dark mb-1 text-capitalize">
                             {{ plan.driverName }}
                           </p>
                         </td>
                         <td class="pl-3 pt-1">
-                          <p class="text-3 text-dark mb-1">
+                          <p class="text-3 text-dark mb-1 text-capitalize">
                             {{ plan.codriverName }}
                           </p>
                         </td>
@@ -915,7 +816,9 @@
                     <tbody>
                       <tr>
                         <td align="center">
-                          <h2 style="font-size: 13px">Powered By</h2>
+                          <h2 class="mb-0 text-dark text-4 font-weight-normal">
+                            Powered By
+                          </h2>
                           <img
                             alt="Fleet Hawks
                                                               Inc."
