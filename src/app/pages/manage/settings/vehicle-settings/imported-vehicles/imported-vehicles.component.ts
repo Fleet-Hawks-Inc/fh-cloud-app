@@ -45,6 +45,7 @@ export class ImportedVehiclesComponent implements OnInit {
   _selectedColumns: any[];
 
   display = false;
+  next: any = 'null';
 
   constructor(private apiService: ApiService, private toastr: ToastrService, private modalService: NgbModal,
   ) { }
@@ -181,15 +182,34 @@ export class ImportedVehiclesComponent implements OnInit {
   }
 
   async fetchVehicleImport() {
-    let result = await this.apiService.getData('importer/get?type=vehicle').toPromise();
-    if (result.length === 0) {
+    if (this.next === 'end') {
+      return;
+    }
+    let result = await this.apiService.getData(`importer/get?type=vehicle&key=${this.next}`).toPromise();
+    if (result.data.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
       this.loaded = true;
     }
-    if (result && result.length > 0) {
-      this.importVehicles = result;
+    if (result && result.data.length > 0) {
+      result.data.forEach(elem => {
+        elem.timeCreated = new Date(elem.timeCreated).toLocaleString('en-CA');
+        this.importVehicles.push(elem);
+      });
+
+      if (result.nextPage != undefined) {
+        this.next = result.nextPage.replace(/#/g, '--');
+      } else {
+        this.next = 'end';
+      }
     }
     this.loaded = true;
+  }
+
+  onScroll() {
+    if (this.loaded) {
+      this.fetchVehicleImport();
+    }
+    this.loaded = false;
   }
 
 
@@ -231,7 +251,8 @@ export class ImportedVehiclesComponent implements OnInit {
   }
 
   refreshData() {
-    this.importVehicles = []
+    this.importVehicles = [];
+    this.next = '';
     this.fetchVehicleImport();
     this.dataMessage = Constants.FETCHING_DATA;
   }
