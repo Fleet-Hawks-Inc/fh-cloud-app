@@ -95,31 +95,19 @@
         </div>
       </header>
 
-      <div class="m-2">
-        <div class="row text-dark">
-          <div class="col-12 mb-3">
-            <div class="bg-white p-3">
-              <div class="row text-dark">
-                <div class="col-12">
-                  <div>
-                    <h4 class="mt-1 mb-0 font-weight-bold">
-                      Vehicle Renewals Report
-                    </h4>
-                  </div>
+      
+          <div class="">
+              <div class="m-2 text-dark">
+                 <div class="form-group row pt-3">
+                    <div class="col-3 mb-3">
+                   <div class="bg-white p-3">
+                     <div>
+                 <h4 class="m-0 text-4 font-weight-bold">Total Service Reminders</h4>
+                  <h3 class="mt-1 mb-0 font-weight-bold">{{ count.total }}</h3>
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div class="col-4 mb-3">
-            <div class="bg-white p-3">
-              <div>
-                <h4 class="m-0 text-4">Total Service Reminders</h4>
-                <h3 class="mt-1 mb-0 font-weight-bold">{{ count.total }}</h3>
-              </div>
-            </div>
-          </div>
-          <div class="col-4 mb-3">
+               </div>
+                <div class="col-4 mb-3">
             <div class="bg-white p-3">
               <div>
                 <h4 class="m-0 text-4">Total Overdue Service</h4>
@@ -135,86 +123,146 @@
               </div>
             </div>
           </div>
-          <div class="col">
-            <div class="card">
-              <div class="col-lg-12 pl-0 pr-0">
-                <div
-                  infiniteScroll
-                  [infiniteScrollDistance]="1"
-                  [infiniteScrollUpDistance]="1"
-                  [infiniteScrollThrottle]="5"
-                  (scrolled)="onScroll()"
-                >
-                  <div class="card-body bor-radius0px p-3">
-                    <section class="reports_div">
-                      <table
-                        class="row-border hover table table-bordered table-striped mb-0"
-                      >
-                        <thead>
-                          <tr class="">
-                            <th>Vehicle</th>
-                            <th>Vehicle Renewal Type</th>
-                            <th>Due Date</th>
-                            <th>Send Reminder</th>
-                            <th>Subscribers</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngIf="allData.length == 0" class="text-center">
-                            <td colspan="6">{{ dataMessage }}</td>
-                          </tr>
-                          <tr *ngFor="let item of allData">
-                            <td>
-                              <span class="text-capitalize">
-                                {{ vehiclesList[item.entityID] }}
+           </div>
+            </div>
+            </div>
+ 
+                    <section class="m-2">
+        <div class="row mb-3">
+          <div class="col-lg-12">
+             <div class="bg-white p-3 text-dark">
+           <div class="form-group row pt-2">
+          <div class="col-lg-12" style="height: calc(90vh - 149px); overflow-y: scroll;">
+           
+              <p-table #dt 
+              [value]="allData" 
+              [resizableColumns]="true" 
+              columnResizeMode="expand" scrollDirection="both"
+                [columns]="selectedColumns" [loading]="!loaded"
+                styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped" 
+                [loading]="!loaded" scrollHeight="100%"  responsiveLayout="scroll" >
+
+
+                <ng-template pTemplate="caption">
+                  <div class="p-d-flex d-flex justify-content-between align-items-center">
+                    <div>
+                      <h3 class="m-0"> Vehicle Renewals Report </h3>
+                    </div>
+                    <div class="text-right">
+                      <span>Showing {{allData.length}} entries</span> &nbsp;
+                      <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
+                        class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                      <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" (click)="clear(dt)"
+                        icon="pi pi-filter-slash"></button>
+
+                    </div>
+                  </div>
+                </ng-template>
+
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+
+                   
+                    <th *ngFor="let column of dataColumns" [pSortableColumn]="column.field" pResizableColumn
+                     [ngStyle]="{'width': column.width}">
+                      <span>
+                        <div class="flex justify-content-center align-items-center" alignFrozen="right" pFrozenColumn
+                          [frozen]="true">
+                          {{column.header}}
+                          <p-sortIcon [field]="column.field">
+                          </p-sortIcon>
+                          <p-columnFilter [type]="column.type" [field]="column.field" matchMode="contains"
+                            [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
+                          </p-columnFilter>
+                        </div>
+                      </span>
+
+                    
+
+                </ng-template>
+                 <ng-template
+                      pTemplate="body"
+                      let-renewals
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
+                      <tr>
+                        <td
+                          *ngFor="let dataColumns of columns"
+                          style="width: 10%; height: 50px; cursor: pointer"
+                        >
+                          <div [ngSwitch]="dataColumns.field">
+                            <span
+                              class="font-weight-bold line-height-lg text-capitalize"
+                              *ngSwitchCase="'entityID'"
+                            >
+                               <span class="text-capitalize">
+                                {{ vehiclesList[renewals.entityID] }}
                               </span>
-                            </td>
-                            <td>
+                            </span>
+                            
+                              <span *ngSwitchCase="'status'">
                               <span
                                 class="text-warning font-weight-bold font-size-12 text-uppercase"
-                                *ngIf="item.status === 'dueSoon'"
-                                >{{ item.status }}<br
+                                *ngIf="renewals.status === 'dueSoon'"
+                                >{{ renewals.status }}<br
                               /></span>
                               <span
                                 class="text-danger font-weight-bold font-size-12 text-uppercase"
-                                *ngIf="item.status === 'overdue'"
-                                >{{ item.status }}<br
+                                *ngIf="renewals.status === 'overdue'"
+                                >{{ renewals.status }}<br
                               /></span>
                               <span class="font-weight-bold" title="Task">{{
-                                tasksData[item.tasks.taskID]
+                                tasksData[renewals.tasks.taskID]
                               }}</span>
-                            </td>
-                            <td>
-                              {{ item.tasks.dueDate | date: "yyyy/MM/dd" }}
-                            </td>
-                            <td>
-                              {{ item.tasks.time }} {{ item.tasks.timeUnit }}(s)
+                            </span>
+                            
+                            <span  *ngSwitchCase="'tasks.dueDate'">
+                               {{ renewals.tasks.dueDate | date: "yyyy/MM/dd" }}
+                            </span>
+                            
+                            <span *ngSwitchCase="'tasks.timeUnit'">
+                               {{ renewals.tasks.time }} {{ renewals.tasks.timeUnit }}(s)
                               Before
-                            </td>
-                            <td>{{ item.subscribers }}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </section>
+                            </span>
+                            
+                            <span *ngSwitchDefault>
+                              {{ get(renewals, dataColumns.field) }}</span
+                            >
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+
+                <!-- Empty Template -->
+                <ng-template pTemplate="emptymessage" let-columns>
+                  <div class="col-lg-12 mt-3 text-center">
+                  <span> {{dataMessage}} </span>  
+                    <br /><br/>
                   </div>
-                  <div
-                    class="col-lg-12 mt-3 text-center"
-                    *ngIf="lastItemSK !== 'end' && allData.length !== 0"
-                  >
-                    <button
-                      type="button"
-                      class="btn btn-success btn-sm text-light"
-                      (click)="fetchVehiclesdata()"
-                    >
-                      Load More..
-                    </button>
+                </ng-template>
+                <!-- Summary Section with Load More button -->
+
+                <ng-template pTemplate="summary" let-columns>
+                  <div class="col-lg-12 mt-3 text-center " *ngIf="lastItemSK !=='end' && allData.length !==0 ">
+                    <button type="button " (click)="onScroll($event) " class="btn btn-success btn-sm text-light ">Load
+                      More..</button>
+
+                    <br /><br>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                  <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK ==='end'">
+                    Total Records: {{allData.length}}</div>
+                </ng-template>
+
+               
+            </p-table>
+         
         </div>
-      </div>
+  </div>
+  </div>
+  </div>
+  </div>
+</section>  
     </section>
   </div>
 </section>
