@@ -78,9 +78,16 @@
 
                     </ng-template>
                     <ng-template pTemplate="summary" let-columns>
-
-                      <div class="col-lg-12 mt-3 text-center">Total Records: {{importDrivers.length}}</div>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="importDrivers.length !== 0 && next != 'end'">
+                        <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
+                          Load More..
+                        </button>
+                        <br /><br>
+                      </div>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="next ==='end'">
+                        Total Records: {{importDrivers.length}}</div>
                     </ng-template>
+
                   </p-table>
 
 

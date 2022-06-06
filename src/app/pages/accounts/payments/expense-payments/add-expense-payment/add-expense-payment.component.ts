@@ -40,6 +40,10 @@ export class AddExpensePaymentComponent implements OnInit {
     expIds: [],
     advTotal: 0,
     expTotal: 0,
+    cheqdata: {
+      comp: '',
+      addr: ''
+    }
   };
   drivers = [];
   carriers = [];
@@ -73,6 +77,7 @@ export class AddExpensePaymentComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.listService.paymentSaveList.subscribe((res: any) => {
       if (res.openFrom === "addForm") {
+        this.paymentData.cheqdata = res.cheqdata;
         this.addRecord();
       }
     });

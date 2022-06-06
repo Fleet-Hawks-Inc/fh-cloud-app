@@ -61,7 +61,10 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
     gstHstAmt: <any>0,
     isVendorPayment: false,
     vendorId: '',
-
+    cheqdata: {
+      comp: '',
+      addr: ''
+    }
   };
   drivers = [];
   carriers = [];
@@ -115,6 +118,7 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     this.subscription = this.listService.paymentSaveList.subscribe((res: any) => {
       if (res.openFrom == 'addForm') {
+        this.paymentData.cheqdata = res.cheqdata;
         this.addRecord();
       }
     });

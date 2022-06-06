@@ -46,6 +46,8 @@ export class AddServiceComponent implements OnInit {
   reminders = [];
   issues: any;
   inventory = [];
+  uploadDocsError = '';
+  uploadPhotoError = '';
   selectedTasks = [];
   selectedParts = [];
   sessionID: string;
@@ -574,12 +576,35 @@ export class AddServiceComponent implements OnInit {
     if (obj === "uploadedDocs") {
       this.uploadedDocs = [];
       for (let i = 0; i < files.length; i++) {
+             let name = files[i].name.split(".");
+       let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
         this.uploadedDocs.push(files[i]);
+              } else {
+            this.uploadDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+        }
       }
     } else {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
+             let name = files[i].name.split(".");
+       let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
         this.uploadedPhotos.push(files[i]);
+         } else {
+            this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
+        }
       }
     }
   }
