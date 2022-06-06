@@ -668,6 +668,12 @@
                           multiple
                           accept=".jpg, .jpeg, .png"
                         />
+                               <span
+                              *ngIf="photoError != ''"
+                              class="text-danger"
+                            >
+                              {{ photoError }}
+                            </span>
                       </div>
                       <div class="col-lg-2 mar-top-37"></div>
                     </div>
@@ -709,6 +715,12 @@
                           multiple
                           accept=".doc, .docx, .pdf, .jpg, .jpeg .png" 
                         />
+                               <span
+                              *ngIf="docsError != ''"
+                              class="text-danger"
+                            >
+                              {{ docsError }}
+                            </span>
                       </div>
                       <div class="col-lg-2 mar-top-37"></div>
                     </div>
