@@ -22,97 +22,68 @@
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
-              <form class="form-horizontal form-bordered" method="get">
-                <div class="form-group adddriverpl row">
-                  <div class="col-lg-6">
-                    <label
-                      class="control-label font-weight-bold text-lg-right text-dark text-4 font-weight-bold pt-2"
-                      >From Account Details</label
-                    >
-                  </div>
-                  <div class="col-lg-6">
-                    <label
-                      class="control-label font-weight-bold text-lg-right text-dark text-4 font-weight-bold pt-2"
-                      >To Account Details</label
-                    >
-                  </div>
+              <form class="form-horizontal form-bordered" method="post">
+                <div class="form-group adddriverpl row mt-4">
                   <div class="col-lg-6">
                     <div class="row">
-                      <div class="col-lg-5">
-                        <label
-                          class="control-label font-weight-bold text-lg-right"
-                          >Transfer#</label
-                        >
-                        <input type="text" class="form-control" />
-                      </div>
                       <div class="col-lg-5">
                         <label
                           class="control-label font-weight-bold text-lg-right"
                           >Transfer Date</label
                         >
                         <input
-                          type="text"
-                          data-plugin-datepicker=""
-                          class="form-control"
-                          placeholder="mm/dd/yyyy"
-                        />
+                            [(ngModel)]="transferData.txnDate"
+                            name="transDate"
+                            type="text"
+                            placeholder="yyyy/mm/dd"
+                            (click)="transDate.toggle()"
+                            ngbDatepicker
+                            #transDate="ngbDatepicker"
+                            class="form-control"
+                            autocomplete="off"
+                            [minDate]="dateMinLimit"
+                            [maxDate]="futureDatesLimit"
+                            #modeDate="ngModel"
+                            required
+                          />
                       </div>
-                    </div>
-                    <div class="row mt-3">
-                      <div class="col-lg-10">
+                    
+                      <div class="col-lg-5">
                         <label
-                          class="control-label font-weight-bold text-lg-right pt-2"
+                          class="control-label font-weight-bold text-lg-right"
                           >From Account</label
                         >
-                        <select
-                          data-plugin-selectTwo
-                          class="form-control populate"
-                        >
-                          <optgroup label="Select Account">
-                            <option value="1">Account 1</option>
-                            <option value="2">Account 2</option>
-                            <option value="2">Account 3</option>
-                            <option value="2">Account 4</option>
-                            <option value="3">Account 5</option>
-                          </optgroup>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="row mt-3">
-                      <div class="col-lg-10">
+                        <ng-select
+                            [(ngModel)]="transferData.fAcc"
+                            name="fAcc"
+                            placeholder="Select Account"
+                            #accountID="ngModel"
+                            required
+                            [disabled]="editDisabled"
+                          >
+                            <ng-option
+                              value="{{ data.actID }}"
+                              *ngFor="let data of accounts | async"
+                              >{{ data.actNo }} -
+                              {{ data.actName | titlecase }}</ng-option
+                            >
+                          </ng-select>
+                          <div
+                            *ngIf="
+                              accountID.invalid &&
+                              (accountID.dirty || accountID.touched)
+                            "
+                            class="text-danger"
+                          >
+                            <div *ngIf="accountID.errors.required">
+                              Account is required.
+                            </div>
+                          </div>
+
                         <label
                           class="control-label font-weight-bold text-lg-right pt-2"
-                          >Current Balance:</label
+                          >Current Balance: 0.00 CAD </label
                         >
-                        <label
-                          class="control-label font-weight-semibold text-lg-right pt-2"
-                        >
-                          2345.56 CAD</label
-                        >
-                      </div>
-                    </div>
-                    <div class="row mt-3">
-                      <div class="col-lg-5">
-                        <label
-                          class="control-label font-weight-bold text-lg-right"
-                          >Transfer Amount</label
-                        >
-                        <input type="text" class="form-control" />
-                      </div>
-                      <div class="col-lg-5">
-                        <label
-                          class="control-label font-weight-bold text-lg-right"
-                          >&nbsp;</label
-                        >
-                        <select
-                          data-plugin-selectTwo
-                          class="form-control populate"
-                        >
-                          <optgroup label="Select Currency">
-                            <option value="1">CAD</option>
-                            <option value="2">USD</option>
-                          </optgroup>
-                        </select>
                       </div>
                     </div>
                     <div class="row pt-1">
@@ -120,158 +91,170 @@
                         <label class="control-label font-weight-bold labelalign"
                           >Transfer Mode</label
                         >
-                        <select
-                          data-plugin-selectTwo
-                          class="form-control populate"
-                          id="paymentModeListDriver"
-                          onchange="paymentModeDriver()"
-                        >
-                          <optgroup>
-                            <option value="select">Select</option>
-                            <option value="Cash">Cash</option>
-                            <option value="Cheque">Cheque</option>
-                            <option value="EFT">EFT</option>
-                            <option value="creditCard">Credit Card</option>
-                            <option value="debitCard">Debit Card</option>
-                            <option value="demandDraft">Demand Draft</option>
-                          </optgroup>
-                        </select>
+                        <ng-select
+                            [(ngModel)]="transferData.payMode"
+                            name="payMode"
+                            placeholder="Select Payment Mode"
+                            #payMode="ngModel"
+                            required
+                            (change)="changePaymentMode($event)"
+                          >
+                            <ng-option value="cash">Cash</ng-option>
+                            <ng-option value="cheque">Cheque</ng-option>
+                            <ng-option value="eft">EFT</ng-option>
+                            <ng-option value="credit_card"
+                              >Credit Card</ng-option
+                            >
+                            <ng-option value="debit_card">Debit Card</ng-option>
+                            <ng-option value="demand_draft"
+                              >Demand Draft</ng-option
+                            >
+                          </ng-select>
                       </div>
-                      <!-- <div class="col-lg-3 mt-2" id="chequeBtnDriver" style="display: none;"> <a href="#printChequeModal" class="btn btn-sm btn-default modal-with-form mt-4">Print Cheque</a> </div> -->
+                      <div class="col-lg-5" *ngIf="
+                      transferData.payMode
+                    ">
+                        <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference<span
+                              class="mandfield text-2 ml-1"
+                              ><sup>*</sup></span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="transferData.payModeNo"
+                            name="payModeNo"
+                            placeholder="{{ payModeLabel }} Reference"
+                            #modeNo="ngModel"
+                            [required]="
+                              transferData.payMode
+                            "
+                            pattern="^[a-zA-Z0-9\s]+$"
+                            [disabled]="editDisabled"
+                          />
+                          <div
+                            *ngIf="
+                              modeNo.invalid && (modeNo.dirty || modeNo.touched)
+                            "
+                            class="text-danger"
+                          >
+                            <div *ngIf="modeNo.errors.required">
+                              {{ payModeLabel }}
+                              Reference is required.
+                            </div>
+                            <div *ngIf="modeNo.errors.pattern">
+                              {{ payModeLabel }}
+                              Reference must contain alphanumeric characters.
+                            </div>
+                          </div>
+                        </div>
                     </div>
-                    <div
-                      class="row pt-1"
-                      id="chequeDivDriver"
-                      style="display: none"
-                    >
+                    <div class="row pt-1" *ngIf="transferData.payMode">
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold labelalign"
-                          >Cheque Number</label
+                        <label
+                          class="control-label font-weight-bold labelalign"
+                          >{{ payModeLabel }} Date<span
+                            class="mandfield text-2 ml-1"
+                            ><sup>*</sup></span
+                          ></label
                         >
-                        <input type="text" class="form-control" />
-                      </div>
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold labelalign"
-                          >Cheque Date</label
+                        <input
+                          [(ngModel)]="transferData.payModeDate"
+                          name="payModeDate"
+                          type="text"
+                          placeholder="yyyy/mm/dd"
+                          (click)="payModeDate.toggle()"
+                          ngbDatepicker
+                          #payModeDate="ngbDatepicker"
+                          class="form-control"
+                          autocomplete="off"
+                          [minDate]="dateMinLimit"
+                          [maxDate]="futureDatesLimit"
+                          #modeDate="ngModel"
+                          required
+                          [disabled]="editDisabled"
+                        />
+                        <div
+                          *ngIf="
+                            modeDate.invalid &&
+                            (modeDate.dirty || modeDate.touched)
+                          "
+                          class="text-danger"
                         >
-                        <input type="date" class="form-control" />
-                      </div>
-                    </div>
-                    <div
-                      class="row pt-1"
-                      id="cashDivDriver"
-                      style="display: none"
-                    >
-                      <!-- <div class="col-lg-5">
-                            <label class="control-label font-weight-bold  labelalign">Cash Reference Number</label>
-                            <input type="text" class="form-control"> </div> -->
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold labelalign"
-                          >Cash Date</label
-                        >
-                        <input type="date" class="form-control" />
-                      </div>
-                    </div>
-                    <div
-                      class="row pt-1"
-                      id="eftDivDriver"
-                      style="display: none"
-                    >
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold labelalign"
-                          >EFT Number</label
-                        >
-                        <input type="text" class="form-control" />
-                      </div>
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold labelalign"
-                          >EFT Date</label
-                        >
-                        <input type="date" class="form-control" />
-                      </div>
-                    </div>
-                    <div
-                      class="row pt-1"
-                      id="creditCardDivDriver"
-                      style="display: none"
-                    >
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold labelalign"
-                          >Credit Card Number</label
-                        >
-                        <input type="text" class="form-control" />
-                      </div>
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold labelalign"
-                          >Credit Card Date</label
-                        >
-                        <input type="date" class="form-control" />
-                      </div>
-                    </div>
-                    <div
-                      class="row pt-1"
-                      id="debitCardDivDriver"
-                      style="display: none"
-                    >
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold labelalign"
-                          >Debit Card Number</label
-                        >
-                        <input type="text" class="form-control" />
-                      </div>
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold labelalign"
-                          >Debit Card Date</label
-                        >
-                        <input type="date" class="form-control" />
-                      </div>
-                    </div>
-                    <div
-                      class="row pt-1"
-                      id="demandDraftDivDriver"
-                      style="display: none"
-                    >
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold labelalign"
-                          >Demand Draft Number</label
-                        >
-                        <input type="text" class="form-control" />
-                      </div>
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold labelalign"
-                          >Demand Draft Date</label
-                        >
-                        <input type="date" class="form-control" />
+                          <div *ngIf="modeDate.errors.required">
+                            {{ payModeLabel }} date is required.
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div class="col-lg-6">
                     <div class="row">
-                      <div class="col-lg-10">
+                      <div class="col-lg-5">
                         <label
                           class="control-label font-weight-bold text-lg-right"
                           >To Account</label
                         >
-                        <select
-                          data-plugin-selectTwo
-                          class="form-control populate"
+                        <ng-select
+                            [(ngModel)]="transferData.tAcc"
+                            name="tAcc"
+                            placeholder="Select Account"
+                            #toaccountID="ngModel"
+                            required
+                            [disabled]="editDisabled"
+                          >
+                            <ng-option
+                              value="{{ data.actID }}"
+                              *ngFor="let data of accounts | async"
+                              >{{ data.actNo }} -
+                              {{ data.actName | titlecase }}</ng-option
+                            >
+                          </ng-select>
+                          <div
+                            *ngIf="
+                              toaccountID.invalid &&
+                              (toaccountID.dirty || toaccountID.touched)
+                            "
+                            class="text-danger"
+                          >
+                            <div *ngIf="toaccountID.errors.required">
+                              Account is required.
+                            </div>
+                          </div>
+                      </div>
+                      <div class="col-lg-3">
+                        <label
+                          class="control-label font-weight-bold text-lg-right"
+                          >Transfer Amount</label
                         >
-                          <optgroup label="Select Account">
-                            <option value="1">Account 1</option>
-                            <option value="2">Account 2</option>
-                            <option value="2">Account 3</option>
-                            <option value="2">Account 4</option>
-                            <option value="3">Account 5</option>
-                          </optgroup>
-                        </select>
+                        <input
+                            [(ngModel)]="transferData.amount"
+                            name="amount"
+                            type="text"
+                            placeholder="e.g 500"
+                            class="form-control"
+                            autocomplete="off"
+                            required
+                          />
+                      </div>
+                      <div class="col-lg-2">
+                        <label
+                          class="control-label font-weight-bold text-lg-right"
+                          >&nbsp;</label
+                        >
+                        <ng-select
+                            [(ngModel)]="transferData.curr"
+                            name="curr"
+                            placeholder="Select Payment Mode"
+                            #curr="ngModel"
+                            required
+                            [clearable]="false"
+                          >
+                            <ng-option value="CAD">CAD</ng-option>
+                            <ng-option value="USD">USD</ng-option>
+                          </ng-select>
                       </div>
                     </div>
-                    <!-- <div class="row mt-3">
-                    <div class="col-lg-10">
-                      <label class="control-label font-weight-bold  text-lg-right">Cheque#/DD</label>
-                      <input type="text" class="form-control">
-                    </div>
-                  </div> -->
                     <div class="row mt-3">
                       <div class="col-lg-10">
                         <label
@@ -281,27 +264,13 @@
                         <textarea
                           class="form-control heighta"
                           rows="3"
+                          [(ngModel)]="transferData.desc"
+                          type="text"
+                          name="desc"
+                          placeholder="Please enter description"
                         ></textarea>
                       </div>
                     </div>
-                    <!-- <div class="row mt-3">
-                    <div class="col-lg-5">
-                      <label class="control-label font-weight-bold  text-lg-right">Amount</label>
-                      <div class="row">
-                        <div class="col-lg-6 pr-0">
-                          <input type="text" class="form-control">
-                        </div>
-                        <div class="col-lg-6 pl-0">
-                          <select data-plugin-selectTwo class="form-control populate">
-                            <optgroup label="Select Currency">
-                              <option value="1">CAD</option>
-                              <option value="2">USD</option>
-                            </optgroup>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div> -->
                   </div>
                 </div>
                 <div class="form-group row">
@@ -313,7 +282,7 @@
                     >
                       Cancel
                     </button>
-                    <button class="btn btn-success">Save</button>
+                    <button class="btn btn-success" (click)="addRecord()">Save</button>
                   </div>
                 </div>
               </form>

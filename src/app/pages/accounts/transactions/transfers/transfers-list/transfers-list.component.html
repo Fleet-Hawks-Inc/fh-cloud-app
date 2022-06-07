@@ -63,67 +63,37 @@
                      <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table" >
                         <thead>
                            <tr>
-                              <th >Date</th>
                               <th>Transfer#</th>
+                              <th >Date</th>
                               <th >From Account</th>
                               <th >Transferred Amount</th>
                               <th >To Account</th>
                               <th >Transfer Mode</th>
-                              <th >Description</th>
+                              <th >Reference No.</th>
                               <th>Action</th>
                            </tr>
                         </thead>
                         <tbody>
-                           <tr>
-                              <td  routerLink="/accounts/transactions/transfers/detail">Jun 5, 2020</td>
-                              <td  routerLink="/accounts/transactions/transfers/detail">98676</td>
-                              <td  routerLink="/accounts/transactions/transfers/detail">Account 1</td>
-                              <td  routerLink="/accounts/transactions/transfers/detail">CAD 45.67</td>
-                              <td  routerLink="/accounts/transactions/transfers/detail">Account 2</td>
-                              <td  routerLink="/accounts/transactions/transfers/detail">Cheque</td>
-                               <td  routerLink="/accounts/transactions/transfers/detail">This is test descirption</td>
+                           <tr *ngIf="transactions.length == 0" class="text-center">
+                              <td colspan="8">{{ dataMessage }}</td>
+                           </tr>
+                           <tr *ngFor="let data of transactions">
+                              <td  [routerLink]="data.url" class="text-capitalize">{{ data.trNo }}</td>
+                              <td  [routerLink]="data.url" class="text-capitalize">{{ data.txnDate |  date: 'yyyy/MM/dd' }}</td>
+                              <td  [routerLink]="data.url" class="text-capitalize">{{ data.fromAccName }}</td>
+                              <td  [routerLink]="data.url" class="text-capitalize">{{ data.amount | number: "1.2-2" }} {{ data.curr }}</td>
+                              <td  [routerLink]="data.url" class="text-capitalize">{{ data.toAccName }}</td>
+                              <td  [routerLink]="data.url" class="text-capitalize">{{ data.payMode }}</td>
+                              <td  [routerLink]="data.url" class="text-capitalize">{{ data.payModeNo }}</td>
+                              
                               <td><div class="btn-group flex-wrap">
                                     <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                     <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
+                                       <a class="dropdown-item text-1" [href]="data.editUrl">Edit</a>
                                        <a class="dropdown-item text-1" href="#">Delete</a>
                                     </div>
                                  </div>
                                </td>
-                           </tr>
-                           <tr>
-                              <td  routerLink="/accounts/transactions/transfers/detail">Jun 5, 2020</td>
-                              <td  routerLink="/accounts/transactions/transfers/detail">98676</td>
-                              <td  routerLink="/accounts/transactions/transfers/detail">Account 1</td>
-                              <td  routerLink="/accounts/transactions/transfers/detail">CAD 45.67</td>
-                              <td  routerLink="/accounts/transactions/transfers/detail">Account 2</td>
-                              <td  routerLink="/accounts/transactions/transfers/detail">Cash</td>
-                               <td  routerLink="/accounts/transactions/transfers/detail">This is test descirption</td>
-                              <td><div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                                 </td>
-                           </tr>
-                           <tr>
-                              <td  routerLink="/accounts/transactions/transfers/detail">Jun 5, 2020</td>
-                              <td  routerLink="/accounts/transactions/transfers/detail">98676</td>
-                              <td  routerLink="/accounts/transactions/transfers/detail">Account 1</td>
-                              <td  routerLink="/accounts/transactions/transfers/detail">CAD 45.67</td>
-                              <td  routerLink="/accounts/transactions/transfers/detail">Account 2</td>
-                              <td  routerLink="/accounts/transactions/transfers/detail">Cash</td>
-                               <td  routerLink="/accounts/transactions/transfers/detail">This is test descirption</td>
-                              <td><div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1" href="#">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                                 </td>
                            </tr>
                         </tbody>
                      </table>
