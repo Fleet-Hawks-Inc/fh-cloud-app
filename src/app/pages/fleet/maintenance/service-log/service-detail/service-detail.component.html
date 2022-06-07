@@ -316,31 +316,6 @@
                   <div class="row mt-2">
                     <div class="col-lg-12">
                       <table class="table table-bordered table-striped table-responsive-lg">
-                        <!-- <tbody>
-                          <tr>
-                            <td width="33%" align="left">
-                              <p style="font-size: 15px" class="text-dark">
-                                <b>c </b><span style="padding-right: 4.5%">
-                                  {{ (partsSubTotal + taskTotal).toFixed(2) }}
-                                  {{ currency }}<br />
-                                </span>
-                              </p>
-                            </td>
-                            <td width="33%" align="left">
-                              <p style="font-size: 15px" class="text-dark">
-                                <b>Taxes: </b>
-                                <span style="padding-right: 9%">{{ taxes ? taxes : "-" }}<br /></span>
-                              </p>
-                            </td>
-                            <td width="34%" align="left">
-                              <p style="font-size: 15px" class="text-dark">
-                                <b>Total Amount: </b>
-                                <span style="padding-right: 6%">
-                                  {{ finalTotal ? finalTotal : "-" }}</span>
-                              </p>
-                            </td>
-                          </tr>
-                        </tbody> -->
                         <thead>
                           <tr>
                             <th>Sub Total:</th>
@@ -447,7 +422,7 @@
               <p class="text-dark mb-0" style="font-weight: 600">
                 <span *ngIf="logsData.unitType != 'asset'" style="font-weight: 500; color: #000000">Vehicle:-
                 </span>
-                {{ vehiclesObject[vehicle] | titlecase  }}
+                {{ vehiclesObject[vehicle] | titlecase }}
               </p>
               <p class="text-dark mb-0" *ngIf="logsData.unitType != 'asset'" style="font-weight: 600">
                 <span style="font-weight: 500; color: #000000">Odometer Miles:-
@@ -553,10 +528,10 @@
                 border-right: 1px solid #999999;
                 padding-left: 10px;
               ">
-              {{ data.issueName | titlecase  }}
+              {{ data.issueName | titlecase }}
             </td>
             <td style="font-size: 13px; padding-left: 10px; padding-right: 10px">
-              {{ users[data.assignedTo] | titlecase  }}
+              {{ users[data.assignedTo] | titlecase }}
             </td>
           </tr>
         </tbody>
@@ -607,7 +582,7 @@
                 border-right: 1px solid #999999;
                 padding-left: 10px;
               ">
-              {{ data.taskName | titlecase  }}
+              {{ data.taskName | titlecase }}
             </td>
             <td style="font-size: 13px; padding-left: 10px; padding-right: 10px">
               {{ data.laborCost }} {{ currency }}
@@ -660,7 +635,7 @@
                 border-right: 1px solid #999999;
                 padding-left: 10px;
               ">
-              {{ data.partNumber | titlecase  }}
+              {{ data.partNumber | titlecase }}
             </td>
             <td style="
                 font-size: 13px;
@@ -687,7 +662,7 @@
               <div class="form-group row">
                 <div class="col-lg-12">
                   <p class="mb-0">
-                    {{ description  ? description : "-" }}
+                    {{ description ? description : "-" }}
                   </p>
                 </div>
 
@@ -720,26 +695,27 @@
                         <div class="row">
                           <div class="col-lg-8" style="text-align: center;">Image {{ i + 1 }}</div>
                           <div class="col-lg-4 text-right">
-                         
+
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="col-lg-4" *ngIf="logDocs?.length > 0">
-                  <label
-                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Documents</label>
-                  <div class="row" *ngFor="let doc of logDocs; let d = index">
-                    <div class="col-lg-9">
-                      <a href="javascript:;" href="{{ doc.path }}" data-toggle="modal" data-target="#viewDocModal"
-                        (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
-                    </div>
-                    <div class="col-lg-3 text-right">
-                      <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
-                        data-target="#viewDocModal"></em>
-                    
-                    </div>
+              </div>
+              <div class="col-lg-4" *ngIf="logDocs?.length > 0">
+                <label
+                  class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Documents</label>
+                <div *ngFor="let doc of logDocs;let d = index ">
+                  <div>
+                    <pdf-viewer src="{{doc.path}}" [fit-to-page]="false" [show-all]="true" [render-text]="true"
+                      [original-size]="false" [autoresize]="true" style="max-width: 100%; display: block">
+                    </pdf-viewer>
+
+                    <hr style="width:200%">
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-8" style="text-align: center;">Document {{d+ 1 }}</div>
                   </div>
                 </div>
               </div>

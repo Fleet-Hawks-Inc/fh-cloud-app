@@ -233,8 +233,8 @@
                           ">Description
                         </label>
                         <textarea [(ngModel)]="serviceData.description" name="description" class="form-control" rows="3"
-                          style="height: auto !important" placeholder="Enter
-                          description about the service" #notesService="ngModel" pattern="^[\s\S]{1,500}$"></textarea>
+                          style="height: auto !important" placeholder="Enter description about the service"
+                          #notesService="ngModel" pattern="^[\s\S]{1,500}$"></textarea>
                         <div *ngIf="
                             notesService.invalid &&
                             (notesService.dirty || notesService.touched)
@@ -621,7 +621,7 @@
                           </table>
                         </div>
 
-                        
+
                         <!-- <div class="row">
                                 <div class="col-lg-1 offset-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount(%)</label>
@@ -667,7 +667,7 @@
                                 text-left
                               ">
                               <input class="w100" type="file" multiple name="uploadedPhotos" (change)="
-                                  selectDocuments($event, 'uploadedPhotos')" accept=".jpg, .jpeg, .png"  />
+                                  selectDocuments($event, 'uploadedPhotos')" accept=".jpg, .jpeg, .png" />
                             </span>
 
                             <!-- <input (change)="selectDocuments($event,
@@ -711,7 +711,7 @@
                               ">
                               <input class="w100" type="file" multiple name="uploadedDocuments" (change)="
                                   selectDocuments($event, 'uploadedDocs')
-                                " accept=".doc, .docx, .pdf, .jpg, .jpeg .png"  />
+                                " accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
                             </span>
 
                             <!-- <input
@@ -760,8 +760,7 @@
                         <div class="checkbox-custom checkbox-default">
                           <input type="checkbox" id="ZeroRated" name="exempt" [(ngModel)]="serviceData.exempt"
                             (change)="taxExempt()" />
-                          <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                            for="ZeroRated">Tax
+                          <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="ZeroRated">Tax
                             Exempt </label>
                         </div>
                       </div>
@@ -770,20 +769,20 @@
                       <div class="col-lg-5"></div>
                       <div class="col-lg-5 offset-1 text-left" *ngIf="!serviceData.exempt">
                         <div class="row">
-                            <div class="col-lg-10">
-                              <label class="control-label font-weight-bold text-3 text-dark"
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-3 text-dark"
                               for="inputDefault">Province/State</label>
-                              <ng-select class="form-control populate" name="stateID" [(ngModel)]="serviceData.stateID"
+                            <ng-select class="form-control populate" name="stateID" [(ngModel)]="serviceData.stateID"
                               placeholder="Select state" (change)="selectProvince($event)">
                               <ng-option *ngFor="let data of stateTaxes" value="{{ data.stateTaxID }}">{{ data.stateName
                                 }}
                               </ng-option>
                             </ng-select>
-                            </div>
+                          </div>
                         </div>
                       </div>
 
-                      
+
                     </div>
                     <div class="row">
                       <div class="col-lg-5"></div>
@@ -793,8 +792,8 @@
                           let taxD of serviceData.charges.taxes;
                           let td = index
                         ">
-                        <div class="col-lg-10">
-                          <div class="row">
+                          <div class="col-lg-10">
+                            <div class="row">
                               <div class="col-lg-4">
                                 <input type="text" disabled class="form-control" [(ngModel)]="taxD.name"
                                   name="taxName{{ td }}" />
@@ -807,20 +806,20 @@
                               <div class="col-lg-4">
                                 <div class="bordtop">
                                   <p class="text-right pt-2 mb-0">
-    
+
                                     {{ taxD.amount | number: "1.2-2" }}
                                   </p>
                                 </div>
                               </div>
                             </div>
-                        </div>
-                          
+                          </div>
+
 
 
                         </div>
                       </div>
 
-                     
+
                     </div>
 
                     <div class="row mt-3">
