@@ -1503,7 +1503,8 @@ export class NewAddressBookComponent implements OnInit {
               address: this.unitData.adrs,
               workPhone: this.unitData.workPhone,
               workEmail: this.unitData.workEmail,
-              eTypes: this.unitData.eTypes
+              eTypes: this.unitData.eTypes,
+              contactID: this.unitData['contactID']
             })
             this.formModalRef.close();
             this.units.forEach(element => {

@@ -1,36 +1,40 @@
 /* PURE css solution for rotating carets based on expanded section */
 .expand_caret {
-    transform: scale(1.6);
-    margin-left: 8px;
-    margin-top: -4px;
+  transform: scale(1.6);
+  margin-left: 8px;
+  margin-top: -4px;
 }
-a[aria-expanded='false'] > .expand_caret {
-    transform: scale(1.6) rotate(-90deg);
+a[aria-expanded="false"] > .expand_caret {
+  transform: scale(1.6) rotate(-90deg);
 }
 .invoice-wrapper {
-    padding: 0px;
-    border: none;
-    border-radius: .25rem;
-    font-size: 14px;
-    box-shadow: none;
-    margin: 0 auto;
-    margin-bottom: 0;
-    font-family: 'Open Sans', sans-serif;
+  padding: 0px;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 14px;
+  box-shadow: none;
+  margin: 0 auto;
+  margin-bottom: 0;
+  font-family: "Open Sans", sans-serif;
 }
 .invoice-iner__wrapper {
-    /* border: 1px dashed #8d8d8d; */
-    padding: 10px;
-    background-color: #fff;
+  /* border: 1px dashed #8d8d8d; */
+  padding: 10px;
+  background-color: #fff;
 }
 .table-striped > tbody td,
 .table-striped > thead td,
 .table-striped > tfoot th {
-    padding: 5px;
+  padding: 5px;
 }
 .invoice-iner__wrapper td {
-    padding: 5px;
+  padding: 5px;
 }
-.img_thumbnail{
-  width:90px;
-  height:70px;
+.img_thumbnail {
+  width: 90px;
+  height: 70px;
+}
+
+.shipmentbox {
+  min-height: 300px;
 }
