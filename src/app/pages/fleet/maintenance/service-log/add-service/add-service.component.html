@@ -668,6 +668,9 @@
                               ">
                               <input class="w100" type="file" multiple name="uploadedPhotos" (change)="
                                   selectDocuments($event, 'uploadedPhotos')" accept=".jpg, .jpeg, .png" />
+                              <span *ngIf="uploadPhotoError != ''" class="text-danger">
+                                {{ uploadPhotoError }}
+                              </span>
                             </span>
 
                             <!-- <input (change)="selectDocuments($event,
@@ -712,6 +715,9 @@
                               <input class="w100" type="file" multiple name="uploadedDocuments" (change)="
                                   selectDocuments($event, 'uploadedDocs')
                                 " accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
+                              <span *ngIf="uploadDocsError != ''" class="text-danger">
+                                {{ uploadDocsError }}
+                              </span>
                             </span>
 
                             <!-- <input

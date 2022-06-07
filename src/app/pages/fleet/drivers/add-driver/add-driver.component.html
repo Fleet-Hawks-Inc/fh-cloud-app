@@ -515,7 +515,14 @@
                                   )
                                 " type="file" accept=".jpg, .jpeg, .png"/>
                             </div>
+                            <span 
+                              *ngIf="uploadPhotoError != ''"
+                              class="text-danger"
+                            >
+                              {{ uploadPhotoError }}
+                            </span>
                           </div>
+                         
                         </div>
                       </div>
                       <div class="col-lg-5">
@@ -681,6 +688,12 @@
                                 type="file" accept=".doc, .docx, .pdf, .jpg, .jpeg .png"  />
                             </div>
                           </div>
+                             <span
+                              *ngIf="absDocsError != ''"
+                              class="text-danger"
+                            >
+                              {{ absDocsError }}
+                            </span>
                           <div class="col-lg-12 text-right" *ngIf="
                               driverF.submitted &&
                               abstractDocs.length == 0 &&
@@ -1027,10 +1040,16 @@
                           multiple
                         /> -->
 
-                        <span class="btn btn-default btn-file btn-xs w100 text-left">
+                        
                           <input class="w100" type="file" multiple name="document.uploadedDocs{{ i }}"
                             (change)="selectDocuments($event, i)" accept=".doc, .docx, .pdf, .jpg, .jpeg .png"   />
-                        </span>
+                                        <span
+                              *ngIf="uploadDocsError != ''"
+                              class="text-danger"
+                            >
+                              {{ uploadDocsError }}
+                            </span>
+                      
                       </div>
                       <div class="col-lg-10 mt-2" *ngIf="assetsDocs[i]">
                         <div class="vehicle-common-box p-3">

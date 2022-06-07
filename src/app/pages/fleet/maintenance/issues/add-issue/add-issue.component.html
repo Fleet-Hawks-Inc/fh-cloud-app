@@ -414,6 +414,12 @@
                             (change)="selectDocuments($event, 'uploadedPhotos')"
                             accept=".jpg, .jpeg, .png"
                           />
+                               <span
+                              *ngIf="uploadPhotoError != ''"
+                              class="text-danger"
+                            >
+                              {{ uploadPhotoError }}
+                            </span>
                         </span>
 
                         <!-- <input (change)="selectDocuments($event, 'uploadedPhotos')"
@@ -471,8 +477,13 @@
                             (change)="selectDocuments($event, 'uploadedDocs')"
                             accept=".doc, .docx, .pdf, .jpg, .jpeg .png" 
                           />
+                            <span
+                              *ngIf="uploadDocsError != ''"
+                              class="text-danger"
+                            >
+                              {{ uploadDocsError }}
+                            </span>
                         </span>
-
                         <!-- <input
                           (change)="selectDocuments($event, 'uploadedDocs')"
                           name="uploadedDocs"
