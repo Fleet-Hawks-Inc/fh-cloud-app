@@ -36,7 +36,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
-
+import { PdfViewerModule } from "ng2-pdf-viewer";
 
 
 const COMPONENTS = [
@@ -210,7 +210,8 @@ const routes: Routes = [
     MenuModule,
     CalendarModule,
     AutoCompleteModule,
-    DropdownModule
+    DropdownModule,
+    PdfViewerModule,
   ],
   exports: [...COMPONENTS],
   providers: [unsavedChangesGuard,

@@ -8,7 +8,7 @@ import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import * as html2pdf from "html2pdf.js";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
-
+import { PdfViewerComponent } from "ng2-pdf-viewer";
 @Component({
   selector: 'app-service-detail',
   templateUrl: './service-detail.component.html',
@@ -117,7 +117,7 @@ export class ServiceDetailComponent implements OnInit {
     this.fetchUsers();
     this.fetchCarrier()
   }
-
+  
   fetchProgramByID() {
     this.spinner.show(); // loader init
     this.apiService.getData(`serviceLogs/${this.logID}`).subscribe({
