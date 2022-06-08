@@ -76,6 +76,9 @@ import { ToastMessagesComponent } from './toast-messages/toast-messages.componen
 import { MessageService } from "primeng/api";
 import { ToastModule } from 'primeng/toast';
 
+import { SidebarModule } from 'primeng/sidebar';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -135,7 +138,10 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     TrackingModule,
     BadgeModule,
     DialogModule,
-    ToastModule
+    ToastModule,
+    SidebarModule,
+    CardModule,
+    InputTextModule
   ],
   providers: [
     HttpInterceptorProviders,

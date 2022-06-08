@@ -251,7 +251,7 @@
                       </thead>
                       <tbody>
                         <tr *ngIf="payments.length === 0" class="text-center">
-                          <td colspan="10">{{ dataMessage }}</td>
+                          <td colspan="11">{{ dataMessage }}</td>
                         </tr>
                         <tr *ngFor="let data of payments; let i = index">
                           <td class="font-weight-bold cursorpoint" [routerLink]="data.url">

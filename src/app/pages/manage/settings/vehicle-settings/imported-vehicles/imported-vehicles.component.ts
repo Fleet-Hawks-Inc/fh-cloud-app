@@ -45,6 +45,7 @@ export class ImportedVehiclesComponent implements OnInit {
   _selectedColumns: any[];
 
   display = false;
+  next: any = 'null';
 
   constructor(private apiService: ApiService, private toastr: ToastrService, private modalService: NgbModal,
   ) { }
@@ -144,14 +145,18 @@ export class ImportedVehiclesComponent implements OnInit {
             this.submitDisabled = true;
             for (let item of csvData.inValidMessages) {
               let joinStr = '';
+
               if (item.includes('vin')) {
                 joinStr = item + '. VIN must be between 17-18 alphanumeric characters eg.2G1WH55K5Y9322458.';
                 this.inValidMessages.push(joinStr)
               } else if (item.includes('year')) {
-                joinStr = item + '.  Please enter the year in the format: YYYY';
+                joinStr = item + '. Please enter the year in the format: YYYY';
+                this.inValidMessages.push(joinStr)
+              } else if (item.includes('vehicle_name')) {
+                joinStr = item + '. Vehicle name/number must contain alphanumeric characters.';
                 this.inValidMessages.push(joinStr)
               } else if (item.includes('status')) {
-                joinStr = item + '.  Status should be active, inActive, outOfService or sold';
+                joinStr = item + '. Status should be active, inActive, outOfService or sold';
                 this.inValidMessages.push(joinStr)
               } else {
                 this.inValidMessages.push(item)
@@ -177,15 +182,34 @@ export class ImportedVehiclesComponent implements OnInit {
   }
 
   async fetchVehicleImport() {
-    let result = await this.apiService.getData('importer/get?type=vehicle').toPromise();
-    if (result.length === 0) {
+    if (this.next === 'end') {
+      return;
+    }
+    let result = await this.apiService.getData(`importer/get?type=vehicle&key=${this.next}`).toPromise();
+    if (result.data.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
       this.loaded = true;
     }
-    if (result && result.length > 0) {
-      this.importVehicles = result;
+    if (result && result.data.length > 0) {
+      result.data.forEach(elem => {
+        elem.timeCreated = new Date(elem.timeCreated).toLocaleString('en-CA');
+        this.importVehicles.push(elem);
+      });
+
+      if (result.nextPage != undefined) {
+        this.next = result.nextPage.replace(/#/g, '--');
+      } else {
+        this.next = 'end';
+      }
     }
     this.loaded = true;
+  }
+
+  onScroll() {
+    if (this.loaded) {
+      this.fetchVehicleImport();
+    }
+    this.loaded = false;
   }
 
 
@@ -227,7 +251,8 @@ export class ImportedVehiclesComponent implements OnInit {
   }
 
   refreshData() {
-    this.importVehicles = []
+    this.importVehicles = [];
+    this.next = '';
     this.fetchVehicleImport();
     this.dataMessage = Constants.FETCHING_DATA;
   }

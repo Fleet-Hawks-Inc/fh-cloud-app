@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService, ListService } from "src/app/services";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-employee-payment-detail",
@@ -59,7 +60,8 @@ export class EmployeePaymentDetailComponent implements OnInit {
     isFeatEnabled: false,
     gstper: 0,
     gstHstAmt: 0,
-    vendorId: ''
+    vendorId: '',
+    cheqdata: {}
   };
   employees = [];
   empdetail = {
@@ -78,6 +80,7 @@ export class EmployeePaymentDetailComponent implements OnInit {
   accountsIntObjects = {};
   showModal = false;
   downloadDisabled = false;
+  subscription: Subscription;
 
   constructor(
     private listService: ListService,
@@ -89,6 +92,12 @@ export class EmployeePaymentDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.subscription = this.listService.paymentDetail.subscribe(async (res: any) => {
+      if(res == 'employee-payments') {
+        this.fetchPay();
+      }
+    })
+
     this.paymentID = this.route.snapshot.params["paymentID"];
     this.fetchPaymentDetail();
     // this.fetchEmployees();
@@ -200,7 +209,30 @@ export class EmployeePaymentDetailComponent implements OnInit {
       vendorId: this.paymentData.vendorId,
       gstHstPer: this.paymentData.gstper,
       gstHstAmt: this.paymentData.gstHstAmt,
+      recordID: this.paymentID,
+      cheqData: this.paymentData.cheqdata,
+      module: 'employee-payments',
     };
     this.listService.openPaymentChequeModal(obj);
+  }
+
+  fetchPay() {
+    this.accountService
+      .getData(`employee-payments/detail/${this.paymentID}`)
+      .subscribe((result: any) => {
+        this.paymentData = result[0];
+        this.paymentData.currency = this.paymentData.currency
+          ? this.paymentData.currency
+          : "CAD";
+        if (this.paymentData.payMode) {
+          this.paymentData.payMode = this.paymentData.payMode.replace("_", " ");
+        }
+      }, err => {
+        this.downloadDisabled = false;
+      });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

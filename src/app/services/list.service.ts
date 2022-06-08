@@ -115,6 +115,9 @@ export class ListService {
   bolPdfDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   bolPdfList = this.bolPdfDataSource.asObservable();
 
+  paymentDetailSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  paymentDetail = this.paymentDetailSource.asObservable();
+
   settlementDetailsDataSource: BehaviorSubject<Array<any>> =
     new BehaviorSubject([]);
   settlementDetails = this.settlementDetailsDataSource.asObservable();
@@ -331,5 +334,9 @@ export class ListService {
 
   passMaxUnit(value) {
     this.maxUnit.next(value);
+  }
+
+  triggerFetchPaymentDetail(value) {
+    this.paymentDetailSource.next(value);
   }
 }

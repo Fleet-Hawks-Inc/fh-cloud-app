@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ApiService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
 import { ToastrService } from "ngx-toastr";
@@ -7,13 +7,14 @@ import * as moment from 'moment';
 import { ActivatedRoute } from "@angular/router";
 import { result } from 'lodash';
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
-
+import { Table } from 'primeng/table';
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
   styleUrls: ['./activity.component.css']
 })
 export class ActivityComponent implements OnInit {
+  @ViewChild('dt') table: Table;
   exportData = [];
   allData: any = [];
   assetData = []
@@ -34,6 +35,11 @@ export class ActivityComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   public astId;
+  get = _.get;
+  find = _.find;
+
+  _selectedColumns: any[];
+  dataColumns: any[];
   constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute, private countryStateCity: CountryStateCityService) { }
   ngOnInit() {
     this.end = moment().format("YYYY-MM-DD");
@@ -41,13 +47,47 @@ export class ActivityComponent implements OnInit {
     this.astId = this.route.snapshot.params[`astId`];
     this.fetchAssetActivity()
     this.fetchAsset();
+    this.dataColumns = [
+      { width: '6%', field: 'assetName', header: 'Asset', type: "text", },
+      { width: '6%', field: 'tripNo', header: 'Trip#', type: "text" },
+      { width: '6%', field: 'orderName', header: 'Order#', type: "text" },
+      { width: '6%', field: 'vehicle', header: 'Vehicle', type: 'text' },
+      { width: '13%', field: 'driverName', header: 'Driver', type: 'text' },
+      { width: '25%', field: 'location', header: 'Location', type: "text" },
+      { width: '8%', field: 'date', header: 'Date', type: "text" },
+      { width: '8%', field: 'usState', header: 'Province (US)', type: 'text' },
+      { width: '8%', field: 'usStateMiles', header: 'US Miles', type: 'text' },
+      { width: '7%', field: 'usMiles', header: 'US Total', type: 'text' },
+      { width: '9%', field: 'canState', header: 'Province (Canada)', type: 'text' },
+      { width: '8%', field: 'canStateMiles', header: 'Canada Miles', type: 'text' },
+      { width: '8%', field: 'canMiles', header: 'Canada Total', type: 'text' },
+      { width: '8%', field: 'miles', header: 'Total Miles', type: 'text' },
+    ]
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
   }
+
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+  }
+
+
   fetchAsset() {
     this.apiService.getData(`assets/fetch/detail/${this.astId}`).subscribe((result: any) => {
       this.assetData = result.Items;
     });
   }
-  onScroll() {
+  onScroll(event: any) {
     if (this.loaded) {
       this.fetchAssetActivity();
     }
@@ -73,21 +113,43 @@ export class ActivityComponent implements OnInit {
           this.lastItemSK = 'end';
         }
         this.loaded = true;
-                 for (let ast of result.Items) 
-                 {
-                    let dataa = ast
-                    ast.miles = 0
-                    for (let element of dataa.tripPlanning) {
-                        ast.miles += Number(element.miles);
-                    }
-                }
-                if (result.Items.length === 0) {
-                    this.dataMessage = Constants.NO_RECORDS_FOUND
-                }
-             });
+        for (let res of result.Items) {
+
+          res.miles = 0
+          res.location = []
+          res.locationData
+          res.date = []
+          res.usState = []
+          res.usStateMiles = []
+          res.canState = []
+          res.canStateMiles = []
+          for (let element of res.tripPlanning) {
+            res.miles += Number(element.miles);
+            res.location.push(element.type + ": " + element.location )
+        
+            res.date.push(element.type + ": " + element.date)
+          } 
+          for (let data of res.provinceData) {
+            for (let provD of data.usProvince) {
+              res.usState.push(provD.StCntry)
+              res.usStateMiles.push( provD.Total)
+            }
+
+            for (let canProvD of data.canProvince) {
+              res.canState.push(canProvD.StCntry)
+              res.canStateMiles.push(canProvD.Total)
+            }
+          }
+        }
+
+
+        if (result.Items.length === 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND
+        }
+      });
     }
   }
-  
+
   searchFilter() {
     if (this.start != null && this.end != null) {
       if (this.start != null && this.end == null) {
@@ -110,7 +172,7 @@ export class ActivityComponent implements OnInit {
       return false;
     }
   }
-  
+
   fetchFullExport() {
     this.apiService.getData(`trips/fetch/assetActivity/list?asset=${this.astId}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.exportData = result.Items;
@@ -124,7 +186,20 @@ export class ActivityComponent implements OnInit {
       this.generateCSV();
     });
   }
-  
+  clear(table: Table) {
+    table.clear();
+  }
+  refreshData() {
+    this.end = moment().format("YYYY-MM-DD");
+    this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
+    this.allData = [];
+    this.lastItemSK = '';
+    this.loaded = false;
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.fetchAssetActivity()
+    this.fetchAsset();
+  }
+
   generateCSV() {
     if (this.exportData.length > 0) {
       let dataObject = []

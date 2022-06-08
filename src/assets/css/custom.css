@@ -2870,7 +2870,7 @@ td.loadid a {
 /* width */
 
 .w100 {
-  width: 100%;
+  width: 100% !important;
 }
 
 .w25 {
@@ -4383,5 +4383,4 @@ input:checked + .sliderbtn:before {
 
 .orders-listing .p-datatable-scrollable .p-frozen-column {
   position: relative !important;
-
 }

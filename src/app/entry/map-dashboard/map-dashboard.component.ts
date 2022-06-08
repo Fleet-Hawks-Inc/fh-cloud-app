@@ -1,6 +1,7 @@
 import { animate, style, transition, trigger } from "@angular/animations";
 import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { MapInfoWindow, MapMarker } from "@angular/google-maps";
+import { Table } from "primeng/table";
 import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { ApiService } from "../../services";
@@ -142,6 +143,12 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
   }
 
+  displayAssets = false;
+  showAssets() {
+    this.displayAssets = !this.displayAssets;
+
+  }
+
   /**
  * Get vehicle location by dashCam
  */
@@ -235,6 +242,10 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     await this.getCurrentAssetLocation();
     await this.getVehicleLocationByDashCam();
 
+  }
+
+  clear(table: Table) {
+    table.clear();
   }
 
 }

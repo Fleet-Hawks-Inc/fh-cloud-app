@@ -53,6 +53,7 @@ export class ImportedAssetsComponent implements OnInit {
 
   ];
   _selectedColumns: any[];
+  next: any = 'null';
 
   constructor(private apiService: ApiService, private location: Location, private toastr: ToastrService, private modalService: NgbModal) { }
 
@@ -92,16 +93,34 @@ export class ImportedAssetsComponent implements OnInit {
     }
   }
   async fetchAssetImport() {
-
-    let result = await this.apiService.getData('importer/get?type=asset').toPromise();
-    if (result.length === 0) {
+    if (this.next === 'end') {
+      return;
+    }
+    let result = await this.apiService.getData(`importer/get?type=asset&key=${this.next}`).toPromise();
+    if (result.data.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
       this.loaded = true;
     }
-    if (result && result.length > 0) {
-      this.importAssets = result;
+    if (result && result.data.length > 0) {
+      result.data.forEach(elem => {
+        elem.timeCreated = new Date(elem.timeCreated).toLocaleString('en-CA');
+        this.importAssets.push(elem);
+      });
+
+      if (result.nextPage != undefined) {
+        this.next = result.nextPage.replace(/#/g, '--');
+      } else {
+        this.next = 'end';
+      }
     }
     this.loaded = true;
+  }
+
+  onScroll() {
+    if (this.loaded) {
+      this.fetchAssetImport();
+    }
+    this.loaded = false;
   }
 
   isStatusValid = (status) => {
@@ -174,6 +193,9 @@ export class ImportedAssetsComponent implements OnInit {
               if (item.includes('start_date')) {
                 joinStr = item + '. Please enter the date in the format: YYYY-MM-DD';
                 this.inValidMessages.push(joinStr)
+              } else if (item.includes('asset_name')) {
+                joinStr = item + '. Asset name/number must contain alphanumeric characters.';
+                this.inValidMessages.push(joinStr)
               } else if (item.includes('year')) {
                 joinStr = item + '.  Please enter the year in the format: YYYY';
                 this.inValidMessages.push(joinStr)
@@ -209,7 +231,8 @@ export class ImportedAssetsComponent implements OnInit {
   }
 
   refreshData() {
-    this.importAssets = []
+    this.importAssets = [];
+    this.next = '';
     this.fetchAssetImport();
     this.dataMessage = Constants.FETCHING_DATA;
   }

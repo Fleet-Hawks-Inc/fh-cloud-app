@@ -37,6 +37,7 @@ export class ImportedContactsComponent implements OnInit {
     eType: 'customer'
   }
   entity: string;
+  next: any = 'null';
 
   // columns of data table
   dataColumns = [
@@ -109,9 +110,6 @@ export class ImportedContactsComponent implements OnInit {
         {
           name: 'company_name', inputName: 'companyname', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
-          }, validate: function (name: string) {
-            const vname = /^[a-zA-Z0-9\s]+$/;
-            return vname.test(name)
           }
         },
         {
@@ -127,23 +125,13 @@ export class ImportedContactsComponent implements OnInit {
           name: 'zip', inputName: 'zip', required: false
         },
         {
-          name: 'phone1', inputName: 'phone1', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
-            return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
-          }, validate: function (phoneno: string) {
-            const phoneformat = /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;
-            return phoneformat.test(phoneno)
-          }
+          name: 'phone1', inputName: 'phone1', required: false
         },
         {
           name: 'phone2', inputName: 'phone2', required: false
         },
         {
-          name: 'primary_email', inputName: 'primary_email', required: true, unique: true, requiredError: function (headerName, rowNumber, columnNumber) {
-            return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
-          }, validate: function (email: string) {
-            const reqExp = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/
-            return reqExp.test(email)
-          }
+          name: 'primary_email', inputName: 'primary_email', required: false
         },
         {
           name: 'secondary_emails', inputName: 'secondary_emails', isArray: true,
@@ -155,17 +143,23 @@ export class ImportedContactsComponent implements OnInit {
       .then(csvData => {
         if (csvData.data.length !== 0 && csvData.data.length < 201) {
           let errors = [];
-          for (let i = 0; i < csvData.data.length; i++) {
+          for (let i = 1; i < csvData.data.length; i++) {
             const element = csvData.data[i];
+            const reqExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            if (element.primary_email && element.primary_email != '') {
+              element.primary_email = element.primary_email.toLowerCase().trim();
+              let result = reqExp.test(element.primary_email)
+              if (!result) {
+                errors.push(`Primary Email is not valid in the ${i + 1} row / 9 column.`)
+              }
+            }
             if (element.secondary_emails.length == 1 && element.secondary_emails[0] == '') {
-
               element.secondary_emails = [];
             }
+
             if (element.secondary_emails.length > 0) {
               for (let j = 0; j < element.secondary_emails.length; j++) {
                 const email = element.secondary_emails[j];
-
-                const reqExp = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/
                 let result = reqExp.test(email)
                 if (!result) {
                   errors.push(`Email is not valid in the ${i + 1} row / 9 column.`)
@@ -195,7 +189,7 @@ export class ImportedContactsComponent implements OnInit {
         }
         else {
           this.submitDisabled = true;
-          this.toastr.error("'The file should contain a maximum of 200 records'")
+          this.toastr.error("The file should contain a maximum of 200 records")
         }
       })
       .catch(err => { })
@@ -207,15 +201,34 @@ export class ImportedContactsComponent implements OnInit {
   }
 
   async fetchCustomersImport() {
-    let result = await this.apiService.getData(`importer/get?type=contact&entity=${this.importData.eType}`).toPromise();
-    if (result.length === 0) {
+    if (this.next === 'end') {
+      return;
+    }
+    let result = await this.apiService.getData(`importer/get?type=contact&entity=${this.importData.eType}&key=${this.next}`).toPromise();
+    if (result.data.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
       this.loaded = true;
     }
-    if (result && result.length > 0) {
-      this.importCustomers = result;
+    if (result && result.data.length > 0) {
+      result.data.forEach(elem => {
+        elem.timeCreated = new Date(elem.timeCreated).toLocaleString('en-CA');
+        this.importCustomers.push(elem);
+      });
+
+      if (result.nextPage != undefined) {
+        this.next = result.nextPage.replace(/#/g, '--');
+      } else {
+        this.next = 'end';
+      }
     }
     this.loaded = true;
+  }
+
+  onScroll() {
+    if (this.loaded) {
+      this.fetchCustomersImport();
+    }
+    this.loaded = false;
   }
 
 
@@ -258,7 +271,8 @@ export class ImportedContactsComponent implements OnInit {
   }
 
   refreshData() {
-    this.importCustomers = []
+    this.importCustomers = [];
+    this.next = '';
     this.fetchCustomersImport();
     this.dataMessage = Constants.FETCHING_DATA;
   }

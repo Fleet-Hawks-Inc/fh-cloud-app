@@ -32,6 +32,8 @@ export class OrdersListComponent implements OnInit {
   @ViewChild("confirmEmailModal", { static: true })
   confirmEmailModal: TemplateRef<any>;
 
+  @ViewChild("schedularModal", {static:true}) schedularModal:TemplateRef<any>
+
   dataMessage: string = Constants.FETCHING_DATA;
   noOrdersMsg = Constants.NO_RECORDS_FOUND;
   orders = [];
@@ -231,6 +233,29 @@ export class OrdersListComponent implements OnInit {
   _selectedColumns: any[];
   // pickupLocData = []
   isOrderPriceEnabled = environment.isOrderPriceEnabled
+  scheduler={
+    orderID:null,
+    orderNumber:null,
+    name:null,
+    time:null,
+    type:{
+      daysNo:0,
+      days:[]
+    },
+    range:{
+      dateRange:{
+        to:null,
+        from:null,
+      },
+      months:[]
+    }
+  }
+
+  saveDisabled=false;
+  repeatType=null;
+  range=null;
+  days=["everyday","monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
+  months=["selectAll","january","february","march","april","may","june","july","august","september","october","november","december"]
 
   constructor(
     private apiService: ApiService,
@@ -834,5 +859,116 @@ export class OrdersListComponent implements OnInit {
   */
   clear(table: Table) {
     table.clear();
+  }
+  resetSchedule(){
+    this.scheduler={
+      orderID:null,
+      orderNumber:null,
+      name:null,
+      time:null,
+      type:{
+        daysNo:0,
+        days:[]
+      },
+      range:{
+        dateRange:{
+          to:null,
+          from:null,
+        },
+        months:[]
+      }
+    }
+
+  }
+
+  openSchedulerModal(orderID,orderNumber){
+    this.resetSchedule();
+    this.scheduler.orderID=orderID,
+    this.scheduler.orderNumber=orderNumber
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: true,
+      windowClass: "schedular--modal",
+    };
+    this.confirmRef = this.modalService.open(
+      this.schedularModal,
+      ngbModalOptions
+    );
+    this.repeatType=''
+    this.range=''
+  this.saveDisabled=false
+  }
+
+  onCheckboxChange(data,isChecked){
+    if(isChecked){
+      this.scheduler.type.days.push(data)
+    }
+    else{
+      const index=this.scheduler.type.days.findIndex(x=>x==data);
+      this.scheduler.type.days.splice(index,1)
+    }
+  }
+
+  onRangeCheckboxChange(value,isChecked){
+    if(isChecked){
+      this.scheduler.range.months.push(value)
+    }
+    else{
+      const index=this.scheduler.range.months.findIndex(x=>x==value);
+      this.scheduler.type.days.splice(index,1)
+    }
+  }
+
+  async saveScheduler(){
+    this.saveDisabled=true;
+    if(this.scheduler.name==null){
+      this.toastr.error("Scheduler Name is required");
+      this.saveDisabled=false;
+      return 
+    }
+    if(this.scheduler.time==null){
+      this.toastr.error("Scheduler Time is required");
+      this.saveDisabled=false;
+      return;
+    }
+    if(this.repeatType==null){
+      this.toastr.error("Repeat Type is required");
+      this.saveDisabled=false;
+      return;
+    }
+    if(this.range==null){
+      this.toastr.error("Range is required");
+      this.saveDisabled=false;
+      return;
+    }
+    if(this.repeatType=="selectDaysNo"){
+      delete this.scheduler.type.days
+    }
+    else{
+      delete this.scheduler.type.daysNo
+    }
+
+    if(this.range=="date"){
+      delete this.scheduler.range.months;
+    }
+    else{
+      delete this.scheduler.range.dateRange
+    }
+    const scheduleData={
+      orderID:this.scheduler.orderID,
+      orderNumber:this.scheduler.orderNumber,
+      sName:this.scheduler.name,
+      sType:this.scheduler.type,
+      sTime:this.scheduler.time,
+      sRange:this.scheduler.range
+  }
+    this.apiService.postData('orders/schedule',scheduleData).subscribe({
+      complete:()=>{},
+      error:(err)=>{},
+      next:(res)=>{
+        this.toastr.success("Schedule added successfully");
+        this.modalService.dismissAll();
+      }
+    })
+    
   }
 }
