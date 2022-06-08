@@ -662,6 +662,10 @@ export class AddUserComponent implements OnInit {
         // this.spinner.show();
         this.userData[`contactID`] = this.contactID;
         this.userData[`deletedUploads`] = this.deletedUploads;
+        if(!this.userData.userType)
+        {
+         this.toastr.error('Select User Type');
+        }
         if (this.userData.loginEnabled === false) {
             this.userData.userLoginData.userName = '';
             this.userData.userLoginData.userRoles = [];

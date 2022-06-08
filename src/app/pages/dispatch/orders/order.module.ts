@@ -88,7 +88,7 @@ const routes: Routes = [
     ButtonModule,
     ToastModule,
     FormsModule,
-    BadgeModule
+    BadgeModule,
 
   ],
   providers: [unsavedChangesGuard],

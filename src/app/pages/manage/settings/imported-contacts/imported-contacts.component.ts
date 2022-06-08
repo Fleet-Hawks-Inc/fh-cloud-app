@@ -37,6 +37,7 @@ export class ImportedContactsComponent implements OnInit {
     eType: 'customer'
   }
   entity: string;
+  next: any = 'null';
 
   // columns of data table
   dataColumns = [
@@ -200,15 +201,34 @@ export class ImportedContactsComponent implements OnInit {
   }
 
   async fetchCustomersImport() {
-    let result = await this.apiService.getData(`importer/get?type=contact&entity=${this.importData.eType}`).toPromise();
-    if (result.length === 0) {
+    if (this.next === 'end') {
+      return;
+    }
+    let result = await this.apiService.getData(`importer/get?type=contact&entity=${this.importData.eType}&key=${this.next}`).toPromise();
+    if (result.data.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
       this.loaded = true;
     }
-    if (result && result.length > 0) {
-      this.importCustomers = result;
+    if (result && result.data.length > 0) {
+      result.data.forEach(elem => {
+        elem.timeCreated = new Date(elem.timeCreated).toLocaleString('en-CA');
+        this.importCustomers.push(elem);
+      });
+
+      if (result.nextPage != undefined) {
+        this.next = result.nextPage.replace(/#/g, '--');
+      } else {
+        this.next = 'end';
+      }
     }
     this.loaded = true;
+  }
+
+  onScroll() {
+    if (this.loaded) {
+      this.fetchCustomersImport();
+    }
+    this.loaded = false;
   }
 
 
@@ -251,7 +271,8 @@ export class ImportedContactsComponent implements OnInit {
   }
 
   refreshData() {
-    this.importCustomers = []
+    this.importCustomers = [];
+    this.next = '';
     this.fetchCustomersImport();
     this.dataMessage = Constants.FETCHING_DATA;
   }

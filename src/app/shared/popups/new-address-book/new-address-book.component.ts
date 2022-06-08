@@ -83,7 +83,7 @@ export class NewAddressBookComponent implements OnInit {
 
 
 
-
+  formModalRef: any;
   updateButton: boolean = false;
   suggestions = [];
   actualSuggestions = [];
@@ -304,12 +304,13 @@ export class NewAddressBookComponent implements OnInit {
         let ngbModalOptions: NgbModalOptions = {
           backdrop: 'static',
           keyboard: false,
-          windowClass: 'units-form__main'
+          windowClass: 'units-form__main',
+          backdropClass: 'light-backdrop'
         };
-        this.modalService.dismissAll();
-        const modalRef = this.modalService.open(this.newUnitModal, ngbModalOptions)
+        // this.modalService.dismissAll();
+        this.formModalRef = this.modalService.open(this.newUnitModal, ngbModalOptions)
         this.imageText = 'Add Picture';
-        modalRef.result.then((data) => {
+        this.formModalRef.result.then((data) => {
           this.emptyEntry();
         }, (reason) => {
           this.emptyEntry();
@@ -1481,8 +1482,6 @@ export class NewAddressBookComponent implements OnInit {
           next: (res) => {
             this.hasSuccess = true;
             this.unitDisabled = false;
-            this.dataMessage = Constants.FETCHING_DATA;
-            this.emptyTabs();
             this.listService.fetchContactsByIDs();
             if (this.unitData.eTypes.includes('owner_operator')) {
               this.listService.fetchOwnerOperators();
@@ -1495,7 +1494,46 @@ export class NewAddressBookComponent implements OnInit {
             } else if (this.unitData.eTypes.includes('customer')) {
               this.listService.fetchCustomers();
             }
-            this.listService.triggerModal('list');
+            const index = this.units.findIndex(object => {
+              return object.cName === this.unitData.cName && object.workPhone === this.unitData.workPhone && object.workEmail === this.unitData.workEmail;
+            });
+            this.units.splice(index, 1);
+            this.units.unshift({
+              cName: this.unitData.cName,
+              address: this.unitData.adrs,
+              workPhone: this.unitData.workPhone,
+              workEmail: this.unitData.workEmail,
+              eTypes: this.unitData.eTypes,
+              contactID: this.unitData['contactID']
+            })
+            this.formModalRef.close();
+            this.units.forEach(element => {
+              if (element.eTypes.includes('customer')) {
+                this.customers.push(element);
+              } else if (element.eTypes.includes('broker')) {
+                this.brokers.push(element);
+              } else if (element.eTypes.includes('carrier')) {
+                this.carriers.push(element);
+              } else if (element.eTypes.includes('shipper')) {
+                this.shippers.push(element);
+              } else if (element.eTypes.includes('receiver')) {
+                this.receivers.push(element);
+              } else if (element.eTypes.includes('fc')) {
+                this.fcCompanies.push(element);
+              } else if (element.eTypes.includes('vendor')) {
+                this.vendors.push(element);
+              } else if (element.eTypes.includes('owner_operator')) {
+                this.owners.push(element);
+              }
+            });
+            if (this.customers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+            if (this.brokers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+            if (this.carriers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+            if (this.shippers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+            if (this.receivers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+            if (this.fcCompanies.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+            if (this.vendors.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+            if (this.owners.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
             this.toastr.success('Entry updated successfully');
           },
         });
