@@ -224,7 +224,7 @@ export class AddDriverComponent
   driverLicenseType = "";
   driverLicenseExpiry = "";
   driverLicenseStateID = "";
-  
+
   HOSCompliance = {
     status: "",
     type: "",
@@ -680,7 +680,7 @@ export class AddDriverComponent
       this.documentTypeList = data;
     });
   }
-  
+
   getToday(): string {
     return new Date().toISOString().split("T")[0];
   }
@@ -691,9 +691,9 @@ export class AddDriverComponent
     let files = [...event.target.files];
     if (i != null) {
       this.uploadedDocs[i] = [];
-       for (let i = 0; i < files.length; i++) {
-       let name = files[i].name.split(".");
-       let ext = name[name.length - 1].toLowerCase();
+      for (let i = 0; i < files.length; i++) {
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
         if (
           ext == "doc" ||
           ext == "docx" ||
@@ -702,9 +702,9 @@ export class AddDriverComponent
           ext == "jpeg" ||
           ext == "png"
         ) {
-      this.uploadedDocs[i] = files;
-      } else {
-            this.uploadDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+          this.uploadedDocs[i] = files;
+        } else {
+          this.uploadDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
         }
       }
     } else {
@@ -715,8 +715,8 @@ export class AddDriverComponent
       reader.readAsDataURL(files[0]);
       this.abstractDocs = [];
       for (let i = 0; i < files.length; i++) {
-       let name = files[i].name.split(".");
-       let ext = name[name.length - 1].toLowerCase();
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
         if (
           ext == "doc" ||
           ext == "docx" ||
@@ -725,9 +725,9 @@ export class AddDriverComponent
           ext == "jpeg" ||
           ext == "png"
         ) {
-      this.abstractDocs = files;
-       } else {
-            this.absDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+          this.abstractDocs = files;
+        } else {
+          this.absDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
         }
       }
     }
@@ -738,43 +738,43 @@ export class AddDriverComponent
     if (type === 'Add') {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
-       let name = files[i].name.split('.');
-       let ext = name[name.length - 1].toLowerCase();
+        let name = files[i].name.split('.');
+        let ext = name[name.length - 1].toLowerCase();
         if (
           ext == 'jpg' ||
           ext == 'jpeg' ||
           ext == 'png'
         ) {
-        this.check = true;
-        this.uploadedPhotos.push(files[0]);
+          this.check = true;
+          this.uploadedPhotos.push(files[0]);
         } else {
-            this.check = false;
-            this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
+          this.check = false;
+          this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
         }
-        if(this.check = true){
-        const reader = new FileReader();
-        this.showUploadedPicModal = true;
-        reader.onload = (e: any) => {
-          this.uploadedPic = e.target.result;
-        };
-        reader.readAsDataURL(files[i]);
-        this.imageTitle = "Change";
+        if (this.check = true) {
+          const reader = new FileReader();
+          this.showUploadedPicModal = true;
+          reader.onload = (e: any) => {
+            this.uploadedPic = e.target.result;
+          };
+          reader.readAsDataURL(files[i]);
+          this.imageTitle = "Change";
         }
       }
     } else {
       const files = [...event.target.files];
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
-       let name = files[i].name.split(".");
-       let ext = name[name.length - 1].toLowerCase();
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
         if (
           ext == "jpg" ||
           ext == "jpeg" ||
           ext == "png"
         ) {
-        this.uploadedPhotos.push(files[0]);
+          this.uploadedPhotos.push(files[0]);
         } else {
-            this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
+          this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
         }
         const reader = new FileReader();
         this.showUploadedPicModal = true;
@@ -1044,7 +1044,8 @@ export class AddDriverComponent
           next: (res) => {
             // this.response = res;
             // this.hasSuccess = true;
-            this.dashboardUtilityService.refreshDrivers = true;
+            this.dashboardUtilityService.refreshDrvCount = true;
+            this.dashboardUtilityService.fetchDriversCount();
             this.submitDisabled = false;
             this.toastr.success("Driver added successfully");
             this.spinner.hide();

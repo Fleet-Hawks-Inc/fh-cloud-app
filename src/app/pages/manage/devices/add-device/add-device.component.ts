@@ -81,8 +81,9 @@ export class AddDeviceComponent implements OnInit {
 
           let vehicleTotal = Math.max(...data.map(o => o.vehicles))
           this.isUpgrade = curDevCount <= vehicleTotal ? true : false;
+          console.log('curDevCount', curDevCount, vehicleTotal)
           if (this.isUpgrade) {
-            this.devicesTypes = this.devicesTypes.filter(elem => {
+            this.deviceVehicle = this.deviceVehicle.filter(elem => {
               return elem.value != 'DashCam';
             })
             let obj = {

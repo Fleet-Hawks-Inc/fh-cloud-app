@@ -21,6 +21,7 @@ export class DashboardUtilityService {
   public refreshPlans = true;
   public refreshCarrier = true;
   public refreshVehCount = true;
+  public refreshDrvCount = true;
   public refreshDeviceCount = true;
   vehCount: number;
   carriers: any = {};
@@ -36,6 +37,7 @@ export class DashboardUtilityService {
   carrierData: any = [];
   subscriptionPlans: any = [];
   deviceCount: any = [];
+  driverCount: any = [];
   notificationChange: BehaviorSubject<any> =
     new BehaviorSubject([]);
   notificationRes = this.notificationChange.asObservable();
@@ -188,6 +190,16 @@ export class DashboardUtilityService {
       this.refreshVehCount = false;
     }
     return this.vehCount;
+
+  }
+
+  async fetchDriversCount() {
+    if (this.refreshDrvCount) {
+      let result = await this.apiService.getData(`drivers/fetch/driverCount`).toPromise()
+      this.driverCount = result.total ? result.total : null;
+      this.refreshDrvCount = false;
+    }
+    return this.driverCount;
 
   }
 
