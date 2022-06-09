@@ -323,6 +323,7 @@ export class AssetDetailComponent implements OnInit {
                     this.reminderBefore = result.insuranceDetails.reminderBefore;
                     this.reminderBeforeUnit = result.insuranceDetails.reminderBeforeUnit;
                     this.vendor = result.insuranceDetails.vendor;
+                    this.groupId = result.groupID;
                     this.purchase = {
                         purchaseVendorID: result.purchase.purchaseVendorID,
                         warrantyExpirationDate: result.purchase.warrantyExpirationDate,
@@ -360,57 +361,11 @@ export class AssetDetailComponent implements OnInit {
                     this.ACIID = result.crossBorderDetails.ACI_ID;
 
                     // get imageLinks
-                    this.assetsImages = result.uploadedPhotosLinks;
-                    this.pDocs = result.purchaseDocsLinks;
-                    this.lDocs = result.loanDocsLinks;
-                    this.assetsDocs = result.uploadedDocsLinks;
-                    this.groupId = result.groupID;
+                    this.assetsImages = result.uploadedPics;
+                    this.pDocs = result.purchaseDocsUpload;
+                    this.lDocs = result.loanDocsUpload;
+                    this.assetsDocs = result.uploadDocument;
                     this.fetchGroups();
-
-                    // if (
-                    //   result.uploadedPhotos != undefined &&
-                    //   result.uploadedPhotos.length > 0
-                    // ) {
-                    //   this.assetsImages = result.uploadedPhotos.map((x) => ({
-                    //     path: `${this.Asseturl}/${result.carrierID}/${x}`,
-                    //     name: x,
-                    //   }));
-                    // }
-                    // if (
-                    //   result.purchaseDocs != undefined &&
-                    //   result.purchaseDocs.length > 0
-                    // ) {
-                    //   this.pDocs = [];
-                    //   result.purchaseDocs.map((x) => {
-                    //     let obj = {
-                    //       name: x,
-                    //       path: `${this.Asseturl}/${result.carrierID}/${x}`,
-                    //     };
-                    //     this.pDocs.push(obj);
-                    //   });
-                    // }
-
-                    // if (result.loanDocs != undefined && result.loanDocs.length > 0) {
-                    //   this.lDocs = [];
-                    //   result.loanDocs.map((x) => {
-                    //     let obj = {
-                    //       name: x,
-                    //       path: `${this.Asseturl}/${result.carrierID}/${x}`,
-                    //     };
-                    //     this.lDocs.push(obj);
-                    //   });
-                    // }
-
-                    // if (
-                    //   result.uploadedDocs != undefined &&
-                    //   result.uploadedDocs.length > 0
-                    // ) {
-                    //   this.assetsDocs = result.uploadedDocs.map((x) => ({
-                    //     path: `${this.Asseturl}/${result.carrierID}/${x}`,
-                    //     name: x,
-                    //   }));
-                    // }
-                    // this.spinner.hide(); // loader hide
                 }
 
 
