@@ -48,7 +48,26 @@
                                 <td class="back-color-gray font-weight-bold">Schedule Time</td>
                                 <td>{{schedule.sTime}} </td>
                               </tr>
-                              <tr >
+                              <tr *ngIf="schedule.repeatType"> 
+                                <td class="back-color-gray font-weight-bold">Repeat Type</td>
+                                <td>{{schedule.repeatType}} </td>
+                              </tr>
+                              <tr *ngIf="schedule.sType && schedule.sType.days"> 
+                                <td class="back-color-gray font-weight-bold">Schedule Days</td>
+                                <td>{{schedule.sType.newDays}} </td>
+                              </tr>
+                              
+                              <tr *ngIf="schedule.selectedMonths"> 
+                                <td class="back-color-gray font-weight-bold">Schedule Months</td>
+                                <td>{{schedule.newMonths}} </td>
+                              </tr>
+                              
+                              
+                              <tr>
+                                <td class="back-color-gray font-weight-bold">Range</td>
+                                <td>{{schedule.sRange |titlecase}} </td>
+                              </tr>
+                              <!-- <tr >
                                 <td class="back-color-gray font-weight-bold">Schedule Range</td>
                                 <td *ngIf="schedule.sRange.newMonths">{{schedule.sRange.newMonths | uppercase}} </td>
                                 <td *ngIf="schedule.sRange.dateRange">From : {{schedule.sRange.dateRange.from}}, To: {{schedule.sRange.dateRange.to}} </td>
@@ -58,7 +77,7 @@
                                 <td *ngIf="schedule.sType.newDays">{{schedule.sType.newDays | uppercase}} </td>
                                 <td *ngIf="schedule.sType.daysNo"> No Of Days: {{schedule.sType.daysNo}} </td>
 
-                              </tr>
+                              </tr> -->
                           </tbody>
                         </table>
                       </div>

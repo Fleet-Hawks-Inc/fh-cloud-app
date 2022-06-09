@@ -56,11 +56,21 @@ export class SchedulerListComponent implements OnInit {
   else{
     this.lastEvaluatedKey=undefined
   }
+
+  if(this.lastEvaluatedKey==undefined){
+    this.lastEvaluatedKey='end'
+  }
   this.loaded=true;
 this.schedules=this.schedules.concat(result.data)
 console.log(this.schedules)
   }
   delete(){
     
+  }
+  onScroll(event:any){
+    if(this.loaded){
+      this.initData();
+    }
+
   }
 }
