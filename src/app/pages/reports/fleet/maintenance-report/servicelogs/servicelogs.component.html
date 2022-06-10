@@ -187,7 +187,7 @@
 
                                                 <td [ngStyle]="{'width': find(columns,{field:'completionDate'}).width}">
                                                     <span>
-                                                        {{ log.completionDate}}<br /><span *ngIf="item?.vehicleID"
+                                                        {{ log.completionDate}}<br /><span *ngIf="log?.vehicleID"
                                                             class="font-size-12">{{ log.odometer }} miles</span>
                                                     </span>
                                                 </td>
