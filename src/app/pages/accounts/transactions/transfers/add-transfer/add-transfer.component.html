@@ -5,16 +5,12 @@
         <div class="row" style="padding-top: 10px">
           <div class="col-md-4 col-lg-4">
             <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">
-              Transfer
+              {{ title }} Transfer <span *ngIf="transferData.trNo"> - {{transferData.trNo}}</span>
             </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right">
-            <a
-              routerLink="/accounts/transactions/transfers/list"
-              class="btn btn-default btn-sm mx-2"
-              style="color: black"
-              ><i class="fas fa-list"></i> All Transfers</a
-            >
+            <a routerLink="/accounts/transactions/transfers/list" class="btn btn-default btn-sm mx-2"
+              style="color: black"><i class="fas fa-list"></i> All Transfers</a>
           </div>
         </div>
       </header>
@@ -27,160 +23,81 @@
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label
-                          class="control-label font-weight-bold text-lg-right"
-                          >Transfer Date</label
-                        >
-                        <input
-                            [(ngModel)]="transferData.txnDate"
-                            name="transDate"
-                            type="text"
-                            placeholder="yyyy/mm/dd"
-                            (click)="transDate.toggle()"
-                            ngbDatepicker
-                            #transDate="ngbDatepicker"
-                            class="form-control"
-                            autocomplete="off"
-                            [minDate]="dateMinLimit"
-                            [maxDate]="futureDatesLimit"
-                            #modeDate="ngModel"
-                            required
-                          />
+                        <label class="control-label font-weight-bold text-lg-right">Transfer Date</label>
+                        <input [(ngModel)]="transferData.txnDate" name="transDate" type="text" placeholder="yyyy/mm/dd"
+                          (click)="transDate.toggle()" ngbDatepicker #transDate="ngbDatepicker" class="form-control"
+                          autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #modeDate="ngModel"
+                          required />
                       </div>
-                    
+
                       <div class="col-lg-5">
-                        <label
-                          class="control-label font-weight-bold text-lg-right"
-                          >From Account</label
-                        >
-                        <ng-select
-                            [(ngModel)]="transferData.fAcc"
-                            name="fAcc"
-                            placeholder="Select Account"
-                            #accountID="ngModel"
-                            required
-                            [disabled]="editDisabled"
-                          >
-                            <ng-option
-                              value="{{ data.actID }}"
-                              *ngFor="let data of accounts | async"
-                              >{{ data.actNo }} -
-                              {{ data.actName | titlecase }}</ng-option
-                            >
-                          </ng-select>
-                          <div
-                            *ngIf="
+                        <label class="control-label font-weight-bold text-lg-right">From Account</label>
+                        <ng-select [(ngModel)]="transferData.fAcc" name="fAcc" placeholder="Select Account"
+                          #accountID="ngModel" required [disabled]="editDisabled">
+                          <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actNo }} -
+                            {{ data.actName | titlecase }}</ng-option>
+                        </ng-select>
+                        <div *ngIf="
                               accountID.invalid &&
                               (accountID.dirty || accountID.touched)
-                            "
-                            class="text-danger"
-                          >
-                            <div *ngIf="accountID.errors.required">
-                              Account is required.
-                            </div>
+                            " class="text-danger">
+                          <div *ngIf="accountID.errors.required">
+                            Account is required.
                           </div>
+                        </div>
 
-                        <label
-                          class="control-label font-weight-bold text-lg-right pt-2"
-                          >Current Balance: 0.00 CAD </label
-                        >
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Current Balance: 0.00 CAD
+                        </label>
                       </div>
                     </div>
                     <div class="row pt-1">
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold labelalign"
-                          >Transfer Mode</label
-                        >
-                        <ng-select
-                            [(ngModel)]="transferData.payMode"
-                            name="payMode"
-                            placeholder="Select Payment Mode"
-                            #payMode="ngModel"
-                            required
-                            (change)="changePaymentMode($event)"
-                          >
-                            <ng-option value="cash">Cash</ng-option>
-                            <ng-option value="cheque">Cheque</ng-option>
-                            <ng-option value="eft">EFT</ng-option>
-                            <ng-option value="credit_card"
-                              >Credit Card</ng-option
-                            >
-                            <ng-option value="debit_card">Debit Card</ng-option>
-                            <ng-option value="demand_draft"
-                              >Demand Draft</ng-option
-                            >
-                          </ng-select>
+                        <label class="control-label font-weight-bold labelalign">Transfer Mode</label>
+                        <ng-select [(ngModel)]="transferData.payMode" name="payMode" placeholder="Select Payment Mode"
+                          #payMode="ngModel" required (change)="changePaymentMode($event)">
+                          <ng-option value="cash">Cash</ng-option>
+                          <ng-option value="cheque">Cheque</ng-option>
+                          <ng-option value="eft">EFT</ng-option>
+                          <ng-option value="credit_card">Credit Card</ng-option>
+                          <ng-option value="debit_card">Debit Card</ng-option>
+                          <ng-option value="demand_draft">Demand Draft</ng-option>
+                        </ng-select>
                       </div>
                       <div class="col-lg-5" *ngIf="
                       transferData.payMode
                     ">
                         <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference<span
-                              class="mandfield text-2 ml-1"
-                              ><sup>*</sup></span
-                            ></label
-                          >
-                          <input
-                            type="text"
-                            class="form-control"
-                            [(ngModel)]="transferData.payModeNo"
-                            name="payModeNo"
-                            placeholder="{{ payModeLabel }} Reference"
-                            #modeNo="ngModel"
-                            [required]="
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <input type="text" class="form-control" [(ngModel)]="transferData.payModeNo" name="payModeNo"
+                          placeholder="{{ payModeLabel }} Reference" #modeNo="ngModel" [required]="
                               transferData.payMode
-                            "
-                            pattern="^[a-zA-Z0-9\s]+$"
-                            [disabled]="editDisabled"
-                          />
-                          <div
-                            *ngIf="
+                            " pattern="^[a-zA-Z0-9\s]+$" [disabled]="editDisabled" />
+                        <div *ngIf="
                               modeNo.invalid && (modeNo.dirty || modeNo.touched)
-                            "
-                            class="text-danger"
-                          >
-                            <div *ngIf="modeNo.errors.required">
-                              {{ payModeLabel }}
-                              Reference is required.
-                            </div>
-                            <div *ngIf="modeNo.errors.pattern">
-                              {{ payModeLabel }}
-                              Reference must contain alphanumeric characters.
-                            </div>
+                            " class="text-danger">
+                          <div *ngIf="modeNo.errors.required">
+                            {{ payModeLabel }}
+                            Reference is required.
+                          </div>
+                          <div *ngIf="modeNo.errors.pattern">
+                            {{ payModeLabel }}
+                            Reference must contain alphanumeric characters.
                           </div>
                         </div>
+                      </div>
                     </div>
                     <div class="row pt-1" *ngIf="transferData.payMode">
                       <div class="col-lg-5">
-                        <label
-                          class="control-label font-weight-bold labelalign"
-                          >{{ payModeLabel }} Date<span
-                            class="mandfield text-2 ml-1"
-                            ><sup>*</sup></span
-                          ></label
-                        >
-                        <input
-                          [(ngModel)]="transferData.payModeDate"
-                          name="payModeDate"
-                          type="text"
-                          placeholder="yyyy/mm/dd"
-                          (click)="payModeDate.toggle()"
-                          ngbDatepicker
-                          #payModeDate="ngbDatepicker"
-                          class="form-control"
-                          autocomplete="off"
-                          [minDate]="dateMinLimit"
-                          [maxDate]="futureDatesLimit"
-                          #modeDate="ngModel"
-                          required
-                          [disabled]="editDisabled"
-                        />
-                        <div
-                          *ngIf="
+                        <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Date<span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <input [(ngModel)]="transferData.payModeDate" name="payModeDate" type="text"
+                          placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker
+                          #payModeDate="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit"
+                          [maxDate]="futureDatesLimit" #modeDate="ngModel" required [disabled]="editDisabled" />
+                        <div *ngIf="
                             modeDate.invalid &&
                             (modeDate.dirty || modeDate.touched)
-                          "
-                          class="text-danger"
-                        >
+                          " class="text-danger">
                           <div *ngIf="modeDate.errors.required">
                             {{ payModeLabel }} date is required.
                           </div>
@@ -191,98 +108,54 @@
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label
-                          class="control-label font-weight-bold text-lg-right"
-                          >To Account</label
-                        >
-                        <ng-select
-                            [(ngModel)]="transferData.tAcc"
-                            name="tAcc"
-                            placeholder="Select Account"
-                            #toaccountID="ngModel"
-                            required
-                            [disabled]="editDisabled"
-                          >
-                            <ng-option
-                              value="{{ data.actID }}"
-                              *ngFor="let data of accounts | async"
-                              >{{ data.actNo }} -
-                              {{ data.actName | titlecase }}</ng-option
-                            >
-                          </ng-select>
-                          <div
-                            *ngIf="
+                        <label class="control-label font-weight-bold text-lg-right">To Account</label>
+                        <ng-select [(ngModel)]="transferData.tAcc" name="tAcc" placeholder="Select Account"
+                          #toaccountID="ngModel" required [disabled]="editDisabled">
+                          <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actNo }} -
+                            {{ data.actName | titlecase }}</ng-option>
+                        </ng-select>
+                        <div *ngIf="
                               toaccountID.invalid &&
                               (toaccountID.dirty || toaccountID.touched)
-                            "
-                            class="text-danger"
-                          >
-                            <div *ngIf="toaccountID.errors.required">
-                              Account is required.
-                            </div>
+                            " class="text-danger">
+                          <div *ngIf="toaccountID.errors.required">
+                            Account is required.
                           </div>
+                        </div>
                       </div>
                       <div class="col-lg-3">
-                        <label
-                          class="control-label font-weight-bold text-lg-right"
-                          >Transfer Amount</label
-                        >
-                        <input
-                            [(ngModel)]="transferData.amount"
-                            name="amount"
-                            type="text"
-                            placeholder="e.g 500"
-                            class="form-control"
-                            autocomplete="off"
-                            required
-                          />
+                        <label class="control-label font-weight-bold text-lg-right">Transfer Amount</label>
+                        <input [(ngModel)]="transferData.amount" name="amount" type="text" placeholder="e.g 500"
+                          class="form-control" autocomplete="off" required />
                       </div>
                       <div class="col-lg-2">
-                        <label
-                          class="control-label font-weight-bold text-lg-right"
-                          >&nbsp;</label
-                        >
-                        <ng-select
-                            [(ngModel)]="transferData.curr"
-                            name="curr"
-                            placeholder="Select Payment Mode"
-                            #curr="ngModel"
-                            required
-                            [clearable]="false"
-                          >
-                            <ng-option value="CAD">CAD</ng-option>
-                            <ng-option value="USD">USD</ng-option>
-                          </ng-select>
+                        <label class="control-label font-weight-bold text-lg-right">&nbsp;</label>
+                        <ng-select [(ngModel)]="transferData.curr" name="curr" placeholder="Select Payment Mode"
+                          #curr="ngModel" required [clearable]="false">
+                          <ng-option value="CAD">CAD</ng-option>
+                          <ng-option value="USD">USD</ng-option>
+                        </ng-select>
                       </div>
                     </div>
                     <div class="row mt-3">
                       <div class="col-lg-10">
-                        <label
-                          class="control-label font-weight-bold text-lg-right pt-2"
-                          >Description</label
-                        >
-                        <textarea
-                          class="form-control heighta"
-                          rows="3"
-                          [(ngModel)]="transferData.desc"
-                          type="text"
-                          name="desc"
-                          placeholder="Please enter description"
-                        ></textarea>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Description</label>
+                        <textarea class="form-control heighta" rows="3" [(ngModel)]="transferData.desc" type="text"
+                          name="desc" placeholder="Please enter description"></textarea>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="form-group row">
                   <div class="col-lg-11 pr-1 text-right">
-                    <button
-                      type="button"
-                      class="btn btn-default mr-3"
-                      onclick="goBack()"
-                    >
+                    <button type="button" class="btn btn-default mr-3"
+                      routerLink="/accounts/transactions/transfers/list">
                       Cancel
                     </button>
-                    <button class="btn btn-success" (click)="addRecord()">Save</button>
+                    <button class="btn btn-success" [disabled]="submitDisabled" *ngIf="!transferID"
+                      (click)="addRecord()">Save</button>
+                    <button class="btn btn-success" *ngIf="transferID" [disabled]="submitDisabled"
+                      (click)="updateRecord()">Update</button>
                   </div>
                 </div>
               </form>

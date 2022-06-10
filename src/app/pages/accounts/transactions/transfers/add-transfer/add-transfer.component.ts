@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AccountService } from 'src/app/services/account.service';
@@ -21,22 +23,28 @@ export class AddTransferComponent implements OnInit {
     payMode: null,
     payModeNo: '',
     payModeDate: '',
-    desc: ''
+    desc: '',
+    trNo: ''
   }
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   payModeLabel = '';
   errors = {};
+  submitDisabled = false;
+  transferID = '';
+  title = 'Add';
 
-  constructor(private listService: ListService, private accountService: AccountService,) { }
+  constructor(private listService: ListService, private accountService: AccountService, private toaster: ToastrService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() { 
-
+    this.transferID = this.route.snapshot.params["transferID"];
+    if(this.transferID) {
+      this.fetchDetail();
+      this.title = 'Edit';
+    }
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
-
-    console.log('this.accounts', this.accounts)
   }
 
   changePaymentMode(type) {
@@ -60,7 +68,7 @@ export class AddTransferComponent implements OnInit {
   }
 
   addRecord() {
-    console.log('transfer data', this.transferData);
+    this.submitDisabled = true;
     this.accountService.postData("transfer-transactions", this.transferData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -73,20 +81,57 @@ export class AddTransferComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              // this.submitDisabled = false;
+              this.submitDisabled = false;
               // this.throwErrors();
             },
             error: () => {
-              // this.submitDisabled = false;
+              this.submitDisabled = false;
             },
             next: () => { },
           });
       },
       next: (res) => {
-        // this.submitDisabled = false;
-        // this.response = res;
-        // this.toaster.success("Advance payment added successfully.");
-        console.log('pay done')
+        this.submitDisabled = false;
+        this.toaster.success("Transaction added successfully.");
+        this.router.navigateByUrl("/accounts/transactions/transfers/list");
+      },
+    });
+  }
+
+  async fetchDetail() {
+    let result: any = await this.accountService.getData(`transfer-transactions/detail/${this.transferID}`).toPromise();
+    if(result && result.length > 0) {
+      this.transferData = result[0];
+    }
+  }
+
+  updateRecord() {
+    this.submitDisabled = true;
+    this.accountService.putData(`transfer-transactions/update/${this.transferID}`, this.transferData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.submitDisabled = false;
+              // this.throwErrors();
+            },
+            error: () => {
+              this.submitDisabled = false;
+            },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.submitDisabled = false;
+        this.toaster.success("Transaction updated successfully.");
+        this.router.navigateByUrl(`/accounts/transactions/transfers/detail/${this.transferID}`);
       },
     });
   }

@@ -1,111 +1,125 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pt-0 pl-0 pr-0">
-      <header class="page-header pr19 pl7">
-         <form class="form-horizontal" method="get">
-            <div class="row" style="padding-top:10px;">
-               <div class="col-md-2 col-lg-2 pr-0">
-                  <div class="input-group input-group-md mb-3">
-                     <select data-plugin-selectTwo class="form-control populate">
-                        <optgroup label="Select From Account">
-                           <option value="1">Account 1</option>
-                           <option value="2">Account 2</option>
-                           <option value="2">Account 3</option>
-                           <option value="2">Account 4</option>
-                           <option value="2">Account 5</option>
-                        </optgroup>
-                     </select>
+   <div class="inner-wrapper">
+      <section role="main" class="content-body pt-0 pl-0 pr-0">
+         <header class="page-header pr19 pl7">
+            <form class="form-horizontal" method="get">
+               <div class="row" style="padding-top:10px;">
+                  <div class="col-md-2 col-lg-2 pr-0">
+                     <ng-select [(ngModel)]="filter.fromAcc" name="fAcc" placeholder="Select From Account">
+                        <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actNo }} -
+                           {{ data.actName | titlecase }}</ng-option>
+                     </ng-select>
+                  </div>
+                  <div class="col-md-2 col-lg-2 pr-0">
+                     <ng-select [(ngModel)]="filter.toAcc" name="toAcc" placeholder="Select To Account">
+                        <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actNo }} -
+                           {{ data.actName | titlecase }}</ng-option>
+                     </ng-select>
+                  </div>
+                  <div class="col-lg-3 col-md-3 pr-0">
+                     <div class="input-daterange input-group" data-plugin-datepicker="">
+                        <span class="input-group-prepend">
+                           <span class="input-group-text">
+                              <i class="fas fa-calendar-alt"></i>
+                           </span>
+                        </span>
+                        <input [(ngModel)]="filter.fromDate" name="fromDate" type="text" placeholder="yyyy/mm/dd"
+                           (click)="fromDate.toggle()" ngbDatepicker #fromDate="ngbDatepicker" class="form-control"
+                           autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit"
+                           #modeDate="ngModel" />
+                        <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                           to
+                        </span>
+                        <input [(ngModel)]="filter.toDate" name="toDate" type="text" placeholder="yyyy/mm/dd"
+                           (click)="toDate.toggle()" ngbDatepicker #toDate="ngbDatepicker" class="form-control"
+                           autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #modeDate="ngModel">
+                     </div>
+                  </div>
+                  <div class="col-md-2 col-lg-2">
+                     <button type="button" class="btn btn-sm btn-success" (click)="searchList()">Search</button>
+                     <button type="button" class="btn btn-sm btn-success ml-2" (click)="resetSearch()">Reset</button>
+                  </div>
+                  <div class="col-md-3 col-lg-3 text-right pr-1">
+                     <a routerLink="/accounts/transactions/transfers/add" class="btn btn-success btn-sm ml-2"
+                        style="color:white;"><i class="fas fa-plus"></i> Transfer</a>
                   </div>
                </div>
-               <div class="col-md-2 col-lg-2 pr-0">
-                  <div class="input-group input-group-md mb-3">
-                     <select data-plugin-selectTwo class="form-control populate">
-                        <optgroup label="Select To Account">
-                           <option value="1">Account 1</option>
-                           <option value="2">Account 2</option>
-                           <option value="2">Account 3</option>
-                           <option value="2">Account 4</option>
-                           <option value="2">Account 5</option>
-                        </optgroup>
-                     </select>
+            </form>
+         </header>
+
+         <section class="m-2">
+            <div class="row mb-3">
+               <div class="col-lg-12">
+                  <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                     [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                     <div class="bg-white p-3 text-dark">
+                        <div class="form-group row">
+                           <div class="col-lg-12">
+                              <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
+                                 <thead>
+                                    <tr>
+                                       <th>Transfer#</th>
+                                       <th>Date</th>
+                                       <th>From Account</th>
+                                       <th>Transferred Amount</th>
+                                       <th>To Account</th>
+                                       <th>Transfer Mode</th>
+                                       <th>Reference No.</th>
+                                       <th>Action</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr *ngIf="transactions.length == 0" class="text-center">
+                                       <td colspan="8">{{ dataMessage }}</td>
+                                    </tr>
+                                    <tr *ngFor="let data of transactions">
+                                       <td [routerLink]="data.url" class="text-capitalize cursorpoint">{{ data.trNo }}
+                                       </td>
+                                       <td [routerLink]="data.url" class="text-capitalize cursorpoint">{{ data.txnDate |
+                                          date: 'yyyy/MM/dd' }}</td>
+                                       <td [routerLink]="data.url" class="text-capitalize cursorpoint">{{
+                                          data.fromAccName
+                                          }}</td>
+                                       <td [routerLink]="data.url" class="text-capitalize cursorpoint">{{ data.amount |
+                                          number: "1.2-2" }} {{ data.curr }}</td>
+                                       <td [routerLink]="data.url" class="text-capitalize cursorpoint">{{ data.toAccName
+                                          }}
+                                       </td>
+                                       <td [routerLink]="data.url" class="text-capitalize cursorpoint">{{ data.payMode
+                                          }}
+                                       </td>
+                                       <td [routerLink]="data.url" class="text-capitalize cursorpoint">{{ data.payModeNo
+                                          }}
+                                       </td>
+
+                                       <td>
+                                          <div class="btn-group flex-wrap">
+                                             <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i
+                                                   class="fas fa-ellipsis-v"></i></button>
+                                             <div class="dropdown-menu" role="menu">
+                                                <a class="dropdown-item text-1" href="#"
+                                                   [routerLink]="data.editUrl">Edit</a>
+                                                <a class="dropdown-item text-1" href="javascript:;"
+                                                   (click)="deleteTransfer(data.transferID)">Delete</a>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <div class="col-lg-12 mt-3 text-center"
+                              *ngIf="lastkey !== 'end' && transactions.length !== 0">
+                              <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
+                                 Load More..
+                              </button>
+                           </div>
+                        </div>
+                     </div>
                   </div>
-               </div>
-               <div class="col-lg-3 col-md-3 pr-0">
-                  <div class="input-daterange input-group" data-plugin-datepicker="">
-                     <span class="input-group-prepend">
-                     <span class="input-group-text">
-                     <i class="fas fa-calendar-alt"></i>
-                     </span>
-                     </span>
-                     <input type="text" class="form-control" name="start">
-                     <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                     to
-                     </span>
-                     <input type="text" class="form-control" name="end">
-                  </div>
-               </div>
-               <div class="col-md-1  col-lg-1">
-                  <button type="submit" class="btn btn-sm btn-success">Search</button>
-               </div>
-               <div class="col-md-4 col-lg-4 text-right pr-1">
-                  <a routerLink="/accounts/transactions/transfers/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Transfer</a>
                </div>
             </div>
-         </form>
-      </header>
-
-      <section class="m-2">
-         <div class="row mb-3">
-           <div class="col-lg-12">
-             <div class="bg-white p-3 text-dark">
-               <div class="form-group row">
-                  <div class="col-lg-12">
-                     <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table" >
-                        <thead>
-                           <tr>
-                              <th>Transfer#</th>
-                              <th >Date</th>
-                              <th >From Account</th>
-                              <th >Transferred Amount</th>
-                              <th >To Account</th>
-                              <th >Transfer Mode</th>
-                              <th >Reference No.</th>
-                              <th>Action</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <tr *ngIf="transactions.length == 0" class="text-center">
-                              <td colspan="8">{{ dataMessage }}</td>
-                           </tr>
-                           <tr *ngFor="let data of transactions">
-                              <td  [routerLink]="data.url" class="text-capitalize">{{ data.trNo }}</td>
-                              <td  [routerLink]="data.url" class="text-capitalize">{{ data.txnDate |  date: 'yyyy/MM/dd' }}</td>
-                              <td  [routerLink]="data.url" class="text-capitalize">{{ data.fromAccName }}</td>
-                              <td  [routerLink]="data.url" class="text-capitalize">{{ data.amount | number: "1.2-2" }} {{ data.curr }}</td>
-                              <td  [routerLink]="data.url" class="text-capitalize">{{ data.toAccName }}</td>
-                              <td  [routerLink]="data.url" class="text-capitalize">{{ data.payMode }}</td>
-                              <td  [routerLink]="data.url" class="text-capitalize">{{ data.payModeNo }}</td>
-                              
-                              <td><div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
-                                       <a class="dropdown-item text-1" [href]="data.editUrl">Edit</a>
-                                       <a class="dropdown-item text-1" href="#">Delete</a>
-                                    </div>
-                                 </div>
-                               </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                  </div>
-                  
-               </div>
-             </div>
-           </div>
-         </div>
+         </section>
       </section>
-
-      
-   </section>
-  </div>
+   </div>
 </section>
