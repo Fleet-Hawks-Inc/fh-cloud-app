@@ -788,41 +788,25 @@ export class AddAssetsComponent implements OnInit {
           result.uploadedPhotos !== undefined &&
           result.uploadedPhotos.length > 0
         ) {
-          // this.assetsImages = result.uploadedPhotos.map((x: any) => ({
-          //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
-          //    name: x,
-          // }));
-          this.assetsImages = result.uploadedPhotosLinks;
+          this.assetsImages = result.uploadedPics;
         }
 
         if (
           result.uploadedDocs !== undefined &&
           result.uploadedDocs.length > 0
         ) {
-          // this.assetsDocs = result.uploadedDocs.map((x) => ({
-          //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
-          //   name: x,
-          // }));
-          this.assetsDocs = result.uploadedDocsLinks;
+          this.assetsDocs = result.uploadDocument;
         }
 
         if (result.loanDocs !== undefined && result.loanDocs.length > 0) {
-          // this.lDocs = result.loanDocs.map((x) => ({
-          //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
-          //   name: x,
-          //  }));
-          this.lDocs = result.loanDocsLinks;
+          this.lDocs = result.loanDocsUpload;
         }
 
         if (
           result.purchaseDocs !== undefined &&
           result.purchaseDocs.length > 0
         ) {
-          //  this.pDocs = result.purchaseDocs.map((x) => ({
-          //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
-          //    name: x,
-          //  }));
-          this.pDocs = result.purchaseDocsLinks;
+          this.pDocs = result.purchaseDocsUpload;
         }
         this.isImport = result.isImport
 
