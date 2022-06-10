@@ -4384,3 +4384,6 @@ input:checked + .sliderbtn:before {
 .orders-listing .p-datatable-scrollable .p-frozen-column {
   position: relative !important;
 }
+.p-toast {
+  z-index: 9999;
+}

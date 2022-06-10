@@ -82,7 +82,7 @@
                           &nbsp;
                           <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
                             class="p-button-outlined mr-2" icon="fas fa-sync"></button>
-                          <button type="button" pButton pTooltip="Add" routerLink="/fleet/assets/add"
+                          <button type="button" [disabled]="isUpgrade" pButton pTooltip="Add" routerLink="/fleet/assets/add"
                             class="p-button-outlined mr-2" icon="pi pi-plus"></button>
                           <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
                             icon="pi pi-filter-slash" (click)="clear(dt)"></button>

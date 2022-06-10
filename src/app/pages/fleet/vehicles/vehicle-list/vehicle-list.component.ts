@@ -139,7 +139,6 @@ export class VehicleListComponent implements OnInit {
       if (data.length > 0) {
 
         let vehicleTotal = Math.max(...data.map(o => o.vehicles))
-        console.log('curVehCount', curVehCount, vehicleTotal)
         this.isUpgrade = curVehCount >= vehicleTotal ? true : false;
         if (this.isUpgrade) {
 

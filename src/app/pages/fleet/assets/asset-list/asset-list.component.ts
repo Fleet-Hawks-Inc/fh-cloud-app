@@ -159,7 +159,6 @@ export class AssetListComponent implements OnInit {
         if (data.length > 0) {
 
           let assetTotal = Math.max(...data.map(o => o.assets))
-          console.log('curAstCount', curAstCount, assetTotal)
           this.isUpgrade = curAstCount >= assetTotal ? true : false;
           if (this.isUpgrade) {
 

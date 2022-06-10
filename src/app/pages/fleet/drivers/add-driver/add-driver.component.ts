@@ -1044,8 +1044,6 @@ export class AddDriverComponent
           next: (res) => {
             // this.response = res;
             // this.hasSuccess = true;
-            this.dashboardUtilityService.refreshDrvCount = true;
-            this.dashboardUtilityService.fetchDriversCount();
             this.submitDisabled = false;
             this.toastr.success("Driver added successfully");
             this.spinner.hide();

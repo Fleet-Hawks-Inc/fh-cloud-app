@@ -102,6 +102,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
     this.listenToLoading();
     const selectedCarrier = localStorage.getItem('xfhCarrierId');
     let carrierData = await this.dashboardUtilityService.getCarrierByID(selectedCarrier);
+    this.dashboardUtilityService.refreshPlans = true;
     let subscriptions = await this.dashboardUtilityService.getSubscriptionPlans();
     if (carrierData.subscriptions && carrierData.subscriptions.length > 0 && subscriptions.length > 0) {
       let plans = await this.checkSubscriptionPlans(carrierData.subscriptions, subscriptions);

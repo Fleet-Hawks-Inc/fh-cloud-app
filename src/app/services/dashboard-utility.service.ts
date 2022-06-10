@@ -21,6 +21,7 @@ export class DashboardUtilityService {
   public refreshPlans = true;
   public refreshCarrier = true;
   public refreshVehCount = true;
+  public refreshAstCount = true;
   public refreshDrvCount = true;
   public refreshDeviceCount = true;
   vehCount: number;
@@ -38,6 +39,7 @@ export class DashboardUtilityService {
   subscriptionPlans: any = [];
   deviceCount: any = [];
   driverCount: any = [];
+  astCount: any;
   notificationChange: BehaviorSubject<any> =
     new BehaviorSubject([]);
   notificationRes = this.notificationChange.asObservable();
@@ -172,9 +174,7 @@ export class DashboardUtilityService {
 
 
   async fetchVehiclesCount() {
-    console.log('count')
     if (this.refreshVehCount) {
-      console.log('count if')
       let result = await this.apiService.getData(`vehicles/fetch/vehicleCount`).toPromise()
       this.vehCount = result.total ? result.total : null;
       this.refreshVehCount = false;
@@ -184,12 +184,12 @@ export class DashboardUtilityService {
   }
 
   async fetchAssetsCount() {
-    if (this.refreshVehCount) {
+    if (this.refreshAstCount) {
       let result = await this.apiService.getData(`assets/fetch/assetCount`).toPromise()
-      this.vehCount = result.total ? result.total : null;
-      this.refreshVehCount = false;
+      this.astCount = result.total ? result.total : null;
+      this.refreshAstCount = false;
     }
-    return this.vehCount;
+    return this.astCount;
 
   }
 
@@ -215,6 +215,7 @@ export class DashboardUtilityService {
   }
 
   notify(data) {
+    this.messageService.clear();
     this.notificationChange.next(data);
   }
 
