@@ -99,7 +99,7 @@ export class AddTransferComponent implements OnInit {
   }
 
   async fetchDetail() {
-    let result: any = await this.accountService.getData(`transfer-transactions/detail/${this.transferID}`).toPromise();
+    let result: any = await this.accountService.getData(`transfer-transactions/edit/detail/${this.transferID}`).toPromise();
     if(result && result.length > 0) {
       this.transferData = result[0];
     }
