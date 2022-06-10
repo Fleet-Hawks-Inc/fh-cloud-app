@@ -33,7 +33,7 @@
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right">From Account</label>
                         <ng-select [(ngModel)]="transferData.fAcc" name="fAcc" placeholder="Select Account"
-                          #accountID="ngModel" required [disabled]="editDisabled">
+                          #accountID="ngModel" required>
                           <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actNo }} -
                             {{ data.actName | titlecase }}</ng-option>
                         </ng-select>
@@ -71,7 +71,7 @@
                         <input type="text" class="form-control" [(ngModel)]="transferData.payModeNo" name="payModeNo"
                           placeholder="{{ payModeLabel }} Reference" #modeNo="ngModel" [required]="
                               transferData.payMode
-                            " pattern="^[a-zA-Z0-9\s]+$" [disabled]="editDisabled" />
+                            " pattern="^[a-zA-Z0-9\s]+$" />
                         <div *ngIf="
                               modeNo.invalid && (modeNo.dirty || modeNo.touched)
                             " class="text-danger">
@@ -93,7 +93,7 @@
                         <input [(ngModel)]="transferData.payModeDate" name="payModeDate" type="text"
                           placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker
                           #payModeDate="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit"
-                          [maxDate]="futureDatesLimit" #modeDate="ngModel" required [disabled]="editDisabled" />
+                          [maxDate]="futureDatesLimit" #modeDate="ngModel" required />
                         <div *ngIf="
                             modeDate.invalid &&
                             (modeDate.dirty || modeDate.touched)
@@ -110,7 +110,7 @@
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right">To Account</label>
                         <ng-select [(ngModel)]="transferData.tAcc" name="tAcc" placeholder="Select Account"
-                          #toaccountID="ngModel" required [disabled]="editDisabled">
+                          #toaccountID="ngModel" required>
                           <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actNo }} -
                             {{ data.actName | titlecase }}</ng-option>
                         </ng-select>
