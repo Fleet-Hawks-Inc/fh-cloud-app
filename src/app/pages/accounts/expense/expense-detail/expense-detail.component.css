@@ -1,0 +1,4 @@
+.table-bordered thead td,
+.table-bordered thead th {
+  border-bottom-width: 1px !important;
+}

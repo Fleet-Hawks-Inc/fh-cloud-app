@@ -19,6 +19,7 @@ import { BrokeragePdfComponent } from "./brokerage-pdf/brokerage-pdf.component";
 import { BolPdfComponent } from "./bol-pdf/bol-pdf.component";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { SlickCarouselModule } from "ngx-slick-carousel";
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 
 import { MenuModule } from 'primeng/menu';
@@ -89,7 +90,7 @@ const routes: Routes = [
     ToastModule,
     FormsModule,
     BadgeModule,
-
+    OverlayPanelModule
   ],
   providers: [unsavedChangesGuard],
 })

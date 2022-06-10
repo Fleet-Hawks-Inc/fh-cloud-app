@@ -12,76 +12,37 @@
             <div class="col" style="margin-left: 20px; margin-top: 5px">
               <div class="row" style="padding-top: 9px">
                 <div class="col-md-2 col-lg-2 pr-1">
-                  <ng-select
-                    [(ngModel)]="orderFiltr.category"
-                    name="category"
-                    placeholder="Search by Category"
-                    (change)="categoryChange($event)"
-                  >
-                    <ng-option
-                      *ngFor="let data of categoryFilter"
-                      value="{{ data.value }}"
-                    >
-                      {{ data.name }}</ng-option
-                    >
+                  <ng-select [(ngModel)]="orderFiltr.category" name="category" placeholder="Search by Category"
+                    (change)="categoryChange($event)">
+                    <ng-option *ngFor="let data of categoryFilter" value="{{ data.value }}">
+                      {{ data.name }}</ng-option>
                   </ng-select>
                 </div>
 
                 <div class="col-md-2 col-lg-2 pr-1">
-                  <div
-                    class="input-group input-group-md mb-3"
-                    *ngIf="
+                  <div class="input-group input-group-md mb-3" *ngIf="
                       orderFiltr.category != 'customer' &&
                       orderFiltr.category != 'orderType' &&
                       orderFiltr.category != 'orderStatus'
-                    "
-                  >
-                    <input
-                      type="text"
-                      class="form-control"
-                      name="searchValue"
-                      [(ngModel)]="orderFiltr.searchValue"
-                      placeholder="Search"
-                    />
+                    ">
+                    <input type="text" class="form-control" name="searchValue" [(ngModel)]="orderFiltr.searchValue"
+                      placeholder="Search" />
                   </div>
 
-                  <ng-select
-                    [(ngModel)]="orderFiltr.searchValue"
-                    name="searchValue"
-                    placeholder="Search By
-                    Customer"
-                    *ngIf="orderFiltr.category == 'customer'"
-                  >
-                    <ng-option
-                      *ngFor="let data of customersObjects | keyvalue"
-                      value="{{ data.key }}"
-                    >
-                      {{ data.value }}</ng-option
-                    >
+                  <ng-select [(ngModel)]="orderFiltr.searchValue" name="searchValue" placeholder="Search By
+                    Customer" *ngIf="orderFiltr.category == 'customer'">
+                    <ng-option *ngFor="let data of customersObjects | keyvalue" value="{{ data.key }}">
+                      {{ data.value }}</ng-option>
                   </ng-select>
 
-                  <ng-select
-                    [(ngModel)]="orderFiltr.searchValue"
-                    name="searchValue"
-                    placeholder="Search By Order
-                    Status"
-                    *ngIf="orderFiltr.category == 'orderStatus'"
-                  >
-                    <ng-option
-                      *ngFor="let data of statusData"
-                      value="{{ data.value }}"
-                    >
-                      {{ data.name }}</ng-option
-                    >
+                  <ng-select [(ngModel)]="orderFiltr.searchValue" name="searchValue" placeholder="Search By Order
+                    Status" *ngIf="orderFiltr.category == 'orderStatus'">
+                    <ng-option *ngFor="let data of statusData" value="{{ data.value }}">
+                      {{ data.name }}</ng-option>
                   </ng-select>
 
-                  <ng-select
-                    [(ngModel)]="orderFiltr.searchValue"
-                    name="searchValue"
-                    placeholder="Search By Order
-                    Type"
-                    *ngIf="orderFiltr.category == 'orderType'"
-                  >
+                  <ng-select [(ngModel)]="orderFiltr.searchValue" name="searchValue" placeholder="Search By Order
+                    Type" *ngIf="orderFiltr.category == 'orderType'">
                     <ng-option value="FTL"> FTL</ng-option>
                     <ng-option value="LTL"> LTL</ng-option>
                   </ng-select>
@@ -94,55 +55,24 @@
                         <i class="fas fa-calendar-alt"></i>
                       </span>
                     </span>
-                    <input
-                      [(ngModel)]="orderFiltr.startDate"
-                      name="fromDate"
-                      type="text"
-                      placeholder="yyyy/mm/dd"
-                      (click)="from.toggle()"
-                      ngbDatepicker
-                      #from="ngbDatepicker"
-                      class="form-control"
-                      autocomplete="off"
-                      [minDate]="dateMinLimit"
-                      [maxDate]="futureDatesLimit"
-                    />
-                    <span
-                      class="input-group-text border-left-0 border-right-0 rounded-0"
-                    >
+                    <input [(ngModel)]="orderFiltr.startDate" name="fromDate" type="text" placeholder="yyyy/mm/dd"
+                      (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control"
+                      autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                    <span class="input-group-text border-left-0 border-right-0 rounded-0">
                       to
                     </span>
-                    <input
-                      [(ngModel)]="orderFiltr.endDate"
-                      name="toDate"
-                      type="text"
-                      placeholder="yyyy/mm/dd"
-                      (click)="to.toggle()"
-                      ngbDatepicker
-                      #to="ngbDatepicker"
-                      class="form-control"
-                      autocomplete="off"
-                      [minDate]="dateMinLimit"
-                      [maxDate]="futureDatesLimit"
-                    />
+                    <input [(ngModel)]="orderFiltr.endDate" name="toDate" type="text" placeholder="yyyy/mm/dd"
+                      (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off"
+                      [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
                   </div>
                 </div>
 
                 <div class="col-md-2 col-lg-2">
-                  <button
-                    type="submit"
-                    class="btn btn-sm btn-success mr-3"
-                    [disabled]="isSearch"
-                    (click)="filterOrders()"
-                  >
+                  <button type="submit" class="btn btn-sm btn-success mr-3" [disabled]="isSearch"
+                    (click)="filterOrders()">
                     Search
                   </button>
-                  <button
-                    type="submit"
-                    class="btn btn-sm btn-success"
-                    [disabled]="isSearch"
-                    (click)="resetFilter()"
-                  >
+                  <button type="submit" class="btn btn-sm btn-success" [disabled]="isSearch" (click)="resetFilter()">
                     Reset
                   </button>
                 </div>
@@ -156,425 +86,213 @@
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark text-capitalize orders-listing">
               <div class="form-group row">
-                <div
-                  class="col-lg-12"
-                  style="height: calc(100vh - 149px); overflow-y: scroll"
-                >
-                  <p-table
-                    #dt
-                    [value]="orders"
-                    [resizableColumns]="true"
-                    columnResizeMode="expand"
-                    scrollDirection="both"
-                    [columns]="selectedColumns"
-                    [loading]="!loaded"
-                    styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                    [scrollable]="true"
-                    [loading]="!loaded"
-                    scrollHeight="100%"
-                    dataKey="orderNumber"
-                    responsiveLayout="scroll"
-                  >
+                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
+                  <p-table #dt [value]="orders" [resizableColumns]="true" columnResizeMode="expand"
+                    scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
+                    styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
+                    [loading]="!loaded" scrollHeight="100%" dataKey="orderNumber" responsiveLayout="scroll">
                     <ng-template pTemplate="caption">
-                      <div
-                        class="p-d-flex d-flex justify-content-between align-items-center"
-                      >
+                      <div class="p-d-flex d-flex justify-content-between align-items-center">
                         <div>
                           <h3 class="m-0">Orders</h3>
                         </div>
                         <div class="text-right">
                           <span>Showing {{ orders.length }} entries</span>
                           &nbsp;
-                          <button
-                            type="button"
-                            pButton
-                            (click)="refreshData()"
-                            pTooltip="Refresh"
-                            class="p-button-outlined mr-2"
-                            icon="fas fa-sync"
-                          ></button>
+                          <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
+                            class="p-button-outlined mr-2" icon="fas fa-sync"></button>
 
-                          <button
-                            type="button"
-                            pButton
-                            pTooltip="Add"
-                            routerLink="/dispatch/orders/add"
-                            class="p-button-outlined mr-2"
-                            icon="pi pi-plus"
-                          ></button>
+                          <button type="button" pButton pTooltip="Add" routerLink="/dispatch/orders/add"
+                            class="p-button-outlined mr-2" icon="pi pi-plus"></button>
 
-                          <button
-                            pButton
-                            pRipple
-                            pTooltip="Clear Filter"
-                            class="p-button-outlined mr-2"
-                            (click)="clear(dt)"
-                            icon="pi pi-filter-slash"
-                          ></button>
+                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                            (click)="clear(dt)" icon="pi pi-filter-slash"></button>
 
-                          <button
-                            type="button"
-                            pButton
-                            pRipple
-                            class="p-button-outlined mr-2"
-                            icon="fas fa-regular fa-file-excel"
-                            (click)="dt.exportCSV()"
-                            pTooltip="Excel"
-                          ></button>
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
                         </div>
                       </div>
                     </ng-template>
 
                     <ng-template pTemplate="header" let-columns>
                       <tr>
-                        <th
-                          style="width: 3%"
-                          alignFrozen="left"
-                          pFrozenColumn
-                          [frozen]="true"
-                        ></th>
-                        <th
-                          *ngFor="let column of dataColumns"
-                          [pSortableColumn]="column.field"
-                          pResizableColumn
-                          [ngStyle]="{ width: column.width }"
-                        >
+                        <th style="width: 3%" alignFrozen="left" pFrozenColumn [frozen]="true"></th>
+                        <th *ngFor="let column of dataColumns" [pSortableColumn]="column.field" pResizableColumn
+                          [ngStyle]="{ width: column.width }">
                           <span>
-                            <div
-                              class="flex justify-content-center align-items-center"
-                              alignFrozen="right"
-                              pFrozenColumn
-                              [frozen]="true"
-                            >
+                            <div class="flex justify-content-center align-items-center" alignFrozen="right"
+                              pFrozenColumn [frozen]="true">
                               {{ column.header }}
                               <p-sortIcon [field]="column.field"> </p-sortIcon>
-                              <p-columnFilter
-                                [type]="column.type"
-                                [field]="column.field"
-                                matchMode="contains"
-                                [showMatchModes]="false"
-                                [showOperator]="false"
-                                [showAddButton]="false"
-                                display="menu"
-                              >
+                              <p-columnFilter [type]="column.type" [field]="column.field" matchMode="contains"
+                                [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
                               </p-columnFilter>
                             </div>
                           </span>
                         </th>
-                        <th
-                          style="width: 6%"
-                          alignFrozen="right"
-                          pFrozenColumn
-                          [frozen]="true"
-                        >
+                        <th style="width: 6%" alignFrozen="right" pFrozenColumn [frozen]="true">
                           Actions
                         </th>
                       </tr>
                     </ng-template>
-                    <ng-template
-                      pTemplate="body"
-                      let-order
-                      let-columns="columns"
-                      let-rowIndex="rowIndex"
-                      let-expanded="expanded"
-                    >
+                    <ng-template pTemplate="body" let-order let-columns="columns" let-rowIndex="rowIndex"
+                      let-expanded="expanded">
                       <tr style="cursor: pointer">
-                        <td
-                          alignFrozen="left"
-                          pFrozenColumn
-                          [frozen]="true"
-                          style="width: 3%"
-                        >
-                          <button
-                            type="button"
-                            pButton
-                            [pRowToggler]="order"
-                            class="p-button-text p-button-rounded p-button-plain"
-                            [icon]="
+                        <td alignFrozen="left" pFrozenColumn [frozen]="true" style="width: 3%">
+                          <button type="button" pButton [pRowToggler]="order"
+                            class="p-button-text p-button-rounded p-button-plain" [icon]="
                               expanded
                                 ? 'pi pi-chevron-down'
                                 : 'pi pi-chevron-right'
-                            "
-                          ></button>
+                            "></button>
                         </td>
-                        <td
-                          routerLink="/dispatch/orders/detail/{{
+                        <td routerLink="/dispatch/orders/detail/{{
                             order.orderID
-                          }}"
-                          class="font-weight-bold"
-                          [ngStyle]="{
+                          }}" class="font-weight-bold" [ngStyle]="{
                             width: find(columns, { field: 'orderNumber' }).width
-                          }"
-                        >
+                          }">
                           {{ order.orderNumber }}
                         </td>
-                        <td
-                          routerLink="/dispatch/orders/detail/{{
+                        <td routerLink="/dispatch/orders/detail/{{
                             order.orderID
-                          }}"
-                          [ngStyle]="{
+                          }}" [ngStyle]="{
                             width: find(columns, { field: 'orderMode' }).width
-                          }"
-                        >
+                          }">
                           {{ order.orderMode }}
                         </td>
-                        <td
-                          routerLink="/dispatch/orders/detail/{{
+                        <td routerLink="/dispatch/orders/detail/{{
                             order.orderID
-                          }}"
-                          [ngStyle]="{
+                          }}" [ngStyle]="{
                             width: find(columns, { field: 'createdDate' }).width
-                          }"
-                        >
+                          }">
                           {{ order.createdDate | date: "yyyy/MM/dd" }}
                         </td>
-                        <td
-                          routerLink="/dispatch/orders/detail/{{
+                        <td routerLink="/dispatch/orders/detail/{{
                             order.orderID
-                          }}"
-                          [ngStyle]="{
+                          }}" [ngStyle]="{
                             width: find(columns, { field: 'customerName' })
                               .width
-                          }"
-                        >
+                          }">
                           <div style="white-space: pre-line">
                             {{ order.customerName }}
                           </div>
                         </td>
-                        <td
-                          routerLink="/dispatch/orders/detail/{{
+                        <td routerLink="/dispatch/orders/detail/{{
                             order.orderID
-                          }}"
-                          [ngStyle]="{
+                          }}" [ngStyle]="{
                             width: find(columns, { field: 'cusConfirmation' })
                               .width
-                          }"
-                        >
+                          }">
                           <div style="white-space: pre-line">
                             {{ order.cusConfirmation }}
                           </div>
                         </td>
 
-                        <td
-                          routerLink="/dispatch/orders/detail/{{
+                        <td routerLink="/dispatch/orders/detail/{{
                             order.orderID
-                          }}"
-                          [ngStyle]="{
+                          }}" [ngStyle]="{
                             width: find(columns, { field: 'shipperName' }).width
-                          }"
-                        >
+                          }">
                           <div style="white-space: pre-line">
                             {{ order.shipperName }}
                           </div>
                         </td>
 
-                        <td
-                          routerLink="/dispatch/orders/detail/{{
+                        <td routerLink="/dispatch/orders/detail/{{
                             order.orderID
-                          }}"
-                          [ngStyle]="{
+                          }}" [ngStyle]="{
                             width: find(columns, { field: 'receiverName' })
                               .width
-                          }"
-                        >
+                          }">
                           <div style="white-space: pre-line">
                             {{ order.receiverName }}
                           </div>
                         </td>
 
-                        <td
-                          routerLink="/dispatch/orders/detail/{{
+                        <td routerLink="/dispatch/orders/detail/{{
                             order.orderID
-                          }}"
-                          [ngStyle]="{
+                          }}" [ngStyle]="{
                             width: find(columns, { field: 'amount' }).width
-                          }"
-                        >
+                          }">
                           {{ order.amount }}
                           <br />
                         </td>
-                        <td
-                          routerLink="/dispatch/orders/detail/{{
+                        <td routerLink="/dispatch/orders/detail/{{
                             order.orderID
-                          }}"
-                          [ngStyle]="{
+                          }}" [ngStyle]="{
                             width: find(columns, { field: 'invoiceData' }).width
-                          }"
-                        >
-                          <span
-                            class="badge badge-danger"
-                            *ngIf="!order.invoicedTime"
-                            >Pending</span
-                          >
-                          <span
-                            class="badge badge-success"
-                            *ngIf="order.invoicedTime"
-                            >Invoiced</span
-                          >
+                          }">
+                          <span class="badge badge-danger" *ngIf="!order.invoicedTime">Pending</span>
+                          <span class="badge badge-success" *ngIf="order.invoicedTime">Invoiced</span>
 
                           <br />
                         </td>
-                        <td
-                          routerLink="/dispatch/orders/detail/{{
+                        <td routerLink="/dispatch/orders/detail/{{
                             order.orderID
-                          }}"
-                          [ngStyle]="{
+                          }}" [ngStyle]="{
                             width: find(columns, { field: 'paymentData' }).width
-                          }"
-                        >
+                          }">
                           <div class="badges">
-                            <span
-                              class="badge badge-primary"
-                              *ngIf="!order.invStatus"
-                              >NA</span
-                            >
-                            <span
-                              class="badge badge-secondary"
-                              *ngIf="order.invStatus === 'void'"
-                              >Void</span
-                            >
-                            <span
-                              class="badge badge-success"
-                              *ngIf="order.invStatus === 'paid'"
-                              >Paid</span
-                            >
-                            <span
-                              class="badge badge-danger"
-                              *ngIf="order.invStatus === 'open'"
-                              >Open</span
-                            >
-                            <span
-                              class="badge badge-warning"
-                              *ngIf="order.invStatus === 'partially_paid'"
-                              >Partial
+                            <span class="badge badge-primary" *ngIf="!order.invStatus">NA</span>
+                            <span class="badge badge-secondary" *ngIf="order.invStatus === 'void'">Void</span>
+                            <span class="badge badge-success" *ngIf="order.invStatus === 'paid'">Paid</span>
+                            <span class="badge badge-danger" *ngIf="order.invStatus === 'open'">Open</span>
+                            <span class="badge badge-warning" *ngIf="order.invStatus === 'partially_paid'">Partial
                             </span>
                           </div>
 
                           <br />
                         </td>
 
-                        <td
-                          routerLink="/dispatch/orders/detail/{{
+                        <td routerLink="/dispatch/orders/detail/{{
                             order.orderID
-                          }}"
-                          [ngStyle]="{
+                          }}" [ngStyle]="{
                             width: find(columns, { field: 'newStatus' }).width
-                          }"
-                        >
+                          }">
                           <span class="badge badge-dark p-1">{{
                             order.newStatus
-                          }}</span>
+                            }}</span>
                           <br />
                         </td>
-                        <td
-                          style="width: 6%; overflow: inherit !important"
-                          pFrozenColumn
-                          alignFrozen="right"
-                          [frozen]="true"
-                        >
+                        <td style="width: 6%; overflow: inherit !important" pFrozenColumn alignFrozen="right"
+                          [frozen]="true">
                           <div class="dropdown dropbottom">
-                            <button
-                              class="bg-transparent border-0"
-                              type="button"
-                              id="dropdownMenuButton-{{ rowIndex }}"
-                              data-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                            >
+                            <button (click)="op.toggle($event)" class="bg-transparent border-0" type="button"
+                              id="dropdownMenuButton-{{ rowIndex }}">
                               <i class="fas fa-ellipsis-v"></i>
                             </button>
-                            <div
-                              class="dropdown-menu"
-                              attr.aria-labelledby="dropdownMenuButton-{{
-                                rowIndex
-                              }}"
-                            >
-                              <a
-                                *ngIf="order.orderStatus != 'delivered'"
-                                class="dropdown-item"
-                                routerLink="/dispatch/orders/edit/{{
-                                  order.orderID
-                                }}"
-                                >Edit</a
-                              >
-                              <a
-                                *ngIf="order.orderStatus === 'confirmed'"
-                                class="dropdown-item"
-                                [routerLink]="[
-                                  '/dispatch',
-                                  'trips',
-                                  'add-trip'
-                                ]"
-                                [queryParams]="{
-                                  orderId: order.orderID,
-                                  orderNum: order.orderNumber
-                                }"
-                                >Create Trip</a
-                              >
-                              <a
-                                *ngIf="
+                            <p-overlayPanel #op [showCloseIcon]="true"  [style]="{width: '160px'}">
+                              <ng-template pTemplate>
+                                <a *ngIf="order.orderStatus != 'delivered'" (click)="op.hide();editOrder(order.orderID)" class="dropdown-item" >Edit</a>
+                                <a *ngIf="order.orderStatus === 'confirmed'" (click)="op.hide(); createTrip(order.orderID, order.orderNumber)" class="dropdown-item" >Create Trip</a>
+                                <a *ngIf="
                                   order.orderStatus == 'created' ||
                                   order.orderStatus == 'confirmed'
-                                "
-                                class="dropdown-item"
-                                href="javascript:;"
-                                (click)="deactivateOrder(order)"
-                                >Delete</a
-                              >
-                              <a
-                                *ngIf="order.orderStatus === 'created'"
-                                class="dropdown-item"
-                                (click)="confirmEmail(order, rowIndex)"
-                                >Confirm</a
-                              >
-                              <a
-                                *ngIf="
+                                " class="dropdown-item" href="javascript:;" (click)="op.hide();deactivateOrder(order)">Delete</a>
+                                <a *ngIf="order.orderStatus === 'created'" class="dropdown-item"
+                                  (click)="op.hide();confirmEmail(order, rowIndex)">Confirm</a>
+                                <a *ngIf="
                                   order.orderStatus === 'created' ||
                                   order.orderStatus === 'confirmed'
-                                "
-                                class="dropdown-item"
-                                (click)="
+                                " class="dropdown-item" (click)="op.hide();
                                   showBrokerageModal(
                                     order,
                                     ordersDraw,
                                     rowIndex,
                                     'all'
                                   )
-                                "
-                                >Brokerage</a
-                              >
-                              <a
-                                *ngIf="order.orderStatus === 'brokerage'"
-                                class="dropdown-item"
-                                (click)="
+                                ">Brokerage</a>
+                                <a *ngIf="order.orderStatus === 'brokerage'" class="dropdown-item" (click)="op.hide();
                                   updateCreatedStatus(
                                     order,
                                     ordersDraw,
                                     rowIndex
                                   )
-                                "
-                                >Cancel Brokerage</a
-                              >
-                              <a
-                                class="dropdown-item"
-                                [routerLink]="['/dispatch', 'orders', 'add']"
-                                [queryParams]="{
-                                  cloneID: order.orderID
-                                }"
-                                >Clone</a
-                              >
-                              <a
-                                *ngIf="order.canRecall"
-                                class="dropdown-item"
-                                routerLink="/dispatch/orders/edit/{{
-                                  order.orderID
-                                }}"
-                                [queryParams]="{
-                                  state: 'recall'
-                                }"
-                                >Recall</a
-                              >
-                            </div>
+                                ">Cancel Brokerage</a>
+                                <a class="dropdown-item" (click)="op.hide(); cloneOrder(order.orderID)">Clone</a>
+                                <a *ngIf="order.canRecall" (click)="op.hide(); recallOrder(order.orderID)" class="dropdown-item">Recall</a>
+                              </ng-template>
+                            </p-overlayPanel>
                           </div>
                         </td>
                       </tr>
@@ -590,26 +308,16 @@
                     <!-- Summary Section with Load More button -->
 
                     <ng-template pTemplate="summary" let-columns>
-                      <div
-                        class="col-lg-12 mt-3 text-center"
-                        *ngIf="
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="
                           lastEvaluatedKey !== 'end' && orders.length !== 0
-                        "
-                      >
-                        <button
-                          type="button "
-                          (click)="onScroll($event)"
-                          class="btn btn-success btn-sm text-light"
-                        >
+                        ">
+                        <button type="button " (click)="onScroll($event)" class="btn btn-success btn-sm text-light">
                           Load More..
                         </button>
 
                         <br /><br />
                       </div>
-                      <div
-                        class="col-lg-12 mt-3 text-center"
-                        *ngIf="lastEvaluatedKey === 'end'"
-                      >
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey === 'end'">
                         Total Records: {{ orders.length }}
                       </div>
                     </ng-template>
@@ -618,212 +326,192 @@
                       <tr>
                         <td width="40%" class="p-0 custom-bg-light border-0">
                           <div class="p-3">
-                            <p-table
-                              [value]="order.shippersReceiversInfo"
-                              styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped"
-                            >
+                            <p-table [value]="order.shippersReceiversInfo"
+                              styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
                               <ng-template pTemplate="header">
-                                <tr>
-                                  <th class="border-0 p-0">Pickup Location</th>
-                                </tr>
-                              </ng-template>
-                              <ng-template pTemplate="body" let-ord>
-                                <tbody>
-                                  <tr>
-                                    <td>
-                                      <b>Date: </b>
-                                      {{
-                                        ord.shippers[0].pickupPoint[0]
-                                          .dateAndTime
-                                          | date
-                                            : "yyyy/MM/dd
-                    hh:mm a"
-                                      }}<br />
-                                      <b>Location: </b>
-                                      <span
-                                        *ngIf="
+                      <tr>
+                        <th class="border-0 p-0">Pickup Location</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-ord>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <b>Date: </b>
+                            {{
+                            ord.shippers[0].pickupPoint[0]
+                            .dateAndTime
+                            | date
+                            : "yyyy/MM/dd
+                            hh:mm a"
+                            }}<br />
+                            <b>Location: </b>
+                            <span *ngIf="
                                           ord.shippers[0].pickupPoint[0].address
                                             .manual
-                                        "
-                                      >
-                                        {{
-                                          ord.shippers[0].pickupPoint[0].address
-                                            .address
-                                        }},
-                                        {{
-                                          ord.shippers[0].pickupPoint[0].address
-                                            .cityName
-                                        }},
-                                        {{
-                                          ord.shippers[0].pickupPoint[0].address
-                                            .stateName
-                                        }},
-                                        {{
-                                          ord.shippers[0].pickupPoint[0].address
-                                            .countryName
-                                        }}
-                                        {{
-                                          ord.shippers[0].pickupPoint[0].address
-                                            .zipCode
-                                        }}
-                                      </span>
-                                      <span
-                                        *ngIf="
+                                        ">
+                              {{
+                              ord.shippers[0].pickupPoint[0].address
+                              .address
+                              }},
+                              {{
+                              ord.shippers[0].pickupPoint[0].address
+                              .cityName
+                              }},
+                              {{
+                              ord.shippers[0].pickupPoint[0].address
+                              .stateName
+                              }},
+                              {{
+                              ord.shippers[0].pickupPoint[0].address
+                              .countryName
+                              }}
+                              {{
+                              ord.shippers[0].pickupPoint[0].address
+                              .zipCode
+                              }}
+                            </span>
+                            <span *ngIf="
                                           !ord.shippers[0].pickupPoint[0]
                                             .address.manual
-                                        "
-                                      >
-                                        {{
-                                          ord.shippers[0].pickupPoint[0].address
-                                            .pickupLocation
-                                        }}
-                                      </span>
-                                      <span
-                                        class="badge badge-dark"
-                                        *ngIf="
+                                        ">
+                              {{
+                              ord.shippers[0].pickupPoint[0].address
+                              .pickupLocation
+                              }}
+                            </span>
+                            <span class="badge badge-dark" *ngIf="
                                           ord.shippers[0].pickupPoint.length > 1
-                                        "
-                                      >
-                                        +{{
-                                          ord.shippers[0].pickupPoint.length - 1
-                                        }}
-                                      </span>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </ng-template>
-                            </p-table>
-                          </div>
-                        </td>
-                        <td width="40%" class="p-0 custom-bg-light border-0">
-                          <div class="p-3">
-                            <p-table
-                              [value]="order.shippersReceiversInfo"
-                              styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped"
-                            >
-                              <ng-template pTemplate="header">
-                                <tr>
-                                  <th class="border-0 p-0">
-                                    Drop Off Location
-                                  </th>
-                                </tr>
-                              </ng-template>
-                              <ng-template pTemplate="body" let-ord>
-                                <tbody>
-                                  <tr>
-                                    <td>
-                                      <b>Date: </b>
-                                      {{
-                                        ord.receivers[0].dropPoint[0]
-                                          .dateAndTime
-                                          | date
-                                            : "yyyy/MM/dd
-                      hh:mm a"
-                                      }}<br />
-                                      <b>Location: </b>
-                                      <span
-                                        *ngIf="
-                                          ord.receivers[0].dropPoint[0].address
-                                            .manual
-                                        "
-                                      >
-                                        {{
-                                          ord.receivers[0].dropPoint[0].address
-                                            .address
-                                        }},
-                                        {{
-                                          ord.receivers[0].dropPoint[0].address
-                                            .cityName
-                                        }},
-                                        {{
-                                          ord.receivers[0].dropPoint[0].address
-                                            .stateName
-                                        }},
-                                        {{
-                                          ord.receivers[0].dropPoint[0].address
-                                            .countryName
-                                        }}
-                                        {{
-                                          ord.receivers[0].dropPoint[0].address
-                                            .zipCode
-                                        }}
-                                      </span>
-                                      <span
-                                        *ngIf="
-                                          !ord.receivers[0].dropPoint[0].address
-                                            .manual
-                                        "
-                                      >
-                                        {{
-                                          ord.receivers[0].dropPoint[0].address
-                                            .dropOffLocation
-                                        }}
-                                      </span>
-                                      <span
-                                        class="badge badge-dark"
-                                        *ngIf="ord.receivers[0].dropPoint > 1"
-                                      >
-                                        +{{ ord.receivers[0].dropPoint - 1 }}
-                                      </span>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </ng-template>
-                            </p-table>
-                          </div>
-                        </td>
-                        <td width="20%" class="p-0 custom-bg-light border-0">
-                          <div class="p-3">
-                            <p-table
-                              [value]="order.shippersReceiversInfo"
-                              styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped"
-                            >
-                              <ng-template pTemplate="header">
-                                <tr>
-                                  <th class="border-0 p-0">Commodity</th>
-                                </tr>
-                              </ng-template>
-                              <ng-template pTemplate="body" let-ord>
-                                <tbody>
-                                  <tr>
-                                    <td>
-                                      {{
-                                        ord.shippers[0].pickupPoint[0]
-                                          .commodity[0].name
-                                          ? "Name: " +
-                                            ord.shippers[0].pickupPoint[0]
-                                              .commodity[0].name
-                                          : "-"
-                                      }}<br />
-                                      {{
-                                        ord.shippers[0].pickupPoint[0]
-                                          .commodity[0].quantity
-                                          ? "Qty:" +
-                                            ord.shippers[0].pickupPoint[0]
-                                              .commodity[0].quantity +
-                                            " " +
-                                            ord.shippers[0].pickupPoint[0]
-                                              .commodity[0].quantityUnit
-                                          : "Qty:" + "null"
-                                      }}
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </ng-template>
-                            </p-table>
-                          </div>
-                        </td>
-                      </tr>
+                                        ">
+                              +{{
+                              ord.shippers[0].pickupPoint.length - 1
+                              }}
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
                     </ng-template>
                   </p-table>
                 </div>
+                </td>
+                <td width="40%" class="p-0 custom-bg-light border-0">
+                  <div class="p-3">
+                    <p-table [value]="order.shippersReceiversInfo"
+                      styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th class="border-0 p-0">
+                            Drop Off Location
+                          </th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-ord>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <b>Date: </b>
+                              {{
+                              ord.receivers[0].dropPoint[0]
+                              .dateAndTime
+                              | date
+                              : "yyyy/MM/dd
+                              hh:mm a"
+                              }}<br />
+                              <b>Location: </b>
+                              <span *ngIf="
+                                          ord.receivers[0].dropPoint[0].address
+                                            .manual
+                                        ">
+                                {{
+                                ord.receivers[0].dropPoint[0].address
+                                .address
+                                }},
+                                {{
+                                ord.receivers[0].dropPoint[0].address
+                                .cityName
+                                }},
+                                {{
+                                ord.receivers[0].dropPoint[0].address
+                                .stateName
+                                }},
+                                {{
+                                ord.receivers[0].dropPoint[0].address
+                                .countryName
+                                }}
+                                {{
+                                ord.receivers[0].dropPoint[0].address
+                                .zipCode
+                                }}
+                              </span>
+                              <span *ngIf="
+                                          !ord.receivers[0].dropPoint[0].address
+                                            .manual
+                                        ">
+                                {{
+                                ord.receivers[0].dropPoint[0].address
+                                .dropOffLocation
+                                }}
+                              </span>
+                              <span class="badge badge-dark" *ngIf="ord.receivers[0].dropPoint > 1">
+                                +{{ ord.receivers[0].dropPoint - 1 }}
+                              </span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </td>
+                <td width="20%" class="p-0 custom-bg-light border-0">
+                  <div class="p-3">
+                    <p-table [value]="order.shippersReceiversInfo"
+                      styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th class="border-0 p-0">Commodity</th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-ord>
+                        <tbody>
+                          <tr>
+                            <td>
+                              {{
+                              ord.shippers[0].pickupPoint[0]
+                              .commodity[0].name
+                              ? "Name: " +
+                              ord.shippers[0].pickupPoint[0]
+                              .commodity[0].name
+                              : "-"
+                              }}<br />
+                              {{
+                              ord.shippers[0].pickupPoint[0]
+                              .commodity[0].quantity
+                              ? "Qty:" +
+                              ord.shippers[0].pickupPoint[0]
+                              .commodity[0].quantity +
+                              " " +
+                              ord.shippers[0].pickupPoint[0]
+                              .commodity[0].quantityUnit
+                              : "Qty:" + "null"
+                              }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </td>
+                </tr>
+                </ng-template>
+                </p-table>
               </div>
             </div>
           </div>
         </div>
-      </section>
-    </section>
   </div>
+</section>
+</section>
+</div>
 </section>
 
 <div class="modal fade" id="orderStatusModal" role="dialog" tabindex="-1">
@@ -841,10 +529,7 @@
             <div class="col-lg-12">
               <div class="row">
                 <div class="col-lg-12">
-                  <label
-                    class="control-label font-weight-bold text-lg-right pt-2"
-                    >Order Information</label
-                  >
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Order Information</label>
                   <p>
                     Order# : {{ brokerage.orderNo }} <br />
                     Order Total: {{ brokerage.finalAmount }}
@@ -853,52 +538,25 @@
                 <div class="col-lg-12">
                   <div class="row">
                     <div class="col-lg-6">
-                      <label
-                        class="control-label font-weight-bold text-lg-right pt-2"
-                        >Select Carrier</label
-                      >
-                      <ng-select
-                        [(ngModel)]="brokerage.carrierID"
-                        name="brokerage.carrierID"
-                        placeholder="Select Carrier"
-                      >
-                        <ng-option
-                          value="{{ data.key }}"
-                          *ngFor="let data of carriersObject | keyvalue"
-                        >
-                          {{ data.value }}</ng-option
-                        >
+                      <label class="control-label font-weight-bold text-lg-right pt-2">Select Carrier</label>
+                      <ng-select [(ngModel)]="brokerage.carrierID" name="brokerage.carrierID"
+                        placeholder="Select Carrier">
+                        <ng-option value="{{ data.key }}" *ngFor="let data of carriersObject | keyvalue">
+                          {{ data.value }}</ng-option>
                       </ng-select>
                     </div>
                     <div class="col-lg-6">
-                      <label
-                        class="control-label font-weight-bold text-lg-right pt-2"
-                        >Brokerage amount</label
-                      >
-                      <input
-                        [(ngModel)]="brokerage.brokerageAmount"
-                        name="brokerageAmount"
-                        type="text"
-                        class="form-control"
-                        placeholder="e.g. 230"
-                      />
+                      <label class="control-label font-weight-bold text-lg-right pt-2">Brokerage amount</label>
+                      <input [(ngModel)]="brokerage.brokerageAmount" name="brokerageAmount" type="text"
+                        class="form-control" placeholder="e.g. 230" />
                     </div>
                   </div>
                 </div>
                 <div class="col-lg-12">
-                  <label
-                    class="control-label font-weight-bold text-lg-right pt-2"
-                    >Special Instructions</label
-                  >
-                  <textarea
-                    placeholder="eg.
-                    Please be on time"
-                    [(ngModel)]="brokerage.instructions"
-                    name="instructions_br"
-                    class="form-control h-auto"
-                    rows="2"
-                    pattern="^[\s\S]{500}$"
-                  ></textarea>
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Special Instructions</label>
+                  <textarea placeholder="eg.
+                    Please be on time" [(ngModel)]="brokerage.instructions" name="instructions_br"
+                    class="form-control h-auto" rows="2" pattern="^[\s\S]{500}$"></textarea>
 
                   <label class="error">{{ brokerErr }}</label>
                 </div>
@@ -910,12 +568,7 @@
           <button type="button" class="btn btn-default" data-dismiss="modal">
             Close
           </button>
-          <button
-            type="button"
-            class="btn btn-success"
-            [disabled]="brokerageDisabled"
-            (click)="submitClick()"
-          >
+          <button type="button" class="btn btn-success" [disabled]="brokerageDisabled" (click)="submitClick()">
             Save
           </button>
         </div>
@@ -931,12 +584,7 @@
     <h4 class="modal-title" id="modal-basic-title">
       Confirm Order <strong>#{{ newOrderNumber }}</strong>
     </h4>
-    <button
-      type="button"
-      class="close"
-      aria-label="Close"
-      (click)="modal.dismiss('Cross click')"
-    >
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -945,81 +593,38 @@
       <div class="email--invoice__main mt-3">
         <div class="row align-items-center mb-2">
           <div class="col-7">
-            <label
-              class="control-label font-weight-bold text-3 text-dark"
-              for="inputDefault"
-              >Do you want to send the confirmation email to customer ?</label
-            >
+            <label class="control-label font-weight-bold text-3 text-dark" for="inputDefault">Do you want to send the
+              confirmation email to customer ?</label>
           </div>
           <div class="col-5">
             <div class="btn-group-toggle" data-toggle="buttons">
-              <label
-                class="btn btn-outline btn-yesno mr-2 mb-2"
-                [class.active]="emailData.confirmEmail === true"
-                (click)="conEmailChange(true)"
-              >
-                <input
-                  type="radio"
-                  [(ngModel)]="emailData.confirmEmail"
-                  name="orderMode"
-                  checked
-                  hidden
-                  value="FTL"
-                />
+              <label class="btn btn-outline btn-yesno mr-2 mb-2" [class.active]="emailData.confirmEmail === true"
+                (click)="conEmailChange(true)">
+                <input type="radio" [(ngModel)]="emailData.confirmEmail" name="orderMode" checked hidden value="FTL" />
                 Yes
               </label>
-              <label
-                class="btn btn-outline btn-yesno mr-2 mb-2"
-                [class.active]="emailData.confirmEmail === false"
-                (click)="conEmailChange(false)"
-              >
-                <input
-                  type="radio"
-                  [(ngModel)]="emailData.confirmEmail"
-                  name="orderMode"
-                  hidden
-                  value="LTL"
-                />
+              <label class="btn btn-outline btn-yesno mr-2 mb-2" [class.active]="emailData.confirmEmail === false"
+                (click)="conEmailChange(false)">
+                <input type="radio" [(ngModel)]="emailData.confirmEmail" name="orderMode" hidden value="LTL" />
                 No
               </label>
             </div>
           </div>
         </div>
         <div class="" *ngIf="emailData.confirmEmail != false">
-          <label
-            class="control-label font-weight-bold mt-2 text-3 text-dark"
-            for="inputDefault"
-            >Enter Email
-            <small>You can also add multiple email(s)</small></label
-          >
-          <ng-select
-            multiple="true"
-            notFoundText="Please type to add
-            email"
-            [addTag]="true"
-            placeholder="eg. johnsmith@gmail.com"
-            [clearable]="false"
-            [(ngModel)]="emailData.emails"
-            name="emails"
-            type="text"
-            class="form-control h-auto"
-          ></ng-select>
+          <label class="control-label font-weight-bold mt-2 text-3 text-dark" for="inputDefault">Enter Email
+            <small>You can also add multiple email(s)</small></label>
+          <ng-select multiple="true" notFoundText="Please type to add
+            email" [addTag]="true" placeholder="eg. johnsmith@gmail.com" [clearable]="false"
+            [(ngModel)]="emailData.emails" name="emails" type="text" class="form-control h-auto"></ng-select>
         </div>
       </div>
     </div>
     <div class="modal-footer">
-      <button
-        type="button"
-        (click)="modal.dismiss('Cross click')"
-        class="btn btn-default"
-      >
+      <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-default">
         Cancel
       </button>
-      <button
-        [disabled]="isConfirm"
-        (click)="changeStatus()"
-        class="btn btn-success"
-      >
+      <button [disabled]="isConfirm" (click)="changeStatus()" class="btn btn-success">
         Confirm
       </button>
     </div>

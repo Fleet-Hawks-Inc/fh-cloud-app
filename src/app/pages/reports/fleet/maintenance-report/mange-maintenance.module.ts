@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { NgModule, Component } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
@@ -11,6 +11,8 @@ import {
 } from "@ng-bootstrap/ng-bootstrap";
 
 import { NgSelectModule } from "@ng-select/ng-select";
+import { SharedModule } from "../../../../shared/shared.module";
+import { SlickCarouselModule } from "ngx-slick-carousel";
 import { NgxSpinnerModule } from "ngx-spinner";
 import { ChartsModule } from "ng2-charts";
 import { unsavedChangesGuard } from "src/app/guards/unsaved-changes.guard";
@@ -19,6 +21,19 @@ import { OverviewComponent } from "./overview/overview.component";
 import { ServicelogsComponent } from "./servicelogs/servicelogs.component";
 import { ServiceprogramComponent } from "./serviceprogram/serviceprogram.component";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { TableModule } from 'primeng/table';
+import { GoogleMapsModule } from "@angular/google-maps";
+import { NgxDatatableModule } from "@swimlane/ngx-datatable";
+import { ToastModule } from 'primeng/toast';
+import { DropdownModule } from 'primeng/dropdown';
+import { BadgeModule } from "primeng/badge";
 
 const routes: Routes = [
   {
@@ -95,9 +110,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 @NgModule({
   declarations: [
     OverviewComponent,
-
     ServicelogsComponent,
-
     ServiceprogramComponent,
   ],
   imports: [
@@ -111,6 +124,21 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgxSpinnerModule,
     ChartsModule,
     InfiniteScrollModule,
+    GoogleMapsModule,
+    TableModule,
+    ButtonModule,
+    MultiSelectModule,
+    TooltipModule,
+    MenuModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule,
+    SlickCarouselModule,
+    SharedModule,
+    ToastModule,
+    BadgeModule,
+    NgxDatatableModule,
   ],
   providers: [
     unsavedChangesGuard,

@@ -349,7 +349,6 @@
                                 style="
                                   border-bottom: 1px solid #adadad;
                                   height: 25px;
-                                  padding-left: 10px;
                                 "
                               >
                                 <p
@@ -366,18 +365,19 @@
                             </tr>
                             <tr>
                               <td
+                                class="pl-3"
                                 width="55%"
                                 style="
                                   border-bottom: 1px solid #adadad;
                                   border-right: 1px solid #adadad;
-                                  padding-left: 10px;
                                 "
                               >
-                                <p class="text-dark font-weight-bold mb-1 mt-1">
+                                <p class="text-dark font-weight-bold mb-0">
                                   Name
                                 </p>
                               </td>
                               <td
+                                class="pl-3"
                                 width="15%"
                                 style="
                                   border-bottom: 1px solid #adadad;
@@ -385,11 +385,12 @@
                                   padding-left: 10px;
                                 "
                               >
-                                <p class="text-dark font-weight-bold mb-1 mt-1">
+                                <p class="text-dark font-weight-bold mb-0">
                                   PU#
                                 </p>
                               </td>
                               <td
+                                class="pl-3"
                                 width="15%"
                                 style="
                                   border-bottom: 1px solid #adadad;
@@ -397,11 +398,12 @@
                                   padding-left: 10px;
                                 "
                               >
-                                <p class="text-dark font-weight-bold mb-1 mt-1">
+                                <p class="text-dark font-weight-bold mb-0">
                                   Quantity
                                 </p>
                               </td>
                               <td
+                                class="pl-3"
                                 width="15%"
                                 style="
                                   border-bottom: 1px solid #adadad;
@@ -409,59 +411,48 @@
                                   padding-left: 10px;
                                 "
                               >
-                                <p class="text-dark font-weight-bold mb-1 mt-1">
+                                <p class="text-dark font-weight-bold mb-0">
                                   Weight
                                 </p>
                               </td>
                             </tr>
                             <tr *ngFor="let com of ord.commodities">
                               <td
-                                class="text-dark"
+                                class="text-dark pl-3"
                                 style="
                                   border-bottom: 1px solid #adadad;
                                   border-right: 1px solid #adadad;
-                                  padding-left: 10px;
                                 "
                               >
                                 {{ com.name ? com.name : "-" }}
                               </td>
                               <td
-                                class="text-dark"
+                                class="text-dark pl-3"
                                 style="
                                   border-bottom: 1px solid #adadad;
                                   border-right: 1px solid #adadad;
-                                  padding-left: 10px;
                                 "
                               >
                                 {{ com.pu ? com.pu : "-" }}
                               </td>
                               <td
-                                class="text-dark"
+                                class="text-dark pl-3"
                                 style="
                                   border-bottom: 1px solid #adadad;
                                   border-right: 1px solid #adadad;
-                                  padding-left: 10px;
                                 "
                               >
                                 {{ com.quantity ? com.quantity : "0" }}
                                 {{ com.quantityUnit }}
                               </td>
                               <td
-                                class="text-dark"
+                                class="text-dark pl-3"
                                 style="
                                   border-bottom: 1px solid #adadad;
                                   border-right: 1px solid #adadad;
-                                  padding-left: 10px;
                                 "
                               >
-                                <p
-                                  class="text-dark"
-                                  style="
-                                    font-weight: 600;
-                                    margin-bottom: 4px;
-                                    margin-top: 4px;
-                                  "
-                                >
+                                <p class="text-dark mb-0">
                                   {{ com.weight ? com.weight : "0" }}
                                   {{ com.weightUnit }}
                                 </p>
@@ -469,23 +460,17 @@
                             </tr>
                             <tr>
                               <td
-                                style="
-                                  border-right: 1px solid #adadad;
-                                  padding-left: 10px;
-                                "
+                                class="text-dark pl-3"
+                                style="border-right: 1px solid #adadad"
                               >
                                 <p
-                                  class="text-dark"
-                                  style="
-                                    font-weight: 600;
-                                    margin-bottom: 4px;
-                                    margin-top: 4px;
-                                  "
+                                  class="text-dark mb-0"
+                                  style="font-weight: 600"
                                 >
                                   GRAND TOTAL
                                 </p>
                               </td>
-                              <td colspan="4" style="padding-left: 10px">
+                              <td colspan="4" class="text-dark pl-3">
                                 {{ finalAmount }}
                               </td>
                             </tr>
@@ -522,13 +507,9 @@
                                   <tbody>
                                     <tr>
                                       <td
+                                        class="text-dark pl-3 pt-1"
                                         bgcolor="#f3f3f3"
-                                        class="text-dark"
-                                        style="
-                                          border-bottom: 1px solid #adadad;
-                                          height: 25px;
-                                          padding-left: 10px;
-                                        "
+                                        style="border-bottom: 1px solid #adadad"
                                       >
                                         <strong>Pick Up Instructions</strong>
                                       </td>
@@ -538,10 +519,7 @@
                                         ord.pickupInstructions.length === 0
                                       "
                                     >
-                                      <td
-                                        width="25%"
-                                        style="padding-left: 10px"
-                                      >
+                                      <td class="text-dark pl-3 pt-1">
                                         &nbsp;
                                       </td>
                                     </tr>
@@ -552,8 +530,7 @@
                                     >
                                       <td
                                         width="25%"
-                                        class="text-dark"
-                                        style="padding-left: 10px"
+                                        class="text-dark pl-3 pt-1"
                                       >
                                         {{ pickInc }}
                                       </td>
@@ -571,18 +548,15 @@
                                   style="
                                     border: 1px solid #adadad;
                                     font-size: 13px;
+                                    margin-left: 2%;
                                   "
                                 >
                                   <tbody>
                                     <tr>
                                       <td
+                                        class="text-dark pl-3 pt-1"
                                         bgcolor="#f3f3f3"
-                                        class="text-dark"
-                                        style="
-                                          border-bottom: 1px solid #adadad;
-                                          height: 25px;
-                                          padding-left: 10px;
-                                        "
+                                        style="border-bottom: 1px solid #adadad"
                                       >
                                         <strong>Delivery Instructions</strong>
                                       </td>
@@ -590,10 +564,7 @@
                                     <tr
                                       *ngIf="ord.dropInstructions.length === 0"
                                     >
-                                      <td
-                                        width="25%"
-                                        style="padding-left: 10px"
-                                      >
+                                      <td class="text-dark pl-3 pt-1">
                                         &nbsp;
                                       </td>
                                     </tr>
@@ -603,9 +574,8 @@
                                       "
                                     >
                                       <td
+                                        class="text-dark pl-3 pt-1"
                                         width="25%"
-                                        class="text-dark"
-                                        style="padding-left: 10px"
                                       >
                                         {{ dropInc }}
                                       </td>
