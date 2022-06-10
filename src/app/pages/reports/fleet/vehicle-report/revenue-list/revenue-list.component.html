@@ -149,14 +149,14 @@
                                                                 class="font-weight-bold line-height-lg text-capitalize">{{
                                                                 vehicle.vehicleIdentification }}</span>
                                                         </span>
-                                                        <span *ngSwitchCase="'driverList.teamDriverID'">
+                                                        <span  *ngSwitchCase="'teamDriverID'">
                                                             <span>
                                                                 <span>{{((driversList[vehicle.teamDriverID])
                                                                     ? driversList[vehicle.teamDriverID]: '-') |
                                                                     titlecase }}</span>
                                                             </span>
                                                         </span>
-                                                        <span *ngSwitchCase="'driverList.driverID'">
+                                                        <span *ngSwitchCase="'driverID'">
                                                             <span>
                                                                 <span>{{((driversList[vehicle.driverID])
                                                                     ? driversList[vehicle.driverID]: '-') | titlecase
