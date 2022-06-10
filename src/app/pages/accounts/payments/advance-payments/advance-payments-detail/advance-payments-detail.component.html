@@ -264,6 +264,13 @@
 </section>
 
 <ng-template #previewAdvPayment let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Advance Payment</h4>
+    <button type="button" class="close" (click)="modal.dismiss()">
+      &times;
+    </button>
+  </div>
+
   <div class="modal-content">
     <div class="modal-body text-dark">
       <table
@@ -292,7 +299,7 @@
                 alt="logo"
                 style="max-width: 100px"
               />
-              <p *ngIf="tagLine" class="mb-0 text-dark font-weight-bold">
+              <p *ngIf="tagLine" class="mb-0 text-dark text-4 font-weight-bold">
                 {{ tagLine }}
               </p>
             </td>
@@ -431,10 +438,10 @@
                 <thead>
                   <tr class="">
                     <th width="30%" class="pl-3 pt-1 pb-1">Payment Mode</th>
-                    <th width="30%" class="pl-3 pt-1">
+                    <th width="30%" class="pl-3 pt-1 pb-1">
                       {{ paymentData.payMode }} Date
                     </th>
-                    <th width="20%" class="pl-3 pt-1">
+                    <th width="20%" class="pl-3 pt-1 pb-1">
                       {{ paymentData.payMode }} Reference#
                     </th>
                   </tr>
@@ -444,10 +451,10 @@
                     <td class="pl-3 pt-1 pb-1">
                       {{ paymentData.payMode }}
                     </td>
-                    <td class="pl-3 pt-1">
+                    <td class="pl-3 pt-1 pb-1">
                       {{ paymentData.payModeDate | date: "yyyy/MM/dd" }}
                     </td>
-                    <td class="pl-3 pt-1">
+                    <td class="pl-3 pt-1 pb-1">
                       {{ paymentData.payModeNo }}
                     </td>
                   </tr>
