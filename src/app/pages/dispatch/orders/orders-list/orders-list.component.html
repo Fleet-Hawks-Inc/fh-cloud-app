@@ -261,29 +261,20 @@
                               id="dropdownMenuButton-{{ rowIndex }}">
                               <i class="fas fa-ellipsis-v"></i>
                             </button>
-                            <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '160px'}">
+                            <p-overlayPanel #op [showCloseIcon]="true"  [style]="{width: '160px'}">
                               <ng-template pTemplate>
-                                <a *ngIf="order.orderStatus != 'delivered'" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
-                                  order.orderID
-                                }}">Edit</a>
-                                <a *ngIf="order.orderStatus === 'confirmed'" class="dropdown-item" [routerLink]="[
-                                  '/dispatch',
-                                  'trips',
-                                  'add-trip'
-                                ]" [queryParams]="{
-                                  orderId: order.orderID,
-                                  orderNum: order.orderNumber
-                                }">Create Trip</a>
+                                <a *ngIf="order.orderStatus != 'delivered'" (click)="op.hide();editOrder(order.orderID)" class="dropdown-item" >Edit</a>
+                                <a *ngIf="order.orderStatus === 'confirmed'" (click)="op.hide(); createTrip(order.orderID, order.orderNumber)" class="dropdown-item" >Create Trip</a>
                                 <a *ngIf="
                                   order.orderStatus == 'created' ||
                                   order.orderStatus == 'confirmed'
-                                " class="dropdown-item" href="javascript:;" (click)="deactivateOrder(order)">Delete</a>
+                                " class="dropdown-item" href="javascript:;" (click)="op.hide();deactivateOrder(order)">Delete</a>
                                 <a *ngIf="order.orderStatus === 'created'" class="dropdown-item"
-                                  (click)="confirmEmail(order, rowIndex)">Confirm</a>
+                                  (click)="op.hide();confirmEmail(order, rowIndex)">Confirm</a>
                                 <a *ngIf="
                                   order.orderStatus === 'created' ||
                                   order.orderStatus === 'confirmed'
-                                " class="dropdown-item" (click)="
+                                " class="dropdown-item" (click)="op.hide();
                                   showBrokerageModal(
                                     order,
                                     ordersDraw,
@@ -291,21 +282,15 @@
                                     'all'
                                   )
                                 ">Brokerage</a>
-                                <a *ngIf="order.orderStatus === 'brokerage'" class="dropdown-item" (click)="
+                                <a *ngIf="order.orderStatus === 'brokerage'" class="dropdown-item" (click)="op.hide();
                                   updateCreatedStatus(
                                     order,
                                     ordersDraw,
                                     rowIndex
                                   )
                                 ">Cancel Brokerage</a>
-                                <a class="dropdown-item" [routerLink]="['/dispatch', 'orders', 'add']" [queryParams]="{
-                                  cloneID: order.orderID
-                                }">Clone</a>
-                                <a *ngIf="order.canRecall" class="dropdown-item" routerLink="/dispatch/orders/edit/{{
-                                  order.orderID
-                                }}" [queryParams]="{
-                                  state: 'recall'
-                                }">Recall</a>
+                                <a class="dropdown-item" (click)="op.hide(); cloneOrder(order.orderID)">Clone</a>
+                                <a *ngIf="order.canRecall" (click)="op.hide(); recallOrder(order.orderID)" class="dropdown-item">Recall</a>
                               </ng-template>
                             </p-overlayPanel>
                           </div>

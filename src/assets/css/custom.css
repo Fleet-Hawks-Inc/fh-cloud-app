@@ -4376,3 +4376,12 @@ input:checked + .sliderbtn:before {
   font-family: Roboto, Arial;
   font-size: 13px;
 }
+.p-overlaypanel .p-overlaypanel-close {
+  z-index: 9;
+}
+.p-overlaypanel:after {
+  margin-left: -20px !important;
+}
+.p-overlaypanel:before {
+  margin-left: -25px !important;
+}
