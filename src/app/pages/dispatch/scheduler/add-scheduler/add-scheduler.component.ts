@@ -224,7 +224,7 @@ export class AddSchedulerComponent implements OnInit {
     this.apiService.postData('orders/schedule',scheduleData).subscribe({
       complete:()=>{},
       error:(err)=>{
-        this.toastr.error("Error occured")
+        this.saveDisabled=false
       },
       next:(res)=>{
         this.toastr.success("Schedule added successfully");

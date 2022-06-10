@@ -23,7 +23,7 @@
                       <div class="text-right">
                         <span>Showing {{schedules.length}} entries</span> &nbsp;
                         <button type="button" pButton  pTooltip="Refresh"
-                          class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                          class="p-button-outlined mr-2" (click)="refreshData()" icon="fas fa-sync"></button>
   
                         <button type="button" pButton pTooltip="Add" routerLink="/dispatch/scheduler/add"
                           class="p-button-outlined mr-2" icon="pi pi-plus"></button>
@@ -51,8 +51,9 @@
                             </p-columnFilter>
                           </div>
                         </span>
-  
                       </th>
+                      <th style="width: 20%">Created By</th>
+                      <th style="width:20%">Status</th>
                       <th style="width: 6%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
                     </tr>
                   </ng-template>
@@ -61,19 +62,30 @@
                   let-expanded="expanded">
                   <tr style="cursor: pointer;">
                     <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}' 
-                    style="width:30%">
+                    style="width:20%">
 
                     {{schedule.orderNumber}}
                   </td>
                   <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}' 
-                  style="width:30%">
+                  style="width:20%">
 
                   {{schedule.sName |titlecase}}
                 </td>
                 <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}'
-                style="width:30%">
+                style="width:20%">
                 {{schedule.sTime}}
               </td>
+              <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}'
+                style="width:20%">
+                {{schedule.firstName}} {{schedule.lastName}}
+              </td>
+
+              <td routerLink='/dispatch/scheduler/detail/{{schedule.id}}'
+                style="width:20%">
+                <span class="badge badge-success" *ngIf="schedule.disabled===0">Enabled</span>
+                <span class="badge badge-danger" *ngIf="schedule.disabled===1">Disabled</span>
+              </td>
+
               <td style="width:6%;overflow: inherit !important; " pFrozenColumn alignFrozen="right"
                       [frozen]="true">
                       <div class="dropdown dropright" style="z-index: 10001">
@@ -85,8 +97,7 @@
                             rowIndex
                                }}">
                             <a class="dropdown-item" routerLink='/dispatch/scheduler/edit/{{schedule.id}}'>Edit</a>
-                            <a class="dropdown-item" (click)="delete();">Delete</a>
-
+                            <a class="dropdown-item" (click)="delete(schedule.id)">Deactivate</a>
                         </div>
                         </div>
                 </td>
