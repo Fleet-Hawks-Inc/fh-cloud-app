@@ -72,6 +72,7 @@ export class AddTransferComponent implements OnInit {
     this.accountService.postData("transfer-transactions", this.transferData).subscribe({
       complete: () => { },
       error: (err: any) => {
+        this.submitDisabled = false;
         from(err.error)
           .pipe(
             map((val: any) => {
@@ -87,7 +88,7 @@ export class AddTransferComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -99,7 +100,7 @@ export class AddTransferComponent implements OnInit {
   }
 
   async fetchDetail() {
-    let result: any = await this.accountService.getData(`transfer-transactions/detail/${this.transferID}`).toPromise();
+    let result: any = await this.accountService.getData(`transfer-transactions/edit/detail/${this.transferID}`).toPromise();
     if(result && result.length > 0) {
       this.transferData = result[0];
     }
@@ -110,6 +111,7 @@ export class AddTransferComponent implements OnInit {
     this.accountService.putData(`transfer-transactions/update/${this.transferID}`, this.transferData).subscribe({
       complete: () => { },
       error: (err: any) => {
+        this.submitDisabled = false;
         from(err.error)
           .pipe(
             map((val: any) => {

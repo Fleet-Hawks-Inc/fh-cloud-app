@@ -564,12 +564,12 @@
                             Location
                           </p>
                         </td>
-                        <td width="10%" class="pl-3 pt-1">
+                        <!-- <td width="10%" class="pl-3 pt-1">
                           <p class="text-3 font-weight-bold text-dark mb-1">
                             Driver
                           </p>
-                        </td>
-                        <td width="10%" class="pl-3 pt-1">
+                        </td> -->
+                        <td width="20%" class="pl-3 pt-1">
                           <p class="text-3 font-weight-bold text-dark mb-1">
                             Co-driver
                           </p>
@@ -586,7 +586,7 @@
                         </td>
                         <td width="10%" class="pl-3 pt-1">
                           <p class="text-3 font-weight-bold text-dark mb-1">
-                            Total Miles
+                            Miles
                           </p>
                         </td>
                         <td width="5%" class="pl-3 pt-1">
@@ -604,14 +604,14 @@
                             {{ plan.location }}
                           </p>
                         </td>
-                        <td class="pl-3 pt-1">
+                        <!-- <td class="pl-3 pt-1">
                           <p class="text-3 text-dark mb-1 text-capitalize">
                             {{ plan.driverName }}
                           </p>
-                        </td>
+                        </td> -->
                         <td class="pl-3 pt-1">
                           <p class="text-3 text-dark mb-1 text-capitalize">
-                            {{ plan.codriverName }}
+                            {{ plan.drivrCodriver }}
                           </p>
                         </td>
                         <td class="pl-3 pt-1">
@@ -636,7 +636,7 @@
                         </td>
                       </tr>
                       <tr>
-                        <td colspan="6" class="pl-3 pt-1">
+                        <td colspan="5" class="pl-3 pt-1">
                           <p class="text-3 text-dark mb-1">
                             <strong>Total</strong>
                           </p>
@@ -841,8 +841,8 @@
           class="cheque-wrapper"
           id="ownerOperator_pay_pdf"
           *ngIf="
-            this.paymentData.paymentTo === 'owner_operator' ||
-            this.paymentData.paymentTo === 'carrier'
+            paymentData.paymentTo === 'owner_operator' ||
+           paymentData.paymentTo === 'carrier'
           "
         >
           <table
@@ -1104,7 +1104,7 @@
                         </td>
                         <td width="20%" class="pl-3 pt-1">
                           <p class="text-4 font-weight-bold text-dark mb-1">
-                            Total Miles
+                            Miles
                           </p>
                         </td>
                       </tr>
