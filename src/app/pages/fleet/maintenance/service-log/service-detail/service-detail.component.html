@@ -22,7 +22,7 @@
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
               <div class="form-group row pt-1">
-                <div style="width: 10%">
+                <div style="width: 13%">
                   <div class="text-center p-4 cerbor">
                     <p class="mb-0 text-4 font-weight-bold text-dark">
                       Unit type
@@ -30,7 +30,7 @@
                     <p class="mb-0 text-3">{{ logsData.unitType | titlecase }}</p>
                   </div>
                 </div>
-                <div style="width: 10%">
+                <div style="width: 12%">
                   <div class="text-center p-4 cerbor" *ngIf="logsData.unitType != 'asset'">
                     <p class="mb-0 text-4 font-weight-bold text-dark">
                       Vehicle
@@ -44,7 +44,7 @@
                     <p class="mb-0 text-3">{{ assetsObject[assetID] | titlecase }}</p>
                   </div>
                 </div>
-                <div style="width: 10%">
+                <div style="width: 13%">
                   <div class="text-center p-4 cerbor" *ngIf="logsData.unitType != 'asset'">
                     <p class="mb-0 text-4 font-weight-bold text-dark">
                       Vehicle plate no.
@@ -63,7 +63,7 @@
                     </p>
                   </div>
                 </div>
-                <div style="width: 13%">
+                <div style="width: 14%">
                   <div class="text-center p-4 cerbor" *ngIf="logsData.unitType != 'asset'">
                     <p class="mb-0 text-4 font-weight-bold text-dark">
                       Vehicle VIN
@@ -81,10 +81,10 @@
                     </p>
                   </div>
                 </div>
-                <div style="width: 12%" *ngIf="logsData.unitType != 'asset'">
+                <div style="width:8%" *ngIf="logsData.unitType != 'asset'">
                   <div class="text-center p-4 cerbor">
                     <p class="mb-0 text-4 font-weight-bold text-dark">
-                      Odometer in miles
+                      Miles Odometer
                     </p>
                     <p class="mb-0 text-3">
                       {{ odometer ? odometer : "-" }}
@@ -105,7 +105,7 @@
                     </p>
                   </div>
                 </div>
-                <div style="width: 12%">
+                <div style="width: 14%">
                   <div class="text-center p-4 cerbor">
                     <p class="mb-0 text-4 font-weight-bold text-dark">
                       Bill#
@@ -290,17 +290,17 @@
                 </div>
                 <div class="col-lg-4" *ngIf="logDocs?.length > 0">
                   <label
-                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Documents</label>
+                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Document(s)</label>
                   <div class="row" *ngFor="let doc of logDocs; let d = index">
                     <div class="col-lg-9">
                       <a href="javascript:;" href="{{ doc.path }}" data-toggle="modal" data-target="#viewDocModal"
                         (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
                     </div>
                     <div class="col-lg-3 text-right">
-                      <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
-                        data-target="#viewDocModal"></em>
-                      <a href="javascript:;" (click)="delete('doc', doc.name, d)" class="modal-with-form">
-                        <em class="fas fa-times text-danger"></em></a>
+
+                      <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="delete('doc', doc.name, d)"><i class="fas fa-trash-alt"></i></a>
+                      <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal">
+                        <i class="fas fa-eye"></i></a>
                     </div>
                   </div>
                 </div>
