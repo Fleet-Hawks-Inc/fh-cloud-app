@@ -1132,35 +1132,23 @@
                         </div>
                         <div class="row">
                           <div class="col-12">
-                            <div
-                              class="row my-2 px-2"
-                              *ngFor="let item of attachments; let d = index"
-                            >
-                              <div class="col-5">
-                                <a
-                                  href="javascript:;"
-                                  data-toggle="modal"
-                                  data-target="#viewDocModal"
-                                  (click)="setPDFSrc(item.path)"
-                                  >Document {{ d + 1 }}</a
-                                >
-                              </div>
-                              <div class="col- 3 text-right">
-                                <em
-                                  class="far fa-file text-dak mr-1"
-                                  (click)="setPDFSrc(item.path)"
-                                  data-toggle="modal"
-                                  data-target="#viewDocModal"
-                                ></em>
-                                <a
-                                  href="javascript:;"
-                                  (click)="delete('attachment', item.name, d)"
-                                  class="modal-with-form"
-                                >
-                                  <em class="fas fa-times text-danger"></em
-                                ></a>
-                              </div>
-                            </div>
+          
+                            
+              <div class="row mb-1" *ngFor="let item of attachments; let d = index">
+                                        <div class="col-lg-9">
+                                            <a href="{{ item.path }}" data-toggle="modal" data-target="#viewDocModal"
+                                                (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
+                                        </div>
+                                        <div class="col-lg-3 text-right">
+                            <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="delete('attachment', item.name, d)"><i class="fas fa-trash-alt"></i></a>
+                                                 <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="setPDFSrc(item.path)" data-toggle="modal" data-target="#viewDocModal"><i
+                                class="fas fa-eye"></i></a>
+                                        </div>
+                                    </div>                          
+                            
+                            
                             <div
                               *ngIf="attachments.length == 0"
                               class="my-2 px-2"
