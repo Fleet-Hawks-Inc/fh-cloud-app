@@ -165,7 +165,6 @@ _selectedColumns: any[];
 
     setToggleOptions() {
         this.selectedColumns = this.dataColumns;
-        console.log('a',this.selectedColumns)
     }
 
     @Input() get selectedColumns(): any[] {
@@ -175,7 +174,6 @@ _selectedColumns: any[];
    set selectedColumns(val: any[]) {
     //restore original order
     this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
-    console.log('b',this._selectedColumns)
    }
     fetchAssetList() {
         this.apiService.getData('assets/get/list').subscribe((result: any) => {
