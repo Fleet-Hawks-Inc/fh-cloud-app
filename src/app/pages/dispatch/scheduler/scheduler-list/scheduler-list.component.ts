@@ -18,7 +18,6 @@ export class SchedulerListComponent implements OnInit {
   loaded=false;
   _selectedColumns:any[];
   dataColumns:any[];
-
   ngOnInit(): void {
     this.initData();
     this.dataColumns=[
@@ -65,9 +64,9 @@ export class SchedulerListComponent implements OnInit {
 this.schedules=this.schedules.concat(result.data)
   }
 
-  delete(scheduleID:any){
+  delete(scheduleID:any,mongoID){
     if(confirm("Are you sure you want deactivate?")===true){
-      this.apiService.deleteData(`orders/schedule/deactivate/${scheduleID}`).subscribe(()=>{
+      this.apiService.deleteData(`orders/schedule/deactivate/${scheduleID}/${mongoID}`).subscribe(()=>{
         this.schedules=[];
         this.lastEvaluatedKey="";
         this.toastrService.success("Schedule is Deactivated Successfully!");

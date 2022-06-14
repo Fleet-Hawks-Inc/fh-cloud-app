@@ -97,7 +97,7 @@
                             rowIndex
                                }}">
                             <a class="dropdown-item" routerLink='/dispatch/scheduler/edit/{{schedule.id}}'>Edit</a>
-                            <a class="dropdown-item" (click)="delete(schedule.id)">Deactivate</a>
+                            <a class="dropdown-item" (click)="delete(schedule.id,schedule.mongoID)">Deactivate</a>
                         </div>
                         </div>
                 </td>
