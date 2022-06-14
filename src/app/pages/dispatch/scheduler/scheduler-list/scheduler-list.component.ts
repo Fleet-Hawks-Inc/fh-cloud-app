@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import Constants from 'src/app/pages/fleet/constants';
 import { ApiService } from 'src/app/services';
+import {ToastrService} from 'ngx-toastr'
 
 @Component({
   selector: 'app-scheduler-list',
@@ -9,7 +10,7 @@ import { ApiService } from 'src/app/services';
 })
 export class SchedulerListComponent implements OnInit {
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService,private toastrService: ToastrService) { }
 
   lastEvaluatedKey='';
   schedules=[];
@@ -21,9 +22,9 @@ export class SchedulerListComponent implements OnInit {
   ngOnInit(): void {
     this.initData();
     this.dataColumns=[
-      {width:'30%', field:'orderNumber',header:'Order#',type:'text'},
-      {width:'30%',field:'sName',header:'Scheduler Name',type:'text'},
-      {width:'30%',field:'sTime',header:'Scheduler Time',type:'text'}
+      {width:'20%', field:'orderNumber',header:'Order#',type:'text'},
+      {width:'20%',field:'sName',header:'Scheduler Name',type:'text'},
+      {width:'20%',field:'sTime',header:'Scheduler Time',type:'text'},
     ]
     this._selectedColumns=this.dataColumns;
   }
@@ -56,11 +57,36 @@ export class SchedulerListComponent implements OnInit {
   else{
     this.lastEvaluatedKey=undefined
   }
+
+  if(this.lastEvaluatedKey==undefined){
+    this.lastEvaluatedKey='end'
+  }
   this.loaded=true;
 this.schedules=this.schedules.concat(result.data)
-console.log(this.schedules)
   }
-  delete(){
-    
+
+  delete(scheduleID:any){
+    if(confirm("Are you sure you want deactivate?")===true){
+      this.apiService.deleteData(`orders/schedule/deactivate/${scheduleID}`).subscribe(()=>{
+        this.schedules=[];
+        this.lastEvaluatedKey="";
+        this.toastrService.success("Schedule is Deactivated Successfully!");
+        this.initData();
+      })
+    }
+  }
+
+  refreshData(){
+    this.schedules=[]
+    this.dataMessage=Constants.FETCHING_DATA;
+    this.lastEvaluatedKey=''
+    this.initData();
+
+  }
+  onScroll(event:any){
+    if(this.loaded){
+      this.initData();
+    }
+
   }
 }
