@@ -97,40 +97,16 @@
                           <tbody>
                             <tr>
                               <td style="padding-left: 10px">
-                                <p
-                                  class="text-dark"
-                                  style="margin-bottom: 0px; line-height: 20px"
-                                >
-                                  <strong
-                                    >Carrier Name:
-                                    {{
-                                      carrierData.companyName
-                                        ? carrierData.companyName
-                                        : "NA"
-                                    }}</strong
-                                  >
+                                <p class="mt-0 mb-0 text-dark text-3">
+                                  <strong>Carrier Name: </strong>
+                                  {{
+                                    carrierData.companyName
+                                      ? carrierData.companyName
+                                      : "NA"
+                                  }}
                                 </p>
-                              </td>
-                              <td style="padding-left: 10px">
-                                <p
-                                  class="text-dark"
-                                  style="margin-bottom: 0px; line-height: 20px"
-                                >
-                                  <strong>Searl#: </strong
-                                  ><span contenteditable>NA</span>
-                                </p>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td style="padding-left: 10px">
-                                <p
-                                  class="text-dark"
-                                  style="
-                                    margin-bottom: 0px;
-                                    margin-top: 4px;
-                                    line-height: 20px;
-                                  "
-                                >
+
+                                <p class="mt-0 mb-0 text-dark text-3">
                                   <strong>Trailer#</strong>:
                                   <span
                                     *ngFor="
@@ -142,16 +118,25 @@
                                   </span>
                                   <span *ngIf="assets.length === 0"> NA </span>
                                 </p>
+                                <p class="mt-0 mb-0 text-dark text-3">
+                                  <strong>Driver Name</strong>:
+                                  <span
+                                    *ngFor="
+                                      let drv of drivers;
+                                      let isLast = last
+                                    "
+                                  >
+                                    {{ drv }} <span *ngIf="!isLast">,</span>
+                                  </span>
+                                  <span *ngIf="drivers.length === 0"> NA </span>
+                                </p>
                               </td>
-                              <td valign="top" style="padding-left: 10px">
-                                <p
-                                  class="text-dark"
-                                  style="
-                                    margin-bottom: 0px;
-                                    margin-top: 4px;
-                                    line-height: 20px;
-                                  "
-                                >
+                              <td style="padding-left: 10px">
+                                <p class="mt-0 mb-0 text-dark text-3">
+                                  <strong>Searl#: </strong
+                                  ><span contenteditable>NA</span>
+                                </p>
+                                <p class="mt-0 mb-0 text-dark text-3">
                                   <strong>Truck#</strong>:
                                   <span
                                     *ngFor="
@@ -164,29 +149,6 @@
                                   <span *ngIf="vehicles.length === 0">
                                     NA
                                   </span>
-                                </p>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td colspan="2" style="padding-left: 10px">
-                                <p
-                                  class="text-dark"
-                                  style="
-                                    margin-bottom: 15px;
-                                    margin-top: 4px;
-                                    line-height: 20px;
-                                  "
-                                >
-                                  <strong>Driver Name</strong>:
-                                  <span
-                                    *ngFor="
-                                      let drv of drivers;
-                                      let isLast = last
-                                    "
-                                  >
-                                    {{ drv }} <span *ngIf="!isLast">,</span>
-                                  </span>
-                                  <span *ngIf="drivers.length === 0"> NA </span>
                                 </p>
                               </td>
                             </tr>
