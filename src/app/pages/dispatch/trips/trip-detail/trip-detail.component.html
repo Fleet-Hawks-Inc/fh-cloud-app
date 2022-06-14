@@ -1118,8 +1118,7 @@
               style="max-width: 100px"
             />
             <p
-              class="m-0 font-weight-bold text-dark"
-              style="font-size: 16px"
+              class="mb-0 text-dark text-4 font-weight-bold"
               *ngIf="tagLine && tagLine != ''"
             >
               {{ tagLine }}
@@ -1127,22 +1126,14 @@
           </td>
         </tr>
         <tr>
-          <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
+          <td colspan="2" height="1" bgcolor="#595959"></td>
         </tr>
         <tr>
           <td valign="top" class="text-dark">
-            <h2 style="font-size: 14px; line-height: 34px; margin-bottom: 0px">
+            <p class="mt-2 mb-0 text-dark text-3">
               <strong>Trip#</strong> {{ tripData.tripNo }}
-            </h2>
-            <p
-              class="text-dark"
-              style="
-                font-size: 12px;
-                margin-bottom: 15px;
-                margin-top: 0px;
-                display: inline-block;
-              "
-            >
+            </p>
+            <p class="mt-2 mb-2 text-dark text-3">
               <strong>Trip Type:</strong> {{ orderType }}
             </p>
           </td>
@@ -1154,7 +1145,7 @@
           </td>
         </tr>
         <tr>
-          <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
+          <td colspan="2" height="1" bgcolor="#595959"></td>
         </tr>
         <tr class="text-dark" *ngFor="let item of customerData">
           <td colspan="2">

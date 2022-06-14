@@ -18,13 +18,10 @@
           <tbody>
             <tr>
               <td width="50%">
-                <h1
-                  class="text-dark"
-                  style="font-size: 26px; margin-bottom: 0px"
-                >
+                <h1 class="text-dark font-weight-bold text-6 mb-1 mt-1">
                   Bill of Lading
                 </h1>
-                <p class="text-dark" style="font-size: 13px; margin-top: 0px">
+                <p class="mt-2 mb-2 text-dark text-3">
                   <strong>Date:</strong> {{ today | date: "yyyy/MM/dd" }}
                 </p>
               </td>
@@ -61,41 +58,19 @@
                           <tbody>
                             <tr>
                               <td width="25%" class="p-3">
-                                <p
-                                  class="text-dark"
-                                  style="
-                                    font-size: 14px;
-                                    line-height: 20px;
-                                    margin-bottom: 0px;
-                                  "
-                                >
-                                  <strong
-                                    >Bill of Lading Number:
-                                    {{ orderNumber }}</strong
+                                <p class="mt-2 mb-0 text-dark text-3">
+                                  <span class="font-weight-bold"
+                                    >Bill of Lading Number:</span
                                   >
+                                  {{ orderNumber }}
                                 </p>
-                                <p
-                                  class="text-dark"
-                                  style="
-                                    font-size: 14px;
-                                    margin-bottom: 0px;
-                                    margin-top: 6px;
-                                    line-height: 20px;
-                                  "
-                                >
-                                  <strong>SCAC: </strong
+                                <p class="mt-0 mb-0 text-dark text-3">
+                                  <span class="font-weight-bold">SCAC: </span
                                   ><span contenteditable>NA</span>
                                 </p>
-                                <p
-                                  class="text-dark"
-                                  style="
-                                    font-size: 14px;
-                                    margin-top: 8px;
-                                    line-height: 20px;
-                                    margin-bottom: 8px;
-                                  "
-                                >
-                                  <strong>Pro Number: </strong
+                                <p class="mt-0 mb-0 text-dark text-3">
+                                  <span class="font-weight-bold"
+                                    >Pro Number: </span
                                   ><span contenteditable>NA</span>
                                 </p>
                               </td>

@@ -18,23 +18,23 @@ export class AddSchedulerComponent implements OnInit {
     orderNumber:null,
     name:null,
     time:null,
+    repeatType:null,
     type:{
       daysNo:'',
       days:[]
     },
-    range:{
-      dateRange:{
-        to:null,
-        from:null,
-      },
-      months:[]
-    }
+    rangeType:null,
+    dateRange:{
+      to:null,
+      from:null,
+    },
+    selectedMonths:[]
   }
   saveDisabled=false;
   repeatType=null;
   range=null;
-  days=["everyday","monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
-  months=["selectAll","january","february","march","april","may","june","july","august","september","october","november","december"]
+  days=["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
+  months=["january","february","march","april","may","june","july","august","september","october","november","december"]
   orders:any;
   schedulerID:any=''
   async ngOnInit( ) {
@@ -51,22 +51,19 @@ export class AddSchedulerComponent implements OnInit {
       const data=result[0]
       this.scheduler.name= data.sName;
       this.scheduler.time=data.sTime;
-      this.scheduler.range=data.sRange;
+      this.scheduler.dateRange=data.dateRange;
       this.scheduler.orderID=data.orderID;
       this.scheduler.orderNumber=data.orderNumber;
-      this.scheduler.type=data.sType;
+      this.scheduler.type=data.sType?data.sType:undefined;
+      this.scheduler.selectedMonths=data.selectedMonths?this.scheduler.selectedMonths:undefined,
+      this.range=data.sRange,
+      this.repeatType=data.repeatType
 
       if(this.scheduler.type.days===undefined){
         this.repeatType="selectDaysNo";
       }
       else{
         this.repeatType="days";
-      }
-      if(this.scheduler.range.dateRange==undefined){
-        this.range="month";
-      }
-      else{
-        this.range="date";
       }
 
     }
@@ -88,10 +85,10 @@ export class AddSchedulerComponent implements OnInit {
 
   onRangeCheckboxChange(value,isChecked){
     if(isChecked){
-      this.scheduler.range.months.push(value)
+      this.scheduler.selectedMonths.push(value)
     }
     else{
-      const index=this.scheduler.range.months.findIndex(x=>x==value);
+      const index=this.scheduler.selectedMonths.findIndex(x=>x==value);
       this.scheduler.type.days.splice(index,1)
     }
   }
@@ -129,23 +126,26 @@ export class AddSchedulerComponent implements OnInit {
     if(this.repeatType=="selectDaysNo"){
       delete this.scheduler.type.days
     }
-    else{
+    else if(this.repeatType=="days"){
       delete this.scheduler.type.daysNo
     }
-
-    if(this.range=="date"){
-      delete this.scheduler.range.months;
-    }
     else{
-      delete this.scheduler.range.dateRange
+      delete this.scheduler.type
+        }
+
+    if(this.range=="everyMonth"){
+      delete this.scheduler.selectedMonths;
     }
     const scheduleData={
       orderID:this.scheduler.orderID,
       orderNumber:this.scheduler.orderNumber,
+      repeatType:this.repeatType,
       sName:this.scheduler.name,
-      sType:this.scheduler.type,
+      sType:(this.scheduler.type)?this.scheduler.type:undefined,
       sTime:this.scheduler.time,
-      sRange:this.scheduler.range,
+      dateRange:this.scheduler.dateRange,
+      selectedMonth:this.scheduler.selectedMonths?this.scheduler.selectedMonths:undefined,
+      sRange:this.range,
       orderSK:`ORDSCH#`+this.schedulerID,
       id:this.schedulerID
   }
@@ -162,7 +162,6 @@ export class AddSchedulerComponent implements OnInit {
   async saveScheduler(){
     this.saveDisabled=true;
     if(this.scheduler.orderID) this.scheduler.orderNumber=this.orders[this.scheduler.orderID]
-    console.log(this.scheduler)
     if(this.scheduler.orderID==null || this.scheduler.orderNumber==null)
     {
       this.toastr.error("Reference Order is required");
@@ -189,36 +188,49 @@ export class AddSchedulerComponent implements OnInit {
       this.saveDisabled=false;
       return;
     }
+
+    if(!this.scheduler.dateRange.from || !this.scheduler.dateRange.to){
+      this.toastr.error("Date Range is required");
+      this.saveDisabled=false;
+      return
+
+    }
+
     if(this.repeatType=="selectDaysNo"){
       delete this.scheduler.type.days
     }
-    else{
+    else if (this.repeatType=="days"){
       delete this.scheduler.type.daysNo
     }
-
-    if(this.range=="date"){
-      delete this.scheduler.range.months;
-    }
     else{
-      delete this.scheduler.range.dateRange
+      delete this.scheduler.type
+    }
+
+    if(this.range=="everyMonth"){
+      delete this.scheduler.selectedMonths;
     }
     const scheduleData={
       orderID:this.scheduler.orderID,
       orderNumber:this.scheduler.orderNumber,
+      repeatType:this.repeatType,
       sName:this.scheduler.name,
-      sType:this.scheduler.type,
+      dateRange:this.scheduler.dateRange,
+      sType:(this.scheduler.type)?this.scheduler.type:undefined,
+      selectedMonths:this.scheduler.selectedMonths?this.scheduler.selectedMonths:undefined,
+      sRange:this.range,
       sTime:this.scheduler.time,
-      sRange:this.scheduler.range
   }
+
     this.apiService.postData('orders/schedule',scheduleData).subscribe({
       complete:()=>{},
-      error:(err)=>{},
+      error:(err)=>{
+        this.saveDisabled=false
+      },
       next:(res)=>{
         this.toastr.success("Schedule added successfully");
         this.location.back();
       }
     })
-    
   }
   back(){
     this.location.back();
