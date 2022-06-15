@@ -22,8 +22,8 @@ export class SchedulerListComponent implements OnInit {
     this.initData();
     this.dataColumns=[
       {width:'20%', field:'orderNumber',header:'Order#',type:'text'},
-      {width:'20%',field:'sName',header:'Scheduler Name',type:'text'},
-      {width:'20%',field:'sTime',header:'Scheduler Time',type:'text'},
+      {width:'20%',field:'sName',header:'Schedule Name',type:'text'},
+      {width:'20%',field:'sTime',header:'Scheduled Time',type:'text'},
     ]
     this._selectedColumns=this.dataColumns;
   }
@@ -72,6 +72,18 @@ this.schedules=this.schedules.concat(result.data)
         this.toastrService.success("Schedule is Deactivated Successfully!");
         this.initData();
       })
+    }
+  }
+
+  activate(scheduleID:any,mongoID:any){
+    if(confirm("Are you sure you want activate?")===true){
+      const result=this.apiService.getData(`orders/schedule/activate/${scheduleID}/${mongoID}`).subscribe(()=>{   
+      this.toastrService.success("Schedule is Activated Successfully!");
+      this.schedules=[];
+      this.lastEvaluatedKey="";
+      this.initData();
+      });
+
     }
   }
 

@@ -24,7 +24,6 @@ const routes: Routes = [
       path: "scheduler-list",
       component: SchedulerListComponent,
       data: {
-        reuseRoute: true,
         title: "Schedule List",
       },
     },
