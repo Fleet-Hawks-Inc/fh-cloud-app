@@ -13,14 +13,22 @@ import {
 import { SharedModule } from "../../../shared/shared.module";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { Injectable } from "@angular/core";
-
 import { EventListComponent } from "./event-list/event-list.component";
 import { AddEventComponent } from "./add-event/add-event.component";
 import { EventDetailComponent } from "./event-detail/event-detail.component";
-
 import { SlickCarouselModule } from "ngx-slick-carousel";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
 
+import { DialogModule } from 'primeng/dialog';
 const routes: Routes = [
   {
     path: "",
@@ -60,10 +68,10 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     // from internal model -> your mode
     return date
       ? date.year +
-          this.DELIMITER +
-          ("0" + date.month).slice(-2) +
-          this.DELIMITER +
-          ("0" + date.day).slice(-2)
+      this.DELIMITER +
+      ("0" + date.month).slice(-2) +
+      this.DELIMITER +
+      ("0" + date.day).slice(-2)
       : null;
   }
 }
@@ -107,10 +115,20 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgSelectModule,
     InfiniteScrollModule,
     SlickCarouselModule,
+    ButtonModule,
+    MultiSelectModule,
+    TooltipModule,
+    MenuModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule,
+    TableModule,
+    DialogModule,
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
-export class CriticalEventsModule {}
+export class CriticalEventsModule { }

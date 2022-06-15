@@ -1,14 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ApiService, HereMapService } from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 import * as moment from "moment";
+import { Table } from 'primeng/table';
+import { NgSelectComponent } from "@ng-select/ng-select";
 import { SafetyService } from 'src/app/services/safety.service';
 import Constants from 'src/app/pages/fleet/constants';
 import { constants } from 'os';
-
+import * as _ from "lodash";
+import { DropdownModule } from 'primeng/dropdown'
+import { Interface } from 'readline';
 @Component({
   selector: 'app-event-list',
   templateUrl: './event-list.component.html',
@@ -16,7 +20,11 @@ import { constants } from 'os';
 })
 export class EventListComponent implements OnInit {
 
+  @ViewChild('dt') table: Table;
+
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   events = [];
+
   lastEvaluatedKey = '';
   totalRecords = 20;
   pageLength = 10;
@@ -25,8 +33,7 @@ export class EventListComponent implements OnInit {
   vehicleID = '';
   filter = {
     vehicleID: null,
-    date: null
-
+    date: null,
   };
 
   suggestions = [];
@@ -38,21 +45,69 @@ export class EventListComponent implements OnInit {
   birthDateMinLimit: any;
   birthDateMaxLimit: any;
   status_values: any = ["open", "investigating", "coaching", "closed"];
-  lastItemSK: string = '';
 
+  lastItemSK: string = '';
+  employeeOptions: any[];
+  _selectedColumns: any[];
+  dataColumns: any[];
+  get = _.get;
+  find = _.find;
+  loaded = false
+  status: any[]
+  selectStatus: string
   constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toaster: ToastrService,
     private spinner: NgxSpinnerService, private hereMapService: HereMapService) {
-      const date = new Date();
-      this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
-      this.birthDateMaxLimit = { year: date.getFullYear(), month: 12, day: 31 };
-    }
+    const date = new Date();
+    this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
+    this.birthDateMaxLimit = { year: date.getFullYear(), month: 12, day: 31 }
+
+  }
+
 
   async ngOnInit() {
     this.fetchEvents();
     this.fetchVehicles();
     this.fetchAllVehiclesIDs();
+    // this.setStatusOptions()
+    this.dataColumns = [
+      { width: '10%', field: 'vehicleID', header: 'Vehicle', type: "text" },
+      { width: '10%', field: 'eventDate', header: 'Event Date', type: "text" },
+      { width: '10%', field: 'eventTime', header: 'Event Time', type: "text" },
+      { width: '10%', field: 'eventType', header: 'Event Type', type: "text" },
+      { width: '10%', field: 'eventSource', header: 'Event Source', type: "text" },
+      { width: '10%', field: 'createdBy', header: 'Created By', type: "text" },
+      { width: '26%', field: 'location.label', header: 'Location', type: "text" },
+      { width: '8%', field: 'status', header: 'Status', type: "text" },
+    ];
+
+    this.status = [
+      { name: 'open', value: 'open' },
+      { name: 'investigating', value: 'investigating' },
+      { name: 'coaching', value: 'coaching' },
+      { name: 'closed', value: 'closed' },
+    ];
+
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
   }
 
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  setStatusOptions() {
+    this.status_values = [{ "value": "open", "name": "Open" }, { "value": "investigating", "name": "Investigating" }, { "value": "coaching", "name": "Coaching" }, { "value": "closed", "name": "Closed" }];
+  }
+
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+  }
   async getLocation(location: string) {
     try {
       const cords = location.split(',');
@@ -83,7 +138,7 @@ export class EventListComponent implements OnInit {
     cords = `${cords.lng},${cords.lat}`;
     let result = await this.apiService.getData(`pcMiles/reverse/${cords}`).toPromise();
 
- }
+  }
 
 
   fetchVehicles() {
@@ -91,11 +146,12 @@ export class EventListComponent implements OnInit {
       .subscribe((result: any) => {
         this.vehicles = result.Items;
       })
+
   }
 
   searchEvents() {
     this.dataMessage = Constants.FETCHING_DATA;
-    if(this.filter.date == '') {
+    if (this.filter.date == '') {
       this.filter.date = 'null'
     }
     this.safetyService.getData(`critical-events/paging?vehicleID=${this.filter.vehicleID}&date=${this.filter.date}`)
@@ -119,6 +175,7 @@ export class EventListComponent implements OnInit {
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.loaded = true;
           }
           result.map((v) => {
             v.url = `/safety/critical-events/event-details/${v.eventID}`;
@@ -127,11 +184,13 @@ export class EventListComponent implements OnInit {
             for (let index = 0; index < result.length; index++) {
               const element = result[index];
               this.events.push(element);
+              this.loaded = true;
             }
             if (this.events[this.events.length - 1].sk !== undefined) {
               this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
             } else {
               this.lastItemSK = 'end';
+
             }
           }
 
@@ -160,7 +219,7 @@ export class EventListComponent implements OnInit {
 
   resetFilter() {
 
-    if(this.filter.date != '' || this.filter.vehicleID != '' || this.filter.vehicleID != null) {
+    if (this.filter.date != '' || this.filter.vehicleID != '' || this.filter.vehicleID != null) {
       this.lastItemSK = '';
       this.events = [];
       this.fetchEvents();
@@ -168,7 +227,6 @@ export class EventListComponent implements OnInit {
         vehicleID: null,
         date: ''
       };
-
     } else {
       return false;
     }
@@ -196,8 +254,11 @@ export class EventListComponent implements OnInit {
     return time.join(''); // return adjusted time or original string
   }
 
-  onScroll() {
-    this.fetchEvents();
+  onScroll = async (event: any) => {
+    if (this.loaded) {
+      this.fetchEvents();
+    }
+    this.loaded = false;
   }
 
   refreshData() {
@@ -208,6 +269,12 @@ export class EventListComponent implements OnInit {
       vehicleID: null,
       date: ''
     };
+  }
+
+  display: boolean = false;
+
+  showDialog() {
+    this.display = true;
   }
 
 }
