@@ -240,19 +240,28 @@
                             <span class="badge badge-warning" *ngIf="order.invStatus === 'partially_paid'">Partial
                             </span>
                           </div>
-
                           <br />
                         </td>
-
                         <td routerLink="/dispatch/orders/detail/{{
                             order.orderID
                           }}" [ngStyle]="{
                             width: find(columns, { field: 'newStatus' }).width
                           }">
-                          <span class="badge badge-dark p-1">{{
-                            order.newStatus
-                            }}</span>
-                          <br />
+                          <div class="badges">
+                            <span class="badge badge-dark p-1" style = "background-color: #4e97d6;" *ngIf="order.newStatus === 'confirmed'">confirmed</span>
+                            <span class="badge badge-dark p-1" style = "background-color: #171717;" *ngIf="order.newStatus === 'created'">created</span>
+                            <span class="badge badge-dark p-1" style = "background-color: cadetblue;" *ngIf="order.newStatus === 'brokerage'">brokerage</span>
+                            <span class="badge badge-dark p-1" style = " color:black; background-color: #f7e363;" *ngIf="order.newStatus === 'dispatched'">dispatched</span>
+                            <span class="badge badge-dark p-1" style = "background-color: #171717;" *ngIf="order.newStatus === 'attached'">attached</span>
+                            <span class="badge badge-dark p-1" style = "background-color: #f93121;" *ngIf="order.newStatus === 'tonu'">tonu</span>
+                             <span class="badge badge-dark p-1" style = "background-color: #f93121;" *ngIf="order.newStatus === 'canceled'">canceled</span>
+                            <span class="badge badge-dark p-1" style = "color:black; background-color: #f7e363;" *ngIf="order.newStatus === 'started'">started</span>
+                            <span class="badge badge-dark p-1" style = "background-color:orange" *ngIf="order.recall">delivered(R)</span>
+                            <span class="badge badge-success" style = "color:black; background-color: #a1d9ae;" *ngIf="order.newStatus === 'delivered'">delivered</span>
+                            <span class="badge badge-dark p-1" style = "background-color: #47a447;" *ngIf="order.newStatus === 'settled'">settled</span>
+                            <span class="badge badge-dark p-1" style = "background-color: #f4978e;" *ngIf="order.newStatus === 'en-route'">en-route</span>
+                          <br/>
+                     </div>
                         </td>
                         <td style="width: 6%; overflow: inherit !important" pFrozenColumn alignFrozen="right"
                           [frozen]="true">

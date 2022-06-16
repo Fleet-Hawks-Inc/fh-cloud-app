@@ -745,14 +745,7 @@ export class OrdersListComponent implements OnInit {
     ) {
       this.brokerErr = "Please fill the required fields";
       return false;
-    } else if (
-      Number(this.brokerage.brokerageAmount) >
-      Number(this.brokerage.finalAmount)
-    ) {
-      this.brokerErr =
-        "Brokerage amount should not be greater than order total.";
-      return false;
-    } else {
+    }  else {
       this.brokerErr = "";
     }
     this.showModal = true;

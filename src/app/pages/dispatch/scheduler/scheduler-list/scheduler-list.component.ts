@@ -18,13 +18,12 @@ export class SchedulerListComponent implements OnInit {
   loaded=false;
   _selectedColumns:any[];
   dataColumns:any[];
-
   ngOnInit(): void {
     this.initData();
     this.dataColumns=[
       {width:'20%', field:'orderNumber',header:'Order#',type:'text'},
-      {width:'20%',field:'sName',header:'Scheduler Name',type:'text'},
-      {width:'20%',field:'sTime',header:'Scheduler Time',type:'text'},
+      {width:'20%',field:'sName',header:'Schedule Name',type:'text'},
+      {width:'20%',field:'sTime',header:'Scheduled Time',type:'text'},
     ]
     this._selectedColumns=this.dataColumns;
   }
@@ -65,14 +64,26 @@ export class SchedulerListComponent implements OnInit {
 this.schedules=this.schedules.concat(result.data)
   }
 
-  delete(scheduleID:any){
+  delete(scheduleID:any,mongoID){
     if(confirm("Are you sure you want deactivate?")===true){
-      this.apiService.deleteData(`orders/schedule/deactivate/${scheduleID}`).subscribe(()=>{
+      this.apiService.deleteData(`orders/schedule/deactivate/${scheduleID}/${mongoID}`).subscribe(()=>{
         this.schedules=[];
         this.lastEvaluatedKey="";
         this.toastrService.success("Schedule is Deactivated Successfully!");
         this.initData();
       })
+    }
+  }
+
+  activate(scheduleID:any,mongoID:any){
+    if(confirm("Are you sure you want activate?")===true){
+      const result=this.apiService.getData(`orders/schedule/activate/${scheduleID}/${mongoID}`).subscribe(()=>{   
+      this.toastrService.success("Schedule is Activated Successfully!");
+      this.schedules=[];
+      this.lastEvaluatedKey="";
+      this.initData();
+      });
+
     }
   }
 
