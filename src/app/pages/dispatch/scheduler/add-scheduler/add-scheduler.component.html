@@ -2,8 +2,8 @@
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-1 pt-0 pr-0">
       <header class="page-header flex align-items-center justify-content-start">
-        <h2 class="card-title font-weight-bold">Scheduler <span>#{{scheduler.orderNumber}}</span></h2>
-        <div class="col-md-12 col-lg-12 text-right por-1">
+        <h2 class="card-title font-weight-bold">Add a Schedule</h2>
+        <div class="text-right" style="margin:10px">
           <a routerLink="/dispatch/scheduler/scheduler-list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Schedule
             List</a>
         </div>
@@ -112,13 +112,15 @@
       
                       <div class="col-lg-3">
                         <label>
-                          From the date</label>
+                          From the date <span class="mandfield text-2 ml-1"
+                          ><sup>*</sup></span></label>
                       </div>
                       <div class="col-lg-2">
                         <input type="text" name="fromDate" [(ngModel)]="scheduler.dateRange.from" #fromDate="ngbDatepicker" (click)="fromDate.toggle()" autocomplete="off" ngbDatepicker placeholder="yyyy/mm/dd" class="form-control">
                       </div>
                       <div class="col-lg-2">
-                        <label>To the date</label>
+                        <label>To the date <span class="mandfield text-2 ml-1"
+                          ><sup>*</sup></span></label>
                       </div>
                       <div class="col-lg-2">
                         <input type="text" name="toDate" [(ngModel)]="scheduler.dateRange.to" #toDate="ngbDatepicker" (click)="toDate.toggle()" autocomplete="off" ngbDatepicker placeholder="yyyy/mm/dd" class="form-control">

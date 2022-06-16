@@ -67,7 +67,7 @@ export class AddSchedulerComponent implements OnInit {
       }
 
     }
-
+    
   }
   async fetchOrderList(){
     const orders=await this.apiService.getData('orders/get/list').toPromise();
