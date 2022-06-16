@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { NgModule, Component } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
@@ -16,7 +16,19 @@ import { ChartsModule } from "ng2-charts";
 import { unsavedChangesGuard } from "src/app/guards/unsaved-changes.guard";
 import { Injectable } from "@angular/core";
 import { OverviewComponent } from "./overview/overview.component";
+import { ButtonModule } from 'primeng/button';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
+import { GoogleMapsModule } from "@angular/google-maps";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { SharedModule } from 'src/app/shared/shared.module';
+
 
 const routes: Routes = [
   {
@@ -84,6 +96,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   declarations: [OverviewComponent],
   imports: [
     CommonModule,
+    SharedModule,
     RouterModule.forChild(routes),
     HttpClientModule,
     FormsModule,
@@ -91,8 +104,17 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgbModule,
     NgSelectModule,
     NgxSpinnerModule,
-    InfiniteScrollModule,
     ChartsModule,
+    GoogleMapsModule,
+    TableModule,
+    ButtonModule,
+    MultiSelectModule,
+    TooltipModule,
+    MenuModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule,
   ],
   providers: [
     unsavedChangesGuard,
