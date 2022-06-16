@@ -1132,23 +1132,37 @@
                         </div>
                         <div class="row">
                           <div class="col-12">
-          
-                            
-              <div class="row mb-1" *ngFor="let item of attachments; let d = index">
-                                        <div class="col-lg-9">
-                                            <a href="{{ item.path }}" data-toggle="modal" data-target="#viewDocModal"
-                                                (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
-                                        </div>
-                                        <div class="col-lg-3 text-right">
-                            <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
-                              (click)="delete('attachment', item.name, d)"><i class="fas fa-trash-alt"></i></a>
-                                                 <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
-                              (click)="setPDFSrc(item.path)" data-toggle="modal" data-target="#viewDocModal"><i
-                                class="fas fa-eye"></i></a>
-                                        </div>
-                                    </div>                          
-                            
-                            
+                            <div
+                              class="row mb-1"
+                              *ngFor="let item of attachments; let d = index"
+                            >
+                              <div class="col-lg-9">
+                                <a
+                                  href="{{ item.path }}"
+                                  data-toggle="modal"
+                                  data-target="#viewDocModal"
+                                  (click)="setPDFSrc(item.path)"
+                                  >Document {{ d + 1 }}</a
+                                >
+                              </div>
+                              <div class="col-lg-3 text-right">
+                                <a
+                                  href="javascript:;"
+                                  class="btn btn-deafault pull-right btn-xs"
+                                  (click)="delete('attachment', item.name, d)"
+                                  ><i class="fas fa-trash-alt"></i
+                                ></a>
+                                <a
+                                  href="javascript:;"
+                                  class="btn btn-deafault pull-right btn-xs"
+                                  (click)="setPDFSrc(item.path)"
+                                  data-toggle="modal"
+                                  data-target="#viewDocModal"
+                                  ><i class="fas fa-eye"></i
+                                ></a>
+                              </div>
+                            </div>
+
                             <div
                               *ngIf="attachments.length == 0"
                               class="my-2 px-2"
@@ -1273,7 +1287,7 @@
               <td>
                 <table
                   width="100%"
-                  style="margin-top: 0px; border-bottom: 1px solid #cdcdcd"
+                  style="margin-top: 0px; border-bottom: 1px solid #595959"
                 >
                   <tbody>
                     <tr>
@@ -1284,15 +1298,16 @@
                         style="padding: 10px; text-align: left"
                       >
                         <h4
+                          class="text-dark"
                           style="
                             margin: 0 0 15px;
-                            font-size: 37px;
+                            font-size: 1.8em;
                             color: #040404;
                             font-weight: 700;
                             text-transform: capitalize;
                           "
                         >
-                          INVOICE
+                          Invoice
                         </h4>
                       </td>
                       <td align="right">
@@ -1315,7 +1330,8 @@
                         </p>
                       </td>
                     </tr>
-                    <tr>
+
+                    <tr style="border-top: 1px solid #595959">
                       <td
                         width="60%"
                         class="title"
@@ -1324,7 +1340,7 @@
                       >
                         <p style="margin: 0; color: #000">
                           <span style="font-size: 12px">
-                            <b>Invoice#</b>
+                            <b>Invoice# </b>
                           </span>
                           {{ orderNumber }}
                         </p>
@@ -1415,7 +1431,7 @@
                 </table>
                 <table
                   width="100%"
-                  style="margin-top: 0px; border-bottom: 1px solid #cdcdcd"
+                  style="margin-top: 0px; border-bottom: 1px solid #595959"
                 >
                   <tbody>
                     <tr>
@@ -1467,7 +1483,7 @@
                   style="
                     color: #040404;
                     margin-top: 0px;
-                    border-bottom: 1px solid #cdcdcd;
+                    border-bottom: 1px solid #595959;
                   "
                 >
                   <tbody>
@@ -1666,14 +1682,16 @@
                                                   class="text-capitalize"
                                                   colspan="2"
                                                 >
-                                                  COMMODITY
+                                                  <strong>COMMODITY</strong>
                                                 </td>
                                                 <td style="width: 80px">
-                                                  PICK#
+                                                  <strong>PICK#</strong>
                                                 </td>
-                                                <td style="width: 70px">QTY</td>
                                                 <td style="width: 70px">
-                                                  WEIGHT
+                                                  <strong>QTY</strong>
+                                                </td>
+                                                <td style="width: 70px">
+                                                  <strong>WEIGHT</strong>
                                                 </td>
                                               </tr>
                                             </thead>
@@ -2199,7 +2217,7 @@
                                   text-transform: capitalize;
                                 "
                               >
-                                INVOICE
+                                Invoice
                               </h4>
                               <p style="margin: 0; color: #000">
                                 <span style="font-size: 12px">
