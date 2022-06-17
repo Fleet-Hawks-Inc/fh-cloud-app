@@ -202,7 +202,9 @@ export class EventListComponent implements OnInit {
     }
 
   }
-
+  clear(table: Table) {
+    table.clear();
+  }
   fetchAllVehiclesIDs() {
     this.apiService.getData('vehicles/get/list')
       .subscribe((result: any) => {
