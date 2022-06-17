@@ -163,11 +163,12 @@ export class OrdersListComponent implements OnInit {
     carrierID: null,
     finalAmount: "",
     miles: 0,
-    currency: "",
+    // currency: "",
     draw: 0,
     index: 0,
     type: "",
     brokerageAmount: 0,
+      brkCurrency: "",
     instructions: "",
     today: moment().format("YYYY-MM-DD"),
   };
@@ -332,7 +333,7 @@ export class OrdersListComponent implements OnInit {
       this.orders = [...this.orders, element];
     }
   }
-
+ 
   initDataTable(refresh?: boolean) {
     if (refresh === true) {
       this.lastEvaluatedKey = "";
@@ -703,7 +704,7 @@ export class OrdersListComponent implements OnInit {
     this.brokerage.orderNo = order.orderNumber;
     this.brokerage.miles = order.milesInfo.totalMiles;
     this.brokerage.finalAmount = order.finalAmount;
-    this.brokerage.currency = order.charges.freightFee.currency;
+    // this.brokerage.currency = order.charges.freightFee.currency;
     this.brokerage.draw = draw;
     this.brokerage.index = index;
     this.brokerage.type = actionFrom;
@@ -711,6 +712,12 @@ export class OrdersListComponent implements OnInit {
     await this.fetchOrderData();
     $("#orderStatusModal").modal("show");
   }
+
+
+  changeCurrency(val) {
+    this.brokerage.brkCurrency = val;
+  }
+
 
   async fetchCarriers() {
     let result: any = await this.apiService
@@ -758,6 +765,7 @@ export class OrdersListComponent implements OnInit {
       showModal: this.showModal,
       companyLogo: this.companyLogoSrc,
     };
+    console.log('data==',data)
     this.listService.triggerBrokeragePdf(data);
     await this.updateBrokerageStatus();
     $("#orderStatusModal").modal("hide");
@@ -786,6 +794,7 @@ export class OrdersListComponent implements OnInit {
       orderID: this.brokerage.orderID,
       orderNo: this.brokerage.orderNo,
       brokerageAmount: this.brokerage.brokerageAmount,
+      brkCurrency: this.brokerage.brkCurrency,
       instructions: this.brokerage.instructions,
       type: "update",
       carrierID: this.brokerage.carrierID,
@@ -816,6 +825,7 @@ export class OrdersListComponent implements OnInit {
         orderID: order.orderID,
         orderNo: order.orderNo,
         brokerageAmount: 0,
+        brkCurrency : '',
         instructions: "",
         carrierID: null,
         type: "cancel",
