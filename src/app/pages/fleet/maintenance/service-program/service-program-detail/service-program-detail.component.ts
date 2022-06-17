@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+
 declare var $: any;
 
 @Component({
@@ -18,6 +20,8 @@ export class ServiceProgramDetailComponent implements OnInit {
   programs = [];
   vehicles = [];
   programID;
+    sessionID: string;
+
   tasks = [];
   programData = {
     serviceTask: '',
@@ -35,8 +39,11 @@ export class ServiceProgramDetailComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private apiService: ApiService,
     private route: ActivatedRoute,
-    private toastr: ToastrService
-  ) { }
+    private toastr: ToastrService,
+    private routerMgmtService: RouteManagementServiceService
+  ) { 
+      this.sessionID = this.routerMgmtService.serviceLogSessionID;
+  }
 
   ngOnInit() {
     this.programID = this.route.snapshot.params['programID'];

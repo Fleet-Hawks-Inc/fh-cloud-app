@@ -1,17 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { result } from 'lodash';
+import { Component, Input, OnInit, TemplateRef, ViewChild  } from '@angular/core';
+import { result, map } from 'lodash';
+import { resourceUsage } from 'process';
 import * as moment from 'moment'
-import { ApiService } from 'src/app/services';
+import { ApiService, HereMapService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
 import { ToastrService } from 'ngx-toastr';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ListService } from '../../../../../services';
+import { ActivatedRoute } from "@angular/router";
+import { NgxSpinnerService } from 'ngx-spinner';
+import * as html2pdf from "html2pdf.js";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { environment } from '../../../../../../environments/environment';
+import * as _ from 'lodash';
+import { HttpClient } from '@angular/common/http';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { Table } from 'primeng/table/table';
+import { DomSanitizer } from '@angular/platform-browser';
+import { OverlayPanel } from "primeng/overlaypanel";
+import { Router } from "@angular/router";
+
 @Component({
   selector: 'app-contact-renewals',
   templateUrl: './contact-renewals.component.html',
   styleUrls: ['./contact-renewals.component.css']
 })
 export class ContactRenewalsComponent implements OnInit {
+  @ViewChild('dt') table: Table;
+  confirmEmailModal: TemplateRef<any>;
+  @ViewChild('op') overlaypanel: OverlayPanel;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   empData: any = [];
   tasks = []
   dataMessage: string = Constants.FETCHING_DATA;
@@ -34,7 +52,31 @@ export class ContactRenewalsComponent implements OnInit {
   mergedList: any = {};
   employees = [];
   drivers: any;
-  constructor( private listService: ListService,private apiService: ApiService, private toastr: ToastrService) { }
+  listView = true;
+  visible = true;
+  loadMsg: string = Constants.NO_RECORDS_FOUND;
+   isSearch = false;
+  get = _.get;
+  _selectedColumns: any[];
+  find = _.find;
+  
+  dataColumns = [
+        { width: '7%', field: 'entityID', header: 'Contact', type: "text" },
+        { width: '7%', field: 'status', header: 'Contact Renewal Type', type: "text" },
+        { width: '7%', field: 'tasks.timeUnit', header: 'Send Reminder', type: "text" },
+        { width: '7%', field: 'tasks.dueDate', header: 'Expiration Date', type: "text" },
+        { width: '7%', field: 'subscribers', header: 'Subscribers', type: "text" },
+    ];
+  
+  constructor( private listService: ListService,
+  private apiService: ApiService, 
+  private toastr: ToastrService,
+  private httpClient: HttpClient,
+  private route: ActivatedRoute,
+  private spinner: NgxSpinnerService,
+  private hereMap: HereMapService,
+  protected _sanitizer: DomSanitizer,
+  private modalService: NgbModal) { }
 
   ngOnInit() {
     this.listService.fetchDrivers();
@@ -42,6 +84,7 @@ export class ContactRenewalsComponent implements OnInit {
     this.fectchTasks();
     this.fetchEmployees();
     this.fetchReminderCount();
+    this.setToggleOptions();
     this.fetchVehicleIDs();
     let driverList = new Array<any>();
     this.getValidDrivers(driverList);
@@ -66,6 +109,20 @@ export class ContactRenewalsComponent implements OnInit {
       })
     })
   }
+  
+  setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    
+    @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
+    
+    set selectedColumns(val: any[]) {
+        //restore original order
+        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+    }
+  
  //for search with contact name
   fetchEmployeesData() {
     this.apiService.getData('contacts/employee/records').subscribe((res) => {
@@ -121,7 +178,7 @@ export class ContactRenewalsComponent implements OnInit {
     }
   }
 
-  onScroll() {
+  onScroll = async (event: any) =>{
     if (this.loaded) {
       this.fetchallitems();
     }
@@ -139,6 +196,11 @@ export class ContactRenewalsComponent implements OnInit {
       return false;
     }
   }
+  
+  clear(table: Table) {
+        table.clear();
+    }
+  
   resetData() {
     if (this.entityID !== null || this.searchServiceTask !== null || this.filterStatus !== null) {
       this.entityID = null;
@@ -153,6 +215,18 @@ export class ContactRenewalsComponent implements OnInit {
       return false;
     }
   }
+  
+   refreshData(){
+      this.entityID = null;
+      this.searchServiceTask = null;
+      this.status = null;
+      this.empData = [];
+      this.lastItemSK = '';
+      this.filterStatus = null;
+      this.dataMessage = Constants.FETCHING_DATA
+      this.fetchallitems();
+  }
+  
   fetchAllExport() {
     this.apiService.getData("reminders/fetch/export?type=contact").subscribe((result: any) => {
       this.data = result.Items;

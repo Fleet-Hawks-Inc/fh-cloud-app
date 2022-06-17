@@ -122,10 +122,12 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     ChartsModule,
     InfiniteScrollModule,
     NgxDatatableModule,
+    TooltipModule,
     TableModule,
     MenuModule,
     ButtonModule,
     SplitButtonModule,
+    MultiSelectModule,
     CalendarModule,
     AutoCompleteModule,
     DropdownModule

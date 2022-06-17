@@ -405,7 +405,16 @@ export class PaymentPdfsComponent implements OnInit {
                       vehicleName: plan.vehicleName ? plan.vehicleName : '',
                       assetNames: plan.assetNames ? plan.assetNames.toString() : '',
                       showMiles: `${plan.mileType === 'loaded' ? 'L' : 'E'} - ${plan.miles}`,
+                      drivrCodriver: ''
                     };
+                    if(plan.driverID && this.paymentData.entityId === plan.driverID) {
+                      planObj.drivrCodriver = plan.codriverName ? plan.codriverName : '';
+                    }
+
+                    if(plan.coDriverID && this.paymentData.entityId === plan.coDriverID) {
+                      planObj.drivrCodriver = plan.driverName ? plan.driverName : '';
+                    }
+
                     if(v.paymentSelected) {
                       if(v.paymentSelected[0].pType == 'pfr') {
                         planObj.rate = ''
@@ -446,8 +455,15 @@ export class PaymentPdfsComponent implements OnInit {
                   vehicleName: plan.vehicleName ? plan.vehicleName : '',
                   assetNames: plan.assetNames ? plan.assetNames.toString() : '',
                   showMiles: `${plan.mileType === 'loaded' ? 'L' : 'E'} - ${plan.miles}`,
+                  drivrCodriver: ''
                 };
+                if(plan.driverID && this.paymentData.entityId === plan.driverID) {
+                  planObj.drivrCodriver = plan.codriverName ? plan.codriverName : '';
+                }
 
+                if(plan.coDriverID && this.paymentData.entityId === plan.coDriverID) {
+                  planObj.drivrCodriver = plan.driverName ? plan.driverName : '';
+                }
                 if(v.paymentSelected) {
                   if(v.paymentSelected[0].pType == 'pfr') {
                     planObj.rate = ''

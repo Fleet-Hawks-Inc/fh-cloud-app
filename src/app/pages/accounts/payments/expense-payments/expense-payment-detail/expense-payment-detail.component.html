@@ -307,6 +307,13 @@
 
 <ng-template #previewExpPayment let-modal>
   <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Expense Payment</h4>
+      <button type="button" class="close" (click)="modal.dismiss()">
+        &times;
+      </button>
+    </div>
+
     <div class="modal-body text-dark">
       <table
         width="98%"
@@ -336,8 +343,7 @@
               />
               <p
                 *ngIf="tagLine"
-                class="mb-0"
-                style="font-size: 18px; margin-top: 10px; font-weight: 600"
+                class="mb-0 text-dark text-4 font-weight-bold ng-star-inserted"
               >
                 {{ tagLine }}
               </p>
@@ -345,18 +351,18 @@
           </tr>
 
           <tr>
-            <td colspan="2" height="3" bgcolor="#dddddd"></td>
+            <td colspan="2" height="1" bgcolor="#595959"></td>
           </tr>
           <tr>
             <td width="50%" valign="top">
-              <p class="mt-3 mb-0 text-dark text-5 font-weight-semibold">
+              <h2 class="mt-0 mb-0 text-dark text-5 font-weight-semibold">
                 Company
-              </p>
-              <h2
-                class="text-capitalize text-dark text-5 font-weight-semibold mb-0 mt-0"
+              </h2>
+              <p
+                class="text-capitalize text-dark text-5 font-weight-semibold mb-1 mt-0"
               >
                 {{ carrierName ? carrierName : "NA" }}
-              </h2>
+              </p>
             </td>
             <td valign="top">
               <table
@@ -369,28 +375,14 @@
                 <tbody>
                   <tr>
                     <td align="right">
-                      <p class="mt-3 mb-0 text-4 text-dark">
-                        Payment#
-                        <span
-                          style="
-                            font-size: 16px;
-                            font-weight: 600;
-                            margin-top: 0px;
-                          "
-                          >{{ paymentData.paymentNo }}</span
-                        >
+                      <p class="mt-1 mb-0 text-4 text-dark">
+                        <span class="font-weight-bold">Payment#</span>
+                        {{ paymentData.paymentNo }}
                       </p>
                       <p class="mt-2 mb-0 text-4 text-dark">
-                        Payment Amount:
-                        <span
-                          style="
-                            font-size: 16px;
-                            font-weight: 600;
-                            margin-top: 0px;
-                          "
-                          >{{ paymentData.finalAmount | number: "1.2-2" }}
-                          {{ paymentData.currency }}</span
-                        >
+                        <span class="font-weight-bold">Payment Amount:</span>
+                        {{ paymentData.finalAmount | number: "1.2-2" }}
+                        {{ paymentData.currency }}
                       </p>
                     </td>
                   </tr>
@@ -399,7 +391,7 @@
             </td>
           </tr>
           <tr>
-            <td colspan="2" height="3" bgcolor="#dddddd"></td>
+            <td colspan="2" height="1" bgcolor="#595959"></td>
           </tr>
           <tr>
             <td colspan="2">&nbsp;</td>
