@@ -77,10 +77,10 @@
                                 <td>{{schedule.firstName | titlecase}} {{schedule.lastName| titlecase}} </td>
                               </tr>
 
-                              <tr *ngIf="schedule.disabled"> 
+                              <tr> 
                                 <td class="back-color-gray font-weight-bold">Status</td>
-                                <td><span class="badge badge-success" *ngIf="schedule.disabled===0">Enabled</span>
-                                  <span class="badge badge-danger" *ngIf="schedule.disabled===1">Disabled</span> </td>
+                                <td><span class="badge badge-success" *ngIf="schedule.disabled==0">Enabled</span>
+                                  <span class="badge badge-danger" *ngIf="schedule.disabled==1">Disabled</span> </td>
                               </tr>
 
                               
