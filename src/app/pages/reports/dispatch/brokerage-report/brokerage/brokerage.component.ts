@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from 'src/app/services'
 
 @Component({
   selector: 'app-brokerage',
@@ -6,10 +7,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./brokerage.component.css']
 })
 export class BrokerageComponent implements OnInit {
-
-  constructor() { }
+  brokerage = [];
+  constructor(
+  private apiService: ApiService
+  ) { }
 
   ngOnInit(): void {
+  this.fetchBrokerageReport();
   }
 
+    async fetchBrokerageReport() {
+    const result = await this.apiService.getData('orders/report/getBrokerageReport').toPromise();
+    this.brokerage = result;
+    console.log('broker',this.brokerage);
+    }
 }
