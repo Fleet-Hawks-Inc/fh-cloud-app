@@ -276,7 +276,7 @@
                         icon="pi pi-filter-slash"
                       ></button>
 
-                      <p-multiSelect
+                   <p-multiSelect
                             [options]="dataColumns"
                             [(ngModel)]="selectedColumns"
                             optionLabel="header"
@@ -284,7 +284,7 @@
                             [style]="{ minWidth: '200px' }"
                             placeholder="Choose Columns"
                           >
-                     </p-multiSelect>
+                          </p-multiSelect>
                     </div>
                   </div>
                 </ng-template>
@@ -292,10 +292,10 @@
                 <ng-template pTemplate="header" let-columns>
                   <tr>
                     <th
-                      *ngFor="let column of dataColumns"
-                      [pSortableColumn]="column.field"
+                      *ngFor="let dataColumns of columns"
+                      [pSortableColumn]="dataColumns.field"
                       pResizableColumn
-                      [ngStyle]="{ width: column.width }"
+                      [ngStyle]="{ width: dataColumns.width }"
                     >
                       <span>
                         <div
@@ -304,11 +304,11 @@
                           pFrozenColumn
                           [frozen]="true"
                         >
-                          {{ column.header }}
-                          <p-sortIcon [field]="column.field"></p-sortIcon>
+                          {{ dataColumns.header }}
+                          <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
                           <p-columnFilter
-                            [type]="column.type"
-                            [field]="column.field"
+                            [type]="dataColumns.type"
+                            [field]="dataColumns.field"
                             matchMode="contains"
                             [showMatchModes]="false"
                             [showOperator]="false"
@@ -382,16 +382,9 @@
             </div>
           </div>
         </div>
-
-      
       </section>
-    
-
-           
           </div>
           </div>
-          
-          
         </div>
       </div>
     </section>
