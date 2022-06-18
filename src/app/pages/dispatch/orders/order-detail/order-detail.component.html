@@ -41,7 +41,7 @@
             </button>
 
             <button
-              *ngIf="orderStatus === 'brokerage' || 'delivered'"
+              *ngIf="brokerage.carrierID && brokerage.brokerageAmount" 
               (click)="downloadBrokeragePdf()"
               [disabled]="brokerageDisabled"
               class="btn btn-success btn-sm mr-2"

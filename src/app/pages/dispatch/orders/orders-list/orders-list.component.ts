@@ -708,7 +708,7 @@ export class OrdersListComponent implements OnInit {
     this.brokerage.draw = draw;
     this.brokerage.index = index;
     this.brokerage.type = actionFrom;
-    await this.fetchCarriers();
+    await this.fetchCarriers( this.brokerage.carrierID);
     await this.fetchOrderData();
     $("#orderStatusModal").modal("show");
   }
@@ -719,7 +719,7 @@ export class OrdersListComponent implements OnInit {
   }
 
 
-  async fetchCarriers() {
+  async fetchCarriers(carrierID) {
     let result: any = await this.apiService
       .getData("contacts/get/type/carrier")
       .toPromise();
@@ -1005,4 +1005,23 @@ export class OrdersListComponent implements OnInit {
       }});
     }, 10);
  }
+
+ openModal(unit: string) {
+  this.listService.triggerModal(unit);
+
+  localStorage.setItem("isOpen", "true");
+  this.listService.changeButton(false);
+}
+
+fetchData(i: any, value: string) {
+  console.log('carrier--',this.brokerage.carrierID)
+  if (value === "carrier") {
+    if (this.brokerage.carrierID != null) {
+      let id = this.brokerage.carrierID;
+      this.fetchCarriers(id);
+    }
+    this.listService.fetchCarriers();
+  }
+}
+
 }
