@@ -399,10 +399,15 @@ export class OrderDetailComponent implements OnInit {
     this.docs = [];
     this.apiService.getData(`orders/detail/${this.orderID}`).subscribe(
       async (result: any) => {
+        //
+    
         this.newOrderData = result;
         result = result.Items[0];
+        console.log('result--',result)
+        console.log('result.brkCarrID--',result.brkCarrID)
         if (result.brkCarrID) {
           this.brokerage.carrierID = result.brkCarrID;
+          console.log('this.brokerage.carrierID--',this.brokerage.carrierID)
         }
         if (result.brkIns) {
           this.brokerage.instructions = result.brkIns;
