@@ -9,14 +9,7 @@
             </h4>
           </div>
           <div class="col-md-8 col-lg-8  text-dark font-weight-bold text-center">
-            <span>Payment Currency: {{ settlementData.currency }}</span>,
-            <span class="ml-3">Total Payment: {{ settlementData.paymentTotal }}</span>,
-            <span class="ml-3">Addition: {{ settlementData.additionTotal }}</span>,
-            <span class="ml-3">Deduction: {{ settlementData.deductionTotal }}</span>,
-            <span class="ml-3">Fuel Addition: {{ settlementData.fuelAdd }}</span>,
-            <span class="ml-3">Fuel Deduction: {{ settlementData.fuelDed }}</span>,
-            <span class="ml-3">Taxes: {{ settlementData.taxes }}</span>,
-            <span class="ml-3">Grand Total: {{ settlementData.finalTotal }}</span>
+            
           </div>
           <div class="col-md-2 col-lg-2 pr-1 text-right">
             <a routerLink="/accounts/settlements/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All
@@ -174,7 +167,7 @@
                               ]
                               : "NA"
                               }}
-                              <a (click)="openPaymentModal()" *ngIf="settlementData.paymentSelected[0]" style="
+                              <a (click)="displayResponsive=true" *ngIf="settlementData.paymentSelected[0]" style="
                                   font-size: 13px;
                                   text-decoration: underline;
                                   color: cornflowerblue;
@@ -353,7 +346,23 @@
               </div>
             </div>
           </div>
-
+          <div class="row mb-3 pay-info"> 
+            <div class="col-lg-12">
+              <div class="bg-white p-3 text-dark">
+                <div class="col-lg-12 text-center">
+                  <span class="font-weight-bold">Payment Currency: {{ settlementData.currency }}</span>,
+                  <span class="ml-3 font-weight-bold">Total Payment: {{ settlementData.paymentTotal }}</span>,
+                  <span class="ml-3 font-weight-bold">Addition: {{ settlementData.additionTotal }}</span>,
+                  <span class="ml-3 font-weight-bold">Deduction: {{ settlementData.deductionTotal }}</span>,
+                  <span class="ml-3 font-weight-bold">Fuel Addition: {{ settlementData.fuelAdd }}</span>,
+                  <span class="ml-3 font-weight-bold">Fuel Deduction: {{ settlementData.fuelDed }}</span>,
+                  <span class="ml-3 font-weight-bold">Taxes: {{ settlementData.taxes }}</span>,
+                  <span class="ml-3 font-weight-bold">Grand Total: {{ settlementData.finalTotal }}</span>
+                </div>
+                </div>
+            </div>
+            
+          </div>
           <div class="row mb-3">
             <div class="col-lg-12">
               <div class="bg-white p-3 text-dark">
@@ -576,7 +585,7 @@
                     </div>
                   </div>
                 </div>
-
+               
                 <div class="form-group row adddriverpl pt-3" *ngIf="!settlementData.paymentLinked">
                   <div class="col-lg-10">
                     <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Un-settled
@@ -1797,250 +1806,213 @@
   </div>
 </div>
 
-<ng-template id="paymentOptModal" #paymentOptModal let-modal>
-  <div class="modal-content" style="height: 500px">
-    <div class="modal-body p-0">
-      <div class="bg-white p-3">
-        <div class="form-group text-dark">
-          <div class="row">
-            <div class="col-lg-10">
-              <label class="control-label font-weight-bold text-lg-right text-5">Payment Details</label>
-            </div>
-            <div class="col-lg-6 mb-1">
-              <div class="row">
-                <div class="col-lg-10">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">
-                    Payment Type
-                    <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                  <ng-select [(ngModel)]="paymentType" name="paymentType" placeholder="Select the payment type"
-                    id="paymentTypeForm" required>
-                    <ng-option *ngFor="let option of paymentOptions" [value]="option.value">{{ option.name }}
-                    </ng-option>
-                  </ng-select>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row" id="payPerHourForm" *ngIf="paymentType == 'pph'">
-            <div class="col-lg-4">
-              <label class="control-label font-weight-bold text-lg-right pt-2">
-                Rate
-                <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-              <input [(ngModel)]="pph.rate" name="pph.rate" type="text" class="form-control"
-                placeholder="eg. $20 ,$40 ,$60" #payHour="ngModel" required />
-              <div *ngIf="payHour.invalid" class="text-danger">
-                <div *ngIf="payHour.errors.required">Rate is required.</div>
-                <div *ngIf="payHour.errors.pattern">
-                  Rate must contain numbers.
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
-              <ng-select class="mt-2" [(ngModel)]="pph.currency" (change)="changeCurrency($event)"
-                name="payPerHour.currency" placeholder="Select Currency" #payCurr="ngModel" required>
-                <ng-option value="CAD">CAD</ng-option>
-                <ng-option value="USD">USD</ng-option>
-              </ng-select>
-              <div *ngIf="payCurr.invalid" class="text-danger">
-                <div *ngIf="payCurr.errors.required">Currency is required.</div>
-              </div>
-            </div>
-            <div class="col-lg-4">
-              <label class="control-label font-weight-bold text-lg-right pt-2">Waiting period Pay</label>
-              <input [(ngModel)]="pph.waitingPay" name="pph.waitingPay" type="text" class="form-control"
-                placeholder=" eg. $20 ,$40 ,$60" #payWait="ngModel" />
-            </div>
-            <div class="col-lg-6">
-              <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
-              <ng-select class="mt-2" [(ngModel)]="pph.currency" name="pph.currency" placeholder="Select Currency">
-                <ng-option value="CAD">CAD</ng-option>
-                <ng-option value="USD">USD</ng-option>
-              </ng-select>
-            </div>
-            <div class="col-lg-4">
-              <label class="control-label font-weight-bold text-lg-right pt-2">Waiting hour start after</label>
-              <input [(ngModel)]="pph.waitingHourAfter" name="pph.waitingHourAfter" type="text" class="form-control"
-                placeholder="eg. Min 3 hours" />
+<p-dialog header="Payment Details" [blockScroll]="true" [contentStyle]="{'overflow': 'inherit'}" [(visible)]="displayResponsive" [breakpoints]="{'960px': '75vw'}" [style]="{width: '50vw'}"
+    [draggable]="false" [resizable]="false">
+    <div class="stlmnt-payment-main">
+      <div class="row">
+        <div class="col-lg-6 mb-1">
+          <label class="control-label font-weight-bold w-100 pt-2">
+            Payment Type
+          <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+          <p-dropdown appendTo="body" panelStyleClass="width:100%" [options]="paymentOptions" [style]="{'width':'100%'}" required [(ngModel)]="paymentType" optionValue="value" optionLabel="name"></p-dropdown>
+        </div>
+      </div>
+
+      <div class="row" id="payPerHourForm" *ngIf="paymentType == 'pph'">
+        <div class="col-lg-4">
+          <label class="control-label font-weight-bold w-100 pt-2">
+            Rate
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+          <input pInputText class="p-inputtext-lg" [(ngModel)]="pph.rate" name="pph.rate" type="text" class="w-100"
+            placeholder="eg. $20 ,$40 ,$60" #payHour="ngModel" required />
+          <div *ngIf="payHour.invalid" class="text-danger">
+            <div *ngIf="payHour.errors.required">Rate is required.</div>
+            <div *ngIf="payHour.errors.pattern">
+              Rate must contain numbers.
             </div>
           </div>
-          <div class="row" id="payPerDelivery" *ngIf="paymentType == 'ppd'">
-            <div class="col-lg-4">
-              <label class="control-label font-weight-bold text-lg-right pt-2">Delivery Rate
-                <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-              <input [(ngModel)]="ppd.deliveryRate" name="payDelivery.deliveryRate" type="text" class="form-control"
-                placeholder="eg. $20 ,$40 ,$60" #dRate="ngModel" required />
-              <div *ngIf="dRate.invalid" class="text-danger">
-                <div *ngIf="dRate.errors.required">
-                  Delivery rate is required.
-                </div>
-                <div *ngIf="dRate.errors.pattern">
-                  Delivery rate must contain numbers.
-                </div>
-              </div>
+        </div>
+        <div class="col-lg-2">
+          <label class="control-label font-weight-bold text-lg-right pt-2">&nbsp;</label>
+          <p-dropdown class="mt-2" [(ngModel)]="pph.currency" (change)="changeCurrency($event)"
+          name="payPerHour.currency" placeholder="Select Currency" #payCurr="ngModel" required appendTo="body" panelStyleClass="width:100%" [options]="currencies" [style]="{'width':'100%'}" optionValue="value" optionLabel="name"></p-dropdown>
+          
+          <div *ngIf="payCurr.invalid" class="text-danger">
+            <div *ngIf="payCurr.errors.required">Currency is required.</div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <label class="control-label font-weight-bold text-lg-right pt-2">Waiting period Pay</label>
+          <input pInputText  [(ngModel)]="pph.waitingPay" name="pph.waitingPay" type="text" class="w-100"
+            placeholder=" eg. $20 ,$40 ,$60" #payWait="ngModel" />
+        </div>
+        <div class="col-lg-2">
+          <label class="control-label font-weight-bold text-lg-right pt-2">&nbsp;</label>
+          <p-dropdown class="mt-2" [(ngModel)]="pph.currency" name="pph.currency" placeholder="Select Currency" #payCurr="ngModel" required appendTo="body" panelStyleClass="width:100%" [options]="currencies" [style]="{'width':'100%'}" optionValue="value" optionLabel="name"></p-dropdown>
+        </div>
+        <div class="col-lg-4">
+          <label class="control-label font-weight-bold text-lg-right pt-2">Waiting hour start after</label>
+          <input pInputText  [(ngModel)]="pph.waitingHourAfter" name="pph.waitingHourAfter" type="text" class="w-100"
+            placeholder="eg. Min 3 hours" />
+        </div>
+      </div>
+      <div class="row" id="payPerDelivery" *ngIf="paymentType == 'ppd'">
+        <div class="col-lg-4">
+          <label class="control-label font-weight-bold text-lg-right pt-2">Delivery Rate
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+          <input pInputText  [(ngModel)]="ppd.deliveryRate" name="payDelivery.deliveryRate" type="text" class="w-100"
+            placeholder="eg. $20 ,$40 ,$60" #dRate="ngModel" required />
+          <div *ngIf="dRate.invalid" class="text-danger">
+            <div *ngIf="dRate.errors.required">
+              Delivery rate is required.
             </div>
-            <div class="col-lg-6">
-              <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
-              <ng-select class="mt-2" [(ngModel)]="ppd.currency" name="payPerDelivery.deliveryRateUnit"
-                placeholder="Select Currency" #curr2="ngModel" required>
-                <ng-option value="CAD">CAD</ng-option>
-                <ng-option value="USD">USD</ng-option>
-              </ng-select>
-              <div *ngIf="curr2.invalid" class="text-danger">
-                <div *ngIf="curr2.errors.required">Currency is required.</div>
-              </div>
+            <div *ngIf="dRate.errors.pattern">
+              Delivery rate must contain numbers.
             </div>
           </div>
-          <div class="row" id="payFlatRate" *ngIf="paymentType == 'pfr'">
-            <div class="col-lg-4">
-              <label class="control-label font-weight-bold text-lg-right pt-2">Flat Rate
-                <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-              <input [(ngModel)]="pfr.flatRate" name="payFlatRate.flatRate" type="text" class="form-control"
-                placeholder="eg. $20 ,$40 ,$60" #fRate="ngModel" required />
-              <div *ngIf="fRate.invalid" class="text-danger">
-                <div *ngIf="fRate.errors.required">Flat rate is required.</div>
-                <div *ngIf="fRate.errors.pattern">
-                  Flat rate must contain numbers.
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
-              <ng-select class="mt-2" [(ngModel)]="pfr.currency" name="payFlatRate.currency"
-                placeholder="Select Currency" #curr3="ngModel" required>
-                <ng-option value="CAD">CAD</ng-option>
-                <ng-option value="USD">USD</ng-option>
-              </ng-select>
-              <div *ngIf="curr3.invalid" class="text-danger">
-                <div *ngIf="curr3.errors.required">Currency is required.</div>
-              </div>
+        </div>
+        <div class="col-lg-2">
+          <label class="control-label font-weight-bold text-lg-right pt-2">&nbsp;</label>
+          <p-dropdown class="mt-2" [(ngModel)]="ppd.currency" name="payPerDelivery.deliveryRateUnit"
+          placeholder="Select Currency" #curr2="ngModel" required appendTo="body" panelStyleClass="width:100%" [options]="currencies" [style]="{'width':'100%'}" optionValue="value" optionLabel="name"></p-dropdown>
+          <div *ngIf="curr2.invalid" class="text-danger">
+            <div *ngIf="curr2.errors.required">Currency is required.</div>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="payFlatRate" *ngIf="paymentType == 'pfr'">
+        <div class="col-lg-4">
+          <label class="control-label font-weight-bold w-100 pt-2">Flat Rate
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+          <input pInputText [(ngModel)]="pfr.flatRate" name="payFlatRate.flatRate" type="text" class="w-100"
+            placeholder="eg. $20 ,$40 ,$60" #fRate="ngModel" required />
+          <div *ngIf="fRate.invalid" class="text-danger">
+            <div *ngIf="fRate.errors.required">Flat rate is required.</div>
+            <div *ngIf="fRate.errors.pattern">
+              Flat rate must contain numbers.
             </div>
           </div>
-          <div class="row" id="payPercentageForm" *ngIf="paymentType == 'pp'">
-            <div class="col-lg-10">
-              <label class="control-label font-weight-bold text-lg-right pt-2">Load Pay Percent
-                <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-              <div class="row">
-                <div class="col-lg-3">
-                  <input [(ngModel)]="pp.loadPayPercentage" name="pp.loadPayPercentage" type="text" class="form-control"
-                    placeholder="eg. 2%, 5%, 10%" #lPay1="ngModel" required />
-                  <div *ngIf="lPay1.invalid" class="text-danger">
-                    <div *ngIf="lPay1.errors.required">
-                      Load pay percent is required.
-                    </div>
-                    <div *ngIf="lPay1.errors.pattern">
-                      Load pay percent must contain numbers.
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-2 px-0">
-                  <label class="font-weight-bold">%</label>
-                  <label class="font-weight-bold pull-right">of</label>
-                </div>
-                <div class="col-lg-7">
-                  <ng-select [(ngModel)]="pp.loadPayPercentageOf" name="payPercentage.loadPayPercentageOf"
-                    placeholder="Select the percentage type of" #ff="ngModel" required>
-                    <ng-option value="Freight Fees">Freight Fees</ng-option>
-                    <ng-option value="Freight + Fuel Surcharge">Freight + Fuel Surcharge
-                    </ng-option>
-                    <ng-option value="Total Income">Total Income</ng-option>
-                  </ng-select>
-                  <div *ngIf="ff.invalid" class="text-danger">
-                    <div *ngIf="ff.errors.required">
-                      Load pay percent type is required.
-                    </div>
-                  </div>
-                </div>
-              </div>
+        </div>
+        <div class="col-lg-2">
+          <label class="control-label font-weight-bold text-lg-right pt-2">&nbsp;</label>
+          <p-dropdown class="mt-2" [(ngModel)]="pfr.currency" name="payFlatRate.currency"
+          placeholder="Select Currency" #curr3="ngModel" required appendTo="body" panelStyleClass="width:100%" [options]="currencies" [style]="{'width':'100%'}" optionValue="value" optionLabel="name"></p-dropdown>
+          <div *ngIf="curr3.invalid" class="text-danger">
+            <div *ngIf="curr3.errors.required">Currency is required.</div>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="payPercentageForm" *ngIf="paymentType == 'pp'">
+        <div class="col-lg-12">
+          <label class="control-label font-weight-bold text-lg-right pt-2">Load Pay Percent
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+        </div>
+        <div class="col-lg-2">
+          <input pInputText [(ngModel)]="pp.loadPayPercentage" name="pp.loadPayPercentage" type="text" class=""
+            placeholder="eg. 2%, 5%, 10%" #lPay1="ngModel" required />
+          <div *ngIf="lPay1.invalid" class="text-danger">
+            <div *ngIf="lPay1.errors.required">
+              Load pay percent is required.
+            </div>
+            <div *ngIf="lPay1.errors.pattern">
+              Load pay percent must contain numbers.
             </div>
           </div>
-          <div class="row" id="payPerMileForm" *ngIf="paymentType == 'ppm'" style="display: flex">
-            <div class="col-lg-3 pr-0">
-              <label class="control-label font-weight-bold text-lg-right pt-2">Loaded Miles
-                <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-              <input [(ngModel)]="ppm.loadedMiles" name="ppm.loadedMiles" type="text" class="form-control"
-                #payM="ngModel" required placeholder="eg. $0.5, $1, $2" />
-              <div *ngIf="payM.invalid" class="text-danger">
-                <div *ngIf="payM.errors.required">
-                  Loaded miles are required.
-                </div>
-                <div *ngIf="payM.errors.pattern">
-                  Loaded miles must contain numbers.
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
-              <ng-select class="mt-2" [(ngModel)]="ppm.currency" name="payPerMile.loadedMilesUnit"
-                placeholder="Select Currency" #curr4="ngModel" required>
-                <ng-option value="CAD">CAD</ng-option>
-                <ng-option value="USD">USD</ng-option>
-              </ng-select>
-              <div *ngIf="curr4.invalid" class="text-danger">
-                <div *ngIf="curr4.errors.required">Currency is required.</div>
-              </div>
-            </div>
-            <div class="col-lg-3 pr-0">
-              <label class="control-label font-weight-bold text-lg-right pt-2">Empty Miles
-                <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-              <input [(ngModel)]="ppm.emptyMiles" name="payPerMile.emptyMiles" type="text" class="form-control"
-                placeholder="eg. $0.5, $1, $2" #eMiles1="ngModel" required />
-              <div *ngIf="eMiles1.invalid" class="text-danger">
-                <div *ngIf="eMiles1.errors.required">
-                  Empty miles are required.
-                </div>
-                <div *ngIf="eMiles1.errors.pattern">
-                  Empty miles must contain numbers.
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-2">
-              <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
-              <ng-select class="mt-2" [(ngModel)]="ppm.currency" name="payPerMile.emptyMilesUnit"
-                placeholder="Select Currency" #curr5="ngModel" required>
-                <ng-option value="CAD">CAD</ng-option>
-                <ng-option value="USD">USD</ng-option>
-              </ng-select>
-              <div *ngIf="curr5.invalid" class="text-danger">
-                <div *ngIf="curr5.errors.required">Currency is required.</div>
-              </div>
-            </div>
-            <div class="col-lg-3 pr-0">
-              <label class="control-label font-weight-bold text-lg-right pt-2">Loaded Miles (Team)
-                <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-              <input [(ngModel)]="ppm.loadedMilesTeam" name="payPerMile.loadedMilesTeam" type="text"
-                class="form-control" placeholder="eg. $0.5, $1, $2" #lMiles2="ngModel" required />
-              <div *ngIf="lMiles2.invalid" class="text-danger">
-                <div *ngIf="lMiles2.errors.required">
-                  Loaded miles are required.
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 pr-0">
-              <label class="control-label font-weight-bold text-lg-right pt-2">Empty Miles (Team)
-                <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-              <input [(ngModel)]="ppm.emptyMilesTeam" name="payPerMile.emptyMilesTeam" type="text" class="form-control"
-                placeholder="eg. $0.5, $1, $2" #eMilesTeam="ngModel" required />
-              <div *ngIf="eMilesTeam.invalid" class="text-danger">
-                <div *ngIf="eMilesTeam.errors.required">
-                  Empty miles (Team) are required.
-                </div>
-              </div>
+        </div>
+        <div class="col-lg-1 px-0">
+          <label class="font-weight-bold">%</label>
+          <label class="font-weight-bold pull-right">of</label>
+        </div>
+        <div class="col-lg-3">
+          <p-dropdown [(ngModel)]="pp.loadPayPercentageOf" name="payPercentage.loadPayPercentageOf"
+          placeholder="Select the percentage type of" #ff="ngModel" required appendTo="body" panelStyleClass="width:100%" [options]="percentagesTypes" [style]="{'width':'100%'}" optionValue="value" optionLabel="name"></p-dropdown>
+          
+          <div *ngIf="ff.invalid" class="text-danger">
+            <div *ngIf="ff.errors.required">
+              Load pay percent type is required.
             </div>
           </div>
-          <div class="row">
-            <button type="button" aria-label="Close" class="btn" (click)="closePayment()" data-dismiss="modal">
-              Cancel
-            </button>
-            <button type="button" class="btn btn-primary" (click)="updatePaymentOption()">
-              Save
-            </button>
+        </div>
+      </div>
+      <div class="row" id="payPerMileForm" *ngIf="paymentType == 'ppm'" style="display: flex">
+        <div class="col-lg-4">
+          <label class="control-label font-weight-bold text-lg-right pt-2">Loaded Miles
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+          <input pInputText [(ngModel)]="ppm.loadedMiles" name="ppm.loadedMiles" type="text" class="w-100"
+            #payM="ngModel" required placeholder="eg. $0.5, $1, $2" />
+          <div *ngIf="payM.invalid" class="text-danger">
+            <div *ngIf="payM.errors.required">
+              Loaded miles are required.
+            </div>
+            <div *ngIf="payM.errors.pattern">
+              Loaded miles must contain numbers.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <label class="control-label font-weight-bold text-lg-right pt-2">&nbsp;</label>
+          <p-dropdown class="mt-2" [(ngModel)]="ppm.currency" name="payPerMile.loadedMilesUnit"
+          placeholder="Select Currency" #curr4="ngModel" required appendTo="body" panelStyleClass="width:100%" [options]="currencies" [style]="{'width':'100%'}" optionValue="value" optionLabel="name"></p-dropdown>
+          <div *ngIf="curr4.invalid" class="text-danger">
+            <div *ngIf="curr4.errors.required">Currency is required.</div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <label class="control-label font-weight-bold text-lg-right pt-2">Empty Miles
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+          <input pInputText [(ngModel)]="ppm.emptyMiles" name="payPerMile.emptyMiles" type="text" class="w-100"
+            placeholder="eg. $0.5, $1, $2" #eMiles1="ngModel" required />
+          <div *ngIf="eMiles1.invalid" class="text-danger">
+            <div *ngIf="eMiles1.errors.required">
+              Empty miles are required.
+            </div>
+            <div *ngIf="eMiles1.errors.pattern">
+              Empty miles must contain numbers.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <label class="control-label font-weight-bold text-lg-right pt-2">&nbsp;</label>
+          <p-dropdown class="mt-2" [(ngModel)]="ppm.currency" name="payPerMile.emptyMilesUnit"
+          placeholder="Select Currency" #curr5="ngModel" required appendTo="body" panelStyleClass="width:100%" [options]="currencies" [style]="{'width':'100%'}" optionValue="value" optionLabel="name"></p-dropdown>
+          <div *ngIf="curr5.invalid" class="text-danger">
+            <div *ngIf="curr5.errors.required">Currency is required.</div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <label class="control-label font-weight-bold text-lg-right pt-2">Loaded Miles (Team)
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+          <input pInputText [(ngModel)]="ppm.loadedMilesTeam" name="payPerMile.loadedMilesTeam" type="text"
+            class="w-100" placeholder="eg. $0.5, $1, $2" #lMiles2="ngModel" required />
+          <div *ngIf="lMiles2.invalid" class="text-danger">
+            <div *ngIf="lMiles2.errors.required">
+              Loaded miles are required.
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2">
+
+        </div>
+        <div class="col-lg-4">
+          <label class="control-label font-weight-bold text-lg-right pt-2">Empty Miles (Team)
+            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+          <input pInputText [(ngModel)]="ppm.emptyMilesTeam" name="payPerMile.emptyMilesTeam" type="text" class="w-100"
+            placeholder="eg. $0.5, $1, $2" #eMilesTeam="ngModel" required />
+          <div *ngIf="eMilesTeam.invalid" class="text-danger">
+            <div *ngIf="eMilesTeam.errors.required">
+              Empty miles (Team) are required.
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</ng-template>
+    
+        <ng-template pTemplate="footer">
+        <button (click)="displayResponsive=false;closePayment()" class="btn btn-default">Cancel</button>
+        <button (click)="displayResponsive=false;updatePaymentOption()" class="btn btn-success">Save</button>
+        </ng-template>
+</p-dialog>
+
 
 <ng-template id="payModal" #payModal let-modal>
   <div class="modal-content" style="height: 500px">

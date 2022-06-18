@@ -16,12 +16,31 @@ declare var $: any;
   styleUrls: ["./add-settlement.component.css"],
 })
 export class AddSettlementComponent implements OnInit {
-  @ViewChild("paymentOptModal", { static: false }) paymentOptModal: TemplateRef<any>;
   @ViewChild("payModal", { static: false }) payModal: TemplateRef<any>;
 
   tripMsg = Constants.NO_RECORDS_FOUND;
   noRecordMsg: string = Constants.NO_RECORDS_FOUND;
-
+  currencies = [
+    {
+      name: 'CAD',
+      value: 'CAD'
+    },{
+      name: 'USD',
+      value: 'USD'
+    },
+  ]
+  percentagesTypes = [
+    {
+      name: 'Freight Fees',
+      value: 'Freight Fees'
+    },{
+      name: 'Freight + Fuel Surcharge',
+      value: 'Freight + Fuel Surcharge'
+    },{
+      name: 'Total Income',
+      value: 'Total Income'
+    },
+  ]
   paymentType = ''
   trip: any = {}
   driverData = {
@@ -270,6 +289,18 @@ export class AddSettlementComponent implements OnInit {
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchOrders();
+    var stickySidebar = $('.pay-info').offset().top - 100;
+
+      $(window).scroll(function() {  
+          if ($(window).scrollTop() > stickySidebar) {
+              $('.pay-info').addClass('fixed');
+          }
+          else {
+              $('.pay-info').removeClass('fixed');
+          }  
+      });
+    
+    
     // this.fetchExpenseCategories();
   }
 
@@ -3117,11 +3148,5 @@ export class AddSettlementComponent implements OnInit {
     this.pendingInfo = false;
     $("#infoModal").modal("show");
   }
-  openPaymentModal() {
-    let ngbModalOptions: NgbModalOptions = {
-      keyboard: true,
-      windowClass: "preview"
-    };
-    this.modalService.open(this.paymentOptModal, ngbModalOptions)
-  }
+  
 }
