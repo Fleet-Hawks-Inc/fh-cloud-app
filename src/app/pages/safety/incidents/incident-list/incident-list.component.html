@@ -90,7 +90,7 @@
                                                                         let-filter="filterCallback">
                                                                         <p-multiSelect [options]="status_values"
                                                                             placeholder="Any"
-                                                                            (onChange)='changeStatus(critical.incidentID, $event, rowIndex)'
+                                                                            (onChange)="filter($event.value)"
                                                                             optionLabel="name" optionValue="value">
                                                                             <ng-template let-option pTemplate="item">
                                                                                 <div>
