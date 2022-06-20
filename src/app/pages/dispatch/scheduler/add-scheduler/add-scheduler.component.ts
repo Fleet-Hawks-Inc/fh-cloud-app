@@ -3,6 +3,7 @@ import { ApiService } from "../../../../services/api.service";
 import {  ToastrService } from "ngx-toastr";
 import { Location } from "@angular/common";
 import {ActivatedRoute} from '@angular/router';
+import * as moment from 'moment-timezone';
 @Component({
   selector: 'app-add-scheduler',
   templateUrl: './add-scheduler.component.html',
@@ -51,13 +52,15 @@ export class AddSchedulerComponent implements OnInit {
       const data=result[0]
       this.scheduler.name= data.sName;
       this.scheduler.time=data.sTime;
-      this.scheduler.dateRange=data.dateRange;
+      this.scheduler.dateRange.from=data.dateRange.from;
+      this.scheduler.dateRange.to=data.dateRange.to;
       this.scheduler.orderID=data.orderID;
       this.scheduler.orderNumber=data.orderNumber;
       this.scheduler.type=data.sType?data.sType:undefined;
       this.scheduler.selectedMonths=data.selectedMonths?this.scheduler.selectedMonths:undefined,
       this.range=data.sRange,
       this.repeatType=data.repeatType
+      this.scheduler.selectedMonths=data.selectedMonths
 
       if(this.scheduler.type.days===undefined){
         this.repeatType="selectDaysNo";
@@ -219,6 +222,7 @@ export class AddSchedulerComponent implements OnInit {
       selectedMonths:this.scheduler.selectedMonths?this.scheduler.selectedMonths:undefined,
       sRange:this.range,
       sTime:this.scheduler.time,
+      timezone: moment.tz.guess()
   }
 
     this.apiService.postData('orders/schedule',scheduleData).subscribe({
