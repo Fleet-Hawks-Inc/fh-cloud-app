@@ -10,7 +10,7 @@
           </div>
 
           <div class="col-md-8 col-lg-8 text-right">
-            <a routerLink="/fleet/maintenance/service-program/list" class="btn btn-default btn-sm"
+            <a routerLink="/fleet/maintenance/service-program/list/{{sessionID}}" class="btn btn-default btn-sm"
               style="color: black"><i class="fas fa-list"></i> Service Programs List</a>
           </div>
         </div>
@@ -305,7 +305,7 @@
                       <div class="col-12">
                         <div class="row">
                           <div class="col-11 pr-0">
-                            <a href="javascript:;" routerLink="/fleet/maintenance/service-program/list"
+                            <a href="javascript:;" routerLink="/fleet/maintenance/service-program/list{{sessionID}}"
                               class="btn btn-default mr-2" id="">Cancel</a>
 
                             <button *ngIf="!programID && !serviceProgramF.form.valid"

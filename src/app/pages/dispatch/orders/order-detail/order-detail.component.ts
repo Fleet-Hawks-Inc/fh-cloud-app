@@ -549,7 +549,9 @@ export class OrderDetailComponent implements OnInit {
             ext: x.split(".")[1],
           }));
         }
-
+  
+       this.attachments = result.uploadPics;
+ 
         if (result.tripDocs != undefined && result.tripDocs.length > 0) {
           this.tripDocs = result.tripDocs.map((x) => ({
             imgPath: `${x.urlPath}`,

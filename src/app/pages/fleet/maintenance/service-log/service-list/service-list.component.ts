@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Input } from "@angular/core";
 import { ApiService } from "../../../../../services";
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 declare var $: any;
 import { Table } from 'primeng/table';
 import { ToastrService } from "ngx-toastr";
@@ -25,6 +26,7 @@ export class ServiceListComponent implements OnInit {
   title = "Service Logs";
   // dtOptions: any = {};
   logs = [];
+    sessionID: string;
 
   suggestedVehicles = [];
   vehicleID = null;
@@ -83,8 +85,11 @@ export class ServiceListComponent implements OnInit {
     private apiService: ApiService,
     private router: Router,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService
-  ) { }
+    private toastr: ToastrService,
+    private routerMgmtService: RouteManagementServiceService
+  ) {
+      this.sessionID = this.routerMgmtService.serviceLogSessionID;
+  }
 
   ngOnInit() {
     this.initDataTable();

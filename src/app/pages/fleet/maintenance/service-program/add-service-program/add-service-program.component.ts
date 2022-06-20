@@ -36,8 +36,8 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   tasks: any;
   programID = [];
   taskData: any = []
+  sessionID: string;
   serviceData = {
-    
     programName: '',
     description: '',
     vehicles: [],
@@ -53,14 +53,10 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   errors = {};
   form;
 
-  /********** Form Fields ***********/
 
-  // programName ='';
-  // repeatByTime = '';
-  // repeatByOdometer = '';
-  // description = '';
 
-  /******************/
+
+
 
   response: any = '';
   hasError: boolean = false;
@@ -79,8 +75,10 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     private listService: ListService,
     private modalService: NgbModal,
     private modalServiceOwn: ModalService,
+    private routerMgmtService: RouteManagementServiceService,
   ) { 
    
+    this.sessionID = this.routerMgmtService.serviceLogSessionID;
 
 
   }
@@ -179,7 +177,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
         this.response = res;
 
         this.toastr.success('Service added successfully');
-        this.router.navigateByUrl('/fleet/maintenance/service-program/list');
+        this.router.navigateByUrl('/fleet/maintenance/service-program/list/${this.routerMgmtService.serviceLogUpdated()}');
 
       }
     });
@@ -277,7 +275,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
         this.submitDisabled = false;
   
         this.toastr.success('Service Updated Successfully');
-        this.router.navigateByUrl('/fleet/maintenance/service-program/list');
+        this.router.navigateByUrl('/fleet/maintenance/service-program/list/${this.routerMgmtService.serviceLogUpdated()}');
       },
     });
   }

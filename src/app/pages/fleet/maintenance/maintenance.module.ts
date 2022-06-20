@@ -143,9 +143,9 @@ const routes: Routes = [
         data: { title: "Add Service Program" },
       },
       {
-        path: "list",
+        path: "list/:sessionID",
         component: ServiceProgramListComponent,
-        data: { title: "Service Program List" },
+        data: { title: "Service Program List",reuseRoute: true },
       },
       {
         path: "edit/:programID",

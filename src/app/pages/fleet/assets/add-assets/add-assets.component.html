@@ -871,6 +871,7 @@
                         <input type="text" class="form-control" name="purchase.purchaseOdometer"
                           [(ngModel)]="assetsData.purchase.purchaseOdometer" placeholder="eg. 4500" />
                       </div>
+                      
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Add Purchase
                           Document(s)</label>
@@ -883,6 +884,7 @@
                               {{ purchaseDocsError }}
                             </span>
                       </div>
+                      
                     </div>
                     <div class="row pr-3">
                       <div class="col-lg-10 mt-2" *ngIf="pDocs.length > 0">
@@ -901,10 +903,11 @@
                                 (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
                             </div>
                             <div class="col-lg-3 text-right">
-                              <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal"
-                                data-target="#viewDocModal"></i>
-                              <a href="javascript:;" (click)="deleteDocument('purchase', item.name)"
-                                class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
+                          <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="deleteDocument('purchase', item.name)"><i class="fas fa-trash-alt"></i></a>     
+                                <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="setPDFSrc(item.path)" data-toggle="modal" data-target="#viewDocModal"><i
+                                class="fas fa-eye"></i></a>
                             </div>
                           </div>
                         </div>
@@ -1096,10 +1099,11 @@
                                 (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
                             </div>
                             <div class="col-lg-3 text-right">
-                              <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal"
-                                data-target="#viewDocModal"></i>
-                              <a href="javascript:;" (click)="deleteDocument('loan', item.name)"
-                                class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
+                          <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="deleteDocument('loan', item.name)"><i class="fas fa-trash-alt"></i></a>     
+                                <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="setPDFSrc(item.path)" data-toggle="modal" data-target="#viewDocModal"><i
+                                class="fas fa-eye"></i></a>
                             </div>
                           </div>
                         </div>

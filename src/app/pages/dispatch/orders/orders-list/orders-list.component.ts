@@ -745,14 +745,7 @@ export class OrdersListComponent implements OnInit {
     ) {
       this.brokerErr = "Please fill the required fields";
       return false;
-    } else if (
-      Number(this.brokerage.brokerageAmount) >
-      Number(this.brokerage.finalAmount)
-    ) {
-      this.brokerErr =
-        "Brokerage amount should not be greater than order total.";
-      return false;
-    } else {
+    }  else {
       this.brokerErr = "";
     }
     this.showModal = true;
@@ -971,4 +964,35 @@ export class OrdersListComponent implements OnInit {
     })
     
   }
+
+  editOrder(orderID) {
+    setTimeout(() => {
+      this.router.navigateByUrl(`/dispatch/orders/edit/${orderID}`)
+    }, 10);
+  }
+  
+  createTrip(orderID, orderNumber) {
+    setTimeout(() => {
+      this.router.navigate([`/dispatch/trips/add-trip`],{ queryParams: {
+        orderId: orderID,
+        orderNum: orderNumber
+      }});
+    }, 10);
+ }
+  
+ cloneOrder(orderID) {
+    setTimeout(() => {
+      this.router.navigate([`/dispatch/orders/add`],{ queryParams: {
+        cloneID: orderID
+      }});
+    }, 10);
+ }
+  
+ recallOrder(orderID) {
+    setTimeout(() => {
+      this.router.navigate([`/dispatch/orders/edit/${orderID}`],{ queryParams: {
+        state: 'recall'
+      }});
+    }, 10);
+ }
 }

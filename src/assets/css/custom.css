@@ -4376,14 +4376,17 @@ input:checked + .sliderbtn:before {
   font-family: Roboto, Arial;
   font-size: 13px;
 }
-
-.orders-listing .p-datatable-resizable > .p-datatable-wrapper {
-  overflow: visible;
+.p-overlaypanel .p-overlaypanel-close {
+  z-index: 9;
+}
+.p-overlaypanel:after {
+  margin-left: -20px !important;
 }
 
-.orders-listing .p-datatable-scrollable .p-frozen-column {
-  position: relative !important;
-}
 .p-toast {
   z-index: 9999;
+}
+.p-overlaypanel:before {
+  margin-left: -25px !important;
+
 }
