@@ -161,7 +161,7 @@ export class ImportedVehiclesComponent implements OnInit {
               } else if (item.includes('status')) {
                 joinStr = item + '. Status should be active, inActive, outOfService or sold';
                 this.inValidMessages.push(joinStr)
-              } else if (item.includes('licence_plate_number')) {
+              } else if (item.includes('plate_number')) {
                 joinStr = item + '. Plate Number must be between 6-8 alphanumeric characters eg.K5Y932.';
                 this.inValidMessages.push(joinStr)
               } else {
