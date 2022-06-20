@@ -32,7 +32,7 @@ export class OrdersListComponent implements OnInit {
   @ViewChild("confirmEmailModal", { static: true })
   confirmEmailModal: TemplateRef<any>;
 
-  @ViewChild("schedularModal", {static:true}) schedularModal:TemplateRef<any>
+  @ViewChild("schedularModal", { static: true }) schedularModal: TemplateRef<any>
 
   dataMessage: string = Constants.FETCHING_DATA;
   noOrdersMsg = Constants.NO_RECORDS_FOUND;
@@ -168,7 +168,7 @@ export class OrdersListComponent implements OnInit {
     index: 0,
     type: "",
     brokerageAmount: 0,
-      brkCurrency: "",
+    brkCurrency: "",
     instructions: "",
     today: moment().format("YYYY-MM-DD"),
   };
@@ -234,29 +234,30 @@ export class OrdersListComponent implements OnInit {
   _selectedColumns: any[];
   // pickupLocData = []
   isOrderPriceEnabled = environment.isOrderPriceEnabled
-  scheduler={
-    orderID:null,
-    orderNumber:null,
-    name:null,
-    time:null,
-    type:{
-      daysNo:0,
-      days:[]
+  scheduler = {
+    orderID: null,
+    orderNumber: null,
+    name: null,
+    time: null,
+    type: {
+      daysNo: 0,
+      days: []
     },
-    range:{
-      dateRange:{
-        to:null,
-        from:null,
+    range: {
+      dateRange: {
+        to: null,
+        from: null,
       },
-      months:[]
+      months: []
     }
   }
 
-  saveDisabled=false;
-  repeatType=null;
-  range=null;
-  days=["everyday","monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
-  months=["selectAll","january","february","march","april","may","june","july","august","september","october","november","december"]
+  saveDisabled = false;
+  display = false;
+  repeatType = null;
+  range = null;
+  days = ["everyday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+  months = ["selectAll", "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
 
   constructor(
     private apiService: ApiService,
@@ -333,7 +334,7 @@ export class OrdersListComponent implements OnInit {
       this.orders = [...this.orders, element];
     }
   }
- 
+
   initDataTable(refresh?: boolean) {
     if (refresh === true) {
       this.lastEvaluatedKey = "";
@@ -708,9 +709,9 @@ export class OrdersListComponent implements OnInit {
     this.brokerage.draw = draw;
     this.brokerage.index = index;
     this.brokerage.type = actionFrom;
-    await this.fetchCarriers( this.brokerage.carrierID);
+    await this.fetchCarriers(this.brokerage.carrierID);
     await this.fetchOrderData();
-    $("#orderStatusModal").modal("show");
+    this.display = true;
   }
 
 
@@ -752,7 +753,7 @@ export class OrdersListComponent implements OnInit {
     ) {
       this.brokerErr = "Please fill the required fields";
       return false;
-    }  else {
+    } else {
       this.brokerErr = "";
     }
     this.showModal = true;
@@ -765,10 +766,10 @@ export class OrdersListComponent implements OnInit {
       showModal: this.showModal,
       companyLogo: this.companyLogoSrc,
     };
-    console.log('data==',data)
+    console.log('data==', data)
     this.listService.triggerBrokeragePdf(data);
     await this.updateBrokerageStatus();
-    $("#orderStatusModal").modal("hide");
+    this.display = false;
     this.brokerageDisabled = false;
   }
 
@@ -825,7 +826,7 @@ export class OrdersListComponent implements OnInit {
         orderID: order.orderID,
         orderNo: order.orderNo,
         brokerageAmount: 0,
-        brkCurrency : '',
+        brkCurrency: '',
         instructions: "",
         carrierID: null,
         type: "cancel",
@@ -863,31 +864,31 @@ export class OrdersListComponent implements OnInit {
   clear(table: Table) {
     table.clear();
   }
-  resetSchedule(){
-    this.scheduler={
-      orderID:null,
-      orderNumber:null,
-      name:null,
-      time:null,
-      type:{
-        daysNo:0,
-        days:[]
+  resetSchedule() {
+    this.scheduler = {
+      orderID: null,
+      orderNumber: null,
+      name: null,
+      time: null,
+      type: {
+        daysNo: 0,
+        days: []
       },
-      range:{
-        dateRange:{
-          to:null,
-          from:null,
+      range: {
+        dateRange: {
+          to: null,
+          from: null,
         },
-        months:[]
+        months: []
       }
     }
 
   }
 
-  openSchedulerModal(orderID,orderNumber){
+  openSchedulerModal(orderID, orderNumber) {
     this.resetSchedule();
-    this.scheduler.orderID=orderID,
-    this.scheduler.orderNumber=orderNumber
+    this.scheduler.orderID = orderID,
+      this.scheduler.orderNumber = orderNumber
     let ngbModalOptions: NgbModalOptions = {
       keyboard: true,
       windowClass: "schedular--modal",
@@ -896,83 +897,83 @@ export class OrdersListComponent implements OnInit {
       this.schedularModal,
       ngbModalOptions
     );
-    this.repeatType=''
-    this.range=''
-  this.saveDisabled=false
+    this.repeatType = ''
+    this.range = ''
+    this.saveDisabled = false
   }
 
-  onCheckboxChange(data,isChecked){
-    if(isChecked){
+  onCheckboxChange(data, isChecked) {
+    if (isChecked) {
       this.scheduler.type.days.push(data)
     }
-    else{
-      const index=this.scheduler.type.days.findIndex(x=>x==data);
-      this.scheduler.type.days.splice(index,1)
+    else {
+      const index = this.scheduler.type.days.findIndex(x => x == data);
+      this.scheduler.type.days.splice(index, 1)
     }
   }
 
-  onRangeCheckboxChange(value,isChecked){
-    if(isChecked){
+  onRangeCheckboxChange(value, isChecked) {
+    if (isChecked) {
       this.scheduler.range.months.push(value)
     }
-    else{
-      const index=this.scheduler.range.months.findIndex(x=>x==value);
-      this.scheduler.type.days.splice(index,1)
+    else {
+      const index = this.scheduler.range.months.findIndex(x => x == value);
+      this.scheduler.type.days.splice(index, 1)
     }
   }
 
-  async saveScheduler(){
-    this.saveDisabled=true;
-    if(this.scheduler.name==null){
+  async saveScheduler() {
+    this.saveDisabled = true;
+    if (this.scheduler.name == null) {
       this.toastr.error("Scheduler Name is required");
-      this.saveDisabled=false;
-      return 
+      this.saveDisabled = false;
+      return
     }
-    if(this.scheduler.time==null){
+    if (this.scheduler.time == null) {
       this.toastr.error("Scheduler Time is required");
-      this.saveDisabled=false;
+      this.saveDisabled = false;
       return;
     }
-    if(this.repeatType==null){
+    if (this.repeatType == null) {
       this.toastr.error("Repeat Type is required");
-      this.saveDisabled=false;
+      this.saveDisabled = false;
       return;
     }
-    if(this.range==null){
+    if (this.range == null) {
       this.toastr.error("Range is required");
-      this.saveDisabled=false;
+      this.saveDisabled = false;
       return;
     }
-    if(this.repeatType=="selectDaysNo"){
+    if (this.repeatType == "selectDaysNo") {
       delete this.scheduler.type.days
     }
-    else{
+    else {
       delete this.scheduler.type.daysNo
     }
 
-    if(this.range=="date"){
+    if (this.range == "date") {
       delete this.scheduler.range.months;
     }
-    else{
+    else {
       delete this.scheduler.range.dateRange
     }
-    const scheduleData={
-      orderID:this.scheduler.orderID,
-      orderNumber:this.scheduler.orderNumber,
-      sName:this.scheduler.name,
-      sType:this.scheduler.type,
-      sTime:this.scheduler.time,
-      sRange:this.scheduler.range
-  }
-    this.apiService.postData('orders/schedule',scheduleData).subscribe({
-      complete:()=>{},
-      error:(err)=>{},
-      next:(res)=>{
+    const scheduleData = {
+      orderID: this.scheduler.orderID,
+      orderNumber: this.scheduler.orderNumber,
+      sName: this.scheduler.name,
+      sType: this.scheduler.type,
+      sTime: this.scheduler.time,
+      sRange: this.scheduler.range
+    }
+    this.apiService.postData('orders/schedule', scheduleData).subscribe({
+      complete: () => { },
+      error: (err) => { },
+      next: (res) => {
         this.toastr.success("Schedule added successfully");
         this.modalService.dismissAll();
       }
     })
-    
+
   }
 
   editOrder(orderID) {
@@ -980,48 +981,54 @@ export class OrdersListComponent implements OnInit {
       this.router.navigateByUrl(`/dispatch/orders/edit/${orderID}`)
     }, 10);
   }
-  
+
   createTrip(orderID, orderNumber) {
     setTimeout(() => {
-      this.router.navigate([`/dispatch/trips/add-trip`],{ queryParams: {
-        orderId: orderID,
-        orderNum: orderNumber
-      }});
+      this.router.navigate([`/dispatch/trips/add-trip`], {
+        queryParams: {
+          orderId: orderID,
+          orderNum: orderNumber
+        }
+      });
     }, 10);
- }
-  
- cloneOrder(orderID) {
-    setTimeout(() => {
-      this.router.navigate([`/dispatch/orders/add`],{ queryParams: {
-        cloneID: orderID
-      }});
-    }, 10);
- }
-  
- recallOrder(orderID) {
-    setTimeout(() => {
-      this.router.navigate([`/dispatch/orders/edit/${orderID}`],{ queryParams: {
-        state: 'recall'
-      }});
-    }, 10);
- }
-
- openModal(unit: string) {
-  this.listService.triggerModal(unit);
-
-  localStorage.setItem("isOpen", "true");
-  this.listService.changeButton(false);
-}
-
-fetchData(i: any, value: string) {
-  console.log('carrier--',this.brokerage.carrierID)
-  if (value === "carrier") {
-    if (this.brokerage.carrierID != null) {
-      let id = this.brokerage.carrierID;
-      this.fetchCarriers(id);
-    }
-    this.listService.fetchCarriers();
   }
-}
+
+  cloneOrder(orderID) {
+    setTimeout(() => {
+      this.router.navigate([`/dispatch/orders/add`], {
+        queryParams: {
+          cloneID: orderID
+        }
+      });
+    }, 10);
+  }
+
+  recallOrder(orderID) {
+    setTimeout(() => {
+      this.router.navigate([`/dispatch/orders/edit/${orderID}`], {
+        queryParams: {
+          state: 'recall'
+        }
+      });
+    }, 10);
+  }
+
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+
+    localStorage.setItem("isOpen", "true");
+    this.listService.changeButton(false);
+  }
+
+  fetchData(i: any, value: string) {
+    console.log('carrier--', this.brokerage.carrierID)
+    if (value === "carrier") {
+      if (this.brokerage.carrierID != null) {
+        let id = this.brokerage.carrierID;
+        this.fetchCarriers(id);
+      }
+      this.listService.fetchCarriers();
+    }
+  }
 
 }
