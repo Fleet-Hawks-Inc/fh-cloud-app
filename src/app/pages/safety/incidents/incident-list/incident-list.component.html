@@ -70,7 +70,7 @@
                                                 </div>
                                             </div>
                                         </ng-template>
-                                        <ng-template pTemplate="header" let-columns>
+                                        <ng-template pTemplate="header" let-columns let-rowIndex="rowIndex">
                                             <tr>
                                                 <th *ngFor="let dataColumns of columns"
                                                     [pSortableColumn]="dataColumns.field" pResizableColumn
