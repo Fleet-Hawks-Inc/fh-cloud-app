@@ -294,6 +294,7 @@ export class AddTripComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.getRoutes();
     this.tripID = this.route.snapshot.params["tripID"];
     if (this.tripID != undefined) {
       this.pageTitle = "Edit Trip";
