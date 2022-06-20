@@ -19,6 +19,7 @@ import {
   NgbDateStruct,
   NgbModule,
 } from "@ng-bootstrap/ng-bootstrap";
+import { EmployerPayComponent } from './employer-pay/employer-pay.component';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -110,6 +111,11 @@ const routes: Routes = [
     component: TaxReportComponent,
     data: { title: "Tax Report" },
   },
+  {
+    path: "employer-pay",
+    component: EmployerPayComponent,
+    data: { title: "Employer Pay" },
+  },
 ];
 
 @NgModule({
@@ -121,6 +127,7 @@ const routes: Routes = [
     TrialBalanceComponent,
     CashFlowStatementComponent,
     TaxReportComponent,
+    EmployerPayComponent,
   ],
   imports: [
     FormsModule,
