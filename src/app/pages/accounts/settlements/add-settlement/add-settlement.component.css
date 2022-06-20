@@ -2,3 +2,10 @@
     width: 20%;
     float: left;
 }
+.fixed {
+	position: fixed;
+    top: 110px;
+    border-bottom: 1px solid #eaeaea;
+    z-index: 1;
+    width: 100%;
+}
