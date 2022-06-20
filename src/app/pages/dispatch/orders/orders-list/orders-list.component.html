@@ -248,20 +248,32 @@
                             width: find(columns, { field: 'newStatus' }).width
                           }">
                           <div class="badges">
-                            <span class="badge badge-dark p-1" style = "background-color: #4e97d6;" *ngIf="order.newStatus === 'confirmed'">confirmed</span>
-                            <span class="badge badge-dark p-1" style = "background-color: #171717;" *ngIf="order.newStatus === 'created'">created</span>
-                            <span class="badge badge-dark p-1" style = "background-color: cadetblue;" *ngIf="order.newStatus === 'brokerage'">brokerage</span>
-                            <span class="badge badge-dark p-1" style = " color:black; background-color: #f7e363;" *ngIf="order.newStatus === 'dispatched'">dispatched</span>
-                            <span class="badge badge-dark p-1" style = "background-color: #171717;" *ngIf="order.newStatus === 'attached'">attached</span>
-                            <span class="badge badge-dark p-1" style = "background-color: #f93121;" *ngIf="order.newStatus === 'tonu'">tonu</span>
-                             <span class="badge badge-dark p-1" style = "background-color: #f93121;" *ngIf="order.newStatus === 'canceled'">canceled</span>
-                            <span class="badge badge-dark p-1" style = "color:black; background-color: #f7e363;" *ngIf="order.newStatus === 'started'">started</span>
-                            <span class="badge badge-dark p-1" style = "background-color:orange" *ngIf="order.recall">delivered(R)</span>
-                            <span class="badge badge-success" style = "color:black; background-color: #a1d9ae;" *ngIf="order.newStatus === 'delivered'">delivered</span>
-                            <span class="badge badge-dark p-1" style = "background-color: #47a447;" *ngIf="order.newStatus === 'settled'">settled</span>
-                            <span class="badge badge-dark p-1" style = "background-color: #f4978e;" *ngIf="order.newStatus === 'en-route'">en-route</span>
-                          <br/>
-                     </div>
+                            <span class="badge badge-dark p-1" style="background-color: #4e97d6;"
+                              *ngIf="order.newStatus === 'confirmed'">confirmed</span>
+                            <span class="badge badge-dark p-1" style="background-color: #171717;"
+                              *ngIf="order.newStatus === 'created'">created</span>
+                            <span class="badge badge-dark p-1" style="background-color: cadetblue;"
+                              *ngIf="order.newStatus === 'brokerage'">brokerage</span>
+                            <span class="badge badge-dark p-1" style=" color:black; background-color: #f7e363;"
+                              *ngIf="order.newStatus === 'dispatched'">dispatched</span>
+                            <span class="badge badge-dark p-1" style="background-color: #171717;"
+                              *ngIf="order.newStatus === 'attached'">attached</span>
+                            <span class="badge badge-dark p-1" style="background-color: #f93121;"
+                              *ngIf="order.newStatus === 'tonu'">tonu</span>
+                            <span class="badge badge-dark p-1" style="background-color: #f93121;"
+                              *ngIf="order.newStatus === 'canceled'">canceled</span>
+                            <span class="badge badge-dark p-1" style="color:black; background-color: #f7e363;"
+                              *ngIf="order.newStatus === 'started'">started</span>
+                            <span class="badge badge-dark p-1" style="background-color:orange"
+                              *ngIf="order.recall">delivered(R)</span>
+                            <span class="badge badge-success" style="color:black; background-color: #a1d9ae;"
+                              *ngIf="order.newStatus === 'delivered'">delivered</span>
+                            <span class="badge badge-dark p-1" style="background-color: #47a447;"
+                              *ngIf="order.newStatus === 'settled'">settled</span>
+                            <span class="badge badge-dark p-1" style="background-color: #f4978e;"
+                              *ngIf="order.newStatus === 'en-route'">en-route</span>
+                            <br />
+                          </div>
                         </td>
                         <td style="width: 6%; overflow: inherit !important" pFrozenColumn alignFrozen="right"
                           [frozen]="true">
@@ -529,114 +541,81 @@
 </section>
 </div>
 </section>
+<p-dialog header="Brokerage Order" [(visible)]="display" [style]="{width: '500px'}">
+  <div class="form-group row text-dark">
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="col-lg-12">
+          <label class="control-label font-weight-bold text-lg-right pt-2">Order Information</label>
+          <p>
+            Order# : {{ brokerage.orderNo }} <br />
+            Order Total: {{ brokerage.finalAmount }}
+          </p>
+        </div>
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-6">
+              <label class="control-label font-weight-bold text-lg-right pt-2">Select Carrier</label>
+              <ng-select [(ngModel)]="brokerage.carrierID" name="brokerage.carrierID" placeholder="Select Carrier">
+                <ng-option value="{{ data.key }}" *ngFor="let data of carriersObject | keyvalue">
+                  {{ data.value }}</ng-option>
+              </ng-select>
+            </div>
+            <div class="col-2 mar-top-37 p-0">
+              <a class="btn btn-success btn-sm text-light" (click)="openModal('form')"><i class="fas fa-plus"></i>
+              </a>
+              <a data-toggle="modal" (click)="fetchData(i, 'carrier')" href="javascript:;"
+                class="modal-with-form btn btn-sm btn-success ml-2">
+                <em class="fas fa-sync"></em>
+              </a>
+            </div>
+            <div class="col-lg-6">
+              <label class="control-label font-weight-bold text-lg-right pt-2">Brokerage amount</label>
+              <input [(ngModel)]="brokerage.brokerageAmount" name="brokerageAmount" type="text" class="form-control"
+                placeholder="e.g. 230" />
+            </div>
 
-<div class="modal fade" id="orderStatusModal" role="dialog" tabindex="-1">
-  <div class="modal-dialog" role="document" style="max-width: 500px">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Brokerage Order</h4>
-        <button type="button" class="close" data-dismiss="modal">
-          &times;
-        </button>
-      </div>
-      <form>
-        <div class="modal-body">
-          <div class="form-group row text-dark">
-            <div class="col-lg-12">
-              <div class="row">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Order Information</label>
-                  <p>
-                    Order# : {{ brokerage.orderNo }} <br />
-                    Order Total: {{ brokerage.finalAmount }}
-                  </p>
-                </div>
-                <div class="col-lg-12">
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <label class="control-label font-weight-bold text-lg-right pt-2">Select Carrier</label>
-                      <ng-select [(ngModel)]="brokerage.carrierID" name="brokerage.carrierID"
-                        placeholder="Select Carrier">
-                        <ng-option value="{{ data.key }}" *ngFor="let data of carriersObject | keyvalue">
-                          {{ data.value }}</ng-option>
-                      </ng-select>
-                    </div>
-                    <div class="col-2 mar-top-37 p-0">
-                      <a
-                      class="btn btn-success btn-sm text-light"
-                      (click)="openModal('form')"
-                      ><i class="fas fa-plus"></i>
-                    </a>
-                    <a
-                      data-toggle="modal"
-                      (click)="fetchData(i, 'carrier')"
-                      href="javascript:;"
-                      class="modal-with-form btn btn-sm btn-success ml-2"
-                    >
-                      <em class="fas fa-sync"></em>
-                    </a>
-                    </div>
-                    <div class="col-lg-6">
-                      <label class="control-label font-weight-bold text-lg-right pt-2">Brokerage amount</label>
-                      <input [(ngModel)]="brokerage.brokerageAmount" name="brokerageAmount" type="text"
-                        class="form-control" placeholder="e.g. 230" />
-                    </div>
-
-                    <div class="col-lg-6">
-                      <label class="control-label font-weight-bold text-lg-right pt-2">Select Currency</label>
-                      <ng-select
-                     
-                      name="brokerage.brkCurrency" placeholder="Select Currency" 
-                      [(ngModel)]="brokerage.brkCurrency"
-                      (change)="changeCurrency($event)"
-                      #money="ngModel"
-                      placeholder="Select Currency"
-                      required
-                    >
-                      >
-                        <ng-option value="CAD">CAD</ng-option>
-                        <ng-option value="USD">USD</ng-option>
-                      </ng-select>
-                      <div
-                        *ngIf="
-                          money.invalid &&
-                          (money.dirty || money.touched)
-                        "
-                        class="text-danger"
-                      >
-                        <div *ngIf="money.errors.required">
-                          Currency is required.
-                        </div>
-                      </div>
-                    </div>
-
-
-                  </div>
-                </div>
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Special Instructions</label>
-                  <textarea placeholder="eg.
-                    Please be on time" [(ngModel)]="brokerage.instructions" name="instructions_br"
-                    class="form-control h-auto" rows="2" pattern="^[\s\S]{500}$"></textarea>
-
-                  <label class="error">{{ brokerErr }}</label>
+            <div class="col-lg-6">
+              <label class="control-label font-weight-bold text-lg-right pt-2">Select Currency</label>
+              <ng-select name="brokerage.brkCurrency" placeholder="Select Currency" [(ngModel)]="brokerage.brkCurrency"
+                (change)="changeCurrency($event)" #money="ngModel" placeholder="Select Currency" required>
+                >
+                <ng-option value="CAD">CAD</ng-option>
+                <ng-option value="USD">USD</ng-option>
+              </ng-select>
+              <div *ngIf="
+                  money.invalid &&
+                  (money.dirty || money.touched)
+                " class="text-danger">
+                <div *ngIf="money.errors.required">
+                  Currency is required.
                 </div>
               </div>
             </div>
+
+
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">
-            Close
-          </button>
-          <button type="button" class="btn btn-success" [disabled]="brokerageDisabled" (click)="submitClick()">
-            Save
-          </button>
+        <div class="col-lg-12">
+          <label class="control-label font-weight-bold text-lg-right pt-2">Special Instructions</label>
+          <textarea placeholder="eg. Please be on time" [(ngModel)]="brokerage.instructions" name="instructions_br"
+            class="form-control h-auto" rows="2" pattern="^[\s\S]{500}$"></textarea>
+
+          <label class="error">{{ brokerErr }}</label>
         </div>
-      </form>
+      </div>
     </div>
   </div>
-</div>
+  <div class="text-right">
+    <button type="button" class="btn btn-default mr-2" (click)="display = false;">
+      Close
+    </button>
+    <button type="button" class="btn btn-success" [disabled]="brokerageDisabled" (click)="submitClick()">
+      Save
+    </button>
+  </div>
+</p-dialog>
+
 
 <app-brokerage-pdf></app-brokerage-pdf>
 
