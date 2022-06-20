@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { NgSelectComponent } from "@ng-select/ng-select";
 import * as _ from "lodash";
 import { ToastrService } from 'ngx-toastr';
 import { Table } from 'primeng/table';
@@ -52,9 +51,9 @@ export class EventListComponent implements OnInit {
     this.fetchVehicles();
     this.fetchAllVehiclesIDs();
     this.dataColumns = [
-      { width: '8%', field: 'vehicleID', header: 'Vehicle', type: "text" },
-      { width: '8%', field: 'eventDate', header: 'Event Date', type: "text" },
-      { width: '8%', field: 'eventTime', header: 'Event Time', type: "text" },
+      { width: '9%', field: 'vehicleID', header: 'Vehicle', type: "text" },
+      { width: '9%', field: 'eventDate', header: 'Event Date', type: "text" },
+      { width: '9%', field: 'eventTime', header: 'Event Time', type: "text" },
       { width: '10%', field: 'eventType', header: 'Event Type', type: "text" },
       { width: '10%', field: 'eventSource', header: 'Event Source', type: "text" },
       { width: '10%', field: 'createdBy', header: 'Created By', type: "text" },
@@ -129,6 +128,8 @@ export class EventListComponent implements OnInit {
 
         if (result.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
+        } else {
+          this.lastItemSK = 'end'
         }
         this.events = result;
 
