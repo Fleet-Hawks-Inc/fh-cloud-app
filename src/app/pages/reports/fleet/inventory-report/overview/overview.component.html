@@ -1,462 +1,698 @@
 <style>
-    .extra {
-        display: none;
-    }
+  .extra {
+    display: none;
+  }
 </style>
 <section class="body">
-    <div class="inner-wrapper">
-        <section role="main" class="content-body pt-0 pr-0 pl-1">
-            <header class="page-header pr19 pl11">
-                <form class="form-horizontal" method="get">
-                    <!-- For Existing Inventory -->
-                    <div class="row" *ngIf="currentTab == 'inv'" style="padding-top: 10px">
-                        <div class="col-md-2 col-lg-2 pr-0">
-                            <h4 class="text-4 mt-0 font-weight-bold mb-0 text-dark">
-                                Existing Inventory Detail
-                            </h4>
-                        </div>
-                        <div class="col-md-2 col-lg-2 pl-2 pr-0">
-                            <input class="form-control line-height-xs ng-valid ng-touched" [(ngModel)]="itemName"
-                                (input)="getItemSuggestions($event.target.value, 'inv')" name="driverName"
-                                placeholder="Search item by name" type="text" />
-                            <div *ngIf="suggestedItems?.length > 0" class="result-suggestions">
-                                <ul>
-                                    <li *ngFor="let suggestedItem of suggestedItems" style="cursor: pointer" (click)="
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pt-0 pr-0">
+      <header class="page-header pr19 pl11">
+        <form class="form-horizontal" method="get">
+          <!-- For Existing Inventory -->
+          <div
+            class="row"
+            *ngIf="currentTab == 'inv'"
+            style="padding-top: 10px"
+          >
+            <div class="col-md-2 col-lg-2 pr-0">
+              <h4 class="text-4 mt-0 font-weight-bold mb-0 text-dark">
+                Existing Inventory Detail
+              </h4>
+            </div>
+            <div class="col-md-2 col-lg-2 pl-2 pr-0">
+              <input
+                class="form-control line-height-xs ng-valid ng-touched"
+                [(ngModel)]="itemName"
+                (input)="getItemSuggestions($event.target.value, 'inv')"
+                name="driverName"
+                placeholder="Search item by name"
+                type="text"
+              />
+              <div
+                *ngIf="suggestedItems?.length > 0"
+                class="result-suggestions"
+              >
+                <ul>
+                  <li
+                    *ngFor="let suggestedItem of suggestedItems"
+                    style="cursor: pointer"
+                    (click)="
                       setItem(
                         suggestedItem.itemID,
                         suggestedItem.itemName,
                         'inv'
                       )
-                    ">
-                                        {{ suggestedItem.itemName }}
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-lg-2 pl-2 pr-0">
-                            <div class="input-group input-group-sm mb-3">
-                                <ng-select [(ngModel)]="vendorID" name="vendorID" style="width: 100%"
-                                    placeholder="Search items by vendor">
-                                    <ng-option *ngFor="let data of allVendors | async" [value]="data.contactID">
-                                        {{ data.companyName }}</ng-option>
-                                </ng-select>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-lg-2 pl-2 pr-0">
-                            <div class="input-group input-group-sm mb-3">
-                                <ng-select [(ngModel)]="category" name="category" class="capitalize" style="width: 100%"
-                                    placeholder="Search items by category">
-                                    <ng-option value="belts">Belts</ng-option>
-                                    <ng-option value="brakes">Brakes</ng-option>
-                                    <ng-option value="electrical">Electrical</ng-option>
-                                    <ng-option value="filters">Filters</ng-option>
-                                    <ng-option value="fluids">Fluids</ng-option>
-                                    <ng-option value="miscellaneous">Miscellaneous</ng-option>
-                                </ng-select>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-lg-2 pl-2">
-                            <button type="submit" (click)="searchExistingInventory()"
-                                class="btn btn-sm btn-success mr-2">
-                                Search
-                            </button>
-                            <button class="btn btn-sm btn-success line-height-18" (click)="resetExistingInventory()"
-                                type="button">
-                                Reset
-                            </button>
-                        </div>
-                        <div class="col-md-2 col-lg-2 text-right pr-1">
-                            <div class="btn-group flex-wrap ml-2">
-                                <button type="button" class="btn btn-success btn-sm dropdown-toggle"
-                                    data-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-upload"></i> Export<span class="caret"></span>
-                                </button>
-                                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
+                    "
+                  >
+                    {{ suggestedItem.itemName }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-2 col-lg-2 pl-2 pr-0">
+              <div class="input-group input-group-sm mb-3">
+                <ng-select
+                  [(ngModel)]="vendorID"
+                  name="vendorID"
+                  style="width: 100%"
+                  placeholder="Search items by vendor"
+                >
+                  <ng-option
+                    *ngFor="let data of allVendors | async"
+                    [value]="data.contactID"
+                  >
+                    {{ data.companyName }}</ng-option
+                  >
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-md-2 col-lg-2 pl-2 pr-0">
+              <div class="input-group input-group-sm mb-3">
+                <ng-select
+                  [(ngModel)]="category"
+                  name="category"
+                  class="capitalize"
+                  style="width: 100%"
+                  placeholder="Search items by category"
+                >
+                  <ng-option value="belts">Belts</ng-option>
+                  <ng-option value="brakes">Brakes</ng-option>
+                  <ng-option value="electrical">Electrical</ng-option>
+                  <ng-option value="filters">Filters</ng-option>
+                  <ng-option value="fluids">Fluids</ng-option>
+                  <ng-option value="miscellaneous">Miscellaneous</ng-option>
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-md-2 col-lg-2 pl-2">
+              <button
+                type="submit"
+                (click)="searchExistingInventory()"
+                class="btn btn-sm btn-success mr-2"
+              >
+                Search
+              </button>
+              <button
+                class="btn btn-sm btn-success line-height-18"
+                (click)="resetExistingInventory()"
+                type="button"
+              >
+                Reset
+              </button>
+            </div>
+            <div class="col-md-2 col-lg-2 text-right pr-1">
+              <div class="btn-group flex-wrap ml-2">
+                <button
+                  type="button"
+                  class="btn btn-success btn-sm dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-upload"></i> Export<span
+                    class="caret"
+                  ></span>
+                </button>
+                <div
+                  class="dropdown-menu"
+                  role="menu"
+                  x-placement="bottom-start"
+                  style="
                     position: absolute;
                     will-change: transform;
                     top: 0px;
                     left: 0px;
                     transform: translate3d(0px, 38px, 0px);
-                  ">
-                                    <a class="dropdown-item text-1" (click)="existingCSV()">CSV</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- For Required Inventory -->
-                    <div class="row" *ngIf="currentTab == 'rinv'" style="padding-top: 10px">
-                        <div class="col-md-2 col-lg-2 pr-0">
-                            <h4 class="text-4 mt-0 font-weight-bold mb-0 text-dark">
-                                Required Inventory Detail
-                            </h4>
-                        </div>
-                        <div class="col-md-2 col-lg-2">
-                            <div class="input-group input-group-sm mb-3">
-                                <input autocomplete="off" type="text" name="requiredItemName"
-                                    [(ngModel)]="requiredItemName" class="form-control"
-                                    (input)="getItemSuggestions($event.target.value, 'req')"
-                                    placeholder="Search items by name" />
-                            </div>
-                            <div *ngIf="requiredSuggestedItems?.length > 0" class="result-suggestions">
-                                <ul>
-                                    <li *ngFor="let suggestedItem of requiredSuggestedItems" style="cursor: pointer"
-                                        (click)="
+                  "
+                >
+                  <a class="dropdown-item text-1" (click)="existingCSV()"
+                    >CSV</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- For Required Inventory -->
+          <div
+            class="row"
+            *ngIf="currentTab == 'rinv'"
+            style="padding-top: 10px"
+          >
+            <div class="col-md-2 col-lg-2 pr-0">
+              <h4 class="text-4 mt-0 font-weight-bold mb-0 text-dark">
+                Required Inventory Detail
+              </h4>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <div class="input-group input-group-sm mb-3">
+                <input
+                  autocomplete="off"
+                  type="text"
+                  name="requiredItemName"
+                  [(ngModel)]="requiredItemName"
+                  class="form-control"
+                  (input)="getItemSuggestions($event.target.value, 'req')"
+                  placeholder="Search items by name"
+                />
+              </div>
+              <div
+                *ngIf="requiredSuggestedItems?.length > 0"
+                class="result-suggestions"
+              >
+                <ul>
+                  <li
+                    *ngFor="let suggestedItem of requiredSuggestedItems"
+                    style="cursor: pointer"
+                    (click)="
                       setItem(
                         suggestedItem.itemID,
                         suggestedItem.itemName,
                         'req'
                       )
-                    ">
-                                        {{ suggestedItem.itemName }}
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-lg-2">
-                            <div class="input-group input-group-sm mb-3">
-                                <ng-select [(ngModel)]="requiredVendorID" name="requiredVendorID" style="width: 100%"
-                                    placeholder="Search items by vendor">
-                                    <ng-option *ngFor="let data of allVendors | async" [value]="data.contactID">
-                                        {{ data.companyName }}</ng-option>
-                                </ng-select>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-lg-2">
-                            <button type="submit" (click)="searchRequiredFilter()" class="btn btn-sm btn-success mr-3">
-                                Search
-                            </button>
-                            <button type="button" (click)="resetRequiredFilter()" class="btn btn-sm btn-success">
-                                Reset
-                            </button>
-                        </div>
-                        <div class="col-md-4 col-lg-4 text-right pr-1">
-                            <div class="btn-group flex-wrap ml-2">
-                                <button type="button" class="btn btn-success btn-sm dropdown-toggle"
-                                    data-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-upload"></i>Export<span class="caret"></span>
-                                </button>
-                                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
+                    "
+                  >
+                    {{ suggestedItem.itemName }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <div class="input-group input-group-sm mb-3">
+                <ng-select
+                  [(ngModel)]="requiredVendorID"
+                  name="requiredVendorID"
+                  style="width: 100%"
+                  placeholder="Search items by vendor"
+                >
+                  <ng-option
+                    *ngFor="let data of allVendors | async"
+                    [value]="data.contactID"
+                  >
+                    {{ data.companyName }}</ng-option
+                  >
+                </ng-select>
+              </div>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <button
+                type="submit"
+                (click)="searchRequiredFilter()"
+                class="btn btn-sm btn-success mr-3"
+              >
+                Search
+              </button>
+              <button
+                type="button"
+                (click)="resetRequiredFilter()"
+                class="btn btn-sm btn-success"
+              >
+                Reset
+              </button>
+            </div>
+            <div class="col-md-4 col-lg-4 text-right pr-1">
+              <div class="btn-group flex-wrap ml-2">
+                <button
+                  type="button"
+                  class="btn btn-success btn-sm dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-upload"></i>Export<span class="caret"></span>
+                </button>
+                <div
+                  class="dropdown-menu"
+                  role="menu"
+                  x-placement="bottom-start"
+                  style="
                     position: absolute;
                     will-change: transform;
                     top: 0px;
                     left: 0px;
                     transform: translate3d(0px, 38px, 0px);
-                  ">
-                                    <a class="dropdown-item text-1" (click)="requiredCSV()">CSV</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </header>
-
-            <div class="col-lg-12 mt-3">
-                <div class="text-dark">
-                    <div class="form-group row">
-                        <div class="col-4 mb-3">
-                            <div class="p-3 bg-white">
-                                <div>
-                                    <h4 class="mt-1 mb-0 font-weight-bold">
-                                        Total Existing Inventory
-                                    </h4>
-                                    <h3 class="mt-1 mb-0 font-weight-bold">
-                                        {{ inventCount.total }}
-                                    </h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4 mb-3">
-                            <div class="p-3 bg-white">
-                                <div>
-                                    <h4 class="mt-1 mb-0 font-weight-bold">
-                                        Total Required Inventory
-                                    </h4>
-                                    <h3 class="mt-1 mb-0 font-weight-bold">
-                                        {{ requiredInventoryData.totalRequired }}
-                                    </h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                  "
+                >
+                  <a class="dropdown-item text-1" (click)="requiredCSV()"
+                    >CSV</a
+                  >
                 </div>
+              </div>
             </div>
-            <section class="m-2">
-                <div class="row mb-3">
-                    <div class="col-lg-12">
+          </div>
+        </form>
+      </header>
 
-                        <div class="bg-white p-3 text-dark">
-                            <div class="form-group row pt-1">
-                                <div class="col-lg-12">
-                                    <div class="pb-3">
-                                        <ul class="nav nav-tabs top-tabs mb-1" id="top-tabs" role="tablist">
-                                            <li class="nav-item" style="cursor:pointer; ">
-                                                <a class="nav-link" [ngClass]="{'active': currentTab == 'inv'}"
-                                                    (click)="tabChange('inv')" id="all-tab" role="tab"
-                                                    aria-controls="allassets" aria-selected="true">Existing
-                                                    Inventory</a>
-                                            </li>
-                                            <li class="nav-item" style="cursor:pointer;">
-                                                <a class="nav-link" [ngClass]="{'active show': currentTab == 'rinv'}"
-                                                    (click)="tabChange('rinv')" role="tab" aria-controls="reefer"
-                                                    aria-selected="false">Required
-                                                    Inventory</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="tab-content border-0 p-0 shadow-none" id="myTabContent">
-                                        <div class="tab-pane" [ngClass]="{'active show': currentTab == 'inv'}" id="einv"
-                                            role="tabpanel" aria-labelledby="all-tab">
-                                            <p-table #dt [value]="items" [resizableColumns]="true"
-                                                columnResizeMode="expand" scrollDirection="both"
-                                                [columns]="selectedColumns" [loading]="!loaded"
-                                                styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                                                [scrollable]="true" [loading]="!loaded" scrollHeight="100%">
-                                                <!-- Caption template of data table -->
-                                                <ng-template pTemplate="caption">
-                                                    <div
-                                                        class="p-d-flex d-flex justify-content-between align-items-center">
-                                                        <div>
-                                                            <h3 class="m-0"> Inventory </h3>
-                                                        </div>
-                                                        <div class="text-right">
-                                                            <span>Showing {{items.length}} entries </span> &nbsp;
-                                                            <button type="button" pButton
-                                                                (click)="refreshInventoryData()" pTooltip="Refresh"
-                                                                class="p-button-outlined mr-2"
-                                                                icon="fas fa-sync"></button>
-                                                            <button pButton pRipple pTooltip="Clear Filter"
-                                                                class="p-button-outlined mr-2" icon="pi pi-filter-slash"
-                                                                (click)="clear(dt)"></button>
-                                                            <p-multiSelect [options]="dataColumns"
-                                                                [(ngModel)]="selectedColumns" optionLabel="header"
-                                                                selectedItemsLabel="{0} columns selected"
-                                                                [style]="{minWidth: '200px'}"
-                                                                placeholder="Choose Columns">
-                                                            </p-multiSelect>
-                                                        </div>
-                                                    </div>
-                                                </ng-template>
-                                                <!-- Header template of DataTable -->
-                                                <ng-template pTemplate="header" let-columns>
-                                                    <tr>
-                                                        <th *ngFor="let dataColumns of columns"
-                                                            [pSortableColumn]="dataColumns.field" pResizableColumn
-                                                            style="width:14.50%">
-                                                            <div [ngSwitch]="dataColumns.field">
-                                                                <span *ngSwitchDefault>
-                                                                    <div class="flex justify-content-center align-items-center"
-                                                                        alignFrozen="right" pFrozenColumn
-                                                                        [frozen]="true">
-                                                                        {{dataColumns.header}}
-                                                                        <p-sortIcon [field]="dataColumns.field">
-                                                                        </p-sortIcon>
-                                                                        <p-columnFilter [type]="dataColumns.type"
-                                                                            [field]="dataColumns.field"
-                                                                            matchMode="contains"
-                                                                            [showMatchModes]="false"
-                                                                            [showOperator]="false"
-                                                                            [showAddButton]="false" display="menu">
-                                                                        </p-columnFilter>
-                                                                    </div>
-                                                                </span>
-                                                            </div>
-                                                        </th>
-
-                                                    </tr>
-                                                </ng-template>
-                                                <!-- Body Template of Data Table -->
-                                                <ng-template pTemplate="body" let-exItems let-columns="columns"
-                                                    let-rowIndex="rowIndex">
-                                                    <tr>
-                                                        <td *ngFor="let dataColumns of columns"
-                                                            style="width:14.50%; height: 40px; cursor: pointer">
-                                                            <div [ngSwitch]="dataColumns.field">
-                                                                <span *ngSwitchCase="'partNumber'">
-                                                                    <span>{{ exItems.partNumber }}</span>
-                                                                </span>
-                                                                <span *ngSwitchCase="'warehouseVendorID'">
-                                                                    <span class="line-height-lg text-capitalize">{{
-                                                                        vendors[exItems.warehouseVendorID]
-                                                                        }}</span>
-                                                                </span>
-                                                                <span *ngSwitchCase="'itemName'">
-                                                                    <span class="line-height-lg text-capitalize">{{
-                                                                        exItems.itemName
-                                                                        }}</span>
-                                                                </span>
-                                                                <span *ngSwitchCase="'category'">
-                                                                    <span class="line-height-lg text-capitalize">{{
-                                                                        exItems.category
-                                                                        }}</span>
-                                                                </span>
-                                                                <span *ngSwitchCase="'costUnitType'">
-                                                                    <span>{{exItems.cost}}
-                                                                        {{exItems.costUnitType}}</span>
-                                                                </span>
-                                                                <span *ngSwitchCase="'warehouseID'">
-                                                                    <span>{{warehouses[exItems.warehouseID] |
-                                                                        titlecase}}</span>
-                                                                </span>
-                                                                <span *ngSwitchDefault> {{get(exItems,dataColumns.field)
-                                                                    }}</span>
-                                                            </div>
-                                                        </td>
-
-                                                    </tr>
-                                                </ng-template>
-                                                <!-- Empty Template -->
-
-                                                <ng-template pTemplate="emptymessage" let-columns>
-                                                    <div class="col-lg-12 mt-3 text-center">
-                                                        {{dataMessage}}
-                                                        <br /><br>
-                                                    </div>
-                                                </ng-template>
-                                                <!-- Summary Section with Load More button -->
-
-                                                <ng-template pTemplate="summary" let-columns>
-                                                    <div class="col-lg-12 mt-3 text-center "
-                                                        *ngIf="lastItemSK !== 'end' && items.length !== 0">
-                                                        <button type="button " (click)="onScroll($event) "
-                                                            class="btn btn-success btn-sm text-light ">Load
-                                                            More..</button>
-                                                        <br /><br>
-                                                    </div>
-                                                    <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK ==='end'">
-                                                        Total Records: {{items.length}}</div>
-                                                </ng-template>
-                                            </p-table>
-                                        </div>
-
-                                        <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 'rinv'}"
-                                            id="rinv" role="tabpanel" aria-labelledby="reefer-tab">
-                                            <p-table #dt [value]="requiredItems" [resizableColumns]="true"
-                                                columnResizeMode="expand" scrollDirection="both"
-                                                [columns]="reqSelectedColumns" [loading]="!loaded"
-                                                styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                                                [scrollable]="true" [loading]="!loaded" scrollHeight="100%">
-                                                <!-- Caption template of data table -->
-                                                <ng-template pTemplate="caption">
-                                                    <div
-                                                        class="p-d-flex d-flex justify-content-between align-items-center">
-                                                        <div>
-                                                            <h3 class="m-0"> Inventory </h3>
-                                                        </div>
-                                                        <div class="text-right">
-                                                            <span>Showing {{requiredItems.length}} entries </span>
-                                                            &nbsp;
-                                                            <button type="button" pButton
-                                                                (click)="refreshRequiredData()" pTooltip="Refresh"
-                                                                class="p-button-outlined mr-2"
-                                                                icon="fas fa-sync"></button>
-
-                                                            <button pButton pRipple pTooltip="Clear Filter"
-                                                                class="p-button-outlined mr-2" icon="pi pi-filter-slash"
-                                                                (click)="clear(dt)"></button>
-
-                                                            <p-multiSelect [options]="reqDataColumns"
-                                                                [(ngModel)]="reqSelectedColumns" optionLabel="header"
-                                                                selectedItemsLabel="{0} columns selected"
-                                                                [style]="{minWidth: '200px'}"
-                                                                placeholder="Choose Columns">
-                                                            </p-multiSelect>
-                                                        </div>
-                                                    </div>
-                                                </ng-template>
-                                                <!-- Header template of DataTable -->
-                                                <ng-template pTemplate="header" let-columns>
-                                                    <tr>
-                                                        <th *ngFor="let reqDataColumns of columns"
-                                                            [pSortableColumn]="reqDataColumns.field" pResizableColumn
-                                                            style="width:25% ">
-                                                            <div [ngSwitch]="reqDataColumns.field">
-                                                                <span *ngSwitchDefault>
-                                                                    <div class="flex justify-content-center align-items-center"
-                                                                        alignFrozen="right" pFrozenColumn
-                                                                        [frozen]="true">
-                                                                        {{reqDataColumns.header}}
-                                                                        <p-sortIcon [field]="reqDataColumns.field">
-                                                                        </p-sortIcon>
-                                                                        <p-columnFilter [type]="reqDataColumns.type"
-                                                                            [field]="reqDataColumns.field"
-                                                                            matchMode="contains"
-                                                                            [showMatchModes]="false"
-                                                                            [showOperator]="false"
-                                                                            [showAddButton]="false" display="menu">
-                                                                        </p-columnFilter>
-                                                                    </div>
-                                                                </span>
-                                                            </div>
-                                                        </th>
-
-                                                    </tr>
-                                                </ng-template>
-                                                <!-- Body Template of Data Table -->
-                                                <ng-template pTemplate="body" let-reqItems let-columns="columns"
-                                                    let-rowIndex="rowIndex">
-                                                    <tr>
-                                                        <td *ngFor="let reqDataColumns of columns"
-                                                            style="width:25%; height: 40px;;cursor: pointer;">
-                                                            <div [ngSwitch]="reqDataColumns.field">
-                                                                <span *ngSwitchCase="'partNumber'">
-                                                                    <span class="line-height-lg text-capitalize"> {{
-                                                                        reqItems.partNumber }} </span>
-                                                                </span>
-                                                                <span *ngSwitchCase="'itemName'">
-                                                                    <span class="line-height-lg text-capitalize">{{
-                                                                        reqItems.itemName }}</span>
-                                                                </span>
-                                                                <span *ngSwitchCase="'warehouseVendorID'">
-                                                                    <span>{{( vendors[reqItems.warehouseVendorID] ?
-                                                                        vendors[reqItems.warehouseVendorID] : '-') |
-                                                                        titlecase}}</span>
-                                                                </span>
-                                                                <span *ngSwitchCase="'quantity'">
-                                                                    <span>{{( reqItems.quantity ? reqItems.quantity :
-                                                                        '-') | titlecase}}</span>
-                                                                </span>
-                                                                <span *ngSwitchDefault>
-                                                                    {{(get(reqItems,reqDataColumns.field) ?
-                                                                    get(reqItems,reqDataColumns.field): '-') |
-                                                                    titlecase}}</span>
-                                                            </div>
-                                                        </td>
-
-                                                    </tr>
-                                                </ng-template>
-                                                <!-- Empty Template -->
-
-                                                <ng-template pTemplate="emptymessage" let-columns>
-                                                    <div class="col-lg-12 mt-3 text-center">
-                                                        {{dataMessage}}
-                                                        <br /><br>
-                                                    </div>
-                                                </ng-template>
-                                                <!-- Summary Section with Load More button -->
-
-                                                <ng-template pTemplate="summary" let-columns>
-                                                    <div class="col-lg-12 mt-3 text-center "
-                                                        *ngIf="lastSK !== 'end' && requiredItems.length !== 0">
-                                                        <button type="button " (click)="onScroll($event) "
-                                                            class="btn btn-success btn-sm text-light ">Load
-                                                            More..</button>
-                                                        <br /><br>
-                                                    </div>
-                                                    <div class="col-lg-12 mt-3 text-center" *ngIf="lastSK ==='end'">
-                                                        Total Records: {{requiredItems.length}}</div>
-                                                </ng-template>
-                                            </p-table>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
+      <section class="m-2">
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="text-dark">
+              <div class="form-group row">
+                <div class="col-4 mb-2 pr-0">
+                  <div class="p-3 bg-white">
+                    <div>
+                      <h4 class="mt-1 mb-0 font-weight-bold">
+                        Total Existing Inventory
+                      </h4>
+                      <h3 class="mt-1 mb-0 font-weight-bold">
+                        {{ inventCount.total }}
+                      </h3>
                     </div>
+                  </div>
                 </div>
-            </section>
-        </section>
-    </div>
+                <div class="col-4 mb-2 pl-2">
+                  <div class="p-3 bg-white">
+                    <div>
+                      <h4 class="mt-1 mb-0 font-weight-bold">
+                        Total Required Inventory
+                      </h4>
+                      <h3 class="mt-1 mb-0 font-weight-bold">
+                        {{ requiredInventoryData.totalRequired }}
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row pt-1">
+                <div class="col-lg-12">
+                  <div class="pb-3">
+                    <ul
+                      class="nav nav-tabs top-tabs mb-1"
+                      id="top-tabs"
+                      role="tablist"
+                    >
+                      <li class="nav-item" style="cursor: pointer">
+                        <a
+                          class="nav-link"
+                          [ngClass]="{ active: currentTab == 'inv' }"
+                          (click)="tabChange('inv')"
+                          id="all-tab"
+                          role="tab"
+                          aria-controls="allassets"
+                          aria-selected="true"
+                          >Existing Inventory</a
+                        >
+                      </li>
+                      <li class="nav-item" style="cursor: pointer">
+                        <a
+                          class="nav-link"
+                          [ngClass]="{ 'active show': currentTab == 'rinv' }"
+                          (click)="tabChange('rinv')"
+                          role="tab"
+                          aria-controls="reefer"
+                          aria-selected="false"
+                          >Required Inventory</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div
+                    class="tab-content border-0 p-0 shadow-none"
+                    id="myTabContent"
+                  >
+                    <div
+                      class="tab-pane"
+                      [ngClass]="{ 'active show': currentTab == 'inv' }"
+                      id="einv"
+                      role="tabpanel"
+                      aria-labelledby="all-tab"
+                    >
+                      <p-table
+                        #dt
+                        [value]="items"
+                        [resizableColumns]="true"
+                        columnResizeMode="expand"
+                        scrollDirection="both"
+                        [columns]="selectedColumns"
+                        [loading]="!loaded"
+                        styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                        [scrollable]="true"
+                        [loading]="!loaded"
+                        scrollHeight="100%"
+                      >
+                        <!-- Caption template of data table -->
+                        <ng-template pTemplate="caption">
+                          <div
+                            class="p-d-flex d-flex justify-content-between align-items-center"
+                          >
+                            <div>
+                              <h3 class="m-0">Inventory</h3>
+                            </div>
+                            <div class="text-right">
+                              <span>Showing {{ items.length }} entries </span>
+                              &nbsp;
+                              <button
+                                type="button"
+                                pButton
+                                (click)="refreshInventoryData()"
+                                pTooltip="Refresh"
+                                class="p-button-outlined mr-2"
+                                icon="fas fa-sync"
+                              ></button>
+                              <button
+                                pButton
+                                pRipple
+                                pTooltip="Clear Filter"
+                                class="p-button-outlined mr-2"
+                                icon="pi pi-filter-slash"
+                                (click)="clear(dt)"
+                              ></button>
+                              <p-multiSelect
+                                [options]="dataColumns"
+                                [(ngModel)]="selectedColumns"
+                                optionLabel="header"
+                                selectedItemsLabel="{0} columns selected"
+                                [style]="{ minWidth: '200px' }"
+                                placeholder="Choose Columns"
+                              >
+                              </p-multiSelect>
+                            </div>
+                          </div>
+                        </ng-template>
+                        <!-- Header template of DataTable -->
+                        <ng-template pTemplate="header" let-columns>
+                          <tr>
+                            <th
+                              *ngFor="let dataColumns of columns"
+                              [pSortableColumn]="dataColumns.field"
+                              pResizableColumn
+                              style="width: 14.5%"
+                            >
+                              <div [ngSwitch]="dataColumns.field">
+                                <span *ngSwitchDefault>
+                                  <div
+                                    class="flex justify-content-center align-items-center"
+                                    alignFrozen="right"
+                                    pFrozenColumn
+                                    [frozen]="true"
+                                  >
+                                    {{ dataColumns.header }}
+                                    <p-sortIcon [field]="dataColumns.field">
+                                    </p-sortIcon>
+                                    <p-columnFilter
+                                      [type]="dataColumns.type"
+                                      [field]="dataColumns.field"
+                                      matchMode="contains"
+                                      [showMatchModes]="false"
+                                      [showOperator]="false"
+                                      [showAddButton]="false"
+                                      display="menu"
+                                    >
+                                    </p-columnFilter>
+                                  </div>
+                                </span>
+                              </div>
+                            </th>
+                          </tr>
+                        </ng-template>
+                        <!-- Body Template of Data Table -->
+                        <ng-template
+                          pTemplate="body"
+                          let-exItems
+                          let-columns="columns"
+                          let-rowIndex="rowIndex"
+                        >
+                          <tr>
+                            <td
+                              *ngFor="let dataColumns of columns"
+                              style="
+                                width: 14.5%;
+                                height: 40px;
+                                cursor: pointer;
+                              "
+                            >
+                              <div [ngSwitch]="dataColumns.field">
+                                <span *ngSwitchCase="'partNumber'">
+                                  <span>{{ exItems.partNumber }}</span>
+                                </span>
+                                <span *ngSwitchCase="'warehouseVendorID'">
+                                  <span
+                                    class="line-height-lg text-capitalize"
+                                    >{{
+                                      vendors[exItems.warehouseVendorID]
+                                    }}</span
+                                  >
+                                </span>
+                                <span *ngSwitchCase="'itemName'">
+                                  <span
+                                    class="line-height-lg text-capitalize"
+                                    >{{ exItems.itemName }}</span
+                                  >
+                                </span>
+                                <span *ngSwitchCase="'category'">
+                                  <span
+                                    class="line-height-lg text-capitalize"
+                                    >{{ exItems.category }}</span
+                                  >
+                                </span>
+                                <span *ngSwitchCase="'costUnitType'">
+                                  <span
+                                    >{{ exItems.cost }}
+                                    {{ exItems.costUnitType }}</span
+                                  >
+                                </span>
+                                <span *ngSwitchCase="'warehouseID'">
+                                  <span>{{
+                                    warehouses[exItems.warehouseID] | titlecase
+                                  }}</span>
+                                </span>
+                                <span *ngSwitchDefault>
+                                  {{ get(exItems, dataColumns.field) }}</span
+                                >
+                              </div>
+                            </td>
+                          </tr>
+                        </ng-template>
+                        <!-- Empty Template -->
+
+                        <ng-template pTemplate="emptymessage" let-columns>
+                          <div class="col-lg-12 mt-3 text-center">
+                            {{ dataMessage }}
+                            <br /><br />
+                          </div>
+                        </ng-template>
+                        <!-- Summary Section with Load More button -->
+
+                        <ng-template pTemplate="summary" let-columns>
+                          <div
+                            class="col-lg-12 mt-3 text-center"
+                            *ngIf="lastItemSK !== 'end' && items.length !== 0"
+                          >
+                            <button
+                              type="button "
+                              (click)="onScroll($event)"
+                              class="btn btn-success btn-sm text-light"
+                            >
+                              Load More..
+                            </button>
+                            <br /><br />
+                          </div>
+                          <div
+                            class="col-lg-12 mt-3 text-center"
+                            *ngIf="lastItemSK === 'end'"
+                          >
+                            Total Records: {{ items.length }}
+                          </div>
+                        </ng-template>
+                      </p-table>
+                    </div>
+
+                    <div
+                      class="tab-pane fade"
+                      [ngClass]="{ 'active show': currentTab == 'rinv' }"
+                      id="rinv"
+                      role="tabpanel"
+                      aria-labelledby="reefer-tab"
+                    >
+                      <p-table
+                        #dt
+                        [value]="requiredItems"
+                        [resizableColumns]="true"
+                        columnResizeMode="expand"
+                        scrollDirection="both"
+                        [columns]="reqSelectedColumns"
+                        [loading]="!loaded"
+                        styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                        [scrollable]="true"
+                        [loading]="!loaded"
+                        scrollHeight="100%"
+                      >
+                        <!-- Caption template of data table -->
+                        <ng-template pTemplate="caption">
+                          <div
+                            class="p-d-flex d-flex justify-content-between align-items-center"
+                          >
+                            <div>
+                              <h3 class="m-0">Inventory</h3>
+                            </div>
+                            <div class="text-right">
+                              <span
+                                >Showing {{ requiredItems.length }} entries
+                              </span>
+                              &nbsp;
+                              <button
+                                type="button"
+                                pButton
+                                (click)="refreshRequiredData()"
+                                pTooltip="Refresh"
+                                class="p-button-outlined mr-2"
+                                icon="fas fa-sync"
+                              ></button>
+
+                              <button
+                                pButton
+                                pRipple
+                                pTooltip="Clear Filter"
+                                class="p-button-outlined mr-2"
+                                icon="pi pi-filter-slash"
+                                (click)="clear(dt)"
+                              ></button>
+
+                              <p-multiSelect
+                                [options]="reqDataColumns"
+                                [(ngModel)]="reqSelectedColumns"
+                                optionLabel="header"
+                                selectedItemsLabel="{0} columns selected"
+                                [style]="{ minWidth: '200px' }"
+                                placeholder="Choose Columns"
+                              >
+                              </p-multiSelect>
+                            </div>
+                          </div>
+                        </ng-template>
+                        <!-- Header template of DataTable -->
+                        <ng-template pTemplate="header" let-columns>
+                          <tr>
+                            <th
+                              *ngFor="let reqDataColumns of columns"
+                              [pSortableColumn]="reqDataColumns.field"
+                              pResizableColumn
+                              style="width: 25%"
+                            >
+                              <div [ngSwitch]="reqDataColumns.field">
+                                <span *ngSwitchDefault>
+                                  <div
+                                    class="flex justify-content-center align-items-center"
+                                    alignFrozen="right"
+                                    pFrozenColumn
+                                    [frozen]="true"
+                                  >
+                                    {{ reqDataColumns.header }}
+                                    <p-sortIcon [field]="reqDataColumns.field">
+                                    </p-sortIcon>
+                                    <p-columnFilter
+                                      [type]="reqDataColumns.type"
+                                      [field]="reqDataColumns.field"
+                                      matchMode="contains"
+                                      [showMatchModes]="false"
+                                      [showOperator]="false"
+                                      [showAddButton]="false"
+                                      display="menu"
+                                    >
+                                    </p-columnFilter>
+                                  </div>
+                                </span>
+                              </div>
+                            </th>
+                          </tr>
+                        </ng-template>
+                        <!-- Body Template of Data Table -->
+                        <ng-template
+                          pTemplate="body"
+                          let-reqItems
+                          let-columns="columns"
+                          let-rowIndex="rowIndex"
+                        >
+                          <tr>
+                            <td
+                              *ngFor="let reqDataColumns of columns"
+                              style="width: 25%; height: 40px; cursor: pointer"
+                            >
+                              <div [ngSwitch]="reqDataColumns.field">
+                                <span *ngSwitchCase="'partNumber'">
+                                  <span class="line-height-lg text-capitalize">
+                                    {{ reqItems.partNumber }}
+                                  </span>
+                                </span>
+                                <span *ngSwitchCase="'itemName'">
+                                  <span
+                                    class="line-height-lg text-capitalize"
+                                    >{{ reqItems.itemName }}</span
+                                  >
+                                </span>
+                                <span *ngSwitchCase="'warehouseVendorID'">
+                                  <span>{{
+                                    (vendors[reqItems.warehouseVendorID]
+                                      ? vendors[reqItems.warehouseVendorID]
+                                      : "-"
+                                    ) | titlecase
+                                  }}</span>
+                                </span>
+                                <span *ngSwitchCase="'quantity'">
+                                  <span>{{
+                                    (reqItems.quantity
+                                      ? reqItems.quantity
+                                      : "-"
+                                    ) | titlecase
+                                  }}</span>
+                                </span>
+                                <span *ngSwitchDefault>
+                                  {{
+                                    (get(reqItems, reqDataColumns.field)
+                                      ? get(reqItems, reqDataColumns.field)
+                                      : "-"
+                                    ) | titlecase
+                                  }}</span
+                                >
+                              </div>
+                            </td>
+                          </tr>
+                        </ng-template>
+                        <!-- Empty Template -->
+
+                        <ng-template pTemplate="emptymessage" let-columns>
+                          <div class="col-lg-12 mt-3 text-center">
+                            {{ dataMessage }}
+                            <br /><br />
+                          </div>
+                        </ng-template>
+                        <!-- Summary Section with Load More button -->
+
+                        <ng-template pTemplate="summary" let-columns>
+                          <div
+                            class="col-lg-12 mt-3 text-center"
+                            *ngIf="
+                              lastSK !== 'end' && requiredItems.length !== 0
+                            "
+                          >
+                            <button
+                              type="button "
+                              (click)="onScroll($event)"
+                              class="btn btn-success btn-sm text-light"
+                            >
+                              Load More..
+                            </button>
+                            <br /><br />
+                          </div>
+                          <div
+                            class="col-lg-12 mt-3 text-center"
+                            *ngIf="lastSK === 'end'"
+                          >
+                            Total Records: {{ requiredItems.length }}
+                          </div>
+                        </ng-template>
+                      </p-table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
 </section>
