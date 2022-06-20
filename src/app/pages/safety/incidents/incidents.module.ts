@@ -1,25 +1,36 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
+import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { RouterModule, Routes } from "@angular/router";
 import {
   NgbDateAdapter,
   NgbDateParserFormatter,
   NgbDateStruct,
-  NgbModule,
+  NgbModule
 } from "@ng-bootstrap/ng-bootstrap";
 
-import { IncidentListComponent } from "./incident-list/incident-list.component";
 import { AddIncidentComponent } from "./add-incident/add-incident.component";
 import { IncidentDetailComponent } from "./incident-detail/incident-detail.component";
+import { IncidentListComponent } from "./incident-list/incident-list.component";
 
-import { SharedModule } from "../../../shared/shared.module";
-import { NgSelectModule } from "@ng-select/ng-select";
 import { Injectable } from "@angular/core";
+import { NgSelectModule } from "@ng-select/ng-select";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { SharedModule } from "../../../shared/shared.module";
 
 import { SlickCarouselModule } from "ngx-slick-carousel";
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { MenuModule } from 'primeng/menu';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { TableModule } from 'primeng/table';
+
+
 const routes: Routes = [
   {
     path: "",
@@ -58,10 +69,10 @@ export class CustomAdapter extends NgbDateAdapter<string> {
   toModel(date: NgbDateStruct): string { // from internal model -> your mode
     return date
       ? date.year +
-          this.DELIMITER +
-          ("0" + date.month).slice(-2) +
-          this.DELIMITER +
-          ("0" + date.day).slice(-2)
+      this.DELIMITER +
+      ("0" + date.month).slice(-2) +
+      this.DELIMITER +
+      ("0" + date.day).slice(-2)
       : null;
   }
 }
@@ -109,10 +120,20 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgSelectModule,
     InfiniteScrollModule,
     SlickCarouselModule,
+    AutoCompleteModule,
+    ButtonModule,
+    CalendarModule,
+    DropdownModule,
+    MenuModule,
+    MultiSelectModule,
+    SplitButtonModule,
+    TableModule,
+    DialogModule
+
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
-export class IncidentsModule {}
+export class IncidentsModule { }

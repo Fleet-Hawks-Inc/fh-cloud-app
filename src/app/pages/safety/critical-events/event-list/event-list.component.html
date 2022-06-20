@@ -70,12 +70,37 @@
                         <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn
                           [ngStyle]="{ width: dataColumns.width }">
                           <div [ngSwitch]="dataColumns.field">
-                            <span>
+                            <!-- Event Status Filter Customization -->
+                            <span *ngSwitchCase="'status'">
                               <div class="flex justify-content-center align-items-center" alignFrozen="left"
                                 pFrozenColumn [frozen]="true">
                                 {{ dataColumns.header }}
-                                <p-sortIcon [field]="dataColumns.field">
-                                </p-sortIcon>
+                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
+                                  [showOperator]="false" matchMode="contains" [showMatchModes]="false"
+                                  [showAddButton]="false" display="menu">
+                                  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <p-multiSelect [options]="status_values" placeholder="Any"
+                                      (onChange)='changeStatus(critical.incidentID, $event, rowIndex)'
+                                      optionLabel="name" optionValue="value">
+                                      <ng-template let-option pTemplate="item">
+                                        <div>
+                                          <span class="ml-1">{{
+                                            option.name
+                                            }}</span>
+                                        </div>
+                                      </ng-template>
+                                    </p-multiSelect>
+                                  </ng-template>
+                                </p-columnFilter>
+                              </div>
+                            </span>
+
+                            <span *ngSwitchDefault>
+                              <div class="flex justify-content-center align-items-center" alignFrozen="right"
+                                pFrozenColumn [frozen]="true">
+                                {{ dataColumns.header }}
+                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
                                 <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
                                   matchMode="contains" [showMatchModes]="false" [showOperator]="false"
                                   [showAddButton]="false" display="menu">
@@ -84,11 +109,12 @@
                             </span>
                           </div>
                         </th>
-                        <th style="width: 12%" alignFrozen="right" pFrozenColumn [frozen]="true">
+                        <th style="width: 162px" alignFrozen="right" pFrozenColumn [frozen]="true">
                           Actions
                         </th>
                       </tr>
                     </ng-template>
+
                     <ng-template pTemplate="body" let-critical let-columns="columns" let-rowIndex="rowIndex">
                       <tr>
                         <td *ngFor="let dataColumns of columns" [ngStyle]="{ width: dataColumns.width }"
@@ -140,7 +166,7 @@
                           </div>
                         </td>
                         <td>
-                          <p-dropdown [style]="{ width: '203px'}" [options]="status_values"
+                          <p-dropdown [style]="{ width: '150px'}" [options]="status_values"
                             [(ngModel)]="critical.status" appendTo="body" baseZIndex="1000"
                             (onChange)='changeStatus(critical.eventID, $event, rowIndex)' optionLabel="name"
                             optionValue="value"></p-dropdown>
