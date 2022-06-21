@@ -54,7 +54,7 @@
     "@types/jquery.validation": "1.16.6",
     "@types/jqueryui": "1.12.10",
     "@types/pdfjs-dist": "2.1.7",
-    "aws-amplify": "4.3.17",
+    "aws-amplify": "4.3.24",
     "buffer": "5.4.3",
     "check-password-strength": "2.0.3",
     "countries-and-timezones": "3.3.0",
