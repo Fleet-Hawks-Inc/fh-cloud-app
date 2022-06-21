@@ -87,7 +87,9 @@ export class HeaderComponent implements OnInit {
   notifications = [];
   announcements = [];
   unReadCounter = 0;
-
+  lastKey = '';
+  isLoadText = "Load More...";
+  isLoad = false;
   constructor(
     private sharedService: SharedServiceService,
     private apiService: ApiService,
@@ -288,6 +290,7 @@ export class HeaderComponent implements OnInit {
     if (isNotification && notification.read === 0) {
 
       await this.apiService.putData(`notification/read/${notification.id}`, {}).toPromise();
+      this.unReadCounter -= 1;
     }
 
 
@@ -295,12 +298,20 @@ export class HeaderComponent implements OnInit {
   }
 
 
+  onScroll = async () => {
+    this.isLoad = true;
+    this.isLoadText = "Loading";
+    await this.getAllNotificationAnnouncement();
+  }
 
   async getAllNotificationAnnouncement() {
     this.unReadCounter = 0;
-    const result = await this.apiService.getData('notification/getAll', true).toPromise();
+    const result = await this.apiService.getData(`notification/getAll?lastKey=${this.lastKey}`).toPromise();
     if (result.notifications) {
-      this.notifications = result.notifications;
+      for (let i = 0; i < result.notifications.data.length; i++) {
+        const element = result.notifications.data[i];
+        this.notifications.push(element)
+      }
       this.notifications.forEach(element => {
         if (element.read === 0) {
           this.unReadCounter += 1;
@@ -312,6 +323,11 @@ export class HeaderComponent implements OnInit {
           element.message;
 
       });
+      if (result.notifications.nextPage) {
+        this.lastKey = result.notifications.nextPage;
+      } else {
+        this.lastKey = 'end';
+      }
     }
     if (result.announcements) {
       this.announcements = result.announcements;

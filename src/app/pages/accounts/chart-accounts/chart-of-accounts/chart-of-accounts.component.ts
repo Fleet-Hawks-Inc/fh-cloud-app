@@ -70,7 +70,7 @@ export class ChartOfAccountsComponent implements OnInit {
     private accountService: AccountService,
     private toaster: ToastrService,
     private listService: ListService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.checkPredefinedAccounts();
@@ -236,28 +236,37 @@ export class ChartOfAccountsComponent implements OnInit {
       });
   }
   validateAcNumber(actNo) {
+
     if (actNo !== null && actNo !== "") {
+      this.submitDisabled = true;
+      this.actNoError = false;
       this.accountService
         .getData(`chartAc/validate/accountNumber/${actNo}`)
         .subscribe((res) => {
           if (res === true) {
             this.actNoError = true;
+            this.submitDisabled = true;
           } else {
             this.actNoError = false;
+            this.submitDisabled = false;
           }
         });
     }
   }
   validateAcName(actName) {
     if (actName !== null && actName !== "") {
+      this.submitDisabled = true;
+      this.actNameError = false;
       actName = actName.replace(/\s+/g, " ").trim(); // trim the double or more spaces if in between words
       this.accountService
         .getData(`chartAc/validate/accountName/${actName}`)
         .subscribe((res) => {
           if (res === true) {
             this.actNameError = true;
+            this.submitDisabled = true;
           } else {
             this.actNameError = false;
+            this.submitDisabled = false;
           }
         });
     }
@@ -284,7 +293,7 @@ export class ChartOfAccountsComponent implements OnInit {
       internalActID: "",
     };
     this.accountService.postData("chartAc", data).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -301,7 +310,7 @@ export class ChartOfAccountsComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -415,7 +424,7 @@ export class ChartOfAccountsComponent implements OnInit {
       internalActID: this.internalActID,
     };
     this.accountService.putData(`chartAc/update/${ID}`, data).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -432,7 +441,7 @@ export class ChartOfAccountsComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -492,7 +501,7 @@ export class ChartOfAccountsComponent implements OnInit {
     this.accountService
       .postData("chartAc/acClass/add", this.classData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -508,7 +517,7 @@ export class ChartOfAccountsComponent implements OnInit {
               error: () => {
                 this.classDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {
