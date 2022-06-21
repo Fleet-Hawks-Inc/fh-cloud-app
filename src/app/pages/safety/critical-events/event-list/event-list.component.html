@@ -1,188 +1,201 @@
 <section class="body">
   <div class="inner-wrapper">
-    <section role="main" class="content-body pr-0 pt-0 pl-0">
-      <header class="page-header">
-                        <form class="form-horizontal" method="get">
-        <div class="row" style="padding-top: 10px">
-          <div class="col-md-2 col-lg-2">
-            <ng-select
-              [(ngModel)]="filter.vehicleID"
-              class="text-capitalize"
-              name="vehicleID"
-              placeholder="Search by Vehicle"
-            >
-              <ng-option
-                *ngFor="let vehicle of vehicles"
-                value="{{ vehicle.vehicleID }}"
-                >{{ vehicle.vehicleIdentification }}</ng-option
-              >
-            </ng-select>
-          </div>
-          <div class="col-md-2 col-lg-2">
-            <div class="input-group input-group-sm mb-3">
-              <input
-                [(ngModel)]="filter.date"
-                name="date"
-                type="text"
-                placeholder="yyyy/mm/dd"
-                (click)="from.toggle()"
-                [maxDate]="birthDateMaxLimit"
-                [minDate]="birthDateMinLimit"
-                ngbDatepicker
-                #from="ngbDatepicker"
-                class="form-control"
-                autocomplete="off"
-              />
+    <section role="main" class="content-body pl-0 pt-0 pr-0">
+      <header class="page-header pr19 pl11">
+        <form class="form-horizontal" method="get">
+          <div class="row" style="padding-top: 9px">
+            <div class="col-md-2 col-lg-2">
+              <ng-select [(ngModel)]="filter.vehicleID" class="text-capitalize" name="vehicleID"
+                placeholder="Search by Vehicle">
+                <ng-option *ngFor="let vehicle of vehicles" value="{{ vehicle.vehicleID }}">{{
+                  vehicle.vehicleIdentification }}</ng-option>
+              </ng-select>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <div class="input-group input-group-sm mb-3">
+                <input [(ngModel)]="filter.date" name="date" type="text" placeholder="yyyy/mm/dd"
+                  (click)="from.toggle()" [maxDate]="birthDateMaxLimit" [minDate]="birthDateMinLimit" ngbDatepicker
+                  #from="ngbDatepicker" class="form-control" autocomplete="off" />
+              </div>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <button type="submit" (click)="searchEvents()" class="btn btn-sm btn-success mr-3">Search</button>
+              <a href="javascript:;" (click)="resetFilter()" class="btn btn-success btn-sm" style="color: white">
+                Reset
+              </a>
             </div>
           </div>
-          <div class="col-md-2 col-lg-2">
-                                <button type="submit" (click)="searchEvents()"class="btn btn-sm btn-success mr-3">Search</button>
-            <a
-              href="javascript:;"
-              (click)="resetFilter()"
-              class="btn btn-success btn-sm"
-              style="color: white"
-            >
-              Reset
-            </a>
-          </div>
-          <div class="col-md-6 col-lg-6 pr-1 text-right">
-            <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
-              <i class="fas fa-sync"></i>
-            </a>
-            <a
-              (click)="fetchEvents(true)"
-              href="javascript:;"
-              class="modal-with-form btn btn-success btn-sm mx-2"
-              style="color: white"
-              ><i class="fas fa-download"></i> Fetch Events</a
-            >
-
-            <a
-              href="javascript:;"
-              routerLink="/safety/critical-events/add-event"
-              class="btn btn-success btn-sm mr-2"
-              style="color: white"
-              ><i class="fas fa-plus"></i> Add Event</a
-            >
-          </div>
-        </div>
         </form>
       </header>
-
       <section class="m-2">
         <div class="row mb-3">
-         <div class="col-lg-12">
-          <div class="bg-white p-3 text-dark">
-           <div class="form-group row">
-            <div class="col-lg-12"
-              infiniteScroll
-              [infiniteScrollDistance]="1"
-              [infiniteScrollUpDistance]="1"
-              [infiniteScrollThrottle]="5"
-              (scrolled)="onScroll()"
-            >
-            <table
-            class="
-              row-border
-              hover
-              table table-bordered table-striped
-              mb-0
-            "
-          >
-            <thead>
-              <tr>
-                <th>Vehicle</th>
-                <th>Event Date</th>
-                <th>Event Time</th>
-                <th>Event Type</th>
-                <th>Event Source</th>
-                <th>Created By</th>
-                <th>Location</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody *ngIf="events.length > 0">
-              <tr
-                class="cursorpoint"
-                *ngFor="let data of events; let i = index"
-              >
-                <td
-                  class="text-capitalize"
-                  [routerLink]="data.url"
-                >
-                  {{ vehiclesObject[data.vehicleID] }}
-                </td>
-                <td class="text-capitalize" [routerLink]="data.url">
-                  {{ data.eventDate | date: 'yyyy/MM/dd' }}
-                </td>
-                <td class="text-capitalize" [routerLink]="data.url">
-                  {{ data.eventTime }}
-                </td>
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row">
+                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
+                  <p-table #dt [value]="events" [resizableColumns]="true" columnResizeMode="expand"
+                    scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
+                    scrollHeight="100%">
+                    <!-- Caption template of data table -->
+                    <ng-template pTemplate="caption">
+                      <div class="p-d-flex d-flex justify-content-between align-items-center">
+                        <div>
+                          <h3 class="m-0">Critical Event</h3>
+                        </div>
 
-                <td class="text-capitalize" [routerLink]="data.url">
-                  <span *ngIf="data.eventType == 'motionDetection'"
-                    >Motion Detection</span
-                  >
-                  <span *ngIf="data.eventType == 'harshAcceleration'"
-                    >Harsh Acceleration</span
-                  >
-                  <span *ngIf="data.eventType == 'harshBrake'"
-                    >Harsh Brake</span
-                  >
-                  <span *ngIf="data.eventType == 'highSpeed'"
-                    >High Speed</span
-                  >
-                  <span *ngIf="data.eventType == 'impactTilt'"
-                    >Impact/Tilt</span
-                  >
-                </td>
-                <td class="text-capitalize" [routerLink]="data.url">
-                  {{ data.eventSource }}
-                </td>
-                <td class="text-capitalize" [routerLink]="data.url">{{ data.createdBy }}</td>
-                <td class="text-capitalize" [routerLink]="data.url">
-                  <span *ngIf="data.location.label != undefined">{{ data.location.label }}</span>
-                  <span *ngIf="data.location.label === undefined">NA</span>
-                </td>
-                <td style="width: 180px">
-                  <ng-select
-                    [clearable]="false"
-                    class="form-control text-capitalize"
-                    (ngModelChange)="
-                      changeStatus(data.eventID, $event, i)
-                    "
-                    [(ngModel)]="data.status"
-                  >
-                    <ng-option
-                      *ngFor="let status of status_values"
-                      value="{{ status }}"
-                      >{{ status }}</ng-option
-                    >
-                  </ng-select>
-                </td>
-              </tr>
-            </tbody>
+                        <div class="text-right">
+                          <span>Showing {{ events.length }} entries </span>
+                          &nbsp;
+                          <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
+                            class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                          <button type="button" pButton pTooltip="Add" routerLink="/safety/critical-events/add-event"
+                            class="p-button-outlined mr-2" icon="pi pi-plus"></button>
+                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash" (click)="clear(dt)"></button>
 
-            <tbody *ngIf="events.length == 0">
-              <tr>
-                <td colspan="9" class="no-data-available">
-                  {{dataMessage}}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+
+                          <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header"
+                            selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns">
+                          </p-multiSelect>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <!-- Header template of DataTable -->
+                    <ng-template pTemplate="header" let-columns let-rowIndex="rowIndex">
+                      <tr>
+                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn
+                          [ngStyle]="{ width: dataColumns.width }">
+                          <div [ngSwitch]="dataColumns.field">
+                            <!-- Event Status Filter Customization -->
+                            <span *ngSwitchCase="'status'">
+                              <div class="flex justify-content-center align-items-center" alignFrozen="left"
+                                pFrozenColumn [frozen]="true">
+                                {{ dataColumns.header }}
+                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
+                                  [showOperator]="false" matchMode="contains" [showMatchModes]="false"
+                                  [showAddButton]="false" display="menu">
+                                  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <p-multiSelect [options]="status_values" placeholder="Any"
+                                      (onChange)="filter($event.value)" optionLabel="name" optionValue="value">
+                                      <ng-template let-option pTemplate="item">
+                                        <div>
+                                          <span class="ml-1">{{
+                                            option.name
+                                            }}</span>
+                                        </div>
+                                      </ng-template>
+                                    </p-multiSelect>
+                                  </ng-template>
+                                </p-columnFilter>
+                              </div>
+                            </span>
+
+                            <span *ngSwitchDefault>
+                              <div class="flex justify-content-center align-items-center" alignFrozen="right"
+                                pFrozenColumn [frozen]="true">
+                                {{ dataColumns.header }}
+                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
+                                  matchMode="contains" [showMatchModes]="false" [showOperator]="false"
+                                  [showAddButton]="false" display="menu">
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                          </div>
+                        </th>
+                        <th style="width: 162px" alignFrozen="right" pFrozenColumn [frozen]="true">
+                          Actions
+                        </th>
+                      </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-critical let-columns="columns" let-rowIndex="rowIndex">
+                      <tr>
+                        <td *ngFor="let dataColumns of columns" [ngStyle]="{ width: dataColumns.width }"
+                          style="cursor: pointer"
+                          routerLink="/safety/critical-events/event-details/{{critical.eventID}}">
+
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchCase="'vehicleID'">
+                              <b> {{ vehiclesObject[critical.vehicleID] ? vehiclesObject[critical.vehicleID] : "-" |
+                                titlecase}}</b>
+                            </span>
+
+                            <span *ngSwitchCase="'Event Date'">
+                              {{ get(critical, dataColumns.field) | titlecase }}
+                            </span>
+
+                            <span *ngSwitchCase="'Event Time'">
+                              {{ critical[dataColumns.field] | titlecase }}
+                            </span>
+
+                            <span *ngSwitchCase="'Event Type'">
+                              <span class="badge badge-dark p-1">{{critical[dataColumns.field] | titlecase}}</span>
+                            </span>
+
+                            <span *ngSwitchCase="'Event Source'">
+                              {{ critical[dataColumns.field] | uppercase }}
+                            </span>
+
+                            <span *ngSwitchCase="'createdBy'">
+                              {{ critical[dataColumns.field] | titlecase }}
+                            </span>
+
+                            <span *ngSwitchCase="'location'">
+                              {{ critical[dataColumns.field] | titlecase }}
+                            </span>
+
+                            <span *ngSwitchCase="'status'">
+                              <span class="badge badge-dark p-1" style="background-color: #ff4d4d; font-size: 12px;"
+                                *ngIf="critical.status === 'open'">Open</span>
+                              <span class="badge badge-dark p-1" style="background-color: #47a447; font-size: 12px;"
+                                *ngIf="critical.status === 'closed'">Closed</span>
+                              <span class="badge badge-dark p-1" style="background-color: black; font-size: 12px;"
+                                *ngIf="critical.status === 'investigating'">Investigating</span>
+                              <span class="badge badge-dark p-1" style="background-color: #ffb833; font-size: 12px;"
+                                *ngIf="critical.status === 'coaching'">Coaching</span>
+                            </span>
+                            <span *ngSwitchDefault>
+                              {{ get(critical, dataColumns.field) }}</span>
+                          </div>
+                        </td>
+                        <td>
+                          <p-dropdown [style]="{ width: '150px'}" [options]="status_values"
+                            [(ngModel)]="critical.status" appendTo="body" baseZIndex="1000"
+                            (onChange)='changeStatus(critical.eventID, $event, rowIndex)' optionLabel="name"
+                            optionValue="value"></p-dropdown>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <div class="col-lg-12 mt-3 text-center">
+                        {{ dataMessage }} <br /><br />
+                      </div>
+                    </ng-template>
+                    <!-- Summary Section with Load More button -->
+
+                    <ng-template pTemplate="summary" let-columns>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && events.length !== 0">
+                        <button type="button " (click)="onScroll($event)" class="btn btn-success btn-sm text-light">
+                          Load More..
+                        </button><br /><br />
+                      </div>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK === 'end'">
+                        Total Records: {{ events.length }}
+                      </div>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </div>
           </div>
-             
-           </div>
-          </div>
-         </div>
         </div>
-      
-        
-     </section>
-
-
+      </section>
     </section>
   </div>
 </section>

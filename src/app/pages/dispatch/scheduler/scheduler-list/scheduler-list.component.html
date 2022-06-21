@@ -101,7 +101,7 @@
                                }}">
                             <a class="dropdown-item" routerLink='/dispatch/scheduler/edit/{{schedule.id}}'>Edit</a>
                             <a *ngIf="schedule.disabled==0" class="dropdown-item" (click)="delete(schedule.id,schedule.mongoID)">Deactivate</a>
-                            <a *ngIf="schedule.disabled==1" class="dropdown-item" (click)="activate(schedule.id,schedule.mongoID)">Activate</a>
+                            <a *ngIf="schedule.disabled==1" class="dropdown-item" (click)="activate(schedule.id,schedule)">Activate</a>
                         </div>
                         </div>
                 </td>

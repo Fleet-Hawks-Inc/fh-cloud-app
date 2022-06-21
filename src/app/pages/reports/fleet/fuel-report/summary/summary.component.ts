@@ -232,7 +232,8 @@ _selectedColumns: any[];
         if (this.lastItemSK !== 'end') {
             const result = await this.apiService.getData(`fuelEntries/fetch/fuel/report?unitID=${this.unitID}&asset=${this.assetUnitID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`).toPromise();
             if (result.Items.length == 0) {
-                this.dataMessage = Constants.NO_RECORDS_FOUND
+                this.dataMessage = Constants.NO_RECORDS_FOUND;
+                this.loaded = true;
             }
             if (result.Items.length > 0) {
                 if (result.LastEvaluatedKey !== undefined) {
