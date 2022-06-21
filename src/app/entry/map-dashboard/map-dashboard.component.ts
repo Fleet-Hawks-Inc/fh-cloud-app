@@ -82,13 +82,16 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     this.oneSignal.isPushNotificationsEnabled(async (isEnabled) => {
       if (isEnabled) {
         // this console is for info do not remove it.
+        this.oneSignal.setExternalUserId(localStorage.getItem('xfhCarrierId'));
         console.log("Push notifications are already enabled!");
       }
       else {
-        await this.oneSignal.registerForPushNotifications();
+
         await this.oneSignal.showHttpPrompt({
           force: true,
         });
+        await this.oneSignal.registerForPushNotifications();
+        this.oneSignal.setExternalUserId(localStorage.getItem('xfhCarrierId'));
         // this console is for info do not remove it.
         console.log("Push notifications are not enabled yet.");
       }
