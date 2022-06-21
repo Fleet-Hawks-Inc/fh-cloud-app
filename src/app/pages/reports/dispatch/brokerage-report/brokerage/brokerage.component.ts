@@ -29,7 +29,7 @@ export class BrokerageComponent implements OnInit {
     { width: '10%', field: 'tripData.tripNo', header: 'Trip No', type: "text" },
     { width: '12%', field: 'cName', header: 'Carrier', type: "text" },
     { width: '10%', field: 'createdDate', header: 'Order Date', type: "text" },
-    { width: '12%', field: 'brokerDate', header: 'Brokerage Date', type: "text" },
+    { width: '12%', field: 'brkDate', header: 'Brokerage Date', type: "text" },
     { width: '12%', field: 'pickUpLoc', header: 'Pickup Location', type: "text" },
     { width: '12%', field: 'dropOffLoc', header: 'Delivery Location', type: "text" },
     { width: '10%', field: 'finalAmount', header: 'Order Amount', type: "text" },
