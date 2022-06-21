@@ -96,12 +96,13 @@ export class CustomerCollectionComponent implements OnInit {
     this.setToggleOptions();
   }
   
-  // onScroll = async (event: any) => {
-  //   if (this.loaded) {
-  //     this.fetchCustomerCollection();
-  //   }
-  //   this.loaded = false;
-  // }
+  onScroll = async (event: any) => {
+    if (this.loaded) {
+      this.fetchCustomerCollection();
+    }
+    this.loaded = false;
+  }
+  
   // onScroll(offsetY: any) {
   //   const viewHeight =
   //     el.nativeElement.getBoundingClientRect().height - this.headerHeight;

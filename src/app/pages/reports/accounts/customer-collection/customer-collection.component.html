@@ -164,7 +164,7 @@
                      <div class="text-right">
                        <span>Showing {{customerCollection.length}} entries</span> &nbsp;
                        <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
-                       <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" (click)="clear(dt)" icon="pi pi-filter-slash"></button>
+                       <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" (click)="clear(myTable)" icon="pi pi-filter-slash"></button>
                        <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
                        </p-multiSelect>
                      </div>
@@ -386,7 +386,7 @@
             <td style=" text-align: center; width: 100px;" pFrozenColumn alignFrozen="right" [frozen]="true">
                                   <button 
                             class="btn btn-dark"
-                            (click)="showReport($event)"
+                           (click)="showReport($event, row)"
                           >
                             View
                           </button>
