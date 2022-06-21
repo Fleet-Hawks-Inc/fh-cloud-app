@@ -1,402 +1,825 @@
 <section class="body">
-    <div class="inner-wrapper">
-        <section role="main" class="content-body pr-0 pl-0 pt-0">
-            <header class="page-header">
-                <form class="form-horizontal" method="get">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pr-0 pl-0 pt-0">
+      <header class="page-header">
+        <form class="form-horizontal" method="get">
+          <div class="row px-4" style="padding-top: 10px">
+            <div class="col-md-2 col-lg-2 pl-0">
+              <ng-select
+                name="searchValue"
+                placeholder="Select Type"
+                [(ngModel)]="filterData.type"
+                (change)="changeType()"
+              >
+                <ng-option value="driver">Driver</ng-option>
+                <ng-option value="employee">Employee</ng-option>
+              </ng-select>
+            </div>
+            <div
+              class="col-md-2 col-lg-2 pl-0"
+              *ngIf="filterData.type == 'employee'"
+            >
+              <ng-select
+                name="entity"
+                placeholder="Select Employee"
+                [(ngModel)]="filterData.entity"
+                class="text-capitalize"
+              >
+                <ng-option
+                  *ngFor="let data of employees | keyvalue"
+                  value="{{ data.key }}"
+                  >{{ data.value }}</ng-option
+                >
+              </ng-select>
+            </div>
 
-                    <div class="row px-4" style="padding-top:10px;">
-                        <div class="col-md-2 col-lg-2 pl-0">
-                            <ng-select name="searchValue" placeholder="Select Type" [(ngModel)]="filterData.type"
-                                (change)="changeType()">
-                                <ng-option value="driver">Driver</ng-option>
-                                <ng-option value="employee">Employee</ng-option>
-                            </ng-select>
-                        </div>
-                        <div class="col-md-2 col-lg-2 pl-0" *ngIf="filterData.type == 'employee'">
-                            <ng-select name="entity" placeholder="Select Employee" [(ngModel)]="filterData.entity"
-                                class="text-capitalize">
-                                <ng-option *ngFor="let data of employees | keyvalue" value="{{data.key}}">{{
-                                    data.value
-                                    }}</ng-option>
-                            </ng-select>
-                        </div>
+            <div
+              class="col-md-2 col-lg-2 pl-0"
+              *ngIf="filterData.type == 'driver'"
+            >
+              <ng-select
+                name="entity"
+                placeholder="Select Driver"
+                [(ngModel)]="filterData.entity"
+                class="text-capitalize"
+              >
+                <ng-option
+                  *ngFor="let data of drivers | keyvalue"
+                  value="{{ data.key }}"
+                  >{{ data.value }}</ng-option
+                >
+              </ng-select>
+            </div>
 
-                        <div class="col-md-2 col-lg-2 pl-0" *ngIf="filterData.type == 'driver'">
-                            <ng-select name="entity" placeholder="Select Driver" [(ngModel)]="filterData.entity"
-                                class="text-capitalize">
-                                <ng-option *ngFor="let data of drivers | keyvalue" value="{{data.key}}">{{
-                                    data.value
-                                    }}</ng-option>
-                            </ng-select>
-                        </div>
+            <div class="col-lg-3 col-md-3">
+              <div
+                class="input-daterange input-group"
+                data-plugin-datepicker=""
+              >
+                <span class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-calendar-alt"></i>
+                  </span>
+                </span>
+                <input
+                  [(ngModel)]="filterData.startDate"
+                  name="startDate"
+                  type="text"
+                  placeholder="yyyy/mm/dd"
+                  (click)="startDate.toggle()"
+                  ngbDatepicker
+                  #startDate="ngbDatepicker"
+                  class="form-control"
+                  autocomplete="off"
+                  [minDate]="dateMinLimit"
+                  [maxDate]="futureDatesLimit"
+                />
+                <span
+                  class="input-group-text border-left-0 border-right-0 rounded-0"
+                >
+                  to
+                </span>
+                <input
+                  [(ngModel)]="filterData.endDate"
+                  name="endDate"
+                  type="text"
+                  placeholder="yyyy/mm/dd"
+                  (click)="endDate.toggle()"
+                  ngbDatepicker
+                  #endDate="ngbDatepicker"
+                  class="form-control"
+                  autocomplete="off"
+                  [minDate]="dateMinLimit"
+                  [maxDate]="futureDatesLimit"
+                />
+              </div>
+            </div>
 
-                        <div class="col-lg-3 col-md-3">
-                            <div class="input-daterange input-group" data-plugin-datepicker="">
-                                <span class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </span>
-                                </span>
-                                <input [(ngModel)]="filterData.startDate" name="startDate" type="text"
-                                    placeholder="yyyy/mm/dd" (click)="startDate.toggle()" ngbDatepicker
-                                    #startDate="ngbDatepicker" class="form-control" autocomplete="off"
-                                    [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
-                                <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                                    to
-                                </span>
-                                <input [(ngModel)]="filterData.endDate" name="endDate" type="text"
-                                    placeholder="yyyy/mm/dd" (click)="endDate.toggle()" ngbDatepicker
-                                    #endDate="ngbDatepicker" class="form-control" autocomplete="off"
-                                    [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
-                            </div>
-                        </div>
+            <div class="col-md-2 col-lg-2">
+              <button
+                type="button"
+                (click)="searchResults()"
+                class="btn btn-sm btn-success mr-3"
+              >
+                Search
+              </button>
 
-                        <div class="col-md-2 col-lg-2">
-                            <button type="button" (click)="searchResults()"
-                                class="btn btn-sm btn-success mr-3">Search</button>
-
-                            <button type="button" (click)="resetResults()" class="btn btn-sm btn-success">Reset</button>
-                        </div>
-                        <div class=" text-right pr-0"
-                            [ngClass]="filterData.type ? 'col-md-3 col-lg-3' : 'col-md-5 col-lg-5' ">
-                            <button type="button" (click)="showPdf()" class="btn btn-sm btn-success"><i
-                                    class="fa fa-download"></i>
-                                PDF</button>
-                        </div>
-                    </div>
-                </form>
-            </header>
-            <section class="m-2">
-                <div class="row mb-3">
-                    <div class="col-lg-12">
-                        <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                            [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
-                            <div class="bg-white p-3 text-dark">
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-
-                                        <table
-                                            class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Employee ID</th>
-                                                    <th>Employee Name</th>
-                                                    <th>Payment ID</th>
-                                                    <th>Pay Date</th>
-                                                    <th>Pay Period</th>
-                                                    <th>Payment Mode</th>
-                                                    <th>Reference No.</th>
-                                                    <th>EI</th>
-                                                    <th>CPP</th>
-                                                    <th>Pro Tax</th>
-                                                    <th>Fed. Tax</th>
-                                                    <th>Co. EI</th>
-                                                    <th>Co. CPP</th>
-                                                    <th>Gross</th>
-                                                    <th>Pay CRA</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngIf="empData.length == 0" class="text-center">
-                                                    <td colspan="15">{{dataMessage}}</td>
-                                                </tr>
-                                                <tr *ngFor="let data of empData">
-                                                    <td>{{ data.empID }}</td>
-                                                    <td class="text-capitalize">{{ data.empName }}</td>
-                                                    <td>{{ data.paymentNo }}</td>
-                                                    <td>{{ data.txnDate | date:'yyyy/MM/dd' }}</td>
-                                                    <td>{{ data.fromDate | date:'yyyy/MM/dd' }} - {{ data.toDate |
-                                                        date:'yyyy/MM/dd' }}</td>
-                                                    <td class="text-capitalize">{{ data.payMode }}</td>
-                                                    <td>{{ data.payModeNo }}</td>
-                                                    <td>{{ data.taxdata.ei | number: "1.2-2" }}</td>
-                                                    <td>{{ data.taxdata.cpp | number: "1.2-2" }}</td>
-                                                    <td>{{ data.taxdata.provincialTax | number: "1.2-2" }}</td>
-                                                    <td>{{ data.taxdata.federalTax | number: "1.2-2" }}</td>
-                                                    <td>{{ data.taxdata.emplEI | number: "1.2-2" }}</td>
-                                                    <td>{{ data.taxdata.emplCPP | number: "1.2-2" }}</td>
-                                                    <td>{{ data.finalTotal | number: "1.2-2" }}</td>
-                                                    <td>{{ data.cra | number: "1.2-2" }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="col-lg-12 mt-3 text-center"
-                                        *ngIf="lastSK !== 'end' && empData.length !== 0">
-                                        <button type="button" class="btn btn-success btn-sm text-light"
-                                            (click)="onScroll()">
-                                            Load More..
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+              <button
+                type="button"
+                (click)="resetResults()"
+                class="btn btn-sm btn-success"
+              >
+                Reset
+              </button>
+            </div>
+            <div
+              class="text-right pr-0"
+              [ngClass]="
+                filterData.type ? 'col-md-3 col-lg-3' : 'col-md-5 col-lg-5'
+              "
+            >
+              <button
+                type="button"
+                (click)="showPdf()"
+                class="btn btn-sm btn-success"
+              >
+                <i class="fa fa-download"></i> PDF
+              </button>
+            </div>
+          </div>
+        </form>
+      </header>
+      <section class="m-2">
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div
+              infiniteScroll
+              [infiniteScrollDistance]="1"
+              [infiniteScrollUpDistance]="1"
+              [infiniteScrollThrottle]="5"
+              (scrolled)="onScroll()"
+            >
+              <div class="bg-white p-3 text-dark">
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <table
+                      class="table table-bordered table-responsive-lg table-striped mb-0 simple-table"
+                    >
+                      <thead>
+                        <tr>
+                          <th>Employee ID</th>
+                          <th>Employee Name</th>
+                          <th>Payment ID</th>
+                          <th>Pay Date</th>
+                          <th>Pay Period</th>
+                          <th>Payment Mode</th>
+                          <th>Reference No.</th>
+                          <th>EI</th>
+                          <th>CPP</th>
+                          <th>Pro Tax</th>
+                          <th>Fed. Tax</th>
+                          <th>Co. EI</th>
+                          <th>Co. CPP</th>
+                          <th>Gross</th>
+                          <th>Pay CRA</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="empData.length == 0" class="text-center">
+                          <td colspan="15">{{ dataMessage }}</td>
+                        </tr>
+                        <tr *ngFor="let data of empData">
+                          <td>{{ data.empID }}</td>
+                          <td class="text-capitalize">{{ data.empName }}</td>
+                          <td>{{ data.paymentNo }}</td>
+                          <td>{{ data.txnDate | date: "yyyy/MM/dd" }}</td>
+                          <td>
+                            {{ data.fromDate | date: "yyyy/MM/dd" }} -
+                            {{ data.toDate | date: "yyyy/MM/dd" }}
+                          </td>
+                          <td class="text-capitalize">{{ data.payMode }}</td>
+                          <td>{{ data.payModeNo }}</td>
+                          <td>{{ data.taxdata.ei | number: "1.2-2" }}</td>
+                          <td>{{ data.taxdata.cpp | number: "1.2-2" }}</td>
+                          <td>
+                            {{ data.taxdata.provincialTax | number: "1.2-2" }}
+                          </td>
+                          <td>
+                            {{ data.taxdata.federalTax | number: "1.2-2" }}
+                          </td>
+                          <td>{{ data.taxdata.emplEI | number: "1.2-2" }}</td>
+                          <td>{{ data.taxdata.emplCPP | number: "1.2-2" }}</td>
+                          <td>{{ data.finalTotal | number: "1.2-2" }}</td>
+                          <td>{{ data.cra | number: "1.2-2" }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div
+                    class="col-lg-12 mt-3 text-center"
+                    *ngIf="lastSK !== 'end' && empData.length !== 0"
+                  >
+                    <button
+                      type="button"
+                      class="btn btn-success btn-sm text-light"
+                      (click)="onScroll()"
+                    >
+                      Load More..
+                    </button>
+                  </div>
                 </div>
-            </section>
-        </section>
-    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
 </section>
 
 <!-- payment pdf -->
 <ng-template #employerPayPdf let-modal>
-    <div class="modal-content">
-        <div class="modal-header">
-            <h4 class="modal-title">Payment</h4>
-            <button type="button" class="close" (click)="modal.dismiss()">
-                &times;
-            </button>
-        </div>
-        <form>
-            <div class="modal-body">
-                <!-- driver pdf -->
-                <section id="emppPdf" class="text-dark">
-                    <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
-                        <tbody>
-                            <tr>
-                                <td colspan="2">&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <h1 style="font-size:26px;" class="text-dark">Employer Pay Statement</h1>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td width="50%">&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" height="3" bgcolor="#dddddd"></td>
-                            </tr>
-                            <tr>
-                                <td width="50%" valign="top">
-                                    <p style="font-size:13px; margin-bottom:10px;" class="text-dark">Company</p>
-                                    <h2 style="font-size:20px; margin-top:0px; margin-bottom:10px;"
-                                        class="text-capitalize">{{ currentUser }}</h2>
-                                </td>
-                                <td valign="top">
-                                    <table width="80%" border="0" align="right" cellpadding="0" cellspacing="0">
-                                        <tbody>
-                                            <tr>
-                                                <td align="right">
-                                                    <p style="font-size:13px; margin-bottom:10px;"><span
-                                                            style="font-size:16px; font-weight:600; margin-top:0px;">{{
-                                                            filterData.startDate | date:'yyyy/MM/dd' }} to {{
-                                                            filterData.endDate | date:'yyyy/MM/dd' }} </span>
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" height="3" bgcolor="#dddddd"></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">&nbsp;</td>
-                            </tr>
-                            <tr *ngFor="let data of pdfRecords">
-                                <td colspan="2">
-                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                        <tbody>
-                                            <tr>
-                                                <td width="50%" colspan="2">
-                                                    <table border="0" cellpadding="0" cellspacing="0">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <p style="font-size:16px;"><strong
-                                                                            class="text-capitalize">{{
-                                                                            data.entityName }}</strong>
-                                                                        <strong> #{{ data.uniqID }} </strong>
-                                                                    </p>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2">
-                                                    <table width="100%" border="0"
-                                                        style="border:0px solid #adadad; font-size:13px; margin-bottom:10px;"
-                                                        bordercolor="#adadad" cellspacing="0" cellpadding="0">
-                                                        <tbody>
-                                                            <tr bgcolor="#f3f3f3">
-                                                                <td width="16%"
-                                                                    style="border-bottom:1px solid #adadad; border-top:1px solid #adadad; border-left:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p style="font-weight:600;">Pay Period</p>
-                                                                </td>
-                                                                <td width="7%"
-                                                                    style="border-bottom:1px solid #adadad; border-top:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p style="font-weight:600;">Pay Mode</p>
-                                                                </td>
-                                                                <td width="10%"
-                                                                    style="border-bottom:1px solid #adadad; border-top:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p style="font-weight:600;">Reference#</p>
-                                                                </td>
-                                                                <td width="10%"
-                                                                    style="border-bottom:1px solid #adadad; border-top:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p style="font-weight:600;">Gross Salary</p>
-                                                                </td>
-                                                                <td width="7%"
-                                                                    style="border-bottom:1px solid #adadad; border-top:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p style="font-weight:600;">EI</p>
-                                                                </td>
-                                                                <td width="7%"
-                                                                    style="border-bottom:1px solid #adadad; border-top:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p style="font-weight:600;">CPP</p>
-                                                                </td>
-                                                                <td width="10%"
-                                                                    style="border-bottom:1px solid #adadad; border-top:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p style="font-weight:600;">Prov Tax</p>
-                                                                </td>
-                                                                <td width="10%"
-                                                                    style="border-bottom:1px solid #adadad; border-top:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p style="font-weight:600;">Fed. Tax</p>
-                                                                </td>
-                                                                <td width="8%"
-                                                                    style="border-bottom:1px solid #adadad; border-top:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p style="font-weight:600;">Co. EI</p>
-                                                                </td>
-                                                                <td width="8%"
-                                                                    style="border-bottom:1px solid #adadad; border-top:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p style="font-weight:600;">Co. CPP</p>
-                                                                </td>
-                                                                <td width="10%"
-                                                                    style="border-top:1px solid #adadad; border-right:1px solid #adadad; text-align:right; padding-right:10px;">
-                                                                    <p style="font-weight:600;">Pay CRA</p>
-                                                                </td>
-                                                            </tr>
-
-                                                            <tr *ngFor="let pay of data.payments">
-                                                                <td
-                                                                    style="border-bottom:1px solid #adadad; border-left:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p>{{ pay.fromDate | date:'yyyy/MM/dd' }}
-                                                                        to {{ pay.toDate | date:'yyyy/MM/dd' }}</p>
-                                                                </td>
-                                                                <td style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;"
-                                                                    class="text-capitalize">
-                                                                    {{ pay.payMode }}</td>
-                                                                <td
-                                                                    style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    {{ pay.payModeNo }}</td>
-                                                                <td
-                                                                    style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    {{ pay.finalTotal | number: "1.2-2" }}</td>
-                                                                <td
-                                                                    style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p>{{ pay.taxdata.ei | number: "1.2-2" }}</p>
-                                                                </td>
-                                                                <td
-                                                                    style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    {{ pay.taxdata.cpp | number: "1.2-2" }}</td>
-                                                                <td
-                                                                    style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    {{ pay.taxdata.provincialTax | number: "1.2-2" }}
-                                                                </td>
-                                                                <td
-                                                                    style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    {{ pay.taxdata.federalTax | number: "1.2-2" }}</td>
-                                                                <td
-                                                                    style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    {{ pay.taxdata.emplEI | number: "1.2-2" }}</td>
-                                                                <td
-                                                                    style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    {{ pay.taxdata.emplCPP | number: "1.2-2" }}</td>
-                                                                <td
-                                                                    style="border-top:1px solid #adadad; text-align:right; border-right:1px solid #adadad; padding-right:10px;">
-                                                                    <p>{{ pay.cra | number: "1.2-2" }}</p>
-                                                                </td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td style="border-bottom:1px solid #adadad; border-left:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;"
-                                                                    colspan="3">
-                                                                    <p><strong>Total</strong></p>
-                                                                </td>
-                                                                <td
-                                                                    style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p><strong>{{ data.total.gross | number: "1.2-2"
-                                                                            }}</strong></p>
-                                                                </td>
-                                                                <td
-                                                                    style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p><strong>{{ data.total.ei | number: "1.2-2"
-                                                                            }}</strong></p>
-                                                                </td>
-                                                                <td
-                                                                    style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p><strong>{{ data.total.cpp | number: "1.2-2"
-                                                                            }}</strong></p>
-                                                                </td>
-                                                                <td
-                                                                    style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p><strong>{{ data.total.provTax | number: "1.2-2"
-                                                                            }}</strong></p>
-                                                                </td>
-                                                                <td
-                                                                    style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p><strong>{{ data.total.fedTax | number: "1.2-2"
-                                                                            }}</strong></p>
-                                                                </td>
-                                                                <td
-                                                                    style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p><strong>{{ data.total.empEI | number: "1.2-2"
-                                                                            }}</strong></p>
-                                                                </td>
-                                                                <td
-                                                                    style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                                                    <p><strong>{{ data.total.EmpCpp | number: "1.2-2"
-                                                                            }}</strong></p>
-                                                                </td>
-                                                                <td
-                                                                    style="border-bottom:1px solid #adadad; border-top:1px solid #adadad; text-align:right; border-right:1px solid #adadad; padding-right:10px;">
-                                                                    <p><strong>{{ data.total.cra | number: "1.2-2"
-                                                                            }}</strong></p>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <table border="0" align="center" cellpadding="0" cellspacing="0">
-                                        <tbody>
-                                            <tr>
-                                                <td align="center">
-                                                    <h2 style="font-size:13px;">Powered By</h2>
-                                                    <img src="assets/img/logo.png" width="207" height="28">
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">&nbsp;</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" (click)="modal.dismiss()">
-                    Close
-                </button>
-                <button type="button" class="btn btn-success" (click)="downloadPDF()">
-                    Download PDF
-                </button>
-            </div>
-        </form>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Employer Pay Statement</h4>
+      <button type="button" class="close" (click)="modal.dismiss()">
+        &times;
+      </button>
     </div>
+    <form>
+      <div class="modal-body">
+        <!-- driver pdf -->
+        <section id="emppPdf" class="text-dark">
+          <table
+            width="90%"
+            border="0"
+            align="center"
+            cellpadding="0"
+            cellspacing="0"
+          >
+            <tbody>
+              <tr>
+                <td colspan="2">
+                  <h1
+                    style="font-size: 26px"
+                    class="text-dark font-weight-bold mb-1 mt-1"
+                  >
+                    Employer Pay Statement
+                  </h1>
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td width="50%">&nbsp;</td>
+              </tr>
+              <tr>
+                <td colspan="2" height="1" bgcolor="#595959"></td>
+              </tr>
+              <tr>
+                <td width="50%" valign="top">
+                  <h2
+                    style="font-size: 13px; margin-bottom: 10px"
+                    class="mt-0 mb-0 text-dark text-5 font-weight-semibold"
+                  >
+                    Company
+                  </h2>
+                  <p
+                    style="
+                      font-size: 20px;
+                      margin-top: 0px;
+                      margin-bottom: 10px;
+                    "
+                    class="text-capitalize text-dark text-5 font-weight-semibold mb-0 mt-0"
+                  >
+                    {{ currentUser }}
+                  </p>
+                </td>
+                <td valign="top">
+                  <table
+                    width="80%"
+                    border="0"
+                    align="right"
+                    cellpadding="0"
+                    cellspacing="0"
+                  >
+                    <tbody>
+                      <tr>
+                        <td align="right">
+                          <p
+                            style="font-size: 13px; margin-bottom: 10px"
+                            class="text-capitalize text-dark text-5 font-weight-semibold mb-0 mt-2"
+                          >
+                            <span
+                              style="
+                                font-size: 16px;
+                                font-weight: 600;
+                                margin-top: 0px;
+                              "
+                              >{{
+                                filterData.startDate | date: "yyyy/MM/dd"
+                              }}
+                              to {{ filterData.endDate | date: "yyyy/MM/dd" }}
+                            </span>
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" height="1" bgcolor="#595959"></td>
+              </tr>
+              <tr>
+                <td colspan="2">&nbsp;</td>
+              </tr>
+              <tr *ngFor="let data of pdfRecords">
+                <td colspan="2">
+                  <table
+                    width="100%"
+                    border="0"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
+                    <tbody>
+                      <tr>
+                        <td width="50%" colspan="2">
+                          <table border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p class="text-dark" style="font-size: 16px">
+                                    <strong class="text-capitalize">{{
+                                      data.entityName
+                                    }}</strong>
+                                    <strong> #{{ data.uniqID }} </strong>
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <table
+                            width="100%"
+                            border="0"
+                            class="text-dark"
+                            style="
+                              border: 0px solid #adadad;
+                              font-size: 13px;
+                              margin-bottom: 10px;
+                            "
+                            bordercolor="#adadad"
+                            cellspacing="0"
+                            cellpadding="0"
+                          >
+                            <tbody>
+                              <tr bgcolor="#f3f3f3">
+                                <td
+                                  width="16%"
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-top: 1px solid #adadad;
+                                    border-left: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p
+                                    class="text-dark mb-0"
+                                    style="font-weight: 600"
+                                  >
+                                    Pay Period
+                                  </p>
+                                </td>
+                                <td
+                                  width="7%"
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-top: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p
+                                    class="text-dark mb-0"
+                                    style="font-weight: 600"
+                                  >
+                                    Pay Mode
+                                  </p>
+                                </td>
+                                <td
+                                  width="10%"
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-top: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p
+                                    class="text-dark mb-0"
+                                    style="font-weight: 600"
+                                  >
+                                    Reference#
+                                  </p>
+                                </td>
+                                <td
+                                  width="10%"
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-top: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p
+                                    class="text-dark mb-0"
+                                    style="font-weight: 600"
+                                  >
+                                    Gross Salary
+                                  </p>
+                                </td>
+                                <td
+                                  width="7%"
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-top: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p
+                                    class="text-dark mb-0"
+                                    style="font-weight: 600"
+                                  >
+                                    EI
+                                  </p>
+                                </td>
+                                <td
+                                  width="7%"
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-top: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p
+                                    class="text-dark mb-0"
+                                    style="font-weight: 600"
+                                  >
+                                    CPP
+                                  </p>
+                                </td>
+                                <td
+                                  width="10%"
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-top: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p
+                                    class="text-dark mb-0"
+                                    style="font-weight: 600"
+                                  >
+                                    Prov Tax
+                                  </p>
+                                </td>
+                                <td
+                                  width="10%"
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-top: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p
+                                    class="text-dark mb-0"
+                                    style="font-weight: 600"
+                                  >
+                                    Fed. Tax
+                                  </p>
+                                </td>
+                                <td
+                                  width="8%"
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-top: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p
+                                    class="text-dark mb-0"
+                                    style="font-weight: 600"
+                                  >
+                                    Co. EI
+                                  </p>
+                                </td>
+                                <td
+                                  width="8%"
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-top: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p
+                                    class="text-dark mb-0"
+                                    style="font-weight: 600"
+                                  >
+                                    Co. CPP
+                                  </p>
+                                </td>
+                                <td
+                                  width="10%"
+                                  style="
+                                    border-top: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    text-align: right;
+                                    padding-right: 10px;
+                                  "
+                                >
+                                  <p
+                                    class="text-dark mb-0"
+                                    style="font-weight: 600"
+                                  >
+                                    Pay CRA
+                                  </p>
+                                </td>
+                              </tr>
+
+                              <tr *ngFor="let pay of data.payments">
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-left: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p class="text-dark mb-0">
+                                    {{ pay.fromDate | date: "yyyy/MM/dd" }} to
+                                    {{ pay.toDate | date: "yyyy/MM/dd" }}
+                                  </p>
+                                </td>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                  class="text-capitalize"
+                                >
+                                  {{ pay.payMode }}
+                                </td>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  {{ pay.payModeNo }}
+                                </td>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  {{ pay.finalTotal | number: "1.2-2" }}
+                                </td>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p class="text-dark mb-0">
+                                    {{ pay.taxdata.ei | number: "1.2-2" }}
+                                  </p>
+                                </td>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  {{ pay.taxdata.cpp | number: "1.2-2" }}
+                                </td>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  {{
+                                    pay.taxdata.provincialTax | number: "1.2-2"
+                                  }}
+                                </td>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  {{ pay.taxdata.federalTax | number: "1.2-2" }}
+                                </td>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  {{ pay.taxdata.emplEI | number: "1.2-2" }}
+                                </td>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  {{ pay.taxdata.emplCPP | number: "1.2-2" }}
+                                </td>
+                                <td
+                                  style="
+                                    border-top: 1px solid #adadad;
+                                    text-align: right;
+                                    border-right: 1px solid #adadad;
+                                    padding-right: 10px;
+                                  "
+                                >
+                                  <p class="text-dark mb-0">
+                                    {{ pay.cra | number: "1.2-2" }}
+                                  </p>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-left: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                  colspan="3"
+                                >
+                                  <p class="text-dark mb-0">
+                                    <strong>Total</strong>
+                                  </p>
+                                </td>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p class="text-dark mb-0">
+                                    <strong>{{
+                                      data.total.gross | number: "1.2-2"
+                                    }}</strong>
+                                  </p>
+                                </td>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p class="text-dark mb-0">
+                                    <strong>{{
+                                      data.total.ei | number: "1.2-2"
+                                    }}</strong>
+                                  </p>
+                                </td>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p class="text-dark mb-0">
+                                    <strong>{{
+                                      data.total.cpp | number: "1.2-2"
+                                    }}</strong>
+                                  </p>
+                                </td>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p class="text-dark mb-0">
+                                    <strong>{{
+                                      data.total.provTax | number: "1.2-2"
+                                    }}</strong>
+                                  </p>
+                                </td>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p class="text-dark mb-0">
+                                    <strong>{{
+                                      data.total.fedTax | number: "1.2-2"
+                                    }}</strong>
+                                  </p>
+                                </td>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p class="text-dark mb-0">
+                                    <strong>{{
+                                      data.total.empEI | number: "1.2-2"
+                                    }}</strong>
+                                  </p>
+                                </td>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p class="text-dark mb-0">
+                                    <strong>{{
+                                      data.total.EmpCpp | number: "1.2-2"
+                                    }}</strong>
+                                  </p>
+                                </td>
+                                <td
+                                  style="
+                                    border-bottom: 1px solid #adadad;
+                                    border-top: 1px solid #adadad;
+                                    text-align: right;
+                                    border-right: 1px solid #adadad;
+                                    padding-right: 10px;
+                                  "
+                                >
+                                  <p class="text-dark mb-0">
+                                    <strong>{{
+                                      data.total.cra | number: "1.2-2"
+                                    }}</strong>
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">&nbsp;</td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <table
+                    border="0"
+                    align="center"
+                    cellpadding="0"
+                    cellspacing="0"
+                  >
+                    <tbody>
+                      <tr>
+                        <td align="center">
+                          <h2 style="font-size: 13px">Powered By</h2>
+                          <img
+                            src="assets/img/logo.png"
+                            width="207"
+                            height="28"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">&nbsp;</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="modal.dismiss()">
+          Close
+        </button>
+        <button type="button" class="btn btn-success" (click)="downloadPDF()">
+          Download PDF
+        </button>
+      </div>
+    </form>
+  </div>
 </ng-template>

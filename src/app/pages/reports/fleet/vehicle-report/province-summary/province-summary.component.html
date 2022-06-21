@@ -1,7 +1,6 @@
 <section class="body">
-
   <div class="inner-wrapper">
-    <section role="main" class="content-body pt-0 pr-0 pl-1">
+    <section role="main" class="content-body pt-0 pr-0">
       <header class="page-header pr19 pl11">
         <form class="form-horizontal" method="get">
           <div class="row" style="padding-top: 10px">
@@ -109,77 +108,91 @@
                   <div>
                     <h3 class="mt-1 mb-0 font-weight-bold">Province Summary</h3>
                   </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <div class="m-2">
-                <div class="row mb-3 text-dark">
-                    <div class="col-lg-12">
-                        <div class="bg-white p-3 text-dark">
-                            <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                                [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-                                        <table
-                                            class="table-responsive row-border hover table table-bordered table-striped mb-0">
-                                            <col style="width: 1%" />
-                                            <col style="width: 1%" />
-                                            <col style="width: 1%" />
-                                            <col style="width: 1%" />
-                                            <thead>
-                                                <tr>
-                                                    <th>Vehicle</th>
-                                                    <th>Province(Canada)</th>
-                                                    <th>Province(US)</th>
-                                                    <th>Trip Status</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngIf="dataM.length == 0" class="text-center">
-                                                    <td colspan="15">{{ dataMessage }}</td>
-                                                </tr>
-                                                <tr *ngFor="let item of allData">
-                                                    <td>{{ item.vehicle ? item.vehicle : "-" }}</td>
-                                                    <td>
-                                                        <span *ngIf="item.caProvinces.length === 0">-</span>
-                                                        <span *ngFor="let item2 of item.caProvinces ">
-                                                            <span *ngFor="let item3 of item2 | keyvalue">
-                                                                {{item3.key}} : {{item3.value}}<br>
-                                                            </span>
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <span *ngIf="item.usProvinces.length === 0">-</span>
-                                                        <span *ngFor="let item2 of item.usProvinces">
-                                                            <span *ngFor='let item3 of item2 | keyvalue'>
-                                                                {{item3.key}} : {{ item3.value}}<br>
-                                                            </span>
-                                                        </span>
-                                                    </td>
-                                                    <td> <span class="badge badge-dark p-1 text-capitalize">{{
-                                                            item.newStatus }}</span></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12 mt-3 text-center"
-                                *ngIf="lastItemSK !== 'end' && allData.length !== 0">
-                                <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
-                                    Load More..
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+      <div class="m-2">
+        <div class="row mb-3 text-dark">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div
+                infiniteScroll
+                [infiniteScrollDistance]="1"
+                [infiniteScrollUpDistance]="1"
+                [infiniteScrollThrottle]="5"
+                (scrolled)="onScroll()"
+              >
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <table
+                      class="table-responsive row-border hover table table-bordered table-striped mb-0"
+                    >
+                      <col style="width: 1%" />
+                      <col style="width: 1%" />
+                      <col style="width: 1%" />
+                      <col style="width: 1%" />
+                      <thead>
+                        <tr>
+                          <th>Vehicle</th>
+                          <th>Province(Canada)</th>
+                          <th>Province(US)</th>
+                          <th>Trip Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="dataM.length == 0" class="text-center">
+                          <td colspan="15">{{ dataMessage }}</td>
+                        </tr>
+                        <tr *ngFor="let item of allData">
+                          <td>{{ item.vehicle ? item.vehicle : "-" }}</td>
+                          <td>
+                            <span *ngIf="item.caProvinces.length === 0">-</span>
+                            <span *ngFor="let item2 of item.caProvinces">
+                              <span *ngFor="let item3 of item2 | keyvalue">
+                                {{ item3.key }} : {{ item3.value }}<br />
+                              </span>
+                            </span>
+                          </td>
+                          <td>
+                            <span *ngIf="item.usProvinces.length === 0">-</span>
+                            <span *ngFor="let item2 of item.usProvinces">
+                              <span *ngFor="let item3 of item2 | keyvalue">
+                                {{ item3.key }} : {{ item3.value }}<br />
+                              </span>
+                            </span>
+                          </td>
+                          <td>
+                            <span
+                              class="badge badge-dark p-1 text-capitalize"
+                              >{{ item.newStatus }}</span
+                            >
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
+              </div>
+              <div
+                class="col-lg-12 mt-3 text-center"
+                *ngIf="lastItemSK !== 'end' && allData.length !== 0"
+              >
+                <button
+                  type="button"
+                  class="btn btn-success btn-sm text-light"
+                  (click)="onScroll()"
+                >
+                  Load More..
+                </button>
+              </div>
             </div>
-        </section>
-    </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </section>
