@@ -1,201 +1,324 @@
 <section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pt-0 pr-0">
+      <header class="page-header pr19 pl11 service-program-header">
+        <form class="form-horizontal" method="get">
+          <div class="row" style="padding-top: 10px">
+            <div class="col-md-3 col-lg-3 pr-1">
+              <div class="input-group input-group-sm mb-3">
+                <input
+                  type="text"
+                  (input)="getSuggestions($event.target.value)"
+                  name="programeName"
+                  [(ngModel)]="programeName"
+                  class="form-control"
+                  placeholder="Search by program name"
+                />
+              </div>
+              <div *ngIf="suggestions?.length > 0" class="result-suggestions">
+                <ul>
+                  <li
+                    *ngFor="let data of suggestions"
+                    style="cursor: pointer"
+                    (click)="setData(data.programName)"
+                  >
+                    {{ data.programName }}
+                  </li>
+                </ul>
+              </div>
+            </div>
 
-    <div class="inner-wrapper">
-
-        <section role="main" class="content-body pl-1 pt-0 pr-0">
-            <header class="page-header pr19 pl11 service-program-header">
-                <form class="form-horizontal" method="get">
-                    <div class="row" style="padding-top:10px;">
-                        <div class="col-md-3 col-lg-3 pr-1">
-                            <div class="input-group input-group-sm mb-3">
-                                <input type="text" (input)="getSuggestions($event.target.value)" name="programeName" [(ngModel)]="programeName" class="form-control"
-                                    placeholder="Search by program name" >
-                            </div>
-                            <div *ngIf="suggestions?.length > 0" class="result-suggestions">
-                                <ul>
-                                    <li *ngFor="let data of suggestions" style="cursor: pointer;"
-                                        (click)="setData(data.programName)">{{ data.programName }}</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="col-md-2 col-lg-2">
-                            <button type="submit" [disabled]="disableSearch" (click)="searchFilter()"
-                                class="btn btn-sm btn-success mr-3">Search</button>
-                            <button type="button" [disabled]="disableSearch" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
-                        </div>
-                        <div class="col-md-6 col-lg-6 text-right pr-1 offset-1">
-
-                            <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
-                                <button type="button" class="btn btn-success btn-sm dropdown-toggle"
-                                    data-toggle="dropdown" aria-expanded="false">Actions<span
-                                        class="caret"></span></button>
-                                <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" href="javascript:;">Import</a>
-                                    <a class="dropdown-item text-1" href="javascript:;">Export</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </header>
-
-
-            <section class="m-2">
-                <div class="row mb-3">
-                    <div class="col-lg-12">
-                        
-                        
-                            <div class="bg-white p-3 text-dark">
-                                <div class="form-group row pt-1">
-                                    <div class="col-lg-12">
-                                        <div class="mb-3 pb-1">
-                                            <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                                                <li class="nav-item">
-                                                    <a class="nav-link "
-                                                        routerLink="/fleet/maintenance/service-log/list/{{sessionID}}"
-                                                        >Service Log</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link active"
-                                                        routerLink="/fleet/maintenance/service-program/list/{{sessionID}}"
-                                                        >Service
-                                                        Programs</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                         <p-table #dt [value]="programs" [resizableColumns]="true" columnResizeMode="expand"
-                                        scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
-                                        styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                                        [scrollable]="true" [loading]="!loaded" scrollHeight="100%">
-                        
-                                        <ng-template pTemplate="caption">
-                                            <div class="p-d-flex d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <h3 class="m-0"> Service Programs </h3>
-                                                </div>
-                                                <div class="text-right">
-                                                      <span>Showing {{programs.length}} entries </span> &nbsp;
-                                                    <button type="button" pButton (click)="refreshData()"
-                                                        pTooltip="Refresh" class="p-button-outlined mr-2"
-                                                        icon="fas fa-sync"></button>
-                                                    <button type="button" pButton pTooltip="Add"
-                                                        routerLink="/fleet/maintenance/service-program/add" class="p-button-outlined mr-2"
-                                                        icon="pi pi-plus"></button>
-                                                    <button pButton pRipple pTooltip="Clear Filter"
-                                                        class="p-button-outlined mr-2" icon="pi pi-filter-slash"
-                                                        (click)="clear(dt)"></button>
-                                                        
-                                                    <!--<button type="button" pButton pRipple class="p-button-outlined mr-2"-->
-                                                    <!--    icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()"-->
-                                                    <!--    pTooltip="Excel"></button> -->
-                                                    <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns"
-                                                        optionLabel="header" selectedItemsLabel="{0} columns selected"
-                                                        [style]="{minWidth: '200px'}" placeholder="Choose Columns">
-                                                    </p-multiSelect>
-                                                </div>
-                                            </div>
-                                        </ng-template>
-                                        
-                                        <ng-template pTemplate="header" let-columns>
-                                            <tr>
-                                                <th *ngFor="let dataColumns of columns"
-                                                    [pSortableColumn]="dataColumns.field" pResizableColumn
-                                                    [ngStyle]="{'width':dataColumns.width}">
-                                                    <div [ngSwitch]="dataColumns.field">
-                                                        <span *ngSwitchDefault>
-                                                            <div class="flex justify-content-center align-items-center"
-                                                                alignFrozen="right" pFrozenColumn [frozen]="true">
-                                                                {{dataColumns.header}}
-                                                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
-                                                                <p-columnFilter [type]="dataColumns.type"
-                                                                    [field]="dataColumns.field" matchMode="contains"
-                                                                    [showMatchModes]="false" [showOperator]="false"
-                                                                    [showAddButton]="false" display="menu">
-                                                                </p-columnFilter>
-                                                            </div>
-                                                        </span>
-                                                    </div>
-                                                </th>
-                                                <th style="width:130px" alignFrozen="right" pFrozenColumn
-                                                    [frozen]="true">Actions</th>
-                                            </tr>
-                                        </ng-template>
-
-                                        
-                                        <ng-template pTemplate="body" let-vehicle let-columns="columns"
-                                            let-rowIndex="rowIndex">
-                                            <tr>
-                                                <td *ngFor="let dataColumns of columns"
-                                                    [ngStyle]="{'width': dataColumns.width}"
-                                                    routerLink="/fleet/maintenance/service-program/detail/{{vehicle.programID}}"
-                                                    style="cursor: pointer;">
-                                                    <div [ngSwitch]="dataColumns.field">
-                                                        <span *ngSwitchCase="'programName'">
-                                                         {{get(vehicle,dataColumns.field) | titlecase}}
-                                                        </span>
-                                                        <span *ngSwitchCase="'description'">
-        {{(get(vehicle,dataColumns.field) ? get(vehicle,dataColumns.field) : '-') | titlecase}}
-                                                        </span>
-                                                        <span *ngSwitchDefault>
-                                                            {{get(vehicle,dataColumns.field)}}
-                                                        </span>
-                                                    </div>
-
-                                                </td>
-                                                <td style=" text-align: center; width: 130px;" pFrozenColumn
-                                                    alignFrozen="right" [frozen]="true">
-                                                    <button id="btnEdit" pButton
-                                                        routerLink="/fleet/maintenance/service-program/edit/{{vehicle.programID}}"
-                                                        type="button" icon="fas fa-user-pen"
-                                                        class="p-button-rounded p-button-text"></button>
-                                                    <button id="btnDelete" (click)="deleteProgram(vehicle.programID, vehicle.programName)" pButton
-                                                        type="button" icon="fas fa-user-slash"
-                                                        class="p-button-rounded p-button-danger p-button-text"></button>
-                                                </td>
-                                            </tr>
-                                        </ng-template>
-                                        
-                                        <ng-template pTemplate="emptymessage" let-columns>
-                                            <div class="col-lg-12 mt-3 text-center">
-                                                {{dataMessage}}
-                                                <br /><br>
-                                            </div>
-                                        </ng-template>
-                                    
-                                        <ng-template pTemplate="summary" let-columns>
-                                                <div class="col-lg-12 mt-3 text-center "
-                                                *ngIf="lastItemSK !== 'end' && programs.length !== 0">
-                                                <button type="button " (click)="onScroll($event) "
-                                                    class="btn btn-success btn-sm text-light ">Load
-                                                    More..</button>
-                                                <br /><br>
-                                            </div>
-                                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK ==='end'">
-                                                Total Records: {{programs.length}}</div>
-                                        </ng-template>
-                                    </p-table>
-                                        
-                                        
-                                        
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        
-                    </div>
+            <div class="col-md-2 col-lg-2">
+              <button
+                type="submit"
+                [disabled]="disableSearch"
+                (click)="searchFilter()"
+                class="btn btn-sm btn-success mr-3"
+              >
+                Search
+              </button>
+              <button
+                type="button"
+                [disabled]="disableSearch"
+                (click)="resetFilter()"
+                class="btn btn-sm btn-success"
+              >
+                Reset
+              </button>
+            </div>
+            <div class="col-md-6 col-lg-6 text-right pr-1 offset-1">
+              <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
+                <button
+                  type="button"
+                  class="btn btn-success btn-sm dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Actions<span class="caret"></span>
+                </button>
+                <div
+                  class="dropdown-menu"
+                  role="menu"
+                  x-placement="bottom-start"
+                  style="
+                    position: absolute;
+                    will-change: transform;
+                    top: 0px;
+                    left: 0px;
+                    transform: translate3d(0px, 38px, 0px);
+                  "
+                >
+                  <a class="dropdown-item text-1" href="javascript:;">Import</a>
+                  <a class="dropdown-item text-1" href="javascript:;">Export</a>
                 </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </header>
 
+      <section class="m-2">
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row pt-1">
+                <div class="col-lg-12">
+                  <div class="mb-3 pb-1">
+                    <ul
+                      class="nav nav-tabs top-tabs"
+                      id="top-tabs"
+                      role="tablist"
+                    >
+                      <li class="nav-item">
+                        <a
+                          class="nav-link"
+                          routerLink="/fleet/maintenance/service-log/list/{{
+                            sessionID
+                          }}"
+                          >Service Log</a
+                        >
+                      </li>
+                      <li class="nav-item">
+                        <a
+                          class="nav-link active"
+                          routerLink="/fleet/maintenance/service-program/list/{{
+                            sessionID
+                          }}"
+                          >Service Programs</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
 
+                  <p-table
+                    #dt
+                    [value]="programs"
+                    [resizableColumns]="true"
+                    columnResizeMode="expand"
+                    scrollDirection="both"
+                    [columns]="selectedColumns"
+                    [loading]="!loaded"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                    [scrollable]="true"
+                    [loading]="!loaded"
+                    scrollHeight="100%"
+                  >
+                    <ng-template pTemplate="caption">
+                      <div
+                        class="p-d-flex d-flex justify-content-between align-items-center"
+                      >
+                        <div>
+                          <h3 class="m-0">Service Programs</h3>
+                        </div>
+                        <div class="text-right">
+                          <span>Showing {{ programs.length }} entries </span>
+                          &nbsp;
+                          <button
+                            type="button"
+                            pButton
+                            (click)="refreshData()"
+                            pTooltip="Refresh"
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-sync"
+                          ></button>
+                          <button
+                            type="button"
+                            pButton
+                            pTooltip="Add"
+                            routerLink="/fleet/maintenance/service-program/add"
+                            class="p-button-outlined mr-2"
+                            icon="pi pi-plus"
+                          ></button>
+                          <button
+                            pButton
+                            pRipple
+                            pTooltip="Clear Filter"
+                            class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash"
+                            (click)="clear(dt)"
+                          ></button>
 
-            </section>
-        </section>
-    </div>
+                          <!--<button type="button" pButton pRipple class="p-button-outlined mr-2"-->
+                          <!--    icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()"-->
+                          <!--    pTooltip="Excel"></button> -->
+                          <p-multiSelect
+                            [options]="dataColumns"
+                            [(ngModel)]="selectedColumns"
+                            optionLabel="header"
+                            selectedItemsLabel="{0} columns selected"
+                            [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns"
+                          >
+                          </p-multiSelect>
+                        </div>
+                      </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th
+                          *ngFor="let dataColumns of columns"
+                          [pSortableColumn]="dataColumns.field"
+                          pResizableColumn
+                          [ngStyle]="{ width: dataColumns.width }"
+                        >
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchDefault>
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="right"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                          </div>
+                        </th>
+                        <th
+                          style="width: 130px"
+                          alignFrozen="right"
+                          pFrozenColumn
+                          [frozen]="true"
+                        >
+                          Actions
+                        </th>
+                      </tr>
+                    </ng-template>
+
+                    <ng-template
+                      pTemplate="body"
+                      let-vehicle
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
+                      <tr>
+                        <td
+                          *ngFor="let dataColumns of columns"
+                          [ngStyle]="{ width: dataColumns.width }"
+                          routerLink="/fleet/maintenance/service-program/detail/{{
+                            vehicle.programID
+                          }}"
+                          style="cursor: pointer"
+                        >
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchCase="'programName'">
+                              {{ get(vehicle, dataColumns.field) | titlecase }}
+                            </span>
+                            <span *ngSwitchCase="'description'">
+                              {{
+                                (get(vehicle, dataColumns.field)
+                                  ? get(vehicle, dataColumns.field)
+                                  : "-"
+                                ) | titlecase
+                              }}
+                            </span>
+                            <span *ngSwitchDefault>
+                              {{ get(vehicle, dataColumns.field) }}
+                            </span>
+                          </div>
+                        </td>
+                        <td
+                          style="text-align: center; width: 130px"
+                          pFrozenColumn
+                          alignFrozen="right"
+                          [frozen]="true"
+                        >
+                          <button
+                            id="btnEdit"
+                            pButton
+                            routerLink="/fleet/maintenance/service-program/edit/{{
+                              vehicle.programID
+                            }}"
+                            type="button"
+                            icon="fas fa-user-pen"
+                            class="p-button-rounded p-button-text"
+                          ></button>
+                          <button
+                            id="btnDelete"
+                            (click)="
+                              deleteProgram(
+                                vehicle.programID,
+                                vehicle.programName
+                              )
+                            "
+                            pButton
+                            type="button"
+                            icon="fas fa-user-slash"
+                            class="p-button-rounded p-button-danger p-button-text"
+                          ></button>
+                        </td>
+                      </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <div class="col-lg-12 mt-3 text-center">
+                        {{ dataMessage }}
+                        <br /><br />
+                      </div>
+                    </ng-template>
+
+                    <ng-template pTemplate="summary" let-columns>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK !== 'end' && programs.length !== 0"
+                      >
+                        <button
+                          type="button "
+                          (click)="onScroll($event)"
+                          class="btn btn-success btn-sm text-light"
+                        >
+                          Load More..
+                        </button>
+                        <br /><br />
+                      </div>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK === 'end'"
+                      >
+                        Total Records: {{ programs.length }}
+                      </div>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
 </section>

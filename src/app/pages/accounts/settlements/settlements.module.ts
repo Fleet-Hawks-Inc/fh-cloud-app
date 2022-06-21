@@ -16,7 +16,9 @@ import { SettlementsDetailComponent } from "./settlements-detail/settlements-det
 import { AddSettlementComponent } from "./add-settlement/add-settlement.component";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { DetailPdfComponent } from "./detail-pdf/detail-pdf.component";
-
+import {DialogModule} from 'primeng/dialog';
+import {InputTextModule} from 'primeng/inputtext';
+import {DropdownModule} from 'primeng/dropdown';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -119,6 +121,9 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule,
     InfiniteScrollModule,
+    DialogModule,
+    DropdownModule,
+    InputTextModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },

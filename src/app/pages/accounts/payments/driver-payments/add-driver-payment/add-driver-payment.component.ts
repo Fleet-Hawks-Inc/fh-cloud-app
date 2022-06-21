@@ -295,12 +295,6 @@ export class AddDriverPaymentComponent implements OnInit, OnDestroy {
     }
   }
 
-  fetchtrips() {
-    this.apiService.getData(`common/trips/get/list`).subscribe((result: any) => {
-      this.trips = result;
-    });
-  }
-
   selectedSettlements() {
     this.paymentData.settlementIds = [];
     this.paymentData.settlData = [];

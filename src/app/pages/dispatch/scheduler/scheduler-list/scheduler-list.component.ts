@@ -75,9 +75,9 @@ this.schedules=this.schedules.concat(result.data)
     }
   }
 
-  activate(scheduleID:any,mongoID:any){
+  activate(scheduleID:any,data:any){
     if(confirm("Are you sure you want activate?")===true){
-      const result=this.apiService.getData(`orders/schedule/activate/${scheduleID}/${mongoID}`).subscribe(()=>{   
+      const result=this.apiService.postData(`orders/schedule/activate/${scheduleID}`,data).subscribe(()=>{   
       this.toastrService.success("Schedule is Activated Successfully!");
       this.schedules=[];
       this.lastEvaluatedKey="";
