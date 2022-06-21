@@ -95,6 +95,7 @@
     "ngx-toastr": "11.3.3",
     "npm": "8.11.0",
     "number-to-words": "1.2.4",
+    "onesignal-ngx": "1.0.2",
     "path": "0.12.7",
     "pdfjs-dist": "2.5.207",
     "pdfmake": "0.2.0",
