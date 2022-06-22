@@ -709,7 +709,7 @@ export class OrdersListComponent implements OnInit {
     this.brokerage.draw = draw;
     this.brokerage.index = index;
     this.brokerage.type = actionFrom;
-    await this.fetchCarriers(this.brokerage.carrierID);
+    await this.fetchCarriers();
     await this.fetchOrderData();
     this.display = true;
   }
@@ -720,7 +720,7 @@ export class OrdersListComponent implements OnInit {
   }
 
 
-  async fetchCarriers(carrierID) {
+  async fetchCarriers() {
     let result: any = await this.apiService
       .getData("contacts/get/type/carrier")
       .toPromise();
@@ -791,7 +791,7 @@ export class OrdersListComponent implements OnInit {
   }
 
   async updateBrokerageStatus() {
-    let data = {
+     let data = {
       orderID: this.brokerage.orderID,
       orderNo: this.brokerage.orderNo,
       brokerageAmount: this.brokerage.brokerageAmount,
@@ -1020,15 +1020,8 @@ export class OrdersListComponent implements OnInit {
     this.listService.changeButton(false);
   }
 
-  fetchData(i: any, value: string) {
-    console.log('carrier--', this.brokerage.carrierID)
-    if (value === "carrier") {
-      if (this.brokerage.carrierID != null) {
-        let id = this.brokerage.carrierID;
-        this.fetchCarriers(id);
-      }
-      this.listService.fetchCarriers();
-    }
+  refreshCarrierData() {
+    this.fetchCarriers();
   }
 
 }
