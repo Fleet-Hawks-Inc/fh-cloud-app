@@ -4,7 +4,6 @@ import { environment } from '../../environments/environment';
 import { Auth } from 'aws-amplify';
 import { EMPTY, from } from 'rxjs';
 import { switchMap } from 'rxjs/internal/operators';
-import { NGX_LOADING_BAR_IGNORED } from '@ngx-loading-bar/http-client';
 @Injectable({
   providedIn: 'root'
 })
@@ -94,7 +93,7 @@ export class ApiService {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', 'fh-carrier-id': isCarrier, 'x-fleethawks-carrier-id': selectedCarrier })
     };
     if (ignoreLoadingBar === true) {
-      options['context'] = new HttpContext().set(NGX_LOADING_BAR_IGNORED, true)
+      options.headers = new HttpHeaders({ 'Content-Type': 'application/json', 'fh-carrier-id': isCarrier, 'x-fleethawks-carrier-id': selectedCarrier, ignoreLoadingBar: '' })
     }
     return this.http.get<any>(this.BaseUrl + url, options);
   }

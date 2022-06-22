@@ -34,8 +34,9 @@ export class ImportedContactsComponent implements OnInit {
 
   importData = {
     module: 'contact',
-    eType: 'customer'
+    eType: []
   }
+  eType = 'customer';
   entity: string;
   next: any = 'null';
 
@@ -50,16 +51,50 @@ export class ImportedContactsComponent implements OnInit {
   _selectedColumns: any[];
   display = false;
 
+  contactTypes = [
+    {
+      value: 'broker',
+      label: 'Broker',
+    },
+    {
+      value: 'carrier',
+      label: 'Carrier',
+    },
+    {
+      value: 'shipper',
+      label: 'Shipper',
+    },
+    {
+      value: 'receiver',
+      label: 'Receiver',
+    },
+    {
+      value: 'customer',
+      label: 'Customer',
+    },
+    {
+      value: 'fc',
+      label: 'Factoring Company',
+    },
+    {
+      value: 'owner_operator',
+      label: 'Owner Operator',
+    }, {
+      value: 'vendor',
+      label: 'Vendor',
+    },
+  ]
+
   constructor(private apiService: ApiService, private route: ActivatedRoute, private location: Location, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      this.importData.eType = params.entity;
+      this.eType = params.entity;
       this.entity = params.entity.charAt(0).toUpperCase() + params.entity.slice(1).replace('_', ' ') + 's';
       if (this.entity == 'Fcs') {
         this.entity = 'Factoring Company';
       }
-
+      this.importData.eType.push(this.eType)
     });
 
     this.setToggleOptions();
@@ -204,7 +239,7 @@ export class ImportedContactsComponent implements OnInit {
     if (this.next === 'end') {
       return;
     }
-    let result = await this.apiService.getData(`importer/get?type=contact&entity=${this.importData.eType}&key=${this.next}`).toPromise();
+    let result = await this.apiService.getData(`importer/get?type=contact&entity=${this.eType}&key=${this.next}`).toPromise();
     if (result.data.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
       this.loaded = true;
@@ -234,11 +269,16 @@ export class ImportedContactsComponent implements OnInit {
 
   uploadImport() {
     if (this.check == true) {
+      if (this.importData.eType.length == 0) {
+        this.toastr.error("Please select at least one contact type");
+        return
+      }
       if (this.importDocs.length > 0) {
         const formData = new FormData();
         for (let i = 0; i < this.importDocs.length; i++) {
           formData.append("importDocs", this.importDocs[i])
         }
+
         this.submitDisabled = true;
         //append other fields
         formData.append("data", JSON.stringify(this.importData));
