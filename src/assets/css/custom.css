@@ -4385,3 +4385,6 @@ input:checked + .sliderbtn:before {
 .p-overlaypanel:before {
   margin-left: -25px !important;
 }
+.notifications-sidebar .p-tabview-panels {
+  padding: 0;
+}
