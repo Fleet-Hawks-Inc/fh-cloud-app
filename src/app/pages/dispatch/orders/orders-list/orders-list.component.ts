@@ -709,6 +709,9 @@ export class OrdersListComponent implements OnInit {
     this.brokerage.draw = draw;
     this.brokerage.index = index;
     this.brokerage.type = actionFrom;
+    this.brokerage.carrierID = null;
+    this.brokerage.brkCurrency = "";
+    this.brokerage.brokerageAmount = 0
     await this.fetchCarriers();
     await this.fetchOrderData();
     this.display = true;
@@ -750,6 +753,7 @@ export class OrdersListComponent implements OnInit {
     if (
       this.brokerage.carrierID === null ||
       this.brokerage.brokerageAmount <= 0
+      || this.brokerage.brkCurrency === ""
     ) {
       this.brokerErr = "Please fill the required fields";
       return false;
