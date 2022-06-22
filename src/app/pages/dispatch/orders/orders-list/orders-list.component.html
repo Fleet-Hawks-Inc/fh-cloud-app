@@ -1240,7 +1240,7 @@
                 <div class="col-lg-3">
                   <div class="radio">
                     <label>
-                      <input type="radio" name="range" value="everymonth" [disabled]="rangeDisabled" [(ngModel)]="range">
+                      <input type="radio" name="range" value="everymonth" [(ngModel)]="range">
                       Every Month
                     </label>
                   </div>
@@ -1256,7 +1256,7 @@
                 <div class="col-lg-3">
                   <div class="radio">
                     <label>
-                      <input type="radio" name="range1" value="month" [disabled]="rangeDisabled" [(ngModel)]="range">
+                      <input type="radio" name="range1" value="month" [(ngModel)]="range">
                       Select month
                     </label>
                   </div>
@@ -1266,7 +1266,7 @@
                 <div class="col-lg-2" *ngFor="let month of months">
                   <div class="checkbox">
                     <label>
-                      <input type="checkbox" [disabled]="rangeDisabled" [value]="month" (change)="onRangeCheckboxChange($event.target.value, $event.target.checked)">
+                      <input type="checkbox" [value]="month" (change)="onRangeCheckboxChange($event.target.value, $event.target.checked)">
                       {{month | titlecase}}
                     </label>
                   </div>
