@@ -103,7 +103,7 @@
           <section class="card">
             <header class="card-header">
               <h2 class="card-title">Events <a
-                [routerLink]=""
+                [routerLink]="[]"
                 (click)="editModal()"
                 class="btn btn-success btn-sm mt-0 modal-confirm margin-right-10 pull-right"
               >+</a
@@ -161,7 +161,7 @@
 
                       <a
                         *ngIf="event.type !== 'D'"
-                        [routerLink]=""
+                        [routerLink]="[][]"
                         (click)="deleteModal(event.eventID)"
                         class="btn btn-danger btn-sm mt-0"
                         >Delete</a
@@ -197,7 +197,7 @@
           type="button"
           data-dismiss="modal"
           class="btn btn-danger"
-          [routerLink]=""
+          [routerLink]="[]"
           (click)="deleteEvent()"
         >
           Delete
@@ -247,7 +247,7 @@
         <button
           type="button"
           class="btn btn-dark"
-          [routerLink]=""
+          [routerLink]="[]"
           (click)="addEvent()"
         >
           Submit
