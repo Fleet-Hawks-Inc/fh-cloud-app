@@ -337,8 +337,19 @@
                           [ngStyle]="{ width: dataColumns.width }"
                           style="cursor: pointer"
                         >
-                          <div [ngSwitch]="dataColumns.field">
-                            
+                      <div [ngSwitch]="dataColumns.field">
+                        <span *ngSwitchCase="'unitSearch'">
+                         {{
+                          (vehicleList[fuelEntry.unitID]
+                            ? vehicleList[fuelEntry.unitID]
+                            : ""
+                          ) | titlecase
+                        }}
+                        {{
+                          (assetList[fuelEntry.unitID] ? assetList[fuelEntry.unitID] : "")
+                            | titlecase
+                        }}
+                        </span>
                             <span *ngSwitchDefault>
                               {{ get(fuelEntry, dataColumns.field) }}</span
                             >

@@ -46,5 +46,6 @@ export const environment = {
     apiKey: 'AIzaSyDBkpMI6T1T-z_JRSd03vZ1Q-MSetM1UwI'
   },
   VSSServerWSS: 'wss://safety-cam.fleethawks.com:36301/wss',
-  whiteListCarriers: ['1tUTDlq930QyBGPqkY23AQH1Bw7', '28gVOlb6UaiBgOcGzAH6Thm8k8c']
+  whiteListCarriers: ['1tUTDlq930QyBGPqkY23AQH1Bw7', '28gVOlb6UaiBgOcGzAH6Thm8k8c'],
+  oneSignalAppId: "31955da2-b779-42dd-a626-ce711f141b8c"
 };
