@@ -269,7 +269,22 @@ export class AddSettlementComponent implements OnInit {
   }
 
   displayResponsive = false;
-
+  fuelTypes = [
+    {
+      label: 'DEF',
+      value: 'def'
+    },
+    {
+      label: 'Vehicle',
+      value: 'vehicle'
+    },
+    {
+      label: 'Reefer',
+      value: 'reefer'
+    },
+  ]
+  selectedFuels = [];
+  filteredFuels = [];
   constructor(
     private listService: ListService,
     private route: ActivatedRoute,
@@ -280,6 +295,16 @@ export class AddSettlementComponent implements OnInit {
     private apiService: ApiService
   ) { }
 
+  filterFuels(event) {
+    if (event.value.length > 0) {
+      this.fuelEnteries = this.filteredFuels.filter((el) => {
+        return event.value.some((f) => {
+          return f == el.data.useType;
+        });
+      });
+    }
+    console.log('myArrayFiltered', this.fuelEnteries)
+  }
   ngOnInit() {
     this.settlementID = this.route.snapshot.params["settlementID"];
     if (this.settlementID) {
@@ -2897,6 +2922,7 @@ export class AddSettlementComponent implements OnInit {
         let dateB: any = new Date(b.fuelDate);
         return dateA - dateB;
       });
+      this.filteredFuels = this.fuelEnteries;
     } else {
       this.fuelEnteries = [];
       this.settlementData.fuelAdd = 0;

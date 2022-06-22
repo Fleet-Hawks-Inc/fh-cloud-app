@@ -397,7 +397,6 @@ export class AddTripComponent implements OnInit {
         if (v.milesMan === false || v.milesMan === undefined) {
           v.miles = 0;
         }
-
         locations.push(v.locationName);
       }
     });
@@ -1716,8 +1715,6 @@ export class AddTripComponent implements OnInit {
       const result: any = await this.apiService
         .getData(`orders/get/type/LTL?lastKey=${this.lastLtlOrderSK}`)
         .toPromise();
-      this.dataMessage = Constant.FETCHING_DATA;
-
       if (result.Items.length === 0) {
         this.dataMessage = Constant.NO_RECORDS_FOUND;
       }
@@ -1966,8 +1963,7 @@ export class AddTripComponent implements OnInit {
       const result: any = await this.apiService
         .getData(`orders/get/type/FTL?lastKey=${this.lastFtLOrderSK}`)
         .toPromise();
-      this.dataMessage = Constant.FETCHING_DATA;
-
+      
       if (result.Items.length === 0) {
         this.dataMessage = Constant.NO_RECORDS_FOUND;
       }

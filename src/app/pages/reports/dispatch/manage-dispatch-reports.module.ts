@@ -19,6 +19,14 @@ const routes: Routes = [
       ),
     data: { title: "Alarm Reports" },
   },
+   {
+    path: "brokerage-report",
+    loadChildren: () =>
+      import("./brokerage-report/manage-brokerage.module").then(
+        (m) => m.ManageBrokerageModule
+      ),
+    data: { title: "Brokerage Reports" },
+  },
   {
     path: "trips",
     loadChildren: () =>
@@ -60,7 +68,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [],
+  declarations: [
+  
+  ],
   imports: [CommonModule, RouterModule.forChild(routes)],
 })
 export class ManageDispatchReportsModule {}

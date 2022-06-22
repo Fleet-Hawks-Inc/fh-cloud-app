@@ -47,5 +47,6 @@ export const environment = {
   },
   VSSServerWSS: 'wss://safety-cam.fleethawks.com:36301/wss',
   whiteListCarriers: ['1tUTDlq930QyBGPqkY23AQH1Bw7', '28gVOlb6UaiBgOcGzAH6Thm8k8c'],
-  oneSignalAppId: "31955da2-b779-42dd-a626-ce711f141b8c"
+  oneSignalAppId: "31955da2-b779-42dd-a626-ce711f141b8c",
+  testCarrier: ['21zpEs5A3MWtK9LeFEkOcsc5Szc']
 };

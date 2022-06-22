@@ -7,10 +7,10 @@ export const environment = {
   isFeatureEnabled: true,
 
 
-  //BaseUrl: 'http://localhost:3000/api/v1/',
+  BaseUrl: 'http://localhost:3000/api/v1/',
   AccountServiceUrl: 'http://localhost:4002/api/v1/',
-  // SafetyServiceUrl: 'http://localhost:4000/api/v1/',
-  BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
+  SafetyServiceUrl: 'http://localhost:4000/api/v1/',
+  // BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
   // AccountServiceUrl: ' https://accounts.ap-south-1.fleethawks.com/api/v1/',
   // SafetyServiceUrl: 'http://localhost:4000/api/v1/',
 
@@ -20,7 +20,7 @@ export const environment = {
   // SafetyServiceUrl: 'http://localhost:4000/api/v1/',
   // BaseUrl: "https://fleetservice.ap-south-1.fleethawks.com/api/v1/",
   // AccountServiceUrl: ' https://accounts.ap-south-1.fleethawks.com/api/v1/',
-  SafetyServiceUrl: "https://safety.ap-south-1.fleethawks.com/api/v1/",
+  // SafetyServiceUrl: "https://safety.ap-south-1.fleethawks.com/api/v1/",
 
   isFleetEnabled: true,
   isDispatchEnabled: false,
@@ -71,7 +71,8 @@ export const environment = {
 
   whiteListCarriers: ['1y4CwKYhlU7I5FluMq2NOCCMZvj', '21zpEs5A3MWtK9LeFEkOcsc5Szc', '1y6913gTrXSlzcTlSEGpwBMe5Ay', '23HFz4o1X79Xh3lcBEJumnolmnt'],
 
-  oneSignalAppId: "1cdb2b50-0786-415f-b454-a3ffe1eab5b4"
+  oneSignalAppId: "1cdb2b50-0786-415f-b454-a3ffe1eab5b4",
+  testCarrier: ['21zpEs5A3MWtK9LeFEkOcsc5Szc']
 
 };
 
