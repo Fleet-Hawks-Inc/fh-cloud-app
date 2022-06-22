@@ -3,7 +3,8 @@
         <a routerLink="/Map-Dashboard" class="logo">
             <img [src]="logoSrc" width="" height="" alt="FH Admin Logo" class="img-fluid" />
         </a>
-        <div class="d-md-none toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
+        <div class="d-md-none toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html"
+            data-fire-event="sidebar-left-opened">
             <i class="fas fa-bars" aria-label="Toggle sidebar"></i>
         </div>
 
@@ -13,41 +14,47 @@
                     <ul class="nav" *ngIf="navSelected != 'onboard'">
                         <li class="" [class.active]="navSelected === 'fleet'" *ngIf="isFleetEnabled">
                             <a class="nav-link" [routerLink]="['/Map-Dashboard']" (click)="onNavSelected('fleet')">
-                Fleet
-              </a>
+                                Fleet
+                            </a>
                         </li>
                         <li class="" [class.active]="navSelected === 'compliance'" *ngIf="isComplianceEnabled">
-                            <a class="nav-link" [routerLink]="['/compliance', 'hos', 'logs']" (click)="onNavSelected('compliance')">
-                Compliance
-              </a>
+                            <a class="nav-link" [routerLink]="['/compliance', 'hos', 'logs']"
+                                (click)="onNavSelected('compliance')">
+                                Compliance
+                            </a>
                         </li>
                         <li class="" [class.active]="navSelected === 'dispatch'" *ngIf="isDispatchEnabled">
-                            <a class="nav-link" [routerLink]="['/dispatch', 'overview']" (click)="onNavSelected('dispatch')">
-                Routing & Dispatch
-              </a>
+                            <a class="nav-link" [routerLink]="['/dispatch', 'overview']"
+                                (click)="onNavSelected('dispatch')">
+                                Routing & Dispatch
+                            </a>
                         </li>
                         <li class="" [class.active]="navSelected === 'safety'" *ngIf="isSafetyEnabled">
-                            <a class="nav-link" [routerLink]="['/safety', 'overview']" (click)="onNavSelected('safety')">
-                Safety
-              </a>
+                            <a class="nav-link" [routerLink]="['/safety', 'overview']"
+                                (click)="onNavSelected('safety')">
+                                Safety
+                            </a>
                         </li>
 
                         <li class="" [class.active]="navSelected === 'accounts'" *ngIf="isAccountsEnabled">
-                            <a class="nav-link" [routerLink]="['/accounts', 'chart-accounts', 'list']" (click)="onNavSelected('accounts')">
-                Accounts
-              </a>
+                            <a class="nav-link" [routerLink]="['/accounts', 'chart-accounts', 'list']"
+                                (click)="onNavSelected('accounts')">
+                                Accounts
+                            </a>
                         </li>
 
                         <li class="" [class.active]="navSelected === 'reports'" *ngIf="isReportsEnabled">
-                            <a class="nav-link" [routerLink]="['/reports', 'allreport']" (click)="onNavSelected('reports')">
-                Reports
-              </a>
+                            <a class="nav-link" [routerLink]="['/reports', 'allreport']"
+                                (click)="onNavSelected('reports')">
+                                Reports
+                            </a>
                         </li>
 
                         <li class="" [class.active]="navSelected === 'manage'" *ngIf="isManageEnabled">
-                            <a class="nav-link" [routerLink]="['/manage', 'overview']" (click)="onNavSelected('manage')">
-                Manage
-              </a>
+                            <a class="nav-link" [routerLink]="['/manage', 'overview']"
+                                (click)="onNavSelected('manage')">
+                                Manage
+                            </a>
                         </li>
                     </ul>
                 </nav>
@@ -56,31 +63,43 @@
     </div>
 
     <div class="header-right">
-        <i class="pi pi-bell mr-4 p-text-secondary" pBadge style="font-size: 1.3rem; cursor: pointer;" severity="danger" size="large" (click)="showNotifications=true" [value]="unReadCounter"></i>
-        <p-sidebar [(visible)]="showNotifications" appendTo="body" modal="false" baseZIndex="100000" position="right" styleClass="p-sidebar-sm">
+        <i class="pi pi-bell mr-4 p-text-secondary" pBadge style="font-size: 1.3rem; cursor: pointer;" severity="danger"
+            size="large" (click)="showNotifications=true" [value]="unReadCounter"></i>
+        <p-sidebar [(visible)]="showNotifications" appendTo="body" modal="false" baseZIndex="100000" position="right"
+            styleClass="p-sidebar-sm">
 
-            <p-tabView>
+            <p-tabView styleClass="notifications-sidebar">
                 <p-tabPanel header="Notifications">
-                    <p-table responsiveLayout="scroll" styleClass="p-datatable-md" [value]="notifications" selectionMode="single">
+                    <p-table responsiveLayout="scroll" styleClass="p-datatable-md" [value]="notifications"
+                        selectionMode="single">
                         <ng-template pTemplate="header">
 
                         </ng-template>
                         <ng-template pTemplate="body" let-rowData let-notification>
                             <tr>
-                                <td (click)="showDetail(notification)" style="cursor:pointer;">{{notification.shortMessage}}</td>
+                                <td (click)="showDetail(notification)" style="cursor:pointer;">
+                                    {{notification.shortMessage}}</td>
 
                             </tr>
+
                         </ng-template>
+
                     </p-table>
+                    <button class="btn btn-success btn-sm mt-3 mx-auto d-block"
+                        *ngIf="lastKey != 'end' && notifications.length !== 0" (click)="onScroll()"
+                        [disabled]="isLoad">{{isLoadText}}</button>
+
                 </p-tabPanel>
                 <p-tabPanel header="Announcements">
-                    <p-table responsiveLayout="scroll" styleClass="p-datatable-md" [value]="announcements" selectionMode="single">
+                    <p-table responsiveLayout="scroll" styleClass="p-datatable-md" [value]="announcements"
+                        selectionMode="single">
                         <ng-template pTemplate="header">
 
                         </ng-template>
                         <ng-template pTemplate="body" let-rowData let-announcement>
                             <tr>
-                                <td (click)="showDetail(announcement,false)" style="cursor:pointer;">{{ announcement.shortMessage}}</td>
+                                <td (click)="showDetail(announcement,false)" style="cursor:pointer;">{{
+                                    announcement.shortMessage}}</td>
 
                             </tr>
                         </ng-template>
@@ -93,7 +112,8 @@
         </p-sidebar>
 
 
-        <a *ngIf="isAddressBook" href="javascript:;" (click)="openModal('list')" class="modal-with-form address-book-icon" title="Address Book">
+        <a *ngIf="isAddressBook" href="javascript:;" (click)="openModal('list')"
+            class="modal-with-form address-book-icon" title="Address Book">
             <i class="far fa-address-book text-dark" style="font-size: 18px"></i>
         </a>
 
@@ -114,40 +134,30 @@
                 <ul class="list-unstyled mb-2 text-dark">
                     <li class="divider"></li>
                     <li *ngIf="isManageEnabled">
-                        <a role="menuitem" tabindex="-1" routerLink="/manage/company/detail/{{ currentCarrierID }}" class="modal-with-form"><i class="fas fa-building"></i> Company Profile</a
-            >
-          </li>
-          <li *ngIf="showSwitch">
-            <a
-              role="menuitem"
-              tabindex="-1"
-              routerLink="/organizations"
-              class="modal-with-form"
-              ><i class="fas fa-exchange"></i> Switch Company</a
-            >
-          </li>
-          <li>
-            <a
-              id="lnkLogout"
-              role="menuitem"
-              tabindex="-1"
-              routerLink=""
-              (click)="Logout()"
-              ><i class="fas fa-power-off"></i> Logout</a
-            >
-          </li>
-        </ul>
-      </div>
+                        <a role="menuitem" tabindex="-1" routerLink="/manage/company/detail/{{ currentCarrierID }}"
+                            class="modal-with-form"><i class="fas fa-building"></i> Company Profile</a>
+                    </li>
+                    <li *ngIf="showSwitch">
+                        <a role="menuitem" tabindex="-1" routerLink="/organizations" class="modal-with-form"><i
+                                class="fas fa-exchange"></i> Switch Company</a>
+                    </li>
+                    <li>
+                        <a id="lnkLogout" role="menuitem" tabindex="-1" routerLink="" (click)="Logout()"><i
+                                class="fas fa-power-off"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
 </header>
 
 <app-new-address-book></app-new-address-book>
 <app-shared-modals></app-shared-modals>
 
-<p-dialog header="Message" [modal]="true" [style]="{width: '50vw'}"  [(visible)]="showNotificationDetail">
-  {{detailMessage}}
-  <ng-template pTemplate="footer">
-    <p-button icon="pi pi-check" (click)="showNotificationDetail=false" label="Ok" styleClass="p-button-text"></p-button>
-</ng-template>
+<p-dialog header="Message" [modal]="true" [style]="{width: '50vw'}" [(visible)]="showNotificationDetail">
+    {{detailMessage}}
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="showNotificationDetail=false" label="Ok" styleClass="p-button-text">
+        </p-button>
+    </ng-template>
 </p-dialog>
