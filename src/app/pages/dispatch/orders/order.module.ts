@@ -19,6 +19,7 @@ import { BrokeragePdfComponent } from "./brokerage-pdf/brokerage-pdf.component";
 import { BolPdfComponent } from "./bol-pdf/bol-pdf.component";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { SlickCarouselModule } from "ngx-slick-carousel";
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 
 import { MenuModule } from 'primeng/menu';
@@ -30,6 +31,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { BadgeModule } from "primeng/badge";
+import { DialogModule } from 'primeng/dialog';
 const routes: Routes = [
   {
     path: "order-list/:sessionId",
@@ -88,8 +90,9 @@ const routes: Routes = [
     ButtonModule,
     ToastModule,
     FormsModule,
-    BadgeModule
-
+    BadgeModule,
+    OverlayPanelModule,
+    DialogModule
   ],
   providers: [unsavedChangesGuard],
 })

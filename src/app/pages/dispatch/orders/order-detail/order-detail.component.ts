@@ -399,6 +399,8 @@ export class OrderDetailComponent implements OnInit {
     this.docs = [];
     this.apiService.getData(`orders/detail/${this.orderID}`).subscribe(
       async (result: any) => {
+        //
+    
         this.newOrderData = result;
         result = result.Items[0];
         if (result.brkCarrID) {
@@ -549,7 +551,9 @@ export class OrderDetailComponent implements OnInit {
             ext: x.split(".")[1],
           }));
         }
-
+  
+       this.attachments = result.uploadPics;
+ 
         if (result.tripDocs != undefined && result.tripDocs.length > 0) {
           this.tripDocs = result.tripDocs.map((x) => ({
             imgPath: `${x.urlPath}`,

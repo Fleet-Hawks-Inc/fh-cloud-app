@@ -86,10 +86,18 @@
                                             </tr>
                                         </ng-template>
                                         <ng-template pTemplate="summary" let-columns>
-
-                                            <div class="col-lg-12 mt-3 text-center">Total Records:
-                                                {{importCustomers.length}}</div>
+                                            <div class="col-lg-12 mt-3 text-center"
+                                                *ngIf="importCustomers.length !== 0 && next != 'end'">
+                                                <button type="button" class="btn btn-success btn-sm text-light"
+                                                    (click)="onScroll()">
+                                                    Load More..
+                                                </button>
+                                                <br /><br>
+                                            </div>
+                                            <div class="col-lg-12 mt-3 text-center" *ngIf="next ==='end'">
+                                                Total Records: {{importCustomers.length}}</div>
                                         </ng-template>
+
                                     </p-table>
                                 </div>
                             </div>
@@ -121,12 +129,24 @@
                     comma separator. </li>
             </ul>
             <div class="row">
-                <div class="form-group col-lg-11 mt-5 mb-3">
+                <div class="form-group col-lg-12 mt-5 mb-3 ">
+                    <label class="control-label font-weight-bold label mb text-3 w-100 text-dark">Select Contact Type
+                        <small>( You can add multiple type if you want )</small>
+                        <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                    </label>
+                    <div class="w-100">
+                        <p-multiSelect appendTo="body" [style]="{'width':'100%'}" required class="w-100 text-capitalize"
+                            [filter]="false" placeholder="Select Contact Types" [options]="contactTypes"
+                            [(ngModel)]="importData.eType" optionLabel="label" optionValue="value">
+                        </p-multiSelect>
+                    </div>
+                </div>
+                <div class="form-group col-lg-11 mb-3">
                     <label class="control-label font-weight-bold label mb text-3 text-dark">Choose File
                         <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                     </label>
-                    <input class="form-control choosefileLH" (change)="chooseFile($event)"
-                        (change)="validateCSV($event)" #myInput accept=".csv" id="importDocs" type="file">
+                    <input class="w-100" pInputText (change)="chooseFile($event)" (change)="validateCSV($event)"
+                        #myInput accept=".csv" id="importDocs" type="file">
                     <div *ngIf="inValidMessages.length > 0 || emailsErrs.length > 0">
                         <br><span><b>Below are the errors in the uploaded file. Please rectify them and upload
                                 the file again.</b></span>
@@ -138,7 +158,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="form-group col-lg-1 mt-5 mb-3">
+                <div class="form-group col-lg-1 mt-2 mb-3">
                     <i class="pi pi-refresh mt-4 pt-2" (click)="cancel()" style="font-size: 1.5rem"></i>
 
                 </div>
