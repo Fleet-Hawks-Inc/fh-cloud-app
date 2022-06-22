@@ -127,7 +127,7 @@ _selectedColumns: any[];
      dataColumns = [
         { width: '12%', field: 'dateTime', header: 'Date/Time', type: "text" },
         { width: '12%', field: 'data.useType', header: 'Use Type', type: "text" },
-        { width: '12%', field: 'data.unitNo', header: 'Unit Name', type: "text" },
+        { width: '12%', field: 'unitSearch', header: 'Unit Name', type: "text" },
         { width: '12%', field: 'data.cardNo', header: 'Fuel Card', type: "text" },
         { width: '12%', field: 'data.city', header: 'City', type: "text" },
         { width: '12%', field: 'data.type', header: 'Fuel Type', type: "text" },
@@ -191,6 +191,7 @@ _selectedColumns: any[];
         this.apiService.getData('assets/get/minor/details')
             .subscribe((result: any) => {
                 this.assetsSet = result.Items;
+                console.log('A',this.assetsSet)
             })
     }
 
@@ -199,6 +200,7 @@ _selectedColumns: any[];
             result['Items'].map((v: any) => {
                 if (v.isDeleted === 0) {
                     this.vehicleSet.push(v);
+                    console.log('V',this.vehicleSet)
                 }
             })
         });
