@@ -71,7 +71,7 @@
         "jspdf-autotable": "3.5.14",
         "jspdf-html2canvas": "1.4.9",
         "jstree": "3.3.10",
-        "jszip": "3.7.0",
+        "jszip": "3.10.0",
         "jwt-decode": "3.1.2",
         "lodash": "4.17.20",
         "moment": "2.29.2",
