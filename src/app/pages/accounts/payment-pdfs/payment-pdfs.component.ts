@@ -421,17 +421,17 @@ export class PaymentPdfsComponent implements OnInit {
                         obj.finalRate = v.paymentSelected[0].flatRate
                       } else if(v.paymentSelected[0].pType == 'ppm') {
                           if(plan.mileType === 'loaded') {
-                            if(plan.driverID || plan.coDriverID) {
-                              planObj.rate = v.paymentSelected[0].loadedMiles
-                            } else if(plan.driverID && plan.coDriverID) {
+                            if(plan.driverID && plan.coDriverID) {
                               planObj.rate = v.paymentSelected[0].loadedMilesTeam
+                            } else {
+                              planObj.rate = v.paymentSelected[0].loadedMiles
                             }
 
                           } else {
-                            if(plan.driverID || plan.coDriverID) {
-                              planObj.rate = v.paymentSelected[0].emptyMiles
-                            } else if(plan.driverID && plan.coDriverID) {
+                            if(plan.driverID && plan.coDriverID) {
                               planObj.rate = v.paymentSelected[0].emptyMilesTeam
+                            } else {
+                              planObj.rate = v.paymentSelected[0].emptyMiles
                             }
                           }
                           obj.finalRate = v.amount
@@ -470,17 +470,17 @@ export class PaymentPdfsComponent implements OnInit {
                     obj.finalRate = v.paymentSelected[0].flatRate
                   } else if(v.paymentSelected[0].pType == 'ppm') {
                     if(plan.mileType === 'loaded') {
-                      if(plan.driverID || plan.coDriverID) {
-                        planObj.rate = v.paymentSelected[0].loadedMiles
-                      } else if(plan.driverID && plan.coDriverID) {
+                      if(plan.driverID && plan.coDriverID) {
                         planObj.rate = v.paymentSelected[0].loadedMilesTeam
+                      } else {
+                        planObj.rate = v.paymentSelected[0].loadedMiles
                       }
 
                     } else {
-                      if(plan.driverID || plan.coDriverID) {
-                        planObj.rate = v.paymentSelected[0].emptyMiles
-                      } else if(plan.driverID && plan.coDriverID) {
+                      if(plan.driverID && plan.coDriverID) {
                         planObj.rate = v.paymentSelected[0].emptyMilesTeam
+                      } else {
+                        planObj.rate = v.paymentSelected[0].emptyMiles
                       }
                     }
                     obj.finalRate = v.amount
