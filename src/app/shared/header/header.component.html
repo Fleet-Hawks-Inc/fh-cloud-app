@@ -86,7 +86,7 @@
 
                     </p-table>
                     <button class="btn btn-success btn-sm mt-3 mx-auto d-block"
-                        *ngIf="lastKey != 'end' && notifications.length !== 0" (click)="onScroll($event)"
+                        *ngIf="lastKey != 'end' && notifications.length !== 0" (click)="onScroll()"
                         [disabled]="isLoad">{{isLoadText}}</button>
 
                 </p-tabPanel>
