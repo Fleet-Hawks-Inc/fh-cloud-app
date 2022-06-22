@@ -306,7 +306,7 @@ export class HeaderComponent implements OnInit {
 
   async getAllNotificationAnnouncement() {
     this.unReadCounter = 0;
-    const result = await this.apiService.getData(`notification/getAll?lastKey=${this.lastKey}`).toPromise();
+    const result = await this.apiService.getData(`notification/getAll?lastKey=${this.lastKey}`, true).toPromise();
     if (result.notifications) {
       for (let i = 0; i < result.notifications.data.length; i++) {
         const element = result.notifications.data[i];
