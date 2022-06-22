@@ -290,6 +290,7 @@ export class HeaderComponent implements OnInit {
     if (isNotification && notification.read === 0) {
 
       await this.apiService.putData(`notification/read/${notification.id}`, {}).toPromise();
+      notification.read = 1;
       this.unReadCounter -= 1;
     }
 
@@ -330,7 +331,7 @@ export class HeaderComponent implements OnInit {
       }
     }
     if (result.announcements) {
-      this.announcements = result.announcements;
+      this.announcements = result.announcements.data;
       this.announcements.forEach(element => {
         const length = 50;
         element['shortMessage'] = element.message.length > length ?
