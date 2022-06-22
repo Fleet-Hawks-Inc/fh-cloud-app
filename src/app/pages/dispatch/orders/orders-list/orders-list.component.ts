@@ -32,7 +32,7 @@ export class OrdersListComponent implements OnInit {
   @ViewChild("confirmEmailModal", { static: true })
   confirmEmailModal: TemplateRef<any>;
 
-  @ViewChild("schedularModal", {static:true}) schedularModal:TemplateRef<any>
+  @ViewChild("schedularModal", { static: true }) schedularModal: TemplateRef<any>
 
   dataMessage: string = Constants.FETCHING_DATA;
   noOrdersMsg = Constants.NO_RECORDS_FOUND;
@@ -163,11 +163,12 @@ export class OrdersListComponent implements OnInit {
     carrierID: null,
     finalAmount: "",
     miles: 0,
-    currency: "",
+    // currency: "",
     draw: 0,
     index: 0,
     type: "",
     brokerageAmount: 0,
+    brkCurrency: "",
     instructions: "",
     today: moment().format("YYYY-MM-DD"),
   };
@@ -255,7 +256,7 @@ export class OrdersListComponent implements OnInit {
   range=null;
   days=["everyday","monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
   months=["selectAll","january","february","march","april","may","june","july","august","september","october","november","december"]
-
+  display:any;
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
@@ -702,14 +703,23 @@ export class OrdersListComponent implements OnInit {
     this.brokerage.orderNo = order.orderNumber;
     this.brokerage.miles = order.milesInfo.totalMiles;
     this.brokerage.finalAmount = order.finalAmount;
-    this.brokerage.currency = order.charges.freightFee.currency;
+    // this.brokerage.currency = order.charges.freightFee.currency;
     this.brokerage.draw = draw;
     this.brokerage.index = index;
     this.brokerage.type = actionFrom;
+    this.brokerage.carrierID = null;
+    this.brokerage.brkCurrency = "";
+    this.brokerage.brokerageAmount = 0
     await this.fetchCarriers();
     await this.fetchOrderData();
-    $("#orderStatusModal").modal("show");
+    this.display = true;
   }
+
+
+  changeCurrency(val) {
+    this.brokerage.brkCurrency = val;
+  }
+
 
   async fetchCarriers() {
     let result: any = await this.apiService
@@ -741,10 +751,11 @@ export class OrdersListComponent implements OnInit {
     if (
       this.brokerage.carrierID === null ||
       this.brokerage.brokerageAmount <= 0
+      || this.brokerage.brkCurrency === ""
     ) {
       this.brokerErr = "Please fill the required fields";
       return false;
-    }  else {
+    } else {
       this.brokerErr = "";
     }
     this.showModal = true;
@@ -757,9 +768,10 @@ export class OrdersListComponent implements OnInit {
       showModal: this.showModal,
       companyLogo: this.companyLogoSrc,
     };
+    console.log('data==', data)
     this.listService.triggerBrokeragePdf(data);
     await this.updateBrokerageStatus();
-    $("#orderStatusModal").modal("hide");
+    this.display = false;
     this.brokerageDisabled = false;
   }
 
@@ -781,10 +793,11 @@ export class OrdersListComponent implements OnInit {
   }
 
   async updateBrokerageStatus() {
-    let data = {
+     let data = {
       orderID: this.brokerage.orderID,
       orderNo: this.brokerage.orderNo,
       brokerageAmount: this.brokerage.brokerageAmount,
+      brkCurrency: this.brokerage.brkCurrency,
       instructions: this.brokerage.instructions,
       type: "update",
       carrierID: this.brokerage.carrierID,
@@ -815,6 +828,7 @@ export class OrdersListComponent implements OnInit {
         orderID: order.orderID,
         orderNo: order.orderNo,
         brokerageAmount: 0,
+        brkCurrency: '',
         instructions: "",
         carrierID: null,
         type: "cancel",
@@ -873,10 +887,10 @@ export class OrdersListComponent implements OnInit {
 
   }
 
-  openSchedulerModal(orderID,orderNumber){
+  openSchedulerModal(orderID, orderNumber) {
     this.resetSchedule();
-    this.scheduler.orderID=orderID,
-    this.scheduler.orderNumber=orderNumber
+    this.scheduler.orderID = orderID,
+      this.scheduler.orderNumber = orderNumber
     let ngbModalOptions: NgbModalOptions = {
       keyboard: true,
       windowClass: "schedular--modal",
@@ -885,18 +899,18 @@ export class OrdersListComponent implements OnInit {
       this.schedularModal,
       ngbModalOptions
     );
-    this.repeatType=''
-    this.range=''
-  this.saveDisabled=false
+    this.repeatType = ''
+    this.range = ''
+    this.saveDisabled = false
   }
 
-  onCheckboxChange(data,isChecked){
-    if(isChecked){
+  onCheckboxChange(data, isChecked) {
+    if (isChecked) {
       this.scheduler.type.days.push(data)
     }
-    else{
-      const index=this.scheduler.type.days.findIndex(x=>x==data);
-      this.scheduler.type.days.splice(index,1)
+    else {
+      const index = this.scheduler.type.days.findIndex(x => x == data);
+      this.scheduler.type.days.splice(index, 1)
     }
   }
 
@@ -921,22 +935,22 @@ export class OrdersListComponent implements OnInit {
     }
     if(this.scheduler.name==null){
       this.toastr.error("Scheduler Name is required");
-      this.saveDisabled=false;
-      return 
+      this.saveDisabled = false;
+      return
     }
-    if(this.scheduler.time==null){
+    if (this.scheduler.time == null) {
       this.toastr.error("Scheduler Time is required");
-      this.saveDisabled=false;
+      this.saveDisabled = false;
       return;
     }
-    if(this.repeatType==null){
+    if (this.repeatType == null) {
       this.toastr.error("Repeat Type is required");
-      this.saveDisabled=false;
+      this.saveDisabled = false;
       return;
     }
-    if(this.range==null){
+    if (this.range == null) {
       this.toastr.error("Range is required");
-      this.saveDisabled=false;
+      this.saveDisabled = false;
       return;
     }
 
@@ -995,7 +1009,7 @@ export class OrdersListComponent implements OnInit {
         this.modalService.dismissAll();
       }
     })
-    
+
   }
 
   editOrder(orderID) {
@@ -1003,29 +1017,47 @@ export class OrdersListComponent implements OnInit {
       this.router.navigateByUrl(`/dispatch/orders/edit/${orderID}`)
     }, 10);
   }
-  
+
   createTrip(orderID, orderNumber) {
     setTimeout(() => {
-      this.router.navigate([`/dispatch/trips/add-trip`],{ queryParams: {
-        orderId: orderID,
-        orderNum: orderNumber
-      }});
+      this.router.navigate([`/dispatch/trips/add-trip`], {
+        queryParams: {
+          orderId: orderID,
+          orderNum: orderNumber
+        }
+      });
     }, 10);
- }
-  
- cloneOrder(orderID) {
+  }
+
+  cloneOrder(orderID) {
     setTimeout(() => {
-      this.router.navigate([`/dispatch/orders/add`],{ queryParams: {
-        cloneID: orderID
-      }});
+      this.router.navigate([`/dispatch/orders/add`], {
+        queryParams: {
+          cloneID: orderID
+        }
+      });
     }, 10);
- }
-  
- recallOrder(orderID) {
+  }
+
+  recallOrder(orderID) {
     setTimeout(() => {
-      this.router.navigate([`/dispatch/orders/edit/${orderID}`],{ queryParams: {
-        state: 'recall'
-      }});
+      this.router.navigate([`/dispatch/orders/edit/${orderID}`], {
+        queryParams: {
+          state: 'recall'
+        }
+      });
     }, 10);
- }
+  }
+
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+
+    localStorage.setItem("isOpen", "true");
+    this.listService.changeButton(false);
+  }
+
+  refreshCarrierData() {
+    this.fetchCarriers();
+  }
+
 }

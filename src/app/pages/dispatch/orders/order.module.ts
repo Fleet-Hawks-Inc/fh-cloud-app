@@ -31,6 +31,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { BadgeModule } from "primeng/badge";
+import { DialogModule } from 'primeng/dialog';
 const routes: Routes = [
   {
     path: "order-list/:sessionId",
@@ -90,7 +91,8 @@ const routes: Routes = [
     ToastModule,
     FormsModule,
     BadgeModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    DialogModule
   ],
   providers: [unsavedChangesGuard],
 })

@@ -76,6 +76,19 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   }
 
   async ngOnInit() {
+    await this.initPushNotification();
+    await this.getCurrentDriverLocation();
+    await this.getCurrentAssetLocation();
+    await this.getVehicleLocationByDashCam();
+
+
+  }
+
+  private async initPushNotification() {
+    const currentCarrierId = localStorage.getItem('xfhCarrierId')
+    if (environment.testCarrier.includes(currentCarrierId)) {
+      return;
+    }
     this.oneSignal.init({
       appId: environment.oneSignalAppId,
     });
@@ -90,17 +103,12 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
         await this.oneSignal.showHttpPrompt({
           force: true,
         });
-        await this.oneSignal.registerForPushNotifications();
+        // await this.oneSignal.registerForPushNotifications();
         this.oneSignal.setExternalUserId(localStorage.getItem('xfhCarrierId'));
         // this console is for info do not remove it.
         console.log("Push notifications are not enabled yet.");
       }
     });
-    await this.getCurrentDriverLocation();
-    await this.getCurrentAssetLocation();
-    await this.getVehicleLocationByDashCam();
-
-
   }
 
   /**
