@@ -32,6 +32,14 @@ scrollHeight      ="100%"
                         <div class="text-right">
                           <span>Showing {{ brokerage.length }} entries </span>
                           &nbsp;
+                          <button
+                            type="button"
+                            pButton
+                            (click)="refreshData()"
+                            pTooltip="Refresh"
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-sync"
+                          ></button>
                           <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
                           <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
                           <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
@@ -62,7 +70,6 @@ scrollHeight      ="100%"
                       <span *ngSwitchCase="'cName'">
                                     {{carriersObject[brk.brkCarrID] | titlecase}}
                                   </span>
-                                  
                       <span *ngSwitchCase="'pickUpLoc'">
                              <span *ngFor="let item of brk.shippersReceiversInfo">
                               <span *ngIf="
@@ -149,9 +156,6 @@ scrollHeight      ="100%"
                               </span>
                       </span>
                       </span>
-                      <!--<span *ngSwitchCase="'brokerDate'">-->
-                      <!--  {{brkDateEnUS}}-->
-                      <!--</span>-->
                       <span *ngSwitchDefault>
                                   {{ get(brk, dataColumns.field) }}</span>
                                   </div>
