@@ -223,6 +223,18 @@ export class DetailreportComponent implements OnInit {
 
     this.fetchOrderReport();
   }
+  
+  refreshData() {
+    this.selectedMonth = ''
+    this.selectedYear = ''
+    this.lastItemSK = '';
+    this.records = []
+
+    this.fetchDetailReport();
+
+    this.fetchOrderReport();
+  }
+  
   async fetchOrderReport(refresh?: boolean) {
     if (refresh === true) {
       this.lastItemSK = '',
