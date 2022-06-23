@@ -1,9 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from 'src/app/services'
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ApiService, HereMapService } from 'src/app/services'
+import { NgxSpinnerService } from "ngx-spinner";
+import { Overlay } from "ngx-toastr";
 import Constant from 'src/app/pages/fleet/constants'
 import { CurrencyPipe } from '@angular/common'
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import * as html2pdf from "html2pdf.js";
+import { environment } from "src/environments/environment";
 import * as moment from 'moment'
 import { ToastrService } from "ngx-toastr";
+import { ListService } from "src/app/services/list.service";
+import * as _ from "lodash";
+import { DashboardUtilityService } from "src/app/services/dashboard-utility.service";
+import { Table } from 'primeng/table';
+import { NgSelectComponent } from "@ng-select/ng-select";
+import { OverlayPanel } from "primeng/overlaypanel";
+import { Router } from "@angular/router";
+import { DomSanitizer } from '@angular/platform-browser';
+declare var $: any;
 
 @Component({
   selector: 'app-detailreport',
@@ -12,7 +26,20 @@ import { ToastrService } from "ngx-toastr";
 })
 export class DetailreportComponent implements OnInit {
 
-  constructor(private apiService: ApiService, private currencyPipe: CurrencyPipe, private toastr: ToastrService) { }
+  
+  
+  Asseturl = this.apiService.AssetUrl;
+   environment = environment.isFeatureEnabled;
+  @ViewChild('dt') table: Table;
+  @ViewChild('op') overlaypanel: OverlayPanel;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
+  @ViewChild("confirmEmailModal", { static: true })
+  confirmEmailModal: TemplateRef<any>;
+
+  @ViewChild("schedularModal", {static:true}) schedularModal:TemplateRef<any>
+
+  dataMessage: string = Constant.FETCHING_DATA;
+  noOrdersMsg = Constant.NO_RECORDS_FOUND;
   totalOrdersCount = 0
   dispatchedCount = 0
   delieverdCount = 0
@@ -20,9 +47,9 @@ export class DetailreportComponent implements OnInit {
   canceledCount = 0
   tonuCount = 0
 
+ isSearch: boolean = false;
   records: any = []
 
-  dataMessage = ''
   customers = {}
   lastItemSK = ''
   loaded = false
@@ -34,8 +61,56 @@ export class DetailreportComponent implements OnInit {
   vehicles = {}
   assets = {}
   drivers = {}
+  
+  customerValue = "";
 
-  ngOnInit() {
+  totalRecords = 10;
+  pageLength = 10;
+  ordersNext = false;
+  ordersPrev = true;
+  ordersDraw = 0;
+  ordersPrevEvauatedKeys = [""];
+  ordersStartPoint = 1;
+  ordersEndPoint = this.pageLength;
+
+  newOrderID: string;
+  newOrderNumber: string;
+  newCustomerID: string;
+  confirmIndex: number;
+  confirmRef: any;
+
+  isConfirm: boolean = false;
+  
+  isLoad: boolean = false;
+  isLoadText = "Load More...";
+  listView = true;
+  visible = true;
+
+  detailUrl = []
+  disableSearch = false;
+  filterStatus = null;
+
+  dataColumns: any[];
+  get = _.get;
+  find = _.find;
+  _selectedColumns: any[];
+  // pickupLocData = []
+  isOrderPriceEnabled = environment.isOrderPriceEnabled
+  customersObjects: any = {};
+
+   constructor(private apiService: ApiService,
+  private currencyPipe: CurrencyPipe,
+  private toastr: ToastrService,
+  private modalService: NgbModal,
+  private spinner: NgxSpinnerService,
+  private listService: ListService,
+  private dashboardUtilityService: DashboardUtilityService,
+  private router: Router,
+  protected _sanitizer: DomSanitizer,
+  private hereMap: HereMapService) { }
+  
+
+  async ngOnInit() {
     this.months = moment.months()
     this.years.push(moment().year())
     this.years.push(moment().subtract(1, 'year').year())
@@ -45,7 +120,45 @@ export class DetailreportComponent implements OnInit {
     this.fetchAssets();
     this.fetchDrivers();
     this.fetchDetailReport();
-    this.fetchOrderReport();
+     this.fetchOrderReport();
+     this.dataColumns = [
+      { width: '7%', field: 'orderNumber', header: 'Order', type: "text", },
+      { width: '7%', field: 'tripData.tripNo', header: 'Trip', type: "text", },
+      { width: '7%', field: 'orderMode', header: 'Type', type: "text" },
+      { width: '8%', field: 'createdDate', header: 'Date', type: "text" },
+      { width: '10%', field: 'customers', header: 'Customer', type: 'text' },
+      { width: '9%', field: 'cusConfirmation', header: 'Confirmation', type: 'text' },
+      { width: '7%', field: 'vehicles', header: 'Vehicles', type: 'text' },
+      { width: '9%', field: 'tripData.assetIDs', header: 'Assets', type: 'text' },
+      { width: '10%', field: 'drivers', header: 'Drivers', type: 'text' },
+      { width: '8%', field:'cusPOs', header: 'Customer PO', type: 'text' },
+      { width: '8%', field: 'milesInfo.totalMiles', header: 'Miles', type: 'text' },
+      { width: '8%', field: 'totalAmount', header: 'Amount', type: 'text' },
+      { width: '8%', field: 'orderStatus', header: 'Status', type: 'text' },
+    ];
+    this._selectedColumns = this.dataColumns;
+     this.setToggleOptions();
+  }
+  
+    setFilterStatus(val) {
+    this.filterStatus = val;
+  }
+  
+   setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+  
+  clear(table: Table) {
+    table.clear();
+  }
+
+  set selectedColumns(val: any[]) {
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
   }
 
   async fetchVehicles() {
@@ -88,6 +201,7 @@ export class DetailreportComponent implements OnInit {
         });
 
         this.records = result.Items
+        console.log('result',this.records)
       }
       else {
         this.dataMessage = Constant.NO_RECORDS_FOUND
