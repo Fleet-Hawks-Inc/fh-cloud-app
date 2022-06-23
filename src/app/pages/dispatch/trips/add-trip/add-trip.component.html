@@ -52,7 +52,7 @@
                         >
                       </div>
                     </div>
-                    <!-- <div class="row">
+                    <div class="row">
                       <div class="col-lg-10">
                         <label
                           class="control-label font-weight-semibold text-3 text-dark"
@@ -62,25 +62,26 @@
                           ></label
                         >
                         <div class="btn-group-toggle">
-                          <label
+                          <!-- <label
                             class="btn btn-outline
                             btn-yesno mr-2 {{ mapOrderActive }} mb-2"
-                            (click)="changeMapRoute('order')"
-                            >Order Number</label
-                          >
-                          <label
+                           
+                            >Order Number {{ mapOrderActive }}</label
+                          > -->
+                          <!-- <label
                             class="btn btn-outline
                             btn-yesno mr-2 mb-2 {{ mapRouteActive }}"
                             (click)="getRoutes()"
                             >Permanent Route</label
-                          >
+                          > -->
                         </div>
                       </div>
-                    </div> -->
+                    </div>
                     <div class="row mb-2">
                       <div class="col-lg-10">
                         <label
-                          class="control-label font-weight-semibold text-3 text-dark"
+                          class="control-label font-weight-semibold text-3 text-dark {{ mapOrderActive }}"
+                          (click)="changeMapRoute('order')"
                           >Select Order#
                           <span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
@@ -90,6 +91,7 @@
                         <input
                           type="text"
                           class="form-control"
+                        
                           (click)="showMOdal()"
                           [(ngModel)]="orderNo"
                           name="ordr"
@@ -114,13 +116,15 @@
                     <div class="row mb-2">
                       <div class="col-lg-10">
                         <label
-                          class="control-label font-weight-semibold text-3 text-dark"
+                          class="control-label font-weight-semibold text-3 text-dark {{ mapRouteActive }}"
                           >Select Permanent Route
                         </label>
                         <ng-select
                           [(ngModel)]="tripData.routeID"
                           name="routeID"
-                          (change)="makeRoutePlan()"
+                          [multiple]="true"
+                          (click)="getRoutes()"
+                          (click)="makeRoutePlan()"
                           placeholder="eg. Calgary to
                           Edmonton"
                           #pRoute="ngModel"
