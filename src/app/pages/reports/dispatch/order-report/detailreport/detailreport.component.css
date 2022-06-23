@@ -1,3 +1,11 @@
-.ng-input {
-  top: 0
+.top-tabs a {
+  cursor: pointer;
+}
+
+.custom-w-160 {
+  width: 160px;
+}
+.dropdown-item {
+  word-break: inherit;
+  white-space: normal;
 }
