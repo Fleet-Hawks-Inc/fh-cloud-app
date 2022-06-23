@@ -6,6 +6,7 @@ import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { ApiService } from "../../services";
 import { OneSignal } from 'onesignal-ngx';
+import { Auth } from "aws-amplify";
 
 
 declare var $: any;
@@ -80,7 +81,6 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     await this.getCurrentDriverLocation();
     await this.getCurrentAssetLocation();
     await this.getVehicleLocationByDashCam();
-
 
   }
 
@@ -281,4 +281,6 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     table.clear();
   }
 
+
 }
+
