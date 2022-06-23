@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
-import { ApiService } from '../../../../services';
+import { ApiService, AuthService } from '../../../../services';
 import { passwordStrength } from 'check-password-strength';
 import { ToastrService } from 'ngx-toastr'
 import { Auth } from 'aws-amplify'
@@ -84,12 +84,20 @@ export class CompanyProfileComponent implements OnInit {
   showSubCompany = false;
 
   accountSettings = [];
+  userAttributes;
+
+  verficationError = '';
+  showVerifyEmail = false;
+  verifyButton = false;
+  otpCode: string;
+  showVerifyPhone = false;
 
   constructor(private route: ActivatedRoute,
     private apiService: ApiService,
     private toastr: ToastrService,
     private formBuilder: RxFormBuilder,
     private headerFnService: InvokeHeaderFnService,
+    private auth: AuthService
   ) {
     ReactiveFormConfig.set({
       'validationMessage': {
@@ -105,6 +113,7 @@ export class CompanyProfileComponent implements OnInit {
     this.companyID = this.route.snapshot.params[`companyID`];
     this.userInfoFormGroup = this.formBuilder.formGroup(this.userInfo);
     this.fetchCarrier();
+
   }
 
   hideErrors() {
@@ -263,6 +272,8 @@ export class CompanyProfileComponent implements OnInit {
       } else {
         this.subscriptions = [];
       }
+      // Get current users attributes
+      this.userAttributes = await this.auth.isUserAttributesVerified();
     }
   }
 
@@ -349,6 +360,53 @@ export class CompanyProfileComponent implements OnInit {
   clearForm() {
     this.userInfoFormGroup.reset();
     $("#addCompanyModal").modal('hide')
+  }
+
+  async verifyEmail() {
+    try {
+      this.verficationError = '';
+      await Auth.verifyCurrentUserAttribute('email');
+
+    } catch (error) {
+      this.verficationError = error
+    }
+
+  }
+
+  async verifyPhone() {
+    try {
+      this.verficationError = '';
+      await Auth.verifyCurrentUserAttribute('phone_number');
+
+    } catch (error) {
+      this.verficationError = error
+    }
+
+  }
+
+  async verifyAttribute(attr: string) {
+    try {
+
+      await Auth.verifyCurrentUserAttributeSubmit(attr, this.otpCode);
+      await this.auth.logout();
+    } catch (error) {
+      this.verficationError = error
+    }
+  }
+
+
+  async onOtpChange(code: any) {
+    try {
+      if (code.length === 6) {
+        this.verifyButton = true;
+        this.otpCode = code;
+
+      } else {
+        this.verifyButton = false;
+      }
+    } catch (error) {
+      // console.log(error)
+    }
   }
 }
 
