@@ -23,6 +23,7 @@ export class BrokerageComponent implements OnInit {
   dataMessage = ''
   brkDateEnUS:any = [];
   carriersObject = [];
+  orderNumber = '';
   loaded = false;
   dataColumns = [
     { width: '10%', field: 'orderNumber', header: 'Order No', type: "text" },
@@ -90,7 +91,7 @@ export class BrokerageComponent implements OnInit {
     this.brokerage = [];
     }
     if(this.lastItemSK !== 'end'){
-    const result = await this.apiService.getData(`orders/report/getBrokerageReport?lastKey=${this.lastItemSK}`).toPromise();
+    const result = await this.apiService.getData(`orders/report/getBrokerageReport?orderNumber=${this.orderNumber}&lastKey=${this.lastItemSK}`).toPromise();
     this.dataMessage = Constant.FETCHING_DATA;
     if(result.Items.length === 0){
     this.dataMessage = Constant.NO_RECORDS_FOUND;
@@ -114,6 +115,32 @@ export class BrokerageComponent implements OnInit {
       this.fetchBrokerageReport();
     }
     this.loaded = false;
+  }
+  
+  
+  searchFilter(){
+  if(this.orderNumber !== ''){
+  this.orderNumber = this.orderNumber;
+  this.brokerage = [];
+  this.dataMessage = Constant.FETCHING_DATA;
+  this.lastItemSK = '';
+  this.fetchBrokerageReport();
+  }else{
+  return false;
+  }
+  }
+  
+  resetFilter(){
+  if(this.orderNumber !== ''){
+  this.brokerage = [];
+  this.loaded = false;
+  this.lastItemSK = '';
+  this.orderNumber = '';
+  this.fetchBrokerageReport();
+  this.dataMessage = Constant.FETCHING_DATA;
+  }else{
+  return false;
+  }
   }
   
   refreshData() {
