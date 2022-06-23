@@ -74,3 +74,21 @@
         </section>
     </div>
 </section>
+
+<p-dialog header="Important!!" [(visible)]="displayModal" [modal]="true" [style]="{width: '40vw'}" [draggable]="false" [resizable]="false">
+    <div *ngIf="!verified">
+        <label>Please verify your email so that we can notify you about important updates.</label>
+        <label> We have sent you verification code on your email <strong>{{email}}</strong>. Please check your
+        email(SPAM or JUNK) and enter the code below.
+    </label>
+        <div style="text-align:center">
+            <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:6,allowNumbersOnly:true}"></ng-otp-input>
+            <label>Click here to send verification code again</label>
+        </div>
+    </div>
+    <div *ngIf="verified"><label>Thank you!! Your email has been verified.</label></div>
+
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" *ngIf="!verified" (click)="displayModal=false" class="p-button-warning" (click)="confirmSignUp()" label="Verify"></p-button>
+    </ng-template>
+</p-dialog>

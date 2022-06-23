@@ -76,7 +76,7 @@
 
                         </ng-template>
                         <ng-template pTemplate="body" let-rowData let-notification>
-                            <tr>
+                            <tr [ngClass]="{'un-noticed': notification.read == 0}">
                                 <td (click)="showDetail(notification)" style="cursor:pointer;">
                                     {{notification.shortMessage}}</td>
 
