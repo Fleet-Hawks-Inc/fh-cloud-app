@@ -4,7 +4,7 @@ import { ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { NgxSpinnerService } from "ngx-spinner";
 import { HereMapService } from "../../../../services/here-map.service";
-import { from } from "rxjs";
+import { from, Subscription } from "rxjs";
 import { map } from "rxjs/operators";
 import * as html2pdf from "html2pdf.js";
 
@@ -128,9 +128,11 @@ export class TripDetailComponent implements OnInit {
   ];
   isCelsius = false;
   get = _.get;
+  subscription: Subscription
+
   ngOnInit() {
 
-    this.listService.getDocsModalList.subscribe((res: any) => {
+    this.subscription = this.listService.getDocsModalList.subscribe((res: any) => {
       if (res && res.docType != null && res.docType != '') {
         if (res.module === 'trip') {
           this.docType = res.docType;
@@ -150,6 +152,9 @@ export class TripDetailComponent implements OnInit {
     // this.initTemperatureChart();
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
+  }
 
   fetchTripLog() {
     this.apiService
@@ -254,38 +259,7 @@ export class TripDetailComponent implements OnInit {
               this.routeName = result.Items[0].routeName;
             });
         }
-        //Presigned URL using AWS s3
-        if (result.documents !== undefined && result.documents.length > 0) {
-          result.documents.forEach((x: any) => {
-            if (
-              x.storedName.split(".")[1] === "jpg" ||
-              x.storedName.split(".")[1] === "png" ||
-              x.storedName.split(".")[1] === "jpeg"
-            ) {
-              const obj =
-              {
-                imgPath: `${x.urlPath}`,
-                docPath: `${x.urlPath}`,
-                displayName: x.displayName,
-                name: x.storedName,
-                ext: x.storedName.split(".")[1],
-                type: x.type ? x.type : 'other'
-              };
-              this.uploadedDocSrc.push(obj);
-            } else {
-              const obj =
-              {
-                imgPath: 'assets/img/icon-pdf.png',
-                docPath: `${x.urlPath}`,
-                displayName: x.displayName,
-                name: x.storedName,
-                ext: x.storedName.split(".")[1],
-                type: x.type ? x.type : 'other'
-              };
-              this.uploadedDocSrc.push(obj);
-            }
-          });
-        }
+
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
           let obj = {
@@ -634,7 +608,7 @@ export class TripDetailComponent implements OnInit {
     }
 
     let result: any = await this.apiService
-      .postData(`trips/update/bol/${this.tripID}/${this.docType}`, formData, true).toPromise()
+      .postData(`trips/upload/docs/${this.tripID}/${this.docType}`, formData, true).toPromise()
     if (result && result.length > 0) {
       this.tripData.documents = result;
       this.uploadedDocSrc = [];
