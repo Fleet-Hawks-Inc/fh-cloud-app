@@ -268,7 +268,7 @@ export class DetailreportComponent implements OnInit {
       this.customers[element.contactID] = element.companyName
     });
   }
-  onScroll() {
+    onScroll = async (event: any) => {
     if (this.loaded) {
       this.fetchOrderReport();
     }
