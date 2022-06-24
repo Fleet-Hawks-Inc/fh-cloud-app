@@ -9,6 +9,7 @@ import { Auth } from 'aws-amplify'
 import { FormGroup } from '@angular/forms';
 import { alphaAsync, compare, numericAsync, password, pattern, prop, ReactiveFormConfig, required, RxFormBuilder } from '@rxweb/reactive-form-validators';
 import { InvokeHeaderFnService } from 'src/app/services/invoke-header-fn.service';
+import * as QRCode from 'qrcode';
 declare var $: any;
 @Component({
   selector: 'app-company-profile',
@@ -408,6 +409,132 @@ export class CompanyProfileComponent implements OnInit {
       // console.log(error)
     }
   }
+
+  // Multi Factor Authentication
+
+  showMFA = false;
+  mfa: string;
+  mfaError = '';
+  totpCode = ';'
+  qrcodeImage;
+  isSMS = false;
+  smsMFA;
+  totpMFA = false;
+  async setSmsOTP(event) {
+    try {
+
+      if (event.checked === true) {
+        let user = await Auth.currentAuthenticatedUser();
+        if (this.userAttributes && this.userAttributes.phoneVerified === false) {
+          throw new Error('Phone number is not verified. Please update or verify your phone number from Company Detail page.')
+        } else {
+          await Auth.setPreferredMFA(user, 'SMS_MFA');
+        }
+      }
+
+    } catch (error) {
+      this.mfaError = error;
+      console.log(error);
+    }
+  }
+
+  /**
+   * Generates Time based OTP for QR code and Apps like Google Authenticator, Microsoft or Authy
+   * @param event 
+   */
+  async generateTOTPCode() {
+    try {
+      this.mfaError = '';
+      await this.getCurrentStatusMFA();
+      let user = await Auth.currentAuthenticatedUser();
+      let userdetails = await this.auth.getUserDetails();
+      const code = await Auth.setupTOTP(user)
+      const str = "otpauth://totp/FleetHawksDashboard:" + userdetails.userName + "?secret=" + code + "&issuer=fleethawks"
+      this.totpCode = code;
+      this.generateQRCode(str);
+
+
+    } catch (error) {
+      this.mfaError = error;
+      console.log(error);
+    }
+  }
+  currentStatus = 'NOMFA';
+  userTotpCode: string;
+  totpSuccess = false;
+  mfaStatus = '';
+  async setupVerifyTOTPCode() {
+    try {
+      if (!this.userTotpCode || this.userTotpCode.toString() == '') {
+        throw new Error("Verification code is required.");
+
+      }
+      this.mfaError = '';
+      let user = await Auth.currentAuthenticatedUser();
+      await Auth.verifyTotpToken(user, this.userTotpCode.toString())
+      const result = await Auth.setPreferredMFA(user, 'TOTP');
+      console.log(result);
+      this.totpSuccess = true;
+      this.mfaStatus = "Successfully setup TOTP for login.";
+
+    } catch (error) {
+      console.log(error);
+      this.mfaError = error;
+    }
+  }
+
+
+  /**
+   * Generates QR Code for Apps
+   * @param code returns QR Code image
+   */
+  generateQRCode(code: string) {
+    var opts = {
+      errorCorrectionLevel: 'H',
+      type: 'image/jpeg',
+      quality: 1.0,
+      margin: 1,
+
+    }
+    QRCode.toDataURL(code, opts, (err, url) => {
+      if (err) throw err
+      this.totpMFA = true
+      console.log(url)
+      this.qrcodeImage = url;
+
+
+    })
+  }
+
+  /**
+   * Disables the MFA
+   */
+  async disableMFA() {
+    try {
+      let user = await Auth.currentAuthenticatedUser();
+      const result = await Auth.setPreferredMFA(user, 'NOMFA');
+      console.log(result);
+    } catch (error) {
+      this.mfaError = error;
+    }
+
+  }
+
+  async getCurrentStatusMFA() {
+    try {
+      let user = await Auth.currentAuthenticatedUser();
+      const result = await Auth.getPreferredMFA(user, { bypassCache: false })
+      if (result && result === 'NOMFA') {
+        this.currentStatus = "There is no MFA registered";
+      } else if (result === 'SOFTWARE_TOKEN_MFA') {
+        this.currentStatus = "Currently MFA is set to TOTP";
+      }
+      console.log(result);
+    } catch (error) {
+      this.mfaError = error;
+    }
+  }
+
 }
 
 class VerificationInfo {
