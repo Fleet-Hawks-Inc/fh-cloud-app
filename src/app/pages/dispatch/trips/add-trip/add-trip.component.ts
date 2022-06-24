@@ -2857,86 +2857,16 @@ export class AddTripComponent implements OnInit {
   }
   changeMapRoute(type) {
     console.log('---type',type)
-    if(type == "'route', 'active'" ){
-      console.log('---0')
-      if (this.tripData.routeID != "" && this.tripData.routeID != null && this.orderNo != "" && this.orderNo != undefined) {
-        this.orderStops = this.trips;
-        // this.trips = [];
-        this.actualMiles = 0;
-        //change route
-        this.apiService
-          .getData("routes/" + this.tripData.routeID)
-          .subscribe(async (result: any) => {
-            let routeData = result.Items[0];
-            let routePath: any = [];
-            this.newCoords = [];
-
-            if (routeData.stops.length > 0) {
-              for (let i = 0; i < routeData.stops.length; i++) {
-                const element = routeData.stops[i];
-                routePath.push(element.stopName);
-                let routeType = "";
-                if (i == 0) {
-                  routeType = "Pickup";
-                } else if (i > 0 && i < routeData.stops.length) {
-                  routeType = "Stop";
-                }
-                if (i == routeData.stops.length - 1) {
-                  routeType = "Delivery";
-                }
-
-                let obj = {
-                  splitDone: false,
-                  split: false,
-                  planID: uuidv4(),
-                  type: routeType,
-                  name: "",
-                  miles: 0,
-                  carrierID: null,
-                  carrierName: "",
-                  pickupTime: "",
-                  dropTime: "",
-                  actualPickupTime: "",
-                  actualDropTime: "",
-                  locationName: element.name,
-                  vehicleName: "",
-                  trailerName: "",
-                  driverName: "",
-                  coDriverName: "",
-                  fromOrder: "yes",
-                  lat: element.lat,
-                  lng: element.lng,
-                };
-
-                this.newCoords.push(`${element.lat},${element.lng}`);
-                this.trips.push(obj);
-              }
-              await this.hereMap.calculateRoute(this.newCoords);
-            }
-            await this.getMiles();
-          });
-
-          this.trips = this.orderStops;
-          this.actualMiles = 0;
-          this.getMiles();
-          this.resetMap();
-          // this.mapOrderActive = "active";
-          // this.mapRouteActive = "";
-          this.tripData.mapFrom = "order", "route";
-      }
-    else {
-      this.mapOrderActiveDisabled = false;
-      // this.toastr.error("Please select order");
-    }
-    }
-    else if (type == "route") {
+     if (type == "route") {
       if (this.tripData.routeID != "" && this.tripData.routeID != null) {
         this.orderStops = this.trips;
         // this.trips = [];
         this.actualMiles = 0;
         //change route
+        console.log('---this.tripData.routeID',this.tripData.routeID)
         this.apiService
           .getData("routes/" + this.tripData.routeID)
+
           .subscribe(async (result: any) => {
             let routeData = result.Items[0];
             let routePath: any = [];
