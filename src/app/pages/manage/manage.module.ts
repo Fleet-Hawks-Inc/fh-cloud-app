@@ -7,6 +7,10 @@ import { SharedModule } from '../../shared/shared.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceModule } from './devices/devices.module';
+import { DialogModule } from 'primeng/dialog';
+import { NgOtpInputModule } from "ng-otp-input";
+import { ButtonModule } from 'primeng/button';
+import { TagModule } from 'primeng/tag';
 import {
   AddUserComponent,
   UserDetailsComponent,
@@ -103,6 +107,10 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgbModule,
     DeviceModule,
     InfiniteScrollModule,
+    DialogModule,
+    NgOtpInputModule,
+    ButtonModule,
+    TagModule
   ], exports: [...COMPONENTS],
 })
 export class ManageModule { }
