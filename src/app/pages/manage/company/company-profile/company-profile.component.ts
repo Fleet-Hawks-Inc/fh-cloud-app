@@ -438,7 +438,6 @@ export class CompanyProfileComponent implements OnInit {
 
     } catch (error) {
       this.mfaError = error;
-      console.log(error);
     }
   }
 
@@ -460,7 +459,6 @@ export class CompanyProfileComponent implements OnInit {
 
     } catch (error) {
       this.mfaError = error;
-      console.log(error);
     }
   }
   currentStatus = 'NOMFA';
@@ -484,7 +482,6 @@ export class CompanyProfileComponent implements OnInit {
       });
       this.showMFA = false;
     } catch (error) {
-      console.log(error);
       this.mfaError = error;
     }
   }
@@ -505,7 +502,6 @@ export class CompanyProfileComponent implements OnInit {
     QRCode.toDataURL(code, opts, (err, url) => {
       if (err) throw err
       this.totpMFA = true
-      console.log(url)
       this.qrcodeImage = url;
 
 
@@ -524,7 +520,7 @@ export class CompanyProfileComponent implements OnInit {
         accept: async () => {
           let user = await Auth.currentAuthenticatedUser();
           const result = await Auth.setPreferredMFA(user, 'NOMFA');
-          console.log(result);
+
           this.messageService.add({
             severity: "info",
             summary: "Confirmed",
@@ -551,7 +547,6 @@ export class CompanyProfileComponent implements OnInit {
       } else if (result === 'SOFTWARE_TOKEN_MFA') {
         this.currentStatus = "Currently MFA is set to TOTP";
       }
-      console.log(result);
     } catch (error) {
       this.mfaError = error;
     }
