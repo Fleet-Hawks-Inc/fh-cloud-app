@@ -2860,12 +2860,15 @@ export class AddTripComponent implements OnInit {
      if (type == "route") {
       if (this.tripData.routeID != "" && this.tripData.routeID != null) {
         this.orderStops = this.trips;
-        // this.trips = [];
+    //     if(this.tripData.routeID){
+    // this.trips = [];
+    //     }
+    
         this.actualMiles = 0;
         //change route
         console.log('---this.tripData.routeID',this.tripData.routeID)
         this.apiService
-          .getData("routes/" + this.tripData.routeID)
+          .getData("routes/" + encodeURIComponent(JSON.stringify(this.tripData.routeID)))
 
           .subscribe(async (result: any) => {
             let routeData = result.Items[0];
