@@ -196,17 +196,30 @@ export class SharedModalsComponent implements OnInit {
   getDocsLength: any;
   docModalRef: any;
   documentType: string;
-
+  docError: string;
   async ngOnInit() {
     let ngbModalOptions: NgbModalOptions = {
       backdrop: "static",
       keyboard: false,
       windowClass: "doc-type__main",
     };
+    this.listService.closeModalList.subscribe((res: any) => {
+      console.log('close', res);
+      if (res.mode == 'open') {
+        this.docError = res.message;
+      } if (res.mode == 'close' && res.message == undefined) {
+        this.docModalRef.close()
+        this.docs = {
+          docType: null,
+          uploadedDocs: [],
+        };
+      }
+    })
     this.docSubscribe = this.listService.docModalList.subscribe((res: any) => {
       if (res.type === 'order' || res.type === 'trip') {
         this.documentType = res.type;
         this.getDocsLength = res.docLength;
+        this.docError = '';
         this.docModalRef = this.modalService.open(this.addDocType, ngbModalOptions)
       }
     })
@@ -726,6 +739,6 @@ export class SharedModalsComponent implements OnInit {
       obj.module = 'trip';
     }
     this.listService.getAllDocs(obj);
-    this.docModalRef.close()
+
   }
 }

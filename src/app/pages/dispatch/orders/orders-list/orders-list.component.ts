@@ -234,29 +234,29 @@ export class OrdersListComponent implements OnInit {
   _selectedColumns: any[];
   // pickupLocData = []
   isOrderPriceEnabled = environment.isOrderPriceEnabled
-  scheduler={
-    orderID:null,
-    orderNumber:null,
-    name:null,
-    time:null,
-    repeatType:null,
-    type:{
-      daysNo:'',
-      days:[]
+  scheduler = {
+    orderID: null,
+    orderNumber: null,
+    name: null,
+    time: null,
+    repeatType: null,
+    type: {
+      daysNo: '',
+      days: []
     },
-    rangeType:null,
-    dateRange:{
-      to:null,
-      from:null,
+    rangeType: null,
+    dateRange: {
+      to: null,
+      from: null,
     },
-    selectedMonths:[]
+    selectedMonths: []
   }
-  saveDisabled=false;
-  repeatType=null;
-  range=null;
-  days=["everyday","monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
-  months=["selectAll","january","february","march","april","may","june","july","august","september","october","november","december"]
-  display:any;
+  saveDisabled = false;
+  repeatType = null;
+  range = null;
+  days = ["everyday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+  months = ["selectAll", "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
+  display: any;
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
@@ -793,7 +793,7 @@ export class OrdersListComponent implements OnInit {
   }
 
   async updateBrokerageStatus() {
-     let data = {
+    let data = {
       orderID: this.brokerage.orderID,
       orderNo: this.brokerage.orderNo,
       brokerageAmount: this.brokerage.brokerageAmount,
@@ -866,23 +866,23 @@ export class OrdersListComponent implements OnInit {
   clear(table: Table) {
     table.clear();
   }
-  resetSchedule(){
-    this.scheduler={
-      orderID:null,
-      orderNumber:null,
-      name:null,
-      time:null,
-      repeatType:null,
-      type:{
-        daysNo:"",
-        days:[]
+  resetSchedule() {
+    this.scheduler = {
+      orderID: null,
+      orderNumber: null,
+      name: null,
+      time: null,
+      repeatType: null,
+      type: {
+        daysNo: "",
+        days: []
       },
-      rangeType:null,
-     dateRange:{
-      to:null,
-      from:null,
-    },
-    selectedMonths:[]
+      rangeType: null,
+      dateRange: {
+        to: null,
+        from: null,
+      },
+      selectedMonths: []
     }
 
   }
@@ -914,26 +914,25 @@ export class OrdersListComponent implements OnInit {
     }
   }
 
-  onRangeCheckboxChange(value,isChecked){
-    if(isChecked){
+  onRangeCheckboxChange(value, isChecked) {
+    if (isChecked) {
       this.scheduler.selectedMonths.push(value)
     }
-    else{
-      const index=this.scheduler.selectedMonths.findIndex(x=>x==value);
-      this.scheduler.type.days.splice(index,1)
+    else {
+      const index = this.scheduler.selectedMonths.findIndex(x => x == value);
+      this.scheduler.type.days.splice(index, 1)
     }
   }
 
-  async saveScheduler(){
-    this.saveDisabled=true;
-    if(this.scheduler.orderID) this.scheduler.orderNumber=this.orders[this.scheduler.orderID]
-    if(this.scheduler.orderID==null || this.scheduler.orderNumber==null)
-    {
+  async saveScheduler() {
+    this.saveDisabled = true;
+    if (this.scheduler.orderID) this.scheduler.orderNumber = this.orders[this.scheduler.orderID]
+    if (this.scheduler.orderID == null || this.scheduler.orderNumber == null) {
       this.toastr.error("Reference Order is required");
-      this.saveDisabled=false;
-      return 
+      this.saveDisabled = false;
+      return
     }
-    if(this.scheduler.name==null){
+    if (this.scheduler.name == null) {
       this.toastr.error("Scheduler Name is required");
       this.saveDisabled = false;
       return
@@ -954,57 +953,57 @@ export class OrdersListComponent implements OnInit {
       return;
     }
 
-    if(!this.scheduler.dateRange.from || !this.scheduler.dateRange.to){
+    if (!this.scheduler.dateRange.from || !this.scheduler.dateRange.to) {
       this.toastr.error("Date Range is required");
-      this.saveDisabled=false;
+      this.saveDisabled = false;
       return
     }
-    else if(this.scheduler.dateRange.to<this.scheduler.dateRange.from){
+    else if (this.scheduler.dateRange.to < this.scheduler.dateRange.from) {
       this.toastr.error("Date range from must be greater")
-      this.saveDisabled=false;
+      this.saveDisabled = false;
       return;
 
     }
-    if(this.range=="month"){
-      if(this.scheduler.selectedMonths.length===0){
+    if (this.range == "month") {
+      if (this.scheduler.selectedMonths.length === 0) {
         this.toastr.error("Please Select at least 1 month")
-        this.saveDisabled=false;
+        this.saveDisabled = false;
         return
       }
     }
 
-    if(this.repeatType=="selectDaysNo"){
+    if (this.repeatType == "selectDaysNo") {
       delete this.scheduler.type.days
     }
-    else if (this.repeatType=="days"){
+    else if (this.repeatType == "days") {
       delete this.scheduler.type.daysNo
     }
-    else{
+    else {
       delete this.scheduler.type
     }
 
-    if(this.range=="everyMonth"){
+    if (this.range == "everyMonth") {
       delete this.scheduler.selectedMonths;
     }
-    const scheduleData={
-      orderID:this.scheduler.orderID,
-      orderNumber:this.scheduler.orderNumber,
-      repeatType:this.repeatType,
-      sName:this.scheduler.name,
-      dateRange:this.scheduler.dateRange,
-      sType:(this.scheduler.type)?this.scheduler.type:undefined,
-      selectedMonths:this.scheduler.selectedMonths?this.scheduler.selectedMonths:undefined,
-      sRange:this.range,
-      sTime:this.scheduler.time,
+    const scheduleData = {
+      orderID: this.scheduler.orderID,
+      orderNumber: this.scheduler.orderNumber,
+      repeatType: this.repeatType,
+      sName: this.scheduler.name,
+      dateRange: this.scheduler.dateRange,
+      sType: (this.scheduler.type) ? this.scheduler.type : undefined,
+      selectedMonths: this.scheduler.selectedMonths ? this.scheduler.selectedMonths : undefined,
+      sRange: this.range,
+      sTime: this.scheduler.time,
       timezone: moment.tz.guess()
-  }
+    }
 
-    this.apiService.postData('orders/schedule',scheduleData).subscribe({
-      complete:()=>{},
-      error:(err)=>{
-        this.saveDisabled=false
+    this.apiService.postData('orders/schedule', scheduleData).subscribe({
+      complete: () => { },
+      error: (err) => {
+        this.saveDisabled = false
       },
-      next:(res)=>{
+      next: (res) => {
         this.toastr.success("Schedule added successfully");
         this.modalService.dismissAll();
       }
@@ -1058,6 +1057,12 @@ export class OrdersListComponent implements OnInit {
 
   refreshCarrierData() {
     this.fetchCarriers();
+  }
+
+  directToDetail(orderID: string) {
+    setTimeout(() => {
+      this.router.navigateByUrl(`/dispatch/orders/detail/${orderID}`);
+    }, 10)
   }
 
 }

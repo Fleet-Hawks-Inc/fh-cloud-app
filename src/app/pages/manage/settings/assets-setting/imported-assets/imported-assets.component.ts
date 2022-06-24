@@ -273,6 +273,8 @@ export class ImportedAssetsComponent implements OnInit {
             this.toastr.success("The file has been scheduled for processing and you will be notified via email once it is completed.")
             $('#uploadedDocs').val('');
             this.display = false;
+            this.importAssets = [];
+            this.next = '';
             this.fetchAssetImport();
           }
         })
