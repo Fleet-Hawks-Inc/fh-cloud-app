@@ -1,20 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
-import { ApiService, AuthService } from '../../../../services';
-import { passwordStrength } from 'check-password-strength';
-import { ToastrService } from 'ngx-toastr'
-import { Auth } from 'aws-amplify'
 import { FormGroup } from '@angular/forms';
-import { alphaAsync, compare, numericAsync, password, pattern, prop, ReactiveFormConfig, required, RxFormBuilder } from '@rxweb/reactive-form-validators';
-import { InvokeHeaderFnService } from 'src/app/services/invoke-header-fn.service';
+import { ActivatedRoute } from '@angular/router';
+import { compare, numericAsync, password, pattern, prop, ReactiveFormConfig, required, RxFormBuilder } from '@rxweb/reactive-form-validators';
+import { Auth } from 'aws-amplify';
+import { passwordStrength } from 'check-password-strength';
+import { ToastrService } from 'ngx-toastr';
 import * as QRCode from 'qrcode';
+import { from } from 'rxjs';
+import { InvokeHeaderFnService } from 'src/app/services/invoke-header-fn.service';
+import { ApiService, AuthService } from '../../../../services';
+import { ConfirmationService, MessageService } from 'primeng/api';
 declare var $: any;
 @Component({
   selector: 'app-company-profile',
   templateUrl: './company-profile.component.html',
-  styleUrls: ['./company-profile.component.css']
+  styleUrls: ['./company-profile.component.css'],
+  providers: [ConfirmationService, MessageService]
+
 })
 export class CompanyProfileComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
@@ -98,7 +100,9 @@ export class CompanyProfileComponent implements OnInit {
     private toastr: ToastrService,
     private formBuilder: RxFormBuilder,
     private headerFnService: InvokeHeaderFnService,
-    private auth: AuthService
+    private auth: AuthService,
+    private confirmSvc: ConfirmationService,
+    private messageService: MessageService,
   ) {
     ReactiveFormConfig.set({
       'validationMessage': {
@@ -473,10 +477,12 @@ export class CompanyProfileComponent implements OnInit {
       let user = await Auth.currentAuthenticatedUser();
       await Auth.verifyTotpToken(user, this.userTotpCode.toString())
       const result = await Auth.setPreferredMFA(user, 'TOTP');
-      console.log(result);
-      this.totpSuccess = true;
-      this.mfaStatus = "Successfully setup TOTP for login.";
-
+      this.messageService.add({
+        severity: "info",
+        summary: "Confirmed",
+        detail: "MFA has been enabled."
+      });
+      this.showMFA = false;
     } catch (error) {
       console.log(error);
       this.mfaError = error;
@@ -509,11 +515,27 @@ export class CompanyProfileComponent implements OnInit {
   /**
    * Disables the MFA
    */
-  async disableMFA() {
+  async disableMFA(event: Event) {
     try {
-      let user = await Auth.currentAuthenticatedUser();
-      const result = await Auth.setPreferredMFA(user, 'NOMFA');
-      console.log(result);
+      this.confirmSvc.confirm({
+        target: event.target,
+        message: 'Are you sure that you want to proceed?',
+        icon: 'pi pi-exclamation-triangle',
+        accept: async () => {
+          let user = await Auth.currentAuthenticatedUser();
+          const result = await Auth.setPreferredMFA(user, 'NOMFA');
+          console.log(result);
+          this.messageService.add({
+            severity: "info",
+            summary: "Confirmed",
+            detail: "MFA has been disabled."
+          });
+        },
+        reject: () => {
+          //reject action
+        }
+      });
+
     } catch (error) {
       this.mfaError = error;
     }

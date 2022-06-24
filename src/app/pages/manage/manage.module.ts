@@ -14,6 +14,8 @@ import { TagModule } from 'primeng/tag';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TooltipModule } from 'primeng/tooltip';
 import { RippleModule } from 'primeng/ripple';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ToastModule } from "primeng/toast";
 import {
   AddUserComponent,
   UserDetailsComponent,
@@ -119,7 +121,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     CheckboxModule,
     InputTextModule,
     TooltipModule,
-    RippleModule
+    RippleModule,
+    ConfirmPopupModule,
+    ToastModule
   ], exports: [...COMPONENTS],
 })
 export class ManageModule { }

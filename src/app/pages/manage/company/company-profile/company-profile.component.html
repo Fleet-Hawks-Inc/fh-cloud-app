@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <section class="body">
     <div class="inner-wrapper" *ngIf="carriers.carrierID">
 
@@ -627,9 +628,7 @@
     <div class="alert alert-danger" role="alert" *ngIf="mfaError!==''">
         {{mfaError}}
     </div>
-    <div class="alert alert-light" role="alert" *ngIf="mfaStatus!==''">
-        {{mfaStatus}}
-    </div>
+
     <strong><label> {{currentStatus}}</label><br></strong>
     <label><strong>TOTP (Time based One Time Password)</strong>  </label>
     <div class="row">
@@ -651,7 +650,7 @@
                     Once scanned, the app should give you 6 digit TOTP.
                 </li>
                 <li>
-                    <label>Enter 6 digit code from app below:</label><br/>
+                    <label>Enter <strong>6 digit </strong> code from app below:</label><br/>
 
                 </li>
                 <input type="text" pInputText [(ngModel)]="userTotpCode" />
@@ -697,8 +696,10 @@
 
 
     <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" class="p-button-warning" (click)="disableMFA();" label="Disable MFA"></p-button>
-        <p-button icon="pi pi-check" class="p-button-warning" *ngIf="!totpSuccess" (click)="setupVerifyTOTPCode()" label="Setup TOTP"></p-button>
-        <p-button icon="pi pi-check" class="p-button-warning" (click)="showMFA=false" *ngIf="totpSuccess" label="Dismiss"></p-button>
+
+        <p-confirmPopup></p-confirmPopup>
+        <p-button icon="pi pi-warning" class="p-button-danger" (click)="disableMFA($event);" label="Disable MFA"></p-button>
+        <p-button icon="pi pi-check" class="p-button-warning" (click)="setupVerifyTOTPCode()" label="Setup TOTP"></p-button>
+
     </ng-template>
 </p-dialog>
