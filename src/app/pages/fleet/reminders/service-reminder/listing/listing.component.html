@@ -359,11 +359,11 @@
                               <a
                                 class="dropdown-item text-1"
                                 href="javascript:;"
-                                (click)="
-                                  resolveReminder(
-                                    dataColumns.reminderIdentification
-                                  )
-                                "
+                                 (click)="
+                                      resolveReminder(
+                                        vehicle.reminderIdentification
+                                      )
+                                    "
                                 >Enter Service</a
                               >
                               <a
@@ -384,7 +384,7 @@
                               <a
                                 href="javascript:;"
                                 class="dropdown-item text-1"
-                                (click)="deleteReminder(dataColumns)"
+                                (click)="deleteReminder(vehicle)"
                               >
                                 Delete</a
                               >
