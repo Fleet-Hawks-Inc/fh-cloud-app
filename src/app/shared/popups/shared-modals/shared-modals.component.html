@@ -556,7 +556,7 @@
             <ng-option value="citation">Citation</ng-option>
             <ng-option value="tickets">Tickets</ng-option>
             <ng-option value="inspect">Inspect</ng-option>
-            <ng-option value="others">Others</ng-option>
+            <ng-option value="other">Others</ng-option>
 
 
           </ng-select>
@@ -595,7 +595,8 @@
     <div class="modal-footer">
       <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-default modal-dismiss">Cancel</button>
 
-      <button type="submit" [disabled]="!docTypeForm.form.valid" class="btn btn-success modal-confirm">Save</button>
+      <button type="submit" [disabled]="!docTypeForm.form.valid || isDocSubmit"
+        class="btn btn-success modal-confirm">Save</button>
     </div>
   </form>
 </ng-template>

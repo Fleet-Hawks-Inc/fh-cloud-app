@@ -114,6 +114,7 @@ export class SharedModalsComponent implements OnInit {
 
   nullVar = null;
   abstractValid = false;
+  isDocSubmit = false;
   prefixOutput: string;
   finalPrefix = "";
   currentUser: any;
@@ -204,7 +205,6 @@ export class SharedModalsComponent implements OnInit {
       windowClass: "doc-type__main",
     };
     this.listService.closeModalList.subscribe((res: any) => {
-      console.log('close', res);
       if (res.mode == 'open') {
         this.docError = res.message;
       } if (res.mode == 'close' && res.message == undefined) {
@@ -220,6 +220,7 @@ export class SharedModalsComponent implements OnInit {
         this.documentType = res.type;
         this.getDocsLength = res.docLength;
         this.docError = '';
+        this.isDocSubmit = false;
         this.docModalRef = this.modalService.open(this.addDocType, ngbModalOptions)
       }
     })
@@ -728,6 +729,7 @@ export class SharedModalsComponent implements OnInit {
       this.toastr.error("Please select at least one document!");
       return false;
     }
+    this.isDocSubmit = true;
     let obj = {
       docType: this.docs.docType,
       documents: this.uploadedDocs,

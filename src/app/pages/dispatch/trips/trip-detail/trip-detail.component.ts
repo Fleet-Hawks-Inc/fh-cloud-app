@@ -651,7 +651,7 @@ export class TripDetailComponent implements OnInit {
             mode: 'close',
           }
           this.listService.closeModel(obj);
-          this.toastr.success('BOL/POD uploaded successfully');
+          this.toastr.success('Document uploaded successfully');
         }
       }).catch((err => {
         let obj = {
