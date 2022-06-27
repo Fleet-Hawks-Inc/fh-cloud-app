@@ -340,7 +340,6 @@
                         <td 
                           style="width: 13%; overflow: inherit !important"
                           alignFrozen="right"
-                          [frozen]="true"
                         >
                           <div class= "dropdown
                                       dropright">
@@ -351,12 +350,12 @@
                               data-toggle="dropdown"
                                aria-expanded="false"
                                 aria-haspopup="true"
-                               id="dropdownMenuButton-{{i}}"
+                               id="dropdownMenuButton-{{ rowIndex }}"
                             >
                               <i class="fas fa-ellipsis-v"></i>
                             </button>
                                <div class="dropdown-menu" 
-                               attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                               attr.aria-labelledby="dropdownMenuButton-{{ rowIndex }}">
                               <a
                                 class="dropdown-item text-1"
                                 href="javascript:;"
