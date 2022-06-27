@@ -15,7 +15,7 @@ export class ZoneListComponent implements OnInit {
   zones=[]
   dataMessage='';
   loaded=false;
-  _selectedColumns:any[]
+  selectedColumns:any[]
   dataColumns:any[]
 
   ngOnInit(): void {
@@ -24,7 +24,7 @@ export class ZoneListComponent implements OnInit {
       {width:'50%', field:'zName',header:'Zone Name',type:'text'},
       {width:'50%',field:'zDesc',header:'Zone Description',type:'text'},
     ]
-    this._selectedColumns=this.dataColumns;
+    this.selectedColumns=this.dataColumns;
   }
   async initData(refresh?:boolean){
     this.loaded=false
