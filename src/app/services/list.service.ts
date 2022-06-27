@@ -84,8 +84,8 @@ export class ListService {
   addressDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   addressList = this.addressDataSource.asObservable();
 
- carrierDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
- carrierList = this.carrierDataSource.asObservable();
+  carrierDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  carrierList = this.carrierDataSource.asObservable();
 
 
 
@@ -94,6 +94,10 @@ export class ListService {
 
   getDocsModalSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   getDocsModalList = this.getDocsModalSource.asObservable();
+
+
+  closeModalSource: BehaviorSubject<any> = new BehaviorSubject(String);
+  closeModalList = this.closeModalSource.asObservable();
 
   paymentModelDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   paymentModelList = this.paymentModelDataSource.asObservable();
@@ -286,7 +290,7 @@ export class ListService {
       });
   }
 
-  
+
 
   fetchContactsByIDs() {
     this.apiService.getData("contacts/get/list").subscribe((result: any) => {
@@ -354,5 +358,10 @@ export class ListService {
 
   triggerFetchPaymentDetail(value) {
     this.paymentDetailSource.next(value);
+  }
+
+  closeModel(value) {
+    this.closeModalSource.next(value)
+      ;
   }
 }

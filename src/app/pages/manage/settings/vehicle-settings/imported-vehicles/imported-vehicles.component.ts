@@ -240,6 +240,8 @@ export class ImportedVehiclesComponent implements OnInit {
             this.toastr.success("The file has been scheduled for processing and you will be notified via email once it is completed")
             $('#importDocs').val('');
             this.display = false;
+            this.importVehicles = [];
+            this.next = '';
             this.fetchVehicleImport();
           }
         })
