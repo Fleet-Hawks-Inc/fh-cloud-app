@@ -76,4 +76,17 @@ export class AuthService implements CanActivate {
     }
   }
 
+  /**
+   * Get current logged in username 
+   * @returns username
+   */
+  async getUserDetails() {
+    const payload = (await Auth.currentSession()).getIdToken().payload;
+    return {
+      userName: payload["cognito:username"],
+
+
+    }
+  }
+
 }

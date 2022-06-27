@@ -709,7 +709,8 @@ export class OrdersListComponent implements OnInit {
     this.brokerage.type = actionFrom;
     this.brokerage.carrierID = null;
     this.brokerage.brkCurrency = "";
-    this.brokerage.brokerageAmount = 0
+    this.brokerage.brokerageAmount = 0;
+    this.brokerage.instructions = '';
     await this.fetchCarriers();
     await this.fetchOrderData();
     this.display = true;
