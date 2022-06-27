@@ -27,6 +27,7 @@ export class ZoneAddComponent implements OnInit {
     const map=new google.maps.Map(document.getElementById("map") as HTMLElement,
     {
       center:{lat:-34.397, lng: 150.644},
+      mapId: '620eb1a41a9e36d4',
       zoom:8
     })
     const drawingManager=new google.maps.drawing.DrawingManager({
@@ -38,9 +39,6 @@ export class ZoneAddComponent implements OnInit {
           google.maps.drawing.OverlayType.POLYGON,
 
         ]
-      },
-      markerOptions:{
-        icon:"https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
       },
       circleOptions: {
         fillColor: "#ffff00",
