@@ -165,7 +165,7 @@
                         >
                           <div [ngSwitch]="dataColumns.field">
                             <!-- Driver Status Filter Customization -->
-                            <span *ngSwitchCase="'driverStatus'">
+                            <span *ngSwitchCase="'currentStatus'">
                               <div
                                 class="flex justify-content-center align-items-center"
                                 alignFrozen="left"
@@ -193,7 +193,9 @@
                                     <p-multiSelect
                                       [options]="[
                                         { name: 'Active', value: 'active' },
-                                        { name: 'InActive', value: 'inActive' }
+                                        { name: 'InActive', value: 'inActive' },
+                                        { name: 'Out of Service', value: 'outOfService' },
+                                        { name: 'Sold', value: 'sold'},
                                       ]"
                                       placeholder="Any"
                                       (onChange)="filter($event.value)"
