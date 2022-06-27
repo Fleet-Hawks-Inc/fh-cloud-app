@@ -952,12 +952,24 @@ export class OrderDetailComponent implements OnInit {
       formData.append("uploadedDocs", this.uploadedDocs[i]);
     }
 
-    let result: any = await this.apiService
-      .postData(`orders/uploadDocs/${this.orderID}/${this.docType}`, formData, true).toPromise()
-    this.uploadedDocs = [];
-    if (result && result.length > 0) {
-      await this.showDocs(result)
-    }
+    await this.apiService
+      .postData(`orders/uploadDocs/${this.orderID}/${this.docType}`, formData, true).toPromise().then(async (result: any) => {
+        this.uploadedDocs = [];
+        if (result && result.length > 0) {
+          await this.showDocs(result);
+          let obj = {
+            mode: 'close',
+          }
+          this.listService.closeModel(obj);
+          this.toastr.success('Document uploaded successfully');
+        }
+      }).catch(err => {
+        let obj = {
+          mode: 'open',
+          message: 'Document type is not valid'
+        }
+        this.listService.closeModel(obj);
+      });
   }
 
   caretClickShipper(i, j) {
