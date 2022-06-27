@@ -8,11 +8,12 @@ import { DashboardUtilityService } from 'src/app/services/dashboard-utility.serv
 import * as html2pdf from "html2pdf.js";
 
 @Component({
-  selector: 'app-employer-pay',
-  templateUrl: './employer-pay.component.html',
-  styleUrls: ['./employer-pay.component.css']
+  selector: 'app-employee-pay',
+  templateUrl: './employee-pay.component.html',
+  styleUrls: ['./employee-pay.component.css']
 })
-export class EmployerPayComponent implements OnInit {
+export class EmployeePayComponent implements OnInit {
+
   @ViewChild("employerPayPdf", { static: true })
   modalContent: TemplateRef<any>;
   
@@ -88,7 +89,6 @@ export class EmployerPayComponent implements OnInit {
         } else {
           this.empData.map((k) => {
             k.payMode = k.payMode.replace("_"," ");
-            k.cra = Number(k.taxdata.ei) + Number(k.taxdata.cpp) + Number(k.taxdata.provincialTax) + Number(k.taxdata.federalTax) + Number(k.taxdata.emplEI) + Number(k.taxdata.emplCPP)
           })
           this.lastSK = '';
           if(this.empData[this.empData.length-1].empsk) {
@@ -165,7 +165,6 @@ export class EmployerPayComponent implements OnInit {
         let empData = result;
         empData.map((k) => {
           k.payMode = k.payMode.replace("_"," ");
-          k.cra = Number(k.taxdata.ei) + Number(k.taxdata.cpp) + Number(k.taxdata.provincialTax) + Number(k.taxdata.federalTax) + Number(k.taxdata.emplEI) + Number(k.taxdata.emplCPP)
         })
       
         for (const iterator of empData) {
@@ -179,8 +178,8 @@ export class EmployerPayComponent implements OnInit {
                 gross: 0,
                 ei: 0,
                 cpp: 0,
-                empEI: 0,
-                EmpCpp: 0,
+                ded: 0,
+                net: 0,
                 provTax: 0,
                 fedTax: 0,
                 cra: 0
@@ -204,8 +203,8 @@ export class EmployerPayComponent implements OnInit {
             gross: 0,
             ei: 0,
             cpp: 0,
-            empEI: 0,
-            EmpCpp: 0,
+            ded: 0,
+            net: 0,
             provTax: 0,
             fedTax: 0,
             cra: 0
@@ -213,11 +212,11 @@ export class EmployerPayComponent implements OnInit {
           for (let index = 0; index < element.payments.length; index++) {
             const pay = element.payments[index];
             
-            element.total.gross += Number(pay.finalTotal); 
+            element.total.gross += Number(pay.subTotal); 
             element.total.ei += Number(pay.taxdata.ei); 
             element.total.cpp += Number(pay.taxdata.cpp); 
-            element.total.empEI += Number(pay.taxdata.emplEI); 
-            element.total.EmpCpp += Number(pay.taxdata.emplCPP); 
+            element.total.ded += Number(pay.deductionTotal); 
+            element.total.net += Number(pay.finalTotal); 
             element.total.provTax += Number(pay.taxdata.provincialTax); 
             element.total.fedTax += Number(pay.taxdata.federalTax); 
             element.total.cra += Number(pay.cra); 
@@ -261,4 +260,5 @@ export class EmployerPayComponent implements OnInit {
       const res = await this.apiService.getData(`carriers/get/detail/${selectedCarrier}`).toPromise()
       this.currentUser = `${res.Items[0].firstName} ${res.Items[0].lastName}`;
   };
+
 }

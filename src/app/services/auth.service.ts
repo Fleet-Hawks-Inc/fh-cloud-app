@@ -63,4 +63,30 @@ export class AuthService implements CanActivate {
     this.router.navigate(['/Login']);
   }
 
+  /**
+   * Gets attributes verification. 
+   * @returns email and phone verification status
+   */
+  async isUserAttributesVerified() {
+    const payload = (await Auth.currentSession()).getIdToken().payload;
+    return {
+      emailVerified: payload.email_verified,
+      phoneVerified: payload.phone_number_verified,
+
+    }
+  }
+
+  /**
+   * Get current logged in username 
+   * @returns username
+   */
+  async getUserDetails() {
+    const payload = (await Auth.currentSession()).getIdToken().payload;
+    return {
+      userName: payload["cognito:username"],
+
+
+    }
+  }
+
 }
