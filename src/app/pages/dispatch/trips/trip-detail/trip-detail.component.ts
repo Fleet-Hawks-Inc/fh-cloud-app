@@ -14,6 +14,7 @@ import { environment } from "src/environments/environment";
 import Constants from "src/app/pages/fleet/constants";
 import { Location } from "@angular/common";
 import * as _ from "lodash";
+import jsPDF from "jspdf";
 
 
 @Component({
@@ -22,9 +23,10 @@ import * as _ from "lodash";
   styleUrls: ["./trip-detail.component.css"],
 })
 export class TripDetailComponent implements OnInit {
-  @ViewChild("tripInfoModal", { static: true })
-  tripInfoModal: TemplateRef<any>;
-  tripInfoRef: any;
+  // @ViewChild("tripInfoModal", { static: true })
+  // tripInfoModal: TemplateRef<any>;
+  // tripInfoRef: any;
+  tripInfoModal = false;
 
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
@@ -43,6 +45,8 @@ export class TripDetailComponent implements OnInit {
     this.selectedFileNames = new Map<any, any>();
   }
   noOrdersMsg = Constants.NO_RECORDS_FOUND;
+  showSplitModel = false;
+  isSplit = false;
   tripData = {
     tripNo: "",
     tripStatus: "",
@@ -126,10 +130,11 @@ export class TripDetailComponent implements OnInit {
     { name: 'C', value: 'C' },
 
   ];
+  selectPlanID = false;
   isCelsius = false;
   get = _.get;
-  subscription: Subscription
-
+  subscription: Subscription;
+  driverNames = [];
   ngOnInit() {
 
     this.subscription = this.listService.getDocsModalList.subscribe((res: any) => {
@@ -321,10 +326,17 @@ export class TripDetailComponent implements OnInit {
             this.assetNamesList.push(assetObj);
 
           }
-
-
+          if (element.driverName && element.driverName != '' && element.driverName != undefined) {
+            this.driverNames.push({ driverID: element.driverID, driverName: element.driverName })
+          }
+          if (element.coDriverName && element.coDriverName != '' && element.coDriverName != undefined) {
+            this.driverNames.push({ driverID: element.coDriverID, driverName: element.coDriverName })
+          }
 
         }
+        this.driverNames = _.uniqBy(this.driverNames, function (e) {
+          return e.driverID;
+        });;
         // filter out duplicates
         this.assetNamesList = _.uniqBy(this.assetNamesList, function (e) {
           return e.assetID;
@@ -381,7 +393,11 @@ export class TripDetailComponent implements OnInit {
             });
           });
         }
-
+        if (result.split && result.split.length > 0) {
+          this.isSplit = true;
+        } else {
+          this.isSplit = false;
+        }
         if (this.newCoords.length > 0) {
           this.getCoords();
         }
@@ -665,15 +681,22 @@ export class TripDetailComponent implements OnInit {
 
 
   openTripInfo() {
-    let ngbModalOptions: NgbModalOptions = {
-      backdrop: "static",
-      keyboard: false,
-      windowClass: "trip--info__main",
-    };
-    this.tripInfoRef = this.modalService.open(
-      this.tripInfoModal,
-      ngbModalOptions
-    );
+    this.tripInfoModal = true;
+    return
+    if (this.isSplit) {
+      this.showSplitModel = true;
+    } else {
+      this.tripInfoModal = true;
+      // let ngbModalOptions: NgbModalOptions = {
+      //   backdrop: "static",
+      //   keyboard: false,
+      //   windowClass: "trip--info__main",
+      // };
+      // this.tripInfoRef = this.modalService.open(
+      //   this.tripInfoModal,
+      //   ngbModalOptions
+      // );
+    }
   }
 
   async generate() {
@@ -691,17 +714,22 @@ export class TripDetailComponent implements OnInit {
       },
       jsPDF: { unit: "in", format: "a4", orientation: "landscape" },
     });
-
-    this.tripInfoRef.close();
+    this.tripInfoModal = false;
   }
 
   async driverEmail() {
+    const elem = document.getElementById('print_wrap');
+    html2pdf().from(elem).outputPdf('arraybuffer').then((result) => {
+      console.log('blob', result)
+    });
+
+    return
     this.isEmail = true;
     let result = await this.apiService
       .getData(`trips/send/emailDriver/${this.tripID}`)
       .toPromise();
     if (result === null) {
-      this.tripInfoRef.close();
+      this.tripInfoModal = false;
       this.toastr.success("Email send successfully");
       this.isEmail = false;
     } else {
