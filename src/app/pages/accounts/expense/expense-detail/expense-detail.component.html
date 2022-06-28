@@ -413,6 +413,13 @@
 
 <ng-template #previewExpTransaction let-modal>
   <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Expense Details</h4>
+      <button type="button" class="close" (click)="modal.dismiss()">
+        &times;
+      </button>
+    </div>
+
     <div class="modal-body text-dark">
       <table
         width="98%"
@@ -440,7 +447,10 @@
                 alt="logo"
                 style="max-width: 100px"
               />
-              <p *ngIf="tagLine" class="mb-0 text-dark font-weight-bold mb-0">
+              <p
+                *ngIf="tagLine"
+                class="mb-0 text-dark text-4 font-weight-bold mb-0"
+              >
                 {{ tagLine }}
               </p>
             </td>
@@ -451,14 +461,14 @@
           </tr>
           <tr>
             <td width="50%" valign="top">
-              <p class="mt-3 mb-0 text-dark text-5 font-weight-semibold">
+              <h2 class="mt-0 mb-0 text-dark text-5 font-weight-semibold">
                 Company
-              </p>
-              <h2
+              </h2>
+              <p
                 class="text-capitalize text-dark text-5 font-weight-semibold mb-0 mt-0"
               >
                 {{ carrierName ? carrierName : "NA" }}
-              </h2>
+              </p>
             </td>
             <td valign="top">
               <table
@@ -471,31 +481,15 @@
                 <tbody>
                   <tr>
                     <td align="right">
-                      <p
-                        class="mt-3 mb-0 text-dark"
-                        style="font-size: 13px; margin-bottom: 10px"
-                      >
-                        Expense Type
-                        <span
-                          style="
-                            font-size: 16px;
-                            font-weight: 600;
-                            margin-top: 0px;
-                          "
-                          >{{ categories[expenseData.categoryID] }}</span
-                        >
+                      <p class="mt-2 mb-0 text-dark text-3">
+                        Expense Type:
+                        <span class="font-weight-bold">{{
+                          categories[expenseData.categoryID]
+                        }}</span>
                       </p>
-                      <p
-                        class="mt-2 mb-0 text-dark"
-                        style="font-size: 13px; margin-bottom: 10px"
-                      >
+                      <p class="mt-2 mb-2 text-dark text-3">
                         Payment Amount:
-                        <span
-                          style="
-                            font-size: 16px;
-                            font-weight: 600;
-                            margin-top: 0px;
-                          "
+                        <span class="font-weight-bold"
                           >{{ expenseData.finalTotal | number: "1.2-2" }}
                           {{ expenseData.currency }}</span
                         >

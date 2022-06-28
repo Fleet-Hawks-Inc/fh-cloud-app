@@ -35,6 +35,7 @@ export class ImportDriversComponent implements OnInit {
   check: boolean = false;
   submitDisabled: boolean = true;
 
+  next: any = 'null';
 
   // columns of data table
   dataColumns = [
@@ -169,7 +170,16 @@ export class ImportDriversComponent implements OnInit {
                 joinStr = item + '. Please enter the date in the format: YYYY-MM-DD';
                 this.inValidMessages.push(joinStr)
               } else if (item.includes('status')) {
-                joinStr = item + '.  Status should be active or inActive';
+                joinStr = item + '. Status should be active or inActive';
+                this.inValidMessages.push(joinStr)
+              } else if (item.includes('username')) {
+                joinStr = item + '. Username should be at-least 6 characters long and can be a combination of numbers, letters and dot(.)';
+                this.inValidMessages.push(joinStr)
+              } else if (item.includes('phone')) {
+                joinStr = item + '. Enter valid phone number eg. 2234567891';
+                this.inValidMessages.push(joinStr)
+              } else if (item.includes('email')) {
+                joinStr = item + '. Enter valid email eg. johnsmith@gmail.com';
                 this.inValidMessages.push(joinStr)
               } else {
                 this.inValidMessages.push(item)
@@ -230,6 +240,8 @@ export class ImportDriversComponent implements OnInit {
             this.toastr.success("The file has been scheduled for processing and you will be notified via email once it is completed.")
             $('#importDocs').val('');
             this.display = false;
+            this.importDrivers = [];
+            this.next = '';
             this.fetchDriverImport();
           }
         })
@@ -238,15 +250,34 @@ export class ImportDriversComponent implements OnInit {
   }
 
   async fetchDriverImport() {
-    let result = await this.apiService.getData('importer/get?type=driver').toPromise();
-    if (result.length === 0) {
+    if (this.next === 'end') {
+      return;
+    }
+    let result = await this.apiService.getData(`importer/get?type=driver&key=${this.next}`).toPromise();
+    if (result.data.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
       this.loaded = true;
     }
-    if (result && result.length > 0) {
-      this.importDrivers = result;
+    if (result && result.data.length > 0) {
+      result.data.forEach(elem => {
+        elem.timeCreated = new Date(elem.timeCreated).toLocaleString('en-CA');
+        this.importDrivers.push(elem);
+      });
+
+      if (result.nextPage != undefined) {
+        this.next = result.nextPage.replace(/#/g, '--');
+      } else {
+        this.next = 'end';
+      }
     }
     this.loaded = true;
+  }
+
+  onScroll() {
+    if (this.loaded) {
+      this.fetchDriverImport();
+    }
+    this.loaded = false;
   }
 
   openModal() {
@@ -268,7 +299,8 @@ export class ImportDriversComponent implements OnInit {
 
 
   refreshData() {
-    this.importDrivers = []
+    this.importDrivers = [];
+    this.next = '';
     this.fetchDriverImport();
     this.dataMessage = Constants.FETCHING_DATA;
   }

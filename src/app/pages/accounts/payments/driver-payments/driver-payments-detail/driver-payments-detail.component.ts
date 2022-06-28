@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService, ListService } from "src/app/services";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-driver-payments-detail",
@@ -55,6 +56,10 @@ export class DriverPaymentsDetailComponent implements OnInit {
     gstHstAmt: <any>0,
     isVendorPayment: false,
     vendorId: '',
+    cheqdata: {
+      comp: '',
+      addr: ''
+    }
   };
   accounts = [];
   accountsObjects = {};
@@ -62,6 +67,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
   showModal = false;
   downloadDisabled = true;
   downloadDisabledpdf = true;
+  subscription: Subscription;
 
   constructor(
     private listService: ListService,
@@ -72,6 +78,11 @@ export class DriverPaymentsDetailComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.subscription = this.listService.paymentDetail.subscribe(async (res: any) => {
+      if(res == 'driver-payments') {
+        this.fetchPay();
+      }
+    })
     this.paymentID = this.route.snapshot.params["paymentID"];
     // this.fetchDrivers();
     // this.fetchContactsList();
@@ -163,9 +174,37 @@ export class DriverPaymentsDetailComponent implements OnInit {
       vendorId: this.paymentData.vendorId,
       gstHstPer: this.paymentData.gstHstPer,
       gstHstAmt: this.paymentData.gstHstAmt,
-      settlementIds: this.paymentData.settlementIds
+      settlementIds: this.paymentData.settlementIds,
+      recordID: this.paymentID,
+      cheqData: this.paymentData.cheqdata,
+      module: 'driver-payments',
     };
     this.downloadDisabled = true;
     this.listService.openPaymentChequeModal(obj);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  async fetchPay() {
+    let result: any = await this.accountService
+      .getData(`driver-payments/detail/${this.paymentID}`)
+      .toPromise();
+    this.paymentData = result[0];
+    this.paymentData.isVendorPayment = result[0].data.isVendorPymt || false;
+    this.paymentData.gstHstPer = result[0].data.gstHstPer || 0;
+    this.paymentData.vendorId = result[0].data.vendorId || undefined;
+    this.paymentData.gstHstAmt = (this.paymentData.gstHstPer / 100) * this.paymentData.settledAmount || 0;
+    
+    if (this.paymentData.payMode) {
+      this.paymentData.payMode = this.paymentData.payMode.replace("_", " ");
+    } else {
+      this.paymentData.payMode = "";
+    }
+    this.paymentData.paymentEnity = this.paymentData.paymentTo.replace(
+      "_",
+      " "
+    );
   }
 }

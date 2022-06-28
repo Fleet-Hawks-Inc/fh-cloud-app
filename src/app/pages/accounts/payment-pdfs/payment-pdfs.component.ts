@@ -405,7 +405,16 @@ export class PaymentPdfsComponent implements OnInit {
                       vehicleName: plan.vehicleName ? plan.vehicleName : '',
                       assetNames: plan.assetNames ? plan.assetNames.toString() : '',
                       showMiles: `${plan.mileType === 'loaded' ? 'L' : 'E'} - ${plan.miles}`,
+                      drivrCodriver: ''
                     };
+                    if(plan.driverID && this.paymentData.entityId === plan.driverID) {
+                      planObj.drivrCodriver = plan.codriverName ? plan.codriverName : '';
+                    }
+
+                    if(plan.coDriverID && this.paymentData.entityId === plan.coDriverID) {
+                      planObj.drivrCodriver = plan.driverName ? plan.driverName : '';
+                    }
+
                     if(v.paymentSelected) {
                       if(v.paymentSelected[0].pType == 'pfr') {
                         planObj.rate = ''
@@ -446,8 +455,15 @@ export class PaymentPdfsComponent implements OnInit {
                   vehicleName: plan.vehicleName ? plan.vehicleName : '',
                   assetNames: plan.assetNames ? plan.assetNames.toString() : '',
                   showMiles: `${plan.mileType === 'loaded' ? 'L' : 'E'} - ${plan.miles}`,
+                  drivrCodriver: ''
                 };
+                if(plan.driverID && this.paymentData.entityId === plan.driverID) {
+                  planObj.drivrCodriver = plan.codriverName ? plan.codriverName : '';
+                }
 
+                if(plan.coDriverID && this.paymentData.entityId === plan.coDriverID) {
+                  planObj.drivrCodriver = plan.driverName ? plan.driverName : '';
+                }
                 if(v.paymentSelected) {
                   if(v.paymentSelected[0].pType == 'pfr') {
                     planObj.rate = ''
@@ -526,7 +542,12 @@ export class PaymentPdfsComponent implements OnInit {
       .getData(`contacts/detail/${this.paymentData.entityId}`)
       .subscribe((result: any) => {
         result = result.Items[0];
-        this.pdfDetails.name = `${result.firstName} ${result.lastName}`;
+        if(result.contactSK.includes('EMP#') ) {
+          this.pdfDetails.name = `${result.firstName} ${result.lastName}`;
+        } else {
+          this.pdfDetails.name = `${result.cName}`;
+        }
+        
         this.pdfDetails.email = result.workEmail;
         this.pdfDetails.userID = result.employeeID;
         if (result.adrs[0].manual) {

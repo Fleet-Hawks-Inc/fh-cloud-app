@@ -44,6 +44,8 @@ export class AddAssetsComponent implements OnInit {
   isSubmitted = false;
 
   selectedFiles: FileList;
+  uploadDocsError = '';
+  purchaseDocsError = '';
   selectedFileNames: Map<any, any>;
   pageTitle: string;
   errors = {};
@@ -51,6 +53,8 @@ export class AddAssetsComponent implements OnInit {
   quantumSelected = "";
   isImport = false;
   pDocs = [];
+  photosError = '';
+  loanDocsError = '';
   lDocs = [];
   assetsData = {
     isTemp: false,
@@ -784,41 +788,25 @@ export class AddAssetsComponent implements OnInit {
           result.uploadedPhotos !== undefined &&
           result.uploadedPhotos.length > 0
         ) {
-          // this.assetsImages = result.uploadedPhotos.map((x: any) => ({
-          //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
-          //    name: x,
-          // }));
-          this.assetsImages = result.uploadedPhotosLinks;
+          this.assetsImages = result.uploadedPics;
         }
 
         if (
           result.uploadedDocs !== undefined &&
           result.uploadedDocs.length > 0
         ) {
-          // this.assetsDocs = result.uploadedDocs.map((x) => ({
-          //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
-          //   name: x,
-          // }));
-          this.assetsDocs = result.uploadedDocsLinks;
+          this.assetsDocs = result.uploadDocument;
         }
 
         if (result.loanDocs !== undefined && result.loanDocs.length > 0) {
-          // this.lDocs = result.loanDocs.map((x) => ({
-          //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
-          //   name: x,
-          //  }));
-          this.lDocs = result.loanDocsLinks;
+          this.lDocs = result.loanDocsUpload;
         }
 
         if (
           result.purchaseDocs !== undefined &&
           result.purchaseDocs.length > 0
         ) {
-          //  this.pDocs = result.purchaseDocs.map((x) => ({
-          //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
-          //    name: x,
-          //  }));
-          this.pDocs = result.purchaseDocsLinks;
+          this.pDocs = result.purchaseDocsUpload;
         }
         this.isImport = result.isImport
 
@@ -1002,24 +990,72 @@ export class AddAssetsComponent implements OnInit {
 
   selectDocuments(event, obj) {
     let files = [...event.target.files];
-
     if (obj === "uploadedDocs") {
       this.uploadedDocs = [];
       for (let i = 0; i < files.length; i++) {
+       let name = files[i].name.split(".");
+       let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
         this.uploadedDocs.push(files[i]);
+        } else {
+            this.uploadDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+        }
       }
     } else if (obj === "purchase") {
       for (let i = 0; i < files.length; i++) {
+      let name = files[i].name.split(".");
+      let ext = name[name.length - 1].toLowerCase();
+      if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
         this.purchaseDocs.push(files[i]);
+        } else {
+            this.purchaseDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+        }
       }
     } else if (obj === "loan") {
       for (let i = 0; i < files.length; i++) {
+       let name = files[i].name.split(".");
+       let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
         this.loanDocs.push(files[i]);
+         } else {
+            this.loanDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+        }
       }
     } else {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
+       let name = files[i].name.split(".");
+       let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
         this.uploadedPhotos.push(files[i]);
+        } else {
+            this.photosError = 'Only .jpg, .jpeg and png files allowed.';
+        }
       }
     }
   }

@@ -11,7 +11,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { environment } from "src/environments/environment";
 import { ToastrService } from "ngx-toastr";
 import * as html2pdf from "html2pdf.js";
-import { from } from "rxjs";
+import { from, Subscription } from "rxjs";
 import { map } from "rxjs/operators";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { PdfViewerComponent } from "ng2-pdf-viewer";
@@ -347,7 +347,7 @@ export class OrderDetailComponent implements OnInit {
   invDate: any = '';
   invBtnDisableStat = true;
   isOrderPriceEnabled = environment.isOrderPriceEnabled
-
+  subscription: Subscription;
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
@@ -382,7 +382,7 @@ export class OrderDetailComponent implements OnInit {
   };
 
   async fetchBolDocs() {
-    this.listService.getDocsModalList.subscribe((res: any) => {
+    this.subscription = this.listService.getDocsModalList.subscribe((res: any) => {
       if (res && res.docType != null && res.docType != '') {
         if (res.module === 'order') {
           this.docType = res.docType;
@@ -392,6 +392,10 @@ export class OrderDetailComponent implements OnInit {
     })
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
+  }
+
   /**
    * fetch order data
    */
@@ -399,6 +403,8 @@ export class OrderDetailComponent implements OnInit {
     this.docs = [];
     this.apiService.getData(`orders/detail/${this.orderID}`).subscribe(
       async (result: any) => {
+        //
+
         this.newOrderData = result;
         result = result.Items[0];
         if (result.brkCarrID) {
@@ -549,6 +555,8 @@ export class OrderDetailComponent implements OnInit {
             ext: x.split(".")[1],
           }));
         }
+
+        this.attachments = result.uploadPics;
 
         if (result.tripDocs != undefined && result.tripDocs.length > 0) {
           this.tripDocs = result.tripDocs.map((x) => ({
@@ -944,12 +952,24 @@ export class OrderDetailComponent implements OnInit {
       formData.append("uploadedDocs", this.uploadedDocs[i]);
     }
 
-    let result: any = await this.apiService
-      .postData(`orders/uploadDocs/${this.orderID}/${this.docType}`, formData, true).toPromise()
-    this.uploadedDocs = [];
-    if (result && result.length > 0) {
-      await this.showDocs(result)
-    }
+    await this.apiService
+      .postData(`orders/uploadDocs/${this.orderID}/${this.docType}`, formData, true).toPromise().then(async (result: any) => {
+        this.uploadedDocs = [];
+        if (result && result.length > 0) {
+          await this.showDocs(result);
+          let obj = {
+            mode: 'close',
+          }
+          this.listService.closeModel(obj);
+          this.toastr.success('Document uploaded successfully');
+        }
+      }).catch(err => {
+        let obj = {
+          mode: 'open',
+          message: 'Document type is not valid'
+        }
+        this.listService.closeModel(obj);
+      });
   }
 
   caretClickShipper(i, j) {

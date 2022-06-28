@@ -23,6 +23,7 @@ import {
   switchMap,
   takeUntil
 } from "rxjs/operators";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 declare var $: any;
 
 @Component({
@@ -45,8 +46,11 @@ export class AddServiceComponent implements OnInit {
   reminders = [];
   issues: any;
   inventory = [];
+  uploadDocsError = '';
+  uploadPhotoError = '';
   selectedTasks = [];
   selectedParts = [];
+  sessionID: string;
   selectedIssues = [];
   // private allServiceTasks = [];
   removeTask = false;
@@ -202,11 +206,9 @@ export class AddServiceComponent implements OnInit {
     private listService: ListService,
     private modalService: NgbModal,
     private modalServiceOwn: ModalService,
+    private routerMgmtService: RouteManagementServiceService
   ) {
-
-
-
-
+    this.sessionID = this.routerMgmtService.serviceLogSessionID;
     this.selectedFileNames = new Map<any, any>();
     // localStorage.setItem('serviceLogs', JSON.stringify(this.serviceData));
   }
@@ -352,7 +354,8 @@ export class AddServiceComponent implements OnInit {
         this.takeUntil$.complete();
         this.isSubmitted = true;
         this.toastr.success("Service log added successfully");
-        this.router.navigateByUrl("/fleet/maintenance/service-log/list");
+        //this.router.navigateByUrl("/fleet/maintenance/service-log/list");
+        this.router.navigateByUrl('/fleet/maintenance/service-log/list/${this.routerMgmtService.serviceLogUpdated()}');
         this.spinner.hide();
       },
     });
@@ -573,12 +576,35 @@ export class AddServiceComponent implements OnInit {
     if (obj === "uploadedDocs") {
       this.uploadedDocs = [];
       for (let i = 0; i < files.length; i++) {
+             let name = files[i].name.split(".");
+       let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
         this.uploadedDocs.push(files[i]);
+              } else {
+            this.uploadDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+        }
       }
     } else {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
+             let name = files[i].name.split(".");
+       let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
         this.uploadedPhotos.push(files[i]);
+         } else {
+            this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
+        }
       }
     }
   }
@@ -981,6 +1007,7 @@ export class AddServiceComponent implements OnInit {
       location: this.serviceData.location,
       geoCords: this.serviceData.geoCords,
       uploadedPhotos: this.existingPhotos,
+      uploadedDocs: this.existingDocs,
       exempt: this.serviceData.exempt,
       total: this.serviceData.total,
       charges: this.serviceData.charges,
@@ -1033,7 +1060,8 @@ export class AddServiceComponent implements OnInit {
         this.takeUntil$.complete();
         this.isSubmitted = true;
         this.toastr.success("Service log Updated Successfully");
-        this.router.navigateByUrl("/fleet/maintenance/service-log/list");
+        //this.router.navigateByUrl("/fleet/maintenance/service-log/list");
+        this.router.navigateByUrl('/fleet/maintenance/service-log/list/${this.routerMgmtService.serviceLogUpdated()}');
       },
     });
   }
