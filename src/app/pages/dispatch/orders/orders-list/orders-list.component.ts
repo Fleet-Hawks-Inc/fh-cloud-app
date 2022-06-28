@@ -224,8 +224,7 @@ export class OrdersListComponent implements OnInit {
   loaded = false;
   isLoad: boolean = false;
   isLoadText = "Load More...";
-
-
+  status_values: any = [{ name: "Created", value: "created" }, { name: "Delivered", value: "delivered" }, { name: "Brokerage", value: "brokerage" }, { name: "Attached", value: "attached" }, ];
   detailUrl = []
 
   dataColumns: any[];

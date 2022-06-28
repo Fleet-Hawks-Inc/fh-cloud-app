@@ -258,6 +258,19 @@
                                 display="menu"
                               >
                               </p-columnFilter>
+
+                              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-multiSelect [options]="status_values" placeholder="Any"
+                                  (onChange)="filter($event.value)" optionLabel="name" optionValue="value">
+                                  <ng-template let-option pTemplate="item">
+                                    <div>
+                                      <span class="ml-1">{{
+                                        option.name
+                                        }}</span>
+                                    </div>
+                                  </ng-template>
+                                </p-multiSelect>
+                              </ng-template>
                             </div>
                           </span>
                         </th>
