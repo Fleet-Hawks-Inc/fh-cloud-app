@@ -134,7 +134,9 @@ export class TripDetailComponent implements OnInit {
   isCelsius = false;
   get = _.get;
   subscription: Subscription;
-  driverNames = [];
+  totalSplits = [];
+  newSplits = [];
+  selectedSplits = [];
   ngOnInit() {
 
     this.subscription = this.listService.getDocsModalList.subscribe((res: any) => {
@@ -326,17 +328,9 @@ export class TripDetailComponent implements OnInit {
             this.assetNamesList.push(assetObj);
 
           }
-          if (element.driverName && element.driverName != '' && element.driverName != undefined) {
-            this.driverNames.push({ driverID: element.driverID, driverName: element.driverName })
-          }
-          if (element.coDriverName && element.coDriverName != '' && element.coDriverName != undefined) {
-            this.driverNames.push({ driverID: element.coDriverID, driverName: element.coDriverName })
-          }
 
         }
-        this.driverNames = _.uniqBy(this.driverNames, function (e) {
-          return e.driverID;
-        });;
+
         // filter out duplicates
         this.assetNamesList = _.uniqBy(this.assetNamesList, function (e) {
           return e.assetID;
@@ -394,6 +388,12 @@ export class TripDetailComponent implements OnInit {
           });
         }
         if (result.split && result.split.length > 0) {
+          for (let i = 0; i < result.split.length; i++) {
+            const element = result.split[i];
+            this.totalSplits.push({ splitID: element.splitID, splitName: `Sub Trip - ${this.tripData.tripNo} (${i + 1})` })
+          }
+          this.newSplits = result.split;
+
           this.isSplit = true;
         } else {
           this.isSplit = false;
@@ -681,8 +681,7 @@ export class TripDetailComponent implements OnInit {
 
 
   openTripInfo() {
-    this.tripInfoModal = true;
-    return
+
     if (this.isSplit) {
       this.showSplitModel = true;
     } else {
@@ -718,22 +717,18 @@ export class TripDetailComponent implements OnInit {
   }
 
   async driverEmail() {
-    const elem = document.getElementById('print_wrap');
-    html2pdf().from(elem).outputPdf('arraybuffer').then((result) => {
-      console.log('blob', result)
-    });
-
-    return
-    this.isEmail = true;
-    let result = await this.apiService
-      .getData(`trips/send/emailDriver/${this.tripID}`)
-      .toPromise();
-    if (result === null) {
-      this.tripInfoModal = false;
-      this.toastr.success("Email send successfully");
-      this.isEmail = false;
-    } else {
-      this.isEmail = false;
+    if (this.selectPlanID) {
+      this.isEmail = true;
+      let result = await this.apiService
+        .getData(`trips/send/emailDriver?tripID=${this.tripID}&planID=${this.selectPlanID}`)
+        .toPromise();
+      if (result === null) {
+        this.tripInfoModal = false;
+        this.toastr.success("Email send successfully");
+        this.isEmail = false;
+      } else {
+        this.isEmail = false;
+      }
     }
   }
 
@@ -873,6 +868,31 @@ export class TripDetailComponent implements OnInit {
       this.isCelsius = true;
     }
   }
+
+  changeSplitTrips() {
+    let planResult = this.newSplits.filter(elem => { return elem.splitID === this.selectPlanID })
+    if (planResult && planResult.length > 0 && planResult[0].plan) {
+      let newData = []
+      let planIds = planResult[0].plan;
+      planIds.map((c, cind) => {
+        this.trips.map((t) => {
+          if (t.planID === c) {
+            newData.push(t);
+          }
+        });
+      });
+      this.selectedSplits = newData;
+    }
+
+  }
+
+  showTripInfoModel() {
+    if (this.selectPlanID) {
+      this.isEmail = false;
+      this.tripInfoModal = true;
+    }
+  }
+
 
 }
 

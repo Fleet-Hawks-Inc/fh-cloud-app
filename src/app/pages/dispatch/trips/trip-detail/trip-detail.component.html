@@ -1035,12 +1035,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngIf="trips.length === 0" class="text-center">
+              <tr *ngIf="selectedSplits.length === 0" class="text-center">
                 <td colspan="15">
                   {{ noOrdersMsg }}
                 </td>
               </tr>
-              <tr *ngFor="let trip of trips">
+              <tr *ngFor="let trip of selectedSplits">
                 <td>{{ trip.type }}</td>
                 <td>{{ trip.orderNumber ? trip.orderNumber : "" }}</td>
                 <td>
@@ -1185,6 +1185,7 @@
 
   <ng-template pTemplate="footer">
     <button pButton (click)="tripInfoModal=false" label="Cancel" styleClass="p-button-text"></button>
+    <button pButton (click)="tripInfoModal=false;showSplitModel=true;" label="Back" styleClass="p-button-text"></button>
     <button pButton (click)="tripInfoModal=false" [disabled]="isEmail" (click)="driverEmail()" label="Email to Driver"
       styleClass="p-button-text"></button>
     <button pButton (click)="generate()" label="Print" styleClass="p-button-text"></button>
@@ -1266,10 +1267,11 @@
 
 <p-dialog header="Select Sub-Trip" [modal]="true" [(visible)]="showSplitModel" blockScroll="true"
   [style]="{ width: '20vw' }">
-  <p-dropdown [options]="driverNames" appendTo="body" optionLabel="driverName" optionValue="driverID"
-    [(ngModel)]="selectPlanID"></p-dropdown>
+  <p-dropdown [options]="totalSplits" (onChange)="changeSplitTrips()" appendTo="body" optionLabel="splitName"
+    optionValue="splitID" placeholder="Select Sub Trip" [style]="{ width: '100%' }" [(ngModel)]="selectPlanID">
+  </p-dropdown>
   <ng-template pTemplate="footer">
     <button pButton (click)="showSplitModel=false" label="Cancel" styleClass="p-button-text"></button>
-    <button pButton (click)="showSplitModel=false" label="Submit" styleClass="p-button-text"></button>
+    <button pButton (click)="showSplitModel=false;showTripInfoModel()" label="Next" styleClass="p-button-text"></button>
   </ng-template>
 </p-dialog>
