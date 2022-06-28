@@ -174,6 +174,9 @@ export class ImportedAssetsComponent implements OnInit {
               if (item.includes('start_date')) {
                 joinStr = item + '. Please enter the date in the format: YYYY-MM-DD';
                 this.inValidMessages.push(joinStr)
+              } else if (item.includes('asset_name')) {
+                joinStr = item + '. Asset name/number must contain alphanumeric characters.';
+                this.inValidMessages.push(joinStr)
               } else if (item.includes('year')) {
                 joinStr = item + '.  Please enter the year in the format: YYYY';
                 this.inValidMessages.push(joinStr)

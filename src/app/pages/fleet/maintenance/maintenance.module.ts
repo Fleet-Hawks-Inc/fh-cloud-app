@@ -110,14 +110,13 @@ const routes: Routes = [
     path: "service-log",
     children: [
       {
-        path: "list",
+        path: "list/:sessionID",
         component: ServiceListComponent,
-        data: { title: "Service Log List" },
+        data: { title: "Service Log List", reuseRoute: true },
       },
       {
         path: "add-service",
         component: AddServiceComponent,
-        canDeactivate: [unsavedChangesGuard],
         data: { title: "Add Service Log" },
       },
       {
