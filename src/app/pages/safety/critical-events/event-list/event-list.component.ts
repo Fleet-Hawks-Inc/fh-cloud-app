@@ -1,14 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService, HereMapService } from '../../../../services';
-import { Router } from '@angular/router';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import * as _ from "lodash";
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
-declare var $: any;
-import * as moment from "moment";
-import { SafetyService } from 'src/app/services/safety.service';
+import { Table } from 'primeng/table';
 import Constants from 'src/app/pages/fleet/constants';
-import { constants } from 'os';
-
+import { SafetyService } from 'src/app/services/safety.service';
+import { ApiService, HereMapService } from '../../../../services';
 @Component({
   selector: 'app-event-list',
   templateUrl: './event-list.component.html',
@@ -16,43 +12,72 @@ import { constants } from 'os';
 })
 export class EventListComponent implements OnInit {
 
+  @ViewChild('dt') table: Table;
   events = [];
   lastEvaluatedKey = '';
   totalRecords = 20;
   pageLength = 10;
-
   vehicles = [];
   vehicleID = '';
   filter = {
     vehicleID: null,
-    date: null
-
+    date: null,
   };
-
   suggestions = [];
   vehiclesObject: any = {};
   driversObject: any = {};
   drivers = [];
   dataMessage: any = Constants.FETCHING_DATA;
-
   birthDateMinLimit: any;
   birthDateMaxLimit: any;
-  status_values: any = ["open", "investigating", "coaching", "closed"];
+  status_values: any = [{ name: "Open", value: "open" }, { name: "Investigating", value: "investigating" }, { name: "Coaching", value: "coaching" }, { name: "Closed", value: "closed" }];
   lastItemSK: string = '';
-
-  constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toaster: ToastrService,
-    private spinner: NgxSpinnerService, private hereMapService: HereMapService) {
-      const date = new Date();
-      this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
-      this.birthDateMaxLimit = { year: date.getFullYear(), month: 12, day: 31 };
-    }
-
+  employeeOptions: any[];
+  _selectedColumns: any[];
+  dataColumns: any[];
+  get = _.get;
+  find = _.find;
+  loaded = false
+  status: any[]
+  selectStatus: string
+  constructor(private apiService: ApiService, private safetyService: SafetyService, private toaster: ToastrService,
+    private hereMapService: HereMapService) {
+    const date = new Date();
+    this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
+    this.birthDateMaxLimit = { year: date.getFullYear(), month: 12, day: 31 }
+  }
   async ngOnInit() {
     this.fetchEvents();
     this.fetchVehicles();
     this.fetchAllVehiclesIDs();
+    this.dataColumns = [
+      { width: '9%', field: 'vehicleID', header: 'Vehicle', type: "text" },
+      { width: '9%', field: 'eventDate', header: 'Event Date', type: "text" },
+      { width: '9%', field: 'eventTime', header: 'Event Time', type: "text" },
+      { width: '10%', field: 'eventType', header: 'Event Type', type: "text" },
+      { width: '10%', field: 'eventSource', header: 'Event Source', type: "text" },
+      { width: '10%', field: 'createdBy', header: 'Created By', type: "text" },
+      { width: '26%', field: 'location.label', header: 'Location', type: "text" },
+      { width: '8%', field: 'status', header: 'Status', type: "text" },
+    ];
+
+
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
   }
 
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+  }
   async getLocation(location: string) {
     try {
       const cords = location.split(',');
@@ -82,8 +107,7 @@ export class EventListComponent implements OnInit {
 
     cords = `${cords.lng},${cords.lat}`;
     let result = await this.apiService.getData(`pcMiles/reverse/${cords}`).toPromise();
-
- }
+  }
 
 
   fetchVehicles() {
@@ -91,11 +115,12 @@ export class EventListComponent implements OnInit {
       .subscribe((result: any) => {
         this.vehicles = result.Items;
       })
+
   }
 
   searchEvents() {
     this.dataMessage = Constants.FETCHING_DATA;
-    if(this.filter.date == '') {
+    if (this.filter.date == '') {
       this.filter.date = 'null'
     }
     this.safetyService.getData(`critical-events/paging?vehicleID=${this.filter.vehicleID}&date=${this.filter.date}`)
@@ -103,6 +128,8 @@ export class EventListComponent implements OnInit {
 
         if (result.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
+        } else {
+          this.lastItemSK = 'end'
         }
         this.events = result;
 
@@ -119,6 +146,7 @@ export class EventListComponent implements OnInit {
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.loaded = true;
           }
           result.map((v) => {
             v.url = `/safety/critical-events/event-details/${v.eventID}`;
@@ -127,11 +155,13 @@ export class EventListComponent implements OnInit {
             for (let index = 0; index < result.length; index++) {
               const element = result[index];
               this.events.push(element);
+              this.loaded = true;
             }
             if (this.events[this.events.length - 1].sk !== undefined) {
               this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
             } else {
               this.lastItemSK = 'end';
+
             }
           }
 
@@ -141,11 +171,11 @@ export class EventListComponent implements OnInit {
   }
 
 
-  changeStatus(eventID: any, newValue: string, i: string) {
-
+  changeStatus(eventID: any, event: any, i: string) {
+    console.log(eventID, event, i)
     let data = {
       eventID: eventID,
-      status: newValue
+      status: event.value
     }
     this.safetyService.putData('critical-events', data).subscribe(async (res: any) => {
       if (res.status == false) {
@@ -160,7 +190,7 @@ export class EventListComponent implements OnInit {
 
   resetFilter() {
 
-    if(this.filter.date != '' || this.filter.vehicleID != '' || this.filter.vehicleID != null) {
+    if (this.filter.date != '' || this.filter.vehicleID != '' || this.filter.vehicleID != null) {
       this.lastItemSK = '';
       this.events = [];
       this.fetchEvents();
@@ -168,13 +198,14 @@ export class EventListComponent implements OnInit {
         vehicleID: null,
         date: ''
       };
-
     } else {
       return false;
     }
 
   }
-
+  clear(table: Table) {
+    table.clear();
+  }
   fetchAllVehiclesIDs() {
     this.apiService.getData('vehicles/get/list')
       .subscribe((result: any) => {
@@ -196,8 +227,11 @@ export class EventListComponent implements OnInit {
     return time.join(''); // return adjusted time or original string
   }
 
-  onScroll() {
-    this.fetchEvents();
+  onScroll = async (event: any) => {
+    if (this.loaded) {
+      this.fetchEvents()
+    }
+    this.loaded = false;
   }
 
   refreshData() {

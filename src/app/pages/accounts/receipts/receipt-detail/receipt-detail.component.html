@@ -350,28 +350,16 @@
             </tr>
             <tr>
               <td valign="top">
-                <p
-                  style="
-                    font-size: 13px;
-                    color: #000;
-                    margin-bottom: 5px;
-                    margin-top: 5px;
-                  "
-                >
-                  <strong>Receipt#:</strong> {{ receiptData.recNo }}
+                <p class="mt-2 mb-2 text-dark text-3">
+                  Receipt#: <strong>{{ receiptData.recNo }}</strong>
                 </p>
               </td>
               <td valign="top" align="right">
-                <p
-                  style="
-                    font-size: 13px;
-                    color: #000;
-                    margin-bottom: 5px;
-                    margin-top: 5px;
-                  "
-                >
-                  <strong>Receipt Date:</strong>
-                  {{ receiptData.txnDate | date: "yyyy/MM/dd" }}
+                <p class="mt-2 mb-2 text-dark text-3">
+                  Receipt Date:
+                  <strong>{{
+                    receiptData.txnDate | date: "yyyy/MM/dd"
+                  }}</strong>
                 </p>
               </td>
             </tr>
@@ -384,7 +372,7 @@
                   Customer
                 </h2>
                 <p
-                  class="text-capitalize text-dark text-5 font-weight-semibold mb-0 mt-0"
+                  class="text-capitalize text-dark text-5 font-weight-semibold mb-2 mt-0"
                 >
                   <strong> {{ customerName | uppercase }} </strong>
                   <!-- <strong>ABC Logistics</strong><br> -->
@@ -405,7 +393,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                <h2 class="text-dark text-4 mt-0 mb-0 font-weight-bold">
+                <h2 class="text-dark text-4 mt-0 mb-0 LH28 font-weight-bold">
                   Invoice
                 </h2>
               </td>
@@ -463,7 +451,7 @@
 
             <tr>
               <td colspan="2">
-                <h2 class="text-dark text-4 mt-0 mb-0 font-weight-bold">
+                <h2 class="text-dark text-4 mt-0 mb-0 LH28 font-weight-bold">
                   Payment Details
                 </h2>
               </td>

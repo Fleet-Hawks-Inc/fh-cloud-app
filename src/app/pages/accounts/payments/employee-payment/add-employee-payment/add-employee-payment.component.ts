@@ -67,7 +67,11 @@ export class AddEmployeePaymentComponent implements OnInit {
     transactionLog: [],
     gstper: 0,
     gstHstAmt: 0,
-    vendorId: ''
+    vendorId: '',
+    cheqdata: {
+      comp: '',
+      addr: ''
+    }
   };
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -161,6 +165,7 @@ export class AddEmployeePaymentComponent implements OnInit {
   async ngOnInit() {
     this.subscription = this.listService.paymentSaveList.subscribe((res: any) => {
       if (res.openFrom === "addForm") {
+        this.paymentData.cheqdata = res.cheqdata;
         this.addRecord();
       }
     });

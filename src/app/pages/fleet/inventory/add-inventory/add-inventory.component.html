@@ -428,7 +428,7 @@
                       </div>
                       <div class="col-lg-2 mar-top-37 pl-0 pr-0 text-right">
                         <a
-                          [routerLink]=""
+                          [routerLink]="[]"
                           (click)="showWarehoseModal()"
                           class="modal-with-form btn cus-btn-padd btn-success mr-3 mt-0"
                           ><i class="fas fa-plus"></i
@@ -668,6 +668,12 @@
                           multiple
                           accept=".jpg, .jpeg, .png"
                         />
+                               <span
+                              *ngIf="photoError != ''"
+                              class="text-danger"
+                            >
+                              {{ photoError }}
+                            </span>
                       </div>
                       <div class="col-lg-2 mar-top-37"></div>
                     </div>
@@ -709,6 +715,12 @@
                           multiple
                           accept=".doc, .docx, .pdf, .jpg, .jpeg .png" 
                         />
+                               <span
+                              *ngIf="docsError != ''"
+                              class="text-danger"
+                            >
+                              {{ docsError }}
+                            </span>
                       </div>
                       <div class="col-lg-2 mar-top-37"></div>
                     </div>
@@ -725,23 +737,39 @@
                             <div class="col-lg-6 text-right"></div>
                           </div>
                           <hr class="solid mt-2" />
-                          <div
-                            class="row mb-1"
-                            *ngFor="let doc of inventoryDocs; let d = index"
-                          >
-                            <div class="col-lg-9">
-                              <a href="{{ doc.path }}" target="_blank"
-                                >Document No. {{ d + 1 }}</a
-                              >
-                            </div>
-                            <div class="col-lg-3 text-right">
+                          
+                          <!--<div-->
+                          <!--  class="row mb-1"-->
+                          <!--  *ngFor="let doc of inventoryDocs; let d = index"-->
+                          <!-->-->
+                          <!--  <div class="col-lg-9">-->
+                          <!--    <a href="{{ doc.path }}" target="_blank"-->
+                          <!--      >Document No. {{ d + 1 }}</a-->
+                          <!--    >-->
+                          <!--  </div>-->
+                          <!--  <div class="col-lg-3 text-right">-->
                               <!-- <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"></i>                               -->
-                              <i
-                                class="fas fa-times text-danger"
-                                (click)="delete('doc', doc.name, d)"
-                              ></i>
-                            </div>
+                          <!--    <i-->
+                          <!--      class="fas fa-times text-danger"-->
+                          <!--      (click)="delete('doc', doc.name, d)"-->
+                          <!--    ></i>-->
+                          <!--  </div>-->
+                          <!--</div>-->
+                          
+                                             
+                        <div class="row mb-1" *ngFor="let doc of inventoryDocs; let d = index">
+                                        <div class="col-lg-9">
+                                            <a href="{{ doc.path }}" data-toggle="modal" data-target="#viewDocModal"
+                                                (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
+                                        </div>
+                                        <div class="col-lg-3 text-right">
+                            <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="delete('doc', doc.name, d)"><i class="fas fa-trash-alt"></i></a>
+                                                 <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"><i
+                                class="fas fa-eye"></i></a>
                           </div>
+                        </div>
                         </div>
                       </div>
                     </div>
@@ -1056,7 +1084,7 @@
           <button
             type="button"
             class="btn btn-success"
-            [routerLink]=""
+            [routerLink]="[]"
             (click)="addWarehouse()"
             [disabled]="!warehouseForm.form.valid"
           >

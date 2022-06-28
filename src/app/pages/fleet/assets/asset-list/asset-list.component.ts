@@ -10,6 +10,7 @@ import { OnboardDefaultService } from '../../../../services/onboard-default.serv
 import * as _ from 'lodash';
 import { Table } from 'primeng/table';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import * as moment from 'moment';
 declare var $: any;
 
 @Component({
@@ -53,6 +54,7 @@ export class AssetListComponent implements OnInit {
   dryboxOptions: any = {};
   flatbedOptions: any = {};
   curtainOptions: any = {};
+  fullExportDriver: any = [];
   closeResult = '';
 
   response: any = '';
@@ -103,6 +105,7 @@ export class AssetListComponent implements OnInit {
   assetEndPoint = this.pageLength;
   contactsObjects = [];
   loaded = false
+  fullExportAsset: any = [];
   lastItemSK = ''
 
   loadMsg: string = Constants.NO_LOAD_DATA;
@@ -313,6 +316,77 @@ export class AssetListComponent implements OnInit {
       return false;
     }
   }
+  
+  
+  generateDriverCSV() {
+        if (this.fullExportAsset.length > 0) {
+            let dataObject = []
+            let csvArray = []
+            this.fullExportAsset.forEach(element => {
+                let obj = {}
+        obj["Asset Name/Number"] = element.assetIdentification
+        obj["VIN"] = element.VIN
+        obj["Asset Type"] = element.assetType
+        obj["Make"] = element.assetDetails.manufacturer
+        obj["License Plate Number"] = element.assetDetails.licencePlateNumber
+        obj["Year"] = element.assetDetails.year
+        obj["Annual Safety Date"] = element.assetDetails.annualSafetyDate
+        obj["Status"] = element.currentStatus
+        obj["ownerShip"] = element.assetDetails.ownerShip ? element.assetDetails.ownerShip: '-'
+         obj["Company Name"] =  element.assetDetails.ownCname
+        // if(element.assetDetails.ownerShip === 'ownerOperator') {
+        //   obj["Company Name"] =  element.assetDetails.ownerOperator ? this.contactsObjects[element.assetDetails.ownerOperator]:''
+        //   }
+        // if(element.assetDetails.ownerShip === 'rented') {
+        //     obj["Company Name"] =  element.assetDetails.ownCname ? element.assetDetails.ownCname: '-'
+        //   }
+        //   if(element.assetDetails.ownerShip === 'leased') {
+        //     obj["Company Name"] =  element.assetDetails.ownCname ? element.assetDetails.ownCname : '-'
+        //   }
+                dataObject.push(obj)
+            });
+            let headers = Object.keys(dataObject[0]).join(',')
+            headers += '\n'
+            csvArray.push(headers)
+            dataObject.forEach(element => {
+                let obj = Object.values(element).join(',')
+                obj += '\n'
+                csvArray.push(obj)
+            });
+            const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Driver-Report.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+        else {
+            this.toastr.error("No Records found")
+        }
+    }
+   
+  
+   requiredExport() {
+        this.apiService.getData(`assets/fetch/assetList`).subscribe((result: any) => {
+            this.fullExportAsset = result.Items;
+            this.generateDriverCSV();
+           console.log('export',this.fullExportAsset);
+        })
+     }
+     
+      requiredCSV() {
+        if (this.assetIdentification !== '' || this.assetType !== null) {
+          this.assetID = '';
+            this.fullExportDriver = this.allData
+            this.generateDriverCSV();
+        } else {
+            this.requiredExport();
+        }
+        }
 
   clearInput() {
     this.suggestedAssets = null;

@@ -18,7 +18,7 @@
           "
         >
           <table
-            width="90%"
+            width="98%"
             border="0"
             align="center"
             cellpadding="0"
@@ -32,15 +32,7 @@
               -->
               <tr>
                 <td>
-                  <h1
-                    style="
-                      font-size: 22px;
-                      font-weight: 700;
-                      margin-bottom: 1px;
-                      margin-top: 1px;
-                    "
-                    class="text-dark"
-                  >
+                  <h1 class="text-dark font-weight-bold text-6 mb-1 mt-1">
                     {{ pdfTitle }}
                   </h1>
                 </td>
@@ -54,8 +46,7 @@
                   />
                   <p
                     *ngIf="tagLine"
-                    class="mb-0 text-dark"
-                    style="font-size: 18px; margin-top: 10px; font-weight: 600"
+                    class="mb-0 text-dark text-4 font-weight-bold ng-star-inserted"
                   >
                     {{ tagLine }}
                   </p>
@@ -73,22 +64,15 @@
               <tr>
                 <td width="50%" valign="top">
                   <h2
-                    style="
-                      font-size: 18px;
-                      margin-top: 1px;
-                      font-weight: 600;
-                      margin-bottom: 1px;
-                    "
-                    class="text-dark mb-0 text-capitalize"
+                    class="mt-1 mb-0 text-dark text-5 text-capitalize LH28 font-weight-semibold"
                   >
                     Company: {{ companyName }}
                   </h2>
-                  <h2
-                    style="font-size: 18px; margin-top: 1px; font-weight: 600"
-                    class="text-dark mb-0 text-capitalize"
+                  <p
+                    class="text-dark mt-0 mb-0 text-capitalize text-5 font-weight-semibold"
                   >
                     {{ pdfDetails.name }}
-                  </h2>
+                  </p>
                   <div
                     class="text-dark"
                     *ngIf="paymentData.paymentTo === 'driver' && !multiPay"
@@ -124,10 +108,7 @@
                       >
                     </div>
                   </div>
-                  <p
-                    class="text-dark"
-                    style="font-size: 12px; margin-bottom: 2px"
-                  >
+                  <p class="text-dark mb-1">
                     <strong>Address:</strong>
                     {{ pdfDetails.address ? pdfDetails.address : "NA" }}<br />
                     <strong>Phone:</strong> {{ pdfDetails.phone }}<br />
@@ -145,26 +126,17 @@
                     <tbody>
                       <tr>
                         <td align="right">
-                          <h2
-                            class="text-dark mb-0"
-                            style="
-                              font-size: 18px;
-                              font-weight: 600;
-                              margin-top: 1px;
-                              margin-bottom: 1px;
-                            "
-                          >
-                            User ID: {{ pdfDetails.userID }}
-                          </h2>
+                          <p class="text-dark mb-0 mt-2 text-3">
+                            <span class="font-weight-bold">User ID:</span>
+                            {{ pdfDetails.userID }}
+                          </p>
                         </td>
                       </tr>
                       <tr>
                         <td align="right">
-                          <p
-                            class="text-dark"
-                            style="font-size: 12px; margin-bottom: 2px"
-                          >
-                            <strong>Status:</strong> {{ payStatus }}
+                          <p class="text-dark mb-0 mt-1 text-3">
+                            <span class="font-weight-bold">Status:</span>
+                            {{ payStatus }}
                           </p>
                         </td>
                       </tr>
@@ -272,9 +244,7 @@
               <tr>
                 <td colspan="2">
                   <table
-                    width="100%"
-                    border="1"
-                    bordercolor="#adadad"
+                    class="table-bordered w100 text-dark"
                     cellspacing="0"
                     cellpadding="0"
                   >
@@ -570,12 +540,12 @@
                             Location
                           </p>
                         </td>
-                        <td width="10%" class="pl-3 pt-1">
+                        <!-- <td width="10%" class="pl-3 pt-1">
                           <p class="text-3 font-weight-bold text-dark mb-1">
                             Driver
                           </p>
-                        </td>
-                        <td width="10%" class="pl-3 pt-1">
+                        </td> -->
+                        <td width="20%" class="pl-3 pt-1">
                           <p class="text-3 font-weight-bold text-dark mb-1">
                             Co-driver
                           </p>
@@ -592,7 +562,7 @@
                         </td>
                         <td width="10%" class="pl-3 pt-1">
                           <p class="text-3 font-weight-bold text-dark mb-1">
-                            Total Miles
+                            Miles
                           </p>
                         </td>
                         <td width="5%" class="pl-3 pt-1">
@@ -610,14 +580,14 @@
                             {{ plan.location }}
                           </p>
                         </td>
-                        <td class="pl-3 pt-1">
+                        <!-- <td class="pl-3 pt-1">
                           <p class="text-3 text-dark mb-1 text-capitalize">
                             {{ plan.driverName }}
                           </p>
-                        </td>
+                        </td> -->
                         <td class="pl-3 pt-1">
                           <p class="text-3 text-dark mb-1 text-capitalize">
-                            {{ plan.codriverName }}
+                            {{ plan.drivrCodriver }}
                           </p>
                         </td>
                         <td class="pl-3 pt-1">
@@ -642,7 +612,7 @@
                         </td>
                       </tr>
                       <tr>
-                        <td colspan="6" class="pl-3 pt-1">
+                        <td colspan="5" class="pl-3 pt-1">
                           <p class="text-3 text-dark mb-1">
                             <strong>Total</strong>
                           </p>
@@ -822,7 +792,9 @@
                     <tbody>
                       <tr>
                         <td align="center">
-                          <h2 style="font-size: 13px">Powered By</h2>
+                          <h2 class="mb-0 text-dark text-4 font-weight-normal">
+                            Powered By
+                          </h2>
                           <img
                             alt="Fleet Hawks
                                                               Inc."
@@ -845,8 +817,8 @@
           class="cheque-wrapper"
           id="ownerOperator_pay_pdf"
           *ngIf="
-            this.paymentData.paymentTo === 'owner_operator' ||
-            this.paymentData.paymentTo === 'carrier'
+            paymentData.paymentTo === 'owner_operator' ||
+           paymentData.paymentTo === 'carrier'
           "
         >
           <table
@@ -1108,7 +1080,7 @@
                         </td>
                         <td width="20%" class="pl-3 pt-1">
                           <p class="text-4 font-weight-bold text-dark mb-1">
-                            Total Miles
+                            Miles
                           </p>
                         </td>
                       </tr>

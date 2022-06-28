@@ -324,6 +324,13 @@
 </section>
 
 <ng-template #previewSaleInvoice let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Sales Invoice</h4>
+    <button type="button" class="close" (click)="modal.dismiss()">
+      &times;
+    </button>
+  </div>
+
   <div class="modal-content">
     <div class="modal-body text-dark text-capitalize" id="print_invoice">
       <table

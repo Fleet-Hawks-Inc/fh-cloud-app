@@ -1,16 +1,26 @@
 import { environment } from '../../../../../../environments/environment';
 import { ApiService } from '../../../../../services';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { HereMapService } from 'src/app/services/here-map.service';
 import * as _ from 'lodash';
+import * as moment from 'moment'
 import Constants from 'src/app/pages/fleet/constants';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { Table } from 'primeng/table';
+
 @Component({
   selector: 'app-revenue-list',
   templateUrl: './revenue-list.component.html',
   styleUrls: ['./revenue-list.component.css']
 })
 export class RevenueListComponent implements OnInit {
+  @ViewChild('dt') table: Table;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   liveModalTimeout: any;
   liveStreamVehicle: string;
   environment = environment.isFeatureEnabled;
@@ -33,6 +43,26 @@ export class RevenueListComponent implements OnInit {
   vehicleTypeObects: any = {};
   lastItemSK = ''
   loaded = false
+  isSearch = false;
+  _selectedColumns: any[];
+  listView = true;
+  visible = true;
+  get = _.get;
+
+  dataColumns = [
+    { field: 'vehicleIdentification', header: 'Vehicle Name/Number', type: "text" },
+    { width: '6%', field: 'VIN', header: 'VIN', type: "text" },
+    { width: '5%', field: 'startDate', header: 'Start Date', type: "text" },
+    { width: '5%', field: 'manufacturerID', header: 'Make', type: "text" },
+    { width: '5%', field: 'modelID', header: 'Model', type: "text" },
+    { width: '5%', field: 'year', header: 'Year', type: "text" },
+    { width: '9%', field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
+    { width: '7%', field: 'ownership', header: 'Ownership', type: "text" },
+    { width: '8%', field: 'driverID', header: 'Driver Assigned', type: 'text' },
+    { width: '10%', field: 'teamDriverID', header: 'Team Driver Assigned', type: 'text' },
+    { width: '7%', field: 'plateNumber', header: 'Plate Number', type: "text" },
+    { width: '3%', field: 'currentStatus', header: 'Status', type: 'text' },
+  ];
 
   constructor(private apiService: ApiService, private httpClient: HttpClient,
     protected _sanitizer: DomSanitizer) {
@@ -40,6 +70,7 @@ export class RevenueListComponent implements OnInit {
   ngOnInit() {
     this.fetchDriversList();
     this.initDataTable()
+    this.setToggleOptions();
   }
   getSuggestions = _.debounce(function (value) {
 
@@ -59,6 +90,20 @@ export class RevenueListComponent implements OnInit {
     this.apiService.getData('vehicleModels/get/list').subscribe((result: any) => {
       this.vehicleModelList = result;
     });
+  }
+
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
   }
 
   fetchDriversList() {
@@ -81,6 +126,7 @@ export class RevenueListComponent implements OnInit {
           if (result.data.length === 0) {
             this.disableSearch = false;
             this.dataMessage = Constants.NO_RECORDS_FOUND
+            this.loaded = true;
           }
           result[`data`].map((v: any) => {
             v.url = `/reports/fleet/vehicles/revenue-detail/${v.vehicleID}`;
@@ -100,12 +146,25 @@ export class RevenueListComponent implements OnInit {
         });
     }
   }
-  onScroll() {
+  onScroll = async (event: any) => {
     if (this.loaded) {
       this.initDataTable();
     }
     this.loaded = false;
   }
+
+  refreshData() {
+    this.vehicleID = '';
+    this.suggestedVehicles = [];
+    this.vehicleIdentification = '';
+    this.currentStatus = null;
+    this.vehicles = [];
+    this.lastEvaluatedKey = '';
+    this.loaded = false;
+    this.initDataTable();
+    this.dataMessage = Constants.FETCHING_DATA;
+  }
+
 
   searchFilter() {
     if (this.vehicleIdentification !== '' || this.currentStatus !== null) {
@@ -138,6 +197,10 @@ export class RevenueListComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  clear(table: Table) {
+    table.clear();
   }
 
 }

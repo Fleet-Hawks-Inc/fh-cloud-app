@@ -1,37 +1,51 @@
-import { Component, OnInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, TemplateRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service'
 import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
 import Constant from "src/app/pages/fleet/constants";
+import { result } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
+import { timeStamp } from 'console';
 import * as html2pdf from "html2pdf.js";
+import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment'
 import * as _ from "lodash";
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { Table } from 'primeng/table';
 declare var $: any;
 
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'src/environments/environment';
+import Constants from 'src/app/pages/fleet/constants';
 @Component({
   selector: 'app-customer-collection',
   templateUrl: './customer-collection.component.html',
   styleUrls: ['./customer-collection.component.css']
 })
 export class CustomerCollectionComponent implements OnInit {
+    // @ViewChild('dt') table: Table;
+    @ViewChild('roleTemplate') roleTemplate: TemplateRef<any>;
+    @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
+    environment = environment.isFeatureEnabled;
   @ViewChild('myTable') table: any;
   @ViewChild("previewAllModal",{static:true}) previewAllModal:TemplateRef<any>;
   @ViewChild("previewReportModal", { static: true }) previewReportModal:TemplateRef<any>;
-//  previewReportModal: TemplateRef<any>;
+  //previewReportModal: TemplateRef<any>;
   
-  constructor(private apiService: ApiService, private el: ElementRef, private toastr: ToastrService,
-    private modalService: NgbModal,) { }
+ 
+  
   public customerCollection = []
   SelectionType = SelectionType;
+  dataMessage: string = Constants.FETCHING_DATA;
   ColumnMode = ColumnMode;
-  dataMessage = "";
+
   loaded = false;
   exportLoading=false
   allData=[];
   readonly rowHeight = 70;
   readonly headerHeight = 70;
   expanded: any = {};
+  printData: any ={};
   orders = []
   lastSK = ""
   isLoading = false
@@ -44,34 +58,92 @@ export class CustomerCollectionComponent implements OnInit {
     endDate: ''
   }
   suggestedCustomers=[]
-  printData: any = {}
+  
   date = new Date();
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+ _selectedColumns: any[];
+   driverOptions: any[];
+   listView = true;
+   visible = true;
+   get = _.get;
+ 
+   
+   dataColumns = [
+        {  field: 'cName', header: 'Customer', type: "text" },
+        {  field: 'workEmail', header: 'Email', type: "text" },
+        { field: 'workPhone', header: 'Phone', type: "text" },
+        {  field: 'totalOrders', header: 'Orders', type: "text" },
+        {  field: 'deliveredOrders', header: 'Delivered', type: "text" },
+        {  field: 'totalAmount', header: 'Total Amount', type: "text" },
+        {  field: 'amountReceived', header: 'Amount Received', type: "text" },
+        {  field: 'balancee', header: 'Balance', type: "text" },
+        {  field: 'balanceAge30', header: '30-45', type: "text" },
+        {  field: 'fourtySixty', header: '45-60', type: "text" },
+        {  field: 'sixtyPlus', header: '60+', type: "text" },
+      
+    ];
+ 
+ 
+  constructor(private apiService: ApiService, 
+  private toastr: ToastrService,
+  private router: Router, 
+  private modalService: NgbModal,
+  private spinner: NgxSpinnerService) { }
 
-  ngOnInit(): void {
+    async ngOnInit(): Promise<void> {
     this.fetchCustomerCollection();
+    this.setToggleOptions();
   }
-  onScroll(offsetY: any) {
-    const viewHeight =
-      this.el.nativeElement.getBoundingClientRect().height - this.headerHeight;
-
-    if (
-      !this.isLoading &&
-      offsetY + viewHeight + this.customerCollection.length * this.rowHeight
-    ) {
-      let limit = this.pageLimit;
-      if (this.customerCollection.length === 0) {
-        const pageSize = Math.ceil(viewHeight / this.rowHeight);
-
-        limit = Math.max(pageSize, this.pageLimit);
-      }
-      if (this.loaded) {
-        this.fetchCustomerCollection();
-      }
-      this.loaded = false;
+  
+  onScroll = async (event: any) => {
+    if (this.loaded) {
+      this.fetchCustomerCollection();
     }
+    this.loaded = false;
   }
+  
+  // onScroll(offsetY: any) {
+  //   const viewHeight =
+  //     el.nativeElement.getBoundingClientRect().height - this.headerHeight;
+
+
+  //   if (
+  //     !this.isLoading &&
+  //     offsetY + viewHeight + this.customerCollection.length * this.rowHeight
+  //   ) {
+  //     let limit = this.pageLimit;
+  //     if (this.customerCollection.length === 0) {
+  //       const pageSize = Math.ceil(viewHeight / this.rowHeight);
+
+  //       limit = Math.max(pageSize, this.pageLimit);
+  //     }
+  //     if (this.loaded) {
+  //       this.fetchCustomerCollection();
+  //     }
+  //     this.loaded = false;
+  //   }
+  // }
+  
+  
+   setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+        @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
+  
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+  }
+   
+   
+   clear(table: Table) {
+        table.clear();
+    }
+  
 getSuggestions=_.debounce(async function (value){
   value=value.toLowerCase();
   if(value!=''){
@@ -118,12 +190,13 @@ setCustomer(cName){
       }
     }
   }
-  async onDetailToggle(event) {
+  
+  // async onDetailToggle(event) {
 
-  }
-  toggleExpandRow(row, expanded) {
-    this.table.rowDetail.toggleExpandRow(row);
-  }
+  // }
+//   toggleExpandRow(row, expanded) {
+// this.table.rowDetail.toggleExpandRow(row);
+//   }
 
   async search() {
     if (!this.customer && !this.customerFiltr.startDate && !this.customerFiltr.endDate) {
@@ -156,6 +229,16 @@ setCustomer(cName){
     this.fetchCustomerCollection();
 
   }
+  
+  refreshData(){
+    this.lastSK = ''
+    this.customer = ''
+    this.customerFiltr.startDate = ''
+    this.customerFiltr.endDate = ''
+    this.customerCollection = []
+
+    this.fetchCustomerCollection(); 
+  }
 
   async showReport(event:any,data: any) {
     event.target.disabled = true;
@@ -172,6 +255,26 @@ setCustomer(cName){
     )
     event.target.disabled=false
   }
+  
+  
+  //   async showReport(event:any, data:any) {
+  //   event.target.disabled = true;
+  // // this.printData = data
+
+  //   const result = await this.apiService.getData(`contacts/get/customer/collection/all?customer=${data.cName}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
+  //   data.orders = result.Items[0].orders
+  //   let ngbModalOptions: NgbModalOptions = {
+  //     keyboard: true,
+  //     windowClass: "preview--report"
+  //   };
+  //   this.previewRef = this.modalService.open(this.previewReportModal,
+  //     ngbModalOptions
+  //   )
+  //   event.target.disabled=false
+  // }
+  
+  
+  
   async allCustomerPDF(){
     this.exportLoading=true
     const result = await this.apiService.getData(`contacts/get/customer/collection/all?customer=${this.customer}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
@@ -180,9 +283,9 @@ setCustomer(cName){
       keyboard: true,
       windowClass: "preview"
     };
-    this.preview = this.modalService.open(this.previewAllModal,
-      ngbModalOptions
-    )
+    // this.preview = this.modalService.open(this.previewAllModal,
+    //   ngbModalOptions
+    // )
     let data=document.getElementById("print_all_wrap")
     html2pdf(data, {
       margin: 0,

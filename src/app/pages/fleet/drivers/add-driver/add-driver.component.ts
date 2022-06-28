@@ -55,8 +55,10 @@ export class AddDriverComponent
   hideNextBtn = true;
   hasBasic = false;
   hasDocs = false;
+  absDocsError = '';
   hasLic = false;
   hasPay = false;
+  uploadPhotoError = '';
   hasHos = false;
   hasCrossBrdr = false;
   deletedUploads = [];
@@ -72,6 +74,7 @@ export class AddDriverComponent
   manualAddress = false;
   nextTab: any;
   carrierID: any;
+  uploadDocsError = '';
   statesObject: any;
   countriesObject: any;
   citiesObject: any;
@@ -212,6 +215,7 @@ export class AddDriverComponent
   lastName = null;
   address = "";
   phone = "";
+  check = false;
   email = "";
   groupID = "";
   loginEnabled = true;
@@ -220,6 +224,7 @@ export class AddDriverComponent
   driverLicenseType = "";
   driverLicenseExpiry = "";
   driverLicenseStateID = "";
+  
   HOSCompliance = {
     status: "",
     type: "",
@@ -675,7 +680,7 @@ export class AddDriverComponent
       this.documentTypeList = data;
     });
   }
-
+  
   getToday(): string {
     return new Date().toISOString().split("T")[0];
   }
@@ -686,7 +691,22 @@ export class AddDriverComponent
     let files = [...event.target.files];
     if (i != null) {
       this.uploadedDocs[i] = [];
+       for (let i = 0; i < files.length; i++) {
+       let name = files[i].name.split(".");
+       let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
       this.uploadedDocs[i] = files;
+      } else {
+            this.uploadDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+        }
+      }
     } else {
       const reader = new FileReader();
       reader.onload = (e: any) => {
@@ -694,16 +714,44 @@ export class AddDriverComponent
       };
       reader.readAsDataURL(files[0]);
       this.abstractDocs = [];
+      for (let i = 0; i < files.length; i++) {
+       let name = files[i].name.split(".");
+       let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
       this.abstractDocs = files;
+       } else {
+            this.absDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+        }
+      }
     }
   }
 
   selectPhoto(event, name: any, type: string) {
-    if (type === "Add") {
+    const files = [...event.target.files];
+    if (type === 'Add') {
       this.uploadedPhotos = [];
-      const files = [...event.target.files];
-      this.uploadedPhotos.push(files[0]);
       for (let i = 0; i < files.length; i++) {
+       let name = files[i].name.split('.');
+       let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == 'jpg' ||
+          ext == 'jpeg' ||
+          ext == 'png'
+        ) {
+        this.check = true;
+        this.uploadedPhotos.push(files[0]);
+        } else {
+            this.check = false;
+            this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
+        }
+        if(this.check = true){
         const reader = new FileReader();
         this.showUploadedPicModal = true;
         reader.onload = (e: any) => {
@@ -711,12 +759,23 @@ export class AddDriverComponent
         };
         reader.readAsDataURL(files[i]);
         this.imageTitle = "Change";
+        }
       }
     } else {
-      this.uploadedPhotos = [];
       const files = [...event.target.files];
-      this.uploadedPhotos.push(files[0]);
+      this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
+       let name = files[i].name.split(".");
+       let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
+        this.uploadedPhotos.push(files[0]);
+        } else {
+            this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
+        }
         const reader = new FileReader();
         this.showUploadedPicModal = true;
         reader.onload = (e: any) => {

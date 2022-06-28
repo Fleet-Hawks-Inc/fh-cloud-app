@@ -515,7 +515,14 @@
                                   )
                                 " type="file" accept=".jpg, .jpeg, .png"/>
                             </div>
+                            <span 
+                              *ngIf="uploadPhotoError != ''"
+                              class="text-danger"
+                            >
+                              {{ uploadPhotoError }}
+                            </span>
                           </div>
+                         
                         </div>
                       </div>
                       <div class="col-lg-5">
@@ -681,6 +688,12 @@
                                 type="file" accept=".doc, .docx, .pdf, .jpg, .jpeg .png"  />
                             </div>
                           </div>
+                             <span
+                              *ngIf="absDocsError != ''"
+                              class="text-danger"
+                            >
+                              {{ absDocsError }}
+                            </span>
                           <div class="col-lg-12 text-right" *ngIf="
                               driverF.submitted &&
                               abstractDocs.length == 0 &&
@@ -1027,10 +1040,16 @@
                           multiple
                         /> -->
 
-                        <span class="btn btn-default btn-file btn-xs w100 text-left">
+                        
                           <input class="w100" type="file" multiple name="document.uploadedDocs{{ i }}"
                             (change)="selectDocuments($event, i)" accept=".doc, .docx, .pdf, .jpg, .jpeg .png"   />
-                        </span>
+                                        <span
+                              *ngIf="uploadDocsError != ''"
+                              class="text-danger"
+                            >
+                              {{ uploadDocsError }}
+                            </span>
+                      
                       </div>
                       <div class="col-lg-10 mt-2" *ngIf="assetsDocs[i]">
                         <div class="vehicle-common-box p-3">
@@ -1041,18 +1060,15 @@
                             <div class="col-lg-6 text-right"></div>
                           </div>
                           <hr class="solid mt-2" />
-                          <div class="row mb-1" *ngFor="let doc of assetsDocs[i]; let d = index">
-                            <div class="col-lg-9">
-                              <a href="{{ doc.path }}" data-toggle="modal" data-target="#viewDocModal"
-                                (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
-                            </div>
-                            <div class="col-lg-3 text-right">
-                              <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
-                                data-target="#viewDocModal"></i>
-                              <a href="javascript:;" (click)="delete('doc', doc.name, i, d)" class="modal-with-form"><i
-                                  class="fas fa-times text-danger"></i></a>
-                            </div>
-                          </div>
+                           <div class="row mb-1" *ngFor="let doc of assetsDocs[i]; let d = index">
+                             <div class="col-lg-9">
+                               <a href="{{ doc.path }}" data-toggle="modal" data-target="#viewDocModal" (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
+                             </div>
+                             <div class="col-lg-3 text-right">
+                               <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="delete('doc', doc.name, i, d)"><i class="fas fa-trash-alt"></i></a>
+                               <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"><i class="fas fa-eye"></i></a>
+                             </div>
+                           </div>
                         </div>
                       </div>
                     </div>

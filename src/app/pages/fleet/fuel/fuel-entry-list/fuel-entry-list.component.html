@@ -353,6 +353,7 @@
                         type="button"
                         icon="fas fa-user-pen"
                         class="p-button-rounded p-button-text"
+                        [disabled]="fuel.fuelProvider === 'WEX'"
                       ></button>
                       <button
                         (click)="deleteFuelEntry(fuel.data.fuelID)"
@@ -361,6 +362,7 @@
                         type="button"
                         icon="fas fa-user-slash"
                         class="p-button-rounded p-button-danger p-button-text"
+                        [disabled]="fuel.fuelProvider === 'WEX'"
                       ></button>
                     </td>
                   </tr>
@@ -655,7 +657,7 @@
             <div style="text-align: right">
               <button
                 *ngIf="!reviewing"
-                class="btn btn-primary"
+                class="btn btn-success"
                 (click)="postPetroDoc()"
               >
                 Submit

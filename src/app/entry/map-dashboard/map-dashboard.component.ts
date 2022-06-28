@@ -1,9 +1,12 @@
 import { animate, style, transition, trigger } from "@angular/animations";
 import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { MapInfoWindow, MapMarker } from "@angular/google-maps";
+import { Table } from "primeng/table";
 import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { ApiService } from "../../services";
+import { OneSignal } from 'onesignal-ngx';
+import { Auth } from "aws-amplify";
 
 
 declare var $: any;
@@ -66,15 +69,46 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
   activeTrips = [];
   constructor(
-    private apiService: ApiService
-  ) { }
+    private apiService: ApiService,
+    private oneSignal: OneSignal
+  ) {
+
+
+  }
 
   async ngOnInit() {
+    await this.initPushNotification();
     await this.getCurrentDriverLocation();
     await this.getCurrentAssetLocation();
     await this.getVehicleLocationByDashCam();
 
+  }
 
+  private async initPushNotification() {
+    const currentCarrierId = localStorage.getItem('xfhCarrierId')
+    if (environment.testCarrier.includes(currentCarrierId)) {
+      return;
+    }
+    this.oneSignal.init({
+      appId: environment.oneSignalAppId,
+    });
+    this.oneSignal.isPushNotificationsEnabled(async (isEnabled) => {
+      if (isEnabled) {
+        // this console is for info do not remove it.
+        this.oneSignal.setExternalUserId(localStorage.getItem('xfhCarrierId'));
+        console.log("Push notifications are already enabled!");
+      }
+      else {
+
+        await this.oneSignal.showHttpPrompt({
+          force: true,
+        });
+        // await this.oneSignal.registerForPushNotifications();
+        this.oneSignal.setExternalUserId(localStorage.getItem('xfhCarrierId'));
+        // this console is for info do not remove it.
+        console.log("Push notifications are not enabled yet.");
+      }
+    });
   }
 
   /**
@@ -139,6 +173,12 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
 
     })
+
+  }
+
+  displayAssets = false;
+  showAssets() {
+    this.displayAssets = !this.displayAssets;
 
   }
 
@@ -237,4 +277,10 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
   }
 
+  clear(table: Table) {
+    table.clear();
+  }
+
+
 }
+

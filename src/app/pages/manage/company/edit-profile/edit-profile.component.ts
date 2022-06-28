@@ -602,7 +602,9 @@ export class EditProfileComponent implements OnInit {
         uploadedLogo: this.uploadedLogo,
         subCompIDs: this.subCompIDs,
         subCompInfo: this.subCompInfo,
-        accountSettings: this.accountSettings
+        accountSettings: this.accountSettings,
+        isSubscribed: this.carriers.isSubscribed || false,
+        subCustomerID: this.carriers.subCustomerID || 'NA'
       };
       if (this.findingWay == "Referral") {
         data["referral"] = this.referral;
