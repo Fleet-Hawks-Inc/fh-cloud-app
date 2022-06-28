@@ -719,9 +719,7 @@ export class TripDetailComponent implements OnInit {
   async driverEmail() {
     if (this.selectPlanID) {
       this.isEmail = true;
-      let result = await this.apiService
-        .getData(`trips/send/emailDriver?tripID=${this.tripID}&planID=${this.selectPlanID}`)
-        .toPromise();
+      let result = await this.apiService.getData(`trips/send/emailDriver?tripID=${this.tripID}&planID=${this.selectPlanID}`).toPromise();
       if (result === null) {
         this.tripInfoModal = false;
         this.toastr.success("Email send successfully");

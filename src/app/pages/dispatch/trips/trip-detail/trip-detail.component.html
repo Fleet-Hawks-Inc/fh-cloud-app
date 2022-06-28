@@ -1186,7 +1186,7 @@
   <ng-template pTemplate="footer">
     <button pButton (click)="tripInfoModal=false" label="Cancel" styleClass="p-button-text"></button>
     <button pButton (click)="tripInfoModal=false;showSplitModel=true;" label="Back" styleClass="p-button-text"></button>
-    <button pButton (click)="tripInfoModal=false" [disabled]="isEmail" (click)="driverEmail()" label="Email to Driver"
+    <button pButton [disabled]="isEmail" (click)="driverEmail()" label="Email to Driver"
       styleClass="p-button-text"></button>
     <button pButton (click)="generate()" label="Print" styleClass="p-button-text"></button>
   </ng-template>
