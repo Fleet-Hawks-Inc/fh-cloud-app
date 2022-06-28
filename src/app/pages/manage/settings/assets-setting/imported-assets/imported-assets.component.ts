@@ -134,6 +134,9 @@ export class ImportedAssetsComponent implements OnInit {
         {
           name: 'asset_name', inputName: 'assetname/number', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
+          }, validate: function (name: string) {
+            const vname = /^[a-zA-Z0-9\s]+$/;
+            return vname.test(name)
           }
         },
         {
@@ -169,8 +172,8 @@ export class ImportedAssetsComponent implements OnInit {
           name: 'licence_plate_number', inputName: 'licenceplatenumber', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
           }, validate: function (vin: string) {
-            const vinformat = /^[A-Z0-9\s]/;
-            return vinformat.test(vin)
+            const licformat = /[a-zA-Z0-9\s]{6,8}$/;
+            return licformat.test(vin)
           }
         },
       ]
@@ -270,6 +273,8 @@ export class ImportedAssetsComponent implements OnInit {
             this.toastr.success("The file has been scheduled for processing and you will be notified via email once it is completed.")
             $('#uploadedDocs').val('');
             this.display = false;
+            this.importAssets = [];
+            this.next = '';
             this.fetchAssetImport();
           }
         })

@@ -32,7 +32,7 @@ export class OrdersListComponent implements OnInit {
   @ViewChild("confirmEmailModal", { static: true })
   confirmEmailModal: TemplateRef<any>;
 
-  @ViewChild("schedularModal", {static:true}) schedularModal:TemplateRef<any>
+  @ViewChild("schedularModal", { static: true }) schedularModal: TemplateRef<any>
 
   dataMessage: string = Constants.FETCHING_DATA;
   noOrdersMsg = Constants.NO_RECORDS_FOUND;
@@ -163,11 +163,12 @@ export class OrdersListComponent implements OnInit {
     carrierID: null,
     finalAmount: "",
     miles: 0,
-    currency: "",
+    // currency: "",
     draw: 0,
     index: 0,
     type: "",
     brokerageAmount: 0,
+    brkCurrency: "",
     instructions: "",
     today: moment().format("YYYY-MM-DD"),
   };
@@ -233,30 +234,29 @@ export class OrdersListComponent implements OnInit {
   _selectedColumns: any[];
   // pickupLocData = []
   isOrderPriceEnabled = environment.isOrderPriceEnabled
-  scheduler={
-    orderID:null,
-    orderNumber:null,
-    name:null,
-    time:null,
-    type:{
-      daysNo:0,
-      days:[]
+  scheduler = {
+    orderID: null,
+    orderNumber: null,
+    name: null,
+    time: null,
+    repeatType: null,
+    type: {
+      daysNo: '',
+      days: []
     },
-    range:{
-      dateRange:{
-        to:null,
-        from:null,
-      },
-      months:[]
-    }
+    rangeType: null,
+    dateRange: {
+      to: null,
+      from: null,
+    },
+    selectedMonths: []
   }
-
-  saveDisabled=false;
-  repeatType=null;
-  range=null;
-  days=["everyday","monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
-  months=["selectAll","january","february","march","april","may","june","july","august","september","october","november","december"]
-
+  saveDisabled = false;
+  repeatType = null;
+  range = null;
+  days = ["everyday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+  months = ["selectAll", "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
+  display: any;
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
@@ -703,14 +703,24 @@ export class OrdersListComponent implements OnInit {
     this.brokerage.orderNo = order.orderNumber;
     this.brokerage.miles = order.milesInfo.totalMiles;
     this.brokerage.finalAmount = order.finalAmount;
-    this.brokerage.currency = order.charges.freightFee.currency;
+    // this.brokerage.currency = order.charges.freightFee.currency;
     this.brokerage.draw = draw;
     this.brokerage.index = index;
     this.brokerage.type = actionFrom;
+    this.brokerage.carrierID = null;
+    this.brokerage.brkCurrency = "";
+    this.brokerage.brokerageAmount = 0;
+    this.brokerage.instructions = '';
     await this.fetchCarriers();
     await this.fetchOrderData();
-    $("#orderStatusModal").modal("show");
+    this.display = true;
   }
+
+
+  changeCurrency(val) {
+    this.brokerage.brkCurrency = val;
+  }
+
 
   async fetchCarriers() {
     let result: any = await this.apiService
@@ -742,10 +752,11 @@ export class OrdersListComponent implements OnInit {
     if (
       this.brokerage.carrierID === null ||
       this.brokerage.brokerageAmount <= 0
+      || this.brokerage.brkCurrency === ""
     ) {
       this.brokerErr = "Please fill the required fields";
       return false;
-    }  else {
+    } else {
       this.brokerErr = "";
     }
     this.showModal = true;
@@ -758,9 +769,10 @@ export class OrdersListComponent implements OnInit {
       showModal: this.showModal,
       companyLogo: this.companyLogoSrc,
     };
+    console.log('data==', data)
     this.listService.triggerBrokeragePdf(data);
     await this.updateBrokerageStatus();
-    $("#orderStatusModal").modal("hide");
+    this.display = false;
     this.brokerageDisabled = false;
   }
 
@@ -786,6 +798,7 @@ export class OrdersListComponent implements OnInit {
       orderID: this.brokerage.orderID,
       orderNo: this.brokerage.orderNo,
       brokerageAmount: this.brokerage.brokerageAmount,
+      brkCurrency: this.brokerage.brkCurrency,
       instructions: this.brokerage.instructions,
       type: "update",
       carrierID: this.brokerage.carrierID,
@@ -816,6 +829,7 @@ export class OrdersListComponent implements OnInit {
         orderID: order.orderID,
         orderNo: order.orderNo,
         brokerageAmount: 0,
+        brkCurrency: '',
         instructions: "",
         carrierID: null,
         type: "cancel",
@@ -853,31 +867,31 @@ export class OrdersListComponent implements OnInit {
   clear(table: Table) {
     table.clear();
   }
-  resetSchedule(){
-    this.scheduler={
-      orderID:null,
-      orderNumber:null,
-      name:null,
-      time:null,
-      type:{
-        daysNo:0,
-        days:[]
+  resetSchedule() {
+    this.scheduler = {
+      orderID: null,
+      orderNumber: null,
+      name: null,
+      time: null,
+      repeatType: null,
+      type: {
+        daysNo: "",
+        days: []
       },
-      range:{
-        dateRange:{
-          to:null,
-          from:null,
-        },
-        months:[]
-      }
+      rangeType: null,
+      dateRange: {
+        to: null,
+        from: null,
+      },
+      selectedMonths: []
     }
 
   }
 
-  openSchedulerModal(orderID,orderNumber){
+  openSchedulerModal(orderID, orderNumber) {
     this.resetSchedule();
-    this.scheduler.orderID=orderID,
-    this.scheduler.orderNumber=orderNumber
+    this.scheduler.orderID = orderID,
+      this.scheduler.orderNumber = orderNumber
     let ngbModalOptions: NgbModalOptions = {
       keyboard: true,
       windowClass: "schedular--modal",
@@ -886,83 +900,116 @@ export class OrdersListComponent implements OnInit {
       this.schedularModal,
       ngbModalOptions
     );
-    this.repeatType=''
-    this.range=''
-  this.saveDisabled=false
+    this.repeatType = ''
+    this.range = ''
+    this.saveDisabled = false
   }
 
-  onCheckboxChange(data,isChecked){
-    if(isChecked){
+  onCheckboxChange(data, isChecked) {
+    if (isChecked) {
       this.scheduler.type.days.push(data)
     }
-    else{
-      const index=this.scheduler.type.days.findIndex(x=>x==data);
-      this.scheduler.type.days.splice(index,1)
+    else {
+      const index = this.scheduler.type.days.findIndex(x => x == data);
+      this.scheduler.type.days.splice(index, 1)
     }
   }
 
-  onRangeCheckboxChange(value,isChecked){
-    if(isChecked){
-      this.scheduler.range.months.push(value)
+  onRangeCheckboxChange(value, isChecked) {
+    if (isChecked) {
+      this.scheduler.selectedMonths.push(value)
     }
-    else{
-      const index=this.scheduler.range.months.findIndex(x=>x==value);
-      this.scheduler.type.days.splice(index,1)
+    else {
+      const index = this.scheduler.selectedMonths.findIndex(x => x == value);
+      this.scheduler.type.days.splice(index, 1)
     }
   }
 
-  async saveScheduler(){
-    this.saveDisabled=true;
-    if(this.scheduler.name==null){
+  async saveScheduler() {
+    this.saveDisabled = true;
+    if (this.scheduler.orderID) this.scheduler.orderNumber = this.orders[this.scheduler.orderID]
+    if (this.scheduler.orderID == null || this.scheduler.orderNumber == null) {
+      this.toastr.error("Reference Order is required");
+      this.saveDisabled = false;
+      return
+    }
+    if (this.scheduler.name == null) {
       this.toastr.error("Scheduler Name is required");
-      this.saveDisabled=false;
-      return 
+      this.saveDisabled = false;
+      return
     }
-    if(this.scheduler.time==null){
+    if (this.scheduler.time == null) {
       this.toastr.error("Scheduler Time is required");
-      this.saveDisabled=false;
+      this.saveDisabled = false;
       return;
     }
-    if(this.repeatType==null){
+    if (this.repeatType == null) {
       this.toastr.error("Repeat Type is required");
-      this.saveDisabled=false;
+      this.saveDisabled = false;
       return;
     }
-    if(this.range==null){
+    if (this.range == null) {
       this.toastr.error("Range is required");
-      this.saveDisabled=false;
+      this.saveDisabled = false;
       return;
     }
-    if(this.repeatType=="selectDaysNo"){
+
+    if (!this.scheduler.dateRange.from || !this.scheduler.dateRange.to) {
+      this.toastr.error("Date Range is required");
+      this.saveDisabled = false;
+      return
+    }
+    else if (this.scheduler.dateRange.to < this.scheduler.dateRange.from) {
+      this.toastr.error("Date range from must be greater")
+      this.saveDisabled = false;
+      return;
+
+    }
+    if (this.range == "month") {
+      if (this.scheduler.selectedMonths.length === 0) {
+        this.toastr.error("Please Select at least 1 month")
+        this.saveDisabled = false;
+        return
+      }
+    }
+
+    if (this.repeatType == "selectDaysNo") {
       delete this.scheduler.type.days
     }
-    else{
+    else if (this.repeatType == "days") {
       delete this.scheduler.type.daysNo
     }
+    else {
+      delete this.scheduler.type
+    }
 
-    if(this.range=="date"){
-      delete this.scheduler.range.months;
+    if (this.range == "everyMonth") {
+      delete this.scheduler.selectedMonths;
     }
-    else{
-      delete this.scheduler.range.dateRange
+    const scheduleData = {
+      orderID: this.scheduler.orderID,
+      orderNumber: this.scheduler.orderNumber,
+      repeatType: this.repeatType,
+      sName: this.scheduler.name,
+      dateRange: this.scheduler.dateRange,
+      sType: (this.scheduler.type) ? this.scheduler.type : undefined,
+      selectedMonths: this.scheduler.selectedMonths ? this.scheduler.selectedMonths : undefined,
+      sRange: this.range,
+      sTime: this.scheduler.time,
+      timezone: moment.tz.guess()
     }
-    const scheduleData={
-      orderID:this.scheduler.orderID,
-      orderNumber:this.scheduler.orderNumber,
-      sName:this.scheduler.name,
-      sType:this.scheduler.type,
-      sTime:this.scheduler.time,
-      sRange:this.scheduler.range
-  }
-    this.apiService.postData('orders/schedule',scheduleData).subscribe({
-      complete:()=>{},
-      error:(err)=>{},
-      next:(res)=>{
+
+    this.apiService.postData('orders/schedule', scheduleData).subscribe({
+      complete: () => { },
+      error: (err) => {
+        this.saveDisabled = false
+      },
+      next: (res) => {
         this.toastr.success("Schedule added successfully");
         this.modalService.dismissAll();
       }
     })
-    
+
   }
 
   editOrder(orderID) {
@@ -970,29 +1017,53 @@ export class OrdersListComponent implements OnInit {
       this.router.navigateByUrl(`/dispatch/orders/edit/${orderID}`)
     }, 10);
   }
-  
+
   createTrip(orderID, orderNumber) {
     setTimeout(() => {
-      this.router.navigate([`/dispatch/trips/add-trip`],{ queryParams: {
-        orderId: orderID,
-        orderNum: orderNumber
-      }});
+      this.router.navigate([`/dispatch/trips/add-trip`], {
+        queryParams: {
+          orderId: orderID,
+          orderNum: orderNumber
+        }
+      });
     }, 10);
- }
-  
- cloneOrder(orderID) {
+  }
+
+  cloneOrder(orderID) {
     setTimeout(() => {
-      this.router.navigate([`/dispatch/orders/add`],{ queryParams: {
-        cloneID: orderID
-      }});
+      this.router.navigate([`/dispatch/orders/add`], {
+        queryParams: {
+          cloneID: orderID
+        }
+      });
     }, 10);
- }
-  
- recallOrder(orderID) {
+  }
+
+  recallOrder(orderID) {
     setTimeout(() => {
-      this.router.navigate([`/dispatch/orders/edit/${orderID}`],{ queryParams: {
-        state: 'recall'
-      }});
+      this.router.navigate([`/dispatch/orders/edit/${orderID}`], {
+        queryParams: {
+          state: 'recall'
+        }
+      });
     }, 10);
- }
+  }
+
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+
+    localStorage.setItem("isOpen", "true");
+    this.listService.changeButton(false);
+  }
+
+  refreshCarrierData() {
+    this.fetchCarriers();
+  }
+
+  directToDetail(orderID: string) {
+    setTimeout(() => {
+      this.router.navigateByUrl(`/dispatch/orders/detail/${orderID}`);
+    }, 10)
+  }
+
 }

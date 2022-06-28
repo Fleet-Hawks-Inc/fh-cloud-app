@@ -1,19 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
-import { ApiService } from '../../../../services';
-import { passwordStrength } from 'check-password-strength';
-import { ToastrService } from 'ngx-toastr'
-import { Auth } from 'aws-amplify'
 import { FormGroup } from '@angular/forms';
-import { alphaAsync, compare, numericAsync, password, pattern, prop, ReactiveFormConfig, required, RxFormBuilder } from '@rxweb/reactive-form-validators';
+import { ActivatedRoute } from '@angular/router';
+import { compare, numericAsync, password, pattern, prop, ReactiveFormConfig, required, RxFormBuilder } from '@rxweb/reactive-form-validators';
+import { Auth } from 'aws-amplify';
+import { passwordStrength } from 'check-password-strength';
+import { ToastrService } from 'ngx-toastr';
+import * as QRCode from 'qrcode';
+import { from } from 'rxjs';
 import { InvokeHeaderFnService } from 'src/app/services/invoke-header-fn.service';
+import { ApiService, AuthService } from '../../../../services';
+import { ConfirmationService, MessageService } from 'primeng/api';
 declare var $: any;
 @Component({
   selector: 'app-company-profile',
   templateUrl: './company-profile.component.html',
-  styleUrls: ['./company-profile.component.css']
+  styleUrls: ['./company-profile.component.css'],
+  providers: [ConfirmationService, MessageService]
+
 })
 export class CompanyProfileComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
@@ -84,12 +87,22 @@ export class CompanyProfileComponent implements OnInit {
   showSubCompany = false;
 
   accountSettings = [];
+  userAttributes;
+
+  verficationError = '';
+  showVerifyEmail = false;
+  verifyButton = false;
+  otpCode: string;
+  showVerifyPhone = false;
 
   constructor(private route: ActivatedRoute,
     private apiService: ApiService,
     private toastr: ToastrService,
     private formBuilder: RxFormBuilder,
     private headerFnService: InvokeHeaderFnService,
+    private auth: AuthService,
+    private confirmSvc: ConfirmationService,
+    private messageService: MessageService,
   ) {
     ReactiveFormConfig.set({
       'validationMessage': {
@@ -105,6 +118,7 @@ export class CompanyProfileComponent implements OnInit {
     this.companyID = this.route.snapshot.params[`companyID`];
     this.userInfoFormGroup = this.formBuilder.formGroup(this.userInfo);
     this.fetchCarrier();
+
   }
 
   hideErrors() {
@@ -263,6 +277,8 @@ export class CompanyProfileComponent implements OnInit {
       } else {
         this.subscriptions = [];
       }
+      // Get current users attributes
+      this.userAttributes = await this.auth.isUserAttributesVerified();
     }
   }
 
@@ -350,6 +366,192 @@ export class CompanyProfileComponent implements OnInit {
     this.userInfoFormGroup.reset();
     $("#addCompanyModal").modal('hide')
   }
+
+  async verifyEmail() {
+    try {
+      this.verficationError = '';
+      await Auth.verifyCurrentUserAttribute('email');
+
+    } catch (error) {
+      this.verficationError = error
+    }
+
+  }
+
+  async verifyPhone() {
+    try {
+      this.verficationError = '';
+      await Auth.verifyCurrentUserAttribute('phone_number');
+
+    } catch (error) {
+      this.verficationError = error
+    }
+
+  }
+
+  async verifyAttribute(attr: string) {
+    try {
+
+      await Auth.verifyCurrentUserAttributeSubmit(attr, this.otpCode);
+      await this.auth.logout();
+    } catch (error) {
+      this.verficationError = error
+    }
+  }
+
+
+  async onOtpChange(code: any) {
+    try {
+      if (code.length === 6) {
+        this.verifyButton = true;
+        this.otpCode = code;
+
+      } else {
+        this.verifyButton = false;
+      }
+    } catch (error) {
+      // console.log(error)
+    }
+  }
+
+  // Multi Factor Authentication
+
+  showMFA = false;
+  mfa: string;
+  mfaError = '';
+  totpCode = ';'
+  qrcodeImage;
+  isSMS = false;
+  smsMFA;
+  totpMFA = false;
+  async setSmsOTP(event) {
+    try {
+
+      if (event.checked === true) {
+        let user = await Auth.currentAuthenticatedUser();
+        if (this.userAttributes && this.userAttributes.phoneVerified === false) {
+          throw new Error('Phone number is not verified. Please update or verify your phone number from Company Detail page.')
+        } else {
+          await Auth.setPreferredMFA(user, 'SMS_MFA');
+        }
+      }
+
+    } catch (error) {
+      this.mfaError = error;
+    }
+  }
+
+  /**
+   * Generates Time based OTP for QR code and Apps like Google Authenticator, Microsoft or Authy
+   * @param event 
+   */
+  async generateTOTPCode() {
+    try {
+      this.mfaError = '';
+      await this.getCurrentStatusMFA();
+      let user = await Auth.currentAuthenticatedUser();
+      let userdetails = await this.auth.getUserDetails();
+      const code = await Auth.setupTOTP(user)
+      const str = "otpauth://totp/FleetHawksDashboard:" + userdetails.userName + "?secret=" + code + "&issuer=fleethawks"
+      this.totpCode = code;
+      this.generateQRCode(str);
+
+
+    } catch (error) {
+      this.mfaError = error;
+    }
+  }
+  currentStatus = 'NOMFA';
+  userTotpCode: string;
+  totpSuccess = false;
+  mfaStatus = '';
+  async setupVerifyTOTPCode() {
+    try {
+      if (!this.userTotpCode || this.userTotpCode.toString() == '') {
+        throw new Error("Verification code is required.");
+
+      }
+      this.mfaError = '';
+      let user = await Auth.currentAuthenticatedUser();
+      await Auth.verifyTotpToken(user, this.userTotpCode.toString())
+      const result = await Auth.setPreferredMFA(user, 'TOTP');
+      this.messageService.add({
+        severity: "info",
+        summary: "Confirmed",
+        detail: "MFA has been enabled."
+      });
+      this.showMFA = false;
+    } catch (error) {
+      this.mfaError = error;
+    }
+  }
+
+
+  /**
+   * Generates QR Code for Apps
+   * @param code returns QR Code image
+   */
+  generateQRCode(code: string) {
+    var opts = {
+      errorCorrectionLevel: 'H',
+      type: 'image/jpeg',
+      quality: 1.0,
+      margin: 1,
+
+    }
+    QRCode.toDataURL(code, opts, (err, url) => {
+      if (err) throw err
+      this.totpMFA = true
+      this.qrcodeImage = url;
+
+
+    })
+  }
+
+  /**
+   * Disables the MFA
+   */
+  async disableMFA(event: Event) {
+    try {
+      this.confirmSvc.confirm({
+        target: event.target,
+        message: 'Are you sure that you want to proceed?',
+        icon: 'pi pi-exclamation-triangle',
+        accept: async () => {
+          let user = await Auth.currentAuthenticatedUser();
+          const result = await Auth.setPreferredMFA(user, 'NOMFA');
+
+          this.messageService.add({
+            severity: "info",
+            summary: "Confirmed",
+            detail: "MFA has been disabled."
+          });
+        },
+        reject: () => {
+          //reject action
+        }
+      });
+
+    } catch (error) {
+      this.mfaError = error;
+    }
+
+  }
+
+  async getCurrentStatusMFA() {
+    try {
+      let user = await Auth.currentAuthenticatedUser();
+      const result = await Auth.getPreferredMFA(user, { bypassCache: false })
+      if (result && result === 'NOMFA') {
+        this.currentStatus = "There is no MFA registered";
+      } else if (result === 'SOFTWARE_TOKEN_MFA') {
+        this.currentStatus = "Currently MFA is set to TOTP";
+      }
+    } catch (error) {
+      this.mfaError = error;
+    }
+  }
+
 }
 
 class VerificationInfo {
