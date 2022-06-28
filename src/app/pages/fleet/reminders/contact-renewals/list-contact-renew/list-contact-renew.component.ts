@@ -174,7 +174,7 @@ export class ListContactRenewComponent implements OnInit {
         });
     }
   }
-  onScroll() {
+  onScroll = async(event: any) => {
     if (this.loaded) {
       this.initDataTable();
     }
