@@ -550,6 +550,13 @@
 
             <ng-option value="bol">Bill of Lading (BOL)</ng-option>
             <ng-option value="pod">Proof of Delivery (POD)</ng-option>
+            <ng-option value="fuelRpt">Fuel Receipts</ng-option>
+            <ng-option value="loadCnf">Load Confirmation</ng-option>
+            <ng-option value="accident">Accident</ng-option>
+            <ng-option value="citation">Citation</ng-option>
+            <ng-option value="tickets">Tickets</ng-option>
+            <ng-option value="inspect">Inspect</ng-option>
+            <ng-option value="other">Others</ng-option>
 
 
           </ng-select>
@@ -564,6 +571,9 @@
 
             </div>
 
+          </div>
+          <div *ngIf="docError">
+            <span class="text-danger">{{docError}}</span>
           </div>
         </div>
 
@@ -585,7 +595,8 @@
     <div class="modal-footer">
       <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-default modal-dismiss">Cancel</button>
 
-      <button type="submit" [disabled]="!docTypeForm.form.valid" class="btn btn-success modal-confirm">Save</button>
+      <button type="submit" [disabled]="!docTypeForm.form.valid || isDocSubmit"
+        class="btn btn-success modal-confirm">Save</button>
     </div>
   </form>
 </ng-template>

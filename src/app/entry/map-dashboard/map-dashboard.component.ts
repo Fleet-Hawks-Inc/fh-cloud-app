@@ -81,7 +81,6 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     await this.getCurrentDriverLocation();
     await this.getCurrentAssetLocation();
     await this.getVehicleLocationByDashCam();
-    await this.verifyEmail();
 
   }
 
@@ -282,65 +281,6 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     table.clear();
   }
 
-  displayModal = false;
-  email = '';
-  otpSubmitDisabled = true;
-  username: string;
-  otpCode = '';
-  verified = false;
-  showResend = true;
-  async verifyEmail() {
-    try {
-      const payload = (await Auth.currentSession()).getIdToken().payload;
-      // console.log(payload)
-      this.username = payload["cognito:username"];
-      this.email = payload.email;
-      if (payload.email_verified === false) {
-
-        await Auth.resendSignUp(this.username);
-        this.displayModal = true;
-        setTimeout(() => {
-          this.showResend = true;
-        }, 100);
-
-      }
-    } catch (error) {
-      console.log(error);
-      this.displayModal = false;
-    }
-  }
-
-  async onOtpChange(code: any) {
-    try {
-      if (code.length === 6) {
-        this.otpSubmitDisabled = false;
-        this.otpCode = code;
-        await this.confirmSignUp();
-
-      } else {
-        this.otpSubmitDisabled = true;
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  async sendCode() {
-    try {
-      await Auth.resendSignUp(this.username);
-    } catch (error) {
-      console.log(error)
-    }
-
-  }
-  async confirmSignUp() {
-    try {
-      const result = await Auth.confirmSignUp(this.username, this.otpCode);
-      console.log(result);
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
 }
 

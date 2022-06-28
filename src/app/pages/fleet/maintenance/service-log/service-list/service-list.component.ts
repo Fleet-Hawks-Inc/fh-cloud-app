@@ -26,7 +26,7 @@ export class ServiceListComponent implements OnInit {
   title = "Service Logs";
   // dtOptions: any = {};
   logs = [];
-    sessionID: string;
+  sessionID: string;
 
   suggestedVehicles = [];
   vehicleID = null;

@@ -23,17 +23,18 @@ export class BrokerageComponent implements OnInit {
   dataMessage = ''
   brkDateEnUS:any = [];
   carriersObject = [];
+  orderNumber = '';
   loaded = false;
   dataColumns = [
     { width: '10%', field: 'orderNumber', header: 'Order No', type: "text" },
     { width: '10%', field: 'tripData.tripNo', header: 'Trip No', type: "text" },
     { width: '12%', field: 'cName', header: 'Carrier', type: "text" },
     { width: '10%', field: 'createdDate', header: 'Order Date', type: "text" },
-    { width: '12%', field: 'brkDate', header: 'Brokerage Date', type: "text" },
+    { width: '12%', field: 'date', header: 'Brokerage Date', type: "text" },
     { width: '12%', field: 'pickUpLoc', header: 'Pickup Location', type: "text" },
     { width: '12%', field: 'dropOffLoc', header: 'Delivery Location', type: "text" },
-    { width: '10%', field: 'finalAmount', header: 'Order Amount', type: "text" },
-    { width: '12%', field: 'brkAmount', header: 'Brokerage Amount', type: "text" },
+    { width: '10%', field: 'amount', header: 'Order Amount', type: "text" },
+    { width: '12%', field: 'bAmount', header: 'Brokerage Amount', type: "text" },
   ];
   constructor(
   private apiService: ApiService,
@@ -90,7 +91,7 @@ export class BrokerageComponent implements OnInit {
     this.brokerage = [];
     }
     if(this.lastItemSK !== 'end'){
-    const result = await this.apiService.getData(`orders/report/getBrokerageReport?lastKey=${this.lastItemSK}`).toPromise();
+    const result = await this.apiService.getData(`orders/report/getBrokerageReport?orderNumber=${this.orderNumber}&lastKey=${this.lastItemSK}`).toPromise();
     this.dataMessage = Constant.FETCHING_DATA;
     if(result.Items.length === 0){
     this.dataMessage = Constant.NO_RECORDS_FOUND;
@@ -103,11 +104,6 @@ export class BrokerageComponent implements OnInit {
     this.lastItemSK = 'end'
     }
     this.brokerage = this.brokerage.concat(result.Items);
-    for(let i=0;i<this.brokerage.length;i++){
-    if(this.brokerage[i].brkDate>0){
-    this.brkDateEnUS = new Date(this.brokerage[i].brkDate).toLocaleDateString("en-US")
-    }
-    }
     this.loaded = true;
     }
     }
@@ -120,6 +116,41 @@ export class BrokerageComponent implements OnInit {
     }
     this.loaded = false;
   }
+  
+  
+  searchFilter(){
+  if(this.orderNumber !== ''){
+  this.orderNumber = this.orderNumber;
+  this.brokerage = [];
+  this.dataMessage = Constant.FETCHING_DATA;
+  this.lastItemSK = '';
+  this.fetchBrokerageReport();
+  }else{
+  return false;
+  }
+  }
+  
+  resetFilter(){
+  if(this.orderNumber !== ''){
+  this.brokerage = [];
+  this.loaded = false;
+  this.lastItemSK = '';
+  this.orderNumber = '';
+  this.fetchBrokerageReport();
+  this.dataMessage = Constant.FETCHING_DATA;
+  }else{
+  return false;
+  }
+  }
+  
+  refreshData() {
+    this.brokerage = [];
+    this.lastItemSK = '';
+    this.loaded = false;
+    this.fetchBrokerageReport();
+    this.dataMessage = Constant.FETCHING_DATA;
+  }
+  
   
     /**
  * Clears the table filters
