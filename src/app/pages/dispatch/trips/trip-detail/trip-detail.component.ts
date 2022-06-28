@@ -397,6 +397,7 @@ export class TripDetailComponent implements OnInit {
           this.isSplit = true;
         } else {
           this.isSplit = false;
+          this.selectedSplits = this.trips;
         }
         if (this.newCoords.length > 0) {
           this.getCoords();
@@ -717,16 +718,14 @@ export class TripDetailComponent implements OnInit {
   }
 
   async driverEmail() {
-    if (this.selectPlanID) {
-      this.isEmail = true;
-      let result = await this.apiService.getData(`trips/send/emailDriver?tripID=${this.tripID}&planID=${this.selectPlanID}`).toPromise();
-      if (result === null) {
-        this.tripInfoModal = false;
-        this.toastr.success("Email send successfully");
-        this.isEmail = false;
-      } else {
-        this.isEmail = false;
-      }
+    this.isEmail = true;
+    let result = await this.apiService.getData(`trips/send/emailDriver?tripID=${this.tripID}&planID=${this.selectPlanID}`).toPromise();
+    if (result === null) {
+      this.tripInfoModal = false;
+      this.toastr.success("Email send successfully");
+      this.isEmail = false;
+    } else {
+      this.isEmail = false;
     }
   }
 
@@ -868,18 +867,20 @@ export class TripDetailComponent implements OnInit {
   }
 
   changeSplitTrips() {
-    let planResult = this.newSplits.filter(elem => { return elem.splitID === this.selectPlanID })
-    if (planResult && planResult.length > 0 && planResult[0].plan) {
-      let newData = []
-      let planIds = planResult[0].plan;
-      planIds.map((c, cind) => {
-        this.trips.map((t) => {
-          if (t.planID === c) {
-            newData.push(t);
-          }
+    if (this.selectPlanID) {
+      let planResult = this.newSplits.filter(elem => { return elem.splitID === this.selectPlanID })
+      if (planResult && planResult.length > 0 && planResult[0].plan) {
+        let newData = []
+        let planIds = planResult[0].plan;
+        planIds.map((c, cind) => {
+          this.trips.map((t) => {
+            if (t.planID === c) {
+              newData.push(t);
+            }
+          });
         });
-      });
-      this.selectedSplits = newData;
+        this.selectedSplits = newData;
+      }
     }
 
   }
