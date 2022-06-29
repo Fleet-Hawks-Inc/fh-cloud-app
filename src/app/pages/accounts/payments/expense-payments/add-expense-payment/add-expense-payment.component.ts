@@ -53,7 +53,7 @@ export class AddExpensePaymentComponent implements OnInit {
   settlements = [];
   advancePayments = [];
   searchDisabled = false;
-  accList: any = {};
+  accounts: any = [];
   expenses = [];
   submitDisabled = false;
   errors = {};
@@ -216,11 +216,9 @@ export class AddExpensePaymentComponent implements OnInit {
   }
 
   fetchAccounts() {
-    this.accountService
-      .getData(`chartAc/get/all/list`)
-      .subscribe((result: any) => {
-        this.accList = result;
-      });
+    this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
+      this.accounts = res;
+    });
   }
 
   selectedSettlements() {

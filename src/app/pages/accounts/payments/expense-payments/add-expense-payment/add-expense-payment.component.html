@@ -649,11 +649,9 @@
                             #accountID="ngModel"
                             required
                           >
-                            <ng-option
-                              value="{{ data.key }}"
-                              *ngFor="let data of accList | keyvalue"
-                              >{{ data.value }}
-                            </ng-option>
+                          <ng-option *ngFor="let act of accounts" value="{{ act.actID }}">{{ act.actNo }}
+                            -
+                            {{ act.actName | titlecase }}</ng-option>
                           </ng-select>
                           <div
                             *ngIf="
