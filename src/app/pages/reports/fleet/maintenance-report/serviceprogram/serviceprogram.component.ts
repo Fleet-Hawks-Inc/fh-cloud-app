@@ -86,6 +86,7 @@ export class ServiceprogramComponent implements OnInit {
       const result = await this.apiService.getData(`servicePrograms/fetch/report?vehicle=${this.vehicle}&programName=${this.programName}&lastKey=${this.lastItemSK}`).toPromise();
       this.dataMessage = Constants.FETCHING_DATA
       if (result.Items.length === 0) {
+        this.loaded = true;
         this.dataMessage = Constants.NO_RECORDS_FOUND
       }
       if (result.Items.length > 0) {
