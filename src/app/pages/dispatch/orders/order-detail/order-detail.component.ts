@@ -242,7 +242,7 @@ export class OrderDetailComponent implements OnInit {
     instructions: "",
     amount: "",
     brokerageAmount: "",
-    currency: "",
+    brkCurrency: "",
     orderNo: "",
     miles: "",
     today: moment().format("YYYY-MM-DD"),
@@ -422,7 +422,8 @@ export class OrderDetailComponent implements OnInit {
         }
         this.brokerage.orderNo = result.orderNumber;
         this.brokerage.miles = result.milesInfo.totalMiles;
-        this.brokerage.currency = result.charges.freightFee.currency;
+        this.brokerage.brkCurrency = result.brkCurrency
+        // this.brokerage.currency = result.charges.freightFee.currency;
 
         if (result.stateTaxID != undefined && result.stateTaxID != "") {
           this.stateCode = result.stateCode;
@@ -853,7 +854,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`cusConfirmation`] = this.cusConfirmation;
 
     this.invoiceData[`zeroRated`] = this.zeroRated;
-    this.invoiceData[`currency`] = this.brokerage.currency;
+    this.invoiceData[`brkCurrency`] = this.brokerage.brkCurrency;
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
       complete: () => { },
       error: (err: any) => {
