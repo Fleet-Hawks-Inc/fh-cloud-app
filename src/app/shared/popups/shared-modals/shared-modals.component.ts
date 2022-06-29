@@ -715,9 +715,9 @@ export class SharedModalsComponent implements OnInit {
     files = [...event.target.files];
     let totalCount = this.getDocsLength + files.length;
 
-    if (totalCount > 4) {
+    if (totalCount > 10) {
       this.uploadedDocs = [];
-      this.toastr.error("Only 4 documents can be uploaded");
+      this.toastr.error("Only 10 documents can be uploaded");
       return false;
     } else {
       this.uploadedDocs = files;

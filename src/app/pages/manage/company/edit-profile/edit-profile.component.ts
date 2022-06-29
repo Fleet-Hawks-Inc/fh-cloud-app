@@ -39,6 +39,7 @@ export class EditProfileComponent implements OnInit {
   PIP = false;
   cargoInsurance = '';
   email = '';
+  notificationEmail='';
   userName = '';
   carrierName = '';
   bizCountry = null;
@@ -56,7 +57,8 @@ export class EditProfileComponent implements OnInit {
     name: '',
     company: '',
     phone: '',
-    email: ''
+    email: '',
+    notificationEmail:'',
   }
   fleets = {
     curtainSide: 0,
@@ -119,6 +121,7 @@ export class EditProfileComponent implements OnInit {
   termsCustom: ""
   notesDriver: ""
   tagLine: ""
+  navigationEmail:""
 
   yardDefault = false;
   public searchTerm = new Subject<string>();
@@ -195,6 +198,7 @@ export class EditProfileComponent implements OnInit {
         this.PIP = this.carriers.PIP;
         this.cargoInsurance = this.carriers.cargoInsurance;
         this.email = this.carriers.email;
+        this.notificationEmail = this.carriers.email
         this.userName = this.carriers.userName;
         this.carrierName = this.carriers.carrierName;
         this.password = this.carriers.password,
@@ -568,6 +572,7 @@ export class EditProfileComponent implements OnInit {
         SCAC: this.SCAC,
         cargoInsurance: this.cargoInsurance,
         email: this.email,
+        notificationEmail: this.carriers.notificationEmail,
         userName: this.userName,
         CTPAT: this.CTPAT,
         CSA: this.CSA,

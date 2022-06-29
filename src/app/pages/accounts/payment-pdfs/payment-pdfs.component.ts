@@ -431,7 +431,11 @@ export class PaymentPdfsComponent implements OnInit {
                           if (plan.driverID && plan.coDriverID) {
                             planObj.rate = v.paymentSelected[0].emptyMilesTeam
                           } else {
-                            planObj.rate = v.paymentSelected[0].emptyMiles
+                            if (plan.driverID && plan.coDriverID) {
+                              planObj.rate = v.paymentSelected[0].emptyMilesTeam
+                            } else {
+                              planObj.rate = v.paymentSelected[0].emptyMiles
+                            }
                           }
                         }
                         obj.finalRate = v.amount
@@ -479,16 +483,13 @@ export class PaymentPdfsComponent implements OnInit {
                     } else {
                       if (plan.driverID && plan.coDriverID) {
                         planObj.rate = v.paymentSelected[0].emptyMilesTeam
-                      } else {
-                        planObj.rate = v.paymentSelected[0].emptyMiles
                       }
                     }
-                    obj.finalRate = v.amount
                   }
-                }
-                obj.plans.push(planObj);
+                  obj.plans.push(planObj);
+                };
+                this.paymentTrips.push(obj);
               });
-              this.paymentTrips.push(obj);
             }
           }
         });

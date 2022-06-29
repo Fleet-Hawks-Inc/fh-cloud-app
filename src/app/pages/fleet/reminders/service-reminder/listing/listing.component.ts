@@ -173,6 +173,7 @@ export class ListingComponent implements OnInit {
           if (result.Items.length === 0) {
 
             this.dataMessage = Constants.NO_RECORDS_FOUND
+            this.loaded = true;
           }
           if (result.Items.length > 0) {
 
