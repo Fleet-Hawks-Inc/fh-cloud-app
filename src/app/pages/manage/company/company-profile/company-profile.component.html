@@ -74,16 +74,6 @@
                                                         VERIFIED</span>
                                                 </td>
                                             </tr>
-
-                                            <td class="back-color-gray">Notification Email </td>
-                                            <td>{{carriers.notificationEmail ? carriers.notificationEmail: '-'}} <span
-                                                    class="badge badge-success"
-                                                    *ngIf="userAttributes && userAttributes.emailVerified">VERIFIED</span>
-                                                <span class="badge badge-danger"
-                                                    (click)="showVerifyEmail=true;verifyEmail()"
-                                                    *ngIf="userAttributes && !userAttributes.emailVerified">NOT
-                                                    VERIFIED</span>
-                                            </td>
                                             <tr>
 
                                                 <td class="back-color-gray">How did you find us?</td>
@@ -91,6 +81,11 @@
                                                 <td class="back-color-gray">Fax</td>
                                                 <td>{{carriers.fax ? carriers.fax : '-'}}</td>
                                             </tr>
+
+                                            <td class="back-color-gray">Notification Email </td>
+                                            <td>{{carriers.notificationEmail ? carriers.notificationEmail: '-'}}
+                                            </td>
+
                                             <tr *ngIf="carriers.findingWay=='Referral'">
 
                                                 <td class="back-color-gray">Referral Name</td>

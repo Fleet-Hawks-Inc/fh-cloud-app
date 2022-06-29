@@ -65,13 +65,13 @@
                           pattern="^[^\.][a-z0-9\.]+[^\.]$" />
                       </div>
                     </div>
-
-                    <div class="col-lg-2"></div>
-                    <div class="col-lg-10">
-                      <label class="control-label font-weight-bold text-lg-right pt-2">Notification Email<span
-                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                      <input id="mail" type="text" class="form-control" [(ngModel)]="carriers.notificationEmail"
-                        name="navigationEmail" [disabled]="true" placeholder="eg. johnsmith@gmail.com" />
+                    <div class="row">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Notification Email<span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <input id="mail" type="text" class="form-control" [(ngModel)]="carriers.notificationEmail"
+                          name="navigationEmail" placeholder="eg. johnsmith@gmail.com" />
+                      </div>
                     </div>
 
                     <div *ngIf="findingWay == 'Referral'" class="row">
