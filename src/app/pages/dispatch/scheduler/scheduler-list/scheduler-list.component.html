@@ -92,17 +92,15 @@
               <td style="width:6%;overflow: inherit !important; " pFrozenColumn alignFrozen="right"
                       [frozen]="true">
                       <div class="dropdown dropright" style="z-index: 10001">
-                        <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{rowIndex
-                            }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <div class="dropdown-menu"  style="z-index: 10001" attr.aria-labelledby="dropdownMenuButton-{{
-                            rowIndex
-                               }}">
-                            <a class="dropdown-item" routerLink='/dispatch/scheduler/edit/{{schedule.id}}'>Edit</a>
-                            <a *ngIf="schedule.disabled==0" class="dropdown-item" (click)="delete(schedule.id,schedule.mongoID)">Deactivate</a>
-                            <a *ngIf="schedule.disabled==1" class="dropdown-item" (click)="activate(schedule.id,schedule)">Activate</a>
-                        </div>
+                        <button (click)="op.toggle($event)" class="bg-transparent border-0" type="button"
+                        id="dropdownMenuButton-{{ rowIndex }}">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                        <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '160px' }">
+                            <a class="dropdown-item" (click)="op.hide();" routerLink='/dispatch/scheduler/edit/{{schedule.id}}'>Edit</a>
+                            <a *ngIf="schedule.disabled==0" class="dropdown-item" (click)="op.hide(); delete(schedule.id,schedule.mongoID)">Deactivate</a>
+                            <a *ngIf="schedule.disabled==1" class="dropdown-item" (click)="op.hide(); activate(schedule.id,schedule)">Activate</a>
+                        </p-overlayPanel>
                         </div>
                 </td>
                 </tr>

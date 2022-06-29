@@ -853,353 +853,344 @@
 </div>
 <!-- split popup end -->
 
-<ng-template #tripInfoModal let-modal>
-  <div class="modal-header">
-    <h5 class="modal-title">Trip Information</h5>
-    <button type="button" (click)="modal.dismiss()" class="close" data-dismiss="modal" aria-label="Close">
-      <i class="far fa-window-close modal-dismiss" style="font-size: 25px"> </i>
-    </button>
-  </div>
-  <div class="modal-body text-dark px-4">
-    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" id="print_wrap">
-      <tbody>
-        <tr>
-          <td width="50%">
-            <h1 class="text-dark font-weight-bold text-6 mb-1 mt-1">
-              Driver Information Sheet
-            </h1>
-          </td>
-          <td width="50%" align="right" valign="middle">
-            <img crossorigin="anonymous" [src]="companyLogoSrc" alt="logo" style="max-width: 100px" />
-            <p class="mb-0 text-dark text-4 font-weight-bold" *ngIf="tagLine && tagLine != ''">
-              {{ tagLine }}
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2" height="1" bgcolor="#595959"></td>
-        </tr>
-        <tr>
-          <td valign="top" class="text-dark">
-            <p class="mt-2 mb-0 text-dark text-3">
-              <strong>Trip#</strong> {{ tripData.tripNo }}
-            </p>
-            <p class="mt-2 mb-2 text-dark text-3">
-              <strong>Trip Type:</strong> {{ orderType }}
-            </p>
-          </td>
-          <td valign="top" class="text-dark" align="right">
-            <h2 style="font-size: 14px; margin-bottom: 10px">
-              <strong> Trip Date# </strong>{{ tripData.dateCreated | date: "yyyy/MM/dd" }}
-            </h2>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2" height="1" bgcolor="#595959"></td>
-        </tr>
-        <tr class="text-dark" *ngFor="let item of customerData">
-          <td colspan="2">
-            <table class="w-100">
-              <tbody>
-                <tr>
-                  <td valign="top">
-                    <h2 class="m-0" style="font-size: 14px">
-                      <strong>Customer: </strong>
-                      <span class="text-capitalize text-dark">{{
-                        item.cName
-                        }}</span>
-                    </h2>
-                  </td>
-                  <td valign="top" align="right" style="line-height: 42px; font-size: 14px">
-                    <strong>Order(s)#:</strong>
-                    <span *ngFor="let ord of item.orderNo; last as isLast">
-                      {{ ord }} <span *ngIf="!isLast">,</span>
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2" valign="top">
-                    <table width="100%" style="
-                        border: 1px solid #adadad;
-                        font-size: 12px;
-                        margin-bottom: 10px;
-                      " cellpadding="0" cellspacing="0" bordercolor="#adadad">
-                      <tbody>
-                        <tr>
-                          <td colspan="2" class="text-dark" style="
-                              border-bottom: 1px solid #adadad;
-                              padding: 10px;
-                              font-size: 14px; ;
-                            ">
-                            <p class="m-0 text-dark">
-                              <strong>Address: </strong>{{ item.address ? item.address : "NA" }}
-                            </p>
-                          </td>
-                          <td colspan="2" align="right" class="text-dark" style="
-                              border-bottom: 1px solid #adadad;
-                              padding: 10px;
-                              font-size: 14px; ;
-                            ">
-                            <p class="m-0 text-dark">
-                              <strong>C/O: </strong>{{ item.careOption ? item.careOption : "NA" }}
-                            </p>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="25%" class="text-dark" bgcolor="#f3f3f3" style="
-                              border-right: 1px solid #adadad;
-                              padding: 10px;
-                            ">
-                            <p class="m-0 text-dark" style="font-weight: 600">
-                              Phone
-                            </p>
-                          </td>
-                          <td width="25%" class="text-dark" style="
-                              border-right: 1px solid #adadad;
-                              padding: 10px;
-                            ">
-                            <p class="m-0 text-dark">
-                              {{ item.workPhone ? item.workPhone : "NA" }}
-                            </p>
-                          </td>
-                          <td width="25%" class="text-dark" bgcolor="#f3f3f3" style="
-                              padding: 10px;
-                              border-right: 1px solid #adadad;
-                            ">
-                            <p class="m-0 text-dark" style="font-weight: 600">
-                              Email
-                            </p>
-                          </td>
-                          <td style="padding: 10px">
-                            <p class="m-0 text-dark">
-                              {{ item.workEmail ? item.workEmail : "NA" }}
-                            </p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-        <tr class="text-dark">
-          <td colspan="2">
-            <table style="font-size: 12px" class="table table-sm table-bordered table-striped">
-              <tbody>
-                <tr>
-                  <td valign="top" style="width: 33.33%">
-                    <strong>Pickup Number(s):</strong>
-                    <span *ngIf="allPUs.length === 0"> NA</span>
-                    <span *ngFor="let pu of allPUs; let isLast = last">
-                      {{ pu }} <span *ngIf="!isLast">,</span>
-                    </span>
-                  </td>
-                  <td valign="top" style="width: 33.33%">
-                    <strong>Delivery Number(s):</strong>
-                    <span *ngIf="allDels.length === 0"> NA</span>
-                    <span *ngFor="let del of allDels; let isLast = last">
-                      {{ del }} <span *ngIf="!isLast">,</span>
-                    </span>
-                  </td>
-                  <td valign="top" style="width: 33.33%">
-                    <strong>Customer PO(s):</strong>
-                    <span *ngIf="allPOs.length === 0"> NA</span>
-                    <span *ngFor="let po of allPOs; let isLast = last">
-                      {{ po }} <span *ngIf="!isLast">,</span>
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
+<p-dialog header="Trip Information" [modal]="true" [(visible)]="tripInfoModal" [style]="{ width: '60vw' }">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" id="print_wrap">
+    <tbody>
+      <tr>
+        <td width="50%">
+          <h1 class="text-dark font-weight-bold text-6 mb-1 mt-1">
+            Driver Information Sheet
+          </h1>
+        </td>
+        <td width="50%" align="right" valign="middle">
+          <img crossorigin="anonymous" [src]="companyLogoSrc" alt="logo" style="max-width: 100px" />
+          <p class="mb-0 text-dark text-4 font-weight-bold" *ngIf="tagLine && tagLine != ''">
+            {{ tagLine }}
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" height="1" bgcolor="#595959"></td>
+      </tr>
+      <tr>
+        <td valign="top" class="text-dark">
+          <p class="mt-2 mb-0 text-dark text-3">
+            <strong>Trip#</strong> {{ tripData.tripNo }}
+          </p>
+          <p class="mt-2 mb-2 text-dark text-3">
+            <strong>Trip Type:</strong> {{ orderType }}
+          </p>
+        </td>
+        <td valign="top" class="text-dark" align="right">
+          <h2 style="font-size: 14px; margin-bottom: 10px">
+            <strong> Trip Date# </strong>{{ tripData.dateCreated | date: "yyyy/MM/dd" }}
+          </h2>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" height="1" bgcolor="#595959"></td>
+      </tr>
+      <tr class="text-dark" *ngFor="let item of customerData">
+        <td colspan="2">
+          <table class="w-100">
+            <tbody>
+              <tr>
+                <td valign="top">
+                  <h2 class="m-0" style="font-size: 14px">
+                    <strong>Customer: </strong>
+                    <span class="text-capitalize text-dark">{{
+                      item.cName
+                      }}</span>
+                  </h2>
+                </td>
+                <td valign="top" align="right" style="line-height: 42px; font-size: 14px">
+                  <strong>Order(s)#:</strong>
+                  <span *ngFor="let ord of item.orderNo; last as isLast">
+                    {{ ord }} <span *ngIf="!isLast">,</span>
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" valign="top">
+                  <table width="100%" style="
+                      border: 1px solid #adadad;
+                      font-size: 12px;
+                      margin-bottom: 10px;
+                    " cellpadding="0" cellspacing="0" bordercolor="#adadad">
+                    <tbody>
+                      <tr>
+                        <td colspan="2" class="text-dark" style="
+                            border-bottom: 1px solid #adadad;
+                            padding: 10px;
+                            font-size: 14px; ;
+                          ">
+                          <p class="m-0 text-dark">
+                            <strong>Address: </strong>{{ item.address ? item.address : "NA" }}
+                          </p>
+                        </td>
+                        <td colspan="2" align="right" class="text-dark" style="
+                            border-bottom: 1px solid #adadad;
+                            padding: 10px;
+                            font-size: 14px; ;
+                          ">
+                          <p class="m-0 text-dark">
+                            <strong>C/O: </strong>{{ item.careOption ? item.careOption : "NA" }}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="25%" class="text-dark" bgcolor="#f3f3f3" style="
+                            border-right: 1px solid #adadad;
+                            padding: 10px;
+                          ">
+                          <p class="m-0 text-dark" style="font-weight: 600">
+                            Phone
+                          </p>
+                        </td>
+                        <td width="25%" class="text-dark" style="
+                            border-right: 1px solid #adadad;
+                            padding: 10px;
+                          ">
+                          <p class="m-0 text-dark">
+                            {{ item.workPhone ? item.workPhone : "NA" }}
+                          </p>
+                        </td>
+                        <td width="25%" class="text-dark" bgcolor="#f3f3f3" style="
+                            padding: 10px;
+                            border-right: 1px solid #adadad;
+                          ">
+                          <p class="m-0 text-dark" style="font-weight: 600">
+                            Email
+                          </p>
+                        </td>
+                        <td style="padding: 10px">
+                          <p class="m-0 text-dark">
+                            {{ item.workEmail ? item.workEmail : "NA" }}
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr class="text-dark">
+        <td colspan="2">
+          <table style="font-size: 12px" class="table table-sm table-bordered table-striped">
+            <tbody>
+              <tr>
+                <td valign="top" style="width: 33.33%">
+                  <strong>Pickup Number(s):</strong>
+                  <span *ngIf="allPUs.length === 0"> NA</span>
+                  <span *ngFor="let pu of allPUs; let isLast = last">
+                    {{ pu }} <span *ngIf="!isLast">,</span>
+                  </span>
+                </td>
+                <td valign="top" style="width: 33.33%">
+                  <strong>Delivery Number(s):</strong>
+                  <span *ngIf="allDels.length === 0"> NA</span>
+                  <span *ngFor="let del of allDels; let isLast = last">
+                    {{ del }} <span *ngIf="!isLast">,</span>
+                  </span>
+                </td>
+                <td valign="top" style="width: 33.33%">
+                  <strong>Customer PO(s):</strong>
+                  <span *ngIf="allPOs.length === 0"> NA</span>
+                  <span *ngFor="let po of allPOs; let isLast = last">
+                    {{ po }} <span *ngIf="!isLast">,</span>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
 
-        <tr>
-          <td colspan="2">
-            <table style="font-size: 12px" class="table table-sm table-bordered table-striped text-capitalize"
-              id="locationTable">
-              <thead>
-                <tr>
-                  <th>Type</th>
-                  <th>Order#</th>
-                  <th>Commodity</th>
-                  <th>Date</th>
+      <tr>
+        <td colspan="2">
+          <table style="font-size: 12px" class="table table-sm table-bordered table-striped text-capitalize"
+            id="locationTable">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Order#</th>
+                <th>Commodity</th>
+                <th>Date</th>
 
-                  <th>Pickup Time</th>
-                  <th>Drop Off Time</th>
+                <th>Pickup Time</th>
+                <th>Drop Off Time</th>
 
-                  <th>Name</th>
-                  <th>Location</th>
-                  <th>Loaded/ Empty</th>
-                  <th>Miles</th>
-                  <th>Vehicle</th>
-                  <th>Asset</th>
-                  <th>Driver</th>
-                  <th>Co-Driver</th>
-                  <th>Carrier</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngIf="trips.length === 0" class="text-center">
-                  <td colspan="15">
-                    {{ noOrdersMsg }}
-                  </td>
-                </tr>
-                <tr *ngFor="let trip of trips">
-                  <td>{{ trip.type }}</td>
-                  <td>{{ trip.orderNumber ? trip.orderNumber : "" }}</td>
-                  <td>
-                    <span *ngIf="trip.commodity">
-                      <span *ngFor="let data of trip.commodity; let d = index">
-                        {{ data }}
-                        <span *ngIf="d < trip.commodity.length - 1">, </span>
-                      </span>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Loaded/ Empty</th>
+                <th>Miles</th>
+                <th>Vehicle</th>
+                <th>Asset</th>
+                <th>Driver</th>
+                <th>Co-Driver</th>
+                <th>Carrier</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="selectedSplits.length === 0" class="text-center">
+                <td colspan="15">
+                  {{ noOrdersMsg }}
+                </td>
+              </tr>
+              <tr *ngFor="let trip of selectedSplits">
+                <td>{{ trip.type }}</td>
+                <td>{{ trip.orderNumber ? trip.orderNumber : "" }}</td>
+                <td>
+                  <span *ngIf="trip.commodity">
+                    <span *ngFor="let data of trip.commodity; let d = index">
+                      {{ data }}
+                      <span *ngIf="d < trip.commodity.length - 1">, </span>
                     </span>
-                  </td>
-                  <td>{{ trip.date | date: "yyyy/MM/dd" }}</td>
+                  </span>
+                </td>
+                <td>{{ trip.date | date: "yyyy/MM/dd" }}</td>
 
-                  <td>{{ trip.pickupTime }}</td>
-                  <td>{{ trip.dropTime }}</td>
+                <td>{{ trip.pickupTime }}</td>
+                <td>{{ trip.dropTime }}</td>
 
-                  <td>{{ trip.name }}</td>
-                  <td>{{ trip.locationName }}</td>
-                  <td>
-                    <span class="badge badge-dark p-1 text-uppercase" title="" data-original-title="Empty Miles"
-                      *ngIf="trip.mileType != ''">{{ trip.mileType }}</span>
-                  </td>
-                  <td>{{ trip.miles }}</td>
-                  <td>{{ trip.vehicleName ? trip.vehicleName : "-" }}</td>
-                  <td>
-                    <span *ngFor="let asst of trip.assetNames">
-                      {{ asst }}
-                      <br />
-                    </span>
-                  </td>
-                  <td>
-                    {{ trip.driverName ? trip.driverName : "" }}
-                    <span *ngIf="
-                        trip.driverStatus && trip.driverStatus == 'STARTED'
-                      " class="badge badge-success">{{ trip.driverStatus }}</span>
-                    <span *ngIf="
-                        trip.driverStatus && trip.driverStatus == 'DELIVERED'
-                      " class="badge badge-primary">{{ trip.driverStatus }}</span>
-                    <span *ngIf="
-                        trip.driverStatus && trip.driverStatus == 'REJECTED'
-                      " class="badge badge-danger">{{ trip.driverStatus }}</span>
-                    <span *ngIf="
-                        trip.driverStatus && trip.driverStatus == 'ACCEPTED'
-                      " class="badge badge-success">{{ trip.driverStatus }}</span>
-                    <span *ngIf="
-                        trip.driverStatus && trip.driverStatus == 'ASSIGNED'
-                      " class="badge bg-blue">{{ trip.driverStatus }}</span>
-                  </td>
-                  <td>
-                    {{ trip.coDriverName ? trip.coDriverName : "" }}
-                    <span *ngIf="
-                        trip.coDriverStatus && trip.coDriverStatus == 'REJECTED'
-                      " class="badge badge-danger">{{ trip.coDriverStatus }}</span>
-                    <span *ngIf="
-                        trip.coDriverStatus && trip.coDriverStatus == 'STARTED'
-                      " class="badge badge-success">{{ trip.coDriverStatus }}</span>
-                    <span *ngIf="
-                        trip.coDriverStatus &&
-                        trip.coDriverStatus == 'DELIVERED'
-                      " class="badge badge-primary">{{ trip.coDriverStatus }}</span>
-                    <span *ngIf="
-                        trip.coDriverStatus && trip.coDriverStatus == 'ACCEPTED'
-                      " class="badge badge-success">{{ trip.coDriverStatus }}</span>
-                    <span *ngIf="
-                        trip.coDriverStatus && trip.coDriverStatus == 'ASSIGNED'
-                      " class="badge bg-blue">{{ trip.coDriverStatus }}</span>
-                  </td>
-                  <td>{{ trip.carrierName ? trip.carrierName : "-" }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
+                <td>{{ trip.name }}</td>
+                <td>{{ trip.locationName }}</td>
+                <td>
+                  <span class="badge badge-dark p-1 text-uppercase" title="" data-original-title="Empty Miles"
+                    *ngIf="trip.mileType != ''">{{ trip.mileType }}</span>
+                </td>
+                <td>{{ trip.miles }}</td>
+                <td>{{ trip.vehicleName ? trip.vehicleName : "-" }}</td>
+                <td>
+                  <span *ngFor="let asst of trip.assetNames">
+                    {{ asst }}
+                    <br />
+                  </span>
+                </td>
+                <td>
+                  {{ trip.driverName ? trip.driverName : "" }}
+                  <span *ngIf="
+                      trip.driverStatus && trip.driverStatus == 'STARTED'
+                    " class="badge badge-success">{{ trip.driverStatus }}</span>
+                  <span *ngIf="
+                      trip.driverStatus && trip.driverStatus == 'DELIVERED'
+                    " class="badge badge-primary">{{ trip.driverStatus }}</span>
+                  <span *ngIf="
+                      trip.driverStatus && trip.driverStatus == 'REJECTED'
+                    " class="badge badge-danger">{{ trip.driverStatus }}</span>
+                  <span *ngIf="
+                      trip.driverStatus && trip.driverStatus == 'ACCEPTED'
+                    " class="badge badge-success">{{ trip.driverStatus }}</span>
+                  <span *ngIf="
+                      trip.driverStatus && trip.driverStatus == 'ASSIGNED'
+                    " class="badge bg-blue">{{ trip.driverStatus }}</span>
+                </td>
+                <td>
+                  {{ trip.coDriverName ? trip.coDriverName : "" }}
+                  <span *ngIf="
+                      trip.coDriverStatus && trip.coDriverStatus == 'REJECTED'
+                    " class="badge badge-danger">{{ trip.coDriverStatus }}</span>
+                  <span *ngIf="
+                      trip.coDriverStatus && trip.coDriverStatus == 'STARTED'
+                    " class="badge badge-success">{{ trip.coDriverStatus }}</span>
+                  <span *ngIf="
+                      trip.coDriverStatus &&
+                      trip.coDriverStatus == 'DELIVERED'
+                    " class="badge badge-primary">{{ trip.coDriverStatus }}</span>
+                  <span *ngIf="
+                      trip.coDriverStatus && trip.coDriverStatus == 'ACCEPTED'
+                    " class="badge badge-success">{{ trip.coDriverStatus }}</span>
+                  <span *ngIf="
+                      trip.coDriverStatus && trip.coDriverStatus == 'ASSIGNED'
+                    " class="badge bg-blue">{{ trip.coDriverStatus }}</span>
+                </td>
+                <td>{{ trip.carrierName ? trip.carrierName : "-" }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
 
-        <tr *ngIf="driverTerms != ''">
-          <td style="font-size: 12px" colspan="2" class="text-dark">
-            <strong>Dispatch Notes For Driver: </strong> {{ driverTerms }}
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">&nbsp;</td>
-        </tr>
-        <tr *ngIf="dispatchTerms != ''">
-          <td style="font-size: 12px" colspan="2" class="text-dark">
-            <strong>Terms and Conditions For Truck Dispatch: </strong>{{ dispatchTerms }}
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">&nbsp;</td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            <table width="100%" cellspacing="0" cellpadding="0">
-              <tbody>
-                <tr>
-                  <td width="10%">
-                    <p style="font-size: 12px" class="text-dark m-0">
-                      <strong>Accepted By: </strong>
-                    </p>
-                  </td>
-                  <td width="23%" style="border-bottom: solid 1px #999">
-                    &nbsp;
-                  </td>
-                  <td width="10%" style="font-size: 12px" class="text-center text-dark m-0">
-                    <strong>Date:</strong>
-                  </td>
-                  <td width="23%" style="border-bottom: solid 1px #999">
-                    &nbsp;
-                  </td>
-                  <td width="10%">
-                    <p style="font-size: 12px" class="text-dark text-center m-0">
-                      <strong>Signature</strong>
-                    </p>
-                  </td>
-                  <td style="border-bottom: solid 1px #999">&nbsp;</td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">&nbsp;</td>
-        </tr>
-        <tr>
-          <td colspan="2">
-            <table border="0" align="center" cellpadding="0" cellspacing="0">
-              <tbody>
-                <tr>
-                  <td align="center">
-                    <h2 style="font-size: 13px">Powered By</h2>
-                    <img src="../../../../../assets/img/logo.png" width="207" height="28" />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">&nbsp;</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-default" (click)="modal.dismiss('Cross click')">
-      Cancel
-    </button>
-    <button class="btn btn-success" [disabled]="isEmail" (click)="driverEmail()">
-      Email to Driver
-    </button>
-    <button class="btn btn-success" (click)="generate()">Print</button>
-  </div>
-</ng-template>
+      <tr *ngIf="driverTerms != ''">
+        <td style="font-size: 12px" colspan="2" class="text-dark">
+          <strong>Dispatch Notes For Driver: </strong> {{ driverTerms }}
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr *ngIf="dispatchTerms != ''">
+        <td style="font-size: 12px" colspan="2" class="text-dark">
+          <strong>Terms and Conditions For Truck Dispatch: </strong>{{ dispatchTerms }}
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <table width="100%" cellspacing="0" cellpadding="0">
+            <tbody>
+              <tr>
+                <td width="10%">
+                  <p style="font-size: 12px" class="text-dark m-0">
+                    <strong>Accepted By: </strong>
+                  </p>
+                </td>
+                <td width="23%" style="border-bottom: solid 1px #999">
+                  &nbsp;
+                </td>
+                <td width="10%" style="font-size: 12px" class="text-center text-dark m-0">
+                  <strong>Date:</strong>
+                </td>
+                <td width="23%" style="border-bottom: solid 1px #999">
+                  &nbsp;
+                </td>
+                <td width="10%">
+                  <p style="font-size: 12px" class="text-dark text-center m-0">
+                    <strong>Signature</strong>
+                  </p>
+                </td>
+                <td style="border-bottom: solid 1px #999">&nbsp;</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <table border="0" align="center" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td align="center">
+                  <h2 style="font-size: 13px">Powered By</h2>
+                  <img src="../../../../../assets/img/logo.png" width="207" height="28" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template pTemplate="footer">
+    <button pButton (click)="tripInfoModal=false" label="Cancel" styleClass="p-button-text"></button>
+    <button pButton (click)="tripInfoModal=false;showSplitModel=true;" label="Back" styleClass="p-button-text"></button>
+    <button pButton [disabled]="isEmail" (click)="driverEmail()" label="Email to Driver"
+      styleClass="p-button-text"></button>
+    <button pButton (click)="generate()" label="Print" styleClass="p-button-text"></button>
+  </ng-template>
+</p-dialog>
 
 <p-dialog header="Title" [(visible)]="showAlerts" [style]="{ width: '50vw', height: '70vw' }">
   <ng-template pTemplate="header">
@@ -1271,5 +1262,16 @@
 
   <ng-template pTemplate="footer">
     <span><b>NOTE: This feature is in BETA testing stage.</b></span>
+  </ng-template>
+</p-dialog>
+
+<p-dialog header="Select Sub-Trip" [modal]="true" [(visible)]="showSplitModel" blockScroll="true"
+  [style]="{ width: '20vw' }">
+  <p-dropdown [options]="totalSplits" (onChange)="changeSplitTrips()" appendTo="body" optionLabel="splitName"
+    optionValue="splitID" placeholder="Select Sub Trip" [style]="{ width: '100%' }" [(ngModel)]="selectPlanID">
+  </p-dropdown>
+  <ng-template pTemplate="footer">
+    <button pButton (click)="showSplitModel=false" label="Cancel" styleClass="p-button-text"></button>
+    <button pButton (click)="showSplitModel=false;showTripInfoModel()" label="Next" styleClass="p-button-text"></button>
   </ng-template>
 </p-dialog>

@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 import * as moment from 'moment';
+import { Table } from 'primeng/table';
 import * as _ from 'lodash';
 import Constants from '../../../constants';
 declare var $: any;
+import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
 import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from '../../../../../../environments/environment';
 @Component({
@@ -14,7 +17,10 @@ import { environment } from '../../../../../../environments/environment';
   styleUrls: ['./listing.component.css']
 })
 export class ListingComponent implements OnInit {
-
+  @ViewChild('dt') table: Table;
+  get = _.get;
+  _selectedColumns: any[];
+  
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   public remindersData = [];
@@ -57,19 +63,59 @@ export class ListingComponent implements OnInit {
   allVehicles: any = [];
   users = [];
   loaded = false
-  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
+  
+  
+  // columns of data table
+   dataColumns = [
+    { width: '15%', field: 'vehicleList', header: 'Vehicle', type: 'text' },
+    { width: '19%', field: 'status', header: '	Service Task', type: 'text' },
+    { width: '17%', field: 'nextDueDays', header: '	Next Due', type: 'text' },
+    { width: '17%', field: 'lastServiceDate', header: 'Last Completed', type: 'text' },
+    { width: '19%', field: 'subscribers', header: 'Subscribers', type: 'text' },
+  ];
+  
+  constructor(private apiService: ApiService, 
+  private router: Router, 
+  private toastr: ToastrService, 
+  private routerMgmtService: RouteManagementServiceService,
+  private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.initDataTable();
     this.fetchTasksList();
     this.fetchVehicleList();
-
+    this.setToggleOptions();
+  
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
     });
   }
+  
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+  }
+  
+  clearInput() {
+    this.suggestedVehicles = null;
+  }
+
+
+  clearSuggestions() {
+    this.vehicleIdentification = null;
+  }
+
+
 
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
@@ -143,12 +189,14 @@ export class ListingComponent implements OnInit {
         });
     }
   }
-  onScroll() {
+  
+  onScroll = async(event: any) => {
     if (this.loaded) {
       this.initDataTable();
     }
     this.loaded = false;
   }
+  
   searchData() {
     if (this.searchServiceTask !== null || this.filterStatus !== null || this.vehicleID !== null) {
       this.remindersData = [];
@@ -197,4 +245,13 @@ export class ListingComponent implements OnInit {
     this.dataMessage = Constants.FETCHING_DATA;
     this.initDataTable();
   }
+  
+    /**
+ * Clears the table filters
+ * @param table Table 
+ */
+  clear(table: Table) {
+    table.clear();
+  }
+  
 }
