@@ -81,6 +81,7 @@ export class CustomerCollectionComponent implements OnInit {
         {  field: 'balanceAge30', header: '30-45', type: "text" },
         {  field: 'fourtySixty', header: '45-60', type: "text" },
         {  field: 'sixtyPlus', header: '60+', type: "text" },
+        {  field: 'createDate', header: 'orderDate', type: "text" },
       
     ];
  
@@ -246,6 +247,10 @@ setCustomer(cName){
 
     const result = await this.apiService.getData(`contacts/get/customer/collection/all?customer=${this.printData.cName}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
     this.printData.orders = result.Items[0].orders
+    for(let order of this.printData.orders){
+      const createDate = order.createdDate
+      console.log('createDate0',createDate)
+    }
     let ngbModalOptions: NgbModalOptions = {
       keyboard: true,
       windowClass: "preview--report"
@@ -255,23 +260,6 @@ setCustomer(cName){
     )
     event.target.disabled=false
   }
-  
-  
-  //   async showReport(event:any, data:any) {
-  //   event.target.disabled = true;
-  // // this.printData = data
-
-  //   const result = await this.apiService.getData(`contacts/get/customer/collection/all?customer=${data.cName}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
-  //   data.orders = result.Items[0].orders
-  //   let ngbModalOptions: NgbModalOptions = {
-  //     keyboard: true,
-  //     windowClass: "preview--report"
-  //   };
-  //   this.previewRef = this.modalService.open(this.previewReportModal,
-  //     ngbModalOptions
-  //   )
-  //   event.target.disabled=false
-  // }
   
   
   
