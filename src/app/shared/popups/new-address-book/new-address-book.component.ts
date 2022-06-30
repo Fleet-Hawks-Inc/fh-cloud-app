@@ -83,7 +83,7 @@ export class NewAddressBookComponent implements OnInit {
 
 
 
-
+  formModalRef: any;
   updateButton: boolean = false;
   suggestions = [];
   actualSuggestions = [];
@@ -110,8 +110,10 @@ export class NewAddressBookComponent implements OnInit {
     cName: '',
     dba: '',
     workPhone: '',
+    workPhone1: '',
     workEmail: '',
     eTypes: [],
+    secondaryEmails: [],
     adrs: [{
       careOption: '',
       aType: 'Billing Address',
@@ -146,7 +148,7 @@ export class NewAddressBookComponent implements OnInit {
     }],
     data: []
   }
-
+  secondaryEmails;
   unitTypes = [
     {
       value: 'broker',
@@ -252,6 +254,7 @@ export class NewAddressBookComponent implements OnInit {
           this.carriers = [];
         });
         this.lastKey = '';
+        this.updateButton = false;
         this.fetchUnits();
       } else if (res === 'form') {
         this.bType = false;
@@ -301,12 +304,13 @@ export class NewAddressBookComponent implements OnInit {
         let ngbModalOptions: NgbModalOptions = {
           backdrop: 'static',
           keyboard: false,
-          windowClass: 'units-form__main'
+          windowClass: 'units-form__main',
+          backdropClass: 'light-backdrop'
         };
-        this.modalService.dismissAll();
-        const modalRef = this.modalService.open(this.newUnitModal, ngbModalOptions)
+        // this.modalService.dismissAll();
+        this.formModalRef = this.modalService.open(this.newUnitModal, ngbModalOptions)
         this.imageText = 'Add Picture';
-        modalRef.result.then((data) => {
+        this.formModalRef.result.then((data) => {
           this.emptyEntry();
         }, (reason) => {
           this.emptyEntry();
@@ -399,7 +403,7 @@ export class NewAddressBookComponent implements OnInit {
 
   getSuggestions = _.debounce(function (value) {
     if (value != '') {
-      value = value.toLowerCase()
+      value = encodeURIComponent(value.toLowerCase())
       this.apiService
         .getData(`address-book/suggestion/${value}`)
         .subscribe((result) => {
@@ -476,7 +480,7 @@ export class NewAddressBookComponent implements OnInit {
           this.shippers.push(element)
         }
       });
-      if (this.carriers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+      if (this.shippers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
     } else if (item === 'receiver') {
       this.receivers = [];
       this.units.forEach(element => {
@@ -529,7 +533,9 @@ export class NewAddressBookComponent implements OnInit {
       dba: '',
       workPhone: '',
       workEmail: '',
+      workPhone1: '',
       eTypes: [],
+      secondaryEmails: [],
       adrs: [{
         careOption: '',
         aType: 'Billing Address',
@@ -1136,133 +1142,156 @@ export class NewAddressBookComponent implements OnInit {
     if (isValid) {
       this.hideErrors();
       this.unitDisabled = true;
-      for (let i = 0; i < this.unitData.adrs.length; i++) {
-        const element = this.unitData.adrs[i];
-        if (element.manual === true) {
-          let data = {
-            address1: element.add1,
-            address2: element.add2,
-            cityName: element.ctyName,
-            stateName: element.sName,
-            countryName: element.cName,
-            zipCode: element.zip
-          }
-          $('#addressErr' + i).css('display', 'none');
-          let result = await this.newGeoCode(data);
-          if (result == null) {
-            $('#addressErr' + i).css('display', 'block');
+      let isFlag = true;
+      let userEmails = [];
+      if (this.unitData.secondaryEmails.length > 0) {
+        const re =
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        this.unitData.secondaryEmails.forEach((elem) => {
+          let result = re.test(String(elem.label).toLowerCase());
+          if (!result) {
+            this.toastr.error("Please enter valid email(s)");
             this.unitDisabled = false;
-            return false;
-          }
-          if (result != undefined || result != null) {
-            element.geoCords = result;
-          }
-        } else {
-          $('#addressErr' + i).css('display', 'none');
-          if (element.isSuggest != true && element.userLoc != '') {
-            $('#addressErr' + i).css('display', 'block');
-            this.unitDisabled = false;
+            isFlag = false;
             return;
-          }
-        }
-        delete element.states;
-        delete element.cities;
-      }
-      await this.checkCarrierBank(this.unitData);
-      for (let j = 0; j < this.unitData.addlCnt.length; j++) {
-        const element = this.unitData.addlCnt[j];
-        element.flName = element.fName + ' ' + element.lName;
-      }
-
-      if (this.unitData.data.length > 0) {
-        for (let element of this.unitData.data) {
-          if (element.carrierData || element.opData) {
-            const el = element.carrierData ? element.carrierData : element.opData
-            el.ppd.default = false
-            el.pph.default = false
-            el.ppm.default = false
-            el.pp.default = false
-            el.pfr.default = false
-            switch (el.pType) {
-              case "ppd":
-                el.ppd.default = true
-                break;
-              case "pph":
-                el.pph.default = true
-                break;
-              case "pp":
-                el.pp.default = true
-                break;
-              case "ppm":
-                el.ppm.default = true
-                break;
-              case "pfr":
-                el.pfr.default = true
-                break;
-
+          } else {
+            if (!userEmails.includes(elem.label)) {
+              userEmails.push(elem.label);
             }
-            el.paymentOption = [el.pp, el.ppd, el.pph, el.ppm, el.pfr]
-            delete el.pType
-            delete el.pp
-            delete el.ppd
-            delete el.pph
-            delete el.ppm
-            delete el.pfr
-            if (element.carrierData) element.carrierData = el
-            if (element.opData) element.opData = el
-          }
-        }
-      }
-      // create form data instance
-      const formData = new FormData();
-      formData.append('data', JSON.stringify(this.unitData));
-      this.apiService.postData('address-book', formData, true).
-        subscribe({
-          complete: () => { },
-          error: (err: any) => {
-            this.unitDisabled = false;
-            from(err.error)
-              .pipe(
-                map((val: any) => {
-                  val.message = val.message.replace(/".*"/, 'This Field');
-                  this.errors[val.context.key] = val.message;
-                })
-              )
-              .subscribe({
-                complete: () => {
-                  this.throwErrors();
-                  this.hasError = true;
-                  this.Error = 'Please see the errors';
-                },
-                error: () => {
-                  this.unitDisabled = false;
-                },
-                next: () => { },
-              });
-          },
-          next: (res) => {
-            // this.response = res;
-            this.hasSuccess = true;
-            this.unitDisabled = false;
-            this.dataMessage = Constants.FETCHING_DATA;
-            this.lastKey = '';
-            this.emptyTabs();
-            this.showMainModal();
-            this.listService.fetchContactsByIDs();
-            if (this.unitData.eTypes.includes('owner_operator')) {
-              this.listService.fetchOwnerOperators();
-            } else if (this.unitData.eTypes.includes('shipper')) {
-              this.listService.fetchShippers();
-            } else if (this.unitData.eTypes.includes('receiver')) {
-              this.listService.fetchReceivers();
-            } else if (this.unitData.eTypes.includes('vendor')) {
-              this.listService.fetchVendors();
-            } else if (this.unitData.eTypes.includes('customer')) {
-              this.listService.fetchCustomers();
-            }
-            this.toastr.success('Entry added successfully');
           }
         });
+      }
+      if (isFlag) {
+        this.unitData.secondaryEmails = userEmails;
+        for (let i = 0; i < this.unitData.adrs.length; i++) {
+          const element = this.unitData.adrs[i];
+          if (element.manual === true) {
+            let data = {
+              address1: element.add1,
+              address2: element.add2,
+              cityName: element.ctyName,
+              stateName: element.sName,
+              countryName: element.cName,
+              zipCode: element.zip
+            }
+            $('#addressErr' + i).css('display', 'none');
+            let result = await this.newGeoCode(data);
+            if (result == null) {
+              $('#addressErr' + i).css('display', 'block');
+              this.unitDisabled = false;
+              return false;
+            }
+            if (result != undefined || result != null) {
+              element.geoCords = result;
+            }
+          } else {
+            $('#addressErr' + i).css('display', 'none');
+            if (element.isSuggest != true && element.userLoc != '') {
+              $('#addressErr' + i).css('display', 'block');
+              this.unitDisabled = false;
+              return;
+            }
+          }
+          delete element.states;
+          delete element.cities;
+        }
+        await this.checkCarrierBank(this.unitData);
+        for (let j = 0; j < this.unitData.addlCnt.length; j++) {
+          const element = this.unitData.addlCnt[j];
+          element.flName = element.fName + ' ' + element.lName;
+        }
+
+        if (this.unitData.data.length > 0) {
+          for (let element of this.unitData.data) {
+            if (element.carrierData || element.opData) {
+              const el = element.carrierData ? element.carrierData : element.opData
+              el.ppd.default = false
+              el.pph.default = false
+              el.ppm.default = false
+              el.pp.default = false
+              el.pfr.default = false
+              switch (el.pType) {
+                case "ppd":
+                  el.ppd.default = true
+                  break;
+                case "pph":
+                  el.pph.default = true
+                  break;
+                case "pp":
+                  el.pp.default = true
+                  break;
+                case "ppm":
+                  el.ppm.default = true
+                  break;
+                case "pfr":
+                  el.pfr.default = true
+                  break;
+
+              }
+              el.paymentOption = [el.pp, el.ppd, el.pph, el.ppm, el.pfr]
+              delete el.pType
+              delete el.pp
+              delete el.ppd
+              delete el.pph
+              delete el.ppm
+              delete el.pfr
+              if (element.carrierData) element.carrierData = el
+              if (element.opData) element.opData = el
+            }
+          }
+        }
+
+        // create form data instance
+        const formData = new FormData();
+        formData.append('data', JSON.stringify(this.unitData));
+        this.apiService.postData('address-book', formData, true).
+          subscribe({
+            complete: () => { },
+            error: (err: any) => {
+              this.unitDisabled = false;
+              from(err.error)
+                .pipe(
+                  map((val: any) => {
+                    val.message = val.message.replace(/".*"/, 'This Field');
+                    this.errors[val.context.key] = val.message;
+                  })
+                )
+                .subscribe({
+                  complete: () => {
+                    this.throwErrors();
+                    this.hasError = true;
+                    this.Error = 'Please see the errors';
+                  },
+                  error: () => {
+                    this.unitDisabled = false;
+                  },
+                  next: () => { },
+                });
+            },
+            next: (res) => {
+              // this.response = res;
+              this.hasSuccess = true;
+              this.unitDisabled = false;
+              this.dataMessage = Constants.FETCHING_DATA;
+              this.lastKey = '';
+              this.emptyTabs();
+              this.showMainModal();
+              this.listService.fetchContactsByIDs();
+              if (this.unitData.eTypes.includes('owner_operator')) {
+                this.listService.fetchOwnerOperators();
+              } else if (this.unitData.eTypes.includes('shipper')) {
+                this.listService.fetchShippers();
+              } else if (this.unitData.eTypes.includes('receiver')) {
+                this.listService.fetchReceivers();
+              } else if (this.unitData.eTypes.includes('vendor')) {
+                this.listService.fetchVendors();
+              } else if (this.unitData.eTypes.includes('customer')) {
+                this.listService.fetchCustomers();
+              }
+              this.toastr.success('Entry added successfully');
+            }
+          });
+      }
     }
   }
 
@@ -1323,133 +1352,192 @@ export class NewAddressBookComponent implements OnInit {
       this.hasSuccess = false;
       this.unitDisabled = true;
       this.hideErrors();
-      for (let i = 0; i < this.unitData.adrs.length; i++) {
-        const element = this.unitData.adrs[i];
-        if (element.manual === true) {
-          let data = {
-            address1: element.add1,
-            address2: element.add2,
-            cityName: element.ctyName,
-            stateName: element.sName,
-            countryName: element.cName,
-            zipCode: element.zip
-          }
-          $('#addressErr' + i).css('display', 'none');
-          let result = await this.newGeoCode(data);
-
-          if (result == null) {
-            $('#addressErr' + i).css('display', 'block');
-            return false;
-          }
-          if (result != undefined || result != null) {
-            element.geoCords = result;
-          }
-        } else {
-          $('#addressErr' + i).css('display', 'none');
-          if (element.isSuggest != true && element.userLoc != '') {
-            $('#addressErr' + i).css('display', 'block');
+      let isFlag = true;
+      let userEmails = [];
+      if (this.unitData.secondaryEmails.length > 0) {
+        const re =
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        this.unitData.secondaryEmails.forEach((elem) => {
+          let result = re.test(String(elem.label).toLowerCase());
+          if (!result) {
+            this.toastr.error("Please enter valid email(s)");
+            this.unitDisabled = false;
+            isFlag = false;
             return;
-          }
-        }
-        delete element.states;
-        delete element.cities;
-      }
-      for (let j = 0; j < this.unitData.addlCnt.length; j++) {
-        const element = this.unitData.addlCnt[j];
-        element.flName = element.fName + ' ' + element.lName;
-      }
-      // create form data instance
-      const formData = new FormData();
-      //append photos if any
-      for (let i = 0; i < this.uploadedPhotos.length; i++) {
-        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-      }
-      //append other fields
-      if (this.unitData.data.length > 0) {
-        for (let element of this.unitData.data) {
-          if (element.carrierData || element.opData) {
-            const el = element.carrierData ? element.carrierData : element.opData
-           if(el.ppd) el.ppd.default = false
-            if(el.pph) el.pph.default = false
-            if(el.ppm) el.ppm.default = false
-            if(el.pp) el.pp.default = false
-            if(el.pfr) el.pfr.default = false
-            switch (el.pType) {
-              case "ppd":
-                el.ppd.default = true
-                break;
-              case "pph":
-                el.pph.default = true
-                break;
-              case "pp":
-                el.pp.default = true
-                break;
-              case "ppm":
-                el.ppm.default = true
-                break;
-              case "pfr":
-                el.pfr.default = true
-                break;
-
+          } else {
+            if (!userEmails.includes(elem.label)) {
+              userEmails.push(elem.label);
             }
-            el.paymentOption = [el.pp, el.ppd, el.pph, el.ppm, el.pfr]
-           if(el.pType) delete el.pType
-           if(el.pp) delete el.pp
-            if(el.ppd) delete el.ppd
-            if(el.pph) delete el.pph
-            if(el.ppm) delete el.ppm
-            if(el.pfr) delete el.pfr
-            if (element.carrierData) element.carrierData = el
-            if (element.opData) element.opData = el
+          }
+        });
+      }
+      if (isFlag) {
+        this.unitData.secondaryEmails = userEmails;
+        for (let i = 0; i < this.unitData.adrs.length; i++) {
+          const element = this.unitData.adrs[i];
+          if (element.manual === true) {
+            let data = {
+              address1: element.add1,
+              address2: element.add2,
+              cityName: element.ctyName,
+              stateName: element.sName,
+              countryName: element.cName,
+              zipCode: element.zip
+            }
+            $('#addressErr' + i).css('display', 'none');
+            let result = await this.newGeoCode(data);
+
+            if (result == null) {
+              $('#addressErr' + i).css('display', 'block');
+              return false;
+            }
+            if (result != undefined || result != null) {
+              element.geoCords = result;
+            }
+          } else {
+            $('#addressErr' + i).css('display', 'none');
+            if (element.isSuggest != true && element.userLoc != '') {
+              $('#addressErr' + i).css('display', 'block');
+              return;
+            }
+          }
+          delete element.states;
+          delete element.cities;
+        }
+        for (let j = 0; j < this.unitData.addlCnt.length; j++) {
+          const element = this.unitData.addlCnt[j];
+          element.flName = element.fName + ' ' + element.lName;
+        }
+        // create form data instance
+        const formData = new FormData();
+        //append photos if any
+        for (let i = 0; i < this.uploadedPhotos.length; i++) {
+          formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+        }
+        //append other fields
+        if (this.unitData.data.length > 0) {
+          for (let element of this.unitData.data) {
+            if (element.carrierData || element.opData) {
+              const el = element.carrierData ? element.carrierData : element.opData
+              if (el.ppd) el.ppd.default = false
+              if (el.pph) el.pph.default = false
+              if (el.ppm) el.ppm.default = false
+              if (el.pp) el.pp.default = false
+              if (el.pfr) el.pfr.default = false
+              switch (el.pType) {
+                case "ppd":
+                  el.ppd.default = true
+                  break;
+                case "pph":
+                  el.pph.default = true
+                  break;
+                case "pp":
+                  el.pp.default = true
+                  break;
+                case "ppm":
+                  el.ppm.default = true
+                  break;
+                case "pfr":
+                  el.pfr.default = true
+                  break;
+
+              }
+              el.paymentOption = [el.pp, el.ppd, el.pph, el.ppm, el.pfr]
+              if (el.pType) delete el.pType
+              if (el.pp) delete el.pp
+              if (el.ppd) delete el.ppd
+              if (el.pph) delete el.pph
+              if (el.ppm) delete el.ppm
+              if (el.pfr) delete el.pfr
+              if (element.carrierData) element.carrierData = el
+              if (element.opData) element.opData = el
+            }
           }
         }
-      }
-      formData.append('data', JSON.stringify(this.unitData));
-      this.apiService.putData('address-book', formData, true).subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          this.unitDisabled = false;
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-                this.hasError = true;
-                this.unitDisabled = false;
-                this.Error = 'Please see the errors';
-              },
-              error: () => {
-                this.unitDisabled = false;
-              },
-              next: () => { },
+        formData.append('data', JSON.stringify(this.unitData));
+        this.apiService.putData('address-book', formData, true).subscribe({
+          complete: () => { },
+          error: (err: any) => {
+            this.unitDisabled = false;
+            from(err.error)
+              .pipe(
+                map((val: any) => {
+                  val.message = val.message.replace(/".*"/, 'This Field');
+                  this.errors[val.context.key] = val.message;
+                })
+              )
+              .subscribe({
+                complete: () => {
+                  this.throwErrors();
+                  this.hasError = true;
+                  this.unitDisabled = false;
+                  this.Error = 'Please see the errors';
+                },
+                error: () => {
+                  this.unitDisabled = false;
+                },
+                next: () => { },
+              });
+          },
+          next: (res) => {
+            this.hasSuccess = true;
+            this.unitDisabled = false;
+            this.listService.fetchContactsByIDs();
+            if (this.unitData.eTypes.includes('owner_operator')) {
+              this.listService.fetchOwnerOperators();
+            } else if (this.unitData.eTypes.includes('shipper')) {
+              this.listService.fetchShippers();
+            } else if (this.unitData.eTypes.includes('receiver')) {
+              this.listService.fetchReceivers();
+            } else if (this.unitData.eTypes.includes('vendor')) {
+              this.listService.fetchVendors();
+            } else if (this.unitData.eTypes.includes('customer')) {
+              this.listService.fetchCustomers();
+            }
+            const index = this.units.findIndex(object => {
+              return object.cName === this.unitData.cName && object.workPhone === this.unitData.workPhone && object.workEmail === this.unitData.workEmail;
             });
-        },
-        next: (res) => {
-          this.hasSuccess = true;
-          this.unitDisabled = false;
-          this.dataMessage = Constants.FETCHING_DATA;
-          this.emptyTabs();
-          this.listService.fetchContactsByIDs();
-          if (this.unitData.eTypes.includes('owner_operator')) {
-            this.listService.fetchOwnerOperators();
-          } else if (this.unitData.eTypes.includes('shipper')) {
-            this.listService.fetchShippers();
-          } else if (this.unitData.eTypes.includes('receiver')) {
-            this.listService.fetchReceivers();
-          } else if (this.unitData.eTypes.includes('vendor')) {
-            this.listService.fetchVendors();
-          } else if (this.unitData.eTypes.includes('customer')) {
-            this.listService.fetchCustomers();
-          }
-          this.listService.triggerModal('list');
-          this.toastr.success('Entry updated successfully');
-        },
-      });
+            this.units.splice(index, 1);
+            this.units.unshift({
+              cName: this.unitData.cName,
+              address: this.unitData.adrs,
+              workPhone: this.unitData.workPhone,
+              workEmail: this.unitData.workEmail,
+              eTypes: this.unitData.eTypes,
+              contactID: this.unitData['contactID']
+            })
+            this.formModalRef.close();
+            this.units.forEach(element => {
+              if (element.eTypes.includes('customer')) {
+                this.customers.push(element);
+              } else if (element.eTypes.includes('broker')) {
+                this.brokers.push(element);
+              } else if (element.eTypes.includes('carrier')) {
+                this.carriers.push(element);
+              } else if (element.eTypes.includes('shipper')) {
+                this.shippers.push(element);
+              } else if (element.eTypes.includes('receiver')) {
+                this.receivers.push(element);
+              } else if (element.eTypes.includes('fc')) {
+                this.fcCompanies.push(element);
+              } else if (element.eTypes.includes('vendor')) {
+                this.vendors.push(element);
+              } else if (element.eTypes.includes('owner_operator')) {
+                this.owners.push(element);
+              }
+            });
+            if (this.customers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+            if (this.brokers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+            if (this.carriers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+            if (this.shippers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+            if (this.receivers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+            if (this.fcCompanies.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+            if (this.vendors.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+            if (this.owners.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.toastr.success('Entry updated successfully');
+          },
+        });
+      }
     }
   }
 
@@ -1484,7 +1572,7 @@ export class NewAddressBookComponent implements OnInit {
   fetchUnits() {
     this.dataMessage = Constants.FETCHING_DATA;
     if (this.lastKey !== 'end') {
-      this.apiService.getData(`address-book/fetch/records?lastKey=${this.lastKey}&updatedKey=${this.updatedKey}&companyName=` + this.filterVal.cName).subscribe(res => {
+      this.apiService.getData(`address-book/fetch/records?lastKey=${this.lastKey}&updatedKey=${this.updatedKey}&companyName=` + encodeURIComponent(this.filterVal.cName)).subscribe(res => {
         if (res.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
@@ -1508,6 +1596,15 @@ export class NewAddressBookComponent implements OnInit {
             this.owners.push(element);
           }
         });
+        if (this.customers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+        if (this.brokers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+        if (this.carriers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+        if (this.shippers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+        if (this.receivers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+        if (this.fcCompanies.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+        if (this.vendors.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+        if (this.owners.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+
         if (this.units.length > 0) {
           if (this.units[this.units.length - 1].contactSK != undefined) {
             this.lastKey = this.units[this.units.length - 1].contactSK.replace(/#/g, '--');
@@ -1515,6 +1612,7 @@ export class NewAddressBookComponent implements OnInit {
           } else {
             this.lastKey = 'end';
           }
+
           this.allData = this.units;
         }
         this.isSearched = false;
@@ -1573,6 +1671,22 @@ export class NewAddressBookComponent implements OnInit {
       this.unitData.dba = res.dba;
       this.unitData.workEmail = res.workEmail;
       this.unitData.workPhone = res.workPhone;
+      this.unitData.workPhone1 = res.workPhone1 ? res.workPhone1 : '';
+      if (res.secondaryEmails && res.secondaryEmails.length > 0) {
+        let emails = [];
+        this.unitData.secondaryEmails = [];
+        for (const iterator of res.secondaryEmails) {
+          if (this.updateButton) {
+            emails.push({ label: iterator })
+          }
+          if (!this.updateButton) {
+            emails.push(iterator)
+          }
+        }
+        this.unitData.secondaryEmails = emails;
+      } else {
+        this.unitData.secondaryEmails = [];
+      }
       this.unitData.adrs = res.adrs;
       for (let index = 0; index < this.unitData.adrs.length; index++) {
         const element = this.unitData.adrs[index];
@@ -1701,7 +1815,9 @@ export class NewAddressBookComponent implements OnInit {
       dba: '',
       workPhone: '',
       workEmail: '',
+      workPhone1: '',
       eTypes: [],
+      secondaryEmails: [],
       adrs: [{
         careOption: '',
         aType: null,

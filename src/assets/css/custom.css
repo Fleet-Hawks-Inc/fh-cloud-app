@@ -648,6 +648,7 @@
   .grightbox2 {
     right: 0px;
   }
+
   .gmainbox2 {
     float: left;
     overflow-x: scroll;
@@ -2697,12 +2698,11 @@ td.loadid a {
 
 .btn-fleet {
   color: rgb(0, 0, 0);
-  background-color: #f0f1f2;
-  border-radius: 10px;
-  padding: 5px;
+  border-radius: 0px;
+  padding: 8px;
   background-image: none;
   font-size: 13px;
-  border-color: #f0f1f2;
+  border-color: #dedede;
   font-weight: 600;
 }
 
@@ -2870,7 +2870,7 @@ td.loadid a {
 /* width */
 
 .w100 {
-  width: 100%;
+  width: 100% !important;
 }
 
 .w25 {
@@ -2951,6 +2951,12 @@ td.loadid a {
 
 .LH16 {
   line-height: 16px !important;
+}
+.LH20 {
+  line-height: 16px !important;
+}
+.LH28 {
+  line-height: 28px !important;
 }
 
 /* cursor */
@@ -4085,13 +4091,16 @@ input:checked + .sliderbtn:before {
 .assign-confirm__main.modal .modal-dialog {
   max-width: 500px;
 }
+
 .doc-type__main.modal .modal-dialog,
 .docs-selection__main.modal .modal-dialog {
   max-width: 500px;
 }
+
 .modal-open .docs-selection__main.modal {
   background: rgb(0 0 0 / 22%);
 }
+
 /* 04.09.21 account classes */
 
 .detailbox {
@@ -4330,6 +4339,7 @@ input:checked + .sliderbtn:before {
 .logs-model .modal-dialog {
   max-width: 900px !important;
 }
+
 .header-title {
   margin-left: 10px;
   margin-top: 5px;
@@ -4365,4 +4375,16 @@ input:checked + .sliderbtn:before {
   color: #333333;
   font-family: Roboto, Arial;
   font-size: 13px;
+}
+.p-overlaypanel .p-overlaypanel-close {
+  z-index: 9;
+}
+.p-overlaypanel:after {
+  margin-left: -20px !important;
+}
+.p-overlaypanel:before {
+  margin-left: -25px !important;
+}
+.notifications-sidebar .p-tabview-panels {
+  padding: 0;
 }

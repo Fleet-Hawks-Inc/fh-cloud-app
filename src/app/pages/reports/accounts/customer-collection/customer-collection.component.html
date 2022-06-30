@@ -144,434 +144,280 @@
         </div>
       </header>
 
-      <div class="m-2">
-        <div class="row text-dark">
-          <div class="col-12 mb-3">
-            <div class="bg-white p-3">
-              <div class="row text-dark">
-                <div class="col-12">
-                  <div>
-                    <h4 class="mt-1 mb-0 font-weight-bold">
-                      Customer Collection Report
-                    </h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div class="col-12">
-            <div class="card">
-              <div class="card-body bor-radius0px">
-                <section class="reports_div">
-                  <div class="setHeight">
-                    <ngx-datatable
-                      #myTable
-                      class="bootstrap expandable fixedTable"
-                      [rows]="customerCollection"
-                      [rowHeight]="rowHeight"
-                      [scrollbarV]="true"
-                      [columnMode]="ColumnMode.standard"
-                      [messages]="{ emptyMessage: dataMessage }"
-                      (scroll)="onScroll($event.offsetY)"
-                    >
-                      <ngx-datatable-row-detail
-                        [rowHeight]="400"
-                        #myDetailRow
-                        (toggle)="onDetailToggle($event)"
-                      >
-                        <ng-template
-                          let-row="row"
-                          let-expanded="expanded"
-                          ngx-datatable-row-detail-template
-                        >
-                          <div class="h-100" style="padding-left: 35px">
-                            <div class="row h-100">
-                              <div class="col-lg-5 h-100">
-                                <strong>Last 10 Orders</strong>
-                                <table
-                                  class="w-100 h-90 table-bordered table-striped"
-                                >
-                                  <thead>
-                                    <tr>
-                                      <th>Order#</th>
-                                      <th>Confirmation#</th>
-                                      <th>Type</th>
-                                      <th>Miles</th>
-                                      <th>Amount</th>
-                                      <th>Status</th>
-                                      <th>Invoice Generated</th>
-                                      <th>Invoice Date</th>
-                                      <th>Invoice No</th>
-                                      <th>Invoice Status</th>
-                                      <th>Received</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr
-                                      *ngIf="row.orders.length == 0"
-                                      class="text-center"
+
+
+
+
+   <section class="m-2">
+     <div class="row mb-3">
+       <div class="col-lg-12">
+         <div class="bg-white p-3 text-dark">
+           <div class="form-group row pt-2">
+             <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
+               <p-table #myTable [value]="customerCollection" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded" styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped" [loading]="!loaded" scrollHeight="100%" responsiveLayout="scroll">
+                 <ng-template pTemplate="caption">
+                   <div class="p-d-flex d-flex justify-content-between align-items-center">
+                     <div>
+                       <h3 class="m-0"> Customer Collection Report </h3>
+                     </div>
+                     <div class="text-right">
+                       <span>Showing {{customerCollection.length}} entries</span> &nbsp;
+                       <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                       <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" (click)="clear(myTable)" icon="pi pi-filter-slash"></button>
+                       <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
+                       </p-multiSelect>
+                     </div>
+                   </div>
+                 </ng-template>
+                 <ng-template pTemplate="header" let-columns>
+                   <tr>
+                     <th *ngFor="let column of dataColumns" [pSortableColumn]="column.field" pResizableColumn [ngStyle]="{'width': column.width}">
+                       <span>
+                         <div class="flex justify-content-center align-items-center" alignFrozen="right" pFrozenColumn [frozen]="true">
+                           {{column.header}}
+                           <p-sortIcon [field]="column.field">
+                           </p-sortIcon>
+                           <p-columnFilter [type]="column.type" [field]="column.field" matchMode="contains" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
+                           </p-columnFilter>
+                         </div>
+                       </span>
+                     </th>
+                     <th style="width: 130px" alignFrozen="right" pFrozenColumn [frozen]="true">
+                       Actions
+                     </th>
+                   </tr>
+                 </ng-template>
+   
+   
+                 <ng-template pTemplate="body" let-customer let-columns="columns" let-rowIndex="rowIndex">
+                   <tr>
+                     <td *ngFor="let dataColumns of columns"  style=" font-size: 13px; margin-top: 10px text-dark cursor: pointer">
+                       <div [ngSwitch]="dataColumns.field">
+                      
+                      <span *ngSwitchCase="'cName'">
+                        <span class="line-height-lg text-capitalize">
+                          {{customer.cName}}
+                        </span>
+                      </span>
+
+
+                       <span *ngSwitchCase="'totalAmount'">
+                         <p style="font-size: 13px; margin-top: 10px">
+                           <span *ngIf="
+                                      customer.totalAmount.cad == 0 &&
+                                        customer.totalAmount.usd == 0;
+                                      else elseblock
+                                    ">
+                             -
+                           </span>
+                           <ng-template #elseblock>
+                             <span *ngIf="customer.totalAmount.cad != 0">{{
+                                        customer.totalAmount.cad
+                                          | currency: "CAD"
+                                      }}</span>
+                             <span *ngIf="customer.totalAmount.cad == 0">-</span><br />
+                             <span *ngIf="customer.totalAmount.usd != 0">US{{
+                                        customer.totalAmount.usd
+                                          | currency: "USD"
+                                      }}</span>
+                             <span *ngIf="customer.totalAmount.usd == 0">-</span>
+                           </ng-template>
+                         </p>
+                       </span>
+                       <span *ngSwitchCase="'amountReceived'">
+                           <p style="font-size: 13px; margin-top: 10px">
+                                  <span
+                                    *ngIf="
+                                      customer.amountReceived.cad == 0 &&
+                                        customer.amountReceived.usd == 0;
+                                      else elseblock1
+                                    "
+                                  >
+                                    -
+                                  </span>
+                                  <ng-template #elseblock1>
+                                    <span
+                                      *ngIf="customer.amountReceived.cad != 0"
+                                      >{{
+                                        customer.amountReceived.cad
+                                          | currency: "CAD"
+                                      }}</span
                                     >
-                                      <td colspan="7">No Records Found</td>
-                                    </tr>
-                                    <tr *ngFor="let order of row.orders">
-                                      <td>{{ order.orderNumber }}</td>
-                                      <td>{{ order.cusConfirmation }}</td>
-                                      <td>{{ order.orderMode }}</td>
-                                      <td>{{ order.milesInfo.totalMiles }}</td>
-                                      <td>
-                                        {{
-                                          order.finalAmount
-                                            | currency
-                                              : order.charges.freightFee
-                                                  .currency
-                                        }}
-                                      </td>
-                                      <td>
-                                        <span class="badge badge-dark">{{
-                                          order.orderStatus
-                                        }}</span>
-                                      </td>
-                                      <td>{{ order.invoiceGenerate }}</td>
-                                      <td>
-                                        <span *ngIf="order.invDate">{{
-                                          order.invDate
-                                        }}</span>
-                                        <span *ngIf="!order.invDate">-</span>
-                                      </td>
-                                      <td>
-                                        <span *ngIf="order.invNo">{{
-                                          order.invNo
-                                        }}</span>
-                                        <span *ngIf="!order.invNo">-</span>
-                                      </td>
-                                      <td>
-                                        <span
-                                          *ngIf="order.invStat"
-                                          class="badge badge-dark"
-                                          >{{ order.invStat }}</span
-                                        >
-                                        <span *ngIf="!order.invStat">-</span>
-                                      </td>
-                                      <td>
-                                        <span *ngIf="order.paid">{{
-                                          order.paid
-                                        }}</span>
-                                        <span *ngIf="!order.paid">-</span>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <div></div>
-                              <!-- <div class="col-lg-5 m-auto">
-                                <div>
-                                  <strong>Invoice Aging</strong>
-                                  <table class="table table-bordered w-50 ">
-                                    <thead>
-                                      <tr>
-                                        <th>
-                                          Aging
-                                        </th>
-                                        <th>
-                                          Balance
-                                        </th>
-                                      </tr>
-
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <td>30-45</td>
-                                        <td>{{row.balanceAge30.cad | currency:"CAD"}}
-                                          <br />US{{row.balanceAge30.usd | currency:"USD"}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>45-60</td>
-                                        <td>{{row.balanceAge45.cad | currency:"CAD"}}
-                                          <br />US{{row.balanceAge45.usd | currency:"USD"}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>60-90</td>
-                                        <td>{{row.balanceAge60.cad | currency:"CAD"}}
-                                          <br />US{{row.balanceAge60.usd | currency:"USD"}}</td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </div>
-
-                              </div> -->
-                            </div>
-                            <!-- <ngx-datatable class="bootstrap" [rows]="row.orders" [rowHeight]="20" [columns]="[{
-                            name:'Order#', prop:'orderNumber'
-                          },
-                          {name:'Confirmation', prop:'cusConfirmation'},
-                          {name:'Type',prop:'orderMode'},
-                          {name:'Miles',prop:'milesInfo.totalMiles'},
-                          {name:'Amount',prop:'finalAmount'},
-                          {name:'Currency',prop:'charges.freightFee.currency'},
-                          {name:'Status', prop:'orderStatus'},
-                          {name:'Invoice', prop:'invoiceGenerate'}]">
-                        </ngx-datatable> -->
-                          </div>
-                        </ng-template>
-                      </ngx-datatable-row-detail>
-                      <!-- <ngx-datatable-column [width]="20" [resizeable]="false" [sortable]="false" [draggable]="false"
-                        [canAutoResize]="false">
-                        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
-                          <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded"
-                            [class.datatable-icon-down]="expanded" title="Expand/Collapse Row"
-                            (click)="toggleExpandRow(row, expanded)">
-                          </a>
-                        </ng-template>
-                      </ngx-datatable-column> -->
-
-                      <ngx-datatable-column name="Customer" prop="cName">
-                        <ng-template
-                          ngx-datatable-cell-template
-                          let-rowIndex="rowIndex"
-                          let-value="value"
-                          let-row="row"
-                        >
-                          <span *ngIf="value == ''">-</span>
-                          <span *ngIf="value">{{ value | titlecase }}</span>
-                        </ng-template>
-                      </ngx-datatable-column>
-                      <ngx-datatable-column
-                        name="Email"
-                        prop="workEmail"
-                        [width]="200"
-                        [sortable]="false"
-                      >
-                      </ngx-datatable-column>
-                      <ngx-datatable-column
-                        name="Phone"
-                        prop="workPhone"
-                        [sortable]="false"
-                      >
-                      </ngx-datatable-column>
-                      <ngx-datatable-column name="Orders" prop="totalOrders">
-                      </ngx-datatable-column>
-                      <ngx-datatable-column
-                        name="Delivered"
-                        prop="deliveredOrders"
-                      >
-                      </ngx-datatable-column>
-                      <!-- <ngx-datatable-column name="Invoice Generated" prop="invoiceGenerated">
-                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
-                          let-row="row">
-                          <span *ngIf="value == 0">-</span>
-                          <span *ngIf="value != 0">{{ value }}</span>
-                        </ng-template>
-                      </ngx-datatable-column> -->
-                      <ngx-datatable-column
-                        name="Total Amount"
-                        prop="totalAmount"
-                        [sortable]="false"
-                      >
-                        <ng-template
-                          ngx-datatable-cell-template
-                          let-rowIndex="rowIndex"
-                          let-value="value"
-                          let-row="row"
-                        >
-                          <span
-                            *ngIf="
-                              value.cad == 0 && value.usd == 0;
-                              else elseblock
-                            "
-                          >
-                            -
-                          </span>
-                          <ng-template #elseblock>
-                            <span *ngIf="value.cad != 0">{{
-                              value.cad | currency: "CAD"
-                            }}</span>
-                            <span *ngIf="value.cad == 0">-</span><br />
-                            <span *ngIf="value.usd != 0"
-                              >US{{ value.usd | currency: "USD" }}</span
+                                    <span
+                                      *ngIf="customer.amountReceived.cad == 0"
+                                      >-</span
+                                    ><br />
+                                    <span
+                                      *ngIf="customer.amountReceived.usd != 0"
+                                      >US{{
+                                        customer.amountReceived.usd
+                                          | currency: "USD"
+                                      }}</span
+                                    >
+                                    <span
+                                      *ngIf="customer.amountReceived.usd == 0"
+                                      >-</span
+                                    >
+                                  </ng-template>
+                                </p>
+                       </span>
+                       <span *ngSwitchCase="'balancee'">
+                            <p style="font-size: 13px; margin-top: 10px">
+                                  <span
+                                    *ngIf="
+                                      customer.balance.cad == 0 &&
+                                        customer.balance.usd == 0;
+                                      else elseblock2
+                                    "
+                                  >
+                                    -
+                                  </span>
+                                  <ng-template #elseblock2>
+                                    <span *ngIf="customer.balance.cad != 0">{{
+                                      customer.balance.cad | currency: "CAD"
+                                    }}</span>
+                                    <span *ngIf="customer.balance.cad == 0"
+                                      >-</span
+                                    ><br />
+                                    <span *ngIf="customer.balance.usd != 0"
+                                      >US{{
+                                        customer.balance.usd | currency: "USD"
+                                      }}</span
+                                    >
+                                    <span *ngIf="customer.balance.usd == 0"
+                                      >-</span
+                                    >
+                                  </ng-template>
+                                </p>
+                       </span>
+                       <span *ngSwitchCase="'balanceAge30'">
+                          <p style="font-size: 13px; margin-top: 10px">
+                            <span
+                              *ngIf="
+                                customer.balanceAge30.cad == 0 &&
+                                  customer.balanceAge30.usd == 0;
+                                else elseblock3
+                              "
                             >
-                            <span *ngIf="value.usd == 0">-</span>
-                          </ng-template>
-                        </ng-template>
-                      </ngx-datatable-column>
-                      <ngx-datatable-column
-                        name="Amount Received"
-                        prop="amountReceived"
-                        [sortable]="false"
-                      >
-                        <ng-template
-                          ngx-datatable-cell-template
-                          let-rowIndex="rowIndex"
-                          let-value="value"
-                          let-row="row"
-                        >
-                          <span
-                            *ngIf="
-                              value.cad == 0 && value.usd == 0;
-                              else elseblock
-                            "
-                          >
-                            -
-                          </span>
-                          <ng-template #elseblock>
-                            <span *ngIf="value.cad != 0">{{
-                              value.cad | currency: "CAD"
-                            }}</span>
-                            <span *ngIf="value.cad == 0">-</span><br />
-                            <span *ngIf="value.usd != 0"
-                              >US{{ value.usd | currency: "USD" }}</span
+                              -
+                            </span>
+                            <ng-template #elseblock3>
+                              <span *ngIf="customer.balanceAge30.cad != 0">{{
+                                customer.balanceAge30.cad | currency: "CAD"
+                              }}</span>
+                              <span *ngIf="customer.balanceAge30.cad == 0"
+                                >-</span
+                              ><br />
+                              <span *ngIf="customer.balanceAge30.usd != 0"
+                                >US{{
+                                  customer.balanceAge30.usd | currency: "USD"
+                                }}</span
+                              >
+                              <span *ngIf="customer.balanceAge30.usd == 0"
+                                >-</span
+                              >
+                            </ng-template>
+                          </p>
+                       </span>
+                       <span *ngSwitchCase="'fourtySixty'">
+                         <p style="font-size: 13px; margin-top: 10px">
+                            <span
+                              *ngIf="
+                                customer.balanceAge45.cad == 0 &&
+                                  customer.balanceAge45.usd == 0;
+                                else elseblock4
+                              "
                             >
-                            <span *ngIf="value.usd == 0">-</span>
-                          </ng-template>
-                        </ng-template>
-                      </ngx-datatable-column>
-                      <ngx-datatable-column
-                        name="Balance"
-                        prop="balance"
-                        [sortable]="false"
-                      >
-                        <ng-template
-                          ngx-datatable-cell-template
-                          let-rowIndex="rowIndex"
-                          let-value="value"
-                          let-row="row"
-                        >
-                          <span
-                            *ngIf="
-                              value.cad == 0 && value.usd == 0;
-                              else elseblock
-                            "
-                          >
-                            -
-                          </span>
-                          <ng-template #elseblock>
-                            <span *ngIf="value.cad != 0">{{
-                              value.cad | currency: "CAD"
-                            }}</span>
-                            <span *ngIf="value.cad == 0">-</span><br />
-                            <span *ngIf="value.usd != 0"
-                              >US{{ value.usd | currency: "USD" }}</span
+                              -
+                            </span>
+                            <ng-template #elseblock4>
+                              <span *ngIf="customer.balanceAge45.cad != 0">{{
+                                customer.balanceAge45.cad | currency: "CAD"
+                              }}</span>
+                              <span *ngIf="customer.balanceAge45.cad == 0"
+                                >-</span
+                              ><br />
+                              <span *ngIf="customer.balanceAge45.usd != 0"
+                                >US{{
+                                  customer.balanceAge45.usd | currency: "USD"
+                                }}</span
+                              >
+                              <span *ngIf="customer.balanceAge45.usd == 0"
+                                >-</span
+                              >
+                            </ng-template>
+                          </p>
+                       </span>
+                       <span *ngSwitchCase="'sixtyPlus'">
+                            <p style="font-size: 13px; margin-top: 10px">
+                            <span
+                              *ngIf="
+                                customer.balanceAge60.cad == 0 &&
+                                  customer.balanceAge60.usd == 0;
+                                else elseblock5
+                              "
                             >
-                            <span *ngIf="value.usd == 0">-</span>
-                          </ng-template>
-                        </ng-template>
-                      </ngx-datatable-column>
-                      <ngx-datatable-column
-                        name="30-45"
-                        prop="balanceAge30"
-                        [sortable]="false"
-                      >
-                        <ng-template
-                          ngx-datatable-cell-template
-                          let-rowIndex="rowIndex"
-                          let-value="value"
-                          let-row="row"
-                        >
-                          <span
-                            *ngIf="
-                              value.cad == 0 && value.usd == 0;
-                              else elseblock
-                            "
-                          >
-                            -
-                          </span>
-                          <ng-template #elseblock>
-                            <span *ngIf="value.cad != 0">{{
-                              value.cad | currency: "CAD"
-                            }}</span>
-                            <span *ngIf="value.cad == 0">-</span><br />
-                            <span *ngIf="value.usd != 0"
-                              >US{{ value.usd | currency: "USD" }}</span
-                            >
-                            <span *ngIf="value.usd == 0">-</span>
-                          </ng-template>
-                        </ng-template>
-                      </ngx-datatable-column>
-                      <ngx-datatable-column
-                        name="45-60"
-                        prop="balanceAge45"
-                        [sortable]="false"
-                      >
-                        <ng-template
-                          ngx-datatable-cell-template
-                          let-rowIndex="rowIndex"
-                          let-value="value"
-                          let-row="row"
-                        >
-                          <span
-                            *ngIf="
-                              value.cad == 0 && value.usd == 0;
-                              else elseblock
-                            "
-                          >
-                            -
-                          </span>
-                          <ng-template #elseblock>
-                            <span *ngIf="value.cad != 0">{{
-                              value.cad | currency: "CAD"
-                            }}</span>
-                            <span *ngIf="value.cad == 0">-</span><br />
-                            <span *ngIf="value.usd != 0"
-                              >US{{ value.usd | currency: "USD" }}</span
-                            >
-                            <span *ngIf="value.usd == 0">-</span>
-                          </ng-template>
-                        </ng-template>
-                      </ngx-datatable-column>
-                      <ngx-datatable-column
-                        name="60+"
-                        prop="balanceAge60"
-                        [sortable]="false"
-                      >
-                        <ng-template
-                          ngx-datatable-cell-template
-                          let-rowIndex="rowIndex"
-                          let-value="value"
-                          let-row="row"
-                        >
-                          <span
-                            *ngIf="
-                              value.cad == 0 && value.usd == 0;
-                              else elseblock
-                            "
-                          >
-                            -
-                          </span>
-                          <ng-template #elseblock>
-                            <span *ngIf="value.cad != 0">{{
-                              value.cad | currency: "CAD"
-                            }}</span>
-                            <span *ngIf="value.cad == 0">-</span><br />
-                            <span *ngIf="value.usd != 0"
-                              >US{{ value.usd | currency: "USD" }}</span
-                            >
-                            <span *ngIf="value.usd == 0">-</span>
-                          </ng-template>
-                        </ng-template>
-                      </ngx-datatable-column>
-                      <ngx-datatable-column name="Actions" [sortable]="false">
-                        <ng-template
-                          ngx-datatable-cell-template
-                          let-rowIndex="rowIndex"
-                          let-value="value"
-                          let-row="row"
-                        >
-                          <button
+                              -
+                            </span>
+                            <ng-template #elseblock5>
+                              <span *ngIf="customer.balanceAge60.cad != 0">{{
+                                customer.balanceAge60.cad | currency: "CAD"
+                              }}</span>
+                              <span *ngIf="customer.balanceAge60.cad == 0"
+                                >-</span
+                              ><br />
+                              <span *ngIf="customer.balanceAge60.usd != 0"
+                                >US{{
+                                  customer.balanceAge60.usd | currency: "USD"
+                                }}</span
+                              >
+                              <span *ngIf="customer.balanceAge60.usd == 0"
+                                >-</span
+                              >
+                            </ng-template>
+                          </p>
+                       </span>
+                         <span *ngSwitchDefault>
+                           {{ get(customer, dataColumns.field) }}</span>
+                       </div>
+                     </td>
+                     
+            <td style=" text-align: center; width: 100px;" pFrozenColumn alignFrozen="right" [frozen]="true">
+                                  <button 
                             class="btn btn-dark"
-                            (click)="showReport($event, row)"
                           >
                             View
                           </button>
-                        </ng-template>
-                      </ngx-datatable-column>
-                    </ngx-datatable>
-                  </div>
-                </section>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                        </td>
+                   </tr>
+                 </ng-template>
+                 <ng-template pTemplate="emptymessage" let-columns>
+                                            <div class="col-lg-12 mt-3 text-center">
+                                                {{dataMessage}}
+                                                <br /><br>
+                                            </div>
+                                        </ng-template>
+                 <ng-template pTemplate="summary" let-columns>
+                   <div class="col-lg-12 mt-3 text-center" *ngIf="
+                             lastSK !== 'end' && customerCollection.length !== 0
+                           ">
+                     <button type="button " (click)="onScroll($event)" class="btn btn-success btn-sm text-light">
+                       Load More..
+                     </button>
+                     <br /><br />
+                   </div>
+                   <div class="col-lg-12 mt-3 text-center" *ngIf="lastSK === 'end'">
+                     Total Records: {{ customerCollection.length }}
+                   </div>
+                 </ng-template>
+               </p-table>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </section>
     </section>
   </div>
 </section>
@@ -617,6 +463,9 @@
                 </p>
               </td>
             </tr>
+            
+            
+            
             <tr>
               <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
             </tr>

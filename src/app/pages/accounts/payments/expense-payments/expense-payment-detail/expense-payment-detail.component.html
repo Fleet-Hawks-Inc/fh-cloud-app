@@ -307,6 +307,13 @@
 
 <ng-template #previewExpPayment let-modal>
   <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Expense Payment</h4>
+      <button type="button" class="close" (click)="modal.dismiss()">
+        &times;
+      </button>
+    </div>
+
     <div class="modal-body text-dark">
       <table
         width="98%"
@@ -322,7 +329,9 @@
           </tr>
           <tr>
             <td>
-              <h1 style="font-size: 26px; color: #212529">Expense Payment</h1>
+              <h1 class="text-dark font-weight-bold text-6 mb-1 mt-1">
+                Expense Payment
+              </h1>
             </td>
             <td align="right">
               <img
@@ -334,39 +343,26 @@
               />
               <p
                 *ngIf="tagLine"
-                class="mb-0"
-                style="font-size: 18px; margin-top: 10px; font-weight: 600"
+                class="mb-0 text-dark text-4 font-weight-bold ng-star-inserted"
               >
                 {{ tagLine }}
               </p>
             </td>
           </tr>
+
           <tr>
-            <td>&nbsp;</td>
-            <td width="50%">&nbsp;</td>
-          </tr>
-          <tr>
-            <td colspan="2" height="3" bgcolor="#dddddd"></td>
+            <td colspan="2" height="1" bgcolor="#595959"></td>
           </tr>
           <tr>
             <td width="50%" valign="top">
-              <p
-                class="mt-3 mb-0 text-dark"
-                style="font-size: 13px; margin-bottom: 10px"
-              >
+              <h2 class="mt-0 mb-0 text-dark text-5 font-weight-semibold">
                 Company
-              </p>
-              <h2
-                class="text-capitalize"
-                style="
-                  color: #212529;
-                  font-size: 20px;
-                  margin-top: 0px;
-                  margin-bottom: 10px;
-                "
+              </h2>
+              <p
+                class="text-capitalize text-dark text-5 font-weight-semibold mb-1 mt-0"
               >
                 {{ carrierName ? carrierName : "NA" }}
-              </h2>
+              </p>
             </td>
             <td valign="top">
               <table
@@ -379,34 +375,14 @@
                 <tbody>
                   <tr>
                     <td align="right">
-                      <p
-                        class="mt-3 mb-0 text-dark"
-                        style="font-size: 13px; margin-bottom: 10px"
-                      >
-                        Payment#
-                        <span
-                          style="
-                            font-size: 16px;
-                            font-weight: 600;
-                            margin-top: 0px;
-                          "
-                          >{{ paymentData.paymentNo }}</span
-                        >
+                      <p class="mt-1 mb-0 text-4 text-dark">
+                        <span class="font-weight-bold">Payment#</span>
+                        {{ paymentData.paymentNo }}
                       </p>
-                      <p
-                        class="mt-3 mb-0 text-dark"
-                        style="font-size: 13px; margin-bottom: 10px"
-                      >
-                        Payment Amount:
-                        <span
-                          style="
-                            font-size: 16px;
-                            font-weight: 600;
-                            margin-top: 0px;
-                          "
-                          >{{ paymentData.finalAmount | number: "1.2-2" }}
-                          {{ paymentData.currency }}</span
-                        >
+                      <p class="mt-2 mb-0 text-4 text-dark">
+                        <span class="font-weight-bold">Payment Amount:</span>
+                        {{ paymentData.finalAmount | number: "1.2-2" }}
+                        {{ paymentData.currency }}
                       </p>
                     </td>
                   </tr>
@@ -415,7 +391,7 @@
             </td>
           </tr>
           <tr>
-            <td colspan="2" height="3" bgcolor="#dddddd"></td>
+            <td colspan="2" height="1" bgcolor="#595959"></td>
           </tr>
           <tr>
             <td colspan="2">&nbsp;</td>
@@ -425,24 +401,32 @@
               <table class="table table-bordered">
                 <thead>
                   <tr class="">
-                    <th width="20%">Payment#</th>
-                    <th>Payment Date</th>
-                    <th width="40%">Paid To</th>
-                    <th width="20%">Amount</th>
+                    <th width="20%" class="pl-3 font-weight-bold pt-1 pb-1">
+                      Payment#
+                    </th>
+                    <th class="pl-3 font-weight-bold pt-1 pb-1">
+                      Payment Date
+                    </th>
+                    <th width="40%" class="pl-3 font-weight-bold pt-1 pb-1">
+                      Paid To
+                    </th>
+                    <th width="20%" class="pl-3 font-weight-bold pt-1 pb-1">
+                      Amount
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>
+                    <td class="pl-3 pt-1 pb-1">
                       {{ paymentData.paymentNo }}
                     </td>
-                    <td>
+                    <td class="pl-3 pt-1 pb-1">
                       {{ paymentData.txnDate | date: "yyyy/MM/dd" }}
                     </td>
-                    <td>
+                    <td class="pl-3 pt-1 pb-1">
                       {{ paymentData.entityName }}
                     </td>
-                    <td>
+                    <td class="pl-3 pt-1 pb-1">
                       {{ paymentData.finalAmount | number: "1.2-2" }}
                       {{ paymentData.currency }}
                     </td>
@@ -461,7 +445,7 @@
                         <tbody>
                           <tr>
                             <td>
-                              <p style="font-size: 16px; color: #212529">
+                              <p class="text-dark text-4 mt-1 mb-2">
                                 <strong>Expense Detail</strong>
                               </p>
                             </td>
@@ -475,10 +459,18 @@
                       <table class="table table-bordered">
                         <thead>
                           <tr class="">
-                            <th>Expense Date</th>
-                            <th>Expense Trip#</th>
-                            <th>Expense Amount</th>
-                            <th>Amount Paid</th>
+                            <th class="pl-3 font-weight-bold pt-1 pb-1">
+                              Expense Date
+                            </th>
+                            <th class="pl-3 font-weight-bold pt-1 pb-1">
+                              Expense Trip#
+                            </th>
+                            <th class="pl-3 font-weight-bold pt-1 pb-1">
+                              Expense Amount
+                            </th>
+                            <th class="pl-3 font-weight-bold pt-1 pb-1">
+                              Amount Paid
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -486,10 +478,12 @@
                             class="text-center"
                             *ngIf="paymentData.expData.length === 0"
                           >
-                            <td colspan="5">No record found</td>
+                            <td colspan="5" class="pl-3 pt-1 pb-1">
+                              No record found
+                            </td>
                           </tr>
                           <tr *ngFor="let data of paymentData.expData">
-                            <td>
+                            <td class="pl-3 pt-1 pb-1">
                               <a
                                 routerLink="/accounts/expense/detail/{{
                                   data.expID
@@ -498,12 +492,12 @@
                                 {{ data.expDate | date: "yyyy/MM/dd" }}
                               </a>
                             </td>
-                            <td>{{ data.tripNo }}</td>
-                            <td>
+                            <td class="pl-3 pt-1 pb-1">{{ data.tripNo }}</td>
+                            <td class="pl-3 pt-1 pb-1">
                               {{ data.expTotal | number: "1.2-2" }}
                               {{ paymentData.currency }}
                             </td>
-                            <td>
+                            <td class="pl-3 pt-1 pb-1">
                               {{ data.amount | number: "1.2-2" }}
                               {{ paymentData.currency }}
                             </td>
@@ -518,7 +512,7 @@
                         <tbody>
                           <tr>
                             <td>
-                              <p style="font-size: 16px; color: #212529">
+                              <p class="text-dark text-4 mt-1 mb-2">
                                 <strong>Advance Payment</strong>
                               </p>
                             </td>
@@ -532,9 +526,15 @@
                       <table class="table table-bordered">
                         <thead>
                           <tr class="">
-                            <th>Payment#</th>
-                            <th>Total Advance</th>
-                            <th>Amount Paid</th>
+                            <th class="pl-3 font-weight-bold pt-1 pb-1">
+                              Payment#
+                            </th>
+                            <th class="pl-3 font-weight-bold pt-1 pb-1">
+                              Total Advance
+                            </th>
+                            <th class="pl-3 font-weight-bold pt-1 pb-1">
+                              Amount Paid
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -542,10 +542,12 @@
                             class="text-center"
                             *ngIf="paymentData.advData.length === 0"
                           >
-                            <td colspan="5">No record found</td>
+                            <td colspan="5" class="pl-3 pt-1 pb-1">
+                              No record found
+                            </td>
                           </tr>
                           <tr *ngFor="let data of paymentData.advData">
-                            <td>
+                            <td class="pl-3 pt-1 pb-1">
                               <a
                                 routerLink="/accounts/payments/advance-payments/detail/{{
                                   data.paymentID
@@ -554,11 +556,11 @@
                                 {{ data.advPayNo }}
                               </a>
                             </td>
-                            <td>
+                            <td class="pl-3 pt-1 pb-1">
                               {{ data.advTotal | number: "1.2-2" }}
                               {{ paymentData.currency }}
                             </td>
-                            <td>
+                            <td class="pl-3 pt-1 pb-1">
                               {{ data.amount | number: "1.2-2" }}
                               {{ paymentData.currency }}
                             </td>
@@ -573,7 +575,7 @@
                         <tbody>
                           <tr>
                             <td>
-                              <p style="font-size: 16px; color: #212529">
+                              <p class="text-dark text-4 mt-1 mb-2">
                                 <strong>Other Detail</strong>
                               </p>
                             </td>
@@ -592,20 +594,26 @@
               <table class="table table-bordered text-capitalize">
                 <thead>
                   <tr class="">
-                    <th width="30%">Payment Mode</th>
-                    <th width="30%">{{ paymentData.payMode }} Date</th>
-                    <th width="20%">{{ paymentData.payMode }} Reference#</th>
+                    <th width="30%" class="pl-3 font-weight-bold pt-1 pb-1">
+                      Payment Mode
+                    </th>
+                    <th width="30%" class="pl-3 font-weight-bold pt-1 pb-1">
+                      {{ paymentData.payMode }} Date
+                    </th>
+                    <th width="20%" class="pl-3 font-weight-bold pt-1 pb-1">
+                      {{ paymentData.payMode }} Reference#
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>
+                    <td class="pl-3 pt-1 pb-1">
                       {{ paymentData.payMode }}
                     </td>
-                    <td>
+                    <td class="pl-3 pt-1 pb-1">
                       {{ paymentData.payModeDate | date: "yyyy/MM/dd" }}
                     </td>
-                    <td>
+                    <td class="pl-3 pt-1 pb-1">
                       {{ paymentData.payModeNo }}
                     </td>
                   </tr>
@@ -619,7 +627,7 @@
                 <tbody>
                   <tr>
                     <td align="center">
-                      <h2 style="font-size: 13px; color: #212529">
+                      <h2 class="mb-0 text-dark text-4 font-weight-normal">
                         Powered By
                       </h2>
                       <img

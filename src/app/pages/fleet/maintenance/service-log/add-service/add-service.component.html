@@ -7,7 +7,7 @@
             {{ pageTitle }}
           </div>
           <div class="col-md-8 col-lg-8 text-right">
-            <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-default btn-sm mx-2"
+            <a routerLink="/fleet/maintenance/service-log/list/{{sessionID}}" class="btn btn-default btn-sm mx-2"
               style="color: black"><i class="fas fa-list"></i> Service Logs List</a>
           </div>
         </div>
@@ -203,7 +203,7 @@
                             font-weight-bold font-bold
                             text-lg-right
                             pt-2
-                          ">Vendor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          ">Bill To<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select [(ngModel)]="serviceData.vendorID" name="vendorID" style="width: 100%"
                           placeholder="Select vendor" #Ven="ngModel" required>
                           <ng-option *ngFor="let vendor of vendors" value="{{ vendor.contactID }}">
@@ -233,8 +233,8 @@
                           ">Description
                         </label>
                         <textarea [(ngModel)]="serviceData.description" name="description" class="form-control" rows="3"
-                          style="height: auto !important" placeholder="Enter
-                          description about the service" #notesService="ngModel" pattern="^[\s\S]{1,500}$"></textarea>
+                          style="height: auto !important" placeholder="Enter description about the service"
+                          #notesService="ngModel" pattern="^[\s\S]{1,500}$"></textarea>
                         <div *ngIf="
                             notesService.invalid &&
                             (notesService.dirty || notesService.touched)
@@ -439,6 +439,9 @@
                                     </ng-select>
                                   </div>
                                 </td>
+
+
+
                               </tr>
                             </tbody>
                           </table>
@@ -459,21 +462,9 @@
                                    <input [disabled]="selectedTasks.length == 0" (blur)="calculateTasks()" [(ngModel)]="serviceData.allServiceTasks.taxPercent" name="taxPercent" type="text" class="form-control">
                                 </div>
                              </div> -->
-                        <div class="row">
-                          <div class="col-lg-1 offset-lg-10">
-                            <label class="
-                                control-label
-                                font-weight-bold font-bold
-                                text-lg-right
-                                pt-2
-                              ">Total</label>
-                          </div>
-                          <div class="col-lg-1">
-                            <input readonly [(ngModel)]="serviceData.allServiceTasks.total" name="total" type="text"
-                              class="form-control" />
-                          </div>
-                        </div>
+
                       </div>
+
                     </div>
                     <div class="form-group row" *ngIf="issues">
                       <div class="col-lg-12">
@@ -629,6 +620,8 @@
                             </tbody>
                           </table>
                         </div>
+
+
                         <!-- <div class="row">
                                 <div class="col-lg-1 offset-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount(%)</label>
@@ -645,20 +638,7 @@
                                    <input [disabled]="selectedParts.length == 0" [(ngModel)]="serviceData.allServiceParts.taxPercent" name="parts-taxPercent" type="text" (blur)="calculateParts()" value="0.00" class="form-control" >
                                 </div>
                              </div> -->
-                        <div class="row">
-                          <div class="col-lg-1 offset-lg-10">
-                            <label class="
-                                control-label
-                                font-weight-bold font-bold
-                                text-lg-right
-                                pt-2
-                              ">Total</label>
-                          </div>
-                          <div class="col-lg-1">
-                            <input readonly [(ngModel)]="serviceData.allServiceParts.total" name="parts-total"
-                              type="text" class="form-control" />
-                          </div>
-                        </div>
+
                       </div>
                     </div>
                     <div class="form-group row">
@@ -687,8 +667,10 @@
                                 text-left
                               ">
                               <input class="w100" type="file" multiple name="uploadedPhotos" (change)="
-                                  selectDocuments($event, 'uploadedPhotos')
-                                " />
+                                  selectDocuments($event, 'uploadedPhotos')" accept=".jpg, .jpeg, .png" />
+                              <span *ngIf="uploadPhotoError != ''" class="text-danger">
+                                {{ uploadPhotoError }}
+                              </span>
                             </span>
 
                             <!-- <input (change)="selectDocuments($event,
@@ -732,7 +714,10 @@
                               ">
                               <input class="w100" type="file" multiple name="uploadedDocuments" (change)="
                                   selectDocuments($event, 'uploadedDocs')
-                                " />
+                                " accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
+                              <span *ngIf="uploadDocsError != ''" class="text-danger">
+                                {{ uploadDocsError }}
+                              </span>
                             </span>
 
                             <!-- <input
@@ -775,8 +760,98 @@
                         </div>
                       </div>
                     </div>
+                    <div class="row pt-4">
+                      <div class="col-lg-5"></div>
+                      <div class="col-lg-4 offset-1 pl-3 mb-2">
+                        <div class="checkbox-custom checkbox-default">
+                          <input type="checkbox" id="ZeroRated" name="exempt" [(ngModel)]="serviceData.exempt"
+                            (change)="taxExempt()" />
+                          <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="ZeroRated">Tax
+                            Exempt </label>
+                        </div>
+                      </div>
 
-                    <div class="form-group row">
+
+                      <div class="col-lg-5"></div>
+                      <div class="col-lg-5 offset-1 text-left" *ngIf="!serviceData.exempt">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-3 text-dark"
+                              for="inputDefault">Province/State</label>
+                            <ng-select class="form-control populate" name="stateID" [(ngModel)]="serviceData.stateID"
+                              placeholder="Select state" (change)="selectProvince($event)">
+                              <ng-option *ngFor="let data of stateTaxes" value="{{ data.stateTaxID }}">{{ data.stateName
+                                }}
+                              </ng-option>
+                            </ng-select>
+                          </div>
+                        </div>
+                      </div>
+
+
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-5"></div>
+                      <div class="col-lg-5 offset-1" *ngIf="!serviceData.exempt">
+                        <!-- GST -->
+                        <div class="row mt-3" *ngFor="
+                          let taxD of serviceData.charges.taxes;
+                          let td = index
+                        ">
+                          <div class="col-lg-10">
+                            <div class="row">
+                              <div class="col-lg-4">
+                                <input type="text" disabled class="form-control" [(ngModel)]="taxD.name"
+                                  name="taxName{{ td }}" />
+                              </div>
+                              <div class="col-lg-4 input-group">
+                                <input type="text" [(ngModel)]="taxD.tax" name="taxper{{ td }}" class="form-control"
+                                  (input)="taxcalculation(td)" /><span class="input-group-append"><span
+                                    class="input-group-text pt-0 pb-0">%</span></span>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="bordtop">
+                                  <p class="text-right pt-2 mb-0">
+
+                                    {{ taxD.amount | number: "1.2-2" }}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+
+
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    <div class="row mt-3">
+                      <div class="col-lg-5"></div>
+                      <div class="col-lg-5 offset-1 text-right">
+                        <div class="row">
+                          <div class="col-lg-10">
+                            <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="ZeroRated">
+                              <span class="mr-5">Sub Total:</span>
+                              {{totalLabors + totalPartsPrice | number: "1.2-2" }}
+                            </label>
+                            <div class="bordtop">
+                              <h5 class="text-right font-weight-semibold text-4 text-dark mr-5 d-inline-block">
+                                Total Amount
+                              </h5>
+                              <p class="text-right pt-2 mb-0 text-dark d-inline-block">
+                                {{
+                                serviceData.total.finalTotal | number: "1.2-2"
+                                }}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group row mt-5">
                       <div class="col-lg-11 text-right pb-3">
                         <div class="row">
                           <div class="col-12">

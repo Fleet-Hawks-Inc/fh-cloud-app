@@ -1,9 +1,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap"
-  rel="stylesheet"
-/>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap"
+  rel="stylesheet" />
 
 <ng-template #chekOptions let-modal>
   <div class="modal-content">
@@ -23,70 +21,12 @@
                   <table class="table table-bordered">
                     <tbody>
                       <tr>
-                        <td
-                          width="50%"
-                          class="back-color-gray font-weight-bold"
-                        >
-                          Select Company
-                        </td>
-                        <td width="50%">
-                          <ng-select
-                            [items]="carriers"
-                            name="carriers"
-                            bindLabel="cName"
-                            (change)="selectedCarrier($event)"
-                            bindValue="contactID"
-                            [(ngModel)]="carrierID"
-                            placeholder="Select
-                                                        Company"
-                            class="text-capitalize"
-                          >
-                          </ng-select>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td
-                          width="50%"
-                          class="back-color-gray font-weight-bold"
-                        >
-                          Select Address
-                        </td>
-                        <td width="50%">
-                          <ng-select
-                            placeholder="Select
-                                                        Company Address"
-                            name="carrAddr"
-                            [(ngModel)]="cheqdata.companyAddress"
-                            #mVehicle="ngModel"
-                            required
-                          >
-                            <ng-container *ngFor="let data of addresses">
-                              <ng-option
-                                *ngIf="data.fullAddr"
-                                value="{{ data.fullAddr }}"
-                              >
-                                {{ data.fullAddr }}</ng-option
-                              >
-                            </ng-container>
-                          </ng-select>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td
-                          width="50%"
-                          class="back-color-gray font-weight-bold"
-                        >
+                        <td width="50%" class="back-color-gray font-weight-bold">
                           Recipient Name
                         </td>
-                        <td width="50%" class="text-uppercase">
+                        <td width="50%" class="text-capitalize">
                           {{ cheqdata.entityName }}
                         </td>
-                      </tr>
-                      <tr>
-                        <td class="back-color-gray font-weight-bold">
-                          Cheque Date
-                        </td>
-                        <td>{{ paydata.chequeDate | date: "yyyy/MM/dd" }}</td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">
@@ -94,6 +34,74 @@
                         </td>
                         <td>{{ paydata.chequeAmount | number: "1.2-2" }}</td>
                       </tr>
+                      <tr>
+                        <td width="50%" class="back-color-gray font-weight-bold">
+                          Select Company
+                        </td>
+                        <td width="50%">
+                          <ng-select [items]="carriers" name="carriers" bindLabel="cName"
+                            (change)="selectedCarrier($event); checkChanges()" bindValue="contactID" [(ngModel)]="carrierID"
+                            placeholder="Select Company" class="text-capitalize">
+                          </ng-select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="50%" class="back-color-gray font-weight-bold">
+                          Select Address
+                        </td>
+                        <td width="50%">
+                          <ng-select placeholder="Select Company Address" name="carrAddr"
+                            [(ngModel)]="cheqdata.companyAddress" #mVehicle="ngModel" required (change)="checkChanges()">
+                            <ng-container *ngFor="let data of addresses">
+                              <ng-option *ngIf="data.fullAddr" value="{{ data.fullAddr }}">
+                                {{ data.fullAddr }}</ng-option>
+                            </ng-container>
+                          </ng-select>
+                        </td>
+                      </tr>
+                      
+                      <tr *ngIf="paydata.page === 'detail'">
+                        <td class="back-color-gray font-weight-bold">
+                          Cheque Date
+                        </td>
+                        <td>
+                          <input
+                          [(ngModel)]="paydata.chequeDate"
+                          name="payModeDate"
+                          type="text"
+                          placeholder="yyyy/mm/dd"
+                          (click)="payModeDate.toggle()"
+                          ngbDatepicker
+                          #payModeDate="ngbDatepicker"
+                          class="form-control"
+                          autocomplete="off"
+                          #payDate="ngModel"
+                          required
+                          [minDate]="dateMinLimit"
+                          [maxDate]="futureDatesLimit"
+                          (dateSelect)="checkChanges()"
+                        />
+                        </td>
+                      </tr>
+                      <tr *ngIf="paydata.page === 'detail'">
+                        <td class="back-color-gray font-weight-bold">
+                          Cheque Reference
+                        </td>
+                        <td>
+                          <input
+                          [(ngModel)]="paydata.chequeNo"
+                          name="chequeNoa"
+                          type="text"
+                          placeholder="e.g 7845"
+                          class="form-control"
+                          autocomplete="off"
+                          #payref="ngModel"
+                          required
+                          (input)="checkChanges()"
+                        />
+                        </td>
+                      </tr>
+                      
                     </tbody>
                   </table>
                 </div>
@@ -106,8 +114,11 @@
         <button type="button" class="btn btn-default" (click)="modal.dismiss()">
           Close
         </button>
-        <button type="button" class="btn btn-success" (click)="prevCheck()">
+        <button type="button" *ngIf="!showRecallBtn" class="btn btn-success" (click)="prevCheck()">
           Preview Cheque
+        </button>
+        <button type="button" *ngIf="showRecallBtn" class="btn btn-success" (click)="updateChequeCompany()">
+          Update and Preview
         </button>
       </div>
     </form>
@@ -119,6 +130,12 @@
   <div class="modal-content">
     <div class="modal-header">
       <h4 class="modal-title">Cheque</h4>
+      <div class="checkbox-custom checkbox-default">
+        <input type="checkbox" id="checkbox" (change)="changeDollor($event.target.checked)" name="checkbox" />
+        <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="checkbox"
+          style="width: 150px">Hide
+          Currency</label>
+      </div>
       <button type="button" class="close" (click)="modal.dismiss()">
         &times;
       </button>
@@ -126,74 +143,44 @@
     <form>
       <div class="modal-body">
         <section class="cheque-wrapper" id="print_wrap">
-          <table
-            width="750"
-            border="0"
-            align="center"
-            cellpadding="0"
-            cellspacing="0"
-          >
+          <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
+
             <tbody>
+
+
+
               <tr>
                 <td>
-                  <table
-                    width="100%"
-                    border="0"
-                    cellspacing="0"
-                    cellpadding="0"
-                  >
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tbody>
                       <tr>
                         <td height="300" valign="top" class="chqbg">
-                          <table
-                            width="100%"
-                            border="0"
-                            cellspacing="0"
-                            cellpadding="0"
-                          >
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tbody>
                               <tr>
                                 <td colspan="2">&nbsp;</td>
                               </tr>
                               <tr>
                                 <td colspan="2" valign="top">
-                                  <table
-                                    width="80%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                  <table width="80%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr>
-                                        <td
-                                          width="50%"
-                                          align="center"
-                                          valign="bottom"
-                                          style="color: #000000"
-                                          class="font-weight-bold text-uppercase"
-                                        >
+                                        <td width="50%" align="center" valign="bottom" style="color: #000000"
+                                          class="font-weight-bold text-uppercase">
                                           <!-- {{
                                                                                     cheqdata.companyName
                                                                                     }} -->
                                         </td>
                                         <td>
-                                          <table
-                                            border="0"
-                                            cellspacing="0"
-                                            cellpadding="0"
-                                          >
+                                          <table border="0" cellspacing="0" cellpadding="0">
                                             <tbody>
                                               <tr>
-                                                <td
-                                                  align="center"
-                                                  style="
+                                                <td align="center" style="
                                                     font-size: 11px;
                                                     line-height: 13px;
                                                     font-weight: 600;
                                                     padding-left: 5px;
-                                                  "
-                                                >
+                                                  ">
                                                   <!-- Bank address and name -->
                                                 </td>
                                               </tr>
@@ -207,13 +194,7 @@
                               </tr>
                               <tr>
                                 <td colspan="2" valign="top">
-                                  <table
-                                    width="90%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                  <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr>
                                         <td>&nbsp;</td>
@@ -222,27 +203,15 @@
                                         <td>&nbsp;</td>
                                       </tr>
                                       <tr>
-                                        <td
-                                          width="61%"
-                                          rowspan="2"
-                                          valign="top"
-                                        >
-                                          <table
-                                            width="90%"
-                                            border="0"
-                                            cellspacing="0"
-                                            cellpadding="0"
-                                          >
+                                        <td width="61%" rowspan="2" valign="top">
+                                          <table width="90%" border="0" cellspacing="0" cellpadding="0">
                                             <tbody>
                                               <tr>
-                                                <td
-                                                  align="center"
-                                                  style="
+                                                <td align="center" style="
                                                     color: #000000;
                                                     font-size: 12px;
                                                     line-height: 15px;
-                                                  "
-                                                >
+                                                  ">
                                                   <!-- {{
                                                                                                     cheqdata.companyAddress
                                                                                                     }} -->
@@ -253,44 +222,28 @@
                                           </table>
                                           <p>&nbsp;</p>
                                         </td>
-                                        <td
-                                          width="20%"
-                                          style="color: #000000"
-                                          class="text-uppercase"
-                                        >
+                                        <td width="20%" style="color: #000000" class="text-uppercase">
                                           Cheque no
                                         </td>
-                                        <td
-                                          align="right"
-                                          style="color: #000000"
-                                        >
+                                        <td align="right" style="color: #000000">
                                           {{ cheqdata.chqNo }}
                                         </td>
                                       </tr>
                                       <tr>
-                                        <td
-                                          class="text-uppercase"
-                                          style="color: #000000"
-                                        >
+                                        <td class="text-uppercase" style="color: #000000">
                                           date
                                         </td>
                                         <td align="right" valign="bottom">
-                                          <div
-                                            class="font10"
-                                            style="
+                                          <div class="font10" style="
                                               letter-spacing: 7.6px;
                                               color: #000000;
-                                            "
-                                          >
+                                            ">
                                             {{ paydata.chequeDate }}
                                           </div>
-                                          <div
-                                            class="font10 text-dark"
-                                            style="
+                                          <div class="font10 text-dark" style="
                                               letter-spacing: 8.5px;
                                               color: #000000;
-                                            "
-                                          >
+                                            ">
                                             YYYYMMDD
                                           </div>
                                         </td>
@@ -306,21 +259,10 @@
                               </tr>
                               <tr>
                                 <td width="60%" valign="top">
-                                  <table
-                                    width="95%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                  <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr>
-                                        <td
-                                          width="11%"
-                                          align="right"
-                                          class="font-weight-bold"
-                                          style="color: #000000"
-                                        >
+                                        <td width="11%" align="right" class="font-weight-bold" style="color: #000000">
                                           <!-- PAY -->
                                         </td>
                                         <td width="2%" class="font-weight-bold">
@@ -330,7 +272,7 @@
                                           **
                                           <span class="text-capitalize">{{
                                             cheqdata.amountWords
-                                          }}</span>
+                                            }}</span>
                                           {{ cheqdata.decimals }} <br />
                                           {{ cheqdata.currencyText }}
                                         </td>
@@ -341,26 +283,16 @@
                                         <td>&nbsp;</td>
                                       </tr>
                                       <tr>
-                                        <td
-                                          style="color: #000000"
-                                          align="right"
-                                          class="text-uppercase"
-                                        >
+                                        <td style="color: #000000" align="right" class="text-uppercase">
                                           <!-- TO -->
                                         </td>
                                         <td class="text-uppercase">&nbsp;</td>
-                                        <td
-                                          style="color: #000000"
-                                          class="text-uppercase"
-                                        >
+                                        <td style="color: #000000" class="text-capitalize">
                                           {{ cheqdata.entityName }}
                                         </td>
                                       </tr>
                                       <tr>
-                                        <td
-                                          style="color: #000000"
-                                          align="right"
-                                        >
+                                        <td style="color: #000000" align="right">
                                           <!-- THE
                                                                                     ORDER
                                                                                     OF -->
@@ -377,21 +309,12 @@
                                   </table>
                                 </td>
                                 <td valign="top">
-                                  <table
-                                    width="50%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                  <table width="50%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr>
-                                        <td
-                                          align="right"
-                                          style="color: #000000"
-                                        >
-                                          $**{{
-                                            cheqdata.amount | number: "1.2-2"
+                                        <td align="right" style="color: #000000">
+                                          <span *ngIf="showDollor">$</span>**{{
+                                          cheqdata.amount | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -445,72 +368,35 @@
               <tr>
                 <td>&nbsp;</td>
               </tr>
-              <tr
-                *ngIf="paydata.type === 'driver' || paydata.type === 'employee'"
-              >
+              <tr *ngIf="paydata.type === 'driver' || paydata.type === 'employee'">
                 <!-- driver payment 1st table-->
                 <td>
-                  <table
-                    width="100%"
-                    border="0"
-                    cellspacing="0"
-                    cellpadding="0"
-                    height="270"
-                    class="class_border"
-                  >
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="270" class="class_border">
                     <tbody>
                       <tr>
                         <td valign="top">
-                          <table
-                            width="100%"
-                            border="0"
-                            cellspacing="0"
-                            cellpadding="0"
-                          >
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tbody>
                               <tr>
                                 <td colspan="3">
-                                  <table
-                                    width="100%"
-                                    border="0"
-                                    cellspacing="0"
-                                    cellpadding="0"
-                                  >
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
                                       <tr>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          height="20"
-                                          class="pl-3 pt-1 pb-1 text-uppercase"
-                                        >
+                                        <td style="color: #000000" width="33%" height="20"
+                                          class="pl-3 pt-1 pb-1 text-capitalize">
                                           {{ cheqdata.entityName }}
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          align="center"
-                                          valign="top"
-                                          class="pt-1 pb-1"
-                                        >
+                                        <td style="color: #000000" width="33%" align="center" valign="top"
+                                          class="pt-1 pb-1">
                                           {{ paydata.chequeDate }}
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          align="right"
-                                          valign="top"
-                                          class="pr-3 pt-1 pb-1"
-                                        >
+                                        <td style="color: #000000" align="right" valign="top" class="pr-3 pt-1 pb-1">
                                           {{ cheqdata.chqNo }}
                                         </td>
                                       </tr>
                                       <tr>
-                                        <td
-                                          colspan="3"
-                                          style="color: #000000"
-                                          height="20"
-                                          class="pl-3 border_bottom text-uppercase"
-                                        >
+                                        <td colspan="3" style="color: #000000" height="20"
+                                          class="pl-3 border_bottom text-uppercase">
                                           Pay Period: {{ cheqdata.payPeriod }}
                                         </td>
                                       </tr>
@@ -520,19 +406,8 @@
                               </tr>
                               <!-- driver payment 1st table 3 column-->
                               <tr>
-                                <td
-                                  width="33%"
-                                  height="234"
-                                  valign="top"
-                                  class="border_right"
-                                >
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                <td width="33%" height="234" valign="top" class="border_right">
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr style="color: #000000">
                                         <td width="48%">&nbsp;</td>
@@ -546,15 +421,15 @@
                                         <td>Regular</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPayYTD
-                                              | number: "1.2-2"
+                                          cheqdata.regularPayYTD
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -562,15 +437,15 @@
                                         <td>Vacation Pay</td>
                                         <td align="right" class="border_bottom">
                                           {{
-                                            cheqdata.vacationPay
-                                              | number: "1.2-2"
+                                          cheqdata.vacationPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right" class="border_bottom">
                                           {{
-                                            cheqdata.vacationPayYTD
-                                              | number: "1.2-2"
+                                          cheqdata.vacationPayYTD
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -581,14 +456,14 @@
                                         <td>Gross Pay</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.grossPay | number: "1.2-2"
+                                          cheqdata.grossPay | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.grossPayYTD
-                                              | number: "1.2-2"
+                                          cheqdata.grossPayYTD
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -598,18 +473,8 @@
                                     </tbody>
                                   </table>
                                 </td>
-                                <td
-                                  width="33%"
-                                  valign="top"
-                                  class="border_right"
-                                >
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                <td width="33%" valign="top" class="border_right">
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr style="color: #000000">
                                         <td width="48%">&nbsp;</td>
@@ -627,7 +492,7 @@
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.cppYTD | number: "1.2-2"
+                                          cheqdata.cppYTD | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -649,7 +514,7 @@
                                         <td align="right">&nbsp;</td>
                                         <td align="right" class="border_bottom">
                                           {{
-                                            cheqdata.taxYTD | number: "1.2-2"
+                                          cheqdata.taxYTD | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -660,14 +525,14 @@
                                         <td>Withheld</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.withHeld | number: "1.2-2"
+                                          cheqdata.withHeld | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.withHeldYTD
-                                              | number: "1.2-2"
+                                          cheqdata.withHeldYTD
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -684,13 +549,7 @@
                                   </table>
                                 </td>
                                 <td valign="top">
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr style="color: #000000">
                                         <td width="48%">&nbsp;</td>
@@ -704,14 +563,14 @@
                                         <td>Gross Pay</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.grossPay | number: "1.2-2"
+                                          cheqdata.grossPay | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.grossPayYTD
-                                              | number: "1.2-2"
+                                          cheqdata.grossPayYTD
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -719,13 +578,13 @@
                                         <td>GST/HST</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.gstHst | number: "1.2-2"
+                                          cheqdata.gstHst | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.gstHstYTD | number: "1.2-2"
+                                          cheqdata.gstHstYTD | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -733,14 +592,14 @@
                                         <td>Withheld</td>
                                         <td align="right" class="">
                                           -{{
-                                            cheqdata.withHeld | number: "1.2-2"
+                                          cheqdata.withHeld | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right" class="">
                                           -{{
-                                            cheqdata.withHeldYTD
-                                              | number: "1.2-2"
+                                          cheqdata.withHeldYTD
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -748,7 +607,7 @@
                                         <td>Advance</td>
                                         <td align="right" class="border_bottom">
                                           -{{
-                                            paydata.advance | number: "1.2-2"
+                                          paydata.advance | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
@@ -763,13 +622,13 @@
                                         <td>Net Pay</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.netPay | number: "1.2-2"
+                                          cheqdata.netPay | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.netPayYTD | number: "1.2-2"
+                                          cheqdata.netPayYTD | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -793,74 +652,37 @@
                   </table>
                 </td>
               </tr>
-              <tr
-                *ngIf="
+              <tr *ngIf="
                   paydata.type === 'owner_operator' ||
                   paydata.type === 'carrier'
-                "
-              >
+                ">
                 <td>
-                  <table
-                    width="100%"
-                    border="0"
-                    cellspacing="0"
-                    cellpadding="0"
-                    height="266"
-                    class="class_border"
-                  >
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="266" class="class_border">
                     <tbody>
                       <tr>
                         <td valign="top">
-                          <table
-                            width="100%"
-                            border="0"
-                            cellspacing="0"
-                            cellpadding="0"
-                          >
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tbody>
                               <tr>
                                 <td colspan="3">
-                                  <table
-                                    width="100%"
-                                    border="0"
-                                    cellspacing="0"
-                                    cellpadding="0"
-                                  >
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
                                       <tr>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          height="30"
-                                          class="pl-3 pt-1 pb-1 text-uppercase"
-                                        >
+                                        <td style="color: #000000" width="33%" height="30"
+                                          class="pl-3 pt-1 pb-1 text-capitalize">
                                           {{ cheqdata.entityName }}
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          align="center"
-                                          valign="top"
-                                          class="pt-1 pb-1"
-                                        >
+                                        <td style="color: #000000" width="33%" align="center" valign="top"
+                                          class="pt-1 pb-1">
                                           {{ paydata.chequeDate }}
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          align="right"
-                                          valign="top"
-                                          class="pr-3 pt-1 pb-1"
-                                        >
+                                        <td style="color: #000000" align="right" valign="top" class="pr-3 pt-1 pb-1">
                                           {{ cheqdata.chqNo }}
                                         </td>
                                       </tr>
                                       <tr>
-                                        <td
-                                          colspan="3"
-                                          style="color: #000000"
-                                          height="20"
-                                          class="pl-3 border_bottom text-uppercase"
-                                        >
+                                        <td colspan="3" style="color: #000000" height="20"
+                                          class="pl-3 border_bottom text-uppercase">
                                           Pay Period: {{ cheqdata.payPeriod }}
                                         </td>
                                       </tr>
@@ -869,19 +691,8 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td
-                                  width="50%"
-                                  height="230"
-                                  valign="top"
-                                  class="border_right"
-                                >
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                <td width="50%" height="230" valign="top" class="border_right">
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr style="color: #000000">
                                         <td width="48%">&nbsp;</td>
@@ -895,15 +706,15 @@
                                         <td>Regular</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPayYTD
-                                              | number: "1.2-2"
+                                          cheqdata.regularPayYTD
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -914,13 +725,7 @@
                                   </table>
                                 </td>
                                 <td width="50%" valign="top">
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr style="color: #000000">
                                         <td width="48%">&nbsp;</td>
@@ -934,15 +739,15 @@
                                         <td>Regular</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPayYTD
-                                              | number: "1.2-2"
+                                          cheqdata.regularPayYTD
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -963,52 +768,24 @@
               </tr>
               <tr *ngIf="paydata.type === 'vendor'">
                 <td>
-                  <table
-                    width="100%"
-                    border="0"
-                    cellspacing="0"
-                    cellpadding="0"
-                    height="276"
-                    class="class_border"
-                  >
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="276" class="class_border">
                     <tbody>
                       <tr>
                         <td valign="top">
-                          <table
-                            width="100%"
-                            border="0"
-                            cellspacing="0"
-                            cellpadding="0"
-                          >
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tbody>
                               <tr>
                                 <td colspan="2">
-                                  <table
-                                    width="100%"
-                                    border="0"
-                                    cellspacing="0"
-                                    cellpadding="0"
-                                  >
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
                                       <tr style="color: #000000">
-                                        <td
-                                          width="33%"
-                                          height="30"
-                                          class="pl-3 pb-1 pt-2 text-uppercase border_bottom"
-                                        >
+                                        <td width="33%" height="30" class="pl-3 pb-1 pt-2 text-uppercase border_bottom">
                                           {{ cheqdata.companyName }}
                                         </td>
-                                        <td
-                                          width="33%"
-                                          align="center"
-                                          class="border_bottom pt-2 pb-1"
-                                        >
+                                        <td width="33%" align="center" class="border_bottom pt-2 pb-1">
                                           {{ paydata.chequeDate }}
                                         </td>
-                                        <td
-                                          align="center"
-                                          class="pr-3 border_bottom pt-2 pb-1"
-                                        >
+                                        <td align="center" class="pr-3 border_bottom pt-2 pb-1">
                                           {{ this.cheqdata.chqNo }}
                                         </td>
                                       </tr>
@@ -1017,31 +794,17 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td
-                                  width="50%"
-                                  height="240"
-                                  valign="top"
-                                  class="border_right"
-                                >
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                <td width="50%" height="240" valign="top" class="border_right">
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr style="color: #000000">
                                         <td width="50%">&nbsp;</td>
                                         <td width="25%"></td>
                                         <td align="right">Amount Paid</td>
                                       </tr>
-                                      <tr
-                                        style="color: #000000"
-                                        *ngFor="
+                                      <tr style="color: #000000" *ngFor="
                                           let dataInv of cheqdata.invoices
-                                        "
-                                      >
+                                        ">
                                         <td>{{ dataInv.invoiceNo }}</td>
                                         <td>&nbsp;</td>
                                         <td align="right">
@@ -1053,13 +816,7 @@
                                   </table>
                                 </td>
                                 <td valign="top">
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr style="color: #000000">
                                         <td width="50%">&nbsp;</td>
@@ -1090,13 +847,7 @@
               </tr>
               <tr *ngIf="paydata.type === 'vendor'">
                 <td>
-                  <table
-                    width="96%"
-                    border="0"
-                    align="center"
-                    cellpadding="0"
-                    cellspacing="0"
-                  >
+                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                     <tbody>
                       <tr style="color: #000000">
                         <td width="10%">Total</td>
@@ -1110,88 +861,42 @@
               </tr>
               <tr *ngIf="paydata.type === 'expensePayment'">
                 <td>
-                  <table
-                    width="100%"
-                    border="0"
-                    cellspacing="0"
-                    cellpadding="0"
-                    height="276"
-                    class="class_border"
-                  >
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="276" class="class_border">
                     <tbody>
                       <tr>
                         <td valign="top">
-                          <table
-                            width="100%"
-                            border="0"
-                            cellspacing="0"
-                            cellpadding="0"
-                          >
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tbody>
                               <tr>
                                 <td colspan="3">
-                                  <table
-                                    width="100%"
-                                    border="0"
-                                    cellspacing="0"
-                                    cellpadding="0"
-                                  >
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
-                                      <tr>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          height="20"
-                                          class="pl-3 pt-1 pb-1 text-uppercase"
-                                        >
+                                      <tr class="border_bottom">
+                                        <td style="color: #000000" width="33%" height="20"
+                                          class="pl-3 pt-1 pb-1 text-capitalize">
                                           {{ cheqdata.entityName }}
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          align="center"
-                                          valign="top"
-                                          class="pt-1 pb-1"
-                                        >
+                                        <td style="color: #000000" width="33%" align="center" valign="top"
+                                          class="pt-1 pb-1">
                                           {{ paydata.chequeDate }}
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          align="right"
-                                          valign="top"
-                                          class="pr-3 pt-1 pb-1"
-                                        >
+                                        <td style="color: #000000" align="right" valign="top" class="pr-3 pt-1 pb-1">
                                           {{ cheqdata.chqNo }}
                                         </td>
                                       </tr>
-                                      <tr>
-                                        <td
-                                          colspan="3"
-                                          style="color: #000000"
-                                          height="20"
-                                          class="pl-3 border_bottom text-uppercase"
-                                        >
+                                      <!-- <tr>
+                                        <td colspan="3" style="color: #000000" height="20"
+                                          class="pl-3 border_bottom text-uppercase">
                                           Pay Period: {{ cheqdata.payPeriod }}
                                         </td>
-                                      </tr>
+                                      </tr> -->
                                     </tbody>
                                   </table>
                                 </td>
                               </tr>
                               <tr>
-                                <td
-                                  width="50%"
-                                  height="240"
-                                  valign="top"
-                                  class="border_right"
-                                >
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                <td width="50%" height="240" valign="top" class="border_right">
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <!-- <tr
                                                                                 style="color:
@@ -1222,8 +927,8 @@
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -1234,13 +939,7 @@
                                   </table>
                                 </td>
                                 <td width="50%" valign="top">
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <!-- <tr
                                                                                 style="color:
@@ -1271,8 +970,8 @@
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -1293,40 +992,19 @@
               </tr>
               <tr *ngIf="paydata.type === 'advancePayment'">
                 <td>
-                  <table
-                    width="100%"
-                    border="0"
-                    cellspacing="0"
-                    cellpadding="0"
-                    height="276"
-                    class="class_border"
-                  >
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="276" class="class_border">
                     <tbody>
                       <tr>
                         <td valign="top">
-                          <table
-                            width="100%"
-                            border="0"
-                            cellspacing="0"
-                            cellpadding="0"
-                          >
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tbody>
                               <tr>
                                 <td colspan="3">
-                                  <table
-                                    width="100%"
-                                    border="0"
-                                    cellspacing="0"
-                                    cellpadding="0"
-                                  >
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
                                       <tr>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          height="30"
-                                          class="pl-3 border_bottom pt-2 pb-1 text-uppercase"
-                                        >
+                                        <td style="color: #000000" width="33%" height="30"
+                                          class="pl-3 border_bottom pt-2 pb-1 text-capitalize">
                                           {{ cheqdata.entityName }}
                                           <!-- Pay
                                                                                     Period:
@@ -1335,21 +1013,12 @@
                                                                                     cheqdata.payPeriod
                                                                                     }} -->
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          align="center"
-                                          valign="top"
-                                          class="border_bottom pt-2 pb-1"
-                                        >
+                                        <td style="color: #000000" width="33%" align="center" valign="top"
+                                          class="border_bottom pt-2 pb-1">
                                           {{ paydata.chequeDate }}
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          align="right"
-                                          valign="top"
-                                          class="pr-3 border_bottom pt-2 pb-1"
-                                        >
+                                        <td style="color: #000000" align="right" valign="top"
+                                          class="pr-3 border_bottom pt-2 pb-1">
                                           {{ cheqdata.chqNo }}
                                         </td>
                                       </tr>
@@ -1358,19 +1027,8 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td
-                                  width="50%"
-                                  height="240"
-                                  valign="top"
-                                  class="border_right"
-                                >
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                <td width="50%" height="240" valign="top" class="border_right">
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <!-- <tr
                                                                                 style="color:
@@ -1401,8 +1059,8 @@
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -1413,13 +1071,7 @@
                                   </table>
                                 </td>
                                 <td width="50%" valign="top">
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <!-- <tr
                                                                                 style="color:
@@ -1450,8 +1102,8 @@
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -1472,40 +1124,19 @@
               </tr>
               <tr *ngIf="paydata.type === 'purchasePayment'">
                 <td>
-                  <table
-                    width="100%"
-                    border="0"
-                    cellspacing="0"
-                    cellpadding="0"
-                    height="276"
-                    class="class_border"
-                  >
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="276" class="class_border">
                     <tbody>
                       <tr>
                         <td valign="top">
-                          <table
-                            width="100%"
-                            border="0"
-                            cellspacing="0"
-                            cellpadding="0"
-                          >
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tbody>
                               <tr>
                                 <td colspan="3">
-                                  <table
-                                    width="100%"
-                                    border="0"
-                                    cellspacing="0"
-                                    cellpadding="0"
-                                  >
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
                                       <tr>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          height="30"
-                                          class="pl-3 border_bottom pt-2 pb-1 text-uppercase"
-                                        >
+                                        <td style="color: #000000" width="33%" height="30"
+                                          class="pl-3 border_bottom pt-2 pb-1 text-capitalize">
                                           {{ cheqdata.entityName }}
                                           <!-- Pay
                                                                                     Period:
@@ -1514,21 +1145,12 @@
                                                                                     cheqdata.payPeriod
                                                                                     }} -->
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          align="center"
-                                          valign="top"
-                                          class="border_bottom pt-2 pb-1"
-                                        >
+                                        <td style="color: #000000" width="33%" align="center" valign="top"
+                                          class="border_bottom pt-2 pb-1">
                                           {{ paydata.chequeDate }}
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          align="right"
-                                          valign="top"
-                                          class="pr-3 border_bottom pt-2 pb-1"
-                                        >
+                                        <td style="color: #000000" align="right" valign="top"
+                                          class="pr-3 border_bottom pt-2 pb-1">
                                           {{ cheqdata.chqNo }}
                                         </td>
                                       </tr>
@@ -1537,19 +1159,8 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td
-                                  width="50%"
-                                  height="240"
-                                  valign="top"
-                                  class="border_right"
-                                >
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                <td width="50%" height="240" valign="top" class="border_right">
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <!-- <tr
                                                                                 style="color:
@@ -1580,8 +1191,8 @@
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -1592,13 +1203,7 @@
                                   </table>
                                 </td>
                                 <td width="50%" valign="top">
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <!-- <tr
                                                                                 style="color:
@@ -1629,8 +1234,8 @@
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -1658,73 +1263,36 @@
               <tr>
                 <td>&nbsp;</td>
               </tr>
-              <tr
-                *ngIf="paydata.type === 'driver' || paydata.type === 'employee'"
-              >
+              <tr *ngIf="paydata.type === 'driver' || paydata.type === 'employee'">
                 <td>
                   <!-- driver payment 2nd table-->
 
-                  <table
-                    width="100%"
-                    border="0"
-                    cellspacing="0"
-                    cellpadding="0"
-                    height="270"
-                    class="class_border"
-                  >
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="270" class="class_border">
                     <tbody>
                       <tr>
                         <td valign="top">
-                          <table
-                            width="100%"
-                            border="0"
-                            cellspacing="0"
-                            cellpadding="0"
-                          >
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tbody>
                               <tr>
                                 <td colspan="3">
-                                  <table
-                                    width="100%"
-                                    border="0"
-                                    cellspacing="0"
-                                    cellpadding="0"
-                                  >
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
                                       <tr>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          height="20"
-                                          class="pl-3 pt-2 pb-1 text-uppercase"
-                                        >
+                                        <td style="color: #000000" width="33%" height="20"
+                                          class="pl-3 pt-2 pb-1 text-capitalize">
                                           {{ cheqdata.entityName }}
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          align="center"
-                                          valign="top"
-                                          class="pt-2 pb-1"
-                                        >
+                                        <td style="color: #000000" width="33%" align="center" valign="top"
+                                          class="pt-2 pb-1">
                                           {{ paydata.chequeDate }}
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          align="right"
-                                          valign="top"
-                                          class="pr-3 pt-2 pb-1"
-                                        >
+                                        <td style="color: #000000" align="right" valign="top" class="pr-3 pt-2 pb-1">
                                           {{ cheqdata.chqNo }}
                                         </td>
                                       </tr>
                                       <tr>
-                                        <td
-                                          colspan="3"
-                                          style="color: #000000"
-                                          height="20"
-                                          class="pl-3 border_bottom text-uppercase"
-                                        >
+                                        <td colspan="3" style="color: #000000" height="20"
+                                          class="pl-3 border_bottom text-uppercase">
                                           Pay Period: {{ cheqdata.payPeriod }}
                                         </td>
                                       </tr>
@@ -1734,19 +1302,8 @@
                               </tr>
                               <!-- driver payment 2nd table 3 column-->
                               <tr>
-                                <td
-                                  width="33%"
-                                  height="234"
-                                  valign="top"
-                                  class="border_right"
-                                >
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                <td width="33%" height="234" valign="top" class="border_right">
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr style="color: #000000">
                                         <td width="48%">&nbsp;</td>
@@ -1760,15 +1317,15 @@
                                         <td>Regular</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPayYTD
-                                              | number: "1.2-2"
+                                          cheqdata.regularPayYTD
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -1776,15 +1333,15 @@
                                         <td>Vacation Pay</td>
                                         <td align="right" class="border_bottom">
                                           {{
-                                            cheqdata.vacationPay
-                                              | number: "1.2-2"
+                                          cheqdata.vacationPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right" class="border_bottom">
                                           {{
-                                            cheqdata.vacationPayYTD
-                                              | number: "1.2-2"
+                                          cheqdata.vacationPayYTD
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -1795,14 +1352,14 @@
                                         <td>Gross Pay</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.grossPay | number: "1.2-2"
+                                          cheqdata.grossPay | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.grossPayYTD
-                                              | number: "1.2-2"
+                                          cheqdata.grossPayYTD
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -1812,18 +1369,8 @@
                                     </tbody>
                                   </table>
                                 </td>
-                                <td
-                                  width="33%"
-                                  valign="top"
-                                  class="border_right"
-                                >
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                <td width="33%" valign="top" class="border_right">
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr style="color: #000000">
                                         <td width="48%">&nbsp;</td>
@@ -1841,7 +1388,7 @@
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.cppYTD | number: "1.2-2"
+                                          cheqdata.cppYTD | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -1863,7 +1410,7 @@
                                         <td align="right">&nbsp;</td>
                                         <td align="right" class="border_bottom">
                                           {{
-                                            cheqdata.taxYTD | number: "1.2-2"
+                                          cheqdata.taxYTD | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -1874,14 +1421,14 @@
                                         <td>Withheld</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.withHeld | number: "1.2-2"
+                                          cheqdata.withHeld | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.withHeldYTD
-                                              | number: "1.2-2"
+                                          cheqdata.withHeldYTD
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -1898,13 +1445,7 @@
                                   </table>
                                 </td>
                                 <td valign="top">
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr style="color: #000000">
                                         <td width="48%">&nbsp;</td>
@@ -1918,14 +1459,14 @@
                                         <td>Gross Pay</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.grossPay | number: "1.2-2"
+                                          cheqdata.grossPay | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.grossPayYTD
-                                              | number: "1.2-2"
+                                          cheqdata.grossPayYTD
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -1933,13 +1474,13 @@
                                         <td>GST/HST</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.gstHst | number: "1.2-2"
+                                          cheqdata.gstHst | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.gstHstYTD | number: "1.2-2"
+                                          cheqdata.gstHstYTD | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -1947,14 +1488,14 @@
                                         <td>Withheld</td>
                                         <td align="right" class="">
                                           -{{
-                                            cheqdata.withHeld | number: "1.2-2"
+                                          cheqdata.withHeld | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right" class="">
                                           -{{
-                                            cheqdata.withHeldYTD
-                                              | number: "1.2-2"
+                                          cheqdata.withHeldYTD
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -1962,7 +1503,7 @@
                                         <td>Advance</td>
                                         <td align="right" class="border_bottom">
                                           -{{
-                                            paydata.advance | number: "1.2-2"
+                                          paydata.advance | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
@@ -1977,13 +1518,13 @@
                                         <td>Net Pay</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.netPay | number: "1.2-2"
+                                          cheqdata.netPay | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.netPayYTD | number: "1.2-2"
+                                          cheqdata.netPayYTD | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -2007,74 +1548,37 @@
                   </table>
                 </td>
               </tr>
-              <tr
-                *ngIf="
+              <tr *ngIf="
                   paydata.type === 'owner_operator' ||
                   paydata.type === 'carrier'
-                "
-              >
+                ">
                 <td>
-                  <table
-                    width="100%"
-                    border="0"
-                    cellspacing="0"
-                    cellpadding="0"
-                    height="266"
-                    class="class_border"
-                  >
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="266" class="class_border">
                     <tbody>
                       <tr>
                         <td valign="top">
-                          <table
-                            width="100%"
-                            border="0"
-                            cellspacing="0"
-                            cellpadding="0"
-                          >
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tbody>
                               <tr>
                                 <td colspan="3">
-                                  <table
-                                    width="100%"
-                                    border="0"
-                                    cellspacing="0"
-                                    cellpadding="0"
-                                  >
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
                                       <tr>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          height="30"
-                                          class="pl-3 pt-1 pb-1 text-uppercase"
-                                        >
+                                        <td style="color: #000000" width="33%" height="30"
+                                          class="pl-3 pt-1 pb-1 text-capitalize">
                                           {{ cheqdata.entityName }}
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          align="center"
-                                          valign="top"
-                                          class="pt-1 pb-1"
-                                        >
+                                        <td style="color: #000000" width="33%" align="center" valign="top"
+                                          class="pt-1 pb-1">
                                           {{ paydata.chequeDate }}
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          align="right"
-                                          valign="top"
-                                          class="pr-3 pt-1 pb-1"
-                                        >
+                                        <td style="color: #000000" align="right" valign="top" class="pr-3 pt-1 pb-1">
                                           {{ cheqdata.chqNo }}
                                         </td>
                                       </tr>
                                       <tr>
-                                        <td
-                                          colspan="3"
-                                          style="color: #000000"
-                                          height="20"
-                                          class="pl-3 border_bottom text-uppercase"
-                                        >
+                                        <td colspan="3" style="color: #000000" height="20"
+                                          class="pl-3 border_bottom text-uppercase">
                                           Pay Period: {{ cheqdata.payPeriod }}
                                         </td>
                                       </tr>
@@ -2083,19 +1587,8 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td
-                                  width="50%"
-                                  height="230"
-                                  valign="top"
-                                  class="border_right"
-                                >
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                <td width="50%" height="230" valign="top" class="border_right">
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr style="color: #000000">
                                         <td width="48%">&nbsp;</td>
@@ -2109,15 +1602,15 @@
                                         <td>Regular</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPayYTD
-                                              | number: "1.2-2"
+                                          cheqdata.regularPayYTD
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -2128,13 +1621,7 @@
                                   </table>
                                 </td>
                                 <td width="50%" valign="top">
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr style="color: #000000">
                                         <td width="48%">&nbsp;</td>
@@ -2148,15 +1635,15 @@
                                         <td>Regular</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPayYTD
-                                              | number: "1.2-2"
+                                          cheqdata.regularPayYTD
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -2177,52 +1664,24 @@
               </tr>
               <tr *ngIf="paydata.type === 'vendor'">
                 <td>
-                  <table
-                    width="100%"
-                    border="0"
-                    cellspacing="0"
-                    cellpadding="0"
-                    height="276"
-                    class="class_border"
-                  >
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="276" class="class_border">
                     <tbody>
                       <tr>
                         <td valign="top">
-                          <table
-                            width="100%"
-                            border="0"
-                            cellspacing="0"
-                            cellpadding="0"
-                          >
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tbody>
                               <tr>
                                 <td colspan="2">
-                                  <table
-                                    width="100%"
-                                    border="0"
-                                    cellspacing="0"
-                                    cellpadding="0"
-                                  >
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
                                       <tr>
-                                        <td
-                                          width="33%"
-                                          height="30"
-                                          class="pl-3 pt-2 pb-1 text-uppercase border_bottom"
-                                        >
+                                        <td width="33%" height="30" class="pl-3 pt-2 pb-1 text-uppercase border_bottom">
                                           {{ cheqdata.companyName }}
                                         </td>
-                                        <td
-                                          width="33%"
-                                          align="center"
-                                          class="border_bottom pt-2 pb-1"
-                                        >
+                                        <td width="33%" align="center" class="border_bottom pt-2 pb-1">
                                           {{ paydata.chequeDate }}
                                         </td>
-                                        <td
-                                          align="center"
-                                          class="pr-3 pt-2 pb-1 border_bottom"
-                                        >
+                                        <td align="center" class="pr-3 pt-2 pb-1 border_bottom">
                                           {{ this.cheqdata.chqNo }}
                                         </td>
                                       </tr>
@@ -2231,30 +1690,17 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td
-                                  width="50%"
-                                  height="270"
-                                  valign="top"
-                                  class="border_right"
-                                >
-                                  <table
-                                    width="98%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                <td width="50%" height="270" valign="top" class="border_right">
+                                  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr>
                                         <td width="50%">&nbsp;</td>
                                         <td width="25%"></td>
                                         <td align="right">Amount Paid</td>
                                       </tr>
-                                      <tr
-                                        *ngFor="
+                                      <tr *ngFor="
                                           let dataInv of cheqdata.invoices
-                                        "
-                                      >
+                                        ">
                                         <td>{{ dataInv.invoiceNo }}</td>
                                         <td>&nbsp;</td>
                                         <td align="right">
@@ -2266,13 +1712,7 @@
                                   </table>
                                 </td>
                                 <td valign="top">
-                                  <table
-                                    width="98%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <tr>
                                         <td width="50%">&nbsp;</td>
@@ -2303,13 +1743,7 @@
               </tr>
               <tr *ngIf="paydata.type === 'vendor'">
                 <td>
-                  <table
-                    width="98%"
-                    border="0"
-                    align="center"
-                    cellpadding="0"
-                    cellspacing="0"
-                  >
+                  <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
                     <tbody>
                       <tr>
                         <td width="10%">Total</td>
@@ -2323,88 +1757,42 @@
               </tr>
               <tr *ngIf="paydata.type === 'expensePayment'">
                 <td>
-                  <table
-                    width="100%"
-                    border="0"
-                    cellspacing="0"
-                    cellpadding="0"
-                    height="276"
-                    class="class_border"
-                  >
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="276" class="class_border">
                     <tbody>
                       <tr>
                         <td valign="top">
-                          <table
-                            width="100%"
-                            border="0"
-                            cellspacing="0"
-                            cellpadding="0"
-                          >
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tbody>
                               <tr>
                                 <td colspan="3">
-                                  <table
-                                    width="100%"
-                                    border="0"
-                                    cellspacing="0"
-                                    cellpadding="0"
-                                  >
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
-                                      <tr>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          height="20"
-                                          class="pl-3 pt-1 pb-1 text-uppercase"
-                                        >
+                                      <tr class="border_bottom">
+                                        <td style="color: #000000" width="33%" height="20"
+                                          class="pl-3 pt-1 pb-1 text-capitalize">
                                           {{ cheqdata.entityName }}
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          align="center"
-                                          valign="top"
-                                          class="pt-1 pb-1"
-                                        >
+                                        <td style="color: #000000" width="33%" align="center" valign="top"
+                                          class="pt-1 pb-1">
                                           {{ paydata.chequeDate }}
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          align="right"
-                                          valign="top"
-                                          class="pr-3 pt-1 pb-1"
-                                        >
+                                        <td style="color: #000000" align="right" valign="top" class="pr-3 pt-1 pb-1">
                                           {{ cheqdata.chqNo }}
                                         </td>
                                       </tr>
-                                      <tr>
-                                        <td
-                                          colspan="3"
-                                          style="color: #000000"
-                                          height="20"
-                                          class="pl-3 border_bottom text-uppercase"
-                                        >
+                                      <!-- <tr>
+                                        <td colspan="3" style="color: #000000" height="20"
+                                          class="pl-3 border_bottom text-uppercase">
                                           Pay Period: {{ cheqdata.payPeriod }}
                                         </td>
-                                      </tr>
+                                      </tr> -->
                                     </tbody>
                                   </table>
                                 </td>
                               </tr>
                               <tr>
-                                <td
-                                  width="50%"
-                                  height="240"
-                                  valign="top"
-                                  class="border_right"
-                                >
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                <td width="50%" height="240" valign="top" class="border_right">
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <!-- <tr
                                                                                 style="color:
@@ -2435,8 +1823,8 @@
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -2447,13 +1835,7 @@
                                   </table>
                                 </td>
                                 <td width="50%" valign="top">
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <!-- <tr
                                                                                 style="color:
@@ -2484,8 +1866,8 @@
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -2506,40 +1888,19 @@
               </tr>
               <tr *ngIf="paydata.type === 'advancePayment'">
                 <td>
-                  <table
-                    width="100%"
-                    border="0"
-                    cellspacing="0"
-                    cellpadding="0"
-                    height="276"
-                    class="class_border"
-                  >
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="276" class="class_border">
                     <tbody>
                       <tr>
                         <td valign="top">
-                          <table
-                            width="100%"
-                            border="0"
-                            cellspacing="0"
-                            cellpadding="0"
-                          >
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tbody>
                               <tr>
                                 <td colspan="3">
-                                  <table
-                                    width="100%"
-                                    border="0"
-                                    cellspacing="0"
-                                    cellpadding="0"
-                                  >
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
                                       <tr>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          height="30"
-                                          class="pl-3 border_bottom pt-2 pb-1 text-uppercase"
-                                        >
+                                        <td style="color: #000000" width="33%" height="30"
+                                          class="pl-3 border_bottom pt-2 pb-1 text-capitalize">
                                           {{ cheqdata.entityName }}
                                           <!-- Pay
                                                                                     Period:
@@ -2548,21 +1909,12 @@
                                                                                     cheqdata.payPeriod
                                                                                     }} -->
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          align="center"
-                                          valign="top"
-                                          class="border_bottom pt-2 pb-1"
-                                        >
+                                        <td style="color: #000000" width="33%" align="center" valign="top"
+                                          class="border_bottom pt-2 pb-1">
                                           {{ paydata.chequeDate }}
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          align="right"
-                                          valign="top"
-                                          class="pr-3 border_bottom pt-2 pb-1"
-                                        >
+                                        <td style="color: #000000" align="right" valign="top"
+                                          class="pr-3 border_bottom pt-2 pb-1">
                                           {{ cheqdata.chqNo }}
                                         </td>
                                       </tr>
@@ -2571,19 +1923,8 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td
-                                  width="50%"
-                                  height="240"
-                                  valign="top"
-                                  class="border_right"
-                                >
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                <td width="50%" height="240" valign="top" class="border_right">
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <!-- <tr
                                                                                 style="color:
@@ -2614,8 +1955,8 @@
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -2626,13 +1967,7 @@
                                   </table>
                                 </td>
                                 <td width="50%" valign="top">
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <!-- <tr
                                                                                 style="color:
@@ -2663,8 +1998,8 @@
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -2685,40 +2020,19 @@
               </tr>
               <tr *ngIf="paydata.type === 'purchasePayment'">
                 <td>
-                  <table
-                    width="100%"
-                    border="0"
-                    cellspacing="0"
-                    cellpadding="0"
-                    height="276"
-                    class="class_border"
-                  >
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="276" class="class_border">
                     <tbody>
                       <tr>
                         <td valign="top">
-                          <table
-                            width="100%"
-                            border="0"
-                            cellspacing="0"
-                            cellpadding="0"
-                          >
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
                             <tbody>
                               <tr>
                                 <td colspan="3">
-                                  <table
-                                    width="100%"
-                                    border="0"
-                                    cellspacing="0"
-                                    cellpadding="0"
-                                  >
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
                                       <tr>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          height="30"
-                                          class="pl-3 border_bottom pt-2 pb-1 text-uppercase"
-                                        >
+                                        <td style="color: #000000" width="33%" height="30"
+                                          class="pl-3 border_bottom pt-2 pb-1 text-capitalize">
                                           {{ cheqdata.entityName }}
                                           <!-- Pay
                                                                                     Period:
@@ -2727,21 +2041,12 @@
                                                                                     cheqdata.payPeriod
                                                                                     }} -->
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          width="33%"
-                                          align="center"
-                                          valign="top"
-                                          class="border_bottom pt-2 pb-1"
-                                        >
+                                        <td style="color: #000000" width="33%" align="center" valign="top"
+                                          class="border_bottom pt-2 pb-1">
                                           {{ paydata.chequeDate }}
                                         </td>
-                                        <td
-                                          style="color: #000000"
-                                          align="right"
-                                          valign="top"
-                                          class="pr-3 border_bottom pt-2 pb-1"
-                                        >
+                                        <td style="color: #000000" align="right" valign="top"
+                                          class="pr-3 border_bottom pt-2 pb-1">
                                           {{ cheqdata.chqNo }}
                                         </td>
                                       </tr>
@@ -2750,19 +2055,8 @@
                                 </td>
                               </tr>
                               <tr>
-                                <td
-                                  width="50%"
-                                  height="240"
-                                  valign="top"
-                                  class="border_right"
-                                >
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                <td width="50%" height="240" valign="top" class="border_right">
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <!-- <tr
                                                                                 style="color:
@@ -2793,8 +2087,8 @@
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -2805,13 +2099,7 @@
                                   </table>
                                 </td>
                                 <td width="50%" valign="top">
-                                  <table
-                                    width="96%"
-                                    border="0"
-                                    align="center"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                  >
+                                  <table width="96%" border="0" align="center" cellpadding="0" cellspacing="0">
                                     <tbody>
                                       <!-- <tr
                                                                                 style="color:
@@ -2842,8 +2130,8 @@
                                         <td align="right">&nbsp;</td>
                                         <td align="right">
                                           {{
-                                            cheqdata.regularPay
-                                              | number: "1.2-2"
+                                          cheqdata.regularPay
+                                          | number: "1.2-2"
                                           }}
                                         </td>
                                       </tr>
@@ -2882,12 +2170,7 @@
         <!-- <button type="button" class="btn btn-success" (click)="generatePDF()">
           Download
         </button> -->
-        <button
-          type="button"
-          class="btn btn-success"
-          [disabled]="isDownload"
-          (click)="saveDownload()"
-        >
+        <button type="button" class="btn btn-success" [disabled]="isDownload" (click)="saveDownload()">
           {{ downloadTitle }}
         </button>
       </div>

@@ -7,7 +7,8 @@
             Order Details
           </div>
           <div class="col-md-8 col-lg-8 text-right" *ngIf="showBtns">
-            <span class="mr-2 text-dark"><b>Invoiced: </b> {{ invDate ? (invDate | date: "yyyy/MM/dd") : "No" }}
+            <span class="mr-2 text-dark"><b>Invoiced: </b>
+              {{ invDate ? (invDate | date: "yyyy/MM/dd") : "No" }}
             </span>
             <span class="mx-2 text-dark text-capitalize"><b>Payment:</b>
               {{ invStatus ? invStatus.replace("_", " ") : "NA" }}</span>
@@ -23,13 +24,12 @@
               Invoice
             </button>
 
-            <button *ngIf="orderStatus === 'brokerage'" (click)="downloadBrokeragePdf()" [disabled]="brokerageDisabled"
-              class="btn btn-success btn-sm mr-2">
+            <button *ngIf="brokerage.carrierID && brokerage.brokerageAmount" (click)="downloadBrokeragePdf()"
+              [disabled]="brokerageDisabled" class="btn btn-success btn-sm mr-2">
               <i class="fas fa-download"> </i>
               Brokerage
             </button>
-            <button (click)="downloadBolPdf();" class="btn btn-success btn-sm
-              mr-2">
+            <button (click)="downloadBolPdf()" class="btn btn-success btn-sm mr-2">
               <i class="fas fa-download"> </i>
               BOL
             </button>
@@ -66,8 +66,8 @@
             <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
               <div>
                 <h4 class="m-0 font-weight-bold">
-                  {{ orderMode }} - ORD{{ orderNumber }}
-                  <span class="badge p-1 badge-dark mt-2 mb-0 text-uppercase" *ngIf="orderStatus">
+                  {{ orderMode }} - {{ orderNumber }}
+                  <span class="badge badge-dark text-capitalize mb-0" *ngIf="orderStatus">
                     {{ orderStatus }} <span *ngIf="recallStatus">(R) </span>
                   </span>
                 </h4>
@@ -754,7 +754,7 @@
                   <div class="col-xl-12 col-12 mb-3">
                     <div class="boxshadow1 maindisbox w100 pull-left">
                       <div class="widgetload">
-                        <div  *ngIf="isOrderPriceEnabled" class="widgettbload">
+                        <div *ngIf="isOrderPriceEnabled" class="widgettbload">
                           <span class="pull-right text-3 mt-2 text-dark">
                           </span>
                           <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
@@ -817,7 +817,6 @@
                               <span class="pull-right">{{ totalCharges | number: "1.2-2" }}
                                 {{ charges.freightFee.currency }}</span>
                             </p>
-
                           </div>
                         </div>
                       </div>
@@ -874,19 +873,20 @@
                         </div>
                         <div class="row">
                           <div class="col-12">
-                            <div class="row my-2 px-2" *ngFor="let item of attachments; let d = index">
-                              <div class="col-5">
-                                <a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
-                                  (click)="setPDFSrc(item.docPath)">Document {{ d + 1 }}</a>
+                            <div class="row mb-1" *ngFor="let item of attachments; let d = index">
+                              <div class="col-lg-9">
+                                <a href="{{ item.path }}" data-toggle="modal" data-target="#viewDocModal"
+                                  (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
                               </div>
-                              <div class="col- 3 text-right">
-                                <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.docPath)"
-                                  data-toggle="modal" data-target="#viewDocModal"></em>
-                                <a href="javascript:;" (click)="delete('attachment', item.name, d)"
-                                  class="modal-with-form">
-                                  <em class="fas fa-times text-danger"></em></a>
+                              <div class="col-lg-3 text-right">
+                                <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                                  (click)="delete('attachment', item.name, d)"><i class="fas fa-trash-alt"></i></a>
+                                <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                                  (click)="setPDFSrc(item.path)" data-toggle="modal" data-target="#viewDocModal"><i
+                                    class="fas fa-eye"></i></a>
                               </div>
                             </div>
+
                             <div *ngIf="attachments.length == 0" class="my-2 px-2">
                               <span>No attachment found</span>
                             </div>
@@ -905,12 +905,14 @@
                           <div class="row align-items-center">
                             <div class="col-6">
                               <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
-                                <i class="fas fa-box"></i> BOL/POD
+                                <i class="fas fa-box"></i> Documents
                               </h2>
                             </div>
                             <div class="col-6 text-right">
-                              <button [disabled]="docs.length == 4" class="btn btn-success btn-sm"
-                                (click)="openDocModal()">Add Document</button>
+                              <button [disabled]="docs.length >= 10" class="btn btn-success btn-sm"
+                                (click)="openDocModal()">
+                                Add Document
+                              </button>
                             </div>
                           </div>
                         </div>
@@ -936,6 +938,12 @@
                                   <td>
                                     <span *ngIf="doc.type === 'bol'">Bill of lading</span>
                                     <span *ngIf="doc.type === 'pod'">Proof of delivery</span>
+                                    <span *ngIf="doc.type === 'fuelRpt'">Fuel Receipts</span>
+                                    <span *ngIf="doc.type === 'loadCnf'">Load Confirmation</span>
+                                    <span *ngIf="doc.type === 'accident'">Accident</span>
+                                    <span *ngIf="doc.type === 'citation'">Citation</span>
+                                    <span *ngIf="doc.type === 'tickets'">Tickets</span>
+                                    <span *ngIf="doc.type === 'inspect'">Inspect</span>
                                     <span *ngIf="doc.type === 'other'">Other</span>
                                   </td>
                                   <td>
@@ -951,15 +959,12 @@
                                 </tr>
                               </tbody>
                             </table>
-
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-
-
               </div>
             </div>
           </div>
@@ -978,24 +983,25 @@
           <tbody>
             <tr>
               <td>
-                <table width="100%" style="margin-top: 0px; border-bottom: 1px solid #cdcdcd">
+                <table width="100%" style="margin-top: 0px; border-bottom: 1px solid #595959">
                   <tbody>
                     <tr>
                       <td width="60%" class="title" valign="center" style="padding: 10px; text-align: left">
-                        <h4 style="
+                        <h4 class="text-dark" style="
                             margin: 0 0 15px;
-                            font-size: 37px;
+                            font-size: 1.8em;
                             color: #040404;
                             font-weight: 700;
                             text-transform: capitalize;
                           ">
-                          INVOICE
+                          Invoice
                         </h4>
                       </td>
                       <td align="right">
                         <img crossorigin="anonymous" *ngIf="companyLogoSrc" [src]="companyLogoSrc" alt="logo"
                           style="max-width: 100px" />
                         <p *ngIf="
+                            invoiceData.carrierData &&
                             invoiceData.carrierData.termsInfo.tagLine &&
                             invoiceData.carrierData.termsInfo.tagLine != ''
                           " class="m-0 font-weight-bold text-dark">
@@ -1003,11 +1009,12 @@
                         </p>
                       </td>
                     </tr>
-                    <tr>
+
+                    <tr style="border-top: 1px solid #595959">
                       <td width="60%" class="title" valign="top" style="padding: 10px; text-align: left">
                         <p style="margin: 0; color: #000">
                           <span style="font-size: 12px">
-                            <b>Invoice#</b>
+                            <b>Invoice# </b>
                           </span>
                           {{ orderNumber }}
                         </p>
@@ -1015,8 +1022,12 @@
                           <span style="font-size: 12px">
                             <b>Invoice Date</b>
                           </span>
-                          <span *ngIf="invDate">{{ invDate | date: "yyyy/MM/dd" }}</span>
-                          <span *ngIf="!invDate">{{ today | date: "yyyy/MM/dd" }}</span>
+                          <span *ngIf="invDate">{{
+                            invDate | date: "yyyy/MM/dd"
+                            }}</span>
+                          <span *ngIf="!invDate">{{
+                            today | date: "yyyy/MM/dd"
+                            }}</span>
                         </p>
                         <p style="margin: 0; color: #000">
                           <span style="font-size: 12px">
@@ -1076,7 +1087,7 @@
                     </tr>
                   </tbody>
                 </table>
-                <table width="100%" style="margin-top: 0px; border-bottom: 1px solid #cdcdcd">
+                <table width="100%" style="margin-top: 0px; border-bottom: 1px solid #595959">
                   <tbody>
                     <tr>
                       <td style="padding: 10px; font-size: 13px" valign="top">
@@ -1122,7 +1133,7 @@
                 <table width="100%" style="
                     color: #040404;
                     margin-top: 0px;
-                    border-bottom: 1px solid #cdcdcd;
+                    border-bottom: 1px solid #595959;
                   ">
                   <tbody>
                     <tr>
@@ -1186,7 +1197,7 @@
                                 ">
                                 Shipment - {{ m + 1 }}
                               </p>
-                              <div class="shipment__wrap" style="
+                              <div class="shipment__wrap shipmentbox" style="
                                   padding: 5px;
                                   float: left;
                                   margin-bottom: 5px;
@@ -1263,14 +1274,16 @@
                                             <thead>
                                               <tr style="font-size: 12px">
                                                 <td class="text-capitalize" colspan="2">
-                                                  COMMODITY
+                                                  <strong>COMMODITY</strong>
                                                 </td>
                                                 <td style="width: 80px">
-                                                  PICK#
+                                                  <strong>PICK#</strong>
                                                 </td>
-                                                <td style="width: 70px">QTY</td>
                                                 <td style="width: 70px">
-                                                  WEIGHT
+                                                  <strong>QTY</strong>
+                                                </td>
+                                                <td style="width: 70px">
+                                                  <strong>WEIGHT</strong>
                                                 </td>
                                               </tr>
                                             </thead>
@@ -1322,7 +1335,7 @@
                                 </div>
                               </div>
                               <div class="receivement__wrap" style="width: 49.5%; float: left">
-                                <div *ngFor="let receive of ship.receivers" style="
+                                <div class="shipmentbox" *ngFor="let receive of ship.receivers" style="
                                     padding: 5px;
                                     margin-bottom: 5px;
                                     border: 1px dashed #8d8d8d;
@@ -1619,7 +1632,6 @@
                       </tr>
                     </tbody>
                   </table>
-
                 </div>
               </td>
             </tr>
@@ -1702,7 +1714,7 @@
                                   font-weight: 700;
                                   text-transform: capitalize;
                                 ">
-                                INVOICE
+                                Invoice
                               </h4>
                               <p style="margin: 0; color: #000">
                                 <span style="font-size: 12px">
@@ -1714,8 +1726,12 @@
                                 <span style="font-size: 12px">
                                   <b>Invoice Date</b>
                                 </span>
-                                <span *ngIf="invDate">{{ invDate | date: "yyyy/MM/dd" }}</span>
-                                <span *ngIf="!invDate">{{ today | date: "yyyy/MM/dd" }}</span>
+                                <span *ngIf="invDate">{{
+                                  invDate | date: "yyyy/MM/dd"
+                                  }}</span>
+                                <span *ngIf="!invDate">{{
+                                  today | date: "yyyy/MM/dd"
+                                  }}</span>
                               </p>
                               <p style="margin: 0; color: #000">
                                 <span style="font-size: 12px">
@@ -2457,18 +2473,21 @@
             </label>
           </div>
           <div class="col-12 mt-2">
-            <div class="form-check form-check-inline" *ngFor="let item of documentsArr;let i = index;">
-              <input class="form-check-input" name="checkbox{{item.id}}" [(ngModel)]="item.checked"
-                (change)="documentSelection()" type="checkbox" id="inlineCheckbox_{{i}}" [disabled]="item.disabled">
-              <label class="form-check-label" for="inlineCheckbox_{{i}}">{{item.docName}}</label>
+            <div class="form-check form-check-inline" *ngFor="let item of documentsArr; let i = index">
+              <input class="form-check-input" name="checkbox{{ item.id }}" [(ngModel)]="item.checked"
+                (change)="documentSelection()" type="checkbox" id="inlineCheckbox_{{ i }}" [disabled]="item.disabled" />
+              <label class="form-check-label" for="inlineCheckbox_{{ i }}">{{
+                item.docName
+                }}</label>
             </div>
           </div>
           <div class="col-12 mt-2">
             <div class="form-check form-check-inline">
               <input class="form-check-input" name="checkbox" [(ngModel)]="emailData.isSingle" type="checkbox"
-                id="inlineCheckbox1" [disabled]="singleDisabled">
+                id="inlineCheckbox1" [disabled]="singleDisabled" />
               <label class="form-check-label" for="inlineCheckbox1">Single file (All documents will be merged in single
-                file.) </label>
+                file.)
+              </label>
             </div>
           </div>
 
@@ -2496,10 +2515,11 @@
   </form>
 </ng-template>
 
-
 <ng-template #documentSelectionModal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Select documents which you want to download?</h4>
+    <h4 class="modal-title" id="modal-basic-title">
+      Select documents which you want to download?
+    </h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -2508,20 +2528,19 @@
     <div class="modal-body">
       <div class="document-selects__main">
         <div class="row align-items-center mb-2">
-
           <div class="col-12 mt-2">
-            <div class="form-check form-check-inline" *ngFor="let item of documentsArr;">
-              <input class="form-check-input" name="checkbox{{item.id}}" [(ngModel)]="item.checked"
-                (change)="documentSelection()" type="checkbox" id="inlineCheckbox1" [disabled]="item.disabled">
-              <label class="form-check-label" for="inlineCheckbox1">{{item.docName}}</label>
+            <div class="form-check form-check-inline" *ngFor="let item of documentsArr">
+              <input class="form-check-input" name="checkbox{{ item.id }}" [(ngModel)]="item.checked"
+                (change)="documentSelection()" type="checkbox" id="inlineCheckbox1" [disabled]="item.disabled" />
+              <label class="form-check-label" for="inlineCheckbox1">{{
+                item.docName
+                }}</label>
             </div>
           </div>
-
         </div>
       </div>
     </div>
     <div class="modal-footer">
-
       <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-default">
         Cancel
       </button>

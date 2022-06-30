@@ -343,43 +343,37 @@
           <tbody>
             <tr>
               <td colspan="2">
-                <h1 style="font-size: 26px; color: #000">Receipt</h1>
+                <h1 class="text-dark font-weight-bold text-6 mb-1 mt-1">
+                  Receipt
+                </h1>
               </td>
             </tr>
             <tr>
               <td valign="top">
-                <p
-                  style="
-                    font-size: 13px;
-                    color: #000;
-                    margin-bottom: 5px;
-                    margin-top: 5px;
-                  "
-                >
-                  <strong>Receipt#:</strong> {{ receiptData.recNo }}
+                <p class="mt-2 mb-2 text-dark text-3">
+                  Receipt#: <strong>{{ receiptData.recNo }}</strong>
                 </p>
               </td>
               <td valign="top" align="right">
-                <p
-                  style="
-                    font-size: 13px;
-                    color: #000;
-                    margin-bottom: 5px;
-                    margin-top: 5px;
-                  "
-                >
-                  <strong>Receipt Date:</strong>
-                  {{ receiptData.txnDate | date: "yyyy/MM/dd" }}
+                <p class="mt-2 mb-2 text-dark text-3">
+                  Receipt Date:
+                  <strong>{{
+                    receiptData.txnDate | date: "yyyy/MM/dd"
+                  }}</strong>
                 </p>
               </td>
             </tr>
             <tr>
-              <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
+              <td colspan="2" height="1" bgcolor="#595959"></td>
             </tr>
             <tr>
               <td width="50%" valign="top">
-                <h2 style="font-size: 20px; color: #000">Customer</h2>
-                <p style="font-size: 13px; color: #000">
+                <h2 class="mt-0 mb-0 text-dark text-5 font-weight-semibold">
+                  Customer
+                </h2>
+                <p
+                  class="text-capitalize text-dark text-5 font-weight-semibold mb-2 mt-0"
+                >
                   <strong> {{ customerName | uppercase }} </strong>
                   <!-- <strong>ABC Logistics</strong><br> -->
                   <!-- 28 Cliveden Ave Delta, BC V3M 5R5 Canada<br> -->
@@ -392,94 +386,56 @@
                   </p></td> -->
             </tr>
             <tr>
-              <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
+              <td colspan="2" height="1" bgcolor="#595959"></td>
+            </tr>
+            <tr>
+              <td colspan="2">&nbsp;</td>
             </tr>
             <tr>
               <td colspan="2">
-                <h2 style="font-size: 20px; color: #000">Invoice</h2>
+                <h2 class="text-dark text-4 mt-0 mb-0 LH28 font-weight-bold">
+                  Invoice
+                </h2>
               </td>
             </tr>
             <tr>
               <td colspan="2">
                 <table
-                  class="table table-bordered"
-                  width="100%"
-                  border="0"
+                  class="w100 text-dark table-bordered"
                   cellspacing="0"
                   cellpadding="0"
                 >
                   <tbody>
                     <tr>
-                      <td
-                        width="25%"
-                        style="
-                          border-bottom: 1px solid #adadad;
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
+                      <td class="pl-3 font-weight-bold pt-1 pb-1" width="25%">
                         Invoice#
                       </td>
-                      <td
-                        width="25%"
-                        style="
-                          border-bottom: 1px solid #adadad;
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
+                      <td class="pl-3 font-weight-bold pt-1" width="25%">
                         Invoice Amount
                       </td>
-                      <td
-                        width="25%"
-                        style="
-                          border-bottom: 1px solid #adadad;
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
+                      <td class="pl-3 font-weight-bold pt-1" width="25%">
                         Discount
                       </td>
                       <td
+                        class="pl-3 pr-3 font-weight-bold pt-1 text-right"
                         width="25%"
-                        style="
-                          border-bottom: 1px solid #adadad;
-                          text-align: right;
-                          padding-right: 10px;
-                        "
                       >
                         Paid Amount
                       </td>
                     </tr>
                     <tr *ngFor="let inv of receiptData.paidInvoices">
-                      <td
-                        height="25"
-                        style="
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
+                      <td class="pl-3 pt-1 pb-1">
                         {{ inv.invNo }}
                       </td>
-                      <td
-                        style="
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
+                      <td class="pl-3 pt-1">
                         {{ inv.finalAmount | number: "1.2-2" }}
                         {{ inv.invCur }}
                       </td>
-                      <td
-                        style="
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
+                      <td class="pl-3 pt-1">
                         {{ inv.discount | number: "1.2-2" }}
                         {{ inv.invCur }}
                       </td>
-                      <td style="text-align: right; padding-right: 10px">
+                      <td class="pl-3 pr-3 text-right pt-1">
                         {{ inv.amountPaid | number: "1.2-2" }}
                         {{ inv.invCur }}
                       </td>
@@ -488,80 +444,48 @@
                 </table>
               </td>
             </tr>
+
             <tr>
               <td colspan="2">&nbsp;</td>
             </tr>
+
             <tr>
               <td colspan="2">
-                <h2 style="font-size: 20px; color: #000">Payment Details</h2>
+                <h2 class="text-dark text-4 mt-0 mb-0 LH28 font-weight-bold">
+                  Payment Details
+                </h2>
               </td>
             </tr>
             <tr>
               <td colspan="2">
                 <table
-                  class="table table-bordered"
-                  width="100%"
-                  border="0"
+                  class="w100 text-dark table-bordered"
                   cellspacing="0"
                   cellpadding="0"
                 >
                   <tbody>
                     <tr>
-                      <td
-                        width="25%"
-                        style="
-                          border-bottom: 1px solid #adadad;
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
+                      <td class="pl-3 font-weight-bold pt-1 pb-1" width="25%">
                         Payment Mode
                       </td>
-                      <td
-                        width="25%"
-                        style="
-                          border-bottom: 1px solid #adadad;
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
+                      <td class="pl-3 font-weight-bold pt-1" width="25%">
                         Reference#
                       </td>
                       <td
+                        class="pl-3 pr-3 text-right font-weight-bold pt-1"
                         width="25%"
-                        style="
-                          border-bottom: 1px solid #adadad;
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
                       >
                         Date
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        height="25"
-                        style="
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
+                      <td class="pl-3 pt-1 pb-1">
                         {{ receiptData.paymentMode | titlecase }}
                       </td>
-                      <td
-                        style="
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
+                      <td class="pl-3 pt-1">
                         {{ receiptData.paymentModeNo }}
                       </td>
-                      <td
-                        style="
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
+                      <td class="pl-3 pt-1 pr-3 text-right">
                         {{ receiptData.paymentModeDate | date: "yyyy/MM/dd" }}
                       </td>
                     </tr>
@@ -569,12 +493,8 @@
                 </table>
               </td>
             </tr>
-            <tr>
-              <td colspan="2">&nbsp;</td>
-            </tr>
-
             <tr
-              *ngIf=" 
+              *ngIf="
                 receiptData.charges && receiptData.charges.addition.length > 0
               "
             >
@@ -586,7 +506,9 @@
               "
             >
               <td colspan="2">
-                <h2 style="font-size: 20px; color: #000">Additions</h2>
+                <h2 class="text-dark text-4 mt-0 mb-0 font-weight-bold">
+                  Additions
+                </h2>
               </td>
             </tr>
             <tr
@@ -596,73 +518,35 @@
             >
               <td colspan="2">
                 <table
-                  width="100%"
-                  border="0"
-                  style="border: 1px solid #adadad; font-size: 13px"
+                  class="w100 text-dark table-bordered"
                   cellspacing="0"
                   cellpadding="0"
                 >
                   <tbody>
-                    <tr bgcolor="#f3f3f3">
-                      <td
-                        width="20%"
-                        style="
-                          border-bottom: 1px solid #adadad;
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
-                        <p style="font-weight: 600">Charge Name</p>
+                    <tr>
+                      <td class="pl-3 font-weight-bold pt-1 pb-1" width="20%">
+                        <p class="mb-0 text-dark">Charge Name</p>
+                      </td>
+                      <td class="pl-3 font-weight-bold pt-1" width="20%">
+                        <p class="mb-0 text-dark">Description</p>
                       </td>
                       <td
+                        class="pl-3 font-weight-bold pt-1 pr-3 text-right"
                         width="20%"
-                        style="
-                          border-bottom: 1px solid #adadad;
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
                       >
-                        <p style="font-weight: 600">Description</p>
-                      </td>
-                      <td
-                        width="20%"
-                        style="
-                          border-bottom: 1px solid #adadad;
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
-                        <p style="font-weight: 600">Amount</p>
+                        <p class="mb-0 text-dark">Amount</p>
                       </td>
                     </tr>
                     <tr *ngFor="let add of receiptData.charges.addition">
-                      <td
-                        style="
-                          border-right: 1px solid #adadad;
-                          border-bottom: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
-                        <p>
+                      <td class="pl-3 pt-1 pb-1">
+                        <p class="mb-0 text-dark">
                           {{ add.charge }}
                         </p>
                       </td>
-                      <td
-                        style="
-                          border-right: 1px solid #adadad;
-                          border-bottom: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
+                      <td class="pl-3 pt-1">
                         {{ add.desc ? add.desc : "-" }}
                       </td>
-                      <td
-                        style="
-                          border-right: 1px solid #adadad;
-                          border-bottom: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
+                      <td class="pl-3 pt-1 pr-3 text-right">
                         {{ add.amount | number: "1.2-2" }}
                         {{ receiptData.recAmountCur }}
                       </td>
@@ -684,7 +568,11 @@
                 receiptData.charges && receiptData.charges.deduction.length > 0
               "
             >
-              <td colspan="2"><h2 style="font-size: 20px">Deductions</h2></td>
+              <td colspan="2">
+                <h2 class="text-dark text-4 mt-0 mb-0 font-weight-bold">
+                  Deductions
+                </h2>
+              </td>
             </tr>
             <tr
               *ngIf="
@@ -693,73 +581,35 @@
             >
               <td colspan="2">
                 <table
-                  width="100%"
-                  border="0"
-                  style="border: 1px solid #adadad; font-size: 13px"
+                  class="w100 text-dark table-bordered"
                   cellspacing="0"
                   cellpadding="0"
                 >
                   <tbody>
-                    <tr bgcolor="#f3f3f3">
-                      <td
-                        width="20%"
-                        style="
-                          border-bottom: 1px solid #adadad;
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
-                        <p style="font-weight: 600">Charge Name</p>
+                    <tr>
+                      <td class="pl-3 font-weight-bold pt-1 pb-1" width="20%">
+                        <p class="mb-0 text-dark">Charge Name</p>
+                      </td>
+                      <td class="pl-3 font-weight-bold pt-1" width="20%">
+                        <p class="mb-0 text-dark">Description</p>
                       </td>
                       <td
+                        class="pl-3 font-weight-bold pt-1 pr-3 text-right"
                         width="20%"
-                        style="
-                          border-bottom: 1px solid #adadad;
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
                       >
-                        <p style="font-weight: 600">Description</p>
-                      </td>
-                      <td
-                        width="20%"
-                        style="
-                          border-bottom: 1px solid #adadad;
-                          border-right: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
-                        <p style="font-weight: 600">Amount</p>
+                        <p class="mb-0 text-dark">Amount</p>
                       </td>
                     </tr>
                     <tr *ngFor="let add of receiptData.charges.deduction">
-                      <td
-                        style="
-                          border-right: 1px solid #adadad;
-                          border-bottom: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
-                        <p>
+                      <td class="pl-3 pt-1 pb-1">
+                        <p class="mb-0 text-dark">
                           {{ add.charge }}
                         </p>
                       </td>
-                      <td
-                        style="
-                          border-right: 1px solid #adadad;
-                          border-bottom: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
+                      <td class="pl-3 pt-1">
                         {{ add.desc ? add.desc : "-" }}
                       </td>
-                      <td
-                        style="
-                          border-right: 1px solid #adadad;
-                          border-bottom: 1px solid #adadad;
-                          padding-left: 10px;
-                        "
-                      >
+                      <td class="pl-3 pt-1 pb-1 pr-3 text-right">
                         {{ add.amount | number: "1.2-2" }}
                         {{ receiptData.recAmountCur }}
                       </td>
@@ -770,7 +620,30 @@
             </tr>
 
             <tr>
-              <td colspan="2">&nbsp;</td>
+              <td colspan="2">
+                <table
+                  border="0"
+                  align="center"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td align="center">
+                        <h2 class="mb-0 text-dark text-4 font-weight-normal">
+                          Powered By
+                        </h2>
+                        <img
+                          alt="Fleet Hawks Inc."
+                          src="assets/img/logo.png"
+                          width="207"
+                          height="28"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
             </tr>
             <tr>
               <td colspan="2">&nbsp;</td>

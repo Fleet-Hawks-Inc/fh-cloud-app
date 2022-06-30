@@ -21,7 +21,7 @@ export class HeaderComponent implements OnInit {
   isSafetyEnabled = environment.isSafetyEnabled;
   isAccountsEnabled = environment.isAccountsEnabled;
   isReportsEnabled = environment.isReportsEnabled;
-  isAddressBook=environment.isAddressBook;
+  isAddressBook = environment.isAddressBook;
 
   Asseturl = this.apiService.AssetUrl;
   @Output() navClicked = new EventEmitter<any>();
@@ -87,7 +87,9 @@ export class HeaderComponent implements OnInit {
   notifications = [];
   announcements = [];
   unReadCounter = 0;
-
+  lastKey = '';
+  isLoadText = "Load More...";
+  isLoad = false;
   constructor(
     private sharedService: SharedServiceService,
     private apiService: ApiService,
@@ -121,6 +123,9 @@ export class HeaderComponent implements OnInit {
     }
     await this.getAllNotificationAnnouncement();
     setInterval(async () => {
+      this.lastKey = '';
+      this.notifications = [];
+      this.announcements = [];
       await this.getAllNotificationAnnouncement();
     }, 1000 * 60 * 5);
   }
@@ -143,13 +148,13 @@ export class HeaderComponent implements OnInit {
     this.isAccountsEnabled = localStorage.getItem("isAccountsEnabled")
       ? JSON.parse(localStorage.getItem("isAccountsEnabled"))
       : environment.isAccountsEnabled;
-      
+
     environment.isAccountsEnabled;
-    
+
     this.isAddressBook = localStorage.getItem("isAddressBook")
       ? JSON.parse(localStorage.getItem("isAddressBook"))
       : environment.isAddressBook;
-      
+
     this.isReportsEnabled = environment.isReportsEnabled;
   }
   onNavSelected(nav: string) {
@@ -288,6 +293,8 @@ export class HeaderComponent implements OnInit {
     if (isNotification && notification.read === 0) {
 
       await this.apiService.putData(`notification/read/${notification.id}`, {}).toPromise();
+      notification.read = 1;
+      this.unReadCounter -= 1;
     }
 
 
@@ -295,11 +302,20 @@ export class HeaderComponent implements OnInit {
   }
 
 
+  onScroll = async () => {
+    this.isLoad = true;
+    this.isLoadText = "Loading";
+    await this.getAllNotificationAnnouncement();
+  }
 
   async getAllNotificationAnnouncement() {
-    const result = await this.apiService.getData('notification/getAll').toPromise();
+    this.unReadCounter = 0;
+    const result = await this.apiService.getData(`notification/getAll?lastKey=${this.lastKey}`, true).toPromise();
     if (result.notifications) {
-      this.notifications = result.notifications;
+      for (let i = 0; i < result.notifications.data.length; i++) {
+        const element = result.notifications.data[i];
+        this.notifications.push(element)
+      }
       this.notifications.forEach(element => {
         if (element.read === 0) {
           this.unReadCounter += 1;
@@ -311,9 +327,14 @@ export class HeaderComponent implements OnInit {
           element.message;
 
       });
+      if (result.notifications.nextPage) {
+        this.lastKey = result.notifications.nextPage;
+      } else {
+        this.lastKey = 'end';
+      }
     }
     if (result.announcements) {
-      this.announcements = result.announcements;
+      this.announcements = result.announcements.data;
       this.announcements.forEach(element => {
         const length = 50;
         element['shortMessage'] = element.message.length > length ?

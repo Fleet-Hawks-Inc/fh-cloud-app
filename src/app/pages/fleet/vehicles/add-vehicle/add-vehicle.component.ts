@@ -85,6 +85,10 @@ export class AddVehicleComponent implements OnInit {
   annualSafetyDate = null;
   annualSafetyReminder = true;
   currentStatus = null;
+  uploadDocsError = '';
+  uploadLonDocsError = '';
+  uploadPurchaseDocsError = '';
+  uploadPhotosError = '';
   ownership = null;
   ownerOperatorID = null;
   groupID = null;
@@ -279,6 +283,7 @@ export class AddVehicleComponent implements OnInit {
     autoplaySpeed: 1500,
   };
 
+  isImport = false;
   vendorModalStatus = false;
   submitDisabled = false;
   groupSubmitDisabled = false;
@@ -822,19 +827,68 @@ export class AddVehicleComponent implements OnInit {
 
     if (obj === "uploadedDocs") {
       for (let i = 0; i < files.length; i++) {
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
+          if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
         this.uploadedDocs.push(files[i]);
+        } else {
+            this.uploadDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+        }
       }
     } else if (obj === "purchase") {
       for (let i = 0; i < files.length; i++) {
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
+          if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
         this.purchaseDocs.push(files[i]);
+          } else {
+            this.uploadPurchaseDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+        }
       }
     } else if (obj === "loan") {
       for (let i = 0; i < files.length; i++) {
+             let name = files[i].name.split(".");
+       let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
         this.loanDocs.push(files[i]);
+                 } else {
+            this.uploadLonDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+        }
       }
     } else {
       for (let i = 0; i < files.length; i++) {
+      let name = files[i].name.split(".");
+       let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
         this.uploadedPhotos.push(files[i]);
+        } else {
+            this.uploadPhotosError = 'Only .jpg, .jpeg and png files allowed.';
+        }
       }
 
       for (let i = 0; i < files.length; i++) {
@@ -873,7 +927,7 @@ export class AddVehicleComponent implements OnInit {
     (this.annualSafetyDate = _.isEmpty(result.annualSafetyDate)
       ? null
       : result.annualSafetyDate),
-      (this.annualSafetyReminder = result.annualSafetyReminder),
+      (this.annualSafetyReminder = result.annualSafetyReminder ? result.annualSafetyReminder : false),
       (this.currentStatus = result.currentStatus);
     this.ownership = result.ownership;
     this.ownerOperatorID = result.ownerOperatorID;
@@ -1113,6 +1167,7 @@ export class AddVehicleComponent implements OnInit {
       this.documentSlides = result.uploadDocument;
     }
     this.timeCreated = result.timeCreated;
+    this.isImport = result.isImport;
 
     $("#hardBreakingParametersValue").html(this.settings.hardBreakingParams);
     $("#hardAccelrationParametersValue").html(
@@ -1300,7 +1355,8 @@ export class AddVehicleComponent implements OnInit {
       purchaseDocs: this.existPDocs,
       loanDocs: this.existLDocs,
       activeTab: this.activeTab,
-      deviceInfo: this.deviceInfo
+      deviceInfo: this.deviceInfo,
+      isImport: this.isImport
     };
     // create form data instance
     const formData = new FormData();

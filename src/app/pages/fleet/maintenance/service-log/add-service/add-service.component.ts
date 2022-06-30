@@ -23,6 +23,7 @@ import {
   switchMap,
   takeUntil
 } from "rxjs/operators";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 declare var $: any;
 
 @Component({
@@ -32,7 +33,7 @@ declare var $: any;
 })
 export class AddServiceComponent implements OnInit {
   @ViewChild('serviceaddF') serviceaddF: NgForm;
-    takeUntil$ = new Subject();
+  takeUntil$ = new Subject();
   logurl = this.apiService.AssetUrl;
   isSubmitted = false;
   groups;
@@ -45,8 +46,11 @@ export class AddServiceComponent implements OnInit {
   reminders = [];
   issues: any;
   inventory = [];
+  uploadDocsError = '';
+  uploadPhotoError = '';
   selectedTasks = [];
   selectedParts = [];
+  sessionID: string;
   selectedIssues = [];
   // private allServiceTasks = [];
   removeTask = false;
@@ -94,6 +98,36 @@ export class AddServiceComponent implements OnInit {
       total: 0,
       currency: "CAD",
     },
+    charges: {
+      discountUnit: '%',
+      discount: 0,
+      taxes: [
+        {
+          name: "GST",
+          tax: 0,
+          type: "prcnt",
+          amount: 0,
+        },
+        {
+          name: "PST",
+          tax: 0,
+          type: "prcnt",
+          amount: 0,
+        },
+        {
+          name: "HST",
+          tax: 0,
+          type: "prcnt",
+          amount: 0,
+        },
+      ],
+    },
+    total: {
+
+      subTotal: 0,
+      taxes: 0,
+      finalTotal: 0,
+    },
     selectedIssues: [],
     location: "",
     geoCords: {
@@ -102,6 +136,8 @@ export class AddServiceComponent implements OnInit {
     },
     uploadedPhotos: [],
     uploadedDocs: [],
+    stateID: null,
+    exempt: true,
   };
 
   uploadedPhotos = [];
@@ -156,7 +192,7 @@ export class AddServiceComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-
+  stateTaxes = [];
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
@@ -170,17 +206,15 @@ export class AddServiceComponent implements OnInit {
     private listService: ListService,
     private modalService: NgbModal,
     private modalServiceOwn: ModalService,
+    private routerMgmtService: RouteManagementServiceService
   ) {
-    
-
-
-  
+    this.sessionID = this.routerMgmtService.serviceLogSessionID;
     this.selectedFileNames = new Map<any, any>();
     // localStorage.setItem('serviceLogs', JSON.stringify(this.serviceData));
   }
 
 
-  
+
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -204,7 +238,7 @@ export class AddServiceComponent implements OnInit {
     this.fetchAllTasksIDs();
     this.fetchInventoryItems();
     this.fetchInventoryQuanitity();
-
+    this.fetchStateTaxes();
     this.fetchedLocalData = JSON.parse(window.localStorage.getItem("unit"));
     if (this.fetchedLocalData) {
       if (this.fetchedLocalData.unitType === "vehicle") {
@@ -320,7 +354,8 @@ export class AddServiceComponent implements OnInit {
         this.takeUntil$.complete();
         this.isSubmitted = true;
         this.toastr.success("Service log added successfully");
-        this.router.navigateByUrl("/fleet/maintenance/service-log/list");
+        //this.router.navigateByUrl("/fleet/maintenance/service-log/list");
+        this.router.navigateByUrl('/fleet/maintenance/service-log/list/${this.routerMgmtService.serviceLogUpdated()}');
         this.spinner.hide();
       },
     });
@@ -541,12 +576,35 @@ export class AddServiceComponent implements OnInit {
     if (obj === "uploadedDocs") {
       this.uploadedDocs = [];
       for (let i = 0; i < files.length; i++) {
+             let name = files[i].name.split(".");
+       let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
         this.uploadedDocs.push(files[i]);
+              } else {
+            this.uploadDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+        }
       }
     } else {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
+             let name = files[i].name.split(".");
+       let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
         this.uploadedPhotos.push(files[i]);
+         } else {
+            this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
+        }
       }
     }
   }
@@ -725,6 +783,9 @@ export class AddServiceComponent implements OnInit {
     }
     let discountAmount = (subTotal * discountPercent) / 100;
     this.serviceData.allServiceTasks.discountAmount = discountAmount;
+    this.calculateFinalTotal();
+    this.allTax();
+    this.taxTotal();
   }
 
   calculateParts() {
@@ -771,6 +832,10 @@ export class AddServiceComponent implements OnInit {
     this.serviceData.allServiceParts.taxAmount = taxAmount;
     this.serviceData.allServiceParts.total -= discountAmount;
     this.serviceData.allServiceParts.total += taxAmount;
+
+    this.calculateFinalTotal();
+    this.allTax();
+    this.taxTotal();
   }
 
   async fetchServiceByID() {
@@ -890,6 +955,15 @@ export class AddServiceComponent implements OnInit {
 
     this.selectedIssues = result.selectedIssues;
     this.serviceData["timeCreated"] = result.timeCreated;
+    if (result.exempt || result.total || result.charges || result.stateID) {
+      this.serviceData.exempt = result.exempt;
+      this.serviceData.total = result.total,
+
+        this.serviceData.charges = result.charges
+
+      this.serviceData.stateID = result.stateID;
+    }
+
     // });
   }
 
@@ -900,7 +974,6 @@ export class AddServiceComponent implements OnInit {
       delete this.serviceData.odometer;
     }
   }
-
   /*
    * Update Service Log
    */
@@ -934,6 +1007,11 @@ export class AddServiceComponent implements OnInit {
       location: this.serviceData.location,
       geoCords: this.serviceData.geoCords,
       uploadedPhotos: this.existingPhotos,
+      uploadedDocs: this.existingDocs,
+      exempt: this.serviceData.exempt,
+      total: this.serviceData.total,
+      charges: this.serviceData.charges,
+      stateID: this.serviceData.stateID
     };
     // create form data instance
     const formData = new FormData();
@@ -949,7 +1027,8 @@ export class AddServiceComponent implements OnInit {
     }
 
     //append other fields
-    formData.append("data", JSON.stringify(data));
+    formData.append("data", JSON.stringify(data))
+
     this.apiService.putData("serviceLogs/", formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -981,7 +1060,8 @@ export class AddServiceComponent implements OnInit {
         this.takeUntil$.complete();
         this.isSubmitted = true;
         this.toastr.success("Service log Updated Successfully");
-        this.router.navigateByUrl("/fleet/maintenance/service-log/list");
+        //this.router.navigateByUrl("/fleet/maintenance/service-log/list");
+        this.router.navigateByUrl('/fleet/maintenance/service-log/list/${this.routerMgmtService.serviceLogUpdated()}');
       },
     });
   }
@@ -1337,5 +1417,114 @@ export class AddServiceComponent implements OnInit {
 
   getTasks() {
     this.listService.fetchTasks();
+  }
+
+  async selectProvince(stateID = undefined) {
+    if (stateID != undefined) {
+
+      let taxObj = {
+        GST: "",
+        HST: "",
+        PST: "",
+        stateCode: "",
+        stateName: "",
+        stateTaxID: "",
+      };
+      this.stateTaxes.map((v) => {
+        if (v.stateTaxID === stateID) {
+          taxObj = v;
+        }
+      });
+
+      this.serviceData.charges.taxes.map((v) => {
+        if (v.name === "GST") {
+          v.tax = Number(taxObj.GST);
+        } else if (v.name === "HST") {
+          v.tax = Number(taxObj.HST);
+        } else if (v.name === "PST") {
+          v.tax = Number(taxObj.PST);
+        }
+      });
+      this.allTax();
+      this.taxTotal();
+    }
+  }
+  allTax() {
+    this.serviceData.charges.taxes.forEach((element) => {
+      element.amount = (element.tax * this.serviceData.total.subTotal) / 100;
+    });
+  }
+  taxTotal() {
+    this.serviceData.total.taxes = 0;
+    this.serviceData.charges.taxes.forEach((element) => {
+      this.serviceData.total.taxes += Number(element.amount);
+    });
+    this.calculateFinalTotal();
+  }
+
+  async calculateFinalTotal() {
+    this.serviceData.total.subTotal =
+      Number(this.totalLabors) +
+      Number(this.totalPartsPrice)
+    this.allTax();
+    this.serviceData.total.finalTotal =
+      Number(this.serviceData.total.subTotal) +
+      Number(this.serviceData.total.taxes);
+  }
+
+
+  async fetchStateTaxes() {
+    let result = await this.apiService.getData("stateTaxes").toPromise();
+    this.stateTaxes = result.Items;
+  }
+
+
+  taxcalculation(index) {
+    this.serviceData.charges.taxes[index].amount =
+      (this.serviceData.charges.taxes[index].tax *
+        this.serviceData.total.subTotal) /
+      100;
+
+    this.taxTotal();
+  }
+  async taxExempt() {
+    this.serviceData.charges.taxes.map((v) => {
+      v.tax = 0;
+    });
+    this.serviceData.stateID = null;
+    this.allTax();
+    this.taxTotal();
+    this.calculateFinalTotal();
+  }
+
+  async selecteProvince(stateID = undefined) {
+    if (stateID != undefined) {
+
+      let taxObj = {
+        GST: "",
+        HST: "",
+        PST: "",
+        stateCode: "",
+        stateName: "",
+        stateTaxID: "",
+      };
+      this.stateTaxes.map((v) => {
+        if (v.stateTaxID === stateID) {
+          taxObj = v;
+        }
+      });
+
+      this.serviceData.charges.taxes.map((v) => {
+        if (v.name === "GST") {
+          v.tax = Number(taxObj.GST);
+        } else if (v.name === "HST") {
+          v.tax = Number(taxObj.HST);
+        } else if (v.name === "PST") {
+          v.tax = Number(taxObj.PST);
+        }
+      });
+      this.allTax();
+      this.taxTotal();
+    }
   }
 }

@@ -275,7 +275,7 @@ export class PaymentPdfsComponent implements OnInit {
     for (let index = 0; index < this.settlements.length; index++) {
       const element = this.settlements[index];
 
-      if(element.paymentSelected) {
+      if (element.paymentSelected) {
         this.multiPay = true;
       }
 
@@ -387,7 +387,8 @@ export class PaymentPdfsComponent implements OnInit {
               tripNo: trip.tripNo,
               date: trip.dateCreated,
               plans: [],
-              paymentSelected: v.paymentSelected ? v.paymentSelected[0] : '' 
+              paymentSelected: v.paymentSelected ? v.paymentSelected[0] : '',
+              finalRate: 0
             };
             if (v.plan.length > 0) {
               // if sub trip is settled
@@ -398,7 +399,48 @@ export class PaymentPdfsComponent implements OnInit {
                       type: plan.type,
                       location: plan.location,
                       miles: plan.miles,
+                      rate: '',
+                      driverName: plan.driverName ? plan.driverName : '',
+                      codriverName: plan.codriverName ? plan.codriverName : '',
+                      vehicleName: plan.vehicleName ? plan.vehicleName : '',
+                      assetNames: plan.assetNames ? plan.assetNames.toString() : '',
+                      showMiles: `${plan.mileType === 'loaded' ? 'L' : 'E'} - ${plan.miles}`,
+                      drivrCodriver: ''
                     };
+                    if (plan.driverID && this.paymentData.entityId === plan.driverID) {
+                      planObj.drivrCodriver = plan.codriverName ? plan.codriverName : '';
+                    }
+
+                    if (plan.coDriverID && this.paymentData.entityId === plan.coDriverID) {
+                      planObj.drivrCodriver = plan.driverName ? plan.driverName : '';
+                    }
+
+                    if (v.paymentSelected) {
+                      if (v.paymentSelected[0].pType == 'pfr') {
+                        planObj.rate = ''
+                        obj.finalRate = v.paymentSelected[0].flatRate
+                      } else if (v.paymentSelected[0].pType == 'ppm') {
+                        if (plan.mileType === 'loaded') {
+                          if (plan.driverID && plan.coDriverID) {
+                            planObj.rate = v.paymentSelected[0].loadedMilesTeam
+                          } else {
+                            planObj.rate = v.paymentSelected[0].loadedMiles
+                          }
+
+                        } else {
+                          if (plan.driverID && plan.coDriverID) {
+                            planObj.rate = v.paymentSelected[0].emptyMilesTeam
+                          } else {
+                            if (plan.driverID && plan.coDriverID) {
+                              planObj.rate = v.paymentSelected[0].emptyMilesTeam
+                            } else {
+                              planObj.rate = v.paymentSelected[0].emptyMiles
+                            }
+                          }
+                        }
+                        obj.finalRate = v.amount
+                      }
+                    }
                     obj.plans.push(planObj);
                   }
                 });
@@ -411,24 +453,64 @@ export class PaymentPdfsComponent implements OnInit {
                   type: plan.type,
                   location: plan.location,
                   miles: plan.miles,
+                  rate: '',
+                  driverName: plan.driverName ? plan.driverName : '',
+                  codriverName: plan.codriverName ? plan.codriverName : '',
+                  vehicleName: plan.vehicleName ? plan.vehicleName : '',
+                  assetNames: plan.assetNames ? plan.assetNames.toString() : '',
+                  showMiles: `${plan.mileType === 'loaded' ? 'L' : 'E'} - ${plan.miles}`,
+                  drivrCodriver: ''
                 };
-                obj.plans.push(planObj);
+                if (plan.driverID && this.paymentData.entityId === plan.driverID) {
+                  planObj.drivrCodriver = plan.codriverName ? plan.codriverName : '';
+                }
+
+                if (plan.coDriverID && this.paymentData.entityId === plan.coDriverID) {
+                  planObj.drivrCodriver = plan.driverName ? plan.driverName : '';
+                }
+                if (v.paymentSelected) {
+                  if (v.paymentSelected[0].pType == 'pfr') {
+                    planObj.rate = ''
+                    obj.finalRate = v.paymentSelected[0].flatRate
+                  } else if (v.paymentSelected[0].pType == 'ppm') {
+                    if (plan.mileType === 'loaded') {
+                      if (plan.driverID && plan.coDriverID) {
+                        planObj.rate = v.paymentSelected[0].loadedMilesTeam
+                      } else {
+                        planObj.rate = v.paymentSelected[0].loadedMiles
+                      }
+
+                    } else {
+                      if (plan.driverID && plan.coDriverID) {
+                        planObj.rate = v.paymentSelected[0].emptyMilesTeam
+                      }
+                    }
+                  }
+                  obj.plans.push(planObj);
+                };
+                this.paymentTrips.push(obj);
               });
-              this.paymentTrips.push(obj);
             }
           }
         });
       });
 
-
     });
     this.grandTotal = 0;
     for (const item of this.paymentTrips) {
       item.totalMiles = 0;
+      item.totalRate = 0;
       for (const plan of item.plans) {
         item.totalMiles += parseFloat(plan.miles);
       }
-      this.grandTotal += item.totalMiles;
+      if (item.paymentSelected) {
+        if (item.paymentSelected && item.paymentSelected.pType == 'ppm') {
+          this.grandTotal += item.totalMiles;
+        }
+      } else {
+        this.grandTotal += item.totalMiles;
+      }
+
     }
   }
 
@@ -437,7 +519,12 @@ export class PaymentPdfsComponent implements OnInit {
       .getData(`drivers/get/details/${this.paymentData.entityId}`)
       .subscribe((result: any) => {
         result = result.Items[0];
-        this.pdfDetails.name = `${result.firstName} ${result.lastName}`;
+
+        if (result.middleName != undefined && result.middleName != '') {
+          this.pdfDetails.name = `${result.firstName} ${result.middleName} ${result.lastName}`;
+        } else {
+          this.pdfDetails.name = `${result.firstName} ${result.lastName}`;
+        }
         this.pdfDetails.email = result.email;
         this.pdfDetails.phone = result.phone;
         this.pdfDetails.userID = result.employeeContractorId;
@@ -456,8 +543,13 @@ export class PaymentPdfsComponent implements OnInit {
       .getData(`contacts/detail/${this.paymentData.entityId}`)
       .subscribe((result: any) => {
         result = result.Items[0];
-        this.pdfDetails.name = result.cName;
+        if (result.contactSK.includes('EMP#')) {
+          this.pdfDetails.name = `${result.firstName} ${result.lastName}`;
+        } else {
+          this.pdfDetails.name = `${result.cName}`;
+        }
         this.pdfDetails.email = result.workEmail;
+        this.pdfDetails.userID = result.employeeID;
         if (result.adrs[0].manual) {
           if (result.adrs[0].add1 !== "") {
             this.pdfDetails.address = `${result.adrs[0].add1} ${result.adrs[0].add2} ${result.adrs[0].ctyName}, ${result.adrs[0].sName}, ${result.adrs[0].cName}`;

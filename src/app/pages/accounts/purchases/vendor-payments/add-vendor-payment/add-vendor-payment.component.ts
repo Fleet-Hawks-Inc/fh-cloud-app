@@ -4,7 +4,7 @@ import * as moment from "moment";
 import { Location } from "@angular/common";
 import { ListService } from "src/app/services/list.service";
 import { AccountService } from "src/app/services/account.service";
-import { from } from "rxjs";
+import { from, Subscription } from "rxjs";
 import { map } from "rxjs/operators";
 import { ToastrService } from "ngx-toastr";
 import { HttpClient } from "@angular/common/http";
@@ -51,7 +51,11 @@ export class AddVendorPaymentComponent implements OnInit {
       accountID: null,
       description: "",
       rowID: "",
-    },]
+    },],
+    cheqdata: {
+      comp: '',
+      addr: ''
+    }
   };
   quantityTypes = [];
   vendors = [];
@@ -94,6 +98,7 @@ export class AddVendorPaymentComponent implements OnInit {
   Success: string = "";
 
   showModal = false;
+  subscription: Subscription;
 
   constructor(
     private listService: ListService,
@@ -104,6 +109,12 @@ export class AddVendorPaymentComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.subscription = this.listService.paymentSaveList.subscribe((res: any) => {
+      if (res.openFrom === "addForm") {
+        this.paymentData.cheqdata = res.cheqdata;
+        this.addRecord();
+      }
+    });
     this.listService.fetchVendors();
     let vendorList = new Array<any>();
     this.getValidVendors(vendorList);
@@ -442,6 +453,10 @@ export class AddVendorPaymentComponent implements OnInit {
     };
 
     this.listService.openPaymentChequeModal(obj);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
   }
 
 }

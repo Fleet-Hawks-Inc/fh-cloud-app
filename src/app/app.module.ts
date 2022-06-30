@@ -72,7 +72,9 @@ import { MultiSelectModule } from "primeng/multiselect";
 import { TrackingModule } from "./pages/tracking/tracking.module";
 import { VehicleDashCamTrackerComponent } from "./pages/tracking/vehicle-dash-cam-tracker/vehicle-dash-cam-tracker.component";
 import { AssetTrackerComponent } from "./pages/tracking/asset-tracker/asset-tracker.component";
-
+import { SidebarModule } from 'primeng/sidebar';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -130,7 +132,10 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     DropdownModule,
     TrackingModule,
     BadgeModule,
-    DialogModule
+    DialogModule,
+    SidebarModule,
+    CardModule,
+    InputTextModule
   ],
   providers: [
     HttpInterceptorProviders,

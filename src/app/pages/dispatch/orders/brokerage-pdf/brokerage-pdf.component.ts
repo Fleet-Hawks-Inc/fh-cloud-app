@@ -31,7 +31,7 @@ export class BrokeragePdfComponent implements OnInit {
     carrierID: null,
     finalAmount: "",
     miles: 0,
-    currency: "",
+    brkCurrency: "",
     draw: 0,
     index: 0,
     type: "",

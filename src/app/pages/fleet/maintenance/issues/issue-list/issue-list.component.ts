@@ -71,17 +71,17 @@ export class IssueListComponent implements OnInit {
       'value': 'asset'
     },
   ]
-      // columns of data table
+  // columns of data table
   dataColumns = [
-        { field: 'unitType', header: 'Unit Type', type: "text" },
-          { field: 'vehicleasset', header: 'Vehicle/Asset', type: "text" },
-          { field: 'issueName', header: 'Issue Name', type: "text" },
-          { field: 'reportedDate', header: 'Reported On', type: "text" },
-          { field: 'reportedBy', header: 'Reported By', type: "text" },
-          { field: 'assignedTo', header: 'Assigned To', type: "text" },
-          { field: 'currentStatus', header: 'Status', type: "text" },
-    ];
-  constructor(private apiService: ApiService,private modalService: NgbModal, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
+    { width: '14%', field: 'unitType', header: 'Unit Type', type: "text" },
+    { width: '14%', field: 'vehicleasset', header: 'Vehicle/Asset', type: "text" },
+    { width: '14%', field: 'issueName', header: 'Issue Name', type: "text" },
+    { width: '14%', field: 'reportedDate', header: 'Reported On', type: "text" },
+    { width: '14%', field: 'reportedBy', header: 'Reported By', type: "text" },
+    { width: '14%', field: 'assignedTo', header: 'Assigned To', type: "text" },
+    { width: '10%', field: 'issueStatus', header: 'Status', type: "text" },
+  ];
+  constructor(private apiService: ApiService, private modalService: NgbModal, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
   async ngOnInit(): Promise<void> {
     this.setToggleOptions();
@@ -103,23 +103,23 @@ export class IssueListComponent implements OnInit {
 
 
 
-    setToggleOptions() {
-        this.selectedColumns = this.dataColumns;
-    }
-    setEmployeeOptions() {
-        this.employeeOptions = [
-                                 {'value': 'vehicle', 'name': 'Vehicle' },
-                                 {'value': 'asset',   'name': 'Asset' }
-                              ];
-    }
-   
-    @Input() get selectedColumns(): any[] {
-        return this._selectedColumns;
-    }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+  setEmployeeOptions() {
+    this.employeeOptions = [
+      { 'value': 'vehicle', 'name': 'Vehicle' },
+      { 'value': 'asset', 'name': 'Asset' }
+    ];
+  }
 
-    set selectedColumns(val: any[]) {
-       this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
-    }
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+  }
 
 
   getSuggestions = _.debounce(function (searchvalue) {
@@ -224,7 +224,7 @@ export class IssueListComponent implements OnInit {
       else {
         this.lastEvaluatedKey = ''
         this.issues = [];
-       
+
         this.dataMessage = Constants.FETCHING_DATA;
         this.initDataTable();
       }
@@ -234,13 +234,13 @@ export class IssueListComponent implements OnInit {
     }
   }
 
-    clearInput() {
-        this.suggestedIssues = null;
-    }
+  clearInput() {
+    this.suggestedIssues = null;
+  }
 
-    clearSuggestions() {
-        this.issueName = null;
-    }
+  clearSuggestions() {
+    this.issueName = null;
+  }
 
   resetFilter() {
     if (this.searchValue != null || this.issueName != '' || this.issueStatus != null || this.category != null) {
@@ -289,12 +289,12 @@ export class IssueListComponent implements OnInit {
 
   cloneIssue(id: string) {
   }
-  
-      /**
-     * Clears the table filters
-     * @param table Table 
-     */
-    clear(table: Table) {
-        table.clear();
-    }
+
+  /**
+ * Clears the table filters
+ * @param table Table 
+ */
+  clear(table: Table) {
+    table.clear();
+  }
 }

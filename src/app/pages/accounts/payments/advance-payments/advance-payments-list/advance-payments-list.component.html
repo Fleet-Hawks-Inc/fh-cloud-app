@@ -240,6 +240,7 @@
                           <th class="text-2">Date</th>
                           <th class="text-2">Type</th>
                           <th class="text-2">Payment Mode</th>
+                          <th class="text-2">Reference No.</th>
                           <th class="text-2">Paid To</th>
                           <th class="text-2">Advance Amount</th>
                           <th class="text-2">Deducted Amount</th>
@@ -250,7 +251,7 @@
                       </thead>
                       <tbody>
                         <tr *ngIf="payments.length === 0" class="text-center">
-                          <td colspan="10">{{ dataMessage }}</td>
+                          <td colspan="11">{{ dataMessage }}</td>
                         </tr>
                         <tr *ngFor="let data of payments; let i = index">
                           <td class="font-weight-bold cursorpoint" [routerLink]="data.url">
@@ -264,6 +265,9 @@
                           </td>
                           <td class="cursorpoint" [routerLink]="data.url" class="text-capitalize">
                             {{ data.payMode }}
+                          </td>
+                          <td class="cursorpoint" [routerLink]="data.url" class="text-capitalize">
+                            {{ data.payModeNo }}
                           </td>
                           <td class="cursorpoint" [routerLink]="data.url">
                             <strong class="text-capitalize">{{

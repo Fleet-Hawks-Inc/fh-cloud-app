@@ -27,15 +27,18 @@ export class ImportedContactsComponent implements OnInit {
 
   isFileValid = false;
   inValidMessages = [];
+  emailsErrs = [];
   importDocs = [];
   check: boolean = false;
   submitDisabled: boolean = true;
 
   importData = {
     module: 'contact',
-    eType: 'customer'
+    eType: []
   }
+  eType = 'customer';
   entity: string;
+  next: any = 'null';
 
   // columns of data table
   dataColumns = [
@@ -48,16 +51,50 @@ export class ImportedContactsComponent implements OnInit {
   _selectedColumns: any[];
   display = false;
 
+  contactTypes = [
+    {
+      value: 'broker',
+      label: 'Broker',
+    },
+    {
+      value: 'carrier',
+      label: 'Carrier',
+    },
+    {
+      value: 'shipper',
+      label: 'Shipper',
+    },
+    {
+      value: 'receiver',
+      label: 'Receiver',
+    },
+    {
+      value: 'customer',
+      label: 'Customer',
+    },
+    {
+      value: 'fc',
+      label: 'Factoring Company',
+    },
+    {
+      value: 'owner_operator',
+      label: 'Owner Operator',
+    }, {
+      value: 'vendor',
+      label: 'Vendor',
+    },
+  ]
+
   constructor(private apiService: ApiService, private route: ActivatedRoute, private location: Location, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      this.importData.eType = params.entity;
-      this.entity = (params.entity + 's').replace('_', ' ').charAt(0).toUpperCase() + params.entity.slice(1);
-      if (this.entity == 'Fc') {
+      this.eType = params.entity;
+      this.entity = params.entity.charAt(0).toUpperCase() + params.entity.slice(1).replace('_', ' ') + 's';
+      if (this.entity == 'Fcs') {
         this.entity = 'Factoring Company';
       }
-
+      this.importData.eType.push(this.eType)
     });
 
     this.setToggleOptions();
@@ -96,6 +133,9 @@ export class ImportedContactsComponent implements OnInit {
   isStatusValid = (status) => {
     return status == 'active' || status == 'inActive' || status == 'sold' || status == 'outOfService'
   }
+  isEmailDependsOnSomeDataInRow = (email, status) => {
+    return false
+  }
 
 
   validateCSV($event) {
@@ -105,26 +145,31 @@ export class ImportedContactsComponent implements OnInit {
         {
           name: 'company_name', inputName: 'companyname', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
-          }, validate: function (name: string) {
-            const vname = /^[a-zA-Z0-9\s]+$/;
-            return vname.test(name)
           }
         },
         {
-          name: 'phone', inputName: 'phone', required: true, requiredError: function (headerName, rowNumber, columnNumber) {
-            return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
-          }, validate: function (phoneno: string) {
-            const phoneformat = /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;
-            return phoneformat.test(phoneno)
-          }
+          name: 'address', inputName: 'address', required: false
         },
         {
-          name: 'email', inputName: 'email', required: true, unique: true, requiredError: function (headerName, rowNumber, columnNumber) {
-            return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column.`;
-          }, validate: function (email: string) {
-            const reqExp = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/
-            return reqExp.test(email)
-          }
+          name: 'city', inputName: 'city', required: false
+        },
+        {
+          name: 'state', inputName: 'state', required: false
+        },
+        {
+          name: 'zip', inputName: 'zip', required: false
+        },
+        {
+          name: 'phone1', inputName: 'phone1', required: false
+        },
+        {
+          name: 'phone2', inputName: 'phone2', required: false
+        },
+        {
+          name: 'primary_email', inputName: 'primary_email', required: false
+        },
+        {
+          name: 'secondary_emails', inputName: 'secondary_emails', isArray: true,
         },
 
       ]
@@ -132,7 +177,35 @@ export class ImportedContactsComponent implements OnInit {
     CSVFileValidator($event.srcElement.files[0], data)
       .then(csvData => {
         if (csvData.data.length !== 0 && csvData.data.length < 201) {
-          if (csvData.inValidMessages.length === 0) {
+          let errors = [];
+          for (let i = 1; i < csvData.data.length; i++) {
+            const element = csvData.data[i];
+            const reqExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            if (element.primary_email && element.primary_email != '') {
+              element.primary_email = element.primary_email.toLowerCase().trim();
+              let result = reqExp.test(element.primary_email)
+              if (!result) {
+                errors.push(`Primary Email is not valid in the ${i + 1} row / 9 column.`)
+              }
+            }
+            if (element.secondary_emails.length == 1 && element.secondary_emails[0] == '') {
+              element.secondary_emails = [];
+            }
+
+            if (element.secondary_emails.length > 0) {
+              for (let j = 0; j < element.secondary_emails.length; j++) {
+                const email = element.secondary_emails[j];
+                let result = reqExp.test(email)
+                if (!result) {
+                  errors.push(`Email is not valid in the ${i + 1} row / 9 column.`)
+                }
+              }
+            }
+
+          }
+          this.emailsErrs = errors;
+          this.check = false;
+          if (csvData.inValidMessages.length === 0 && this.emailsErrs.length === 0) {
             this.validData = csvData.data;
             this.check = true;
 
@@ -143,18 +216,15 @@ export class ImportedContactsComponent implements OnInit {
             this.isFileValid = false;
             this.check = false;
             this.submitDisabled = true;
-
             this.inValidMessages = csvData.inValidMessages
-
           }
-          csvData.data
         } else if (csvData.data.length == 0) {
           this.submitDisabled = true;
           this.toastr.error("There are no records in the file uploaded")
         }
         else {
           this.submitDisabled = true;
-          this.toastr.error("'The file should contain a maximum of 200 records'")
+          this.toastr.error("The file should contain a maximum of 200 records")
         }
       })
       .catch(err => { })
@@ -166,25 +236,49 @@ export class ImportedContactsComponent implements OnInit {
   }
 
   async fetchCustomersImport() {
-    let result = await this.apiService.getData(`importer/get?type=contact&entity=${this.importData.eType}`).toPromise();
-    if (result.length === 0) {
+    if (this.next === 'end') {
+      return;
+    }
+    let result = await this.apiService.getData(`importer/get?type=contact&entity=${this.eType}&key=${this.next}`).toPromise();
+    if (result.data.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
       this.loaded = true;
     }
-    if (result && result.length > 0) {
-      this.importCustomers = result;
+    if (result && result.data.length > 0) {
+      result.data.forEach(elem => {
+        elem.timeCreated = new Date(elem.timeCreated).toLocaleString('en-CA');
+        this.importCustomers.push(elem);
+      });
+
+      if (result.nextPage != undefined) {
+        this.next = result.nextPage.replace(/#/g, '--');
+      } else {
+        this.next = 'end';
+      }
     }
     this.loaded = true;
+  }
+
+  onScroll() {
+    if (this.loaded) {
+      this.fetchCustomersImport();
+    }
+    this.loaded = false;
   }
 
 
   uploadImport() {
     if (this.check == true) {
+      if (this.importData.eType.length == 0) {
+        this.toastr.error("Please select at least one contact type");
+        return
+      }
       if (this.importDocs.length > 0) {
         const formData = new FormData();
         for (let i = 0; i < this.importDocs.length; i++) {
           formData.append("importDocs", this.importDocs[i])
         }
+
         this.submitDisabled = true;
         //append other fields
         formData.append("data", JSON.stringify(this.importData));
@@ -199,6 +293,8 @@ export class ImportedContactsComponent implements OnInit {
             this.toastr.success("The file has been scheduled for processing and you will be notified via email once it is completed")
             $('#importDocs').val('');
             this.display = false;
+            this.importCustomers = [];
+            this.next = '';
             this.fetchCustomersImport();
           }
         })
@@ -212,11 +308,13 @@ export class ImportedContactsComponent implements OnInit {
 
   cancel() {
     this.inValidMessages = [];
+    this.emailsErrs = [];
     this.myInputVariable.nativeElement.value = "";
   }
 
   refreshData() {
-    this.importCustomers = []
+    this.importCustomers = [];
+    this.next = '';
     this.fetchCustomersImport();
     this.dataMessage = Constants.FETCHING_DATA;
   }

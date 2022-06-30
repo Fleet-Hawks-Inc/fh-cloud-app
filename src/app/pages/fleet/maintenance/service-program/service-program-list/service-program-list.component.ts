@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Table } from 'primeng/table';
 import Constants from '../../../constants';
 declare var $: any;
 import { environment } from '../../../../../../environments/environment';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+
 import * as _ from 'lodash';
 @Component({
   selector: 'app-service-program-list',
@@ -12,7 +15,9 @@ import * as _ from 'lodash';
   styleUrls: ['./service-program-list.component.css'],
 })
 export class ServiceProgramListComponent implements OnInit {
-
+  @ViewChild('dt') table: Table;
+  get = _.get;
+  _selectedColumns: any[];
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   title = 'Service Program List';
@@ -22,6 +27,7 @@ export class ServiceProgramListComponent implements OnInit {
   totalRecords = 20;
   pageLength = 10;
   lastItemSK = '';
+  sessionID: string;
   disableSearch = false;
   serviceProgramNext = false;
   serviceProgramPrev = true;
@@ -33,14 +39,26 @@ export class ServiceProgramListComponent implements OnInit {
   data = []
   loaded = false
   demoData = []
+  
+     // columns of data table
+  dataColumns = [
+    { width: '20%', field: 'programName', header: 'Service Program Name', type: 'text' },
+    { width: '75%', field: 'description', header: 'Description', type: 'text' },
+  ];
+  
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService
-  ) { }
+    private toastr: ToastrService,
+    private routerMgmtService: RouteManagementServiceService
+  ) {
+      this.sessionID = this.routerMgmtService.serviceLogSessionID;
+
+  }
 
   ngOnInit() {
     this.initDataTable();
+    this.setToggleOptions();
   }
 
   initDataTable() {
@@ -49,6 +67,7 @@ export class ServiceProgramListComponent implements OnInit {
         .subscribe((result: any) => {
           if (result.Items.length === 0) {
             this.disableSearch = false;
+            this.loaded = true;
             this.dataMessage = Constants.NO_RECORDS_FOUND
           }
           this.suggestions = [];
@@ -66,7 +85,23 @@ export class ServiceProgramListComponent implements OnInit {
         });
     }
   }
-  onScroll() {
+  
+  
+    setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+  }
+
+  
+  onScroll = async(event: any) => {
     if (this.loaded) {
       this.initDataTable();
     }
@@ -133,6 +168,18 @@ export class ServiceProgramListComponent implements OnInit {
     this.suggestions = [];
   }
 
+
+ clearInput() {
+    this.suggestions = null;
+  }
+
+
+  clearSuggestions() {
+    this.programeName = null;
+  }
+
+
+
   refreshData() {
     this.dataMessage = Constants.FETCHING_DATA;
     this.programeName = '';
@@ -141,5 +188,15 @@ export class ServiceProgramListComponent implements OnInit {
     this.programs = [];
     this.initDataTable();
 
+  }
+  
+  
+    
+    /**
+ * Clears the table filters
+ * @param table Table 
+ */
+  clear(table: Table) {
+    table.clear();
   }
 }

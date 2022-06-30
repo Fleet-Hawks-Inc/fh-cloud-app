@@ -40,6 +40,10 @@ export class AddExpensePaymentComponent implements OnInit {
     expIds: [],
     advTotal: 0,
     expTotal: 0,
+    cheqdata: {
+      comp: '',
+      addr: ''
+    }
   };
   drivers = [];
   carriers = [];
@@ -50,6 +54,7 @@ export class AddExpensePaymentComponent implements OnInit {
   advancePayments = [];
   searchDisabled = false;
   accList: any = {};
+  accounts: any = [];
   expenses = [];
   submitDisabled = false;
   errors = {};
@@ -73,11 +78,12 @@ export class AddExpensePaymentComponent implements OnInit {
   ngOnInit() {
     this.subscription = this.listService.paymentSaveList.subscribe((res: any) => {
       if (res.openFrom === "addForm") {
+        this.paymentData.cheqdata = res.cheqdata;
         this.addRecord();
       }
     });
 
-    this.fetchAccounts();
+    this.fetchAccountsData();
   }
 
   ngOnDestroy() {
@@ -209,13 +215,18 @@ export class AddExpensePaymentComponent implements OnInit {
         });
       });
   }
-
   fetchAccounts() {
     this.accountService
       .getData(`chartAc/get/all/list`)
       .subscribe((result: any) => {
         this.accList = result;
       });
+  }
+
+  fetchAccountsData() {
+    this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
+      this.accounts = res;
+    });
   }
 
   selectedSettlements() {

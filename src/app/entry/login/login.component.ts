@@ -11,6 +11,7 @@ import { map } from 'rxjs/operators'
 import { ToastrService } from 'ngx-toastr'
 import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from "./../../../environments/environment";
 declare var $: any;
 
 @Component({
@@ -62,6 +63,10 @@ export class LoginComponent implements OnInit {
   confirmPassword: any;
   signInRef: any;
   showLogin = false;
+  whiteListCarriers = environment.whiteListCarriers;
+  ifMFA = false;
+  loggedInUser;
+  userTOTPCode;
 
   constructor(private apiService: ApiService,
     private router: Router,
@@ -84,39 +89,6 @@ export class LoginComponent implements OnInit {
     this.fieldTextType = !this.fieldTextType;
   }
 
-  //   LoginAction() {
-  //     this.hasError = false;
-
-  //     const data = JSON.stringify({
-  //       'userName': this.email,
-  //       'password': this.password
-  //     });
-  //     this.apiService.getJwt('auth', data).
-  //       subscribe({
-  //         complete: () => { },
-  //         error: (err) => {
-  //           this.hasError = true;
-  //           this.Error = err.error;
-
-  //         },
-  //         next: (res) => {
-  //           const user: User = {
-  //             id: '1',
-  //             username: 'admin',
-  //             firstName: 'Admin',
-  //             lastName: 'User',
-  //             role: Role.FleetManager
-  //           };
-
-  //           this.response = res;
-  //           localStorage.setItem('jwt', this.response.jwt);
-  //           localStorage.setItem('LoggedIn', 'true');
-  //           /************set the role from server **********/
-  //           localStorage.setItem('user', JSON.stringify(user));
-  //           this.router.navigate(['/Map-Dashboard']);
-  //         }
-  //       });
-  //   }
   /** Cognito user action */
   resendSignUpCode = async () => {
     try {
@@ -129,8 +101,12 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  /** Cognito user action */
-  loginAction1 = async () => {
+  /**
+   * Login with Auth
+   */
+
+  async signIn() {
+    this.hasError = false;
     this.submitDisabled = true;
     if (!this.authService.isTokenExpired) {
       this.router.navigate(['/Map-Dashboard']);
@@ -139,42 +115,98 @@ export class LoginComponent implements OnInit {
       try {
         this.userName = this.userName.trim();
         let loginResponse = await Auth.signIn(this.userName, this.password);
-        if (loginResponse) {
-          const isActivatedUser = (await Auth.currentSession()).getIdToken().payload;
-          let allow = await this.apiService.checkIfUserActive();
-          await this.apiService.checkAccess()
-          if (!allow) {
-            this.submitDisabled = false
-            this.hasError = true;
-            this.Error = this.userName + " is not Approved. Please contact support@fleethawks.com | +1 (855)208 7575"
-            Auth.signOut();
+        this.loggedInUser = loginResponse;
+        if (
+          loginResponse.challengeName === 'SMS_MFA' ||
+          loginResponse.challengeName === 'SOFTWARE_TOKEN_MFA'
+        ) {
+          this.ifMFA = true;
+        } else {
+          this.processPostLogin(loginResponse);
+        }
+      } catch (error) {
+        this.submitDisabled = false;
+        this.hasError = true;
+        this.Error = error.message || 'Error during login';
+      }
 
-            return
-          }
-          else {
-            let carrierID = await this.apiService.getCarrierID();
-            localStorage.setItem('xfhCarrierId', carrierID);
-            if (isActivatedUser.userRoles != "orgAdmin") {
-              this.router.navigate(['/Map-Dashboard'])
-              localStorage.setItem("subCompany", 'no')
+    } else {
+      this.submitDisabled = false;
+      this.hasError = true;
+      this.Error = 'Username and password is required'
+
+    }
+    this.routMgmtService.resetAllCache();
+  }
+
+  /**
+   * Validate MFA if enabled.
+   */
+  async validateMFA() {
+    try {
+
+      const loggedUser = await Auth.confirmSignIn(
+        this.loggedInUser, // Return object from Auth.signIn()
+        this.userTOTPCode, // Confirmation code
+        'SOFTWARE_TOKEN_MFA' // MFA Type e.g. SMS_MFA, SOFTWARE_TOKEN_MFA
+      );
+      await this.processPostLogin(loggedUser);
+    }
+    catch (error) {
+      this.hasError = true;
+      this.Error = error || 'Error during login';
+
+    }
+  }
+
+  /** Cognito user action */
+  processPostLogin = async (loginResponse) => {
+    try {
+
+      if (loginResponse) {
+        const isActivatedUser = (await Auth.currentSession()).getIdToken().payload;
+        const jwt = (await Auth.currentSession()).getIdToken().getJwtToken();
+        const at = (await Auth.currentSession()).getAccessToken().getJwtToken();
+        var decodedToken: any = jwt_decode(jwt);
+        let allow = await this.apiService.checkIfUserActive();
+        await this.apiService.checkAccess()
+        if (!allow) {
+          this.submitDisabled = false
+          this.hasError = true;
+          this.Error = this.userName + " is not Approved. Please contact support@fleethawks.com | +1 (855)208 7575"
+          Auth.signOut();
+
+          return
+        }
+        else {
+          // check if customer subscribes any plan and if check carrier exist in our whitelist category like DOT. if not then throw an error
+          let isAuthorize = false;
+          if (decodedToken.subCustomerID && decodedToken.subCustomerID === 'NA') {
+            if (this.whiteListCarriers.includes(decodedToken.carrierID)) {
+              isAuthorize = true;
             } else {
-              this.apiService.getData(`carriers/${carrierID}`).subscribe((res) => {
-                if (res.Items.length > 0) {
-                  if ('isProfileComplete' in res.Items[0]) {
-                    if (res.Items[0].isProfileComplete) {
-                      if (res.Items[0].subCompIDs && res.Items[0].subCompIDs.length > 0) {
-                        this.router.navigate(['/organizations'])
-                        localStorage.setItem("subCompany", 'yes')
-                      } else {
-                        this.router.navigate(['/Map-Dashboard'])
-                        localStorage.setItem("subCompany", 'no')
-                      }
-
-                    } else {
-                      this.router.navigate(['/onboard'])
-                    }
-                    localStorage.setItem("isProfileComplete", res.Items[0].isProfileComplete)
-                  } else {
+              isAuthorize = false;
+            }
+          } else {
+            isAuthorize = true;
+          }
+          if (!isAuthorize) {
+            this.submitDisabled = false;
+            Auth.signOut();
+            localStorage.clear();
+            this.hasError = true;
+            this.Error = 'No valid subscriptions found. Please subscribe one of the plans or contact support@fleethawks.com';
+          }
+          let carrierID = await this.apiService.getCarrierID();
+          localStorage.setItem('xfhCarrierId', carrierID);
+          if (isActivatedUser.userRoles != "orgAdmin") {
+            this.router.navigate(['/Map-Dashboard'])
+            localStorage.setItem("subCompany", 'no')
+          } else {
+            this.apiService.getData(`carriers/${carrierID}`).subscribe((res) => {
+              if (res.Items.length > 0) {
+                if ('isProfileComplete' in res.Items[0]) {
+                  if (res.Items[0].isProfileComplete) {
                     if (res.Items[0].subCompIDs && res.Items[0].subCompIDs.length > 0) {
                       this.router.navigate(['/organizations'])
                       localStorage.setItem("subCompany", 'yes')
@@ -182,69 +214,71 @@ export class LoginComponent implements OnInit {
                       this.router.navigate(['/Map-Dashboard'])
                       localStorage.setItem("subCompany", 'no')
                     }
+
+                  } else {
+                    this.router.navigate(['/onboard'])
+                  }
+                  localStorage.setItem("isProfileComplete", res.Items[0].isProfileComplete)
+                } else {
+                  if (res.Items[0].subCompIDs && res.Items[0].subCompIDs.length > 0) {
+                    this.router.navigate(['/organizations'])
+                    localStorage.setItem("subCompany", 'yes')
+                  } else {
+                    this.router.navigate(['/Map-Dashboard'])
+                    localStorage.setItem("subCompany", 'no')
                   }
                 }
-              })
-            }
-
+              }
+            })
           }
 
-          const jwt = (await Auth.currentSession()).getIdToken().getJwtToken();
-          const at = (await Auth.currentSession()).getAccessToken().getJwtToken()
-          localStorage.setItem('congnitoAT', at);
-          var decodedToken: any = jwt_decode(jwt);
+        }
+        localStorage.setItem('congnitoAT', at);
+        if (decodedToken.userType == 'driver') {
+          this.submitDisabled = false;
+          Auth.signOut();
+          localStorage.clear();
+          this.hasError = true;
+          this.Error = 'You are not authorized to perform this action';
 
-          if (decodedToken.userType == 'driver') {
-            this.submitDisabled = false;
-            Auth.signOut();
-            localStorage.clear();
+        } else {
+          this.submitDisabled = false;
+          localStorage.setItem('currentLoggedUserName', this.userName);
+
+          if (!isActivatedUser.carrierID) {
             this.hasError = true;
-            this.Error = 'You are not authorized to perform this action';
-
+            this.Error = 'Unable to find carrier information';
+            localStorage.setItem('signOut', 'true'); //trigger flag
           } else {
-            this.submitDisabled = false;
-            localStorage.setItem('currentLoggedUserName', this.userName);
 
-            if (!isActivatedUser.carrierID) {
-              this.hasError = true;
-              this.Error = 'Unable to find carrier information';
-              localStorage.setItem('signOut', 'true'); //trigger flag
-            } else {
+            /**
+             * For the Role Management
+             * @type {{id: string; username: string; firstName: string; lastName: string; role: Role}}
+             */
+            const user: User = {
+              id: '1',
+              username: 'admin',
+              firstName: 'Admin',
+              lastName: 'User',
+              role: Role.FleetManager
+            };
+            localStorage.setItem('LoggedIn', 'true');
+            localStorage.setItem('signOut', 'false'); //trigger flag
+            localStorage.setItem('accessToken', jwt);//save token in session storage
+            // await this.router.navigate(['/Map-Dashboard']);
 
-              /**
-               * For the Role Management
-               * @type {{id: string; username: string; firstName: string; lastName: string; role: Role}}
-               */
-              const user: User = {
-                id: '1',
-                username: 'admin',
-                firstName: 'Admin',
-                lastName: 'User',
-                role: Role.FleetManager
-              };
-              localStorage.setItem('LoggedIn', 'true');
-              localStorage.setItem('signOut', 'false'); //trigger flag
-              localStorage.setItem('accessToken', jwt);//save token in session storage
-              // await this.router.navigate(['/Map-Dashboard']);
-
-              this.listService.triggerModal('');
-              localStorage.setItem('user', JSON.stringify(user));
-            }
+            this.listService.triggerModal('');
+            localStorage.setItem('user', JSON.stringify(user));
           }
         }
-      } catch (err) {
-        this.submitDisabled = false;
-        this.hasError = true;
-        this.Error = err.message || 'Error during login';
       }
-    }
-    else {
+    } catch (err) {
+
       this.submitDisabled = false;
       this.hasError = true;
-      this.Error = 'Username and password is required'
-
+      this.Error = err.message || 'Error during login';
     }
-    this.routMgmtService.resetAllCache();
+
   }
   // Show password
   toggleFieldTextType1() {
@@ -378,4 +412,6 @@ export class LoginComponent implements OnInit {
   openLogin() {
     this.showLogin = true;
   }
+
+
 }

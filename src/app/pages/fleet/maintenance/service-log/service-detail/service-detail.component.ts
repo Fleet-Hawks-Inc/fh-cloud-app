@@ -7,6 +7,8 @@ import Constants from '../../../constants';
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import * as html2pdf from "html2pdf.js";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+import { PdfViewerComponent } from "ng2-pdf-viewer";
 @Component({
   selector: 'app-service-detail',
   templateUrl: './service-detail.component.html',
@@ -19,7 +21,7 @@ export class ServiceDetailComponent implements OnInit {
   logModal: TemplateRef<any>;
   logurl = this.apiService.AssetUrl;
   noRecordMessage: string = Constants.NO_RECORDS_FOUND;
-  private logID;
+  public logID;
   programs;
   logsData: any = {
     unitType: '-'
@@ -28,6 +30,8 @@ export class ServiceDetailComponent implements OnInit {
   allServiceParts: any = [];
   vehicle: any;
   assetID: any;
+  sessionID: string;
+
   completionDate: any;
   startDate: any;
   odometer: any;
@@ -67,7 +71,6 @@ export class ServiceDetailComponent implements OnInit {
   logDocs = [];
   logModalRef: any;
   showModal = false;
-  downloadDisabledpdf = true;
   companyLogo = "";
   tagLine: "";
   companyName: any = "";
@@ -81,8 +84,14 @@ export class ServiceDetailComponent implements OnInit {
     zipCode: "",
   };
   showDetails = false;
+  vehiclePlateNo: any
+  vehicleVIN = ''
+  assetPlateNo: any;
+  assetVin: any;
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
-
+  subTotal: 0;
+  taxes: any;
+  finalTotal: any;
   constructor(
     private spinner: NgxSpinnerService,
     private apiService: ApiService,
@@ -90,8 +99,12 @@ export class ServiceDetailComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private modalService: NgbModal,
     private listService: ListService,
-    private countryStateCity: CountryStateCityService
-  ) { }
+    private countryStateCity: CountryStateCityService,
+    private routerMgmtService: RouteManagementServiceService
+
+  ) {
+    this.sessionID = this.routerMgmtService.serviceLogSessionID;
+   }
 
   ngOnInit() {
     this.logID = this.route.snapshot.params['logID'];
@@ -104,13 +117,13 @@ export class ServiceDetailComponent implements OnInit {
     this.fetchUsers();
     this.fetchCarrier()
   }
-
+  
   fetchProgramByID() {
     this.spinner.show(); // loader init
     this.apiService.getData(`serviceLogs/${this.logID}`).subscribe({
       complete: () => { },
       error: () => { },
-      next: (result: any) => {
+      next: async (result: any) => {
         this.logsData = result.Items[0];
         this.fetchSelectedIssues(this.logsData.selectedIssues);
 
@@ -142,9 +155,24 @@ export class ServiceDetailComponent implements OnInit {
         this.partsTotal = result.allServiceParts.total;
 
         this.currency = result.allServiceParts.currency;
-        this.logImages = result.uploadedPics;
+       //  this.logImages = result.uploadedPics;
         this.logDocs = result.uploadDocument;
-
+        this.vehiclePlateNo = result.vehPlateNo;
+        this.vehicleVIN = result.vehicleVin;
+        this.assetPlateNo = result.assetPlateNo;
+        this.assetVin = result.assetVin;
+        this.subTotal = result.total.subTotal;
+        this.taxes = result.total.taxes;
+        this.finalTotal = result.total.finalTotal
+        for (const image of result.uploadedPics) {
+          const base64 = await this.getBase64ImageFromUrl(image.path)
+          this.logImages.push(
+            {
+              path: base64,
+              name: image.name
+            }
+          )
+      }
         /*
        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
           this.logImages = result.uploadedPhotos.map(x => ({
@@ -162,6 +190,21 @@ export class ServiceDetailComponent implements OnInit {
       },
     });
 
+  }
+
+  async getBase64ImageFromUrl(imageUrl) {
+    var res = await fetch(imageUrl);
+    var blob = await res.blob();
+    return new Promise((resolve, reject) => {
+      var reader  = new FileReader();
+      reader.addEventListener("load", function () {
+          resolve(reader.result);
+      }, false);
+      reader.onerror = () => {
+        return reject(this);
+      };
+      reader.readAsDataURL(blob);
+    })
   }
 
   fetchAllVehiclesIDs() {
@@ -228,19 +271,19 @@ export class ServiceDetailComponent implements OnInit {
     let ngbModalOptions: NgbModalOptions = {
       keyboard: false,
       backdrop: "static",
-      windowClass: "log-order logs-model" ,
+      windowClass: "log-order logs-model",
     };
     this.logModalRef = this.modalService.open(this.logModal, ngbModalOptions)
   }
-  downloadPdf() {
+  async downloadPdf() {
     var data = document.getElementById("log_wrap");
     html2pdf(data, {
-      margin: 0.5,
+      margin: [0.5, 0.3, 0.5, 0.3],
       pagebreak: { mode: 'avoid-all', before: "log_wrap" },
       filename: "serviceLog.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {
-        dpi: 192,
+        dpi: 300,
         letterRendering: true,
         allowTaint: true,
         useCORS: true,
@@ -260,13 +303,12 @@ export class ServiceDetailComponent implements OnInit {
   };
 
   fetchCarrier() {
-    
+
     const carrierID = localStorage.getItem('xfhCarrierId');
     this.apiService
       .getData(`carriers/${carrierID}`)
       .subscribe((result: any) => {
         this.carrier = result.Items[0];
-        console.log('this0', this.carrier)
         this.fetchAddress(this.carrier[`addressDetails`]);
       });
   }

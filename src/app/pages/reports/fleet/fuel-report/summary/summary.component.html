@@ -1,242 +1,403 @@
+<style>
+    .extra {
+        display: none;
+    }
+</style>
 <section class="body">
-    <div class="inner-wrapper">
-        <section role="main" class="content-body pt-0 pr-0 pl-1">
-            <header class="page-header pr19 pl11">
-                <form class="form-horizontal" method="get">
-                    <div class="row" style="padding-top: 10px">
-                        <div class="col-md-2 col-lg-2 pr-0">
-                            <ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%"
-                                placeholder="Search by vehicle">
-                                <ng-option *ngFor="let data of vehicleSet" [value]="data.vehicleID">
-                                    {{ data.vehicleIdentification }}
-                                </ng-option>
-                            </ng-select>
-                        </div>
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pt-0 pr-0 pl-1">
+      <header class="page-header pr19 pl11">
+        <form class="form-horizontal" method="get">
+          <div class="row" style="padding-top: 10px">
+            <div class="col-md-2 col-lg-2 pr-0">
+              <ng-select
+                [(ngModel)]="unitID"
+                name="unitID"
+                style="width: 100%"
+                placeholder="Search by vehicle"
+              >
+                <ng-option
+                  *ngFor="let data of vehicleSet"
+                  [value]="data.vehicleID"
+                >
+                  {{ data.vehicleIdentification }}
+                </ng-option>
+              </ng-select>
+            </div>
 
-                        <div class="col-md-2 col-lg-2 pr-0 pl-2">
-                            <ng-select [(ngModel)]="assetUnitID" name="assetUnitID" style="width: 100%"
-                                placeholder="Search by reefer">
-                                <ng-option *ngFor="let data of assetsSet" [value]="data.assetID">
-                                    {{ data.assetIdentification }}
-                                </ng-option>
-                            </ng-select>
-                        </div>
-                        <!-- Set spacing issue -->
-                        <div class="col-md-3 col-lg-3 pl-2 pr-0">
-                            <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
-                                <span class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </span>
-                                </span>
-                                <input [(ngModel)]="start" name="fromDate" type="text" placeholder="yyyy/mm/dd"
-                                    (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control"
-                                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
-                                <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                                    to
-                                </span>
-                                <input [(ngModel)]="end" name="toDate" type="text" placeholder="yyyy/mm/dd"
-                                    (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control"
-                                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
-                            </div>
-                        </div>
+            <div class="col-md-2 col-lg-2 pr-0 pl-2">
+              <ng-select
+                [(ngModel)]="assetUnitID"
+                name="assetUnitID"
+                style="width: 100%"
+                placeholder="Search by reefer"
+              >
+                <ng-option
+                  *ngFor="let data of assetsSet"
+                  [value]="data.assetID"
+                >
+                  {{ data.assetIdentification }}
+                </ng-option>
+              </ng-select>
+            </div>
+            <!-- Set spacing issue -->
+            <div class="col-md-3 col-lg-3 pl-2 pr-0">
+              <div
+                class="input-daterange input-group input-group-sm"
+                data-plugin-datepicker=""
+              >
+                <span class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-calendar-alt"></i>
+                  </span>
+                </span>
+                <input
+                  [(ngModel)]="start"
+                  name="fromDate"
+                  type="text"
+                  placeholder="yyyy/mm/dd"
+                  (click)="from.toggle()"
+                  ngbDatepicker
+                  #from="ngbDatepicker"
+                  class="form-control"
+                  autocomplete="off"
+                  [minDate]="dateMinLimit"
+                  [maxDate]="futureDatesLimit"
+                />
+                <span
+                  class="input-group-text border-left-0 border-right-0 rounded-0"
+                >
+                  to
+                </span>
+                <input
+                  [(ngModel)]="end"
+                  name="toDate"
+                  type="text"
+                  placeholder="yyyy/mm/dd"
+                  (click)="to.toggle()"
+                  ngbDatepicker
+                  #to="ngbDatepicker"
+                  class="form-control"
+                  autocomplete="off"
+                  [minDate]="dateMinLimit"
+                  [maxDate]="futureDatesLimit"
+                />
+              </div>
+            </div>
 
-                        <div class="col-md-2 col-lg-2 pl-2">
-                            <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-2">
-                                Search
-                            </button>
-                            <button class="btn btn-sm btn-success" (click)="resetFilter()" type="submit">
-                                Reset
-                            </button>
-                        </div>
+            <div class="col-md-2 col-lg-2 pl-2">
+              <button
+                type="submit"
+                (click)="searchFilter()"
+                class="btn btn-sm btn-success mr-2"
+              >
+                Search
+              </button>
+              <button
+                class="btn btn-sm btn-success"
+                (click)="resetFilter()"
+                type="submit"
+              >
+                Reset
+              </button>
+            </div>
 
-                        <div class="col-md-3 col-lg-3 text-right pr-1">
-                            <div class="btn-group flex-wrap ml-2">
-                                <button type="button" class="btn btn-success btn-sm dropdown-toggle"
-                                    data-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-upload"></i> Export<span class="caret"></span>
-                                </button>
-                                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
+            <div class="col-md-3 col-lg-3 text-right pr-1">
+              <div class="btn-group flex-wrap ml-2">
+                <button
+                  type="button"
+                  class="btn btn-success btn-sm dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-upload"></i> Export<span
+                    class="caret"
+                  ></span>
+                </button>
+                <div
+                  class="dropdown-menu"
+                  role="menu"
+                  x-placement="bottom-start"
+                  style="
                     position: absolute;
                     will-change: transform;
                     top: 0px;
                     left: 0px;
                     transform: translate3d(0px, 38px, 0px);
-                  ">
-                                    <a class="dropdown-item text-1" (click)="csvExport()">CSV</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </header>
-
-            <div class="m-2">
-                <div class="row text-dark">
-                    <div class="col-12 mb-3">
-                        <div class="bg-white p-3">
-                            <div class="row text-dark">
-                                <div class="col-12">
-                                    <div>
-                                        <h4 class="mt-1 mb-0 font-weight-bold">Fuel Summary</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-12">
-                        <div class="bg-white p-3 m-2 text-dark">
-                            <div class="form-group row">
-                                <div class="col-3 mb-2">
-                                    <div class="maindriverbox  bg-white" style="box-shadow: 3px 3px 5px;">
-                                        <div>
-                                            <h2 class="m-0 text-5 font-weight-bold">Total Fuel Consumed</h2>
-                                        </div>
-                                        <h4 class="m-0 text-5 font-weight-bold">{{finalFuelConsumedLTR | number :
-                                            '1.2-2' }} LTR</h4>
-                                        <h4 class="m-0 text-5 font-weight-bold">{{finalFuelConsumedGL | number : '1.2-2'
-                                            }} GL</h4>
-                                    </div>
-                                </div>
-                                <div class="col-3 mb-2">
-                                    <div class="maindriverbox  bg-white" style="box-shadow: 3px 3px 5px;">
-                                        <div>
-                                            <h2 class="m-0 text-5 font-weight-bold">Total Fuel Cost</h2>
-                                        </div>
-                                        <h4 class="m-0 text-5 font-weight-bold">{{finalFuelRunningCAD | number :
-                                            '1.2-2'}} CAD</h4>
-                                        <h4 class="m-0 text-5 font-weight-bold">{{finalFuelRunningUSD | number :
-                                            '1.2-2'}} USD</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body bor-radius0px">
-                                <section class="reports_div">
-                                    <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                                        [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
-                                        <table id="diverTbl" class="row-border hover table
-                                             table-bordered table-striped mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th style="">Date/Time</th>
-                                                    <th>Use Type</th>
-                                                    <th>Unit Name</th>
-                                                    <th>Fuel Card#</th>
-                                                    <th>City</th>
-                                                    <th>Fuel Type</th>
-                                                    <th>Fuel Quantity</th>
-                                                    <th>Litres or Gallons</th>
-                                                    <th>Odometer</th>
-                                                    <th>Retail Price Per L</th>
-                                                    <th>Retail Amount Before Tax</th>
-                                                    <th>Total Discount</th>
-                                                    <th>Amount CAD</th>
-                                                    <th>Amount USD</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngIf="fuelList.length == 0" class="text-center">
-                                                    <td colspan="13">{{ dataMessage }}</td>
-                                                </tr>
-                                                <ng-container *ngFor="let fuelEntry of fuelList">
-                                                    <tr style="cursor: pointer;">
-                                                        <td><span
-                                                                *ngIf="fuelEntry.dateTime">{{fuelEntry.dateTime}}</span>
-                                                        </td>
-                                                        <td class="line-height-lg text-capitalize">
-                                                            <span
-                                                                *ngIf="fuelEntry.data.useType">{{fuelEntry.data.useType}}</span>
-                                                        </td>
-                                                        <td class="line-height-lg text-capitalize"> <span
-                                                                *ngIf="fuelEntry.unitID">
-                                                                <span
-                                                                    *ngIf="fuelEntry.unitType!='reefer'">{{vehicleList[fuelEntry.unitID]}}</span>
-                                                                <span
-                                                                    *ngIf="fuelEntry.data.useType=='reefer'">{{assetList[fuelEntry.unitID]}}</span>{{fuelEntry.unitIdentification}}</span>
-                                                        </td>
-
-                                                        <td>
-                                                            <span
-                                                                *ngIf="fuelEntry.data.cardNo">{{fuelEntry.data.cardNo}}</span>
-                                                            <span *ngIf="!fuelEntry.data.cardNo">-</span>
-                                                        </td>
-
-                                                        <td><span
-                                                                *ngIf="fuelEntry.data.city">{{fuelEntry.data.city}}</span>
-                                                        </td>
-
-                                                        <td><span
-                                                                *ngIf="fuelEntry.data.fuelID">{{fuelEntry.data.type}}</span>
-                                                        </td>
-
-                                                        <td><span *ngIf="fuelEntry.data.qty">{{fuelEntry.data.qty |
-                                                                number : '1.2-2'}}</span>
-                                                        </td>
-
-                                                        <td class="cursorpoint">
-                                                            <span *ngIf="fuelEntry.data.uom === 'L'">
-                                                                {{fuelEntry.data.uom === "L" ? 'LTR' : null }}
-                                                            </span>
-                                                            <span *ngIf="fuelEntry.data.uom === 'litre'">
-                                                                {{fuelEntry.data.uom === "litre" ? 'LTR' : null }}
-                                                            </span>
-                                                            <span *ngIf="fuelEntry.data.uom === 'G'">
-                                                                {{fuelEntry.data.uom === "G" ? 'GL' : null }}
-                                                            </span>
-                                                        </td>
-
-                                                        <td>
-                                                            <span
-                                                                *ngIf="fuelEntry.data.odometer">{{fuelEntry.data.odometer}}</span>
-                                                            <span *ngIf="!fuelEntry.data.odometer">-</span>
-                                                        </td>
-                                                        <td>
-                                                            <span>{{fuelEntry.data.rPpu
-                                                                }}&nbsp;{{fuelEntry.data.currency}}</span>
-                                                        </td>
-                                                        <td>
-                                                            <span>{{fuelEntry.data.rBeforeTax}}&nbsp;{{fuelEntry.data.currency}}</span>
-                                                        </td>
-                                                        <td>
-                                                            <span
-                                                                *ngIf="fuelEntry.data.discAmt">{{fuelEntry.data.discAmt}}</span>
-                                                            <span *ngIf="!fuelEntry.data.discAmt">-</span>
-                                                        </td>
-                                                        <td>
-                                                            <span *ngIf="fuelEntry.data.currency === 'CAD'">
-                                                                <span *ngIf="fuelEntry.data.amt">{{fuelEntry.data.amt |
-                                                                    number : '1.2-2' }}</span>
-                                                            </span>
-                                                        </td>
-                                                        <td>
-                                                            <span *ngIf="fuelEntry.data.currency === 'USD'">
-                                                                <span *ngIf="fuelEntry.data.amt">{{fuelEntry.data.amt |
-                                                                    number : '1.2-2' }}</span>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                </ng-container>
-                                            </tbody>
-                                        </table>
-                                        <div class="row mt-3 dtPaginate">
-                                            <div class="col-lg-12 mt-3 text-center"
-                                                *ngIf="lastItemSK !== 'end' && fuelList.length !== 0">
-                                                <button type="button" (click)="onScroll()"
-                                                    class="btn btn-success btn-sm text-light">Load More..</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </section>
-                            </div>
-                        </div>
-                    </div>
+                  "
+                >
+                  <a class="dropdown-item text-1" (click)="csvExport()">CSV</a>
                 </div>
+              </div>
             </div>
-        </section>
-    </div>
+          </div>
+        </form>
+      </header>
+
+      <div class="m-2">
+        <div class="row text-dark">
+         
+
+          <div class="col-6 mb-3">
+            <div class="row text-dark">
+              <div class="col-12">
+                <div class="maindriverbox bg-white" style="min-height: 173px">
+                  <div>
+                    <h2 class="m-0 text-5 font-weight-bold">
+                      Total Fuel Consumed
+                    </h2>
+                  </div>
+                  <div class="row" style="padding-right: 40px">
+                    <div class="col-lg-3">
+                      <div style="padding-right: 40px">
+                        <h5 class="m-1 font-weight-bold">Disel</h5>
+                        <h5 class="m-1 font-weight-bold">
+                          {{ disel_ConsumedLTR | number: "1.2-2" }} LTR
+                        </h5>
+                        <h5 class="m-1 font-weight-bold">
+                          {{ disel_ConsumedGL | number: "1.2-2" }} GL
+                        </h5>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                      <div style="padding-right: 40px">
+                        <h5 class="m-1 font-weight-bold">Propane</h5>
+                        <h5 class="m-1 font-weight-bold">
+                          {{ propane_ConsumedLTR | number: "1.2-2" }} LTR
+                        </h5>
+                        <h5 class="m-1 font-weight-bold">
+                          {{ propane_ConsumedGL | number: "1.2-2" }} GL
+                        </h5>
+                      </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <div style="padding-right: 40px">
+                        <h5 class="m-1 font-weight-bold">Gasoline</h5>
+                        <h5 class="m-1 font-weight-bold">
+                          {{ gas_ConsumedLTR | number: "1.2-2" }} LTR
+                        </h5>
+                        <h5
+                          class="m-1 font-weight-bold"
+                          style="padding-bottom: 5px"
+                        >
+                          {{ gas_ConsumedGL | number: "1.2-2" }} GL
+                        </h5>
+                      </div>
+                    </div>
+                    <div class="col-lg-3">
+                      <div style="padding-right: 40px">
+                        <h5 class="m-1 font-weight-bold">DEF</h5>
+                        <h5 class="m-1 font-weight-bold">
+                          {{ def_ConsumedLTR | number: "1.2-2" }} LTR
+                        </h5>
+                        <h5
+                          class="m-1 font-weight-bold"
+                          style="padding-bottom: 5px"
+                        >
+                          {{ def_ConsumedGL | number: "1.2-2" }} GL
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6 mb-3">
+            <div class="row text-dark">
+              <div class="col-12">
+                <div class="maindriverbox bg-white" style="min-height: 173px">
+                  <div>
+                    <h2 class="m-0 text-5 font-weight-bold">Total Fuel Cost</h2>
+                  </div>
+                  <h5 class="m-1 font-weight-bold"></h5>
+                  <h5 class="m-1 text-5 font-weight-bold">
+                    {{ finalFuelRunningCAD | number: "1.2-2" }} CAD
+                  </h5>
+                  <h5 class="m-1 text-5 font-weight-bold">
+                    {{ finalFuelRunningUSD | number: "1.2-2" }} USD
+                  </h5>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+             <div class="card">
+          
+             
+                 <section class="m-2">
+        <div class="row mb-3">
+          <div
+            class="col-lg-12"
+            style="height: calc(111vh - 149px); overflow-y: scroll"
+          >
+            <div class="bg-white p-3 text-dark">
+              <p-table
+                #dt
+                [value]="fuelList"
+                [resizableColumns]="true"
+                columnResizeMode="expand"
+                scrollDirection="both"
+                [columns]="selectedColumns"
+                [loading]="!loaded"
+                styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                [scrollable]="true"
+                scrollHeight="100%"
+              >
+                <!-- Caption template of data table -->
+                <ng-template pTemplate="caption">
+                  <div
+                    class="p-d-flex d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h3 class="m-0">Fuel Summary</h3>
+                    </div>
+
+                    <div class="text-right">
+                      <span>Showing {{ fuelList.length }} entries</span> &nbsp;
+                      <button
+                        type="button"
+                        pButton
+                        (click)="refreshData()"
+                        pTooltip="Refresh"
+                        class="p-button-outlined mr-2"
+                        icon="fas fa-sync"
+                      ></button>
+            
+                      <button
+                        pButton
+                        pRipple
+                        pTooltip="Clear Filter"
+                        class="p-button-outlined mr-2"
+                        (click)="clear(dt)"
+                        icon="pi pi-filter-slash"
+                      ></button>
+
+                   <p-multiSelect
+                            [options]="dataColumns"
+                            [(ngModel)]="selectedColumns"
+                            optionLabel="header"
+                            selectedItemsLabel="{0} columns selected"
+                            [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns"
+                          >
+                          </p-multiSelect>
+                    </div>
+                  </div>
+                </ng-template>
+                <!-- Header template of DataTable -->
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th
+                      *ngFor="let dataColumns of columns"
+                      [pSortableColumn]="dataColumns.field"
+                      pResizableColumn
+                      [ngStyle]="{ width: dataColumns.width }"
+                    >
+                      <span>
+                        <div
+                          class="flex justify-content-center align-items-center"
+                          alignFrozen="right"
+                          pFrozenColumn
+                          [frozen]="true"
+                        >
+                          {{ dataColumns.header }}
+                          <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                          <p-columnFilter
+                            [type]="dataColumns.type"
+                            [field]="dataColumns.field"
+                            matchMode="contains"
+                            [showMatchModes]="false"
+                            [showOperator]="false"
+                            [showAddButton]="false"
+                            display="menu"
+                          >
+                          </p-columnFilter>
+                        </div>
+                      </span>
+                    </th>
+
+                   
+                  </tr>
+                </ng-template>
+
+                <!-- Body Template of Data Table -->
+                <ng-template
+                  pTemplate="body"
+                  let-fuelEntry
+                  let-columns="columns"
+                  let-rowIndex="rowIndex"
+                >
+                   <tr>
+                        <td
+                          *ngFor="let dataColumns of columns"
+                          [ngStyle]="{ width: dataColumns.width }"
+                          style="cursor: pointer"
+                        >
+                      <div [ngSwitch]="dataColumns.field">
+                        <span *ngSwitchCase="'unitSearch'">
+                         {{
+                          (vehicleList[fuelEntry.unitID]
+                            ? vehicleList[fuelEntry.unitID]
+                            : ""
+                          ) | titlecase
+                        }}
+                        {{
+                          (assetList[fuelEntry.unitID] ? assetList[fuelEntry.unitID] : "")
+                            | titlecase
+                        }}
+                        </span>
+                            <span *ngSwitchDefault>
+                              {{ get(fuelEntry, dataColumns.field) }}</span
+                            >
+                          </div>
+                        </td>
+                      </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage" let-columns>
+                  <div class="col-lg-12 mt-3 text-center">
+                    {{ dataMessage }}
+                    <br /><br />
+                  </div>
+                </ng-template>
+                <!-- Summary Section with Load More button -->
+
+                <ng-template pTemplate="summary" let-columns>
+                  <div
+                    class="col-lg-12 mt-3 text-center"
+                     *ngIf="lastItemSK !== 'end' && fuelList.length !== 0"
+                  >
+                    <button
+                      type="button "
+                      (click)="onScroll()"
+                      class="btn btn-success btn-sm text-light"
+                    >
+                      Load More..
+                    </button>
+
+                    <br /><br />
+                  </div>
+                  <div
+                    class="col-lg-12 mt-3 text-center"
+                    *ngIf="lastItemSK === 'end'"
+                  >
+                    Total Records: {{ fuelList.length }}
+                  </div>
+                   
+                </ng-template>
+              </p-table>
+             
+            </div>
+          </div>
+        </div>
+      </section>
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </section>
