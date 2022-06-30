@@ -245,34 +245,34 @@ export class NewAceManifestComponent implements OnInit {
     };
   }
   async ngOnInit() {
-    this.manifestID = this.route.snapshot.params[`manifestID`];
-    if (this.manifestID) {
-      this.title = 'Edit ACE e-Manifest';
-      this.modalTitle = 'Edit';
-      this.fetchACEEntry();
-      await this.getCAProvinces();
-      this.route.queryParams.subscribe((params) => {
-        if (params.amendManifest !== undefined) {
-          this.amendManifest = params.amendManifest; // to get query parameter amend
-        }
-      });
-    } else {
-      this.title = 'Add ACE e-Manifest';
-      this.modalTitle = 'Add';
-    }
+    // this.manifestID = this.route.snapshot.params[`manifestID`];
+    // if (this.manifestID) {
+    //   this.title = 'Edit ACE e-Manifest';
+    //   this.modalTitle = 'Edit';
+    //   this.fetchACEEntry();
+    //   await this.getCAProvinces();
+    //   this.route.queryParams.subscribe((params) => {
+    //     if (params.amendManifest !== undefined) {
+    //       this.amendManifest = params.amendManifest; // to get query parameter amend
+    //     }
+    //   });
+    // } else {
+    //   this.title = 'Add ACE e-Manifest';
+    //   this.modalTitle = 'Add';
+    // }
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
-    await this.fetchCountries();
-    this.listService.fetchShippers();
-    this.listService.fetchReceivers();
-    this.fetchBrokers();
-    this.getCAProvinces(); // fetch al provinces of Canada
-    this.fetchCarrier();
-    this.getCurrentuser();
-    this.searchLocation();
-    this.fetchAssetType();
-    this.fetchUSStates(); // it fetches the US states
+    // await this.fetchCountries();
+    // this.listService.fetchShippers();
+    // this.listService.fetchReceivers();
+    // this.fetchBrokers();
+    // this.getCAProvinces(); // fetch al provinces of Canada
+    // this.fetchCarrier();
+    // this.getCurrentuser();
+    // this.searchLocation();
+    // this.fetchAssetType();
+    // this.fetchUSStates(); // it fetches the US states
     this.shippers = this.listService.shipperList;
     this.consignees = this.listService.receiverList;
     this.httpClient.get('assets/USports.json').subscribe((data) => {
@@ -314,9 +314,9 @@ export class NewAceManifestComponent implements OnInit {
       .subscribe((data) => {
         this.thirdPartiesList = data;
       });
-    $(document).ready(() => {
-      this.form = $('#form_').validate();
-    });
+    // $(document).ready(() => {
+    //   this.form = $('#form_').validate();
+    // });
   }
   shipmentLoadedFn(s, i) {
     this.shipments[s].commodities[i].loadedOn.number = '';
