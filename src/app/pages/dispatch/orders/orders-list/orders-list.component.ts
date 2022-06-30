@@ -927,16 +927,16 @@ export class OrdersListComponent implements OnInit {
 
   async saveScheduler() {
     this.saveDisabled = true;
-    if (this.scheduler.orderID) this.scheduler.orderNumber = this.orders[this.scheduler.orderID]
+    console.log(this.scheduler);
     if (this.scheduler.orderID == null || this.scheduler.orderNumber == null) {
       this.toastr.error("Reference Order is required");
       this.saveDisabled = false;
-      return
+      return;
     }
     if (this.scheduler.name == null) {
       this.toastr.error("Scheduler Name is required");
       this.saveDisabled = false;
-      return
+      return;
     }
     if (this.scheduler.time == null) {
       this.toastr.error("Scheduler Time is required");
@@ -957,35 +957,33 @@ export class OrdersListComponent implements OnInit {
     if (!this.scheduler.dateRange.from || !this.scheduler.dateRange.to) {
       this.toastr.error("Date Range is required");
       this.saveDisabled = false;
-      return
-    }
-    else if (this.scheduler.dateRange.to < this.scheduler.dateRange.from) {
-      this.toastr.error("Date range from must be greater")
+      return;
+    } else if (this.scheduler.dateRange.to < this.scheduler.dateRange.from) {
+      this.toastr.error("Date range from must be greater");
       this.saveDisabled = false;
       return;
-
     }
     if (this.range == "month") {
       if (this.scheduler.selectedMonths.length === 0) {
-        this.toastr.error("Please Select at least 1 month")
+        this.toastr.error("Please Select at least 1 month");
         this.saveDisabled = false;
-        return
+        return;
       }
     }
 
     if (this.repeatType == "selectDaysNo") {
-      delete this.scheduler.type.days
-    }
-    else if (this.repeatType == "days") {
-      delete this.scheduler.type.daysNo
-    }
-    else {
-      delete this.scheduler.type
+      delete this.scheduler.type.days;
+    } else if (this.repeatType == "days") {
+      delete this.scheduler.type.daysNo;
+    } else {
+      delete this.scheduler.type;
     }
 
     if (this.range == "everyMonth") {
       delete this.scheduler.selectedMonths;
     }
+    console.log(this.scheduler);
+    
     const scheduleData = {
       orderID: this.scheduler.orderID,
       orderNumber: this.scheduler.orderNumber,
