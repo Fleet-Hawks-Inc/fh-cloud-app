@@ -1,11 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { result } from 'lodash';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { result, map } from 'lodash';
 import { resourceUsage } from 'process';
 import { VehicleListComponent } from 'src/app/pages/fleet/vehicles/vehicle-list/vehicle-list.component';
-import { ApiService } from 'src/app/services';
+import { ApiService, HereMapService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
-import { ToastrService } from "ngx-toastr";
+import { ToastrService, Overlay } from "ngx-toastr";
 import * as moment from 'moment'
+import { ActivatedRoute } from "@angular/router";
+import { NgxSpinnerService } from 'ngx-spinner';
+import * as html2pdf from "html2pdf.js";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { environment } from '../../../../../../environments/environment';
+import * as _ from 'lodash';
+import { HttpClient } from '@angular/common/http';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { Table } from 'primeng/table/table';
+import { DomSanitizer } from '@angular/platform-browser';
+import { OverlayPanel } from "primeng/overlaypanel";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-vehicle-renewals',
@@ -13,6 +25,10 @@ import * as moment from 'moment'
   styleUrls: ['./vehicle-renewals.component.css']
 })
 export class VehicleRenewalsComponent implements OnInit {
+  @ViewChild('dt') table: Table;
+  confirmEmailModal: TemplateRef<any>;
+  @ViewChild('op') overlaypanel: OverlayPanel;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   vehiclesList = {};
   tasksData = [];
   allData = [];
@@ -33,15 +49,40 @@ export class VehicleRenewalsComponent implements OnInit {
   // record: any = {};
   record = [];
   data = [];
+  listView = true;
+  visible = true;
+  loadMsg: string = Constants.NO_RECORDS_FOUND;
+   isSearch = false;
+  get = _.get;
+  _selectedColumns: any[];
+  find = _.find;
+  
+   dataColumns = [
+        { width: '7%', field: 'entityID', header: 'Vehicle', type: "text" },
+        { width: '7%', field: 'status', header: 'Vehicle Renewal Type', type: "text" },
+        { width: '7%', field: 'tasks.dueDate', header: 'Due Date', type: "text" },
+        { width: '7%', field: 'tasks.timeUnit', header: 'Send Reminder', type: "text" },
+        { width: '7%', field: 'subscribers', header: 'Subscribers', type: "text" },
+    ];
 
-  constructor(private apiService: ApiService, private toastr: ToastrService) { }
+  constructor(private apiService: ApiService, 
+  private toastr: ToastrService,
+  private httpClient: HttpClient,
+  private route: ActivatedRoute,
+  private spinner: NgxSpinnerService,
+  private hereMap: HereMapService,
+  protected _sanitizer: DomSanitizer,
+  private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.fetchvehiclesList();
+
+    this.fetchVehiclesdata();
+    this._selectedColumns = this.dataColumns;
+    this.fetchVehicleIDs();
+     this.fetchvehiclesList();
     this.fetchTasksList();
     this.fetchReminderCount();
-    this.fetchVehiclesdata();
-    this.fetchVehicleIDs();
+     this.setToggleOptions();
 
   }
   setFilterStatus(val) {
@@ -58,7 +99,7 @@ export class VehicleRenewalsComponent implements OnInit {
       this.apiService.getData(`reminders/fetch/records?reminderIdentification=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&lastKey=${this.lastItemSK}&reminderType=vehicle`).subscribe((result: any) => {
         this.dataMessage = Constants.FETCHING_DATA
         if (result.Items.length === 0) {
-
+          this.loaded = true;
           this.dataMessage = Constants.NO_RECORDS_FOUND
         }
         if (result.Items.length > 0) {
@@ -106,12 +147,27 @@ export class VehicleRenewalsComponent implements OnInit {
       return false;
     }
   }
-  onScroll() {
+  
+  setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    
+    @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
+    
+    set selectedColumns(val: any[]) {
+        //restore original order
+        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+    }
+  
+  onScroll = async (event: any) =>{
     if (this.loaded) {
       this.fetchVehiclesdata();
     }
     this.loaded = false;
   }
+  
   resetData() {
     if (this.entityID !== null || this.searchServiceTask !== null || this.filterStatus !== null) {
       this.entityID = null;
@@ -126,12 +182,28 @@ export class VehicleRenewalsComponent implements OnInit {
       return false;
     }
   }
+  
+  refreshData(){
+      this.searchServiceTask = null;
+      this.filterStatus = null;
+      this.status = null;
+      this.allData = [];
+      this.lastItemSK = '';
+      this.dataMessage = Constants.FETCHING_DATA
+      this.fetchVehiclesdata(); 
+  }
+  
   fetchAllExport() {
     this.apiService.getData("reminders/fetch/export?type=vehicle").subscribe((result: any) => {
       this.data = result.Items;
       this.generateCSV();
     })
   }
+  
+  clear(table: Table) {
+        table.clear();
+    }
+  
   csvData() {
     if (this.entityID !== null || this.searchServiceTask !== null || this.filterStatus !== null) {
       this.data = this.allData;

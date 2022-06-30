@@ -1,12 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from 'src/app/services';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ApiService, HereMapService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
 import * as moment from 'moment';
-import { ToastrService } from "ngx-toastr";
-import * as _ from "lodash";
-import { environment } from 'src/environments/environment';
-import { result } from 'lodash';
-
+import { map, result } from 'lodash';
+import { constants } from 'buffer';
+import { Overlay, ToastrService } from "ngx-toastr";
+import { ActivatedRoute } from "@angular/router";
+import { NgxSpinnerService } from 'ngx-spinner';
+import * as html2pdf from "html2pdf.js";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { environment } from '../../../../../../environments/environment';
+import * as _ from 'lodash';
+import { HttpClient } from '@angular/common/http';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { Table } from 'primeng/table/table';
+import { DomSanitizer } from '@angular/platform-browser';
+import { OverlayPanel } from "primeng/overlaypanel";
+import { Router } from "@angular/router";
 
 
 @Component({
@@ -15,6 +25,11 @@ import { result } from 'lodash';
   styleUrls: ['./serviceprogram.component.css']
 })
 export class ServiceprogramComponent implements OnInit {
+  environment = environment.isFeatureEnabled;
+  @ViewChild('dt') table: Table;
+  confirmEmailModal: TemplateRef<any>;
+  @ViewChild('op') overlaypanel: OverlayPanel;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   serviceProgramList: any = [];
   searchVehicle: any = [];
   dataMessage: string = Constants.FETCHING_DATA;
@@ -29,20 +44,49 @@ export class ServiceprogramComponent implements OnInit {
   record: any = [];
   disableSearch = false;
   exportFull = []
-  constructor(private apiService: ApiService, private toastr: ToastrService) { }
+  listView = true;
+  visible = true;
+  loadMsg: string = Constants.NO_RECORDS_FOUND;
+  isSearch = false;
+  get = _.get;
+  _selectedColumns: any[];
+  find = _.find;
+  dataColumns: any[];
+  filterStatus = null;
+  
+  constructor(private apiService: ApiService, 
+  private toastr: ToastrService,
+   private httpClient: HttpClient,
+  private route: ActivatedRoute,
+  private spinner: NgxSpinnerService,
+  protected _sanitizer: DomSanitizer,
+  private hereMap: HereMapService,
+  private modalService: NgbModal,) { }
 
 
-  ngOnInit() {
-    this.fetchvehiclesList()
-    this.fetchServiceVehicleList()
-
+  async ngOnInit() {
+  await this.fetchServiceVehicleList()
+     this.fetchvehiclesList()
+     this.dataColumns = [
+        {  field: 'vehicles', header: 'Vehicle', type: "text" },
+        {  field: 'programName', header: 'Service Program Name', type: "text" },
+        {  field: 'description', header: 'Description', type: "text" },
+    ];
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions();
+  }
+  
+    setFilterStatus(val) {
+    this.filterStatus = val;
   }
 
+  
   async fetchServiceVehicleList() {
     if (this.lastItemSK !== 'end') {
       const result = await this.apiService.getData(`servicePrograms/fetch/report?vehicle=${this.vehicle}&programName=${this.programName}&lastKey=${this.lastItemSK}`).toPromise();
       this.dataMessage = Constants.FETCHING_DATA
       if (result.Items.length === 0) {
+        this.loaded = true;
         this.dataMessage = Constants.NO_RECORDS_FOUND
       }
       if (result.Items.length > 0) {
@@ -64,6 +108,23 @@ export class ServiceprogramComponent implements OnInit {
       this.vehicles = result;
     });
   }
+ 
+  setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    
+    @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
+    
+    set selectedColumns(val: any[]) {
+        //restore original order
+        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+    }
+    
+    clear(table: Table) {
+        table.clear();
+    }
 
   searchFilter() {
     if (this.vehicle !== null || this.programName !== null) {
@@ -78,7 +139,7 @@ export class ServiceprogramComponent implements OnInit {
 
   }
 
-  onScroll() {
+  onScroll = async (event: any) =>{
     if (this.loaded) {
       this.fetchServiceVehicleList();
     }
@@ -99,6 +160,17 @@ export class ServiceprogramComponent implements OnInit {
       return false;
     }
   }
+  
+  refreshData(){
+    this.disableSearch = true;
+    this.vehicle = null;
+    this.programName = null;
+    this.lastItemSK = '';
+    this.dataMessage = Constants.FETCHING_DATA
+    this.serviceProgramList = []
+    this.fetchServiceVehicleList()
+  }
+  
   fetchExportfullList() {
     this.apiService.getData('servicePrograms/fetch/report/export').subscribe((result: any) => {
       this.exportFull = result;

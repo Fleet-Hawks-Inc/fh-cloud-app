@@ -241,6 +241,7 @@
                 [resizableColumns]="true"
                 columnResizeMode="expand"
                 scrollDirection="both"
+                [columns]="selectedColumns"
                 [loading]="!loaded"
                 styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
                 [scrollable]="true"
@@ -275,7 +276,15 @@
                         icon="pi pi-filter-slash"
                       ></button>
 
-              
+                   <p-multiSelect
+                            [options]="dataColumns"
+                            [(ngModel)]="selectedColumns"
+                            optionLabel="header"
+                            selectedItemsLabel="{0} columns selected"
+                            [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns"
+                          >
+                          </p-multiSelect>
                     </div>
                   </div>
                 </ng-template>
@@ -283,10 +292,10 @@
                 <ng-template pTemplate="header" let-columns>
                   <tr>
                     <th
-                      *ngFor="let column of dataColumns"
-                      [pSortableColumn]="column.field"
+                      *ngFor="let dataColumns of columns"
+                      [pSortableColumn]="dataColumns.field"
                       pResizableColumn
-                      [ngStyle]="{ width: column.width }"
+                      [ngStyle]="{ width: dataColumns.width }"
                     >
                       <span>
                         <div
@@ -295,11 +304,11 @@
                           pFrozenColumn
                           [frozen]="true"
                         >
-                          {{ column.header }}
-                          <p-sortIcon [field]="column.field"></p-sortIcon>
+                          {{ dataColumns.header }}
+                          <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
                           <p-columnFilter
-                            [type]="column.type"
-                            [field]="column.field"
+                            [type]="dataColumns.type"
+                            [field]="dataColumns.field"
                             matchMode="contains"
                             [showMatchModes]="false"
                             [showOperator]="false"
@@ -322,105 +331,32 @@
                   let-columns="columns"
                   let-rowIndex="rowIndex"
                 >
-                  
-                   <tr style="height:10% cursor: pointer">
-                            <td style="width: 12%">
-                              <span *ngIf="fuelEntry.dateTime">{{
-                                fuelEntry.dateTime
-                              }}</span>
-                            </td>
-                            <td style="width: 12%" class="line-height-lg text-capitalize">
-                              <span *ngIf="fuelEntry.data.useType">{{
-                                fuelEntry.data.useType
-                              }}</span>
-                            </td>
-                            <td style="width: 12%" class="line-height-lg text-capitalize">
-                              <span *ngIf="fuelEntry.unitID">
-                                <span *ngIf="fuelEntry.unitType != 'reefer'">{{
-                                  vehicleList[fuelEntry.unitID]
-                                }}</span>
-                                <span
-                                  *ngIf="fuelEntry.data.useType == 'reefer'"
-                                  >{{((assetList[fuelEntry.unitID]) ? assetList[fuelEntry.unitID] : '-')}}</span
-                                >{{fuelEntry.unitIdentification}}</span
-                              >
-                            </td>
-
-                            <td style="width: 12%">
-                              <span *ngIf="fuelEntry.data.cardNo">{{
-                                fuelEntry.data.cardNo
-                              }}</span>
-                              <span *ngIf="!fuelEntry.data.cardNo">-</span>
-                            </td>
-
-                            <td style="width: 12%">
-                              <span *ngIf="fuelEntry.data.city">{{
-                                fuelEntry.data.city
-                              }}</span>
-                            </td>
-
-                            <td style="width: 12%">
-                              <span *ngIf="fuelEntry.data.fuelID">{{
-                                fuelEntry.data.type
-                              }}</span>
-                            </td>
-
-                            <td style="width: 12%">
-                              <span *ngIf="fuelEntry.data.qty">{{
-                                fuelEntry.data.qty | number: "1.2-2"
-                              }}</span>
-                            </td>
-
-                            <td style="width: 12%" class="cursorpoint">
-                              <span *ngIf="fuelEntry.data.uom === 'L'">
-                                {{ fuelEntry.data.uom === "L" ? "LTR" : null }}
-                              </span>
-                              <span *ngIf="fuelEntry.data.uom === 'litre'">
-                                {{
-                                  fuelEntry.data.uom === "litre" ? "LTR" : null
-                                }}
-                              </span>
-                              <span *ngIf="fuelEntry.data.uom === 'G'">
-                                {{ fuelEntry.data.uom === "G" ? "GL" : null }}
-                              </span>
-                            </td>
-
-                            <td style="width: 12%">
-                              <span *ngIf="fuelEntry.data.odometer">{{
-                                fuelEntry.data.odometer
-                              }}</span>
-                              <span *ngIf="!fuelEntry.data.odometer">-</span>
-                            </td>
-                            <td style="width: 12%">
-                              <span>{{ fuelEntry.data.rPpu }}</span>
-                            </td>
-                            <td style="width: 12%">
-                              <span>{{ fuelEntry.data.rBeforeTax }}</span>
-                            </td>
-                            <td style="width: 12%">
-                              <span *ngIf="fuelEntry.data.discAmt">{{
-                                fuelEntry.data.discAmt
-                              }}</span>
-                              <span *ngIf="!fuelEntry.data.discAmt">-</span>
-                            </td>
-                            
-                                                       
-                                                      
-                            <td style="width: 12%">
-                              <span *ngIf="fuelEntry.data.amt"
-                                >{{ fuelEntry.data.amt | number: "1.2-2" }}
-                              </span>
-                            </td>
-                            <td style="width: 12%">
-                              <span *ngIf="fuelEntry.data.amt">
-                                {{ fuelEntry.data.currency }}
-                              </span>
-                            </td>
-
-                          </tr>
+                   <tr>
+                        <td
+                          *ngFor="let dataColumns of columns"
+                          [ngStyle]="{ width: dataColumns.width }"
+                          style="cursor: pointer"
+                        >
+                      <div [ngSwitch]="dataColumns.field">
+                        <span *ngSwitchCase="'unitSearch'">
+                         {{
+                          (vehicleList[fuelEntry.unitID]
+                            ? vehicleList[fuelEntry.unitID]
+                            : ""
+                          ) | titlecase
+                        }}
+                        {{
+                          (assetList[fuelEntry.unitID] ? assetList[fuelEntry.unitID] : "")
+                            | titlecase
+                        }}
+                        </span>
+                            <span *ngSwitchDefault>
+                              {{ get(fuelEntry, dataColumns.field) }}</span
+                            >
+                          </div>
+                        </td>
+                      </tr>
                 </ng-template>
-                <!-- Empty Template -->
-
                 <ng-template pTemplate="emptymessage" let-columns>
                   <div class="col-lg-12 mt-3 text-center">
                     {{ dataMessage }}
@@ -457,16 +393,9 @@
             </div>
           </div>
         </div>
-
-      
       </section>
-    
-
-           
           </div>
           </div>
-          
-          
         </div>
       </div>
     </section>

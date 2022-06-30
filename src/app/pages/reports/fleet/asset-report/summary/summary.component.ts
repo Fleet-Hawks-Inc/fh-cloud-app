@@ -105,6 +105,7 @@ export class SummaryComponent implements OnInit {
       this.apiService.getData(`assets/fetch/assetReport?asset=${this.assetIdentification}&assetType=${this.assetType}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
         this.dataMessage = Constants.FETCHING_DATA;
         if (result.Items.length === 0) {
+          this.loaded = true;
           this.dataMessage = Constants.NO_RECORDS_FOUND
         }
         this.suggestedAssets = [];

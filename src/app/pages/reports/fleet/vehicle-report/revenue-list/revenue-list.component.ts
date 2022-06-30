@@ -58,8 +58,8 @@ export class RevenueListComponent implements OnInit {
     { width: '5%', field: 'year', header: 'Year', type: "text" },
     { width: '9%', field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
     { width: '7%', field: 'ownership', header: 'Ownership', type: "text" },
-    { width: '8%', field: 'driverList.driverID', header: 'Driver Assigned', type: 'text' },
-    { width: '10%', field: 'driverList.teamDriverID', header: 'Team Driver Assigned', type: 'text' },
+    { width: '8%', field: 'driverID', header: 'Driver Assigned', type: 'text' },
+    { width: '10%', field: 'teamDriverID', header: 'Team Driver Assigned', type: 'text' },
     { width: '7%', field: 'plateNumber', header: 'Plate Number', type: "text" },
     { width: '3%', field: 'currentStatus', header: 'Status', type: 'text' },
   ];

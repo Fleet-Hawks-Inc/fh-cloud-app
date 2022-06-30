@@ -3,6 +3,7 @@ import { ApiService } from "../../../../services";
 import { ActivatedRoute, Router } from "@angular/router";
 declare var $: any;
 import { ToastrService } from "ngx-toastr";
+import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from '../../../../../environments/environment';
 
 @Component({
@@ -31,6 +32,8 @@ export class InventoryDetailComponent implements OnInit {
   aisle = "";
   row = "";
   bin = "";
+      pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+
   warehouseVendorID = "";
   trackingQuantity = "";
   reorderPoint = "";
@@ -56,7 +59,7 @@ export class InventoryDetailComponent implements OnInit {
     private apiService: ApiService,
     private route: ActivatedRoute,
     private router: Router,
-
+  private domSanitizer: DomSanitizer,
     private toastr: ToastrService
   ) {}
 
@@ -153,6 +156,18 @@ export class InventoryDetailComponent implements OnInit {
       }
     });
   }
+
+    setPDFSrc(val) {
+        let pieces = val.split(/[\s.]+/);
+        let ext = pieces[pieces.length - 1];
+        this.pdfSrc = '';
+        if (ext === 'doc' || ext === 'docx') {
+            this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
+        } else {
+            this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+        }
+    }
+
 
   deleteItem() {
     this.apiService

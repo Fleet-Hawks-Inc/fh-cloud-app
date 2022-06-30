@@ -7,6 +7,15 @@ import { SharedModule } from '../../shared/shared.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceModule } from './devices/devices.module';
+import { DialogModule } from 'primeng/dialog';
+import { NgOtpInputModule } from "ng-otp-input";
+import { ButtonModule } from 'primeng/button';
+import { TagModule } from 'primeng/tag';
+import { CheckboxModule } from 'primeng/checkbox';
+import { TooltipModule } from 'primeng/tooltip';
+import { RippleModule } from 'primeng/ripple';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ToastModule } from "primeng/toast";
 import {
   AddUserComponent,
   UserDetailsComponent,
@@ -15,11 +24,12 @@ import {
   EditProfileComponent
 } from './index';
 
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { ManagemainComponent } from './managemain/managemain.component';
 
 import { AlertsListComponent } from './alerts/alerts-list/alerts-list.component';
 import { AddAlertsComponent } from './alerts/add-alerts/add-alerts.component';
-
+import { InputTextModule } from 'primeng/inputtext';
 
 const COMPONENTS = [
   AddUserComponent,
@@ -103,6 +113,17 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgbModule,
     DeviceModule,
     InfiniteScrollModule,
+    DialogModule,
+    NgOtpInputModule,
+    ButtonModule,
+    RadioButtonModule,
+    TagModule,
+    CheckboxModule,
+    InputTextModule,
+    TooltipModule,
+    RippleModule,
+    ConfirmPopupModule,
+    ToastModule
   ], exports: [...COMPONENTS],
 })
 export class ManageModule { }
