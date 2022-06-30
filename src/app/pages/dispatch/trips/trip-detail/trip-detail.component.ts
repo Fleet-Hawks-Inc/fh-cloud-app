@@ -892,6 +892,18 @@ export class TripDetailComponent implements OnInit {
     }
   }
 
+  // delete uploaded images and documents
+  async delete(name: string, index) {
+
+    if (confirm("Are you sure you want to delete?") === true) {
+      await this.apiService
+        .deleteData(`trips/uploadDelete/${this.tripID}/${name}`)
+        .toPromise();
+      this.uploadedDocSrc.splice(index, 1);
+      this.toastr.success("Document deleted successfully");
+    }
+  }
+
 
 }
 
