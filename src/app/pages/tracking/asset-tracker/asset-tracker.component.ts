@@ -76,10 +76,17 @@ export class AssetTrackerComponent implements OnInit {
   sensorLoading = false;
   sensorTemperature = [];
 
-  startMarkerOptions: google.maps.MarkerOptions = { draggable: false, animation: google.maps.Animation.DROP, title: 'A', label: 'A' };
-  endMarkerOptions: google.maps.MarkerOptions = { draggable: false, animation: google.maps.Animation.DROP, title: 'B', label: 'B' };
+  startMarkerOptions: google.maps.MarkerOptions = { draggable: false, animation: google.maps.Animation.DROP, icon: 'assets/asset-marker.png' };
+  endMarkerOptions: google.maps.MarkerOptions = { draggable: false, animation: google.maps.Animation.DROP, icon: 'assets/map-marker-destination.png' };
   markerOptions: google.maps.MarkerOptions = { draggable: false, animation: google.maps.Animation.DROP };
+  alarmStoppedOptions: google.maps.MarkerOptions = { draggable: false, animation: google.maps.Animation.DROP, icon: 'assets/asset-stopped-marker.png' };
+  alarmMovingOptions: google.maps.MarkerOptions = { draggable: false, animation: google.maps.Animation.DROP, icon: 'assets/moving-asset-marker.png' };
+
   markerPositions: markerPosition[];
+  _movingAssetPositions: markerPosition[];
+  _stoppedAssetPositions: markerPosition[]
+  movingAssetPositions: markerPosition[];
+  stoppedAssetPositions: markerPosition[];
   startMarker: google.maps.LatLngLiteral;
   endMarker: google.maps.LatLngLiteral;
   noDevices = false;
@@ -119,6 +126,10 @@ export class AssetTrackerComponent implements OnInit {
   ) {
     this.assetID = this.route.snapshot.params.assetId;
     this.markerPositions = new Array<markerPosition>();
+    this.movingAssetPositions = new Array<markerPosition>();
+    this._movingAssetPositions = new Array<markerPosition>();
+    this._stoppedAssetPositions = new Array<markerPosition>();
+
   }
 
 
@@ -162,6 +173,8 @@ export class AssetTrackerComponent implements OnInit {
    */
   async updateAssetData() {
     this.locationData = [];
+    this._stoppedAssetPositions = [];
+    this._movingAssetPositions = [];
     await this.getDeviceEventsForDuration(this.selectedDuration.value);
   }
 
@@ -189,6 +202,16 @@ export class AssetTrackerComponent implements OnInit {
    */
   openInfoWindow(marker: MapMarker, data) {
     this.infoDetail = `${data.location} <br/>${data.speed} <br/> ${data.temperature}`;
+    this.infoWindow.open(marker);
+  }
+
+  /**
+  * Open Alarm Info
+  * @param marker 
+  * @param data 
+  */
+  openAlarmInfo(marker: MapMarker, data) {
+    this.infoDetail = `<h5>${data.alarmDesc}</h5> <span class='map-para'>Speed: ${data.speedKms} / ${data.speedMiles}</span><br/><span class='map-para'>Battery: ${data.battery} </span><br/><span class='map-para'>${data.location}</span><br/><span>Time: ${data.time}</span>`;
     this.infoWindow.open(marker);
   }
 
@@ -238,7 +261,76 @@ export class AssetTrackerComponent implements OnInit {
     }
   }
 
+  /**
+   * Get Moving alarm
+   * @param event 
+   * @returns 
+   */
+  async getMovingAlarm(event: any) {
+    console.log(event, this._movingAssetPositions);
+    if (event.checked == false) {
+      this.movingAssetPositions = [];
+      return;
 
+    }
+    if (this._movingAssetPositions.length > 0) {
+      this.movingAssetPositions = this._movingAssetPositions;
+      return;
+    }
+    const data: any = await this.apiService
+      .getData(`assetTrackers/getAlarms/${this.assetID}/alarmCode/${this.selectedDuration.value}/16`).toPromise();
+    if (data && data.length > 0) {
+      for (const item of data) {
+        const stillUtc = moment.utc(item.time).toDate();
+        const localTime = moment(stillUtc)
+          .local()
+          .format("YYYY-MM-DD HH:mm:ss");
+        item.time = localTime;
+        const curPosition: google.maps.LatLng = new google.maps.LatLng({
+          lng: item.longitude,
+          lat: item.latitude,
+        });
+        this._movingAssetPositions.push({ location: curPosition, data: item });
+        this.movingAssetPositions = this._movingAssetPositions;
+
+      }
+    }
+  }
+
+
+  /**
+   * Get Stopped alarms
+   * @param event 
+   * @returns 
+   */
+  async getStoppedAlarms(event: any) {
+    if (event.checked == false) {
+      this.stoppedAssetPositions = [];
+      return
+    }
+    if (this._stoppedAssetPositions.length > 0) {
+      this.stoppedAssetPositions = this._stoppedAssetPositions;
+      return;
+    }
+    const data: any = await this.apiService
+      .getData(`assetTrackers/getAlarms/${this.assetID}/alarmCode/${this.selectedDuration.value}/17`).toPromise();
+    if (data && data.length > 0) {
+      for (const item of data) {
+        const stillUtc = moment.utc(item.time).toDate();
+        const localTime = moment(stillUtc)
+          .local()
+          .format("YYYY-MM-DD HH:mm:ss");
+        item.time = localTime;
+        const curPosition: google.maps.LatLng = new google.maps.LatLng({
+          lng: item.longitude,
+          lat: item.latitude,
+        });
+        this._stoppedAssetPositions.push({ location: curPosition, data: item });
+        this.stoppedAssetPositions = this._stoppedAssetPositions;
+
+      }
+    }
+  }
 
   /**
    * Get Device location for duration
