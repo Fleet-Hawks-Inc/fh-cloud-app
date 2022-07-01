@@ -1,10 +1,20 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, TemplateRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
 import Constants from 'src/app/pages/fleet/constants';
 import { AccountService, ApiService } from 'src/app/services'
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import * as html2pdf from "html2pdf.js";
 import { DashboardUtilityService } from 'src/app/services';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { HereMapService } from 'src/app/services/here-map.service';
+import * as moment from 'moment'
+import * as _ from "lodash";
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { Table } from 'primeng/table';
+import { environment } from 'src/environments/environment';
+declare var $: any;
 
 @Component({
   selector: 'app-payment-report',
@@ -14,12 +24,17 @@ import { ToastrService } from 'ngx-toastr';
 export class PaymentReportComponent implements OnInit {
 
   @ViewChild("previewModal", { static: false }) previewModal: TemplateRef<any>;
-
+  @ViewChild('dt') table: Table;
+  environment = environment.isFeatureEnabled;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
+  
   constructor(private accountService: AccountService,
     private modalService: NgbModal,
+    private router: Router,
     private dashboardUtilityService: DashboardUtilityService,
     private apiService: ApiService,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService) { }
 
   allPayments = []
   allExportData = []
@@ -76,15 +91,34 @@ export class PaymentReportComponent implements OnInit {
   ownerOpObject: any = {}
   employees: any = {}
   vendors: any = {}
+  _selectedColumns: any[];
+  listView = true;
+  visible = true;
+  get = _.get;
+  loaded = false;
+   
+   
+   dataColumns = [
+        {  width: '9%', field: 'txnDate', header: 'Transaction Date', type: "text" },
+        {  width: '9%', field: 'paymentNo', header: 'Payment ID', type: "text" },
+        {  width: '11%', field: 'payMode', header: 'Payment Mode', type: "text" },
+        {  width: '11%', field: 'payModeNo', header: 'Cheque/ Cash No.', type: "text" },
+        {  width: '12%', field: 'payModeDate', header: 'Cheque/Cash Date', type: "text" },
+        {  width: '15%',  field: 'advType', header: 'Type Of Payment', type: "text" },
+        {  width: '17%', field: 'paymentTo', header: 'Receiver', type: "text" },
+        {  width: '8%', field: 'currency', header: 'Currency', type: "text" },
+        {  width: '8%',  field: 'amount', header: 'Amount', type: "text" },
+    ]; 
 
-
-  async ngOnInit() {
+  async ngOnInit(): Promise<void> {
     await this.init();
+    this.setToggleOptions();
     this.driversObject = await this.dashboardUtilityService.getDrivers();
     this.carriersObject = await this.dashboardUtilityService.getContactsCarriers();
     this.ownerOpObject = await this.dashboardUtilityService.getOwnerOperators();
     this.employees = await this.dashboardUtilityService.getEmployees();
     this.vendors = await this.dashboardUtilityService.getVendors();
+    
   }
 
   async init() {
@@ -93,9 +127,27 @@ export class PaymentReportComponent implements OnInit {
     await this.fetchDriverPayments();
     await this.fetchEmployeePayments();
     await this.fetchExpencePayments();
+    this.setToggleOptions();
+    
+    
   }
 
+   setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    
+   
+     @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+  
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
 
+  }
+ 
+ 
   unitTypeChange() {
     this.filter.searchValue = null
   }
@@ -106,6 +158,7 @@ export class PaymentReportComponent implements OnInit {
     if (this.lastAdvanceSK !== "end") {
       const result = await this.accountService.getData(`advance/report/paging?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&payModeNo=${this.filter.payModeNo}&paymentTo=${this.filter.receiverType}&entityID=${this.filter.searchValue}&lastKey=${this.lastAdvanceSK}`).toPromise();
       if (result && result.length === 0) {
+        this.loaded = true;
         this.dataMessage = Constants.NO_RECORDS_FOUND
       }
       if (result && result.length > 0) {
@@ -121,7 +174,7 @@ export class PaymentReportComponent implements OnInit {
           v.url = `/accounts/payments/advance-payments/detail/${v.paymentID}`;
         })
         this.allPayments = this.allPayments.concat(result)
-
+        this.loaded = true;
       }
     }
   }
@@ -135,6 +188,7 @@ export class PaymentReportComponent implements OnInit {
           `driver-payments/report/paging?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&payModeNo=${this.filter.payModeNo}&paymentTo=${this.filter.receiverType}&entityID=${this.filter.searchValue}&lastKey=${this.lastDriverSK}`
         ).toPromise();
       if (result && result.length === 0) {
+        this.loaded = true;
         this.dataMessage = Constants.NO_RECORDS_FOUND
       }
       if (result && result.length > 0) {
@@ -165,6 +219,7 @@ export class PaymentReportComponent implements OnInit {
           `employee-payments/report/paging?startPay=${this.filter.startDate}&endPay=${this.filter.endDate}&paymentMode=${this.filter.mode}&payModeNo=${this.filter.payModeNo}&paymentTo=${this.filter.receiverType}&entityID=${this.filter.searchValue}&lastKey=${this.lastEmployeeSK}`
         ).toPromise();
       if (result && result.length === 0) {
+        this.loaded = true;
         this.dataMessage = Constants.NO_RECORDS_FOUND
       }
       if (result && result.length > 0) {
@@ -197,6 +252,7 @@ export class PaymentReportComponent implements OnInit {
         )
         .toPromise();
       if (result && result.length === 0) {
+        this.loaded = true;
         this.dataMessage = Constants.NO_RECORDS_FOUND
       }
       if (result && result.length > 0) {
@@ -270,9 +326,24 @@ export class PaymentReportComponent implements OnInit {
     }
     await this.init();
   }
-
-
-  onScroll() {
+  
+  async refreshData(){
+    this.resetVariables();
+    this.filter = {
+      startDate: null,
+      endDate: null,
+      mode: null,
+      type: null,
+      payModeNo: null,
+      receiver: null,
+      searchType: null,
+      receiverType: null,
+      searchValue: null
+    }
+    await this.init();
+  }
+  
+  onScroll = async (event: any) => {
     // console.log("Expense",this.expenseLoaded)
     // console.log("Advance",this.advanceLoaded)
     // console.log("Driver",this.driverLoaded)
