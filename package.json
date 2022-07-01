@@ -76,7 +76,7 @@
         "lodash": "4.17.20",
         "moment": "2.29.2",
         "moment-timezone": "^0.5.34",
-        "ng-multiselect-dropdown": "0.3.4",
+        "ng-multiselect-dropdown": "0.3.8",
         "ng-otp-input": "1.8.1",
         "ng-pick-datetime": "7.0.0",
         "ng2-charts": "2.4.2",
