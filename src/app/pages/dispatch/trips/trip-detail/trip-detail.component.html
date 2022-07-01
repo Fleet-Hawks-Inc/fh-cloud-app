@@ -168,6 +168,7 @@
                                   <th>Name</th>
                                   <th>Type</th>
                                   <th>Icon/Thumbnail</th>
+                                  <th>Action</th>
                                 </thead>
                                 <tbody>
                                   <tr *ngFor="
@@ -191,6 +192,11 @@
                                       <a class="image-popup-no-margins" href="{{ doc.docPath }}" target="_blank">
                                         <img class="img_thumbnail" src="{{ doc.imgPath }}" />
                                       </a>
+                                    </td>
+
+                                    <td class="cursorpoint text-center">
+                                      <a href="javascript:;" (click)="delete(doc.name, d)" class="modal-with-form">
+                                        <em class="fas fa-times text-danger"></em></a>
                                     </td>
                                   </tr>
                                 </tbody>

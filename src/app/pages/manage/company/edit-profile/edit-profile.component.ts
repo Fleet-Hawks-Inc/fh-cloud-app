@@ -58,7 +58,6 @@ export class EditProfileComponent implements OnInit {
     company: '',
     phone: '',
     email: '',
-    notificationEmail:'',
   }
   fleets = {
     curtainSide: 0,

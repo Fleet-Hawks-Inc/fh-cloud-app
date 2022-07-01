@@ -1329,15 +1329,15 @@
 
                     <div *ngIf="showFuel === 'yes'">
                       <div class="row pt-2" *ngIf="
-                          settlementData.type == 'driver' ||
-                          settlementData.type == 'owner_operator'
-                        ">
-                        <div class="col-lg-10">
-                          <div>
+                      settlementData.type == 'driver' ||
+                      settlementData.type == 'owner_operator'
+                    ">
+                        <div class="col-lg-12">
+                          <div class="d-flex justify-content-between">
                             <div>
                               <h4 class="font-weight-bold">Fuel Expenses</h4>
                             </div>
-                            <div>
+                            <div style="width: 240px;">
                               <p-multiSelect appendTo="body" [filter]="false" placeholder="Filter Fuel"
                                 [options]="fuelTypes" [(ngModel)]="selectedFuels" (onChange)="filterFuels($event)"
                                 optionLabel="label" optionValue="value" class="w-100 text-capitalize"
