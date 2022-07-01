@@ -1,28 +1,32 @@
+<p-toast></p-toast>
 <section class="body">
-    <div class="inner-wrapper">
+    <div class="inner-wrapper" *ngIf="carriers.carrierID">
 
 
         <section role="main" class="content-body">
-            <header class="page-header pr-5">
-                <div class="row pr-1 mr-1" style="padding-top:10px;">
-                    <div class="col-md-2 col-lg-2">
-                        <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Company Profile</h4>
+            <header class="page-header">
+                <div class="row">
+                    <div class="col header-title">
+                        <label class="mt-0 mb-0"> Company Profile</label>
                     </div>
-                    <div class="col-md-10 col-lg-10 text-right pr-1">
+                    <div class="col header-buttons">
+                        <button type="button" pButton class="mr-1" (click)="showMFA=true;generateTOTPCode()"
+                            icon="pi pi-shield" pTooltip="Manage MFA"></button>
 
-                        <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal"
-                            data-target="#addCompanyModal" href="javascript:;"
-                            *ngIf="showSubCompany && subCompanies.length < 5"><i class="fas fa-plus"></i> Sub
-                            Company</a>
+                        <button type="button" pButton *ngIf="showSubCompany && subCompanies.length < 5" class="mr-1"
+                            data-toggle="modal" data-target="#addCompanyModal" class="mr-1" pTooltip="Sub Company"
+                            icon="pi pi-building" pRipple tooltipPosition="left" pTooltip="Add Subcompany"> </button>
+                        <button id="btnChangePassword" type="button" pButton class="mr-1" tooltipPosition="left"
+                            pTooltip="Change your password" data-toggle="modal" icon="pi pi-lock"
+                            data-target="#changePasswordModal"></button>
+                        <button id="btn" type="button" pButton class="mr-1"
+                            routerLink="/manage/company/edit/{{carriers.carrierID}}" tooltipPosition="left"
+                            icon="pi pi-user-edit" pTooltip="Edit Company details"></button>
 
-                        <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal"
-                            data-target="#changePasswordModal" href="javascript:;">Change Password</a>
-                        <a *ngIf="carriers.carrierID" routerLink="/manage/company/edit/{{carriers.carrierID}}" class="btn btn-dark btn-sm"
-                            style="color: #ffffff;"  ><i class="fas fa-plus"></i> Edit
-                            Company
-                            Detail</a>
+
                     </div>
                 </div>
+
             </header>
             <div class="routing-overview__wrapper m-3">
                 <div class="row">
@@ -49,14 +53,26 @@
                                                 <td width="30%">{{carriers.firstName | titlecase}} &nbsp;
                                                     {{carriers.lastName | titlecase}}</td>
                                                 <td width="20%" class="back-color-gray">Phone</td>
-                                                <td width="30%">{{carriers.phone}}</td>
+                                                <td width="30%">{{carriers.phone}} <span class="badge badge-success"
+                                                        *ngIf="userAttributes && userAttributes.phoneVerified">VERIFIED</span>
+                                                    <span class="badge badge-danger"
+                                                        (click)="showVerifyPhone=true;verifyPhone()"
+                                                        *ngIf="userAttributes && !userAttributes.phoneVerified">NOT
+                                                        VERIFIED</span>
+                                                </td>
                                             </tr>
 
                                             <tr>
                                                 <td class="back-color-gray">Username</td>
                                                 <td>{{carriers.userName}}</td>
-                                                <td class="back-color-gray">Email</td>
-                                                <td>{{carriers.email}}</td>
+                                                <td class="back-color-gray">Email </td>
+                                                <td>{{carriers.email}} <span class="badge badge-success"
+                                                        *ngIf="userAttributes && userAttributes.emailVerified">VERIFIED</span>
+                                                    <span class="badge badge-danger"
+                                                        (click)="showVerifyEmail=true;verifyEmail()"
+                                                        *ngIf="userAttributes && !userAttributes.emailVerified">NOT
+                                                        VERIFIED</span>
+                                                </td>
                                             </tr>
                                             <tr>
 
@@ -65,6 +81,11 @@
                                                 <td class="back-color-gray">Fax</td>
                                                 <td>{{carriers.fax ? carriers.fax : '-'}}</td>
                                             </tr>
+
+                                            <td class="back-color-gray">Notification Email </td>
+                                            <td>{{carriers.notificationEmail ? carriers.notificationEmail: '-'}}
+                                            </td>
+
                                             <tr *ngIf="carriers.findingWay=='Referral'">
 
                                                 <td class="back-color-gray">Referral Name</td>
@@ -222,7 +243,8 @@
                                 <!-- Subscription Details start -->
                                 <div class="col-lg-12" *ngIf="subscriptions.length == 0">
                                     <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Subscription Info not
-                                        found.</h2>
+                                        found.
+                                    </h2>
                                 </div>
 
                                 <div class="col-lg-12" *ngIf="subscriptions.length > 0">
@@ -325,7 +347,8 @@
                                         <tbody>
                                             <tr>
                                                 <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Terms and
-                                                    Conditions</h2>
+                                                    Conditions
+                                                </h2>
                                             </tr>
                                             <tr class="text-capitalize">
                                                 <td width="20%" class="back-color-gray">Terms For Customer on Invoice
@@ -636,3 +659,138 @@
         </div>
     </div>
 </div>
+
+<p-dialog header="Verify Email" [(visible)]="showVerifyEmail" [modal]="true" [style]="{width: '30vw'}"
+    [draggable]="false" [resizable]="false">
+    <div>
+        <label> We have sent you verification code on your email <strong>{{carriers.email}}</strong>. Please check your
+            email(SPAM or JUNK) and enter the code below.
+        </label>
+    </div>
+    <div style="text-align:center">
+        <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:6,allowNumbersOnly:true}"></ng-otp-input>
+    </div><br />
+    <div style="text-align:center">
+        <label style="color:red">{{verficationError}}</label>
+        <p-tag styleClass="mr-2" icon="pi pi-exclamation-triangle" severity="warning" value="Warning"></p-tag> You have
+        to sign-in again once email is verified.
+    </div>
+
+
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" [disabled]="!verifyButton" class="p-button-warning"
+            (click)="verifyAttribute('email')" label="Verify Email"></p-button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog header="Verify Phone Number" [(visible)]="showVerifyPhone" [modal]="true" [style]="{width: '30vw'}"
+    [draggable]="false" [resizable]="false">
+    <div>
+        <label> We have sent you verification code on your phone number <strong>{{carriers.phone}}</strong>.
+        </label>
+    </div>
+    <div style="text-align:center">
+        <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:6,allowNumbersOnly:true}"></ng-otp-input>
+
+    </div><br />
+    <div style="text-align:center">
+        <label style="color:red">{{verficationError}}</label>
+        <p-tag styleClass="mr-2" icon="pi pi-exclamation-triangle" severity="warning" value="Warning"></p-tag> You have
+        to sign-in again once phone is verified.
+
+    </div>
+
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" class="p-button-warning" [disabled]="!verifyButton"
+            (click)="verifyAttribute('phone_number')" label="Verify Phone"></p-button>
+    </ng-template>
+</p-dialog>
+
+
+<!-- Multifactor Authentication Dialog -->
+
+<p-dialog header="Enable Multi-factor Authentication(MFA)" [(visible)]="showMFA" [modal]="true"
+    [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+    <div class="alert alert-danger" role="alert" *ngIf="mfaError!==''">
+        {{mfaError}}
+    </div>
+
+    <strong><label> {{currentStatus}}</label><br></strong>
+    <label><strong>TOTP (Time based One Time Password)</strong> </label>
+    <div class="row">
+        <div class="col-md-5">
+            <!-- TOTP Configuration -->
+            <!-- <div class="field-checkbox">
+                    <p-checkbox [binary]="true" inputId="binary" (onChange)="generateTOTPCode($event)"></p-checkbox>
+                    <label style="margin:0px; margin-left:5px" for="binary"> </label>
+                </div> -->
+            <!-- show Totp configuration -->
+            <ol>
+                <li>
+                    Download one of the apps on your phone/desktop Google authenticator, Microsoft authenticator or
+                    Authy.
+                </li>
+                <li>
+                    Scan the QR code displayed here.
+                </li>
+                <li>
+                    Once scanned, the app should give you 6 digit TOTP.
+                </li>
+                <li>
+                    <label>Enter <strong>6 digit </strong> code from app below:</label><br />
+
+                </li>
+                <input type="text" pInputText [(ngModel)]="userTotpCode" />
+            </ol>
+
+
+
+
+        </div>
+        <div class="col-md-7">
+            <div style="text-align: right;" *ngIf="totpMFA ">
+                <img [src]="qrcodeImage" />
+                <label>Optionally, you can enter following code in your authenticator app: <strong>
+                        {{totpCode}}</strong></label>
+
+
+
+
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-success" role="alert">
+        <label>Note: Once the MFA is enabled, You would be prompted to enter TOTP from app every time you sign
+            In.</label>
+    </div>
+
+
+    <!-- TOTP Configuration ENDS -->
+    <!-- SMS MFA CURRENTLY DISABLED -->
+    <!-- <div class="field-checkbox">
+            <p-checkbox [binary]="true" [(ngModel)]="smsMFA" inputId="binary" (onChange)="generateTOTPCode($event)"></p-checkbox>
+            <label style="margin:0px; margin-left:5px" for="binary">  SMS OTP(Phone Number One Time Passwords)</label>
+        </div>
+        
+        <div style="text-align: center;" *ngIf="isSMS">
+            <label>Please scan this QR code with Google authenticator, Microsoft authenticator or Authy</label>
+            <img [src]="qrcodeImage" />
+            <label>Optionally, you can enter following code in your authenticator app: <strong> {{totpCode}}</strong></label>
+        </div> -->
+    <!-- SMS MFA  ENDS -->
+
+
+
+
+
+
+    <ng-template pTemplate="footer">
+
+        <p-confirmPopup></p-confirmPopup>
+        <p-button icon="pi pi-warning" class="p-button-danger" (click)="disableMFA($event);" label="Disable MFA">
+        </p-button>
+        <p-button icon="pi pi-check" class="p-button-warning" (click)="setupVerifyTOTPCode()" label="Setup TOTP">
+        </p-button>
+
+    </ng-template>
+</p-dialog>

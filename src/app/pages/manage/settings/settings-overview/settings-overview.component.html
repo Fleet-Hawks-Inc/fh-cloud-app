@@ -1,6 +1,6 @@
 <section class="body">
   <div class="inner-wrapper">
-    <section role="main" class="content-body pl-1 pr-0 pt-0">
+    <section role="main" class="content-body pr-0 pt-0">
       <header class="page-header pr27 pl18">
         <div class="row">
           <div class="col-md-12 col-lg-12 font-weight-bold text-4 text-dark">
@@ -9,9 +9,9 @@
         </div>
       </header>
 
-      <div class="routing-overview__wrapper m-4">
+      <div class="routing-overview__wrapper m-2">
         <div class="row">
-          <div class="col-lg-4 col-xl-3 mb-4">
+          <div class="col-lg-4 col-xl-3 mb-4 pr-0">
             <section class="card">
               <div class="card-body">
                 <div class="thumb-info mb-3">
@@ -21,29 +21,41 @@
                 </div>
                 <ul class="simple-post-list">
                   <li>
-                    <a routerLink="/manage/settings/driver-overview"><i class="fas fa-chevron-right"></i> Drivers</a>
+                    <a routerLink="/manage/settings/driver-overview"
+                      ><i class="fas fa-chevron-right"></i> Drivers</a
+                    >
                   </li>
                   <li>
-                    <a routerLink="/manage/settings/vehicles/overview"><i class="fas fa-chevron-right"></i> Vehicles</a>
+                    <a routerLink="/manage/settings/vehicles/overview"
+                      ><i class="fas fa-chevron-right"></i> Vehicles</a
+                    >
                   </li>
                   <li>
-                    <a routerLink="/manage/settings/assets/overview"><i class="fas fa-chevron-right"></i> Assets</a>
+                    <a routerLink="/manage/settings/assets/overview"
+                      ><i class="fas fa-chevron-right"></i> Assets</a
+                    >
                   </li>
                   <li>
-                    <a routerLink="/manage/settings/overview"><i class="fas fa-chevron-right"></i> Fuel</a>
+                    <a routerLink="/manage/settings/overview"
+                      ><i class="fas fa-chevron-right"></i> Fuel</a
+                    >
                   </li>
                   <li>
-                    <a routerLink="/manage/settings/overview"><i class="fas fa-chevron-right"></i> Reminders</a>
+                    <a routerLink="/manage/settings/overview"
+                      ><i class="fas fa-chevron-right"></i> Reminders</a
+                    >
                   </li>
                   <li>
-                    <a routerLink="/manage/settings/overview"><i class="fas fa-chevron-right"></i> Issues</a>
+                    <a routerLink="/manage/settings/overview"
+                      ><i class="fas fa-chevron-right"></i> Issues</a
+                    >
                   </li>
                 </ul>
               </div>
             </section>
           </div>
 
-          <div class="col-lg-4 col-xl-3 mb-4">
+          <div class="col-lg-4 col-xl-3 mb-4 pl-2 pr-2">
             <section class="card">
               <div class="card-body">
                 <div class="thumb-info mb-3">
@@ -53,56 +65,77 @@
                 </div>
                 <ul class="simple-post-list">
                   <li>
-                    <a routerLink="/manage/settings/customer/overview"><i class="fas fa-chevron-right"></i>
-                      Customers</a>
+                    <a routerLink="/manage/settings/customer/overview"
+                      ><i class="fas fa-chevron-right"></i> Customers</a
+                    >
                   </li>
                   <li>
-                    <a routerLink="/manage/settings/contacts-import" [queryParams]="{
-                      entity: 'broker'
-                    }"><i class="fas fa-chevron-right"></i>
-                      Brokers</a>
+                    <a
+                      routerLink="/manage/settings/contacts-import"
+                      [queryParams]="{
+                        entity: 'broker'
+                      }"
+                      ><i class="fas fa-chevron-right"></i> Brokers</a
+                    >
                   </li>
                   <li>
-                    <a routerLink="/manage/settings/contacts-import" [queryParams]="{
-                      entity: 'shipper'
-                    }"><i class="fas fa-chevron-right"></i>
-                      Shippers</a>
+                    <a
+                      routerLink="/manage/settings/contacts-import"
+                      [queryParams]="{
+                        entity: 'shipper'
+                      }"
+                      ><i class="fas fa-chevron-right"></i> Shippers</a
+                    >
                   </li>
                   <li>
-                    <a routerLink="/manage/settings/contacts-import" [queryParams]="{
-                      entity: 'receiver'
-                    }"><i class="fas fa-chevron-right"></i>
-                      Receivers</a>
+                    <a
+                      routerLink="/manage/settings/contacts-import"
+                      [queryParams]="{
+                        entity: 'receiver'
+                      }"
+                      ><i class="fas fa-chevron-right"></i> Receivers</a
+                    >
                   </li>
                   <li>
-                    <a routerLink="/manage/settings/contacts-import" [queryParams]="{
-                      entity: 'vendor'
-                    }"><i class="fas fa-chevron-right"></i>
-                      Vendors</a>
+                    <a
+                      routerLink="/manage/settings/contacts-import"
+                      [queryParams]="{
+                        entity: 'vendor'
+                      }"
+                      ><i class="fas fa-chevron-right"></i> Vendors</a
+                    >
                   </li>
                   <li>
-                    <a routerLink="/manage/settings/contacts-import" [queryParams]="{
-                      entity: 'carrier'
-                    }"><i class="fas fa-chevron-right"></i>
-                      Carriers</a>
+                    <a
+                      routerLink="/manage/settings/contacts-import"
+                      [queryParams]="{
+                        entity: 'carrier'
+                      }"
+                      ><i class="fas fa-chevron-right"></i> Carriers</a
+                    >
                   </li>
                   <li>
-                    <a routerLink="/manage/settings/contacts-import" [queryParams]="{
-                      entity: 'fc'
-                    }"><i class="fas fa-chevron-right"></i>
-                      Factoring Company</a>
+                    <a
+                      routerLink="/manage/settings/contacts-import"
+                      [queryParams]="{
+                        entity: 'fc'
+                      }"
+                      ><i class="fas fa-chevron-right"></i> Factoring Company</a
+                    >
                   </li>
                   <li>
-                    <a routerLink="/manage/settings/contacts-import" [queryParams]="{
-                      entity: 'owner_operator'
-                    }"><i class="fas fa-chevron-right"></i>
-                      Owner Operator </a>
+                    <a
+                      routerLink="/manage/settings/contacts-import"
+                      [queryParams]="{
+                        entity: 'owner_operator'
+                      }"
+                      ><i class="fas fa-chevron-right"></i> Owner Operator
+                    </a>
                   </li>
                 </ul>
               </div>
             </section>
           </div>
-
         </div>
       </div>
     </section>

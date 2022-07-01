@@ -395,11 +395,9 @@
                       class="text-capitalize"
                       (change)="getJournalPreview()"
                     >
-                      <ng-option
-                        value="{{ item.key }}"
-                        *ngFor="let item of accounts | keyvalue"
-                        >{{ item.value }}</ng-option
-                      >
+                    <ng-option *ngFor="let act of accounts" value="{{ act.actID }}">{{ act.actNo }}
+                      -
+                      {{ act.actName | titlecase }}</ng-option>
                     </ng-select>
                   </div>
                   <div class="col-lg-2">
@@ -513,11 +511,10 @@
                       id="ded_acc"
                       (change)="getJournalPreview()"
                     >
-                      <ng-option
-                        value="{{ item.key }}"
-                        *ngFor="let item of accounts | keyvalue"
-                        >{{ item.value }}</ng-option
-                      >
+                    <ng-option *ngFor="let act of accounts"
+                     value="{{ act.actID }}">{{ act.actNo }}
+                      -
+                      {{ act.actName | titlecase }}</ng-option>
                     </ng-select>
                   </div>
                   <div class="col-lg-2">
@@ -742,11 +739,10 @@
                           class="text-capitalize"
                           (change)="getJournalPreview()"
                         >
-                          <ng-option
-                            value="{{ item.key }}"
-                            *ngFor="let item of accounts | keyvalue"
-                            >{{ item.value }}</ng-option
-                          >
+                        <ng-option *ngFor="let act of accounts"
+                        value="{{ act.actID }}">{{ act.actNo }}
+                         -
+                         {{ act.actName | titlecase }}</ng-option>
                         </ng-select>
                         <div
                           *ngIf="

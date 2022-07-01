@@ -208,6 +208,7 @@
                             placeholder="Choose Columns"
                           >
                           </p-multiSelect>
+                          
                         </div>
                       </div>
                     </ng-template>
@@ -221,6 +222,54 @@
                           [ngStyle]="{ width: dataColumns.width }"
                         >
                           <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchCase="'issueStatus'">
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="left"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  [showOperator]="false"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                  <ng-template
+                                    pTemplate="filter"
+                                    let-value
+                                    let-filter="filterCallback"
+                                  >
+                                    <p-multiSelect
+                                      [options]="[
+                                        { name: 'OPEN', value: 'OPEN' },
+                                        { name: 'RESOLVED', value: 'RESOLVED' },
+                                        { name: 'CLOSED',value: 'CLOSED'}
+                                      ]"
+                                      placeholder="Any"
+                                      (onChange)="filter($event.value)"
+                                      optionLabel="name"
+                                      optionValue="value"
+                                    >
+                                      <ng-template let-option pTemplate="item">
+                                        <div>
+                                          <span class="ml-1">{{
+                                            option.name
+                                          }}</span>
+                                        </div>
+                                      </ng-template>
+                                    </p-multiSelect>
+                                  </ng-template>
+                                </p-columnFilter>
+                              </div>
+                            </span>
                             <span *ngSwitchDefault>
                               <div
                                 class="flex justify-content-center align-items-center"

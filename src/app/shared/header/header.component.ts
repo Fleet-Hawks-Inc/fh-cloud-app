@@ -6,6 +6,7 @@ import { ApiService, ListService } from "src/app/services";
 import { InvokeHeaderFnService } from "src/app/services/invoke-header-fn.service";
 import { environment } from "../../../environments/environment";
 import { DashboardUtilityService } from "src/app/services/dashboard-utility.service";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
@@ -87,14 +88,17 @@ export class HeaderComponent implements OnInit {
   notifications = [];
   announcements = [];
   unReadCounter = 0;
-
+  lastKey = '';
+  isLoadText = "Load More...";
+  isLoad = false;
   constructor(
     private sharedService: SharedServiceService,
     private apiService: ApiService,
     private listService: ListService,
     public router: Router,
     private headerFnService: InvokeHeaderFnService,
-    private dashboardService: DashboardUtilityService
+    private dashboardService: DashboardUtilityService,
+    private routerMgmtService: RouteManagementServiceService
   ) {
     this.sharedService.activeParentNav.subscribe((val) => {
       let activeTab = localStorage.getItem("active-header");
@@ -116,11 +120,15 @@ export class HeaderComponent implements OnInit {
         this.headerFnService.invokeHeaderComponentFunction.subscribe(
           (name: string) => {
             this.upateCurrentUser();
+
           }
         );
     }
     await this.getAllNotificationAnnouncement();
     setInterval(async () => {
+      this.lastKey = '';
+      this.notifications = [];
+      this.announcements = [];
       await this.getAllNotificationAnnouncement();
     }, 1000 * 60 * 5);
   }
@@ -288,6 +296,8 @@ export class HeaderComponent implements OnInit {
     if (isNotification && notification.read === 0) {
 
       await this.apiService.putData(`notification/read/${notification.id}`, {}).toPromise();
+      notification.read = 1;
+      this.unReadCounter -= 1;
     }
 
 
@@ -295,12 +305,20 @@ export class HeaderComponent implements OnInit {
   }
 
 
+  onScroll = async () => {
+    this.isLoad = true;
+    this.isLoadText = "Loading";
+    await this.getAllNotificationAnnouncement();
+  }
 
   async getAllNotificationAnnouncement() {
     this.unReadCounter = 0;
-    const result = await this.apiService.getData('notification/getAll', true).toPromise();
+    const result = await this.apiService.getData(`notification/getAll?lastKey=${this.lastKey}`, true).toPromise();
     if (result.notifications) {
-      this.notifications = result.notifications;
+      for (let i = 0; i < result.notifications.data.length; i++) {
+        const element = result.notifications.data[i];
+        this.notifications.push(element)
+      }
       this.notifications.forEach(element => {
         if (element.read === 0) {
           this.unReadCounter += 1;
@@ -312,9 +330,14 @@ export class HeaderComponent implements OnInit {
           element.message;
 
       });
+      if (result.notifications.nextPage) {
+        this.lastKey = result.notifications.nextPage;
+      } else {
+        this.lastKey = 'end';
+      }
     }
     if (result.announcements) {
-      this.announcements = result.announcements;
+      this.announcements = result.announcements.data;
       this.announcements.forEach(element => {
         const length = 50;
         element['shortMessage'] = element.message.length > length ?
@@ -325,5 +348,13 @@ export class HeaderComponent implements OnInit {
     }
 
 
+  }
+
+
+  switchCompany() {
+    this.router.navigateByUrl('/organizations');
+    this.listService.triggerModal("");
+    this.listService.openDocTypeMOdal("");
+    this.routerMgmtService.resetAllCache();
   }
 }

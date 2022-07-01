@@ -1,8 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild  } from '@angular/core';
 import { ApiService } from 'src/app/services';
+import { result, map } from 'lodash';
+import { resourceUsage } from 'process';
 import Constants from 'src/app/pages/fleet/constants';
 import * as moment from 'moment';
-import { ToastrService } from "ngx-toastr";
+import { ToastrService, Overlay } from "ngx-toastr";
+import { NgxSpinnerService } from 'ngx-spinner';
+import { HereMapService } from 'src/app/services/here-map.service';
+import { OnboardDefaultService } from 'src/app/services/onboard-default.service';
+import * as html2pdf from "html2pdf.js";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { environment } from '../../../../../../environments/environment';
+import * as _ from 'lodash';
+import { HttpClient } from '@angular/common/http';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { Table } from 'primeng/table/table';
+import { DomSanitizer } from '@angular/platform-browser';
+import { OverlayPanel } from "primeng/overlaypanel";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-servicelogs',
@@ -10,6 +25,10 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ['./servicelogs.component.css']
 })
 export class ServicelogsComponent implements OnInit {
+  @ViewChild('dt') table: Table;
+  confirmEmailModal: TemplateRef<any>;
+  @ViewChild('op') overlaypanel: OverlayPanel;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   allData = [];
   vendorsObject: any = {};
   tasks = [];
@@ -41,29 +60,76 @@ export class ServicelogsComponent implements OnInit {
       'value': 'asset'
     },
   ]
+  listView = true;
+  visible = true;
+  loadMsg: string = Constants.NO_RECORDS_FOUND;
+   isSearch = false;
+  get = _.get;
+  _selectedColumns: any[];
+  dataColumns: any[];
+  find = _.find;
+  filterStatus = null;
+    
+     
+  constructor(private apiService: ApiService, 
+  private toastr: ToastrService,
+  private httpClient: HttpClient,
+  private router: Router,
+  private spinner: NgxSpinnerService,
+  private hereMap: HereMapService,
+  protected _sanitizer: DomSanitizer,
+  private modalService: NgbModal) { }
 
-
-  constructor(private apiService: ApiService, private toastr: ToastrService) { }
-
-  ngOnInit() {
+   ngOnInit(){
     this.fetchSlogsList();
+     this.dataColumns = [
+        { width: '7%', field: 'unitType', header: 'Unit Type', type: "text" },
+        { width: '7%', field: 'unitName', header: 'Vehicle/Asset', type: "text" },
+        { width: '7%', field: 'odometer', header: 'Odometer', type: "text" },
+        { width: '7%', field: 'vendorID', header: 'Vendor', type: "text" },
+        { width: '7%', field: 'serviceTaskList', header: 'Service Task', type: "text" },
+        { width: '7%', field: 'completionDate', header: 'Service Date', type: "text" },
+        { width: '7%', field: 'currentStatus', header: 'Status', type: "text" },
+        { width: '7%', field: 'allServiceTasks.subTotal', header: 'Service Cost', type: "text" },
+        
+    ];
+    this._selectedColumns = this.dataColumns;
     this.fetchAllVendorsIDs();
     this.fetchAllVehiclesIDs();
     this.fetchAllAssetsIDs();
     this.fetchTasks();
   }
-  onScroll() {
+   setFilterStatus(val) {
+    this.filterStatus = val;
+  }
+  
+  onScroll = async (event: any) => {
     if (this.loaded) {
       this.fetchSlogsList();
     }
     this.loaded = false;
   }
+  
+  setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    
+    @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
+    
+    set selectedColumns(val: any[]) {
+        //restore original order
+        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+    }
+  
   fetchSlogsList() {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`serviceLogs/fetch/serviceLogReport?searchValue=${this.searchValue}&category=${this.category}&taskID=${this.taskID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`)
         .subscribe((result: any) => {
           this.dataMessage = Constants.FETCHING_DATA
           if (result.Items.length === 0) {
+            this.loaded = true;
             this.dataMessage = Constants.NO_RECORDS_FOUND
           }
           if (result.LastEvaluatedKey !== undefined) {
@@ -129,6 +195,10 @@ export class ServicelogsComponent implements OnInit {
       })
 
   }
+  
+    clear(table: Table) {
+        table.clear();
+    }
 
   categoryChange() {
     this.searchValue = null;
@@ -175,6 +245,20 @@ export class ServicelogsComponent implements OnInit {
       return false;
     }
   }
+  
+  refreshData(){
+    this.searchValue = null;
+    this.category = null;
+    this.taskID = null;
+    this.start = null;
+    this.end = null;
+    this.dataMessage = Constants.FETCHING_DATA
+    this.lastItemSK = '';
+    this.datee = null;
+    this.allData = []
+    this.fetchSlogsList()
+  }
+  
   fetchExportList() {
     this.apiService.getData('serviceLogs/fetch/ServiceLogList')
       .subscribe((result: any) => {

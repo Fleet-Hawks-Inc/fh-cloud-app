@@ -4376,11 +4376,15 @@ input:checked + .sliderbtn:before {
   font-family: Roboto, Arial;
   font-size: 13px;
 }
-
-.orders-listing .p-datatable-resizable > .p-datatable-wrapper {
-  overflow: visible;
+.p-overlaypanel .p-overlaypanel-close {
+  z-index: 9;
 }
-
-.orders-listing .p-datatable-scrollable .p-frozen-column {
-  position: relative !important;
+.p-overlaypanel:after {
+  margin-left: -20px !important;
+}
+.p-overlaypanel:before {
+  margin-left: -25px !important;
+}
+.notifications-sidebar .p-tabview-panels {
+  padding: 0;
 }

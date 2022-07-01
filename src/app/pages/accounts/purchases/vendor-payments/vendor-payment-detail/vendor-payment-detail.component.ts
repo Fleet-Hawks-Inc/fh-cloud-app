@@ -4,6 +4,7 @@ import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService, ListService } from "src/app/services";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import * as html2pdf from "html2pdf.js";
+import { Subscription } from "rxjs";
 @Component({
   selector: "app-vendor-payment-detail",
   templateUrl: "./vendor-payment-detail.component.html",
@@ -19,7 +20,7 @@ export class VendorPaymentDetailComponent implements OnInit {
     vendorID: null,
     refNo: "",
     currency: "CAD",
-    accountID: null,
+    accountID: null, 
     payMode: null,
     payModeNo: "",
     payModeDate: null,
@@ -33,6 +34,7 @@ export class VendorPaymentDetailComponent implements OnInit {
       finalTotal: 0,
     },
     transactionLog: [],
+    cheqdata: {}
   };
   vendorName = "";
   paymentID;
@@ -45,6 +47,7 @@ export class VendorPaymentDetailComponent implements OnInit {
   tagLine: string;
   carrierName: string;
   showModal = false;
+  subscription: Subscription;
 
   constructor(
     private apiService: ApiService,
@@ -55,6 +58,11 @@ export class VendorPaymentDetailComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.subscription = this.listService.paymentDetail.subscribe(async (res: any) => {
+      if(res == 'purchase-payments') {
+        this.fetchPay();
+      }
+    })
     this.paymentID = this.route.snapshot.params["paymentID"];
     await this.fetchPayments();
     this.fetchVendor();
@@ -106,7 +114,10 @@ export class VendorPaymentDetailComponent implements OnInit {
       finalAmount: this.paymentData.total.finalTotal,
       txnDate: this.paymentData.txnDate,
       page: "detail",
-      advance: this.paymentData.total.advTotal
+      advance: this.paymentData.total.advTotal,
+      recordID: this.paymentID,
+      cheqData: this.paymentData.cheqdata,
+      module: 'purchase-payments',
     };
     this.listService.openPaymentChequeModal(obj);
   }
@@ -135,6 +146,14 @@ export class VendorPaymentDetailComponent implements OnInit {
     });
     this.venPayRef.close();
     this.downloadDisabled = false;
+  }
+
+  async fetchPay() {
+    let result: any = await this.accountService
+      .getData(`purchase-payments/details/${this.paymentID}`)
+      .toPromise();
+    this.paymentData = result[0];
+    this.paymentData.payMode = this.paymentData.payMode.replace("_", " ");
   }
 
 }

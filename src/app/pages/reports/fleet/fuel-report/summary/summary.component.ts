@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild  } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Input  } from '@angular/core';
 import { ApiService} from 'src/app/services';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -127,7 +127,7 @@ _selectedColumns: any[];
      dataColumns = [
         { width: '12%', field: 'dateTime', header: 'Date/Time', type: "text" },
         { width: '12%', field: 'data.useType', header: 'Use Type', type: "text" },
-        { width: '12%', field: 'data.unitNo', header: 'Unit Name', type: "text" },
+        { width: '12%', field: 'unitSearch', header: 'Unit Name', type: "text" },
         { width: '12%', field: 'data.cardNo', header: 'Fuel Card', type: "text" },
         { width: '12%', field: 'data.city', header: 'City', type: "text" },
         { width: '12%', field: 'data.type', header: 'Fuel Type', type: "text" },
@@ -137,7 +137,7 @@ _selectedColumns: any[];
         { width: '12%', field: 'data.rPpu', header: 'Retail Price Per L', type: "text" },
         { width: '12%', field: 'data.rBeforeTax', header: 'Retail Amount Before Tax', type: "text" },
         { width: '12%', field: 'data.discAmt', header: 'Total Discount', type: "text" },
-        { width: '12%', field: 'data.amt', header: 'Retail Amount', type: "text" },
+        { width: '12%', field: 'data.amt', header: 'Amount', type: "text" },
         { width: '12%', field: 'data.currency', header: 'Currency', type: "text" },
        
     ];
@@ -153,15 +153,28 @@ _selectedColumns: any[];
      private el: ElementRef,
     private modalService: NgbModal,) { }
 
-    ngOnInit() {
+    async ngOnInit(): Promise<void> {
         this.fetchFuelReport();
         this.fetchVehicleList();
         this.fetchAllVehicles();
         this.fetchAssetList();
         this.fetchAllAssets();
         this.fetchFuelCount();
+        this.setToggleOptions();
     }
 
+    setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+
+    @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+    }
+    
+   set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+   }
     fetchAssetList() {
         this.apiService.getData('assets/get/list').subscribe((result: any) => {
             this.assetList = result;
@@ -178,6 +191,7 @@ _selectedColumns: any[];
         this.apiService.getData('assets/get/minor/details')
             .subscribe((result: any) => {
                 this.assetsSet = result.Items;
+                console.log('A',this.assetsSet)
             })
     }
 
@@ -186,6 +200,7 @@ _selectedColumns: any[];
             result['Items'].map((v: any) => {
                 if (v.isDeleted === 0) {
                     this.vehicleSet.push(v);
+                    console.log('V',this.vehicleSet)
                 }
             })
         });
@@ -219,7 +234,8 @@ _selectedColumns: any[];
         if (this.lastItemSK !== 'end') {
             const result = await this.apiService.getData(`fuelEntries/fetch/fuel/report?unitID=${this.unitID}&asset=${this.assetUnitID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`).toPromise();
             if (result.Items.length == 0) {
-                this.dataMessage = Constants.NO_RECORDS_FOUND
+                this.dataMessage = Constants.NO_RECORDS_FOUND;
+                this.loaded = true;
             }
             if (result.Items.length > 0) {
                 if (result.LastEvaluatedKey !== undefined) {
@@ -591,9 +607,7 @@ _selectedColumns: any[];
         })
     }
 
-   clear(table: Table) {
-        table.clear();
-    }
+
   
     csvExport() {
         if (this.unitID !== null || this.assetUnitID !== null || this.start !== null || this.end !== null) {
@@ -603,5 +617,9 @@ _selectedColumns: any[];
         } else {
             this.getSetExport();
         }
+    }
+    
+       clear(table: Table) {
+        table.clear();
     }
 }

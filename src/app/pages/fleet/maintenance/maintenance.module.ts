@@ -36,7 +36,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
-
+import { PdfViewerModule } from "ng2-pdf-viewer";
 
 
 const COMPONENTS = [
@@ -143,9 +143,9 @@ const routes: Routes = [
         data: { title: "Add Service Program" },
       },
       {
-        path: "list",
+        path: "list/:sessionID",
         component: ServiceProgramListComponent,
-        data: { title: "Service Program List" },
+        data: { title: "Service Program List",reuseRoute: true },
       },
       {
         path: "edit/:programID",
@@ -210,7 +210,8 @@ const routes: Routes = [
     MenuModule,
     CalendarModule,
     AutoCompleteModule,
-    DropdownModule
+    DropdownModule,
+    PdfViewerModule,
   ],
   exports: [...COMPONENTS],
   providers: [unsavedChangesGuard,
