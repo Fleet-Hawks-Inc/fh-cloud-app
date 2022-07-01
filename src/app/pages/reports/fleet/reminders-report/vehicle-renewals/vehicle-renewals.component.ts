@@ -99,7 +99,7 @@ export class VehicleRenewalsComponent implements OnInit {
       this.apiService.getData(`reminders/fetch/records?reminderIdentification=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&lastKey=${this.lastItemSK}&reminderType=vehicle`).subscribe((result: any) => {
         this.dataMessage = Constants.FETCHING_DATA
         if (result.Items.length === 0) {
-
+          this.loaded = true;
           this.dataMessage = Constants.NO_RECORDS_FOUND
         }
         if (result.Items.length > 0) {

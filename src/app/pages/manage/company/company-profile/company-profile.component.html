@@ -10,11 +10,18 @@
                         <label class="mt-0 mb-0"> Company Profile</label>
                     </div>
                     <div class="col header-buttons">
-                        <button type="button" pButton class="mr-1" (click)="showMFA=true;generateTOTPCode()" icon="pi pi-shield" pTooltip="Manage MFA"></button>
+                        <button type="button" pButton class="mr-1" (click)="showMFA=true;generateTOTPCode()"
+                            icon="pi pi-shield" pTooltip="Manage MFA"></button>
 
-                        <button type="button" pButton *ngIf="showSubCompany && subCompanies.length < 5" class="mr-1" data-toggle="modal" data-target="#addCompanyModal" class="mr-1" pTooltip="Sub Company" icon="pi pi-building" pRipple tooltipPosition="left" pTooltip="Add Subcompany"> </button>
-                        <button id="btnChangePassword" type="button" pButton class="mr-1" tooltipPosition="left" pTooltip="Change your password" data-toggle="modal" icon="pi pi-lock" data-target="#changePasswordModal"></button>
-                        <button id="btn" type="button" pButton class="mr-1" routerLink="/manage/company/edit/{{carriers.carrierID}}" tooltipPosition="left" icon="pi pi-user-edit" pTooltip="Edit Company details"></button>
+                        <button type="button" pButton *ngIf="showSubCompany && subCompanies.length < 5" class="mr-1"
+                            data-toggle="modal" data-target="#addCompanyModal" class="mr-1" pTooltip="Sub Company"
+                            icon="pi pi-building" pRipple tooltipPosition="left" pTooltip="Add Subcompany"> </button>
+                        <button id="btnChangePassword" type="button" pButton class="mr-1" tooltipPosition="left"
+                            pTooltip="Change your password" data-toggle="modal" icon="pi pi-lock"
+                            data-target="#changePasswordModal"></button>
+                        <button id="btn" type="button" pButton class="mr-1"
+                            routerLink="/manage/company/edit/{{carriers.carrierID}}" tooltipPosition="left"
+                            icon="pi pi-user-edit" pTooltip="Edit Company details"></button>
 
 
                     </div>
@@ -43,18 +50,29 @@
                                         <tbody>
                                             <tr>
                                                 <td width="20%" class="back-color-gray">Name</td>
-                                                <td width="30%">{{carriers.firstName | titlecase}} &nbsp; {{carriers.lastName | titlecase}}</td>
+                                                <td width="30%">{{carriers.firstName | titlecase}} &nbsp;
+                                                    {{carriers.lastName | titlecase}}</td>
                                                 <td width="20%" class="back-color-gray">Phone</td>
-                                                <td width="30%">{{carriers.phone}} <span class="badge badge-success" *ngIf="userAttributes && userAttributes.phoneVerified">VERIFIED</span>
-                                                    <span class="badge badge-danger" (click)="showVerifyPhone=true;verifyPhone()" *ngIf="userAttributes && !userAttributes.phoneVerified">NOT VERIFIED</span></td>
+                                                <td width="30%">{{carriers.phone}} <span class="badge badge-success"
+                                                        *ngIf="userAttributes && userAttributes.phoneVerified">VERIFIED</span>
+                                                    <span class="badge badge-danger"
+                                                        (click)="showVerifyPhone=true;verifyPhone()"
+                                                        *ngIf="userAttributes && !userAttributes.phoneVerified">NOT
+                                                        VERIFIED</span>
+                                                </td>
                                             </tr>
 
                                             <tr>
                                                 <td class="back-color-gray">Username</td>
                                                 <td>{{carriers.userName}}</td>
                                                 <td class="back-color-gray">Email </td>
-                                                <td>{{carriers.email}} <span class="badge badge-success" *ngIf="userAttributes && userAttributes.emailVerified">VERIFIED</span>
-                                                    <span class="badge badge-danger" (click)="showVerifyEmail=true;verifyEmail()" *ngIf="userAttributes && !userAttributes.emailVerified">NOT VERIFIED</span></td>
+                                                <td>{{carriers.email}} <span class="badge badge-success"
+                                                        *ngIf="userAttributes && userAttributes.emailVerified">VERIFIED</span>
+                                                    <span class="badge badge-danger"
+                                                        (click)="showVerifyEmail=true;verifyEmail()"
+                                                        *ngIf="userAttributes && !userAttributes.emailVerified">NOT
+                                                        VERIFIED</span>
+                                                </td>
                                             </tr>
                                             <tr>
 
@@ -63,6 +81,11 @@
                                                 <td class="back-color-gray">Fax</td>
                                                 <td>{{carriers.fax ? carriers.fax : '-'}}</td>
                                             </tr>
+
+                                            <td class="back-color-gray">Notification Email </td>
+                                            <td>{{carriers.notificationEmail ? carriers.notificationEmail: '-'}}
+                                            </td>
+
                                             <tr *ngIf="carriers.findingWay=='Referral'">
 
                                                 <td class="back-color-gray">Referral Name</td>
@@ -93,14 +116,16 @@
                                             </tr>
                                             <tr>
                                                 <td class="back-color-gray">Number of Fleets</td>
-                                                <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.totalFleets}}</span>
+                                                <td><span
+                                                        *ngIf="carriers.fleets != undefined">{{carriers.fleets.totalFleets}}</span>
                                                 </td>
                                                 <td class="back-color-gray">EIN</td>
                                                 <td>{{carriers.EIN ? carriers.EIN : '-'}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="back-color-gray">Vehicle(s)</td>
-                                                <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.trucks}}</span>
+                                                <td><span
+                                                        *ngIf="carriers.fleets != undefined">{{carriers.fleets.trucks}}</span>
                                                 </td>
                                                 <td class="back-color-gray">Liability Insurance#</td>
                                                 <td>{{carriers.liabilityInsurance ? carriers.liabilityInsurance : '-'}}
@@ -108,52 +133,61 @@
                                             </tr>
                                             <tr>
                                                 <td class="back-color-gray">Asset(s)</td>
-                                                <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.trailers}}</span>
+                                                <td><span
+                                                        *ngIf="carriers.fleets != undefined">{{carriers.fleets.trailers}}</span>
                                                 </td>
                                                 <td class="back-color-gray">Cargo Insurance#</td>
                                                 <td>{{carriers.cargoInsurance ? carriers.cargoInsurance : '-'}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="back-color-gray">Reefer(s)</td>
-                                                <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.reefers}}</span>
+                                                <td><span
+                                                        *ngIf="carriers.fleets != undefined">{{carriers.fleets.reefers}}</span>
                                                 </td>
                                                 <td class="back-color-gray">CCC</td>
                                                 <td>{{carriers.CCC ? carriers.CCC : '-'}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="back-color-gray">Dry Van(s)</td>
-                                                <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.dryVans}}</span>
+                                                <td><span
+                                                        *ngIf="carriers.fleets != undefined">{{carriers.fleets.dryVans}}</span>
                                                 </td>
                                                 <td class="back-color-gray">SCAC</td>
                                                 <td>{{carriers.SCAC ? carriers.SCAC : '-'}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="back-color-gray">Flatbed(s)</td>
-                                                <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.flatbed}}</span>
+                                                <td><span
+                                                        *ngIf="carriers.fleets != undefined">{{carriers.fleets.flatbed}}</span>
                                                 </td>
                                                 <td class="back-color-gray">Business Country</td>
                                                 <td><span *ngIf="carriers.bizCountry == 'CA'">Canada</span>
                                                     <span *ngIf="carriers.bizCountry == 'US'">United States of
                                                         America</span>
-                                                    <span *ngIf="carriers.bizCountry != 'US' && carriers.bizCountry != 'CA'">-</span>
+                                                    <span
+                                                        *ngIf="carriers.bizCountry != 'US' && carriers.bizCountry != 'CA'">-</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="back-color-gray">Curtainside(s)</td>
-                                                <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.curtainSide
+                                                <td><span
+                                                        *ngIf="carriers.fleets != undefined">{{carriers.fleets.curtainSide
                                                         ?
                                                         carriers.fleets.curtainSide : '-'}}</span>
                                                 </td>
                                                 <td class="back-color-gray">CSA</td>
-                                                <td><span *ngIf="carriers.CSA == false">NO</span><span *ngIf="carriers.CSA == true">YES</span>
+                                                <td><span *ngIf="carriers.CSA == false">NO</span><span
+                                                        *ngIf="carriers.CSA == true">YES</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="back-color-gray">PIP</td>
-                                                <td><span *ngIf="carriers.PIP == false">NO</span><span *ngIf="carriers.PIP == true">YES</span>
+                                                <td><span *ngIf="carriers.PIP == false">NO</span><span
+                                                        *ngIf="carriers.PIP == true">YES</span>
                                                 </td>
                                                 <td class="back-color-gray">CTPAT</td>
-                                                <td><span *ngIf="carriers.CTPAT == false">NO</span><span *ngIf="carriers.CTPAT == true">YES</span></td>
+                                                <td><span *ngIf="carriers.CTPAT == false">NO</span><span
+                                                        *ngIf="carriers.CTPAT == true">YES</span></td>
                                             </tr>
                                             <tr>
                                                 <td class="back-color-gray" *ngIf="carriers.bizCountry == 'US'">DOT#
@@ -170,7 +204,8 @@
                                     <table class="table table-bordered table-responsive-lg">
                                         <tbody>
                                             <tr class="text-capitalize" *ngFor="let account of accountSettings">
-                                                <td width="20%" class="back-color-gray">{{account.type}} (Prefix + Sequence) </td>
+                                                <td width="20%" class="back-color-gray">{{account.type}} (Prefix +
+                                                    Sequence) </td>
                                                 <td width="30%">{{account.prefix}}{{account.sequence}}</td>
                                             </tr>
                                         </tbody>
@@ -178,12 +213,14 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Address</h2>
-                                    <table class="table table-bordered table-responsive-lg" *ngFor="let address of carriers.addressDetails">
+                                    <table class="table table-bordered table-responsive-lg"
+                                        *ngFor="let address of carriers.addressDetails">
                                         <tbody>
                                             <tr class="text-capitalize">
                                                 <td width="20%" class="back-color-gray">Address Type</td>
                                                 <td width="30%">{{address.addressType ? address.addressType : '-'}}
-                                                    <span *ngIf="address.defaultYard" class="font-weight-semibold">(Default)</span>
+                                                    <span *ngIf="address.defaultYard"
+                                                        class="font-weight-semibold">(Default)</span>
                                                 </td>
                                                 <td width="20%" class="back-color-gray">Address</td>
                                                 <td width="30%">{{address.address ? address.address : '-'}}</td>
@@ -205,7 +242,8 @@
                                 </div>
                                 <!-- Subscription Details start -->
                                 <div class="col-lg-12" *ngIf="subscriptions.length == 0">
-                                    <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Subscription Info not found.
+                                    <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Subscription Info not
+                                        found.
                                     </h2>
                                 </div>
 
@@ -242,15 +280,18 @@
 
                                 <div class="col-lg-12" *ngIf="carriers.banks.length > 0">
                                     <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Bank Details</h2>
-                                    <table class="table table-bordered table-responsive-lg" *ngFor="let bank of carriers.banks">
+                                    <table class="table table-bordered table-responsive-lg"
+                                        *ngFor="let bank of carriers.banks">
                                         <tbody>
                                             <tr class="text-capitalize">
                                                 <td width="20%" class="back-color-gray">Bank Name</td>
-                                                <td width="30%"><span *ngIf="carriers.banks != undefined">{{bank.branchName ?
+                                                <td width="30%"><span
+                                                        *ngIf="carriers.banks != undefined">{{bank.branchName ?
                                                         bank.branchName :
                                                         '-'}}</span></td>
                                                 <td width="20%" class="back-color-gray">Routing#</td>
-                                                <td width="30%"><span *ngIf="carriers.banks != undefined">{{bank.routingNumber ?
+                                                <td width="30%"><span
+                                                        *ngIf="carriers.banks != undefined">{{bank.routingNumber ?
                                                         bank.routingNumber : '-'}}</span>
                                                 </td>
                                             </tr>
@@ -305,7 +346,8 @@
                                     <table class="table table-bordered table-responsive-lg">
                                         <tbody>
                                             <tr>
-                                                <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Terms and Conditions
+                                                <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Terms and
+                                                    Conditions
                                                 </h2>
                                             </tr>
                                             <tr class="text-capitalize">
@@ -344,10 +386,12 @@
                                         <tbody>
                                             <tr class="text-capitalize" *ngFor="let data of subCompanies">
                                                 <td width="20%" class="back-color-gray">Username</td>
-                                                <td width="30%"><span *ngIf="carriers.banks != undefined">{{data.username}}</span>
+                                                <td width="30%"><span
+                                                        *ngIf="carriers.banks != undefined">{{data.username}}</span>
                                                 </td>
                                                 <td width="20%" class="back-color-gray">Status</td>
-                                                <td width="30%"><span *ngIf="carriers.banks != undefined">{{data.status}}</span>
+                                                <td width="30%"><span
+                                                        *ngIf="carriers.banks != undefined">{{data.status}}</span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -363,7 +407,8 @@
 </section>
 
 
-<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModal" aria-hidden="true">
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModal"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
         <div class="modal-content">
             <div class="modal-header">
@@ -373,15 +418,19 @@
                 </button>
             </div>
             <div class="modal-body text-dark" style="max-height: 500px;overflow: scroll;">
-                <form id="changePasswordForm" class="form-horizontal form-bordered text-capitalize" name="changePasswordForm" [mustMatch]="['password', 'confirmPassword']" (ngSubmit)="changePasswordF.form.valid && onChangePassword()" novalidate #changePasswordF="ngForm">
+                <form id="changePasswordForm" class="form-horizontal form-bordered text-capitalize"
+                    name="changePasswordForm" [mustMatch]="['password', 'confirmPassword']"
+                    (ngSubmit)="changePasswordF.form.valid && onChangePassword()" novalidate #changePasswordF="ngForm">
                     <div class="row">
                         <div class="col-lg-12">
                             <label class="control-label font-weight-bold text-lg-right pt-2"> Old Password <span
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                                <input id="pd" [(ngModel)]="pwdData.oldPassword" placeholder="eg.  $John@01" name="oldPassword" #oldPwd="ngModel" required [ngClass]="{ 'error' : changePasswordF.submitted && oldPwd.invalid }" [type]="oldFieldTextType ? 'text' : 'password'" class="form-control"
-                                />
+                                <input id="pd" [(ngModel)]="pwdData.oldPassword" placeholder="eg.  $John@01"
+                                    name="oldPassword" #oldPwd="ngModel" required
+                                    [ngClass]="{ 'error' : changePasswordF.submitted && oldPwd.invalid }"
+                                    [type]="oldFieldTextType ? 'text' : 'password'" class="form-control" />
                                 <div class="input-group-append">
                                     <span class="input-group-text eye">
                                         <i class="fa" [ngClass]="{
@@ -402,8 +451,12 @@
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                                <input id="pd" [(ngModel)]="pwdData.newPassword" placeholder="eg.  $John@01" (change)="onChangeHideErrors('password')" name="password" #pwd="ngModel" required [ngClass]="{ 'error' : changePasswordF.submitted && pwd.invalid }" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"
-                                    [type]="fieldTextType ? 'text' : 'password'" (input)="validatePassword($event.target.value)" class="form-control" />
+                                <input id="pd" [(ngModel)]="pwdData.newPassword" placeholder="eg.  $John@01"
+                                    (change)="onChangeHideErrors('password')" name="password" #pwd="ngModel" required
+                                    [ngClass]="{ 'error' : changePasswordF.submitted && pwd.invalid }"
+                                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"
+                                    [type]="fieldTextType ? 'text' : 'password'"
+                                    (input)="validatePassword($event.target.value)" class="form-control" />
                                 <div class="input-group-append">
                                     <span class="input-group-text eye">
                                         <i class="fa" [ngClass]="{
@@ -420,31 +473,37 @@
                                 <div *ngIf="pwd.errors.pattern">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
+                                            <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                                    [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
                                                     <i
                                                         [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']">
                                                     </i></span> 8 characters minimum</p>
-                                            <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
+                                            <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                                    [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
                                                     <i
                                                         [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']">
                                                     </i></span> atleast 1 number
                                             </p>
                                         </div>
                                         <div class="col-lg-12">
-                                            <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
+                                            <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                                    [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
                                                     <i
                                                         [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']">
                                                     </i></span> atleast 1 uppercase</p>
 
-                                            <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
+                                            <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                                    [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
                                                         [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']">
                                                     </i></span> atleast 1 lowercase</p>
 
                                         </div>
                                         <div class="col-lg-12">
-                                            <p class="text-dark pt-2 mb-0"><span class="pr-1" [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']">
+                                            <p class="text-dark pt-2 mb-0"><span class="pr-1"
+                                                    [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']">
                                                     <i
-                                                        [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span> atleast 1 special character(!@#$%^&*.-)</p>
+                                                        [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span>
+                                                atleast 1 special character(!@#$%^&*.-)</p>
 
                                         </div>
                                     </div>
@@ -456,8 +515,11 @@
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                                <input id="cnf" [(ngModel)]="pwdData.confirmPassword" name="confirmPassword" (change)="onChangeHideErrors('confirmPassword')" #cpwd="ngModel" required [ngClass]="{ 'error' : changePasswordF.submitted && cpwd.invalid }" [type]="cpwdfieldTextType ? 'text' : 'password'"
-                                    placeholder="Confirm password" class="form-control" />
+                                <input id="cnf" [(ngModel)]="pwdData.confirmPassword" name="confirmPassword"
+                                    (change)="onChangeHideErrors('confirmPassword')" #cpwd="ngModel" required
+                                    [ngClass]="{ 'error' : changePasswordF.submitted && cpwd.invalid }"
+                                    [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password"
+                                    class="form-control" />
                                 <div class="input-group-append">
                                     <span class="input-group-text eye">
                                         <i class="fa" [ngClass]="{
@@ -478,8 +540,10 @@
                     <div class="row mt-3">
                         <div class="col-lg-12 text-right">
                             <div *ngIf="oldPassError" class="text-danger">{{oldPassError}}</div>
-                            <button type="button" class="cus-btn-padd btn btn-default mr-2" (click)="pwdModalClose()">Cancel</button>
-                            <button type="submit" class="cus-btn-padd btn btn-success" [disabled]="submitDisabled">Save</button>
+                            <button type="button" class="cus-btn-padd btn btn-default mr-2"
+                                (click)="pwdModalClose()">Cancel</button>
+                            <button type="submit" class="cus-btn-padd btn btn-success"
+                                [disabled]="submitDisabled">Save</button>
                         </div>
                     </div>
                 </form>
@@ -489,7 +553,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="addCompanyModal" tabindex="-1" role="dialog" aria-labelledby="addCompanyModal" aria-hidden="true">
+<div class="modal fade" id="addCompanyModal" tabindex="-1" role="dialog" aria-labelledby="addCompanyModal"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
         <div class="modal-content">
             <div class="modal-header">
@@ -499,14 +564,17 @@
                 </button>
             </div>
             <div class="modal-body text-dark" style="max-height: 500px;overflow: scroll;">
-                <form id="addCompanyForm" class="form-horizontal form-bordered text-capitalize" name="addCompF" [mustMatch]="['password', 'confirmPassword']" (ngSubmit)="addCompF.form.valid" novalidate #addCompF="ngForm" [formGroup]="userInfoFormGroup">
+                <form id="addCompanyForm" class="form-horizontal form-bordered text-capitalize" name="addCompF"
+                    [mustMatch]="['password', 'confirmPassword']" (ngSubmit)="addCompF.form.valid" novalidate
+                    #addCompF="ngForm" [formGroup]="userInfoFormGroup">
                     <div class="row">
                         <div class="col-lg-12">
                             <label class="control-label font-weight-bold text-lg-right pt-2"> First Name <span
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                                <input name="fName" type="text" formControlName="firstName" placeholder="eg. John" required class="form-control" />
+                                <input name="fName" type="text" formControlName="firstName" placeholder="eg. John"
+                                    required class="form-control" />
                             </div>
                         </div>
 
@@ -515,7 +583,8 @@
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                                <input name="lName" type="text" formControlName="lastName" placeholder="eg. Smith" required class="form-control" />
+                                <input name="lName" type="text" formControlName="lastName" placeholder="eg. Smith"
+                                    required class="form-control" />
                             </div>
                         </div>
 
@@ -524,7 +593,9 @@
                                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                                <input name="cName" type="text" formControlName="carrierName" placeholder="eg. Fleet Inc." required class="form-control" (focusout)="validateCompanyName()" />
+                                <input name="cName" type="text" formControlName="carrierName"
+                                    placeholder="eg. Fleet Inc." required class="form-control"
+                                    (focusout)="validateCompanyName()" />
                             </div>
                             <div class="text-danger" *ngIf="carrierNameExists">{{carrierNameErr}}</div>
                         </div>
@@ -534,7 +605,9 @@
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                                <input name="emailId" type="text" formControlName="email" placeholder="eg. johnsmith@gmail.com" required class="form-control" (focusout)="validateEmail()" />
+                                <input name="emailId" type="text" formControlName="email"
+                                    placeholder="eg. johnsmith@gmail.com" required class="form-control"
+                                    (focusout)="validateEmail()" />
                             </div>
                             <div class="text-danger" *ngIf="emailExistsExists">{{emailExistsErr}}</div>
                         </div>
@@ -544,7 +617,9 @@
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                                <input name="username" type="text" formControlName="username" placeholder="eg. johnsmith12" required class="form-control" (focusout)="validateUsername()" />
+                                <input name="username" type="text" formControlName="username"
+                                    placeholder="eg. johnsmith12" required class="form-control"
+                                    (focusout)="validateUsername()" />
                             </div>
                             <div class="text-danger" *ngIf="userNameExists">{{userNameExistsErr}}</div>
                         </div>
@@ -554,7 +629,8 @@
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                                <input name="pwd" type="password" formControlName="compPassword" placeholder="eg. $John@01" required class="form-control" />
+                                <input name="pwd" type="password" formControlName="compPassword"
+                                    placeholder="eg. $John@01" required class="form-control" />
                             </div>
                         </div>
 
@@ -563,7 +639,8 @@
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                                <input name="confirmPwd" type="password" formControlName="confirmPassword" placeholder="eg. $John@01" required class="form-control" />
+                                <input name="confirmPwd" type="password" formControlName="confirmPassword"
+                                    placeholder="eg. $John@01" required class="form-control" />
                             </div>
                         </div>
                     </div>
@@ -572,8 +649,10 @@
             <div class="modal-footer">
                 <div class="row mt-3">
                     <div class="col-lg-12 text-right">
-                        <button type="button" class="cus-btn-padd btn btn-default mr-2" (click)="clearForm()">Cancel</button>
-                        <button type="submit" class="cus-btn-padd btn btn-success" [disabled]="submitDisabled" (click)="addSubCompany()">Save</button>
+                        <button type="button" class="cus-btn-padd btn btn-default mr-2"
+                            (click)="clearForm()">Cancel</button>
+                        <button type="submit" class="cus-btn-padd btn btn-success" [disabled]="submitDisabled"
+                            (click)="addSubCompany()">Save</button>
                     </div>
                 </div>
             </div>
@@ -581,56 +660,63 @@
     </div>
 </div>
 
-<p-dialog header="Verify Email" [(visible)]="showVerifyEmail" [modal]="true" [style]="{width: '30vw'}" [draggable]="false" [resizable]="false">
+<p-dialog header="Verify Email" [(visible)]="showVerifyEmail" [modal]="true" [style]="{width: '30vw'}"
+    [draggable]="false" [resizable]="false">
     <div>
         <label> We have sent you verification code on your email <strong>{{carriers.email}}</strong>. Please check your
-        email(SPAM or JUNK) and enter the code below.
-    </label>
+            email(SPAM or JUNK) and enter the code below.
+        </label>
     </div>
     <div style="text-align:center">
         <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:6,allowNumbersOnly:true}"></ng-otp-input>
-    </div><br/>
+    </div><br />
     <div style="text-align:center">
         <label style="color:red">{{verficationError}}</label>
-        <p-tag styleClass="mr-2" icon="pi pi-exclamation-triangle" severity="warning" value="Warning"></p-tag> You have to sign-in again once email is verified.
+        <p-tag styleClass="mr-2" icon="pi pi-exclamation-triangle" severity="warning" value="Warning"></p-tag> You have
+        to sign-in again once email is verified.
     </div>
 
 
     <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" [disabled]="!verifyButton" class="p-button-warning" (click)="verifyAttribute('email')" label="Verify Email"></p-button>
+        <p-button icon="pi pi-check" [disabled]="!verifyButton" class="p-button-warning"
+            (click)="verifyAttribute('email')" label="Verify Email"></p-button>
     </ng-template>
 </p-dialog>
 
-<p-dialog header="Verify Phone Number" [(visible)]="showVerifyPhone" [modal]="true" [style]="{width: '30vw'}" [draggable]="false" [resizable]="false">
+<p-dialog header="Verify Phone Number" [(visible)]="showVerifyPhone" [modal]="true" [style]="{width: '30vw'}"
+    [draggable]="false" [resizable]="false">
     <div>
         <label> We have sent you verification code on your phone number <strong>{{carriers.phone}}</strong>.
-    </label>
+        </label>
     </div>
     <div style="text-align:center">
         <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:6,allowNumbersOnly:true}"></ng-otp-input>
 
-    </div><br/>
+    </div><br />
     <div style="text-align:center">
         <label style="color:red">{{verficationError}}</label>
-        <p-tag styleClass="mr-2" icon="pi pi-exclamation-triangle" severity="warning" value="Warning"></p-tag> You have to sign-in again once phone is verified.
+        <p-tag styleClass="mr-2" icon="pi pi-exclamation-triangle" severity="warning" value="Warning"></p-tag> You have
+        to sign-in again once phone is verified.
 
     </div>
 
     <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" class="p-button-warning" [disabled]="!verifyButton" (click)="verifyAttribute('phone_number')" label="Verify Phone"></p-button>
+        <p-button icon="pi pi-check" class="p-button-warning" [disabled]="!verifyButton"
+            (click)="verifyAttribute('phone_number')" label="Verify Phone"></p-button>
     </ng-template>
 </p-dialog>
 
 
 <!-- Multifactor Authentication Dialog -->
 
-<p-dialog header="Enable Multi-factor Authentication(MFA)" [(visible)]="showMFA" [modal]="true" [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+<p-dialog header="Enable Multi-factor Authentication(MFA)" [(visible)]="showMFA" [modal]="true"
+    [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
     <div class="alert alert-danger" role="alert" *ngIf="mfaError!==''">
         {{mfaError}}
     </div>
 
     <strong><label> {{currentStatus}}</label><br></strong>
-    <label><strong>TOTP (Time based One Time Password)</strong>  </label>
+    <label><strong>TOTP (Time based One Time Password)</strong> </label>
     <div class="row">
         <div class="col-md-5">
             <!-- TOTP Configuration -->
@@ -641,7 +727,8 @@
             <!-- show Totp configuration -->
             <ol>
                 <li>
-                    Download one of the apps on your phone/desktop Google authenticator, Microsoft authenticator or Authy.
+                    Download one of the apps on your phone/desktop Google authenticator, Microsoft authenticator or
+                    Authy.
                 </li>
                 <li>
                     Scan the QR code displayed here.
@@ -650,7 +737,7 @@
                     Once scanned, the app should give you 6 digit TOTP.
                 </li>
                 <li>
-                    <label>Enter <strong>6 digit </strong> code from app below:</label><br/>
+                    <label>Enter <strong>6 digit </strong> code from app below:</label><br />
 
                 </li>
                 <input type="text" pInputText [(ngModel)]="userTotpCode" />
@@ -663,7 +750,8 @@
         <div class="col-md-7">
             <div style="text-align: right;" *ngIf="totpMFA ">
                 <img [src]="qrcodeImage" />
-                <label>Optionally, you can enter following code in your authenticator app: <strong> {{totpCode}}</strong></label>
+                <label>Optionally, you can enter following code in your authenticator app: <strong>
+                        {{totpCode}}</strong></label>
 
 
 
@@ -672,7 +760,8 @@
         </div>
     </div>
     <div class="alert alert-success" role="alert">
-        <label>Note: Once the MFA is enabled, You would be prompted to enter TOTP from app every time you sign In.</label>
+        <label>Note: Once the MFA is enabled, You would be prompted to enter TOTP from app every time you sign
+            In.</label>
     </div>
 
 
@@ -698,8 +787,10 @@
     <ng-template pTemplate="footer">
 
         <p-confirmPopup></p-confirmPopup>
-        <p-button icon="pi pi-warning" class="p-button-danger" (click)="disableMFA($event);" label="Disable MFA"></p-button>
-        <p-button icon="pi pi-check" class="p-button-warning" (click)="setupVerifyTOTPCode()" label="Setup TOTP"></p-button>
+        <p-button icon="pi pi-warning" class="p-button-danger" (click)="disableMFA($event);" label="Disable MFA">
+        </p-button>
+        <p-button icon="pi pi-check" class="p-button-warning" (click)="setupVerifyTOTPCode()" label="Setup TOTP">
+        </p-button>
 
     </ng-template>
 </p-dialog>

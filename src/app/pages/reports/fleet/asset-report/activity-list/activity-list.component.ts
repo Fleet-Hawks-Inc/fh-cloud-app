@@ -175,6 +175,7 @@ export class ActivityListComponent implements OnInit {
       const result = await this.apiService.getData('assets/fetch/records?asset=' + this.assetIdentification + '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey).toPromise();
       if (result.data.length === 0) {
         this.disableSearch = false;
+        this.loaded = true;
         this.dataMessage = Constants.NO_RECORDS_FOUND;
       }
       this.suggestedAssets = [];
