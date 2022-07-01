@@ -390,7 +390,7 @@
                     <!-- Body Template of Data Table -->
                     <ng-template
                       pTemplate="body"
-                      let-driver
+                      let-payment
                       let-columns="columns"
                       let-rowIndex="rowIndex"
                     >
@@ -402,48 +402,48 @@
                         >
                           <div [ngSwitch]="dataColumns.field">
                            <span *ngSwitchCase="'txnDate'">
-                              {{ driver.txnDate }}
+                              {{ payment.txnDate }}
                             </span> 
                             
                             <span *ngSwitchCase="'paymentNo'">
                               <a
-                                [routerLink]="driver.url"
+                                [routerLink]="payment.url"
                                 target="_blank"
                                 style="color: #0000ff; text-decoration: none" 
-                                >{{ driver.paymentNo }}</a
+                                >{{ payment.paymentNo }}</a
                               >
                             </span>
                             
                              <span *ngSwitchCase="'payMode'">
-                              {{ driver.payMode | titlecase }}
+                              {{ payment.payMode | titlecase }}
                             </span>
                             
                              <span *ngSwitchCase="'payModeNo'">
-                              {{ driver.payModeNo }}
+                              {{ payment.payModeNo }}
                             </span>
                              
                              <span *ngSwitchCase="'payModeDate'">
-                              {{ driver.payModeDate | date: "YYYY-MM-dd" }}
+                              {{ payment.payModeDate | date: "YYYY-MM-dd" }}
                             </span>
                             
                              <span *ngSwitchCase="'advType'">
-                              {{ driver.type | titlecase }}
-                              <span *ngIf="driver.advType"
-                                >: {{ driver.advType | titlecase }}</span
+                              {{ payment.type | titlecase }}
+                              <span *ngIf="payment.advType"
+                                >: {{ payment.advType | titlecase }}</span
                               >
                             </span>
                             
                              <span *ngSwitchCase="'paymentTo'">
-                              {{ driver.paymentTo | titlecase }} :
-                              {{ driver.entityName | titlecase }}
+                              {{ payment.paymentTo | titlecase }} :
+                              {{ payment.entityName | titlecase }}
                             </span>
                             
                             <span *ngSwitchCase="'currency'">
-                              {{ driver.currency }}
+                              {{ payment.currency }}
                             </span>
                             
                             <span *ngSwitchCase="'amount'">
-                              {{ driver.amount }}
+                              {{ payment.amount }}
                             </span>
                             
                           </div>

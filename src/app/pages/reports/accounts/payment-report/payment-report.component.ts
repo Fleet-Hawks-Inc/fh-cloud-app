@@ -477,4 +477,8 @@ export class PaymentReportComponent implements OnInit {
     this.allExportData = this.allExportData.concat(expenseData)
   }
 
+ clear(table: Table) {
+        table.clear();
+    }
+
 }
