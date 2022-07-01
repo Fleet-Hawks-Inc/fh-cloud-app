@@ -74,30 +74,31 @@
 
 
                                 </div>
-                                <div class=" col-lg-8">
-                                    <div class="p-3 text-dark">
-                                        <google-map [width]="width" [height]="height" [options]="mapOptions" *ngIf="!loading">
-                                            <map-traffic-layer *ngIf="showTraffic" [autoRefresh]="true"></map-traffic-layer>
+                            </div>
+                            <div class=" col-lg-8">
+                                <div class="p-3 text-dark">
+                                    <google-map [width]="width" [height]="height" [options]="mapOptions" *ngIf="!loading">
+                                        <map-traffic-layer *ngIf="showTraffic" [autoRefresh]="true"></map-traffic-layer>
 
-                                            <map-marker #marker="mapMarker" *ngFor="let markerPosition of markerPositions" [position]="markerPosition.location" [options]="markerOptions" (mapMouseover)="openInfoWindow(marker,markerPosition.data)"></map-marker>
-                                            <map-marker [position]="startMarker" [options]="startMarkerOptions"></map-marker>
-                                            <map-marker #marker2="mapMarker" *ngFor="let alarms of movingAssetPositions" [position]="alarms.location" (mapMouseover)="openAlarmInfo(marker2,alarms.data)" [options]="alarmMovingOptions"></map-marker>
-                                            <map-marker #marker1="mapMarker" *ngFor="let stopped of stoppedAssetPositions" [position]="stopped.location" (mapMouseover)="openAlarmInfo(marker1,stopped.data)" [options]="alarmStoppedOptions"></map-marker>
+                                        <map-marker #marker="mapMarker" *ngFor="let markerPosition of markerPositions" [position]="markerPosition.location" [options]="markerOptions" (mapMouseover)="openInfoWindow(marker,markerPosition.data)"></map-marker>
+                                        <map-marker [position]="startMarker" [options]="startMarkerOptions"></map-marker>
+                                        <map-marker #marker2="mapMarker" *ngFor="let alarms of movingAssetPositions" [position]="alarms.location" (mapMouseover)="openAlarmInfo(marker2,alarms.data)" [options]="alarmMovingOptions"></map-marker>
+                                        <map-marker #marker1="mapMarker" *ngFor="let stopped of stoppedAssetPositions" [position]="stopped.location" (mapMouseover)="openAlarmInfo(marker1,stopped.data)" [options]="alarmStoppedOptions"></map-marker>
 
 
 
 
-                                            <map-marker [position]="endMarker" [options]="endMarkerOptions"></map-marker>
-                                            <map-polyline [options]="polylineOptions"></map-polyline>
-                                            <map-info-window class="marker-info" [innerHTML]="infoDetail"></map-info-window>
-                                        </google-map>
-                                    </div>
-                                </div>
-                                <div class="text-center mr-4 alert alert-info" *ngIf="locationData.length === 0 && loading!=true">
-                                    <br>
-                                    <p>There is NO Asset Tracker data available for the selected duration. Please update the duration and try again. </p>
+                                        <map-marker [position]="endMarker" [options]="endMarkerOptions"></map-marker>
+                                        <map-polyline [options]="polylineOptions"></map-polyline>
+                                        <map-info-window class="marker-info" [innerHTML]="infoDetail"></map-info-window>
+                                    </google-map>
                                 </div>
                             </div>
+                            <div class="text-center mr-4 alert alert-info" *ngIf="locationData.length === 0 && loading!=true">
+                                <br>
+                                <p>There is NO Asset Tracker data available for the selected duration. Please update the duration and try again. </p>
+                            </div>
+
                         </div>
                     </p-accordionTab>
 
