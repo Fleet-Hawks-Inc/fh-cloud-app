@@ -4388,3 +4388,6 @@ input:checked + .sliderbtn:before {
 .notifications-sidebar .p-tabview-panels {
   padding: 0;
 }
+.mat-accordion-wrapper .mat-expansion-panel-content {
+  font: inherit;
+}

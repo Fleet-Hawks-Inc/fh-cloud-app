@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -15,14 +15,14 @@ import { NewAciManifestComponent } from './aci-documents/new-aci-manifest/new-ac
 import { AciDetailsComponent } from './aci-documents/aci-details/aci-details.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 const routes: Routes = [
-  { path: 'eManifests', component: EManifestsComponent },
-  { path: 'ACE-new-eManifest', component: NewAceManifestComponent },
-  { path: 'ACE-edit-eManifest/:manifestID', component: NewAceManifestComponent },
-  { path: 'ACE-details/:manifestID', component: AceDetailsComponent },
+  { path: 'manifests', component: EManifestsComponent },
+  { path: 'ace-manifest', component: NewAceManifestComponent },
+  { path: 'ace-manifest/:manifestID', component: NewAceManifestComponent },
+  { path: 'ace-details/:manifestID', component: AceDetailsComponent },
 
-  { path: 'ACI-new-eManifest', component: NewAciManifestComponent },
-  { path: 'ACI-edit-eManifest/:manifestID', component: NewAciManifestComponent },
-  { path: 'ACI-details/:manifestID', component: AciDetailsComponent },
+  { path: 'aci-manifest', component: NewAciManifestComponent },
+  { path: 'aci-manifest/:manifestID', component: NewAciManifestComponent },
+  { path: 'aci-details/:manifestID', component: AciDetailsComponent },
 ];
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.

@@ -245,34 +245,34 @@ export class NewAceManifestComponent implements OnInit {
     };
   }
   async ngOnInit() {
-    // this.manifestID = this.route.snapshot.params[`manifestID`];
-    // if (this.manifestID) {
-    //   this.title = 'Edit ACE e-Manifest';
-    //   this.modalTitle = 'Edit';
-    //   this.fetchACEEntry();
-    //   await this.getCAProvinces();
-    //   this.route.queryParams.subscribe((params) => {
-    //     if (params.amendManifest !== undefined) {
-    //       this.amendManifest = params.amendManifest; // to get query parameter amend
-    //     }
-    //   });
-    // } else {
-    //   this.title = 'Add ACE e-Manifest';
-    //   this.modalTitle = 'Add';
-    // }
+    this.manifestID = this.route.snapshot.params[`manifestID`];
+    if (this.manifestID) {
+      this.title = 'Edit ACE e-Manifest';
+      this.modalTitle = 'Edit';
+      this.fetchACEEntry();
+      await this.getCAProvinces();
+      this.route.queryParams.subscribe((params) => {
+        if (params.amendManifest !== undefined) {
+          this.amendManifest = params.amendManifest; // to get query parameter amend
+        }
+      });
+    } else {
+      this.title = 'Add ACE e-Manifest';
+      this.modalTitle = 'Add';
+    }
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
-    // await this.fetchCountries();
-    // this.listService.fetchShippers();
-    // this.listService.fetchReceivers();
+    this.fetchCountries();
+    this.listService.fetchShippers();
+    this.listService.fetchReceivers();
     // this.fetchBrokers();
-    // this.getCAProvinces(); // fetch al provinces of Canada
-    // this.fetchCarrier();
-    // this.getCurrentuser();
-    // this.searchLocation();
-    // this.fetchAssetType();
-    // this.fetchUSStates(); // it fetches the US states
+    this.getCAProvinces(); // fetch al provinces of Canada
+    this.fetchCarrier();
+    this.getCurrentuser();
+    this.searchLocation();
+    this.fetchAssetType();
+    this.fetchUSStates(); // it fetches the US states
     this.shippers = this.listService.shipperList;
     this.consignees = this.listService.receiverList;
     this.httpClient.get('assets/USports.json').subscribe((data) => {
@@ -399,8 +399,12 @@ export class NewAceManifestComponent implements OnInit {
   }
 
   fetchDrivers() {
-    this.apiService.getData('drivers').subscribe((result: any) => {
-      this.fetchedDrivers = result.Items;
+    this.apiService.getData('drivers/get/all/active').subscribe((result: any) => {
+      result.Items.forEach((element) => {
+        if (element.isDeleted === 0) {
+          this.fetchedDrivers.push(element);
+        }
+      });
     });
   }
   fetchVehicles() {
@@ -793,27 +797,29 @@ export class NewAceManifestComponent implements OnInit {
           SCAC: this.SCAC,
           manifestType: this.manifestType,
           tripNumber: this.SCAC + this.tripNumber,
-          usPortOfArrival: this.usPortOfArrival,
-          estimatedArrivalDate: this.estimatedArrivalDate,
-          estimatedArrivalTime: this.estimatedArrivalTime,
-          truck: this.truck,
-          trailers: this.trailers,
-          mainDriver: this.mainDriver,
-          coDrivers: this.coDrivers,
-          usAddress: this.usAddress,
-          passengers: this.passengers,
-          shipments: this.shipments,
           currentStatus: 'Draft',
+          mData: {
+            usPortOfArrival: this.usPortOfArrival,
+            estimatedArrivalDate: this.estimatedArrivalDate,
+            estimatedArrivalTime: this.estimatedArrivalTime,
+            truck: this.truck,
+            trailers: this.trailers,
+            mainDriver: this.mainDriver,
+            coDrivers: this.coDrivers,
+            usAddress: this.usAddress,
+            passengers: this.passengers,
+            shipments: this.shipments,
+          }
         };
-        for (let p = 0; p < data.passengers.length; p++) {
-          for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
-            const element = data.passengers[p].travelDocuments[d];
+        for (let p = 0; p < data.mData.passengers.length; p++) {
+          for (let d = 0; d < data.mData.passengers[p].travelDocuments.length; d++) {
+            const element = data.mData.passengers[p].travelDocuments[d];
             delete element.docStates;
           }
         }
-        for (let s = 0; s < data.shipments.length; s++) {
-          for (let p = 0; p < data.shipments[s].thirdParties.length; p++) {
-            const element = data.shipments[s].thirdParties[p].address;
+        for (let s = 0; s < data.mData.shipments.length; s++) {
+          for (let p = 0; p < data.mData.shipments[s].thirdParties.length; p++) {
+            const element = data.mData.shipments[s].thirdParties[p].address;
             delete element.thirdPartyStates;
             delete element.thirdPartyCities;
           }
@@ -842,27 +848,30 @@ export class NewAceManifestComponent implements OnInit {
         SCAC: this.SCAC,
         manifestType: this.manifestType,
         tripNumber: this.SCAC + this.tripNumber,
-        usPortOfArrival: this.usPortOfArrival,
-        estimatedArrivalDate: this.estimatedArrivalDate,
-        estimatedArrivalTime: this.estimatedArrivalTime,
-        truck: this.truck,
-        trailers: this.trailers,
-        mainDriver: this.mainDriver,
-        coDrivers: this.coDrivers,
-        usAddress: this.usAddress,
-        passengers: this.passengers,
-        shipments: this.shipments,
         currentStatus: 'Draft',
+        mData: {
+          usPortOfArrival: this.usPortOfArrival,
+          estimatedArrivalDate: this.estimatedArrivalDate,
+          estimatedArrivalTime: this.estimatedArrivalTime,
+          truck: this.truck,
+          trailers: this.trailers,
+          mainDriver: this.mainDriver,
+          coDrivers: this.coDrivers,
+          usAddress: this.usAddress,
+          passengers: this.passengers,
+          shipments: this.shipments,
+        }
+
       };
-      for (let p = 0; p < data.passengers.length; p++) {
-        for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
-          const element = data.passengers[p].travelDocuments[d];
+      for (let p = 0; p < data.mData.passengers.length; p++) {
+        for (let d = 0; d < data.mData.passengers[p].travelDocuments.length; d++) {
+          const element = data.mData.passengers[p].travelDocuments[d];
           delete element.docStates;
         }
       }
-      for (let s = 0; s < data.shipments.length; s++) {
-        for (let p = 0; p < data.shipments[s].thirdParties.length; p++) {
-          const element = data.shipments[s].thirdParties[p].address;
+      for (let s = 0; s < data.mData.shipments.length; s++) {
+        for (let p = 0; p < data.mData.shipments[s].thirdParties.length; p++) {
+          const element = data.mData.shipments[s].thirdParties[p].address;
           delete element.thirdPartyStates;
           delete element.thirdPartyCities;
         }

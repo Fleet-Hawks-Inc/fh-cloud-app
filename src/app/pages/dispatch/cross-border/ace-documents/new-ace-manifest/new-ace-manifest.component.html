@@ -533,11 +533,11 @@
                   <div class="col-lg-11 offset-lg-1">
                     <div class="row">
                       <div class="col-lg-10">
-                        <mat-accordion>
+                        <mat-accordion class="mat-accordion-wrapper">
                           <mat-expansion-panel hideToggle *ngFor="let shipment of shipments;let s = index" class="mb-3">
                             <mat-expansion-panel-header>
                               <mat-panel-title>
-                                <span class="line-height-lg">Shipment {{s+1}}</span>
+                                <span class="line-height-lg font-weight-bold">Shipment {{s+1}}</span>
                                 <button type="button" (click)="deleteShipment(s)"
                                   class="btn btn-xs btn-danger pull-right mt-1-c1"> Delete Shipment</button>
                               </mat-panel-title>
@@ -997,8 +997,7 @@
                                               [attr.name]="'shipments['+s+'].thirdParties['+p+'].address.countryCode'"
                                               [(ngModel)]="thirdParty.address.countryCode"
                                               (change)="getThirdPartyState($event,s,p)">
-                                              <ng-option *ngFor="let country of countries"
-                                                [value]="country.countryCode">
+                                              <ng-option *ngFor="let country of countries" value="country.countryCode">
                                                 {{country.countryName}}</ng-option>
                                             </ng-select>
                                           </div>
