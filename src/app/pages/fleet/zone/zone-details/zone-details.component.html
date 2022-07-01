@@ -86,8 +86,10 @@
                                 [disabled]="t != pRates.length - 1"
                                 #weight="ngModel"
                                 placeholder="Weight"
-                                required
                               />
+                              <ng-select [disabled]="t != pRates.length - 1" [(ngModel)]="param.unit" class="form-control ml-2 mr-2">
+                                <ng-option *ngFor="let u of wUnit" [value]="u">{{u}}</ng-option>
+                              </ng-select>
 
                               <input
                                 type="text"
@@ -100,6 +102,9 @@
                                 required
                                 placeholder="Rate CAD$"
                               />
+                              <ng-select [disabled]="t != pRates.length - 1" [(ngModel)]="param.currency" class="form-control ml-2 mr-2">
+                                <ng-option *ngFor="let u of currencies" [value]="u">{{u}}</ng-option>
+                              </ng-select>
                               <div
                                 *ngIf="
                                   noPallets.invalid &&
@@ -114,7 +119,7 @@
                                 </div>
                               </div>
 
-                              <div
+                              <!-- <div
                                 *ngIf="
                                   weight.invalid &&
                                   (weight.dirty || weight.touched)
@@ -126,7 +131,7 @@
                                     Weight is required
                                   </div>
                                 </div>
-                              </div>
+                              </div> -->
                               <div
                                 *ngIf="
                                   rate.invalid && (rate.dirty || rate.touched)
@@ -199,6 +204,9 @@
                                 placeholder="Fee"
                                 required
                               />
+                              <ng-select [(ngModel)]="param.currency" [disabled]="t != aspRates.length - 1" class="form-control ml-2 mr-2">
+                                <ng-option *ngFor="let u of currencies" [value]="u">{{u}}</ng-option>
+                              </ng-select>
 
                               <div
                                 *ngIf="

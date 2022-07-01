@@ -143,12 +143,15 @@ export class ZoneAddComponent implements OnInit {
         noPallets: null,
         weight: null,
         rate: null,
+        currency: null,
+        unit: null,
       },
     ];
     const aspRates = [
       {
         name: null,
         fee: null,
+        currency: null,
       },
     ];
     const zoneData = {

@@ -24,6 +24,8 @@ export class ZoneDetailsComponent implements OnInit {
     {
       noPallets: null,
       weight: null,
+      unit: null,
+      currency: null,
       rate: null,
     },
   ];
@@ -31,8 +33,12 @@ export class ZoneDetailsComponent implements OnInit {
     {
       name: null,
       fee: null,
+      currency: null,
     },
   ];
+
+  currencies = ["CAD", "USD"];
+  wUnit = ["Ton(s)", "Kg(s)", "Lb(s)"];
 
   ngOnInit(): void {
     this.zoneID = this.route.snapshot.params["zoneID"];
@@ -63,6 +69,8 @@ export class ZoneDetailsComponent implements OnInit {
           noPallets: null,
           weight: null,
           rate: null,
+          currency: null,
+          unit: null,
         });
       } else {
         this.toastr.error(" Pallet can not be empty.");
@@ -80,6 +88,7 @@ export class ZoneDetailsComponent implements OnInit {
         this.aspRates.push({
           name: null,
           fee: null,
+          currency: null,
         });
       } else {
         this.toastr.error(" Associrial Fees can not be empty.");
