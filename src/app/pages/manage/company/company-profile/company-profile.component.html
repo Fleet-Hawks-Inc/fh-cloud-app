@@ -14,12 +14,11 @@
                             icon="pi pi-shield" pTooltip="Manage MFA"></button>
 
                         <button type="button" pButton *ngIf="showSubCompany && subCompanies.length < 5" class="mr-1"
-                            (click)="display=true;showDialog()" icon="pi pi-building"></button>
+                            (click)="display=true;" icon="pi pi-building"></button>
 
 
 
-                        <button type="button" pButton class="mr-1" (click)="display1=true;password()"
-                            icon="pi pi-lock"></button>
+                        <button type="button" pButton class="mr-1" (click)="display1=true;" icon="pi pi-lock"></button>
                         <!-- <button id="btnChangePassword" type="button" pButton class="mr-1" tooltipPosition="left"
                             pTooltip="Change your password" data-toggle="modal" icon="pi pi-lock"
                             data-target="#changePasswordModal"></button> -->
