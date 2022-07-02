@@ -307,7 +307,7 @@
                   </div>
 
                   <div class="row">
-                    <div class="col-lg-12" *ngIf="slides?.length > 0">
+                    <div class="col-lg-12" *ngIf="slides?.length">
                       <div class="vehicle-common-box p-3 mb-3">
                         <div class="row">
                           <div class="col-lg-6">
@@ -323,8 +323,7 @@
                             *ngFor="let item of slides; let i = index"
                           >
                             <div class="vehicle-photo-box">
-                              <img
-                                [src]="item.path"
+                              <img src="{{item.path}}"
                                 width="100%"
                                 class="img-fluid"
                                 style="height: 180px; object-fit: cover"
@@ -332,7 +331,7 @@
                               <!-- <iframe [src]="item" width="100px" height="100px" frameborder="0"></iframe> -->
                               <hr class="m-3" />
                               <div class="row">
-                                <div class="col-lg-8">Image {{ i + 1 }}</div>
+                                <div class="col-lg-8">Image {{i + 1}}</div>
                                 <div class="col-lg-4 text-right">
                                   <a
                                     href="javascript:;"
@@ -340,9 +339,8 @@
                                   >
                                     <i
                                       class="fas fa-times text-danger"
-                                      (click)="
-                                        deleteDocument('image', item.name, i)
-                                      "
+                                      (click)="deleteDocument('image', item.name, i)"
+                                      
                                     ></i>
                                   </a>
                                 </div>
