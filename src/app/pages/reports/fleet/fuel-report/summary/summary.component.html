@@ -285,61 +285,61 @@
                                 icon="pi pi-filter-slash"
                               ></button>
 
-                              <p-multiSelect
-                                [options]="dataColumns"
-                                [(ngModel)]="selectedColumns"
-                                optionLabel="header"
-                                selectedItemsLabel="{0} columns selected"
-                                [style]="{ minWidth: '200px' }"
-                                placeholder="Choose Columns"
-                              >
-                              </p-multiSelect>
-                            </div>
-                          </div>
-                        </ng-template>
-                        <!-- Header template of DataTable -->
-                        <ng-template pTemplate="header" let-columns>
-                          <tr>
-                            <th
-                              *ngFor="let dataColumns of columns"
-                              [pSortableColumn]="dataColumns.field"
-                              pResizableColumn
-                              [ngStyle]="{ width: dataColumns.width }"
-                            >
-                              <span>
-                                <div
-                                  class="flex justify-content-center align-items-center"
-                                  alignFrozen="right"
-                                  pFrozenColumn
-                                  [frozen]="true"
-                                >
-                                  {{ dataColumns.header }}
-                                  <p-sortIcon
-                                    [field]="dataColumns.field"
-                                  ></p-sortIcon>
-                                  <p-columnFilter
-                                    [type]="dataColumns.type"
-                                    [field]="dataColumns.field"
-                                    matchMode="contains"
-                                    [showMatchModes]="false"
-                                    [showOperator]="false"
-                                    [showAddButton]="false"
-                                    display="menu"
-                                  >
-                                  </p-columnFilter>
-                                </div>
-                              </span>
-                            </th>
+                   <p-multiSelect
+                            [options]="dataColumns"
+                            [(ngModel)]="selectedColumns"
+                            optionLabel="header"
+                            selectedItemsLabel="{0} columns selected"
+                            [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns"
+                          >
+                          </p-multiSelect>
+                    </div>
+                  </div>
+                </ng-template>
+                <!-- Header template of DataTable -->
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th
+                      *ngFor="let dataColumns of columns"
+                      [pSortableColumn]="dataColumns.field"
+                      pResizableColumn
+                      style="width: 10%;"
+                    >
+                      <span>
+                        <div
+                          class="flex justify-content-center align-items-center"
+                          alignFrozen="right"
+                          pFrozenColumn
+                          [frozen]="true"
+                        >
+                          {{ dataColumns.header }}
+                          <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                          <p-columnFilter
+                            [type]="dataColumns.type"
+                            [field]="dataColumns.field"
+                            matchMode="contains"
+                            [showMatchModes]="false"
+                            [showOperator]="false"
+                            [showAddButton]="false"
+                            display="menu"
+                          >
+                          </p-columnFilter>
+                        </div>
+                      </span>
+                    </th>
+
                           </tr>
                         </ng-template>
 
-                        <!-- Body Template of Data Table -->
-                        <ng-template
-                          pTemplate="body"
-                          let-fuelEntry
-                          let-columns="columns"
-                          let-rowIndex="rowIndex"
-                        >
+
+                <!-- Body Template of Data Table -->
+                <ng-template
+                  pTemplate="body"
+                  let-fuelEntry
+                  let-columns="columns"
+                  let-rowIndex="rowIndex"
+                >
                           <tr>
                             <td
                               *ngFor="let dataColumns of columns"

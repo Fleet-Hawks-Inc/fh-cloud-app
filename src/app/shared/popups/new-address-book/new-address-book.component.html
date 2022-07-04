@@ -4046,84 +4046,94 @@
                     </table>
                   </div>
                   <div class="col-6">
-                    <table
-                      style="float: left"
-                      class="table table-bordered mb-2"
-                    >
-                      <tbody>
-                        <div
-                          *ngFor="let option of item.carrierData.paymentOption"
-                          [ngStyle]="{
-                            display: option.default ? 'block' : 'none'
-                          }"
-                        >
-                          <tr>
-                            <th width="40%" class="back-color-gray">
-                              Payroll Type:
-                            </th>
-                            <td>
-                              {{
-                                option.pType ? mapPayment[option.pType] : "-"
-                              }}
-                            </td>
-                          </tr>
-                          <tr *ngIf="option.pType == 'pfr'">
-                            <th width="40%" class="back-color-gray">
-                              Flat Rate:
-                            </th>
-                            <td>
-                              {{ option.flatRate ? option.flatRate : "-" }}
-                              {{ option.currency }}
-                            </td>
-                          </tr>
-                          <tr *ngIf="option.pType == 'ppm'">
-                            <th width="40%" class="back-color-gray">
-                              Loaded Miles:
-                            </th>
-                            <td>
-                              {{
-                                option.loadedMiles ? option.loadedMiles : "-"
-                              }}
-                              {{ option.currency }}
-                            </td>
-                          </tr>
-                          <tr *ngIf="option.pType == 'ppm'">
-                            <th width="40%" class="back-color-gray">
-                              Empty Miles:
-                            </th>
-                            <td>
-                              {{ option.emptyMiles ? option.emptyMiles : "-" }}
-                              {{ option.currency }}
-                            </td>
-                          </tr>
-                          <tr *ngIf="option.pType === 'pp'">
-                            <th width="40%" class="back-color-gray">
-                              Load Pay Percent:
-                            </th>
-                            <td>
-                              {{ option.loadPayPercentage }}
-                              {{ option.loadPayPercentageOf }}
-                            </td>
-                          </tr>
-                          <tr *ngIf="option.pType == 'pph'">
-                            <th width="40%" class="back-color-gray">Rate:</th>
-                            <td>
-                              {{ option.rate ? option.rate : "-" }}
-                              {{ option.currency ? option.currency : "" }}
-                            </td>
-                          </tr>
-                          <tr *ngIf="item.carrierData.pType === 'ppd'">
-                            <th width="40%" class="back-color-gray">
-                              Delivery Rate:
-                            </th>
-                            <td>
-                              {{
-                                option.deliveryRate ? option.deliveryRate : "-"
-                              }}
-                              {{ option.currency }}
-                            </td>
-                          </tr>
+                    <div *ngFor="let option of item.carrierData.paymentOption"
+                      [ngStyle]="{'display':(option.default)?'block':'none'}">
+                      <div class="payment-mini-wrapper">
+                        <div width="40%" class="back-color-gray">
+                          Payroll Type:
                         </div>
+                        <div>
+                          {{
+                          option.pType
+                          ? mapPayment[option.pType]
+                          : "-"
+                          }}
+                        </div>
+                      </div>
+                      <div class="payment-mini-wrapper" *ngIf="option.pType == 'pfr'">
+                        <div width="40%" class="back-color-gray">
+                          Flat Rate:
+                        </div>
+                        <div>
+                          {{ option.flatRate ? option.flatRate : "-" }}
+                          {{
+                          option.currency
+                          }}
+                        </div>
+                      </div>
+                      <div class="payment-mini-wrapper" *ngIf="option.pType == 'ppm'">
+                        <div width="40%" class="back-color-gray">
+                          Loaded Miles:
+                        </div>
+                        <div>
+                          {{ option.loadedMiles ? option.loadedMiles : "-" }}
+                          {{
+                          option.currency
+                          }}
+                        </div>
+                      </div>
+                      <div class="payment-mini-wrapper" *ngIf="option.pType == 'ppm'">
+                        <div width="40%" class="back-color-gray">
+                          Empty Miles:
+                        </div>
+                        <div>
+                          {{ option.emptyMiles ? option.emptyMiles : "-" }}
+                          {{
+                          option.currency
+                          }}
+                        </div>
+                      </div>
+                      <div class="payment-mini-wrapper" *ngIf="option.pType === 'pp'">
+                        <div width="40%" class="back-color-gray">
+                          Load Pay Percent:
+                        </div>
+                        <div>
+                          {{
+                          option.loadPayPercentage
+                          }}
+                          {{
+                          option.loadPayPercentageOf
+                          }}
+                        </div>
+                      </div>
+                      <div class="payment-mini-wrapper" *ngIf="option.pType == 'pph'">
+                        <div width="40%" class="back-color-gray">Rate:</div>
+                        <div>
+                          {{
+                          option.rate
+                          ? option.rate
+                          : "-"
+                          }}
+                          {{
+                          option.currency
+                          ? option.currency
+                          : ""
+                          }}
+                        </div>
+                      </div>
+                      <div class="payment-mini-wrapper" *ngIf="item.carrierData.pType === 'ppd'">
+                        <div width="40%" class="back-color-gray">
+                          Delivery Rate:
+                        </div>
+                        <div>
+                          {{ option.deliveryRate ? option.deliveryRate : "-" }}
+                          {{ option.currency }}
+                        </div>
+                      </div>
+                    </div>
+                    <table style="float: left" class="table table-bordered mb-2">
+                      <tbody>
+
                         <tr>
                           <th width="40%" class="back-color-gray">
                             Local Tax (in Percentage):
@@ -4601,10 +4611,12 @@
                 >
                 <div class="row">
                   <div class="col-6">
+
                     <table
                       style="float: left"
                       class="table table-bordered mb-2"
                     >
+
                       <tbody>
                         <tr>
                           <th width="40%" class="back-color-gray">CSA:</th>
@@ -4630,6 +4642,7 @@
                             }}
                           </td>
                         </tr>
+
                         <div
                           *ngFor="let option of item.opData.paymentOption"
                           [ngStyle]="{
@@ -4713,8 +4726,74 @@
                             </td>
                           </tr>
                         </div>
+
                       </tbody>
                     </table>
+                    <div *ngFor="let option of item.opData.paymentOption"
+                      [ngStyle]="{'display':(option.default)?'block':'none'}">
+                      <div class="payment-mini-wrapper">
+                        <div width="40%" class="back-color-gray">
+                          Payroll Type:
+                        </div>
+                        <div>
+                          {{ option.pType ? mapPayment[option.pType] : "-" }}
+                        </div>
+                      </div>
+                      <div class="payment-mini-wrapper" *ngIf="option.pType == 'pfr'">
+                        <div width="40%" class="back-color-gray">
+                          Flat Rate:
+                        </div>
+                        <div>
+                          {{ option.flatRate ? option.flatRate : "-" }}
+                          {{ option.currency ? option.currency : "" }}
+                        </div>
+                      </div>
+                      <div class="payment-mini-wrapper" *ngIf="option.pType == 'ppm'">
+                        <div width="40%" class="back-color-gray">
+                          Loaded Miles:
+                        </div>
+                        <div>
+                          {{ option.loadedMiles ? option.loadedMiles : "-" }}
+                          {{ option.currency ? option.currency : "" }}
+                        </div>
+                      </div>
+                      <div class="payment-mini-wrapper" *ngIf="option.pType == 'ppm'">
+                        <div width="40%" class="back-color-gray">
+                          Empty Miles:
+                        </div>
+                        <div>
+                          {{ option.emptyMiles ? option.emptyMiles : "-" }}
+                          {{ option.currency ? option.currency : "" }}
+                        </div>
+                      </div>
+                      <div class="payment-mini-wrapper" *ngIf="option.pType == 'pph'">
+                        <div width="40%" class="back-color-gray">
+                          Rate:
+                        </div>
+                        <div>
+                          {{ option.rate ? option.rate : "-" }}
+                          {{ option.currency ? option.currency : "" }}
+                        </div>
+                      </div>
+                      <div class="payment-mini-wrapper" *ngIf="option.pType == 'pp'">
+                        <div width="40%" class="back-color-gray">
+                          Percentage:
+                        </div>
+                        <div>
+                          {{ option.loadPayPercentage ? option.loadPayPercentage : "-" }} of
+                          {{ option.loadPayPercentageOf ? option.loadPayPercentageOf : "" }}
+                        </div>
+                      </div>
+                      <div class="payment-mini-wrapper" *ngIf="option.pType == 'ppd'">
+                        <div width="40%" class="back-color-gray">
+                          Delivery Rate:
+                        </div>
+                        <div>
+                          {{ option.deliveryRate ? option.deliveryRate : "-" }} of
+                          {{ option.currency ? option.currency : "" }}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div class="col-6">
                     <table
