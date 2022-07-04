@@ -817,7 +817,7 @@ export class AddDriverComponent
   }
 
   addGroup() {
-    this.groupSubmitDisabled = true;
+   // this.groupSubmitDisabled = true;
     this.hideErrors();
     this.apiService.postData("groups", this.groupData).subscribe({
       complete: () => { },
@@ -1772,9 +1772,10 @@ export class AddDriverComponent
             this.onChangeHideErrors("CDL_Number");
             delete this.errors[`CDL_Number`];
           }
-          if(this.emailCheck = true){
-          this.submitDisabled = true;
-          }
+          
+          // if(this.emailCheck = true){
+          // this.submitDisabled = true;
+          // }
           this.throwErrors();
         });
     }

@@ -95,6 +95,10 @@ export class CompanyProfileComponent implements OnInit {
   otpCode: string;
   showVerifyPhone = false;
 
+
+  display: boolean = false;
+  display1: boolean = false;
+
   constructor(private route: ActivatedRoute,
     private apiService: ApiService,
     private toastr: ToastrService,
@@ -168,6 +172,7 @@ export class CompanyProfileComponent implements OnInit {
             this.hasSuccess = true;
             this.submitDisabled = false;
             this.toastr.success('Password updated successfully');
+            this.display1 = false
             this.pwdModalClose();
             this.pwdData = {
               oldPassword: '',
@@ -297,7 +302,9 @@ export class CompanyProfileComponent implements OnInit {
       localStorage.setItem("subCompany", 'yes');
       this.headerComponentFunction();
       this.toastr.success('Sub company added successfully');
+      this.display = false;
       this.fetchCarrier();
+
     } else {
       this.toastr.error('Something went wrong!');
       return false;
@@ -600,3 +607,4 @@ interface ISubscriptionInfo {
   next_billing_at: string;
   amount: number
 }
+
