@@ -19,7 +19,7 @@ export class ZoneDetailsComponent implements OnInit {
   saveDisabled = true;
   title = "Zone Details";
   zoneID = null;
-  zoneDetail = {};
+  zoneDetail: any = {};
   pRates = [
     {
       noPallets: null,
