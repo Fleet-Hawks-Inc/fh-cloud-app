@@ -44,7 +44,7 @@ export class ImportedContactsComponent implements OnInit {
   dataColumns = [
     { field: 'displayName', header: 'File Name', type: "text" },
     { field: 'timeCreated', header: 'Uploaded', type: "text" },
-    { field: "module", header: 'Module', type: 'text' },
+    { field: "eType", header: 'Contact Type(s)', type: 'text' },
     { field: 'fileStatus', header: 'Status', type: "text" },
 
   ];
@@ -247,6 +247,18 @@ export class ImportedContactsComponent implements OnInit {
     if (result && result.data.length > 0) {
       result.data.forEach(elem => {
         elem.timeCreated = new Date(elem.timeCreated).toLocaleString('en-CA');
+        if (elem.eType.includes('fc')) {
+          var index = elem.eType.indexOf('fc');
+          if (index !== -1) {
+            elem.eType[index] = 'Factoring Company';
+          }
+        }
+        if (elem.eType.includes('owner_operator')) {
+          var index = elem.eType.indexOf('owner_operator');
+          if (index !== -1) {
+            elem.eType[index] = 'Owner Operator';
+          }
+        }
         this.importCustomers.push(elem);
       });
 
