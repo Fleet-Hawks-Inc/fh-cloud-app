@@ -794,11 +794,11 @@ export class NewAceManifestComponent implements OnInit {
       }
       if (this.address === true) {
         const data = {
-          SCAC: this.SCAC,
-          manifestType: this.manifestType,
+          type: this.manifestType,
           tripNumber: this.SCAC + this.tripNumber,
-          currentStatus: 'Draft',
-          mData: {
+          currentStatus: 'draft',
+          manifest: {
+            SCAC: this.SCAC,
             usPortOfArrival: this.usPortOfArrival,
             estimatedArrivalDate: this.estimatedArrivalDate,
             estimatedArrivalTime: this.estimatedArrivalTime,
@@ -811,15 +811,15 @@ export class NewAceManifestComponent implements OnInit {
             shipments: this.shipments,
           }
         };
-        for (let p = 0; p < data.mData.passengers.length; p++) {
-          for (let d = 0; d < data.mData.passengers[p].travelDocuments.length; d++) {
-            const element = data.mData.passengers[p].travelDocuments[d];
+        for (let p = 0; p < data.manifest.passengers.length; p++) {
+          for (let d = 0; d < data.manifest.passengers[p].travelDocuments.length; d++) {
+            const element = data.manifest.passengers[p].travelDocuments[d];
             delete element.docStates;
           }
         }
-        for (let s = 0; s < data.mData.shipments.length; s++) {
-          for (let p = 0; p < data.mData.shipments[s].thirdParties.length; p++) {
-            const element = data.mData.shipments[s].thirdParties[p].address;
+        for (let s = 0; s < data.manifest.shipments.length; s++) {
+          for (let p = 0; p < data.manifest.shipments[s].thirdParties.length; p++) {
+            const element = data.manifest.shipments[s].thirdParties[p].address;
             delete element.thirdPartyStates;
             delete element.thirdPartyCities;
           }
@@ -845,11 +845,11 @@ export class NewAceManifestComponent implements OnInit {
         }
       };
       const data = {
-        SCAC: this.SCAC,
-        manifestType: this.manifestType,
+        type: this.manifestType,
         tripNumber: this.SCAC + this.tripNumber,
-        currentStatus: 'Draft',
-        mData: {
+        currentStatus: 'draft',
+        manifest: {
+          SCAC: this.SCAC,
           usPortOfArrival: this.usPortOfArrival,
           estimatedArrivalDate: this.estimatedArrivalDate,
           estimatedArrivalTime: this.estimatedArrivalTime,
@@ -863,15 +863,15 @@ export class NewAceManifestComponent implements OnInit {
         }
 
       };
-      for (let p = 0; p < data.mData.passengers.length; p++) {
-        for (let d = 0; d < data.mData.passengers[p].travelDocuments.length; d++) {
-          const element = data.mData.passengers[p].travelDocuments[d];
+      for (let p = 0; p < data.manifest.passengers.length; p++) {
+        for (let d = 0; d < data.manifest.passengers[p].travelDocuments.length; d++) {
+          const element = data.manifest.passengers[p].travelDocuments[d];
           delete element.docStates;
         }
       }
-      for (let s = 0; s < data.mData.shipments.length; s++) {
-        for (let p = 0; p < data.mData.shipments[s].thirdParties.length; p++) {
-          const element = data.mData.shipments[s].thirdParties[p].address;
+      for (let s = 0; s < data.manifest.shipments.length; s++) {
+        for (let p = 0; p < data.manifest.shipments[s].thirdParties.length; p++) {
+          const element = data.manifest.shipments[s].thirdParties[p].address;
           delete element.thirdPartyStates;
           delete element.thirdPartyCities;
         }
@@ -1003,7 +1003,7 @@ export class NewAceManifestComponent implements OnInit {
           borderResponses: this.borderResponses,
           createdDate: this.createdDate,
           createdTime: this.createdTime,
-          currentStatus: 'Draft',
+          currentStatus: 'draft',
         };
         for (let p = 0; p < data.passengers.length; p++) {
           for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
@@ -1058,7 +1058,7 @@ export class NewAceManifestComponent implements OnInit {
         borderResponses: this.borderResponses,
         createdDate: this.createdDate,
         createdTime: this.createdTime,
-        currentStatus: 'Draft',
+        currentStatus: 'draft',
       };
       for (let p = 0; p < data.passengers.length; p++) {
         for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
