@@ -1,9 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, TemplateRef } from '@angular/core';
 import { ApiService } from 'src/app/services';
+import { Router } from '@angular/router';
 import Constants from 'src/app/pages/fleet/constants';
-import * as moment from 'moment';
+import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
 import { ToastrService } from 'ngx-toastr';
-
+import { result } from 'lodash';
+import * as html2pdf from "html2pdf.js";
+import { NgxSpinnerService } from 'ngx-spinner';
+import * as moment from 'moment'
+import { Table } from 'primeng/table';
+import Constant from "src/app/pages/fleet/constants";
+import * as _ from "lodash";
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'src/environments/environment';
+import { NgSelectComponent } from '@ng-select/ng-select';
+declare var $: any;
 
 @Component({
   selector: 'app-address-book',
@@ -11,20 +22,59 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./address-book.component.css']
 })
 export class AddressBookComponent implements OnInit {
-  
-    addressBookList = [];
-    dataMessage: string;
+     @ViewChild('myTable') table: any;
+    @ViewChild('roleTemplate') roleTemplate: TemplateRef<any>;
+    @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
+     environment = environment.isFeatureEnabled;
+    
+    addressBookList = []
     company: any = null;
     type: any = null;
     lastItemSK = "";
     loaded: boolean = false;
+   _selectedColumns: any[];
+    listView = true;
+    visible = true;
+    ColumnMode = ColumnMode;
+    SelectionType = SelectionType;
+    dataMessage: string = Constants.FETCHING_DATA;
+    
+     dataColumns = [
+        {  field: 'cName', header: 'Company Name', type: "text" },
+        {  field: 'workEmail', header: 'Email', type: "text" },
+        { field: 'workPhone', header: 'Phone', type: "text" },
+        {  field: 'eTypes', header: 'Type', type: "text" },
+        {  field: 'ctyName', header: 'Address', type: "text" },
+    ];
     
 
-  constructor(private apiService: ApiService, private toastr: ToastrService) { }
+  constructor(private apiService: ApiService, 
+  private toastr: ToastrService,
+  private modalService: NgbModal,
+  private spinner: NgxSpinnerService) { }
 
-  ngOnInit() {
+  async ngOnInit(): Promise<void> {
   this.fetchAddressBook()
+  this.setToggleOptions();
   }
+  
+  setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+        @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
+  
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+  }
+   
+   
+   clear(table: Table) {
+        table.clear();
+    }
   
   fetchAddressBook() {
     if (this.lastItemSK !== 'end'){
@@ -58,12 +108,21 @@ export class AddressBookComponent implements OnInit {
       }
     }
     
-  onScroll() {
+  onScroll = async (event: any) => {
     if (this.loaded) {
       this.fetchAddressBook();
     }
     this.loaded = false;
   }
+  
+   refreshData(){
+      this.company = null;
+      this.type = null;
+      this.lastItemSK = '';
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.addressBookList = [];
+      this.fetchAddressBook();
+   }
     
   resetFilter() {
     if (this.company !== null || this.type !== null) {
@@ -148,4 +207,3 @@ export class AddressBookComponent implements OnInit {
         }
     }
 }
-
