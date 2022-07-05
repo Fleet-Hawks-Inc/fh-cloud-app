@@ -1,68 +1,118 @@
 <section class="body">
-    <div class="inner-wrapper">
-       <section role="main" class="content-body pl-0 pr-0 pt-0">
-        <header class="page-header pr19 pl18">
-            <div class="row" style="padding-top:10px;">
-               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                  Add a Zone
-               </div>
-               <div class="col-md-8 col-lg-8 pr-1 text-right">
-                  <a [routerLink]="['/fleet', 'zone', 'list']"  class="btn btn-default btn-sm"><i class="fas fa-list"></i> Zone List</a>
-               </div>
-            </div>
-         </header>
-         <section class="m-2">
-            <form class="form-horizontal form-bordered bg-white" method ="get" name="form" id="form" #zoneForm="ngForm">
-            <div class="row mb-3">
-               <div class="col-lg-12">
-                  <div class="bg-white p-3 text-dark">
-                        
-                       <div class="row">
-                          <div class="col-lg-12 position-relative">
-                             <div id="map" class="mapclassmain" style="height: 600px;"></div>
-                          </div>
-                       </div>
-                       <div class="col-lg-12">
-                        <div class="row">
-                           <div class="col-lg-5">
-                              <label class="control-label font-weight-bold text-lg-right pt-2"
-                                 >Zone Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                              <input type="text" class="form-control"  [(ngModel)]="zone.zName" placeholder=" Zone Name"
-                              name="zonename" #gName = "ngModel" required>
-                              <div *ngIf="gName.invalid && (gName.dirty || gName.touched)" class="text-danger">
-                                 <div *ngIf="gName.errors.required">
-                                  Zone name  is required.
-                                 </div>
-                              </div>
- 
-                           </div>
-                           <div class="col-lg-5">
-                              <label
-                                 class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right"
-                                 >Description</label>
-                              <textarea class="form-control h-auto" placeholder="Enter Description" [(ngModel)]="zone.zDesc"
-                              name="description" rows="3" #desName= "ngModel" ></textarea>
-                              <div *ngIf="desName.invalid && (desName.dirty || desName.touched)" class="text-danger">
-                                 <div *ngIf="desName.errors.pattern">
-                                  Only 500 characters are allowed.
-                                 </div>
- 
-                              </div>
-                           </div>
-                        </div>
-                        <div class="modal-footer">
-                           <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-                           <button type="button" (click)="saveZone()" class="btn btn-success" [disabled]="!zoneForm.form.valid">Save</button>
-                        </div>
-                     </div>
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header pr19 pl18">
+        <div class="row" style="padding-top: 10px">
+          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+            Add a Zone
+          </div>
+          <div class="col-md-8 col-lg-8 pr-1 text-right">
+            <a
+              [routerLink]="['/fleet', 'zone', 'list']"
+              class="btn btn-default btn-sm"
+              ><i class="fas fa-list"></i> Zone List</a
+            >
+          </div>
+        </div>
+      </header>
+      <section class="m-2">
+        <form
+          class="form-horizontal form-bordered bg-white"
+          method="get"
+          name="form"
+          id="form"
+          #zoneForm="ngForm"
+        >
+          <div class="row mb-3">
+            <div class="col-lg-12">
+              <div class="bg-white p-3 text-dark">
+                <div class="row">
+                  <div class="col-lg-12 position-relative">
+                    <div
+                      id="map"
+                      class="mapclassmain"
+                      style="height: 600px"
+                    ></div>
+                    <input
+                      id="searchInput"
+                      class="form-control"
+                      style="width: 50%"
+                      type="text"
+                      placeholder="Enter a location"
+                    />
                   </div>
-               </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="row">
+                    <div class="col-lg-5">
+                      <label
+                        class="control-label font-weight-bold text-lg-right pt-2"
+                        >Zone Name<span class="mandfield text-2 ml-1"
+                          ><sup>*</sup></span
+                        ></label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="zone.zName"
+                        placeholder=" Zone Name"
+                        name="zonename"
+                        #gName="ngModel"
+                        required
+                      />
+                      <div
+                        *ngIf="gName.invalid && (gName.dirty || gName.touched)"
+                        class="text-danger"
+                      >
+                        <div *ngIf="gName.errors.required">
+                          Zone name is required.
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5">
+                      <label
+                        class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right"
+                        >Description</label
+                      >
+                      <textarea
+                        class="form-control h-auto"
+                        placeholder="Enter Description"
+                        [(ngModel)]="zone.zDesc"
+                        name="description"
+                        rows="3"
+                        #desName="ngModel"
+                      ></textarea>
+                      <div
+                        *ngIf="
+                          desName.invalid && (desName.dirty || desName.touched)
+                        "
+                        class="text-danger"
+                      >
+                        <div *ngIf="desName.errors.pattern">
+                          Only 500 characters are allowed.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      (click)="saveZone()"
+                      class="btn btn-success"
+                      [disabled]="!zoneForm.form.valid"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
-         </form>
-         </section>
+          </div>
+        </form>
       </section>
-    </div>
-
-    
-
+    </section>
+  </div>
 </section>
