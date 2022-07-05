@@ -25,10 +25,12 @@ export class BrokerageComponent implements OnInit {
   brkDateEnUS:any = [];
   carriersObject = [];
   orderNumber = '';
-  loaded = false;
+customers = {}
+loaded = false;
   dataColumns = [
     { width: '10%', field: 'orderNumber', header: 'Order No', type: "text" },
     { width: '10%', field: 'tripData.tripNo', header: 'Trip No', type: "text" },
+    { width: '10%', field: 'customerName', header: 'Customers', type: "text" },
     { width: '12%', field: 'cName', header: 'Carrier', type: "text" },
     { width: '10%', field: 'createdDate', header: 'Order Date', type: "text" },
     { width: '12%', field: 'date', header: 'Brokerage Date', type: "text" },
@@ -47,6 +49,7 @@ export class BrokerageComponent implements OnInit {
   this.fetchBrokerageReport();
   this.setToggleOptions();
   this.fetchCarriers();
+  this.fetchCustomers();
   }
 
 
@@ -84,7 +87,12 @@ export class BrokerageComponent implements OnInit {
   }
 
 
-
+  async fetchCustomers() {
+    const customers = await this.apiService.getData(`contacts/fetch/order/customers`).toPromise();
+    customers.forEach(element => {
+      this.customers[element.contactID] = element.companyName
+    });
+  }
 
     async fetchBrokerageReport(refresh?: boolean) {
     if(refresh === true){
@@ -161,6 +169,7 @@ export class BrokerageComponent implements OnInit {
   let obj = {}
   obj['Order No'] = element.orderNumber
   obj['Trip No'] = element.tripData.tripNo
+  obj['Customers'] = this.customers[element.customerID]
   obj['Carrier'] = this.carriersObject[element.brkCarrID] 
   obj['Order Date'] = element.createdDate
   obj['Brokerage Date'] = element.date
@@ -190,6 +199,13 @@ export class BrokerageComponent implements OnInit {
   else {
    this.toastr.error("No Records found")
   }
+  }
+  
+  
+    directToDetail(orderID: string) {
+    setTimeout(() => {
+      this.router.navigateByUrl(`/dispatch/orders/detail/${orderID}`);
+    }, 10);
   }
   
   
