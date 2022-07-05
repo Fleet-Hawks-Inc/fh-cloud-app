@@ -340,7 +340,6 @@ export class TripDetailComponent implements OnInit {
         });
 
         let documents = result.tripDocs;
-
         if (documents.length > 0) {
           documents.forEach((el) => {
             if (el.uploadedDocs.length > 0) {
@@ -352,7 +351,7 @@ export class TripDetailComponent implements OnInit {
                   obj = {
                     imgPath: `${element.urlPath}`,
                     docPath: `${element.urlPath}`,
-                    displayName: el.docType,
+                    displayName: element.displayName,
                     name: name,
                     ext: ext,
                     type: element.type ? element.type : 'other'
@@ -373,7 +372,6 @@ export class TripDetailComponent implements OnInit {
           });
 
         }
-
 
         if (result.split) {
           result.split.map((x, cind) => {

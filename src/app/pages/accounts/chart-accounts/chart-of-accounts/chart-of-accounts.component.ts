@@ -207,8 +207,6 @@ export class ChartOfAccountsComponent implements OnInit {
             } else {
               this.lastItemSK = "end";
             }
-            const newArray = _.sortBy(this.accounts, ["actNo"]); // sort by account number
-            this.accounts = newArray;
             this.loaded = true;
           }
         });
