@@ -112,15 +112,16 @@
                                             <tr>
                                                 <td class="back-color-gray">Number of Fleets</td>
                                                 <td><span
-                                                        *ngIf="carriers.fleets != undefined">{{carriers.fleets.totalFleets}}</span>
+                                                        *ngIf="carriers.fleets != undefined">{{carriers.fleets.totalFleets
+                                                        ? carriers.fleets.totalFleets : '-'}}</span>
                                                 </td>
                                                 <td class="back-color-gray">EIN</td>
                                                 <td>{{carriers.EIN ? carriers.EIN : '-'}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="back-color-gray">Vehicle(s)</td>
-                                                <td><span
-                                                        *ngIf="carriers.fleets != undefined">{{carriers.fleets.trucks}}</span>
+                                                <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.trucks
+                                                        ? carriers.fleets.trucks : '-'}}</span>
                                                 </td>
                                                 <td class="back-color-gray">Liability Insurance#</td>
                                                 <td>{{carriers.liabilityInsurance ? carriers.liabilityInsurance : '-'}}
@@ -129,31 +130,32 @@
                                             <tr>
                                                 <td class="back-color-gray">Asset(s)</td>
                                                 <td><span
-                                                        *ngIf="carriers.fleets != undefined">{{carriers.fleets.trailers}}</span>
+                                                        *ngIf="carriers.fleets != undefined">{{carriers.fleets.trailers
+                                                        ? carriers.fleets.trailers : '-'}}</span>
                                                 </td>
                                                 <td class="back-color-gray">Cargo Insurance#</td>
                                                 <td>{{carriers.cargoInsurance ? carriers.cargoInsurance : '-'}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="back-color-gray">Reefer(s)</td>
-                                                <td><span
-                                                        *ngIf="carriers.fleets != undefined">{{carriers.fleets.reefers}}</span>
+                                                <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.reefers
+                                                        ? carriers.fleets.reefers : '-'}}</span>
                                                 </td>
                                                 <td class="back-color-gray">CCC</td>
                                                 <td>{{carriers.CCC ? carriers.CCC : '-'}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="back-color-gray">Dry Van(s)</td>
-                                                <td><span
-                                                        *ngIf="carriers.fleets != undefined">{{carriers.fleets.dryVans}}</span>
+                                                <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.dryVans
+                                                        ? carriers.fleets.dryVans : '-'}}</span>
                                                 </td>
                                                 <td class="back-color-gray">SCAC</td>
                                                 <td>{{carriers.SCAC ? carriers.SCAC : '-'}}</td>
                                             </tr>
                                             <tr>
                                                 <td class="back-color-gray">Flatbed(s)</td>
-                                                <td><span
-                                                        *ngIf="carriers.fleets != undefined">{{carriers.fleets.flatbed}}</span>
+                                                <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.flatbed
+                                                        ? carriers.fleets.flatbed : '-'}}</span>
                                                 </td>
                                                 <td class="back-color-gray">Business Country</td>
                                                 <td><span *ngIf="carriers.bizCountry == 'CA'">Canada</span>
@@ -206,7 +208,8 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="col-lg-12">
+                                <div class="col-lg-12"
+                                    *ngIf="carriers.addressDetails && carriers.addressDetails.length > 0">
                                     <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Address</h2>
                                     <table class="table table-bordered table-responsive-lg"
                                         *ngFor="let address of carriers.addressDetails">
@@ -273,7 +276,7 @@
                                 <!-- Subscription Details end -->
 
 
-                                <div class="col-lg-12" *ngIf="carriers.banks.length > 0">
+                                <div class="col-lg-12" *ngIf="carriers.banks && carriers.banks.length > 0">
                                     <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Bank Details</h2>
                                     <table class="table table-bordered table-responsive-lg"
                                         *ngFor="let bank of carriers.banks">
@@ -338,13 +341,11 @@
                                     </table>
                                 </div>
                                 <div class="col-lg-12">
+                                    <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Terms and
+                                        Conditions
+                                    </h2>
                                     <table class="table table-bordered table-responsive-lg">
                                         <tbody>
-                                            <tr>
-                                                <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Terms and
-                                                    Conditions
-                                                </h2>
-                                            </tr>
                                             <tr class="text-capitalize">
                                                 <td width="20%" class="back-color-gray">Terms For Customer on Invoice
                                                 </td>
@@ -401,224 +402,222 @@
     </div>
 </section>
 
-<div>
-    <p-dialog header="Change Password" [(visible)]="display1" [style]="{width: '30vw', height:'23vw'}">
-        <div class="modal-body text-dark" style="max-height: 500px;">
-            <form id="changePasswordForm" class="form-horizontal form-bordered text-capitalize"
-                name="changePasswordForm" [mustMatch]="['password', 'confirmPassword']"
-                (ngSubmit)="changePasswordF.form.valid && onChangePassword()" novalidate #changePasswordF="ngForm">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right pt-2"> Old Password <span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label>
-                        <div class="input-group">
-                            <input id="pd" [(ngModel)]="pwdData.oldPassword" placeholder="eg.  $John@01"
-                                name="oldPassword" #oldPwd="ngModel" required
-                                [ngClass]="{ 'error' : changePasswordF.submitted && oldPwd.invalid }"
-                                [type]="oldFieldTextType ? 'text' : 'password'" class="form-control" />
-                            <div class="input-group-append">
-                                <span class="input-group-text eye">
-                                    <i class="fa" [ngClass]="{'fa-eye-slash': !oldFieldTextType,
-                                        'fa-eye': oldFieldTextType}" (click)="toggleOldFieldTextType()"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div *ngIf="oldPwd.invalid && changePasswordF.submitted" class="text-danger">
-                            <div *ngIf="oldPwd.errors.required">
-                                Old Password is required.
-                            </div>
+<p-dialog header="Change Password" [(visible)]="display1" [style]="{width: '30vw', height:'23vw'}">
+    <div class="modal-body text-dark" style="max-height: 500px;">
+        <form id="changePasswordForm" class="form-horizontal form-bordered text-capitalize" name="changePasswordForm"
+            [mustMatch]="['password', 'confirmPassword']" (ngSubmit)="changePasswordF.form.valid && onChangePassword()"
+            novalidate #changePasswordF="ngForm">
+            <div class="row">
+                <div class="col-lg-12">
+                    <label class="control-label font-weight-bold text-lg-right pt-2"> Old Password <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                    </label>
+                    <div class="input-group">
+                        <input id="pd" [(ngModel)]="pwdData.oldPassword" placeholder="eg.  $John@01" name="oldPassword"
+                            #oldPwd="ngModel" required
+                            [ngClass]="{ 'error' : changePasswordF.submitted && oldPwd.invalid }"
+                            [type]="oldFieldTextType ? 'text' : 'password'" class="form-control" />
+                        <div class="input-group-append">
+                            <span class="input-group-text eye">
+                                <i class="fa" [ngClass]="{'fa-eye-slash': !oldFieldTextType,
+                                    'fa-eye': oldFieldTextType}" (click)="toggleOldFieldTextType()"></i>
+                            </span>
                         </div>
                     </div>
-                    <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right pt-2"> New Password <span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label>
-                        <div class="input-group">
-                            <input id="pd" [(ngModel)]="pwdData.newPassword" placeholder="eg.  $John@01"
-                                (change)="onChangeHideErrors('password')" name="password" #pwd="ngModel" required
-                                [ngClass]="{ 'error' : changePasswordF.submitted && pwd.invalid }"
-                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"
-                                [type]="fieldTextType ? 'text' : 'password'"
-                                (input)="validatePassword($event.target.value)" class="form-control" />
-                            <div class="input-group-append">
-                                <span class="input-group-text eye">
-                                    <i class="fa" [ngClass]="{'fa-eye-slash': !fieldTextType,
-                                  'fa-eye': fieldTextType}" (click)="toggleFieldTextType()"></i>
-                                </span>
-                            </div>
+                    <div *ngIf="oldPwd.invalid && changePasswordF.submitted" class="text-danger">
+                        <div *ngIf="oldPwd.errors.required">
+                            Old Password is required.
                         </div>
-                        <div *ngIf="pwd.invalid && changePasswordF.submitted" class="text-danger">
-                            <div *ngIf="pwd.errors.required">
-                                Password is required.
-                            </div>
-                            <div *ngIf="pwd.errors.pattern">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <p class="text-dark pt-2 mb-0"> <span class="pr-1"
-                                                [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
-                                                <i
-                                                    [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']">
-                                                </i></span> 8 characters minimum</p>
-                                        <p class="text-dark pt-2 mb-0"> <span class="pr-1"
-                                                [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
-                                                <i
-                                                    [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']">
-                                                </i></span> atleast 1 number
-                                        </p>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <p class="text-dark pt-2 mb-0"> <span class="pr-1"
-                                                [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
-                                                <i
-                                                    [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']">
-                                                </i></span> atleast 1 uppercase</p>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <label class="control-label font-weight-bold text-lg-right pt-2"> New Password <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                    </label>
+                    <div class="input-group">
+                        <input id="pd" [(ngModel)]="pwdData.newPassword" placeholder="eg.  $John@01"
+                            (change)="onChangeHideErrors('password')" name="password" #pwd="ngModel" required
+                            [ngClass]="{ 'error' : changePasswordF.submitted && pwd.invalid }"
+                            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"
+                            [type]="fieldTextType ? 'text' : 'password'" (input)="validatePassword($event.target.value)"
+                            class="form-control" />
+                        <div class="input-group-append">
+                            <span class="input-group-text eye">
+                                <i class="fa" [ngClass]="{'fa-eye-slash': !fieldTextType,
+                              'fa-eye': fieldTextType}" (click)="toggleFieldTextType()"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div *ngIf="pwd.invalid && changePasswordF.submitted" class="text-danger">
+                        <div *ngIf="pwd.errors.required">
+                            Password is required.
+                        </div>
+                        <div *ngIf="pwd.errors.pattern">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                            [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
+                                            <i
+                                                [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']">
+                                            </i></span> 8 characters minimum</p>
+                                    <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                            [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
+                                            <i
+                                                [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']">
+                                            </i></span> atleast 1 number
+                                    </p>
+                                </div>
+                                <div class="col-lg-12">
+                                    <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                            [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
+                                            <i
+                                                [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']">
+                                            </i></span> atleast 1 uppercase</p>
 
-                                        <p class="text-dark pt-2 mb-0"> <span class="pr-1"
-                                                [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
-                                                    [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']">
-                                                </i></span> atleast 1 lowercase</p>
+                                    <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                            [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
+                                                [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']">
+                                            </i></span> atleast 1 lowercase</p>
 
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <p class="text-dark pt-2 mb-0"><span class="pr-1"
-                                                [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']">
-                                                <i
-                                                    [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span>
-                                            atleast 1 special character(!@#$%^&*.-)</p>
-                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <p class="text-dark pt-2 mb-0"><span class="pr-1"
+                                            [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']">
+                                            <i
+                                                [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span>
+                                        atleast 1 special character(!@#$%^&*.-)</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Confirm Password <span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label>
-                        <div class="input-group">
-                            <input id="cnf" [(ngModel)]="pwdData.confirmPassword" name="confirmPassword"
-                                (change)="onChangeHideErrors('confirmPassword')" #cpwd="ngModel" required
-                                [ngClass]="{ 'error' : changePasswordF.submitted && cpwd.invalid }"
-                                [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password"
-                                class="form-control" />
-                            <div class="input-group-append">
-                                <span class="input-group-text eye">
-                                    <i class="fa" [ngClass]="{'fa-eye-slash': !cpwdfieldTextType,
-                                        'fa-eye': cpwdfieldTextType}" (click)="togglecpwdfieldTextType()"></i>
-                                </span>
-                            </div>
-                        </div>
-                        <div *ngIf="cpwd.invalid && changePasswordF.submitted" class="text-danger">
-                            <div *ngIf="cpwd.errors.required">
-                                Confirm password is required.
-                            </div>
-                            <div *ngIf="cpwd.errors.mustMatch">Passwords must match</div>
+                </div>
+                <div class="col-lg-12">
+                    <label class="control-label font-weight-bold text-lg-right pt-2">Confirm Password <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                    </label>
+                    <div class="input-group">
+                        <input id="cnf" [(ngModel)]="pwdData.confirmPassword" name="confirmPassword"
+                            (change)="onChangeHideErrors('confirmPassword')" #cpwd="ngModel" required
+                            [ngClass]="{ 'error' : changePasswordF.submitted && cpwd.invalid }"
+                            [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password"
+                            class="form-control" />
+                        <div class="input-group-append">
+                            <span class="input-group-text eye">
+                                <i class="fa" [ngClass]="{'fa-eye-slash': !cpwdfieldTextType,
+                                    'fa-eye': cpwdfieldTextType}" (click)="togglecpwdfieldTextType()"></i>
+                            </span>
                         </div>
                     </div>
-                </div><br>
+                    <div *ngIf="cpwd.invalid && changePasswordF.submitted" class="text-danger">
+                        <div *ngIf="cpwd.errors.required">
+                            Confirm password is required.
+                        </div>
+                        <div *ngIf="cpwd.errors.mustMatch">Passwords must match</div>
+                    </div>
+                </div>
+            </div><br>
 
+            <div class="row mt-3">
+                <div class="col-lg-12 text-right">
+                    <div *ngIf="oldPassError" class="text-danger">{{oldPassError}}</div>
+                    <button pButton type="button" label="Cancel" class="mb-2" style="margin-right: 20px;"
+                        (click)="pwdModalClose(); display1= false;"></button>
+                    <button pButton type="submit" label="Save" class="mb-2" style="margin-right: 0px;"
+                        [disabled]="submitDisabled" (click)="onChangePassword()"></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</p-dialog>
+
+<p-dialog header="Add Sub Company" [(visible)]="display" [style]="{width: '40vw', height:'86%'}" tabindex="-1"
+    role="dialog" aria-labelledby="addCompanyModal" aria-hidden="true">
+    <div class="modal-body text-dark" style="max-height: 500px;">
+        <form id="addCompanyForm" class="form-horizontal form-bordered text-capitalize" name="addCompF"
+            [mustMatch]="['password', 'confirmPassword']" (ngSubmit)="addCompF.form.valid" novalidate #addCompF="ngForm"
+            [formGroup]="userInfoFormGroup">
+            <div class="row">
+                <div class="col-lg-12">
+                    <label class="control-label font-weight-bold text-lg-right pt-2"> First Name <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                    </label><br>
+                    <input type="text" style="width: 700px;" placeholder="eg. John" required class="mb-2" pInputText
+                        formControlName="firstName">
+                </div>
+
+                <div class="col-lg-12">
+                    <label class="control-label font-weight-bold text-lg-right pt-2"> Last Name <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                    </label><br>
+                    <input type="text" style="width: 700px;" placeholder="eg. Smith" required pInputText class="mb-2"
+                        formControlName="lastName">
+                </div>
+
+
+                <div class="col-lg-12">
+                    <label class="control-label font-weight-bold text-lg-right pt-2"> Registered Company Name <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                    </label><br>
+                    <input name="cName" type="text" style="width: 700px;" placeholder="eg. Fleet Inc." required
+                        class="mb-2" pInputText formControlName="carrierName" (focusout)="validateCompanyName()">
+                </div>
+                <div class="text-danger" *ngIf="carrierNameExists">{{carrierNameErr}}</div>
+
+
+                <div class="col-lg-12">
+                    <label class="control-label font-weight-bold text-lg-right pt-2"> Email <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                    </label><br>
+                    <input name="emailId" type="text" style="width: 700px;" placeholder="eg. johnsmith@gmail.com"
+                        requiredclass="mb-2" pInputText formControlName="email" (focusout)="validateEmail()">
+                </div>
+                <div class="text-danger" *ngIf="emailExistsExists">{{emailExistsErr}}</div>
+
+
+
+                <div class="col-lg-12">
+                    <label class="control-label font-weight-bold text-lg-right pt-2"> Username <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                    </label><br>
+                    <input name="username" type="text" style="width: 700px;" placeholder="eg. johnsmith12" required
+                        class="mb-2" pInputText formControlName="username" (focusout)="validateUsername()">
+                </div>
+                <div class="text-danger" *ngIf="userNameExists">{{userNameExistsErr}}</div>
+
+
+
+                <div class="col-lg-12">
+                    <label class="control-label font-weight-bold text-lg-right pt-2"> Password <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                    </label><br>
+                    <input name="pwd" type="password" style="width: 700px;" placeholder="eg. $John@01" required
+                        class="mb-2" pInputText formControlName="compPassword">
+                </div>
+
+
+
+                <div class="col-lg-12">
+                    <label class="control-label font-weight-bold text-lg-right pt-2"> Confirm Password <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                    </label><br>
+                    <input name="confirmPwd" type="password" style="width: 700px;" placeholder="eg. $John@01"
+                        requiredclass="mb-2" pInputText formControlName="compPassword">
+                </div>
+            </div>
+            <div class="modal-footer">
                 <div class="row mt-3">
                     <div class="col-lg-12 text-right">
-                        <div *ngIf="oldPassError" class="text-danger">{{oldPassError}}</div>
-                        <button pButton type="button" label="Cancel" class="mb-2" style="margin-right: 20px;"
-                            (click)="pwdModalClose(); display1= false;"></button>
-                        <button pButton type="submit" label="Save" class="mb-2" style="margin-right: 0px;"
-                            [disabled]="submitDisabled" (click)="onChangePassword()"></button>
+                        <button pButton type="button" (click)="clearForm(); display= false;" label="Cancel" class="mb-2"
+                            style="margin-right: 20px"></button>
+                        <button pButton type="button" (click)="addSubCompany()" label="Save" class="mb-2"
+                            style="margin-right: -30px;"></button>
                     </div>
                 </div>
-            </form>
-        </div>
-    </p-dialog>
-</div>
-<div>
-    <p-dialog header="Add Sub Company" [(visible)]="display" [style]="{width: '40vw', height:'86%'}" tabindex="-1"
-        role="dialog" aria-labelledby="addCompanyModal" aria-hidden="true">
-        <div class="modal-body text-dark" style="max-height: 500px;">
-            <form id="addCompanyForm" class="form-horizontal form-bordered text-capitalize" name="addCompF"
-                [mustMatch]="['password', 'confirmPassword']" (ngSubmit)="addCompF.form.valid" novalidate
-                #addCompF="ngForm" [formGroup]="userInfoFormGroup">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right pt-2"> First Name <span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label><br>
-                        <input type="text" style="width: 700px;" placeholder="eg. John" required class="mb-2" pInputText
-                            formControlName="firstName">
-                    </div>
+            </div>
+        </form>
+    </div>
+</p-dialog>
 
-                    <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right pt-2"> Last Name <span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label><br>
-                        <input type="text" style="width: 700px;" placeholder="eg. Smith" required pInputText
-                            class="mb-2" formControlName="lastName">
-                    </div>
-
-
-                    <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right pt-2"> Registered Company Name <span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label><br>
-                        <input name="cName" type="text" style="width: 700px;" placeholder="eg. Fleet Inc." required
-                            class="mb-2" pInputText formControlName="carrierName" (focusout)="validateCompanyName()">
-                    </div>
-                    <div class="text-danger" *ngIf="carrierNameExists">{{carrierNameErr}}</div>
-
-
-                    <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right pt-2"> Email <span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label><br>
-                        <input name="emailId" type="text" style="width: 700px;" placeholder="eg. johnsmith@gmail.com"
-                            requiredclass="mb-2" pInputText formControlName="email" (focusout)="validateEmail()">
-                    </div>
-                    <div class="text-danger" *ngIf="emailExistsExists">{{emailExistsErr}}</div>
-
-
-
-                    <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right pt-2"> Username <span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label><br>
-                        <input name="username" type="text" style="width: 700px;" placeholder="eg. johnsmith12" required
-                            class="mb-2" pInputText formControlName="username" (focusout)="validateUsername()">
-                    </div>
-                    <div class="text-danger" *ngIf="userNameExists">{{userNameExistsErr}}</div>
-
-
-
-                    <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right pt-2"> Password <span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label><br>
-                        <input name="pwd" type="password" style="width: 700px;" placeholder="eg. $John@01" required
-                            class="mb-2" pInputText formControlName="compPassword">
-                    </div>
-
-
-
-                    <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right pt-2"> Confirm Password <span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label><br>
-                        <input name="confirmPwd" type="password" style="width: 700px;" placeholder="eg. $John@01"
-                            requiredclass="mb-2" pInputText formControlName="compPassword">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="row mt-3">
-                        <div class="col-lg-12 text-right">
-                            <button pButton type="button" (click)="clearForm(); display= false;" label="Cancel"
-                                class="mb-2" style="margin-right: 20px"></button>
-                            <button pButton type="button" (click)="addSubCompany()" label="Save" class="mb-2"
-                                style="margin-right: -30px;"></button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </p-dialog>
-</div>
 <p-dialog header="Verify Email" [(visible)]="showVerifyEmail" [modal]="true" [style]="{width: '30vw'}"
     [draggable]="false" [resizable]="false">
     <div>

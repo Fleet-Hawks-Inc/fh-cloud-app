@@ -44,10 +44,18 @@ export class DeletedCustomerComponent implements OnInit {
             }
 
             for (var i = 0; i < result.Items.length; i++) {
-              for (var j = 0; j < result.Items[i].eTypes.length; j++) {
-                result.Items[i].eTypes[j] = result.Items[i].eTypes[j].replace('_', ' ');
+              if (result.Items[i].eTypes.includes('fc')) {
+                var index = result.Items[i].eTypes.indexOf('fc');
+                if (index !== -1) {
+                  result.Items[i].eTypes[index] = 'Factoring Company';
+                }
               }
-              result.Items[i].eTypes = result.Items[i].eTypes.join(', ');
+              if (result.Items[i].eTypes.includes('owner_operator')) {
+                var index = result.Items[i].eTypes.indexOf('owner_operator');
+                if (index !== -1) {
+                  result.Items[i].eTypes[index] = 'Owner Operator';
+                }
+              }
             }
             this.customers = this.customers.concat(result.Items);
             this.loaded = true;
