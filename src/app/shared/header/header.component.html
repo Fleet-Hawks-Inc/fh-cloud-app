@@ -138,7 +138,7 @@
                             class="modal-with-form"><i class="fas fa-building"></i> Company Profile</a>
                     </li>
                     <li *ngIf="showSwitch">
-                        <a role="menuitem" tabindex="-1" routerLink="/organizations" class="modal-with-form"><i
+                        <a role="menuitem" tabindex="-1" (click)="switchCompany()" class="modal-with-form"><i
                                 class="fas fa-exchange"></i> Switch Company</a>
                     </li>
                     <li>

@@ -199,6 +199,7 @@ export class CustomerCollectionComponent implements OnInit {
 
       this.dataMessage = Constant.FETCHING_DATA
       if (result.Items.length == 0) {
+        this.loaded = true;
         this.dataMessage = Constant.NO_RECORDS_FOUND
       }
       if (result.Items.length > 0) {
