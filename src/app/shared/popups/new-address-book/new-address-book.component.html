@@ -4269,48 +4269,36 @@
                           <td>{{ bank.insNo ? bank.insNo : "-" }}</td>
                         </tr>
                         <tr>
-                          <td colspan="2" class="p-0 border-0">
+                          <td colspan="2" class="p-0 border-none">
                             <table
                               style="float: left"
-                              class="table border-0 mb-0"
+                              class="table table-bordered mb-0"
                               *ngFor="let bitem of bank.adrs"
                             >
                               <tbody>
                                 <tr>
-                                  <th
-                                    width="40%"
-                                    class="back-color-gray"
-                                    style="border-top: 0px"
-                                  >
+                                  <th width="40%" class="back-color-gray">
                                     Address Type:
                                   </th>
-                                  <td
-                                    style="border-top: 0px; border-right: 0px"
-                                  >
-                                    {{ bitem.aType ? bitem.aType : "-" }}
-                                  </td>
+                                  <td>{{ bitem.aType ? bitem.aType : "-" }}</td>
                                 </tr>
                                 <tr *ngIf="bitem.manual">
                                   <th width="40%" class="back-color-gray">
                                     Country:
                                   </th>
-                                  <td style="border-right: 0px">
-                                    {{ bitem.cName ? bitem.cName : "-" }}
-                                  </td>
+                                  <td>{{ bitem.cName ? bitem.cName : "-" }}</td>
                                 </tr>
                                 <tr *ngIf="bitem.manual">
                                   <th width="40%" class="back-color-gray">
                                     Province/State:
                                   </th>
-                                  <td style="border-right: 0px">
-                                    {{ bitem.sName ? bitem.sName : "-" }}
-                                  </td>
+                                  <td>{{ bitem.sName ? bitem.sName : "-" }}</td>
                                 </tr>
                                 <tr *ngIf="bitem.manual">
                                   <th width="40%" class="back-color-gray">
                                     City:
                                   </th>
-                                  <td style="border-right: 0px">
+                                  <td>
                                     {{ bitem.ctyName ? bitem.ctyName : "-" }}
                                   </td>
                                 </tr>
@@ -4318,49 +4306,25 @@
                                   <th width="40%" class="back-color-gray">
                                     Zip Code:
                                   </th>
-                                  <td style="border-right: 0px">
-                                    {{ bitem.zip ? bitem.zip : "-" }}
-                                  </td>
+                                  <td>{{ bitem.zip ? bitem.zip : "-" }}</td>
                                 </tr>
                                 <tr *ngIf="bitem.manual">
                                   <th width="40%" class="back-color-gray">
                                     Address1:
                                   </th>
-                                  <td style="border-right: 0px">
-                                    {{ bitem.add1 ? bitem.add1 : "-" }}
-                                  </td>
+                                  <td>{{ bitem.add1 ? bitem.add1 : "-" }}</td>
                                 </tr>
                                 <tr *ngIf="bitem.manual">
-                                  <th
-                                    width="40%"
-                                    style="border-bottom: 0px"
-                                    class="back-color-gray"
-                                  >
+                                  <th width="40%" class="back-color-gray">
                                     Address2:
                                   </th>
-                                  <td
-                                    style="
-                                      border-right: 0px;
-                                      border-bottom: 0px;
-                                    "
-                                  >
-                                    {{ bitem.add2 ? bitem.add2 : "-" }}
-                                  </td>
+                                  <td>{{ bitem.add2 ? bitem.add2 : "-" }}</td>
                                 </tr>
                                 <tr *ngIf="!bitem.manual">
-                                  <th
-                                    width="40%"
-                                    style="border-bottom: 0px"
-                                    class="back-color-gray"
-                                  >
+                                  <th width="40%" class="back-color-gray">
                                     Address:
                                   </th>
-                                  <td
-                                    style="
-                                      border-right: 0px;
-                                      border-bottom: 0px;
-                                    "
-                                  >
+                                  <td>
                                     {{ bitem.userLoc ? bitem.userLoc : "-" }}
                                   </td>
                                 </tr>
@@ -4611,7 +4575,10 @@
                 >
                 <div class="row">
                   <div class="col-6">
-                    <table style="float: left" class="table table-bordered">
+                    <table
+                      style="float: left"
+                      class="table table-bordered mb-2"
+                    >
                       <tbody>
                         <tr>
                           <th width="40%" class="back-color-gray">CSA:</th>
@@ -4726,9 +4693,7 @@
                           Delivery Rate:
                         </div>
                         <div>
-                          {{
-                            option.deliveryRate ? option.deliveryRate : "-"
-                          }}
+                          {{ option.deliveryRate ? option.deliveryRate : "-" }}
                           of
                           {{ option.currency ? option.currency : "" }}
                         </div>
