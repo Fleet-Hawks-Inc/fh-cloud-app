@@ -88,16 +88,16 @@ export class CustomerCollectionComponent implements OnInit {
       { width: '9%', field: 'customerName', header: 'Customer', type: "text" },
       { width: '10%', field: 'customerEmail', header: 'Email', type: "text" },
       { width: '10%', field: 'customerPhone', header: 'Phone', type: "text" },
-      { width: '9%', field: 'customerConfirmation', header: 'Confirmation#', type: "text" },
+      { width: '9%', field: 'cusConfirmation', header: 'Confirmation#', type: "text" },
       { width: '10%', field: 'txnDate', header: 'Inv. Date#', type: "text" },
       { width: '8%', field: 'invNo', header: 'Inv.#', type: "text" },
       { width: '10%', field: 'finalAmount', header: 'Inv Amount#', type: "text" },
       { width: '8%', field: 'balance', header: 'Balance', type: "text" },
       { width: '8%', field: 'invStatus', header: 'Inv Status', type: "text" },
       { width: '10%', field: 'elapsedDays', header: 'Days Elapsed', type: "text" },
-      { field: 'balanceAge30', header: '30-45', type: "text" },
-      { field: 'balanceAge45', header: '45-60', type: "text" },
-      { field: 'balanceAge60', header: '60+', type: "text" },
+      { field: 'cadBalanceAge30', header: '30-45', type: "text" },
+      { field: 'cadBalanceAge45', header: '45-60', type: "text" },
+      { field: 'cadBalanceAge60', header: '60+', type: "text" },
 
     ];
     this._selectedColumns = this.dataColumns;
