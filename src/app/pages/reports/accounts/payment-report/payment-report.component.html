@@ -283,91 +283,217 @@
         </form>
       </header>
 
-      <section class="m-2">
+       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
-            <div
-              infiniteScroll
-              [infiniteScrollDistance]="1"
-              [infiniteScrollUpDistance]="1"
-              [infiniteScrollThrottle]="5"
-              (scrolled)="onScroll()"
-            >
-              <div class="bg-white p-3 text-dark">
-                <div class="form-group row">
-                  <div class="col-lg-12">
-                    <div class="table-responsive">
-                      <table
-                        id="diverTbl"
-                        class="row-border hover table table-bordered table-striped mb-0"
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row pt-2">
+                <div
+                  class="col-lg-12"
+                  style="height: calc(100vh - 149px); overflow-y: scroll"
+                >
+                  <p-table
+                    #dt
+                    [value]="allPayments"
+                    [resizableColumns]="true"
+                    columnResizeMode="expand"
+                    scrollDirection="both"
+                    [columns]="selectedColumns"
+                    [loading]="!loaded"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                    [scrollable]="true"
+                    [loading]="!loaded"
+                    scrollHeight="100%"
+                  >
+                    <!-- Caption template of data table -->
+                    <ng-template pTemplate="caption">
+                      <div
+                        class="p-d-flex d-flex justify-content-between align-items-center"
                       >
-                        <thead>
-                          <tr>
-                            <th id="" class="col1 minWidth120">
-                              Transaction Date
-                            </th>
-                            <th id="" class="col1 minWidth120">Payment ID</th>
-                            <th id="" class="minWidth120">Payment Mode</th>
-                            <th id="" class="minWidth120">Cheque/ Cash No.</th>
-                            <th id="" class="col1 minWidth120">
-                              Cheque/Cash Date
-                            </th>
-                            <th id="" class="minWidth120">Type Of Payment</th>
-                            <th id="" class="minWidth120">Receiver</th>
-                            <th id="" class="minWidth120">Currency</th>
-                            <th id="" class="minWidth120">Amount</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr
-                            *ngIf="allPayments.length == 0"
-                            class="text-center"
-                          >
-                            <td colspan="14">{{ dataMessage }}</td>
-                          </tr>
-                          <tr *ngFor="let element of allPayments">
-                            <td>
-                              {{ element.txnDate | date: "YYYY-MM-dd" }}
-                            </td>
-                            <td>
-                              <a
-                                [routerLink]="element.url"
-                                target="_blank"
-                                style="color: #0000ff; text-decoration: none"
-                                >{{ element.paymentNo }}</a
-                              >
-                            </td>
-                            <td>
-                              {{ element.payMode | titlecase }}
-                            </td>
-                            <td>
-                              {{ element.payModeNo }}
-                            </td>
-                            <td>
-                              {{ element.payModeDate | date: "YYYY-MM-dd" }}
-                            </td>
-                            <td>
-                              {{ element.type | titlecase }}
-                              <span *ngIf="element.advType"
-                                >: {{ element.advType | titlecase }}</span
-                              >
-                            </td>
-                            <td>
-                              {{ element.paymentTo | titlecase }} :
-                              {{ element.entityName | titlecase }}
-                            </td>
+                        <div>
+                          <h3 class="m-0"> Payment Report </h3>
+                        </div>
+                        <div class="text-right">
+                          <span>Showing {{ allPayments.length }} entries </span>
+                          &nbsp;
+                          <button
+                            type="button"
+                            pButton
+                            (click)="refreshData()"
+                            pTooltip="Refresh"
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-sync"
+                          ></button>
+                          <button
+                            pButton
+                            pRipple
+                            pTooltip="Clear Filter"
+                            class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash"
+                            (click)="clear(dt)"
+                          ></button>
 
-                            <td>
-                              {{ element.currency }}
-                            </td>
-                            <td>
-                              {{ element.amount }}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
+                          <p-multiSelect
+                            [options]="dataColumns"
+                            [(ngModel)]="selectedColumns"
+                            optionLabel="header"
+                            selectedItemsLabel="{0} columns selected"
+                            [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns"
+                          >
+                          </p-multiSelect>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <!-- Header template of DataTable -->
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th
+                          *ngFor="let dataColumns of columns"
+                          [pSortableColumn]="dataColumns.field"
+                          pResizableColumn
+                          [ngStyle]="{ width: dataColumns.width }"
+                        >
+                          <div
+                            [ngSwitch]="dataColumns.field"
+                            style="width: 10%"
+                          >
+                           
+                            <span *ngSwitchDefault>
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="right"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                          </div>
+                        </th>
+                      </tr>
+                    </ng-template>
+
+                    <!-- Body Template of Data Table -->
+                    <ng-template
+                      pTemplate="body"
+                      let-payment
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
+                      <tr>
+                        <td
+                          *ngFor="let dataColumns of columns"
+                         [ngStyle]="{ width: dataColumns.width }"
+                          style=" height: 40px; cursor: pointer"
+                        >
+                          <div [ngSwitch]="dataColumns.field">
+                           <span *ngSwitchCase="'txnDate'">
+                              {{ payment.txnDate }}
+                            </span> 
+                            
+                            <span *ngSwitchCase="'paymentNo'">
+                              <a
+                                [routerLink]="payment.url"
+                                target="_blank"
+                                style="color: #0000ff; text-decoration: none" 
+                                >{{ payment.paymentNo }}</a
+                              >
+                            </span>
+                            
+                             <span *ngSwitchCase="'payMode'">
+                              {{ payment.payMode | titlecase }}
+                            </span>
+                            
+                             <span *ngSwitchCase="'payModeNo'">
+                              {{ payment.payModeNo }}
+                            </span>
+                             
+                             <span *ngSwitchCase="'payModeDate'">
+                              {{ payment.payModeDate | date: "YYYY-MM-dd" }}
+                            </span>
+                            
+                             <span *ngSwitchCase="'advType'">
+                              {{ payment.type | titlecase }}
+                              <span *ngIf="payment.advType"
+                                >: {{ payment.advType | titlecase }}</span
+                              >
+                            </span>
+                            
+                             <span *ngSwitchCase="'paymentTo'">
+                              {{ payment.paymentTo | titlecase }} :
+                              {{ payment.entityName | titlecase }}
+                            </span>
+                            
+                            <span *ngSwitchCase="'currency'">
+                              {{ payment.currency }}
+                            </span>
+                            
+                            <span *ngSwitchCase="'amount'">
+                              {{ payment.amount }}
+                            </span>
+                            
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <!-- Empty Template -->
+
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <div class="col-lg-12 mt-3 text-center">
+                        {{ dataMessage }}
+                        <br /><br />
+                      </div>
+                    </ng-template>
+                    <!-- Summary Section with Load More button -->
+
+                    <ng-template pTemplate="summary" let-columns>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="
+                          lastAdvanceSK != 'end' &&
+                         lastDriverSK != 'end' &&
+                        lastEmployeeSK != 'end' &&
+                        lastExpenceSK != 'end' &&
+                        allPayments.length !== 0
+                                  "
+                      >
+                        <button
+                          type="button "
+                          (click)="onScroll($event)"
+                          class="btn btn-success btn-sm text-light"
+                        >
+                          Load More..
+                        </button>
+                        <br /><br />
+                      </div>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="
+                          lastAdvanceSK != 'end' &&
+                         lastDriverSK != 'end' &&
+                        lastEmployeeSK != 'end' &&
+                        lastExpenceSK != 'end' &&
+                        allPayments.length !== 0
+                                  "
+                      >
+                        Total Records: {{ allPayments.length }}
+                      </div>
+                    </ng-template>
+                  </p-table>
                 </div>
               </div>
             </div>
@@ -375,24 +501,7 @@
         </div>
       </section>
     </section>
-    <div
-      class="col-lg-12 mt-3 text-center"
-      *ngIf="
-        lastAdvanceSK != 'end' &&
-        lastDriverSK != 'end' &&
-        lastEmployeeSK != 'end' &&
-        lastExpenceSK != 'end' &&
-        allPayments.length !== 0
-      "
-    >
-      <button
-        type="button"
-        class="btn btn-success btn-sm text-light"
-        (click)="onScroll()"
-      >
-        Load More..
-      </button>
-    </div>
+    
   </div>
 </section>
 
