@@ -85,19 +85,17 @@ export class CustomerCollectionComponent implements OnInit {
     this.fetchCustomerData();
     this.fetchCustomersByIDs();
     this.dataColumns = [
-      { width: '9%', field: 'customerName', header: 'Customer', type: "text" },
+      { width: '8%', field: 'customerName', header: 'Customer', type: "text" },
       { width: '10%', field: 'customerEmail', header: 'Email', type: "text" },
-      { width: '10%', field: 'customerPhone', header: 'Phone', type: "text" },
+      { width: '6%', field: 'customerPhone', header: 'Phone', type: "text" },
       { width: '9%', field: 'cusConfirmation', header: 'Confirmation#', type: "text" },
-      { width: '10%', field: 'txnDate', header: 'Inv. Date#', type: "text" },
-      { width: '8%', field: 'invNo', header: 'Inv.#', type: "text" },
-      { width: '10%', field: 'finalAmount', header: 'Inv Amount#', type: "text" },
-      { width: '8%', field: 'balance', header: 'Balance', type: "text" },
-      { width: '8%', field: 'invStatus', header: 'Inv Status', type: "text" },
-      { width: '10%', field: 'elapsedDays', header: 'Days Elapsed', type: "text" },
-      { field: 'cadBalanceAge30', header: '30-45', type: "text" },
-      { field: 'cadBalanceAge45', header: '45-60', type: "text" },
-      { field: 'cadBalanceAge60', header: '60+', type: "text" },
+      { width: '7%', field: 'txnDate', header: 'Inv. Date#', type: "text" },
+      { width: '5%', field: 'invNo', header: 'Inv.#', type: "text" },
+      { width: '9%', field: 'finalAmount', header: 'Inv Amount#', type: "text" },
+      { width: '7%', field: 'balance', header: 'Balance', type: "text" },
+      { width: '7%', field: 'invStatus', header: 'Inv Status', type: "text" },
+      { width: '9%', field: 'elapsedDays', header: 'Days Elapsed', type: "text" },
+
 
     ];
     this._selectedColumns = this.dataColumns;
@@ -162,7 +160,7 @@ export class CustomerCollectionComponent implements OnInit {
       data.elapsedDays = 0
       const startedDate = new Date(data.txnDate);
       const currentDate = new Date(moment().format("YYYY-MM-DD"));
-      // data.elapsedDays = getDifferenceInDays(startedDate, currentDate);
+      data.elapsedDays = getDifferenceInDays(startedDate, currentDate);
     }
 
 
