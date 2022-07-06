@@ -105,8 +105,15 @@ scrollHeight      ="100%"
                               <tr>
                                 <td *ngFor="let dataColumns of columns" style="width:11.2%; height:40px; cursor: pointer;">
                                   <div [ngSwitch]="dataColumns.field">
+                                    
+                                    <span *ngSwitchCase="'orderNumber'" (click)="directToDetail(brk.orderID)" class="font-weight-bold" >
+                                      {{ get(brk, dataColumns.field) }}
+                                    </span>
+                                    <span *ngSwitchCase="'customerName'">
+                                      {{ (customers[brk.customerID] ? customers[brk.customerID] : '-') | titlecase}}
+                                    </span>
                       <span *ngSwitchCase="'cName'">
-                                    {{carriersObject[brk.brkCarrID] | titlecase}}
+                                    {{(carriersObject[brk.brkCarrID] ? carriersObject[brk.brkCarrID]: '-') | titlecase}}
                                   </span>
                       <span *ngSwitchCase="'pickUpLoc'">
                              <span *ngFor="let item of brk.shippersReceiversInfo">

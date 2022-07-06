@@ -289,9 +289,11 @@ export class HeaderComponent implements OnInit {
   }
 
   detailMessage: string;
+  messageTime: string;
   async showDetail(notification, isNotification = true) {
     this.showNotifications = false;
     this.detailMessage = notification.message;
+    this.messageTime = notification.created;
     this.showNotificationDetail = true;
     if (isNotification && notification.read === 0) {
 
