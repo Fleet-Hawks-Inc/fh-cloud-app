@@ -319,7 +319,7 @@ _selectedColumns: any[];
             this.fuelQty.push(this.fuelList[i].data)
         }
         this.fuelQty.map((x: any) => {
-            if (x.uom === 'L' || x.uom === 'litre') {
+            if (x.uom === 'LTR' || x.uom === 'litre') {
                 this.fuelQtyLitres.push(x);
             } else {
                 this.fuelQtyGallons.push(x);
@@ -537,7 +537,7 @@ _selectedColumns: any[];
                 if (element.data.currency === 'USD') {
                     retailUSDTotal = element.data.amt
                 }
-                obj['Date/Time'] = element.dateTime.replace(/, /g, ' &');
+                obj['Date/Time'] = element.dateTime;
                 obj['Use Type'] = element.data.useType
                 obj['Unit Name'] = this.assetList[element.unitID] || this.vehicleList[element.unitID]
                 obj['Fuel Card#'] = element.data.cardNo
@@ -588,9 +588,9 @@ _selectedColumns: any[];
     getSetExport() {
         this.apiService.getData("fuelEntries/get/export").subscribe((result: any) => {
             result[`Items`].forEach(element => {
-                let date: any = moment(element.data.date)
-                if (element.data.time) {
-                    let time = moment(element.data.time, 'h mm a')
+                let date: any = moment(element.date)
+                if (element.time) {
+                    let time = moment(element.time, 'h mm a')
                     date.set({
                         hour: time.get('hour'),
                         minute: time.get('minute')
