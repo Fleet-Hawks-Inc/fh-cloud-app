@@ -79,7 +79,7 @@ scrollHeight      ="100%"
                             icon="fas fa-sync"
                           ></button>
                           <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
-                          <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="exportBrokerage()" pTooltip="Excel"></button>
                           <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
                           </p-multiSelect>
                         </div>
@@ -105,8 +105,15 @@ scrollHeight      ="100%"
                               <tr>
                                 <td *ngFor="let dataColumns of columns" style="width:11.2%; height:40px; cursor: pointer;">
                                   <div [ngSwitch]="dataColumns.field">
+                                    
+                                    <span *ngSwitchCase="'orderNumber'" (click)="directToDetail(brk.orderID)" class="font-weight-bold" >
+                                      {{ get(brk, dataColumns.field) }}
+                                    </span>
+                                    <span *ngSwitchCase="'customerName'">
+                                      {{ (customers[brk.customerID] ? customers[brk.customerID] : '-') | titlecase}}
+                                    </span>
                       <span *ngSwitchCase="'cName'">
-                                    {{carriersObject[brk.brkCarrID] | titlecase}}
+                                    {{(carriersObject[brk.brkCarrID] ? carriersObject[brk.brkCarrID]: '-') | titlecase}}
                                   </span>
                       <span *ngSwitchCase="'pickUpLoc'">
                              <span *ngFor="let item of brk.shippersReceiversInfo">

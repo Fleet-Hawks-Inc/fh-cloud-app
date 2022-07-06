@@ -242,7 +242,7 @@ export class OrderDetailComponent implements OnInit {
     instructions: "",
     amount: "",
     brokerageAmount: "",
-    currency: "",
+    brkCurrency: "",
     orderNo: "",
     miles: "",
     today: moment().format("YYYY-MM-DD"),
@@ -422,7 +422,8 @@ export class OrderDetailComponent implements OnInit {
         }
         this.brokerage.orderNo = result.orderNumber;
         this.brokerage.miles = result.milesInfo.totalMiles;
-        this.brokerage.currency = result.charges.freightFee.currency;
+        this.brokerage.brkCurrency = result.brkCurrency
+        // this.brokerage.currency = result.charges.freightFee.currency;
 
         if (result.stateTaxID != undefined && result.stateTaxID != "") {
           this.stateCode = result.stateCode;
@@ -853,7 +854,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`cusConfirmation`] = this.cusConfirmation;
 
     this.invoiceData[`zeroRated`] = this.zeroRated;
-    this.invoiceData[`currency`] = this.brokerage.currency;
+    this.invoiceData[`brkCurrency`] = this.brokerage.brkCurrency;
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -952,12 +953,24 @@ export class OrderDetailComponent implements OnInit {
       formData.append("uploadedDocs", this.uploadedDocs[i]);
     }
 
-    let result: any = await this.apiService
-      .postData(`orders/uploadDocs/${this.orderID}/${this.docType}`, formData, true).toPromise()
-    this.uploadedDocs = [];
-    if (result && result.length > 0) {
-      await this.showDocs(result)
-    }
+    await this.apiService
+      .postData(`orders/uploadDocs/${this.orderID}/${this.docType}`, formData, true).toPromise().then(async (result: any) => {
+        this.uploadedDocs = [];
+        if (result && result.length > 0) {
+          await this.showDocs(result);
+          let obj = {
+            mode: 'close',
+          }
+          this.listService.closeModel(obj);
+          this.toastr.success('Document uploaded successfully');
+        }
+      }).catch(err => {
+        let obj = {
+          mode: 'open',
+          message: 'Document type is not valid'
+        }
+        this.listService.closeModel(obj);
+      });
   }
 
   caretClickShipper(i, j) {

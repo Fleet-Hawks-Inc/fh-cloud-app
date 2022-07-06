@@ -6,6 +6,7 @@ import { ApiService, ListService } from "src/app/services";
 import { InvokeHeaderFnService } from "src/app/services/invoke-header-fn.service";
 import { environment } from "../../../environments/environment";
 import { DashboardUtilityService } from "src/app/services/dashboard-utility.service";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
@@ -96,7 +97,8 @@ export class HeaderComponent implements OnInit {
     private listService: ListService,
     public router: Router,
     private headerFnService: InvokeHeaderFnService,
-    private dashboardService: DashboardUtilityService
+    private dashboardService: DashboardUtilityService,
+    private routerMgmtService: RouteManagementServiceService
   ) {
     this.sharedService.activeParentNav.subscribe((val) => {
       let activeTab = localStorage.getItem("active-header");
@@ -118,6 +120,7 @@ export class HeaderComponent implements OnInit {
         this.headerFnService.invokeHeaderComponentFunction.subscribe(
           (name: string) => {
             this.upateCurrentUser();
+
           }
         );
     }
@@ -286,9 +289,11 @@ export class HeaderComponent implements OnInit {
   }
 
   detailMessage: string;
+  messageTime: string;
   async showDetail(notification, isNotification = true) {
     this.showNotifications = false;
     this.detailMessage = notification.message;
+    this.messageTime = notification.created;
     this.showNotificationDetail = true;
     if (isNotification && notification.read === 0) {
 
@@ -345,5 +350,13 @@ export class HeaderComponent implements OnInit {
     }
 
 
+  }
+
+
+  switchCompany() {
+    this.router.navigateByUrl('/organizations');
+    this.listService.triggerModal("");
+    this.listService.openDocTypeMOdal("");
+    this.routerMgmtService.resetAllCache();
   }
 }

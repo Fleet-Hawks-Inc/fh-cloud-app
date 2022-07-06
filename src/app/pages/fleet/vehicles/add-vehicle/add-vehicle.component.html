@@ -43,16 +43,13 @@
                         <i class="fas fa-plus"></i> Add Photo
                         <input (change)="selectDocuments($event, 'uploadedPhotos')" class="hidden_input1 w-100"
                           name="uploadedPhotos" type="file" accept=".jpg, .jpeg, .png" multiple />
-                  
+
                       </div>
                     </div>
-                                       <span
-                              *ngIf="uploadPhotosError != ''"
-                              class="text-danger"
-                            >
-                              {{ uploadPhotosError }}
-                            </span>
-                    
+                    <span *ngIf="uploadPhotosError != ''" class="text-danger">
+                      {{ uploadPhotosError }}
+                    </span>
+
                   </div>
 
                   <div class="col-lg-5 mb-2 pb-1">
@@ -128,7 +125,7 @@
                           </div>
                           <div *ngIf="pNum.errors.pattern">
                             Plate number must be between 6-8 alphanumeric
-                            characters.
+                            characters eg.K5Y932.
                           </div>
                         </div>
                       </div>
@@ -450,13 +447,10 @@
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right">Add Document</label>
                         <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs" type="file"
-                          multiple class="form-control border-0 p-0" accept=".doc, .docx, .pdf, .jpg, .jpeg .png"  />
-                             <span
-                              *ngIf="uploadDocsError != ''"
-                              class="text-danger"
-                            >
-                              {{ uploadDocsError }}
-                            </span>
+                          multiple class="form-control border-0 p-0" accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
+                        <span *ngIf="uploadDocsError != ''" class="text-danger">
+                          {{ uploadDocsError }}
+                        </span>
                       </div>
 
                       <div class="col-lg-10 mt-2" *ngIf="documentSlides.length > 0">
@@ -1331,13 +1325,10 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Add Purchase
                           Document(s)</label>
                         <input (change)="selectDocuments($event, 'purchase')" name="purchaseDocs" type="file" multiple
-                          class="form-control border-0 p-0" accept=".doc, .docx, .pdf, .jpg, .jpeg .png"  />
-                             <span
-                              *ngIf="uploadPurchaseDocsError != ''"
-                              class="text-danger"
-                            >
-                              {{ uploadPurchaseDocsError }}
-                            </span>
+                          class="form-control border-0 p-0" accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
+                        <span *ngIf="uploadPurchaseDocsError != ''" class="text-danger">
+                          {{ uploadPurchaseDocsError }}
+                        </span>
                       </div>
                     </div>
                     <div class="row pr-3">
@@ -1525,12 +1516,9 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Add Loan Document(s)</label>
                         <input (change)="selectDocuments($event, 'loan')" name="loanDocs" type="file" multiple
                           class="form-control border-0 p-0" accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
-                             <span
-                              *ngIf="uploadLonDocsError != ''"
-                              class="text-danger"
-                            >
-                              {{ uploadLonDocsError }}
-                            </span>
+                        <span *ngIf="uploadLonDocsError != ''" class="text-danger">
+                          {{ uploadLonDocsError }}
+                        </span>
                       </div>
                       <div class="col-lg-10 mt-2" *ngIf="lDocs.length > 0">
                         <div class="vehicle-common-box p-3">

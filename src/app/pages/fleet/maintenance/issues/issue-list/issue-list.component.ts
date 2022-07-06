@@ -79,7 +79,7 @@ export class IssueListComponent implements OnInit {
     { width: '14%', field: 'reportedDate', header: 'Reported On', type: "text" },
     { width: '14%', field: 'reportedBy', header: 'Reported By', type: "text" },
     { width: '14%', field: 'assignedTo', header: 'Assigned To', type: "text" },
-    { width: '10%', field: 'currentStatus', header: 'Status', type: "text" },
+    { width: '10%', field: 'issueStatus', header: 'Status', type: "text" },
   ];
   constructor(private apiService: ApiService, private modalService: NgbModal, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 

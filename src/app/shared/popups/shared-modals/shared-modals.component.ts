@@ -114,6 +114,7 @@ export class SharedModalsComponent implements OnInit {
 
   nullVar = null;
   abstractValid = false;
+  isDocSubmit = false;
   prefixOutput: string;
   finalPrefix = "";
   currentUser: any;
@@ -196,17 +197,30 @@ export class SharedModalsComponent implements OnInit {
   getDocsLength: any;
   docModalRef: any;
   documentType: string;
-
+  docError: string;
   async ngOnInit() {
     let ngbModalOptions: NgbModalOptions = {
       backdrop: "static",
       keyboard: false,
       windowClass: "doc-type__main",
     };
+    this.listService.closeModalList.subscribe((res: any) => {
+      if (res.mode == 'open') {
+        this.docError = res.message;
+      } if (res.mode == 'close' && res.message == undefined) {
+        this.docModalRef.close()
+        this.docs = {
+          docType: null,
+          uploadedDocs: [],
+        };
+      }
+    })
     this.docSubscribe = this.listService.docModalList.subscribe((res: any) => {
       if (res.type === 'order' || res.type === 'trip') {
         this.documentType = res.type;
         this.getDocsLength = res.docLength;
+        this.docError = '';
+        this.isDocSubmit = false;
         this.docModalRef = this.modalService.open(this.addDocType, ngbModalOptions)
       }
     })
@@ -701,9 +715,9 @@ export class SharedModalsComponent implements OnInit {
     files = [...event.target.files];
     let totalCount = this.getDocsLength + files.length;
 
-    if (totalCount > 4) {
+    if (totalCount > 10) {
       this.uploadedDocs = [];
-      this.toastr.error("Only 4 documents can be uploaded");
+      this.toastr.error("Only 10 documents can be uploaded");
       return false;
     } else {
       this.uploadedDocs = files;
@@ -715,6 +729,7 @@ export class SharedModalsComponent implements OnInit {
       this.toastr.error("Please select at least one document!");
       return false;
     }
+    this.isDocSubmit = true;
     let obj = {
       docType: this.docs.docType,
       documents: this.uploadedDocs,
@@ -726,6 +741,6 @@ export class SharedModalsComponent implements OnInit {
       obj.module = 'trip';
     }
     this.listService.getAllDocs(obj);
-    this.docModalRef.close()
+
   }
 }
