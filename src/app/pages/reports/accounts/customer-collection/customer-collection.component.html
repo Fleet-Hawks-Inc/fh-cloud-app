@@ -4,13 +4,11 @@
       <header class="page-header pr19 pl11">
         <div class="row" style="padding-top: 10px">
           <div class="col-md-2 col-lg-2 pr-0">
-
-            <ng-select class="form-control populate" [(ngModel)]="customer" name="customer"
+            <ng-select class="form-control populate" name="customer" [(ngModel)]="customer"
               placeholder="Select customer">
               <ng-option *ngFor="let data of customersObjects | keyvalue" value="{{ data.key }}">{{ data.value }}
               </ng-option>
             </ng-select>
-
           </div>
 
           <div class="col-md-2 col-lg-2 pl-2 pr-0">
@@ -118,6 +116,18 @@
                             </div>
                           </span>
                         </th>
+
+                        <th style="width: 8%">
+                          30-45
+                        </th>
+
+                        <th style="width: 7%">
+                          45-60
+                        </th>
+
+                        <th style="width: 8%" alignFrozen="right" pFrozenColumn [frozen]="true">
+                          60+
+                        </th>
                       </tr>
                     </ng-template>
 
@@ -138,8 +148,8 @@
                         }"> {{customer.customerPhone ? customer.customerPhone : "-"}}</td>
 
                         <td [ngStyle]="{
-                          width: find(columns, { field: 'customerConfirmation' }).width
-                        }"> {{customer.customerConfirmation ? customer.customerConfirmation : "-"}}</td>
+                          width: find(columns, { field: 'cusConfirmation' }).width
+                        }"> {{customer.cusConfirmation ? customer.cusConfirmation : "-"}}</td>
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'txnDate' }).width
@@ -152,7 +162,8 @@
                         <td [ngStyle]="{
                           width: find(columns, { field: 'finalAmount' }).width
                         }"> {{ customer.finalAmount | number: "1.2-2" }}
-                          {{ customer.invCur }}</td>
+                          <span *ngIf='invCur'>{{customer.invCur}}</span>
+                          <span *ngIf='currency'>{{customer.currency}}</span>
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'balance' }).width
@@ -166,6 +177,54 @@
                         <td [ngStyle]="{
                           width: find(columns, { field: 'elapsedDays' }).width
                         }"> {{customer.elapsedDays}}</td>
+
+                        <td style="width: 8%;">
+
+                          <span *ngIf="customer.cadBalanceAge30 != '0' ">{{
+                            customer.cadBalanceAge30 | currency
+                            }} CAD</span>
+
+                          <span *ngIf="customer.cadBalanceAge30 == 0">-</span><br />
+
+                          <span *ngIf="customer.usBalanceAge30 ! '0' ">{{
+                            customer.usBalanceAge30 | currency
+                            }} US</span>
+
+                          <span *ngIf="customer.usBalanceAge30 == 0">-</span>
+                        </td>
+
+
+                        <td style="width: 7%;">
+
+                          <span *ngIf="customer.cadBalanceAge45 != 0">{{
+                            customer.cadBalanceAge45 | currency
+                            }} CAD</span>
+
+                          <span *ngIf="customer.cadBalanceAge45 == 0">-</span>
+
+                          <span *ngIf="customer.usBalanceAge45 != 0">{{
+                            customer.usBalanceAge45 | currency
+                            }} US</span>
+
+                          <span *ngIf="customer.usBalanceAge45 == 0">-</span>
+
+                        </td>
+
+                        <td style="width: 8%; overflow: inherit !important" pFrozenColumn alignFrozen="right"
+                          [frozen]="true">
+
+                          <span *ngIf="customer.cadBalanceAge60 != 0">{{
+                            customer.cadBalanceAge60 | currency
+                            }} CAD</span>
+
+                          <span *ngIf="customer.cadBalanceAge60 == 0">-</span>
+
+                          <span *ngIf="customer.usBalanceAge60 != 0">{{
+                            customer.usBalanceAge60 | currency
+                            }} US</span>
+
+                          <span *ngIf="customer.usBalanceAge60 == 0">-</span>
+                        </td>
 
                       </tr>
                     </ng-template>
