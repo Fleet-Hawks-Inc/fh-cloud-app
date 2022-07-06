@@ -4406,3 +4406,15 @@ input:checked + .sliderbtn:before {
 .payment-mini-wrapper > div {
   padding: 0.75rem;
 }
+ul.simple-post-list.settings-list li,
+ul.simple-post-list.settings-list li:last-child a {
+  border-bottom: none;
+}
+.notifications-sidebar .p-datatable-table {
+  border-collapse: separate;
+  border-spacing: 0 0.3em;
+}
+.noti-time {
+  font-size: 12px;
+  color: #b3b6c1;
+}
