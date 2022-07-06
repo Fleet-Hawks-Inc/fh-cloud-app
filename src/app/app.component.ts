@@ -168,4 +168,11 @@ export class AppComponent implements OnInit, AfterContentChecked {
     }
 
   }
+
+  onRouteChange() {
+    // to fix disable issue of action buttons when route change from overlay. currently in order list when cloning
+    if ($('.p-overlaypanel').length > 0) {
+      $('.p-overlaypanel').remove();
+    }
+  }
 }
