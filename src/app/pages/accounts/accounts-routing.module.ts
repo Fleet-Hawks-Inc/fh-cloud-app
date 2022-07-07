@@ -85,6 +85,14 @@ const routes: Routes = [
       ),
     data: { title: "Reports" },
   },
+  {
+    path: "fuel-transactions",
+    loadChildren: () =>
+      import("./fuel-transactions/fuel-transactions.module").then(
+        (m) => m.FuelTransactionsModule
+      ),
+    data: { title: "Reports" },
+  },
 ];
 
 @NgModule({

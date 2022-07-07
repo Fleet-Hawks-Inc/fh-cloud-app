@@ -140,7 +140,7 @@ export class PaymentPdfsComponent implements OnInit {
             Number(this.paymentData.taxdata.provincialTax);
           this.paymentData.payMode = this.paymentData.payMode.replace("_", " ");
           this.paymentData.eiInsurable = this.paymentData.totalAmount;
-
+          this.grandTotal = this.paymentData.finalAmount;
           if (this.paymentData.paymentTo === "driver") {
             this.pdfTitle = "Driver Payment";
           } else if (this.paymentData.paymentTo === "employee") {
@@ -496,21 +496,20 @@ export class PaymentPdfsComponent implements OnInit {
       });
 
     });
-    this.grandTotal = 0;
+    // this.grandTotal = 0;
     for (const item of this.paymentTrips) {
       item.totalMiles = 0;
       item.totalRate = 0;
       for (const plan of item.plans) {
         item.totalMiles += parseFloat(plan.miles);
       }
-      if (item.paymentSelected) {
-        if (item.paymentSelected && item.paymentSelected.pType == 'ppm') {
-          this.grandTotal += item.totalMiles;
-        }
-      } else {
-        this.grandTotal += item.totalMiles;
-      }
-
+      // if(item.paymentSelected) {
+      //   if(item.paymentSelected && item.paymentSelected.pType == 'ppm') {
+      //     this.grandTotal += item.totalMiles;
+      //   }
+      // } else {
+      //   this.grandTotal += item.totalMiles;
+      // }
     }
   }
 
