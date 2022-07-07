@@ -23,13 +23,10 @@ import Constants from 'src/app/pages/fleet/constants';
   styleUrls: ['./customer-collection.component.css']
 })
 export class CustomerCollectionComponent implements OnInit {
-  @ViewChild('roleTemplate') roleTemplate: TemplateRef<any>;
   @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   environment = environment.isFeatureEnabled;
   @ViewChild('myTable') table: any;
-  @ViewChild("previewAllModal", { static: true }) previewAllModal: TemplateRef<any>;
-  @ViewChild("previewReportModal", { static: true }) previewReportModal: TemplateRef<any>;
-  //previewReportModal: TemplateRef<any>;
+
 
 
 
@@ -80,8 +77,7 @@ export class CustomerCollectionComponent implements OnInit {
     private spinner: NgxSpinnerService) { }
 
   async ngOnInit(): Promise<void> {
-    // this.fetchCustomerCollection();
-    // this.setToggleOptions();
+
     this.fetchCustomerData();
     this.fetchCustomersByIDs();
     this.dataColumns = [
@@ -95,9 +91,9 @@ export class CustomerCollectionComponent implements OnInit {
       { width: '7%', field: 'balance', header: 'Balance', type: "text" },
       { width: '7%', field: 'invStatus', header: 'Inv Status', type: "text" },
       { width: '9%', field: 'elapsedDays', header: 'Days Elapsed', type: "text" },
-      { width: '9%', field: 'Age30', header: '30-45', type: "text" },
-      { width: '9%', field: 'Age45', header: '45', type: "text" },
-      { width: '9%', field: 'Age60', header: '60', type: "text" },
+      { width: '8%', field: 'Age30', header: '30-45', type: "text" },
+      { width: '8%', field: 'Age45', header: '45-60', type: "text" },
+      { width: '8%', field: 'Age60', header: '60-90', type: "text" },
 
 
     ];
@@ -127,12 +123,6 @@ export class CustomerCollectionComponent implements OnInit {
   clear(table: Table) {
     table.clear();
   }
-  onScroll = async (event: any) => {
-    if (this.loaded) {
-      this.fetchCustomerCollection();
-    }
-    this.loaded = false;
-  }
 
   getSuggestions = _.debounce(async function (value) {
     value = value.toLowerCase();
@@ -160,34 +150,33 @@ export class CustomerCollectionComponent implements OnInit {
       this.dataMessage = Constants.NO_RECORDS_FOUND
     }
     for (let data of result.Items) {
-      console.log('data--', data)
       data.Age30 = 0;
       data.Age45 = 0;
       data.Age60 = 0;
       if (data.cadBalanceAge30 != 0) {
-        data.Age30 = "CAD" + data.cadBalanceAge30
+        data.Age30 = "$" + data.cadBalanceAge30 + " " + "CAD"
       }
       else if (data.usBalanceAge30 != 0) {
-        data.Age30 = "US" + data.usBalanceAge30
+        data.Age30 = "$" + data.usBalanceAge30 + " " + "USD"
 
-        console.log('Age30', data.Age30)
+
       }
 
       if (data.cadBalanceAge45 != 0) {
-        data.Age45 = "CAD" + data.cadBalanceAge45
+        data.Age45 = "$" + data.cadBalanceAge45 + " " + "CAD"
       }
       else if (data.usBalanceAge45 != 0) {
-        data.Age45 = "US" + data.usBalanceAge45
-        console.log('Age45', data.Age45)
+        data.Age45 = "$" + data.usBalanceAge45 + " " + "USD"
+
       }
 
       if (data.cadBalanceAge60 != 0) {
-        data.Age60 = "CAD" + data.cadBalanceAge60
-        console.log('Age60', data.Age60)
+        data.Age60 = "$" + data.cadBalanceAge60 + " " + "CAD"
+
       }
       else if (data.usBalanceAge60 != 0) {
-        data.Age60 = "US" + data.usBalanceAge60
-        console.log('Age60', data.Age60)
+        data.Age60 = "$" + data.usBalanceAge60 + " " + "USD"
+
       }
 
 
@@ -208,61 +197,6 @@ export class CustomerCollectionComponent implements OnInit {
 
   }
   searchFilter() {
-    if (this.customer !== null || this.customerFiltr.startDate !== null && this.customerFiltr.endDate !== null) {
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.allCustomerData = [];
-      this.fetchCustomerData();
-    } else {
-      return false
-    }
-
-  }
-
-
-  async fetchCustomerCollection(refresh?: boolean) {
-    this.dataMessage = Constant.FETCHING_DATA
-    this.isLoading = true;
-    if (refresh === true) {
-      this.lastSK = ""
-      this.customerCollection = []
-    }
-    if (this.lastSK != 'end') {
-      const result = await this.apiService.getData(`contacts/get/customer/collection?lastKey=${this.lastSK}&customerId=${this.customer}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
-
-      this.dataMessage = Constant.FETCHING_DATA
-      if (result.Items.length == 0) {
-        this.loaded = true;
-        this.dataMessage = Constant.NO_RECORDS_FOUND
-      }
-      if (result.Items.length > 0) {
-        this.isLoading = false;
-
-        if (result.LastEvaluatedKey.contactSK !== undefined) {
-          this.lastSK = encodeURIComponent(result.LastEvaluatedKey.contactSK)
-          this.loaded = true
-        }
-        else {
-          this.lastSK = "end"
-        }
-        this.customerCollection = this.customerCollection.concat(result.Items)
-
-        for (let customerData of this.customerCollection) {
-
-          this.showReport(customerData)
-        }
-
-      }
-    }
-  }
-
-  // async onDetailToggle(event) {
-
-  // }
-  //   toggleExpandRow(row, expanded) {
-  // this.table.rowDetail.toggleExpandRow(row);
-  //   }
-
-  async search() {
     if (!this.customer && !this.customerFiltr.startDate && !this.customerFiltr.endDate) {
       this.toastr.error("At least one field required")
     }
@@ -275,17 +209,18 @@ export class CustomerCollectionComponent implements OnInit {
     else if (this.customerFiltr.startDate > this.customerFiltr.endDate) {
       this.toastr.error("Start date can not exceeds End Date")
     }
-    else {
-      this.loaded = false
-      this.customerCollection = []
-      this.lastSK = ''
-      this.fetchCustomerCollection();
+    // if () {
+    else if (this.customer !== null || this.customerFiltr.startDate !== null && this.customerFiltr.endDate !== null) {
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.allCustomerData = [];
+      this.fetchCustomerData();
     }
+
   }
 
   reset() {
-    // this.lastSK = ''
-    this.customer = ''
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.customer = null
     this.customerFiltr.startDate = ''
     this.customerFiltr.endDate = ''
     this.allCustomerData = [];
@@ -294,157 +229,11 @@ export class CustomerCollectionComponent implements OnInit {
   }
 
   refreshData() {
-    // this.lastSK = ''
-    this.customer = ''
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.customer = null
     this.customerFiltr.startDate = ''
     this.customerFiltr.endDate = ''
     this.allCustomerData = [];
     this.fetchCustomerData();
   }
-
-  async showReport(data: any) {
-    // event.target.disabled = true;
-    this.printData = data
-    const result = await this.apiService.getData(`contacts/get/customer/collection/all?customer=${this.printData.cName}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
-    this.printData.orders = result.Items[0].orders
-    for (let order of this.printData.orders) {
-      const createDate = order.createdDate
-      const orderNumber = order.orderNumber
-
-    }
-    // let ngbModalOptions: NgbModalOptions = {
-    //   keyboard: true,
-    //   windowClass: "preview--report"
-    // };
-    // this.previewRef = this.modalService.open(this.previewReportModal,
-    //   ngbModalOptions
-    // )
-    // event.target.disabled=false
-  }
-
-
-
-  async allCustomerPDF() {
-    this.exportLoading = true
-    const result = await this.apiService.getData(`contacts/get/customer/collection/all?customer=${this.customer}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
-    this.allData = result.Items
-    let ngbModalOptions: NgbModalOptions = {
-      keyboard: true,
-      windowClass: "preview"
-    };
-    // this.preview = this.modalService.open(this.previewAllModal,
-    //   ngbModalOptions
-    // )
-    let data = document.getElementById("print_all_wrap")
-    html2pdf(data, {
-      margin: 0,
-      pagebreak: { mode: "avoid-all" },
-      filename: "allCustomerReport.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2Canvas: {
-        dpi: 300,
-        letterRendering: true,
-      },
-      jsPDF: { unit: "in", format: "a4", orientation: "landscape" }
-    })
-    this.exportLoading = false
-  }
-  async generatePDF() {
-    let data = document.getElementById("print_wrap");
-    html2pdf(data, {
-      margin: 0,
-      //pagebreak: { mode: "avoid-all" },
-      filename: "customerReport.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2Canvas: {
-        dpi: 200,
-
-        letterRendering: true,
-      },
-      jsPDF: { unit: "in", format: "a4", orientation: "landscape" }
-    })
-    $("#previewReportModal").modal("hide");
-  }
-  async generateCSV() {
-    this.exportLoading = true
-    let dataObject = []
-    let ordersData = []
-    let csvArray = []
-    const result = await this.apiService.getData(`contacts/get/customer/collection/all?customer=${this.customer}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
-    for (const element of result.Items) {
-
-      let obj = {}
-      obj["Customer"] = element.cName
-      obj["Email"] = element.workEmail
-      obj["Phone"] = element.workPhone
-      obj["Total Orders"] = element.totalOrders
-      obj["Delivered Orders"] = element.deliveredOrders
-      obj["Invoice Generated"] = element.invoiceGenerated
-      obj["Total Amount CAD"] = `CAD ${element.totalAmount.cad}`
-      obj["Total Amount USD"] = `USD${element.totalAmount.usd}`
-      obj["Amount Received CAD"] = `CAD ${element.amountReceived.cad}`
-      obj["Amount Received USD"] = `USD${element.amountReceived.usd}`
-      obj["Balance CAD"] = `CAD ${element.balance.cad}`
-      obj["Balance USD"] = `USD${element.balance.usd}`
-      obj["30-45 CAD"] = `CAD ${element.balanceAge30.cad}`
-      obj["30-45 USD"] = `USD${element.balanceAge30.usd}`
-      obj["45-60 CAD"] = `CAD ${element.balanceAge45.cad}`
-      obj["45-60 USD"] = `USD${element.balanceAge45.usd}`
-      obj["60-90 CAD"] = `CAD ${element.balanceAge60.cad}`
-      obj["60-90 USD"] = `USD${element.balanceAge60.usd}`
-      dataObject.push(obj)
-
-      obj["orders"] = element.orders
-      ordersData.push(obj)
-    }
-
-    let headers = Object.keys(dataObject[0]).join(',')
-    headers += '\n'
-    csvArray.push(headers)
-    for (const element of ordersData) {
-      let orders = element.orders
-      let orderHeaders = ''
-      let oArray = []
-      if (orders.length > 0) {
-        delete orders[0].orderSK
-        delete orders[0].isDeleted
-        orderHeaders = "," + Object.keys(orders[0]).join(',')
-        orderHeaders += '\n'
-        for (const i of orders) {
-          i.milesInfo = i.milesInfo.totalMiles
-          i.charges = i.charges.freightFee.currency
-          delete i.orderSK
-          delete i.isDeleted
-          let o = "," + Object.values(i).join(',')
-          o += '\n'
-          oArray.push(o)
-        }
-      }
-      else {
-        oArray = ['']
-      }
-      delete element.orders
-      let obj = Object.values(element).join(',')
-      obj += '\n'
-      obj += orderHeaders
-      obj += oArray.join('')
-      csvArray.push(obj)
-    }
-    const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8' })
-    const link = document.createElement('a');
-    if (link.download !== undefined) {
-
-      const url = URL.createObjectURL(blob);
-      link.setAttribute('href', url);
-      link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Collection-Report.csv`);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      this.exportLoading = false
-    }
-
-  }
-
-
 }
