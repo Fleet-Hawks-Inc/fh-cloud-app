@@ -49,7 +49,7 @@ export class CustomerCollectionComponent implements OnInit {
   lastSK = ""
   isLoading = false
   pageLimit = 10
-  customer = ""
+  customer = null
   previewRef: any;
   preview: any;
   customerFiltr = {
@@ -95,6 +95,9 @@ export class CustomerCollectionComponent implements OnInit {
       { width: '7%', field: 'balance', header: 'Balance', type: "text" },
       { width: '7%', field: 'invStatus', header: 'Inv Status', type: "text" },
       { width: '9%', field: 'elapsedDays', header: 'Days Elapsed', type: "text" },
+      { width: '9%', field: 'Age30', header: '30-45', type: "text" },
+      { width: '9%', field: 'Age45', header: '45', type: "text" },
+      { width: '9%', field: 'Age60', header: '60', type: "text" },
 
 
     ];
@@ -157,6 +160,37 @@ export class CustomerCollectionComponent implements OnInit {
       this.dataMessage = Constants.NO_RECORDS_FOUND
     }
     for (let data of result.Items) {
+      console.log('data--', data)
+      data.Age30 = 0;
+      data.Age45 = 0;
+      data.Age60 = 0;
+      if (data.cadBalanceAge30 != 0) {
+        data.Age30 = "CAD" + data.cadBalanceAge30
+      }
+      else if (data.usBalanceAge30 != 0) {
+        data.Age30 = "US" + data.usBalanceAge30
+
+        console.log('Age30', data.Age30)
+      }
+
+      if (data.cadBalanceAge45 != 0) {
+        data.Age45 = "CAD" + data.cadBalanceAge45
+      }
+      else if (data.usBalanceAge45 != 0) {
+        data.Age45 = "US" + data.usBalanceAge45
+        console.log('Age45', data.Age45)
+      }
+
+      if (data.cadBalanceAge60 != 0) {
+        data.Age60 = "CAD" + data.cadBalanceAge60
+        console.log('Age60', data.Age60)
+      }
+      else if (data.usBalanceAge60 != 0) {
+        data.Age60 = "US" + data.usBalanceAge60
+        console.log('Age60', data.Age60)
+      }
+
+
       data.elapsedDays = 0
       const startedDate = new Date(data.txnDate);
       const currentDate = new Date(moment().format("YYYY-MM-DD"));

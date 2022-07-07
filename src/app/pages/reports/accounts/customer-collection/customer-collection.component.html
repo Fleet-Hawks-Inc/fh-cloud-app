@@ -117,7 +117,7 @@
                           </span>
                         </th>
 
-                        <th style="width: 8%">
+                        <!-- <th style="width: 8%">
                           30-45
                         </th>
 
@@ -127,7 +127,7 @@
 
                         <th style="width: 8%" alignFrozen="right" pFrozenColumn [frozen]="true">
                           60+
-                        </th>
+                        </th> -->
                       </tr>
                     </ng-template>
 
@@ -178,6 +178,22 @@
                           width: find(columns, { field: 'elapsedDays' }).width
                         }"> {{customer.elapsedDays}}</td>
 
+                        <td [ngStyle]="{
+                          width: find(columns, { field: 'Age30' }).width
+                        }"> {{customer.Age30}}</td>
+
+                        <td [ngStyle]="{
+                          width: find(columns, { field: 'Age45' }).width
+                        }"> {{customer.Age45}}</td>
+
+                        <td [ngStyle]="{
+                          width: find(columns, { field: 'Age60' }).width
+                        }"> {{customer.Age60}}</td>
+
+
+
+
+                        <!-- 
                         <td style="width: 8%;">
 
                           <span *ngIf="customer.cadBalanceAge30 != '0' ">{{
@@ -224,7 +240,7 @@
                             }} US</span>
 
                           <span *ngIf="customer.usBalanceAge60 == 0">-</span>
-                        </td>
+                        </td> -->
 
                       </tr>
                     </ng-template>
