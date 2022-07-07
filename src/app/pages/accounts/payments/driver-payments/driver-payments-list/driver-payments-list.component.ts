@@ -159,4 +159,11 @@ export class DriverPaymentsListComponent implements OnInit {
     this.lastItemSK = "";
     this.fetchDriverPayments();
   }
+
+  async voidPayment(paymentID) {
+    console.log('innnnnnn')
+
+    let result = await this.accountService.getData(`driver-payments/void/${paymentID}`).toPromise();
+    console.log('result', result);
+  }
 }

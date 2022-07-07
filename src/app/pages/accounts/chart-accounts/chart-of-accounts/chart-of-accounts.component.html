@@ -383,11 +383,12 @@
                 Cancel
               </button>
               <button type="button" class="btn btn-success" *ngIf="!fetchedID"
-                [disabled]="!actForm.form.valid || submitDisabled" (click)="addAccount()">
+                [disabled]="!actForm.form.valid || submitDisabled || actNoError || actNameError" (click)="addAccount()">
                 Save
               </button>
               <button type="button" class="btn btn-success" *ngIf="fetchedID"
-                [disabled]="!actForm.form.valid || submitDisabled" (click)="updateAccount(fetchedID)">
+                [disabled]="!actForm.form.valid || submitDisabled || actNoError || actNameError"
+                (click)="updateAccount(fetchedID)">
                 Update
               </button>
             </div>
