@@ -61,8 +61,9 @@ export class ZoneAddComponent implements OnInit {
           let coords = { lat: "", lng: "" };
           coords.lat = latlng.lat();
           coords.lng = latlng.lng();
-          await coordinates.push(coords);
+          coordinates.push(coords);
         });
+        localStorage.setItem("zCords", JSON.stringify(coordinates));
       }
     );
 
@@ -133,7 +134,11 @@ export class ZoneAddComponent implements OnInit {
 
   async saveZone() {
     this.saveDisabled = true;
-    console.log(this.zone.coordinates);
+    const coordinates = localStorage.getItem("zCords");
+    if (coordinates) {
+      this.zone.coordinates = JSON.parse(coordinates);
+    }
+    localStorage.removeItem("zCords");
     if (!this.zone.zName) {
       this.toastr.error("Zone Name is Required");
       return;
@@ -161,6 +166,7 @@ export class ZoneAddComponent implements OnInit {
       pRates: pRates,
       aspRates: aspRates,
     };
+    console.log(zoneData);
     this.apiService.postData("zone", zoneData).subscribe({
       complete: () => {},
       error: (err) => {
