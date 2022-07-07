@@ -151,7 +151,7 @@ export class AceDetailsComponent implements OnInit {
     private countryStateCity: CountryStateCityService) { }
 
   ngOnInit() {
-    this.manifestID = this.route.snapshot.params[`manifestID`];
+    this.manifestID = this.route.snapshot.params[`mID`];
     this.fetchACEEntry();
     this.fetchAssetsCodeName();
     this.fetchDocuments();

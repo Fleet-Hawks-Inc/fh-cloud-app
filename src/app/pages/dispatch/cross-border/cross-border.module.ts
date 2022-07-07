@@ -14,15 +14,20 @@ import { AceDetailsComponent } from './ace-documents/ace-details/ace-details.com
 import { NewAciManifestComponent } from './aci-documents/new-aci-manifest/new-aci-manifest.component';
 import { AciDetailsComponent } from './aci-documents/aci-details/aci-details.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { TabViewModule } from 'primeng/tabview';
+import { TableModule } from 'primeng/table';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ButtonModule } from 'primeng/button';
 const routes: Routes = [
   { path: 'manifests', component: EManifestsComponent },
   { path: 'ace-manifest', component: NewAceManifestComponent },
-  { path: 'ace-manifest/:manifestID', component: NewAceManifestComponent },
-  { path: 'ace-details/:manifestID', component: AceDetailsComponent },
+  { path: 'ace-manifest/:mID', component: NewAceManifestComponent },
+  { path: 'ace-details/:mID', component: AceDetailsComponent },
 
   { path: 'aci-manifest', component: NewAciManifestComponent },
-  { path: 'aci-manifest/:manifestID', component: NewAciManifestComponent },
-  { path: 'aci-details/:manifestID', component: AciDetailsComponent },
+  { path: 'aci-manifest/:mID', component: NewAciManifestComponent },
+  { path: 'aci-details/:mID', component: AciDetailsComponent },
 ];
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -91,9 +96,14 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    TabViewModule,
+    TableModule,
     NgSelectModule,
     NgxSpinnerModule,
-    MatExpansionModule
+    MatExpansionModule,
+    ButtonModule,
+    OverlayPanelModule,
+    MultiSelectModule
   ],
   providers: [{ provide: NgbDateAdapter, useClass: CustomAdapter },
   { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }]

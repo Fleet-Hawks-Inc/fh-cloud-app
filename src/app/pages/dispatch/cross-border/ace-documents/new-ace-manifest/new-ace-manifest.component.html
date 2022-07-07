@@ -831,7 +831,7 @@
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Assign
                                       Consignee<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <ng-select [ngModelOptions]="{standalone: true}"
-                                      [attr.name]="'shipments['+s+'].consigneeID'" [(ngModel)]="shipment.consigneeID"
+                                      [attr.name]="'shipments['+s+'].receiverID'" [(ngModel)]="shipment.consigneeID"
                                       #Aconsignee="ngModel" [required]="shipments.length !== 0">
                                       <ng-option *ngFor="let consignee of consignees  | async"
                                         value="{{consignee.contactID}}">

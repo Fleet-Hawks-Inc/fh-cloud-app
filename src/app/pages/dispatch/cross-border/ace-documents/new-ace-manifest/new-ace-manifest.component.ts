@@ -245,7 +245,7 @@ export class NewAceManifestComponent implements OnInit {
     };
   }
   async ngOnInit() {
-    this.manifestID = this.route.snapshot.params[`manifestID`];
+    this.manifestID = this.route.snapshot.params[`mID`];
     if (this.manifestID) {
       this.title = 'Edit ACE e-Manifest';
       this.modalTitle = 'Edit';
@@ -907,29 +907,29 @@ export class NewAceManifestComponent implements OnInit {
   fetchACEEntry() {
     this.apiService
       .getData('eManifests/ACE/' + this.manifestID).subscribe(async (result: any) => {
-        result = result.Items[0];
-        this.manifestID = this.manifestID;
-        this.manifestType = this.manifestType;
-        this.sendId = result.sendId;
-        this.timeCreated = result.timeCreated;
-        this.SCAC = result.SCAC;
-        this.tripNumber = result.tripNumber.substring(4, (result.tripNumber.length));
-        this.usPortOfArrival = result.usPortOfArrival;
-        this.estimatedArrivalDate = result.estimatedArrivalDate;
-        this.estimatedArrivalTime = result.estimatedArrivalTime;
-        this.truck = result.truck;
-        this.mainDriver = result.mainDriver;
-        this.coDrivers = result.coDrivers;
-        this.trailers = result.trailers;
-        this.passengers = result.passengers;
-        await this.fetchPassengerDocStates(this.passengers);
-        this.shipments = result.shipments;
-        await this.fetchThirdPartyAddress(this.shipments);
-        this.currentStatus = result.currentStatus;
-        this.usAddress = result.usAddress;
-        this.borderResponses = result.borderResponses;
-        this.createdDate = result.createdDate;
-        this.createdTime = result.createdTime;
+        result = result[0];
+        this.manifestID = result.mID;
+        // this.manifestType = result.type;
+        // this.sendId = result.sendId;
+        // this.timeCreated = result.timeCreated;
+        // this.SCAC = result.SCAC;
+        // this.tripNumber = result.tripNumber.substring(4, (result.tripNumber.length));
+        // this.usPortOfArrival = result.usPortOfArrival;
+        // this.estimatedArrivalDate = result.estimatedArrivalDate;
+        // this.estimatedArrivalTime = result.estimatedArrivalTime;
+        // this.truck = result.truck;
+        // this.mainDriver = result.mainDriver;
+        // this.coDrivers = result.coDrivers;
+        // this.trailers = result.trailers;
+        // this.passengers = result.passengers;
+        // await this.fetchPassengerDocStates(this.passengers);
+        // this.shipments = result.shipments;
+        // await this.fetchThirdPartyAddress(this.shipments);
+        // this.currentStatus = result.currentStatus;
+        // this.usAddress = result.usAddress;
+        // this.borderResponses = result.borderResponses;
+        // this.createdDate = result.createdDate;
+        // this.createdTime = result.createdTime;
       });
   }
 

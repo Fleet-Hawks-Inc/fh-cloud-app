@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -6,7 +6,8 @@ import { environment } from 'src/environments/environment';
 import Constants from '../../../fleet/constants';
 import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 import { HttpClient } from '@angular/common/http';
-
+import * as _ from "lodash";
+import { Table } from 'primeng/table';
 declare var $: any;
 @Component({
   selector: 'app-e-manifests',
@@ -14,6 +15,22 @@ declare var $: any;
   styleUrls: ['./e-manifests.component.css'],
 })
 export class EManifestsComponent implements OnInit {
+  @ViewChild('dt') table: Table;
+  loaded = false;
+
+  ACE_Options = [
+    { width: '6%', field: 'tripNo', header: 'Trip#' },
+    { width: '8%', field: 'shipNo', header: 'Shipment#' },
+    { width: '8%', field: 'shipType', header: 'Shipment Type' },
+    { width: '13%', field: 'arrDateTime', header: 'Est. Arrival Date & Time' },
+    { width: '10%', field: 'usPortOfArrival', header: 'US Port of Entry' },
+    { width: '15%', field: 'drivers', header: 'Drivers' },
+    { width: '8%', field: 'trailer', header: 'Trailer' },
+    { width: '10%', field: 'assets', header: 'Assets' },
+    { width: '10%', field: 'shippers', header: 'Consignor' },
+    { width: '10%', field: 'receivers', header: 'Consignee' },
+    { width: '6%', field: 'status', header: 'Status' },
+  ]
 
   activeDiv = 'ace';
   dataMessage: string = Constants.FETCHING_DATA;
@@ -89,6 +106,9 @@ export class EManifestsComponent implements OnInit {
   ];
   filterCategory = null;
   aciFilterCategory = null;
+  get = _.get;
+  find = _.find;
+  _selectedColumns: any[];
 
   constructor(
     private apiService: ApiService,
@@ -108,6 +128,21 @@ export class EManifestsComponent implements OnInit {
     this.fetchUSPorts();
     this.fetchaceShipmentType();
     this.fetchaciShipmentType();
+
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.ACE_Options;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.ACE_Options.filter(col => val.includes(col));
+
   }
   fetchaceShipmentType() {
     this.httpClient.get('assets/ACEShipmentType.json').subscribe((data: any) => {
@@ -194,35 +229,48 @@ export class EManifestsComponent implements OnInit {
       .subscribe((result: any) => {
         if (result.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
+          this.loaded = true;
         }
-        this.ACEList = result[`Items`];
+        if (result.length > 0) {
+          for (let i = 0; i < result.length; i++) {
+            const element = result[i];
+            element.arrDateTime = `${element.estimatedArrivalDate} ${element.estimatedArrivalTime}`;
+            element.drivers = element.drivers.toString();
+            element.assets = element.assets.toString();
+            element.shippers = element.shippers.toString();
+            element.receivers = element.receivers.toString();
 
-        if (this.vehicleID !== '' || this.aceSearch !== '' || this.fromDate != '' || this.toDate != '') {
-          this.aceStartPoint = 1;
-          this.aceEndPoint = this.totalRecords;
-        }
-        if (result[`LastEvaluatedKey`] !== undefined) {
-          const lastEvalKey = result[`LastEvaluatedKey`].emanifestSK.replace(/#/g, '--');
-          this.aceNext = false;
-          // for prev button
-          if (!this.acePrevEvauatedKeys.includes(lastEvalKey)) {
-            this.acePrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = lastEvalKey;
-        } else {
-          this.aceNext = true;
-          this.lastEvaluatedKey = '';
-          this.aceEndPoint = this.totalRecords;
+          this.ACEList = result;
+          this.loaded = true;
         }
-        if (this.totalRecords < this.aceEndPoint) {
-          this.aceEndPoint = this.totalRecords;
-        }
-        // disable prev btn
-        if (this.aceDraw > 0) {
-          this.acePrev = false;
-        } else {
-          this.acePrev = true;
-        }
+
+        // if (this.vehicleID !== '' || this.aceSearch !== '' || this.fromDate != '' || this.toDate != '') {
+        //   this.aceStartPoint = 1;
+        //   this.aceEndPoint = this.totalRecords;
+        // }
+        // if (result[`LastEvaluatedKey`] !== undefined) {
+        //   const lastEvalKey = result[`LastEvaluatedKey`].emanifestSK.replace(/#/g, '--');
+        //   this.aceNext = false;
+        //   // for prev button
+        //   if (!this.acePrevEvauatedKeys.includes(lastEvalKey)) {
+        //     this.acePrevEvauatedKeys.push(lastEvalKey);
+        //   }
+        //   this.lastEvaluatedKey = lastEvalKey;
+        // } else {
+        //   this.aceNext = true;
+        //   this.lastEvaluatedKey = '';
+        //   this.aceEndPoint = this.totalRecords;
+        // }
+        // if (this.totalRecords < this.aceEndPoint) {
+        //   this.aceEndPoint = this.totalRecords;
+        // }
+        // // disable prev btn
+        // if (this.aceDraw > 0) {
+        //   this.acePrev = false;
+        // } else {
+        //   this.acePrev = true;
+        // }
         this.spinner.hide();
       }, err => {
         this.spinner.hide();
@@ -491,5 +539,13 @@ export class EManifestsComponent implements OnInit {
         this.aciSearch = '';
       }
     }
+  }
+
+  refreshData() {
+    this.ACEList = [];
+    this.lastEvaluatedKey = '';
+    this.loaded = false;
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.initDataTable();
   }
 }
