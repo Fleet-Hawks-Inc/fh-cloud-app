@@ -1,10 +1,11 @@
 import { AccountService, ListService } from "../../../../services";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import Constants from "../../../fleet/constants";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import * as _ from "lodash";
+import { NgForm } from "@angular/forms";
 declare var $: any;
 @Component({
   selector: "app-chart-of-accounts",
@@ -12,6 +13,7 @@ declare var $: any;
   styleUrls: ["./chart-of-accounts.component.css"],
 })
 export class ChartOfAccountsComponent implements OnInit {
+  @ViewChild("actForm") actForm: NgForm;
   modalTitle = "Add Account";
   dataMessage = Constants.FETCHING_DATA;
   accounts: any = [];
@@ -319,6 +321,7 @@ export class ChartOfAccountsComponent implements OnInit {
         this.fetchAccounts();
         this.toaster.success("Account Added Successfully.");
         $("#addAccountModal").modal("hide");
+        this.actForm.reset();
         this.actName = "";
         this.actType = "";
         this.mainactType = "";
