@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Table } from 'primeng/table';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
+import * as moment from 'moment'
 declare var $: any;
 
 
@@ -23,17 +24,20 @@ export class BrokerageComponent implements OnInit {
   dataMessage = ''
   brkDateEnUS:any = [];
   carriersObject = [];
-  loaded = false;
+  orderNumber = '';
+customers = {}
+loaded = false;
   dataColumns = [
     { width: '10%', field: 'orderNumber', header: 'Order No', type: "text" },
     { width: '10%', field: 'tripData.tripNo', header: 'Trip No', type: "text" },
+    { width: '10%', field: 'customerName', header: 'Customers', type: "text" },
     { width: '12%', field: 'cName', header: 'Carrier', type: "text" },
     { width: '10%', field: 'createdDate', header: 'Order Date', type: "text" },
-    { width: '12%', field: 'brkDate', header: 'Brokerage Date', type: "text" },
+    { width: '12%', field: 'date', header: 'Brokerage Date', type: "text" },
     { width: '12%', field: 'pickUpLoc', header: 'Pickup Location', type: "text" },
     { width: '12%', field: 'dropOffLoc', header: 'Delivery Location', type: "text" },
-    { width: '10%', field: 'finalAmount', header: 'Order Amount', type: "text" },
-    { width: '12%', field: 'brkAmount', header: 'Brokerage Amount', type: "text" },
+    { width: '10%', field: 'amount', header: 'Order Amount', type: "text" },
+    { width: '12%', field: 'bAmount', header: 'Brokerage Amount', type: "text" },
   ];
   constructor(
   private apiService: ApiService,
@@ -45,6 +49,7 @@ export class BrokerageComponent implements OnInit {
   this.fetchBrokerageReport();
   this.setToggleOptions();
   this.fetchCarriers();
+  this.fetchCustomers();
   }
 
 
@@ -82,7 +87,12 @@ export class BrokerageComponent implements OnInit {
   }
 
 
-
+  async fetchCustomers() {
+    const customers = await this.apiService.getData(`contacts/fetch/order/customers`).toPromise();
+    customers.forEach(element => {
+      this.customers[element.contactID] = element.companyName
+    });
+  }
 
     async fetchBrokerageReport(refresh?: boolean) {
     if(refresh === true){
@@ -90,7 +100,7 @@ export class BrokerageComponent implements OnInit {
     this.brokerage = [];
     }
     if(this.lastItemSK !== 'end'){
-    const result = await this.apiService.getData(`orders/report/getBrokerageReport?lastKey=${this.lastItemSK}`).toPromise();
+    const result = await this.apiService.getData(`orders/report/getBrokerageReport?orderNumber=${this.orderNumber}&lastKey=${this.lastItemSK}`).toPromise();
     this.dataMessage = Constant.FETCHING_DATA;
     if(result.Items.length === 0){
     this.dataMessage = Constant.NO_RECORDS_FOUND;
@@ -103,11 +113,6 @@ export class BrokerageComponent implements OnInit {
     this.lastItemSK = 'end'
     }
     this.brokerage = this.brokerage.concat(result.Items);
-    for(let i=0;i<this.brokerage.length;i++){
-    if(this.brokerage[i].brkDate>0){
-    this.brkDateEnUS = new Date(this.brokerage[i].brkDate).toLocaleDateString("en-US")
-    }
-    }
     this.loaded = true;
     }
     }
@@ -120,6 +125,89 @@ export class BrokerageComponent implements OnInit {
     }
     this.loaded = false;
   }
+  
+  
+  searchFilter(){
+  if(this.orderNumber !== ''){
+  this.orderNumber = this.orderNumber;
+  this.brokerage = [];
+  this.dataMessage = Constant.FETCHING_DATA;
+  this.lastItemSK = '';
+  this.fetchBrokerageReport();
+  }else{
+  return false;
+  }
+  }
+  
+  resetFilter(){
+  if(this.orderNumber !== ''){
+  this.brokerage = [];
+  this.loaded = false;
+  this.lastItemSK = '';
+  this.orderNumber = '';
+  this.fetchBrokerageReport();
+  this.dataMessage = Constant.FETCHING_DATA;
+  }else{
+  return false;
+  }
+  }
+  
+  refreshData() {
+    this.brokerage = [];
+    this.lastItemSK = '';
+    this.loaded = false;
+    this.fetchBrokerageReport();
+    this.dataMessage = Constant.FETCHING_DATA;
+  }
+  
+  
+  exportBrokerage(){
+  if(this.brokerage.length > 0){
+  let dataObject = []
+  let csvArray = []
+  this.brokerage.forEach(element => {
+  let obj = {}
+  obj['Order No'] = element.orderNumber
+  obj['Trip No'] = element.tripData.tripNo
+  obj['Customers'] = this.customers[element.customerID]
+  obj['Carrier'] = this.carriersObject[element.brkCarrID] 
+  obj['Order Date'] = element.createdDate
+  obj['Brokerage Date'] = element.date
+  obj['Order Amount'] = element.amount
+  obj['Brokerage Amount'] = element.bAmount
+  dataObject.push(obj)
+  });
+  let headers = Object.keys(dataObject[0]).join(',')
+            headers += '\n'
+            csvArray.push(headers)
+            dataObject.forEach(element => {
+                let obj = Object.values(element).join(',')
+                obj += '\n'
+                csvArray.push(obj)
+            });
+            const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Driver-Report.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+  }
+  else {
+   this.toastr.error("No Records found")
+  }
+  }
+  
+  
+    directToDetail(orderID: string) {
+    setTimeout(() => {
+      this.router.navigateByUrl(`/dispatch/orders/detail/${orderID}`);
+    }, 10);
+  }
+  
   
     /**
  * Clears the table filters

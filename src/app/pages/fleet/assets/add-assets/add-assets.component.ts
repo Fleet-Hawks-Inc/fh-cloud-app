@@ -1163,7 +1163,19 @@ export class AddAssetsComponent implements OnInit {
     this.apiService
       .deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`)
       .subscribe((result: any) => {
-        if (type == "doc") {
+      if(type == 'image'){
+       this.assetsImages = [];
+             this.uploadedDocs = result.Attributes.uploadedPhotos;
+             this.existingDocs = result.Attributes.uploadedPhotos;
+             result.Attributes.uploadedPhotos.map((x) => {
+             let obj= {
+                 name: x,
+                 path: `${this.Asseturl}/${result.carrierID}/${x}`,
+                         };
+                         this.assetsImages.push(obj);
+           });
+      }
+       else if (type == "doc") {
           this.assetsDocs = [];
           this.uploadedDocs = result.Attributes.uploadedDocs;
           this.existingDocs = result.Attributes.uploadedDocs;

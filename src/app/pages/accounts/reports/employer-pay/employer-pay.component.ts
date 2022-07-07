@@ -162,7 +162,7 @@ export class EmployerPayComponent implements OnInit {
       let entities = [];
       this.pdfRecords = [];
       this.accountService.getData(`employee-payments/get/employer/pay?type=${this.filterData.type}&entity=${this.filterData.entity}&startDate=${this.filterData.startDate}&endDate=${this.filterData.endDate}&empLastKey=&empLastDate=&drvLastKey=&drvLastDate=&fetchType=all`).subscribe((result: any) => {
-        let empData = this.empData.concat(result);
+        let empData = result;
         empData.map((k) => {
           k.payMode = k.payMode.replace("_"," ");
           k.cra = Number(k.taxdata.ei) + Number(k.taxdata.cpp) + Number(k.taxdata.provincialTax) + Number(k.taxdata.federalTax) + Number(k.taxdata.emplEI) + Number(k.taxdata.emplCPP)

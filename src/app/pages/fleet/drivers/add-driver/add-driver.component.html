@@ -513,16 +513,13 @@
                                     driverData.driverImage,
                                     imageTitle
                                   )
-                                " type="file" accept=".jpg, .jpeg, .png"/>
+                                " type="file" accept=".jpg, .jpeg, .png" />
                             </div>
-                            <span 
-                              *ngIf="uploadPhotoError != ''"
-                              class="text-danger"
-                            >
+                            <span *ngIf="uploadPhotoError != ''" class="text-danger">
                               {{ uploadPhotoError }}
                             </span>
                           </div>
-                         
+
                         </div>
                       </div>
                       <div class="col-lg-5">
@@ -685,15 +682,12 @@
                               Document &nbsp;
                               <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                               <input (change)="selectDocuments($event, nullVar)" class="hidden_input1 w-100" name=""
-                                type="file" accept=".doc, .docx, .pdf, .jpg, .jpeg .png"  />
+                                type="file" accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
                             </div>
                           </div>
-                             <span
-                              *ngIf="absDocsError != ''"
-                              class="text-danger"
-                            >
-                              {{ absDocsError }}
-                            </span>
+                          <span *ngIf="absDocsError != ''" class="text-danger">
+                            {{ absDocsError }}
+                          </span>
                           <div class="col-lg-12 text-right" *ngIf="
                               driverF.submitted &&
                               abstractDocs.length == 0 &&
@@ -734,17 +728,17 @@
                                 (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
                             </div>
                             <div class="col-lg-3 text-right">
-                           
-                                
-                  
-                                
-                          <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
-                              (click)="delete('abs', item.name, d, nullVar)"><i class="fas fa-trash-alt"></i></a>     
-                                
-                                <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
-                              (click)="setPDFSrc(item.path)" data-toggle="modal" data-target="#viewDocModal"><i
-                                class="fas fa-eye"></i></a>
-                                
+
+
+
+
+                              <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                                (click)="delete('abs', item.name, d, nullVar)"><i class="fas fa-trash-alt"></i></a>
+
+                              <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                                (click)="setPDFSrc(item.path)" data-toggle="modal" data-target="#viewDocModal"><i
+                                  class="fas fa-eye"></i></a>
+
                             </div>
                           </div>
                         </div>
@@ -884,6 +878,230 @@
                   </div>
                   <label style="display: none; color: '#dc3545'" class="mt-2" id="addErr{{ i }}">Your address or zip
                     code is not valid</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-lg-12">
+              <div class="bg-white p-3">
+                <div class="form-group row text-dark adddriverpl">
+                  <div class="col-lg-10">
+                    <label class="control-label font-weight-bold text-lg-right text-5">Licence Details</label>
+                  </div>
+                  <div class="col-lg-10">
+                    <label class="control-label text-4 pt-2">Add other licence details (eg. Enhanced drivers licence)
+                      in the documents section.</label>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="row">
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">CDL#
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                        </label>
+                        <input [(ngModel)]="driverData.CDL_Number" name="CDL_Number" type="text" class="form-control"
+                          placeholder="9 digits eg. 0005-04440" (change)="
+                            onChangeHideErrors('CDL_Number'); validateCDL()
+                          " #cdl="ngModel" required [ngClass]="{
+                            error: driverF.submitted && cdl.invalid
+                          }" />
+                        <div *ngIf="cdl.invalid && driverF.submitted" class="text-danger">
+                          <div *ngIf="cdl.errors.required">
+                            CDL# is required.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Licence Expiration
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                        </label>
+                        <input (click)="d3.toggle()" ngbDatepicker #d3="ngbDatepicker" readonly
+                          [(ngModel)]="driverData.licenceDetails.licenceExpiry" name="licenceDetails.licenceExpiry"
+                          [ngClass]="{
+                            error: driverF.submitted && leSlt.invalid
+                          }" type="text" class="form-control" placeholder="yyyy/mm/dd" #leSlt="ngModel" required />
+                        <div *ngIf="leSlt.invalid && driverF.submitted" class="text-danger">
+                          <div *ngIf="leSlt.errors.required">
+                            Licence expiration is required.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issued Country
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                        </label>
+                        <ng-select (change)="getLicStates($event)" [(ngModel)]="driverData.licenceDetails.issuedCountry"
+                          placeholder="Select country" name="licenceDetails.issuedCountry" class="form-control populate"
+                          #conSlt="ngModel" [ngClass]="{
+                            error: driverF.submitted && conSlt.invalid
+                          }" required>
+                          <ng-option value="CA">Canada</ng-option>
+                          <ng-option value="US">United States</ng-option>
+                        </ng-select>
+                        <div *ngIf="conSlt.invalid && driverF.submitted" class="text-danger">
+                          <div *ngIf="conSlt.errors.required">
+                            Issued country is required.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issued Province/State
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                        </label>
+                        <ng-select [(ngModel)]="driverData.licenceDetails.issuedState" name="licenceDetails.issuedState"
+                          placeholder="Select Province/State" (change)="getLicenseStateName()" required #ipSlt="ngModel"
+                          [ngClass]="{
+                            error: driverF.submitted && ipSlt.invalid
+                          }">
+                          <ng-option class="text-capitalize" *ngFor="let state of licStates"
+                            value="{{ state.stateCode }}">
+                            {{ state.stateName }}</ng-option>
+                        </ng-select>
+                        <div *ngIf="ipSlt.invalid && driverF.submitted" class="text-danger">
+                          <div *ngIf="ipSlt.errors.required">
+                            Issued province/state is required.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-10 pt-2">
+                        <div class="checkbox-custom">
+                          <input type="checkbox" name="licenceDetails.licenceNotification" [(ngModel)]="
+                              driverData.licenceDetails.licenceNotification
+                            " value="" />
+                          <label class="control-label font-weight-bold">Send notification (Before 30 days of
+                            expiration)</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="row">
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">WCB#
+                        </label>
+                        <input [(ngModel)]="driverData.licenceDetails.WCB" name="licenceDetails.WCB" type="text"
+                          class="form-control"
+                          placeholder="total 7 digits , 1 is alphabetical and 6 is numeric . eg.123456A"
+                          #wcb="ngModel" />
+                        <!-- <div *ngIf="wcb.invalid && (wcb.dirty || wcb.touched)" class="text-danger">
+                          <div *ngIf="wcb.errors.pattern">
+                            WCB must contain 7 characters only in which 1 is alphabetical and 6 is numeric. eg.123456A.
+                          </div>
+                        </div> -->
+                      </div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Medical Card Renewal
+                        </label>
+                        <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker" [(ngModel)]="
+                            driverData.licenceDetails.medicalCardRenewal
+                          " name="licenceDetails.medicalCardRenewal" type="text" class="form-control"
+                          placeholder="yyyy/mm/dd" />
+                      </div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Health Care#
+                        </label>
+                        <input [(ngModel)]="driverData.licenceDetails.healthCare" name="licenceDetails.healthCare"
+                          type="text" class="form-control"
+                          placeholder="total 13 digits , 11 is numeric and 2 is alphabets , eg. 12345678923AB" />
+                        <!-- <div *ngIf="hCare.invalid && (hCare.dirty || hCare.touched)" class="text-danger">
+                          <div *ngIf="hCare.errors.pattern">
+                            Health Care must contain 13 characters only in which 2 is alphabetical and 11 is numeric.
+                            eg. AB12345678922.
+                          </div>
+                        </div> -->
+                      </div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Select Vehicle Type
+                        </label>
+                        <ng-select [(ngModel)]="driverData.licenceDetails.vehicleType" name="licenceDetails.vehicleType"
+                          placeholder="Select vehicle type of driver">
+                          <ng-option value="Heavy Vehicle">Heavy Vehicle</ng-option>
+                          <ng-option value="Light Vehicle">Light Vehicle</ng-option>
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-lg-12">
+              <div class="bg-white p-3">
+                <div class="row text-dark adddriverpl">
+                  <div class="col-lg-10">
+                    <label class="control-label font-weight-bold text-lg-right text-5">Cross Border Details</label>
+                  </div>
+                </div>
+                <div class="form-group row adddriverpl text-dark" id="document-one">
+                  <div class="col-lg-6">
+                    <div class="row">
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">ACI ID
+                        </label>
+                        <input [(ngModel)]="driverData.crossBorderDetails.ACI_ID" name="crossBorderDetails.ACI_ID"
+                          type="text" class="form-control" placeholder="10 digits , eg.4567895676" />
+                        <!-- <div *ngIf="aci.invalid && (aci.dirty || aci.touched)" class="text-danger">
+                          <div *ngIf="aci.errors.pattern">
+                            ACI ID must contain 10 numbers.
+                          </div>
+
+                        </div> -->
+                      </div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">ACE ID
+                        </label>
+                        <input [(ngModel)]="driverData.crossBorderDetails.ACE_ID" name="crossBorderDetails.ACE_ID"
+                          type="text" class="form-control" placeholder="10 digits , eg.4567895676" />
+                        <!-- <div *ngIf="ace.invalid && (ace.dirty || ace.touched)" class="text-danger">
+                          <div *ngIf="ace.errors.pattern">
+                            ACE ID must contain 10 numbers.
+                          </div>
+
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-10">
+                        <div class="checkbox-custom">
+                          <input type="checkbox" [(ngModel)]="driverData.crossBorderDetails.csa"
+                            name="crossBorderDetails.csa" />
+                          <label for="csa">CSA</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div>
+                      <div class="row">
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold text-lg-right pt-2">FAST Card#
+                          </label>
+                          <input [(ngModel)]="driverData.crossBorderDetails.fast_ID" name="crossBorderDetails.fast_ID"
+                            type="text" class="form-control"
+                            placeholder="14 digits, beginning with 4270/4110 and ending with 00/01/02 (42700012345601)"
+                            #fastCard="ngModel" />
+                          <!-- <div *ngIf="fastCard.invalid && (fastCard.dirty || fastCard.touched)" class="text-danger">
+                            <div *ngIf="fastCard.errors.pattern">
+                              Fast Card must contain only 14 numbers beginning with 4270/4110 and ending with 00/01.
+
+                            </div>
+
+                          </div> -->
+                        </div>
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold text-lg-right pt-2">FAST Expiry
+                          </label>
+                          <input [(ngModel)]="
+                              driverData.crossBorderDetails.fastExpiry
+                            " name="crossBorderDetails.fastExpiry" readonly (click)="d2.toggle()" ngbDatepicker
+                            #d2="ngbDatepicker" type="text" class="form-control" placeholder="yyyy/mm/dd"
+                            [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1040,16 +1258,13 @@
                           multiple
                         /> -->
 
-                        
-                          <input class="w100" type="file" multiple name="document.uploadedDocs{{ i }}"
-                            (change)="selectDocuments($event, i)" accept=".doc, .docx, .pdf, .jpg, .jpeg .png"   />
-                                        <span
-                              *ngIf="uploadDocsError != ''"
-                              class="text-danger"
-                            >
-                              {{ uploadDocsError }}
-                            </span>
-                      
+
+                        <input class="w100" type="file" multiple name="document.uploadedDocs{{ i }}"
+                          (change)="selectDocuments($event, i)" accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
+                        <span *ngIf="uploadDocsError != ''" class="text-danger">
+                          {{ uploadDocsError }}
+                        </span>
+
                       </div>
                       <div class="col-lg-10 mt-2" *ngIf="assetsDocs[i]">
                         <div class="vehicle-common-box p-3">
@@ -1060,15 +1275,19 @@
                             <div class="col-lg-6 text-right"></div>
                           </div>
                           <hr class="solid mt-2" />
-                           <div class="row mb-1" *ngFor="let doc of assetsDocs[i]; let d = index">
-                             <div class="col-lg-9">
-                               <a href="{{ doc.path }}" data-toggle="modal" data-target="#viewDocModal" (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
-                             </div>
-                             <div class="col-lg-3 text-right">
-                               <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="delete('doc', doc.name, i, d)"><i class="fas fa-trash-alt"></i></a>
-                               <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"><i class="fas fa-eye"></i></a>
-                             </div>
-                           </div>
+                          <div class="row mb-1" *ngFor="let doc of assetsDocs[i]; let d = index">
+                            <div class="col-lg-9">
+                              <a href="{{ doc.path }}" data-toggle="modal" data-target="#viewDocModal"
+                                (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
+                            </div>
+                            <div class="col-lg-3 text-right">
+                              <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                                (click)="delete('doc', doc.name, i, d)"><i class="fas fa-trash-alt"></i></a>
+                              <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                                (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"><i
+                                  class="fas fa-eye"></i></a>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1079,229 +1298,6 @@
                       <div class="col-5 text-right">
                         <a href="javascript:;" *ngIf="i != 0" (click)="remove('document', i)" class="btn btn-danger"><i
                             class="fa fa-minus"></i></a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-lg-12">
-              <div class="bg-white p-3">
-                <div class="row text-dark adddriverpl">
-                  <div class="col-lg-10">
-                    <label class="control-label font-weight-bold text-lg-right text-5">Cross Border Details</label>
-                  </div>
-                </div>
-                <div class="form-group row adddriverpl text-dark" id="document-one">
-                  <div class="col-lg-6">
-                    <div class="row">
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">ACI ID
-                        </label>
-                        <input [(ngModel)]="driverData.crossBorderDetails.ACI_ID" name="crossBorderDetails.ACI_ID"
-                          type="text" class="form-control" placeholder="10 digits , eg.4567895676" />
-                        <!-- <div *ngIf="aci.invalid && (aci.dirty || aci.touched)" class="text-danger">
-                          <div *ngIf="aci.errors.pattern">
-                            ACI ID must contain 10 numbers.
-                          </div>
-
-                        </div> -->
-                      </div>
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">ACE ID
-                        </label>
-                        <input [(ngModel)]="driverData.crossBorderDetails.ACE_ID" name="crossBorderDetails.ACE_ID"
-                          type="text" class="form-control" placeholder="10 digits , eg.4567895676" />
-                        <!-- <div *ngIf="ace.invalid && (ace.dirty || ace.touched)" class="text-danger">
-                          <div *ngIf="ace.errors.pattern">
-                            ACE ID must contain 10 numbers.
-                          </div>
-
-                        </div> -->
-                      </div>
-                    </div>
-                    <div class="row pt-2">
-                      <div class="col-lg-10">
-                        <div class="checkbox-custom">
-                          <input type="checkbox" [(ngModel)]="driverData.crossBorderDetails.csa"
-                            name="crossBorderDetails.csa" />
-                          <label for="csa">CSA</label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div>
-                      <div class="row">
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">FAST Card#
-                          </label>
-                          <input [(ngModel)]="driverData.crossBorderDetails.fast_ID" name="crossBorderDetails.fast_ID"
-                            type="text" class="form-control"
-                            placeholder="14 digits, beginning with 4270/4110 and ending with 00/01/02 (42700012345601)"
-                            #fastCard="ngModel" />
-                          <!-- <div *ngIf="fastCard.invalid && (fastCard.dirty || fastCard.touched)" class="text-danger">
-                            <div *ngIf="fastCard.errors.pattern">
-                              Fast Card must contain only 14 numbers beginning with 4270/4110 and ending with 00/01.
-
-                            </div>
-
-                          </div> -->
-                        </div>
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">FAST Expiry
-                          </label>
-                          <input [(ngModel)]="
-                              driverData.crossBorderDetails.fastExpiry
-                            " name="crossBorderDetails.fastExpiry" readonly (click)="d2.toggle()" ngbDatepicker
-                            #d2="ngbDatepicker" type="text" class="form-control" placeholder="yyyy/mm/dd"
-                            [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-lg-12">
-              <div class="bg-white p-3">
-                <div class="form-group row text-dark adddriverpl">
-                  <div class="col-lg-10">
-                    <label class="control-label font-weight-bold text-lg-right text-5">Licence Details</label>
-                  </div>
-                  <div class="col-lg-10">
-                    <label class="control-label text-4 pt-2">Add other licence details (eg. Enhanced drivers licence)
-                      in the documents section.</label>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="row">
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">CDL#
-                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label>
-                        <input [(ngModel)]="driverData.CDL_Number" name="CDL_Number" type="text" class="form-control"
-                          placeholder="9 digits eg. 0005-04440" (change)="
-                            onChangeHideErrors('CDL_Number'); validateCDL()
-                          " #cdl="ngModel" required [ngClass]="{
-                            error: driverF.submitted && cdl.invalid
-                          }" />
-                        <div *ngIf="cdl.invalid && driverF.submitted" class="text-danger">
-                          <div *ngIf="cdl.errors.required">
-                            CDL# is required.
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Licence Expiration
-                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label>
-                        <input (click)="d3.toggle()" ngbDatepicker #d3="ngbDatepicker" readonly
-                          [(ngModel)]="driverData.licenceDetails.licenceExpiry" name="licenceDetails.licenceExpiry"
-                          [ngClass]="{
-                            error: driverF.submitted && leSlt.invalid
-                          }" type="text" class="form-control" placeholder="yyyy/mm/dd" #leSlt="ngModel" required />
-                        <div *ngIf="leSlt.invalid && driverF.submitted" class="text-danger">
-                          <div *ngIf="leSlt.errors.required">
-                            Licence expiration is required.
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issued Country
-                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label>
-                        <ng-select (change)="getLicStates($event)" [(ngModel)]="driverData.licenceDetails.issuedCountry"
-                          placeholder="Select country" name="licenceDetails.issuedCountry" class="form-control populate"
-                          #conSlt="ngModel" [ngClass]="{
-                            error: driverF.submitted && conSlt.invalid
-                          }" required>
-                          <ng-option value="CA">Canada</ng-option>
-                          <ng-option value="US">United States</ng-option>
-                        </ng-select>
-                        <div *ngIf="conSlt.invalid && driverF.submitted" class="text-danger">
-                          <div *ngIf="conSlt.errors.required">
-                            Issued country is required.
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issued Province/State
-                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label>
-                        <ng-select [(ngModel)]="driverData.licenceDetails.issuedState" name="licenceDetails.issuedState"
-                          placeholder="Select Province/State" (change)="getLicenseStateName()" required #ipSlt="ngModel"
-                          [ngClass]="{
-                            error: driverF.submitted && ipSlt.invalid
-                          }">
-                          <ng-option class="text-capitalize" *ngFor="let state of licStates"
-                            value="{{ state.stateCode }}">
-                            {{ state.stateName }}</ng-option>
-                        </ng-select>
-                        <div *ngIf="ipSlt.invalid && driverF.submitted" class="text-danger">
-                          <div *ngIf="ipSlt.errors.required">
-                            Issued province/state is required.
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-10 pt-2">
-                        <div class="checkbox-custom">
-                          <input type="checkbox" name="licenceDetails.licenceNotification" [(ngModel)]="
-                              driverData.licenceDetails.licenceNotification
-                            " value="" />
-                          <label class="control-label font-weight-bold">Send notification (Before 30 days of
-                            expiration)</label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="row">
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">WCB#
-                        </label>
-                        <input [(ngModel)]="driverData.licenceDetails.WCB" name="licenceDetails.WCB" type="text"
-                          class="form-control"
-                          placeholder="total 7 digits , 1 is alphabetical and 6 is numeric . eg.123456A"
-                          #wcb="ngModel" />
-                        <!-- <div *ngIf="wcb.invalid && (wcb.dirty || wcb.touched)" class="text-danger">
-                          <div *ngIf="wcb.errors.pattern">
-                            WCB must contain 7 characters only in which 1 is alphabetical and 6 is numeric. eg.123456A.
-                          </div>
-                        </div> -->
-                      </div>
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Medical Card Renewal
-                        </label>
-                        <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker" [(ngModel)]="
-                            driverData.licenceDetails.medicalCardRenewal
-                          " name="licenceDetails.medicalCardRenewal" type="text" class="form-control"
-                          placeholder="yyyy/mm/dd" />
-                      </div>
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Health Care#
-                        </label>
-                        <input [(ngModel)]="driverData.licenceDetails.healthCare" name="licenceDetails.healthCare"
-                          type="text" class="form-control"
-                          placeholder="total 13 digits , 11 is numeric and 2 is alphabets , eg. 12345678923AB" />
-                        <!-- <div *ngIf="hCare.invalid && (hCare.dirty || hCare.touched)" class="text-danger">
-                          <div *ngIf="hCare.errors.pattern">
-                            Health Care must contain 13 characters only in which 2 is alphabetical and 11 is numeric.
-                            eg. AB12345678922.
-                          </div>
-                        </div> -->
-                      </div>
-                      <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Select Vehicle Type
-                        </label>
-                        <ng-select [(ngModel)]="driverData.licenceDetails.vehicleType" name="licenceDetails.vehicleType"
-                          placeholder="Select vehicle type of driver">
-                          <ng-option value="Heavy Vehicle">Heavy Vehicle</ng-option>
-                          <ng-option value="Light Vehicle">Light Vehicle</ng-option>
-                        </ng-select>
                       </div>
                     </div>
                   </div>

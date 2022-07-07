@@ -116,14 +116,14 @@
                           ><sup>*</sup></span></label>
                       </div>
                       <div class="col-lg-2">
-                        <input type="text" name="fromDate" [(ngModel)]="scheduler.dateRange.from" #fromDate="ngbDatepicker" (click)="fromDate.toggle()" autocomplete="off" ngbDatepicker placeholder="yyyy/mm/dd" class="form-control">
+                        <input type="text" name="fromDate" [(ngModel)]="scheduler.dateRange.from" #fromDate="ngbDatepicker" (click)="fromDate.toggle();" autocomplete="off" ngbDatepicker placeholder="yyyy/mm/dd" class="form-control">
                       </div>
                       <div class="col-lg-2">
                         <label>To the date <span class="mandfield text-2 ml-1"
                           ><sup>*</sup></span></label>
                       </div>
                       <div class="col-lg-2">
-                        <input type="text" name="toDate" [(ngModel)]="scheduler.dateRange.to" #toDate="ngbDatepicker" (click)="toDate.toggle()" autocomplete="off" ngbDatepicker placeholder="yyyy/mm/dd" class="form-control">
+                        <input type="text" name="toDate" [(ngModel)]="scheduler.dateRange.to" #toDate="ngbDatepicker" (click)="toDate.toggle();" autocomplete="off" ngbDatepicker placeholder="yyyy/mm/dd" class="form-control">
                       </div>
                     </div>
                     <div class="row">
@@ -135,7 +135,7 @@
                       <div class="col-lg-3">
                         <div class="radio">
                           <label>
-                            <input type="radio" name="range" value="everymonth" [(ngModel)]="range">
+                            <input type="radio" name="range" value="everymonth" [disabled]="rangeDisabled" [(ngModel)]="range">
                             Every Month
                           </label>
                         </div>
@@ -151,7 +151,7 @@
                       <div class="col-lg-3">
                         <div class="radio">
                           <label>
-                            <input type="radio" name="range" value="month" [(ngModel)]="range">
+                            <input type="radio" name="range1" value="month" [disabled]="rangeDisabled" [(ngModel)]="range">
                             Select month
                           </label>
                         </div>
@@ -161,7 +161,7 @@
                       <div class="col-lg-2" *ngFor="let month of months">
                         <div class="checkbox">
                           <label>
-                            <input type="checkbox" [value]="month" (change)="onRangeCheckboxChange($event.target.value, $event.target.checked)">
+                            <input type="checkbox" [disabled]="rangeDisabled" [value]="month" (change)="onRangeCheckboxChange($event.target.value, $event.target.checked)">
                             {{month | titlecase}}
                           </label>
                         </div>

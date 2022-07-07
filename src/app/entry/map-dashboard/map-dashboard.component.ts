@@ -1,11 +1,12 @@
 import { animate, style, transition, trigger } from "@angular/animations";
 import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
-import { MapInfoWindow, MapMarker } from "@angular/google-maps";
+import { GoogleMap, MapInfoWindow, MapMarker } from "@angular/google-maps";
 import { Table } from "primeng/table";
 import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { ApiService } from "../../services";
 import { OneSignal } from 'onesignal-ngx';
+import { Auth } from "aws-amplify";
 
 
 declare var $: any;
@@ -29,6 +30,7 @@ declare var H: any;
 })
 export class MapDashboardComponent implements OnInit, AfterViewInit {
   @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
+  @ViewChild(GoogleMap) googleMap: GoogleMap;
   environment = environment.isFeatureEnabled;
   title = "Map Dashboard";
   visible = false;
@@ -53,9 +55,26 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   lng = 50.44521;
 
 
-  driverMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/driver-marker.png', animation: google.maps.Animation.DROP };
-  assetMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/asset-marker.png', animation: google.maps.Animation.DROP };
-  vehicleMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/vehicle-marker.png', animation: google.maps.Animation.DROP };
+  driverMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: '', animation: google.maps.Animation.DROP };
+  assetMarkerOptions: google.maps.MarkerOptions = {
+
+    draggable: false,
+    icon: {
+
+      url: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="110" r="100" stroke="#FE904D" fill="#000000" fill-opacity="1.0" stroke-width="15" /></svg>'),
+      scaledSize: new google.maps.Size(40, 40),
+    },
+    animation: google.maps.Animation.DROP
+  };
+  vehicleMarkerOptions: google.maps.MarkerOptions = {
+    draggable: false,
+    icon: {
+
+      url: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="110" r="100" stroke="#FFDE59" fill="#000000" fill-opacity="1.0" stroke-width="15" /></svg>'),
+      scaledSize: new google.maps.Size(40, 40),
+    },
+    animation: google.maps.Animation.DROP
+  };
   driverPositions = [];
   assetPositions = [];
   vehicleDashPositions = [];
@@ -80,7 +99,6 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     await this.getCurrentDriverLocation();
     await this.getCurrentAssetLocation();
     await this.getVehicleLocationByDashCam();
-
 
   }
 
@@ -110,7 +128,19 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
       }
     });
   }
+  ngAfterViewInit() {
 
+    //Add custom control on map or legends
+    var controlTrashUI = document.createElement('DIV');
+    controlTrashUI.style.cursor = 'pointer';
+
+    controlTrashUI.style.marginLeft = '10px';
+    controlTrashUI.style.padding = '5px';
+    controlTrashUI.style.color = "black"
+    controlTrashUI.innerHTML = "<img style='width:80%' src='assets/legends.png' />";
+    this.googleMap.controls[google.maps.ControlPosition.LEFT_TOP].push(controlTrashUI);
+
+  }
   /**
    * Get driver location for last 24 hours
    */
@@ -147,6 +177,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   * Get driver location for last 24 hours
   */
   async getCurrentAssetLocation() {
+
     this.apiService.getData('dashboard/assets/getCurrentAssetLocation').subscribe((data) => {
       if (data) {
         this.assetPositions = [];
@@ -268,8 +299,6 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     this.visible = !this.visible;
   }
 
-  ngAfterViewInit(): void { }
-
   async refresh() {
 
     await this.getCurrentAssetLocation();
@@ -281,4 +310,6 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     table.clear();
   }
 
+
 }
+

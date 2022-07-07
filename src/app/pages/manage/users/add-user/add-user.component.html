@@ -109,7 +109,7 @@
 
                                                     <div class="btn-group-toggle" data-toggle="buttons">
                                                         <label class="btn btn-outline btn-yesno mr-2" [class.active]="userData.userType === 'employee'" (click)="onChangeUnitType('user_type', 'employee')">
-                                                            <input type="radio" name="driverType" [(ngModel)]="userData.userType" checked hidden value="employee" />
+                                                            <input type="radio" name="driverType" style="width: 110px" [(ngModel)]="userData.userType" checked hidden value="employee" />
                                                             Employee
                                                         </label>
 
@@ -212,11 +212,11 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-4 pr-3" *ngIf="userData.corporationType == 'company'">
+                                                    <div class="col-3 pr-3" *ngIf="userData.corporationType == 'company'">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Vendor
                                                             <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                         </label>
-                                                        <ng-select [(ngModel)]="userData.vendor" name="vendor" class="form-control form-control-sm" placeholder="Select Vendor" #vendor="ngModel" required [ngClass]="{
+                                                        <ng-select [(ngModel)]="userData.vendor" name="vendor"placeholder="Select Vendor" #vendor="ngModel" required [ngClass]="{
                                     error: uForm1.submitted && ueName.invalid
                                   }">
                                                             <ng-option *ngFor="let item of vendors" value="{{ item.contactID }}">
@@ -501,11 +501,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div *ngIf="userData.userLoginData.userRoles.length>0" class="col-lg-6">
+                                            <div *ngIf="userData.userLoginData.userRoles.length>0" class="col-lg-7">
                                                 <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Sub
                                                     Role
                                                 </label>
-                                                <ng-select [multiple]="true" class="form-control populate" [(ngModel)]="userData.userLoginData.subRoles" name="sub role" placeholder="Select Sub roles">
+                                                <ng-select [multiple]="true" class="form-control populate" class="col-lg-10" [(ngModel)]="userData.userLoginData.subRoles" [(ngModel)]="subRole" name="sub role" placeholder="Select Sub roles">
                                                     <ng-option *ngFor="let userRole of allSubRoles" [value]="userRole.role">{{ userRole.name }}
                                                     </ng-option>
                                                 </ng-select>

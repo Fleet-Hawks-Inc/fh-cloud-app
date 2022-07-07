@@ -59,6 +59,7 @@ export class AddDriverComponent
   hasLic = false;
   hasPay = false;
   uploadPhotoError = '';
+  check = false;
   hasHos = false;
   hasCrossBrdr = false;
   deletedUploads = [];
@@ -215,7 +216,7 @@ export class AddDriverComponent
   lastName = null;
   address = "";
   phone = "";
-  check = false;
+  emailCheck = false;
   email = "";
   groupID = "";
   loginEnabled = true;
@@ -816,7 +817,7 @@ export class AddDriverComponent
   }
 
   addGroup() {
-    this.groupSubmitDisabled = true;
+   // this.groupSubmitDisabled = true;
     this.hideErrors();
     this.apiService.postData("groups", this.groupData).subscribe({
       complete: () => { },
@@ -1766,10 +1767,15 @@ export class AddDriverComponent
           if (!result) {
             this.errors[`CDL_Number`] = "CDL already exists";
             this.submitDisabled = true;
-          } else {
+          }
+          else {
             this.onChangeHideErrors("CDL_Number");
             delete this.errors[`CDL_Number`];
           }
+          
+          // if(this.emailCheck = true){
+          // this.submitDisabled = true;
+          // }
           this.throwErrors();
         });
     }
@@ -1777,7 +1783,7 @@ export class AddDriverComponent
 
   validateEmail() {
     this.hideVal();
-    if (this.driverData.email !== "") {
+    if (this.driverData.email !== '') {
       this.driverData.email = this.driverData.email.trim();
       this.apiService
         .getData(
@@ -1785,10 +1791,11 @@ export class AddDriverComponent
         )
         .subscribe((result: any) => {
           if (!result) {
-            this.errors[`email`] = "Email already exists";
+            this.errors[`email`] = 'Email already exists';
             this.submitDisabled = true;
+            this.emailCheck = true;
           } else {
-            this.onChangeHideErrors("email");
+            this.onChangeHideErrors('email');
             delete this.errors[`email`];
           }
           this.throwErrors();
