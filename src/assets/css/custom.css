@@ -4382,6 +4382,10 @@ input:checked + .sliderbtn:before {
 .p-overlaypanel:after {
   margin-left: -20px !important;
 }
+
+.p-toast {
+  z-index: 9999;
+}
 .p-overlaypanel:before {
   margin-left: -25px !important;
 }

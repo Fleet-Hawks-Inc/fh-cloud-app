@@ -10,9 +10,10 @@ import * as _ from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../environments/environment';
-import { ApiService, HereMapService } from '../../../../services';
+import { ApiService, DashboardUtilityService, HereMapService, ListService } from '../../../../services';
 import { OnboardDefaultService } from '../../../../services/onboard-default.service';
 import Constants from '../../constants';
+import { Subscription } from 'rxjs';
 declare var $: any;
 @Component({
   selector: 'app-vehicle-list',
@@ -90,6 +91,8 @@ export class VehicleListComponent implements OnInit {
   vehicleTypeObects: any = {};
   lastItemSK = ''
   loaded = false
+  isUpgrade = false;
+  subscription: Subscription;
 
   // columns of data table
   dataColumns = [
@@ -110,7 +113,7 @@ export class VehicleListComponent implements OnInit {
   ];
 
   constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService,
-    private onboard: OnboardDefaultService, protected _sanitizer: DomSanitizer, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) {
+    private onboard: OnboardDefaultService, private listService: ListService, private dashboardUtilityService: DashboardUtilityService, protected _sanitizer: DomSanitizer, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) {
   }
 
 
@@ -118,9 +121,10 @@ export class VehicleListComponent implements OnInit {
     this.onboard.checkInspectionForms();
     this.setToggleOptions();
     this.setVehiclesOptions();
-    this.fetchGroups();
     this.fetchDriversList();
     this.fetchVendorList();
+    this.isSubscriptionsValid();
+
     await this.initDataTable()
 
 
@@ -136,6 +140,40 @@ export class VehicleListComponent implements OnInit {
       }, {});
     });
 
+  }
+
+  private async isSubscriptionsValid() {
+    this.dashboardUtilityService.refreshVehCount = true;
+    this.dashboardUtilityService.refreshPlans = true;
+    let curVehCount = await this.dashboardUtilityService.fetchVehiclesCount();
+    let data = [];
+    this.listService.maxUnit.subscribe((res: any) => {
+
+      for (const item of res) {
+        if (item.planCode.startsWith('DIS-')) {
+          data.push({ vehicles: item.vehicles, planCode: item.planCode })
+        }
+      }
+
+      if (data.length > 0) {
+
+        let vehicleTotal = Math.max(...data.map(o => o.vehicles))
+        this.isUpgrade = curVehCount >= vehicleTotal ? true : false;
+        if (this.isUpgrade) {
+
+          let obj = {
+            summary: Constants.RoutingPlanExpired,
+            detail: 'You will not be able to add more vehicles.',
+            severity: 'error'
+          }
+          this.dashboardUtilityService.notify(obj);
+        }
+      }
+    })
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   setVehiclesOptions() {
@@ -196,12 +234,6 @@ export class VehicleListComponent implements OnInit {
     this.vehicleID = '';
   }
 
-  fetchGroups() {
-    this.apiService.getData('groups/get/list').subscribe((result: any) => {
-      this.groupsList = result;
-    });
-  }
-
   fetchVehicleModelList() {
     this.apiService.getData('vehicleModels/get/list').subscribe((result: any) => {
       this.vehicleModelList = result;
@@ -259,7 +291,7 @@ export class VehicleListComponent implements OnInit {
         this.lastEvaluatedKey = 'end'
       }
       this.vehicles = this.vehicles.concat(result.data)
-       this.loaded = true;
+      this.loaded = true;
       this.isSearch = false;
       await this.getDashCamConnection(this.vehicles);
       await this.getDashCamStatus(this.vehicles);
@@ -382,7 +414,6 @@ export class VehicleListComponent implements OnInit {
         this.vehicleDraw = 0;
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
-        // this.fetchVehiclesCount();
         this.initDataTable();
         this.toastr.success('Vehicle Deleted Successfully!');
       });

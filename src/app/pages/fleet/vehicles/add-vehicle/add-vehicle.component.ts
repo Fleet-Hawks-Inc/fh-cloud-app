@@ -766,6 +766,7 @@ export class AddVehicleComponent implements OnInit {
             this.toastr.success("Vehicle Added Successfully");
             this.router.navigateByUrl("/fleet/vehicles/list");
             this.dashboardUtilityService.refreshVehicles = true;
+            this.dashboardUtilityService.refreshVehCount = true;
             this.router.navigateByUrl(`/fleet/vehicles/list/${this.routerMgmtService.vehicleUpdated()}`);
             // this.location.back();
           },
