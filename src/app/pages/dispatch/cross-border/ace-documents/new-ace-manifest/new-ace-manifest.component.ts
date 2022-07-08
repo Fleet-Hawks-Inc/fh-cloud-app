@@ -909,27 +909,27 @@ export class NewAceManifestComponent implements OnInit {
       .getData('eManifests/ACE/' + this.manifestID).subscribe(async (result: any) => {
         result = result[0];
         this.manifestID = result.mID;
-        // this.manifestType = result.type;
-        // this.sendId = result.sendId;
-        // this.timeCreated = result.timeCreated;
-        // this.SCAC = result.SCAC;
-        // this.tripNumber = result.tripNumber.substring(4, (result.tripNumber.length));
-        // this.usPortOfArrival = result.usPortOfArrival;
-        // this.estimatedArrivalDate = result.estimatedArrivalDate;
-        // this.estimatedArrivalTime = result.estimatedArrivalTime;
-        // this.truck = result.truck;
-        // this.mainDriver = result.mainDriver;
-        // this.coDrivers = result.coDrivers;
-        // this.trailers = result.trailers;
-        // this.passengers = result.passengers;
-        // await this.fetchPassengerDocStates(this.passengers);
-        // this.shipments = result.shipments;
-        // await this.fetchThirdPartyAddress(this.shipments);
-        // this.currentStatus = result.currentStatus;
-        // this.usAddress = result.usAddress;
-        // this.borderResponses = result.borderResponses;
-        // this.createdDate = result.createdDate;
-        // this.createdTime = result.createdTime;
+        this.manifestType = result.type;
+        this.sendId = result.sendId;
+        this.timeCreated = result.timeCreated;
+        this.SCAC = result.manifestInfo.SCAC;
+        this.tripNumber = result.tripNo.substring(4, (result.tripNo.length));
+        this.usPortOfArrival = result.manifestInfo.usPortOfArrival;
+        this.estimatedArrivalDate = result.manifestInfo.estimatedArrivalDate;
+        this.estimatedArrivalTime = result.manifestInfo.estimatedArrivalTime;
+        this.truck = result.manifestInfo.truck;
+        this.mainDriver = result.manifestInfo.mainDriver;
+        this.coDrivers = result.manifestInfo.coDrivers;
+        this.trailers = result.manifestInfo.trailers;
+        this.passengers = result.manifestInfo.passengers;
+        await this.fetchPassengerDocStates(this.passengers);
+        this.shipments = result.manifestInfo.shipments;
+        await this.fetchThirdPartyAddress(this.shipments);
+        this.currentStatus = result.status;
+        this.usAddress = result.manifestInfo.usAddress;
+        this.borderResponses = result.manifestInfo.borderResponses;
+        this.createdDate = result.createdDate;
+        this.createdTime = result.createdTime;
       });
   }
 
@@ -985,35 +985,38 @@ export class NewAceManifestComponent implements OnInit {
       }
       if (this.address === true) {
         const data = {
-          manifestID: this.manifestID,
-          manifestType: this.manifestType,
-          sendId: this.sendId,
-          SCAC: this.SCAC,
+          mID: this.manifestID,
+          type: this.manifestType,
           tripNumber: this.SCAC + this.tripNumber,
-          usPortOfArrival: this.usPortOfArrival,
-          estimatedArrivalDate: this.estimatedArrivalDate,
-          estimatedArrivalTime: this.estimatedArrivalTime,
-          truck: this.truck,
-          trailers: this.trailers,
-          mainDriver: this.mainDriver,
-          coDrivers: this.coDrivers,
-          usAddress: this.usAddress,
-          passengers: this.passengers,
-          shipments: this.shipments,
-          borderResponses: this.borderResponses,
+          currentStatus: 'draft',
+          sendId: this.sendId,
+          manifest: {
+            SCAC: this.SCAC,
+            usPortOfArrival: this.usPortOfArrival,
+            estimatedArrivalDate: this.estimatedArrivalDate,
+            estimatedArrivalTime: this.estimatedArrivalTime,
+            truck: this.truck,
+            trailers: this.trailers,
+            mainDriver: this.mainDriver,
+            coDrivers: this.coDrivers,
+            usAddress: this.usAddress,
+            passengers: this.passengers,
+            shipments: this.shipments,
+            borderResponses: this.borderResponses,
+          },
           createdDate: this.createdDate,
           createdTime: this.createdTime,
-          currentStatus: 'draft',
         };
-        for (let p = 0; p < data.passengers.length; p++) {
-          for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
-            const element = data.passengers[p].travelDocuments[d];
+
+        for (let p = 0; p < data.manifest.passengers.length; p++) {
+          for (let d = 0; d < data.manifest.passengers[p].travelDocuments.length; d++) {
+            const element = data.manifest.passengers[p].travelDocuments[d];
             delete element.docStates;
           }
         }
-        for (let s = 0; s < data.shipments.length; s++) {
-          for (let p = 0; p < data.shipments[s].thirdParties.length; p++) {
-            const element = data.shipments[s].thirdParties[p].address;
+        for (let s = 0; s < data.manifest.shipments.length; s++) {
+          for (let p = 0; p < data.manifest.shipments[s].thirdParties.length; p++) {
+            const element = data.manifest.shipments[s].thirdParties[p].address;
             delete element.thirdPartyStates;
             delete element.thirdPartyCities;
           }
@@ -1040,35 +1043,38 @@ export class NewAceManifestComponent implements OnInit {
       };
       // this.coDrivers.unshift(this.mainDriver);
       const data = {
-        manifestID: this.manifestID,
-        manifestType: this.manifestType,
-        sendId: this.sendId,
-        SCAC: this.SCAC,
+        mID: this.manifestID,
+        type: this.manifestType,
         tripNumber: this.SCAC + this.tripNumber,
-        usPortOfArrival: this.usPortOfArrival,
-        estimatedArrivalDate: this.estimatedArrivalDate,
-        estimatedArrivalTime: this.estimatedArrivalTime,
-        truck: this.truck,
-        trailers: this.trailers,
-        mainDriver: this.mainDriver,
-        coDrivers: this.coDrivers,
-        usAddress: this.usAddress,
-        passengers: this.passengers,
-        shipments: this.shipments,
-        borderResponses: this.borderResponses,
+        currentStatus: 'draft',
+        sendId: this.sendId,
+        manifest: {
+          SCAC: this.SCAC,
+          usPortOfArrival: this.usPortOfArrival,
+          estimatedArrivalDate: this.estimatedArrivalDate,
+          estimatedArrivalTime: this.estimatedArrivalTime,
+          truck: this.truck,
+          trailers: this.trailers,
+          mainDriver: this.mainDriver,
+          coDrivers: this.coDrivers,
+          usAddress: this.usAddress,
+          passengers: this.passengers,
+          shipments: this.shipments,
+          borderResponses: this.borderResponses,
+        },
         createdDate: this.createdDate,
         createdTime: this.createdTime,
-        currentStatus: 'draft',
       };
-      for (let p = 0; p < data.passengers.length; p++) {
-        for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
-          const element = data.passengers[p].travelDocuments[d];
+
+      for (let p = 0; p < data.manifest.passengers.length; p++) {
+        for (let d = 0; d < data.manifest.passengers[p].travelDocuments.length; d++) {
+          const element = data.manifest.passengers[p].travelDocuments[d];
           delete element.docStates;
         }
       }
-      for (let s = 0; s < data.shipments.length; s++) {
-        for (let p = 0; p < data.shipments[s].thirdParties.length; p++) {
-          const element = data.shipments[s].thirdParties[p].address;
+      for (let s = 0; s < data.manifest.shipments.length; s++) {
+        for (let p = 0; p < data.manifest.shipments[s].thirdParties.length; p++) {
+          const element = data.manifest.shipments[s].thirdParties[p].address;
           delete element.thirdPartyStates;
           delete element.thirdPartyCities;
         }

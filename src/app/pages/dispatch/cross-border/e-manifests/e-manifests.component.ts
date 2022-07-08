@@ -4,15 +4,18 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from 'src/environments/environment';
 import Constants from '../../../fleet/constants';
-import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 import { HttpClient } from '@angular/common/http';
 import * as _ from "lodash";
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 declare var $: any;
 @Component({
   selector: 'app-e-manifests',
   templateUrl: './e-manifests.component.html',
   styleUrls: ['./e-manifests.component.css'],
+
+  providers: [ConfirmationService, MessageService]
+
 })
 export class EManifestsComponent implements OnInit {
   @ViewChild('dt') table: Table;
@@ -114,7 +117,9 @@ export class EManifestsComponent implements OnInit {
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
   ) { }
 
   ngOnInit() {
@@ -327,23 +332,44 @@ export class EManifestsComponent implements OnInit {
       return false;
     }
   }
-  deleteACEEntry(eventData) {
-    if (confirm('Are you sure you want to delete?') === true) {
-      let record = {
-        date: eventData.createdDate,
-        time: eventData.createdTime,
-        eventID: eventData.manifestID,
-        status: eventData.currentStatus
-      }
-      this.apiService.postData('eManifests/delete/ACEmanifest', record).subscribe((result: any) => {
-        this.aceDraw = 0;
-        this.dataMessage = Constants.FETCHING_DATA;
-        this.lastEvaluatedKey = '';
+  deleteACEEntry(event: Event, eventData) {
+    try {
+      this.confirmationService.confirm({
+        target: event.target,
+        message: 'Are you sure that you want to proceed?',
+        icon: 'pi pi-exclamation-triangle',
+        accept: async () => {
+          //confirm action
+          console.log('ff', event)
+          // await this.deleteACE(eventData);
+          this.messageService.add({
+            severity: "info",
+            summary: "Confirmed",
+            detail: "ACE record deleted."
+          });
 
-        this.toastr.success('Manifest Deleted Successfully!');
+        }
       });
+    } catch (error) {
+
     }
+
   }
+
+  async deleteACE(eventData) {
+    let record = {
+      date: eventData.createdDate,
+      time: eventData.createdTime,
+      eventID: eventData.manifestID,
+      status: eventData.currentStatus
+    }
+    console.log('record', record)
+    return await this.apiService.postData('eManifests/delete/ACEmanifest', record).toPromise();
+
+  }
+
+
+
   // ACI operations
 
   initDataTableACI() {
