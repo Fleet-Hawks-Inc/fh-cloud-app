@@ -48,6 +48,13 @@
                             </td>
                             <td>{{ zoneDetail.zDesc | titlecase }}</td>
                           </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Zone Coordinates
+                            </td>
+                            <td *ngIf="zoneDetail.coordinates.length==0">No Coordinates found</td>
+                            <td *ngIf="zoneDetail.coordinates.length>0"><span *ngFor="let cords of zoneDetail.coordinates"> Latitude: {{cords.lat}}, Longitude: {{cords.lng}}<br> </span></td>
+                          </tr>
                         </tbody>
                       </table>
 
