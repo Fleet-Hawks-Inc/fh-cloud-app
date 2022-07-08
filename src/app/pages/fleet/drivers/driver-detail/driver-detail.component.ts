@@ -63,6 +63,8 @@ export class DriverDetailComponent implements OnInit {
     documents: any = [];
     licNotification: any = false;
     liceIssueSate: any;
+     uploadedDocs = [];
+    existingDocs = [];
     liceIssueCountry: any;
     liceWCB: any;
     liceHealthCare: any;
@@ -607,6 +609,7 @@ export class DriverDetailComponent implements OnInit {
     }
 
     // delete uploaded images and documents
+    /*
     delete(type: string, name: string, index: any, docIndex: any) {
         this.driverDataUpdate.hosDetails.homeTerminal = this.driverDataUpdate.hosDetails.homeTerminal.addressID;
         delete this.driverDataUpdate.isDelActiveSK;
@@ -642,8 +645,51 @@ export class DriverDetailComponent implements OnInit {
             }
         }
     }
+    */
+    /*
     deleteUploadedFile(name: string) { // delete from aws
         this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => { });
+    }
+    */
+    deleteDocument(type: string,name: string, index: string){
+    this.apiService.deleteData(`drivers/uploadDelete/${this.driverID}/${type}/${name}`).subscribe((result: any) =>{
+        if(type == 'image'){
+                this.profile = [];
+                this.uploadedDocs = result.Attributes.uploadedPhotos;
+                this.existingDocs = result.Attributes.uploadedPhotos;
+                result.Attributes.uploadedPhotos.map((x) => {
+                    let obj = {
+                        name: x,
+                        path: `${this.Asseturl}/${result.carrierID}/${x}`
+                    }
+                    this.profile.push(obj);
+                })
+          }
+    else if(type == 'absDocs'){
+                this.absDocs = [];
+                this.uploadedDocs = result.Attributes.abstractDocs;
+                this.existingDocs = result.Attributes.abstractDocs;
+                result.Attributes.abstractDocs.map((x) => {
+                    let obj = {
+                        name: x,
+                        path: `${this.Asseturl}/${result.carrierID}/${x}`
+                    }
+                    this.absDocs.push(obj);
+                })
+          }
+    else if(type == 'docs'){
+                this.assetsDocs[index] = [];
+                this.uploadedDocs = result.Attributes.documentDetails.Attributes.uploadedDocs;
+                this.existingDocs = result.Attributes.documentDetails.Attributes.uploadedDocs;
+                result.Attributes.documentDetails.Attributes.uploadedDocs.map((x) => {
+                    let obj = {
+                        name: x,
+                        path: `${this.Asseturl}/${result.carrierID}/${x}`
+                    }
+                    this.assetsDocs[index].push(obj);
+                })
+          }      
+    })
     }
     fetchDriverTrips() {
         this.apiService.getData(`drivers/get/driver/active?driver=${this.driverID}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
