@@ -113,48 +113,70 @@
                         </div>
                       </div>
                     </ng-template>
-                    <ng-template pTemplate="header">
+
+                    <ng-template pTemplate="header" let-columns>
                       <tr>
                         <th style="width: 3%" alignFrozen="left" pFrozenColumn [frozen]="true"></th>
-                        <th *ngFor="let column of dataColumns" [pSortableColumn]="dataColumns.field" pResizableColumn
+                        <th *ngFor="let column of dataColumns" [pSortableColumn]="column.field" pResizableColumn
                           [ngStyle]="{ width: column.width }">
-                          <div [ngSwitch]="column.field">
-                            <!-- Event Status Filter Customization -->
-                            <span *ngSwitchCase="'newStatus'">
-                              <div class="flex justify-content-center align-items-center" alignFrozen="left"
-                                pFrozenColumn [frozen]="true">
-                                {{ column.header }}
-                                <p-sortIcon [field]="column.field"></p-sortIcon>
-                                <p-columnFilter [type]="column.type" [field]="column.field" [showOperator]="false"
-                                  matchMode="contains" [showMatchModes]="false" [showAddButton]="false" display="menu">
-                                  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                    <p-multiSelect [options]="statusData" placeholder="Any"
-                                      (onChange)="filter($event.value)" optionLabel="name" optionValue="value">
-                                      <ng-template let-option pTemplate="item">
-                                        <div>
-                                          <span class="ml-1">{{
-                                            option.name
-                                            }}</span>
-                                        </div>
-                                      </ng-template>
-                                    </p-multiSelect>
-                                  </ng-template>
-                                </p-columnFilter>
-                              </div>
-                            </span>
-
+                          <span [ngSwitch]="column.field">
                             <span *ngSwitchDefault>
-                              <div class="flex justify-content-center align-items-center" alignFrozen="right"
-                                pFrozenColumn [frozen]="true">
-                                {{ column.header }}
-                                <p-sortIcon [field]="column.field"></p-sortIcon>
-                                <p-columnFilter [type]="column.type" [field]="column.field" matchMode="contains"
-                                  [showMatchModes]="false" [showOperator]="false" [showAddButton]="false"
-                                  display="menu">
-                                </p-columnFilter>
+                            <div class="flex justify-content-center align-items-center" alignFrozen="right"
+                              pFrozenColumn [frozen]="true">
+                              {{ column.header }}
+                              <p-sortIcon [field]="column.field"> </p-sortIcon>
+                              <p-columnFilter [type]="column.type" [field]="column.field" matchMode="contains"
+                                [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
+                              </p-columnFilter>
+                            </div>
+                          </span>
+                          <span *ngSwitchCase="'newStatus'">
+                            <div class="flex justify-content-center align-items-center" alignFrozen="left"
+                              pFrozenColumn [frozen]="true">
+                              {{ column.header }}
+                              <p-sortIcon [field]="column.field"></p-sortIcon>
+                              <p-columnFilter [type]="column.type" [field]="column.field" [showOperator]="false"
+                                matchMode="in" [showMatchModes]="false" [showAddButton]="false" display="menu">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                  <p-multiSelect [options]="statusData" placeholder="Any"
+                                    (onChange)="filter($event.value)" optionLabel="name" optionValue="value">
+                                    <ng-template let-option pTemplate="item">
+                                      <div>
+                                        <span class="ml-1">{{
+                                          option.name
+                                          }}</span>
+                                      </div>
+                                    </ng-template>
+                                  </p-multiSelect>
+                                </ng-template>
+                              </p-columnFilter>
+                            </div>
+                          </span>
+
+                          <span *ngSwitchCase="'orderMode'">
+                            <div class="flex justify-content-center align-items-center" alignFrozen="left"
+                              pFrozenColumn [frozen]="true">
+                            {{ column.header }}
+                            <p-sortIcon [field]="column.field"></p-sortIcon>
+                            <p-columnFilter [type]="column.type" [field]="column.field" [showOperator]="false"
+                            matchMode="in" [showMatchModes]="false" [showAddButton]="false" display="menu">
+                          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                           
+                            <p-multiSelect [options]="orderType" placeholder="Any"
+                            (onChange)="filter($event.value)" optionLabel="name" optionValue="value">
+                            <ng-template let-option pTemplate="item">
+                              <div>
+                                <span class="ml-1">{{
+                                  option.name
+                                  }}</span>
                               </div>
-                            </span>
+                            </ng-template>
+                          </p-multiSelect>
+                          </ng-template>  
+                          </p-columnFilter>
                           </div>
+                            </span>
+                          </span>
                         </th>
                         <th style="width: 6%" alignFrozen="right" pFrozenColumn [frozen]="true">
                           Actions
@@ -208,7 +230,7 @@
                             width: find(columns, { field: 'shipperName' }).width
                           }">
                           <div style="white-space: pre-line">
-                            {{ order.shipperName }}
+                            {{ order.shipperName ? order.shipperName: "-" }}
                           </div>
                         </td>
 
@@ -217,7 +239,7 @@
                               .width
                           }">
                           <div style="white-space: pre-line">
-                            {{ order.receiverName }}
+                            {{ order.receiverName ? order.receiverName: "-" }}
                           </div>
                         </td>
 
@@ -265,7 +287,7 @@
                             <span class="badge badge-dark p-1" style="background-color: #f93121"
                               *ngIf="order.newStatus === 'tonu'">tonu</span>
                             <span class="badge badge-dark p-1" style="background-color: #f93121"
-                            *ngIf="order.newStatus === 'cancelled'">cancelled</span>
+                              *ngIf="order.newStatus === 'cancelled'">cancelled</span>
                             <span class="badge badge-dark p-1" style="color: black; background-color: #f7e363"
                               *ngIf="order.newStatus === 'started'">started</span>
                             <span class="badge badge-dark p-1" style="background-color: orange"
@@ -738,7 +760,7 @@
                   <div class="radio">
                     <label>
                       <input type="radio" name="repeatType" value="everyday" [(ngModel)]="repeatType">
-                      Everyday
+                      Everyday                
                     </label>
                   </div>
                 </div>
@@ -819,7 +841,7 @@
                   <hr class="solid">
                 </div>
               </div>
-
+              
               <div class="row">
                 <div class="col-lg-3">
                   <div class="radio">
