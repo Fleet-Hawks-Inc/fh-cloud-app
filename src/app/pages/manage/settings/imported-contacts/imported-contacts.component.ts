@@ -44,7 +44,7 @@ export class ImportedContactsComponent implements OnInit {
   dataColumns = [
     { field: 'displayName', header: 'File Name', type: "text" },
     { field: 'timeCreated', header: 'Uploaded', type: "text" },
-    { field: "module", header: 'Module', type: 'text' },
+    { field: "eType", header: 'Contact Type(s)', type: 'text' },
     { field: 'fileStatus', header: 'Status', type: "text" },
 
   ];
@@ -88,14 +88,6 @@ export class ImportedContactsComponent implements OnInit {
   constructor(private apiService: ApiService, private route: ActivatedRoute, private location: Location, private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      this.eType = params.entity;
-      this.entity = params.entity.charAt(0).toUpperCase() + params.entity.slice(1).replace('_', ' ') + 's';
-      if (this.entity == 'Fcs') {
-        this.entity = 'Factoring Company';
-      }
-      this.importData.eType.push(this.eType)
-    });
 
     this.setToggleOptions();
     this.fetchCustomersImport()
@@ -239,7 +231,7 @@ export class ImportedContactsComponent implements OnInit {
     if (this.next === 'end') {
       return;
     }
-    let result = await this.apiService.getData(`importer/get?type=contact&entity=${this.eType}&key=${this.next}`).toPromise();
+    let result = await this.apiService.getData(`importer/get?type=contact&key=${this.next}`).toPromise();
     if (result.data.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
       this.loaded = true;
@@ -247,11 +239,23 @@ export class ImportedContactsComponent implements OnInit {
     if (result && result.data.length > 0) {
       result.data.forEach(elem => {
         elem.timeCreated = new Date(elem.timeCreated).toLocaleString('en-CA');
+        if (elem.eType.includes('fc')) {
+          var index = elem.eType.indexOf('fc');
+          if (index !== -1) {
+            elem.eType[index] = 'Factoring Company';
+          }
+        }
+        if (elem.eType.includes('owner_operator')) {
+          var index = elem.eType.indexOf('owner_operator');
+          if (index !== -1) {
+            elem.eType[index] = 'Owner Operator';
+          }
+        }
         this.importCustomers.push(elem);
       });
 
       if (result.nextPage != undefined) {
-        this.next = result.nextPage.replace(/#/g, '--');
+        this.next = result.nextPage;
       } else {
         this.next = 'end';
       }
@@ -293,6 +297,9 @@ export class ImportedContactsComponent implements OnInit {
             this.toastr.success("The file has been scheduled for processing and you will be notified via email once it is completed")
             $('#importDocs').val('');
             this.display = false;
+            this.dataMessage = Constants.FETCHING_DATA;
+            this.importCustomers = [];
+            this.next = '';
             this.fetchCustomersImport();
           }
         })

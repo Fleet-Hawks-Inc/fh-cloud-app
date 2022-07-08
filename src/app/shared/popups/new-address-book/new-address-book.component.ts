@@ -254,6 +254,7 @@ export class NewAddressBookComponent implements OnInit {
           this.carriers = [];
         });
         this.lastKey = '';
+        this.updatedKey = '';
         this.updateButton = false;
         this.fetchUnits();
       } else if (res === 'form') {
@@ -1778,6 +1779,7 @@ export class NewAddressBookComponent implements OnInit {
     this.newEditUnit(item);
 
     // this.modalService.dismissAll();
+    this.updateButton = false;
     let ngbModalOptions: NgbModalOptions = {
       backdrop: 'static',
       keyboard: false,

@@ -1,3 +1,8 @@
+<style>
+  .extra {
+    display: none;
+  }
+</style>
 <section class="body">
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-0 pt-0 pr-0">
@@ -123,18 +128,12 @@
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
-            <div
-              infiniteScroll
-              [infiniteScrollDistance]="1"
-              [infiniteScrollUpDistance]="1"
-              [infiniteScrollThrottle]="5"
-              (scrolled)="onScroll()"
-            >
-              <div class="bg-white p-3 text-dark">
-                <div class="form-group row">
-                  <div class="col-lg-12">
-                    <div class="wtopnav">
-                      <ul class="nav nav-tabs top-tabs pl-0 mb-3">
+            <div>
+             <div class="bg-white p-3 text-dark"> 
+               <div class="form-group row pt-1">
+                 <div class="col-lg-12">
+                     <div class="mb-3 pb-1">
+                        <ul class="nav nav-tabs top-tabs pl-0 mb-3">
                         <li class="nav-item">
                           <a
                             class="nav-link"
@@ -157,124 +156,237 @@
                           </a>
                         </li>
                       </ul>
-                    </div>
                   </div>
-
-                  <div class="col-lg-12">
-                    <div class="table-responsive">
-                      <table
-                        class="row-border hover table table-bordered table-striped mb-0"
+                  <p-table
+                        #dt
+                      [value]="remindersData"
+                      [resizableColumns]="true"
+                      columnResizeMode="expand"
+                      scrollDirection="both"
+                      [columns]="selectedColumns"
+                      [loading]="!loaded"
+                      styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                      [scrollable]="true"
+                      [loading]="!loaded"
+                      scrollHeight="100%"
                       >
-                        <thead>
-                          <tr>
-                            <th>Contact</th>
-                            <th>Contact Renewal Type</th>
-                            <th>Send Reminder</th>
-                            <th>Expiration Date</th>
-                            <th>Subscribers</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr
-                            *ngIf="remindersData.length == 0"
-                            class="text-center"
+                  <ng-template pTemplate="caption">   
+                 <div  class="p-d-flex d-flex justify-content-between align-items-center"> 
+                   <div>
+                   <h3 class="m-0">Contact Renewal</h3>
+                   </div>
+                    <div class="text-right">
+                     <span>Showing {{ remindersData.length }} entries </span>
+                            &nbsp;
+                      <button
+                              type="button"
+                              pButton
+                              (click)="refreshData()"
+                              pTooltip="Refresh"
+                              class="p-button-outlined mr-2"
+                              icon="fas fa-sync"
+                            ></button>
+                             <button
+                              pButton
+                              pRipple
+                              pTooltip="Clear Filter"
+                              class="p-button-outlined mr-2"
+                              icon="pi pi-filter-slash"
+                              (click)="clear(dt)"
+                            ></button>
+                             <p-multiSelect
+                              [options]="dataColumns"
+                              [(ngModel)]="selectedColumns"
+                              optionLabel="header"
+                              selectedItemsLabel="{0} columns selected"
+                              [style]="{ minWidth: '200px' }"
+                              placeholder="Choose Columns"
+                            >
+                            </p-multiSelect>
+                  </div>
+                  </div>
+                  </ng-template>
+                   <ng-template pTemplate="header" let-columns>
+                  <tr>
+                  <th
+                            *ngFor="let dataColumns of columns"
+                            [pSortableColumn]="dataColumns.field"
+                            pResizableColumn
+                            [ngStyle]="{ width: dataColumns.width }"
                           >
-                            <td colspan="6">{{ dataMessage }}</td>
-                          </tr>
-                          <tr
-                            *ngFor="let item of remindersData"
-                            style="cursor: pointer"
+                  <div [ngSwitch]="dataColumns.field">
+                  <span *ngSwitchDefault>
+                  <div
+                                  class="flex justify-content-center align-items-center"
+                                  alignFrozen="right"
+                                  pFrozenColumn
+                                  [frozen]="true"
+                                >
+                      {{ dataColumns.header }}
+                               <p-sortIcon
+                                    [field]="dataColumns.field"
+                                  ></p-sortIcon>
+                                  <p-columnFilter
+                                    [type]="dataColumns.type"
+                                    [field]="dataColumns.field"
+                                    matchMode="contains"
+                                    [showMatchModes]="false"
+                                    [showOperator]="false"
+                                    [showAddButton]="false"
+                                    display="menu"
+                                  >
+                                  </p-columnFilter> 
+                           </div>
+                            </span>
+                              </div>
+                                </th>
+                                    <th
+                            width="13%"
+                            alignFrozen="right"
+                            pFrozenColumn
+                            [frozen]="true"
                           >
-                            <td class="text-capitalize">
-                              {{ mergedList[item.entityID] }}
-                            </td>
-                            <td>
+                            Actions
+                           </th>
+                            </tr>
+                           </ng-template>
+                             <ng-template
+                        pTemplate="body"
+                        let-vehicle
+                        let-columns="columns"
+                        let-rowIndex="rowIndex"
+                      >
+                     <tr>
+                    <td  *ngFor="let dataColumns of columns" 
+                        [ngStyle]="{ width: dataColumns.width }"
+                         style="cursor: pointer">
+                    <div [ngSwitch]="dataColumns.field">
+                              <span *ngSwitchCase="'entityID'">
+                               <span class="text-capitalize">
+                              {{ mergedList[vehicle.entityID] }}
+                            </span>
+                          </span>
+                          
+                          <span *ngSwitchCase="'status'">
                               <span
                                 class="text-warning font-weight-bold font-size-12 text-uppercase"
-                                *ngIf="item.status === 'dueSoon'"
-                                >{{ item.status }}<br
+                                *ngIf="vehicle.status === 'dueSoon'"
+                                >{{ vehicle.status }}<br
                               /></span>
                               <span
                                 class="text-danger font-weight-bold font-size-12 text-uppercase"
-                                *ngIf="item.status === 'overdue'"
-                                >{{ item.status }}<br
+                                *ngIf="vehicle.status === 'overdue'"
+                                >{{ vehicle.status }}<br
                               /></span>
                               <span
                                 class="font-weight-bold text-capitalize"
                                 title="Task"
-                                >{{ tasksList[item.tasks.taskID] }}</span
+                                >{{ tasksList[vehicle.tasks.taskID] }}</span
                               >
-                            </td>
-                            <td>
+                          </span>
+                          
+                          <span *ngSwitchCase="'tasks.timeUnit'">
                               <span class="font-size-12"
-                                >{{ item.tasks.time }}
-                                {{ item.tasks.timeUnit }}(s) Before</span
+                                >{{ vehicle.tasks.time }}
+                                {{ vehicle.tasks.timeUnit }}(s) Before</span
                               >
-                            </td>
-                            <td>
+                          </span>
+                       
+                       <span *ngSwitchCase="'tasks.dueDate'">
                               <span class="font-size-12">{{
-                                item.tasks.dueDate | date: "yyyy/MM/dd"
+                                vehicle.tasks.dueDate | date: "yyyy/MM/dd"
                               }}</span>
-                            </td>
-                            <td class="text-lowercase">
-                              {{ item.subscribers }}
-                            </td>
-                            <td>
-                              <div class="btn-group flex-wrap">
-                                <button
-                                  type="button"
-                                  class="btn p-0"
-                                  data-toggle="dropdown"
-                                >
-                                  <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <div class="dropdown-menu" role="menu">
-                                  <a
+                       </span>
+                       
+                       <span *ngSwitchCase="'subscribers'">
+                         <span class="text-lowercase">
+                              {{ vehicle.subscribers }}
+                            </span>
+                       </span>
+                       
+                        <span *ngSwitchDefault>
+                                {{ get(vehicle, dataColumns.field) }}
+                              </span>
+                            </div>
+                           </td>
+                           <td 
+                          style="width: 13%; overflow: inherit !important"
+                          alignFrozen="right"
+                        >
+                         <div class= "dropdown
+                                      dropright">
+                       <button
+                            class="bg-transparent"
+                              type="button"
+                              class="bg-transparent border-0"
+                              data-toggle="dropdown"
+                               aria-expanded="false"
+                                aria-haspopup="true"
+                               id="dropdownMenuButton-{{ rowIndex }}"
+                            >
+                              <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        <div class="dropdown-menu" 
+                               attr.aria-labelledby="dropdownMenuButton-{{ rowIndex }}">
+                                      <a 
                                     class="dropdown-item text-1"
                                     href="javascript:;"
-                                    (click)="sendEmailNotification(item)"
+                                    (click)="sendEmailNotification(vehicle)"
                                     >Send Notifications</a
                                   >
-                                  <a
+                                    <a
                                     routerLink="/fleet/reminders/contact-renewals/edit/{{
-                                      item.reminderID
+                                      vehicle.reminderID
                                     }}"
                                     class="dropdown-item text-1"
                                     >Edit</a
                                   >
-                                  <a
+                                   <a
                                     href="javascript:;"
                                     class="dropdown-item text-1"
-                                    (click)="deleteRenewal(item)"
+                                    (click)="deleteRenewal(vehicle)"
                                     >Delete</a
                                   >
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
+                         </div>  
+                     </div>
+                     </td>      
+                  </tr>
+                  </ng-template>
+                    <ng-template pTemplate="emptymessage" let-columns>
+                        <div class="col-lg-12 mt-3 text-center">
+                          {{ dataMessage }}
+                          <br /><br />
+                        </div>
+                      </ng-template>
+                   <ng-template pTemplate="summary" let-columns>
+                   <div
+                        class="col-lg-12 mt-3 text-center"
+                          *ngIf="lastEvaluatedKey !== 'end' && remindersData.length !== 0"
+                      >
+                   <button
+                          type="button "
+                          (click)="onScroll($event)"
+                          class="btn btn-success btn-sm text-light"
+                        >
+                          Load More..
+                        </button>
+                         <br /><br />
+                      </div>
+                   <div
+                        class="col-lg-12 mt-3 text-center"
+                         *ngIf="lastEvaluatedKey !== 'end'"
+                      >
+                        Total Records: {{ remindersData.length }}
+                      </div>
+                  </ng-template>
+                  </p-table>
+                 </div>
+                 </div>
               </div>
-            </div>
+              </div>
           </div>
         </div>
       </section>
-      <div
-        class="col-lg-12 mt-3 text-center"
-        *ngIf="lastEvaluatedKey !== 'end' && remindersData.length !== 0"
-      >
-        <button
-          type="button"
-          class="btn btn-success btn-sm text-light"
-          (click)="onScroll()"
-        >
-          Load More..
-        </button>
-      </div>
     </section>
   </div>
 </section>

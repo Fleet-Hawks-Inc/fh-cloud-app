@@ -249,33 +249,6 @@
                                   [showAddButton]="false"
                                   display="menu"
                                 >
-                                  <ng-template
-                                    pTemplate="filter"
-                                    let-value
-                                    let-filter="filterCallback"
-                                  >
-                                    <p-multiSelect
-                                      [options]="[
-                                        {
-                                          name: 'Delivered',
-                                          value: 'delivered'
-                                        },
-                                        { name: 'Settled', value: 'settled' }
-                                      ]"
-                                      placeholder="Any"
-                                      (onChange)="filter($event.value)"
-                                      optionLabel="name"
-                                      optionValue="value"
-                                    >
-                                      <ng-template let-option pTemplate="item">
-                                        <div>
-                                          <span class="ml-1">{{
-                                            option.name
-                                          }}</span>
-                                        </div>
-                                      </ng-template>
-                                    </p-multiSelect>
-                                  </ng-template>
                                 </p-columnFilter>
                               </div>
                             </span>

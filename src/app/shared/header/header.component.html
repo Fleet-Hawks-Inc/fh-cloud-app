@@ -78,7 +78,11 @@
                         <ng-template pTemplate="body" let-rowData let-notification>
                             <tr [ngClass]="{'un-noticed': notification.read == 0}">
                                 <td (click)="showDetail(notification)" style="cursor:pointer;">
-                                    {{notification.shortMessage}}</td>
+                                    {{notification.shortMessage}}
+                                    <div class="d-block noti-time">
+                                        {{notification.created | date: 'yyyy/MM/dd hh:mm a' }}
+                                    </div>
+                                </td>
 
                             </tr>
 
@@ -138,7 +142,7 @@
                             class="modal-with-form"><i class="fas fa-building"></i> Company Profile</a>
                     </li>
                     <li *ngIf="showSwitch">
-                        <a role="menuitem" tabindex="-1" routerLink="/organizations" class="modal-with-form"><i
+                        <a role="menuitem" tabindex="-1" (click)="switchCompany()" class="modal-with-form"><i
                                 class="fas fa-exchange"></i> Switch Company</a>
                     </li>
                     <li>
@@ -154,8 +158,11 @@
 <app-new-address-book></app-new-address-book>
 <app-shared-modals></app-shared-modals>
 
-<p-dialog header="Message" [modal]="true" [style]="{width: '50vw'}" [(visible)]="showNotificationDetail">
+<p-dialog header="Message" [modal]="true" [style]="{width: '35vw'}" [(visible)]="showNotificationDetail">
     {{detailMessage}}
+    <div class="d-block noti-time">
+        {{messageTime | date: 'yyyy/MM/dd hh:mm a' }}
+    </div>
     <ng-template pTemplate="footer">
         <p-button icon="pi pi-check" (click)="showNotificationDetail=false" label="Ok" styleClass="p-button-text">
         </p-button>

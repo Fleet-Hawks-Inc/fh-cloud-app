@@ -1,6 +1,6 @@
 <ul class="nav nav-main mr-0 bg-white">
   <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/accounts', 'chart-accounts', 'list']">
+    <a class="nav-link" [routerLink]="['/accounts', 'chart-accounts', 'list', genrateChartAccountSessionID()]">
       <i class="fas fa-chart-pie"></i>
       <span>Chart of Accounts</span>
     </a>
@@ -33,6 +33,12 @@
     <a class="nav-link" [routerLink]="['/accounts', 'receipts', 'list']">
       <i class="fab fa-wpforms"></i>
       <span>Receipts</span>
+    </a>
+  </li>
+  <li routerLinkActive="nav-active">
+    <a class="nav-link" [routerLink]="['/accounts', 'fuel-transactions', 'list']">
+      <i class="fab fa-wpforms"></i>
+      <span>Fuel Transactions</span>
     </a>
   </li>
   <li>

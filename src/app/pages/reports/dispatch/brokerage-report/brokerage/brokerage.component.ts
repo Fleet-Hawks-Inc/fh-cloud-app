@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Table } from 'primeng/table';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
+import * as moment from 'moment'
 declare var $: any;
 
 
@@ -24,15 +25,17 @@ export class BrokerageComponent implements OnInit {
   brkDateEnUS:any = [];
   carriersObject = [];
   orderNumber = '';
-  loaded = false;
+customers = {}
+loaded = false;
   dataColumns = [
-    { width: '10%', field: 'orderNumber', header: 'Order No', type: "text" },
-    { width: '10%', field: 'tripData.tripNo', header: 'Trip No', type: "text" },
-    { width: '12%', field: 'cName', header: 'Carrier', type: "text" },
-    { width: '10%', field: 'createdDate', header: 'Order Date', type: "text" },
-    { width: '12%', field: 'date', header: 'Brokerage Date', type: "text" },
-    { width: '12%', field: 'pickUpLoc', header: 'Pickup Location', type: "text" },
-    { width: '12%', field: 'dropOffLoc', header: 'Delivery Location', type: "text" },
+    { width: '8%', field: 'orderNumber', header: 'Order No', type: "text" },
+    { width: '7%', field: 'tripData.tripNo', header: 'Trip No', type: "text" },
+    { width: '9%', field: 'customerName', header: 'Customers', type: "text" },
+    { width: '7%', field: 'cName', header: 'Carrier', type: "text" },
+    { width: '8%', field: 'createdDate', header: 'Order Date', type: "text" },
+    { width: '10%', field: 'date', header: 'Brokerage Date', type: "text" },
+    { width: '15%', field: 'pickUpLoc', header: 'Pickup Location', type: "text" },
+    { width: '15%', field: 'dropOffLoc', header: 'Delivery Location', type: "text" },
     { width: '10%', field: 'amount', header: 'Order Amount', type: "text" },
     { width: '12%', field: 'bAmount', header: 'Brokerage Amount', type: "text" },
   ];
@@ -46,6 +49,7 @@ export class BrokerageComponent implements OnInit {
   this.fetchBrokerageReport();
   this.setToggleOptions();
   this.fetchCarriers();
+  this.fetchCustomers();
   }
 
 
@@ -83,7 +87,12 @@ export class BrokerageComponent implements OnInit {
   }
 
 
-
+  async fetchCustomers() {
+    const customers = await this.apiService.getData(`contacts/fetch/order/customers`).toPromise();
+    customers.forEach(element => {
+      this.customers[element.contactID] = element.companyName
+    });
+  }
 
     async fetchBrokerageReport(refresh?: boolean) {
     if(refresh === true){
@@ -149,6 +158,54 @@ export class BrokerageComponent implements OnInit {
     this.loaded = false;
     this.fetchBrokerageReport();
     this.dataMessage = Constant.FETCHING_DATA;
+  }
+  
+  
+  exportBrokerage(){
+  if(this.brokerage.length > 0){
+  let dataObject = []
+  let csvArray = []
+  this.brokerage.forEach(element => {
+  let obj = {}
+  obj['Order No'] = element.orderNumber
+  obj['Trip No'] = element.tripData.tripNo
+  obj['Customers'] = this.customers[element.customerID]
+  obj['Carrier'] = this.carriersObject[element.brkCarrID] 
+  obj['Order Date'] = element.createdDate
+  obj['Brokerage Date'] = element.date
+  obj['Order Amount'] = element.amount
+  obj['Brokerage Amount'] = element.bAmount
+  dataObject.push(obj)
+  });
+  let headers = Object.keys(dataObject[0]).join(',')
+            headers += '\n'
+            csvArray.push(headers)
+            dataObject.forEach(element => {
+                let obj = Object.values(element).join(',')
+                obj += '\n'
+                csvArray.push(obj)
+            });
+            const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Driver-Report.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+  }
+  else {
+   this.toastr.error("No Records found")
+  }
+  }
+  
+  
+    directToDetail(orderID: string) {
+    setTimeout(() => {
+      this.router.navigateByUrl(`/dispatch/orders/detail/${orderID}`);
+    }, 10);
   }
   
   

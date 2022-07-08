@@ -129,6 +129,7 @@ export class ServicelogsComponent implements OnInit {
         .subscribe((result: any) => {
           this.dataMessage = Constants.FETCHING_DATA
           if (result.Items.length === 0) {
+            this.loaded = true;
             this.dataMessage = Constants.NO_RECORDS_FOUND
           }
           if (result.LastEvaluatedKey !== undefined) {
