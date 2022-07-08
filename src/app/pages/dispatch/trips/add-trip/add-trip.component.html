@@ -123,8 +123,8 @@
                           [(ngModel)]="tripData.routeID"
                           name="routeID"
                           [multiple]="true"
-                          (click)="getRoutes()"
-                          (click)="makeRoutePlan()"
+                          (change)="getRoutes()"
+                          (change)="makeRoutePlan()"
                           placeholder="eg. Calgary to
                           Edmonton"
                           #pRoute="ngModel"

@@ -2856,26 +2856,23 @@ export class AddTripComponent implements OnInit {
     this.tripData.mapFrom = "route";
   }
   changeMapRoute(type) {
-    console.log('---type',type)
-     if (type == "route") {
+    if (type == "route") {
       if (this.tripData.routeID != "" && this.tripData.routeID != null) {
         this.orderStops = this.trips;
-    //     if(this.tripData.routeID){
-    // this.trips = [];
-    //     }
-    
+        // this.trips = [];
         this.actualMiles = 0;
-        //change route
-        console.log('---this.tripData.routeID',this.tripData.routeID)
+      
+        // console.log('this.tripData.routeID-',this.tripData.routeID)
         this.apiService
           .getData("routes/" + encodeURIComponent(JSON.stringify(this.tripData.routeID)))
-
           .subscribe(async (result: any) => {
-            let routeData = result.Items[0];
+            let routeData = result.Items;
+            // console.log('routeData-',routeData)
             let routePath: any = [];
             this.newCoords = [];
 
             if (routeData.stops.length > 0) {
+              // console.log('routeData.stops-',routeData.stops)
               for (let i = 0; i < routeData.stops.length; i++) {
                 const element = routeData.stops[i];
                 routePath.push(element.stopName);
