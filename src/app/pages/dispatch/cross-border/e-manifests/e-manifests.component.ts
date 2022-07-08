@@ -29,7 +29,7 @@ export class EManifestsComponent implements OnInit {
     { width: '13%', field: 'arrDateTime', header: 'Est. Arrival Date & Time' },
     { width: '10%', field: 'usPortOfArrival', header: 'US Port of Entry' },
     { width: '15%', field: 'drivers', header: 'Drivers' },
-    { width: '8%', field: 'trailer', header: 'Trailer' },
+    { width: '8%', field: 'truck', header: 'Truck' },
     { width: '10%', field: 'assets', header: 'Assets' },
     { width: '10%', field: 'shippers', header: 'Consignor' },
     { width: '10%', field: 'receivers', header: 'Consignee' },

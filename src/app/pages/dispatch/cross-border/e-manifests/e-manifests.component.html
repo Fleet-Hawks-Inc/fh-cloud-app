@@ -249,7 +249,7 @@
                                                 get(rowData, col.field) | titlecase
                                                 }}</b>
                                           </span>
-                                          <span *ngSwitchCase="'trailer'">
+                                          <span *ngSwitchCase="'truck'">
                                              <b>
                                                 {{
                                                 get(rowData, col.field) | titlecase
@@ -309,14 +309,14 @@
                         </p-tabPanel>
                      </p-tabView>
                   </div>
-                  <section class="card">
+                  <!-- <section class="card">
                      <div class="card-body">
 
                         <div class="tab-content p-0">
                            <div class="tab-pane show table-responsive active" id="ace-emanifest" role="tabpanel"
                               aria-labelledby="ace-tab">
                               <table class="table table-bordered table-responsive-lg table-striped mb-0" id="ace">
-                                 <!-- <thead>
+                                 <thead>
                                     <tr>
                                        <th>Trip#</th>
                                        <th>Shipment#</th>
@@ -331,8 +331,8 @@
                                        <th width="15%">Status</th>
                                        <th width="5%">Actions</th>
                                     </tr>
-                                 </thead> -->
-                                 <!-- <tbody>
+                                 </thead> 
+                                          <tbody>
                                     <tr *ngIf="ACEList.length == 0" class="text-center">
                                        <td colspan="12">{{ dataMessage }}</td>
                                     </tr>
@@ -400,10 +400,10 @@
                                           </div>
                                        </td>
                                     </tr>
-                                 </tbody> -->
+                                 </tbody>
                               </table>
                            </div>
-                           <!-- <div class="row mt-3 dtPaginate" *ngIf="ACEList.length > 0 && activeDiv == 'ace'">
+                          <div class="row mt-3 dtPaginate" *ngIf="ACEList.length > 0 && activeDiv == 'ace'">
                               <div class="col-6">
                                  Showing {{ aceStartPoint }} to {{ aceEndPoint }} of {{ totalRecords }} enteries
                               </div>
@@ -413,7 +413,7 @@
                                  <button type="button" class="btn btn-default" (click)="nextResults('ace')"
                                     [disabled]="aceNext">Next</button>
                               </div>
-                           </div> -->
+                           </div> 
                            <div class="tab-pane table-responsive" id="aci-emanifest" role="tabpanel"
                               aria-labelledby="aci-tab">
                               <table class="table table-bordered table-responsive-lg table-striped mb-0" id="aci">
@@ -433,7 +433,7 @@
                                        <th width="5%">Actions</th>
                                     </tr>
                                  </thead>
-                                 <!-- <tbody>
+                                 <tbody>
                                     <tr *ngIf="ACIList.length == 0" class="text-center">
                                        <td colspan="12">{{ dataMessageACI }}</td>
                                     </tr>
@@ -500,10 +500,10 @@
                                           </div>
                                        </td>
                                     </tr>
-                                 </tbody> -->
+                                 </tbody
                               </table>
                            </div>
-                           <!-- <div class="row mt-3 dtPaginate" *ngIf="ACIList.length > 0 && activeDiv == 'aci'">
+                         <div class="row mt-3 dtPaginate" *ngIf="ACIList.length > 0 && activeDiv == 'aci'">
                               <div class="col-6">
                                  Showing {{ aciStartPoint }} to {{ aciEndPoint }} of {{ totalACIRecords }} enteries
                               </div>
@@ -513,11 +513,11 @@
                                  <button type="button" class="btn btn-default" (click)="nextResults('aci')"
                                     [disabled]="aciNext">Next</button>
                               </div>
-                           </div> -->
+                           </div>
                         </div>
 
                      </div>
-                  </section>
+                  </section> -->
                </div>
             </div>
          </div>
