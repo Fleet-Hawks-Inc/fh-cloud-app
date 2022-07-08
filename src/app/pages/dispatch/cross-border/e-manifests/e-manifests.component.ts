@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import * as _ from "lodash";
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { Router } from '@angular/router';
 declare var $: any;
 @Component({
   selector: 'app-e-manifests',
@@ -120,6 +121,7 @@ export class EManifestsComponent implements OnInit {
     private httpClient: HttpClient,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -332,6 +334,10 @@ export class EManifestsComponent implements OnInit {
       return false;
     }
   }
+
+  detailPage(id) {
+    this.router.navigateByUrl(`/dispatch/cross-border/ace-details/${id}`)
+  }
   deleteACEEntry(event: Event, eventData) {
     try {
       this.confirmationService.confirm({
@@ -355,6 +361,8 @@ export class EManifestsComponent implements OnInit {
     }
 
   }
+
+
 
   async deleteACE(eventData) {
     let record = {

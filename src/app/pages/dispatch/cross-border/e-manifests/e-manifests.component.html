@@ -211,8 +211,7 @@
                               <ng-template pTemplate="body" let-rowData let-columns="columns">
                                  <tr>
                                     <td *ngFor="let col of columns" style="cursor: pointer;"
-                                       [ngStyle]="{ width: col.width }"
-                                       routerLink="/dispatch/cross-border/ace-details/{{col.mID }}">
+                                       [ngStyle]="{ width: col.width }" (click)="detailPage(rowData.mID)">
                                        <div [ngSwitch]="col.field">
                                           <span *ngSwitchCase="'tripNo'">
                                              <b>
