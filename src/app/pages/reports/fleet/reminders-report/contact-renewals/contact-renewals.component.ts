@@ -1,24 +1,18 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild  } from '@angular/core';
-import { result, map } from 'lodash';
-import { resourceUsage } from 'process';
-import * as moment from 'moment'
-import { ApiService, HereMapService } from 'src/app/services';
-import Constants from 'src/app/pages/fleet/constants';
-import { ToastrService } from 'ngx-toastr';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { ListService } from '../../../../../services';
-import { ActivatedRoute } from "@angular/router";
-import { NgxSpinnerService } from 'ngx-spinner';
-import * as html2pdf from "html2pdf.js";
-import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
-import { environment } from '../../../../../../environments/environment';
-import * as _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
-import { NgSelectComponent } from '@ng-select/ng-select';
-import { Table } from 'primeng/table/table';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute } from "@angular/router";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgSelectComponent } from '@ng-select/ng-select';
+import * as _ from 'lodash';
+import * as moment from 'moment';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 import { OverlayPanel } from "primeng/overlaypanel";
-import { Router } from "@angular/router";
+import { Table } from 'primeng/table/table';
+import Constants from 'src/app/pages/fleet/constants';
+import { ApiService, HereMapService } from 'src/app/services';
+import { ListService } from '../../../../../services';
 
 @Component({
   selector: 'app-contact-renewals',
@@ -55,28 +49,28 @@ export class ContactRenewalsComponent implements OnInit {
   listView = true;
   visible = true;
   loadMsg: string = Constants.NO_RECORDS_FOUND;
-   isSearch = false;
+  isSearch = false;
   get = _.get;
   _selectedColumns: any[];
   find = _.find;
-  
+
   dataColumns = [
-        { width: '7%', field: 'entityID', header: 'Contact', type: "text" },
-        { width: '7%', field: 'status', header: 'Contact Renewal Type', type: "text" },
-        { width: '7%', field: 'tasks.timeUnit', header: 'Send Reminder', type: "text" },
-        { width: '7%', field: 'tasks.dueDate', header: 'Expiration Date', type: "text" },
-        { width: '7%', field: 'subscribers', header: 'Subscribers', type: "text" },
-    ];
-  
-  constructor( private listService: ListService,
-  private apiService: ApiService, 
-  private toastr: ToastrService,
-  private httpClient: HttpClient,
-  private route: ActivatedRoute,
-  private spinner: NgxSpinnerService,
-  private hereMap: HereMapService,
-  protected _sanitizer: DomSanitizer,
-  private modalService: NgbModal) { }
+    { width: '7%', field: 'entityID', header: 'Contact', type: "text" },
+    { width: '7%', field: 'status', header: 'Contact Renewal Type', type: "text" },
+    { width: '7%', field: 'tasks.timeUnit', header: 'Send Reminder', type: "text" },
+    { width: '7%', field: 'tasks.dueDate', header: 'Expiration Date', type: "text" },
+    { width: '7%', field: 'subscribers', header: 'Subscribers', type: "text" },
+  ];
+
+  constructor(private listService: ListService,
+    private apiService: ApiService,
+    private toastr: ToastrService,
+    private httpClient: HttpClient,
+    private route: ActivatedRoute,
+    private spinner: NgxSpinnerService,
+    private hereMap: HereMapService,
+    protected _sanitizer: DomSanitizer,
+    private modalService: NgbModal) { }
 
   ngOnInit() {
     this.listService.fetchDrivers();
@@ -109,21 +103,21 @@ export class ContactRenewalsComponent implements OnInit {
       })
     })
   }
-  
+
   setToggleOptions() {
-        this.selectedColumns = this.dataColumns;
-    }
-    
-    @Input() get selectedColumns(): any[] {
-        return this._selectedColumns;
-    }
-    
-    set selectedColumns(val: any[]) {
-        //restore original order
-        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
-    }
-  
- //for search with contact name
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+  }
+
+  //for search with contact name
   fetchEmployeesData() {
     this.apiService.getData('contacts/employee/records').subscribe((res) => {
 
@@ -141,7 +135,7 @@ export class ContactRenewalsComponent implements OnInit {
       }
     });
   }
- //for search with contact name
+  //for search with contact name
   private getValidDrivers(driverList: any[]) {
     let ids = [];
     this.listService.driversList.forEach((element) => {
@@ -159,7 +153,7 @@ export class ContactRenewalsComponent implements OnInit {
         .subscribe((result: any) => {
           this.dataMessage = Constants.FETCHING_DATA
           if (result.Items.length === 0) {
-
+            this.loaded = true;
             this.dataMessage = Constants.NO_RECORDS_FOUND
           }
           if (result.Items.length > 0) {
@@ -178,7 +172,7 @@ export class ContactRenewalsComponent implements OnInit {
     }
   }
 
-  onScroll = async (event: any) =>{
+  onScroll = async (event: any) => {
     if (this.loaded) {
       this.fetchallitems();
     }
@@ -196,11 +190,11 @@ export class ContactRenewalsComponent implements OnInit {
       return false;
     }
   }
-  
+
   clear(table: Table) {
-        table.clear();
-    }
-  
+    table.clear();
+  }
+
   resetData() {
     if (this.entityID !== null || this.searchServiceTask !== null || this.filterStatus !== null) {
       this.entityID = null;
@@ -215,18 +209,18 @@ export class ContactRenewalsComponent implements OnInit {
       return false;
     }
   }
-  
-   refreshData(){
-      this.entityID = null;
-      this.searchServiceTask = null;
-      this.status = null;
-      this.empData = [];
-      this.lastItemSK = '';
-      this.filterStatus = null;
-      this.dataMessage = Constants.FETCHING_DATA
-      this.fetchallitems();
+
+  refreshData() {
+    this.entityID = null;
+    this.searchServiceTask = null;
+    this.status = null;
+    this.empData = [];
+    this.lastItemSK = '';
+    this.filterStatus = null;
+    this.dataMessage = Constants.FETCHING_DATA
+    this.fetchallitems();
   }
-  
+
   fetchAllExport() {
     this.apiService.getData("reminders/fetch/export?type=contact").subscribe((result: any) => {
       this.data = result.Items;
@@ -281,5 +275,5 @@ export class ContactRenewalsComponent implements OnInit {
       this.toastr.error("No Records found")
     }
   }
-  
+
 }

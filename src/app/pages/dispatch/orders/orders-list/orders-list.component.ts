@@ -1,4 +1,10 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import {
+  Component,
+  Input,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from "@angular/core";
 import { ApiService } from "../../../../services/api.service";
 import { NgxSpinnerService } from "ngx-spinner";
 import { Overlay, ToastrService } from "ngx-toastr";
@@ -10,7 +16,7 @@ import * as moment from "moment";
 import { ListService } from "src/app/services/list.service";
 import * as _ from "lodash";
 import { DashboardUtilityService } from "src/app/services/dashboard-utility.service";
-import { Table } from 'primeng/table';
+import { Table } from "primeng/table";
 
 import { NgSelectComponent } from "@ng-select/ng-select";
 import { OverlayPanel } from "primeng/overlaypanel";
@@ -21,18 +27,18 @@ declare var $: any;
   selector: "app-orders-list",
   templateUrl: "./orders-list.component.html",
   styleUrls: ["./orders-list.component.css"],
-
 })
 export class OrdersListComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
-  @ViewChild('dt') table: Table;
-  @ViewChild('op') overlaypanel: OverlayPanel;
+  @ViewChild("dt") table: Table;
+  @ViewChild("op") overlaypanel: OverlayPanel;
   @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   @ViewChild("confirmEmailModal", { static: true })
   confirmEmailModal: TemplateRef<any>;
 
-  @ViewChild("schedularModal", {static:true}) schedularModal:TemplateRef<any>
+  @ViewChild("schedularModal", { static: true })
+  schedularModal: TemplateRef<any>;
 
   dataMessage: string = Constants.FETCHING_DATA;
   noOrdersMsg = Constants.NO_RECORDS_FOUND;
@@ -163,11 +169,12 @@ export class OrdersListComponent implements OnInit {
     carrierID: null,
     finalAmount: "",
     miles: 0,
-    currency: "",
+    // currency: "",
     draw: 0,
     index: 0,
     type: "",
     brokerageAmount: 0,
+    brkCurrency: "",
     instructions: "",
     today: moment().format("YYYY-MM-DD"),
   };
@@ -224,39 +231,60 @@ export class OrdersListComponent implements OnInit {
   isLoad: boolean = false;
   isLoadText = "Load More...";
 
-
-  detailUrl = []
+  detailUrl = [];
 
   dataColumns: any[];
   get = _.get;
   find = _.find;
   _selectedColumns: any[];
   // pickupLocData = []
-  isOrderPriceEnabled = environment.isOrderPriceEnabled
-  scheduler={
-    orderID:null,
-    orderNumber:null,
-    name:null,
-    time:null,
-    type:{
-      daysNo:0,
-      days:[]
+  isOrderPriceEnabled = environment.isOrderPriceEnabled;
+  scheduler = {
+    orderID: null,
+    orderNumber: null,
+    name: null,
+    time: null,
+    repeatType: null,
+    type: {
+      daysNo: "",
+      days: [],
     },
-    range:{
-      dateRange:{
-        to:null,
-        from:null,
-      },
-      months:[]
-    }
-  }
-
-  saveDisabled=false;
-  repeatType=null;
-  range=null;
-  days=["everyday","monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
-  months=["selectAll","january","february","march","april","may","june","july","august","september","october","november","december"]
-
+    rangeType: null,
+    dateRange: {
+      to: null,
+      from: null,
+    },
+    selectedMonths: [],
+  };
+  saveDisabled = false;
+  repeatType = null;
+  range = null;
+  days = [
+    "everyday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+  ];
+  months = [
+    "selectAll",
+    "january",
+    "february",
+    "march",
+    "april",
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "november",
+    "december",
+  ];
+  display: any;
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
@@ -265,28 +293,31 @@ export class OrdersListComponent implements OnInit {
     private listService: ListService,
     private dashboardUtilityService: DashboardUtilityService,
     private router: Router
-  ) { }
+  ) {}
 
   async ngOnInit() {
     this.initDataTable();
     this.dataColumns = [
-      { width: '8%', field: 'orderNumber', header: 'Order#', type: "text", },
-      { width: '7%', field: 'orderMode', header: 'Type', type: "text" },
-      { width: '8%', field: 'createdDate', header: 'Date', type: "text" },
-      { width: '10%', field: 'customerName', header: 'Customer', type: 'text' },
-      { width: '9%', field: 'cusConfirmation', header: 'Confirmation', type: 'text' },
-      { width: '9%', field: 'shipperName', header: 'Shipper', type: "text" },
-      { width: '9%', field: 'receiverName', header: 'Receiver', type: 'text' },
-      { width: '8%', field: 'amount', header: 'Amount', type: 'text' },
-      { width: '7%', field: 'invoiceData', header: 'Invoice ', type: 'text' },
-      { width: '7%', field: 'paymentData', header: 'Payment ', type: 'text' },
-      { width: '9%', field: 'newStatus', header: 'Order Status', type: 'text' },
+      { width: "8%", field: "orderNumber", header: "Order#", type: "text" },
+      { width: "7%", field: "orderMode", header: "Type", type: "text" },
+      { width: "8%", field: "createdDate", header: "Date", type: "text" },
+      { width: "10%", field: "customerName", header: "Customer", type: "text" },
+      {
+        width: "9%",
+        field: "cusConfirmation",
+        header: "Confirmation",
+        type: "text",
+      },
+      { width: "9%", field: "shipperName", header: "Shipper", type: "text" },
+      { width: "9%", field: "receiverName", header: "Receiver", type: "text" },
+      { width: "8%", field: "amount", header: "Amount", type: "text" },
+      { width: "7%", field: "invoiceData", header: "Invoice ", type: "text" },
+      { width: "7%", field: "paymentData", header: "Payment ", type: "text" },
+      { width: "9%", field: "newStatus", header: "Order Status", type: "text" },
     ];
     this._selectedColumns = this.dataColumns;
 
-
-    this.setToggleOptions()
-
+    this.setToggleOptions();
 
     this.isOrderPriceEnabled = localStorage.getItem("isOrderPriceEnabled")
       ? JSON.parse(localStorage.getItem("isOrderPriceEnabled"))
@@ -304,18 +335,15 @@ export class OrdersListComponent implements OnInit {
   }
 
   set selectedColumns(val: any[]) {
-    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
-
+    this._selectedColumns = this.dataColumns.filter((col) => val.includes(col));
   }
   fetchTabData(tabType) {
     this.activeTab = tabType;
   }
 
   allignOrders(orders) {
-
     for (let i = 0; i < orders.length; i++) {
       const element = orders[i];
-
 
       element.canRecall = false;
       if (element.orderStatus === "delivered") {
@@ -346,15 +374,15 @@ export class OrdersListComponent implements OnInit {
       this.apiService
         .getData(
           "orders/fetch/records/all?searchValue=" +
-          this.orderFiltr.searchValue +
-          "&startDate=" +
-          this.orderFiltr.start +
-          "&endDate=" +
-          this.orderFiltr.end +
-          "&category=" +
-          this.orderFiltr.category +
-          "&lastKey=" +
-          this.lastEvaluatedKey
+            this.orderFiltr.searchValue +
+            "&startDate=" +
+            this.orderFiltr.start +
+            "&endDate=" +
+            this.orderFiltr.end +
+            "&category=" +
+            this.orderFiltr.category +
+            "&lastKey=" +
+            this.lastEvaluatedKey
         )
         .subscribe(
           (result: any) => {
@@ -366,8 +394,7 @@ export class OrdersListComponent implements OnInit {
             }
             result.Items.map((v) => {
               v.url = `/dispatch/orders/detail/${v.orderID}`;
-              this.detailUrl = v.url
-
+              this.detailUrl = v.url;
             });
             this.fetchedRecordsCount += result.Count;
             this.getStartandEndVal("all");
@@ -401,41 +428,39 @@ export class OrdersListComponent implements OnInit {
 
             // multiple data for csv
             for (let res of result.Items) {
-              res.commodityData = ''
-              res.amount = ''
-              res.shipperName = ''
-              res.receiverName = ''
-              res.customerData = ''
+              res.commodityData = "";
+              res.amount = "";
+              res.shipperName = "";
+              res.receiverName = "";
+              res.customerData = "";
               for (let shipArr of res.shippersReceiversInfo) {
                 for (let ship of shipArr.shippers) {
-                  res.shipperName = ship.shiperName
+                  res.shipperName = ship.shiperName;
 
                   for (let receiver of shipArr.receivers) {
-                    res.receiverName = receiver.receiverName
-
+                    res.receiverName = receiver.receiverName;
                   }
                 }
-
               }
-              res.amount = res.charges.freightFee.currency + " " + res.totalAmount;
+              res.amount =
+                res.charges.freightFee.currency + " " + res.totalAmount;
               if (res.invoicedTime) {
-                res.invoiceData = 'Invoiced'
-              }
-              else if (!res.invoicedTime) {
-                res.invoiceData = 'Pending'
+                res.invoiceData = "Invoiced";
+              } else if (!res.invoicedTime) {
+                res.invoiceData = "Pending";
               }
               if (res.invStatus) {
-                res.paymentData = res.invStatus.replace('_', ' ')
-              }
-              else if (!res.invStatus) {
-                res.paymentData = 'NA'
+                res.paymentData = res.invStatus.replace("_", " ");
+              } else if (!res.invStatus) {
+                res.paymentData = "NA";
               }
 
-              res.customerData = res.customerName + "\n" + "Confirmation:-"
-                + res.cusConfirmation
-
+              res.customerData =
+                res.customerName +
+                "\n" +
+                "Confirmation:-" +
+                res.cusConfirmation;
             }
-
 
             // disable prev btn
             if (this.ordersDraw == 0) {
@@ -623,7 +648,8 @@ export class OrdersListComponent implements OnInit {
     newData.confirm = this.emailData.confirmEmail;
     let result = await this.apiService
       .getData(
-        `orders/update/orderStatus/${this.newOrderID}/${this.newOrderNumber
+        `orders/update/orderStatus/${this.newOrderID}/${
+          this.newOrderNumber
         }/confirmed?emailData=${encodeURIComponent(JSON.stringify(newData))}`
       )
       .toPromise();
@@ -703,13 +729,21 @@ export class OrdersListComponent implements OnInit {
     this.brokerage.orderNo = order.orderNumber;
     this.brokerage.miles = order.milesInfo.totalMiles;
     this.brokerage.finalAmount = order.finalAmount;
-    this.brokerage.currency = order.charges.freightFee.currency;
+    // this.brokerage.currency = order.charges.freightFee.currency;
     this.brokerage.draw = draw;
     this.brokerage.index = index;
     this.brokerage.type = actionFrom;
+    this.brokerage.carrierID = null;
+    this.brokerage.brkCurrency = "";
+    this.brokerage.brokerageAmount = 0;
+    this.brokerage.instructions = "";
     await this.fetchCarriers();
     await this.fetchOrderData();
-    $("#orderStatusModal").modal("show");
+    this.display = true;
+  }
+
+  changeCurrency(val) {
+    this.brokerage.brkCurrency = val;
   }
 
   async fetchCarriers() {
@@ -741,11 +775,12 @@ export class OrdersListComponent implements OnInit {
   async submitClick() {
     if (
       this.brokerage.carrierID === null ||
-      this.brokerage.brokerageAmount <= 0
+      this.brokerage.brokerageAmount <= 0 ||
+      this.brokerage.brkCurrency === ""
     ) {
       this.brokerErr = "Please fill the required fields";
       return false;
-    }  else {
+    } else {
       this.brokerErr = "";
     }
     this.showModal = true;
@@ -758,9 +793,10 @@ export class OrdersListComponent implements OnInit {
       showModal: this.showModal,
       companyLogo: this.companyLogoSrc,
     };
+    console.log("data==", data);
     this.listService.triggerBrokeragePdf(data);
     await this.updateBrokerageStatus();
-    $("#orderStatusModal").modal("hide");
+    this.display = false;
     this.brokerageDisabled = false;
   }
 
@@ -786,6 +822,7 @@ export class OrdersListComponent implements OnInit {
       orderID: this.brokerage.orderID,
       orderNo: this.brokerage.orderNo,
       brokerageAmount: this.brokerage.brokerageAmount,
+      brkCurrency: this.brokerage.brkCurrency,
       instructions: this.brokerage.instructions,
       type: "update",
       carrierID: this.brokerage.carrierID,
@@ -816,6 +853,7 @@ export class OrdersListComponent implements OnInit {
         orderID: order.orderID,
         orderNo: order.orderNo,
         brokerageAmount: 0,
+        brkCurrency: "",
         instructions: "",
         carrierID: null,
         type: "cancel",
@@ -834,50 +872,47 @@ export class OrdersListComponent implements OnInit {
 
   onScroll = async (event: any) => {
     if (this.loaded) {
-      this.orderFiltr.searchValue = "",
-        this.orderFiltr.startDate = "",
-        this.orderFiltr.endDate = "",
-        this.orderFiltr.category = null,
-
-
-        this.isLoad = true;
+      (this.orderFiltr.searchValue = ""),
+        (this.orderFiltr.startDate = ""),
+        (this.orderFiltr.endDate = ""),
+        (this.orderFiltr.category = null),
+        (this.isLoad = true);
       this.isLoadText = "Loading";
       this.initDataTable();
     }
     this.loaded = false;
-  }
+  };
   /**
-  * Clears the table filters
-  * @param table Table 
-  */
+   * Clears the table filters
+   * @param table Table
+   */
   clear(table: Table) {
     table.clear();
   }
-  resetSchedule(){
-    this.scheduler={
-      orderID:null,
-      orderNumber:null,
-      name:null,
-      time:null,
-      type:{
-        daysNo:0,
-        days:[]
+  resetSchedule() {
+    this.scheduler = {
+      orderID: null,
+      orderNumber: null,
+      name: null,
+      time: null,
+      repeatType: null,
+      type: {
+        daysNo: "",
+        days: [],
       },
-      range:{
-        dateRange:{
-          to:null,
-          from:null,
-        },
-        months:[]
-      }
-    }
-
+      rangeType: null,
+      dateRange: {
+        to: null,
+        from: null,
+      },
+      selectedMonths: [],
+    };
   }
 
-  openSchedulerModal(orderID,orderNumber){
+  openSchedulerModal(orderID, orderNumber) {
     this.resetSchedule();
-    this.scheduler.orderID=orderID,
-    this.scheduler.orderNumber=orderNumber
+    (this.scheduler.orderID = orderID),
+      (this.scheduler.orderNumber = orderNumber);
     let ngbModalOptions: NgbModalOptions = {
       keyboard: true,
       windowClass: "schedular--modal",
@@ -886,113 +921,165 @@ export class OrdersListComponent implements OnInit {
       this.schedularModal,
       ngbModalOptions
     );
-    this.repeatType=''
-    this.range=''
-  this.saveDisabled=false
+    this.repeatType = "";
+    this.range = "";
+    this.saveDisabled = false;
   }
 
-  onCheckboxChange(data,isChecked){
-    if(isChecked){
-      this.scheduler.type.days.push(data)
-    }
-    else{
-      const index=this.scheduler.type.days.findIndex(x=>x==data);
-      this.scheduler.type.days.splice(index,1)
-    }
-  }
-
-  onRangeCheckboxChange(value,isChecked){
-    if(isChecked){
-      this.scheduler.range.months.push(value)
-    }
-    else{
-      const index=this.scheduler.range.months.findIndex(x=>x==value);
-      this.scheduler.type.days.splice(index,1)
+  onCheckboxChange(data, isChecked) {
+    if (isChecked) {
+      this.scheduler.type.days.push(data);
+    } else {
+      const index = this.scheduler.type.days.findIndex((x) => x == data);
+      this.scheduler.type.days.splice(index, 1);
     }
   }
 
-  async saveScheduler(){
-    this.saveDisabled=true;
-    if(this.scheduler.name==null){
+  onRangeCheckboxChange(value, isChecked) {
+    if (isChecked) {
+      this.scheduler.selectedMonths.push(value);
+    } else {
+      const index = this.scheduler.selectedMonths.findIndex((x) => x == value);
+      this.scheduler.type.days.splice(index, 1);
+    }
+  }
+
+  async saveScheduler() {
+    this.saveDisabled = true;
+    if (this.scheduler.orderID == null || this.scheduler.orderNumber == null) {
+      this.toastr.error("Reference Order is required");
+      this.saveDisabled = false;
+      return;
+    }
+    if (this.scheduler.name == null) {
       this.toastr.error("Scheduler Name is required");
-      this.saveDisabled=false;
-      return 
+      this.saveDisabled = false;
+      return;
     }
-    if(this.scheduler.time==null){
+    if (this.scheduler.time == null) {
       this.toastr.error("Scheduler Time is required");
-      this.saveDisabled=false;
+      this.saveDisabled = false;
       return;
     }
-    if(this.repeatType==null){
+    if (this.repeatType == null) {
       this.toastr.error("Repeat Type is required");
-      this.saveDisabled=false;
+      this.saveDisabled = false;
       return;
     }
-    if(this.range==null){
+    if (this.range == null) {
       this.toastr.error("Range is required");
-      this.saveDisabled=false;
+      this.saveDisabled = false;
       return;
-    }
-    if(this.repeatType=="selectDaysNo"){
-      delete this.scheduler.type.days
-    }
-    else{
-      delete this.scheduler.type.daysNo
     }
 
-    if(this.range=="date"){
-      delete this.scheduler.range.months;
+    if (!this.scheduler.dateRange.from || !this.scheduler.dateRange.to) {
+      this.toastr.error("Date Range is required");
+      this.saveDisabled = false;
+      return;
+    } else if (this.scheduler.dateRange.to < this.scheduler.dateRange.from) {
+      this.toastr.error("Date range from must be greater");
+      this.saveDisabled = false;
+      return;
     }
-    else{
-      delete this.scheduler.range.dateRange
+    if (this.range == "month") {
+      if (this.scheduler.selectedMonths.length === 0) {
+        this.toastr.error("Please Select at least 1 month");
+        this.saveDisabled = false;
+        return;
+      }
     }
-    const scheduleData={
-      orderID:this.scheduler.orderID,
-      orderNumber:this.scheduler.orderNumber,
-      sName:this.scheduler.name,
-      sType:this.scheduler.type,
-      sTime:this.scheduler.time,
-      sRange:this.scheduler.range
-  }
-    this.apiService.postData('orders/schedule',scheduleData).subscribe({
-      complete:()=>{},
-      error:(err)=>{},
-      next:(res)=>{
+
+    if (this.repeatType == "selectDaysNo") {
+      delete this.scheduler.type.days;
+    } else if (this.repeatType == "days") {
+      delete this.scheduler.type.daysNo;
+    } else {
+      delete this.scheduler.type;
+    }
+
+    if (this.range == "everyMonth") {
+      delete this.scheduler.selectedMonths;
+    }
+    console.log(this.scheduler);
+
+    const scheduleData = {
+      orderID: this.scheduler.orderID,
+      orderNumber: this.scheduler.orderNumber,
+      repeatType: this.repeatType,
+      sName: this.scheduler.name,
+      dateRange: this.scheduler.dateRange,
+      sType: this.scheduler.type ? this.scheduler.type : undefined,
+      selectedMonths: this.scheduler.selectedMonths
+        ? this.scheduler.selectedMonths
+        : undefined,
+      sRange: this.range,
+      sTime: this.scheduler.time,
+      timezone: moment.tz.guess(),
+    };
+
+    this.apiService.postData("orders/schedule", scheduleData).subscribe({
+      complete: () => {},
+      error: (err) => {
+        this.saveDisabled = false;
+      },
+      next: (res) => {
         this.toastr.success("Schedule added successfully");
         this.modalService.dismissAll();
-      }
-    })
-    
+      },
+    });
   }
 
   editOrder(orderID) {
     setTimeout(() => {
-      this.router.navigateByUrl(`/dispatch/orders/edit/${orderID}`)
+      this.router.navigateByUrl(`/dispatch/orders/edit/${orderID}`);
     }, 10);
   }
-  
+
   createTrip(orderID, orderNumber) {
     setTimeout(() => {
-      this.router.navigate([`/dispatch/trips/add-trip`],{ queryParams: {
-        orderId: orderID,
-        orderNum: orderNumber
-      }});
+      this.router.navigate([`/dispatch/trips/add-trip`], {
+        queryParams: {
+          orderId: orderID,
+          orderNum: orderNumber,
+        },
+      });
     }, 10);
- }
-  
- cloneOrder(orderID) {
+  }
+
+  cloneOrder(orderID) {
     setTimeout(() => {
-      this.router.navigate([`/dispatch/orders/add`],{ queryParams: {
-        cloneID: orderID
-      }});
+      this.router.navigate([`/dispatch/orders/add`], {
+        queryParams: {
+          cloneID: orderID,
+        },
+      });
     }, 10);
- }
-  
- recallOrder(orderID) {
+  }
+
+  recallOrder(orderID) {
     setTimeout(() => {
-      this.router.navigate([`/dispatch/orders/edit/${orderID}`],{ queryParams: {
-        state: 'recall'
-      }});
+      this.router.navigate([`/dispatch/orders/edit/${orderID}`], {
+        queryParams: {
+          state: "recall",
+        },
+      });
     }, 10);
- }
+  }
+
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+
+    localStorage.setItem("isOpen", "true");
+    this.listService.changeButton(false);
+  }
+
+  refreshCarrierData() {
+    this.fetchCarriers();
+  }
+
+  directToDetail(orderID: string) {
+    setTimeout(() => {
+      this.router.navigateByUrl(`/dispatch/orders/detail/${orderID}`);
+    }, 10);
+  }
 }

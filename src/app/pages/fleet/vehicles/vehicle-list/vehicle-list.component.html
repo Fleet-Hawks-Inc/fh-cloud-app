@@ -72,8 +72,8 @@
                           &nbsp;
                           <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
                             class="p-button-outlined mr-2" icon="fas fa-sync"></button>
-                          <button type="button" [disabled]="isUpgrade" pButton pTooltip="Add" routerLink="/fleet/vehicles/add"
-                            class="p-button-outlined mr-2" icon="pi pi-plus"></button>
+                          <button type="button" [disabled]="isUpgrade" pButton pTooltip="Add"
+                            routerLink="/fleet/vehicles/add" class="p-button-outlined mr-2" icon="pi pi-plus"></button>
                           <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
                             icon="pi pi-filter-slash" (click)="clear(dt)"></button>
                           <button type="button" pButton pRipple class="p-button-outlined mr-2"
@@ -92,7 +92,7 @@
                           [ngStyle]="{ width: dataColumns.width }">
                           <div [ngSwitch]="dataColumns.field">
                             <!-- Driver Status Filter Customization -->
-                            <span *ngSwitchCase="'driverStatus'">
+                            <span *ngSwitchCase="'currentStatus'">
                               <div class="flex justify-content-center align-items-center" alignFrozen="left"
                                 pFrozenColumn [frozen]="true">
                                 {{ dataColumns.header }}
@@ -103,7 +103,9 @@
                                   <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                                     <p-multiSelect [options]="[
                                         { name: 'Active', value: 'active' },
-                                        { name: 'InActive', value: 'inActive' }
+                                        { name: 'InActive', value: 'inActive' },
+                                        { name: 'Out of Service', value: 'outOfService' },
+                                        { name: 'Sold', value: 'sold'},
                                       ]" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name"
                                       optionValue="value">
                                       <ng-template let-option pTemplate="item">

@@ -5,76 +5,155 @@
 </style>
 <section class="body">
   <div class="inner-wrapper">
-    <section role="main" class="content-body pl-1 pt-0 pr-0">
+    <section role="main" class="content-body pt-0 pr-0">
       <header class="page-header pr19 pl11">
         <form class="form-horizontal" method="get">
           <div class="row" style="padding-top: 10px">
             <div class="col-lg-11 col-md-11">
               <div class="row">
                 <div class="col-md-2 col-lg-2 pr-0">
-                  <ng-select [(ngModel)]="filter.type" name="type" placeholder="Select type">
-                    <ng-option *ngFor="let payment of paymentType" [value]="payment.type">{{ payment.name }}</ng-option>
+                  <ng-select
+                    [(ngModel)]="filter.type"
+                    name="type"
+                    placeholder="Select type"
+                  >
+                    <ng-option
+                      *ngFor="let payment of paymentType"
+                      [value]="payment.type"
+                      >{{ payment.name }}</ng-option
+                    >
                   </ng-select>
                 </div>
                 <div class="col-md-1 col-lg-1 pl-2 pr-0">
-                  <ng-select [(ngModel)]="filter.mode" name="type" placeholder="Select mode">
-                    <ng-option *ngFor="let payment of paymentMode" [value]="payment.type">{{ payment.name }}</ng-option>
+                  <ng-select
+                    [(ngModel)]="filter.mode"
+                    name="type"
+                    placeholder="Select mode"
+                  >
+                    <ng-option
+                      *ngFor="let payment of paymentMode"
+                      [value]="payment.type"
+                      >{{ payment.name }}</ng-option
+                    >
                   </ng-select>
                 </div>
                 <div class="col-md-1 col-lg-1 pl-2 pr-0">
-                  <ng-select [(ngModel)]="filter.searchType" name="searchBy" placeholder="Search By">
-                    <ng-option *ngFor="let type of searchBy" [value]="type.value">{{
-                      type.name
-                      }}</ng-option>
+                  <ng-select
+                    [(ngModel)]="filter.searchType"
+                    name="searchBy"
+                    placeholder="Search By"
+                  >
+                    <ng-option
+                      *ngFor="let type of searchBy"
+                      [value]="type.value"
+                      >{{ type.name }}</ng-option
+                    >
                   </ng-select>
                 </div>
 
-                <div *ngIf="filter.searchType == 'chequeNo'" class="col-md-2 col-lg-2 pr-0">
+                <div
+                  *ngIf="filter.searchType == 'chequeNo'"
+                  class="col-md-2 col-lg-2 pr-0"
+                >
                   <div class="input-group input-group-md mb-3">
-                    <input type="text" class="form-control" placeholder="Search by Cheque/ Cash No." name="payModeNo"
-                      [(ngModel)]="filter.payModeNo" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Search by Cheque/ Cash No."
+                      name="payModeNo"
+                      [(ngModel)]="filter.payModeNo"
+                    />
                   </div>
                 </div>
 
-                <div *ngIf="filter.searchType == 'receiver'" class="col-md-2 col-lg-2 pr-0">
-                  <ng-select [(ngModel)]="filter.receiverType" (change)="unitTypeChange()" name="receiverType"
-                    placeholder="Select Receiver Type">
-                    <ng-option *ngFor="let type of receivers" [value]="type.value">{{ type.name }}</ng-option>
+                <div
+                  *ngIf="filter.searchType == 'receiver'"
+                  class="col-md-2 col-lg-2 pr-0"
+                >
+                  <ng-select
+                    [(ngModel)]="filter.receiverType"
+                    (change)="unitTypeChange()"
+                    name="receiverType"
+                    placeholder="Select Receiver Type"
+                  >
+                    <ng-option
+                      *ngFor="let type of receivers"
+                      [value]="type.value"
+                      >{{ type.name }}</ng-option
+                    >
                   </ng-select>
                 </div>
 
-                <div *ngIf="filter.searchType == 'receiver' && filter.receiverType" class="col-md-2 col-lg-2 pr-0">
+                <div
+                  *ngIf="filter.searchType == 'receiver' && filter.receiverType"
+                  class="col-md-2 col-lg-2 pr-0"
+                >
                   <div *ngIf="filter.receiverType === 'vendor'">
-                    <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Employee">
-                      <ng-option value="{{ data.key }}" *ngFor="let data of vendors | keyvalue">
+                    <ng-select
+                      [(ngModel)]="filter.searchValue"
+                      name="searchValue"
+                      placeholder="Select Employee"
+                    >
+                      <ng-option
+                        value="{{ data.key }}"
+                        *ngFor="let data of vendors | keyvalue"
+                      >
                         {{ data.value | titlecase }}
                       </ng-option>
                     </ng-select>
                   </div>
                   <div *ngIf="filter.receiverType === 'employee'">
-                    <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Employee">
-                      <ng-option value="{{ data.key }}" *ngFor="let data of employees | keyvalue">
+                    <ng-select
+                      [(ngModel)]="filter.searchValue"
+                      name="searchValue"
+                      placeholder="Select Employee"
+                    >
+                      <ng-option
+                        value="{{ data.key }}"
+                        *ngFor="let data of employees | keyvalue"
+                      >
                         {{ data.value | titlecase }}
                       </ng-option>
                     </ng-select>
                   </div>
                   <div *ngIf="filter.receiverType === 'driver'">
-                    <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Driver">
-                      <ng-option value="{{ data.key }}" *ngFor="let data of driversObject | keyvalue">
+                    <ng-select
+                      [(ngModel)]="filter.searchValue"
+                      name="searchValue"
+                      placeholder="Select Driver"
+                    >
+                      <ng-option
+                        value="{{ data.key }}"
+                        *ngFor="let data of driversObject | keyvalue"
+                      >
                         {{ data.value | titlecase }}
                       </ng-option>
                     </ng-select>
                   </div>
                   <div *ngIf="filter.receiverType === 'carrier'">
-                    <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Carrier">
-                      <ng-option value="{{ data.key }}" *ngFor="let data of carriersObject | keyvalue">
+                    <ng-select
+                      [(ngModel)]="filter.searchValue"
+                      name="searchValue"
+                      placeholder="Select Carrier"
+                    >
+                      <ng-option
+                        value="{{ data.key }}"
+                        *ngFor="let data of carriersObject | keyvalue"
+                      >
                         {{ data.value | titlecase }}
                       </ng-option>
                     </ng-select>
                   </div>
                   <div *ngIf="filter.receiverType === 'ownerOperator'">
-                    <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Owner Operator">
-                      <ng-option value="{{ data.key }}" *ngFor="let data of ownerOpObject | keyvalue">
+                    <ng-select
+                      [(ngModel)]="filter.searchValue"
+                      name="searchValue"
+                      placeholder="Select Owner Operator"
+                    >
+                      <ng-option
+                        value="{{ data.key }}"
+                        *ngFor="let data of ownerOpObject | keyvalue"
+                      >
                         {{ data.value | titlecase }}
                       </ng-option>
                     </ng-select>
@@ -82,32 +161,75 @@
                 </div>
 
                 <div class="col-lg-2 col-md-2 pl-2 pr-0">
-                  <div class="input-daterange input-group" data-plugin-datepicker>
+                  <div
+                    class="input-daterange input-group"
+                    data-plugin-datepicker
+                  >
                     <span class="input-group-prepend">
                       <span class="input-group-text">
                         <i class="fas fa-calendar-alt"></i>
                       </span>
                     </span>
-                    <input [(ngModel)]="filter.startDate" name="startDate" type="text" placeholder="yyyy/mm/dd"
-                      (click)="startDate.toggle()" ngbDatepicker #startDate="ngbDatepicker" class="form-control"
-                      autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
-                    <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                    <input
+                      [(ngModel)]="filter.startDate"
+                      name="startDate"
+                      type="text"
+                      placeholder="yyyy/mm/dd"
+                      (click)="startDate.toggle()"
+                      ngbDatepicker
+                      #startDate="ngbDatepicker"
+                      class="form-control"
+                      autocomplete="off"
+                      [minDate]="dateMinLimit"
+                      [maxDate]="futureDatesLimit"
+                    />
+                    <span
+                      class="input-group-text border-left-0 border-right-0 rounded-0"
+                    >
                       to
                     </span>
-                    <input [(ngModel)]="filter.endDate" name="endDate" type="text" placeholder="yyyy/mm/dd"
-                      (click)="endDate.toggle()" ngbDatepicker #endDate="ngbDatepicker" class="form-control"
-                      autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                    <input
+                      [(ngModel)]="filter.endDate"
+                      name="endDate"
+                      type="text"
+                      placeholder="yyyy/mm/dd"
+                      (click)="endDate.toggle()"
+                      ngbDatepicker
+                      #endDate="ngbDatepicker"
+                      class="form-control"
+                      autocomplete="off"
+                      [minDate]="dateMinLimit"
+                      [maxDate]="futureDatesLimit"
+                    />
                   </div>
                 </div>
                 <div class="col-md-2 col-lg-2 pl-2">
-                  <button *ngIf="searching" class="btn btn-success btn-sm" type="button" disabled>
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <button
+                    *ngIf="searching"
+                    class="btn btn-success btn-sm"
+                    type="button"
+                    disabled
+                  >
+                    <span
+                      class="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
                     Searching...
                   </button>
-                  <button type="submit" *ngIf="!searching" (click)="searchFilter()" class="btn btn-sm btn-success mr-2">
+                  <button
+                    type="submit"
+                    *ngIf="!searching"
+                    (click)="searchFilter()"
+                    class="btn btn-sm btn-success mr-2"
+                  >
                     Search
                   </button>
-                  <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">
+                  <button
+                    type="button"
+                    (click)="resetFilter()"
+                    class="btn btn-sm btn-success"
+                  >
                     Reset
                   </button>
                 </div>
@@ -115,22 +237,43 @@
             </div>
 
             <div class="col-md-1 col-lg-1 text-right pr-1">
-              <button *ngIf="exporting" class="btn btn-success btn-sm" type="button" disabled>
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <button
+                *ngIf="exporting"
+                class="btn btn-success btn-sm"
+                type="button"
+                disabled
+              >
+                <span
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
                 Exporting...
               </button>
-              <button *ngIf="!exporting" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown"
-                aria-expanded="false">
+              <button
+                *ngIf="!exporting"
+                class="btn btn-sm btn-success dropdown-toggle"
+                data-toggle="dropdown"
+                aria-expanded="false"
+              >
                 Export<span class="caret"></span>
               </button>
-              <div *ngIf="!exporting" class="dropdown-menu" role="menu" x-placement="bottom-start" style="
+              <div
+                *ngIf="!exporting"
+                class="dropdown-menu"
+                role="menu"
+                x-placement="bottom-start"
+                style="
                   position: absolute;
                   will-change: transform;
                   top: 0px;
                   left: 0px;
                   transform: translate3d(0px, 38px, 0px);
-                ">
-                <a class="dropdown-item text-1" (click)="generateRequiredCSV()">CSV</a>
+                "
+              >
+                <a class="dropdown-item text-1" (click)="generateRequiredCSV()"
+                  >CSV</a
+                >
                 <a class="dropdown-item text-1" (click)="showPDF()">PDF</a>
 
                 <!-- <a *ngIf="customer!=''" class="dropdown-item text-1" (click)="showReport(); isModalShow= true">PDF</a> -->
@@ -140,75 +283,217 @@
         </form>
       </header>
 
-      <section class="m-2">
+       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
-            <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1" [infiniteScrollThrottle]="5"
-              (scrolled)="onScroll()">
-              <div class="bg-white p-3 text-dark">
-                <div class="form-group row pt-3">
-                  <div class="col-lg-12">
-                    <div class="table-responsive">
-                      <table id="diverTbl" class="row-border hover table table-bordered table-striped mb-0">
-                        <thead>
-                          <tr>
-                            <th id="" class="col1 minWidth120">
-                              Transaction Date
-                            </th>
-                            <th id="" class="col1 minWidth120">Payment ID</th>
-                            <th id="" class="minWidth120">Payment Mode</th>
-                            <th id="" class="minWidth120">Cheque/ Cash No.</th>
-                            <th id="" class="col1 minWidth120">
-                              Cheque/Cash Date
-                            </th>
-                            <th id="" class="minWidth120">Type Of Payment</th>
-                            <th id="" class="minWidth120">Receiver</th>
-                            <th id="" class="minWidth120">Currency</th>
-                            <th id="" class="minWidth120">Amount</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngIf="allPayments.length == 0" class="text-center">
-                            <td colspan="14">{{ dataMessage }}</td>
-                          </tr>
-                          <tr *ngFor="let element of allPayments">
-                            <td>
-                              {{ element.txnDate | date: "YYYY-MM-dd" }}
-                            </td>
-                            <td>
-                              <a [routerLink]="element.url" target="_blank"
-                                style="color: #0000ff; text-decoration: none;">{{
-                                element.paymentNo }}</a>
-                            </td>
-                            <td>
-                              {{ element.payMode | titlecase }}
-                            </td>
-                            <td>
-                              {{ element.payModeNo }}
-                            </td>
-                            <td>
-                              {{ element.payModeDate | date: "YYYY-MM-dd" }}
-                            </td>
-                            <td>
-                              {{ element.type | titlecase }}
-                              <span *ngIf="element.advType">: {{ element.advType | titlecase }}</span>
-                            </td>
-                            <td>
-                              {{ element.paymentTo | titlecase }} :
-                              {{ element.entityName | titlecase }}
-                            </td>
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row pt-2">
+                <div
+                  class="col-lg-12"
+                  style="height: calc(100vh - 149px); overflow-y: scroll"
+                >
+                  <p-table
+                    #dt
+                    [value]="allPayments"
+                    [resizableColumns]="true"
+                    columnResizeMode="expand"
+                    scrollDirection="both"
+                    [columns]="selectedColumns"
+                    [loading]="!loaded"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                    [scrollable]="true"
+                    [loading]="!loaded"
+                    scrollHeight="100%"
+                  >
+                    <!-- Caption template of data table -->
+                    <ng-template pTemplate="caption">
+                      <div
+                        class="p-d-flex d-flex justify-content-between align-items-center"
+                      >
+                        <div>
+                          <h3 class="m-0"> Payment Report </h3>
+                        </div>
+                        <div class="text-right">
+                          <span>Showing {{ allPayments.length }} entries </span>
+                          &nbsp;
+                          <button
+                            type="button"
+                            pButton
+                            (click)="refreshData()"
+                            pTooltip="Refresh"
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-sync"
+                          ></button>
+                          <button
+                            pButton
+                            pRipple
+                            pTooltip="Clear Filter"
+                            class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash"
+                            (click)="clear(dt)"
+                          ></button>
 
-                            <td>
-                              {{ element.currency }}
-                            </td>
-                            <td>
-                              {{ element.amount }}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
+                          <p-multiSelect
+                            [options]="dataColumns"
+                            [(ngModel)]="selectedColumns"
+                            optionLabel="header"
+                            selectedItemsLabel="{0} columns selected"
+                            [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns"
+                          >
+                          </p-multiSelect>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <!-- Header template of DataTable -->
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th
+                          *ngFor="let dataColumns of columns"
+                          [pSortableColumn]="dataColumns.field"
+                          pResizableColumn
+                          [ngStyle]="{ width: dataColumns.width }"
+                        >
+                          <div
+                            [ngSwitch]="dataColumns.field"
+                            style="width: 10%"
+                          >
+                           
+                            <span *ngSwitchDefault>
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="right"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                          </div>
+                        </th>
+                      </tr>
+                    </ng-template>
+
+                    <!-- Body Template of Data Table -->
+                    <ng-template
+                      pTemplate="body"
+                      let-payment
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
+                      <tr>
+                        <td
+                          *ngFor="let dataColumns of columns"
+                         [ngStyle]="{ width: dataColumns.width }"
+                          style=" height: 40px; cursor: pointer"
+                        >
+                          <div [ngSwitch]="dataColumns.field">
+                           <span *ngSwitchCase="'txnDate'">
+                              {{ payment.txnDate }}
+                            </span> 
+                            
+                            <span *ngSwitchCase="'paymentNo'">
+                              <a
+                                [routerLink]="payment.url"
+                                target="_blank"
+                                style="color: #0000ff; text-decoration: none" 
+                                >{{ payment.paymentNo }}</a
+                              >
+                            </span>
+                            
+                             <span *ngSwitchCase="'payMode'">
+                              {{ payment.payMode | titlecase }}
+                            </span>
+                            
+                             <span *ngSwitchCase="'payModeNo'">
+                              {{ payment.payModeNo }}
+                            </span>
+                             
+                             <span *ngSwitchCase="'payModeDate'">
+                              {{ payment.payModeDate | date: "YYYY-MM-dd" }}
+                            </span>
+                            
+                             <span *ngSwitchCase="'advType'">
+                              {{ payment.type | titlecase }}
+                              <span *ngIf="payment.advType"
+                                >: {{ payment.advType | titlecase }}</span
+                              >
+                            </span>
+                            
+                             <span *ngSwitchCase="'paymentTo'">
+                              {{ payment.paymentTo | titlecase }} :
+                              {{ payment.entityName | titlecase }}
+                            </span>
+                            
+                            <span *ngSwitchCase="'currency'">
+                              {{ payment.currency }}
+                            </span>
+                            
+                            <span *ngSwitchCase="'amount'">
+                              {{ payment.amount }}
+                            </span>
+                            
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <!-- Empty Template -->
+
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <div class="col-lg-12 mt-3 text-center">
+                        {{ dataMessage }}
+                        <br /><br />
+                      </div>
+                    </ng-template>
+                    <!-- Summary Section with Load More button -->
+
+                    <ng-template pTemplate="summary" let-columns>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="
+                          lastAdvanceSK != 'end' &&
+                         lastDriverSK != 'end' &&
+                        lastEmployeeSK != 'end' &&
+                        lastExpenceSK != 'end' &&
+                        allPayments.length !== 0
+                                  "
+                      >
+                        <button
+                          type="button "
+                          (click)="onScroll($event)"
+                          class="btn btn-success btn-sm text-light"
+                        >
+                          Load More..
+                        </button>
+                        <br /><br />
+                      </div>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="
+                          lastAdvanceSK != 'end' &&
+                         lastDriverSK != 'end' &&
+                        lastEmployeeSK != 'end' &&
+                        lastExpenceSK != 'end' &&
+                        allPayments.length !== 0
+                                  "
+                      >
+                        Total Records: {{ allPayments.length }}
+                      </div>
+                    </ng-template>
+                  </p-table>
                 </div>
               </div>
             </div>
@@ -216,25 +501,25 @@
         </div>
       </section>
     </section>
-    <div class="col-lg-12 mt-3 text-center" *ngIf="
-        lastAdvanceSK != 'end' &&
-        lastDriverSK != 'end' &&
-        lastEmployeeSK != 'end' &&
-        lastExpenceSK != 'end' &&
-        allPayments.length !== 0
-      ">
-      <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
-        Load More..
-      </button>
-    </div>
+    
   </div>
 </section>
 
 <ng-template #previewModal let-modal>
   <div class="modal-content">
     <div class="modal-body p-0">
-      <section class="report-wrapper p-2" style="background-color: #fff; color: #000" id="print_wrap">
-        <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <section
+        class="report-wrapper p-2"
+        style="background-color: #fff; color: #000"
+        id="print_wrap"
+      >
+        <table
+          width="90%"
+          border="0"
+          align="center"
+          cellpadding="0"
+          cellspacing="0"
+        >
           <tbody>
             <tr>
               <td colspan="2">
@@ -268,7 +553,12 @@
                   <tbody>
                     <tr>
                       <td width="40%">
-                        <table width="80%" border="0" cellpadding="0" cellspacing="0">
+                        <table
+                          width="80%"
+                          border="0"
+                          cellpadding="0"
+                          cellspacing="0"
+                        >
                           <tbody>
                             <tr>
                               <td>
@@ -285,7 +575,12 @@
                         </table>
                       </td>
                       <td width="33%">
-                        <table width="90%" border="0" cellpadding="0" cellspacing="0">
+                        <table
+                          width="90%"
+                          border="0"
+                          cellpadding="0"
+                          cellspacing="0"
+                        >
                           <tbody>
                             <tr>
                               <td>
@@ -302,7 +597,12 @@
                         </table>
                       </td>
                       <td>
-                        <table width="90%" border="0" cellpadding="0" cellspacing="0">
+                        <table
+                          width="90%"
+                          border="0"
+                          cellpadding="0"
+                          cellspacing="0"
+                        >
                           <tbody>
                             <tr>
                               <td>
@@ -326,71 +626,103 @@
 
             <tr valign="top">
               <td colspan="2">
-                <table width="100%" border="0" style="border: 1px solid #000000; font-size: 13px" cellspacing="0"
-                  cellpadding="0">
+                <table
+                  width="100%"
+                  border="0"
+                  style="border: 1px solid #000000; font-size: 13px"
+                  cellspacing="0"
+                  cellpadding="0"
+                >
                   <tbody>
                     <tr bgcolor="#f3f3f3">
-                      <td width="8%" style="
+                      <td
+                        width="8%"
+                        style="
                           border-bottom: 1px solid #000000;
                           border-right: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="font-weight: 600">Trans. Date</p>
                       </td>
-                      <td width="8%" style="
+                      <td
+                        width="8%"
+                        style="
                           border-bottom: 1px solid #000000;
                           border-right: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="font-weight: 600">Payment#</p>
                       </td>
-                      <td width="8%" style="
+                      <td
+                        width="8%"
+                        style="
                           border-bottom: 1px solid #000000;
                           border-right: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="font-weight: 600">Payment Mode</p>
                       </td>
-                      <td width="8%" style="
+                      <td
+                        width="8%"
+                        style="
                           border-bottom: 1px solid #000000;
                           border-right: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="font-weight: 600">Cheq/ Cash#</p>
                       </td>
-                      <td width="8%" style="
+                      <td
+                        width="8%"
+                        style="
                           border-bottom: 1px solid #000000;
                           border-right: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="font-weight: 600">Cheq/ Cash Date</p>
                       </td>
-                      <td width="8%" style="
+                      <td
+                        width="8%"
+                        style="
                           border-bottom: 1px solid #000000;
                           border-right: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="font-weight: 600">Type Of Payment</p>
                       </td>
-                      <td width="8%" style="
+                      <td
+                        width="8%"
+                        style="
                           border-bottom: 1px solid #000000;
                           border-right: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="font-weight: 600">Receiver</p>
                       </td>
-                      <td width="6%" style="
+                      <td
+                        width="6%"
+                        style="
                           border-bottom: 1px solid #000000;
                           border-right: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="font-weight: 600">Currency</p>
                       </td>
-                      <td width="6%" style="
+                      <td
+                        width="6%"
+                        style="
                           border-bottom: 1px solid #000000;
                           border-right: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="font-weight: 600">Amount</p>
                       </td>
                     </tr>
@@ -398,85 +730,107 @@
                       <td colspan="7">No Records Found</td>
                     </tr>
                     <tr *ngFor="let element of allExportData">
-                      <td height="25" style="
+                      <td
+                        height="25"
+                        style="
                           border-right: 1px solid #000000;
                           border-bottom: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="margin-top: 0px; margin-bottom: 0px">
                           {{ element.txnDate | date: "YYYY-MM-dd" }}
                         </p>
                       </td>
-                      <td style="
+                      <td
+                        style="
                           border-right: 1px solid #000000;
                           border-bottom: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="margin-top: 0px; margin-bottom: 0px">
                           {{ element.paymentNo }}
                         </p>
                       </td>
-                      <td style="
+                      <td
+                        style="
                           border-right: 1px solid #000000;
                           border-bottom: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="margin-top: 0px; margin-bottom: 0px">
                           {{ element.payMode | titlecase }}
                         </p>
                       </td>
-                      <td style="
+                      <td
+                        style="
                           border-right: 1px solid #000000;
                           border-bottom: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="margin-top: 0px; margin-bottom: 0px">
                           {{ element.payModeNo }}
                         </p>
                       </td>
-                      <td height="25" style="
+                      <td
+                        height="25"
+                        style="
                           border-right: 1px solid #000000;
                           border-bottom: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="margin-top: 0px; margin-bottom: 0px">
                           {{ element.payModeDate | date: "YYYY-MM-dd" }}
                         </p>
                       </td>
-                      <td style="
+                      <td
+                        style="
                           border-right: 1px solid #000000;
                           border-bottom: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="margin-top: 0px; margin-bottom: 0px">
                           {{ element.type | titlecase
-                          }}<span *ngIf="element.advType">: {{ element.advType | titlecase }}</span>
+                          }}<span *ngIf="element.advType"
+                            >: {{ element.advType | titlecase }}</span
+                          >
                         </p>
                       </td>
-                      <td style="
+                      <td
+                        style="
                           border-right: 1px solid #000000;
                           border-bottom: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="margin-top: 0px; margin-bottom: 0px">
                           {{ element.paymentTo | titlecase }} :
                           {{ element.entityName | titlecase }}
                         </p>
                       </td>
-                      <td style="
+                      <td
+                        style="
                           border-right: 1px solid #000000;
                           border-bottom: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="margin-top: 0px; margin-bottom: 0px">
                           {{ element.currency }}
                         </p>
                       </td>
-                      <td style="
+                      <td
+                        style="
                           border-right: 1px solid #000000;
                           border-bottom: 1px solid #000000;
                           padding-left: 10px;
-                        ">
+                        "
+                      >
                         <p style="margin-top: 0px; margin-bottom: 0px">
                           {{ element.amount }}
                         </p>
@@ -488,12 +842,21 @@
             </tr>
             <tr>
               <td colspan="2">
-                <table border="0" align="center" cellpadding="0" cellspacing="0">
+                <table
+                  border="0"
+                  align="center"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
                   <tbody>
                     <tr>
                       <td align="center">
                         <h2 style="font-size: 13px">Powered By</h2>
-                        <img src="assets/img/logo.png" width="207" height="28" />
+                        <img
+                          src="assets/img/logo.png"
+                          width="207"
+                          height="28"
+                        />
                       </td>
                     </tr>
                   </tbody>
@@ -508,8 +871,17 @@
       <button class="btn btn-default" (click)="modal.dismiss('Cross click')">
         Cancel
       </button>
-      <button *ngIf="printing" class="btn btn-success btn-sm" type="button" disabled>
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      <button
+        *ngIf="printing"
+        class="btn btn-success btn-sm"
+        type="button"
+        disabled
+      >
+        <span
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
         Printing...
       </button>
       <button *ngIf="!printing" class="btn btn-success" (click)="generatePDF()">

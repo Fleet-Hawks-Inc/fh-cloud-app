@@ -33,6 +33,7 @@ export class AddSchedulerComponent implements OnInit {
   }
   saveDisabled=false;
   repeatType=null;
+  rangeDisabled=false;
   range=null;
   days=["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
   months=["january","february","march","april","may","june","july","august","september","october","november","december"]
@@ -196,7 +197,19 @@ export class AddSchedulerComponent implements OnInit {
       this.toastr.error("Date Range is required");
       this.saveDisabled=false;
       return
+    }
+    else if(this.scheduler.dateRange.to<this.scheduler.dateRange.from){
+      this.toastr.error("Date range from must be greater")
+      this.saveDisabled=false;
+      return;
 
+    }
+    if(this.range=="month"){
+      if(this.scheduler.selectedMonths.length===0){
+        this.toastr.error("Please Select at least 1 month")
+        this.saveDisabled=false;
+        return
+      }
     }
 
     if(this.repeatType=="selectDaysNo"){

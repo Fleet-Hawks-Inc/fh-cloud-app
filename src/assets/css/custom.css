@@ -4388,5 +4388,34 @@ input:checked + .sliderbtn:before {
 }
 .p-overlaypanel:before {
   margin-left: -25px !important;
-
+}
+.notifications-sidebar .p-tabview-panels {
+  padding: 0;
+}
+.payment-mini-wrapper {
+  width: 100%;
+  display: flex;
+}
+.payment-mini-wrapper > div:first-child {
+  width: 40%;
+  font-weight: 600;
+}
+.payment-mini-wrapper > div:last-child {
+  width: 60%;
+  border: 1px solid #dee2e6;
+}
+.payment-mini-wrapper > div {
+  padding: 0.75rem;
+}
+ul.simple-post-list.settings-list li,
+ul.simple-post-list.settings-list li:last-child a {
+  border-bottom: none;
+}
+.notifications-sidebar .p-datatable-table {
+  border-collapse: separate;
+  border-spacing: 0 0.3em;
+}
+.noti-time {
+  font-size: 12px;
+  color: #b3b6c1;
 }

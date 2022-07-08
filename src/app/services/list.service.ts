@@ -84,11 +84,20 @@ export class ListService {
   addressDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   addressList = this.addressDataSource.asObservable();
 
+  carrierDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  carrierList = this.carrierDataSource.asObservable();
+
+
+
   docModalSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   docModalList = this.docModalSource.asObservable();
 
   getDocsModalSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   getDocsModalList = this.getDocsModalSource.asObservable();
+
+
+  closeModalSource: BehaviorSubject<any> = new BehaviorSubject(String);
+  closeModalList = this.closeModalSource.asObservable();
 
   paymentModelDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   paymentModelList = this.paymentModelDataSource.asObservable();
@@ -283,12 +292,25 @@ export class ListService {
       });
   }
 
+
+
   fetchContactsByIDs() {
     this.apiService.getData("contacts/get/list").subscribe((result: any) => {
       this.contactsObjectDataSource.next(result);
     });
   }
-
+  fetchCarriers() {
+    this.apiService
+      .getData(`contacts/get/type/carrier`)
+      .subscribe((result: any) => {
+        // this.carriers = result;
+        result.forEach((element) => {
+          if (element.isDeleted === 0) {
+            this.carrierDataSource.next(element);
+          }
+        });
+      });
+  }
   public changeButton(value: boolean) {
     this.isTrueDataSource.next(value);
   }
@@ -296,6 +318,10 @@ export class ListService {
   triggerModal(value: any) {
     this.addressDataSource.next(value);
   }
+
+  // triggerCarrierModal(value: any) {
+  //   this.addressDataSource.next(value);
+  // }
 
   openDocTypeMOdal(value: any) {
     this.docModalSource.next(value);
@@ -338,5 +364,10 @@ export class ListService {
 
   triggerFetchPaymentDetail(value) {
     this.paymentDetailSource.next(value);
+  }
+
+  closeModel(value) {
+    this.closeModalSource.next(value)
+      ;
   }
 }

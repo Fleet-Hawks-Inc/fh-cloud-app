@@ -1,157 +1,378 @@
+<style>
+  .extra {
+    display: none;
+  }
+</style>
 <section class="body">
-    <div class="inner-wrapper">
-        <section role="main" class="content-body pl-1 pt-0 pr-0">
-            <header class="page-header pr19 pl11">
-                <div class="row" style="padding-top:10px;">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pt-0 pr-0">
+      <header class="page-header pr19 pl11">
+        <div class="row" style="padding-top: 10px">
+          <div class="col-md-2 col-lg-2">
+            <ng-select
+              [(ngModel)]="vehicleID"
+              name="vehicleID"
+              placeholder="Search By vehicle"
+            >
+              <ng-option
+                *ngFor="let data of vehicleList | keyvalue"
+                value="{{ data.key }}"
+              >
+                {{ data.value }}</ng-option
+              >
+            </ng-select>
+          </div>
 
-                    <div class="col-md-2 col-lg-2">
-                        <ng-select [(ngModel)]="vehicleID" name="vehicleID" placeholder="Search By vehicle">
-                            <ng-option *ngFor="let data of vehicleList | keyvalue" value="{{ data.key }}"> {{ data.value
-                                }}</ng-option>
-                        </ng-select>
-                    </div>
+          <div class="col-lg-2 col-md-2 pl-0">
+            <ng-select
+              placeholder="Search By Renewal Type"
+              [(ngModel)]="searchServiceTask"
+              name="searchServiceTask"
+              style="width: 100%"
+            >
+              <ng-option
+                *ngFor="let data of tasksList | keyvalue"
+                value="{{ data.key }}"
+              >
+                {{ data.value }}
+              </ng-option>
+            </ng-select>
+          </div>
 
-                    <div class="col-lg-2 col-md-2 pl-0">
-                        <ng-select placeholder="Search By Renewal Type" [(ngModel)]="searchServiceTask"
-                            name="searchServiceTask" style="width: 100%;">
-                            <ng-option *ngFor="let data of tasksList | keyvalue" value="{{ data.key }}">
-                                {{ data.value }}
-                            </ng-option>
-                        </ng-select>
-                    </div>
+          <div class="col-md-2 col-lg-2 pl-0 pr-0">
+            <ng-select
+              [(ngModel)]="filterStatus"
+              name="filterStatus"
+              style="width: 100%"
+              placeholder="Select Reminder Status"
+            >
+              <optgroup label="Select Reminder Status">
+                <ng-option value="all">ALL</ng-option>
+                <ng-option value="overdue">OVERDUE</ng-option>
+                <ng-option value="dueSoon">DUE SOON</ng-option>
+              </optgroup>
+            </ng-select>
+          </div>
 
-                    <div class="col-md-2 col-lg-2 pl-0 pr-0">
-                        <ng-select [(ngModel)]="filterStatus" name="filterStatus" style="width: 100%;"
-                            placeholder="Select Reminder Status">
-                            <optgroup label="Select Reminder Status">
-                                <ng-option value="all">ALL</ng-option>
-                                <ng-option value="overdue">OVERDUE</ng-option>
-                                <ng-option value="dueSoon">DUE SOON</ng-option>
-                            </optgroup>
-                        </ng-select>
-                    </div>
+          <div class="col-md-2 col-lg-2">
+            <button
+              type="submit"
+              (click)="searchFilter()"
+              class="btn btn-sm btn-success mr-3"
+            >
+              Search
+            </button>
+            <button
+              type="button"
+              (click)="resetFilter()"
+              class="btn btn-sm btn-success"
+            >
+              Reset
+            </button>
+          </div>
 
-                    <div class="col-md-2 col-lg-2">
-                        <button type="submit" (click)="searchFilter()"
-                            class="btn btn-sm btn-success mr-3">Search</button>
-                        <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
-                    </div>
-
-                    <div class="col-md-4 col-lg-4 text-right pr-1 page-buttons">
-                        <div class="btn-group flex-wrap mr-2" *ngIf=!environment>
-                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                                aria-expanded="false">Actions<span class="caret"></span></button>
-                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                <a class="dropdown-item text-1" href="">Import</a>
-                                <a class="dropdown-item text-1" href="">Export</a>
-                            </div>
-                        </div>
-
-                        <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data"
-                            class="btn btn-success btn-sm modal-with-form mr-2">
-                            <i class="fas fa-sync"></i>
-                        </a>
-
-                        <a routerLink="/fleet/reminders/vehicle-renewals/add" class="btn btn-sm btn-success"><i
-                                class="fas fa-plus"></i> Add Vehicle Renewal Reminder</a>
-
-                    </div>
-                </div>
-            </header>
-
-            <section class="m-2">
-                <div class="row mb-3">
-                    <div class="col-lg-12">
-                        <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                            [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
-                            <div class="bg-white p-3 text-dark">
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-                                        <div class="wtopnav">
-                                            <ul class="nav nav-tabs top-tabs pl-0 mb-3">
-                                                <li class="nav-item"><a class="nav-link"
-                                                        routerLink="/fleet/reminders/service-reminder/list">Service
-                                                        Reminders </a></li>
-                                                <li class="nav-item"><a class="nav-link active"
-                                                        routerLink="/fleet/reminders/vehicle-renewals/list">Vehicle
-                                                        Renewals
-                                                    </a></li>
-                                                <li class="nav-item"><a class="nav-link"
-                                                        routerLink="/fleet/reminders/contact-renewals/list">Contact
-                                                        Renewals
-                                                    </a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-12">
-                                        <div class="table-responsive">
-                                            <table class="row-border hover table table-bordered table-striped mb-0">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="30%">Vehicle</th>
-                                                        <th width="15%">Vehicle Renewal Type</th>
-                                                        <th width="15%">Due Date</th>
-                                                        <th width="15%">Send Reminder</th>
-                                                        <th width="15%">Subscribers</th>
-                                                        <th width="5%">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr *ngIf="remindersData.length == 0" class="text-center">
-                                                        <td colspan="6">{{ dataMessage }}</td>
-                                                    </tr>
-                                                    <tr *ngFor="let item of remindersData;">
-                                                        <td>{{ vehicleList[item.entityID]}}</td>
-                                                        <td>
-                                                            <span
-                                                                class="text-warning font-weight-bold font-size-12 text-uppercase"
-                                                                *ngIf="item.status === 'dueSoon'">{{item.status}}<br></span>
-                                                            <span
-                                                                class="text-danger font-weight-bold font-size-12 text-uppercase"
-                                                                *ngIf="item.status === 'overdue'">{{item.status}}<br></span>
-
-                                                            <span class="font-weight-bold"
-                                                                title="Task">{{tasksList[item.tasks.taskID]}}</span>
-                                                        </td>
-                                                        <td>{{item.tasks.dueDate | date:"yyyy/MM/dd"}}</td>
-                                                        <td>{{item.tasks.time}} {{item.tasks.timeUnit}}(s) Before</td>
-                                                        <td class="text-lowercase">
-                                                            {{ item.subscribers }}
-                                                        </td>
-                                                        <td>
-                                                            <div class="btn-group flex-wrap">
-                                                                <button type="button" class="btn p-0"
-                                                                    data-toggle="dropdown"><i
-                                                                        class="fas fa-ellipsis-v"></i></button>
-                                                                <div class="dropdown-menu" role="menu">
-                                                                    <a class="dropdown-item text-1" href="javascript:;"
-                                                                        (click)="sendEmailNotification(item)">Send
-                                                                        Notifications</a>
-                                                                    <a routerLink="/fleet/reminders/vehicle-renewals/edit/{{item.reminderID }}"
-                                                                        class="dropdown-item text-1">Edit</a>
-                                                                    <a href="javascript:;" class="dropdown-item text-1"
-                                                                        (click)="deleteRenewal(item)">Delete</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey !== 'end' && remindersData.length !== 0">
-                <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">Load
-                    More..</button>
+          <div class="col-md-4 col-lg-4 text-right pr-1 page-buttons">
+            <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
+              <button
+                type="button"
+                class="btn btn-success btn-sm dropdown-toggle"
+                data-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Actions<span class="caret"></span>
+              </button>
+              <div
+                class="dropdown-menu"
+                role="menu"
+                x-placement="bottom-start"
+                style="
+                  position: absolute;
+                  will-change: transform;
+                  top: 0px;
+                  left: 0px;
+                  transform: translate3d(0px, 38px, 0px);
+                "
+              >
+                <a class="dropdown-item text-1" href="">Import</a>
+                <a class="dropdown-item text-1" href="">Export</a>
+              </div>
             </div>
-        </section>
-    </div>
+
+            <a
+              href="javascript:;"
+              (click)="refreshData()"
+              data-toggle="tooltip"
+              title="Refresh data"
+              class="btn btn-success btn-sm modal-with-form mr-2"
+            >
+              <i class="fas fa-sync"></i>
+            </a>
+
+            <a
+              routerLink="/fleet/reminders/vehicle-renewals/add"
+              class="btn btn-sm btn-success"
+              ><i class="fas fa-plus"></i> Add Vehicle Renewal Reminder</a
+            >
+          </div>
+        </div>
+      </header>
+
+      <section class="m-2">
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div>
+              <div class="bg-white p-3 text-dark">
+               <div class="form-group row pt-1">
+                <div class="col-lg-12">
+                   <div class="mb-3 pb-1">
+                   <ul class="nav nav-tabs top-tabs pl-0 mb-3">
+                        <li class="nav-item">
+                          <a
+                            class="nav-link"
+                            routerLink="/fleet/reminders/service-reminder/list"
+                            >Service Reminders
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a
+                            class="nav-link active"
+                            routerLink="/fleet/reminders/vehicle-renewals/list"
+                            >Vehicle Renewals
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a
+                            class="nav-link"
+                            routerLink="/fleet/reminders/contact-renewals/list"
+                            >Contact Renewals
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                     <p-table 
+                      #dt
+                      [value]="remindersData"
+                      [resizableColumns]="true"
+                      columnResizeMode="expand"
+                      scrollDirection="both"
+                      [columns]="selectedColumns"
+                      [loading]="!loaded"
+                      styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                      [scrollable]="true"
+                      [loading]="!loaded"
+                      scrollHeight="100%">
+                    <ng-template pTemplate="caption"> 
+                    <div  class="p-d-flex d-flex justify-content-between align-items-center">
+                    <div>
+                    <h3 class="m-0"> Vehicle Renewals </h3>
+                    </div>
+                      <div class="text-right">
+                    <span>Showing {{ remindersData.length }} entries </span>
+                    &nbsp;
+                            <button
+                              type="button"
+                              pButton
+                              (click)="refreshData()"
+                              pTooltip="Refresh"
+                              class="p-button-outlined mr-2"
+                              icon="fas fa-sync"
+                            ></button>
+                           <button
+                              pButton
+                              pRipple
+                              pTooltip="Clear Filter"
+                              class="p-button-outlined mr-2"
+                              icon="pi pi-filter-slash"
+                              (click)="clear(dt)"
+                            ></button>
+                        <p-multiSelect
+                              [options]="dataColumns"
+                              [(ngModel)]="selectedColumns"
+                              optionLabel="header"
+                              selectedItemsLabel="{0} columns selected"
+                              [style]="{ minWidth: '200px' }"
+                              placeholder="Choose Columns"
+                            >
+                            </p-multiSelect>
+                    </div>
+                    </div>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                     <th
+                            *ngFor="let dataColumns of columns"
+                            [pSortableColumn]="dataColumns.field"
+                            pResizableColumn
+                            [ngStyle]="{ width: dataColumns.width }"
+                          > 
+                      <div [ngSwitch]="dataColumns.field">    
+                       <span *ngSwitchDefault>   
+                        <div
+                        class="flex justify-content-center align-items-center"
+                        alignFrozen="right"
+                        pFrozenColumn
+                        [frozen]="true"
+                          >
+                          {{ dataColumns.header }}    
+                          <p-sortIcon
+                          [field]="dataColumns.field"
+                          ></p-sortIcon>
+                            <p-columnFilter
+                                    [type]="dataColumns.type"
+                                    [field]="dataColumns.field"
+                                    matchMode="contains"
+                                    [showMatchModes]="false"
+                                    [showOperator]="false"
+                                    [showAddButton]="false"
+                                    display="menu"
+                                  >
+                            </p-columnFilter>
+                      </div>    
+                      </span>
+                      </div>
+                      </th>
+                      <th
+                        width="13%"
+                        alignFrozen="right"
+                        pFrozenColumn
+                        [frozen]="true"
+                         >
+                        Actions
+                       </th>
+                    </tr>
+                  </ng-template> 
+                  <ng-template
+                        pTemplate="body"
+                        let-vehicle
+                        let-columns="columns"
+                        let-rowIndex="rowIndex"
+                      >
+                  <tr> 
+                    <td  *ngFor="let dataColumns of columns" 
+                        [ngStyle]="{ width: dataColumns.width }"
+                         style="cursor: pointer">
+                  <div [ngSwitch]="dataColumns.field">
+                   <span *ngSwitchCase="'entityID'">
+                                 {{ vehicleList[vehicle.entityID] }}
+                   </span>
+                   
+                   <span *ngSwitchCase="'status'">
+                              <span
+                                class="text-warning font-weight-bold font-size-12 text-uppercase"
+                                *ngIf="vehicle.status === 'dueSoon'"
+                                >{{ vehicle.status }}<br
+                              /></span>
+                              <span
+                                class="text-danger font-weight-bold font-size-12 text-uppercase"
+                                *ngIf="vehicle.status === 'overdue'"
+                                >{{ vehicle.status }}<br
+                              /></span>
+
+                              <span class="font-weight-bold" title="Task">{{
+                                tasksList[vehicle.tasks.taskID]
+                              }}</span>
+                   </span>
+                    
+                    <span *ngSwitchCase="'tasks.dueDate'">
+                     {{ vehicle.tasks.dueDate | date: "yyyy/MM/dd" }}
+                    </span>
+                    
+                    <span *ngSwitchCase="'tasks.time'">
+                      <span>
+                      {{ vehicle.tasks.time }} {{ vehicle.tasks.timeUnit }}(s)
+                       Before
+                        </span>
+                    </span>
+                   <span *ngSwitchCase="'subscribers'">
+                            <span class="text-lowercase">
+                              {{ vehicle.subscribers }}
+                            </span>
+                          </span>
+                    
+                    
+                    <span *ngSwitchDefault>
+                                {{ get(vehicle, dataColumns.field) }}
+                              </span>
+                  </div>
+                  </td>
+                  <td 
+                          style="width: 13%; overflow: inherit !important"
+                          alignFrozen="right"
+                        >
+                     <div class= "dropdown
+                               dropright">
+                      <button
+                            class="bg-transparent"
+                              type="button"
+                              class="bg-transparent border-0"
+                              data-toggle="dropdown"
+                               aria-expanded="false"
+                                aria-haspopup="true"
+                               id="dropdownMenuButton-{{ rowIndex }}"
+                            >
+                              <i class="fas fa-ellipsis-v"></i>
+                            </button>  
+                        <div class="dropdown-menu" 
+                        attr.aria-labelledby="dropdownMenuButton-{{ rowIndex }}">
+                        <a
+                           class="dropdown-item text-1"
+                            href="javascript:;"
+                            (click)="sendEmailNotification(vehicle)"
+                            >Send Notifications</a
+                            >
+                          <a
+                           routerLink="/fleet/reminders/vehicle-renewals/edit/{{
+                            vehicle.reminderID
+                              }}"
+                            class="dropdown-item text-1"
+                            >Edit</a
+                            >
+                            <a
+                            href="javascript:;"
+                            class="dropdown-item text-1"
+                            (click)="deleteRenewal(vehicle)"
+                            >Delete</a
+                            >
+                       </div>
+                    </div>
+                    </td>
+                  </tr>
+                  </ng-template>
+                  <ng-template pTemplate="emptymessage" let-columns>
+                        <div class="col-lg-12 mt-3 text-center">
+                          {{ dataMessage }}
+                          <br /><br />
+                        </div>
+                      </ng-template> 
+                  <ng-template pTemplate="summary" let-columns>
+                        <div
+                        class="col-lg-12 mt-3 text-center"
+                          *ngIf="lastEvaluatedKey !== 'end' && remindersData.length !== 0"
+                      >
+                       <button
+                          type="button "
+                          (click)="onScroll($event)"
+                          class="btn btn-success btn-sm text-light"
+                        >
+                          Load More..
+                        </button>
+                         <br /><br />
+                       </div>
+                       <div
+                        class="col-lg-12 mt-3 text-center"
+                         *ngIf="lastEvaluatedKey !== 'end'"
+                      >
+                        Total Records: {{ remindersData.length }}
+                      </div>
+                   </ng-template>
+                 </p-table>   
+              </div>
+              </div>
+             </div> 
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
 </section>

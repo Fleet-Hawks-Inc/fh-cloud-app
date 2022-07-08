@@ -127,7 +127,7 @@ _selectedColumns: any[];
      dataColumns = [
         { width: '12%', field: 'dateTime', header: 'Date/Time', type: "text" },
         { width: '12%', field: 'data.useType', header: 'Use Type', type: "text" },
-        { width: '12%', field: 'data.unitNo', header: 'Unit Name', type: "text" },
+        { width: '12%', field: 'unitSearch', header: 'Unit Name', type: "text" },
         { width: '12%', field: 'data.cardNo', header: 'Fuel Card', type: "text" },
         { width: '12%', field: 'data.city', header: 'City', type: "text" },
         { width: '12%', field: 'data.type', header: 'Fuel Type', type: "text" },
@@ -191,6 +191,7 @@ _selectedColumns: any[];
         this.apiService.getData('assets/get/minor/details')
             .subscribe((result: any) => {
                 this.assetsSet = result.Items;
+                console.log('A',this.assetsSet)
             })
     }
 
@@ -199,6 +200,7 @@ _selectedColumns: any[];
             result['Items'].map((v: any) => {
                 if (v.isDeleted === 0) {
                     this.vehicleSet.push(v);
+                    console.log('V',this.vehicleSet)
                 }
             })
         });
@@ -232,7 +234,8 @@ _selectedColumns: any[];
         if (this.lastItemSK !== 'end') {
             const result = await this.apiService.getData(`fuelEntries/fetch/fuel/report?unitID=${this.unitID}&asset=${this.assetUnitID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`).toPromise();
             if (result.Items.length == 0) {
-                this.dataMessage = Constants.NO_RECORDS_FOUND
+                this.dataMessage = Constants.NO_RECORDS_FOUND;
+                this.loaded = true;
             }
             if (result.Items.length > 0) {
                 if (result.LastEvaluatedKey !== undefined) {
@@ -316,7 +319,7 @@ _selectedColumns: any[];
             this.fuelQty.push(this.fuelList[i].data)
         }
         this.fuelQty.map((x: any) => {
-            if (x.uom === 'L' || x.uom === 'litre') {
+            if (x.uom === 'LTR' || x.uom === 'litre') {
                 this.fuelQtyLitres.push(x);
             } else {
                 this.fuelQtyGallons.push(x);
@@ -534,7 +537,7 @@ _selectedColumns: any[];
                 if (element.data.currency === 'USD') {
                     retailUSDTotal = element.data.amt
                 }
-                obj['Date/Time'] = element.dateTime.replace(/, /g, ' &');
+                obj['Date/Time'] = element.dateTime;
                 obj['Use Type'] = element.data.useType
                 obj['Unit Name'] = this.assetList[element.unitID] || this.vehicleList[element.unitID]
                 obj['Fuel Card#'] = element.data.cardNo
@@ -585,9 +588,9 @@ _selectedColumns: any[];
     getSetExport() {
         this.apiService.getData("fuelEntries/get/export").subscribe((result: any) => {
             result[`Items`].forEach(element => {
-                let date: any = moment(element.data.date)
-                if (element.data.time) {
-                    let time = moment(element.data.time, 'h mm a')
+                let date: any = moment(element.date)
+                if (element.time) {
+                    let time = moment(element.time, 'h mm a')
                     date.set({
                         hour: time.get('hour'),
                         minute: time.get('minute')

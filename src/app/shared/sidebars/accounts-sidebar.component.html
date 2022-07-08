@@ -35,6 +35,12 @@
       <span>Receipts</span>
     </a>
   </li>
+  <li routerLinkActive="nav-active">
+    <a class="nav-link" [routerLink]="['/accounts', 'fuel-transactions', 'list']">
+      <i class="fab fa-wpforms"></i>
+      <span>Fuel Transactions</span>
+    </a>
+  </li>
   <li>
     <hr class="solid mt-2 mb-2" />
   </li>
@@ -179,7 +185,7 @@
     <ul class="nav nav-children">
       <li>
         <a class="nav-link" [routerLink]="['/accounts', 'reports', 'general-ledger', 'list']">
-          General Ledger Report
+          General Ledger
         </a>
       </li>
       <li>
@@ -190,12 +196,22 @@
       <li>
         <a class="nav-link" [routerLink]="['/accounts', 'reports', 'profit-loss-report']">
 
-          Profit and Loss Report
+          Profit and Loss
         </a>
       </li>
       <li>
         <a class="nav-link" [routerLink]="['/accounts', 'reports', 'trial-balance']">
           Trial Balance
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/accounts', 'reports', 'employer-pay']">
+          Employer Pay
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/accounts', 'reports', 'employee-pay']">
+          Employee Pay
         </a>
       </li>
     <!--  <li>

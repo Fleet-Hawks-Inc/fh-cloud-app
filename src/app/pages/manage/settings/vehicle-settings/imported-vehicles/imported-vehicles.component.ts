@@ -112,6 +112,9 @@ export class ImportedVehiclesComponent implements OnInit {
         {
           name: 'plate_number', inputName: 'platenumber', required: true, unique: true, requiredError: function (headerName, rowNumber, columnNumber) {
             return `${headerName} is required in the ${rowNumber} row / ${columnNumber} column`;
+          }, validate: function (name: string) {
+            const vinno = /[a-zA-Z0-9\s]{6,8}$/;
+            return vinno.test(name)
           }
         },
         {
@@ -157,6 +160,9 @@ export class ImportedVehiclesComponent implements OnInit {
                 this.inValidMessages.push(joinStr)
               } else if (item.includes('status')) {
                 joinStr = item + '. Status should be active, inActive, outOfService or sold';
+                this.inValidMessages.push(joinStr)
+              } else if (item.includes('plate_number')) {
+                joinStr = item + '. Plate Number must be between 6-8 alphanumeric characters eg.K5Y932.';
                 this.inValidMessages.push(joinStr)
               } else {
                 this.inValidMessages.push(item)
@@ -234,6 +240,8 @@ export class ImportedVehiclesComponent implements OnInit {
             this.toastr.success("The file has been scheduled for processing and you will be notified via email once it is completed")
             $('#importDocs').val('');
             this.display = false;
+            this.importVehicles = [];
+            this.next = '';
             this.fetchVehicleImport();
           }
         })

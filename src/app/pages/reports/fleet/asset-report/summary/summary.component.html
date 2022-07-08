@@ -1,6 +1,6 @@
 <section class="body">
   <div class="inner-wrapper">
-    <section role="main" class="content-body pl-1 pt-0 pr-0">
+    <section role="main" class="content-body pt-0 pr-0">
       <header class="page-header pr19 pl11">
         <form class="form-horizontal" method="get">
           <div class="row" style="padding-top: 10px">
@@ -93,15 +93,13 @@
                 Reset
               </button>
             </div>
-
-            
           </div>
         </form>
       </header>
       <div class="">
         <div class="m-2 text-dark">
-          <div class="form-group row pt-3">
-            <div class="col-3 mb-3">
+          <div class="form-group row">
+            <div class="col-3 pr-0">
               <div class="p-3 bg-white">
                 <div>
                   <h4 class="m-0 text-4">Total Assets</h4>
@@ -111,7 +109,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-3 mb-3">
+            <div class="col-3 pr-2 pl-2">
               <div class="bg-white p-3">
                 <div>
                   <h4 class="m-0 text-4">Active Assets</h4>
@@ -121,7 +119,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-3 mb-3">
+            <div class="col-3 pl-0">
               <div class="bg-white p-3">
                 <div>
                   <h4 class="m-0 text-4">Inactive Assets</h4>
@@ -160,7 +158,7 @@
                     class="p-d-flex d-flex justify-content-between align-items-center"
                   >
                     <div>
-                      <h3 class="m-0">Asset</h3>
+                      <h3 class="m-0">Asset Summary Report</h3>
                     </div>
                     <div class="text-right">
                       <span>Showing {{ allData.length }} entries</span> &nbsp;
@@ -213,7 +211,7 @@
                       *ngFor="let dataColumns of columns"
                       [pSortableColumn]="dataColumns.field"
                       pResizableColumn
-                      [ngStyle]="{ width: dataColumns.width }"
+                      style="width: 14.27%; height: 50px;"
                     >
                       <div [ngSwitch]="dataColumns.field">
                         <span>
@@ -254,7 +252,7 @@
                   <tr>
                     <td
                       *ngFor="let dataColumns of columns"
-                      [ngStyle]="{ width: dataColumns.width }"
+                      style="width: 14.27%; height: 37px; cursor: pointer"
                     >
                       <div [ngSwitch]="dataColumns.field">
                         <span *ngSwitchCase="'assetIdentification'">
@@ -270,8 +268,12 @@
 
                         <span *ngSwitchCase="'assetType'">
                           <span>
-                            {{((asset.assetType) ? (asset.assetType.replace('_',' ')) : '-') | titlecase}}
-
+                            {{
+                              (asset.assetType
+                                ? asset.assetType.replace("_", " ")
+                                : "-"
+                              ) | titlecase
+                            }}
                           </span>
                         </span>
                         <span *ngSwitchCase="'assetDetails.manufacturer'">
@@ -299,7 +301,7 @@
                           >
                         </span>
                         <span *ngSwitchCase="'currentStatus'">
-                          <span>
+                          <span class="badge badge-dark p-1">
                             {{
                               (get(asset, dataColumns.field)
                                 ? get(asset, dataColumns.field)

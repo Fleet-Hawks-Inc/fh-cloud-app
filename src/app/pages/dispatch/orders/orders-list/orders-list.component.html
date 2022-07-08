@@ -5,7 +5,7 @@
 </style>
 <section class="body">
   <div class="inner-wrapper">
-    <section role="main" class="content-body pl-1 pt-0 pr-0">
+    <section role="main" class="content-body pl-0 pt-0 pr-0">
       <header class="page-header flex align-items-center justify-content-start">
         <form class="formgrid grid">
           <div class="row">
@@ -146,30 +146,22 @@
                                 : 'pi pi-chevron-right'
                             "></button>
                         </td>
-                        <td routerLink="/dispatch/orders/detail/{{
-                            order.orderID
-                          }}" class="font-weight-bold" [ngStyle]="{
+                        <td (click)="directToDetail(order.orderID)" class="font-weight-bold" [ngStyle]="{
                             width: find(columns, { field: 'orderNumber' }).width
                           }">
                           {{ order.orderNumber }}
                         </td>
-                        <td routerLink="/dispatch/orders/detail/{{
-                            order.orderID
-                          }}" [ngStyle]="{
+                        <td (click)="directToDetail(order.orderID)" [ngStyle]="{
                             width: find(columns, { field: 'orderMode' }).width
                           }">
                           {{ order.orderMode }}
                         </td>
-                        <td routerLink="/dispatch/orders/detail/{{
-                            order.orderID
-                          }}" [ngStyle]="{
+                        <td (click)="directToDetail(order.orderID)" [ngStyle]="{
                             width: find(columns, { field: 'createdDate' }).width
                           }">
                           {{ order.createdDate | date: "yyyy/MM/dd" }}
                         </td>
-                        <td routerLink="/dispatch/orders/detail/{{
-                            order.orderID
-                          }}" [ngStyle]="{
+                        <td (click)="directToDetail(order.orderID)" [ngStyle]="{
                             width: find(columns, { field: 'customerName' })
                               .width
                           }">
@@ -177,9 +169,7 @@
                             {{ order.customerName }}
                           </div>
                         </td>
-                        <td routerLink="/dispatch/orders/detail/{{
-                            order.orderID
-                          }}" [ngStyle]="{
+                        <td (click)="directToDetail(order.orderID)" [ngStyle]="{
                             width: find(columns, { field: 'cusConfirmation' })
                               .width
                           }">
@@ -188,9 +178,7 @@
                           </div>
                         </td>
 
-                        <td routerLink="/dispatch/orders/detail/{{
-                            order.orderID
-                          }}" [ngStyle]="{
+                        <td (click)="directToDetail(order.orderID)" [ngStyle]="{
                             width: find(columns, { field: 'shipperName' }).width
                           }">
                           <div style="white-space: pre-line">
@@ -198,9 +186,7 @@
                           </div>
                         </td>
 
-                        <td routerLink="/dispatch/orders/detail/{{
-                            order.orderID
-                          }}" [ngStyle]="{
+                        <td (click)="directToDetail(order.orderID)" [ngStyle]="{
                             width: find(columns, { field: 'receiverName' })
                               .width
                           }">
@@ -209,17 +195,13 @@
                           </div>
                         </td>
 
-                        <td routerLink="/dispatch/orders/detail/{{
-                            order.orderID
-                          }}" [ngStyle]="{
+                        <td (click)="directToDetail(order.orderID)" [ngStyle]="{
                             width: find(columns, { field: 'amount' }).width
                           }">
                           {{ order.amount }}
                           <br />
                         </td>
-                        <td routerLink="/dispatch/orders/detail/{{
-                            order.orderID
-                          }}" [ngStyle]="{
+                        <td (click)="directToDetail(order.orderID)" [ngStyle]="{
                             width: find(columns, { field: 'invoiceData' }).width
                           }">
                           <span class="badge badge-danger" *ngIf="!order.invoicedTime">Pending</span>
@@ -227,9 +209,7 @@
 
                           <br />
                         </td>
-                        <td routerLink="/dispatch/orders/detail/{{
-                            order.orderID
-                          }}" [ngStyle]="{
+                        <td (click)="directToDetail(order.orderID)" [ngStyle]="{
                             width: find(columns, { field: 'paymentData' }).width
                           }">
                           <div class="badges">
@@ -242,26 +222,36 @@
                           </div>
                           <br />
                         </td>
-                        <td routerLink="/dispatch/orders/detail/{{
-                            order.orderID
-                          }}" [ngStyle]="{
+                        <td (click)="directToDetail(order.orderID)" [ngStyle]="{
                             width: find(columns, { field: 'newStatus' }).width
                           }">
                           <div class="badges">
-                            <span class="badge badge-dark p-1" style = "background-color: #4e97d6;" *ngIf="order.newStatus === 'confirmed'">confirmed</span>
-                            <span class="badge badge-dark p-1" style = "background-color: #171717;" *ngIf="order.newStatus === 'created'">created</span>
-                            <span class="badge badge-dark p-1" style = "background-color: cadetblue;" *ngIf="order.newStatus === 'brokerage'">brokerage</span>
-                            <span class="badge badge-dark p-1" style = " color:black; background-color: #f7e363;" *ngIf="order.newStatus === 'dispatched'">dispatched</span>
-                            <span class="badge badge-dark p-1" style = "background-color: #171717;" *ngIf="order.newStatus === 'attached'">attached</span>
-                            <span class="badge badge-dark p-1" style = "background-color: #f93121;" *ngIf="order.newStatus === 'tonu'">tonu</span>
-                             <span class="badge badge-dark p-1" style = "background-color: #f93121;" *ngIf="order.newStatus === 'canceled'">canceled</span>
-                            <span class="badge badge-dark p-1" style = "color:black; background-color: #f7e363;" *ngIf="order.newStatus === 'started'">started</span>
-                            <span class="badge badge-dark p-1" style = "background-color:orange" *ngIf="order.recall">delivered(R)</span>
-                            <span class="badge badge-success" style = "color:black; background-color: #a1d9ae;" *ngIf="order.newStatus === 'delivered'">delivered</span>
-                            <span class="badge badge-dark p-1" style = "background-color: #47a447;" *ngIf="order.newStatus === 'settled'">settled</span>
-                            <span class="badge badge-dark p-1" style = "background-color: #f4978e;" *ngIf="order.newStatus === 'en-route'">en-route</span>
-                          <br/>
-                     </div>
+                            <span class="badge badge-dark p-1" style="background-color: #4e97d6"
+                              *ngIf="order.newStatus === 'confirmed'">confirmed</span>
+                            <span class="badge badge-dark p-1" style="background-color: #171717"
+                              *ngIf="order.newStatus === 'created'">created</span>
+                            <span class="badge badge-dark p-1" style="background-color: cadetblue"
+                              *ngIf="order.newStatus === 'brokerage'">brokerage</span>
+                            <span class="badge badge-dark p-1" style="color: black; background-color: #f7e363"
+                              *ngIf="order.newStatus === 'dispatched'">dispatched</span>
+                            <span class="badge badge-dark p-1" style="background-color: #171717"
+                              *ngIf="order.newStatus === 'attached'">attached</span>
+                            <span class="badge badge-dark p-1" style="background-color: #f93121"
+                              *ngIf="order.newStatus === 'tonu'">tonu</span>
+                            <span class="badge badge-dark p-1" style="background-color: #f93121"
+                              *ngIf="order.newStatus === 'cancelled'">cancelled</span>
+                            <span class="badge badge-dark p-1" style="color: black; background-color: #f7e363"
+                              *ngIf="order.newStatus === 'started'">started</span>
+                            <span class="badge badge-dark p-1" style="background-color: orange"
+                              *ngIf="order.recall">delivered(R)</span>
+                            <span class="badge badge-success" style="color: black; background-color: #a1d9ae"
+                              *ngIf="order.newStatus === 'delivered'">delivered</span>
+                            <span class="badge badge-dark p-1" style="background-color: #47a447"
+                              *ngIf="order.newStatus === 'settled'">settled</span>
+                            <span class="badge badge-dark p-1" style="background-color: #f4978e"
+                              *ngIf="order.newStatus === 'en-route'">en-route</span>
+                            <br />
+                          </div>
                         </td>
                         <td style="width: 6%; overflow: inherit !important" pFrozenColumn alignFrozen="right"
                           [frozen]="true">
@@ -270,43 +260,52 @@
                               id="dropdownMenuButton-{{ rowIndex }}">
                               <i class="fas fa-ellipsis-v"></i>
                             </button>
-                            <p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '160px'}">
+                            <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '160px' }">
                               <ng-template pTemplate>
-                                <a *ngIf="order.orderStatus != 'delivered'" (click)="op.hide();editOrder(order.orderID)"
-                                  class="dropdown-item">Edit</a>
-                                <a *ngIf="order.orderStatus === 'confirmed'"
-                                  (click)="op.hide(); createTrip(order.orderID, order.orderNumber)"
-                                  class="dropdown-item">Create Trip</a>
-                                <a *ngIf="order.orderStatus === 'confirmed'" class="dropdown-item"
-                                  (click)="openSchedulerModal(order.orderID,order.orderNumber)">Scheduler</a>
+                                <a *ngIf="order.orderStatus != 'delivered'"
+                                  (click)="op.hide(); editOrder(order.orderID)" class="dropdown-item">Edit</a>
+                                <a *ngIf="order.orderStatus === 'confirmed'" (click)="
+                                    op.hide();
+                                    createTrip(order.orderID, order.orderNumber)
+                                  " class="dropdown-item">Create Trip</a>
+                                <a *ngIf="order.orderStatus === 'confirmed'" class="dropdown-item" (click)="
+                                    openSchedulerModal(
+                                      order.orderID,
+                                      order.orderNumber
+                                    )
+                                  ">Scheduler</a>
                                 <a *ngIf="
-                                  order.orderStatus == 'created' ||
-                                  order.orderStatus == 'confirmed'
-                                " class="dropdown-item" href="javascript:;"
-                                  (click)="op.hide();deactivateOrder(order)">Delete</a>
-                                <a *ngIf="order.orderStatus === 'created'" class="dropdown-item"
-                                  (click)="op.hide();confirmEmail(order, rowIndex)">Confirm</a>
+                                    order.orderStatus == 'created' ||
+                                    order.orderStatus == 'confirmed'
+                                  " class="dropdown-item" href="javascript:;"
+                                  (click)="op.hide(); deactivateOrder(order)">Delete</a>
+                                <a *ngIf="order.orderStatus === 'created'" class="dropdown-item" (click)="
+                                    op.hide(); confirmEmail(order, rowIndex)
+                                  ">Confirm</a>
                                 <a *ngIf="
-                                  order.orderStatus === 'created' ||
-                                  order.orderStatus === 'confirmed'
-                                " class="dropdown-item" (click)="op.hide();
-                                  showBrokerageModal(
-                                    order,
-                                    ordersDraw,
-                                    rowIndex,
-                                    'all'
-                                  )
-                                ">Brokerage</a>
-                                <a *ngIf="order.orderStatus === 'brokerage'" class="dropdown-item" (click)="op.hide();
-                                  updateCreatedStatus(
-                                    order,
-                                    ordersDraw,
-                                    rowIndex
-                                  )
-                                ">Cancel Brokerage</a>
+                                    order.orderStatus === 'created' ||
+                                    order.orderStatus === 'confirmed'
+                                  " class="dropdown-item" (click)="
+                                    op.hide();
+                                    showBrokerageModal(
+                                      order,
+                                      ordersDraw,
+                                      rowIndex,
+                                      'all'
+                                    )
+                                  ">Brokerage</a>
+                                <a *ngIf="order.orderStatus === 'brokerage'" class="dropdown-item" (click)="
+                                    op.hide();
+                                    updateCreatedStatus(
+                                      order,
+                                      ordersDraw,
+                                      rowIndex
+                                    )
+                                  ">Cancel Brokerage</a>
                                 <a class="dropdown-item" (click)="op.hide(); cloneOrder(order.orderID)">Clone</a>
-                                <a *ngIf="order.canRecall" (click)="op.hide(); recallOrder(order.orderID)"
-                                  class="dropdown-item">Recall</a>
+                                <a *ngIf="order.canRecall" (click)="
+                                    op.hide(); recallOrder(order.orderID)
+                                  " class="dropdown-item">Recall</a>
                               </ng-template>
                             </p-overlayPanel>
                           </div>
@@ -529,69 +528,80 @@
 </section>
 </div>
 </section>
-
-<div class="modal fade" id="orderStatusModal" role="dialog" tabindex="-1">
-  <div class="modal-dialog" role="document" style="max-width: 500px">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Brokerage Order</h4>
-        <button type="button" class="close" data-dismiss="modal">
-          &times;
-        </button>
-      </div>
-      <form>
-        <div class="modal-body">
-          <div class="form-group row text-dark">
-            <div class="col-lg-12">
-              <div class="row">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Order Information</label>
-                  <p>
-                    Order# : {{ brokerage.orderNo }} <br />
-                    Order Total: {{ brokerage.finalAmount }}
-                  </p>
-                </div>
-                <div class="col-lg-12">
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <label class="control-label font-weight-bold text-lg-right pt-2">Select Carrier</label>
-                      <ng-select [(ngModel)]="brokerage.carrierID" name="brokerage.carrierID"
-                        placeholder="Select Carrier">
-                        <ng-option value="{{ data.key }}" *ngFor="let data of carriersObject | keyvalue">
-                          {{ data.value }}</ng-option>
-                      </ng-select>
-                    </div>
-                    <div class="col-lg-6">
-                      <label class="control-label font-weight-bold text-lg-right pt-2">Brokerage amount</label>
-                      <input [(ngModel)]="brokerage.brokerageAmount" name="brokerageAmount" type="text"
-                        class="form-control" placeholder="e.g. 230" />
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Special Instructions</label>
-                  <textarea placeholder="eg.
-                    Please be on time" [(ngModel)]="brokerage.instructions" name="instructions_br"
-                    class="form-control h-auto" rows="2" pattern="^[\s\S]{500}$"></textarea>
-
-                  <label class="error">{{ brokerErr }}</label>
-                </div>
-              </div>
+<p-dialog header="Brokerage Order" [(visible)]="display" [style]="{width: '500px'}" [modal]="true">
+  <div class="form-group row text-dark">
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="col-lg-12">
+          <label class="control-label font-weight-bold text-lg-right pt-2">Order Information</label>
+          <p>
+            Order# : {{ brokerage.orderNo }} <br />
+            Order Total: {{ brokerage.finalAmount }}
+          </p>
+        </div>
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-6">
+              <label class="control-label font-weight-bold text-lg-right pt-2">Select Carrier
+                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <ng-select [(ngModel)]="brokerage.carrierID" name="brokerage.carrierID" placeholder="Select Carrier">
+                <ng-option value="{{ data.key }}" *ngFor="let data of carriersObject | keyvalue">
+                  {{ data.value }}</ng-option>
+              </ng-select>
             </div>
+            <div class="col-2 mar-top-37 p-0">
+              <a class="btn btn-success btn-sm text-light" (click)="openModal('form')"><i class="fas fa-plus"></i>
+              </a>
+              <a data-toggle="modal" (click)="refreshCarrierData()" href="javascript:;"
+                class="modal-with-form btn btn-sm btn-success ml-2">
+                <em class="fas fa-sync"></em>
+              </a>
+            </div>
+            <div class="col-lg-6">
+              <label class="control-label font-weight-bold text-lg-right pt-2">Brokerage amount
+                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <input [(ngModel)]="brokerage.brokerageAmount" name="brokerageAmount" type="text" class="form-control"
+                placeholder="e.g. 230" />
+            </div>
+
+            <div class="col-lg-6">
+              <label class="control-label font-weight-bold text-lg-right pt-2">Select Currency
+                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <ng-select name="brokerage.brkCurrency" placeholder="Select Currency" [(ngModel)]="brokerage.brkCurrency"
+                (change)="changeCurrency($event)" #money="ngModel" placeholder="Select Currency" required>
+                >
+                <ng-option value="CAD">CAD</ng-option>
+                <ng-option value="USD">USD</ng-option>
+              </ng-select>
+
+            </div>
+
+
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">
-            Close
-          </button>
-          <button type="button" class="btn btn-success" [disabled]="brokerageDisabled" (click)="submitClick()">
-            Save
-          </button>
+        <div class="col-lg-12">
+          <label class="control-label font-weight-bold text-lg-right pt-2">Special Instructions</label>
+          <textarea placeholder="eg. Please be on time" [(ngModel)]="brokerage.instructions" name="instructions_br"
+            class="form-control h-auto" rows="2" pattern="^[\s\S]{500}$"></textarea>
+
+          <label class="error">{{ brokerErr }}</label>
         </div>
-      </form>
+      </div>
     </div>
   </div>
-</div>
+  <div class="text-right">
+    <button type="button" class="btn btn-default mr-2" (click)="display = false;">
+      Close
+    </button>
+    <button type="button" class="btn btn-success" [disabled]="brokerageDisabled" (click)="submitClick()">
+      Save
+    </button>
+  </div>
+</p-dialog>
+
 
 <app-brokerage-pdf></app-brokerage-pdf>
 
@@ -649,73 +659,90 @@
 <ng-template #schedularModal let-modal class="modal-block modal-block-lg2 modal-block-primary mfp-hide">
   <section class="card">
     <header class="card-header">
-      <h2 class="card-title font-weight-bold">Scheduler <span>#{{scheduler.orderNumber}}</span></h2>
+      <h2 class="card-title font-weight-bold">
+        Scheduler <span>#{{ scheduler.orderNumber }}</span>
+      </h2>
     </header>
     <div class="card-body text-dark">
       <form class="form-horizontal form-bordered" #scheduleModal="ngForm">
         <div class="form-row">
           <div class="form-group col-lg-12 col-md-12" id="manualDiv">
             <div class="row">
-
               <div class="col-lg-8">
-                <label> Schedule Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                <label>
+                  Schedule Name
+                  <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                 <input placeholder="Schedule Name" [(ngModel)]="scheduler.name" type="text" name="scheduleName"
-                  class="form-control" #scheduleName="ngModel">
+                  class="form-control" #scheduleName="ngModel" />
               </div>
               <div class="col-lg-4">
-                <label> Time <span><sup>*</sup></span></label>
+                <label>
+                  Time <span><sup>*</sup></span></label>
                 <input placeholder="--:--:--" type="time" [(ngModel)]="scheduler.time" name="scheduleTime"
-                  class="form-control">
+                  class="form-control" />
               </div>
-
             </div>
             <div class="col-lg-12 pl-0">
               <h5 class="font-weight-bold text-5">Repeat Type</h5>
             </div>
             <div class="col-lg-12 borddas p-3">
-
               <div class="row">
                 <div class="col-lg-3">
                   <div class="radio">
                     <label>
-                      <input type="radio" name="repeatType" value="selectDaysNo" [(ngModel)]="repeatType">
+                      <input type="radio" name="repeatType" value="selectDaysNo" [(ngModel)]="repeatType" />
                       Every
                     </label>
                   </div>
                 </div>
                 <div class="col-lg-2">
-                  <input type="number" min='0' name="daysNo" class="form-control" [(ngModel)]="scheduler.type.daysNo">
+                  <input type="number" min="0" name="daysNo" class="form-control" [(ngModel)]="scheduler.type.daysNo" />
                 </div>
-                <div class="col-lg-1">
-                  day(s)
-                </div>
+                <div class="col-lg-1">day(s)</div>
               </div>
 
 
               <div class="row">
                 <div class="col-lg-12">
-                  <hr class="solid">
+                  <hr class="solid" />
                 </div>
               </div>
-
-
+              <div class="row">
+                <div class="col-lg-2">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="repeatType" value="everyday" [(ngModel)]="repeatType">
+                      Everyday                
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12">
+                  <hr class="solid" />
+                </div>
+              </div>
               <div class="row">
                 <div class="col-lg-3">
                   <div class="radio">
                     <label>
-                      <input type="radio" name="repeatType" value="days" [(ngModel)]="repeatType">
+                      <input type="radio" name="repeatType" value="days" [(ngModel)]="repeatType" />
                       Select the days
                     </label>
                   </div>
                 </div>
               </div>
-              <div class="row" style="margin-left:15%">
+              <div class="row" style="margin-left: 15%">
                 <div class="col-lg-2" *ngFor="let day of days">
                   <div class="checkbox">
                     <label>
-                      <input type="checkbox" [value]="day"
-                        (change)="onCheckboxChange($event.target.value, $event.target.checked)">
-                      {{day | titlecase}}
+                      <input type="checkbox" [value]="day" (change)="
+                          onCheckboxChange(
+                            $event.target.value,
+                            $event.target.checked
+                          )
+                        " />
+                      {{ day | titlecase }}
                     </label>
                   </div>
                 </div>
@@ -726,38 +753,52 @@
             </div>
 
             <div class="col-lg-12 borddas p-3 mt-3">
-
               <div class="row">
-
                 <div class="col-lg-3">
-                  <label><input type="radio" name="range" value="date" [(ngModel)]="range">
-                    From the date</label>
+                  <label>
+                    From the date <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                 </div>
                 <div class="col-lg-2">
-                  <input type="text" name="fromDate" [(ngModel)]="scheduler.range.dateRange.from"
-                    #fromDate="ngbDatepicker" (click)="fromDate.toggle()" autocomplete="off" ngbDatepicker
-                    placeholder="yyyy/mm/dd" class="form-control">
+                  <input type="text" name="fromDate" [(ngModel)]="scheduler.dateRange.from" #fromDate="ngbDatepicker"
+                    (click)="fromDate.toggle();" autocomplete="off" ngbDatepicker placeholder="yyyy/mm/dd"
+                    class="form-control">
                 </div>
                 <div class="col-lg-2">
-                  <label>To the date</label>
+                  <label>To the date <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                 </div>
                 <div class="col-lg-2">
-                  <input type="text" name="toDate" [(ngModel)]="scheduler.range.dateRange.to" #toDate="ngbDatepicker"
-                    (click)="toDate.toggle()" autocomplete="off" ngbDatepicker placeholder="yyyy/mm/dd"
+                  <input type="text" name="toDate" [(ngModel)]="scheduler.dateRange.to" #toDate="ngbDatepicker"
+                    (click)="toDate.toggle();" autocomplete="off" ngbDatepicker placeholder="yyyy/mm/dd"
                     class="form-control">
                 </div>
               </div>
               <div class="row">
                 <div class="col-lg-12">
-                  <hr class="solid">
+                  <hr class="solid" />
                 </div>
               </div>
-
               <div class="row">
                 <div class="col-lg-3">
                   <div class="radio">
                     <label>
-                      <input type="radio" name="range" value="month" [(ngModel)]="range">
+                      <input type="radio" name="range" value="everymonth" [(ngModel)]="range">
+                      Every Month
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-12">
+                  <hr class="solid">
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-lg-3">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="range1" value="month" [(ngModel)]="range">
                       Select month
                     </label>
                   </div>
@@ -778,12 +819,10 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" (click)="modal.dismiss('Cross click')" class="btn
-            btn-default">
+          <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-default">
             Cancel
           </button>
-          <button (click)="saveScheduler()" [disabled]="saveDisabled" class="btn
-            btn-success">
+          <button (click)="saveScheduler()" [disabled]="saveDisabled" class="btn btn-success">
             Save
           </button>
         </div>

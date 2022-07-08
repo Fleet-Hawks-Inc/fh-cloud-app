@@ -18,6 +18,8 @@ import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { BadgeModule } from "primeng/badge";
 import { NgSelectModule } from "@ng-select/ng-select";
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+
 
 const routes: Routes = [
     {
@@ -62,6 +64,7 @@ const routes: Routes = [
         FormsModule,
         BadgeModule,
         NgSelectModule,
+        OverlayPanelModule
     ]
 
 })

@@ -256,7 +256,7 @@ export class VehicleDetailComponent implements OnInit {
         deviceSrNo: '',
         email: ''
     }
-
+    uploadedPhotos = [];
     constructor(
         private apiService: ApiService,
         private route: ActivatedRoute,
@@ -582,8 +582,9 @@ export class VehicleDetailComponent implements OnInit {
                     turningParams: vehicleResult.settings.turningParams,
                     measurmentUnit: vehicleResult.settings.measurmentUnit,
                 };
+                this.uploadedPhotos = vehicleResult.uploadedPhotos;
 
-
+                //AWS S3
                 this.slides = vehicleResult.uploadedPics;
                 this.pDocs = vehicleResult.purchaseDocsUpload;
                 this.lDocs = vehicleResult.loanDocsUpload;
@@ -615,7 +616,19 @@ export class VehicleDetailComponent implements OnInit {
 
     deleteDocument(value: string, name: string, index: string) {
         this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${value}/${name}`).subscribe((result: any) => {
-            if (value == 'doc') {
+          if(value == 'image'){
+                this.slides = [];
+                this.uploadedDocs = result.Attributes.uploadedPhotos;
+                this.existingDocs = result.Attributes.uploadedPhotos;
+                result.Attributes.uploadedPhotos.map((x) => {
+                    let obj = {
+                        name: x,
+                        path: `${this.Asseturl}/${result.carrierID}/${x}`
+                    }
+                    this.slides.push(obj);
+                })
+          }
+          else if (value == 'doc') {
                 this.docs = [];
                 this.uploadedDocs = result.Attributes.uploadedDocs;
                 this.existingDocs = result.Attributes.uploadedDocs;

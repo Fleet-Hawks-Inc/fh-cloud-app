@@ -138,12 +138,9 @@ export class AddReceiptComponent implements OnInit {
   }
 
   fetchAccounts() {
-    this.accountService
-      .getData(`chartAc/get/list/all`)
-      .subscribe((result: any) => {
-        this.accounts = result;
-
-      });
+    this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
+      this.accounts = res;
+    });
   }
 
   private getValidCustomers(customerList: any[]) {

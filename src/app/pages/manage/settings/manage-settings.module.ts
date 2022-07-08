@@ -28,6 +28,7 @@ import { SplitButtonModule } from "primeng/splitbutton";
 import { CalendarModule } from "primeng/calendar";
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { DropdownModule } from "primeng/dropdown";
+import { InputTextModule } from 'primeng/inputtext';
 import { AssetsSettingComponent } from "./assets-setting/assets-setting.component";
 import { DialogModule } from 'primeng/dialog';
 import { ImportedContactsComponent } from './imported-contacts/imported-contacts.component';
@@ -154,7 +155,8 @@ const routes: Routes = [
     CalendarModule,
     AutoCompleteModule,
     DropdownModule,
-    DialogModule
+    DialogModule,
+    InputTextModule
   ],
 })
 export class ManageSettingsModule { }
