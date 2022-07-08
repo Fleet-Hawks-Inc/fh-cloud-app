@@ -337,16 +337,16 @@ export class DetailreportComponent implements OnInit {
         }
         element.shippersReceiversInfo.forEach(item => {
           item.shippers.forEach(shipper => {
-            obj["Pickup"] = this.customers[shipper.shipperID]
+            obj['Pickup'] = this.customers[shipper.shipperID]
             if (shipper.pickupPoint.length > 0) {
               shipper.pickupPoint.forEach(pickup => {
                 pickup.address.address = pickup.address.address.split(',').join(' ')
-                obj["Pickup"] += " " + pickup.address.address + " " + pickup.address.cityName + " " +
-                  pickup.address.stateName + " " + pickup.address.countryCode
-                  + " " + pickup.address.zipCode + " "
+                obj['Pickup'] += ' ' + pickup.address.address + ' '  + pickup.address.cityName + ' ' +
+                  pickup.address.stateName + ' ' + pickup.address.countryCode
+                  + ' ' + pickup.address.zipCode + ' '
                 if (pickup.commodity.length > 0) {
                   pickup.commodity.forEach(element => {
-                    obj["Pickup"] += "PU# " + element.pu
+                    obj['Pickup'] += 'PU# ' + element.pu
                   });
                 }
               });
@@ -355,16 +355,16 @@ export class DetailreportComponent implements OnInit {
           });
 
           item.receivers.forEach(receiver => {
-            obj["DropOff"] = this.customers[receiver.receiverID]
+            obj['DropOff'] = this.customers[receiver.receiverID]
             if (receiver.dropPoint.length > 0) {
               receiver.dropPoint.forEach(drop => {
                 drop.address.address = drop.address.address.split(',').join(' ')
-                obj["DropOff"] += " " + drop.address.address + " " + drop.address.cityName + " " +
-                  drop.address.stateName + " " + drop.address.countryCode
-                  + " " + drop.address.zipCode + " "
+                obj['DropOff'] += ' ' + drop.address.address + ' ' + drop.address.cityName + ' ' +
+                  drop.address.stateName + ' ' + drop.address.countryCode
+                  + ' ' + drop.address.zipCode + ' '
                 if (drop.commodity.length > 0) {
                   drop.commodity.forEach(element => {
-                    obj["DropOff"] += "DEL# " + element.del
+                    obj['DropOff'] += 'DEL# ' + element.del
 
                   });
                 }

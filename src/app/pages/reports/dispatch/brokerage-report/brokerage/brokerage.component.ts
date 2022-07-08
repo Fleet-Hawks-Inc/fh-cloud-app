@@ -28,16 +28,16 @@ export class BrokerageComponent implements OnInit {
 customers = {}
 loaded = false;
   dataColumns = [
-    { width: '8%', field: 'orderNumber', header: 'Order No', type: "text" },
-    { width: '7%', field: 'tripData.tripNo', header: 'Trip No', type: "text" },
+    { width: '7%', field: 'orderNumber', header: 'Order#', type: "text" },
+    { width: '6%', field: 'tripData.tripNo', header: 'Trip#', type: "text" },
     { width: '9%', field: 'customerName', header: 'Customers', type: "text" },
     { width: '7%', field: 'cName', header: 'Carrier', type: "text" },
     { width: '8%', field: 'createdDate', header: 'Order Date', type: "text" },
-    { width: '10%', field: 'date', header: 'Brokerage Date', type: "text" },
-    { width: '15%', field: 'pickUpLoc', header: 'Pickup Location', type: "text" },
-    { width: '15%', field: 'dropOffLoc', header: 'Delivery Location', type: "text" },
+    { width: '8%', field: 'date', header: 'Bkg. Date', type: "text" },
+    { width: '18%', field: 'pickUpLoc', header: 'Pickup Location', type: "text" },
+    { width: '18%', field: 'dropOffLoc', header: 'Delivery Location', type: "text" },
     { width: '10%', field: 'amount', header: 'Order Amount', type: "text" },
-    { width: '12%', field: 'bAmount', header: 'Brokerage Amount', type: "text" },
+    { width: '9%', field: 'bAmount', header: 'Bkg. Amount', type: "text" },
   ];
   constructor(
   private apiService: ApiService,
