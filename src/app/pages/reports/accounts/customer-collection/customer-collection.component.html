@@ -154,15 +154,22 @@
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'Age30' }).width
-                        }"> {{customer.Age30}}</td>
+                        }"> <div class="badges">  <span
+                           style="color: #018fee"
+                        >{{customer.Age30}}</span></div></td>
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'Age45' }).width
-                        }"> {{customer.Age45}}</td>
+                        }"> 
+                        <span
+                           style="color: #f58504"
+                        >{{customer.Age45}}</span></td>
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'Age60' }).width
-                        }"> {{customer.Age60}}</td>
+                        }"> <span 
+                        style="color: #d11313ef"
+                     >{{customer.Age60}}</span></td>
 
                       </tr>
                     </ng-template>
