@@ -121,9 +121,28 @@ export class VehicleListComponent implements OnInit {
     this.onboard.checkInspectionForms();
     this.setToggleOptions();
     this.setVehiclesOptions();
-    this.fetchGroups();
     this.fetchDriversList();
     this.fetchVendorList();
+    this.isSubscriptionsValid();
+
+    await this.initDataTable()
+
+
+    $(document).ready(() => {
+      setTimeout(() => {
+        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+      }, 1800);
+    });
+
+    this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
+      this.vehicleTypeObects = data.reduce((a: any, b: any) => {
+        return a[b['code']] = b['name'], a;
+      }, {});
+    });
+
+  }
+
+  private async isSubscriptionsValid() {
     this.dashboardUtilityService.refreshVehCount = true;
     this.dashboardUtilityService.refreshPlans = true;
     let curVehCount = await this.dashboardUtilityService.fetchVehiclesCount();
@@ -151,21 +170,6 @@ export class VehicleListComponent implements OnInit {
         }
       }
     })
-    await this.initDataTable()
-
-
-    $(document).ready(() => {
-      setTimeout(() => {
-        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
-      }, 1800);
-    });
-
-    this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
-      this.vehicleTypeObects = data.reduce((a: any, b: any) => {
-        return a[b['code']] = b['name'], a;
-      }, {});
-    });
-
   }
 
   ngOnDestroy() {
@@ -228,12 +232,6 @@ export class VehicleListComponent implements OnInit {
 
   changeVehicleID() {
     this.vehicleID = '';
-  }
-
-  fetchGroups() {
-    this.apiService.getData('groups/get/list').subscribe((result: any) => {
-      this.groupsList = result;
-    });
   }
 
   fetchVehicleModelList() {

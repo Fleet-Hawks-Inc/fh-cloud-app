@@ -150,6 +150,10 @@ export class AssetListComponent implements OnInit {
     this.fetchGroups();
     await this.initDataTable();
     this.fetchContacts();
+    this.isSubscriptionsValid();
+  }
+
+  private async isSubscriptionsValid() {
     let curAstCount = await this.dashboardUtilityService.fetchAssetsCount();
     this.listService.maxUnit.subscribe((res: any) => {
       if (res) {
@@ -176,7 +180,6 @@ export class AssetListComponent implements OnInit {
         }
       }
     })
-
   }
 
   ngOnDestroy() {
@@ -352,14 +355,14 @@ export class AssetListComponent implements OnInit {
       return false;
     }
   }
-  
-  
+
+
   generateDriverCSV() {
-        if (this.fullExportAsset.length > 0) {
-            let dataObject = []
-            let csvArray = []
-            this.fullExportAsset.forEach(element => {
-                let obj = {}
+    if (this.fullExportAsset.length > 0) {
+      let dataObject = []
+      let csvArray = []
+      this.fullExportAsset.forEach(element => {
+        let obj = {}
         obj["Asset Name/Number"] = element.assetIdentification
         obj["VIN"] = element.VIN
         obj["Asset Type"] = element.assetType
@@ -368,8 +371,8 @@ export class AssetListComponent implements OnInit {
         obj["Year"] = element.assetDetails.year
         obj["Annual Safety Date"] = element.assetDetails.annualSafetyDate
         obj["Status"] = element.currentStatus
-        obj["ownerShip"] = element.assetDetails.ownerShip ? element.assetDetails.ownerShip: '-'
-         obj["Company Name"] =  element.assetDetails.ownCname
+        obj["ownerShip"] = element.assetDetails.ownerShip ? element.assetDetails.ownerShip : '-'
+        obj["Company Name"] = element.assetDetails.ownCname
         // if(element.assetDetails.ownerShip === 'ownerOperator') {
         //   obj["Company Name"] =  element.assetDetails.ownerOperator ? this.contactsObjects[element.assetDetails.ownerOperator]:''
         //   }
@@ -379,50 +382,50 @@ export class AssetListComponent implements OnInit {
         //   if(element.assetDetails.ownerShip === 'leased') {
         //     obj["Company Name"] =  element.assetDetails.ownCname ? element.assetDetails.ownCname : '-'
         //   }
-                dataObject.push(obj)
-            });
-            let headers = Object.keys(dataObject[0]).join(',')
-            headers += '\n'
-            csvArray.push(headers)
-            dataObject.forEach(element => {
-                let obj = Object.values(element).join(',')
-                obj += '\n'
-                csvArray.push(obj)
-            });
-            const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            if (link.download !== undefined) {
-                const url = URL.createObjectURL(blob);
-                link.setAttribute('href', url);
-                link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Driver-Report.csv`);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        }
-        else {
-            this.toastr.error("No Records found")
-        }
+        dataObject.push(obj)
+      });
+      let headers = Object.keys(dataObject[0]).join(',')
+      headers += '\n'
+      csvArray.push(headers)
+      dataObject.forEach(element => {
+        let obj = Object.values(element).join(',')
+        obj += '\n'
+        csvArray.push(obj)
+      });
+      const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Driver-Report.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
     }
-   
-  
-   requiredExport() {
-        this.apiService.getData(`assets/fetch/assetList`).subscribe((result: any) => {
-            this.fullExportAsset = result.Items;
-            this.generateDriverCSV();
-           console.log('export',this.fullExportAsset);
-        })
-     }
-     
-      requiredCSV() {
-        if (this.assetIdentification !== '' || this.assetType !== null) {
-          this.assetID = '';
-            this.fullExportDriver = this.allData
-            this.generateDriverCSV();
-        } else {
-            this.requiredExport();
-        }
-        }
+    else {
+      this.toastr.error("No Records found")
+    }
+  }
+
+
+  requiredExport() {
+    this.apiService.getData(`assets/fetch/assetList`).subscribe((result: any) => {
+      this.fullExportAsset = result.Items;
+      this.generateDriverCSV();
+      console.log('export', this.fullExportAsset);
+    })
+  }
+
+  requiredCSV() {
+    if (this.assetIdentification !== '' || this.assetType !== null) {
+      this.assetID = '';
+      this.fullExportDriver = this.allData
+      this.generateDriverCSV();
+    } else {
+      this.requiredExport();
+    }
+  }
 
   clearInput() {
     this.suggestedAssets = null;

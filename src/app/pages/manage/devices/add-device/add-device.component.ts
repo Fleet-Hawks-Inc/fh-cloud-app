@@ -66,6 +66,21 @@ export class AddDeviceComponent implements OnInit {
   async ngOnInit() {
     let deviceType = this.route.snapshot.params["deviceType"];
     let deviceSerialNo = this.route.snapshot.params["deviceSerialNo"];
+    this.isSubscriptionsValid();
+
+    if (deviceType && deviceSerialNo) {
+      this.editMode = true;
+      this.deviceID = `${deviceType}/${deviceSerialNo}`;
+      this.title = "Edit Device"
+
+      // this.deviceID=encodeURIComponent(this.deviceID);
+      this.fetchDevices();
+    }
+
+    await this.deviceAttachedVehicle();
+  }
+
+  private async isSubscriptionsValid() {
     this.dashboardUtilityService.refreshDeviceCount = true;
     let curDevCount = await this.dashboardUtilityService.fetchDevicesCount('DashCam');
     if (curDevCount) {
@@ -96,16 +111,6 @@ export class AddDeviceComponent implements OnInit {
         }
       })
     }
-    if (deviceType && deviceSerialNo) {
-      this.editMode = true;
-      this.deviceID = `${deviceType}/${deviceSerialNo}`;
-      this.title = "Edit Device"
-
-      // this.deviceID=encodeURIComponent(this.deviceID);
-      this.fetchDevices();
-    }
-
-    await this.deviceAttachedVehicle();
   }
 
   async deviceAttachedVehicle() {

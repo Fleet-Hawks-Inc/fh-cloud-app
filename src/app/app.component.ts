@@ -100,26 +100,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
   async ngOnInit() {
     this.setTitle();
     this.listenToLoading();
-    const selectedCarrier = localStorage.getItem('xfhCarrierId');
-    let carrierData = await this.dashboardUtilityService.getCarrierByID(selectedCarrier);
-    this.dashboardUtilityService.refreshPlans = true;
-    let subscriptions = await this.dashboardUtilityService.getSubscriptionPlans();
-    if (carrierData.subscriptions && carrierData.subscriptions.length > 0 && subscriptions.length > 0) {
-      let plans = await this.checkSubscriptionPlans(carrierData.subscriptions, subscriptions);
-      if (plans && plans.length > 0) {
-        let data = [];
-        for (const iterator of plans) {
-          if (iterator.maxVehicles) {
-            data.push({ planCode: iterator.planCode, vehicles: iterator.maxVehicles })
-          } if (iterator.maxAsset) {
-            data.push({ planCode: iterator.planCode, assets: iterator.maxAsset })
-          }
-        }
-        console.log('plans', data)
-        this.listService.passMaxUnit(data)
-
-      }
-    }
+    this.getSubscriptionDetails();
     window.addEventListener(
       "storage",
       (event) => {
@@ -142,6 +123,28 @@ export class AppComponent implements OnInit, AfterContentChecked {
         $("div").removeClass("show-search__result");
       }
     });
+  }
+
+  async getSubscriptionDetails() {
+    const selectedCarrier = localStorage.getItem('xfhCarrierId');
+    let carrierData = await this.dashboardUtilityService.getCarrierByID(selectedCarrier);
+    this.dashboardUtilityService.refreshPlans = true;
+    let subscriptions = await this.dashboardUtilityService.getSubscriptionPlans();
+    if (carrierData && carrierData.subscriptions && carrierData.subscriptions.length > 0 && subscriptions.length > 0) {
+      let plans = await this.checkSubscriptionPlans(carrierData.subscriptions, subscriptions);
+      if (plans && plans.length > 0) {
+        let data = [];
+        for (const iterator of plans) {
+          if (iterator.maxVehicles) {
+            data.push({ planCode: iterator.planCode, vehicles: iterator.maxVehicles })
+          } if (iterator.maxAsset) {
+            data.push({ planCode: iterator.planCode, assets: iterator.maxAsset })
+          }
+        }
+        this.listService.passMaxUnit(data)
+
+      }
+    }
   }
 
   getToken() {
