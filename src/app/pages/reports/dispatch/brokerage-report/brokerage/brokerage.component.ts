@@ -28,14 +28,14 @@ export class BrokerageComponent implements OnInit {
 customers = {}
 loaded = false;
   dataColumns = [
-    { width: '10%', field: 'orderNumber', header: 'Order No', type: "text" },
-    { width: '10%', field: 'tripData.tripNo', header: 'Trip No', type: "text" },
-    { width: '10%', field: 'customerName', header: 'Customers', type: "text" },
-    { width: '12%', field: 'cName', header: 'Carrier', type: "text" },
-    { width: '10%', field: 'createdDate', header: 'Order Date', type: "text" },
-    { width: '12%', field: 'date', header: 'Brokerage Date', type: "text" },
-    { width: '12%', field: 'pickUpLoc', header: 'Pickup Location', type: "text" },
-    { width: '12%', field: 'dropOffLoc', header: 'Delivery Location', type: "text" },
+    { width: '8%', field: 'orderNumber', header: 'Order No', type: "text" },
+    { width: '7%', field: 'tripData.tripNo', header: 'Trip No', type: "text" },
+    { width: '9%', field: 'customerName', header: 'Customers', type: "text" },
+    { width: '7%', field: 'cName', header: 'Carrier', type: "text" },
+    { width: '8%', field: 'createdDate', header: 'Order Date', type: "text" },
+    { width: '10%', field: 'date', header: 'Brokerage Date', type: "text" },
+    { width: '15%', field: 'pickUpLoc', header: 'Pickup Location', type: "text" },
+    { width: '15%', field: 'dropOffLoc', header: 'Delivery Location', type: "text" },
     { width: '10%', field: 'amount', header: 'Order Amount', type: "text" },
     { width: '12%', field: 'bAmount', header: 'Brokerage Amount', type: "text" },
   ];
