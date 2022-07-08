@@ -25,19 +25,19 @@ export class BrokerageComponent implements OnInit {
   brkDateEnUS:any = [];
   carriersObject = [];
   orderNumber = '';
-customers = {}
-loaded = false;
+  customers = {}
+  loaded = false;
   dataColumns = [
-    { width: '8%', field: 'orderNumber', header: 'Order No', type: "text" },
-    { width: '7%', field: 'tripData.tripNo', header: 'Trip No', type: "text" },
+    { width: '7%', field: 'orderNumber', header: 'Order#', type: "text" },
+    { width: '6%', field: 'tripData.tripNo', header: 'Trip#', type: "text" },
     { width: '9%', field: 'customerName', header: 'Customers', type: "text" },
     { width: '7%', field: 'cName', header: 'Carrier', type: "text" },
     { width: '8%', field: 'createdDate', header: 'Order Date', type: "text" },
-    { width: '10%', field: 'date', header: 'Brokerage Date', type: "text" },
-    { width: '15%', field: 'pickUpLoc', header: 'Pickup Location', type: "text" },
-    { width: '15%', field: 'dropOffLoc', header: 'Delivery Location', type: "text" },
+    { width: '8%', field: 'date', header: 'Bkg. Date', type: "text" },
+    { width: '18%', field: 'pickUpLoc', header: 'Pickup Location', type: "text" },
+    { width: '18%', field: 'dropOffLoc', header: 'Delivery Location', type: "text" },
     { width: '10%', field: 'amount', header: 'Order Amount', type: "text" },
-    { width: '12%', field: 'bAmount', header: 'Brokerage Amount', type: "text" },
+    { width: '9%', field: 'bAmount', header: 'Bkg Amount', type: "text" },
   ];
   constructor(
   private apiService: ApiService,
@@ -64,9 +64,7 @@ loaded = false;
   }
 
   set selectedColumns(val: any[]) {
-    //restore original order
     this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
-
   }
 
 
@@ -119,7 +117,7 @@ loaded = false;
     }
     
     
-      onScroll = async (event: any) => {
+  onScroll = async (event: any) => {
     if (this.loaded) {
       this.fetchBrokerageReport();
     }
@@ -167,14 +165,14 @@ loaded = false;
   let csvArray = []
   this.brokerage.forEach(element => {
   let obj = {}
-  obj['Order No'] = element.orderNumber
-  obj['Trip No'] = element.tripData.tripNo
-  obj['Customers'] = this.customers[element.customerID]
+  obj['Order#'] = element.orderNumber
+  obj['Trip#'] = element.tripData.tripNo
+  obj['Customers'] = this.customers[element.customerID] 
   obj['Carrier'] = this.carriersObject[element.brkCarrID] 
   obj['Order Date'] = element.createdDate
-  obj['Brokerage Date'] = element.date
+  obj['Bkg. Date'] = element.date
   obj['Order Amount'] = element.amount
-  obj['Brokerage Amount'] = element.bAmount
+  obj['Bkg. Amount'] = element.bAmount
   dataObject.push(obj)
   });
   let headers = Object.keys(dataObject[0]).join(',')
