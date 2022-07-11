@@ -50,7 +50,7 @@
                         type="button"
                         pButton
                         pTooltip="Add"
-                        routerLink="/fleet/zone/add"
+                        routerLink="/dispatch/zone/add"
                         class="p-button-outlined mr-2"
                         icon="pi pi-plus"
                       ></button>
@@ -118,7 +118,7 @@
                 >
                   <tr style="cursor: pointer">
                     <td
-                      routerLink="/fleet/zone/detail/{{ zone.id }}"
+                      routerLink="/dispatch/zone/detail/{{ zone.id }}"
                       style="width: 50%"
                     >
                       {{ zone.zName | titlecase }}
@@ -153,7 +153,7 @@
                         >
                           <a
                             class="dropdown-item"
-                            routerLink="/fleet/zone/edit/{{ zone.id }}"
+                            routerLink="/dispatch/zone/edit/{{ zone.id }}"
                             >Edit</a
                           >
                           <a class="dropdown-item" (click)="delete(zone.id)"

@@ -17,6 +17,11 @@ const routes: Routes = [
     data: { title: "All Schedules" },
   },
   {
+    path: "zone",
+    loadChildren: () =>
+      import("../dispatch/zone/zone.module").then((m) => m.ZoneModule),
+  },
+  {
     path: "trips",
     loadChildren: () => import("./trips/trip.module").then((m) => m.TripModule),
     data: { title: "All Trips" },
