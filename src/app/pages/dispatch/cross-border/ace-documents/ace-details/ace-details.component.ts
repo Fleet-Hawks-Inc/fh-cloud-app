@@ -244,15 +244,14 @@ export class AceDetailsComponent implements OnInit {
     });
   }
   fetchACEEntry() {
-    this.spinner.show(); // loader init
     this.apiService
-      .getData('eManifests/ACEdetails/' + this.manifestID)
+      .getData('eManifests/ace-detail/' + this.manifestID)
       .subscribe(async (result: any) => {
 
         this.estimatedArrivalDateTime = result.estimatedArrivalDateTime;
         this.usPortOfArrival = result.usPortOfArrival;
         this.tripNumber = result.tripNumber;
-        this.currentStatus = result.currentStatus;
+        this.currentStatus = result.status;
         this.truck = {
           number: result.truck.number,
           type: result.truck.type,
@@ -287,7 +286,6 @@ export class AceDetailsComponent implements OnInit {
         this.createdBy = result.createdBy;
         this.createdDate = result.createdDate;
         this.createdTime = result.createdTime;
-        this.spinner.hide(); // loader hide
       });
   }
   setStatus(val) {
