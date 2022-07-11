@@ -191,7 +191,6 @@ _selectedColumns: any[];
         this.apiService.getData('assets/get/minor/details')
             .subscribe((result: any) => {
                 this.assetsSet = result.Items;
-                console.log('A',this.assetsSet)
             })
     }
 
@@ -200,7 +199,6 @@ _selectedColumns: any[];
             result['Items'].map((v: any) => {
                 if (v.isDeleted === 0) {
                     this.vehicleSet.push(v);
-                    console.log('V',this.vehicleSet)
                 }
             })
         });
