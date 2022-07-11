@@ -204,43 +204,91 @@
                 </ng-template>
 
                 <!-- Header template of DataTable -->
-                <ng-template pTemplate="header" let-columns>
-                  <tr>
-                    <!-- <th style="width: 3%" alignFrozen="left" pFrozenColumn [frozen]="true"></th> -->
-                    <th
-                      *ngFor="let dataColumns of columns"
-                      [pSortableColumn]="dataColumns.field"
-                      pResizableColumn
-                      style="width: 14.27%; height: 50px;"
-                    >
-                      <div [ngSwitch]="dataColumns.field">
-                        <span>
-                          <div
-                            class="flex justify-content-center align-items-center"
-                            alignFrozen="left"
-                            pFrozenColumn
-                            [frozen]="true"
-                          >
-                            {{ dataColumns.header }}
-                            <p-sortIcon [field]="dataColumns.field">
-                            </p-sortIcon>
-                            <p-columnFilter
-                              [type]="dataColumns.type"
-                              [field]="dataColumns.field"
-                              matchMode="contains"
-                              [showMatchModes]="false"
-                              [showOperator]="false"
-                              [showAddButton]="false"
-                              display="menu"
-                            >
-                            </p-columnFilter>
+              <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th
+                          *ngFor="let dataColumns of columns"
+                          [pSortableColumn]="dataColumns.field"
+                          pResizableColumn
+                         style="width: 14.27%"
+                        >
+                          <div [ngSwitch]="dataColumns.field">
+                            <!-- Asset Status Filter Customization -->
+                            <span *ngSwitchCase="'currentStatus'">
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="left"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  [showOperator]="false"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                  <ng-template
+                                    pTemplate="filter"
+                                    let-value
+                                    let-filter="filterCallback"
+                                  >
+                                    <p-multiSelect
+                                      [options]="[
+                                        { name: 'Active', value: 'active' },
+                                        { name: 'InActive', value: 'inactive' }
+                                      ]"
+                                      placeholder="Any"
+                                      (onChange)="filter($event.value)"
+                                      optionLabel="name"
+                                      optionValue="value"
+                                    >
+                                      <ng-template let-option pTemplate="item">
+                                        <div>
+                                          <span class="ml-1">{{
+                                            option.name
+                                          }}</span>
+                                        </div>
+                                      </ng-template>
+                                    </p-multiSelect>
+                                  </ng-template>
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                            <span *ngSwitchDefault>
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="right"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </span>
                           </div>
-                        </span>
-                      </div>
-                    </th>
-                    <!-- <th style="width: 6%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th> -->
-                  </tr>
-                </ng-template>
+                        </th>
+                        
+                      </tr>
+                    </ng-template>
 
                 <!-- Body Template of Data Table -->
                 <ng-template
