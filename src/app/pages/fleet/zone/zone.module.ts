@@ -20,6 +20,7 @@ import { ZoneDetailsComponent } from "./zone-details/zone-details.component";
 
 const routes: Routes = [
   { path: "add", component: ZoneAddComponent },
+  { path: "edit/:zoneID", component: ZoneAddComponent },
   { path: "detail/:zoneID", component: ZoneDetailsComponent },
   { path: "list", component: ZoneListComponent },
 ];

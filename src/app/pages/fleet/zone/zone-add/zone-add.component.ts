@@ -2,6 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { ApiService } from "src/app/services";
 import { ToastrService } from "ngx-toastr";
 import { Location } from "@angular/common";
+import { ActivatedRoute } from "@angular/router";
+import { GoogleMap } from "@angular/google-maps";
+import { map } from "lodash";
 declare var $;
 @Component({
   selector: "app-zone-add",
@@ -12,7 +15,8 @@ export class ZoneAddComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
-    private location: Location
+    private location: Location,
+    private route: ActivatedRoute
   ) {}
 
   public zone = {
@@ -20,10 +24,25 @@ export class ZoneAddComponent implements OnInit {
     zDesc: null,
     coordinates: [],
   };
+  zoneID: any = null;
+
   public saveDisabled = false;
 
   ngOnInit(): void {
+    this.zoneID = this.route.snapshot.params["zoneID"];
+    if (this.zoneID) {
+      this.fetchZoneDetails();
+    }
     this.initMap();
+  }
+
+  async fetchZoneDetails() {
+    const result = await this.apiService
+      .getData("zone/" + this.zoneID)
+      .toPromise();
+    this.zone.zName = result[0].zName;
+    this.zone.zDesc = result[0].zDesc;
+    this.zone.coordinates = result[0].coordinates;
   }
 
   initMap() {
@@ -51,6 +70,16 @@ export class ZoneAddComponent implements OnInit {
         zIndex: 1,
       },
     });
+    if (this.zone.coordinates.length > 0) {
+      const newPolygon = new google.maps.Polygon({
+        paths: this.zone.coordinates,
+        fillColor: "#ffff00",
+        fillOpacity: 1,
+        strokeWeight: 5,
+        zIndex: 1,
+      });
+      newPolygon.setMap(map);
+    }
     drawingManager.setMap(map);
     const coordinates = [];
     google.maps.event.addListener(
@@ -99,7 +128,6 @@ export class ZoneAddComponent implements OnInit {
 
       places.forEach((place) => {
         if (!place.geometry || !place.geometry.location) {
-          console.log("Returned place contains no geometry");
           return;
         }
 
@@ -166,7 +194,6 @@ export class ZoneAddComponent implements OnInit {
       pRates: pRates,
       aspRates: aspRates,
     };
-    console.log(zoneData);
     this.apiService.postData("zone", zoneData).subscribe({
       complete: () => {},
       error: (err) => {
