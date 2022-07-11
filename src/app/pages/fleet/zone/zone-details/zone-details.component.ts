@@ -40,9 +40,30 @@ export class ZoneDetailsComponent implements OnInit {
   currencies = ["CAD", "USD"];
   wUnit = ["Ton(s)", "Kg(s)", "Lb(s)"];
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.zoneID = this.route.snapshot.params["zoneID"];
-    this.fetchZoneDetails();
+    await this.fetchZoneDetails();
+    await this.initMap();
+  }
+  initMap() {
+    if (this.zoneID && this.zoneDetail.coordinates.length > 0) {
+      const map = new google.maps.Map(
+        document.getElementById("map") as HTMLElement,
+        {
+          center: this.zoneDetail.coordinates[0],
+          mapId: "620eb1a41a9e36d4",
+          zoom: 9,
+        }
+      );
+      const newPolygon = new google.maps.Polygon({
+        paths: this.zoneDetail.coordinates,
+        fillColor: "#afb0b0",
+        fillOpacity: 0.6,
+        strokeWeight: 3,
+        zIndex: 1,
+      });
+      newPolygon.setMap(map);
+    }
   }
 
   async fetchZoneDetails() {
