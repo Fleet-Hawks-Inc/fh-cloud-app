@@ -290,7 +290,7 @@ export class HereMapService {
 
   // }
 
-  calculateRoute(coordinates, additionalSpec?) {
+  async calculateRoute(coordinates, additionalSpec?) {
     try {
       this.viaPoints = [];
       if (coordinates.length > 2) {
