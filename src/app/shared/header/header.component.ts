@@ -211,6 +211,7 @@ export class HeaderComponent implements OnInit {
       localStorage.removeItem('currentUserName');
       localStorage.removeItem('subCompany');
       // localStorage.removeItem('jwt');
+      this.dashboardService.clearToast()
       this.router.navigate(["/Login"]);
     } catch (error) {
       console.log("error signing out: ", error);

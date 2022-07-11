@@ -328,6 +328,9 @@ export class CommonSideBarComponent implements OnInit {
   generateServiceLogSessionID(){
   return this.routeManagement.serviceLogSessionID;
   }
+  genrateChartAccountSessionID(){
+    return this.routeManagement.chartAccountSessionID;
+  }
 }
 
 @Component({

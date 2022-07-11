@@ -11,27 +11,17 @@
                     </div>
                     <div class="col header-buttons">
                         <button type="button" pButton class="mr-1" (click)="showMFA=true;generateTOTPCode()"
-                            icon="pi pi-shield" pTooltip="Manage MFA"></button>
-
+                            icon="pi pi-shield" pTooltip="Manage MFA" tooltipPosition="left"></button>
                         <button type="button" pButton *ngIf="showSubCompany && subCompanies.length < 5" class="mr-1"
-                            (click)="display=true;" icon="pi pi-building"></button>
-
-
-
-                        <button type="button" pButton class="mr-1" (click)="display1=true;" icon="pi pi-lock"></button>
-                        <!-- <button id="btnChangePassword" type="button" pButton class="mr-1" tooltipPosition="left"
-                            pTooltip="Change your password" data-toggle="modal" icon="pi pi-lock"
-                            data-target="#changePasswordModal"></button> -->
-
-
+                            (click)="display=true;" icon="pi pi-building" tooltipPosition="left"
+                            pTooltip="Add Subcompany"></button>
+                        <button type="button" pButton class="mr-1" (click)="display1=true;" icon="pi pi-lock" tooltipPosition="left"
+                         pTooltip="Change your password"></button>
                         <button id="btn" type="button" pButton class="mr-1"
                             routerLink="/manage/company/edit/{{carriers.carrierID}}" tooltipPosition="left"
                             icon="pi pi-user-edit" pTooltip="Edit Company details"></button>
-
-
                     </div>
                 </div>
-
             </header>
             <div class="routing-overview__wrapper m-3">
                 <div class="row">

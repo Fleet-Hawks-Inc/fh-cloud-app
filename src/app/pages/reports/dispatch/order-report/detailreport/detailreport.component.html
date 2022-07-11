@@ -45,32 +45,32 @@
             </button>
           </div>
 
-          <div class="col-md-6 col-lg-6 text-right pr-1">
-            <div class="btn-group flex-wrap ml-2">
-              <button
-                type="button"
-                class="btn btn-success btn-sm dropdown-toggle"
-                data-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i class="fas fa-upload"></i> Export<span class="caret"></span>
-              </button>
-              <div
-                class="dropdown-menu"
-                role="menu"
-                x-placement="bottom-start"
-                style="
-                  position: absolute;
-                  will-change: transform;
-                  top: 0px;
-                  left: 0px;
-                  transform: translate3d(0px, 38px, 0px);
-                "
-              >
-                <a class="dropdown-item text-1" (click)="generateCSV()">CSV</a>
-              </div>
-            </div>
-          </div>
+          <!--<div class="col-md-6 col-lg-6 text-right pr-1">-->
+          <!--  <div class="btn-group flex-wrap ml-2">-->
+          <!--    <button-->
+          <!--      type="button"-->
+          <!--      class="btn btn-success btn-sm dropdown-toggle"-->
+          <!--      data-toggle="dropdown"-->
+          <!--      aria-expanded="false"-->
+          <!--    >-->
+          <!--      <i class="fas fa-upload"></i> Export<span class="caret"></span>-->
+          <!--    </button>-->
+          <!--    <div-->
+          <!--      class="dropdown-menu"-->
+          <!--      role="menu"-->
+          <!--      x-placement="bottom-start"-->
+          <!--      style="-->
+          <!--        position: absolute;-->
+          <!--        will-change: transform;-->
+          <!--        top: 0px;-->
+          <!--        left: 0px;-->
+          <!--        transform: translate3d(0px, 38px, 0px);-->
+          <!--      "-->
+          <!--    >-->
+          <!--      <a class="dropdown-item text-1" (click)="generateCSV()">CSV</a>-->
+          <!--    </div>-->
+          <!--  </div>-->
+          <!--</div>-->
         </div>
       </header>
 
@@ -158,29 +158,157 @@
                           &nbsp;
                           <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
                             class="p-button-outlined mr-2" icon="fas fa-sync"></button>
-
+                            
+                             <button
+                            type="button"
+                            pButton
+                            pRipple
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel"
+                            (click)="generateCSV()"
+                            pTooltip="Excel"
+                          ></button>
+                            
                           <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
                             (click)="clear(dt)" icon="pi pi-filter-slash"></button>
                         </div>
                       </div>
                     </ng-template>
+                    
                       <ng-template pTemplate="header" let-columns>
                       <tr>
-                        <th style="width: 3%" alignFrozen="left" pFrozenColumn [frozen]="true"></th>
-                        <th *ngFor="let column of dataColumns" [pSortableColumn]="column.field" pResizableColumn
-                          [ngStyle]="{ width: column.width }">
-                          <span>
-                            <div class="flex justify-content-center align-items-center" alignFrozen="right"
-                              pFrozenColumn [frozen]="true">
-                              {{ column.header }}
-                              <p-sortIcon [field]="column.field"> </p-sortIcon>
-                              <p-columnFilter [type]="column.type" [field]="column.field" matchMode="contains"
-                                [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
-                              </p-columnFilter>
-                            </div>
-                          </span>
+                         <th style="width: 3%" alignFrozen="left" pFrozenColumn [frozen]="true"></th>
+                        <th
+                          *ngFor="let dataColumns of columns"
+                          [pSortableColumn]="dataColumns.field"
+                          pResizableColumn
+                          style="width: 10%"
+                        >
+                          <div [ngSwitch]="dataColumns.field">
+                            <!-- Driver Status Filter Customization -->
+                            <span *ngSwitchCase="'orderStatus'">
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="left"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  [showOperator]="false"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                  <ng-template
+                                    pTemplate="filter"
+                                    let-value
+                                    let-filter="filterCallback"
+                                  >
+                                    <p-multiSelect
+                                      [options]="[
+                                        { name: 'Delivered', value: 'delivered' },
+                                        { name: 'Dispatched', value: 'dispatched' },
+                                        { name: 'Created', value: 'created' },
+                                        { name: 'Tonu', value: 'tonu' },
+                                        { name: 'Attached', value: 'attached' },
+                                        { name: 'Cancelled', value: 'cancelled' }
+                                      ]"
+                                      placeholder="Any"
+                                      (onChange)="filter($event.value)"
+                                      optionLabel="name"
+                                      optionValue="value"
+                                    >
+                                      <ng-template let-option pTemplate="item">
+                                        <div>
+                                          <span class="ml-1">{{
+                                            option.name
+                                          }}</span>
+                                        </div>
+                                      </ng-template>
+                                    </p-multiSelect>
+                                  </ng-template>
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                             <span *ngSwitchCase="'orderMode'">
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="left"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  [showOperator]="false"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                  <ng-template
+                                    pTemplate="filter"
+                                    let-value
+                                    let-filter="filterCallback"
+                                  >
+                                    <p-multiSelect
+                                      [options]="[
+                                        { name: 'LTL', value: 'LTL' },
+                                        { name: 'FTL', value: 'FTL' },
+                                      ]"
+                                      placeholder="Any"
+                                      (onChange)="filter($event.value)"
+                                      optionLabel="name"
+                                      optionValue="value"
+                                    >
+                                      <ng-template let-option pTemplate="item">
+                                        <div>
+                                          <span class="ml-1">{{
+                                            option.name
+                                          }}</span>
+                                        </div>
+                                      </ng-template>
+                                    </p-multiSelect>
+                                  </ng-template>
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                            <span *ngSwitchDefault>
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="right"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                          </div>
                         </th>
-                        
                       </tr>
                     </ng-template>
                           <ng-template pTemplate="body" let-order let-columns="columns" let-rowIndex="rowIndex"
