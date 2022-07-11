@@ -72,10 +72,10 @@ export class ZoneDetailsComponent implements OnInit {
       .toPromise();
 
     this.zoneDetail = result[0];
-    if (result[0].pRates) {
+    if (result[0].pRates && result[0].pRates.length > 0) {
       this.pRates = result[0].pRates;
     }
-    if (result[0].aspRates) {
+    if (result[0].aspRates && result[0].aspRates.length > 0) {
       this.aspRates = result[0].aspRates;
     }
   }
