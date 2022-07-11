@@ -4419,3 +4419,9 @@ ul.simple-post-list.settings-list li:last-child a {
   font-size: 12px;
   color: #b3b6c1;
 }
+
+/*11.07.22 for sorted out the drop down display issue over page header*/
+
+.ng-dropdown-panel {
+  z-index: 1010 !important;
+}
