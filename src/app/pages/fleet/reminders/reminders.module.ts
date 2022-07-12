@@ -90,9 +90,9 @@ const routes: Routes = [
     path: "service-reminder",
     children: [
       {
-        path: "list",
+        path: "list/:sessionID",
         component: ListingComponent,
-        data: { title: "Service Reminder List" },
+        data: { title: "Service Reminder List", reuseRoute: true },
       },
       {
         path: "add",
@@ -112,9 +112,9 @@ const routes: Routes = [
     path: "vehicle-renewals",
     children: [
       {
-        path: "list",
+        path: "list/:sessionID",
         component: VehicleRenewListComponent,
-        data: { title: "Vehicle Renewals List" },
+        data: { title: "Vehicle Renewals List", reuseRoute: true },
       },
       {
         path: "add",
@@ -135,9 +135,9 @@ const routes: Routes = [
     path: "contact-renewals",
     children: [
       {
-        path: "list",
+        path: "list/:sessionID",
         component: ListContactRenewComponent,
-        data: { title: "Contact Renewals List" },
+        data: { title: "Contact Renewals List", reuseRoute: true },
       },
       {
         path: "add",
