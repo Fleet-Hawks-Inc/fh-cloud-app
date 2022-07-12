@@ -21,6 +21,7 @@ import { OverlayPanelModule } from "primeng/overlaypanel";
 
 const routes: Routes = [
   { path: "add", component: ZoneAddComponent },
+  { path: "edit/:zoneID", component: ZoneAddComponent },
   { path: "detail/:zoneID", component: ZoneDetailsComponent },
   { path: "list", component: ZoneListComponent },
 ];
