@@ -43,6 +43,7 @@ export class ListingComponent implements OnInit {
   newData = [];
   suggestedVehicles = [];
   vehicleID = null;
+  sessionID: string;
 
   tasksList: any = {}
 
@@ -78,7 +79,9 @@ export class ListingComponent implements OnInit {
   private router: Router, 
   private toastr: ToastrService, 
   private routerMgmtService: RouteManagementServiceService,
-  private spinner: NgxSpinnerService) { }
+  private spinner: NgxSpinnerService) { 
+  this.sessionID = this.routerMgmtService.serviceRemindersSessionID;
+  }
 
   ngOnInit() {
     this.initDataTable();

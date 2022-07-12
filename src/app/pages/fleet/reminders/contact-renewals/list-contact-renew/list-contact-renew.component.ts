@@ -32,6 +32,7 @@ export class ListContactRenewComponent implements OnInit {
   subcribersArray = [];
   groups: any = {};
   currentDate = moment().format('YYYY-MM-DD');
+  sessionID: string;
   newData = [];
   filterStatus = null;
   usersList: any = {};
@@ -73,7 +74,9 @@ export class ListContactRenewComponent implements OnInit {
     private router: Router, 
     private toastr: ToastrService,
     private routerMgmtService: RouteManagementServiceService,
-    private spinner: NgxSpinnerService) { }
+    private spinner: NgxSpinnerService) {
+      this.sessionID = this.routerMgmtService.serviceRemindersSessionID;
+    }
 
   ngOnInit() {
     this.listService.fetchDrivers();
