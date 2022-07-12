@@ -81,7 +81,8 @@
                           Permanent Route
                         </label>
                         <ng-select [(ngModel)]="tripData.routeID" name="routeID" [multiple]="true"
-                          (change)="getRoutes()" (change)="makeRoutePlan()" placeholder="eg. Calgary to
+                          (change)="getRoutes()" (remove)="removeRoutePlan($event)" (add)="makeRoutePlan($event)"
+                          placeholder="eg. Calgary to
                           Edmonton" #pRoute="ngModel">
                           <ng-option *ngFor="let route of permanentRoutes" value="{{ route.routeID }}">
                             {{ route.routeName }}</ng-option>

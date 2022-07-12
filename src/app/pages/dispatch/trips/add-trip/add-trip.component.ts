@@ -29,6 +29,7 @@ import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 import { constants } from "buffer";
+import * as _ from "lodash";
 
 declare var $: any;
 
@@ -279,6 +280,7 @@ export class AddTripComponent implements OnInit {
   orderType: string;
   orderNum: string;
   // trips = [];
+  planTrip = [];
 
   constructor(
     private apiService: ApiService,
@@ -314,7 +316,7 @@ export class AddTripComponent implements OnInit {
       this.orderNum = params.orderNum;
       if (this.orderId != undefined) {
         await this.fetchOrderDetails([this.orderId])
-        this.changeMapRoute('order')
+        this.changeMapRoute('order',null)
         this.temporaryOrderIDs.push(this.orderId);
         this.temporaryOrderNumber.push(this.orderNum);
         await this.saveSelectOrderIDS();
@@ -331,7 +333,7 @@ export class AddTripComponent implements OnInit {
     this.fetchDrivers();
     this.getTripPrefix();
     this.fetchRoutes();
-    this.makeRoutePlan();
+    this.makeRoutePlan(null);
     await this.fetchCountries();
 
     if (this.tripID != undefined) {
@@ -965,7 +967,6 @@ export class AddTripComponent implements OnInit {
   }
 
   async getMiles() {
-    console.log('miles==')
     let savedCord = "";
     this.orderMiles.totalMiles = 0;
     for (let i = 0; i < this.trips.length; i++) {
@@ -2857,18 +2858,18 @@ export class AddTripComponent implements OnInit {
     this.mapRouteActive = "active";
     this.tripData.mapFrom = "route";
   }
-  changeMapRoute(type) {
-    console.log('tyope---',type)
+
+  changeMapRoute(type,event) {
+    this.planTrip
+    
     if (type == "route") {
       if (this.tripData.routeID != "" && this.tripData.routeID != null) {
         this.orderStops = this.trips;
-        console.log('tripDAta---',this.trips)
-        this.trips = [];
+       
+        // this.trips = [];
         this.actualMiles = 0;
-      
-        console.log('this.tripData.routeID-',this.tripData.routeID)
         this.apiService
-          .getData("routes/" + encodeURIComponent(JSON.stringify(this.tripData.routeID)))
+          .getData("routes/" + encodeURIComponent(JSON.stringify([event])))
           .subscribe(async (result: any) => {
             if(result && result.length > 0) {
               let routeData: any = [];
@@ -2876,7 +2877,6 @@ export class AddTripComponent implements OnInit {
                 const element = result[i];
                 routeData.push(element);
               }
-              console.log('routeData-',routeData)
               for (let j = 0; j < routeData.length; j++) {
                 const element = routeData[j];
                 
@@ -2885,7 +2885,6 @@ export class AddTripComponent implements OnInit {
               
   
                     if (element.stops.length > 0) {
-                      console.log('routeData.stops-',element.stops)
                       for (let i = 0; i < element.stops.length; i++) {
                         const elem = element.stops[i];
                         routePath.push(elem.stopName);
@@ -2920,6 +2919,7 @@ export class AddTripComponent implements OnInit {
                           fromOrder: "yes",
                           lat: elem.lat,
                           lng: elem.lng,
+                          routeID: event
                         };
   
                         this.newCoords.push(`${elem.lat},${elem.lng}`);
@@ -2945,7 +2945,6 @@ export class AddTripComponent implements OnInit {
       }
     } else {
       if (this.orderNo != "" && this.orderNo != undefined) {
-        console.log('order--')
         this.trips = this.orderStops;
         this.actualMiles = 0;
         this.getMiles();
@@ -2962,9 +2961,9 @@ export class AddTripComponent implements OnInit {
     }
   }
 
-  makeRoutePlan() {
+  makeRoutePlan(event:any) {
     if (this.tripData.mapFrom == "route") {
-      this.changeMapRoute("route");
+      this.changeMapRoute("route",event);
     }
   }
   scrollError() {
@@ -3385,5 +3384,10 @@ export class AddTripComponent implements OnInit {
     if (result && result.length > 0) {
       this.tripData.tripNo = `${result[0].prefix}${result[0].sequence}`;
     }
+  }
+
+  removeRoutePlan(event:any) {
+   this.trips = _.reject(this.trips, {routeID:event.value})
+   this.getMiles();
   }
 }
