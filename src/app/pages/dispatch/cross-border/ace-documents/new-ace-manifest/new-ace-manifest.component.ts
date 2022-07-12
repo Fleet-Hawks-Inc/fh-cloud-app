@@ -635,6 +635,7 @@ export class NewAceManifestComponent implements OnInit {
     this.searchTerm.pipe(
       map((e: any) => {
         $('.map-search__results').hide();
+        $('div').removeClass('show-search__result');
         $(e.target).closest('div').addClass('show-search__result');
         return e.target.value;
       }),
@@ -694,45 +695,57 @@ export class NewAceManifestComponent implements OnInit {
       }
     }
   }
+  async getAddressDetail(id) {
+    let result = await this.apiService
+      .getData(`pcMiles/detail/${id}`).toPromise();
+    return result;
+  }
+
   async userAddress(s, p, item, callType) {
-    let result = await this.HereMap.geoCode(item.address.label);
-    result = result.items[0];
     if (callType === 'thirdParty') {
-      this.shipments[s].thirdParties[p].address.userLocation = result.address.label;
-      this.shipments[s].thirdParties[p].address.geoCords.lat = result.position.lat;
-      this.shipments[s].thirdParties[p].address.geoCords.lng = result.position.lng;
-      this.shipments[s].thirdParties[p].address.countryName = result.address.countryName;
-      this.shipments[s].thirdParties[p].address.countryCode = result.address.countryCode;
-      this.shipments[s].thirdParties[p].address.addressLine = result.address.houseNumber + ' ' + result.address.street;
-      $('div').removeClass('show-search__result');
-      this.shipments[s].thirdParties[p].address.stateName = result.address.state;
-      this.shipments[s].thirdParties[p].address.stateCode = result.address.stateCode;
-      this.shipments[s].thirdParties[p].address.cityName = result.address.city;
-      this.shipments[s].thirdParties[p].address.postalCode = result.address.postalCode;
-      if (result.address.houseNumber === undefined) {
-        result.address.houseNumber = '';
-      }
-      if (result.address.street === undefined) {
-        result.address.street = '';
-      }
+      this.shipments[s].thirdParties[p].address.userLocation = item.address;
     } else {
-      this.usAddress.address.userLocation = result.address.label;
-      this.usAddress.address.geoCords.lat = result.position.lat;
-      this.usAddress.address.geoCords.lng = result.position.lng;
-      this.usAddress.address.countryName = result.address.countryName;
-      this.usAddress.address.countryCode = result.address.countryCode;
-      this.usAddress.address.addressLine = result.address.houseNumber + ' ' + result.address.street;
-      this.usAddress.address.stateName = result.address.state;
-      this.usAddress.address.stateCode = result.address.stateCode;
-      this.usAddress.address.cityName = result.address.city;
-      this.usAddress.address.postalCode = result.address.postalCode;
+      this.usAddress.address.userLocation = item.address;
+    }
+    let result = await this.getAddressDetail(item.place_id);
+    if (result != undefined) {
+      if (callType === 'thirdParty') {
+        this.shipments[s].thirdParties[p].address.geoCords.lat = result.position.lat;
+        this.shipments[s].thirdParties[p].address.geoCords.lng = result.position.lng;
+        this.shipments[s].thirdParties[p].address.countryName = result.address.CountryFullName;
+        this.shipments[s].thirdParties[p].address.countryCode = result.address.Country;
+        this.shipments[s].thirdParties[p].address.addressLine = result.address.StreetAddress;
+        this.shipments[s].thirdParties[p].address.stateName = result.address.StateName;
+        this.shipments[s].thirdParties[p].address.stateCode = result.address.State;
+        this.shipments[s].thirdParties[p].address.cityName = result.address.City;
+        this.shipments[s].thirdParties[p].address.postalCode = result.address.Zip;
+        if (result.address.houseNumber === undefined) {
+          result.address.houseNumber = '';
+        }
+        if (result.address.street === undefined) {
+          result.address.street = '';
+        }
+      } else {
+
+        this.usAddress.address.geoCords.lat = result.position.lat;
+        this.usAddress.address.geoCords.lng = result.position.lng;
+        this.usAddress.address.countryName = result.address.CountryFullName;
+        this.usAddress.address.countryCode = result.address.Country;
+        this.usAddress.address.addressLine = result.address.StreetAddress;
+        this.usAddress.address.stateName = result.address.StateName;
+        this.usAddress.address.stateCode = result.address.State;
+        this.usAddress.address.cityName = result.address.City;
+        this.usAddress.address.postalCode = result.address.Zip;
+
+        if (result.address.houseNumber === undefined) {
+          result.address.houseNumber = '';
+        }
+        if (result.address.street === undefined) {
+          result.address.street = '';
+        }
+      }
+      console.log($('.show-search__result').length)
       $('div').removeClass('show-search__result');
-      if (result.address.houseNumber === undefined) {
-        result.address.houseNumber = '';
-      }
-      if (result.address.street === undefined) {
-        result.address.street = '';
-      }
     }
   }
 

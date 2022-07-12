@@ -446,7 +446,7 @@
                             <ul class="p-0 m-0 text-left">
                               <li *ngFor="let item of searchResults;">
                                 <a href="javascript:;"
-                                  (click)="userAddress(null,null,item,'usAddress')">{{item.address.label}}</a>
+                                  (click)="userAddress(null,null,item,'usAddress')">{{item.address}}</a>
                               </li>
                             </ul>
                           </div>
@@ -964,7 +964,7 @@
                                         <ul class="p-0 m-0 text-left">
                                           <li *ngFor="let item of searchResults;">
                                             <a href="javascript:;"
-                                              (click)="userAddress(s, p, item, 'thirdParty')">{{item.address.label}}</a>
+                                              (click)="userAddress(s, p, item, 'thirdParty')">{{item.address}}</a>
                                           </li>
                                         </ul>
                                       </div>
