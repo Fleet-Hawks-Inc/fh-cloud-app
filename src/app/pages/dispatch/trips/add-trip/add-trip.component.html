@@ -39,7 +39,8 @@
                     </div>
                     <div class="row">
                       <div class="col-lg-10">
-
+                        <!-- <label class="control-label font-weight-semibold text-3 text-dark">Create this trip using
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span></label> -->
                         <div class="btn-group-toggle">
                           <!-- <label
                             class="btn btn-outline
@@ -229,164 +230,156 @@
                           </tr>
                         </thead>
                         <tbody class="ui-sortable example-list txttt" cdkDropList (cdkDropListDropped)="drop($event)">
-                          <tr class="ui-sortable-handle" cdkDrag *ngFor=" let i = index">
-                            <span *ngIf="!orderData">
-
-                              <span *ngFor=" let trip of orderData">
-
-
-                                <td class="labelRow{{ i }}">
-                                  <input class="form-control manCheck" type="checkbox" name="splitt{{ i }}"
-                                    [(ngModel)]="trip.split" [disabled]="trip.splitDone" />
-                                </td>
-                                <td id="labelCell1{{ i }}" class="labelRow{{ i }}">
-                                  {{ trip.type }}
-                                </td>
-                                <td id="labelCell21{{ i }}" class="labelRow{{ i }}">
-                                  {{ trip.orderNo }}
-                                </td>
-                                <td id="labelCell22{{ i }}" class="labelRow{{ i }}">
-                                  {{ trip.commName }}
-                                </td>
-                                <td id="labelCell2{{ i }}" class="labelRow{{ i }}">
-                                  {{ trip.date | date: "yyyy/MM/dd" }}
-                                </td>
-                                <!-- <td id="labelCell12{{i}}" class="labelRow{{i}}">{{ trip.time }}</td> -->
-                                <td id="labelCell13{{ i }}" class="labelRow{{ i }}">
-                                  {{ trip.pickupTime }}
-                                </td>
-                                <td id="labelCell14{{ i }}" class="labelRow{{ i }}">
-                                  {{ trip.dropTime }}
-                                </td>
-                                <!-- <td id="labelCell15{{i}}" class="labelRow{{i}}">{{
+                          <tr class="ui-sortable-handle" cdkDrag *ngFor="let trip of trips; let i = index">
+                            <td class="labelRow{{ i }}">
+                              <input class="form-control manCheck" type="checkbox" name="splitt{{ i }}"
+                                [(ngModel)]="trip.split" [disabled]="trip.splitDone" />
+                            </td>
+                            <td id="labelCell1{{ i }}" class="labelRow{{ i }}">
+                              {{ trip.type }}
+                            </td>
+                            <td id="labelCell21{{ i }}" class="labelRow{{ i }}">
+                              {{ trip.orderNo }}
+                            </td>
+                            <td id="labelCell22{{ i }}" class="labelRow{{ i }}">
+                              {{ trip.commName }}
+                            </td>
+                            <td id="labelCell2{{ i }}" class="labelRow{{ i }}">
+                              {{ trip.date | date: "yyyy/MM/dd" }}
+                            </td>
+                            <!-- <td id="labelCell12{{i}}" class="labelRow{{i}}">{{ trip.time }}</td> -->
+                            <td id="labelCell13{{ i }}" class="labelRow{{ i }}">
+                              {{ trip.pickupTime }}
+                            </td>
+                            <td id="labelCell14{{ i }}" class="labelRow{{ i }}">
+                              {{ trip.dropTime }}
+                            </td>
+                            <!-- <td id="labelCell15{{i}}" class="labelRow{{i}}">{{
                                                           trip.actualPickupTime }}</td>
                                                       <td id="labelCell16{{i}}" class="labelRow{{i}}">{{
                                                           trip.actualDropTime }}</td> -->
-                                <td id="labelCell3{{ i }}" class="labelRow{{ i }}">
-                                  <a class="modal-with-form">{{ trip.name }}</a>
-                                </td>
-                                <td id="labelCell333{{ i }}" class="labelRow{{ i }}">
-                                  <!-- <input type="checkbox" class="form-control" /> -->
-                                  <span class="badge badge-dark p-1 text-uppercase">
-                                    {{ trip.locMan ? "yes" : "no" }}</span>
-                                </td>
-                                <td style="
+                            <td id="labelCell3{{ i }}" class="labelRow{{ i }}">
+                              <a class="modal-with-form">{{ trip.name }}</a>
+                            </td>
+                            <td id="labelCell333{{ i }}" class="labelRow{{ i }}">
+                              <!-- <input type="checkbox" class="form-control" /> -->
+                              <span class="badge badge-dark p-1 text-uppercase">
+                                {{ trip.locMan ? "yes" : "no" }}</span>
+                            </td>
+                            <td style="
                                 min-width: 100px;
                                 max-width: 100px;
                                 width: 100px;
                                 word-wrap: break-word;
                                 white-space: normal;
                               " id="labelCell4{{ i }}" class="labelRow{{ i }}">
-                                  {{ trip.locationName }}
-                                </td>
-                                <td id="labelCell51{{ i }}" class="labelRow{{ i }}">
-                                  <!-- <input type="checkbox" class="form-control" /> -->
-                                  <span class="badge badge-dark p-1 text-uppercase">
-                                    {{ trip.milesMan ? "yes" : "no" }}</span>
-                                </td>
-                                <td id="labelCell5{{ i }}" class="labelRow{{ i }}">
-                                  <span class="badge badge-dark p-1 text-uppercase" title="" data-original-title="Empty
+                              {{ trip.locationName }}
+                            </td>
+                            <td id="labelCell51{{ i }}" class="labelRow{{ i }}">
+                              <!-- <input type="checkbox" class="form-control" /> -->
+                              <span class="badge badge-dark p-1 text-uppercase">
+                                {{ trip.milesMan ? "yes" : "no" }}</span>
+                            </td>
+                            <td id="labelCell5{{ i }}" class="labelRow{{ i }}">
+                              <span class="badge badge-dark p-1 text-uppercase" title="" data-original-title="Empty
                                 Miles" *ngIf="!!trip.mileType">{{ trip.mileType }}</span>
-                                </td>
-                                <td id="labelCell6{{ i }}" class="labelRow{{ i }}">
-                                  {{ trip.miles }}
-                                </td>
-                                <td id="labelCell7{{ i }}" class="labelRow{{ i }}">
-                                  {{
-                                  trip.vehicleID
-                                  ? vehiclesObjects[trip.vehicleID]
-                                  : ""
-                                  }}
-                                </td>
-                                <td id="labelCell8{{ i }}" class="labelRow{{ i }}">
-                                  <span *ngFor="let addt of trip.trailer; let f = index">
-                                    {{ addt.id ? assetsObjects[addt.id] : "" }}
-                                    <span *ngIf="f < trip.trailer.length - 1">,</span>
-                                  </span>
-                                </td>
-                                <td id="labelCell9{{ i }}" class="labelRow{{ i }}">
-                                  {{
-                                  trip.driverID
-                                  ? driversObjects[trip.driverID]
-                                  : ""
-                                  }}
-                                </td>
-                                <td id="labelCell10{{ i }}" class="labelRow{{ i }}">
-                                  {{
-                                  trip.coDriverID
-                                  ? driversObjects[trip.coDriverID]
-                                  : ""
-                                  }}
-                                </td>
-                                <td id="labelCell11{{ i }}" class="labelRow{{ i }}">
-                                  {{
-                                  trip.carrierID
-                                  ? carriersObject[trip.carrierID]
-                                  : ""
-                                  }}
-                                </td>
-                                <td class="labelRow{{ i }}">
-                                  <i class="fas fa-copy mr-2" title="Copy Row" (click)="copyRow(i)"></i>
-                                  <i class="fas fa-edit mr-2" title="Edit Row" (click)="showEditRow(i)"></i>
-                                  <i class="fas fa-trash-alt" title="Delete
+                            </td>
+                            <td id="labelCell6{{ i }}" class="labelRow{{ i }}">
+                              {{ trip.miles }}
+                            </td>
+                            <td id="labelCell7{{ i }}" class="labelRow{{ i }}">
+                              {{
+                              trip.vehicleID
+                              ? vehiclesObjects[trip.vehicleID]
+                              : ""
+                              }}
+                            </td>
+                            <td id="labelCell8{{ i }}" class="labelRow{{ i }}">
+                              <span *ngFor="let addt of trip.trailer; let f = index">
+                                {{ addt.id ? assetsObjects[addt.id] : "" }}
+                                <span *ngIf="f < trip.trailer.length - 1">,</span>
+                              </span>
+                            </td>
+                            <td id="labelCell9{{ i }}" class="labelRow{{ i }}">
+                              {{
+                              trip.driverID
+                              ? driversObjects[trip.driverID]
+                              : ""
+                              }}
+                            </td>
+                            <td id="labelCell10{{ i }}" class="labelRow{{ i }}">
+                              {{
+                              trip.coDriverID
+                              ? driversObjects[trip.coDriverID]
+                              : ""
+                              }}
+                            </td>
+                            <td id="labelCell11{{ i }}" class="labelRow{{ i }}">
+                              {{
+                              trip.carrierID
+                              ? carriersObject[trip.carrierID]
+                              : ""
+                              }}
+                            </td>
+                            <td class="labelRow{{ i }}">
+                              <i class="fas fa-copy mr-2" title="Copy Row" (click)="copyRow(i)"></i>
+                              <i class="fas fa-edit mr-2" title="Edit Row" (click)="showEditRow(i)"></i>
+                              <i class="fas fa-trash-alt" title="Delete
                                 Row" (click)="delRow(i)"></i>
-                                </td>
+                            </td>
 
-                                <!-- text fields -->
-                                <td class="rowStatus
+                            <!-- text fields -->
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}"></td>
-                                <td class="rowStatus
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <ng-select [(ngModel)]="trip.type" (open)="dropdownOpen()" (close)="dropdownClose()"
-                                    (change)="checkType($event, i)" id="editCell1{{ i }}" name="tripType{{ i }}"
-                                    placeholder="Select trip type">
-                                    <ng-option value="{{ type }}" *ngFor="let type of typeOptions">{{ type }}
-                                    </ng-option>
-                                  </ng-select>
-                                </td>
-                                <td class="rowStatus
+                              <ng-select [(ngModel)]="trip.type" (open)="dropdownOpen()" (close)="dropdownClose()"
+                                (change)="checkType($event, i)" id="editCell1{{ i }}" name="tripType{{ i }}"
+                                placeholder="Select trip type">
+                                <ng-option value="{{ type }}" *ngFor="let type of typeOptions">{{ type }}</ng-option>
+                              </ng-select>
+                            </td>
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <ng-select [(ngModel)]="trip.orderID" (open)="dropdownOpen()"
-                                    (close)="dropdownClose()" id="cell21{{ i }}" name="neworderID{{ i }}"
-                                    placeholder="Select Order">
-                                    <ng-option value="{{ ord.orderID }}" *ngFor="let ord of planOrderData">{{
-                                      ord.orderNo }}</ng-option>
-                                  </ng-select>
-                                </td>
-                                <td class="rowStatus
+                              <ng-select [(ngModel)]="trip.orderID" (open)="dropdownOpen()" (close)="dropdownClose()"
+                                id="cell21{{ i }}" name="neworderID{{ i }}" placeholder="Select Order">
+                                <ng-option value="{{ ord.orderID }}" *ngFor="let ord of planOrderData">{{ ord.orderNo }}
+                                </ng-option>
+                              </ng-select>
+                            </td>
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <ng-select [(ngModel)]="trip.commodity" (open)="dropdownOpen()"
-                                    (close)="dropdownClose()" [multiple]="true" id="cell22{{ i }}" name="newComm{{ i }}"
-                                    placeholder="Commodity">
-                                    <ng-option value="{{ comm }}" *ngFor="let comm of planComm">{{ comm }}</ng-option>
-                                  </ng-select>
-                                </td>
-                                <td class="rowStatus
+                              <ng-select [(ngModel)]="trip.commodity" (open)="dropdownOpen()" (close)="dropdownClose()"
+                                [multiple]="true" id="cell22{{ i }}" name="newComm{{ i }}" placeholder="Commodity">
+                                <ng-option value="{{ comm }}" *ngFor="let comm of planComm">{{ comm }}</ng-option>
+                              </ng-select>
+                            </td>
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <input id="cell2{{ i }}" name="cell2" type="text" placeholder="yyyy/mm/dd"
-                                    (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" [(ngModel)]="trip.date"
-                                    class="form-control newRow" autocomplete="off" [minDate]="dateMinLimit"
-                                    [maxDate]="futureDatesLimit" />
-                                </td>
+                              <input id="cell2{{ i }}" name="cell2" type="text" placeholder="yyyy/mm/dd"
+                                (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" [(ngModel)]="trip.date"
+                                class="form-control newRow" autocomplete="off" [minDate]="dateMinLimit"
+                                [maxDate]="futureDatesLimit" />
+                            </td>
 
-                                <td class="rowStatus
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <input type="time" class="form-control" id="editCell13{{ i }}" name="editCell13"
-                                    value="{{ trip.pickupTime }}" />
-                                </td>
-                                <td class="rowStatus
+                              <input type="time" class="form-control" id="editCell13{{ i }}" name="editCell13"
+                                value="{{ trip.pickupTime }}" />
+                            </td>
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <input type="time" class="form-control" id="editCell14{{ i }}" name="editCell14"
-                                    value="{{ trip.dropTime }}" />
-                                </td>
-                                <!-- <td class="rowStatus textRows editRow{{i}}">
+                              <input type="time" class="form-control" id="editCell14{{ i }}" name="editCell14"
+                                value="{{ trip.dropTime }}" />
+                            </td>
+                            <!-- <td class="rowStatus textRows editRow{{i}}">
                                                           <input type="time" class="form-control" id="editCell15{{i}}"
                                                               name="editCell15" value="{{ trip.actualPickupTime }}">
                                                       </td>
@@ -394,105 +387,99 @@
                                                           <input type="time" class="form-control" id="editCell16{{i}}"
                                                               name="editCell16" value="{{ trip.actualDropTime }}">
                                                       </td> -->
-                                <td class="rowStatus
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <input type="text" class="form-control" id="editCell3{{ i }}"
-                                    value="{{ trip.name }}" />
-                                </td>
-                                <td class="rowStatus
+                              <input type="text" class="form-control" id="editCell3{{ i }}" value="{{ trip.name }}" />
+                            </td>
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <input type="checkbox" class="form-control manCheck" id="editCell18{{ i }}"
-                                    [(ngModel)]="trip.locMan" name="editlocMan{{ i }}"
-                                    (change)="selectManualAddress(i)" />
-                                </td>
+                              <input type="checkbox" class="form-control manCheck" id="editCell18{{ i }}"
+                                [(ngModel)]="trip.locMan" name="editlocMan{{ i }}" (change)="selectManualAddress(i)" />
+                            </td>
 
-                                <td class="rowStatus
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <input type="text" id="editCell4{{ i }}" name="editCell4{{ i }}"
-                                    [(ngModel)]="trip.locationName" class="form-control newRow" autocomplete="off"
-                                    (keyup)="searchTerm.next($event)"
-                                    placeholder="Start typing to get location suggestions" *ngIf="!trip.locMan" />
-                                  <input type="text" id="editCell4{{ i }}" name="editCell4{{ i }}"
-                                    [(ngModel)]="trip.locationName" class="form-control newRow"
-                                    placeholder="Start add location from popup" *ngIf="trip.locMan"
-                                    (click)="locationModel('edit', i)" />
-                                  <ul class="p-0 m-0 text-left map-search__resultstrip bg-white"
-                                    *ngIf="searchResults && !trip.locMan">
-                                    <li *ngFor="let item of searchResults">
-                                      <a href="javascript:;" (click)="assignLocation('editLoc', item, i)"
-                                        title="{{ item.address }}">{{ item.address }}</a>
-                                    </li>
-                                  </ul>
-                                </td>
+                              <input type="text" id="editCell4{{ i }}" name="editCell4{{ i }}"
+                                [(ngModel)]="trip.locationName" class="form-control newRow" autocomplete="off"
+                                (keyup)="searchTerm.next($event)" placeholder="Start typing to get location suggestions"
+                                *ngIf="!trip.locMan" />
+                              <input type="text" id="editCell4{{ i }}" name="editCell4{{ i }}"
+                                [(ngModel)]="trip.locationName" class="form-control newRow"
+                                placeholder="Start add location from popup" *ngIf="trip.locMan"
+                                (click)="locationModel('edit', i)" />
+                              <ul class="p-0 m-0 text-left map-search__resultstrip bg-white"
+                                *ngIf="searchResults && !trip.locMan">
+                                <li *ngFor="let item of searchResults">
+                                  <a href="javascript:;" (click)="assignLocation('editLoc', item, i)"
+                                    title="{{ item.address }}">{{ item.address }}</a>
+                                </li>
+                              </ul>
+                            </td>
 
-                                <td class="rowStatus
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <input type="checkbox" class="form-control manCheck" id="editCell51{{ i }}"
-                                    [(ngModel)]="trip.milesMan" name="editmilesMan{{ i }}" />
-                                </td>
-                                <td class="rowStatus
+                              <input type="checkbox" class="form-control manCheck" id="editCell51{{ i }}"
+                                [(ngModel)]="trip.milesMan" name="editmilesMan{{ i }}" />
+                            </td>
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <ng-select [(ngModel)]="trip.mileType" (open)="dropdownOpen()"
-                                    (close)="dropdownClose()" id="editCell5{{ i }}" name="tripmileType{{ i }}"
-                                    placeholder="Select miles type">
-                                    <ng-option value="empty">EMPTY</ng-option>
-                                    <ng-option value="loaded">LOADED</ng-option>
-                                  </ng-select>
-                                </td>
-                                <td class="rowStatus
+                              <ng-select [(ngModel)]="trip.mileType" (open)="dropdownOpen()" (close)="dropdownClose()"
+                                id="editCell5{{ i }}" name="tripmileType{{ i }}" placeholder="Select miles type">
+                                <ng-option value="empty">EMPTY</ng-option>
+                                <ng-option value="loaded">LOADED</ng-option>
+                              </ng-select>
+                            </td>
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <input type="text" class="form-control" id="editCell6{{ i }}" name="miles"
-                                    value="{{ trip.miles }}" />
-                                </td>
-                                <td class="rowStatus
+                              <input type="text" class="form-control" id="editCell6{{ i }}" name="miles"
+                                value="{{ trip.miles }}" />
+                            </td>
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <input type="text" class="form-control" id="editCell7{{ i }}"
-                                    (click)="showAssetModal('edit', i)" value="{{ vehiclesObjects[trip.vehicleID] }}" />
-                                </td>
-                                <td class="rowStatus
+                              <input type="text" class="form-control" id="editCell7{{ i }}"
+                                (click)="showAssetModal('edit', i)" value="{{ vehiclesObjects[trip.vehicleID] }}" />
+                            </td>
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <input type="text" class="form-control" id="editCell8{{ i }}"
-                                    (click)="showAssetModal('edit', i)" value="{{ trip.trailerName }}" />
-                                </td>
-                                <td class="rowStatus
+                              <input type="text" class="form-control" id="editCell8{{ i }}"
+                                (click)="showAssetModal('edit', i)" value="{{ trip.trailerName }}" />
+                            </td>
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <input type="text" class="form-control" id="editCell9{{ i }}"
-                                    (click)="showAssetModal('edit', i)" value="{{ driversObjects[trip.driverID] }}" />
-                                </td>
-                                <td class="rowStatus
+                              <input type="text" class="form-control" id="editCell9{{ i }}"
+                                (click)="showAssetModal('edit', i)" value="{{ driversObjects[trip.driverID] }}" />
+                            </td>
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <input type="text" class="form-control" id="editCell10{{ i }}"
-                                    (click)="showAssetModal('edit', i)" value="{{ driversObjects[trip.coDriverID] }}" />
-                                </td>
-                                <td class="rowStatus
+                              <input type="text" class="form-control" id="editCell10{{ i }}"
+                                (click)="showAssetModal('edit', i)" value="{{ driversObjects[trip.coDriverID] }}" />
+                            </td>
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <ng-select [(ngModel)]="trip.carrierID" (open)="dropdownOpen()"
-                                    (close)="dropdownClose()" id="editCell11{{ i }}" name="editCarrID"
-                                    placeholder="Select Carrier" [disabled]="trip.disablecarr">
-                                    <ng-option value="{{ carrier.contactID }}" *ngFor="let carrier of carriers">{{
-                                      carrier.companyName }}</ng-option>
-                                  </ng-select>
-                                </td>
-                                <td class="rowStatus
+                              <ng-select [(ngModel)]="trip.carrierID" (open)="dropdownOpen()" (close)="dropdownClose()"
+                                id="editCell11{{ i }}" name="editCarrID" placeholder="Select Carrier"
+                                [disabled]="trip.disablecarr">
+                                <ng-option value="{{ carrier.contactID }}" *ngFor="let carrier of carriers">{{
+                                  carrier.companyName }}</ng-option>
+                              </ng-select>
+                            </td>
+                            <td class="rowStatus
                               textRows
                               editRow{{ i }}">
-                                  <i class="fas fa-check mr-2" (click)="editRow(i)"></i>
-                                  <i class="fas fa-times" (click)="closeEditRow(i)"></i>
-                                </td>
-                              </span>
-
-                            </span>
+                              <i class="fas fa-check mr-2" (click)="editRow(i)"></i>
+                              <i class="fas fa-times" (click)="closeEditRow(i)"></i>
+                            </td>
                           </tr>
                           <tr class="ui-sortable-handle">
                             <td></td>
@@ -617,8 +604,6 @@
                               </button>
                             </td>
                           </tr>
-
-
                         </tbody>
                       </table>
                     </div>

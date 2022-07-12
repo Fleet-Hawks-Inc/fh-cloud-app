@@ -278,7 +278,7 @@ export class AddTripComponent implements OnInit {
   orderId: string;
   orderType: string;
   orderNum: string;
-  orderData = [];
+  // trips = [];
 
   constructor(
     private apiService: ApiService,
@@ -953,7 +953,7 @@ export class AddTripComponent implements OnInit {
       }
     }
     if (this.tripData.mapFrom == "order") {
-      this.orderData = tripPlans;
+      this.trips = tripPlans;
       this.orderMiles = {
         calculateBy: calculateBy,
         totalMiles: totalMilesOrder,
@@ -968,8 +968,8 @@ export class AddTripComponent implements OnInit {
     console.log('miles==')
     let savedCord = "";
     this.orderMiles.totalMiles = 0;
-    for (let i = 0; i < this.orderData.length; i++) {
-      const element = this.orderData[i];
+    for (let i = 0; i < this.trips.length; i++) {
+      const element = this.trips[i];
 
       if (i > 0) {
         if (element.lng != undefined && element.lat != undefined) {
@@ -1013,8 +1013,8 @@ export class AddTripComponent implements OnInit {
   getMilesTotal() {
     this.orderMiles.totalMiles = 0;
     this.actualMiles = 0;
-    for (let i = 0; i < this.orderData.length; i++) {
-      const element = this.orderData[i];
+    for (let i = 0; i < this.trips.length; i++) {
+      const element = this.trips[i];
       if (element.milesMan) {
         this.orderMiles.totalMiles += Number(element.miles);
       } else {
@@ -2862,6 +2862,7 @@ export class AddTripComponent implements OnInit {
     if (type == "route") {
       if (this.tripData.routeID != "" && this.tripData.routeID != null) {
         this.orderStops = this.trips;
+        console.log('tripDAta---',this.trips)
         this.trips = [];
         this.actualMiles = 0;
       
