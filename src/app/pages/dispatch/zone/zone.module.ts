@@ -17,6 +17,7 @@ import { DropdownModule } from "primeng/dropdown";
 import { BadgeModule } from "primeng/badge";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { ZoneDetailsComponent } from "./zone-details/zone-details.component";
+import { OverlayPanelModule } from "primeng/overlaypanel";
 
 const routes: Routes = [
   { path: "add", component: ZoneAddComponent },
@@ -43,6 +44,7 @@ const routes: Routes = [
     ToastModule,
     BadgeModule,
     NgSelectModule,
+    OverlayPanelModule,
   ],
   providers: [unsavedChangesGuard],
 })

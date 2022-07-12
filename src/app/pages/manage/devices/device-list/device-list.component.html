@@ -1,36 +1,119 @@
+<style>
+  .extra {
+    display: none;
+  }
+</style>
 <section class="body">
   <div class="inner-wrapper">
     <section role="main" class="content-body pt-0 pr-0">
-      <header class="page-header">
-        <div class="row">
-          <div class="col header-title">
-            <label class="mt-0 mb-0"> Devices</label>
+      
+       <header class="page-header pr19 pl11">
+        <form class="form-horizontal" method="get">
+          <div class="row" style="padding-top: 10px">
+            <div class="col-md-2 col-lg-2">
+              <div class="input-group input-group-md mb-3">
+                <input
+                  type="text"
+                  autocomplete="off"
+                  name="vehicleIdentification"
+                  placeholder="Search vehicle by name"
+                  [(ngModel)]="vehicleIdentification"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            
+               <div class="col-md-2 col-lg-2 pl-0 pr-2">
+              <div class="input-group input-group-md mb-3">
+                <input
+                  type="text"
+                  autocomplete="off"
+                  name="assetIdentification"
+                  placeholder="Search Asset by name"
+                  [(ngModel)]="assetIdentification"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            
+            <div class="col-md-2 col-lg-2 pl-2">
+              <button
+                type="submit"
+                (click)="searchFilter()"
+                class="btn btn-sm btn-success mr-3"
+              >
+                Search
+              </button>
+              <button
+                type="button"
+                (click)="resetFilter()"
+                class="btn btn-sm btn-success"
+              >
+                Reset
+              </button>
+            </div>
           </div>
-          <div class="col header-buttons">
-            <button
-              id="btnLiveVideo"
-              type="button"
-              pButton
-              class="mr-1"
-              tooltipPosition="left"
-              icon="pi pi-refresh"
-              pTooltip="Refresh"
-              (click)="refreshData()"
-            ></button>
-            <button
-              id="btnLiveVideo"
-              type="button"
-              pButton
-              class="mr-1"
-              tooltipPosition="left"
-              icon="pi pi-plus"
-              routerLink="/manage/devices/add"
-              pTooltip="Add Device"
-              (click)="refreshData()"
-            ></button>
-          </div>
-        </div>
+        </form>
       </header>
+      
+      <!--<header class="page-header pr19 pl11">-->
+      <!--  <div class="row">-->
+      <!--   <div class="col-md-2 col-lg-2">-->
+      <!--        <div class="input-group input-group-md mb-3">-->
+      <!--          <input-->
+      <!--            type="text"-->
+      <!--            autocomplete="off"-->
+      <!--            name="orderNumber"-->
+      <!--            placeholder="Search Vehicle by Name"-->
+      <!--            [(ngModel)]="vehicleIdentification"-->
+      <!--            class="form-control"-->
+      <!--          />-->
+      <!--        </div>-->
+      <!--      </div>-->
+            <!--<div class="col-md-2 col-lg-2">-->
+            <!--  <div class="input-group input-group-md mb-3">-->
+            <!--    <input-->
+            <!--      type="text"-->
+            <!--      autocomplete="off"-->
+            <!--      name="orderNumber"-->
+            <!--      placeholder="Search Asset by Name"-->
+            <!--      [(ngModel)]="assetIdentification"-->
+            <!--      class="form-control"-->
+            <!--    />-->
+            <!--  </div>-->
+            <!--</div>-->
+      <!--    <div class="col header-buttons">-->
+      <!--      <button-->
+      <!--          type="submit"-->
+      <!--          (click)="searchFilter()"-->
+      <!--          class="btn btn-sm btn-success mr-3"-->
+      <!--        >-->
+      <!--          Search-->
+      <!--      </button>-->
+      <!--      <button-->
+      <!--        id="btnLiveVideo"-->
+      <!--        type="button"-->
+      <!--        pButton-->
+      <!--        class="mr-1"-->
+      <!--        tooltipPosition="left"-->
+      <!--        icon="pi pi-refresh"-->
+      <!--        pTooltip="Refresh"-->
+      <!--        (click)="refreshData()"-->
+      <!--      ></button>-->
+      <!--      <button-->
+      <!--        id="btnLiveVideo"-->
+      <!--        type="button"-->
+      <!--        pButton-->
+      <!--        class="mr-1"-->
+      <!--        tooltipPosition="left"-->
+      <!--        icon="pi pi-plus"-->
+      <!--        routerLink="/manage/devices/add"-->
+      <!--        pTooltip="Add Device"-->
+      <!--        (click)="refreshData()"-->
+      <!--      ></button>-->
+      <!--    </div>-->
+      <!--  </div>-->
+      <!--</header>-->
 
       <section class="m-2">
         <div class="row mb-3">

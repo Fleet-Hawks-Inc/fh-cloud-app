@@ -135,6 +135,7 @@
                     >
                       <div class="dropdown dropright" style="z-index: 10001">
                         <button
+                        (click)="op.toggle($event);"
                           class="bg-transparent border-0"
                           type="button"
                           id="dropdownMenuButton-{{ rowIndex }}"
@@ -144,7 +145,18 @@
                         >
                           <i class="fas fa-ellipsis-v"></i>
                         </button>
-                        <div
+                        <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '160px' }">
+                          <a
+                            class="dropdown-item"
+                            (click)="op.hide();"
+                            routerLink="/fleet/zone/edit/{{ zone.id }}"
+                            >Edit</a
+                          >
+                          <a class="dropdown-item" (click)="delete(zone.id); op.hide();"
+                            >Delete</a
+                          >
+                        </p-overlayPanel>
+                        <!-- <div
                           class="dropdown-menu"
                           style="z-index: 10001"
                           attr.aria-labelledby="dropdownMenuButton-{{
@@ -159,7 +171,7 @@
                           <a class="dropdown-item" (click)="delete(zone.id)"
                             >Delete</a
                           >
-                        </div>
+                        </div> -->
                       </div>
                     </td>
                   </tr>

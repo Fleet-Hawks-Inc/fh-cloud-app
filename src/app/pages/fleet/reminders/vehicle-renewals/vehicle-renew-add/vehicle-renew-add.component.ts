@@ -10,6 +10,7 @@ import {
 } from "rxjs/operators";
 import { ToastrService } from 'ngx-toastr';
 import { NgForm } from "@angular/forms";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
@@ -32,6 +33,8 @@ export class VehicleRenewAddComponent implements OnInit {
   takeUntil$ = new Subject();
 
   reminderID;
+    sessionID: string;
+
   pageTitle;
   entityID = null;
   taskID = null;
@@ -89,11 +92,13 @@ export class VehicleRenewAddComponent implements OnInit {
   private router: Router,
   private modalService: NgbModal,
     private modalServiceOwn: ModalService,
+      private routerMgmtService: RouteManagementServiceService,
   private toastr: ToastrService,
     private ngbCalendar: NgbCalendar, 
     private dateAdapter: NgbDateAdapter<string>,
     private location: Location) 
     {
+      this.sessionID = this.routerMgmtService.serviceRemindersSessionID;
 
       }
       
@@ -181,7 +186,7 @@ export class VehicleRenewAddComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
 
-
+        this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/list/${this.routerMgmtService.serviceReminderUpdated()}');
         this.toastr.success('Vehicle Renewal Reminder Added Successfully');
         this.cancel();
         this.reminderData = {
@@ -289,9 +294,9 @@ export class VehicleRenewAddComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.submitDisabled = false;
-       
+        this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/list/${this.routerMgmtService.serviceReminderUpdated()}');
         this.toastr.success('Vehicle Renewal Reminder Updated Successfully.');
-        this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/list');
+        //this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/list');
         this.Success = '';
       },
     });
