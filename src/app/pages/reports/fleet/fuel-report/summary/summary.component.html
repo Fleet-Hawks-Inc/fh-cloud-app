@@ -283,7 +283,7 @@
                               *ngFor="let dataColumns of columns"
                               [pSortableColumn]="dataColumns.field"
                               pResizableColumn
-                              style="width: 10%"
+                             style="width: 11.2%"
                             >
                               <span>
                                 <div
@@ -322,8 +322,7 @@
                           <tr>
                             <td
                               *ngFor="let dataColumns of columns"
-                              [ngStyle]="{ width: dataColumns.width }"
-                              style="cursor: pointer"
+                              style="width: 11.2%; height: 40px; cursor: pointer"
                             >
                               <div [ngSwitch]="dataColumns.field">
                                 <span *ngSwitchCase="'unitSearch'">

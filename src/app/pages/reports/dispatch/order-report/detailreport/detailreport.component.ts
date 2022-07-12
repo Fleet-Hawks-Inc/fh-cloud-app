@@ -122,19 +122,19 @@ export class DetailreportComponent implements OnInit {
     this.fetchDetailReport();
      this.fetchOrderReport();
      this.dataColumns = [
-      { width: '7%', field: 'orderNumber', header: 'Order', type: "text", },
-      { width: '7%', field: 'tripData.tripNo', header: 'Trip', type: "text", },
-      { width: '7%', field: 'orderMode', header: 'Type', type: "text" },
-      { width: '8%', field: 'createdDate', header: 'Date', type: "text" },
+      { width: '10%', field: 'orderNumber', header: 'Order', type: "text", },
+      { width: '10%', field: 'tripData.tripNo', header: 'Trip', type: "text", },
+      { width: '10%', field: 'orderMode', header: 'Type', type: "text" },
+      { width: '10%', field: 'createdDate', header: 'Date', type: "text" },
       { width: '10%', field: 'customers', header: 'Customer', type: 'text' },
-      { width: '9%', field: 'cusConfirmation', header: 'Confirmation', type: 'text' },
-      { width: '7%', field: 'vehicles', header: 'Vehicles', type: 'text' },
-      { width: '9%', field: 'tripData.assetIDs', header: 'Assets', type: 'text' },
+      { width: '10%', field: 'cusConfirmation', header: 'Confirmation', type: 'text' },
+      { width: '10%', field: 'vehicles', header: 'Vehicles', type: 'text' },
+      { width: '10%', field: 'tripData.assetIDs', header: 'Assets', type: 'text' },
       { width: '10%', field: 'drivers', header: 'Drivers', type: 'text' },
-      { width: '8%', field:'cusPOs', header: 'Customer PO', type: 'text' },
-      { width: '8%', field: 'milesInfo.totalMiles', header: 'Miles', type: 'text' },
-      { width: '8%', field: 'totalAmount', header: 'Amount', type: 'text' },
-      { width: '8%', field: 'orderStatus', header: 'Status', type: 'text' },
+      { width: '10%', field:'cusPOs', header: 'Customer PO', type: 'text' },
+      { width: '10%', field: 'milesInfo.totalMiles', header: 'Miles', type: 'text' },
+      { width: '10%', field: 'totalAmount', header: 'Amount', type: 'text' },
+      { width: '10%', field: 'orderStatus', header: 'Status', type: 'text' },
     ];
     this._selectedColumns = this.dataColumns;
      this.setToggleOptions();
