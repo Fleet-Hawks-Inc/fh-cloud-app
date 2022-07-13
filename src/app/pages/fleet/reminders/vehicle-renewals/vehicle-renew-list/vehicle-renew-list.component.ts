@@ -26,6 +26,8 @@ export class VehicleRenewListComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
   public remindersData = [];
   // dtOptions: any = {};
+    sessionID: string;
+
   vehicles = [];
   vehicleName: string;
   vehicleList: any = {};
@@ -72,7 +74,9 @@ export class VehicleRenewListComponent implements OnInit {
   private router: Router, 
   private spinner: NgxSpinnerService, 
   private routerMgmtService: RouteManagementServiceService,
-  private toastr: ToastrService) { }
+  private toastr: ToastrService) { 
+  this.sessionID = this.routerMgmtService.serviceRemindersSessionID;
+  }
 
   ngOnInit() {
     this.initDataTable();

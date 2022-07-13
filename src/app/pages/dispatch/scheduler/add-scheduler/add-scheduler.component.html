@@ -95,8 +95,8 @@
                       <div class="col-lg-2" *ngFor="let day of days">
                         <div class="checkbox">
                           <label>
-                            <input type="checkbox" [value]="day" (change)="onCheckboxChange($event.target.value, $event.target.checked)">
-                            {{day | titlecase}}
+                            <input type="checkbox" [value]="day.dName" [checked]="day.isSelected" (change)="onCheckboxChange($event.target.value, $event.target.checked)">
+                            {{day.dName | titlecase}}
                           </label>
                         </div>
                       </div>
@@ -161,8 +161,8 @@
                       <div class="col-lg-2" *ngFor="let month of months">
                         <div class="checkbox">
                           <label>
-                            <input type="checkbox" [disabled]="rangeDisabled" [value]="month" (change)="onRangeCheckboxChange($event.target.value, $event.target.checked)">
-                            {{month | titlecase}}
+                            <input type="checkbox" [disabled]="rangeDisabled" [value]="month.mName" [checked]="month.isSelected" (change)="onRangeCheckboxChange($event.target.value, $event.target.checked)">
+                            {{month.mName | titlecase}}
                           </label>
                         </div>
                       </div>

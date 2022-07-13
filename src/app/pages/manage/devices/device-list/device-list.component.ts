@@ -30,8 +30,9 @@ export class DeviceListComponent implements OnInit {
     constructor(private apiService: ApiService,
     private toastr: ToastrService, private router: Router) { }
 
-  next: any = 'null';
-
+  next: any = "null";
+  vehicleIdentification = '';
+  assetIdentification = '';
   dataMessage: string = Constants.FETCHING_DATA;
   public devices: any = [];
 
@@ -70,7 +71,7 @@ export class DeviceListComponent implements OnInit {
        return;
       }
       this.dataMessage = Constants.FETCHING_DATA;
-      const result: any = await this.apiService.getData(`devices/getDevices/${this.next}`).toPromise();
+      const result: any = await this.apiService.getData(`devices/getDevices/${this.next}?searchTerm=${this.vehicleIdentification}${this.assetIdentification}`).toPromise();
       if(result.data.length === 0){
         this.dataMessage = Constants.NO_RECORDS_FOUND;
         this.loaded = true;
@@ -116,6 +117,36 @@ export class DeviceListComponent implements OnInit {
       throw new Error(error)
     }
   }
+
+
+  searchFilter(){
+  if(this.vehicleIdentification !== '' || this.assetIdentification !== ''){
+  this.vehicleIdentification = this.vehicleIdentification;
+  this.assetIdentification = this.assetIdentification;
+  this.devices = [];
+  this.dataMessage = Constants.FETCHING_DATA;
+  this.next = "null"
+  this.fetchDevices();
+  }else{
+  return false;
+  }
+  }
+  
+  resetFilter(){
+  if(this.vehicleIdentification !== '' || this.assetIdentification !== ''){
+  this.vehicleIdentification = '';
+  this.assetIdentification = '';
+  this.devices = [];
+  this.dataMessage = Constants.FETCHING_DATA;
+  this.next = "null"
+  this.loaded = false;
+  this.fetchDevices();
+  this.dataMessage = Constants.FETCHING_DATA;
+  }else{
+  return false;
+  }
+  }
+
 
   public deactivateDevice(devicesType: any, deviceID: string, activate: boolean) {
     const confirmationText = activate == true ? 'activate' : 'deactivate';

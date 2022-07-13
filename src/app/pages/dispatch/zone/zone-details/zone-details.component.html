@@ -10,11 +10,11 @@
           </div>
           <div class="col-md-8 col-lg-8 text-right por-1">
             <a
-              routerLink="/fleet/zone/edit/{{ zoneID }}"
+              routerLink="/dispatch/zone/edit/{{ zoneID }}"
               class="btn btn-default btn-sm mr-2"
               ><i class="fas fa-pencil-alt"></i> Edit Zone</a
             >
-            <a routerLink="/fleet/zone/list" class="btn btn-sm btn-default"
+            <a routerLink="/dispatch/zone/list" class="btn btn-sm btn-default"
               ><i class="fas fa-list"></i> Zone List</a
             >
           </div>
@@ -31,7 +31,18 @@
                     >Zone Details</label
                   >
                 </div>
-                <div class="col-lg-6">
+
+                <div class="col-lg-12">
+                  <div class="row">
+                    <div
+                      id="map"
+                      class="mapclassmain"
+                      style="height: 500px;"
+                    ></div>
+                  </div>
+
+                </div>
+                <div class="col-lg-6">   
                   <div class="row">
                     <div class="col-lg-12">
                       <table class="table table-bordered table-responsive-lg">
