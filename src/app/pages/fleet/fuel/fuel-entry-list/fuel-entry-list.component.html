@@ -608,7 +608,7 @@
   <div
     class="modal-dialog modal-dialog-centered"
     role="document"
-    style="width: 600px"
+    style="width: 1000px"
   >
     <div class="modal-content">
       <div class="modal-header">
@@ -649,24 +649,52 @@
                           </div>
                         </span>
                       </th>
-                      <!-- <th style="width: 6%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th> -->
+                      <th style="width: 20%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
                     </tr>
                   </ng-template>
                   <ng-template pTemplate="body" let-fs let-columns="columns" let-rowIndex="rowIndex"
                   let-expanded="expanded">
                   <tr style="cursor: pointer;">
                     <td  
-                    style="width:30%">
+                    style="width:20%">
 
-                    {{fs.date}}
+                    {{fs.from}}
                   </td>
                   <td  
-                  style="width:30%">
+                    style="width:20%">
+
+                    {{fs.to}}
+                  </td>
+                  <td  
+                  style="width:20%">
 
                   {{fs.ltl}}
                 </td>
-                <td style="width:30%">
+                <td style="width:20%">
                   {{fs.tl}}
+                </td>
+                <td style="text-align: center; width: 20% " pFrozenColumn alignFrozen="right">
+                  <div class="dropdown dropright">
+
+                    <a class="m-1" (click)="editSurcharge(fs)">Edit</a>
+                    <a class="m-1" (click)="deleteSurcharge(fs)" class="m-2">Delete</a>
+                    <!-- <button
+                      class="bg-transparent border-0"
+                      type="button"
+                      (click)="op.toggle($event)"
+                      id="dropdownMenuButton-{{ i }}"
+                      
+                      
+                    >
+                      <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '160px' }">
+                      <a class="dropdown-item" (click)="op.hide();" >Edit</a>
+                      <a class="dropdown-item" >Deactivate</a>
+                      <a class="dropdown-item" >Activate</a>
+                  </p-overlayPanel> -->
+                    
+                  </div>
                 </td>
                 </tr>
 
@@ -700,18 +728,48 @@
         </div>
         <div class="row">
           <div class="col-lg-12">
+            <hr class="solid">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+          <h4>
+          {{addUpdate}} a Fuel Surcharge
+        </h4>
+      </div>
+        </div>
+       
+        <div class="row">
+          <div class="col-lg-12">
             <div class="col-lg-12 pl-0 d-flex mt-2">
+              <div>
+              <label for="date">From</label>
               <input
                 type="date"
                 class="form-control mr-2"
-                name="date"
-                [(ngModel)]="fSurcharge.date"
+                name="from"
+                [(ngModel)]="fSurcharge.from"
                 [ngModelOptions]="{ standalone: true }"
                 #date="ngModel"
                 placeholder="Date"
                 required
               />
-
+              </div>
+              <div>
+              <label for="to">To</label>
+              <input
+                type="date"
+                class="form-control mr-2"
+                name="to"
+                [(ngModel)]="fSurcharge.to"
+                [ngModelOptions]="{ standalone: true }"
+                #date="ngModel"
+                placeholder="Date"
+                required
+              />
+            </div>
+            <div>
+              <label for="ltl">LTL</label>
               <input
                 type="text"
                 class="form-control mr-2"
@@ -721,24 +779,47 @@
                 #ltl="ngModel"
                 placeholder="LTL %"
               />
+              </div>
+              <div>
+                <label for="ftl">FTL</label>
               <input
                 type="text"
                 class="form-control mr-2"
-                name="tl"
+                name="ftl"
                 [(ngModel)]="fSurcharge.tl"
                 [ngModelOptions]="{ standalone: true }"
                 #tl="ngModel"
                 required
                 placeholder="TL %"
               />
+              </div>
+              <div class="mt-auto">
               <button
+              *ngIf="!fsUpdate"
                 type="button"
-                class="btn btn-sm btn-success"
+                class="btn btn-sm btn-success ml-1"
                 (click)="postSurcharge()"
               >
                 Save
               </button>
+              <button
+              *ngIf="fsUpdate"
+                type="button"
+                class="btn btn-sm btn-success ml-1"
+                (click)="updateSurcharge()"
+              >
+                Update
+              </button>
 
+              <button
+                type="button"
+                class="btn btn-sm btn-success ml-1"
+                (click)="cancel()"
+              >
+                Cancel
+              </button>
+
+</div>
               <div
                 *ngIf="date.invalid && (date.dirty || date.touched)"
                 class="text-danger"
@@ -749,6 +830,9 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="row">
+          
         </div>
       </div>
     </div>
