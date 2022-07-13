@@ -28,7 +28,9 @@ import { v4 as uuidv4 } from "uuid";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
+import { ConfirmationService, ConfirmEventType, MessageService } from 'primeng/api';
 import { constants } from "buffer";
+import * as _ from "lodash";
 
 declare var $: any;
 
@@ -36,6 +38,7 @@ declare var $: any;
   selector: "app-add-trip",
   templateUrl: "./add-trip.component.html",
   styleUrls: ["./add-trip.component.css"],
+  providers: [ConfirmationService, MessageService]
 })
 export class AddTripComponent implements OnInit {
   @ViewChild("assignAssetModel", { static: true })
@@ -279,6 +282,13 @@ export class AddTripComponent implements OnInit {
   orderType: string;
   orderNum: string;
 
+  expiredErrors = [];
+
+  assetsValidate = [];
+  mDrvValidate: string;
+  coDrvValidate: string;
+  vehicleValidate: string;
+
   constructor(
     private apiService: ApiService,
     private modalService: NgbModal,
@@ -288,6 +298,7 @@ export class AddTripComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private location: Location,
     private hereMap: HereMapService,
+    private confirmationService: ConfirmationService, private messageService: MessageService,
     private countryStateCity: CountryStateCityService,
     private el: ElementRef, // public selectionType: SelectionType, // public columnMode: ColumnMode,
     private routeMnagementSvc: RouteManagementServiceService
@@ -1296,9 +1307,11 @@ export class AddTripComponent implements OnInit {
       this.tempTextFieldValues.vehicleName = "";
       this.tempTextFieldValues.vehicleID = "";
       this.assetDataVehicleID = null;
+      this.vehicleValidate = null;
     } else {
       if (type === "click") {
         this.assetDataVehicleID = $event.vehicleID;
+        this.vehicleValidate = $event.vehicleID;
       }
       this.tempTextFieldValues.vehicleName = $event.vehicleIdentification;
       this.tempTextFieldValues.vehicleID = $event.vehicleID;
@@ -1319,6 +1332,7 @@ export class AddTripComponent implements OnInit {
         this.tempTextFieldValues.driverName = "";
         this.tempTextFieldValues.driverUsername = "";
         this.assetDataDriverUsername = null;
+        this.mDrvValidate = '';
         this.tempTextFieldValues.driverID = "";
       } else {
         $(".codriverClass").removeClass("td_border");
@@ -1326,6 +1340,7 @@ export class AddTripComponent implements OnInit {
         this.tempTextFieldValues.coDriverUsername = "";
         this.assetDataCoDriverUsername = null;
         this.tempTextFieldValues.coDriverID = "";
+        this.coDrvValidate = '';
       }
     } else {
       if (type === "driver") {
@@ -1334,6 +1349,7 @@ export class AddTripComponent implements OnInit {
         this.tempTextFieldValues.driverName = $event.fullName;
         this.tempTextFieldValues.driverUsername = $event.userName;
         this.tempTextFieldValues.driverID = $event.driverID;
+        this.mDrvValidate = $event.driverID;
         if (this.assetDataDriverUsername === this.assetDataCoDriverUsername) {
           this.assetDataCoDriverUsername = null;
         }
@@ -1352,7 +1368,7 @@ export class AddTripComponent implements OnInit {
         this.tempTextFieldValues.coDriverName = $event.fullName;
         this.tempTextFieldValues.coDriverUsername = $event.userName;
         this.tempTextFieldValues.coDriverID = $event.driverID;
-
+        this.coDrvValidate = $event.driverID;
         if (eventType === "click") {
           this.assetDataCoDriverUsername = $event.userName;
         }
@@ -1367,6 +1383,10 @@ export class AddTripComponent implements OnInit {
   }
 
   assetsChange($event, type) {
+    console.log('$event', $event)
+    if ($event.length == 0) {
+      this.assetsValidate = [];
+    }
     this.tempTextFieldValues.trailerName = "";
     if ($event === undefined) {
       $(".assetClass").removeClass("td_border");
@@ -1383,12 +1403,14 @@ export class AddTripComponent implements OnInit {
           if (!arayy.includes(element.assetID)) {
             arayy.push(element.assetID);
           }
+
           let objj = {
             id: element.assetID,
             name: element.assetIdentification,
           };
 
           this.tempTextFieldValues.trailer.push(objj);
+          this.assetsValidate = arayy;
         }
         if ($event.length > 0) {
           let lastItem = $event[$event.length - 1];
@@ -1404,6 +1426,7 @@ export class AddTripComponent implements OnInit {
           id: $event.assetID,
           name: $event.assetIdentification,
         };
+        this.assetsValidate.push($event.assetID);
         const exist = this.tempTextFieldValues.trailer.some(
           (el) => el.id === $event.assetID
         );
@@ -1423,6 +1446,46 @@ export class AddTripComponent implements OnInit {
       });
       trailerNames = trailerNames.join();
       this.tempTextFieldValues.trailerName = trailerNames;
+    }
+  }
+
+  validateUnits(type = '') {
+
+    let drivers = [];
+    if (this.mDrvValidate != '' && this.mDrvValidate != undefined) {
+      drivers.push(this.mDrvValidate)
+    }
+    if (this.coDrvValidate != '' && this.coDrvValidate != undefined) {
+      drivers.push(this.coDrvValidate)
+    }
+    let data = {
+      drivers: drivers,
+      vehicle: this.vehicleValidate ? this.vehicleValidate : '',
+      assets: _.uniq(this.assetsValidate),
+    }
+    console.log('data', data)
+
+    let result: any = this.apiService.getData(`trips/validate-units/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
+    if (result && result.length > 0) {
+      this.expiredErrors = result;
+      this.confirmationService.confirm({
+        message: 'Are you sure that you want to proceed?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted' });
+        },
+        reject: (type) => {
+          switch (type) {
+            case ConfirmEventType.REJECT:
+              this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+              break;
+            case ConfirmEventType.CANCEL:
+              this.messageService.add({ severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled' });
+              break;
+          }
+        }
+      });
     }
   }
 
@@ -1963,7 +2026,7 @@ export class AddTripComponent implements OnInit {
       const result: any = await this.apiService
         .getData(`orders/get/type/FTL?lastKey=${this.lastFtLOrderSK}`)
         .toPromise();
-      
+
       if (result.Items.length === 0) {
         this.dataMessage = Constant.NO_RECORDS_FOUND;
       }
