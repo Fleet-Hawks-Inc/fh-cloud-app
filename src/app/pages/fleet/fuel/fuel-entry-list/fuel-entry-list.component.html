@@ -4,7 +4,7 @@
       <header class="page-header pr19 pl11">
         <form class="form-horizontal" method="get" name="form" id="form_">
           <div class="row" style="padding-top: 10px">
-            <div class="col-md-2 col-lg-2 pr-1">
+            <div class="col-md-2 col-lg-2">
               <ng-select
                 [(ngModel)]="unitID"
                 name="unitID"
@@ -32,7 +32,7 @@
                 </ng-select>
               </div>
             </div> -->
-            <div class="col-lg-3 col-md-3">
+            <div class="col-lg-3 col-md-3 pl-0">
               <div class="input-daterange input-group">
                 <span class="input-group-prepend">
                   <span class="input-group-text">
@@ -72,7 +72,7 @@
                 />
               </div>
             </div>
-            <div class="col-md-2 col-lg- pl-2">
+            <div class="col-md-2 col-lg-2 pl-0">
               <button
                 type="submit"
                 (click)="searchFilter()"
@@ -117,7 +117,7 @@
 
               <div ngbDropdown class="d-inline-block">
                 <button
-                  class="btn btn-success btn-sm mr-2 ml-2"
+                  class="btn btn-success btn-sm mr-3"
                   id="fSur"
                   data-toggle="modal"
                   data-target="#fSurcharge"
@@ -150,7 +150,7 @@
               </div>
               <a
                 routerLink="/fleet/fuel/add"
-                class="btn btn-success btn-sm ml-2"
+                class="btn btn-success btn-sm ml-3"
                 style="color: white"
                 ><i class="fas fa-plus"></i> Add Fuel Entry</a
               >
@@ -614,71 +614,95 @@
       <div class="modal-header">
         <h5 class="modal-title">Fuel Surcharge</h5>
         <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <i
-              class="far fa-window-close modal-dismiss"
-              style="font-size: 25px"
-            >
-            </i>
-          </button>
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
+          </i>
+        </button>
       </div>
       <div class="modal-body text-dark">
         <div class="row">
           <div class="col-lg-12">
-            <p-table #dt [value]="fuelSurcharge" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both"
-                [columns]="fsColumns" [loading]="!fsLoaded"
-                styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
-                 scrollHeight="100%" responsiveLayout="scroll">
-                 <ng-template pTemplate="header" let-columns>
-                    <tr>
-                      <th *ngFor="let column of fsColumns" [pSortableColumn]="column.field" pResizableColumn
-                        [ngStyle]="{'width': column.width}">
-                        <span>
-                          <div class="flex justify-content-center align-items-center" alignFrozen="right" pFrozenColumn
-                            [frozen]="true">
-                            {{column.header}}
-                            <p-sortIcon [field]="column.field">
-                            </p-sortIcon>
-                            <!-- <p-columnFilter [type]="column.type" [field]="column.field" matchMode="contains"
+            <p-table
+              #dt
+              [value]="fuelSurcharge"
+              [resizableColumns]="true"
+              columnResizeMode="expand"
+              scrollDirection="both"
+              [columns]="fsColumns"
+              [loading]="!fsLoaded"
+              styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
+              [scrollable]="true"
+              scrollHeight="100%"
+              responsiveLayout="scroll"
+            >
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th
+                    *ngFor="let column of fsColumns"
+                    [pSortableColumn]="column.field"
+                    pResizableColumn
+                    [ngStyle]="{ width: column.width }"
+                  >
+                    <span>
+                      <div
+                        class="flex justify-content-center align-items-center"
+                        alignFrozen="right"
+                        pFrozenColumn
+                        [frozen]="true"
+                      >
+                        {{ column.header }}
+                        <p-sortIcon [field]="column.field"> </p-sortIcon>
+                        <!-- <p-columnFilter [type]="column.type" [field]="column.field" matchMode="contains"
                               [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
                             </p-columnFilter> -->
-                          </div>
-                        </span>
-                      </th>
-                      <th style="width: 20%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th>
-                    </tr>
-                  </ng-template>
-                  <ng-template pTemplate="body" let-fs let-columns="columns" let-rowIndex="rowIndex"
-                  let-expanded="expanded">
-                  <tr style="cursor: pointer;">
-                    <td  
-                    style="width:20%">
-
-                    {{fs.from}}
+                      </div>
+                    </span>
+                  </th>
+                  <th
+                    style="width: 20%"
+                    alignFrozen="right"
+                    pFrozenColumn
+                    [frozen]="true"
+                  >
+                    Actions
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template
+                pTemplate="body"
+                let-fs
+                let-columns="columns"
+                let-rowIndex="rowIndex"
+                let-expanded="expanded"
+              >
+                <tr style="cursor: pointer">
+                  <td style="width: 20%">
+                    {{ fs.from }}
                   </td>
-                  <td  
-                    style="width:20%">
-
-                    {{fs.to}}
+                  <td style="width: 20%">
+                    {{ fs.to }}
                   </td>
-                  <td  
-                  style="width:20%">
-
-                  {{fs.ltl}}
-                </td>
-                <td style="width:20%">
-                  {{fs.tl}}
-                </td>
-                <td style="text-align: center; width: 20% " pFrozenColumn alignFrozen="right">
-                  <div class="dropdown dropright">
-
-                    <a class="m-1" (click)="editSurcharge(fs)">Edit</a>
-                    <a class="m-1" (click)="deleteSurcharge(fs)" class="m-2">Delete</a>
-                    <!-- <button
+                  <td style="width: 20%">
+                    {{ fs.ltl }}
+                  </td>
+                  <td style="width: 20%">
+                    {{ fs.tl }}
+                  </td>
+                  <td
+                    style="text-align: center; width: 20%"
+                    pFrozenColumn
+                    alignFrozen="right"
+                  >
+                    <div class="dropdown dropright">
+                      <a class="m-1" (click)="editSurcharge(fs)">Edit</a>
+                      <a class="m-1" (click)="deleteSurcharge(fs)" class="m-2"
+                        >Delete</a
+                      >
+                      <!-- <button
                       class="bg-transparent border-0"
                       type="button"
                       (click)="op.toggle($event)"
@@ -693,133 +717,128 @@
                       <a class="dropdown-item" >Deactivate</a>
                       <a class="dropdown-item" >Activate</a>
                   </p-overlayPanel> -->
-                    
-                  </div>
-                </td>
+                    </div>
+                  </td>
                 </tr>
+              </ng-template>
+              <ng-template pTemplate="summary" let-columns>
+                <div
+                  class="col-lg-12 mt-3 text-center"
+                  *ngIf="
+                    fsLastEvaluatedKey !== 'end' && fuelSurcharge.length !== 0
+                  "
+                >
+                  <button
+                    type="button "
+                    (click)="onFsScroll($event)"
+                    class="btn btn-success btn-sm text-light"
+                  >
+                    Load More..
+                  </button>
 
-                  </ng-template>
-                  <ng-template pTemplate="summary" let-columns>
-                    <div
-                      class="col-lg-12 mt-3 text-center"
-                      *ngIf="
-                        fsLastEvaluatedKey !== 'end' && fuelSurcharge.length !== 0
-                      "
-                    >
-                      <button
-                        type="button "
-                        (click)="onFsScroll($event)"
-                        class="btn btn-success btn-sm text-light"
-                      >
-                        Load More..
-                      </button>
-
-                      <br /><br />
-                    </div>
-                    <div
-                      class="col-lg-12 mt-3 text-center"
-                      *ngIf="fsLastEvaluatedKey === 'end'"
-                    >
-                      Total Records: {{ fuelSurcharge.length }}
-                    </div>
-                    </ng-template>
-                </p-table>
+                  <br /><br />
+                </div>
+                <div
+                  class="col-lg-12 mt-3 text-center"
+                  *ngIf="fsLastEvaluatedKey === 'end'"
+                >
+                  Total Records: {{ fuelSurcharge.length }}
+                </div>
+              </ng-template>
+            </p-table>
           </div>
         </div>
         <div class="row">
           <div class="col-lg-12">
-            <hr class="solid">
+            <hr class="solid" />
           </div>
         </div>
         <div class="row">
           <div class="col-lg-12">
-          <h4>
-          {{addUpdate}} a Fuel Surcharge
-        </h4>
-      </div>
+            <h4>{{ addUpdate }} a Fuel Surcharge</h4>
+          </div>
         </div>
-       
+
         <div class="row">
           <div class="col-lg-12">
             <div class="col-lg-12 pl-0 d-flex mt-2">
               <div>
-              <label for="date">From</label>
-              <input
-                type="date"
-                class="form-control mr-2"
-                name="from"
-                [(ngModel)]="fSurcharge.from"
-                [ngModelOptions]="{ standalone: true }"
-                #date="ngModel"
-                placeholder="Date"
-                required
-              />
+                <label for="date">From</label>
+                <input
+                  type="date"
+                  class="form-control mr-2"
+                  name="from"
+                  [(ngModel)]="fSurcharge.from"
+                  [ngModelOptions]="{ standalone: true }"
+                  #date="ngModel"
+                  placeholder="Date"
+                  required
+                />
               </div>
               <div>
-              <label for="to">To</label>
-              <input
-                type="date"
-                class="form-control mr-2"
-                name="to"
-                [(ngModel)]="fSurcharge.to"
-                [ngModelOptions]="{ standalone: true }"
-                #date="ngModel"
-                placeholder="Date"
-                required
-              />
-            </div>
-            <div>
-              <label for="ltl">LTL</label>
-              <input
-                type="text"
-                class="form-control mr-2"
-                name="ltl"
-                [(ngModel)]="fSurcharge.ltl"
-                [ngModelOptions]="{ standalone: true }"
-                #ltl="ngModel"
-                placeholder="LTL %"
-              />
+                <label for="to">To</label>
+                <input
+                  type="date"
+                  class="form-control mr-2"
+                  name="to"
+                  [(ngModel)]="fSurcharge.to"
+                  [ngModelOptions]="{ standalone: true }"
+                  #date="ngModel"
+                  placeholder="Date"
+                  required
+                />
+              </div>
+              <div>
+                <label for="ltl">LTL</label>
+                <input
+                  type="text"
+                  class="form-control mr-2"
+                  name="ltl"
+                  [(ngModel)]="fSurcharge.ltl"
+                  [ngModelOptions]="{ standalone: true }"
+                  #ltl="ngModel"
+                  placeholder="LTL %"
+                />
               </div>
               <div>
                 <label for="ftl">FTL</label>
-              <input
-                type="text"
-                class="form-control mr-2"
-                name="ftl"
-                [(ngModel)]="fSurcharge.tl"
-                [ngModelOptions]="{ standalone: true }"
-                #tl="ngModel"
-                required
-                placeholder="TL %"
-              />
+                <input
+                  type="text"
+                  class="form-control mr-2"
+                  name="ftl"
+                  [(ngModel)]="fSurcharge.tl"
+                  [ngModelOptions]="{ standalone: true }"
+                  #tl="ngModel"
+                  required
+                  placeholder="TL %"
+                />
               </div>
               <div class="mt-auto">
-              <button
-              *ngIf="!fsUpdate"
-                type="button"
-                class="btn btn-sm btn-success ml-1"
-                (click)="postSurcharge()"
-              >
-                Save
-              </button>
-              <button
-              *ngIf="fsUpdate"
-                type="button"
-                class="btn btn-sm btn-success ml-1"
-                (click)="updateSurcharge()"
-              >
-                Update
-              </button>
+                <button
+                  *ngIf="!fsUpdate"
+                  type="button"
+                  class="btn btn-sm btn-success ml-1"
+                  (click)="postSurcharge()"
+                >
+                  Save
+                </button>
+                <button
+                  *ngIf="fsUpdate"
+                  type="button"
+                  class="btn btn-sm btn-success ml-1"
+                  (click)="updateSurcharge()"
+                >
+                  Update
+                </button>
 
-              <button
-                type="button"
-                class="btn btn-sm btn-success ml-1"
-                (click)="cancel()"
-              >
-                Cancel
-              </button>
-
-</div>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-success ml-1"
+                  (click)="cancel()"
+                >
+                  Cancel
+                </button>
+              </div>
               <div
                 *ngIf="date.invalid && (date.dirty || date.touched)"
                 class="text-danger"
@@ -831,9 +850,7 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          
-        </div>
+        <div class="row"></div>
       </div>
     </div>
   </div>
