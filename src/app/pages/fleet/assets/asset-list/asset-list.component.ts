@@ -335,9 +335,6 @@ export class AssetListComponent implements OnInit {
         obj["Annual Safety Date"] = element.assetDetails.annualSafetyDate
         obj["Status"] = element.currentStatus
         obj["Added By"] = element.isImport ? 'Imported' : 'Manual'
-       
-       // isImport: iterator.isImport ? 'Imported' : 'Manual',
-       
         if(element.assetDetails.ownerShip === 'ownerOperator') {
           obj["Company Name"] =  element.assetDetails.ownerOperator ? this.contactsObjects[element.assetDetails.ownerOperator]:''
           }
