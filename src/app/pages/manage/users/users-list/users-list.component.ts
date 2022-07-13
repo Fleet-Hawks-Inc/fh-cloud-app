@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild} from '@angular/core';
 import { ApiService } from 'src/app/services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators'
 import { from } from 'rxjs'
+import { Table } from 'primeng/table';
 declare var $: any;
 
 @Component({
@@ -15,6 +16,7 @@ declare var $: any;
   styleUrls: ['./users-list.component.css']
 })
 export class UsersListComponent implements OnInit {
+  @ViewChild('ut') table: Table;
   dataMessage: string = Constants.FETCHING_DATA;
   contactID = '';
   setUsrName = '';
@@ -52,7 +54,10 @@ export class UsersListComponent implements OnInit {
   reminderID: any;
   allSubRoles = []
   subRole = []
-
+  dataColumns = 
+  [
+  { width: '8%', field: 'firstName', header: 'First Name', type: 'text' },
+  ];
 
   constructor(private apiService: ApiService,
     private toastr: ToastrService,
