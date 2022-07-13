@@ -22,6 +22,7 @@ declare var $: any;
   providers: [],
 })
 export class NewAceManifestComponent implements OnInit {
+  activeState: boolean[] = [true, false, false];
   public manifestID;
   public carrierID;
   sendId;
@@ -51,7 +52,7 @@ export class NewAceManifestComponent implements OnInit {
   getcurrentDate: any;
   manifestType = 'ACE';
   truck = {
-    truckID: '',
+    truckID: null,
     sealNumbers: [
       { sealNumber: '' },
       { sealNumber: '' },
@@ -63,8 +64,8 @@ export class NewAceManifestComponent implements OnInit {
   };
   trailers = [
     {
-      assetID: '',
-      assetTypeCode: '',
+      assetID: null,
+      assetTypeCode: null,
       sealNumbers: [
         { sealNumber: '' },
         { sealNumber: '' },
@@ -428,8 +429,8 @@ export class NewAceManifestComponent implements OnInit {
   // TRAILER DATA
   addTrailer() {
     this.trailers.push({
-      assetID: '',
-      assetTypeCode: '',
+      assetID: null,
+      assetTypeCode: null,
       sealNumbers: [
         { sealNumber: '' },
         { sealNumber: '' },
@@ -1127,6 +1128,7 @@ export class NewAceManifestComponent implements OnInit {
   }
   // add Function
   addFunction(data) {
+
     this.apiService.postData('eManifests/addACEemanifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -1174,6 +1176,19 @@ export class NewAceManifestComponent implements OnInit {
           this.errorFastCard = false;
         }
       }
+    }
+  }
+
+  changeBroker(s) {
+    if (s != null) {
+      let portIdentifier = this.shipments[s].broker.filerCode;
+
+      const result = this.brokersList.find((elem) => elem.portIdentifier == portIdentifier);
+      if (result) {
+        this.shipments[s].broker.filerCode = result.filerCode;
+        this.shipments[s].broker.portLocation = result.portIdentifier;
+      }
+
     }
   }
 }

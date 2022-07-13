@@ -20,6 +20,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { AccordionModule } from 'primeng/accordion';
 const routes: Routes = [
   { path: 'manifests', component: EManifestsComponent },
   { path: 'ace-manifest', component: NewAceManifestComponent },
@@ -105,6 +106,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     ButtonModule,
     OverlayPanelModule,
     MultiSelectModule,
+    AccordionModule,
     ConfirmPopupModule
   ],
   providers: [{ provide: NgbDateAdapter, useClass: CustomAdapter },
