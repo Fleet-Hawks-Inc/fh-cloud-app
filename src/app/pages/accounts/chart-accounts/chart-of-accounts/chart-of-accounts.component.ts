@@ -1,10 +1,11 @@
 import { AccountService, ListService } from "../../../../services";
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import Constants from "../../../fleet/constants";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import * as _ from "lodash";
+import { Table } from 'primeng/table';
 import { NgForm } from "@angular/forms";
 declare var $: any;
 @Component({
@@ -68,6 +69,10 @@ export class ChartOfAccountsComponent implements OnInit {
   actNoError = false;
   actNameError = false;
   accountsClassObjects = {};
+  _selectedColumns: any[];
+  dataColumns: any[];
+  get = _.get;
+  find = _.find;
   constructor(
     private accountService: AccountService,
     private toaster: ToastrService,
@@ -79,6 +84,25 @@ export class ChartOfAccountsComponent implements OnInit {
     this.fetchAccounts();
     this.getAcClasses();
     this.fetchAccountClassByIDs();
+    this.dataColumns = [
+      { width: '25%', field: 'actName', header: 'Account Name', type: "text" },
+      { width: '15%', field: 'actNo', header: 'Account Number', type: "text" },
+      { width: '15%', field: 'actType', header: 'Account Type', type: "text" },
+      { width: '15%', field: 'actClassID', header: 'Account Class', type: "text" },
+      { width: '24%', field: 'actDesc', header: 'Description', type: "text" },
+    ];
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
 
   preAccounts() {
@@ -209,6 +233,8 @@ export class ChartOfAccountsComponent implements OnInit {
             } else {
               this.lastItemSK = "end";
             }
+            const newArray = _.sortBy(this.accounts, ["actNo"]); // sort by account number
+            this.accounts = newArray;
             this.loaded = true;
           }
         });
@@ -401,7 +427,9 @@ export class ChartOfAccountsComponent implements OnInit {
         }
       });
   }
-
+  clear(table: Table) {
+    table.clear();
+  }
   updateAccount(ID: any) {
     this.submitDisabled = true;
     const data = {

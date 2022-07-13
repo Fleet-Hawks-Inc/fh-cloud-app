@@ -1,0 +1,70 @@
+[
+  {
+    "planCode": "DIS-FREE",
+    "maxVehicles": 3
+  },
+  {
+    "planCode": "DIS-BAS",
+    "maxVehicles": 7
+  },
+  {
+    "planCode": "DIS-STAN",
+    "maxVehicles": 25
+  },
+  {
+    "planCode": "DIS-PRO",
+    "maxVehicles": 75
+  },
+  {
+    "planCode": "DIS-ENT",
+    "maxVehicles": "no_limit"
+  },
+  {
+    "planCode": "REF-BAS",
+    "maxAsset": 3
+  },
+  {
+    "planCode": "REF-STAN",
+    "maxAsset": 25
+  },
+  {
+    "planCode": "REF-PRO",
+    "maxAsset": 75
+  },
+  {
+    "planCode": "REF-ENT",
+    "maxAsset": "no_limit"
+  },
+  {
+    "planCode": "TRA-BASIC",
+    "maxAsset": 3
+  },
+  {
+    "planCode": "TRA-STAN",
+    "maxAsset": 25
+  },
+  {
+    "planCode": "TRA-PRO",
+    "maxAsset": 75
+  },
+  {
+    "planCode": "TRA-ENT",
+    "maxAsset": "no_limit"
+  },
+  {
+    "planCode": "SAF-BAS",
+    "maxVehicles": 3
+  },
+  {
+    "planCode": "SAF-STAN",
+    "maxVehicles": 25
+  },
+  {
+    "planCode": "SAF-PRO",
+    "maxVehicles": 75
+  },
+  {
+    "planCode": "SAF-ENT",
+    "maxVehicles": "no_limit"
+  }
+]

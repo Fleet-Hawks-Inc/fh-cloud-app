@@ -4,6 +4,7 @@ import { from, Subject, throwError } from 'rxjs';
 import { NgForm } from "@angular/forms";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { ModalService } from "../../../../../services/modal.service";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 import {
   catchError,
   debounceTime,
@@ -62,6 +63,7 @@ export class AddReminderComponent implements OnInit {
   };
   vehicles = [];
   users = [];
+  sessionID: string;
   groups = [];
   groupData = {
     groupName: '',
@@ -91,9 +93,11 @@ export class AddReminderComponent implements OnInit {
   private router: Router,
   private toastr: ToastrService,
   private modalService: NgbModal,
+  private routerMgmtService: RouteManagementServiceService,
   private modalServiceOwn: ModalService,
   private location: Location
     ) { 
+      this.sessionID = this.routerMgmtService.serviceRemindersSessionID;
       }
 
   async ngOnInit() {
@@ -206,7 +210,7 @@ export class AddReminderComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-       
+        this.router.navigateByUrl('/fleet/reminders/service-reminder/list/${this.routerMgmtService.serviceReminderUpdated()}');
         this.toastr.success('Service Reminder Added Successfully!');
         this.cancel();
       },
@@ -289,7 +293,7 @@ export class AddReminderComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.submitDisabled = false;
-       
+        this.router.navigateByUrl('/fleet/reminders/service-reminder/list/${this.routerMgmtService.serviceReminderUpdated()}');
         this.toastr.success('Service reminder updated successfully!');
         this.Success = '';
         this.cancel();
