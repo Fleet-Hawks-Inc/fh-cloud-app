@@ -71,7 +71,7 @@ export class DeviceListComponent implements OnInit {
        return;
       }
       this.dataMessage = Constants.FETCHING_DATA;
-      const result: any = await this.apiService.getData(`devices/getDevices/${this.next}?searchTerm=${this.vehicleIdentification}${this.assetIdentification}`).toPromise();
+      const result: any = await this.apiService.getData(`devices/getDevices/${this.next}?searchTerm=${this.vehicleIdentification}`).toPromise();
       if(result.data.length === 0){
         this.dataMessage = Constants.NO_RECORDS_FOUND;
         this.loaded = true;
