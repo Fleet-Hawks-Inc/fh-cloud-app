@@ -46,6 +46,8 @@ export class UsersListComponent implements OnInit {
   }
   newRoles = [];
   searchValue = '';
+    get = _.get;
+  _selectedColumns: any[];
   queryValue = '';
   lastItemSK = "";
   loaded: boolean = false;
@@ -56,7 +58,15 @@ export class UsersListComponent implements OnInit {
   subRole = []
   dataColumns = 
   [
-  { width: '8%', field: 'firstName', header: 'First Name', type: 'text' },
+  { width: '9%', field: 'employeeID', header: 'Employee ID', type: 'text' },
+  { width: '6.5%', field: 'name', header: 'Name', type: 'text' },
+  { width: '8%', field: 'userLoginData.userName', header: 'Username', type: 'text' },
+  { width: '8%', field: 'userType', header: 'UserType', type: 'text' },
+  { width: '8.5%', field: 'userAccount.department', header: 'Department', type: 'text' },
+  { width: '45%', field: 'userSub', header: 'User Roles', type: 'text' },
+  { width: '6.5%', field: 'workPhone', header: 'Phone', type: 'text' },
+  { width: '9%', field: 'workEmail', header: 'Email', type: 'text' },
+  { width: '6.5%', field: 'currentStatus', header: 'Status', type: 'text' },
   ];
 
   constructor(private apiService: ApiService,
@@ -67,9 +77,21 @@ export class UsersListComponent implements OnInit {
 
   ngOnInit() {
     this.fetchUserRoles();
+    this.setToggleOptions();
     this.fetchRoles();
     this.initDataTable();
     this.fetchSubRoles();
+  }
+
+
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+  set selectedColumns(val: any[]) {
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
 
 

@@ -95,35 +95,7 @@
                         <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn
                           [ngStyle]="{ width: dataColumns.width }">
                           <div [ngSwitch]="dataColumns.field">
-                            <!-- Driver Status Filter Customization -->
-                            <span *ngSwitchCase="'currentStatus'">
-                              <div class="flex justify-content-center align-items-center" alignFrozen="left"
-                                pFrozenColumn [frozen]="true">
-                                {{ dataColumns.header }}
-                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
-                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
-                                  [showOperator]="false" matchMode="contains" [showMatchModes]="false"
-                                  [showAddButton]="false" display="menu">
-                                  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                    <p-multiSelect [options]="[
-                                        { name: 'Active', value: 'active' },
-                                        { name: 'InActive', value: 'inActive' },
-                                        { name: 'Out of Service', value: 'outOfService' },
-                                        { name: 'Sold', value: 'sold'},
-                                      ]" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name"
-                                      optionValue="value">
-                                      <ng-template let-option pTemplate="item">
-                                        <div>
-                                          <span class="ml-1">{{
-                                            option.name
-                                            }}</span>
-                                        </div>
-                                      </ng-template>
-                                    </p-multiSelect>
-                                  </ng-template>
-                                </p-columnFilter>
-                              </div>
-                            </span>
+              
                             <span *ngSwitchDefault>
                               <div class="flex justify-content-center align-items-center" alignFrozen="right"
                                 pFrozenColumn [frozen]="true">
@@ -137,29 +109,95 @@
                             </span>
                           </div>
                         </th>
-                        <th style="width: 130px" alignFrozen="right" pFrozenColumn [frozen]="true">
+                        <th style="width: 100px" alignFrozen="right" pFrozenColumn [frozen]="true">
                           Actions
                         </th>
                       </tr>
                     </ng-template>
 
                     <!-- Body Template of Data Table -->
-                    <ng-template pTemplate="body" let-vehicle let-columns="columns" let-rowIndex="rowIndex">
+                    <ng-template pTemplate="body" let-user let-columns="columns" let-rowIndex="rowIndex">
                       <tr>
                         <td *ngFor="let dataColumns of columns" [ngStyle]="{ width: dataColumns.width }"
-                          style="cursor: pointer">
+                          style="cursor: pointer"
+                          routerLink="/manage/users/detail/{{
+                                user.contactID
+                              }}"
+                          >
                           <div [ngSwitch]="dataColumns.field">
-
+                          <span *ngSwitchCase="'employeeID'">
+                            <b>
+                            {{ get(user, dataColumns.field)}}
+                            </b>
+                          </span>  
+                           <span *ngSwitchCase="'name'">
+                             {{ user.firstName | titlecase }}&nbsp;{{ user.lastName | titlecase}}
+                           </span>
+                           <span *ngSwitchCase="'userType'">
+                            {{ get(user, dataColumns.field) | titlecase}}
+                           </span>
+                           <span *ngSwitchCase="'userAccount.department'">
+                             {{
+                                get(user, dataColumns.field)
+                                ? get(user, dataColumns.field)
+                                : "-"
+                                }}
+                           </span>
+                           <span *ngSwitchCase="'userLoginData.userName'">
+                                 {{
+                                get(user, dataColumns.field)
+                                ? get(user, dataColumns.field)
+                                : "-"
+                                }}
+                           </span>
+                           <span *ngSwitchCase="'userSub'">
+                               <span *ngIf="user.userLoginData.userRoles">
+                                <span
+                                  *ngFor="
+                                    let role of user.userLoginData.userRoles;
+                                    let i = index
+                                  "
+                                >
+                                  {{ userRoles[role]
+                                  }}<span
+                                    *ngIf="
+                                      user.userLoginData.userRoles.length > 1 &&
+                                      i !=
+                                        user.userLoginData.userRoles.length - 1
+                                    "
+                                    >,</span
+                                  >
+                                </span>
+                              </span>
+                              <span
+                                *ngIf="
+                                  user.userLoginData.userRoles.length === 0
+                                "
+                              >
+                                -
+                              </span>
+                           </span>
+                            <span *ngSwitchCase="'currentStatus'">
+                              <span class="badge badge-dark p-1">{{
+                                get(user, dataColumns.field) | titlecase
+                                }}</span>
+                            </span>
                             <span *ngSwitchDefault>
-                              {{ get(vehicle, dataColumns.field) }}
+                              {{ get(user, dataColumns.field)}}
                             </span>
                           </div>
                         </td>
-                        <td style="text-align: center; width: 130px" pFrozenColumn alignFrozen="right" [frozen]="true">
-                          <button id="btnEdit" pButton routerLink="/fleet/vehicles/edit/{{
-                              vehicle.vehicleID
-                            }}" type="button" icon="fas fa-user-pen" class="p-button-rounded p-button-text"></button>
-                          <button id="btnDelete" (click)="deleteVehicle(vehicle)" pButton type="button"
+                        <td style="text-align: center; width: 100px" pFrozenColumn alignFrozen="right" [frozen]="true">
+                          <button id="btnEdit" data-toggle="dropdown" pTooltip="Assign Roles" pButton  (click)="fetchRole(user)"
+                            type="button" icon="fas fa-user-plus" style="color:orange" 
+                             data-toggle="modal"
+                             data-target="#assignrole"
+                            class="p-button-rounded p-button-text"></button>
+                          <button id="btnEdit" pTooltip="Edit" pButton routerLink="/manage/users/edit/{{
+                                      user.contactID
+                                    }}"
+                          type="button" icon="fas fa-user-pen" class="p-button-rounded p-button-text"></button>
+                          <button id="btnDelete" pTooltip="Delete" (click)="deleteUser(user.contactID)" pButton type="button"
                             icon="fas fa-user-slash" class="p-button-rounded p-button-danger p-button-text"></button>
                         </td>
                       </tr>
@@ -174,14 +212,14 @@
                     <!-- Summary Section with Load More button -->
                     <ng-template pTemplate="summary" let-columns>
                       <div class="col-lg-12 mt-3 text-center" *ngIf="
-                          lastEvaluatedKey !== 'end' && users.length !== 0
+                          lastItemSK !== 'end' && users.length !== 0
                         ">
                         <button type="button " (click)="onScroll($event)" class="btn btn-success btn-sm text-light">
                           Load More..
                         </button>
                         <br /><br />
                       </div>
-                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey === 'end'">
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK === 'end'">
                         Total Records: {{ users.length }}
                       </div>
                     </ng-template>
