@@ -330,19 +330,20 @@ export class AssetListComponent implements OnInit {
         obj["Make"] = element.assetDetails.manufacturer
         obj["License Plate Number"] = element.assetDetails.licencePlateNumber
         obj["Year"] = element.assetDetails.year
+        obj["ownerShip"] = element.assetDetails.ownerShip ? element.assetDetails.ownerShip: '-'
+        obj["Company Name"] =  element.assetDetails.ownCname
         obj["Annual Safety Date"] = element.assetDetails.annualSafetyDate
         obj["Status"] = element.currentStatus
-        obj["ownerShip"] = element.assetDetails.ownerShip ? element.assetDetails.ownerShip: '-'
-         obj["Company Name"] =  element.assetDetails.ownCname
-        // if(element.assetDetails.ownerShip === 'ownerOperator') {
-        //   obj["Company Name"] =  element.assetDetails.ownerOperator ? this.contactsObjects[element.assetDetails.ownerOperator]:''
-        //   }
-        // if(element.assetDetails.ownerShip === 'rented') {
-        //     obj["Company Name"] =  element.assetDetails.ownCname ? element.assetDetails.ownCname: '-'
-        //   }
-        //   if(element.assetDetails.ownerShip === 'leased') {
-        //     obj["Company Name"] =  element.assetDetails.ownCname ? element.assetDetails.ownCname : '-'
-        //   }
+      
+        if(element.assetDetails.ownerShip === 'ownerOperator') {
+          obj["Company Name"] =  element.assetDetails.ownerOperator ? this.contactsObjects[element.assetDetails.ownerOperator]:''
+          }
+        if(element.assetDetails.ownerShip === 'rented') {
+            obj["Company Name"] =  element.assetDetails.ownCname ? element.assetDetails.ownCname: '-'
+          }
+          if(element.assetDetails.ownerShip === 'leased') {
+            obj["Company Name"] =  element.assetDetails.ownCname ? element.assetDetails.ownCname : '-'
+          }
                 dataObject.push(obj)
             });
             let headers = Object.keys(dataObject[0]).join(',')
