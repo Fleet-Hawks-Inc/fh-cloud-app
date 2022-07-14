@@ -17,7 +17,7 @@
   },
   {
     "planCode": "DIS-ENT",
-    "maxVehicles": "no_limit"
+    "maxVehicles": -1
   },
   {
     "planCode": "REF-BAS",
@@ -33,7 +33,7 @@
   },
   {
     "planCode": "REF-ENT",
-    "maxAsset": "no_limit"
+    "maxAsset": -1
   },
   {
     "planCode": "TRA-BASIC",
@@ -49,7 +49,7 @@
   },
   {
     "planCode": "TRA-ENT",
-    "maxAsset": "no_limit"
+    "maxAsset": -1
   },
   {
     "planCode": "SAF-BAS",
@@ -65,6 +65,6 @@
   },
   {
     "planCode": "SAF-ENT",
-    "maxVehicles": "no_limit"
+    "maxVehicles": -1
   }
 ]

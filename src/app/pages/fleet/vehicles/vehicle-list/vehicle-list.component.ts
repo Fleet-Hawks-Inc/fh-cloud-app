@@ -156,17 +156,20 @@ export class VehicleListComponent implements OnInit {
       }
 
       if (data.length > 0) {
-
         let vehicleTotal = Math.max(...data.map(o => o.vehicles))
-        this.isUpgrade = curVehCount >= vehicleTotal ? true : false;
-        if (this.isUpgrade) {
+        if (vehicleTotal == -1) { // -1 returns when subscribed Enterprise plan with no limit
+          this.isUpgrade = false;
+        } else {
+          this.isUpgrade = curVehCount >= vehicleTotal ? true : false;
+          if (this.isUpgrade) {
 
-          let obj = {
-            summary: Constants.RoutingPlanExpired,
-            detail: 'You will not be able to add more vehicles.',
-            severity: 'error'
+            let obj = {
+              summary: Constants.RoutingPlanExpired,
+              detail: 'You will not be able to add more vehicles.',
+              severity: 'error'
+            }
+            this.dashboardUtilityService.notify(obj);
           }
-          this.dashboardUtilityService.notify(obj);
         }
       }
     })

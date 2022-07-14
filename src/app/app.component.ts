@@ -42,6 +42,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
     private modalService: NgbModal,
     private listService: ListService,
   ) {
+
     // left sidebar collapsed on overview - fleet page
     const rootHtml = document.getElementsByTagName("html")[0];
 
@@ -99,8 +100,8 @@ export class AppComponent implements OnInit, AfterContentChecked {
 
   async ngOnInit() {
     this.setTitle();
-    this.listenToLoading();
-    this.getSubscriptionDetails();
+    // this.listenToLoading();
+
     window.addEventListener(
       "storage",
       (event) => {
