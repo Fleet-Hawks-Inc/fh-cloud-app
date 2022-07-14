@@ -23,7 +23,7 @@ export class DeviceListComponent implements OnInit {
         { width: '20%', field: 'deviceType', header: 'Type', type: "text" },
         { width: '20%', field: 'deviceSerialNo', header: 'Serial/IMEI', type: "text" },
         { width: '20%', field: 'deviceName', header: 'Device Name', type: "text" },
-        { width: '20%', field: 'Vehicle/Asset', header: 'Vehicle/Asset', type: "text" },
+        { width: '20%', field: 'vehicle.vehicleIdentification', header: 'Vehicle/Asset', type: "text" },
         { width: '20%', field: 'deviceStatus', header: 'Status', type: "text" },
     ];
     
