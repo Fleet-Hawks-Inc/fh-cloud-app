@@ -82,6 +82,7 @@ export class AddDeviceComponent implements OnInit {
 
   private async isSubscriptionsValid() {
     this.dashboardUtilityService.refreshDeviceCount = true;
+    this.dashboardUtilityService.refreshPlans = true;
     let curDevCount = await this.dashboardUtilityService.fetchDevicesCount('DashCam');
     if (curDevCount) {
       this.listService.maxUnit.subscribe((res: any) => {
@@ -95,18 +96,21 @@ export class AddDeviceComponent implements OnInit {
         if (data.length > 0) {
 
           let vehicleTotal = Math.max(...data.map(o => o.vehicles))
-          this.isUpgrade = curDevCount <= vehicleTotal ? true : false;
-          console.log('curDevCount', curDevCount, vehicleTotal)
-          if (this.isUpgrade) {
-            this.deviceVehicle = this.deviceVehicle.filter(elem => {
-              return elem.value != 'DashCam';
-            })
-            let obj = {
-              summary: Constants.SafetyPlanExpired,
-              detail: 'You will not be able to add more vehicles with DashCam device.',
-              severity: 'error'
+          if (vehicleTotal == -1) { // -1 returns when subscribed Enterprise plan with no limit
+            this.isUpgrade = false;
+          } else {
+            this.isUpgrade = curDevCount <= vehicleTotal ? true : false;
+            if (this.isUpgrade) {
+              this.deviceVehicle = this.deviceVehicle.filter(elem => {
+                return elem.value != 'DashCam';
+              })
+              let obj = {
+                summary: Constants.SafetyPlanExpired,
+                detail: 'You will not be able to add more vehicles with DashCam device.',
+                severity: 'error'
+              }
+              this.dashboardUtilityService.notify(obj);
             }
-            this.dashboardUtilityService.notify(obj);
           }
         }
       })

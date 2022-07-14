@@ -31,8 +31,8 @@ module Constants {
   export const NO_LOAD_DATA = 'Please search by typing';
   export const NO_LOAD_FOUND = 'No Data Found';
 
-  export const contactMsg = 'Please subscribe one of the plans or contact support@fleethawks.com';
-  export const RoutingPlanExpired = 'Routing & Dispatch Subscription Expired!';
+  export const contactMsg = 'Please upgrade your plan or contact support@fleethawks.com';
+  export const RoutingPlanExpired = 'Routing & Dispatch Subscription Error!';
 }
 
 export default Constants;
