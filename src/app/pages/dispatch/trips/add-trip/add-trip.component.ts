@@ -41,6 +41,7 @@ declare var $: any;
 export class AddTripComponent implements OnInit {
   assignAssetModel: boolean = false;
   assignConModel: boolean = false;
+  manualAstDisplay: boolean = false;
 
   @ViewChild("orderModal", { static: true })
   orderModal: TemplateRef<any>;
@@ -3262,7 +3263,7 @@ export class AddTripComponent implements OnInit {
 
   addManualAsset() {
     this.submitDisabled = true;
-    this.assignAssetModel = false;
+
     this.apiService
       .postData("assets/addManualAsset", this.assetData)
       .subscribe({
@@ -3291,9 +3292,11 @@ export class AddTripComponent implements OnInit {
             assetIdentification: "",
             isTemp: true,
           };
+          this.assets = [];
           this.fetchAssets();
           this.manualAssetModel = false;
-          this.openTripAssignModel();
+          this.assignAssetModel = true;
+
         },
       });
   }

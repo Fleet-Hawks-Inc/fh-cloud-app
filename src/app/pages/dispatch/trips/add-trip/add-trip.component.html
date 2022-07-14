@@ -1009,7 +1009,7 @@
           <th width="25%">
             <div class="d-flex justify-content-between align-items-center">
               <span>Asset</span>
-              <span><button (click)="manualAstDisplay = true;" class="btn btn-success btn-sm">
+              <span><button (click)="manualAssetModel = true;" class="btn btn-success btn-sm">
                   Manual Asset
                 </button></span>
             </div>
@@ -1371,7 +1371,7 @@
 </div>
 
 
-<p-dialog header="Add Manual Asset" [style]="{width: '400px'}" [(visible)]="manualAstDisplay">
+<p-dialog header="Add Manual Asset" [modal]="true" [style]="{width: '400px'}" [(visible)]="manualAssetModel">
   <form class="form-horizontal form-bordered" method="get" name="form" id="form_" #ManualAssetF="ngForm"
     (ngSubmit)="ManualAssetF.form.valid && addManualAsset()" novalidate ngNativeValidate>
     <div class="row">
@@ -1388,17 +1388,20 @@
             </div>
           </div>
         </div>
+        <div class="mt-3 text-right">
+
+          <button class="btn btn-default mr-2" (click)="manualAssetModel = false;">
+            Close
+          </button>
+          <button type="submit" [disabled]="submitDisabled" class="btn btn-success">
+            Submit
+          </button>
+        </div>
+
+
       </div>
     </div>
-    <ng-template pTemplate="footer">
 
-      <button class="btn btn-default mr-2" (click)="manualAstDisplay = false;">
-        Close
-      </button>
-      <button type="submit" [disabled]="submitDisabled" class="btn btn-success">
-        Submit
-      </button>
-    </ng-template>
 
   </form>
 </p-dialog>
@@ -1413,8 +1416,8 @@
     <a href="javascript:;" class="btn btn-success mr-2 mt-3" (click)="isExpDisplay= false;assignAssetModel = true;">
       Cancel</a>
     <a href="javascript:;" *ngIf="isAllType == ''" class="btn btn-success mr-2 mt-3" (click)="assignUnits(isAllType)">
-      Continue to assign {{isAll}}</a>
+      Continue to assign</a>
     <a href="javascript:;" *ngIf="isAllType != ''" class="btn btn-success mr-2 mt-3" (click)="assignUnits(isAllType)">
-      Continue to assign {{isAll}}</a>
+      Continue to assign</a>
   </ng-template>
 </p-dialog>
