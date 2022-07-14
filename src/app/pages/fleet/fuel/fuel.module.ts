@@ -20,14 +20,14 @@ import { FuelEntryListComponent } from "./fuel-entry-list/fuel-entry-list.compon
 import { FuelEntryDetailsComponent } from "./fuel-entry-details/fuel-entry-details.component";
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { TooltipModule } from 'primeng/tooltip';
+import { ButtonModule } from "primeng/button";
 import { MenuModule } from 'primeng/menu';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
+import { OverlayPanelModule } from "primeng/overlaypanel";
+
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -130,7 +130,8 @@ const routes: Routes = [
     SplitButtonModule,
     CalendarModule,
     AutoCompleteModule,
-    DropdownModule
+    DropdownModule,
+    OverlayPanelModule,
   ],
   providers: [
     unsavedChangesGuard,
