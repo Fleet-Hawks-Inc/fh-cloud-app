@@ -339,6 +339,17 @@
                                     ) | titlecase
                                   }}
                                 </span>
+                                <span *ngSwitchCase="'uom'">
+                                  <span *ngIf="fuelEntry.data.uom === 'L'">
+                                    {{fuelEntry.data.uom === 'L' ? 'LTR' : null}}
+                                  </span>
+                                  <span *ngIf="fuelEntry.data.uom === 'litre'">
+                                    {{fuelEntry.data.uom === 'litre' ? 'LTR' : null}}
+                                  </span>
+                                  <span *ngIf="fuelEntry.data.uom === 'G'">
+                                    {{fuelEntry.data.uom === 'G' ? 'GL' : null}}
+                                  </span>
+                                </span>
                                 <span *ngSwitchDefault>
                                   {{ get(fuelEntry, dataColumns.field) }}</span
                                 >
