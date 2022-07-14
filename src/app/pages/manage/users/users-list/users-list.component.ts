@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators'
 import { from } from 'rxjs'
+import * as moment from 'moment'
 import { Table } from 'primeng/table';
 declare var $: any;
 
@@ -75,7 +76,7 @@ export class UsersListComponent implements OnInit {
     private httpClient: HttpClient,
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.fetchUserRoles();
     this.setToggleOptions();
     this.fetchRoles();
@@ -86,7 +87,7 @@ export class UsersListComponent implements OnInit {
 
   setToggleOptions() {
     this.selectedColumns = this.dataColumns;
-  }
+}
   @Input() get selectedColumns(): any[] {
     return this._selectedColumns;
   }
@@ -118,7 +119,6 @@ export class UsersListComponent implements OnInit {
   setUser(data: any) {
     this.searchValue = `${data.firstName} ${data.lastName}`;
     this.searchValue = this.searchValue.toLowerCase().trim();
-
     this.contactID = data.contactID;
     this.suggestedUsers = [];
   }
@@ -209,15 +209,16 @@ export class UsersListComponent implements OnInit {
       });
   }
 
-  initDataTable() {
+  async initDataTable() {
     if (this.lastItemSK !== 'end') {
       if (this.searchValue != '') {
         this.queryValue = this.searchValue;
       }
-      this.apiService.getData(`contacts/fetch/employee/records?searchValue=${encodeURIComponent(this.queryValue)}&lastKey=${this.lastItemSK}`)
+      await this.apiService.getData(`contacts/fetch/employee/records?searchValue=${encodeURIComponent(this.queryValue)}&lastKey=${this.lastItemSK}`)
         .subscribe((result: any) => {
           if (result.Items.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.loaded = true;
           }
           if (result.Items.length > 0) {
             if (result.LastEvaluatedKey !== undefined) {
@@ -241,8 +242,17 @@ export class UsersListComponent implements OnInit {
     this.dataMessage = Constants.FETCHING_DATA;
     this.initDataTable();
   }
-
-  onScroll() {
+ 
+   refreshData() {
+    this.users = [];
+    this.lastItemSK = '';
+    this.loaded = false;
+    this.initDataTable();
+    this.dataMessage = Constants.FETCHING_DATA;
+  }
+  
+ 
+  onScroll = async(event: any) => {
     if (this.loaded) {
       this.initDataTable();
     }
@@ -288,4 +298,14 @@ export class UsersListComponent implements OnInit {
     this.userEndPoint = this.pageLength;
     this.userDraw = 0;
   }
+  
+  
+  
+      /**
+     * Clears the table filters
+     * @param table Table 
+     */
+    clear(table: Table) {
+        table.clear();
+    }
 }
