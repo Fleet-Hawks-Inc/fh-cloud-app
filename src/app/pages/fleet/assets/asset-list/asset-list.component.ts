@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { ApiService } from '../../../../services';
+import { ApiService, DashboardUtilityService, ListService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services';
@@ -10,7 +10,9 @@ import { OnboardDefaultService } from '../../../../services/onboard-default.serv
 import * as _ from 'lodash';
 import { Table } from 'primeng/table';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import { Subscription } from 'rxjs/internal/Subscription';
 import * as moment from 'moment';
+
 declare var $: any;
 
 @Component({
@@ -114,6 +116,8 @@ export class AssetListComponent implements OnInit {
   get = _.get;
   isSearch = false;
 
+  subscription: Subscription;
+
   dataColumns = [
     { width: '11%', field: 'assetIdentification', header: 'Asset Name/Number', type: "text" },
     { width: '8%', field: 'VIN', header: 'VIN', type: "text" },
@@ -128,13 +132,15 @@ export class AssetListComponent implements OnInit {
     { width: '8%', field: 'isImport', header: 'Added By', type: "text" },
 
   ];
-
+  isUpgrade = false;
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private httpClient: HttpClient,
+    private listService: ListService,
     private hereMap: HereMapService,
+    private dashboardUtilityService: DashboardUtilityService,
     private onboard: OnboardDefaultService) { }
 
   async ngOnInit(): Promise<void> {
@@ -144,7 +150,40 @@ export class AssetListComponent implements OnInit {
     this.fetchGroups();
     await this.initDataTable();
     this.fetchContacts();
+    this.isSubscriptionsValid();
+  }
 
+  private async isSubscriptionsValid() {
+    let curAstCount = await this.dashboardUtilityService.fetchAssetsCount();
+    this.listService.maxUnit.subscribe((res: any) => {
+      if (res) {
+        let data = [];
+        for (const item of res) {
+          if (item.planCode.startsWith('TRA-') || item.planCode.startsWith('REF-')) {
+            data.push({ assets: item.assets, planCode: item.planCode })
+          }
+
+        }
+        if (data.length > 0) {
+
+          let assetTotal = Math.max(...data.map(o => o.assets))
+          this.isUpgrade = curAstCount >= assetTotal ? true : false;
+          if (this.isUpgrade) {
+
+            let obj = {
+              summary: Constants.RoutingPlanExpired,
+              detail: 'You will not be able to add more assets.',
+              severity: 'error'
+            }
+            this.dashboardUtilityService.notify(obj);
+          }
+        }
+      }
+    })
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   setToggleOptions() {
@@ -316,33 +355,33 @@ export class AssetListComponent implements OnInit {
       return false;
     }
   }
-  
-  
-  generateDriverCSV() {
-        if (this.fullExportAsset.length > 0) {
+
+
+    generateAssetCSV() {
+        if (this.allData.length > 0) {
             let dataObject = []
             let csvArray = []
-            this.fullExportAsset.forEach(element => {
+            this.allData.forEach(element => {
                 let obj = {}
         obj["Asset Name/Number"] = element.assetIdentification
         obj["VIN"] = element.VIN
         obj["Asset Type"] = element.assetType
-        obj["Make"] = element.assetDetails.manufacturer
-        obj["License Plate Number"] = element.assetDetails.licencePlateNumber
-        obj["Year"] = element.assetDetails.year
-        obj["ownerShip"] = element.assetDetails.ownerShip ? element.assetDetails.ownerShip: '-'
-        obj["Company Name"] =  element.assetDetails.ownCname
-        obj["Annual Safety Date"] = element.assetDetails.annualSafetyDate
+        obj["Make"] = element.manufacturer
+        obj["License Plate Number"] = element.licencePlateNumber
+        obj["Year"] = element.year
+        obj["ownerShip"] = element.ownerShip ? element.ownerShip: '-'
+        obj["Company Name"] =  element.ownCname
+        obj["Annual Safety Date"] = element.annualSafetyDate
         obj["Status"] = element.currentStatus
       
-        if(element.assetDetails.ownerShip === 'ownerOperator') {
-          obj["Company Name"] =  element.assetDetails.ownerOperator ? this.contactsObjects[element.assetDetails.ownerOperator]:''
+        if(element.ownerShip === 'ownerOperator') {
+          obj["Company Name"] =  element.ownerOperator ? this.contactsObjects[element.ownerOperator]:''
           }
-        if(element.assetDetails.ownerShip === 'rented') {
-            obj["Company Name"] =  element.assetDetails.ownCname ? element.assetDetails.ownCname: '-'
+        if(element.ownerShip === 'rented') {
+            obj["Company Name"] =  element.ownCname ? element.ownCname: '-'
           }
-          if(element.assetDetails.ownerShip === 'leased') {
-            obj["Company Name"] =  element.assetDetails.ownCname ? element.assetDetails.ownCname : '-'
+          if(element.ownerShip === 'leased') {
+            obj["Company Name"] =  element.ownCname ? element.ownCname : '-'
           }
                 dataObject.push(obj)
             });
@@ -359,7 +398,7 @@ export class AssetListComponent implements OnInit {
             if (link.download !== undefined) {
                 const url = URL.createObjectURL(blob);
                 link.setAttribute('href', url);
-                link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Driver-Report.csv`);
+                link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Asset-List.csv`);
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -370,24 +409,8 @@ export class AssetListComponent implements OnInit {
         }
     }
    
-  
-   requiredExport() {
-        this.apiService.getData(`assets/fetch/assetList`).subscribe((result: any) => {
-            this.fullExportAsset = result.Items;
-            this.generateDriverCSV();
-           console.log('export',this.fullExportAsset);
-        })
-     }
-     
-      requiredCSV() {
-        if (this.assetIdentification !== '' || this.assetType !== null) {
-          this.assetID = '';
-            this.fullExportDriver = this.allData
-            this.generateDriverCSV();
-        } else {
-            this.requiredExport();
-        }
-        }
+
+ 
 
   clearInput() {
     this.suggestedAssets = null;
