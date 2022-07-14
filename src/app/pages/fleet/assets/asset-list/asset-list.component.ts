@@ -10,9 +10,7 @@ import { OnboardDefaultService } from '../../../../services/onboard-default.serv
 import * as _ from 'lodash';
 import { Table } from 'primeng/table';
 import { NgSelectComponent } from '@ng-select/ng-select';
-import { Subscription } from 'rxjs/internal/Subscription';
 import * as moment from 'moment';
-
 declare var $: any;
 
 @Component({
@@ -116,8 +114,6 @@ export class AssetListComponent implements OnInit {
   get = _.get;
   isSearch = false;
 
-  subscription: Subscription;
-
   dataColumns = [
     { width: '11%', field: 'assetIdentification', header: 'Asset Name/Number', type: "text" },
     { width: '8%', field: 'VIN', header: 'VIN', type: "text" },
@@ -132,15 +128,17 @@ export class AssetListComponent implements OnInit {
     { width: '8%', field: 'isImport', header: 'Added By', type: "text" },
 
   ];
+
   isUpgrade = false;
+
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private httpClient: HttpClient,
-    private listService: ListService,
     private hereMap: HereMapService,
     private dashboardUtilityService: DashboardUtilityService,
+    private listService: ListService,
     private onboard: OnboardDefaultService) { }
 
   async ngOnInit(): Promise<void> {
@@ -154,6 +152,8 @@ export class AssetListComponent implements OnInit {
   }
 
   private async isSubscriptionsValid() {
+    this.dashboardUtilityService.refreshAstCount = true;
+    this.dashboardUtilityService.refreshPlans = true;
     let curAstCount = await this.dashboardUtilityService.fetchAssetsCount();
     this.listService.maxUnit.subscribe((res: any) => {
       if (res) {
@@ -162,28 +162,28 @@ export class AssetListComponent implements OnInit {
           if (item.planCode.startsWith('TRA-') || item.planCode.startsWith('REF-')) {
             data.push({ assets: item.assets, planCode: item.planCode })
           }
-
         }
+
         if (data.length > 0) {
 
           let assetTotal = Math.max(...data.map(o => o.assets))
-          this.isUpgrade = curAstCount >= assetTotal ? true : false;
-          if (this.isUpgrade) {
+          if (assetTotal == -1) { // -1 returns when subscribed Enterprise plan with no limit
+            this.isUpgrade = false;
+          } else {
+            this.isUpgrade = curAstCount >= assetTotal ? true : false;
+            if (this.isUpgrade) {
 
-            let obj = {
-              summary: Constants.RoutingPlanExpired,
-              detail: 'You will not be able to add more assets.',
-              severity: 'error'
+              let obj = {
+                summary: Constants.RoutingPlanExpired,
+                detail: 'You will not be able to add more assets.',
+                severity: 'error'
+              }
+              this.dashboardUtilityService.notify(obj);
             }
-            this.dashboardUtilityService.notify(obj);
           }
         }
       }
     })
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 
   setToggleOptions() {
@@ -369,19 +369,20 @@ export class AssetListComponent implements OnInit {
         obj["Make"] = element.assetDetails.manufacturer
         obj["License Plate Number"] = element.assetDetails.licencePlateNumber
         obj["Year"] = element.assetDetails.year
-        obj["Annual Safety Date"] = element.assetDetails.annualSafetyDate
-        obj["Status"] = element.currentStatus
         obj["ownerShip"] = element.assetDetails.ownerShip ? element.assetDetails.ownerShip : '-'
         obj["Company Name"] = element.assetDetails.ownCname
-        // if(element.assetDetails.ownerShip === 'ownerOperator') {
-        //   obj["Company Name"] =  element.assetDetails.ownerOperator ? this.contactsObjects[element.assetDetails.ownerOperator]:''
-        //   }
-        // if(element.assetDetails.ownerShip === 'rented') {
-        //     obj["Company Name"] =  element.assetDetails.ownCname ? element.assetDetails.ownCname: '-'
-        //   }
-        //   if(element.assetDetails.ownerShip === 'leased') {
-        //     obj["Company Name"] =  element.assetDetails.ownCname ? element.assetDetails.ownCname : '-'
-        //   }
+        obj["Annual Safety Date"] = element.assetDetails.annualSafetyDate
+        obj["Status"] = element.currentStatus
+        obj["Added By"] = element.isImport ? 'Imported' : 'Manual'
+        if (element.assetDetails.ownerShip === 'ownerOperator') {
+          obj["Company Name"] = element.assetDetails.ownerOperator ? this.contactsObjects[element.assetDetails.ownerOperator] : ''
+        }
+        if (element.assetDetails.ownerShip === 'rented') {
+          obj["Company Name"] = element.assetDetails.ownCname ? element.assetDetails.ownCname : '-'
+        }
+        if (element.assetDetails.ownerShip === 'leased') {
+          obj["Company Name"] = element.assetDetails.ownCname ? element.assetDetails.ownCname : '-'
+        }
         dataObject.push(obj)
       });
       let headers = Object.keys(dataObject[0]).join(',')
@@ -413,7 +414,6 @@ export class AssetListComponent implements OnInit {
     this.apiService.getData(`assets/fetch/assetList`).subscribe((result: any) => {
       this.fullExportAsset = result.Items;
       this.generateDriverCSV();
-      console.log('export', this.fullExportAsset);
     })
   }
 
