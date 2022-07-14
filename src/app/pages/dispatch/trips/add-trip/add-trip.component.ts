@@ -28,7 +28,6 @@ import { v4 as uuidv4 } from "uuid";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
-import { ConfirmationService, ConfirmEventType, MessageService } from 'primeng/api';
 import { constants } from "buffer";
 import * as _ from "lodash";
 
@@ -38,13 +37,10 @@ declare var $: any;
   selector: "app-add-trip",
   templateUrl: "./add-trip.component.html",
   styleUrls: ["./add-trip.component.css"],
-  providers: [ConfirmationService, MessageService]
 })
 export class AddTripComponent implements OnInit {
-  @ViewChild("assignAssetModel", { static: true })
-  assignAssetModel: TemplateRef<any>;
-  @ViewChild("assignConfirmationModal", { static: true })
-  assignConfirmationModal: TemplateRef<any>;
+  assignAssetModel: boolean = false;
+  assignConModel: boolean = false;
 
   @ViewChild("orderModal", { static: true })
   orderModal: TemplateRef<any>;
@@ -225,6 +221,7 @@ export class AddTripComponent implements OnInit {
   mapOrderActiveDisabled = false;
   mapRouteActiveDisabled = false;
   submitDisabled = false;
+  manualAssetModel = false;
   orderStops = [];
   isEdit = false;
   tripNoDisabled = false;
@@ -251,10 +248,6 @@ export class AddTripComponent implements OnInit {
     assetIdentification: "",
     isTemp: true,
   };
-
-  tripModalRef: any;
-  manualAssetRef: any;
-  assignConfirmModal: any;
 
   lastFtLOrderSK = "";
   lastLtlOrderSK = "";
@@ -288,6 +281,8 @@ export class AddTripComponent implements OnInit {
   mDrvValidate: string;
   coDrvValidate: string;
   vehicleValidate: string;
+  isExpDisplay: boolean = false;
+  isAllType = '';
 
   constructor(
     private apiService: ApiService,
@@ -298,7 +293,6 @@ export class AddTripComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private location: Location,
     private hereMap: HereMapService,
-    private confirmationService: ConfirmationService, private messageService: MessageService,
     private countryStateCity: CountryStateCityService,
     private el: ElementRef, // public selectionType: SelectionType, // public columnMode: ColumnMode,
     private routeMnagementSvc: RouteManagementServiceService
@@ -1221,7 +1215,7 @@ export class AddTripComponent implements OnInit {
       } else {
         $("#cell11").prop("disabled", false);
       }
-      this.tripModalRef.close();
+      this.assignAssetModel = false;
       //$('#assetModal').modal('hide');
     } else if (this.tempTextFieldValues.type === "edit") {
       let index = this.tempTextFieldValues.index;
@@ -1271,13 +1265,13 @@ export class AddTripComponent implements OnInit {
             element.disablecarr = true;
           }
         }
-        this.assignConfirmModal.close();
+        this.assignConModel = false;
       }
 
       this.getStateWiseMiles();
       this.emptyAssetModalFields();
-      this.tripModalRef.close();
-      // $('#assetModal').modal('hide');
+      this.assignAssetModel = false;
+      this.isExpDisplay = false;
     }
   }
 
@@ -1383,7 +1377,6 @@ export class AddTripComponent implements OnInit {
   }
 
   assetsChange($event, type) {
-    console.log('$event', $event)
     if ($event.length == 0) {
       this.assetsValidate = [];
     }
@@ -1449,7 +1442,8 @@ export class AddTripComponent implements OnInit {
     }
   }
 
-  validateUnits(type = '') {
+  async validateUnits(type = '') {
+
 
     let drivers = [];
     if (this.mDrvValidate != '' && this.mDrvValidate != undefined) {
@@ -1463,30 +1457,26 @@ export class AddTripComponent implements OnInit {
       vehicle: this.vehicleValidate ? this.vehicleValidate : '',
       assets: _.uniq(this.assetsValidate),
     }
-    console.log('data', data)
 
-    let result: any = this.apiService.getData(`trips/validate-units/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
+    let result: any = await this.apiService.getData(`trips/validate-units/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
+    this.isAllType = type;
     if (result && result.length > 0) {
       this.expiredErrors = result;
-      this.confirmationService.confirm({
-        message: 'Are you sure that you want to proceed?',
-        header: 'Confirmation',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {
-          this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted' });
-        },
-        reject: (type) => {
-          switch (type) {
-            case ConfirmEventType.REJECT:
-              this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
-              break;
-            case ConfirmEventType.CANCEL:
-              this.messageService.add({ severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled' });
-              break;
-          }
-        }
-      });
+      this.isExpDisplay = true;
+    } else {
+      this.saveAssetModalData('');
     }
+
+  }
+
+  assignUnits(type) {
+    if (type == 'populate') {
+      this.assignConModel = true;
+      this.isExpDisplay = false;
+      return;
+    }
+    this.saveAssetModalData(type);
+    this.isExpDisplay = false;
   }
 
   async onAddTrip() {
@@ -3123,16 +3113,9 @@ export class AddTripComponent implements OnInit {
   }
 
   showConfirmationPopup() {
-    let ngbModalOptions: NgbModalOptions = {
-      backdrop: "static",
-      keyboard: false,
-      windowClass: "assign-confirm__main",
-    };
-    this.tripModalRef.close();
-    this.assignConfirmModal = this.modalService.open(
-      this.assignConfirmationModal,
-      ngbModalOptions
-    );
+    this.assignAssetModel = false;
+    this.assignConModel = true;
+    this.isExpDisplay = false;
   }
 
   locationModel(type, index = "") {
@@ -3277,20 +3260,9 @@ export class AddTripComponent implements OnInit {
     }
   }
 
-  openManualAsset(modal: any) {
-    this.tripModalRef.close();
-    let ngbModalOptions: NgbModalOptions = {
-      backdrop: "static",
-      keyboard: false,
-      windowClass: "asset-manual__main",
-      backdropClass: "light-blue-backdrop",
-    };
-    this.manualAssetRef = this.modalService.open(modal, ngbModalOptions);
-  }
-
   addManualAsset() {
     this.submitDisabled = true;
-    this.tripModalRef.close();
+    this.assignAssetModel = false;
     this.apiService
       .postData("assets/addManualAsset", this.assetData)
       .subscribe({
@@ -3320,22 +3292,14 @@ export class AddTripComponent implements OnInit {
             isTemp: true,
           };
           this.fetchAssets();
-          this.manualAssetRef.close();
+          this.manualAssetModel = false;
           this.openTripAssignModel();
         },
       });
   }
 
   openTripAssignModel() {
-    let ngbModalOptions: NgbModalOptions = {
-      backdrop: "static",
-      keyboard: false,
-      windowClass: "trips-assign__main",
-    };
-    this.tripModalRef = this.modalService.open(
-      this.assignAssetModel,
-      ngbModalOptions
-    );
+    this.assignAssetModel = true;
   }
 
   copyRow(index) {

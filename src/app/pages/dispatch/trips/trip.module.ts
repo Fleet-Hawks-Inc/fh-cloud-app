@@ -30,7 +30,6 @@ import { AddTripComponent } from "./add-trip/add-trip.component";
 import { TripDetailComponent } from "./trip-detail/trip-detail.component";
 import { TripListComponent } from "./trip-list/trip-list.component";
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -145,7 +144,6 @@ const routes: Routes = [
     ToastModule,
     TooltipModule,
     SelectButtonModule,
-    ConfirmDialogModule
   ],
   providers: [
     unsavedChangesGuard,
