@@ -159,7 +159,7 @@ export class AlarmComponent implements OnInit {
             if (link.download !== undefined) {
                 const url = URL.createObjectURL(blob);
                 link.setAttribute('href', url);
-                link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Driver-Report.csv`);
+                link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Alarm-Report.csv`);
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
