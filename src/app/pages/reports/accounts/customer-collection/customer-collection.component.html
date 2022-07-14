@@ -47,7 +47,7 @@
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark text-capitalize">
+            <div class="bg-white p-3 text-dark">
               <div class="form-group row pt-2">
                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
                   <p-table #myTable [value]="allCustomerData" [resizableColumns]="true" columnResizeMode="expand"
@@ -88,28 +88,16 @@
                             </div>
                           </span>
                         </th>
-
-                        <!-- <th style="width: 8%">
-                          30-45
-                        </th>
-
-                        <th style="width: 7%">
-                          45-60
-                        </th>
-
-                        <th style="width: 8%" alignFrozen="right" pFrozenColumn [frozen]="true">
-                          60+
-                        </th> -->
                       </tr>
                     </ng-template>
 
                     <ng-template pTemplate="body" let-customer let-columns="columns" let-rowIndex="rowIndex">
                       <tr>
-                        <!-- <td> -->
-                        <!-- <div [ngSwitch]="dataColumns.field"> -->
+                 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'customerName' }).width
-                        }" style="height: 40px;"> {{customer.customerName ? customer.customerName : "-"}}</td>
+
+                        }"> {{(customer.customerName ? customer.customerName : "-") | titlecase}}</td>
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'customerEmail' }).width

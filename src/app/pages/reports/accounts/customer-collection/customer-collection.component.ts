@@ -93,7 +93,7 @@ export class CustomerCollectionComponent implements OnInit {
       { width: '6%', field: 'elapsedDays', header: 'Days', type: "text" },
       { width: '7%', field: 'Age30', header: '30-45', type: "text" },
       { width: '7%', field: 'Age45', header: '45-60', type: "text" },
-      { width: '8%', field: 'Age60', header: '60-90', type: "text" },
+      { width: '8%', field: 'Age60', header: '60-90+', type: "text" },
 
 
     ];
