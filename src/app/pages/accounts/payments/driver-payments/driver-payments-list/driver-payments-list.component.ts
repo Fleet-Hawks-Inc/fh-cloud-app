@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import Constants from "src/app/pages/fleet/constants";
-import { AccountService, ApiService, DashboardUtilityService } from "src/app/services";
+import { AccountService, ApiService, DashboardUtilityService, ListService } from "src/app/services";
 
 @Component({
   selector: "app-driver-payments-list",
@@ -33,7 +33,8 @@ export class DriverPaymentsListComponent implements OnInit {
     private toaster: ToastrService,
     private accountService: AccountService,
     private apiService: ApiService,
-    private dashboardUtilityService: DashboardUtilityService
+    private dashboardUtilityService: DashboardUtilityService,
+    private listService: ListService,
   ) { }
 
   async ngOnInit() {
@@ -160,10 +161,17 @@ export class DriverPaymentsListComponent implements OnInit {
     this.fetchDriverPayments();
   }
 
-  async voidPayment(paymentID) {
-    console.log('innnnnnn')
+  async voidPayment(payData) {
+    console.log('innnnnnn') 
+    let payObj = {
+      showModal: true,
+      page: "list",
+      paymentNo: payData.paymentNo,
+      paymentID: payData.paymentID
+    };
+    this.listService.triggerVoidDriverPayment(payObj);
 
-    let result = await this.accountService.getData(`driver-payments/void/${paymentID}`).toPromise();
-    console.log('result', result);
+    // let result = await this.accountService.getData(`driver-payments/void/${paymentID}`).toPromise();
+    // console.log('result', result);
   }
 }

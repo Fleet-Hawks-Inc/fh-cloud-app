@@ -20,9 +20,10 @@ export class PaymentPdfsComponent implements OnInit {
     private accountService: AccountService,
     private modalService: NgbModal,
   ) { }
-  @ViewChild("driverPaymentDetail", { static: true })
-  modalContent: TemplateRef<any>;
+  @ViewChild("driverPaymentDetail", { static: true }) modalContent: TemplateRef<any>;
+  @ViewChild("voidPayment", { static: true }) voidModalContent: TemplateRef<any>;
   subscription: Subscription;
+  voidSubscription: Subscription;
 
   pdfDetails = {
     name: "",
@@ -126,6 +127,12 @@ export class PaymentPdfsComponent implements OnInit {
   }
   multiPay = false;
 
+  voidData = {
+    payID: '',
+    reason: ''
+  }
+  voidDisable = false;
+
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
       async (res: any) => {
@@ -222,6 +229,24 @@ export class PaymentPdfsComponent implements OnInit {
         }
       }
     );
+
+    this.voidSubscription = this.listService.voidPayment.subscribe(async (res: any) => {
+      console.log('resres', res)
+      if (res.showModal && res.length != 0) {
+        let ngbModalOptions: NgbModalOptions = {
+          backdrop: "static",
+          keyboard: false,
+          windowClass: "voidPaymentModal-prog__main",
+        };
+        res.showModal = false;
+        this.modelRef = this.modalService
+          .open(this.voidModalContent, ngbModalOptions)
+          .result.then(
+            (result) => { },
+            (reason) => { }
+          );
+      }
+    })
   }
 
   async generatePaymentPDF() {
@@ -258,6 +283,7 @@ export class PaymentPdfsComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.voidSubscription.unsubscribe();
   }
 
   async getSettlementData() {
@@ -628,4 +654,12 @@ export class PaymentPdfsComponent implements OnInit {
     this.companyLogo = result.logo;
     this.tagLine = result.tagLine;
   };
+
+  async voidPay() {
+    console.log('in voidPay')
+    this.voidDisable = true;
+    let result = await this.accountService.postData(`driver-payments/void`, this.voidData).toPromise();
+    this.voidDisable = false;
+    console.log('result', result);
+  }
 }

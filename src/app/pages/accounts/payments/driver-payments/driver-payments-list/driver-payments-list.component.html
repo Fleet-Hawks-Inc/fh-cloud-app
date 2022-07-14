@@ -124,7 +124,7 @@
                                   <th class="text-2">Settlement#</th>
                                   <th class="text-2">Paid To</th>
                                   <th class="text-2">Amount</th>
-                                  <!-- <th class="text-2">Action</th> -->
+                                  <th class="text-2">Action</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -172,7 +172,7 @@
                                     {{ data.finalAmount | number: "1.2-2" }}
                                     {{ data.currency }}
                                   </td>
-                                  <!-- <td>
+                                  <td>
                                   <div class="dropdown dropright">
                                     <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}"
                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -181,10 +181,10 @@
                                     <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                       
                                         <a class="dropdown-item"
-                                        (click)="voidPayment(data.paymentID)">Void</a>
+                                        (click)="voidPayment(data)">Void</a>
                                     </div>
                                   </div>
-                                </td> -->
+                                </td>
                                 </tr>
                               </tbody>
                             </table>
@@ -219,3 +219,5 @@
     </section>
   </div>
 </section>
+
+<app-payment-pdfs></app-payment-pdfs>
