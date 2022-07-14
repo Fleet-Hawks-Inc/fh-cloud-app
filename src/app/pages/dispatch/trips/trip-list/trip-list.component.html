@@ -387,7 +387,7 @@
                                                                     (click)="op.hide();deleteTrip(trip)">Delete</a>
                                                                 <a class="dropdown-item" href="javascript:;"
                                                                     *ngIf="trip.showStatus"
-                                                                    (click)="op.hide();openStatusModal(trip.tripID, i)">Update
+                                                                    (click)="op.hide();openStatusModal(trip.tripID, rowIndex)">Update
                                                                     Status</a>
                                                                 <a class="dropdown-item" *ngIf="trip.canRecall"
                                                                     routerLink="/dispatch/trips/edit-trip/{{
