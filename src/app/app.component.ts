@@ -218,5 +218,8 @@ export class AppComponent implements OnInit, AfterContentChecked {
     if ($('.p-overlaypanel').length > 0) {
       $('.p-overlaypanel').remove();
     }
+    else if ( $('.p-multiselect').length > 0){
+      $('.p-multiselect').remove();
+    }
   }
 }
