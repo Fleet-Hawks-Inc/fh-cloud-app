@@ -130,7 +130,7 @@
                           [ngStyle]="{ width: dataColumns.width }"
                         >
                           <div [ngSwitch]="dataColumns.field">
-                            <span *ngSwitchDefault>
+                             <span *ngSwitchCase="'deviceStatus'">
                               <div
                                 class="flex justify-content-center align-items-center"
                                 alignFrozen="right"
@@ -177,6 +177,31 @@
                                 </p-columnFilter>
                               </div>
                             </span>
+                            
+                             <span *ngSwitchDefault>
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="right"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                            
                           </div>
                         </th>
                         <th
@@ -204,7 +229,7 @@
                           }}"
                         >
                           <div [ngSwitch]="dataColumns.field">
-                            <span *ngSwitchCase="'Vehicle/Asset'">
+                            <span *ngSwitchCase="'vehicle.vehicleIdentification'">
                               <span
                                 *ngIf="
                                   device.vehicle.vehicleIdentification;
@@ -307,24 +332,7 @@
                             >
                           </div>
                         </td>
-                        <!--    <div class="dropdown-menu">-->
-                        <!--        <a class="dropdown-item" routerLink="/manage/devices/edit/{{-->
-                        <!--      device.deviceSerialNo.replace('#', '/')-->
-                        <!--    }}">Edit</a-->
-                        <!--  >-->
-                        <!--<a-->
-                        <!--  href="javascript:;"-->
-                        <!--  class="dropdown-item"-->
-                        <!--  (click)="-->
-                        <!--    deactivateDevice(-->
-                        <!--      device.deviceType,-->
-                        <!--      device.deviceID,-->
-                        <!--      !device.deviceStatus-->
-                        <!--    )-->
-                        <!--  "-->
-                        <!--  >{{ device.deviceStatus === true ? 'Deactivate' : 'Activate'}}</a-->
-                        <!-->-->
-                        <!--</div>-->
+                       
                       </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>

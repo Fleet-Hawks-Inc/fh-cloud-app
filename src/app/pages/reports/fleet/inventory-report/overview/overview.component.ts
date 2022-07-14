@@ -159,6 +159,7 @@ export class OverviewComponent implements OnInit {
             const result = await this.apiService.getData(`items/invent/list?name=${this.itemName}&category=${this.category}&vendorID=${this.vendorID}&lastKey=${this.lastItemSK}`).toPromise();
             if (result.Items.length === 0) {
                 this.dataMessage = Constants.NO_RECORDS_FOUND
+                this.loaded = true;
             }
             if (result.Items.length > 0) {
                 if (result.LastEvaluatedKey !== undefined) {
@@ -285,6 +286,7 @@ export class OverviewComponent implements OnInit {
             const result = await this.apiService.getData(`items/requiredInventory/invent/list?name=${this.requiredItemName}&vendorID=${this.requiredVendorID}&lastKey=${this.lastSK}`).toPromise();
             if (result.Items.length === 0) {
                 this.dataMessageReq = Constants.NO_RECORDS_FOUND
+                this.loaded = true;
             }
             if (result.Items.length > 0) {
                 if (result.LastEvaluatedKey !== undefined) {
