@@ -219,5 +219,9 @@ export class AppComponent implements OnInit, AfterContentChecked {
     if ($('.p-overlaypanel').length > 0) {
       $('.p-overlaypanel').remove();
     }
+    if ($('.p-column-filter-overlay').length > 0) {
+      $('.p-column-filter-overlay').remove();
+    }
   }
+
 }
