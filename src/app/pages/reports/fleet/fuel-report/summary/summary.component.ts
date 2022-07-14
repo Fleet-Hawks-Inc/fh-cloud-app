@@ -132,7 +132,7 @@ _selectedColumns: any[];
         { width: '12%', field: 'data.city', header: 'City', type: "text" },
         { width: '12%', field: 'data.type', header: 'Fuel Type', type: "text" },
         { width: '12%', field: 'data.qty', header: 'Fuel Quantity', type: "text" },
-        { width: '12%', field: 'data.uom', header: 'Litres or Gallons', type: "text" },
+        { width: '12%', field: 'uom', header: 'Litres or Gallons', type: "text" },
         { width: '12%', field: 'data.odometer', header: 'Odometer', type: "text" },
         { width: '12%', field: 'data.rPpu', header: 'Retail Price Per L', type: "text" },
         { width: '12%', field: 'data.rBeforeTax', header: 'Retail Amount Before Tax', type: "text" },

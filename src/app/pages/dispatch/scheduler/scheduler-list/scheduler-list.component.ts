@@ -20,11 +20,17 @@ export class SchedulerListComponent implements OnInit {
   dataColumns:any[];
   ngOnInit(): void {
     this.initData();
-    this.dataColumns=[
-      {width:'20%', field:'orderNumber',header:'Order#',type:'text'},
-      {width:'20%',field:'sName',header:'Schedule Name',type:'text'},
-      {width:'20%',field:'sTime',header:'Scheduled Time',type:'text'},
-    ]
+    this.dataColumns = [
+      { width: "20%", field: "orderNumber", header: "Order#", type: "text" },
+      {
+        width: "20%",
+        field: "customerName",
+        header: "Customer Name",
+        type: "text",
+      },
+      { width: "20%", field: "sName", header: "Schedule Name", type: "text" },
+      { width: "20%", field: "sTime", header: "Scheduled Time", type: "text" },
+    ];
     this._selectedColumns=this.dataColumns;
   }
   setToggleOptions() {

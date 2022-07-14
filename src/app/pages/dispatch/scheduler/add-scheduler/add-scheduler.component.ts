@@ -34,6 +34,7 @@ export class AddSchedulerComponent implements OnInit {
     selectedMonths: [],
     timezone: null,
   };
+  allTimezones = null;
   saveDisabled = false;
   repeatType = null;
   rangeDisabled = false;
@@ -64,6 +65,8 @@ export class AddSchedulerComponent implements OnInit {
   orders: any;
   schedulerID: any = "";
   async ngOnInit() {
+    this.allTimezones = await moment.tz.names();
+    this.scheduler.timezone = await moment.tz.guess();
     this.schedulerID = this.route.snapshot.params["scheduleID"];
     if (this.schedulerID) {
       this.fetchScheduleByID();
@@ -280,7 +283,7 @@ export class AddSchedulerComponent implements OnInit {
         : undefined,
       sRange: this.range,
       sTime: this.scheduler.time,
-      timezone: moment.tz.guess(),
+      timezone: this.scheduler.timezone,
     };
 
     this.apiService.postData("orders/schedule", scheduleData).subscribe({

@@ -14,13 +14,19 @@ import {
 import { NgSelectModule } from "@ng-select/ng-select";
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { ChartsModule } from "ng2-charts";
-import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { NgxSpinnerModule } from "ngx-spinner";
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { BadgeModule } from "primeng/badge";
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { MenuModule } from 'primeng/menu';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { SplitButtonModule } from 'primeng/splitbutton';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
@@ -29,7 +35,6 @@ import { SharedModule } from "../../../shared/shared.module";
 import { AddTripComponent } from "./add-trip/add-trip.component";
 import { TripDetailComponent } from "./trip-detail/trip-detail.component";
 import { TripListComponent } from "./trip-list/trip-list.component";
-import { SelectButtonModule } from 'primeng/selectbutton';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -134,7 +139,6 @@ const routes: Routes = [
     DragDropModule,
     MatExpansionModule,
     NgxDatatableModule,
-    InfiniteScrollModule,
     DialogModule,
     DropdownModule,
     InputTextModule,
@@ -143,7 +147,14 @@ const routes: Routes = [
     TableModule,
     ToastModule,
     TooltipModule,
-    SelectButtonModule
+    SelectButtonModule,
+    OverlayPanelModule,
+    MenuModule,
+    SplitButtonModule,
+    AutoCompleteModule,
+    BadgeModule,
+    MultiSelectModule
+
   ],
   providers: [
     unsavedChangesGuard,

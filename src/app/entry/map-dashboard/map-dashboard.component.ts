@@ -7,7 +7,7 @@ import { environment } from "src/environments/environment";
 import { ApiService } from "../../services";
 import { OneSignal } from 'onesignal-ngx';
 import { Auth } from "aws-amplify";
-
+import { AppComponent } from './../../app.component';
 
 declare var $: any;
 declare var H: any;
@@ -88,7 +88,8 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   activeTrips = [];
   constructor(
     private apiService: ApiService,
-    private oneSignal: OneSignal
+    private oneSignal: OneSignal,
+    private app: AppComponent
   ) {
 
 
@@ -99,6 +100,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     await this.getCurrentDriverLocation();
     await this.getCurrentAssetLocation();
     await this.getVehicleLocationByDashCam();
+    await this.app.getSubscriptionDetails();
 
   }
 

@@ -23,13 +23,19 @@ import {
   CompanyProfileComponent,
   EditProfileComponent
 } from './index';
-
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ManagemainComponent } from './managemain/managemain.component';
-
 import { AlertsListComponent } from './alerts/alerts-list/alerts-list.component';
 import { AddAlertsComponent } from './alerts/add-alerts/add-alerts.component';
 import { InputTextModule } from 'primeng/inputtext';
+import { TableModule } from 'primeng/table';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
+
 
 const COMPONENTS = [
   AddUserComponent,
@@ -95,12 +101,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   declarations: [
     ...COMPONENTS,
     ManagemainComponent,
-
-
     AlertsListComponent,
-
     AddAlertsComponent,
-
   ],
   providers: [{ provide: NgbDateAdapter, useClass: CustomAdapter },
   { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }],
@@ -115,15 +117,22 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     InfiniteScrollModule,
     DialogModule,
     NgOtpInputModule,
-    ButtonModule,
     RadioButtonModule,
     TagModule,
     CheckboxModule,
     InputTextModule,
-    TooltipModule,
     RippleModule,
     ConfirmPopupModule,
-    ToastModule
+    ToastModule,
+    TableModule,
+    ButtonModule,
+    MultiSelectModule,
+    TooltipModule,
+    MenuModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule
   ], exports: [...COMPONENTS],
 })
 export class ManageModule { }
