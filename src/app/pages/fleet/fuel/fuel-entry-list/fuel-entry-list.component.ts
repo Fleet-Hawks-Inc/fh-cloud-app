@@ -88,6 +88,7 @@ export class FuelEntryListComponent implements OnInit {
   pageLimit = 10;
   loaded = false;
   _selectedColumns: any[];
+  fsUpdate: any = false;
   dataColumns = [
     { width: "12%", field: "data.date", header: "Date Time", type: "date" },
     { width: "12%", field: "data.cardNo", header: "Fuel Card #", type: "text" },
@@ -99,23 +100,26 @@ export class FuelEntryListComponent implements OnInit {
     { width: "12%", field: "data.city", header: "Province", type: "text" },
   ];
   fSurcharge = {
-    date: null,
+    from: null,
+    to: null,
     ltl: null,
     tl: null,
+    id: null,
   };
   fsLastEvaluatedKey = "";
   fuelSurcharge = [];
   fsLoaded = false;
+  addUpdate = "Add";
   fsColumns = [
-    { width: "30%", field: "date", header: "Date", type: "text" },
-    { width: "30%", field: "ltl", header: "LTL", type: "text" },
-    { width: "30%", field: "tl", header: "TL", type: "text" },
+    { width: "20%", field: "from", header: "From", type: "text" },
+    { width: "20%", field: "to", header: "To", type: "text" },
+    { width: "20%", field: "ltl", header: "LTL", type: "text" },
+    { width: "20%", field: "tl", header: "FTL", type: "text" },
   ];
 
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService,
     private httpClient: HttpClient,
     private el: ElementRef,
     private router: Router
@@ -721,16 +725,58 @@ export class FuelEntryListComponent implements OnInit {
       this.initFuelSurcharge();
     }
   }
-  postSurcharge() {
-    if (!this.fSurcharge.date) {
+  editSurcharge(data) {
+    this.fsUpdate = true;
+    this.addUpdate = "Update";
+    this.fSurcharge.from = data.from;
+    this.fSurcharge.to = data.to;
+    this.fSurcharge.ltl = data.ltl;
+    this.fSurcharge.tl = data.tl;
+    this.fSurcharge.id = data.id;
+  }
+  updateSurcharge() {
+    if (!this.fSurcharge.from || !this.fSurcharge.to) {
       this.toastr.error("Date is missing");
     } else if (!this.fSurcharge.ltl) {
       this.toastr.error("LTL Price is missing");
     } else if (!this.fSurcharge.tl) {
-      this.toastr.error("tl price is missing");
+      this.toastr.error("FTL price is missing");
+    }
+    this.apiService
+      .putData("fuelEntries/surcharge", this.fSurcharge)
+      .subscribe({
+        complete: () => {},
+        error: (err) => {},
+        next: (res) => {
+          this.toastr.success("Surcharge Updated Successfully");
+          this.initFuelSurcharge(true);
+          this.fSurcharge.from = null;
+          (this.fSurcharge.ltl = null), (this.fSurcharge.tl = null);
+          this.fsUpdate = false;
+        },
+      });
+  }
+  async deleteSurcharge(data) {
+    await this.apiService
+      .deleteData(`fuelEntries/surcharge/${data.id}`)
+      .toPromise();
+    this.initFuelSurcharge(true);
+    this.fSurcharge.from = null;
+    this.fSurcharge.to = null;
+    this.fSurcharge.ltl = null;
+    this.fSurcharge.tl = null;
+  }
+  postSurcharge() {
+    if (!this.fSurcharge.from || !this.fSurcharge.to) {
+      this.toastr.error("Date is missing");
+    } else if (!this.fSurcharge.ltl) {
+      this.toastr.error("LTL Price is missing");
+    } else if (!this.fSurcharge.tl) {
+      this.toastr.error("FTL price is missing");
     }
     const surcharge = {
-      date: this.fSurcharge.date,
+      from: this.fSurcharge.from,
+      to: this.fSurcharge.to,
       ltl: this.fSurcharge.ltl,
       tl: this.fSurcharge.tl,
     };
@@ -740,11 +786,20 @@ export class FuelEntryListComponent implements OnInit {
       next: (res) => {
         this.toastr.success("Surcharge added successfully");
         this.initFuelSurcharge(true);
-        this.fSurcharge.date=null;
-        this.fSurcharge.ltl=null,
-        this.fSurcharge.tl=null
+        this.fSurcharge.from = null;
+        this.fSurcharge.to = null;
+        (this.fSurcharge.ltl = null), (this.fSurcharge.tl = null);
       },
     });
+  }
+
+  cancel() {
+    this.fsUpdate = false;
+    this.addUpdate = "Add";
+    this.fSurcharge.from = null;
+    this.fSurcharge.to = null;
+    this.fSurcharge.ltl = null;
+    this.fSurcharge.tl = null;
   }
 }
 
