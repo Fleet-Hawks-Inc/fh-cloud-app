@@ -96,11 +96,16 @@
                             error: assetF.submitted && vName.invalid
                           }" placeholder="17-18 Alphanumeric characters , eg. 2G1WH55K5Y9322458"
                           class="form-control placeholder-lowercase" maxlength="18" #vName="ngModel"
-                          [required]="isRequired" />
+                          [required]="isRequired" required pattern="^[a-zA-Z0-9\s]{17,18}$"/>
                         <div *ngIf="vName.invalid && assetF.submitted" class="text-danger">
                           <div *ngIf="vName.errors.required">
                             VIN is required.
                           </div>
+
+                          <div *ngIf="vName.errors.pattern">
+                            VIN must be between 17-18 alphanumeric characters eg.2G1WH55K5Y9322458..
+                          </div>
+
                         </div>
                       </div>
                       <div class="col-lg-10">
@@ -580,7 +585,7 @@
                           </div>
                           <div *ngIf="pName.errors.pattern">
                             Licence plate number must be between 6-8
-                            alphanumeric characters.
+                            alphanumeric characters eg.K5Y932.
                           </div>
                         </div>
                       </div>
