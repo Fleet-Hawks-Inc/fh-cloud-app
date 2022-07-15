@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild} from '@angular/core';
 import { ApiService } from 'src/app/services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -7,6 +7,8 @@ import * as _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators'
 import { from } from 'rxjs'
+import * as moment from 'moment'
+import { Table } from 'primeng/table';
 declare var $: any;
 
 @Component({
@@ -15,6 +17,7 @@ declare var $: any;
   styleUrls: ['./users-list.component.css']
 })
 export class UsersListComponent implements OnInit {
+  @ViewChild('ut') table: Table;
   dataMessage: string = Constants.FETCHING_DATA;
   contactID = '';
   setUsrName = '';
@@ -44,6 +47,8 @@ export class UsersListComponent implements OnInit {
   }
   newRoles = [];
   searchValue = '';
+    get = _.get;
+  _selectedColumns: any[];
   queryValue = '';
   lastItemSK = "";
   loaded: boolean = false;
@@ -52,7 +57,18 @@ export class UsersListComponent implements OnInit {
   reminderID: any;
   allSubRoles = []
   subRole = []
-
+  dataColumns = 
+  [
+  { width: '9%', field: 'employeeID', header: 'Employee ID', type: 'text' },
+  { width: '6.5%', field: 'name', header: 'Name', type: 'text' },
+  { width: '8%', field: 'userLoginData.userName', header: 'Username', type: 'text' },
+  { width: '8%', field: 'userType', header: 'UserType', type: 'text' },
+  { width: '8.5%', field: 'userAccount.department', header: 'Department', type: 'text' },
+  { width: '45%', field: 'userSub', header: 'User Roles', type: 'text' },
+  { width: '6.5%', field: 'workPhone', header: 'Phone', type: 'text' },
+  { width: '9%', field: 'workEmail', header: 'Email', type: 'text' },
+  { width: '6.5%', field: 'currentStatus', header: 'Status', type: 'text' },
+  ];
 
   constructor(private apiService: ApiService,
     private toastr: ToastrService,
@@ -60,11 +76,23 @@ export class UsersListComponent implements OnInit {
     private httpClient: HttpClient,
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.fetchUserRoles();
+    this.setToggleOptions();
     this.fetchRoles();
     this.initDataTable();
     this.fetchSubRoles();
+  }
+
+
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+}
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+  set selectedColumns(val: any[]) {
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
 
 
@@ -91,7 +119,6 @@ export class UsersListComponent implements OnInit {
   setUser(data: any) {
     this.searchValue = `${data.firstName} ${data.lastName}`;
     this.searchValue = this.searchValue.toLowerCase().trim();
-
     this.contactID = data.contactID;
     this.suggestedUsers = [];
   }
@@ -182,15 +209,16 @@ export class UsersListComponent implements OnInit {
       });
   }
 
-  initDataTable() {
+  async initDataTable() {
     if (this.lastItemSK !== 'end') {
       if (this.searchValue != '') {
         this.queryValue = this.searchValue;
       }
-      this.apiService.getData(`contacts/fetch/employee/records?searchValue=${encodeURIComponent(this.queryValue)}&lastKey=${this.lastItemSK}`)
+      await this.apiService.getData(`contacts/fetch/employee/records?searchValue=${encodeURIComponent(this.queryValue)}&lastKey=${this.lastItemSK}`)
         .subscribe((result: any) => {
           if (result.Items.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.loaded = true;
           }
           if (result.Items.length > 0) {
             if (result.LastEvaluatedKey !== undefined) {
@@ -214,8 +242,17 @@ export class UsersListComponent implements OnInit {
     this.dataMessage = Constants.FETCHING_DATA;
     this.initDataTable();
   }
-
-  onScroll() {
+ 
+   refreshData() {
+    this.users = [];
+    this.lastItemSK = '';
+    this.loaded = false;
+    this.initDataTable();
+    this.dataMessage = Constants.FETCHING_DATA;
+  }
+  
+ 
+  onScroll = async(event: any) => {
     if (this.loaded) {
       this.initDataTable();
     }
@@ -261,4 +298,14 @@ export class UsersListComponent implements OnInit {
     this.userEndPoint = this.pageLength;
     this.userDraw = 0;
   }
+  
+  
+  
+      /**
+     * Clears the table filters
+     * @param table Table 
+     */
+    clear(table: Table) {
+        table.clear();
+    }
 }

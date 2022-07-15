@@ -16,26 +16,12 @@
                   type="text"
                   autocomplete="off"
                   name="vehicleIdentification"
-                  placeholder="Search vehicle by name"
+                  placeholder="Search Vehicle/Asset by name"
                   [(ngModel)]="vehicleIdentification"
                   class="form-control"
                 />
               </div>
             </div>
-            
-               <div class="col-md-2 col-lg-2 pl-0 pr-2">
-              <div class="input-group input-group-md mb-3">
-                <input
-                  type="text"
-                  autocomplete="off"
-                  name="assetIdentification"
-                  placeholder="Search Asset by name"
-                  [(ngModel)]="assetIdentification"
-                  class="form-control"
-                />
-              </div>
-            </div>
-            
             <div class="col-md-2 col-lg-2 pl-2">
               <button
                 type="submit"
@@ -55,65 +41,6 @@
           </div>
         </form>
       </header>
-      
-      <!--<header class="page-header pr19 pl11">-->
-      <!--  <div class="row">-->
-      <!--   <div class="col-md-2 col-lg-2">-->
-      <!--        <div class="input-group input-group-md mb-3">-->
-      <!--          <input-->
-      <!--            type="text"-->
-      <!--            autocomplete="off"-->
-      <!--            name="orderNumber"-->
-      <!--            placeholder="Search Vehicle by Name"-->
-      <!--            [(ngModel)]="vehicleIdentification"-->
-      <!--            class="form-control"-->
-      <!--          />-->
-      <!--        </div>-->
-      <!--      </div>-->
-            <!--<div class="col-md-2 col-lg-2">-->
-            <!--  <div class="input-group input-group-md mb-3">-->
-            <!--    <input-->
-            <!--      type="text"-->
-            <!--      autocomplete="off"-->
-            <!--      name="orderNumber"-->
-            <!--      placeholder="Search Asset by Name"-->
-            <!--      [(ngModel)]="assetIdentification"-->
-            <!--      class="form-control"-->
-            <!--    />-->
-            <!--  </div>-->
-            <!--</div>-->
-      <!--    <div class="col header-buttons">-->
-      <!--      <button-->
-      <!--          type="submit"-->
-      <!--          (click)="searchFilter()"-->
-      <!--          class="btn btn-sm btn-success mr-3"-->
-      <!--        >-->
-      <!--          Search-->
-      <!--      </button>-->
-      <!--      <button-->
-      <!--        id="btnLiveVideo"-->
-      <!--        type="button"-->
-      <!--        pButton-->
-      <!--        class="mr-1"-->
-      <!--        tooltipPosition="left"-->
-      <!--        icon="pi pi-refresh"-->
-      <!--        pTooltip="Refresh"-->
-      <!--        (click)="refreshData()"-->
-      <!--      ></button>-->
-      <!--      <button-->
-      <!--        id="btnLiveVideo"-->
-      <!--        type="button"-->
-      <!--        pButton-->
-      <!--        class="mr-1"-->
-      <!--        tooltipPosition="left"-->
-      <!--        icon="pi pi-plus"-->
-      <!--        routerLink="/manage/devices/add"-->
-      <!--        pTooltip="Add Device"-->
-      <!--        (click)="refreshData()"-->
-      <!--      ></button>-->
-      <!--    </div>-->
-      <!--  </div>-->
-      <!--</header>-->
 
       <section class="m-2">
         <div class="row mb-3">
@@ -203,7 +130,7 @@
                           [ngStyle]="{ width: dataColumns.width }"
                         >
                           <div [ngSwitch]="dataColumns.field">
-                            <span *ngSwitchDefault>
+                             <span *ngSwitchCase="'deviceStatus'">
                               <div
                                 class="flex justify-content-center align-items-center"
                                 alignFrozen="right"
@@ -250,6 +177,31 @@
                                 </p-columnFilter>
                               </div>
                             </span>
+                            
+                             <span *ngSwitchDefault>
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="right"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                            
                           </div>
                         </th>
                         <th
@@ -277,7 +229,7 @@
                           }}"
                         >
                           <div [ngSwitch]="dataColumns.field">
-                            <span *ngSwitchCase="'Vehicle/Asset'">
+                            <span *ngSwitchCase="'vehicle.vehicleIdentification'">
                               <span
                                 *ngIf="
                                   device.vehicle.vehicleIdentification;
@@ -380,24 +332,7 @@
                             >
                           </div>
                         </td>
-                        <!--    <div class="dropdown-menu">-->
-                        <!--        <a class="dropdown-item" routerLink="/manage/devices/edit/{{-->
-                        <!--      device.deviceSerialNo.replace('#', '/')-->
-                        <!--    }}">Edit</a-->
-                        <!--  >-->
-                        <!--<a-->
-                        <!--  href="javascript:;"-->
-                        <!--  class="dropdown-item"-->
-                        <!--  (click)="-->
-                        <!--    deactivateDevice(-->
-                        <!--      device.deviceType,-->
-                        <!--      device.deviceID,-->
-                        <!--      !device.deviceStatus-->
-                        <!--    )-->
-                        <!--  "-->
-                        <!--  >{{ device.deviceStatus === true ? 'Deactivate' : 'Activate'}}</a-->
-                        <!-->-->
-                        <!--</div>-->
+                       
                       </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>

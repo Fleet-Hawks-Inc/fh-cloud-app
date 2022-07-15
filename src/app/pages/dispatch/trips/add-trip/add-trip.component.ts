@@ -39,10 +39,9 @@ declare var $: any;
   styleUrls: ["./add-trip.component.css"],
 })
 export class AddTripComponent implements OnInit {
-  @ViewChild("assignAssetModel", { static: true })
-  assignAssetModel: TemplateRef<any>;
-  @ViewChild("assignConfirmationModal", { static: true })
-  assignConfirmationModal: TemplateRef<any>;
+  assignAssetModel: boolean = false;
+  assignConModel: boolean = false;
+  manualAstDisplay: boolean = false;
 
   @ViewChild("orderModal", { static: true })
   orderModal: TemplateRef<any>;
@@ -223,6 +222,7 @@ export class AddTripComponent implements OnInit {
   mapOrderActiveDisabled = false;
   mapRouteActiveDisabled = false;
   submitDisabled = false;
+  manualAssetModel = false;
   orderStops = [];
   isEdit = false;
   tripNoDisabled = false;
@@ -249,10 +249,6 @@ export class AddTripComponent implements OnInit {
     assetIdentification: "",
     isTemp: true,
   };
-
-  tripModalRef: any;
-  manualAssetRef: any;
-  assignConfirmModal: any;
 
   lastFtLOrderSK = "";
   lastLtlOrderSK = "";
@@ -281,6 +277,15 @@ export class AddTripComponent implements OnInit {
   orderNum: string;
   // trips = [];
   planTrip = [];
+
+  expiredErrors = [];
+
+  assetsValidate = [];
+  mDrvValidate: string;
+  coDrvValidate: string;
+  vehicleValidate: string;
+  isExpDisplay: boolean = false;
+  isAllType = '';
 
   constructor(
     private apiService: ApiService,
@@ -1215,7 +1220,7 @@ export class AddTripComponent implements OnInit {
       } else {
         $("#cell11").prop("disabled", false);
       }
-      this.tripModalRef.close();
+      this.assignAssetModel = false;
       //$('#assetModal').modal('hide');
     } else if (this.tempTextFieldValues.type === "edit") {
       let index = this.tempTextFieldValues.index;
@@ -1265,13 +1270,13 @@ export class AddTripComponent implements OnInit {
             element.disablecarr = true;
           }
         }
-        this.assignConfirmModal.close();
+        this.assignConModel = false;
       }
 
       this.getStateWiseMiles();
       this.emptyAssetModalFields();
-      this.tripModalRef.close();
-      // $('#assetModal').modal('hide');
+      this.assignAssetModel = false;
+      this.isExpDisplay = false;
     }
   }
 
@@ -1301,9 +1306,11 @@ export class AddTripComponent implements OnInit {
       this.tempTextFieldValues.vehicleName = "";
       this.tempTextFieldValues.vehicleID = "";
       this.assetDataVehicleID = null;
+      this.vehicleValidate = null;
     } else {
       if (type === "click") {
         this.assetDataVehicleID = $event.vehicleID;
+        this.vehicleValidate = $event.vehicleID;
       }
       this.tempTextFieldValues.vehicleName = $event.vehicleIdentification;
       this.tempTextFieldValues.vehicleID = $event.vehicleID;
@@ -1324,6 +1331,7 @@ export class AddTripComponent implements OnInit {
         this.tempTextFieldValues.driverName = "";
         this.tempTextFieldValues.driverUsername = "";
         this.assetDataDriverUsername = null;
+        this.mDrvValidate = '';
         this.tempTextFieldValues.driverID = "";
       } else {
         $(".codriverClass").removeClass("td_border");
@@ -1331,6 +1339,7 @@ export class AddTripComponent implements OnInit {
         this.tempTextFieldValues.coDriverUsername = "";
         this.assetDataCoDriverUsername = null;
         this.tempTextFieldValues.coDriverID = "";
+        this.coDrvValidate = '';
       }
     } else {
       if (type === "driver") {
@@ -1339,6 +1348,7 @@ export class AddTripComponent implements OnInit {
         this.tempTextFieldValues.driverName = $event.fullName;
         this.tempTextFieldValues.driverUsername = $event.userName;
         this.tempTextFieldValues.driverID = $event.driverID;
+        this.mDrvValidate = $event.driverID;
         if (this.assetDataDriverUsername === this.assetDataCoDriverUsername) {
           this.assetDataCoDriverUsername = null;
         }
@@ -1357,7 +1367,7 @@ export class AddTripComponent implements OnInit {
         this.tempTextFieldValues.coDriverName = $event.fullName;
         this.tempTextFieldValues.coDriverUsername = $event.userName;
         this.tempTextFieldValues.coDriverID = $event.driverID;
-
+        this.coDrvValidate = $event.driverID;
         if (eventType === "click") {
           this.assetDataCoDriverUsername = $event.userName;
         }
@@ -1372,6 +1382,9 @@ export class AddTripComponent implements OnInit {
   }
 
   assetsChange($event, type) {
+    if ($event.length == 0) {
+      this.assetsValidate = [];
+    }
     this.tempTextFieldValues.trailerName = "";
     if ($event === undefined) {
       $(".assetClass").removeClass("td_border");
@@ -1388,12 +1401,14 @@ export class AddTripComponent implements OnInit {
           if (!arayy.includes(element.assetID)) {
             arayy.push(element.assetID);
           }
+
           let objj = {
             id: element.assetID,
             name: element.assetIdentification,
           };
 
           this.tempTextFieldValues.trailer.push(objj);
+          this.assetsValidate = arayy;
         }
         if ($event.length > 0) {
           let lastItem = $event[$event.length - 1];
@@ -1409,6 +1424,7 @@ export class AddTripComponent implements OnInit {
           id: $event.assetID,
           name: $event.assetIdentification,
         };
+        this.assetsValidate.push($event.assetID);
         const exist = this.tempTextFieldValues.trailer.some(
           (el) => el.id === $event.assetID
         );
@@ -1429,6 +1445,43 @@ export class AddTripComponent implements OnInit {
       trailerNames = trailerNames.join();
       this.tempTextFieldValues.trailerName = trailerNames;
     }
+  }
+
+  async validateUnits(type = '') {
+
+
+    let drivers = [];
+    if (this.mDrvValidate != '' && this.mDrvValidate != undefined) {
+      drivers.push(this.mDrvValidate)
+    }
+    if (this.coDrvValidate != '' && this.coDrvValidate != undefined) {
+      drivers.push(this.coDrvValidate)
+    }
+    let data = {
+      drivers: drivers,
+      vehicle: this.vehicleValidate ? this.vehicleValidate : '',
+      assets: _.uniq(this.assetsValidate),
+    }
+
+    let result: any = await this.apiService.getData(`trips/validate-units/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
+    this.isAllType = type;
+    if (result && result.length > 0) {
+      this.expiredErrors = result;
+      this.isExpDisplay = true;
+    } else {
+      this.saveAssetModalData('');
+    }
+
+  }
+
+  assignUnits(type) {
+    if (type == 'populate') {
+      this.assignConModel = true;
+      this.isExpDisplay = false;
+      return;
+    }
+    this.saveAssetModalData(type);
+    this.isExpDisplay = false;
   }
 
   async onAddTrip() {
@@ -1968,7 +2021,7 @@ export class AddTripComponent implements OnInit {
       const result: any = await this.apiService
         .getData(`orders/get/type/FTL?lastKey=${this.lastFtLOrderSK}`)
         .toPromise();
-      
+
       if (result.Items.length === 0) {
         this.dataMessage = Constant.NO_RECORDS_FOUND;
       }
@@ -3081,16 +3134,9 @@ export class AddTripComponent implements OnInit {
   }
 
   showConfirmationPopup() {
-    let ngbModalOptions: NgbModalOptions = {
-      backdrop: "static",
-      keyboard: false,
-      windowClass: "assign-confirm__main",
-    };
-    this.tripModalRef.close();
-    this.assignConfirmModal = this.modalService.open(
-      this.assignConfirmationModal,
-      ngbModalOptions
-    );
+    this.assignAssetModel = false;
+    this.assignConModel = true;
+    this.isExpDisplay = false;
   }
 
   locationModel(type, index = "") {
@@ -3235,20 +3281,9 @@ export class AddTripComponent implements OnInit {
     }
   }
 
-  openManualAsset(modal: any) {
-    this.tripModalRef.close();
-    let ngbModalOptions: NgbModalOptions = {
-      backdrop: "static",
-      keyboard: false,
-      windowClass: "asset-manual__main",
-      backdropClass: "light-blue-backdrop",
-    };
-    this.manualAssetRef = this.modalService.open(modal, ngbModalOptions);
-  }
-
   addManualAsset() {
     this.submitDisabled = true;
-    this.tripModalRef.close();
+
     this.apiService
       .postData("assets/addManualAsset", this.assetData)
       .subscribe({
@@ -3277,23 +3312,17 @@ export class AddTripComponent implements OnInit {
             assetIdentification: "",
             isTemp: true,
           };
+          this.assets = [];
           this.fetchAssets();
-          this.manualAssetRef.close();
-          this.openTripAssignModel();
+          this.manualAssetModel = false;
+          this.assignAssetModel = true;
+
         },
       });
   }
 
   openTripAssignModel() {
-    let ngbModalOptions: NgbModalOptions = {
-      backdrop: "static",
-      keyboard: false,
-      windowClass: "trips-assign__main",
-    };
-    this.tripModalRef = this.modalService.open(
-      this.assignAssetModel,
-      ngbModalOptions
-    );
+    this.assignAssetModel = true;
   }
 
   copyRow(index) {
