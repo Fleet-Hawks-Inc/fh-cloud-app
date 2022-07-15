@@ -101,7 +101,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
   async ngOnInit() {
     this.setTitle();
     // this.listenToLoading();
-
+    this.getSubscriptionDetails();
     window.addEventListener(
       "storage",
       (event) => {
@@ -133,6 +133,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
     let subscriptions = await this.dashboardUtilityService.getSubscriptionPlans();
     if (carrierData && carrierData.subscriptions && carrierData.subscriptions.length > 0 && subscriptions.length > 0) {
       let plans = await this.checkSubscriptionPlans(carrierData.subscriptions, subscriptions);
+      console.log('plans', plans);
       if (plans && plans.length > 0) {
         let data = [];
         for (const iterator of plans) {
