@@ -275,8 +275,6 @@ export class AddTripComponent implements OnInit {
   orderId: string;
   orderType: string;
   orderNum: string;
-  // trips = [];
-  planTrip = [];
 
   expiredErrors = [];
 
@@ -2913,7 +2911,7 @@ export class AddTripComponent implements OnInit {
   }
 
   changeMapRoute(type, event) {
-    this.planTrip
+    
 
     if (type == "route") {
       if (this.tripData.routeID != "" && this.tripData.routeID != null) {
