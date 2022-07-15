@@ -321,7 +321,7 @@ export class AddTripComponent implements OnInit {
       this.orderNum = params.orderNum;
       if (this.orderId != undefined) {
         await this.fetchOrderDetails([this.orderId])
-        this.changeMapRoute('order',null)
+        this.changeMapRoute('order', null)
         this.temporaryOrderIDs.push(this.orderId);
         this.temporaryOrderNumber.push(this.orderNum);
         await this.saveSelectOrderIDS();
@@ -2912,19 +2912,19 @@ export class AddTripComponent implements OnInit {
     this.tripData.mapFrom = "route";
   }
 
-  changeMapRoute(type,event) {
+  changeMapRoute(type, event) {
     this.planTrip
-    
+
     if (type == "route") {
       if (this.tripData.routeID != "" && this.tripData.routeID != null) {
         this.orderStops = this.trips;
-       
+
         // this.trips = [];
         this.actualMiles = 0;
         this.apiService
           .getData("routes/" + encodeURIComponent(JSON.stringify([event])))
           .subscribe(async (result: any) => {
-            if(result && result.length > 0) {
+            if (result && result.length > 0) {
               let routeData: any = [];
               for (let i = 0; i < result.length; i++) {
                 const element = result[i];
@@ -2932,55 +2932,55 @@ export class AddTripComponent implements OnInit {
               }
               for (let j = 0; j < routeData.length; j++) {
                 const element = routeData[j];
-                
+
                 let routePath: any = [];
                 this.newCoords = [];
-              
-  
-                    if (element.stops.length > 0) {
-                      for (let i = 0; i < element.stops.length; i++) {
-                        const elem = element.stops[i];
-                        routePath.push(elem.stopName);
-                        let routeType = "";
-                        if (i == 0) {
-                          routeType = "Pickup";
-                        } else if (i > 0 && i < element.stops.length) {
-                          routeType = "Stop";
-                        }
-                        if (i == element.stops.length - 1) {
-                          routeType = "Delivery";
-                        }
-  
-                        let obj = {
-                          splitDone: false,
-                          split: false,
-                          planID: uuidv4(),
-                          type: routeType,
-                          name: "",
-                          miles: 0,
-                          carrierID: null,
-                          carrierName: "",
-                          pickupTime: "",
-                          dropTime: "",
-                          actualPickupTime: "",
-                          actualDropTime: "",
-                          locationName: elem.name,
-                          vehicleName: "",
-                          trailerName: "",
-                          driverName: "",
-                          coDriverName: "",
-                          fromOrder: "yes",
-                          lat: elem.lat,
-                          lng: elem.lng,
-                          routeID: event
-                        };
-  
-                        this.newCoords.push(`${elem.lat},${elem.lng}`);
-                        this.trips.push(obj);
-                      }
+
+
+                if (element.stops.length > 0) {
+                  for (let i = 0; i < element.stops.length; i++) {
+                    const elem = element.stops[i];
+                    routePath.push(elem.stopName);
+                    let routeType = "";
+                    if (i == 0) {
+                      routeType = "Pickup";
+                    } else if (i > 0 && i < element.stops.length) {
+                      routeType = "Stop";
                     }
+                    if (i == element.stops.length - 1) {
+                      routeType = "Delivery";
+                    }
+
+                    let obj = {
+                      splitDone: false,
+                      split: false,
+                      planID: uuidv4(),
+                      type: routeType,
+                      name: "",
+                      miles: 0,
+                      carrierID: null,
+                      carrierName: "",
+                      pickupTime: "",
+                      dropTime: "",
+                      actualPickupTime: "",
+                      actualDropTime: "",
+                      locationName: elem.name,
+                      vehicleName: "",
+                      trailerName: "",
+                      driverName: "",
+                      coDriverName: "",
+                      fromOrder: "yes",
+                      lat: elem.lat,
+                      lng: elem.lng,
+                      routeID: event
+                    };
+
+                    this.newCoords.push(`${elem.lat},${elem.lng}`);
+                    this.trips.push(obj);
+                  }
+                }
               }
-  
+
               await this.hereMap.calculateRoute(this.newCoords);
               await this.getMiles();
             }
@@ -3014,9 +3014,9 @@ export class AddTripComponent implements OnInit {
     }
   }
 
-  makeRoutePlan(event:any) {
+  makeRoutePlan(event: any) {
     if (this.tripData.mapFrom == "route") {
-      this.changeMapRoute("route",event);
+      this.changeMapRoute("route", event);
     }
   }
   scrollError() {
@@ -3415,8 +3415,23 @@ export class AddTripComponent implements OnInit {
     }
   }
 
-  removeRoutePlan(event:any) {
-   this.trips = _.reject(this.trips, {routeID:event.value})
-   this.getMiles();
+  removeRoutePlan(event: any) {
+    this.trips = _.reject(this.trips, { routeID: event.value })
+    this.getMiles();
+  }
+
+  callOrder(event: any) {
+
+
+    // $("#abc").change(function () {
+    if (event !== '') {
+      $("#abc").removeAttr("disabled");
+
+    }
+    // }) 
+
+    console.log('event--', event)
+
+
   }
 }
