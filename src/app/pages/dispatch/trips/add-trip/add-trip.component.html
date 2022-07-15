@@ -56,9 +56,8 @@
                           (click)="changeMapRoute('order')">Select Order#
                         </label>
 
-                        <input id="abc" [disabled]="true" type="text" class="form-control" (click)="showMOdal()"
-                          [(ngModel)]="orderNo" name="ordr" placeholder="eg. 776,1234" autocomplete="off"
-                          #order="ngModel" required />
+                        <input type="text" class="form-control" (click)="showMOdal()" [(ngModel)]="orderNo" name="ordr"
+                          placeholder="eg. 776,1234" autocomplete="off" #order="ngModel" required />
                         <div *ngIf="
                             order.invalid && (order.dirty || order.touched)
                           " class="text-danger">
@@ -74,8 +73,8 @@
                         <label class="control-label font-weight-semibold text-3 text-dark {{ mapRouteActive }}">Select
                           Permanent Route
                         </label>
-                        <ng-select [(ngModel)]="tripData.routeID" name="routeID" [multiple]="true"
-                          (change)="getRoutes()" (remove)="removeRoutePlan($event)" (change)="callOrder($event)"
+                        <ng-select [disabled]="orderNo != '' ? false : true" [(ngModel)]="tripData.routeID"
+                          name="routeID" [multiple]="true" (change)="getRoutes()" (remove)="removeRoutePlan($event)"
                           (add)="makeRoutePlan($event)" placeholder="eg. Calgary to
                           Edmonton" #pRoute="ngModel">
                           <ng-option *ngFor="let route of permanentRoutes" value="{{ route.routeID }}">

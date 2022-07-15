@@ -3419,19 +3419,4 @@ export class AddTripComponent implements OnInit {
     this.trips = _.reject(this.trips, { routeID: event.value })
     this.getMiles();
   }
-
-  callOrder(event: any) {
-
-
-    // $("#abc").change(function () {
-    if (event !== '') {
-      $("#abc").removeAttr("disabled");
-
-    }
-    // }) 
-
-    console.log('event--', event)
-
-
-  }
 }
