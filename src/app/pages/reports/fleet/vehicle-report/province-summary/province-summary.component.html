@@ -194,7 +194,7 @@
               
                <ng-template
                       pTemplate="body"
-                      let-renewals
+                      let-province
                       let-columns="columns"
                       let-rowIndex="rowIndex"
                     >
@@ -212,13 +212,13 @@
                               *ngSwitchCase="'vehicle'"
                             >
                               <span class="text-capitalize">
-                               {{ renewals.vehicle ? renewals.vehicle : "-" }}
+                               {{ province.vehicle ? province.vehicle : "-" }}
                               </span>
                             </span> 
                    
                      <span *ngSwitchCase="'caProvinces'">
-                            <span *ngIf="renewals.caProvinces.length === 0">-</span>
-                            <span *ngFor="let item2 of renewals.caProvinces">
+                            <span *ngIf="province.caProvinces.length === 0">-</span>
+                            <span *ngFor="let item2 of province.caProvinces">
                               <span *ngFor="let item3 of item2 | keyvalue">
                                 {{ item3.key }} : {{ item3.value }}<br />
                               </span>
@@ -226,8 +226,8 @@
                      </span>
                      
                      <span  *ngSwitchCase="'usProvinces'">
-                            <span *ngIf="renewals.usProvinces.length === 0">-</span>
-                            <span *ngFor="let item2 of renewals.usProvinces">
+                            <span *ngIf="province.usProvinces.length === 0">-</span>
+                            <span *ngFor="let item2 of province.usProvinces">
                               <span *ngFor="let item3 of item2 | keyvalue">
                                 {{ item3.key }} : {{ item3.value }}<br />
                               </span>
@@ -237,12 +237,12 @@
                      <span  *ngSwitchCase="'newStatus'">
                             <span
                               class="badge badge-dark p-1 text-capitalize"
-                              >{{ renewals.newStatus }}</span
+                              >{{ province.newStatus }}</span
                             >
                      </span>
                     
                      <span *ngSwitchDefault>
-                              {{ get(renewals, dataColumns.field) }}</span
+                              {{ get(province, dataColumns.field) }}</span
                             >
                    
                    </div>
