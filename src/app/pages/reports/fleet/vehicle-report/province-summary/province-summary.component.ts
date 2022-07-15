@@ -171,19 +171,20 @@ export class ProvinceSummaryComponent implements OnInit {
       return false;
     }
   }
-  // reset() {
-  //   if (this.vehicleIdentification !== '') {
-  //     this.vehicleId = '';
-  //     // this.suggestedVehicles = [];
-  //     this.vehicleIdentification = '';
-  //     this.lastItemSK = '';
-  //     this.allData = [];
-  //     this.dataMessage = Constants.FETCHING_DATA;
-  //     this.fetchProvinceMilesData();
-  //   } else {
-  //     return false;
-  //   }
-  // }
+  
+  refreshData() {
+      this.end = moment().format("YYYY-MM-DD");
+      this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
+      this.vehicleId = '';
+      // this.suggestedVehicles = [];
+      this.vehicleIdentification = '';
+      this.lastItemSK = '';
+      this.allData = [];
+      this.dataM = [];
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.fetchProvinceMilesData();
+  }
+  
   fetchFullExport(type = '') {
     this.apiService.getData(`vehicles/fetch/provinceMiles/report?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.exportData = result.summaryResult;
