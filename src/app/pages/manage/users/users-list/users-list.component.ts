@@ -3,6 +3,7 @@ import { ApiService } from 'src/app/services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import Constants from 'src/app/pages/fleet/constants';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 import * as _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators'
@@ -54,6 +55,7 @@ export class UsersListComponent implements OnInit {
   loaded: boolean = false;
   roles: any = [];
   response: any = '';
+  sessionID: string;
   reminderID: any;
   allSubRoles = []
   subRole = []
@@ -74,7 +76,10 @@ export class UsersListComponent implements OnInit {
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     private httpClient: HttpClient,
-  ) { }
+    private routerMgmtService: RouteManagementServiceService,
+  ) {
+        this.sessionID = this.routerMgmtService.manageUserSessionID;
+  }
 
   ngOnInit(): void {
     this.fetchUserRoles();

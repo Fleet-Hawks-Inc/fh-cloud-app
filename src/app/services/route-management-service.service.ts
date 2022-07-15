@@ -15,6 +15,8 @@ export class RouteManagementServiceService {
   public serviceLogSessionID: string;
   public chartAccountSessionID: string;
   public serviceRemindersSessionID: string;
+  public manageUserSessionID: string;
+  public manageDeviceSessionID: string;
   
 
   constructor() {
@@ -28,6 +30,8 @@ export class RouteManagementServiceService {
     this.serviceLogSessionID = uuidv4();
     this.chartAccountSessionID = uuidv4();
     this.serviceRemindersSessionID = uuidv4();
+    this.manageUserSessionID = uuidv4();
+    this.manageDeviceSessionID = uuidv4();
   }
 
   driverUpdated() {
@@ -66,6 +70,12 @@ export class RouteManagementServiceService {
   serviceReminderUpdated(){
     return this.serviceRemindersSessionID = uuidv4();
   }
+  manageUsersUpdated(){
+    return this.manageUserSessionID = uuidv4();
+  }
+  manageDevicesUpdated(){
+    return this.manageDeviceSessionID = uuidv4();
+  }
   resetAllCache() {
     this.tripUpdateSessionID = uuidv4();
     this.orderUpdateSessionID = uuidv4();
@@ -77,5 +87,7 @@ export class RouteManagementServiceService {
     this.serviceLogSessionID = uuidv4();
     this.chartAccountSessionID = uuidv4();
     this.serviceRemindersSessionID = uuidv4();
+    this.manageUserSessionID = uuidv4();
+    this.manageDeviceSessionID = uuidv4();
   }
 }

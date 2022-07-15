@@ -4,6 +4,7 @@ import { ApiService } from '../../../../services/api.service'
 import { ToastrService } from 'ngx-toastr';
 import Constants from '../../constants';
 import { Router } from '@angular/router';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 import { Table } from 'primeng/table';
 import * as _ from "lodash";
 
@@ -17,6 +18,8 @@ import * as _ from "lodash";
 export class DeviceListComponent implements OnInit {
   @ViewChild('dt') table: Table;
   get = _.get;
+    sessionID: string;
+
   _selectedColumns: any[];
       loaded = false;
       dataColumns = [
@@ -28,7 +31,11 @@ export class DeviceListComponent implements OnInit {
     ];
     
     constructor(private apiService: ApiService,
-    private toastr: ToastrService, private router: Router) { }
+    private toastr: ToastrService, private router: Router,
+        private routerMgmtService: RouteManagementServiceService,
+    ) {
+            this.sessionID = this.routerMgmtService.manageDeviceSessionID;
+    }
 
   next: any = "null";
   vehicleIdentification = '';

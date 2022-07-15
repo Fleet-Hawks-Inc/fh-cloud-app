@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { from, Subject, throwError } from 'rxjs';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { HereMapService, ListService, ApiService } from '../../../../services';
@@ -29,6 +30,7 @@ export class AddUserComponent implements OnInit {
     showUploadedPicModal = false;
     vendors: any;
     searchUserName = '';
+    sessionID: string;
     userData = {
         cName: '',
         dba: '',
@@ -146,11 +148,13 @@ export class AddUserComponent implements OnInit {
         private toastr: ToastrService,
         private HereMap: HereMapService,
         private location: Location,
+        private routerMgmtService: RouteManagementServiceService,
         private route: ActivatedRoute,
         private httpClient: HttpClient,
         private countryStateCity: CountryStateCityService,
         private listService: ListService,
     ) {
+        this.sessionID = this.routerMgmtService.manageUserSessionID;
         const date = new Date();
         this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
         this.birthDateMaxLimit = {

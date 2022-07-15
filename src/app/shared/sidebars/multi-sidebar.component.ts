@@ -334,6 +334,12 @@ export class CommonSideBarComponent implements OnInit {
   generateServiceReminderSessionID(){
   return this.routeManagement.serviceRemindersSessionID;
   }
+  generateManageUserSessionID(){
+  return this.routeManagement.manageUserSessionID;
+  }
+  generateManageDeviceSessionID(){
+  return this.routeManagement.manageDeviceSessionID;
+  }
 }
 
 @Component({
