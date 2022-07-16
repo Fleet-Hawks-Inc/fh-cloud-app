@@ -6,6 +6,7 @@ import Constants from '../../constants';
 import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
 import * as _ from "lodash";
+import { environment } from '../../../../../environments/environment';
 
 
 @Component({
@@ -16,6 +17,7 @@ import * as _ from "lodash";
 
 export class DeviceListComponent implements OnInit {
   @ViewChild('dt') table: Table;
+  environment = environment.isFeatureEnabled;
   get = _.get;
   _selectedColumns: any[];
       loaded = false;

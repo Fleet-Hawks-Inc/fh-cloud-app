@@ -7,6 +7,9 @@ import { passwordStrength } from 'check-password-strength';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NgForm } from '@angular/forms';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+
+
 declare var $: any;
 
 @Component({
@@ -20,6 +23,7 @@ export class UserDetailsComponent implements OnInit {
   contactID = '';
   contactsObject: any = {};
   vendor: any;
+  sessionID: string;
   profilePath = '';
   userData = {
     companyName: '',
@@ -100,7 +104,11 @@ export class UserDetailsComponent implements OnInit {
   response: any = '';
   public userProfileSrc: any = 'assets/img/driver/driver.png';
   constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router, private toastr: ToastrService,
-    private countryStateCity: CountryStateCityService) { }
+    private countryStateCity: CountryStateCityService,
+    private routerMgmtService: RouteManagementServiceService
+    ) { 
+          this.sessionID = this.routerMgmtService.userSessionID;
+    }
 
   ngOnInit() {
     this.contactID = this.route.snapshot.params[`contactID`];
