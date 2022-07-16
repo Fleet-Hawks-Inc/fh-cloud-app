@@ -96,20 +96,6 @@
                             <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
                         </div>
 
-                        <div class="col-md-3 col-lg-3 pr-1 text-right">
-                            <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
-                                <button type="button" class="btn btn-success
-                                    btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span
-                                        class="caret"></span></button>
-                                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position:
-                                    absolute; will-change:
-                                    transform; top: 0px; left: 0px; transform:
-                                    translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" href="">Import</a>
-                                    <a class="dropdown-item text-1" href="">Export</a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </form>
             </header>
@@ -272,8 +258,6 @@
                                                 </th>
                                             </tr>
                                         </ng-template>
-
-
                                         <ng-template pTemplate="body" let-trip let-columns="columns"
                                             let-rowIndex="rowIndex">
                                             <tr>

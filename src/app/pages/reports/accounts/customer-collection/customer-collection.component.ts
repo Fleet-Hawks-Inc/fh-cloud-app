@@ -82,7 +82,7 @@ export class CustomerCollectionComponent implements OnInit {
     this.fetchCustomersByIDs();
     this.dataColumns = [
       { width: '9%', field: 'customerName', header: 'Customer', type: "text" },
-      { width: '11%', field: 'customerEmail', header: 'Email', type: "text" },
+      { width: '10%', field: 'customerEmail', header: 'Email', type: "text" },
       { width: '7%', field: 'customerPhone', header: 'Phone', type: "text" },
       { width: '7%', field: 'cusConfirmation', header: ' Conf#', type: "text" },
       { width: '8%', field: 'txnDate', header: 'Inv. Date#', type: "text" },
