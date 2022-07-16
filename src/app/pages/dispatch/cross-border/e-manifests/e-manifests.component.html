@@ -301,7 +301,13 @@
                                     </td>
                                  </tr>
                               </ng-template>
-
+                              <!-- Empty Template -->
+                              <ng-template pTemplate="emptymessage" let-columns>
+                                 <div class="col-lg-12 mt-3 text-center">
+                                    {{ dataMessage }}
+                                    <br /><br />
+                                 </div>
+                              </ng-template>
                            </p-table>
                         </p-tabPanel>
                         <p-tabPanel header="ACI eManifest">

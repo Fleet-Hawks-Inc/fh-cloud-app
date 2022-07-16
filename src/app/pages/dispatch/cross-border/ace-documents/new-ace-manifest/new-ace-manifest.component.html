@@ -354,8 +354,9 @@
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'passengers['+i+'].travelDocuments['+j+'].country'"
                               (change)="getPassengerDocStates($event,i,j)" [(ngModel)]="document.country">
-                              <ng-option *ngFor="let country of countries" [value]="country.countryCode">
-                                {{country.countryName}}</ng-option>
+                              <ng-option value="CA">Canada</ng-option>
+                              <ng-option value="US">United States</ng-option>
+                              <ng-option value="MX">Mexico</ng-option>
                             </ng-select>
 
                           </div>
@@ -405,18 +406,35 @@
                   </div>
                 </div> -->
                 <!-- Passenger div  end-->
+
                 <!-- SHIPMENT DIV STARTS -->
                 <div class="row">
                   <div class="col-lg-11 offset-lg-1">
                     <label class=" text-dark control-label font-weight-bold text-lg-right text-dark text-4  pt-2"
                       *ngIf="shipments.length !== 0">ACE Shipment Details</label>
-                    <label class=" text-dark control-label font-weight-bold text-lg-right text-dark text-4  pt-2"
-                      *ngIf="shipments.length === 0">US Address Details</label>
+
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-lg-5 offset-lg-1">
+                    <label
+                      class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Shipment(s)</label>
+                  </div>
+                  <div class="col-lg-5">
+                    <div class="row">
+                      <div class="col-lg-10">
+                        <button type="button" (click)="addShipment()" class="btn btn-sm btn-success pull-right"><i
+                            class="fas fa-plus"></i> Add
+                          Shipment</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="row" *ngIf="shipments.length === 0">
                   <!-- NEW ADDRESS DIV -->
                   <div class="col-10 offset-lg-1">
+                    <label class=" text-dark control-label font-weight-bold text-lg-right text-dark text-4  pt-2"
+                      *ngIf="shipments.length === 0">US Address Details</label>
                     <div class="address-item">
                       <div class="form-group row border-bottom-0">
                         <div class="col-lg-5">
@@ -533,6 +551,7 @@
                     </div>
                   </div>
                 </div>
+
                 <div class="row">
                   <div class="col-lg-11 offset-lg-1">
                     <div class="row">
@@ -1508,17 +1527,7 @@
                   </div>
                 </div>
 
-                <div class="row mt-2">
-                  <div class="col-lg-11 offset-lg-1">
-                    <div class="row">
-                      <div class="col-lg-10">
-                        <button type="button" (click)="addShipment()" class="btn btn-sm btn-success pull-right"><i
-                            class="fas fa-plus"></i> Add
-                          Shipment</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
                 <!-- NEW ASSET DIV -->
                 <div class="row">
                   <div class="col-lg-11 offset-lg-1">

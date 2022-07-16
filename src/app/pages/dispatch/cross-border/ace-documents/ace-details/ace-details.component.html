@@ -120,7 +120,7 @@
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                                 <h4 class="m-0 ">ACE eManifest History</h4>
                             </div>
-                            <div class="card-body border scroll-table-class">
+                            <div class="card-body border">
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
@@ -136,9 +136,12 @@
                                             <td>{{response.dateTime}}</td>
                                             <td>{{response.status}}</td>
                                             <td><b>{{response.message}}</b>&nbsp;&nbsp;
-                                                <span
-                                                    *ngFor="let error of response.errors; let s = index;">{{error.note}}<span
-                                                        *ngIf="s != response.errors.length-1">,</span><br></span>
+                                                <ul class="p-0 ml-3 mt-3">
+                                                    <li *ngFor="let error of response.errors; let s = index;">
+                                                        {{error.note}}
+                                                        <span *ngIf="s != response.errors.length-1">,</span><br>
+                                                    </li>
+                                                </ul>
                                             </td>
                                         </tr>
                                     </tbody>

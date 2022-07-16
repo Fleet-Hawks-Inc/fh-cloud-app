@@ -1099,7 +1099,7 @@ export class NewAceManifestComponent implements OnInit {
   // update function
   updateFunction(data) {
     this.apiService
-      .putData(`eManifests/updateACEmanifest/${this.amendManifest}`, data)
+      .putData(`eManifests/update-ace/${this.amendManifest}`, data)
       .subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -1129,7 +1129,7 @@ export class NewAceManifestComponent implements OnInit {
   // add Function
   addFunction(data) {
 
-    this.apiService.postData('eManifests/addACEemanifest', data).subscribe({
+    this.apiService.postData('eManifests/add-ace', data).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)

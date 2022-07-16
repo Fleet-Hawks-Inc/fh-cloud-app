@@ -27,6 +27,7 @@ declare var $: any;
 export class AddVehicleComponent implements OnInit {
   @ViewChild("vehicleF") vehicleF: NgForm;
   takeUntil$ = new Subject();
+  isInsured = true;
   showDriverModal = false;
   createdDate = "";
   createdTime = "";
@@ -829,7 +830,7 @@ export class AddVehicleComponent implements OnInit {
       for (let i = 0; i < files.length; i++) {
         let name = files[i].name.split(".");
         let ext = name[name.length - 1].toLowerCase();
-          if (
+        if (
           ext == "doc" ||
           ext == "docx" ||
           ext == "pdf" ||
@@ -837,16 +838,16 @@ export class AddVehicleComponent implements OnInit {
           ext == "jpeg" ||
           ext == "png"
         ) {
-        this.uploadedDocs.push(files[i]);
+          this.uploadedDocs.push(files[i]);
         } else {
-            this.uploadDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+          this.uploadDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
         }
       }
     } else if (obj === "purchase") {
       for (let i = 0; i < files.length; i++) {
         let name = files[i].name.split(".");
         let ext = name[name.length - 1].toLowerCase();
-          if (
+        if (
           ext == "doc" ||
           ext == "docx" ||
           ext == "pdf" ||
@@ -854,15 +855,15 @@ export class AddVehicleComponent implements OnInit {
           ext == "jpeg" ||
           ext == "png"
         ) {
-        this.purchaseDocs.push(files[i]);
-          } else {
-            this.uploadPurchaseDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+          this.purchaseDocs.push(files[i]);
+        } else {
+          this.uploadPurchaseDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
         }
       }
     } else if (obj === "loan") {
       for (let i = 0; i < files.length; i++) {
-             let name = files[i].name.split(".");
-       let ext = name[name.length - 1].toLowerCase();
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
         if (
           ext == "doc" ||
           ext == "docx" ||
@@ -871,23 +872,23 @@ export class AddVehicleComponent implements OnInit {
           ext == "jpeg" ||
           ext == "png"
         ) {
-        this.loanDocs.push(files[i]);
-                 } else {
-            this.uploadLonDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+          this.loanDocs.push(files[i]);
+        } else {
+          this.uploadLonDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
         }
       }
     } else {
       for (let i = 0; i < files.length; i++) {
-      let name = files[i].name.split(".");
-       let ext = name[name.length - 1].toLowerCase();
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
         if (
           ext == "jpg" ||
           ext == "jpeg" ||
           ext == "png"
         ) {
-        this.uploadedPhotos.push(files[i]);
+          this.uploadedPhotos.push(files[i]);
         } else {
-            this.uploadPhotosError = 'Only .jpg, .jpeg and png files allowed.';
+          this.uploadPhotosError = 'Only .jpg, .jpeg and png files allowed.';
         }
       }
 

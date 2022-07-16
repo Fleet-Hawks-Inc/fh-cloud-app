@@ -232,7 +232,7 @@ export class EManifestsComponent implements OnInit {
   }
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('eManifests/fetch/ACErecords?aceSearch=' + this.aceSearch + '&fromDate=' + this.fromDate + '&toDate=' + this.toDate + '&category=' + this.filterCategory + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('eManifests/fetch/ace-list?aceSearch=' + this.aceSearch + '&fromDate=' + this.fromDate + '&toDate=' + this.toDate + '&category=' + this.filterCategory + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         if (result.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -309,7 +309,7 @@ export class EManifestsComponent implements OnInit {
         }
         this.ACEList = [];
         this.dataMessage = Constants.FETCHING_DATA;
-
+        this.initDataTable();
       }
     } else {
       return false;
