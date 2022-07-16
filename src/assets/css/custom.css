@@ -4425,3 +4425,9 @@ ul.simple-post-list.settings-list li:last-child a {
 .ng-dropdown-panel {
   z-index: 1010 !important;
 }
+
+/*14.07.22 for planner calander today button alignment*/
+
+.fc.fc-unthemed .fc-toolbar .fc-button {
+  display: inline-block !important;
+}
