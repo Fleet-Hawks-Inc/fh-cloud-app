@@ -101,7 +101,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
   async ngOnInit() {
     this.setTitle();
     // this.listenToLoading();
-
+    this.getSubscriptionDetails();
     window.addEventListener(
       "storage",
       (event) => {
