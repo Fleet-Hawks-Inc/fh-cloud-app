@@ -261,7 +261,7 @@ export class TripDetailComponent implements OnInit {
 
         if (result.routeID != "" && result.routeID != undefined) {
           this.apiService
-            .getData("routes/" + result.routeID)
+            .getData("routes/" + encodeURIComponent(JSON.stringify(result.routeID)))
             .subscribe((result: any) => {
               this.routeName = result.Items[0].routeName;
             });
