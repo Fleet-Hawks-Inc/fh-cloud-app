@@ -43,9 +43,9 @@ const routes: Routes = [
     canDeactivate: [unsavedChangesGuard]
   },
   {
-    path: "list",
+    path: "list/:sessionID",
     component: InventoryListComponent,
-    data: { title: "Inventory List" },
+    data: { title: "Inventory List", reuseRoute: true },
   },
   {
     path: "detail/:itemID",
