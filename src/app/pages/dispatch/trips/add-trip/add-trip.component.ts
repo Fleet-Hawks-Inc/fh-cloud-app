@@ -78,7 +78,7 @@ export class AddTripComponent implements OnInit {
   tripData = {
     tripNo: "",
     orderNo: "",
-    routeID: null,
+    routeID: [],
     bol: "",
     reeferTemperature: "",
     reeferTemperatureUnit: null,
@@ -2911,10 +2911,8 @@ export class AddTripComponent implements OnInit {
   }
 
   changeMapRoute(type, event) {
-    
-
     if (type == "route") {
-      if (this.tripData.routeID != "" && this.tripData.routeID != null) {
+      if (this.tripData.routeID != undefined && this.tripData.routeID != null) {
         this.orderStops = this.trips;
 
         // this.trips = [];
