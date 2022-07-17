@@ -124,12 +124,13 @@
                                   <th class="text-2">Settlement#</th>
                                   <th class="text-2">Paid To</th>
                                   <th class="text-2">Amount</th>
-                                  <!-- <th class="text-2">Action</th> -->
+                                  <th class="text-2">Status</th>
+                                  <th class="text-2">Action</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 <tr class="text-center" *ngIf="payments.length === 0">
-                                  <td colspan="8">
+                                  <td colspan="9">
                                     {{ dataMessage }}
                                   </td>
                                 </tr>
@@ -172,19 +173,22 @@
                                     {{ data.finalAmount | number: "1.2-2" }}
                                     {{ data.currency }}
                                   </td>
-                                  <!-- <td>
+                                  <td class="cursorpoint" [routerLink]="data.url">
+                                    <span class="badge badge-dark p-1 text-uppercase"> {{ data.status ? data.status : '' }} </span>
+                                  </td>
+                                  <td>
                                   <div class="dropdown dropright">
-                                    <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}"
+                                    <button [disabled]="data.status === 'paid' ? false : true " class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}"
                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                       <i class="fas fa-ellipsis-v"></i>
                                     </button>
-                                    <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                    <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}" *ngIf="data.status === 'paid'">
                                       
                                         <a class="dropdown-item"
-                                        (click)="voidPayment(data.paymentID)">Void</a>
+                                        (click)="voidPayment(data)">Void</a>
                                     </div>
                                   </div>
-                                </td> -->
+                                </td>
                                 </tr>
                               </tbody>
                             </table>
@@ -219,3 +223,5 @@
     </section>
   </div>
 </section>
+
+<app-payment-pdfs></app-payment-pdfs>
