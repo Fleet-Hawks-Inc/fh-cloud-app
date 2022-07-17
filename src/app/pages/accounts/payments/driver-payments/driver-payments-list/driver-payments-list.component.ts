@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
+import { Subscription } from "rxjs";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService, DashboardUtilityService, ListService } from "src/app/services";
 
@@ -28,6 +29,8 @@ export class DriverPaymentsListComponent implements OnInit {
   driversObject: any = {};
   carriersObject: any = {};
   ownerOpObjects: any = {};
+  voidedRecID = '';
+  voidSubs: Subscription;
 
   constructor(
     private toaster: ToastrService,
@@ -43,6 +46,17 @@ export class DriverPaymentsListComponent implements OnInit {
     this.driversObject = await this.dashboardUtilityService.getDrivers();
     this.carriersObject = await this.dashboardUtilityService.getContactsCarriers();
     this.ownerOpObjects = await this.dashboardUtilityService.getOwnerOperators();
+
+    this.voidSubs = this.listService.voidStatus.subscribe(
+      async (res: any) => {
+        if(res === true) {
+          for (const iterator of this.payments) {
+            if(iterator.paymentID === this.voidedRecID) {
+              iterator.status = 'voided';
+            }
+          }
+        }
+      })
   }
 
   unitTypeChange() {
@@ -162,16 +176,13 @@ export class DriverPaymentsListComponent implements OnInit {
   }
 
   async voidPayment(payData) {
-    console.log('innnnnnn') 
     let payObj = {
       showModal: true,
       page: "list",
       paymentNo: payData.paymentNo,
       paymentID: payData.paymentID
     };
+    this.voidedRecID = payData.paymentID;
     this.listService.triggerVoidDriverPayment(payObj);
-
-    // let result = await this.accountService.getData(`driver-payments/void/${paymentID}`).toPromise();
-    // console.log('result', result);
   }
 }

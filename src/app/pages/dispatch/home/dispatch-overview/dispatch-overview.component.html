@@ -739,6 +739,14 @@
                                 data.entityNumber
                               }}</b>
                             </span>
+                            <span
+                              *ngIf="
+                                data.eventParams.type === 'driver_payment'
+                              ">
+                              <b class="text-success" (click)="goToDetails(data.eventParams.eventID, 'driverPayment')">
+                                {{ data.entityNumber | titlecase }}</b
+                              >
+                            </span>
                           </li>
                         </ul>
                       </div>
@@ -1164,6 +1172,15 @@
                 </span>
                 <span *ngIf="data.eventParams.type === 'document'">
                   <b class="text-success">{{ data.entityNumber }}</b>
+                </span>
+
+                <span
+                  *ngIf="
+                    data.eventParams.type === 'driver_payment'
+                  ">
+                  <b class="text-success" (click)="goToDetails(data.eventParams.eventID, 'driverPayment')">
+                    {{ data.entityNumber | titlecase }}</b
+                  >
                 </span>
               </td>
             </tr>

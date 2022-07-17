@@ -130,6 +130,9 @@ export class ListService {
   voidPaymentSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   voidPayment = this.voidPaymentSource.asObservable();
 
+  voidStatusSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  voidStatus = this.voidStatusSource.asObservable();
+
   settlementDetailsDataSource: BehaviorSubject<Array<any>> =
     new BehaviorSubject([]);
   settlementDetails = this.settlementDetailsDataSource.asObservable();
@@ -377,5 +380,9 @@ export class ListService {
   triggerVoidDriverPayment(value) {
     console.log('listvalue', value)
     this.voidPaymentSource.next(value);
+  }
+
+  triggerVoidStatus(value) {
+    this.voidStatusSource.next(value);
   }
 }

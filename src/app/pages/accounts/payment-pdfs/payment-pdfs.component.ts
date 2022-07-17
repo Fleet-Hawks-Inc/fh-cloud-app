@@ -5,7 +5,7 @@ import { ApiService } from "src/app/services/api.service";
 import { ListService } from "src/app/services/list.service";
 import { formatDate } from "@angular/common";
 import { AccountService } from "src/app/services/account.service";
-import { Auth } from "aws-amplify";
+import { ToastrService } from "ngx-toastr";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
@@ -19,6 +19,7 @@ export class PaymentPdfsComponent implements OnInit {
     private apiService: ApiService,
     private accountService: AccountService,
     private modalService: NgbModal,
+    private toaster: ToastrService,
   ) { }
   @ViewChild("driverPaymentDetail", { static: true }) modalContent: TemplateRef<any>;
   @ViewChild("voidPayment", { static: true }) voidModalContent: TemplateRef<any>;
@@ -132,6 +133,8 @@ export class PaymentPdfsComponent implements OnInit {
     reason: ''
   }
   voidDisable = false;
+  voidPayNo: '';
+  voidModalRef: any;
 
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
@@ -231,15 +234,16 @@ export class PaymentPdfsComponent implements OnInit {
     );
 
     this.voidSubscription = this.listService.voidPayment.subscribe(async (res: any) => {
-      console.log('resres', res)
       if (res.showModal && res.length != 0) {
+        this.voidData.payID = res.paymentID;
+        this.voidPayNo = res.paymentNo;
         let ngbModalOptions: NgbModalOptions = {
           backdrop: "static",
           keyboard: false,
           windowClass: "voidPaymentModal-prog__main",
         };
         res.showModal = false;
-        this.modelRef = this.modalService
+        this.voidModalRef = this.modalService
           .open(this.voidModalContent, ngbModalOptions)
           .result.then(
             (result) => { },
@@ -656,10 +660,15 @@ export class PaymentPdfsComponent implements OnInit {
   };
 
   async voidPay() {
-    console.log('in voidPay')
-    this.voidDisable = true;
-    let result = await this.accountService.postData(`driver-payments/void`, this.voidData).toPromise();
-    this.voidDisable = false;
-    console.log('result', result);
+    if(this.voidData.reason) {
+      this.voidDisable = true;
+      let result = await this.accountService.postData(`driver-payments/void`, this.voidData).toPromise();
+      if(result) {
+        this.voidDisable = false;
+        this.toaster.success("Payment voided successfully.");
+        this.modalService.dismissAll();
+        this.listService.triggerVoidStatus(true);
+      }  
+    }
   }
 }
