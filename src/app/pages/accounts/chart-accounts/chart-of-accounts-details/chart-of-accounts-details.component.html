@@ -3,7 +3,7 @@
     <section role="main" class="content-body pr-0 pl-0 pt-0">
       <header class="page-header pr19 pl7">
         <div class="row" style="padding-top: 10px">
-          <div class="col-lg-3 col-md-3 pr-0">
+          <div class="col-lg-3 col-md-3">
             <div class="input-daterange input-group">
               <span class="input-group-prepend">
                 <span class="input-group-text">
@@ -43,7 +43,7 @@
               />
             </div>
           </div>
-          <div class="col-md-2 col-lg-2">
+          <div class="col-md-2 col-lg-2 pl-0">
             <button
               type="button"
               class="btn btn-sm btn-success"
@@ -70,13 +70,13 @@
       </header>
 
       <section class="m-2">
-        <div class="row mb-3">
+        <div class="row mb-2">
           <div class="col-lg-12">
             <div class="text-dark">
               <div class="form-group row">
                 <div class="col-lg-12">
                   <div class="row">
-                    <div class="col">
+                    <div class="col pr-0">
                       <div class="text-center p-4 bg-white detailbox">
                         <i class="fas fa-file-invoice-dollar text-7"></i>
                         <br />
@@ -98,7 +98,7 @@
                         <p class="mb-0">Account Name</p>
                       </div>
                     </div>
-                    <div class="col">
+                    <div class="col pl-2 pr-0">
                       <div class="text-center p-4 bg-white detailbox">
                         <i class="far fa-calendar-check text-7"></i>
                         <br />
@@ -108,7 +108,7 @@
                         <p class="mb-0">Account Number</p>
                       </div>
                     </div>
-                    <div class="col">
+                    <div class="col pl-2 pr-0">
                       <div class="text-center p-4 bg-white detailbox">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br />
@@ -132,7 +132,7 @@
                         <p class="mb-0">Account Type</p>
                       </div>
                     </div>
-                    <div class="col">
+                    <div class="col pl-2 pr-0">
                       <div class="text-center p-4 bg-white detailbox">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br />
@@ -149,7 +149,7 @@
                         <p class="mb-0">Account Class</p>
                       </div>
                     </div>
-                    <div class="col">
+                    <div class="col pl-2">
                       <div class="text-center p-4 bg-white detailbox">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br />
@@ -166,12 +166,12 @@
           </div>
         </div>
 
-        <div class="row mb-3">
+        <div class="row mb-2">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
               <div class="form-group row">
                 <div
-                  class="col-lg-12"
+                  class="col-lg-12 mb-2"
                   *ngIf="
                     account.actDesc !== '' &&
                     account.actDesc !== null &&
@@ -180,7 +180,7 @@
                 >
                   <table>
                     <tbody>
-                      <tr>
+                      <tr class="">
                         <td class="font-weight-bold">Description:</td>
                         <td>{{ account.actDesc }}</td>
                       </tr>
@@ -190,7 +190,7 @@
                 <div class="col-lg-12">
                   <!-- Nav tabs -->
                   <ul
-                    class="nav nav-tabs top-tabs"
+                    class="nav nav-tabs top-tabs mb-2"
                     id="top-tabs"
                     role="tablist"
                   >
