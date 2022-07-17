@@ -241,5 +241,50 @@ export class ActivityListComponent implements OnInit {
       return false;
     }
   }
+  
+  generateCSV() {
+    if (this.vehicles.length > 0) {
+      let dataObject = []
+      let csvArray = []
+      this.vehicles.forEach(element => {
+        let obj = {}
+        obj["Vehicle Name/Number"] = element.vehicleIdentification
+        obj["VIN"] = element.VIN
+        obj["startDate"] = element.startDate
+        obj["Make"] = element.manufacturerID
+        obj["Model"] = element.modelID
+        obj["Year"] = element.year
+        obj["Annual Safety Date"] = element.annualSafetyDate
+        obj["Ownership"] = element.ownership
+        obj["Driver Assigned"] = this.driversList[element.driverID]
+        obj["Team Driver Assigned"] = this.driversList[element.teamDriverID]
+        obj["Plate Number"] = element.plateNumber
+        obj["Status"] = element.currentStatus
+        dataObject.push(obj)
+      });
+      let headers = Object.keys(dataObject[0]).join(',')
+      headers += ' \n'
+      csvArray.push(headers)
+      dataObject.forEach(element => {
+        let obj = Object.values(element).join(',')
+        obj += ' \n'
+        csvArray.push(obj)
+      });
+      const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Activity-Report.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+    else {
+      this.toastr.error("No Records found")
+    }
+  }
 
 }
