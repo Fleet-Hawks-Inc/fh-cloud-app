@@ -266,6 +266,7 @@ export class AddDriverComponent
   birthDateMaxLimit: any;
   futureDatesLimit: any;
   uploadedPhotos = [];
+  cdlResult = '';
   licStates = [];
   uploadedDocs = [];
   abstractDocs = [];
@@ -1763,7 +1764,8 @@ export class AddDriverComponent
           `drivers/validate/cdl?value=${this.driverData.CDL_Number}&type=${this.pageType}&drv=${this.driverID}`
         )
         .subscribe((result: any) => {
-          if (!result) {
+          this.cdlResult = result;
+          if (!this.cdlResult) {
             this.errors[`CDL_Number`] = "CDL already exists";
             this.submitDisabled = true;
           }
@@ -1771,10 +1773,9 @@ export class AddDriverComponent
             this.onChangeHideErrors("CDL_Number");
             delete this.errors[`CDL_Number`];
           }
-          
-          // if(this.emailCheck = true){
-          // this.submitDisabled = true;
-          // }
+          if(this.emailCheck === true){
+          this.submitDisabled = true;
+          }
           this.throwErrors();
         });
     }
