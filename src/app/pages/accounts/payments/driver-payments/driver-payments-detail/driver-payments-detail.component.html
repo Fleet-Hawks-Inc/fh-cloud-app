@@ -1,5 +1,4 @@
 <section class="body">
-
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header pr19 pl7">
@@ -7,7 +6,10 @@
           <div class="col-md-4 col-lg-4">
             <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">
               {{ paymentData.paymentEnity | titlecase }} Payment# -
-              {{ paymentData.paymentNo }} <span class="badge badge-dark p-1 text-uppercase"> {{ paymentData.status ? paymentData.status : '' }} </span>
+              {{ paymentData.paymentNo }}
+              <span class="badge badge-dark p-1 text-uppercase">
+                {{ paymentData.status ? paymentData.status : "" }}
+              </span>
             </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
@@ -15,8 +17,9 @@
               type="button"
               (click)="voidPayment()"
               class="btn btn-success btn-sm mr-2"
-             *ngIf="paymentData.status && paymentData.status === 'paid'">
-              Void payment 
+              *ngIf="paymentData.status && paymentData.status === 'paid'"
+            >
+              Void payment
             </button>
             <button
               type="button"
@@ -136,9 +139,7 @@
                                 Settled Amount
                               </td>
                               <td width="60%">
-                                {{
-                                  paymentData.finalAmount | number: "1.2-2"
-                                }}
+                                {{ paymentData.finalAmount | number: "1.2-2" }}
                                 CAD
                               </td>
                             </tr>
@@ -157,9 +158,14 @@
                               </td>
                               <td>
                                 <span *ngIf="paymentData.voidData.date">
-                                  {{ paymentData.voidData.date | date: 'yyyy/MM/dd' }}
+                                  {{
+                                    paymentData.voidData.date
+                                      | date: "yyyy/MM/dd"
+                                  }}
                                 </span>
-                                <span *ngIf="!paymentData.voidData.date">-</span>
+                                <span *ngIf="!paymentData.voidData.date"
+                                  >-</span
+                                >
                               </td>
                             </tr>
                           </tbody>
@@ -215,7 +221,9 @@
                                 <span *ngIf="paymentData.voidData.reason">
                                   {{ paymentData.voidData.reason }}
                                 </span>
-                                <span *ngIf="!paymentData.voidData.reason">-</span>
+                                <span *ngIf="!paymentData.voidData.reason"
+                                  >-</span
+                                >
                               </td>
                             </tr>
                           </tbody>
@@ -239,7 +247,9 @@
                 <div class="form-group row">
                   <div class="col-lg-6">
                     <h5 class="font-weight-bold">Journal</h5>
-                    <table class="table table-bordered table-hover">
+                    <table
+                      class="table table-bordered table-striped table-hover"
+                    >
                       <thead>
                         <tr class="">
                           <th>Account Name</th>
