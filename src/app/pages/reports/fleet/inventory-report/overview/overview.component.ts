@@ -208,15 +208,7 @@ export class OverviewComponent implements OnInit {
         }
     }
   
-   refreshInventoryData(){
-            this.itemName = '';
-            this.category = null;
-            this.vendorID = null;
-            this.items = [];
-            this.lastItemSK = '';
-            this.suggestedItems = [];
-            this.existingInventoryList();   
-   }
+   
 
     generateInventCSV() {
         if (this.existingExportList.length > 0) {
@@ -338,14 +330,27 @@ export class OverviewComponent implements OnInit {
     }
     
     refreshRequiredData(){
+            this.requiredItems = [];
             this.requiredItemName = '';
             this.requiredVendorID = null;
-            this.requiredItems = [];
             this.lastSK = '';
-            this.dataMessageReq = Constants.FETCHING_DATA;
+            this.loaded = false;
             this.suggestedItems = [];
             this.requiredInventoryListReport(); 
+            this.dataMessageReq = Constants.FETCHING_DATA;
    }
+    
+       refreshInventoryData(){
+            this.items = [];
+            this.itemName = '';
+            this.vendorID = null;
+            this.category = null;
+            this.lastItemSK = '';
+            this.loaded = false;
+            this.suggestedItems = [];
+            this.existingInventoryList();   
+            this.dataMessage = Constants.FETCHING_DATA;
+   }    
 
     generateRequiredCSV() {
         if (this.requiredExportList.length > 0) {
