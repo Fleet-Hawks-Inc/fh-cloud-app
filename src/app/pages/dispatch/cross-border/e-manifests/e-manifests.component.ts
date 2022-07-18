@@ -105,7 +105,7 @@ export class EManifestsComponent implements OnInit {
     },
     {
       'name': 'Trip Number',
-      'value': 'tripNumber'
+      'value': 'tripNo'
     },
   ];
   filterCategory = null;
@@ -330,6 +330,7 @@ export class EManifestsComponent implements OnInit {
       this.filterCategory = null;
 
       this.resetCountResult('ace');
+      this.initDataTable();
     } else {
       return false;
     }
