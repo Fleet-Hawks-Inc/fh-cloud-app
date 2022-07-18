@@ -7,10 +7,17 @@
           <div class="col-md-4 col-lg-4">
             <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">
               {{ paymentData.paymentEnity | titlecase }} Payment# -
-              {{ paymentData.paymentNo }}
+              {{ paymentData.paymentNo }} <span class="badge badge-dark p-1 text-uppercase"> {{ paymentData.status ? paymentData.status : '' }} </span>
             </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
+            <button
+              type="button"
+              (click)="voidPayment()"
+              class="btn btn-success btn-sm mr-2"
+             *ngIf="paymentData.status && paymentData.status === 'paid'">
+              Void payment 
+            </button>
             <button
               type="button"
               (click)="downloadPaymentPdf()"
@@ -143,6 +150,18 @@
                                 {{ paymentData.advance | number: "1.2-2" }} CAD
                               </td>
                             </tr>
+
+                            <tr *ngIf="paymentData.voidData">
+                              <td class="back-color-gray font-weight-bold">
+                                Void Date
+                              </td>
+                              <td>
+                                <span *ngIf="paymentData.voidData.date">
+                                  {{ paymentData.voidData.date | date: 'yyyy/MM/dd' }}
+                                </span>
+                                <span *ngIf="!paymentData.voidData.date">-</span>
+                              </td>
+                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -187,6 +206,17 @@
                                 {{ paymentData.payMode }} Reference
                               </td>
                               <td>{{ paymentData.payModeNo }}</td>
+                            </tr>
+                            <tr *ngIf="paymentData.voidData">
+                              <td class="back-color-gray font-weight-bold">
+                                Void Reason
+                              </td>
+                              <td>
+                                <span *ngIf="paymentData.voidData.reason">
+                                  {{ paymentData.voidData.reason }}
+                                </span>
+                                <span *ngIf="!paymentData.voidData.reason">-</span>
+                              </td>
                             </tr>
                           </tbody>
                         </table>

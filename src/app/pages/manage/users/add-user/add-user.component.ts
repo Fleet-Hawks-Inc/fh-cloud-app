@@ -5,8 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { HereMapService, ListService, ApiService } from '../../../../services';
 import { Auth } from 'aws-amplify';
-
-import { ActivatedRoute } from '@angular/router';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+import { Router, ActivatedRoute } from '@angular/router';
 import { passwordStrength } from 'check-password-strength'
 import { HttpClient } from '@angular/common/http'
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
@@ -28,6 +28,7 @@ export class AddUserComponent implements OnInit {
     suggestedUsers = [];
     showUploadedPicModal = false;
     vendors: any;
+    sessionID: string;
     searchUserName = '';
     userData = {
         cName: '',
@@ -145,12 +146,15 @@ export class AddUserComponent implements OnInit {
         private apiService: ApiService,
         private toastr: ToastrService,
         private HereMap: HereMapService,
+            private router: Router,
         private location: Location,
         private route: ActivatedRoute,
         private httpClient: HttpClient,
         private countryStateCity: CountryStateCityService,
         private listService: ListService,
+        private routerMgmtService: RouteManagementServiceService,
     ) {
+        this.sessionID = this.routerMgmtService.userSessionID;
         const date = new Date();
         this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
         this.birthDateMaxLimit = {
@@ -493,6 +497,7 @@ export class AddUserComponent implements OnInit {
                     this.hasSuccess = true;
                     this.location.back();
                     this.toastr.success('User Added Successfully');
+                    this.router.navigateByUrl('/manage/users/list/${this.routerMgmtService.userUpdated()}');
                 }
             });
     }
@@ -743,6 +748,7 @@ export class AddUserComponent implements OnInit {
                         this.hasSuccess = true;
                         this.location.back();
                         this.toastr.success('User is updated successfully');
+                        this.router.navigateByUrl('/manage/users/list/${this.routerMgmtService.userUpdated()}');
                     }
                 });
         } catch (error) {

@@ -77,7 +77,7 @@
                           <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
                             class="p-button-outlined mr-2" icon="fas fa-sync"></button>
                           <button type="button" pButton pTooltip="Add"
-                            routerLink="/fleet/vehicles/add" class="p-button-outlined mr-2" icon="pi pi-plus"></button>
+                             [routerLink]="['/manage', 'users', 'add']" class="p-button-outlined mr-2" icon="pi pi-plus"></button>
                           <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
                             icon="pi pi-filter-slash" (click)="clear(ut)"></button>
                           <!--<button type="button" pButton pRipple class="p-button-outlined mr-2"-->
