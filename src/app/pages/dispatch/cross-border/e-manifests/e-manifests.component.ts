@@ -100,7 +100,7 @@ export class EManifestsComponent implements OnInit {
       'value': 'vehicle'
     },
     {
-      'name': 'Port of entry',
+      'name': 'US Port of entry',
       'value': 'entryPort'
     },
     {
@@ -124,7 +124,9 @@ export class EManifestsComponent implements OnInit {
     private router: Router
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.fetchUSPorts();
+
     this.fetchVehiclesList();
     this.fetchAssetsList();
     this.fetchDriversList();
@@ -132,7 +134,6 @@ export class EManifestsComponent implements OnInit {
 
     this.initDataTable();
     this.fetchCanadianPorts();
-    this.fetchUSPorts();
     this.fetchaceShipmentType();
     this.fetchaciShipmentType();
 
@@ -175,7 +176,7 @@ export class EManifestsComponent implements OnInit {
         }
       });
   }
-  fetchUSPorts() {
+  async fetchUSPorts() {
     this.httpClient.get('assets/USports.json').subscribe((data: any) => {
       this.USPortsObjects = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`portOfEntry`], a;
@@ -246,7 +247,7 @@ export class EManifestsComponent implements OnInit {
             element.assets = element.assets.toString();
             element.shippers = element.shippers.toString();
             element.receivers = element.receivers.toString();
-
+            element.usPortOfArrival = this.USPortsObjects[element.usPortOfArrival];
           }
           this.ACEList = result;
           this.loaded = true;

@@ -811,11 +811,11 @@ export class NewAceManifestComponent implements OnInit {
           type: this.manifestType,
           tripNumber: this.SCAC + this.tripNumber,
           currentStatus: 'draft',
+          estimatedArrivalDate: this.estimatedArrivalDate,
+          estimatedArrivalTime: this.estimatedArrivalTime,
           manifest: {
             SCAC: this.SCAC,
             usPortOfArrival: this.usPortOfArrival,
-            estimatedArrivalDate: this.estimatedArrivalDate,
-            estimatedArrivalTime: this.estimatedArrivalTime,
             truck: this.truck,
             trailers: this.trailers,
             mainDriver: this.mainDriver,
@@ -862,11 +862,11 @@ export class NewAceManifestComponent implements OnInit {
         type: this.manifestType,
         tripNumber: this.SCAC + this.tripNumber,
         currentStatus: 'draft',
+        estimatedArrivalDate: this.estimatedArrivalDate,
+        estimatedArrivalTime: this.estimatedArrivalTime,
         manifest: {
           SCAC: this.SCAC,
           usPortOfArrival: this.usPortOfArrival,
-          estimatedArrivalDate: this.estimatedArrivalDate,
-          estimatedArrivalTime: this.estimatedArrivalTime,
           truck: this.truck,
           trailers: this.trailers,
           mainDriver: this.mainDriver,
@@ -929,8 +929,8 @@ export class NewAceManifestComponent implements OnInit {
         this.SCAC = result.manifestInfo.SCAC;
         this.tripNumber = result.tripNo.substring(4, (result.tripNo.length));
         this.usPortOfArrival = result.manifestInfo.usPortOfArrival;
-        this.estimatedArrivalDate = result.manifestInfo.estimatedArrivalDate;
-        this.estimatedArrivalTime = result.manifestInfo.estimatedArrivalTime;
+        this.estimatedArrivalDate = result.estimatedArrivalDate;
+        this.estimatedArrivalTime = result.estimatedArrivalTime;
         this.truck = result.manifestInfo.truck;
         this.mainDriver = result.manifestInfo.mainDriver;
         this.coDrivers = result.manifestInfo.coDrivers;
@@ -1004,11 +1004,11 @@ export class NewAceManifestComponent implements OnInit {
           tripNumber: this.SCAC + this.tripNumber,
           currentStatus: 'draft',
           sendId: this.sendId,
+          estimatedArrivalDate: this.estimatedArrivalDate,
+          estimatedArrivalTime: this.estimatedArrivalTime,
           manifest: {
             SCAC: this.SCAC,
             usPortOfArrival: this.usPortOfArrival,
-            estimatedArrivalDate: this.estimatedArrivalDate,
-            estimatedArrivalTime: this.estimatedArrivalTime,
             truck: this.truck,
             trailers: this.trailers,
             mainDriver: this.mainDriver,
@@ -1062,11 +1062,11 @@ export class NewAceManifestComponent implements OnInit {
         tripNumber: this.SCAC + this.tripNumber,
         currentStatus: 'draft',
         sendId: this.sendId,
+        estimatedArrivalDate: this.estimatedArrivalDate,
+        estimatedArrivalTime: this.estimatedArrivalTime,
         manifest: {
           SCAC: this.SCAC,
           usPortOfArrival: this.usPortOfArrival,
-          estimatedArrivalDate: this.estimatedArrivalDate,
-          estimatedArrivalTime: this.estimatedArrivalTime,
           truck: this.truck,
           trailers: this.trailers,
           mainDriver: this.mainDriver,
@@ -1151,7 +1151,7 @@ export class NewAceManifestComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.toastr.success('Manifest added successfully.');
-        this.location.back(); // <-- go back to previous location
+        //  this.location.back(); // <-- go back to previous location
       },
     });
   }

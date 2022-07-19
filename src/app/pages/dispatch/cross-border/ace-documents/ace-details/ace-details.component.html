@@ -5,15 +5,12 @@
                 <h2>ACE eManifest Details</h2>
                 <div class="right-wrapper text-right pt-2 pr-2">
 
-                    <!-- <div class="btn-group btn-group1 flex-wrap mr-1">
-                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                            aria-expanded="false">Actions<span class="caret"></span></button>
-                        <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
-                                class="dropdown-item text-1">Edit</a>
-                        </div>
-                    </div> -->
+                    <a routerLink="/dispatch/cross-border/ace-manifest/{{manifestID}}"
+                        class="btn btn-default btn-sm mr-2"><i class="fas fa-pencil-alt"></i> Edit Manifest</a>
+
+                    <button type="text" pButton class="btn btn-success btn-sm align-items-center d-inline-flex mr-2"
+                        label=" Send To CBP" (click)="op.toggle($event)"> <i class="pi pi-chevron-down"></i></button>
+
                     <p-overlayPanel #op>
                         <ng-template pTemplate [style]="{padding: '0px'}">
                             <a class="dropdown-item" href="javascript:;" (click)="sendCBPFn()">Send Complete
@@ -24,12 +21,9 @@
                                 eManifest</a>
                         </ng-template>
                     </p-overlayPanel>
-
-                    <button type="text" pButton class="btn btn-success btn-sm align-items-center d-inline-flex mr-2"
-                        label=" Send To CBP" (click)="op.toggle($event)"> <i class="pi pi-chevron-down"></i></button>
-
-                    <a [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-default btn-sm"><i
+                    <a [routerLink]="['/dispatch', 'cross-border','manifests']" class="btn btn-default btn-sm"><i
                             class="fas fa-list"></i> ACE Manifests</a>
+
                 </div>
             </header>
             <div class="ace-main__wrapper p-4 text-dark bg-white">
@@ -161,8 +155,8 @@
                                 <div class=" pull-right">
                                     <!-- <button class="btn btn-success btn-sm mr-1"> Set Shipment Status</button> -->
                                     <!-- <button class="btn btn-success btn-sm"> Send to CBP</button> -->
-                                    <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
-                                        class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Shipment</a>
+                                    <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
+                                        class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Shipment</a> -->
                                 </div>
                             </div>
                             <div class="card-body border">
@@ -176,7 +170,7 @@
                                             <th>Consignee</th>
                                             <th>Total Commodities</th>
                                             <th>Total Quantities</th>
-                                            <th width="10%">Actions </th>
+                                            <!-- <th width="10%">Actions </th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -232,12 +226,12 @@
                                                     *ngFor="let commodity of shipment.commodities; let s=index;">{{commodity.quantity}}{{packagingUnitsObects[commodity.packagingUnit]}}<span
                                                         *ngIf="s != shipment.commodities.length-1">,</span></span>
                                             </td>
-                                            <td class="actions">
+                                            <!-- <td class="actions">
                                                 <a
                                                     routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
 
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     </tbody>
                                 </table>
@@ -253,13 +247,13 @@
                             <div
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                                 <h4 class="m-0 ">Drivers,Co-Drivers and Passengers</h4>
-                                <div class=" pull-right">
+                                <!-- <div class=" pull-right">
                                     <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
                                         class="btn btn-success btn-sm mr-1"><i class="fas fa-plus"></i> Add
                                         Co-Driver</a>
                                     <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
                                         class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Passenger</a>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="card-body border">
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0">
@@ -271,7 +265,7 @@
                                             <th>Fast Card#</th>
                                             <th>Documents#</th>
                                             <!-- <th>Address</th> -->
-                                            <th width="10%">Actions</th>
+                                            <!-- <th width="10%">Actions</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -294,11 +288,11 @@
                                                     *ngFor="let document of mainDriver.travelDocuments; let s= index;">{{document.number}}<span
                                                         *ngIf="s != mainDriver.travelDocuments.length-1">,</span></span>
                                             </td>
-                                            <td class="actions">
+                                            <!-- <td class="actions">
                                                 <a
                                                     routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            </td>
+                                            </td> -->
                                         </tr>
                                         <tr *ngFor="let driver of drivers" data-toggle="tooltip"
                                             style="cursor: pointer;" data-placement="top"
@@ -322,11 +316,11 @@
                                             </td>
 
                                             <!-- <td>Address</td> -->
-                                            <td class="actions">
+                                            <!-- <td class="actions">
                                                 <a
                                                     routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            </td>
+                                            </td> -->
                                         </tr>
                                         <tr *ngFor="let passenger of passengers" data-toggle="tooltip"
                                             style="cursor: pointer;" data-placement="top"
@@ -349,11 +343,11 @@
                                                         *ngIf="s != passenger.travelDocuments.length-1">,</span></span>
                                             </td>
                                             <!-- <td>Address</td> -->
-                                            <td class="actions">
+                                            <!-- <td class="actions">
                                                 <a
                                                     routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     </tbody>
                                 </table>
@@ -385,7 +379,7 @@
                                             <th width="10%">Licence Plate #</th>
                                             <th width="15%">IIT</th>
                                             <th width="15%">Seal Numbers</th>
-                                            <th width="10%">Actions</th>
+                                            <!-- <th width="10%">Actions</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -421,10 +415,10 @@
                                                 title="Click to see details of vehicle"><span
                                                     *ngFor="let seal of truck.sealNumbers; let s= index;">{{seal}}<span
                                                         *ngIf="s != truck.sealNumbers.length-1">,</span></span></td>
-                                            <td class="actions"><a
+                                            <!-- <td class="actions"><a
                                                     routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     </tbody>
                                 </table>
@@ -443,8 +437,8 @@
                                 <div class=" pull-right">
                                     <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
                                         class="btn btn-success btn-sm mr-1"> Set IIT Status</a> -->
-                                    <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
-                                        class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Asset</a>
+                                    <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
+                                        class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Asset</a> -->
                                 </div>
                             </div>
                             <div class="card-body border">
@@ -458,7 +452,7 @@
                                             <th width="15%">Licence Plate #</th>
                                             <th width="15%">IIT</th>
                                             <th width="15%">Seal Numbers</th>
-                                            <th width="10%">Actions</th>
+                                            <!-- <th width="10%">Actions</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -485,12 +479,12 @@
                                             <td><span
                                                     *ngFor="let seal of trailer.sealNumbers;let s= index;">{{seal}}<span
                                                         *ngIf="s != trailer.sealNumbers.length-1">,</span></span></td>
-                                            <td class="actions">
+                                            <!-- <td class="actions">
                                                 <a
                                                     routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                                <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a> -->
-                                            </td>
+                                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
+                                            </td> -->
                                         </tr>
                                     </tbody>
                                 </table>

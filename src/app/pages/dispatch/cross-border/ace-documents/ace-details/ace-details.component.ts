@@ -288,7 +288,7 @@ export class AceDetailsComponent implements OnInit {
         this.createdTime = result.createdTime;
       });
   }
-  setStatus(val) {
+  async setStatus(val) {
     let record = {
       date: this.createdDate,
       time: this.createdTime,
@@ -296,10 +296,12 @@ export class AceDetailsComponent implements OnInit {
       manifestType: 'ACE',
       status: val
     };
-    this.apiService.postData('eManifests/setStatus', record).subscribe((result: any) => {
+    let result = await this.apiService.postData('eManifests/setStatus', record).toPromise();
+    if (result) {
       this.toastr.success('Status Updated Successfully!');
       this.currentStatus = val;
-    });
+    }
+
   }
   getTrailerLicState(trailers: any) {
     if (trailers !== undefined || trailers !== '') {
