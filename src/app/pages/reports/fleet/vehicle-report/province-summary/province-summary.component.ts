@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,  Input, TemplateRef, ViewChild  } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import Constants from 'src/app/pages/fleet/constants';
 import * as _ from 'lodash';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { OverlayPanel } from "primeng/overlaypanel";
+import { Table } from 'primeng/table/table';
+
 
 @Component({
   selector: 'app-province-summary',
@@ -11,6 +16,10 @@ import * as _ from 'lodash';
   styleUrls: ['./province-summary.component.css']
 })
 export class ProvinceSummaryComponent implements OnInit {
+  @ViewChild('dt') table: Table;
+  confirmEmailModal: TemplateRef<any>;
+  @ViewChild('op') overlaypanel: OverlayPanel;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   allData: any = [];
   start = null;
   end = null;
@@ -26,12 +35,29 @@ export class ProvinceSummaryComponent implements OnInit {
   vehicleIdentification = '';
   vehicleId = '';
   dataM = []
-  constructor(private apiService: ApiService, private toastr: ToastrService) { }
+  visible = true;
+  loadMsg: string = Constants.NO_RECORDS_FOUND;
+  isSearch = false;
+  get = _.get;
+  _selectedColumns: any[];
+  find = _.find;
+  
+  dataColumns = [
+    { width: '7%', field: 'vehicle', header: 'Vehicle', type: "text" },
+    { width: '7%', field: 'caProvinces', header: 'Province(Canada)', type: "text" },
+    { width: '7%', field: 'usProvinces', header: 'Province(US)', type: "text" },
+    { width: '7%', field: 'newStatus', header: 'Trip Status', type: "text" }
+  ];
+  
+  constructor(private apiService: ApiService, 
+  private toastr: ToastrService,
+  private spinner: NgxSpinnerService) { }
+  
   ngOnInit(): void {
-
     this.end = moment().format("YYYY-MM-DD");
     this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
     this.fetchProvinceMilesData();
+    this.setToggleOptions();
   }
   // getSuggestions = _.debounce(function (value) {
 
@@ -52,6 +78,21 @@ export class ProvinceSummaryComponent implements OnInit {
   //   this.vehicleId = vehicleIDs;
   //   this.suggestedVehicles = [];
   // }
+  
+  
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+  }
+  
   fetchProvinceMilesData() {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`vehicles/fetch/provinceMiles?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
@@ -89,12 +130,17 @@ export class ProvinceSummaryComponent implements OnInit {
     }
   }
 
-  onScroll() {
+  onScroll = async (event: any) => {
     if (this.loaded) {
       this.fetchProvinceMilesData();
     }
     this.loaded = false;
   }
+  
+  clear(table: Table) {
+    table.clear();
+  }
+  
   searchFilter() {
     if (this.start != null && this.end != null) {
       // this.vehicleIdentification = this.vehicleIdentification.toLowerCase();
@@ -125,19 +171,21 @@ export class ProvinceSummaryComponent implements OnInit {
       return false;
     }
   }
-  // reset() {
-  //   if (this.vehicleIdentification !== '') {
-  //     this.vehicleId = '';
-  //     // this.suggestedVehicles = [];
-  //     this.vehicleIdentification = '';
-  //     this.lastItemSK = '';
-  //     this.allData = [];
-  //     this.dataMessage = Constants.FETCHING_DATA;
-  //     this.fetchProvinceMilesData();
-  //   } else {
-  //     return false;
-  //   }
-  // }
+  
+  refreshData() {
+      this.dataM = [];
+      this.allData = [];
+      this.end = moment().format("YYYY-MM-DD");
+      this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
+      this.vehicleId = '';
+      // this.suggestedVehicles = [];
+      this.vehicleIdentification = '';
+      this.lastItemSK = '';
+      this.loaded = false;
+      this.fetchProvinceMilesData();
+      this.dataMessage = Constants.FETCHING_DATA;
+  }
+  
   fetchFullExport(type = '') {
     this.apiService.getData(`vehicles/fetch/provinceMiles/report?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.exportData = result.summaryResult;

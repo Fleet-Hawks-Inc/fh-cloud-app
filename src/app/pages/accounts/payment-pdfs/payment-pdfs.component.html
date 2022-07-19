@@ -1465,3 +1465,67 @@
     </form>
   </div>
 </ng-template>
+
+
+<ng-template #voidPayment let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Void Payment</h4>
+      <button type="button" class="close" (click)="modal.dismiss()">
+        &times;
+      </button>
+    </div>
+    <form>
+      <div class="modal-body">
+        <div class="form-group col-lg-12 col-md-12">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="row">
+                <div class="col-lg-12">
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td width="50%" class="back-color-gray font-weight-bold">
+                          Payment#
+                        </td>
+                        <td width="50%" class="text-capitalize">
+                          {{ voidPayNo }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="back-color-gray font-weight-bold">
+                          Reason
+                        </td>
+                        <td>
+                          <textarea
+                          [(ngModel)]="voidData.reason"
+                          name="reason"
+                          type="text"
+                          placeholder="e.g 7845"
+                          class="form-control h-auto"
+                          autocomplete="off"
+                          #payref="ngModel"
+                          required rows="3"></textarea>
+                        
+                        </td>
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="modal.dismiss()">
+          Close
+        </button>
+        <button type="button" class="btn btn-success" [disabled]="voidDisable" (click)="voidPay()">
+          Void Payment
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>

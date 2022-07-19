@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 
 @Component({
   selector: 'app-managemain',
@@ -6,8 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./managemain.component.css']
 })
 export class ManagemainComponent implements OnInit {
+  sessionID: string;
 
-  constructor() { }
+  constructor(
+  private routerMgmtService: RouteManagementServiceService
+  ) { 
+        this.sessionID = this.routerMgmtService.serviceLogSessionID;
+  }
 
   ngOnInit() {
   }

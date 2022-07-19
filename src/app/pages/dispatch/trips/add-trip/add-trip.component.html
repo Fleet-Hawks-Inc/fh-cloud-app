@@ -37,7 +37,7 @@
                             }}</span></label>
                       </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-semibold text-3 text-dark">Create this trip using
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -49,10 +49,11 @@
                             btn-yesno mr-2 mb-2 {{ mapRouteActive }}" (click)="getRoutes()">Permanent Route</label>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                     <div class="row mb-2">
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-semibold text-3 text-dark">Select Order#
+                        <label class="control-label font-weight-semibold text-3 text-dark {{ mapOrderActive }}"
+                          (click)="changeMapRoute('order',null)">Select Order#
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
 
@@ -70,9 +71,12 @@
 
                     <div class="row mb-2">
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-semibold text-3 text-dark">Select Permanent Route
+                        <label class="control-label font-weight-semibold text-3 text-dark {{ mapRouteActive }}">Select
+                          Permanent Route
                         </label>
-                        <ng-select [(ngModel)]="tripData.routeID" name="routeID" (change)="makeRoutePlan()" placeholder="eg. Calgary to
+                        <ng-select [disabled]="orderNo != '' ? false : true" [(ngModel)]="tripData.routeID"
+                          name="routeID" [multiple]="true" (change)="getRoutes()" (remove)="removeRoutePlan($event)"
+                          (add)="makeRoutePlan($event)" placeholder="eg. Calgary to
                           Edmonton" #pRoute="ngModel">
                           <ng-option *ngFor="let route of permanentRoutes" value="{{ route.routeID }}">
                             {{ route.routeName }}</ng-option>

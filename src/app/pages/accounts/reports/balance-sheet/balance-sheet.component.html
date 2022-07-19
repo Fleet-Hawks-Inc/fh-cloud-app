@@ -1,557 +1,706 @@
 <section class="body">
-    <div class="inner-wrapper">
-        <section role="main" class="content-body pl-0 pr-0 pt-0">
-            <header class="page-header pr19 pl7">
-                <div class="row" style="padding-top:10px;">
-                    <div class="col-md-2 col-lg-2 pr-0">
-                        <h4 class="font-weight-bold mt-0 text-dark">Balance Sheet</h4>
-                    </div>
-                    <div class="col-lg-3 col-md-3 pr-1">
-                        <div class="input-daterange input-group">
-                            <span class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </span>
-                            </span>
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header pr19 pl7">
+        <div class="row" style="padding-top: 10px">
+          <div class="col-md-2 col-lg-2 pr-0">
+            <h4 class="font-weight-bold mt-0 text-dark">Balance Sheet</h4>
+          </div>
+          <div class="col-lg-3 col-md-3 pr-1">
+            <div class="input-daterange input-group">
+              <span class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fas fa-calendar-alt"></i>
+                </span>
+              </span>
 
-                            <input [(ngModel)]="filter.startDate" name="fromDate" type="text" placeholder="yyyy/mm/dd"
-                                (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control"
-                                autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-                            <span class="input-group-text border-left-0
-                    border-right-0 rounded-0">
-                                to
-                            </span>
-                            <input [(ngModel)]="filter.endDate" name="toDate" type="text" placeholder="yyyy/mm/dd"
-                                (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control"
-                                autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+              <input
+                [(ngModel)]="filter.startDate"
+                name="fromDate"
+                type="text"
+                placeholder="yyyy/mm/dd"
+                (click)="from.toggle()"
+                ngbDatepicker
+                #from="ngbDatepicker"
+                class="form-control"
+                autocomplete="off"
+                [minDate]="dateMinLimit"
+                [maxDate]="futureDatesLimit"
+              />
+              <span
+                class="input-group-text border-left-0 border-right-0 rounded-0"
+              >
+                to
+              </span>
+              <input
+                [(ngModel)]="filter.endDate"
+                name="toDate"
+                type="text"
+                placeholder="yyyy/mm/dd"
+                (click)="to.toggle()"
+                ngbDatepicker
+                #to="ngbDatepicker"
+                class="form-control"
+                autocomplete="off"
+                [minDate]="dateMinLimit"
+                [maxDate]="futureDatesLimit"
+              />
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2">
+            <button type="button" class="btn btn-success btn-sm">Search</button>
+          </div>
+          <div class="col-md-5 col-lg-5 pr-2">
+            <button
+              *ngIf="exportLoading"
+              class="btn btn-success btn-sm ml-2"
+              type="button"
+              disabled
+            >
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              Exporting...
+            </button>
+            <button
+              type="button"
+              *ngIf="!exportLoading"
+              class="btn btn-success btn-sm ml-2 dropdown-toggle"
+              data-toggle="dropdown"
+              style="position: absolute; right: 10px"
+              aria-expanded="false"
+            >
+              <i class="fas fa-file-export"></i> Export<span
+                class="caret"
+              ></span>
+            </button>
+            <div
+              *ngIf="!exportLoading"
+              class="dropdown-menu"
+              role="menu"
+              x-placement="bottom-start"
+              style="
+                position: absolute;
+                will-change: transform;
+                top: 0px;
+                left: 0px;
+                transform: translate3d(0px, 38px, 0px);
+              "
+            >
+              <a class="dropdown-item text-1" (click)="generateCSV()">Excel</a>
+            </div>
+          </div>
+        </div>
+      </header>
+      <section class="m-2">
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row">
+                <div class="col-lg-12">
+                  <ul
+                    class="nav nav-tabs top-tabs"
+                    id="top-tabs"
+                    role="tablist"
+                  >
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        [ngClass]="{ active: currTab === 'CAD' }"
+                        (click)="changeTab('CAD')"
+                        id="CAD-tab"
+                        >CAD Balance Sheet</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        [ngClass]="{ active: currTab === 'USD' }"
+                        (click)="changeTab('USD')"
+                        id="USD-tab"
+                        >USD Balance Sheet</a
+                      >
+                    </li>
+                  </ul>
+                  <div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <h4
+                          class="font-weight-bold text-dark mt-0 mb-3 text-underline"
+                        >
+                          Assets
+                        </h4>
+                        <!-- Current Assets -->
+                        <table
+                          class="table table-bordered table-striped table-hover"
+                        >
+                          <thead>
+                            <tr>
+                              <th colspan="4">Current Assets</th>
+                            </tr>
+                          </thead>
+                          <thead>
+                            <tr>
+                              <th class="text-4" width="25%">Account Number</th>
+                              <th class="text-4" width="20%">Account Name</th>
+                              <th class="text-4" width="20%">Account Class</th>
+                              <th class="text-4" width="15%">
+                                Closing Balance
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngIf="sortOtherCurrentAssets.length === 0">
+                              <td colspan="6">{{ dataMessage }}</td>
+                            </tr>
+                            <tr *ngFor="let ac of sortOtherCurrentAssets">
+                              <td>{{ ac.accountNo }}</td>
+                              <td>{{ ac.accountName }}</td>
+                              <td>{{ ac.subAcClass }}</td>
+                              <td>
+                                <span *ngIf="currTab === 'CAD'">{{
+                                  ac.closingBalAmtCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currTab === 'USD'">{{
+                                  ac.closingBalAmtUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="font-weight-bold">
+                                Total Current Assets
+                              </td>
+                              <td></td>
+                              <td></td>
+                              <td class="font-weight-bold text-4">
+                                <span *ngIf="currency === 'CAD'">{{
+                                  currentAssetTotalCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currency === 'USD'">{{
+                                  currentAssetTotalUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
 
-                        </div>
+                        <!-- Inventory Assets -->
+                        <table
+                          class="table table-bordered table-striped table-hover"
+                        >
+                          <thead>
+                            <tr>
+                              <th colspan="4">Inventory Assets</th>
+                            </tr>
+                          </thead>
+                          <thead>
+                            <tr>
+                              <th class="text-4" width="25%">Account Number</th>
+                              <th class="text-4" width="20%">Account Name</th>
+                              <th class="text-4" width="20%">Account Class</th>
+                              <th class="text-4" width="15%">
+                                Closing Balance
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngIf="sortInventoryAssets.length === 0">
+                              <td colspan="6">{{ dataMessage }}</td>
+                            </tr>
+                            <tr *ngFor="let ac of sortInventoryAssets">
+                              <td>{{ ac.accountNo }}</td>
+                              <td>{{ ac.accountName }}</td>
+                              <td>{{ ac.subAcClass }}</td>
+                              <td>
+                                <span *ngIf="currTab === 'CAD'">{{
+                                  ac.closingBalAmtCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currTab === 'USD'">{{
+                                  ac.closingBalAmtUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="font-weight-bold">
+                                Total Inventory Assets
+                              </td>
+                              <td></td>
+                              <td></td>
+                              <td class="font-weight-bold text-4">
+                                <span *ngIf="currency === 'CAD'">{{
+                                  inventoryAssetTotalCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currency === 'USD'">{{
+                                  inventoryAssetTotalUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <!-- Capital Assets -->
+                        <table
+                          class="table table-bordered table-striped table-hover"
+                        >
+                          <thead>
+                            <tr>
+                              <th colspan="4">Capital Assets</th>
+                            </tr>
+                          </thead>
+                          <thead>
+                            <tr>
+                              <th class="text-4" width="25%">Account Number</th>
+                              <th class="text-4" width="20%">Account Name</th>
+                              <th class="text-4" width="20%">Account Class</th>
+                              <th class="text-4" width="15%">
+                                Closing Balance
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngIf="sortCapitalAsset.length === 0">
+                              <td colspan="6">{{ dataMessage }}</td>
+                            </tr>
+                            <tr *ngFor="let ac of sortCapitalAsset">
+                              <td>{{ ac.accountNo }}</td>
+                              <td>{{ ac.accountName }}</td>
+                              <td>{{ ac.subAcClass }}</td>
+                              <td>
+                                <span *ngIf="currTab === 'CAD'">{{
+                                  ac.closingBalAmtCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currTab === 'USD'">{{
+                                  ac.closingBalAmtUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="font-weight-bold">
+                                Total Capital Assets
+                              </td>
+                              <td></td>
+                              <td></td>
+                              <td class="font-weight-bold text-4">
+                                <span *ngIf="currency === 'CAD'">{{
+                                  capitalAssetTotalCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currency === 'USD'">{{
+                                  capitalAssetTotalUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <!-- Other Non-Current Assets -->
+                        <table
+                          class="table table-bordered table-striped table-hover"
+                        >
+                          <thead>
+                            <tr>
+                              <th colspan="4">Other Non-Current Assets</th>
+                            </tr>
+                          </thead>
+                          <thead>
+                            <tr>
+                              <th class="text-4" width="25%">Account Number</th>
+                              <th class="text-4" width="20%">Account Name</th>
+                              <th class="text-4" width="20%">Account Class</th>
+                              <th class="text-4" width="15%">
+                                Closing Balance
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngIf="sortONCAsset.length === 0">
+                              <td colspan="6">{{ dataMessage }}</td>
+                            </tr>
+                            <tr *ngFor="let ac of sortONCAsset">
+                              <td>{{ ac.accountNo }}</td>
+                              <td>{{ ac.accountName }}</td>
+                              <td>{{ ac.subAcClass }}</td>
+                              <td>
+                                <span *ngIf="currTab === 'CAD'">{{
+                                  ac.closingBalAmtCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currTab === 'USD'">{{
+                                  ac.closingBalAmtUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="font-weight-bold">
+                                Total Other Non-Current Assets
+                              </td>
+                              <td></td>
+                              <td></td>
+                              <td class="font-weight-bold text-4">
+                                <span *ngIf="currency === 'CAD'">{{
+                                  ONCAssetTotalCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currency === 'USD'">{{
+                                  ONCAssetTotalUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <!-- Total Assets -->
+                        <table
+                          class="table table-bordered table-striped table-hover"
+                        >
+                          <thead>
+                            <tr>
+                              <th width="25%">All Assets Total</th>
+                              <th width="20%"></th>
+                              <th width="20%"></th>
+                              <th width="15%">Total Assets Closing Balance</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="font-weight-bold">Total</td>
+                              <td></td>
+                              <td></td>
+                              <td class="font-weight-bold text-4">
+                                <span *ngIf="currency === 'CAD'">{{
+                                  totalAssetsCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currency === 'USD'">{{
+                                  totalAssetsUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Liability -->
+                      <div class="col-lg-12">
+                        <h4
+                          class="font-weight-bold text-dark mt-0 mb-3 text-underline"
+                        >
+                          Liability
+                        </h4>
+                        <!-- Current Liability -->
+                        <table
+                          class="table table-bordered table-striped table-hover"
+                        >
+                          <thead>
+                            <tr>
+                              <th colspan="4">Current Liability</th>
+                            </tr>
+                          </thead>
+                          <thead>
+                            <tr>
+                              <th class="text-4" width="25%">Account Number</th>
+                              <th class="text-4" width="20%">Account Name</th>
+                              <th class="text-4" width="20%">Account Class</th>
+                              <th class="text-4" width="15%">
+                                Closing Balance
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngIf="currLiability.length === 0">
+                              <td colspan="6">{{ dataMessage }}</td>
+                            </tr>
+                            <tr *ngFor="let ac of currLiability">
+                              <td>{{ ac.accountNo }}</td>
+                              <td>{{ ac.accountName }}</td>
+                              <td>{{ ac.subAcClass }}</td>
+                              <td>
+                                <span *ngIf="currTab === 'CAD'">{{
+                                  ac.closingBalAmtCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currTab === 'USD'">{{
+                                  ac.closingBalAmtUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="font-weight-bold">
+                                Total Current Liability
+                              </td>
+                              <td></td>
+                              <td></td>
+                              <td class="font-weight-bold text-4">
+                                <span *ngIf="currency === 'CAD'">{{
+                                  totalCurrentLiabilityCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currency === 'USD'">{{
+                                  totalCurrentLiabilityUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <!--Long Term Liabilities -->
+                        <table
+                          class="table table-bordered table-striped table-hover"
+                        >
+                          <thead>
+                            <tr>
+                              <th colspan="4">Long Term Liability</th>
+                            </tr>
+                          </thead>
+                          <thead>
+                            <tr>
+                              <th class="text-4" width="25%">Account Number</th>
+                              <th class="text-4" width="20%">Account Name</th>
+                              <th class="text-4" width="20%">Account Class</th>
+                              <th class="text-4" width="15%">
+                                Closing Balance
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngIf="ltLiability.length === 0">
+                              <td colspan="6">{{ dataMessage }}</td>
+                            </tr>
+                            <tr *ngFor="let ac of ltLiability">
+                              <td>{{ ac.accountNo }}</td>
+                              <td>{{ ac.accountName }}</td>
+                              <td>{{ ac.subAcClass }}</td>
+                              <td>
+                                <span *ngIf="currTab === 'CAD'">{{
+                                  ac.closingBalAmtCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currTab === 'USD'">{{
+                                  ac.closingBalAmtUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="font-weight-bold">
+                                Total Long Term Liability
+                              </td>
+                              <td></td>
+                              <td></td>
+                              <td class="font-weight-bold text-4">
+                                <span *ngIf="currency === 'CAD'">{{
+                                  totalLongTermLiabilityCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currency === 'USD'">{{
+                                  totalLongTermLiabilityUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <!-- Total Liability -->
+                        <table
+                          class="table table-bordered table-striped table-hover"
+                        >
+                          <thead>
+                            <tr>
+                              <th width="25%">All Liability Total</th>
+                              <th width="20%"></th>
+                              <th width="20%"></th>
+                              <th width="15%">
+                                Total Liability Closing Balance
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="font-weight-bold">Total</td>
+                              <td></td>
+                              <td></td>
+                              <td class="font-weight-bold text-4">
+                                <span *ngIf="currency === 'CAD'">{{
+                                  totalLiabilityCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currency === 'USD'">{{
+                                  totalLiabilityUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-                    <div class="col-md-2 col-lg-2">
-                        <button type="button" class="btn btn-success btn-sm">Search</button>
+                    <!-- Equity -->
+                    <div class="row pt-2">
+                      <div class="col-lg-12">
+                        <h4
+                          class="font-weight-bold text-dark mt-0 mb-3 text-underline"
+                        >
+                          Equity
+                        </h4>
+                        <!-- Share Capital -->
+                        <table
+                          class="table table-bordered table-striped table-hover"
+                        >
+                          <thead>
+                            <tr>
+                              <th colspan="4">Share Capital</th>
+                            </tr>
+                          </thead>
+                          <thead>
+                            <tr>
+                              <th class="text-4" width="25%">Account Number</th>
+                              <th class="text-4" width="20%">Account Name</th>
+                              <th class="text-4" width="20%">Account Class</th>
+                              <th class="text-4" width="15%">
+                                Closing Balance
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngIf="scEquity.length === 0">
+                              <td colspan="6">{{ dataMessage }}</td>
+                            </tr>
+                            <tr *ngFor="let ac of scEquity">
+                              <td>{{ ac.accountNo }}</td>
+                              <td>{{ ac.accountName }}</td>
+                              <td>{{ ac.subAcClass }}</td>
+                              <td>
+                                <span *ngIf="currTab === 'CAD'">{{
+                                  ac.closingBalAmtCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currTab === 'USD'">{{
+                                  ac.closingBalAmtUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="font-weight-bold">
+                                Total Long Term Liability
+                              </td>
+                              <td></td>
+                              <td></td>
+                              <td class="font-weight-bold text-4">
+                                <span *ngIf="currency === 'CAD'">{{
+                                  totalShareCapitalCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currency === 'USD'">{{
+                                  totalShareCapitalUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <!-- Retained Earnings -->
+                        <table
+                          class="table table-bordered table-striped table-hover"
+                        >
+                          <thead>
+                            <tr>
+                              <th colspan="4">Retained Earnings</th>
+                            </tr>
+                          </thead>
+                          <thead>
+                            <tr>
+                              <th class="text-4" width="25%">Account Number</th>
+                              <th class="text-4" width="20%">Account Name</th>
+                              <th class="text-4" width="20%">Account Class</th>
+                              <th class="text-4" width="15%">
+                                Closing Balance
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngIf="retainedEarnings.length === 0">
+                              <td colspan="6">{{ dataMessage }}</td>
+                            </tr>
+                            <tr *ngFor="let ac of retainedEarnings">
+                              <td>{{ ac.accountNo }}</td>
+                              <td>{{ ac.accountName }}</td>
+                              <td>{{ ac.subAcClass }}</td>
+                              <td>
+                                <span *ngIf="currTab === 'CAD'">{{
+                                  ac.closingBalAmtCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currTab === 'USD'">{{
+                                  ac.closingBalAmtUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="font-weight-bold">
+                                Total Long Term Liability
+                              </td>
+                              <td></td>
+                              <td></td>
+                              <td class="font-weight-bold text-4">
+                                <span *ngIf="currency === 'CAD'">{{
+                                  totalRetainedEarningsCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currency === 'USD'">{{
+                                  totalRetainedEarningsCAD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <!-- Total Equity -->
+                        <table
+                          class="table table-bordered table-striped table-hover"
+                        >
+                          <thead>
+                            <tr>
+                              <th width="25%">All Equity Total</th>
+                              <th width="20%"></th>
+                              <th width="20%"></th>
+                              <th width="15%">All Equities Closing Balance</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="font-weight-bold">Total</td>
+                              <td></td>
+                              <td></td>
+                              <td class="font-weight-bold text-4">
+                                <span *ngIf="currency === 'CAD'">{{
+                                  totalEquityCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currency === 'USD'">{{
+                                  totalEquityUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <!--Total Liabilty and Equity -->
+                        <table
+                          class="table table-bordered table-striped table-hover"
+                        >
+                          <thead>
+                            <tr>
+                              <th width="25%">Liability & Equity Total</th>
+                              <th width="20%"></th>
+                              <th width="20%"></th>
+                              <th width="15%">
+                                All Equities & Liabilities Closing Balance
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td class="font-weight-bold">Total</td>
+                              <td></td>
+                              <td></td>
+                              <td class="font-weight-bold text-4">
+                                <span *ngIf="currency === 'CAD'">{{
+                                  totalLiabilityEquityCAD | number: "1.2-2"
+                                }}</span>
+                                <span *ngIf="currency === 'USD'">{{
+                                  totalLiabilityEquityUSD | number: "1.2-2"
+                                }}</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-                    <div class="col-md-5 col-lg-5 pr-2">
-                        <button *ngIf="exportLoading" class="btn btn-success btn-sm ml-2" type="button" disabled>
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            Exporting...
-                        </button>
-                        <button type="button" *ngIf="!exportLoading" class="btn btn-success btn-sm ml-2 dropdown-toggle"
-                            data-toggle="dropdown" style="position: absolute; right: 10px" aria-expanded="false">
-                            <i class="fas fa-file-export"></i> Export<span class="caret"></span>
-                        </button>
-                        <div *ngIf="!exportLoading" class="dropdown-menu" role="menu" x-placement="bottom-start" style="
-                      position: absolute;
-                      will-change: transform;
-                      top: 0px;
-                      left: 0px;
-                      transform: translate3d(0px, 38px, 0px);
-                    ">
-                            <a class="dropdown-item text-1" (click)="generateCSV()">Excel</a>
-                        </div>
-                    </div>
+                  </div>
                 </div>
-            </header>
-            <section class="m-2">
-                <div class="row mb-3">
-                    <div class="col-lg-12">
-                        <div class="bg-white p-3 text-dark">
-                            <div class="form-group row">
-                                <div class="col-lg-12">
-                                    <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                                        <li class="nav-item">
-                                            <a class="nav-link" [ngClass]="{ active: currTab === 'CAD' }"
-                                                (click)="changeTab('CAD')" id="CAD-tab">CAD Balance Sheet</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" [ngClass]="{ active: currTab === 'USD' }"
-                                                (click)="changeTab('USD')" id="USD-tab">USD Balance Sheet</a>
-                                        </li>
-                                    </ul>
-                                    <div>
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <h4 class="font-weight-bold text-dark mt-0 mb-3 text-underline">Assets
-                                                </h4>
-                                                <!-- Current Assets -->
-                                                <table class="table table-bordered table-striped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Current Assets</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-4" width="25%">Account Number</th>
-                                                            <th class="text-4" width="20%">Account Name</th>
-                                                            <th class="text-4" width="20%">Account Class</th>
-                                                            <th class="text-4" width="15%">Closing Balance</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngIf="sortOtherCurrentAssets.length === 0">
-                                                            <td colspan="6">{{ dataMessage }}</td>
-                                                        </tr>
-                                                        <tr *ngFor="let ac of sortOtherCurrentAssets">
-                                                            <td>{{ac.accountNo}}</td>
-                                                            <td>{{ac.accountName}}</td>
-                                                            <td>{{ac.subAcClass}}</td>
-                                                            <td>
-                                                                <span *ngIf="currTab === 'CAD'">{{ac.closingBalAmtCAD |
-                                                                    number: "1.2-2"}}</span>
-                                                                <span *ngIf="currTab === 'USD'">{{ac.closingBalAmtUSD |
-                                                                    number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="font-weight-bold">Total Current Assets</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span *ngIf="currency === 'CAD'">{{currentAssetTotalCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span *ngIf="currency === 'USD'">{{currentAssetTotalUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-
-                                                <!-- Inventory Assets -->
-                                                <table class="table table-bordered table-striped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Inventory Assets</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-4" width="25%">Account Number</th>
-                                                            <th class="text-4" width="20%">Account Name</th>
-                                                            <th class="text-4" width="20%">Account Class</th>
-                                                            <th class="text-4" width="15%">Closing Balance</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngIf="sortInventoryAssets.length === 0">
-                                                            <td colspan="6">{{ dataMessage }}</td>
-                                                        </tr>
-                                                        <tr *ngFor="let ac of sortInventoryAssets">
-                                                            <td>{{ac.accountNo}}</td>
-                                                            <td>{{ac.accountName}}</td>
-                                                            <td>{{ac.subAcClass}}</td>
-                                                            <td>
-                                                                <span *ngIf="currTab === 'CAD'">{{ac.closingBalAmtCAD |
-                                                                    number: "1.2-2"}}</span>
-                                                                <span *ngIf="currTab === 'USD'">{{ac.closingBalAmtUSD |
-                                                                    number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="font-weight-bold">Total Inventory Assets</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf="currency === 'CAD'">{{inventoryAssetTotalCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf="currency === 'USD'">{{inventoryAssetTotalUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                <!-- Capital Assets -->
-                                                <table class="table table-bordered table-striped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Capital Assets</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-4" width="25%">Account Number</th>
-                                                            <th class="text-4" width="20%">Account Name</th>
-                                                            <th class="text-4" width="20%">Account Class</th>
-                                                            <th class="text-4" width="15%">Closing Balance</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngIf="sortCapitalAsset.length === 0">
-                                                            <td colspan="6">{{ dataMessage }}</td>
-                                                        </tr>
-                                                        <tr *ngFor="let ac of sortCapitalAsset">
-                                                            <td>{{ac.accountNo}}</td>
-                                                            <td>{{ac.accountName}}</td>
-                                                            <td>{{ac.subAcClass}}</td>
-                                                            <td>
-                                                                <span *ngIf="currTab === 'CAD'">{{ac.closingBalAmtCAD |
-                                                                    number: "1.2-2"}}</span>
-                                                                <span *ngIf="currTab === 'USD'">{{ac.closingBalAmtUSD |
-                                                                    number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="font-weight-bold">Total Capital Assets</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span *ngIf="currency === 'CAD'">{{capitalAssetTotalCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span *ngIf="currency === 'USD'">{{capitalAssetTotalUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                <!-- Other Non-Current Assets -->
-                                                <table class="table table-bordered table-striped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Other Non-Current Assets</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-4" width="25%">Account Number</th>
-                                                            <th class="text-4" width="20%">Account Name</th>
-                                                            <th class="text-4" width="20%">Account Class</th>
-                                                            <th class="text-4" width="15%">Closing Balance</th>
-
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngIf="sortONCAsset.length === 0">
-                                                            <td colspan="6">{{ dataMessage }}</td>
-                                                        </tr>
-                                                        <tr *ngFor="let ac of sortONCAsset">
-                                                            <td>{{ac.accountNo}}</td>
-                                                            <td>{{ac.accountName}}</td>
-                                                            <td>{{ac.subAcClass}}</td>
-                                                            <td>
-                                                                <span *ngIf="currTab === 'CAD'">{{ac.closingBalAmtCAD |
-                                                                    number: "1.2-2"}}</span>
-                                                                <span *ngIf="currTab === 'USD'">{{ac.closingBalAmtUSD |
-                                                                    number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="font-weight-bold">Total Other Non-Current Assets
-                                                            </td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span *ngIf="currency === 'CAD'">{{ONCAssetTotalCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span *ngIf="currency === 'USD'">{{ONCAssetTotalUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                <!-- Total Assets -->
-                                                <table class="table table-bordered table-striped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="25%">All Assets Total</th>
-                                                            <th width="20%"></th>
-                                                            <th width="20%"></th>
-                                                            <th width="15%">Total Assets Closing Balance</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="font-weight-bold">Total</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span *ngIf="currency === 'CAD'">{{totalAssetsCAD |
-                                                                    number: "1.2-2"}}</span>
-                                                                <span *ngIf="currency === 'USD'">{{totalAssetsUSD |
-                                                                    number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <!-- Liability -->
-                                            <div class="col-lg-12">
-                                                <h4 class="font-weight-bold text-dark mt-0 mb-3 text-underline">
-                                                    Liability
-                                                </h4>
-                                                <!-- Current Liability -->
-                                                <table class="table table-bordered table-striped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Current Liability</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-4" width="25%">Account Number</th>
-                                                            <th class="text-4" width="20%">Account Name</th>
-                                                            <th class="text-4" width="20%">Account Class</th>
-                                                            <th class="text-4" width="15%">Closing Balance</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngIf="currLiability.length === 0">
-                                                            <td colspan="6">{{ dataMessage }}</td>
-                                                        </tr>
-                                                        <tr *ngFor="let ac of currLiability">
-                                                            <td>{{ac.accountNo}}</td>
-                                                            <td>{{ac.accountName}}</td>
-                                                            <td>{{ac.subAcClass}}</td>
-                                                            <td>
-                                                                <span *ngIf="currTab === 'CAD'">{{ac.closingBalAmtCAD |
-                                                                    number: "1.2-2"}}</span>
-                                                                <span *ngIf="currTab === 'USD'">{{ac.closingBalAmtUSD |
-                                                                    number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="font-weight-bold">Total Current Liability</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf="currency === 'CAD'">{{totalCurrentLiabilityCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf="currency === 'USD'">{{totalCurrentLiabilityUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                <!--Long Term Liabilities -->
-                                                <table class="table table-bordered table-striped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Long Term Liability</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-4" width="25%">Account Number</th>
-                                                            <th class="text-4" width="20%">Account Name</th>
-                                                            <th class="text-4" width="20%">Account Class</th>
-                                                            <th class="text-4" width="15%">Closing Balance</th>
-
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngIf="ltLiability.length === 0">
-                                                            <td colspan="6">{{ dataMessage }}</td>
-                                                        </tr>
-                                                        <tr *ngFor="let ac of ltLiability">
-                                                            <td>{{ac.accountNo}}</td>
-                                                            <td>{{ac.accountName}}</td>
-                                                            <td>{{ac.subAcClass}}</td>
-                                                            <td>
-                                                                <span *ngIf="currTab === 'CAD'">{{ac.closingBalAmtCAD |
-                                                                    number: "1.2-2"}}</span>
-                                                                <span *ngIf="currTab === 'USD'">{{ac.closingBalAmtUSD |
-                                                                    number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="font-weight-bold">Total Long Term Liability</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf="currency === 'CAD'">{{totalLongTermLiabilityCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf="currency === 'USD'">{{totalLongTermLiabilityUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                <!-- Total Liability -->
-                                                <table class="table table-bordered table-striped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="25%">All Liability Total</th>
-                                                            <th width="20%"></th>
-                                                            <th width="20%"></th>
-                                                            <th width="15%">Total Liability Closing Balance</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="font-weight-bold">Total</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span *ngIf="currency === 'CAD'">{{totalLiabilityCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span *ngIf="currency === 'USD'">{{totalLiabilityUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <!-- Equity -->
-                                        <div class="row pt-2">
-                                            <div class="col-lg-12">
-                                                <h4 class="font-weight-bold text-dark mt-0 mb-3 text-underline">Equity
-                                                </h4>
-                                                <!-- Share Capital -->
-                                                <table class="table table-bordered table-striped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Share Capital</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-4" width="25%">Account Number</th>
-                                                            <th class="text-4" width="20%">Account Name</th>
-                                                            <th class="text-4" width="20%">Account Class</th>
-                                                            <th class="text-4" width="15%">Closing Balance</th>
-
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngIf="scEquity.length === 0">
-                                                            <td colspan="6">{{ dataMessage }}</td>
-                                                        </tr>
-                                                        <tr *ngFor="let ac of scEquity">
-                                                            <td>{{ac.accountNo}}</td>
-                                                            <td>{{ac.accountName}}</td>
-                                                            <td>{{ac.subAcClass}}</td>
-                                                            <td>
-                                                                <span *ngIf="currTab === 'CAD'">{{ac.closingBalAmtCAD |
-                                                                    number: "1.2-2"}}</span>
-                                                                <span *ngIf="currTab === 'USD'">{{ac.closingBalAmtUSD |
-                                                                    number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="font-weight-bold">Total Long Term Liability</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span *ngIf="currency === 'CAD'">{{totalShareCapitalCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span *ngIf="currency === 'USD'">{{totalShareCapitalUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                <!-- Retained Earnings -->
-                                                <table class="table table-bordered table-striped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Retained Earnings</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-4" width="25%">Account Number</th>
-                                                            <th class="text-4" width="20%">Account Name</th>
-                                                            <th class="text-4" width="20%">Account Class</th>
-                                                            <th class="text-4" width="15%">Closing Balance</th>
-
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngIf="retainedEarnings.length === 0">
-                                                            <td colspan="6">{{ dataMessage }}</td>
-                                                        </tr>
-                                                        <tr *ngFor="let ac of retainedEarnings">
-                                                            <td>{{ac.accountNo}}</td>
-                                                            <td>{{ac.accountName}}</td>
-                                                            <td>{{ac.subAcClass}}</td>
-                                                            <td>
-                                                                <span *ngIf="currTab === 'CAD'">{{ac.closingBalAmtCAD |
-                                                                    number: "1.2-2"}}</span>
-                                                                <span *ngIf="currTab === 'USD'">{{ac.closingBalAmtUSD |
-                                                                    number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="font-weight-bold">Total Long Term Liability</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf="currency === 'CAD'">{{totalRetainedEarningsCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf="currency === 'USD'">{{totalRetainedEarningsCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-
-                                                <!-- Total Equity -->
-                                                <table class="table table-bordered table-striped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="25%">All Equity Total</th>
-                                                            <th width="20%"></th>
-                                                            <th width="20%"></th>
-                                                            <th width="15%">All Equities Closing Balance</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="font-weight-bold">Total</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span *ngIf="currency === 'CAD'">{{totalEquityCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span *ngIf="currency === 'USD'">{{totalEquityUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                <!--Total Liabilty and Equity -->
-                                                <table class="table table-bordered table-striped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="25%">Liability & Equity Total</th>
-                                                            <th width="20%"></th>
-                                                            <th width="20%"></th>
-                                                            <th width="15%">All Equities & Liabilities Closing Balance
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="font-weight-bold">Total</td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td class="font-weight-bold text-4">
-                                                                <span
-                                                                    *ngIf="currency === 'CAD'">{{totalLiabilityEquityCAD
-                                                                    | number: "1.2-2"}}</span>
-                                                                <span
-                                                                    *ngIf="currency === 'USD'">{{totalLiabilityEquityUSD
-                                                                    | number: "1.2-2"}}</span>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </section>
-    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
 </section>

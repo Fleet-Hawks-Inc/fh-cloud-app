@@ -184,10 +184,22 @@ export class TripListComponent implements OnInit {
   cancelOrd = "no";
   statDisabled = false;
   _selectedColumns: any[];
-  dataColumns: any[];
   get = _.get;
   find = _.find;
   display: any;
+  dataColumns = [
+    { width: '6%', field: 'tripNo', header: 'Trip#', type: "text" },
+    { width: '6%', field: 'orderType', header: 'Type', type: "text" },
+    { width: '7%', field: 'orderNames', header: 'Order#', type: "text" },
+    { width: '6%', field: 'dateCreated', header: 'Date', type: "text" },
+    { width: '17%', field: 'pickupLocation', header: 'Pickup Location', type: "text" },
+    { width: '17%', field: 'dropLocation', header: 'Drop Off Location', type: "text" },
+    { width: '7%', field: 'vehicleNames', header: 'Vehicle', type: "text" },
+    { width: '7%', field: 'assetNames', header: 'Asset', type: "text" },
+    { width: '7%', field: 'driverNames', header: 'Driver', type: "text" },
+    { width: '7%', field: 'carrierNames', header: 'Carrier', type: "text" },
+    { width: '7%', field: 'tripStatus', header: 'Status', type: "text" },
+  ];
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
@@ -196,27 +208,12 @@ export class TripListComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.setToggleOptions()
     this.initDataTable();
     this.driversObject = await this.dashboardUtilityService.getDrivers();
     this.assetsObject = await this.dashboardUtilityService.getAssets();
     this.vehiclesObject = await this.dashboardUtilityService.getVehicles();
-    this.dataColumns = [
-      { width: '6%', field: 'tripNo', header: 'Trip#', type: "text" },
-      { width: '6%', field: 'orderType', header: 'Type', type: "text" },
-      { width: '7%', field: 'orderNames', header: 'Order#', type: "text" },
-      { width: '6%', field: 'dateCreated', header: 'Date', type: "text" },
-      { width: '17%', field: 'pickupLocation', header: 'Pickup Location', type: "text" },
-      { width: '17%', field: 'dropLocation', header: 'Drop Off Location', type: "text" },
-      { width: '7%', field: 'vehicleNames', header: 'Vehicle', type: "text" },
-      { width: '7%', field: 'assetNames', header: 'Asset', type: "text" },
-      { width: '7%', field: 'driverNames', header: 'Driver', type: "text" },
-      { width: '7%', field: 'carrierNames', header: 'Carrier', type: "text" },
-      { width: '7%', field: 'tripStatus', header: 'Status', type: "text" },
-    ];
 
-
-    this._selectedColumns = this.dataColumns;
-    this.setToggleOptions()
   }
   setToggleOptions() {
     this.selectedColumns = this.dataColumns;
@@ -669,7 +666,7 @@ export class TripListComponent implements OnInit {
           this.statDisabled = false;
           this.toastr.error("Internal Server error");
         }
-        
+
       });
   }
 
