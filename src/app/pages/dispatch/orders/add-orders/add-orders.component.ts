@@ -583,6 +583,7 @@ export class AddOrdersComponent implements OnInit {
       let receiverList = new Array<any>();
       this.getValidReceivers(receiverList);
       this.receivers = receiverList;
+      console.log(this.receivers.length);
     }
   }
 
@@ -1623,6 +1624,7 @@ export class AddOrdersComponent implements OnInit {
       formData.append("uploadedDocs", this.uploadedDocs[j]);
     }
 
+    console.log(this.orderData);
     //append other fields
     formData.append("data", JSON.stringify(this.orderData));
 
