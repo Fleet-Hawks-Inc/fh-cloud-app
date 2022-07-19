@@ -96,6 +96,7 @@ export class SummaryComponent implements OnInit {
             const result = await this.apiService.getData(`vehicles/fetch/summary/list?name=${this.vehicleIdentification}&currentStatus=${this.currentStatus}&lastKey=${this.lastItemSK}`).toPromise();
            
             if (result.Items.length === 0) {
+                this.loaded = true;
                 this.dataMessage = Constants.NO_RECORDS_FOUND
             }
             this.suggestedVehicles = [];
