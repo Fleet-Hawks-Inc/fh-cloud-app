@@ -146,8 +146,9 @@
                       </div>
                     </ng-template>
                     <ng-template pTemplate="summary" let-columns>
-                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && events.length !== 0">
-                        <button type="button " (click)="onScroll($event)" class="btn btn-success btn-sm text-light">
+                      <div class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK !== 'end' && incomeAccounts.length !== 0">
+                        <button type="button " (click)="onScroll()" class="btn btn-success btn-sm text-light">
                           Load More..
                         </button><br /><br />
                       </div>
