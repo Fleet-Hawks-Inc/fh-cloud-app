@@ -583,7 +583,6 @@ export class AddOrdersComponent implements OnInit {
       let receiverList = new Array<any>();
       this.getValidReceivers(receiverList);
       this.receivers = receiverList;
-      console.log(this.receivers.length);
     }
   }
 
@@ -1624,7 +1623,6 @@ export class AddOrdersComponent implements OnInit {
       formData.append("uploadedDocs", this.uploadedDocs[j]);
     }
 
-    console.log(this.orderData);
     //append other fields
     formData.append("data", JSON.stringify(this.orderData));
 
@@ -2058,6 +2056,14 @@ export class AddOrdersComponent implements OnInit {
         index++
       ) {
         const element = this.shippersReceivers[j].receivers.dropPoint[index];
+        if (element.zone == undefined) {
+          element.zone = {
+            zoneID: null,
+            zName: null,
+            pRates: null,
+            aspRates: null,
+          };
+        }
         if (
           element["dateAndTime"] != undefined ||
           element["dateAndTime"] != ""
@@ -3404,7 +3410,6 @@ export class AddOrdersComponent implements OnInit {
           latitude: address.geoCords.lat,
           longitude: address.geoCords.lng,
         };
-        console.log(geoCords);
         for (const zone of this.zoneList) {
           if (zone.coordinates && zone.coordinates.length > 0) {
             const cordArray = [];
@@ -3419,9 +3424,6 @@ export class AddOrdersComponent implements OnInit {
                 pRates: zone.pRates,
                 aspRates: zone.aspRates,
               };
-              console.log(
-                this.shippersReceivers[i].receivers.dropPoint[index].zone
-              );
               return;
             }
           }
