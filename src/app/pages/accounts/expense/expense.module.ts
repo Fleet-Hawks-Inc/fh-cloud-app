@@ -15,8 +15,12 @@ import { AddExpenseComponent } from "./add-expense/add-expense.component";
 import { ExpenseListComponent } from "./expense-list/expense-list.component";
 import { ExpenseDetailComponent } from "./expense-detail/expense-detail.component";
 import { AddAccountModule } from "../add-account/add-account.module";
-import { InfiniteScrollModule } from "ngx-infinite-scroll";
-
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
+import { MultiSelectModule } from 'primeng/multiselect';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -118,11 +122,17 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule,
     AddAccountModule,
-    InfiniteScrollModule,
+    AutoCompleteModule,
+    ButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule,
+    TableModule,
+    MultiSelectModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
-export class ExpenseModule {}
+export class ExpenseModule { }
