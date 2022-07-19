@@ -173,16 +173,17 @@ export class ProvinceSummaryComponent implements OnInit {
   }
   
   refreshData() {
+      this.dataM = [];
+      this.allData = [];
       this.end = moment().format("YYYY-MM-DD");
       this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
       this.vehicleId = '';
       // this.suggestedVehicles = [];
       this.vehicleIdentification = '';
       this.lastItemSK = '';
-      this.allData = [];
-      this.dataM = [];
-      this.dataMessage = Constants.FETCHING_DATA;
+      this.loaded = false;
       this.fetchProvinceMilesData();
+      this.dataMessage = Constants.FETCHING_DATA;
   }
   
   fetchFullExport(type = '') {
