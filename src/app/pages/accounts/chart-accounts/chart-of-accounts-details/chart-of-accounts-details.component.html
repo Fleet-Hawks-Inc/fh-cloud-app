@@ -10,56 +10,95 @@
                   <i class="fas fa-calendar-alt"></i>
                 </span>
               </span>
-              <input [(ngModel)]="filter.startDate" name="startDate" type="text" placeholder="yyyy/mm/dd"
-                (click)="startDate.toggle()" ngbDatepicker #startDate="ngbDatepicker" class="form-control"
-                autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
-              <span class="input-group-text border-left-0 border-right-0 rounded-0">
+              <input
+                [(ngModel)]="filter.startDate"
+                name="startDate"
+                type="text"
+                placeholder="yyyy/mm/dd"
+                (click)="startDate.toggle()"
+                ngbDatepicker
+                #startDate="ngbDatepicker"
+                class="form-control"
+                autocomplete="off"
+                [minDate]="dateMinLimit"
+                [maxDate]="futureDatesLimit"
+              />
+              <span
+                class="input-group-text border-left-0 border-right-0 rounded-0"
+              >
                 to
               </span>
-              <input [(ngModel)]="filter.endDate" name="endDate" type="text" placeholder="yyyy/mm/dd"
-                (click)="endDate.toggle()" ngbDatepicker #endDate="ngbDatepicker" class="form-control"
-                autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+              <input
+                [(ngModel)]="filter.endDate"
+                name="endDate"
+                type="text"
+                placeholder="yyyy/mm/dd"
+                (click)="endDate.toggle()"
+                ngbDatepicker
+                #endDate="ngbDatepicker"
+                class="form-control"
+                autocomplete="off"
+                [minDate]="dateMinLimit"
+                [maxDate]="futureDatesLimit"
+              />
             </div>
           </div>
           <div class="col-md-2 col-lg-2">
-            <button type="button" class="btn btn-sm btn-success" (click)="searchFilter()">
+            <button
+              type="button"
+              class="btn btn-sm btn-success"
+              (click)="searchFilter()"
+            >
               Search
             </button>
-            <button type="button" class="btn btn-sm btn-success ml-2" (click)="resetFilter()">
+            <button
+              type="button"
+              class="btn btn-sm btn-success ml-2"
+              (click)="resetFilter()"
+            >
               Reset
             </button>
           </div>
           <div class="col-md-7 col-lg-7 text-right pr-1">
-            <a routerLink="/accounts/chart-accounts/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i>
-              Chart Of Accounts</a>
+            <a
+              routerLink="/accounts/chart-accounts/list"
+              class="btn btn-default btn-sm"
+              ><i class="fas fa-list"></i> Chart Of Accounts</a
+            >
           </div>
         </div>
       </header>
 
       <section class="m-2">
-        <div class="row mb-3">
+        <div class="row mb-2">
           <div class="col-lg-12">
             <div class="text-dark">
               <div class="form-group row">
                 <div class="col-lg-12">
                   <div class="row">
-                    <div class="col">
+                    <div class="col pr-0">
                       <div class="text-center p-4 bg-white detailbox">
                         <i class="fas fa-file-invoice-dollar text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark">
-                          <span *ngIf="
+                          <span
+                            *ngIf="
                               account.first === 'ei' || account.first === 'cpp'
-                            ">{{ account.first | uppercase }}</span>
-                          <span *ngIf="
+                            "
+                            >{{ account.first | uppercase }}</span
+                          >
+                          <span
+                            *ngIf="
                               account.first !== 'ei' && account.first !== 'cpp'
-                            ">{{ account.first | titlecase }}</span>
+                            "
+                            >{{ account.first | titlecase }}</span
+                          >
                           {{ account.last | titlecase }}
                         </p>
                         <p class="mb-0">Account Name</p>
                       </div>
                     </div>
-                    <div class="col">
+                    <div class="col pl-2 pr-0">
                       <div class="text-center p-4 bg-white detailbox">
                         <i class="far fa-calendar-check text-7"></i>
                         <br />
@@ -69,25 +108,37 @@
                         <p class="mb-0">Account Number</p>
                       </div>
                     </div>
-                    <div class="col">
+                    <div class="col pl-2 pr-0">
                       <div class="text-center p-4 bg-white detailbox">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark">
-                          <span *ngIf="account.actType === 'H'">Group Heading - H</span>
-                          <span *ngIf="account.actType === 'A'">Subgroup Account - A</span>
-                          <span *ngIf="account.actType === 'S'">Subgroup Total - S</span>
-                          <span *ngIf="account.actType === 'G'">Group Account - G</span>
-                          <span *ngIf="account.actType === 'T'">Group Total - T</span>
+                          <span *ngIf="account.actType === 'H'"
+                            >Group Heading - H</span
+                          >
+                          <span *ngIf="account.actType === 'A'"
+                            >Subgroup Account - A</span
+                          >
+                          <span *ngIf="account.actType === 'S'"
+                            >Subgroup Total - S</span
+                          >
+                          <span *ngIf="account.actType === 'G'"
+                            >Group Account - G</span
+                          >
+                          <span *ngIf="account.actType === 'T'"
+                            >Group Total - T</span
+                          >
                         </p>
                         <p class="mb-0">Account Type</p>
                       </div>
                     </div>
-                    <div class="col">
+                    <div class="col pl-2 pr-0">
                       <div class="text-center p-4 bg-white detailbox">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br />
-                        <p class="mb-0 text-5 font-weight-bold text-dark text-capitalize">
+                        <p
+                          class="mb-0 text-5 font-weight-bold text-dark text-capitalize"
+                        >
                           <span *ngIf="account.isFeatEnabled">
                             {{ account.className }}
                           </span>
@@ -98,7 +149,7 @@
                         <p class="mb-0">Account Class</p>
                       </div>
                     </div>
-                    <div class="col">
+                    <div class="col pl-2">
                       <div class="text-center p-4 bg-white detailbox">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br />
@@ -119,11 +170,14 @@
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
               <div class="form-group row">
-                <div class="col-lg-12" *ngIf="
+                <div
+                  class="col-lg-12"
+                  *ngIf="
                     account.actDesc !== '' &&
                     account.actDesc !== null &&
                     account.actDesc !== undefined
-                  ">
+                  "
+                >
                   <table>
                     <tbody>
                       <tr>
@@ -135,151 +189,290 @@
                 </div>
                 <div class="col-lg-12">
                   <!-- Nav tabs -->
-                  <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                  <ul
+                    class="nav nav-tabs top-tabs"
+                    id="top-tabs"
+                    role="tablist"
+                  >
                     <li class="nav-item">
-                      <a class="nav-link" [ngClass]="{ active: currTab === 'CAD' }" id="CAD-tab"
-                        (click)="changeTab('CAD')">CAD Transactions</a>
+                      <a
+                        class="nav-link"
+                        [ngClass]="{ active: currTab === 'CAD' }"
+                        id="CAD-tab"
+                        (click)="changeTab('CAD')"
+                        >CAD Transactions</a
+                      >
                       <!-- <a class="nav-link active" id="CAD-tab" data-toggle="tab" href="#CAD" type="button" role="tab"
                         aria-controls="CAD" aria-selected="true">CAD Transactions</a> -->
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" [ngClass]="{ active: currTab === 'USD' }" id="USD-tab"
-                        (click)="changeTab('USD')">USD Transactions</a>
+                      <a
+                        class="nav-link"
+                        [ngClass]="{ active: currTab === 'USD' }"
+                        id="USD-tab"
+                        (click)="changeTab('USD')"
+                        >USD Transactions</a
+                      >
                       <!-- <a class="nav-link" id="USD-tab" data-toggle="tab" href="#USD" type="button" role="tab"
                         aria-controls="USD" aria-selected="false">USD Transactions</a> -->
                     </li>
-                  </ul><br>
+                  </ul>
+                  <br />
                   <!-- Tab panes -->
                   <div class="tab-content">
-                    <div class="tab-pane" [ngClass]="{ 'show active': currTab === 'CAD' }" id="CAD" role="tabpanel"
-                      aria-labelledby="CAD-tab" *ngIf="currTab === 'CAD'">
-                      <p-table [value]="transactionLogCAD" responsiveLayout="scroll">
+                    <div
+                      class="tab-pane"
+                      [ngClass]="{ 'show active': currTab === 'CAD' }"
+                      id="CAD"
+                      role="tabpanel"
+                      aria-labelledby="CAD-tab"
+                      *ngIf="currTab === 'CAD'"
+                    >
+                      <p-table
+                        [value]="transactionLogCAD"
+                        responsiveLayout="scroll"
+                      >
                         <ng-template pTemplate="caption">
                           Opening Balance
-                          <span *ngIf="account.opnBalTypeCAD === 'debit'">{{
-                            account.opnBalCAD | number: "1.2-2"
-                            }}&nbsp; CAD</span>
-
+                          <span *ngIf="account.opnBalTypeCAD === 'debit'"
+                            >{{ account.opnBalCAD | number: "1.2-2" }}&nbsp;
+                            CAD</span
+                          >
                         </ng-template>
-                        <ng-template pTemplate="header" let-rowIndex="rowIndex"
-                          class="table table-bordered table-hover table-responsive-lg table-striped simple-table">
+                        <ng-template
+                          pTemplate="header"
+                          let-rowIndex="rowIndex"
+                          class="table table-bordered table-hover table-responsive-lg table-striped simple-table"
+                        >
                           <tr>
-                            <th style="width: 6%;">Trx # <p-columnFilter matchMode="contains" [showMatchModes]="false"
-                                field="{{ rowIndex + 1 }}" [showOperator]="false" [showAddButton]="false"
-                                display="menu">
+                            <th style="width: 6%">
+                              Trx #
+                              <p-columnFilter
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                field="{{ rowIndex + 1 }}"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </th>
-                            <th style="width: 8%;">Date <p-columnFilter matchMode="contains" [showMatchModes]="false"
-                                field="logDate" [showOperator]="false" [showAddButton]="false" display="menu">
+                            <th style="width: 8%">
+                              Date
+                              <p-columnFilter
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                field="logDate"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </th>
-                            <th style="width: 8%;">Name <p-columnFilter matchMode="contains" [showMatchModes]="false"
-                                field="uName" [showOperator]="false" [showAddButton]="false" display="menu">
+                            <th style="width: 8%">
+                              Name
+                              <p-columnFilter
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                field="uName"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </th>
-                            <th style="width: 10%;">Type <p-columnFilter matchMode="contains" [showMatchModes]="false"
-                                field="entityType" [showOperator]="false" [showAddButton]="false" display="menu">
+                            <th style="width: 10%">
+                              Type
+                              <p-columnFilter
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                field="entityType"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </th>
-                            <th style="width: 18%;">Description <p-columnFilter matchMode="contains"
-                                [showMatchModes]="false" field="desc" [showOperator]="false" [showAddButton]="false"
-                                display="menu">
+                            <th style="width: 18%">
+                              Description
+                              <p-columnFilter
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                field="desc"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </th>
-                            <th style="width: 18%;">Source <p-columnFilter matchMode="contains" [showMatchModes]="false"
-                                field="source" [showOperator]="false" [showAddButton]="false" display="menu">
+                            <th style="width: 18%">
+                              Source
+                              <p-columnFilter
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                field="source"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </th>
-                            <th style="width: 10%;">Debit <p-columnFilter matchMode="contains" [showMatchModes]="false"
-                                field="amount" [showOperator]="false" [showAddButton]="false" display="menu">
+                            <th style="width: 10%">
+                              Debit
+                              <p-columnFilter
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                field="amount"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </th>
-                            <th style="width: 10%;">Credit <p-columnFilter matchMode="contains" [showMatchModes]="false"
-                                field="amount" [showOperator]="false" [showAddButton]="false" display="menu">
+                            <th style="width: 10%">
+                              Credit
+                              <p-columnFilter
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                field="amount"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </th>
-                            <th style="width: 10%;">Running Total <p-columnFilter matchMode="contains"
-                                [showMatchModes]="false" field="trxRunTotal" [showOperator]="false"
-                                [showAddButton]="false" display="menu">
+                            <th style="width: 10%">
+                              Running Total
+                              <p-columnFilter
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                field="trxRunTotal"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </th>
                           </tr>
                         </ng-template>
 
-                        <ng-template pTemplate="body" let-transactionLogCAD let-rowIndex="rowIndex">
-
-
+                        <ng-template
+                          pTemplate="body"
+                          let-transactionLogCAD
+                          let-rowIndex="rowIndex"
+                        >
                           <tr *ngIf="account.isFeatEnabled">
                             <td>{{ rowIndex + 1 }}</td>
                             <td>
-                              {{ transactionLogCAD.logDate | date: "yyyy/MM/dd" }}
+                              {{
+                                transactionLogCAD.logDate | date: "yyyy/MM/dd"
+                              }}
                             </td>
                             <td class="text-capitalize">
-                              {{ transactionLogCAD.uName ? transactionLogCAD.uName : "-" }}
+                              {{
+                                transactionLogCAD.uName
+                                  ? transactionLogCAD.uName
+                                  : "-"
+                              }}
                             </td>
-                            <td>{{ transactionLogCAD.entityType | titlecase }}</td>
+                            <td>
+                              {{ transactionLogCAD.entityType | titlecase }}
+                            </td>
                             <td [innerHTML]="transactionLogCAD.desc"></td>
                             <td [innerHTML]="transactionLogCAD.source"></td>
                             <td>
-                              <span *ngIf="transactionLogCAD.trxType === 'debit'">{{
-                                transactionLogCAD.amount
-                                | number: "1.2-2" }}&nbsp;
-                                {{ transactionLogCAD.currency }}</span>
+                              <span
+                                *ngIf="transactionLogCAD.trxType === 'debit'"
+                                >{{
+                                  transactionLogCAD.amount | number: "1.2-2"
+                                }}&nbsp; {{ transactionLogCAD.currency }}</span
+                              >
                             </td>
                             <td>
-                              <span *ngIf="transactionLogCAD.trxType === 'credit'">{{
-                                transactionLogCAD.amount
-                                | number: "1.2-2" }}&nbsp;
-                                {{ transactionLogCAD.currency }}</span>
+                              <span
+                                *ngIf="transactionLogCAD.trxType === 'credit'"
+                                >{{
+                                  transactionLogCAD.amount | number: "1.2-2"
+                                }}&nbsp; {{ transactionLogCAD.currency }}</span
+                              >
                             </td>
                             <td>
                               {{
-                              transactionLogCAD.trxRunTotal
-                              | absoluteValue
-                              | number: "1.2-2"
+                                transactionLogCAD.trxRunTotal
+                                  | absoluteValue
+                                  | number: "1.2-2"
                               }}&nbsp;
-                              <span>{{ transactionLogCAD.runTotalType }}
-                                {{ transactionLogCAD.trxType === "debit" ? "Dr" : "Cr" }}
+                              <span
+                                >{{ transactionLogCAD.runTotalType }}
+                                {{
+                                  transactionLogCAD.trxType === "debit"
+                                    ? "Dr"
+                                    : "Cr"
+                                }}
                               </span>
                             </td>
                           </tr>
 
                           <tr *ngIf="!account.isFeatEnabled">
-
                             <td>{{ rowIndex + 1 }}</td>
-                            <td>{{ transactionLogCAD.transactionLogCAD | date: "yyyy/MM/dd" }}</td>
                             <td>
-                              <span *ngIf="transactionLogCAD.name !== undefined || transactionLogCAD.name !== null
-                                ">{{ merged[transactionLogCAD.name] | titlecase }}</span>
+                              {{
+                                transactionLogCAD.transactionLogCAD
+                                  | date: "yyyy/MM/dd"
+                              }}
+                            </td>
+                            <td>
+                              <span
+                                *ngIf="
+                                  transactionLogCAD.name !== undefined ||
+                                  transactionLogCAD.name !== null
+                                "
+                                >{{
+                                  merged[transactionLogCAD.name] | titlecase
+                                }}</span
+                              >
 
                               <span
-                                *ngIf="transactionLogCAD.name === undefined || transactionLogCAD.name === null">-</span>
+                                *ngIf="
+                                  transactionLogCAD.name === undefined ||
+                                  transactionLogCAD.name === null
+                                "
+                                >-</span
+                              >
                             </td>
                             <td>{{ transactionLogCAD.type | titlecase }}</td>
                             <td [innerHTML]="transactionLogCAD.desc"></td>
                             <td>
-                              <span *ngIf="transactionLogCAD.trxType === 'debit'">{{ transactionLogCAD.amount
-                                | number: "1.2-2" }}&nbsp;
-                                {{ transactionLogCAD.currency }}</span>
+                              <span
+                                *ngIf="transactionLogCAD.trxType === 'debit'"
+                                >{{
+                                  transactionLogCAD.amount | number: "1.2-2"
+                                }}&nbsp; {{ transactionLogCAD.currency }}</span
+                              >
                             </td>
                             <td>
-                              <span *ngIf="transactionLogCAD.trxType === 'credit'">{{ transactionLogCAD.amount
-                                | number: "1.2-2" }}&nbsp;
-                                {{ transactionLogCAD.currency }}</span>
+                              <span
+                                *ngIf="transactionLogCAD.trxType === 'credit'"
+                                >{{
+                                  transactionLogCAD.amount | number: "1.2-2"
+                                }}&nbsp; {{ transactionLogCAD.currency }}</span
+                              >
                             </td>
                             <td>
                               {{
-                              transactionLogCAD.trxRunTotal
-                              | absoluteValue
-                              | number: "1.2-2"
-                              }}&nbsp; <span>{{ transactionLogCAD.runTotalType }}</span>
+                                transactionLogCAD.trxRunTotal
+                                  | absoluteValue
+                                  | number: "1.2-2"
+                              }}&nbsp;
+                              <span>{{ transactionLogCAD.runTotalType }}</span>
                             </td>
                           </tr>
                         </ng-template>
 
-
-
-                        <ng-template pTemplate="summary" *ngIf="account.isFeatEnabled">
+                        <ng-template
+                          pTemplate="summary"
+                          *ngIf="account.isFeatEnabled"
+                        >
                           <table>
                             <tr *ngIf="transactionLogUSD.length === 0">
                               <td colspan="8" class="text-center">
@@ -287,14 +480,18 @@
                               </td>
                             </tr>
                             <tr>
-                              <td colspan="8" class="text-right font-weight-bold" style="width: 90%;">
+                              <td
+                                colspan="8"
+                                class="text-right font-weight-bold"
+                                style="width: 90%"
+                              >
                                 Closing Balance
                               </td>
                               <td>
                                 {{
-                                account.closingAmtCAD
-                                | absoluteValue
-                                | number: "1.2-2"
+                                  account.closingAmtCAD
+                                    | absoluteValue
+                                    | number: "1.2-2"
                                 }}&nbsp;CAD
 
                                 <span *ngIf="account.isFeatEnabled">
@@ -303,14 +500,17 @@
                               </td>
                             </tr>
                             <tr>
-                              <td colspan="8" class="text-right font-weight-bold">
+                              <td
+                                colspan="8"
+                                class="text-right font-weight-bold"
+                              >
                                 Period Variance
                               </td>
                               <td>
                                 {{
-                                periodVarianceCAD
-                                | absoluteValue
-                                | number: "1.2-2"
+                                  periodVarianceCAD
+                                    | absoluteValue
+                                    | number: "1.2-2"
                                 }}&nbsp;CAD
                               </td>
                             </tr>
@@ -318,132 +518,261 @@
                         </ng-template>
                       </p-table>
                     </div>
-                    <div class="col-lg-12 mt-3 text-center" *ngIf="
-                          lastKey !== 'end' &&transactionLogCAD.length > 0 &&
-                        currTab === 'CAD'">
-                      <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
+                    <div
+                      class="col-lg-12 mt-3 text-center"
+                      *ngIf="
+                        lastKey !== 'end' &&
+                        transactionLogCAD.length > 0 &&
+                        currTab === 'CAD'
+                      "
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-success btn-sm text-light"
+                        (click)="onScroll()"
+                      >
                         Load More...
                       </button>
                     </div>
-                    <div class="tab-pane" [ngClass]="{ 'show active': currTab === 'USD' }" id="USD" role="tabpanel"
-                      aria-labelledby="USD-tab" *ngIf="currTab === 'USD'">
-                      <p-table [value]="transactionLogUSD" responsiveLayout="scroll">
+                    <div
+                      class="tab-pane"
+                      [ngClass]="{ 'show active': currTab === 'USD' }"
+                      id="USD"
+                      role="tabpanel"
+                      aria-labelledby="USD-tab"
+                      *ngIf="currTab === 'USD'"
+                    >
+                      <p-table
+                        [value]="transactionLogUSD"
+                        responsiveLayout="scroll"
+                      >
                         <ng-template pTemplate="caption">
                           Opening Balance
-                          <span *ngIf="account.opnBalTypeUSD === 'debit'">{{
-                            account.opnBalUSD | number: "1.2-2"
-                            }}&nbsp; USD</span>
+                          <span *ngIf="account.opnBalTypeUSD === 'debit'"
+                            >{{ account.opnBalUSD | number: "1.2-2" }}&nbsp;
+                            USD</span
+                          >
                         </ng-template>
-                        <ng-template pTemplate="header"
-                          class="table table-bordered table-hover table-responsive-lg table-striped simple-table">
+                        <ng-template
+                          pTemplate="header"
+                          class="table table-bordered table-hover table-responsive-lg table-striped simple-table"
+                        >
                           <tr>
-                            <th style="width: 6%;">Trx # <p-columnFilter matchMode="contains" [showMatchModes]="false"
-                                field="" [showOperator]="false" [showAddButton]="false" display="menu">
+                            <th style="width: 6%">
+                              Trx #
+                              <p-columnFilter
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                field=""
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </th>
-                            <th style="width: 8%;">Date <p-columnFilter matchMode="contains" [showMatchModes]="false"
-                                field="logDate" [showOperator]="false" [showAddButton]="false" display="menu">
+                            <th style="width: 8%">
+                              Date
+                              <p-columnFilter
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                field="logDate"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </th>
-                            <th style="width: 8%;">Name <p-columnFilter matchMode="contains" [showMatchModes]="false"
-                                field="uName" [showOperator]="false" [showAddButton]="false" display="menu">
+                            <th style="width: 8%">
+                              Name
+                              <p-columnFilter
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                field="uName"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </th>
-                            <th style="width: 10%;">Type <p-columnFilter matchMode="contains" [showMatchModes]="false"
-                                field="entityType" [showOperator]="false" [showAddButton]="false" display="menu">
+                            <th style="width: 10%">
+                              Type
+                              <p-columnFilter
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                field="entityType"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </th>
-                            <th style="width: 18%;">Description <p-columnFilter matchMode="contains"
-                                [showMatchModes]="false" field="desc" [showOperator]="false" [showAddButton]="false"
-                                display="menu">
+                            <th style="width: 18%">
+                              Description
+                              <p-columnFilter
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                field="desc"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </th>
 
-                            <th style="width: 10%;">Debit <p-columnFilter matchMode="contains" [showMatchModes]="false"
-                                field="amount" [showOperator]="false" [showAddButton]="false" display="menu">
+                            <th style="width: 10%">
+                              Debit
+                              <p-columnFilter
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                field="amount"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </th>
-                            <th style="width: 10%;">Credit <p-columnFilter matchMode="contains" [showMatchModes]="false"
-                                field="amount" [showOperator]="false" [showAddButton]="false" display="menu">
+                            <th style="width: 10%">
+                              Credit
+                              <p-columnFilter
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                field="amount"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </th>
-                            <th style="width: 10%;">Running Total <p-columnFilter matchMode="contains"
-                                [showMatchModes]="false" field="trxRunTotal" [showOperator]="false"
-                                [showAddButton]="false" display="menu">
+                            <th style="width: 10%">
+                              Running Total
+                              <p-columnFilter
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                field="trxRunTotal"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </th>
                           </tr>
                         </ng-template>
-                        <ng-template pTemplate="body" let-transactionLogUSD let-rowIndex="rowIndex">
-
+                        <ng-template
+                          pTemplate="body"
+                          let-transactionLogUSD
+                          let-rowIndex="rowIndex"
+                        >
                           <tr *ngIf="account.isFeatEnabled">
                             <td>{{ rowIndex + 1 }}</td>
                             <td>
-                              {{ transactionLogUSD.logDate | date: "yyyy/MM/dd" }}
+                              {{
+                                transactionLogUSD.logDate | date: "yyyy/MM/dd"
+                              }}
                             </td>
                             <td class="text-capitalize">
-                              {{ transactionLogUSD.uName ? transactionLogUSD.uName : "-" }}
+                              {{
+                                transactionLogUSD.uName
+                                  ? transactionLogUSD.uName
+                                  : "-"
+                              }}
                             </td>
-                            <td>{{ transactionLogUSD.entityType | titlecase }}</td>
+                            <td>
+                              {{ transactionLogUSD.entityType | titlecase }}
+                            </td>
                             <td [innerHTML]="transactionLogUSD.desc"></td>
 
                             <td>
-                              <span *ngIf="transactionLogUSD.trxType === 'debit'">{{
-                                transactionLogUSD.amount
-                                | number: "1.2-2" }}&nbsp;
-                                {{ transactionLogUSD.currency }}</span>
+                              <span
+                                *ngIf="transactionLogUSD.trxType === 'debit'"
+                                >{{
+                                  transactionLogUSD.amount | number: "1.2-2"
+                                }}&nbsp; {{ transactionLogUSD.currency }}</span
+                              >
                             </td>
                             <td>
-                              <span *ngIf="transactionLogUSD.trxType === 'credit'">{{
-                                transactionLogUSD.amount
-                                | number: "1.2-2" }}&nbsp;
-                                {{ transactionLogUSD.currency }}</span>
+                              <span
+                                *ngIf="transactionLogUSD.trxType === 'credit'"
+                                >{{
+                                  transactionLogUSD.amount | number: "1.2-2"
+                                }}&nbsp; {{ transactionLogUSD.currency }}</span
+                              >
                             </td>
                             <td>
                               {{
-                              transactionLogUSD.trxRunTotal
-                              | absoluteValue
-                              | number: "1.2-2"
+                                transactionLogUSD.trxRunTotal
+                                  | absoluteValue
+                                  | number: "1.2-2"
                               }}&nbsp;
-                              <span>{{ transactionLogUSD.runTotalType }}
-                                {{ transactionLogUSD.trxType === "debit" ? "Dr" : "Cr" }}
+                              <span
+                                >{{ transactionLogUSD.runTotalType }}
+                                {{
+                                  transactionLogUSD.trxType === "debit"
+                                    ? "Dr"
+                                    : "Cr"
+                                }}
                               </span>
                             </td>
                           </tr>
                           <tr *ngIf="!account.isFeatEnabled">
-
                             <td>{{ rowIndex + 1 }}</td>
-                            <td>{{ transactionLogUSD.transactionLogUSD | date: "yyyy/MM/dd" }}</td>
                             <td>
-                              <span *ngIf="transactionLogUSD.name !== undefined || transactionLogUSD.name !== null
-                                  ">{{ merged[transactionLogUSD.name] | titlecase }}</span>
+                              {{
+                                transactionLogUSD.transactionLogUSD
+                                  | date: "yyyy/MM/dd"
+                              }}
+                            </td>
+                            <td>
+                              <span
+                                *ngIf="
+                                  transactionLogUSD.name !== undefined ||
+                                  transactionLogUSD.name !== null
+                                "
+                                >{{
+                                  merged[transactionLogUSD.name] | titlecase
+                                }}</span
+                              >
 
                               <span
-                                *ngIf="transactionLogUSD.name === undefined || transactionLogUSD.name === null">-</span>
+                                *ngIf="
+                                  transactionLogUSD.name === undefined ||
+                                  transactionLogUSD.name === null
+                                "
+                                >-</span
+                              >
                             </td>
                             <td>{{ transactionLogUSD.type | titlecase }}</td>
                             <td [innerHTML]="transactionLogUSD.desc"></td>
                             <td>
-                              <span *ngIf="transactionLogUSD.trxType === 'debit'">{{ transactionLogUSD.amount
-                                | number: "1.2-2" }}&nbsp;
-                                {{ transactionLogUSD.currency }}</span>
+                              <span
+                                *ngIf="transactionLogUSD.trxType === 'debit'"
+                                >{{
+                                  transactionLogUSD.amount | number: "1.2-2"
+                                }}&nbsp; {{ transactionLogUSD.currency }}</span
+                              >
                             </td>
                             <td>
-                              <span *ngIf="transactionLogUSD.trxType === 'credit'">{{ transactionLogUSD.amount
-                                | number: "1.2-2" }}&nbsp;
-                                {{ transactionLogUSD.currency }}</span>
+                              <span
+                                *ngIf="transactionLogUSD.trxType === 'credit'"
+                                >{{
+                                  transactionLogUSD.amount | number: "1.2-2"
+                                }}&nbsp; {{ transactionLogUSD.currency }}</span
+                              >
                             </td>
                             <td>
                               {{
-                              transactionLogUSD.trxRunTotal
-                              | absoluteValue
-                              | number: "1.2-2"
-                              }}&nbsp; <span>{{ transactionLogUSD.runTotalType }}</span>
+                                transactionLogUSD.trxRunTotal
+                                  | absoluteValue
+                                  | number: "1.2-2"
+                              }}&nbsp;
+                              <span>{{ transactionLogUSD.runTotalType }}</span>
                             </td>
                           </tr>
                         </ng-template>
 
-                        <ng-template pTemplate="summary" *ngIf="account.isFeatEnabled">
+                        <ng-template
+                          pTemplate="summary"
+                          *ngIf="account.isFeatEnabled"
+                        >
                           <table>
                             <tr *ngIf="transactionLogUSD.length === 0">
                               <td colspan="8" class="text-center">
@@ -451,14 +780,18 @@
                               </td>
                             </tr>
                             <tr>
-                              <td colspan="8" class="text-right font-weight-bold" style="width: 90%;">
+                              <td
+                                colspan="8"
+                                class="text-right font-weight-bold"
+                                style="width: 90%"
+                              >
                                 Closing Balance
                               </td>
                               <td>
                                 {{
-                                account.closingAmtUSD
-                                | absoluteValue
-                                | number: "1.2-2"
+                                  account.closingAmtUSD
+                                    | absoluteValue
+                                    | number: "1.2-2"
                                 }}&nbsp;USD
 
                                 <span *ngIf="account.isFeatEnabled">
@@ -467,28 +800,40 @@
                               </td>
                             </tr>
                             <tr>
-                              <td colspan="8" class="text-right font-weight-bold">
+                              <td
+                                colspan="8"
+                                class="text-right font-weight-bold"
+                              >
                                 Period Variance
                               </td>
                               <td>
                                 {{
-                                periodVarianceUSD
-                                | absoluteValue
-                                | number: "1.2-2"
+                                  periodVarianceUSD
+                                    | absoluteValue
+                                    | number: "1.2-2"
                                 }}&nbsp;USD
                               </td>
                             </tr>
                           </table>
                         </ng-template>
                       </p-table>
-                      <div class="col-lg-12 mt-3 text-center"
-                        *ngIf=" lastKeyUsd !== 'end' && transactionLogUSD.length > 0 &&currTab === 'USD' ">
-                        <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="
+                          lastKeyUsd !== 'end' &&
+                          transactionLogUSD.length > 0 &&
+                          currTab === 'USD'
+                        "
+                      >
+                        <button
+                          type="button"
+                          class="btn btn-success btn-sm text-light"
+                          (click)="onScroll()"
+                        >
                           Load More...
                         </button>
                       </div>
                     </div>
-
                   </div>
                 </div>
               </div>
