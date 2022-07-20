@@ -1023,11 +1023,37 @@ export class AddOrdersComponent implements OnInit {
   async calculateZonePrice() {
     let rate = 0;
     let currency = "CAD";
-    let aspRate = {};
+
     for (const shipRec of this.orderData.shippersReceiversInfo) {
       for (const receiver of shipRec.receivers) {
         for (const drop of receiver.dropPoint) {
           if (drop.zone.aspRates || drop.zone.pRates) {
+            if (drop.zone.aspRates && drop.zone.aspRates.length > 0) {
+              if (drop.zone.aspRates && drop.zone.aspRates.length > 0) {
+                for (const asp of drop.zone.aspRates) {
+                  if (
+                    !this.accessFeesInfo.accessFees.find(
+                      (item) => item.type === asp.name
+                    )
+                  ) {
+                    let accessFees = {
+                      type: asp.name,
+                      currency: asp.currency,
+                      amount: Number(asp.fee),
+                    };
+                    this.accessFeesInfo.accessFees.push(accessFees);
+                  } else {
+                    for (const a of this.accessFeesInfo.accessFees) {
+                      if (a.type === asp.name) {
+                        a.amount = a.amount + Number(asp.fee);
+                      }
+                    }
+                  }
+                }
+
+                console.log(this.accessFeesInfo.accessFees);
+              }
+            }
             for (const commodity of drop.commodity) {
               if (commodity.quantityUnit == "Pallets") {
                 const quantity: any = commodity.quantity;
