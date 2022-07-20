@@ -21,6 +21,9 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { AccordionModule } from 'primeng/accordion';
+import {DialogModule} from 'primeng/dialog';
+import {SplitButtonModule} from 'primeng/splitbutton';
+import {ToastModule} from 'primeng/toast';
 const routes: Routes = [
   { path: 'manifests', component: EManifestsComponent },
   { path: 'ace-manifest', component: NewAceManifestComponent },
@@ -107,7 +110,10 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     OverlayPanelModule,
     MultiSelectModule,
     AccordionModule,
-    ConfirmPopupModule
+    ConfirmPopupModule,
+    DialogModule,
+    ToastModule,
+    SplitButtonModule
   ],
   providers: [{ provide: NgbDateAdapter, useClass: CustomAdapter },
   { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }]

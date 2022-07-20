@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
@@ -13,15 +13,18 @@ import { ListService } from '../../../../../services';
 import { HereMapService } from '../../../../../services';
 import { updateFunctionDeclaration } from 'typescript';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+import { NgForm } from '@angular/forms';
+import {MessageService} from 'primeng/api';
 declare var $: any;
 
 @Component({
   selector: 'app-new-ace-manifest',
   templateUrl: './new-ace-manifest.component.html',
   styleUrls: ['./new-ace-manifest.component.css'],
-  providers: [],
+  providers: [MessageService],
 })
 export class NewAceManifestComponent implements OnInit {
+  @ViewChild("aAce1") aAce1: NgForm;
   activeState: boolean[] = [true, false, false];
   public manifestID;
   public carrierID;
@@ -233,6 +236,7 @@ export class NewAceManifestComponent implements OnInit {
     private listService: ListService,
     config: NgbTimepickerConfig,
     private dateAdapter: NgbDateAdapter<string>,
+    private messageService: MessageService,
     private countryStateCity: CountryStateCityService
   ) {
     config.seconds = true;
@@ -418,7 +422,14 @@ export class NewAceManifestComponent implements OnInit {
   }
   fetchCarrier() {
     this.apiService.getData('carriers/getCarrier').subscribe((result: any) => {
-      this.carriers = result.Items;
+      if(result && result.Items.length > 0) {
+        if(result.Items[0].SCAC != '' && result.Items[0].SCAC != undefined && result.Items[0].SCAC != null) {
+          this.SCAC = result.Items[0].SCAC;
+        } else {
+          this.messageService.add({sticky: true,closable:false,severity:'error', summary: 'Carrier\'s SCAC Error!', detail: 'Please update your profile to add manifest.'});
+        }
+      }
+      
     });
   }
   fetchBrokers() {
@@ -929,8 +940,8 @@ export class NewAceManifestComponent implements OnInit {
         this.SCAC = result.manifestInfo.SCAC;
         this.tripNumber = result.tripNo.substring(4, (result.tripNo.length));
         this.usPortOfArrival = result.manifestInfo.usPortOfArrival;
-        this.estimatedArrivalDate = result.estimatedArrivalDate;
-        this.estimatedArrivalTime = result.estimatedArrivalTime;
+        this.estimatedArrivalDate = result.arvDate;
+        this.estimatedArrivalTime = result.arvTime;
         this.truck = result.manifestInfo.truck;
         this.mainDriver = result.manifestInfo.mainDriver;
         this.coDrivers = result.manifestInfo.coDrivers;

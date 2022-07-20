@@ -19,16 +19,17 @@
                       <div class="col-lg-3">
                         <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Trip#<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            <input type="text" class="form-control" name="SCAC" [(ngModel)]="SCAC" disabled placeholder="Select SCAC" #Trip1="ngModel" required/>
                         <!-- <ng-select name="SCAC" [(ngModel)]="SCAC" placeholder="Select SCAC">
                           <ng-option *ngFor="let carrier of carriers" [value]="carrier.SCAC">
                             {{carrier.SCAC}}</ng-option>
-                        </ng-select> -->
+                        </ng-select>
                         <ng-select name="SCAC" [(ngModel)]="SCAC" (change)="onChangeHideErrors('SCAC')"
                           placeholder="Select SCAC" #Trip1="ngModel" required>
                           <ng-option value="DOTL">DOTL</ng-option>
                           <ng-option value="FVFA">FVFA</ng-option>
                           <ng-option value="GHGP">GHGP</ng-option>
-                        </ng-select>
+                        </ng-select> -->
                         <div *ngIf="Trip1.invalid && (Trip1.dirty || Trip1.touched)" class="text-danger">
                           <div>
 
@@ -1653,3 +1654,5 @@
     </section>
   </div>
 </section>
+
+<p-toast></p-toast>

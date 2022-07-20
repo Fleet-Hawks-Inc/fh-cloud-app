@@ -146,6 +146,25 @@ export class AceDetailsComponent implements OnInit {
   USportsListObjects: any = {};
   brokerCodeObject: any = {};
   sendBorderConnectOption = false;
+
+  items = [
+    
+    {
+      label: 'Send', icon: 'pi pi-send', command: () => {
+        this.sendCBPFn();
+    }},
+    {
+      label: 'Amend', icon: 'pi pi-user-edit', command: () => {
+      this.amendManifest();
+    }},
+    {
+      label: 'Cancel', icon: 'pi pi-exclamation-circle', command: () => {
+      this.cancelManifest(this.manifestID);
+      },
+    }
+];
+  errorsDisplay = false;
+  errors = [];
   constructor(private apiService: ApiService, private route: ActivatedRoute, private spinner: NgxSpinnerService,
     private httpClient: HttpClient, private toastr: ToastrService, private router: Router,
     private countryStateCity: CountryStateCityService) { }
@@ -317,9 +336,14 @@ export class AceDetailsComponent implements OnInit {
   }
   sendCBPFn() {
     this.apiService
-      .getData('eManifests/ACE/CBPdetails/' + this.manifestID)
-      .subscribe((result: any) => {
-        // this.sendBorderConnectOption = result;
+      .getData('eManifests/ACE/CBPdetails/' + this.manifestID).toPromise().then(result => {
+
+      }).catch(err => {
+        this.errorsDisplay = true;
+        this.errors = err.error;
+        console.log('erro', this.errors)
+      })
+      // this.sendBorderConnectOption = result;
         // if (this.sendBorderConnectOption === true) {
         //   const val = 'Queued';
         //   const setStatus: any = this.apiService.getData('ACEeManifest/setStatus/' + this.manifestID + '/' + val).subscribe((result: any) => {
@@ -327,7 +351,7 @@ export class AceDetailsComponent implements OnInit {
         //      this.currentStatus = val;
         //   });
         // }
-      });
+      
   }
   async showShipmentDetails(shipmentID) {
     const shipmentDataFetched = this.shipments.filter((item: any) => item.shipmentID === shipmentID);
@@ -449,6 +473,6 @@ export class AceDetailsComponent implements OnInit {
 
   amendManifest() {
     const amend = true;
-    this.router.navigateByUrl('/dispatch/cross-border/ACE-edit-eManifest/' + this.manifestID + `?amendManifest=` + amend);
+    this.router.navigateByUrl('/dispatch/cross-border/ace-manifest/' + this.manifestID + `?amendManifest=` + amend);
   }
 }

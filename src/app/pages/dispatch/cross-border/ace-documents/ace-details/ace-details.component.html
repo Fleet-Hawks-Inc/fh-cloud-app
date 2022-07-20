@@ -7,12 +7,12 @@
 
                     <a routerLink="/dispatch/cross-border/ace-manifest/{{manifestID}}"
                         class="btn btn-default btn-sm mr-2"><i class="fas fa-pencil-alt"></i> Edit Manifest</a>
-
-                    <button type="text" pButton class="btn btn-success btn-sm align-items-center d-inline-flex mr-2"
+                        <p-splitButton label="Send To CBP" [model]="items" styleClass="p-button-sm mr-2 text-left"></p-splitButton>
+                    <!-- <button type="text" pButton class="btn btn-success btn-sm align-items-center d-inline-flex mr-2"
                         label=" Send To CBP" (click)="op.toggle($event)"> <i class="pi pi-chevron-down"></i></button>
 
                     <p-overlayPanel #op>
-                        <ng-template pTemplate [style]="{padding: '0px'}">
+                        <ng-template pTemplate>
                             <a class="dropdown-item" href="javascript:;" (click)="sendCBPFn()">Send Complete
                                 eManifest</a>
                             <a class="dropdown-item" (click)="amendManifest()">Amend Completed
@@ -20,7 +20,7 @@
                             <a class="dropdown-item" (click)="cancelManifest(manifestID)">Cancel Completed
                                 eManifest</a>
                         </ng-template>
-                    </p-overlayPanel>
+                    </p-overlayPanel> -->
                     <a [routerLink]="['/dispatch', 'cross-border','manifests']" class="btn btn-default btn-sm"><i
                             class="fas fa-list"></i> ACE Manifests</a>
 
@@ -1059,3 +1059,17 @@
         </div>
     </div>
 </div>
+
+<p-dialog header="Please check these errors" [modal]="true" [style]="{ width: '40vw' }" [(visible)]="errorsDisplay">
+    <div class="row">
+        <div class="col">
+            <div *ngFor="let err of errors" class="text-danger">
+                {{err.stack}}
+            </div>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button class=""
+            (click)="errorsDisplay = false;" label="Ok"></p-button>
+    </ng-template>
+</p-dialog>
