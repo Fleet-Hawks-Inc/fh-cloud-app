@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
-import { from } from "rxjs";
+import { from, Subscription } from "rxjs";
 import { map } from "rxjs/operators";
 import { AccountService, ApiService, ListService } from "src/app/services";
 import { Location } from "@angular/common";
@@ -29,6 +29,10 @@ export class AddAdvancePaymentComponent implements OnInit {
     status: "not_deducted",
     transactionLog: [],
     paymentLinked: false,
+    cheqdata: {
+      comp: '',
+      addr: ''
+    }
   };
   drivers = [];
   carriers = [];
@@ -50,6 +54,7 @@ export class AddAdvancePaymentComponent implements OnInit {
   submitDisabled = false;
   paymentID;
   showModal = false;
+  subscription: Subscription;
 
   constructor(
     private listService: ListService,
@@ -59,9 +64,15 @@ export class AddAdvancePaymentComponent implements OnInit {
     private accountService: AccountService,
     private apiService: ApiService,
     private location: Location
-  ) {}
+  ) { }
 
   ngOnInit() {
+    this.subscription = this.listService.paymentSaveList.subscribe((res: any) => {
+      if (res.openFrom === "addForm") {
+        this.paymentData.cheqdata = res.cheqdata;
+        this.addRecord();
+      }
+    });
     this.paymentID = this.route.snapshot.params["paymentID"];
     if (this.paymentID) {
       this.fetchPaymentDetails();
@@ -79,6 +90,11 @@ export class AddAdvancePaymentComponent implements OnInit {
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
   }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
+  }
+
 
   fetchDrivers() {
     this.apiService
@@ -154,7 +170,7 @@ export class AddAdvancePaymentComponent implements OnInit {
   addRecord() {
     this.submitDisabled = true;
     this.accountService.postData("advance", this.paymentData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -171,13 +187,24 @@ export class AddAdvancePaymentComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success("Advance payment added successfully.");
+        let obj = {
+          type: '',
+          openFrom: ''
+        }
+        this.listService.triggerPaymentSave(obj);
+        let payObj = {
+          showModal: false,
+          page: "",
+        };
+
+        this.listService.openPaymentChequeModal(payObj);
         this.cancel();
       },
     });
@@ -220,7 +247,7 @@ export class AddAdvancePaymentComponent implements OnInit {
     this.accountService
       .putData(`advance/${this.paymentID}`, this.paymentData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -237,7 +264,7 @@ export class AddAdvancePaymentComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {

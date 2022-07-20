@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input} from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
+import { NgSelectComponent } from "@ng-select/ng-select";
 declare var $: any;
 import { ToastrService } from 'ngx-toastr';
+import { Table } from 'primeng/table';
 import { NgxSpinnerService } from 'ngx-spinner';
 import Constants from '../../constants';
 import { ListService } from '../../../../services';
@@ -15,6 +17,8 @@ import { environment } from '../../../../../environments/environment';
     styleUrls: ['./inventory-list.component.css']
 })
 export class InventoryListComponent implements OnInit {
+    @ViewChild('dt') table: Table;
+    @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
     environment = environment.isFeatureEnabled;
     dataMessage: string = Constants.FETCHING_DATA;
     dataMessageReq: string = Constants.FETCHING_DATA;
@@ -103,12 +107,38 @@ export class InventoryListComponent implements OnInit {
     dateMinLimit = { year: 1950, month: 1, day: 1 };
     date1: any = new Date();
     futureDatesLimit = { year: this.date1.getFullYear() + 30, month: 12, day: 31 };
+    employeeOptions: any[];
+    _selectedColumns: any[];
+    _reqSelectedColumns: any[];
+    get = _.get;
 
+
+   
+        // columns of data table
+    dataColumns = [
+        { field: 'partNumber', header: 'Part#', type: "text" },
+        { field: 'itemName', header: 'Item Name', type: "text" },
+        { field: 'category', header: 'Category', type: "text" },
+        { field: 'vendor', header: 'Vendor', type: "text" },
+        { field: 'unitcost', header: 'Unit Cost', type: "text" },
+        { field: 'tax', header: 'Tax', type: "text" },
+        { field: 'quantity', header: 'Quantity', type: "text" },
+        { field: 'totalCost', header: 'Total Cost', type: "text" },
+        { field: 'warehouseDetails', header: 'Warehouse Details', type: "text" },
+    ];
+    reqDataColumns = [
+        { field: 'partNumber', header: 'Part#', type: "text" },
+        { field: 'reqItemName', header: 'Item Name', type: "text" },
+        { field: 'vendor', header: 'Vendor', type: "text" },
+        { field: 'quantity', header: 'Quantity', type: "text" },
+    ];
     constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private listService: ListService) { }
 
     ngOnInit() {
+        this.setToggleOptions();
         this.fetchWarehouses();
         this.fetchAllItemsList();
+        this.setreqToggleOptions();
         this.initDataTable();
         this.initDataTableRequired();
         this.fetchVendors();
@@ -116,6 +146,39 @@ export class InventoryListComponent implements OnInit {
         this.disableButton();
         this.allVendors = this.listService.vendorList;
     }
+        
+        
+        //Existing Inventory
+        setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+        @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
+    
+    set selectedColumns(val: any[]) {
+        //restore original order
+        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+    }
+    
+        //Required Inventory
+     setreqToggleOptions() {
+        this.reqSelectedColumns = this.reqDataColumns;
+    }
+        @Input() get reqSelectedColumns(): any[] {
+        return this._reqSelectedColumns;
+    }
+    
+    set reqSelectedColumns(val: any[]) {
+        //restore original order
+        this._reqSelectedColumns = this.reqDataColumns.filter(col => val.includes(col));
+    }
+    
+    
+    
+    
+
+
 
     getItemSuggestions = _.debounce(function (value, type) {
         if (value != '') {
@@ -167,6 +230,14 @@ export class InventoryListComponent implements OnInit {
             this.requiredItemID = itemName;
             this.requiredSuggestedItems = [];
         }
+    }
+    
+    clearInput() {
+       // this.suggestedDrivers = null;
+    }
+
+    clearSuggestions() {
+       // this.driverName = null;
     }
 
     resetFilter() {
@@ -243,6 +314,7 @@ export class InventoryListComponent implements OnInit {
             this.apiService.getData('items/fetch/records?item=' + this.itemID + "&vendorID=" + this.vendorID + "&category=" + this.category + "&lastKey=" + this.lastItemSK).subscribe((result: any) => {
                 if (result.Items.length === 0) {
                     this.dataMessage = Constants.NO_RECORDS_FOUND
+                    this.loaded = true
                 }
                 if (result.Items.length > 0) {
                     if (result.LastEvaluatedKey !== undefined) {
@@ -262,6 +334,7 @@ export class InventoryListComponent implements OnInit {
             this.apiService.getData('items/fetch/required/records?item=' + this.requiredItemID + '&vendorID=' + this.requiredVendorID + '&partNo=' + this.requiredPartNumber + '&lastKey=' + this.lastSK).subscribe((result: any) => {
                 if (result.Items.length === 0) {
                     this.dataMessage = Constants.NO_RECORDS_FOUND
+                    this.loaded = true
                 }
                 if (result.Items.length > 0) {
                     if (result.LastEvaluatedKey !== undefined) {
@@ -427,7 +500,7 @@ export class InventoryListComponent implements OnInit {
         });
     }
 
-    onScroll() {
+    onScroll = async(event: any) => {
         if (this.loaded) {
             this.initDataTable();
             this.initDataTableRequired();
@@ -528,4 +601,14 @@ export class InventoryListComponent implements OnInit {
         this.dataMessageReq = Constants.FETCHING_DATA;
         this.initDataTableRequired();
     }
+    
+    
+        /**
+     * Clears the table filters
+     * @param table Table 
+     */
+    clear(table: Table) {
+        table.clear();
+    }
+
 }

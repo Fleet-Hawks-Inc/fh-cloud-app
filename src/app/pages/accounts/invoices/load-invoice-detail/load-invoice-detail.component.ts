@@ -13,9 +13,11 @@ export class LoadInvoiceDetailComponent implements OnInit {
   companyLogoSrc: string;
   invoiceData: any = {
     orderID: "",
+    isFeatEnabled: false,
   };
   vehicles = [];
-  assets = []
+  assets = [];
+  customers = [];
   customersObjects = {};
   accountsObjects = {};
   accountsIntObjects = {};
@@ -23,7 +25,7 @@ export class LoadInvoiceDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private accountService: AccountService,
     private apiService: ApiService
-  ) { }
+  ) {}
 
   async ngOnInit() {
     this.invID = this.route.snapshot.params[`invID`];
@@ -31,7 +33,6 @@ export class LoadInvoiceDetailComponent implements OnInit {
       await this.fetchInvoice();
       await this.fetchOrderInvoiceData();
     }
-    this.fetchAccountsByInternalIDs();
   }
 
   async fetchInvoice() {
@@ -39,6 +40,9 @@ export class LoadInvoiceDetailComponent implements OnInit {
       .getData(`order-invoice/detail/${this.invID}`)
       .toPromise();
     this.invoiceData = res[0];
+    if (!this.invoiceData.isFeatEnabled) {
+      this.fetchAccountsByInternalIDs();
+    }
 
     this.invoiceData.transactionLog.map((v: any) => {
       v.type = v.type.replace("_", " ");
@@ -66,7 +70,10 @@ export class LoadInvoiceDetailComponent implements OnInit {
     this.invoiceData["orderNumber"] = result[0]["orderNumber"];
     this.invoiceData["data"] = result[0]["data"];
 
-    if (this.invoiceData.carrierData.logo && this.invoiceData.carrierData.logo != "") {
+    if (
+      this.invoiceData.carrierData.logo &&
+      this.invoiceData.carrierData.logo != ""
+    ) {
       this.companyLogoSrc = `${this.Asseturl}/${this.invoiceData.pk}/${this.invoiceData.carrierData.logo}`;
     }
     if (result[0].assets != undefined) {
@@ -74,6 +81,9 @@ export class LoadInvoiceDetailComponent implements OnInit {
     }
     if (result[0].vehicles != undefined) {
       this.vehicles = result[0].vehicles;
+    }
+    if(result != undefined){
+    this.customers = result;
     }
   }
 }

@@ -3,7 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import * as moment from "moment";
 import { ToastrService } from "ngx-toastr";
-import { from } from "rxjs";
+import { from, Subscription } from "rxjs";
 import { map } from "rxjs/operators";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService } from "src/app/services/account.service";
@@ -32,8 +32,8 @@ export class AddEmployeePaymentComponent implements OnInit {
       hours: 0,
       perHour: 0,
     },
-    fromDate: "",
-    toDate: "",
+    fromDate: null,
+    toDate: null,
     accountID: null,
     payMode: null,
     payModeNo: "",
@@ -65,6 +65,13 @@ export class AddEmployeePaymentComponent implements OnInit {
     advancePayIds: [],
     advData: [],
     transactionLog: [],
+    gstper: 0,
+    gstHstAmt: 0,
+    vendorId: '',
+    cheqdata: {
+      comp: '',
+      addr: ''
+    }
   };
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -76,6 +83,9 @@ export class AddEmployeePaymentComponent implements OnInit {
       payrollRateUnit: "",
       payrollRate: "",
     },
+    venAddress: [],
+    vendorName: '',
+    vendorID: ''
   };
   additionRowData = {
     eventDate: null,
@@ -135,7 +145,11 @@ export class AddEmployeePaymentComponent implements OnInit {
   provincalClaimCodes = [];
   showModal = false;
   employeesObj: any = {};
+  vendorCompanyName = '';
+  vendorAddress = '';
+  isVendor = false;
 
+  subscription: Subscription;
   constructor(
     private listService: ListService,
     private route: ActivatedRoute,
@@ -149,6 +163,13 @@ export class AddEmployeePaymentComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.subscription = this.listService.paymentSaveList.subscribe((res: any) => {
+      if (res.openFrom === "addForm") {
+        this.paymentData.cheqdata = res.cheqdata;
+        this.addRecord();
+      }
+    });
+
     this.paymentID = this.route.snapshot.params["paymentID"];
     if (this.paymentID) {
       this.fetchPaymentDetail();
@@ -160,6 +181,11 @@ export class AddEmployeePaymentComponent implements OnInit {
     await this.getStates();
     this.fetchClaimCodes();
   }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
+  }
+
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
@@ -168,7 +194,6 @@ export class AddEmployeePaymentComponent implements OnInit {
       .getData(`contacts/get/all/employees`)
       .subscribe((result: any) => {
         this.employees = result;
-        console.log("this.employees", this.employees);
 
         this.employeesObj = result.reduce((a: any, b: any) => {
           return (
@@ -203,6 +228,13 @@ export class AddEmployeePaymentComponent implements OnInit {
         .getData(`contacts/detail/${this.paymentData.entityId}`)
         .subscribe((result: any) => {
           this.empDetails = result.Items[0];
+          this.empDetails.vendorID = result.Items[0].vendor ? result.Items[0].vendor : '';
+          if(this.empDetails.vendorName) {
+            this.vendorCompanyName = this.empDetails.vendorName;
+          }
+          if(this.empDetails.venAddress && this.empDetails.venAddress.length > 0) {
+            this.vendorAddress = this.empDetails.venAddress[0];
+          }
           let paymentInfo = this.empDetails.paymentDetails;
           this.paymentData.currency = paymentInfo.payrollRateUnit
             ? paymentInfo.payrollRateUnit
@@ -226,8 +258,14 @@ export class AddEmployeePaymentComponent implements OnInit {
           }
         });
       this.fetchLastAdded();
-      this.fetchAdvancePayments();
+      this.fetchPayments();
       this.calculatePayroll();
+    }
+  }
+
+  fetchPayments() {
+    if(this.paymentData.fromDate && this.paymentData.toDate) {
+      this.fetchAdvancePayments();
     }
   }
 
@@ -358,7 +396,6 @@ export class AddEmployeePaymentComponent implements OnInit {
       this.toaster.error("Please enter valid amount");
       return false;
     }
-
     this.submitDisabled = true;
     this.accountService
       .postData("employee-payments", this.paymentData)
@@ -387,6 +424,17 @@ export class AddEmployeePaymentComponent implements OnInit {
           this.submitDisabled = false;
           this.response = res;
           this.toaster.success("Employee payment added successfully.");
+          let obj = {
+            type: '',
+            openFrom: ''
+          }
+          this.listService.triggerPaymentSave(obj);
+          let payObj = {
+            showModal: false,
+            page: "",
+          };
+
+          this.listService.openPaymentChequeModal(payObj);
           this.cancel();
         },
       });
@@ -408,7 +456,8 @@ export class AddEmployeePaymentComponent implements OnInit {
       this.paymentData.additionTotal -
       this.paymentData.deductionTotal;
     this.paymentData.finalTotal =
-      this.paymentData.subTotal -
+      this.paymentData.subTotal + 
+      Number(this.paymentData.gstHstAmt) -
       this.paymentData.taxes -
       this.paymentData.taxdata.cpp -
       this.paymentData.taxdata.ei -
@@ -477,7 +526,7 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.advancePayments = [];
     this.dataMessage = Constants.FETCHING_DATA;
     this.accountService
-      .getData(`advance/entity/${this.paymentData.entityId}?from=null&to=null`)
+      .getData(`advance/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}&curr=${this.paymentData.currency}`)
       .subscribe((result: any) => {
         if (result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -730,5 +779,40 @@ export class AddEmployeePaymentComponent implements OnInit {
     } else {
       this.calculateFinalTotal();
     }
+  }
+
+  issueToVendor(event) {
+    if (event.target.checked) {
+      this.isVendor = true;
+
+      this.paymentData.taxdata.ei = 0;
+      this.paymentData.taxdata.cpp = 0;
+      this.paymentData.taxes = 0;
+      this.paymentData.vacPayPer = 0
+      this.paymentData.vacPayAmount = 0;
+
+      this.paymentData.taxdata.emplCPP = 0;
+      this.paymentData.taxdata.emplEI = 0;
+      this.paymentData.taxdata.federalCode = '';
+      this.paymentData.taxdata.federalTax = 0;
+      this.paymentData.taxdata.payPeriod = '';
+      this.paymentData.taxdata.provincialCode = '';
+      this.paymentData.taxdata.provincialTax = 0;
+      this.paymentData.taxdata.stateCode = '';
+
+      this.paymentData.vendorId = this.empDetails.vendorID;
+    } else {
+      this.isVendor = false;
+      this.paymentData.gstper = 0,
+      this.paymentData.gstHstAmt = 0
+      this.paymentData.vendorId = '';
+    }
+    this.calculateFinalTotal();
+  }
+
+  calculateGstHst() {
+    this.paymentData.gstHstAmt =
+      (this.paymentData.gstper / 100) * this.paymentData.paymentTotal;
+    this.calculateFinalTotal();
   }
 }

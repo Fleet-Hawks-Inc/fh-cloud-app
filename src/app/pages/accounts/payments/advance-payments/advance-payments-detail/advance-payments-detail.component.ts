@@ -1,8 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService, ListService } from "src/app/services";
+import * as html2pdf from "html2pdf.js";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-advance-payments-detail",
@@ -10,6 +13,9 @@ import { AccountService, ApiService, ListService } from "src/app/services";
   styleUrls: ["./advance-payments-detail.component.css"],
 })
 export class AdvancePaymentsDetailComponent implements OnInit {
+  @ViewChild("previewAdvPayment", { static: true })
+  previewAdvPayment: TemplateRef<any>;
+
   dataMessage: string = Constants.FETCHING_DATA;
   noRecordMsg = Constants.NO_RECORDS_FOUND;
   paymentData = {
@@ -28,6 +34,8 @@ export class AdvancePaymentsDetailComponent implements OnInit {
     accountID: null,
     status: "",
     transactionLog: [],
+    isFeatEnabled: false,
+    cheqdata: {}
   };
   paymentID;
   entityName = "";
@@ -37,19 +45,34 @@ export class AdvancePaymentsDetailComponent implements OnInit {
   accountsIntObjects: any = {};
   advancePayments = [];
   showModal = false;
+  advPayRef: any;
+  companyLogo: string;
+  tagLine: string;
+  carrierName: string;
+  pendingAmt: string;
+  deductedAmt: any;
+  downloadDisabled = true;
+  subscription: Subscription;
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
     private toaster: ToastrService,
     private route: ActivatedRoute,
+    private modalService: NgbModal,
     private listService: ListService
-  ) {}
+  ) { }
 
   ngOnInit() {
+    this.subscription = this.listService.paymentDetail.subscribe(async (res: any) => {
+      if(res == 'advance') {
+        this.fetchPay();
+      }
+    })
+
     this.paymentID = this.route.snapshot.params[`paymentID`];
     this.fetchPayments();
-    this.fetchAccountsByIDs();
-    this.fetchAccountsByInternalIDs();
+    // this.fetchAccountsByIDs();
+    // this.fetchAccountsByInternalIDs();
   }
   fetchAccountsByIDs() {
     this.accountService
@@ -70,14 +93,25 @@ export class AdvancePaymentsDetailComponent implements OnInit {
       .getData(`advance/detail/${this.paymentID}`)
       .subscribe((result: any) => {
         this.paymentData = result[0];
+        this.companyLogo = result[0].carrierDtl.logo;
+        this.tagLine = result[0].carrierDtl.tagLine;
+        this.carrierName = result[0].carrierDtl.carrierName;
+        this.deductedAmt = result[0].amount - result[0].pendingPayment;
+        this.pendingAmt = result[0].pendingPayment;
+        this.downloadDisabled = false;
         this.fetchAdvPayments();
-
+        if (!this.paymentData.isFeatEnabled) {
+          this.fetchAccountsByIDs();
+          this.fetchAccountsByInternalIDs();
+        }
         this.paymentData.transactionLog.map((v: any) => {
           v.type = v.type.replace("_", " ");
         });
         if (this.paymentData.status) {
           this.paymentData.status = this.paymentData.status.replace("_", " ");
         }
+
+        this.paymentData.paymentTo = this.paymentData.paymentTo.replace("_", " ");
 
         this.changePaymentMode(this.paymentData.payMode);
         if (this.paymentData.paymentTo === "driver") {
@@ -93,7 +127,11 @@ export class AdvancePaymentsDetailComponent implements OnInit {
 
   fetchDriverDetail(driverID) {
     this.apiService.getData(`drivers/${driverID}`).subscribe((result: any) => {
-      this.entityName = `${result.Items[0].firstName} ${result.Items[0].lastName} `;
+      if(result.Items[0].middleName) {
+        this.entityName = `${result.Items[0].firstName} ${result.Items[0].middleName} ${result.Items[0].lastName} `;
+      } else {
+        this.entityName = `${result.Items[0].firstName} ${result.Items[0].lastName} `;
+      }
     });
   }
 
@@ -185,7 +223,57 @@ export class AdvancePaymentsDetailComponent implements OnInit {
       finalAmount: this.paymentData.amount,
       txnDate: this.paymentData.txnDate,
       advType: this.paymentData.advType,
+      page: 'detail',
+      recordID: this.paymentID,
+      cheqData: this.paymentData.cheqdata,
+      module: 'advance',
     };
     this.listService.openPaymentChequeModal(obj);
+  }
+
+
+  openModal() {
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "preview-adv-pay",
+    };
+    this.advPayRef = this.modalService.open(this.previewAdvPayment, ngbModalOptions)
+  }
+
+  generatePaymentPDF() {
+    let data = document.getElementById("print-adv-pay");
+    html2pdf(data, {
+      margin: 0.5,
+      pagebreak: { mode: "avoid-all", before: 'print-adv-pay' },
+      filename: `advance-payment-${this.paymentData.paymentNo}.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        scale: 2, logging: true, dpi: 192, letterRendering: true, allowTaint: true,
+        useCORS: true,
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    });
+    this.advPayRef.close();
+    this.downloadDisabled = false;
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  fetchPay() {
+    this.accountService
+      .getData(`advance/detail/${this.paymentID}`)
+      .subscribe((result: any) => {
+        this.paymentData = result[0];
+        this.paymentData.transactionLog.map((v: any) => {
+          v.type = v.type.replace("_", " ");
+        });
+        this.paymentData.paymentTo = this.paymentData.paymentTo.replace("_", " ");
+        if (this.paymentData.status) {
+          this.paymentData.status = this.paymentData.status.replace("_", " ");
+        }
+      });
   }
 }

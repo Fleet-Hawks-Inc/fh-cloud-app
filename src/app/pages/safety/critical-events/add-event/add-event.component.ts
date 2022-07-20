@@ -127,8 +127,7 @@ export class AddEventComponent implements OnInit {
    * Get Current User logged in
    */
   getCurrentuser = async () => {
-    let result = (await Auth.currentSession()).getIdToken().payload;
-    this.currentUser = `${result.firstName} ${result.lastName}`;
+    this.currentUser = localStorage.getItem("currentUserName");
     this.event.createdBy = this.currentUser;
   };
 
@@ -149,7 +148,7 @@ export class AddEventComponent implements OnInit {
   }
 
   fetchUsers() {
-    this.apiService.getData("users/fetch/records").subscribe((result: any) => {
+    this.apiService.getData("common/users/fetch/records").subscribe((result: any) => {
       result.Items.map((i) => {
         i.fullName = i.firstName + " " + i.lastName;
         return i;

@@ -2,166 +2,109 @@
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header">
-        <h2>Purchase Payment</h2>
-        <div class="right-wrapper text-right">
-          <div class="pull-right pr-2">
-            <a
-              routerLink="/accounts/purchases/vendor-payments/list"
-              class="mb-1 mt-1 mr-1 mr-5 btn btn-default"><i class="fas
-                fa-list"></i> All Payments</a>
+        <div class="row">
+          <div class="col-md-4 col-lg-4">
+            <h4 class="font-weight-bold text-4 text-dark">Vendor Payment</h4>
+          </div>
+
+          <div class="col-md-8 col-lg-8 text-right pr-3">
+            <a routerLink="/accounts/purchases/vendor-payments/list" class="mb-1 mt-1 btn btn-sm btn-default"><i
+                class="fas fa-list"></i> All Payments</a>
           </div>
         </div>
       </header>
-      <section class="card mt-0 mb-4">
-        <div class="card-body">
-          <div class="row">
-            <div class="col pr-0">
-              <div class="card-body text-dark">
-                <form class="form-horizontal form-bordered" method="get"
-                  #venPayForm="ngForm">
-                  <div class="row">
-                    <div class="col-lg-5 offset-lg-1">
+
+      <section class="m-2">
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="">
+              <div class="bg-white p-3 text-dark">
+                <form class="form-horizontal form-bordered" method="get" #venPayForm="ngForm">
+                  <div class="form-group row adddriverpl pt-3">
+                    <div class="col-lg-6">
                       <div class="row">
                         <div class="col-lg-5">
-                          <label
-                            class="control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2">Payment Date<span class="mandfield text-2
-                              ml-1"><sup>*</sup></span>
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment Date<span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span>
                           </label>
-                          <input
-                            [(ngModel)]="paymentData.txnDate"
-                            name="txnDate"
-                            type="text"
-                            placeholder="yyyy/mm/dd"
-                            (click)="custexp.toggle()"
-                            ngbDatepicker
-                            #custexp="ngbDatepicker"
-                            class="form-control"
-                            autocomplete="off"
-                            [minDate]="dateMinLimit"
-                            [maxDate]="futureDatesLimit"
-                            #jDate="ngModel"
-                            required readonly
-                            />
+                          <input [(ngModel)]="paymentData.txnDate" name="txnDate" type="text" placeholder="yyyy/mm/dd"
+                            (click)="custexp.toggle()" ngbDatepicker #custexp="ngbDatepicker" class="form-control"
+                            autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #jDate="ngModel"
+                            required readonly />
 
-                          <div *ngIf="jDate.invalid &&
-                            (jDate.dirty ||
-                            jDate.touched)"
-                            class="text-danger">
-                            <div
-                              *ngIf="jDate.errors.required">
+                          <div *ngIf="
+                              jDate.invalid && (jDate.dirty || jDate.touched)
+                            " class="text-danger">
+                            <div *ngIf="jDate.errors.required">
                               Payment date is required.
                             </div>
                           </div>
                         </div>
                         <div class="col-lg-5">
-                          <label
-                            class="control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2">Vendor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select
-                            [(ngModel)]="paymentData.vendorID"
-                            name="vendorID"
-                            placeholder="Select Vendor"
-                            #vendorID="ngModel"
-                            required
-                            (change)="fetchVendorData()">
-                            <ng-option value="{{
-                              data.contactID }}"
-                              *ngFor="let
-                              data of vendors">{{
-                              data.companyName }}</ng-option>
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor<span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="paymentData.vendorID" name="vendorID" placeholder="Select Vendor"
+                            #vendorID="ngModel" required (change)="fetchVendorData()">
+                            <ng-option value="{{ data.contactID }}" *ngFor="let data of vendors">{{ data.companyName }}
+                            </ng-option>
                           </ng-select>
 
-                          <div *ngIf="vendorID.invalid &&
-                            (vendorID.dirty ||
-                            vendorID.touched)"
-                            class="text-danger">
-                            <div
-                              *ngIf="vendorID.errors.required">
+                          <div *ngIf="
+                              vendorID.invalid &&
+                              (vendorID.dirty || vendorID.touched)
+                            " class="text-danger">
+                            <div *ngIf="vendorID.errors.required">
                               Vendor is required.
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="col-lg-5 offset-lg-1">
+                    <div class="col-lg-6">
                       <div class="row">
                         <div class="col-lg-5">
-                          <label
-                            class="control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2">Reference#</label>
-                          <input
-                            type="text"
-                            name="refNo"
-                            [(ngModel)]="paymentData.refNo"
-                            class="form-control"
-                            placeholder="Enter
-                            Reference#"
-                            />
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Reference#</label>
+                          <input type="text" name="refNo" [(ngModel)]="paymentData.refNo" class="form-control"
+                            placeholder="Enter Reference#" />
                         </div>
                         <div class="col-lg-5">
-                          <label
-                            class="control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2">Payment Currency<span class="mandfield text-2
-                              ml-1"><sup>*</sup></span></label>
-                          <ng-select
-                            [(ngModel)]="paymentData.currency"
-                            name="currency"
-                            placeholder="Select
-                            currency"
-                            #curr="ngModel"
-                            required
-                            [clearable]="false"
-                            (change)="fetchVendorData()">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
+                            Currency<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="paymentData.currency" name="currency" placeholder="Select
+                            currency" #curr="ngModel" required [clearable]="false" (change)="fetchVendorData()">
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
 
-                          <div *ngIf="curr.invalid
-                            &&
-                            (curr.dirty ||
-                            curr.touched)"
-                            class="text-danger">
-                            <div
-                              *ngIf="curr.errors.required">
-                              Currency is
-                              required.
+                          <div *ngIf="curr.invalid && (curr.dirty || curr.touched)" class="text-danger">
+                            <div *ngIf="curr.errors.required">
+                              Currency is required.
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <h4>Purchase Bills</h4>
+
+                  <div class="row adddriverpl">
+                    <div class="col-lg-11">
+                      <h4 class="font-weight-bold text-5">Purchase Bills </h4>
                     </div>
                   </div>
 
                   <div>
-                    <div class="row">
-                      <div class="col-lg-10 offset-lg-1">
-                        <table
-                          class="table table-bordered table-striped
-                          mb-0
-                          simple-table">
+                    <div class="row adddriverpl">
+                      <div class="col-lg-11">
+                        <table class="table table-bordered table-striped mb-0 simple-table">
                           <thead>
-                            <tr class="bgcol2">
+                            <tr class="">
                               <th class="text-2"></th>
                               <th class="text-2">Date</th>
                               <th class="text-2">Purchase Bill#</th>
                               <th class="text-2">Reference#</th>
                               <th class="text-2">Due Date</th>
                               <th class="text-2">Amount</th>
-                              <th class="text-2">Pending Amount </th>
+                              <th class="text-2">Pending Amount</th>
                               <th class="text-2">Paid Amount</th>
                               <th class="text-2">Status</th>
                               <th class="text-2">Full Payment</th>
@@ -174,45 +117,36 @@
                                 {{ dataMessage }}
                               </td>
                             </tr>
-                            <tr *ngFor="let data of bills; let i=index;">
+                            <tr *ngFor="let data of bills; let i = index">
                               <td class="text-center">
-                                <input type="checkbox"
-                                  [(ngModel)]="data.selected"
-                                  name="selected{{i}}"
-                                  (change)="billsTotal();" />
+                                <input type="checkbox" [(ngModel)]="data.selected" name="selected{{ i }}"
+                                  (change)="billsTotal()" />
                               </td>
-                              <td>{{ data.txnDate | date:"yyyy/MM/dd" }}</td>
+                              <td>{{ data.txnDate | date: "yyyy/MM/dd" }}</td>
                               <td>{{ data.billNo }}</td>
-                              <td>{{ data.refNo ? data.refNo : '-' }}</td>
-                              <td>{{ data.dueDate | date:"yyyy/MM/dd" }}</td>
+                              <td>{{ data.refNo ? data.refNo : "-" }}</td>
+                              <td>{{ data.dueDate | date: "yyyy/MM/dd" }}</td>
                               <td>
-                                {{ data.total.finalTotal | number : '1.2-2' }}
+                                {{ data.total.finalTotal | number: "1.2-2" }}
                                 {{ data.currency }}
                               </td>
                               <td>
-                                {{ data.balance | number : '1.2-2' }}
+                                {{ data.balance | number: "1.2-2" }}
                                 {{ data.currency }}
                               </td>
                               <td>
-                                {{ data.prevPaidAmount | number : '1.2-2' }}
+                                {{ data.prevPaidAmount | number: "1.2-2" }}
                               </td>
                               <td>
-                                <span class="badge badge-dark p-1
-                                  text-uppercase">{{ data.newStatus }}</span>
+                                <span class="badge badge-dark p-1 text-uppercase">{{ data.newStatus }}</span>
                               </td>
                               <td class="text-center">
-                                <input type="checkbox"
-                                  [(ngModel)]="data.fullPayment"
-                                  name="fullPay{{i}}"
-                                  (change)="assignFullPayment(i, data);"
-                                  />
+                                <input type="checkbox" [(ngModel)]="data.fullPayment" name="fullPay{{ i }}"
+                                  (change)="assignFullPayment(i, data)" />
                               </td>
                               <td>
-                                <input type="text" class="form-control"
-                                  [(ngModel)]="data.paidAmount"
-                                  [disabled]="data.fullPayment"
-                                  name="payment{{i}}" (input)="billsTotal();"
-                                  />
+                                <input type="text" class="form-control" [(ngModel)]="data.paidAmount"
+                                  [disabled]="data.fullPayment" name="payment{{ i }}" (input)="billsTotal()" />
                               </td>
                             </tr>
                           </tbody>
@@ -220,19 +154,150 @@
                       </div>
                     </div>
 
-                    <div class="row pt-2">
+                    <div class="row adddriverpl my-3">
                       <div class="col-lg-12">
-                        <h4>Advance Payments</h4>
+                        <div class="bg-white text-dark">
+                          <div class="form-group row pt-3">
+                            <div class="col-lg-10">
+                              <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Manual
+                                Bill
+                                Details</label>
+                            </div>
+                            <div class="col-lg-11">
+                              <div class="pt-2">
+                                <table class="table table-bordered">
+                                  <thead>
+                                    <tr>
+                                      <th style="width: 180px;">
+                                        Commodity
+                                      </th>
+                                      <th style="width: 200px;">
+                                        Quantity
+                                      </th>
+                                      <th style="width: 200px;">
+                                        Rate
+                                      </th>
+                                      <th style="width: 120px;">
+                                        Amount
+                                      </th>
+                                      <th style="width: 180px;">
+                                        Account
+                                      </th>
+                                      <th style="width: 180px;">Description</th>
+                                      <th style="width: 80px;">Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="
+                                        let detail of paymentData.detail;
+                                        let idt = index
+                                      ">
+                                      <td>
+                                        <input type="text" name="comm{{ idt }}" [(ngModel)]="detail.comm"
+                                          class="form-control" placeholder="Enter
+                                                                          commodity" />
+                                      </td>
+
+                                      <td>
+                                        <div class="row">
+                                          <div class="col-lg-6 pr-0 mr-2">
+                                            <input type="text" name="qty{{ idt }}" [(ngModel)]="detail.qty"
+                                              class="form-control" placeholder="Enter
+                                                                                  quantity"
+                                              (input)="calcDetailAmount(idt)" pattern="^[1-9]\d*(\.\d+)?$" />
+
+                                          </div>
+                                          <div class="col-lg-5 pl-0">
+                                            <ng-select [(ngModel)]="detail.qtyTyp" name="quanType{{ idt }}" placeholder="Select
+                                                                                  type"
+                                              (change)="setQuanType($event, idt)">
+                                              <ng-option *ngFor="let qtype of quantityTypes" value="{{ qtype.value }}">
+                                                {{
+                                                qtype.name }}</ng-option>
+                                            </ng-select>
+                                          </div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <div class="row">
+                                          <div class="col-lg-5 pr-0 mr-2">
+                                            <input type="text" name="rate{{ idt }}" [(ngModel)]="detail.rate"
+                                              class="form-control" placeholder="Enter
+                                                                                  rate" (input)="calcDetailAmount(idt)"
+                                              pattern="^[1-9]\d*(\.\d+)?$" />
+                                          </div>
+                                          <div class="col-lg-1 pr-0 pl-0">
+                                            <label>per</label>
+                                          </div>
+
+                                          <div class="col-lg-5 pl-0">
+                                            <ng-select [(ngModel)]="detail.rateTyp" name="rateTyp{{ idt }}" placeholder="Select
+                                                                                  type"
+                                              (change)="setQuanType($event, idt)">
+                                              <ng-option *ngFor="let qtype of quantityTypes" value="{{ qtype.value }}">
+                                                {{
+                                                qtype.name }}</ng-option>
+                                            </ng-select>
+                                          </div>
+                                        </div>
+                                      </td>
+                                      <td>
+                                        <input type="text" name="amount{{ idt }}" [(ngModel)]="detail.amount"
+                                          class="form-control" placeholder="Enter
+                                                                          amount" readonly />
+                                      </td>
+                                      <td>
+                                        <ng-select [(ngModel)]="detail.accountID" name="accountID{{ idt }}" placeholder="Select
+                                                                          account">
+                                          <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">
+                                            {{ data.actNo }} -
+                                            {{ data.actName | titlecase }}
+                                          </ng-option>
+                                        </ng-select>
+
+                                      </td>
+                                      <td>
+                                        <input type="text" name="description{{ idt }}" [(ngModel)]="detail.description"
+                                          class="form-control" placeholder="Enter
+                                                                          description" />
+                                      </td>
+                                      <td>
+                                        <a href="javascript:;" (click)="delDetail(idt)">
+                                          <i class="fa fa-trash"></i>
+                                        </a>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                              <div>
+                                <button type="button" class="btn btn-success btn-sm" (click)="addDetail()">
+                                  <i class="fas fa-plus"></i> Add Another Line
+                                </button>
+
+                                <span class="pull-right">
+                                  Detail Total: {{paymentData.total.detailTotal | number: "1.2-2"}}
+                                  {{paymentData.currency}}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div class="row">
-                      <div class="col-lg-10 offset-lg-1">
-                        <table
-                          class="table table-bordered table-striped
-                          mb-0
-                          simple-table">
+
+                    <div class="row adddriverpl pt-2">
+                      <div class="col-lg-11">
+                        <h4 class="font-weight-bold text-5">
+                          Advance Payments
+                        </h4>
+                      </div>
+                    </div>
+                    <div class="row adddriverpl">
+                      <div class="col-lg-11">
+                        <table class="table table-bordered table-striped mb-0 simple-table">
                           <thead>
-                            <tr class="bgcol2">
+                            <tr class="">
                               <th class="text-2"></th>
                               <th class="text-2">Date</th>
                               <th class="text-2">Payment#</th>
@@ -246,40 +311,38 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngIf="advancePayments.length === 0"
-                              class="text-center">
-                              <td colspan="9">{{ dataMessageAdv }} </td>
+                            <tr *ngIf="advancePayments.length === 0" class="text-center">
+                              <td colspan="9">{{ dataMessageAdv }}</td>
                             </tr>
-                            <tr *ngFor="let data of advancePayments; let
-                              i=index">
+                            <tr *ngFor="
+                                let data of advancePayments;
+                                let i = index
+                              ">
                               <td class="text-center">
-                                <input type="checkbox"
-                                  [(ngModel)]="data.selected"
-                                  name="selcadv{{i}}" (change)="advanceTotal();"
-                                  />
+                                <input type="checkbox" [(ngModel)]="data.selected" name="selcadv{{ i }}"
+                                  (change)="advanceTotal()" />
                               </td>
                               <td>{{ data.txnDate | date: "yyyy/MM/dd" }}</td>
                               <td>{{ data.paymentNo }}</td>
 
                               <td>{{ data.amount }} {{ data.currency }}</td>
-                              <td>{{ data.pendingPayment }} {{ data.currency }}</td>
-                              <td>{{ data.prevPaidAmount }} {{ data.currency }}</td>
                               <td>
-                                <span class="badge badge-dark p-1
-                                  text-uppercase"> {{ data.newStatus }}</span>
+                                {{ data.pendingPayment }} {{ data.currency }}
+                              </td>
+                              <td>
+                                {{ data.prevPaidAmount }} {{ data.currency }}
+                              </td>
+                              <td>
+                                <span class="badge badge-dark p-1 text-uppercase">
+                                  {{ data.newStatus }}</span>
                               </td>
                               <td class="text-center">
-                                <input type="checkbox"
-                                  [(ngModel)]="data.fullPayment"
-                                  name="fullPaymentadv{{i}}"
+                                <input type="checkbox" [(ngModel)]="data.fullPayment" name="fullPaymentadv{{ i }}"
                                   (change)="assignFullPaymentAdv(i, data)" />
                               </td>
                               <td>
-                                <input type="text" class="form-control"
-                                  [(ngModel)]="data.paidAmount"
-                                  name="paidAmountadv{{i}}"
-                                  [disabled]="data.fullPayment"
-                                  (change)="advanceTotal();" />
+                                <input type="text" class="form-control" [(ngModel)]="data.paidAmount"
+                                  name="paidAmountadv{{ i }}" [disabled]="data.fullPayment" (change)="advanceTotal()" />
                               </td>
                             </tr>
                           </tbody>
@@ -287,35 +350,32 @@
                       </div>
                     </div>
 
-                    <div class="row pt-2">
-                      <div class="col-lg-12">
-                        <h4>Payment Information</h4>
+
+                    <div class="row adddriverpl pt-2">
+                      <div class="col-lg-11">
+                        <h4 class="font-weight-bold text-5">
+                          Payment Information
+                        </h4>
                       </div>
                     </div>
-                    <div class="row pt-2">
-                      <div class="col-lg-5 offset-lg-1">
+                    <div class="row pt-2 adddriverpl">
+                      <div class="col-lg-6">
                         <div class="row">
                           <div class="col-lg-5">
-                            <label class="control-label font-weight-bold">Select
-                              Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <ng-select
-                              [(ngModel)]="paymentData.accountID"
-                              name="accountID"
-                              placeholder="Select Account"
-                              #incAccount="ngModel"
-                              required>
-                              <ng-option
-                                value="{{ data.actID }}"
-                                *ngFor="let data of accounts | async">
-                                {{ data.actNo }} - {{ data.actName | titlecase
-                                }}
+                            <label class="control-label font-weight-bold">Select Account<span
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            <ng-select [(ngModel)]="paymentData.accountID" name="accountID" placeholder="Select Account"
+                              #incAccount="ngModel" required>
+                              <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">
+                                {{ data.actNo }} -
+                                {{ data.actName | titlecase }}
                               </ng-option>
                             </ng-select>
 
-                            <div
-                              *ngIf="incAccount.invalid &&
-                              (incAccount.dirty || incAccount.touched)"
-                              class="text-danger">
+                            <div *ngIf="
+                                incAccount.invalid &&
+                                (incAccount.dirty || incAccount.touched)
+                              " class="text-danger">
                               <div *ngIf="incAccount.errors.required">
                                 Account is required.
                               </div>
@@ -323,90 +383,58 @@
                           </div>
 
                           <div class="col-lg-5">
-                            <label
-                              class="control-label font-weight-bold labelalign">Payment
-                              Mode <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            <label class="control-label font-weight-bold labelalign">Payment Mode
+                              <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
-                            <ng-select
-                              [(ngModel)]="paymentData.payMode"
-                              name="paymentMode"
-                              placeholder="Select Payment Mode"
-                              (change)="showPaymentFields($event)"
-                              #payMode="ngModel"
+                            <ng-select [(ngModel)]="paymentData.payMode" name="paymentMode"
+                              placeholder="Select Payment Mode" (change)="showPaymentFields($event)" #payMode="ngModel"
                               required>
-                              <ng-option
-                                value="{{ data.value }}"
-                                *ngFor="let data of paymentMode">{{ data.name }}</ng-option>
+                              <ng-option value="{{ data.value }}" *ngFor="let data of paymentMode">{{ data.name }}
+                              </ng-option>
                             </ng-select>
-                            <div
-                              *ngIf="payMode.invalid &&
-                              (payMode.dirty || payMode.touched)"
-                              class="text-danger">
+                            <div *ngIf="
+                                payMode.invalid &&
+                                (payMode.dirty || payMode.touched)
+                              " class="text-danger">
                               <div *ngIf="payMode.errors.required">
                                 Payment mode is required.
                               </div>
                             </div>
                           </div>
-                          <div class="col-lg-5">
-                          </div>
+                          <div class="col-lg-5"></div>
                         </div>
-                        <div
-                          *ngIf="paymentData.payMode"
-                          class="row pt-1"
-                          id="chequeDivDriver">
+                        <div *ngIf="paymentData.payMode" class="row pt-1" id="chequeDivDriver">
                           <div class="col-lg-5">
-                            <label
-                              class="control-label font-weight-bold labelalign">{{
-                              paymentLabel }} Reference <span class="mandfield
-                                text-2 ml-1"><sup>*</sup></span>
+                            <label class="control-label font-weight-bold labelalign">{{ paymentLabel }} Reference
+                              <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
-                            <input
-                              type="text"
-                              [(ngModel)]="paymentData.payModeNo"
-                              name="payModeNo"
-                              class="form-control"
-                              #modeNUmber="ngModel"
-                              required
-                              pattern="^[a-zA-Z0-9\s]+$"
-                              placeholder="{{ paymentLabel }} Reference"
-                              />
+                            <input type="text" [(ngModel)]="paymentData.payModeNo" name="payModeNo" class="form-control"
+                              #modeNUmber="ngModel" required pattern="^[a-zA-Z0-9\s]+$"
+                              placeholder="{{ paymentLabel }} Reference" />
                           </div>
                           <div class="col-lg-5">
-                            <label
-                              class="control-label font-weight-bold labelalign">{{
-                              paymentLabel }} Date <span class="mandfield text-2
-                                ml-1"><sup>*</sup></span>
+                            <label class="control-label font-weight-bold labelalign">{{ paymentLabel }} Date
+                              <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
-                            <input
-                              [(ngModel)]="paymentData.payModeDate"
-                              name="paymentModeDate"
-                              type="text"
-                              placeholder="yyyy/mm/dd"
-                              (click)="custexp.toggle()"
-                              ngbDatepicker
-                              #custexp="ngbDatepicker"
-                              class="form-control"
-                              autocomplete="off"
-                              [minDate]="dateMinLimit"
-                              [maxDate]="futureDatesLimit"
-                              #modeDate="ngModel"
-                              required
-                              />
+                            <input [(ngModel)]="paymentData.payModeDate" name="paymentModeDate" type="text"
+                              placeholder="yyyy/mm/dd" (click)="custexp.toggle()" ngbDatepicker #custexp="ngbDatepicker"
+                              class="form-control" autocomplete="off" [minDate]="dateMinLimit"
+                              [maxDate]="futureDatesLimit" #modeDate="ngModel" required />
 
-                            <div
-                              *ngIf="modeDate.invalid &&
-                              (modeDate.dirty || modeDate.touched)"
-                              class="text-danger">
+                            <div *ngIf="
+                                modeDate.invalid &&
+                                (modeDate.dirty || modeDate.touched)
+                              " class="text-danger">
                               <div *ngIf="modeDate.errors.required">
                                 {{ paymentLabel }} date is required.
                               </div>
                             </div>
                           </div>
 
-                          <div
-                            *ngIf="modeNUmber.invalid &&
-                            (modeNUmber.dirty || modeNUmber.touched)"
-                            class="text-danger">
+                          <div *ngIf="
+                              modeNUmber.invalid &&
+                              (modeNUmber.dirty || modeNUmber.touched)
+                            " class="text-danger">
                             <div *ngIf="modeNUmber.errors.required">
                               {{ paymentLabel }} reference is required.
                             </div>
@@ -424,14 +452,8 @@
                               Amount</label>
                           </div>
                           <div class="col-lg-6">
-                            <input
-                              class="form-control"
-                              [(ngModel)]="paymentData.total.subTotal"
-                              name="payAmount"
-                              type="text"
-                              placeholder="Amount"
-                              readonly
-                              />
+                            <input class="form-control" [(ngModel)]="paymentData.total.subTotal" name="payAmount"
+                              type="text" placeholder="Amount" readonly />
                           </div>
                         </div>
                         <div class="row pt-1">
@@ -439,47 +461,37 @@
                             <label class="control-label font-weight-bold">Advance</label>
                           </div>
                           <div class="col-lg-6">
-                            <input
-                              class="form-control"
-                              [(ngModel)]="paymentData.total.advTotal"
-                              name="advTotal"
-                              type="text"
-                              placeholder="Advance"
-                              readonly
-                              />
+                            <input class="form-control" [(ngModel)]="paymentData.total.advTotal" name="advTotal"
+                              type="text" placeholder="Advance" readonly />
                           </div>
                         </div>
                         <div class="row pt-1">
                           <div class="col-lg-6 text-right">
-                            <label class="control-label font-weight-bold">Net
-                              Payable</label>
+                            <label class="control-label font-weight-bold">Net Payable</label>
                           </div>
                           <div class="col-lg-6">
-                            <input
-                              class="form-control"
-                              [(ngModel)]="paymentData.total.finalTotal"
-                              name="finalTotal"
-                              type="text"
-                              placeholder="Amount"
-                              readonly
-                              />
+                            <input class="form-control" [(ngModel)]="paymentData.total.finalTotal" name="finalTotal"
+                              type="text" placeholder="Amount" readonly />
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="form-group row mt-4">
-                    <div class="col-lg-11 text-right">
-                      <button
-                        routerLink="/accounts/purchases/vendor-payments/list"
-                        type="button"
+                    <div class="col-lg-11 pr-1 text-right">
+                      <button routerLink="/accounts/purchases/vendor-payments/list" type="button"
                         class="btn btn-default mr-2">
                         Cancel
                       </button>
-                      <button (click)="addRecord()"
-                        [disabled]="!venPayForm.form.valid || submitDisabled"
-                        type="submit" class="btn
-                        btn-success">Save</button>
+                      <button type="button" class="btn btn-success modal-with-form mr-2"
+                        *ngIf="paymentData.payMode == 'cheque'" [disabled]="!venPayForm.form.valid || submitDisabled"
+                        (click)="showCheque()">
+                        Cheque preview
+                      </button>
+                      <button (click)="addRecord()" [disabled]="!venPayForm.form.valid || submitDisabled" type="submit"
+                        class="btn btn-success">
+                        Save
+                      </button>
                     </div>
                   </div>
                 </form>
@@ -491,3 +503,5 @@
     </section>
   </div>
 </section>
+
+<app-payment-cheque></app-payment-cheque>

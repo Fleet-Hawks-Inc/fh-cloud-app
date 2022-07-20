@@ -1,0 +1,126 @@
+<section class="body">
+
+    <div class="inner-wrapper">
+  
+      <section role="main" class="content-body pl-1 pr-0 pt-0">
+        <header class="page-header pr19 pl11">
+          <div class="row" style="padding-top:10px;">
+            <div class="col-md-4 col-lg-4">
+              <h4 class="font-weight-bold mt-0 mb-0 text-dark">Schedule Details
+                
+              </h4>
+            </div>
+            <div class="col-md-8 col-lg-8 text-right por-1">
+              <a
+              routerLink="/dispatch/scheduler/edit/{{ schedulerID }}"
+              class="btn btn-default btn-sm mr-2"
+              ><i class="fas fa-pencil-alt"></i> Edit Scheduler</a
+            >
+              <a routerLink="/dispatch/scheduler/scheduler-list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Schedule
+                List</a>
+            </div>
+          </div>
+        </header>
+  
+  
+        <section class="m-2">
+          <div class="row mb-3">
+            <div class="col-lg-12">
+              <div class="bg-white p-3 text-dark">
+                <div class="form-group row pt-3">
+                  <div class="col-lg-12">
+                    <!-- <label
+                      class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Schedule
+                      Details</label> -->
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <table class="table table-bordered table-responsive-lg">
+                          <tbody>
+                            <tr>
+                              <td class="back-color-gray font-weight-bold">Reference Order</td>
+                              <td><a routerLink="/dispatch/orders/detail/{{
+                                schedule.orderID
+                              }}">{{schedule.orderNumber}} </a></td>
+                            </tr>
+                            <tr>
+                                <td class="back-color-gray font-weight-bold">Schedule Name</td>
+                                <td>{{schedule.sName | titlecase}} </td>
+                              </tr>
+                              <tr>
+                                <td class="back-color-gray font-weight-bold">Schedule Time</td>
+                                <td>{{schedule.sTime}} </td>
+                              </tr>
+                              <tr *ngIf="schedule.dateRange.from"> 
+                                <td class="back-color-gray font-weight-bold">From</td>
+                                <td>{{schedule.dateRange.from}}</td>
+                              </tr>
+                              <tr *ngIf="schedule.dateRange.to"> 
+                                <td class="back-color-gray font-weight-bold">To</td>
+                                <td>{{schedule.dateRange.to}}</td>
+                              </tr>
+                              <tr *ngIf="schedule.repeatType"> 
+                                <td class="back-color-gray font-weight-bold">Repeat Type</td>
+                                <td>{{schedule.repeatType |titlecase}} </td>
+                              </tr>
+                              <tr *ngIf="schedule.sType && schedule.sType.days"> 
+                                <td class="back-color-gray font-weight-bold">Schedule Days</td>
+                                <td>{{schedule.sType.newDays}} </td>
+                              </tr>
+                              <tr *ngIf="schedule.sType && schedule.sType.daysNo"> 
+                                <td class="back-color-gray font-weight-bold">Schedule Days</td>
+                                <td>{{schedule.sType.daysNo}} </td>
+                              </tr>
+                              <tr *ngIf="schedule.firstName && schedule.firstName"> 
+                                <td class="back-color-gray font-weight-bold">Created By</td>
+                                <td>{{schedule.firstName | titlecase}} {{schedule.lastName| titlecase}} </td>
+                              </tr>
+
+                              <tr> 
+                                <td class="back-color-gray font-weight-bold">Status</td>
+                                <td><span class="badge badge-success" *ngIf="schedule.disabled==0">Enabled</span>
+                                  <span class="badge badge-danger" *ngIf="schedule.disabled==1">Disabled</span> </td>
+                              </tr>
+
+                              
+                              
+                              <tr *ngIf="schedule.selectedMonths && schedule.selectedMonths.length>0"> 
+                                <td class="back-color-gray font-weight-bold">Repetition Range</td>
+                                <td>{{schedule.newMonths}} </td>
+                              </tr>
+
+                              <tr>
+                                <td class="back-color-gray font-weight-bold">Range</td>
+                                <td>{{schedule.sRange |titlecase}} </td>
+                              </tr>
+                              <!-- <tr >
+                                <td class="back-color-gray font-weight-bold">Schedule Range</td>
+                                <td *ngIf="schedule.sRange.newMonths">{{schedule.sRange.newMonths | uppercase}} </td>
+                                <td *ngIf="schedule.sRange.dateRange">From : {{schedule.sRange.dateRange.from}}, To: {{schedule.sRange.dateRange.to}} </td>
+                              </tr>
+                              <tr >
+                                <td class="back-color-gray font-weight-bold">Schedule Type</td>
+                                <td *ngIf="schedule.sType.newDays">{{schedule.sType.newDays | uppercase}} </td>
+                                <td *ngIf="schedule.sType.daysNo"> No Of Days: {{schedule.sType.daysNo}} </td>
+
+                              </tr> -->
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+              </div>
+            </div>
+          </div>
+  
+  
+        </section>
+  
+  
+      </section>
+    </div>
+  </section>
+  

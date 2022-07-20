@@ -367,6 +367,8 @@ export class AddOrdersComponent implements OnInit {
   cloneID: any;
   recalledState = false;
 
+  orderPrefix: string = "";
+
   constructor(
     private apiService: ApiService,
     private ngbCalendar: NgbCalendar,
@@ -464,8 +466,7 @@ export class AddOrdersComponent implements OnInit {
     ]); // <-- go back to previous location on cancel
   }
   async getCarrierState() {
-    let carrierID = (await Auth.currentSession()).getIdToken().payload
-      .carrierID;
+    let carrierID = localStorage.getItem("xfhCarrierId");
     let result: any = await this.apiService
       .getData(`carriers/${carrierID}`)
       .toPromise();
@@ -509,7 +510,6 @@ export class AddOrdersComponent implements OnInit {
         this.shippersObjects = res;
       });
     }
-
     this.httpClient.get("assets/packagingUnit.json").subscribe((data) => {
       this.packagingUnitsList = data;
     });
@@ -520,6 +520,7 @@ export class AddOrdersComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.cloneID = params.cloneID;
       if (this.cloneID != undefined && this.cloneID != "") {
+        this.pageTitle = "Clone Order";
         this.cloneOrder(this.cloneID);
       }
     });
@@ -530,6 +531,9 @@ export class AddOrdersComponent implements OnInit {
         this.recalledState = true;
       }
     });
+    if (!this.getOrderID) {
+      this.getOrderPrefix();
+    }
 
     let customerList = new Array<any>();
     this.getValidCustomers(customerList);
@@ -1203,7 +1207,7 @@ export class AddOrdersComponent implements OnInit {
         this.apiService
           .getData(
             "trips/calculate/pc/miles?type=mileReport&vehType=Truck&stops=" +
-            this.getAllCords.join(";")
+              this.getAllCords.join(";")
           )
           .subscribe(
             (result) => {
@@ -1278,6 +1282,13 @@ export class AddOrdersComponent implements OnInit {
               if (elem.addressID === this.orderData.cusAddressID) {
                 elem.isChecked = true;
               }
+              // address id doesnot match when address deleted from address book of particular entry
+              if (
+                this.customerSelected[0].adrs.length === 1 &&
+                elem.addressID != this.orderData.cusAddressID
+              ) {
+                this.orderData.cusAddressID = elem.addressID;
+              }
             });
           }
         }
@@ -1309,9 +1320,13 @@ export class AddOrdersComponent implements OnInit {
   setAdditionalContact(event) {
     for (let i = 0; i < this.cusAdditionalContact.length; i++) {
       const element = this.cusAdditionalContact[i];
-      if (element.fullName == event) {
+      if (element.flName == event) {
         this.orderData.phone = element.phone;
         this.orderData.email = element.email;
+      }
+      else{
+      this.orderData.phone = null;
+      this.orderData.email = null;
       }
     }
   }
@@ -1523,6 +1538,9 @@ export class AddOrdersComponent implements OnInit {
 
     this.orderData["loc"] = selectedLoc;
     this.orderData.orderNumber = this.orderData.orderNumber.toString();
+    this.orderData.cusConfirmation = this.orderData.cusConfirmation
+      ? this.orderData.cusConfirmation
+      : "NA";
 
     // create form data instance
     const formData = new FormData();
@@ -1536,7 +1554,7 @@ export class AddOrdersComponent implements OnInit {
     formData.append("data", JSON.stringify(this.orderData));
 
     this.apiService.postData("orders", formData, true).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err) => {
         this.submitDisabled = false;
         from(err.error)
@@ -1544,6 +1562,9 @@ export class AddOrdersComponent implements OnInit {
             map((val: any) => {
               const path = val.path;
               // We Can Use This Method
+              if (path.includes("order")) {
+                this.toastr.error(val.message);
+              }
               const key = val.message.match(/"([^']+)"/)[1];
               val.message = val.message.replace(/".*"/, "This Field");
               this.errors[key] = val.message;
@@ -1562,7 +1583,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -1578,12 +1599,12 @@ export class AddOrdersComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-          v +
-          '-error" class="error" for="' +
-          v +
-          '">' +
-          this.errors[v] +
-          "</label>"
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
         )
         .addClass("error");
     });
@@ -2251,7 +2272,8 @@ export class AddOrdersComponent implements OnInit {
           ? result.recptStat
           : false;
         this.orderData["customerID"] = result.customerID;
-        this.orderData.cusConfirmation = result.cusConfirmation;
+        this.orderData.cusConfirmation =
+          result.cusConfirmation == "NA" ? "" : result.cusConfirmation;
         this.selectedCustomer(result.customerID);
 
         if (result.attachments !== undefined && result.attachments.length > 0) {
@@ -2494,7 +2516,6 @@ export class AddOrdersComponent implements OnInit {
     this.orderData["orderID"] = this.getOrderID;
     this.orderData.orderNumber = this.orderData.orderNumber.toString();
     this.orderData["deletedFiles"] = this.deletedFiles;
-
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
     for (let k = 0; k < this.finalShippersReceivers.length; k++) {
@@ -2504,7 +2525,6 @@ export class AddOrdersComponent implements OnInit {
       if (shippers.length == 0) flag = false;
       if (receivers.length == 0) flag = false;
     }
-
     //for location search in listing page
     let selectedLoc = "";
     let newloc = "";
@@ -2546,6 +2566,7 @@ export class AddOrdersComponent implements OnInit {
       );
       return false;
     }
+
     if (this.isConfirmExist) {
       setTimeout(() => {
         $("html, body").animate(
@@ -2580,6 +2601,9 @@ export class AddOrdersComponent implements OnInit {
 
     this.orderData["loc"] = selectedLoc;
     this.orderData.cusPOs = this.cusPOs;
+    this.orderData.cusConfirmation = this.orderData.cusConfirmation
+      ? this.orderData.cusConfirmation
+      : "NA";
 
     // create form data instance
     const formData = new FormData();
@@ -2599,7 +2623,7 @@ export class AddOrdersComponent implements OnInit {
       url = "admin/order/recall";
     }
     this.apiService.putData(url, formData, true).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err) => {
         from(err.error)
           .pipe(
@@ -2620,7 +2644,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -3026,7 +3050,9 @@ export class AddOrdersComponent implements OnInit {
           if (
             res.Items[0].adrs.length === 1 &&
             (res.Items[0].adrs[0].aType === "" ||
-              res.Items[0].adrs[0].aType === null)
+              res.Items[0].adrs[0].aType === null) &&
+            (res.Items[0].adrs[0].cCode === "" ||
+              res.Items[0].adrs[0].cCode === null)
           ) {
             this.receiverAddresses = [];
           } else {
@@ -3118,8 +3144,8 @@ export class AddOrdersComponent implements OnInit {
       this.orderData["customerPO"] = result.customerPO;
       this.orderData["email"] = result.email;
       this.orderData["orderMode"] = result.orderMode;
-      this.orderData["orderNumber"] = result.orderNumber;
-      this.getOrderNumber = result.orderNumber;
+      // this.orderData["orderNumber"] = result.orderNumber;
+      // this.getOrderNumber = result.orderNumber;
       this.orderData["phone"] = result.phone;
       this.orderData["reference"] = result.reference;
       this.orderData["remarks"] = result.remarks;
@@ -3228,10 +3254,13 @@ export class AddOrdersComponent implements OnInit {
   }
 
   validateConfirmation() {
-    this.isConfirmExist = false;
-    this.submitDisabled = true;
     if (this.orderData.cusConfirmation !== "") {
-      this.orderData.cusConfirmation = this.orderData.cusConfirmation.trim();
+      this.isConfirmExist = false;
+      this.submitDisabled = true;
+
+      this.orderData.cusConfirmation = this.orderData.cusConfirmation
+        ? this.orderData.cusConfirmation.trim()
+        : "NA";
       this.apiService
         .getData(
           `orders/validate/confirm?value=${this.orderData.cusConfirmation}`
@@ -3247,6 +3276,15 @@ export class AddOrdersComponent implements OnInit {
             this.submitDisabled = false;
           }
         });
+    }
+  }
+
+  async getOrderPrefix() {
+    let result: any = await this.apiService
+      .getData(`carriers/get/showPrefix?type=${"order"}`)
+      .toPromise();
+    if (result && result.length > 0) {
+      this.orderData.orderNumber = `${result[0].prefix}${result[0].sequence}`;
     }
   }
 }

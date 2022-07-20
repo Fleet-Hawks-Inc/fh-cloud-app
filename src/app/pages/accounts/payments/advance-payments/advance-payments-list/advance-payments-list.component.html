@@ -1,249 +1,342 @@
 <section class="body">
-    <div class="inner-wrapper">
-        <section role="main" class="content-body pr-0 pl-0 pt-0">
-            <header class="page-header pr19 pl7">
-                <div class="row" style="padding-top:10px;">
-                    <div class="col-md-2 col-lg-2 pr-0">
-                        <div class="input-group input-group-md mb-3">
-                            <input type="text" class="form-control"
-                                placeholder="Search by advance payment#"
-                                name="paymentNo" [(ngModel)]="filter.paymentNo">
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-3 pr-0">
-                        <div class="input-daterange input-group"
-                            data-plugin-datepicker>
-                            <span class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </span>
-                            </span>
-                            <input [(ngModel)]="filter.startDate"
-                                name="startDate" type="text"
-                                placeholder="yyyy/mm/dd"
-                                (click)="startDate.toggle()" ngbDatepicker
-                                #startDate="ngbDatepicker"
-                                class="form-control" autocomplete="off"
-                                [minDate]="dateMinLimit" readonly
-                                [maxDate]="futureDatesLimit">
-                            <span class="input-group-text border-left-0
-                                border-right-0 rounded-0">
-                                to
-                            </span>
-                            <input [(ngModel)]="filter.endDate" name="endDate"
-                                type="text" placeholder="yyyy/mm/dd"
-                                (click)="endDate.toggle()" ngbDatepicker
-                                #endDate="ngbDatepicker" class="form-control"
-                                autocomplete="off" [minDate]="dateMinLimit"
-                                readonly [maxDate]="futureDatesLimit">
-                        </div>
-                    </div>
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pr-0 pl-0 pt-0">
+      <header class="page-header pr19 pl7">
+        <div class="row" style="padding-top: 10px">
+          <div class="col-lg-10 col-md-10">
+            <div class="row">
+              <div class="col-md-2 col-lg-2 pr-0">
+                <ng-select [(ngModel)]="filter.type" (change)="unitTypeChange()" name="type" placeholder="Select type">
+                  <ng-option value="paymentNo">Payment Number</ng-option>
+                  <ng-option value="driver">Driver</ng-option>
+                  <ng-option value="carrier">Carrier</ng-option>
+                  <ng-option value="owner_operator">Owner Operator</ng-option>
+                  <ng-option value="employee">Employee</ng-option>
+                  <ng-option value="vendor">Vendor</ng-option>
+                </ng-select>
+              </div>
 
-                    <div class="col-md-2 col-lg-2 pr-0">
-                        <ng-select [(ngModel)]="filter.type" name="type"
-                            placeholder="Select type">
-                            <ng-option value="driver">Driver</ng-option>
-                            <ng-option value="carrier">Carrier</ng-option>
-                            <ng-option value="owner_operator">Owner Operator</ng-option>
-                            <ng-option value="employee">Employee</ng-option>
-                            <!-- <ng-option value="vendor">Vendor</ng-option>
-                            <ng-option value="customer">Customer</ng-option> -->
-                        </ng-select>
-                    </div>
-
-                    <div class="col-md-2 col-lg-2">
-                        <button type="submit" class="btn btn-sm btn-success
-                            mr-3" [disabled]="disableSearch"
-                            (click)="searchFilter()">Search</button>
-                        <button type="submit" class="btn btn-sm btn-success"
-                            [disabled]="disableSearch"
-                            (click)="resetFilter()">Reset</button>
-                    </div>
-                    <div class="col-md-3 col-lg-3 text-right pr-1">
-                        <button (click)="refreshData()" data-toggle="tooltip"
-                            title="Refresh data"
-                            [disabled]="disableSearch" class="btn btn-success
-                            btn-sm mr-2">
-                            <i class="fas fa-sync"></i>
-                        </button>
-                        <a routerLink="/accounts/payments/advance-payments/add"
-                            class="btn btn-success btn-sm ml-2"
-                            style="color:white;"><i class="fas fa-plus"></i> Add
-                            Advance Payment </a>
-
-                    </div>
+              <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'paymentNo'">
+                <div class="input-group input-group-md mb-3">
+                  <input type="text" class="form-control" placeholder="Search by payment number" name="paymentNo"
+                    [(ngModel)]="filter.searchValue" />
                 </div>
-            </header>
+              </div>
+              <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'driver'">
+                <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Driver">
+                  <ng-option value="{{ data.key }}" *ngFor="let
+                    data of driversObject | keyvalue"> {{
+                    data.value }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'carrier'">
+                <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Carrier">
+                  <ng-option value="{{ data.key }}" *ngFor="let
+                    data of carriersObject | keyvalue"> {{
+                    data.value }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'owner_operator'">
+                <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Owner Operator">
+                  <ng-option value="{{ data.key }}" *ngFor="let
+                    data of ownerOpObjects | keyvalue"> {{
+                    data.value }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'employee'">
+                <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Employee">
+                  <ng-option value="{{ data.key }}" *ngFor="let
+                    data of employees | keyvalue"> {{
+                    data.value }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'vendor'">
+                <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Vendor">
+                  <ng-option value="{{ data.key }}" *ngFor="let
+                    data of vendors | keyvalue"> {{
+                    data.value }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-md-2 col-lg-2 pr-0">
+                <ng-select [(ngModel)]="filter.payType" name="type" placeholder="Select payment type">
+                  <ng-option value="expense">Expense</ng-option>
+                  <ng-option value="payroll">Payroll</ng-option>
+                </ng-select>
+              </div>
+              <div class="col-lg-3 col-md-3 pr-0">
+                <div class="input-daterange input-group" data-plugin-datepicker>
+                  <span class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fas fa-calendar-alt"></i>
+                    </span>
+                  </span>
+                  <input [(ngModel)]="filter.startDate" name="startDate" type="text" placeholder="yyyy/mm/dd"
+                    (click)="startDate.toggle()" ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                  <span class="
+                      input-group-text
+                      border-left-0 border-right-0
+                      rounded-0
+                    ">
+                    to
+                  </span>
+                  <input [(ngModel)]="filter.endDate" name="endDate" type="text" placeholder="yyyy/mm/dd"
+                    (click)="endDate.toggle()" ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                </div>
+              </div>
 
-            <section class="m-2">
-                <div class="row mb-3">
-                    <div class="col-lg-12">
-                        <div class="bg-white p-3 text-dark">
-                            <div infiniteScroll [infiniteScrollDistance]="1"
-                                [infiniteScrollUpDistance]="1"
-                                [infiniteScrollThrottle]="5"
-                                (scrolled)="onScroll()">
-                                <div class="form-group row">
-                                    <div class="col-lg-12">
-                                        <table class="table table-bordered
-                                            table-striped mb-0 simple-table">
-                                            <thead>
-                                                <tr class="bgcol2">
-                                                    <th class="text-2">Advance
-                                                        Payment#</th>
-                                                    <th class="text-2">Date</th>
-                                                    <th class="text-2">Type</th>
-                                                    <th class="text-2">Payment
-                                                        Mode</th>
-                                                    <th class="text-2">Paid To</th>
-                                                    <th class="text-2">Advance
-                                                        Amount</th>
-                                                    <th class="text-2">Deducted
-                                                        Amount</th>
-                                                    <th class="text-2">Balance</th>
-                                                    <th class="text-2">Status</th>
-                                                    <th class="text-2">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngIf="payments.length ===
-                                                    0" class="text-center">
-                                                    <td colspan="10">{{
-                                                        dataMessage }} </td>
-                                                </tr>
-                                                <tr *ngFor="let data of
-                                                    payments; let i=index;">
+              <div class="col-md-2 col-lg-2">
+                <button type="submit" class="btn btn-sm btn-success mr-3" [disabled]="disableSearch"
+                  (click)="searchFilter()">
+                  Search
+                </button>
+                <button type="submit" class="btn btn-sm btn-success" [disabled]="disableSearch" (click)="resetFilter()">
+                  Reset
+                </button>
+              </div>
+            </div>
+          </div>
 
-                                                    <td class="font-weight-bold
-                                                        cursorpoint"
-                                                        [routerLink]="data.url">{{
-                                                        data.paymentNo }} </td>
-                                                    <td class="cursorpoint"
-                                                        [routerLink]="data.url">
-                                                        {{ data.txnDate |
-                                                        date:"yyyy/MM/dd" }}
-                                                    </td>
-                                                    <td class="cursorpoint
-                                                        text-capitalize"
-                                                        [routerLink]="data.url">
-                                                        {{ data.advType ?
-                                                        data.advType : '-' }}
-                                                    </td>
-                                                    <td class="cursorpoint"
-                                                        [routerLink]="data.url"
-                                                        class="text-capitalize">{{
-                                                        data.payMode }}</td>
-                                                    <td class="cursorpoint"
-                                                        [routerLink]="data.url"><strong
-                                                            class="text-capitalize">{{
-                                                            data.paymentTo }}</strong>:
-                                                        <span
-                                                            *ngIf="data.paymentTo
-                                                            === 'driver'">
-                                                            {{
-                                                            drivers[data.entityId]
-                                                            | titlecase}}
-                                                        </span>
-                                                        <span
-                                                            *ngIf="data.paymentTo
-                                                            === 'employee'">
-                                                            {{
-                                                            employees[data.entityId]
-                                                            | titlecase}}
-                                                        </span>
-                                                        <span
-                                                            *ngIf="data.paymentTo
-                                                            !== 'driver' &&
-                                                            data.paymentTo !==
-                                                            'employee'">
-                                                            {{
-                                                            contacts[data.entityId]
-                                                            | titlecase }}
-                                                        </span>
+          <div class="col-md-2 col-lg-2 text-right pr-1">
+            <button (click)="refreshData()" data-toggle="tooltip" title="Refresh data" [disabled]="disableSearch"
+              class="btn btn-success btn-sm mr-2">
+              <i class="fas fa-sync"></i>
+            </button>
+            <a routerLink="/accounts/payments/advance-payments/add" class="btn btn-success btn-sm ml-2"
+              style="color: white"><i class="fas fa-plus"></i> Add Advance Payment
+            </a>
+          </div>
+        </div>
+        <!-- <div class="row" style="padding-top: 10px">
+          <div class="col-md-2 col-lg-2 pr-0">
+            <div class="input-group input-group-md mb-3">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search by advance payment#"
+                name="paymentNo"
+                [(ngModel)]="filter.paymentNo"
+              />
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 pr-0">
+            <div class="input-daterange input-group" data-plugin-datepicker>
+              <span class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fas fa-calendar-alt"></i>
+                </span>
+              </span>
+              <input
+                [(ngModel)]="filter.startDate"
+                name="startDate"
+                type="text"
+                placeholder="yyyy/mm/dd"
+                (click)="startDate.toggle()"
+                ngbDatepicker
+                #startDate="ngbDatepicker"
+                class="form-control"
+                autocomplete="off"
+                [minDate]="dateMinLimit"
+                readonly
+                [maxDate]="futureDatesLimit"
+              />
+              <span
+                class="input-group-text border-left-0 border-right-0 rounded-0"
+              >
+                to
+              </span>
+              <input
+                [(ngModel)]="filter.endDate"
+                name="endDate"
+                type="text"
+                placeholder="yyyy/mm/dd"
+                (click)="endDate.toggle()"
+                ngbDatepicker
+                #endDate="ngbDatepicker"
+                class="form-control"
+                autocomplete="off"
+                [minDate]="dateMinLimit"
+                readonly
+                [maxDate]="futureDatesLimit"
+              />
+            </div>
+          </div>
 
-                                                    </td>
-                                                    <td class="cursorpoint"
-                                                        [routerLink]="data.url">{{
-                                                        data.amount |
-                                                        number : '1.2-2' }} {{
-                                                        data.currency }}</td>
-                                                    <td class="cursorpoint"
-                                                        [routerLink]="data.url">{{
-                                                        data.paidAmount |
-                                                        number : '1.2-2' }} {{
-                                                        data.currency }}</td>
-                                                    <td class="cursorpoint"
-                                                        [routerLink]="data.url">{{
-                                                        data.pendingPayment |
-                                                        number : '1.2-2' }} {{
-                                                        data.currency }}
-                                                    </td>
-                                                    <td class="cursorpoint"
-                                                        [routerLink]="data.url"><span
-                                                            class="badge
-                                                            badge-dark p-1
-                                                            text-uppercase">{{
-                                                            data.newStatus
-                                                            }}</span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="dropdown
-                                                            dropright">
-                                                            <button
-                                                                class="bg-transparent
-                                                                border-0"
-                                                                type="button"
-                                                                id="dropdownMenuButton-{{i}}"
-                                                                data-toggle="dropdown"
-                                                                aria-haspopup="true"
-                                                                aria-expanded="false"
-                                                                [disabled]="data.status
-                                                                !=
-                                                                'not_deducted'">
-                                                                <i class="fas
-                                                                    fa-ellipsis-v"></i>
-                                                            </button>
-                                                            <div
-                                                                *ngIf="data.status
-                                                                ===
-                                                                'not_deducted'"
-                                                                class="dropdown-menu"
-                                                                attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                <a
-                                                                    class="dropdown-item"
-                                                                    routerLink="/accounts/payments/advance-payments/edit/{{
-                                                                    data.paymentID
-                                                                    }}">Edit</a>
-                                                                <a
-                                                                    class="dropdown-item"
-                                                                    href="javascript:;"
-                                                                    *ngIf="!data.paymentLinked"
-                                                                    (click)="deletePayment(data.paymentID)">Void</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="col-lg-12 mt-3 text-center"
-                                        *ngIf="lastItemSK !== 'end' &&
-                                        payments.length !== 0">
-                                        <button type="button" class="btn
-                                            btn-success btn-sm text-light"
-                                            (click)="onScroll()">Load More..</button>
-                                    </div>
-                                </div>
+          <div class="col-md-2 col-lg-2 pr-0">
+            <ng-select
+              [(ngModel)]="filter.type"
+              name="type"
+              placeholder="Select type"
+            >
+              <ng-option value="driver">Driver</ng-option>
+              <ng-option value="carrier">Carrier</ng-option>
+              <ng-option value="owner_operator">Owner Operator</ng-option>
+              <ng-option value="employee">Employee</ng-option>
+               <ng-option value="vendor">Vendor</ng-option>
+                            <ng-option value="customer">Customer</ng-option>
+            </ng-select>
+          </div>
+
+          <div class="col-md-2 col-lg-2">
+            <button
+              type="submit"
+              class="btn btn-sm btn-success mr-3"
+              [disabled]="disableSearch"
+              (click)="searchFilter()"
+            >
+              Search
+            </button>
+            <button
+              type="submit"
+              class="btn btn-sm btn-success"
+              [disabled]="disableSearch"
+              (click)="resetFilter()"
+            >
+              Reset
+            </button>
+          </div>
+          <div class="col-md-3 col-lg-3 text-right pr-1">
+            <button
+              (click)="refreshData()"
+              data-toggle="tooltip"
+              title="Refresh data"
+              [disabled]="disableSearch"
+              class="btn btn-success btn-sm mr-2"
+            >
+              <i class="fas fa-sync"></i>
+            </button>
+            <a
+              routerLink="/accounts/payments/advance-payments/add"
+              class="btn btn-success btn-sm ml-2"
+              style="color: white"
+              ><i class="fas fa-plus"></i> Add Advance Payment
+            </a>
+          </div>
+        </div> -->
+      </header>
+
+      <section class="m-2">
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <table class="
+                        table table-bordered table-striped
+                        mb-0
+                        simple-table
+                      ">
+                      <thead>
+                        <tr class="">
+                          <th class="text-2">Advance Payment#</th>
+                          <th class="text-2">Date</th>
+                          <th class="text-2">Type</th>
+                          <th class="text-2">Payment Mode</th>
+                          <th class="text-2">Reference No.</th>
+                          <th class="text-2">Paid To</th>
+                          <th class="text-2">Advance Amount</th>
+                          <th class="text-2">Deducted Amount</th>
+                          <th class="text-2">Balance</th>
+                          <th class="text-2">Status</th>
+                          <th class="text-2">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="payments.length === 0" class="text-center">
+                          <td colspan="11">{{ dataMessage }}</td>
+                        </tr>
+                        <tr *ngFor="let data of payments; let i = index">
+                          <td class="font-weight-bold cursorpoint" [routerLink]="data.url">
+                            {{ data.paymentNo }}
+                          </td>
+                          <td class="cursorpoint" [routerLink]="data.url">
+                            {{ data.txnDate | date: "yyyy/MM/dd" }}
+                          </td>
+                          <td class="cursorpoint text-capitalize" [routerLink]="data.url">
+                            {{ data.advType ? data.advType : "-" }}
+                          </td>
+                          <td class="cursorpoint" [routerLink]="data.url" class="text-capitalize">
+                            {{ data.payMode }}
+                          </td>
+                          <td class="cursorpoint" [routerLink]="data.url" class="text-capitalize">
+                            {{ data.payModeNo }}
+                          </td>
+                          <td class="cursorpoint" [routerLink]="data.url">
+                            <strong class="text-capitalize">{{
+                              data.paymentTo
+                              }}</strong>:
+                            {{data.entityName | titlecase}}
+                            <!-- <span *ngIf="data.paymentTo === 'driver'">
+                              {{ drivers[data.entityId] | titlecase }}
+                            </span>
+                            <span *ngIf="data.paymentTo === 'employee'">
+                              {{ employees[data.entityId] | titlecase }}
+                            </span>
+                            <span *ngIf="
+                                data.paymentTo !== 'driver' &&
+                                data.paymentTo !== 'employee'
+                              ">
+                              {{ contacts[data.entityId] | titlecase }}
+                            </span> -->
+                          </td>
+                          <td class="cursorpoint" [routerLink]="data.url">
+                            {{ data.amount | number: "1.2-2" }}
+                            {{ data.currency }}
+                          </td>
+                          <td class="cursorpoint" [routerLink]="data.url">
+                            {{ data.paidAmount | number: "1.2-2" }}
+                            {{ data.currency }}
+                          </td>
+                          <td class="cursorpoint" [routerLink]="data.url">
+                            {{ data.pendingPayment | number: "1.2-2" }}
+                            {{ data.currency }}
+                          </td>
+                          <td class="cursorpoint" [routerLink]="data.url">
+                            <span class="badge badge-dark p-1 text-uppercase">{{
+                              data.newStatus
+                              }}</span>
+                          </td>
+                          <td>
+                            <div class="dropdown dropright">
+                              <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{ i }}"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                [disabled]="data.status != 'not_deducted'">
+                                <i class="fas fa-ellipsis-v"></i>
+                              </button>
+                              <div *ngIf="data.status === 'not_deducted'" class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{
+                                  i
+                                }}">
+                                <a class="dropdown-item" routerLink="/accounts/payments/advance-payments/edit/{{
+                                    data.paymentID
+                                  }}">Edit</a>
+                                <a class="dropdown-item" href="javascript:;" *ngIf="!data.paymentLinked"
+                                  (click)="deletePayment(data.paymentID)">Void</a>
+                              </div>
                             </div>
-                        </div>
-                    </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && payments.length !== 0">
+                    <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
+                      Load More..
+                    </button>
+                  </div>
                 </div>
-
-
-            </section>
-
-
-
-        </section>
-    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
 </section>

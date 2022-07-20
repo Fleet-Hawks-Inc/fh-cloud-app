@@ -1,10 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { ApiService } from '../../../../../services';
-import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+  takeUntil
+} from "rxjs/operators";
 import { ToastrService } from 'ngx-toastr';
+import { NgForm } from "@angular/forms";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { from, Subject, throwError } from 'rxjs';
+import { ModalService } from "../../../../../services/modal.service";
+import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
 import { Location } from '@angular/common';
 import constants from '../../../constants';
 import * as moment from 'moment';
@@ -16,10 +28,18 @@ declare var $: any;
   styleUrls: ['./vehicle-renew-add.component.css']
 })
 export class VehicleRenewAddComponent implements OnInit {
+
+  @ViewChild('vehicleRF') vehicleRF: NgForm;
+  takeUntil$ = new Subject();
+
   reminderID;
+    sessionID: string;
+
   pageTitle;
   entityID = null;
   taskID = null;
+    isSubmitted = false;
+
   reminderData = {
     entityID: '',
     type: constants.REMINDER_VEHICLE,
@@ -67,8 +87,23 @@ export class VehicleRenewAddComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
-    private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>, private location: Location) { }
+  constructor(private apiService: ApiService,
+  private route: ActivatedRoute, 
+  private router: Router,
+  private modalService: NgbModal,
+    private modalServiceOwn: ModalService,
+      private routerMgmtService: RouteManagementServiceService,
+  private toastr: ToastrService,
+    private ngbCalendar: NgbCalendar, 
+    private dateAdapter: NgbDateAdapter<string>,
+    private location: Location) 
+    {
+      this.sessionID = this.routerMgmtService.serviceRemindersSessionID;
+
+      }
+      
+
+
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -150,6 +185,8 @@ export class VehicleRenewAddComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
+
+        this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/list/${this.routerMgmtService.serviceReminderUpdated()}');
         this.toastr.success('Vehicle Renewal Reminder Added Successfully');
         this.cancel();
         this.reminderData = {
@@ -257,8 +294,9 @@ export class VehicleRenewAddComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.submitDisabled = false;
+        this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/list/${this.routerMgmtService.serviceReminderUpdated()}');
         this.toastr.success('Vehicle Renewal Reminder Updated Successfully.');
-        this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/list');
+        //this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/list');
         this.Success = '';
       },
     });

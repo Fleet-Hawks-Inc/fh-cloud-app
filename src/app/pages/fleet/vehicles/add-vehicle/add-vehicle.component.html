@@ -7,19 +7,13 @@
             {{ title }}
           </div>
           <div class="col-md-8 col-lg-8 text-right">
-            <a routerLink="/fleet/vehicles/list" class="btn btn-default btn-sm"
-              ><i class="fas fa-list"></i> Vehicles List</a
-            >
+            <a routerLink="/fleet/vehicles/list/{{sessionID}}" class="btn btn-default btn-sm"><i
+                class="fas fa-list"></i> Vehicles List</a>
           </div>
         </div>
       </header>
 
-      <form
-        class="form-horizontal form-bordered"
-        method="get"
-        name="form"
-        id="form_"
-        (ngSubmit)="
+      <form class="form-horizontal form-bordered" method="get" name="form" id="form_" (ngSubmit)="
           vehicleID
             ? vehicleF.form.valid
               ? onUpdateVehicle()
@@ -27,11 +21,7 @@
             : vehicleF.form.valid
             ? onAddVehicle()
             : scrollError()
-        "
-        #vehicleF="ngForm"
-        novalidate
-        ngNativeValidate
-      >
+        " #vehicleF="ngForm" novalidate ngNativeValidate>
         <section class="m-2">
           <div class="row mb-3">
             <div class="col-12">
@@ -39,88 +29,43 @@
                 <div class="row pt-2 adddriverpl">
                   <div class="col-lg-7">
                     <label
-                      class="
-                        control-label
-                        font-weight-bold font-weight-bold
-                        text-lg-right text-5
-                        pt-2
-                      "
-                      >Identification</label
-                    >
+                      class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Identification</label>
                   </div>
                   <div class="col-lg-3 pr-0">
-                    <ngx-slick-carousel
-                      class="carousel"
-                      #slickModal="slick-carousel"
-                      [config]="slideConfig"
-                    >
-                      <div
-                        ngxSlickItem
-                        *ngFor="let slide of slides"
-                        class="slide"
-                      >
-                        <img
-                          src="{{ slide }}"
-                          class="img-fluid"
-                          alt=""
-                          style="margin: auto; max-height: 200px"
-                        />
+                    <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
+                      <div ngxSlickItem *ngFor="let slide of slides" class="slide">
+                        <img src="{{ slide.path }}" class="img-fluid" alt="" style="margin: auto; max-height: 200px" />
                       </div>
                     </ngx-slick-carousel>
 
                     <div class="mt-3 pull-right">
                       <div class="btn btn-sm btn-success">
                         <i class="fas fa-plus"></i> Add Photo
-                        <input
-                          (change)="selectDocuments($event, 'uploadedPhotos')"
-                          class="hidden_input1 w-100"
-                          name="uploadedPhotos"
-                          type="file"
-                          multiple
-                        />
+                        <input (change)="selectDocuments($event, 'uploadedPhotos')" class="hidden_input1 w-100"
+                          name="uploadedPhotos" type="file" accept=".jpg, .jpeg, .png" multiple />
+
                       </div>
                     </div>
+                    <span *ngIf="uploadPhotosError != ''" class="text-danger">
+                      {{ uploadPhotosError }}
+                    </span>
+
                   </div>
 
                   <div class="col-lg-5 mb-2 pb-1">
                     <div class="row">
                       <div class="col-lg-5 topClass">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Vehicle Name/Number
-                          <span class="mandfield text-2 ml-1"
-                            ><sup>*</sup></span
-                          >
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Name or Number for Vehicle"
-                          ></i>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle Name/Number
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Name or Number for Vehicle"></i>
                         </label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="vehicleIdentification"
-                          [(ngModel)]="vehicleIdentification"
-                          placeholder="eg. Semi Truck or 2344"
-                          #vName="ngModel"
-                          required
-                          pattern="^[a-zA-Z0-9\s]+$"
-                          [ngClass]="{
+                        <input type="text" class="form-control" name="vehicleIdentification"
+                          [(ngModel)]="vehicleIdentification" placeholder="eg. Semi Truck or 2344" #vName="ngModel"
+                          required pattern="^[a-zA-Z0-9\s]+$" [ngClass]="{
                             error: vehicleF.submitted && vName.invalid
-                          }"
-                          [disabled]="editDisabled"
-                        />
-                        <div
-                          *ngIf="vName.invalid && vehicleF.submitted"
-                          class="text-danger"
-                        >
+                          }" [disabled]="editDisabled" />
+                        <div *ngIf="vName.invalid && vehicleF.submitted" class="text-danger">
                           <div *ngIf="vName.errors.required">
                             Vehicle name/number is required.
                           </div>
@@ -131,82 +76,33 @@
                         </div>
                       </div>
                       <div class="col-lg-5 topClass">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Vehicle Type
-                          <span class="mandfield text-2 ml-1"
-                            ><sup>*</sup></span
-                          ></label
-                        >
-                        <ng-select
-                          class="form-control"
-                          name="vehicleType"
-                          [(ngModel)]="vehicleType"
-                          placeholder="Select vehicle type"
-                          #vSlt="ngModel"
-                          required
-                          [ngClass]="{
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle Type
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <ng-select class="form-control" name="vehicleType" [(ngModel)]="vehicleType"
+                          placeholder="Select vehicle type" #vSlt="ngModel" required [ngClass]="{
                             error: vehicleF.submitted && vSlt.invalid
-                          }"
-                        >
-                          <ng-option
-                            *ngFor="let vehicle of vehicleTypeList"
-                            [value]="vehicle.code"
-                          >
-                            {{ vehicle.name }}</ng-option
-                          >
+                          }">
+                          <ng-option *ngFor="let vehicle of vehicleTypeList" [value]="vehicle.code">
+                            {{ vehicle.name }}</ng-option>
                         </ng-select>
-                        <div
-                          *ngIf="vSlt.invalid && vehicleF.submitted"
-                          class="text-danger"
-                        >
+                        <div *ngIf="vSlt.invalid && vehicleF.submitted" class="text-danger">
                           <div *ngIf="vSlt.errors.required">
                             Vehicle type is required.
                           </div>
                         </div>
                       </div>
                       <div class="col-lg-5 topClass">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >VIN
-                          <span class="mandfield text-2 ml-1"
-                            ><sup>*</sup></span
-                          >
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Vehicle Identification Number"
-                          ></i>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">VIN
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Vehicle Identification Number"></i>
                         </label>
-                        <input
-                          type="text"
-                          class="form-control placeholder-lowercase"
-                          name="VIN"
-                          [(ngModel)]="VIN"
-                          placeholder="17-18 digits alphanumeric,eg. 2G1WH55K5Y9322458"
-                          maxlength="18"
-                          #vin="ngModel"
-                          required
-                          pattern="^[a-zA-Z0-9]{17,18}$"
-                          [ngClass]="{
+                        <input type="text" class="form-control placeholder-lowercase" name="VIN" [(ngModel)]="VIN"
+                          placeholder="17-18 digits alphanumeric,eg. 2G1WH55K5Y9322458" maxlength="18" #vin="ngModel"
+                          required pattern="^[a-zA-Z0-9]{17,18}$" [ngClass]="{
                             error: vehicleF.submitted && vin.invalid
-                          }"
-                        />
-                        <div
-                          *ngIf="vin.invalid && vehicleF.submitted"
-                          class="text-danger"
-                        >
+                          }" />
+                        <div *ngIf="vin.invalid && vehicleF.submitted" class="text-danger">
                           <div *ngIf="vin.errors.required">
                             VIN is required.
                           </div>
@@ -217,150 +113,65 @@
                         </div>
                       </div>
                       <div class="col-lg-5 topClass">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Plate Number
-                          <span class="mandfield text-2 ml-1"
-                            ><sup>*</sup></span
-                          ></label
-                        >
-                        <input
-                          type="text"
-                          class="form-control placeholder-lowercase"
-                          name="plateNumber"
-                          [(ngModel)]="plateNumber"
-                          placeholder="eg. CAL 890"
-                          #pNum="ngModel"
-                          required
-                          [ngClass]="{
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Plate Number
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <input type="text" class="form-control placeholder-lowercase" name="plateNumber"
+                          [(ngModel)]="plateNumber" placeholder="eg. CAL 890" #pNum="ngModel" required [ngClass]="{
                             error: vehicleF.submitted && pNum.invalid
-                          }"
-                          pattern="^[a-zA-Z0-9\s]{6,8}$"
-                        />
-                        <div
-                          *ngIf="pNum.invalid && vehicleF.submitted"
-                          class="text-danger"
-                        >
+                          }" pattern="^[a-zA-Z0-9\s]{6,8}$" />
+                        <div *ngIf="pNum.invalid && vehicleF.submitted" class="text-danger">
                           <div *ngIf="pNum.errors.required">
                             Plate number is required.
                           </div>
                           <div *ngIf="pNum.errors.pattern">
                             Plate number must be between 6-8 alphanumeric
-                            characters.
+                            characters eg.K5Y932.
                           </div>
                         </div>
                       </div>
                       <div class="col-lg-5 topClass">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Year
-                          <span class="mandfield text-2 ml-1"
-                            ><sup>*</sup></span
-                          ></label
-                        >
-                        <ng-select
-                          class="form-control"
-                          name="year"
-                          [(ngModel)]="year"
-                          placeholder="Select model year"
-                          #ySlt="ngModel"
-                          required
-                          [ngClass]="{
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Year
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <ng-select class="form-control" name="year" [(ngModel)]="year" placeholder="Select model year"
+                          #ySlt="ngModel" required [ngClass]="{
                             error: vehicleF.submitted && ySlt.invalid
-                          }"
-                        >
-                          <ng-option
-                            *ngFor="let year of years"
-                            value="{{ year }}"
-                            >{{ year }}</ng-option
-                          >
+                          }">
+                          <ng-option *ngFor="let year of years" value="{{ year }}">{{ year }}</ng-option>
                         </ng-select>
-                        <div
-                          *ngIf="ySlt.invalid && vehicleF.submitted"
-                          class="text-danger"
-                        >
+                        <div *ngIf="ySlt.invalid && vehicleF.submitted" class="text-danger">
                           <div *ngIf="ySlt.errors.required">
                             Year is required.
                           </div>
                         </div>
                       </div>
                       <div class="col-lg-5 topClass">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Make
-                          <span class="mandfield text-2 ml-1"
-                            ><sup>*</sup></span
-                          ></label
-                        >
-                        <ng-select
-                          class="form-control populate"
-                          name="manufacturerID"
-                          [(ngModel)]="manufacturerID"
-                          placeholder="Select vehicle make"
-                          (change)="resetModel()"
-                          required
-                          #make="ngModel"
-                          [ngClass]="{
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Make
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <ng-select class="form-control populate" name="manufacturerID" [(ngModel)]="manufacturerID"
+                          placeholder="Select vehicle make" (change)="resetModel()" required #make="ngModel" [ngClass]="{
                             error: vehicleF.submitted && make.invalid
-                          }"
-                        >
+                          }">
                           <optgroup label="">
-                            <ng-option
-                              *ngFor="
+                            <ng-option *ngFor="
                                 let manufacturer of manufacturerDataSource
-                              "
-                              value="{{ manufacturer }}"
-                            >
-                              {{ manufacturer }}</ng-option
-                            >
+                              " value="{{ manufacturer }}">
+                              {{ manufacturer }}</ng-option>
                           </optgroup>
                         </ng-select>
-                        <div
-                          *ngIf="make.invalid && vehicleF.submitted"
-                          class="text-danger"
-                        >
+                        <div *ngIf="make.invalid && vehicleF.submitted" class="text-danger">
                           <div *ngIf="make.errors.required">
                             Make is required.
                           </div>
                         </div>
                       </div>
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Model
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Model
                         </label>
-                        <ng-select
-                          (change)="fetchModels()"
-                          class="form-control populate"
-                          name="modelID"
-                          [(ngModel)]="modelID"
-                          placeholder="Select vehicle model"
-                          id="vehicleSelect"
-                        >
+                        <ng-select (change)="fetchModels()" class="form-control populate" name="modelID"
+                          [(ngModel)]="modelID" placeholder="Select vehicle model" id="vehicleSelect">
                           <optgroup label="">
                             <ng-container *ngFor="let model of modals">
-                              <ng-option value="{{ model }}"
-                                >{{ model }}
+                              <ng-option value="{{ model }}">{{ model }}
                               </ng-option>
                             </ng-container>
                           </optgroup>
@@ -371,78 +182,34 @@
                   <div class="col-lg-5 mb-2 pb-1 offset-lg-1">
                     <div class="row">
                       <div class="col-lg-5 topClass">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Country
-                          <span class="mandfield text-2 ml-1"
-                            ><sup>*</sup></span
-                          ></label
-                        >
-                        <ng-select
-                          class="form-control populate"
-                          name="countryCode"
-                          [(ngModel)]="countryCode"
-                          placeholder="Select Country"
-                          (change)="getStates($event)"
-                          #country="ngModel"
-                          required
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Country
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <ng-select class="form-control populate" name="countryCode" [(ngModel)]="countryCode"
+                          placeholder="Select Country" (change)="getStates($event)" #country="ngModel" required
                           [ngClass]="{
                             error: vehicleF.submitted && country.invalid
-                          }"
-                        >
+                          }">
                           <ng-option value="CA">Canada</ng-option>
                           <ng-option value="US">United States</ng-option>
                         </ng-select>
-                        <div
-                          *ngIf="country.invalid && vehicleF.submitted"
-                          class="text-danger"
-                        >
+                        <div *ngIf="country.invalid && vehicleF.submitted" class="text-danger">
                           <div *ngIf="country.errors.required">
                             Country is required.
                           </div>
                         </div>
                       </div>
                       <div class="col-lg-5 topClass">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Province/State
-                          <span class="mandfield text-2 ml-1"
-                            ><sup>*</sup></span
-                          ></label
-                        >
-                        <ng-select
-                          class="form-control populate"
-                          name="stateCode"
-                          [(ngModel)]="stateCode"
-                          placeholder="Select Province/State"
-                          id="stateSelect"
-                          #province="ngModel"
-                          [ngClass]="{
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Province/State
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <ng-select class="form-control populate" name="stateCode" [(ngModel)]="stateCode"
+                          placeholder="Select Province/State" id="stateSelect" #province="ngModel" [ngClass]="{
                             error: vehicleF.submitted && province.invalid
-                          }"
-                          required
-                        >
-                          <ng-option
-                            *ngFor="let state of states"
-                            value="{{ state.stateCode }}"
-                          >
+                          }" required>
+                          <ng-option *ngFor="let state of states" value="{{ state.stateCode }}">
                             {{ state.stateName }}
                           </ng-option>
                         </ng-select>
-                        <div
-                          *ngIf="province.invalid && vehicleF.submitted"
-                          class="text-danger"
-                        >
+                        <div *ngIf="province.invalid && vehicleF.submitted" class="text-danger">
                           <div *ngIf="province.errors.required">
                             Province/State is required.
                           </div>
@@ -451,98 +218,47 @@
                       <div class="col-lg-2 mar-top-37"></div>
 
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Assign Driver
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Assign Driver
                         </label>
-                        <ng-select
-                          class="form-control populate"
-                          id="main_driver"
-                          name="driverID"
-                          [(ngModel)]="driverID"
-                          placeholder="Select driver to assign to vehicle"
-                          (click)="driverChange('main')"
-                        >
+                        <ng-select class="form-control populate" id="main_driver" name="driverID" [(ngModel)]="driverID"
+                          placeholder="Select driver to assign to vehicle" (click)="driverChange('main')">
                           <optgroup label="">
-                            <ng-option
-                              *ngFor="let driver of drivers"
-                              value="{{ driver.driverID }}"
-                            >
+                            <ng-option *ngFor="let driver of drivers" value="{{ driver.driverID }}">
                               {{ driver.firstName }}
                             </ng-option>
                           </optgroup>
                         </ng-select>
                       </div>
                       <div class="col-lg-2 mar-top-37 pr-0">
-                        <a
-                          href="#/fleet/drivers/add"
-                          target="_blank"
-                          class="btn cus-btn-padd btn-success mr-3"
-                          ><i class="fas fa-plus"></i
-                        ></a>
+                        <a href="#/fleet/drivers/add" target="_blank" class="btn cus-btn-padd btn-success mr-3"><i
+                            class="fas fa-plus"></i></a>
 
-                        <a
-                          href="javascript:;"
-                          (click)="refreshDriverData()"
-                          data-toggle="tooltip"
-                          title="Refresh driver data"
-                          class="btn cus-btn-padd btn-success"
-                          ><i class="fas fa-sync"></i
-                        ></a>
+                        <a href="javascript:;" (click)="refreshDriverData()" data-toggle="tooltip"
+                          title="Refresh driver data" class="btn cus-btn-padd btn-success"><i
+                            class="fas fa-sync"></i></a>
                       </div>
 
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Driver's Team
-                          <span class="text-1 optional-label-color"
-                            >(If any)</span
-                          >
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Driver's Team
+                          <span class="text-1 optional-label-color">(If any)</span>
                         </label>
-                        <ng-select
-                          class="form-control populate"
-                          id="team_driver"
-                          name="teamDriverID"
-                          [(ngModel)]="teamDriverID"
-                          placeholder="Select co-driver to the vehicle"
-                          (click)="driverChange('team')"
-                        >
+                        <ng-select class="form-control populate" id="team_driver" name="teamDriverID"
+                          [(ngModel)]="teamDriverID" placeholder="Select co-driver to the vehicle"
+                          (click)="driverChange('team')">
                           <optgroup label="">
-                            <ng-option
-                              *ngFor="let driver of drivers"
-                              value="{{ driver.driverID }}"
-                            >
+                            <ng-option *ngFor="let driver of drivers" value="{{ driver.driverID }}">
                               {{ driver.firstName }}
                             </ng-option>
                           </optgroup>
                         </ng-select>
                       </div>
                       <div class="col-lg-2 mar-top-37 pr-0">
-                        <a
-                          href="#/fleet/drivers/add"
-                          target="_blank"
-                          class="btn cus-btn-padd btn-success mr-3"
-                          ><i class="fas fa-plus"></i
-                        ></a>
+                        <a href="#/fleet/drivers/add" target="_blank" class="btn cus-btn-padd btn-success mr-3"><i
+                            class="fas fa-plus"></i></a>
 
-                        <a
-                          href="javascript:;"
-                          (click)="refreshDriverData()"
-                          data-toggle="tooltip"
-                          title="Refresh driver data"
-                          class="btn cus-btn-padd btn-success"
-                          ><i class="fas fa-sync"></i
-                        ></a>
+                        <a href="javascript:;" (click)="refreshDriverData()" data-toggle="tooltip"
+                          title="Refresh driver data" class="btn cus-btn-padd btn-success"><i
+                            class="fas fa-sync"></i></a>
                       </div>
                     </div>
                   </div>
@@ -556,59 +272,30 @@
 
                 <div class="row adddriverpl mb-2 pt-2">
                   <div class="col-lg-10 pt-1">
-                    <label
-                      class="
-                        control-label
-                        font-weight-bold font-weight-bold
-                        text-lg-right text-5
-                      "
-                      >Preventative Maintenance</label
-                    >
+                    <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Preventative
+                      Maintenance</label>
                   </div>
                   <div class="col-lg-5">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Service Program
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Service Program
                         </label>
-                        <ng-select
-                          class="form-control populate"
-                          name="servicePrograms"
-                          [multiple]="true"
-                          [(ngModel)]="servicePrograms"
-                          placeholder="Select service program for vehicle"
-                          multiple
-                        >
-                          <ng-option
-                            *ngFor="let serviceProgram of serviceProgramss"
-                            value="{{ serviceProgram.programID }}"
-                          >
+                        <ng-select class="form-control populate" name="servicePrograms" [multiple]="true"
+                          [(ngModel)]="servicePrograms" placeholder="Select service program for vehicle" multiple>
+                          <ng-option *ngFor="let serviceProgram of serviceProgramss"
+                            value="{{ serviceProgram.programID }}">
                             {{ serviceProgram.programName }}
                           </ng-option>
                         </ng-select>
                       </div>
                       <div class="col-lg-2 mar-top-37 pl-0 pr-0 text-right">
-                        <button
-                          (click)="openProgram('veh-program')"
-                          type="button"
-                          class="btn cus-btn-padd btn-success mr-3"
-                        >
+                        <button (click)="openProgram('veh-program')" type="button"
+                          class="btn cus-btn-padd btn-success mr-3">
                           <i class="fas fa-plus"></i>
                         </button>
-                        <a
-                          href="javascript:;"
-                          (click)="refreshProgramData()"
-                          data-toggle="tooltip"
-                          title="Refresh program data"
-                          class="btn cus-btn-padd btn-success"
-                          ><i class="fas fa-sync"></i
-                        ></a>
+                        <a href="javascript:;" (click)="refreshProgramData()" data-toggle="tooltip"
+                          title="Refresh program data" class="btn cus-btn-padd btn-success"><i
+                            class="fas fa-sync"></i></a>
                       </div>
                     </div>
                   </div>
@@ -616,40 +303,16 @@
                   <div class="col-lg-5 offset-lg-1">
                     <div class="row">
                       <div class="col-lg-10 topClass">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Annual Safety Date (Set Reminder)
-                          <span class="mandfield text-2 ml-1"
-                            ><sup>*</sup></span
-                          >
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Annual Safety Date (Set
+                          Reminder)
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
-                        <input
-                          type="text"
-                          readonly
-                          (click)="d1.toggle()"
-                          ngbDatepicker
-                          #d1="ngbDatepicker"
-                          name="annualSafetyDate"
-                          [(ngModel)]="annualSafetyDate"
-                          placeholder="yyyy/mm/dd"
-                          [ngClass]="{
+                        <input type="text" readonly (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker"
+                          name="annualSafetyDate" [(ngModel)]="annualSafetyDate" placeholder="yyyy/mm/dd" [ngClass]="{
                             error: vehicleF.submitted && annualSlt.invalid
-                          }"
-                          class="form-control"
-                          #annualSlt="ngModel"
-                          required
-                          [minDate]="dateMinLimit"
-                          [maxDate]="futureDatesLimit"
-                        />
-                        <div
-                          *ngIf="annualSlt.invalid && vehicleF.submitted"
-                          class="text-danger"
-                        >
+                          }" class="form-control" #annualSlt="ngModel" required [minDate]="dateMinLimit"
+                          [maxDate]="futureDatesLimit" />
+                        <div *ngIf="annualSlt.invalid && vehicleF.submitted" class="text-danger">
                           <div *ngIf="annualSlt.errors.required">
                             Annual safety date is required.
                           </div>
@@ -658,11 +321,7 @@
                       <div class="col-lg-10">
                         <div class="checkbox mt-1">
                           <label class="mb-1">
-                            <input
-                              type="checkbox"
-                              name="annualSafetyReminder"
-                              [(ngModel)]="annualSafetyReminder"
-                            />
+                            <input type="checkbox" name="annualSafetyReminder" [(ngModel)]="annualSafetyReminder" />
                             Set Notification (30 Days Before Expiry)
                           </label>
                         </div>
@@ -680,197 +339,81 @@
                 <div class="row mb-2 adddriverpl pt-2">
                   <div class="col-lg-10">
                     <label
-                      class="
-                        control-label
-                        font-weight-bold font-weight-bold
-                        text-lg-right text-5
-                      "
-                      >Classification</label
-                    >
+                      class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Classification</label>
                   </div>
                   <div class="col-lg-5 mb-1">
                     <div class="row">
                       <div class="col-lg-5 topClass">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Status
-                          <span class="mandfield text-2 ml-1"
-                            ><sup>*</sup></span
-                          >
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Status
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
-                        <ng-select
-                          class="form-control populate"
-                          name="currentStatus"
-                          [(ngModel)]="currentStatus"
-                          placeholder="Select status of the vehicle"
-                          #status="ngModel"
-                          required
-                          [ngClass]="{
+                        <ng-select class="form-control populate" name="currentStatus" [(ngModel)]="currentStatus"
+                          placeholder="Select status of the vehicle" #status="ngModel" required [ngClass]="{
                             error: vehicleF.submitted && status.invalid
-                          }"
-                        >
+                          }">
                           <ng-option value="active">Active</ng-option>
                           <ng-option value="inActive">Inactive</ng-option>
-                          <ng-option value="outOfService"
-                            >Out of Service</ng-option
-                          >
+                          <ng-option value="outOfService">Out of Service</ng-option>
                           <ng-option value="sold">Sold</ng-option>
                         </ng-select>
-                        <div
-                          *ngIf="status.invalid && vehicleF.submitted"
-                          class="text-danger"
-                        >
+                        <div *ngIf="status.invalid && vehicleF.submitted" class="text-danger">
                           <div *ngIf="status.errors.required">
                             Status is required.
                           </div>
                         </div>
                       </div>
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Group</label
-                        >
-                        <ng-select
-                          [(ngModel)]="groupID"
-                          name="groupID"
-                          style="width: 100%"
-                          placeholder="Select group for the vehicle"
-                        >
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Group</label>
+                        <ng-select [(ngModel)]="groupID" name="groupID" style="width: 100%"
+                          placeholder="Select group for the vehicle">
                           <optgroup label="Select Group">
-                            <ng-option
-                              *ngFor="let group of groups"
-                              value="{{ group.groupID }}"
-                            >
-                              {{ group.groupName }}</ng-option
-                            >
+                            <ng-option *ngFor="let group of groupsData" value="{{ group.groupID }}">
+                              {{ group.groupName }}</ng-option>
                           </optgroup>
 
-                          <optgroup></optgroup
-                        ></ng-select>
+                          <optgroup></optgroup>
+                        </ng-select>
                       </div>
                       <div class="col-2 pl-0 pr-0 mar-top-37 text-right">
-                        <button
-                          type="button"
-                          data-toggle="modal"
-                          data-target="#addGroupModal"
-                          class="
-                            modal-with-form
-                            btn
-                            cus-btn-padd
-                            btn-success
-                            text-light
-                            mr-3
-                          "
-                        >
+                        <button type="button" data-toggle="modal" data-target="#addGroupModal"
+                          class="modal-with-form btn cus-btn-padd btn-success text-light mr-3">
                           <i class="fas fa-plus"></i>
                         </button>
-                        <a
-                          class="
-                            modal-with-form
-                            btn
-                            cus-btn-padd
-                            btn-success
-                            text-light
-                          "
-                          (click)="getGroups()"
-                          data-toggle="tooltip"
-                          href="javascript:;"
-                          title="Refresh groups data"
-                          ><i class="fas fa-sync"></i
-                        ></a>
+                        <a class="modal-with-form btn cus-btn-padd btn-success text-light" (click)="getGroups()"
+                          data-toggle="tooltip" href="javascript:;" title="Refresh groups data"><i
+                            class="fas fa-sync"></i></a>
                       </div>
                     </div>
                   </div>
                   <div class="col-lg-5 mb-1 offset-lg-1">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Ownership</label
-                        >
-                        <ng-select
-                          class="form-control populate"
-                          name="ownership"
-                          [(ngModel)]="ownership"
-                          placeholder="Select vehicle ownership"
-                        >
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Ownership</label>
+                        <ng-select class="form-control populate" name="ownership" [(ngModel)]="ownership"
+                          placeholder="Select vehicle ownership">
                           <ng-option value="owned">Owned</ng-option>
                           <ng-option value="leased">Leased</ng-option>
                           <ng-option value="rented">Rented</ng-option>
-                          <ng-option value="ownerOperator"
-                            >Owner Operator</ng-option
-                          >
+                          <ng-option value="ownerOperator">Owner Operator</ng-option>
                         </ng-select>
                       </div>
-                      <div
-                        class="col-lg-10"
-                        *ngIf="ownership == 'ownerOperator'"
-                      >
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Owner Operator</label
-                        >
-                        <ng-select
-                          class="form-control populate"
-                          name="ownerOperatorID"
-                          [(ngModel)]="ownerOperatorID"
-                          placeholder="Select owner operator"
-                        >
-                          <ng-container
-                            *ngFor="let ownerOperator of ownerOperators"
-                          >
+                      <div class="col-lg-10" *ngIf="ownership == 'ownerOperator'">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator</label>
+                        <ng-select class="form-control populate" name="ownerOperatorID" [(ngModel)]="ownerOperatorID"
+                          placeholder="Select owner operator">
+                          <ng-container *ngFor="let ownerOperator of ownerOperators">
                             <ng-option value="{{ ownerOperator.contactID }}">
-                              {{ ownerOperator.companyName }}</ng-option
-                            >
+                              {{ ownerOperator.companyName }}</ng-option>
                           </ng-container>
                         </ng-select>
                       </div>
-                      <div
-                        class="col-lg-2 mar-top-37 pl-0"
-                        *ngIf="ownership == 'ownerOperator'"
-                      >
-                        <a
-                          data-toggle="modal"
-                          (click)="openModal('form')"
-                          href="javascript:;"
-                          class="
-                            modal-with-form
-                            btn
-                            cus-btn-padd
-                            btn-success
-                            mr-2
-                          "
-                          ><i class="fas fa-plus"></i
-                        ></a>
+                      <div class="col-lg-2 mar-top-37 pl-0" *ngIf="ownership == 'ownerOperator'">
+                        <a data-toggle="modal" (click)="openModal('form')" href="javascript:;"
+                          class="modal-with-form btn cus-btn-padd btn-success mr-2"><i class="fas fa-plus"></i></a>
 
-                        <a
-                          href="javascript:;"
-                          (click)="refreshOpData()"
-                          data-toggle="tooltip"
-                          title="Refresh owner operator data"
-                          class="btn btn-success cus-btn-padd modal-with-form"
-                          ><i class="fas fa-sync"></i
-                        ></a>
+                        <a href="javascript:;" (click)="refreshOpData()" data-toggle="tooltip"
+                          title="Refresh owner operator data" class="btn btn-success cus-btn-padd modal-with-form"><i
+                            class="fas fa-sync"></i></a>
                       </div>
                     </div>
                   </div>
@@ -884,29 +427,15 @@
 
                 <div class="form-group adddriverpl row adddriverpl pt-2">
                   <div class="col-lg-10">
-                    <label
-                      class="
-                        control-label
-                        font-weight-bold font-weight-bold
-                        text-lg-right text-5
-                      "
-                      >Additional Details</label
-                    >
+                    <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Additional
+                      Details</label>
                   </div>
                   <div class="col-lg-5 mb-3 pb-1">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label
-                          class="control-label font-weight-bold text-lg-right"
-                          >Vehicle Color</label
-                        >
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="vehicleColor"
-                          [(ngModel)]="vehicleColor"
-                          placeholder="eg. Red"
-                        />
+                        <label class="control-label font-weight-bold text-lg-right">Vehicle Color</label>
+                        <input type="text" class="form-control" name="vehicleColor" [(ngModel)]="vehicleColor"
+                          placeholder="eg. Red" />
                         <!-- <div *ngIf="vColor.invalid && (vColor.dirty || vColor.touched)" class="text-danger w100">
                                     <div *ngIf="vColor.errors.pattern" >
                                       Vehicle color must contain letters.
@@ -916,61 +445,34 @@
                       </div>
 
                       <div class="col-lg-5">
-                        <label
-                          class="control-label font-weight-bold text-lg-right"
-                          >Add Document</label
-                        >
-                        <input
-                          (change)="selectDocuments($event, 'uploadedDocs')"
-                          name="uploadedDocs"
-                          type="file"
-                          multiple
-                          class="form-control border-0 p-0"
-                        />
+                        <label class="control-label font-weight-bold text-lg-right">Add Document</label>
+                        <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs" type="file"
+                          multiple class="form-control border-0 p-0" accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
+                        <span *ngIf="uploadDocsError != ''" class="text-danger">
+                          {{ uploadDocsError }}
+                        </span>
                       </div>
 
-                      <div
-                        class="col-lg-10 mt-2"
-                        *ngIf="documentSlides.length > 0"
-                      >
+                      <div class="col-lg-10 mt-2" *ngIf="documentSlides.length > 0">
                         <div class="vehicle-common-box p-3">
                           <div class="row">
                             <div class="col-lg-6">
-                              <label
-                                class="control-label font-weight-bold text-3"
-                              >
-                                Document(s)</label
-                              >
+                              <label class="control-label font-weight-bold text-3">
+                                Document(s)</label>
                             </div>
                             <div class="col-lg-6 text-right"></div>
                           </div>
                           <hr class="solid mt-2" />
-                          <div
-                            class="row mb-1"
-                            *ngFor="let item of documentSlides; let d = index"
-                          >
+                          <div class="row mb-1" *ngFor="let item of documentSlides; let d = index">
                             <div class="col-lg-9">
-                              <a
-                                href="javascript:;"
-                                data-toggle="modal"
-                                data-target="#viewDocModal"
-                                (click)="setPDFSrc(item.path)"
-                                >Document {{ d + 1 }}</a
-                              >
+                              <a href="{{item.path}}" data-toggle="modal" data-target="#viewDocModal"
+                                (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
                             </div>
                             <div class="col-lg-3 text-right">
-                              <i
-                                class="far fa-file text-dak mr-1"
-                                (click)="setPDFSrc(item.path)"
-                                data-toggle="modal"
-                                data-target="#viewDocModal"
-                              ></i>
-                              <a
-                                href="javascript:;"
-                                (click)="deleteDocument('doc', item.name, d)"
-                                class="modal-with-form"
-                                ><i class="fas fa-times text-danger"></i
-                              ></a>
+                              <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal"
+                                data-target="#viewDocModal"></i>
+                              <a href="javascript:;" (click)="deleteDocument('doc', item.name, d)"
+                                class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
                             </div>
                           </div>
                         </div>
@@ -979,11 +481,7 @@
                       <div class="col-lg-12 pl-0">
                         <div class="checkbox mt-2 pl-3">
                           <label>
-                            <input
-                              type="checkbox"
-                              name="iftaReporting"
-                              [(ngModel)]="iftaReporting"
-                            />
+                            <input type="checkbox" name="iftaReporting" [(ngModel)]="iftaReporting" />
                             Enable IFTA Reporting
                           </label>
                         </div>
@@ -993,35 +491,14 @@
                   <div class="col-lg-5 mb-3 pb-1 offset-lg-1">
                     <div class="row mt-4 pt-1">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Select the Inspection Form
-                          <span class="mandfield text-2 ml-1"
-                            ><sup>*</sup></span
-                          ></label
-                        >
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Select the Inspection Form
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <div class="d-flex topClass">
-                          <ng-select
-                            class="form-control populate mr-2"
-                            name="inspectionFormID"
-                            [(ngModel)]="inspectionFormID"
-                            placeholder="Select Inspection Form"
-                            [ngClass]="{
+                          <ng-select class="form-control populate mr-2" name="inspectionFormID"
+                            [(ngModel)]="inspectionFormID" placeholder="Select Inspection Form" [ngClass]="{
                               error: vehicleF.submitted && iForm1.invalid
-                            }"
-                            #iForm1="ngModel"
-                            (ngModelChange)="getInspectionForms()"
-                            required
-                          >
-                            <ng-option
-                              *ngFor="let iForm of inspectionForms"
-                              value="{{ iForm.inspectionFormID }}"
-                            >
+                            }" #iForm1="ngModel" (ngModelChange)="getInspectionForms()" required>
+                            <ng-option *ngFor="let iForm of inspectionForms" value="{{ iForm.inspectionFormID }}">
                               {{ iForm.inspectionFormName }}
                             </ng-option>
                           </ng-select>
@@ -1029,30 +506,14 @@
                       </div>
 
                       <div class="col-lg-2 pl-0 pr-0 mar-top-37">
-                        <a
-                          href="/#/compliance/dvir/inspection-add"
-                          target="_blank"
-                          class="modal-with-form btn btn-success cus-btn-padd"
-                          ><i class="fas fa-plus"></i
-                        ></a>
-                        <a
-                          (click)="getInspectionForms()"
-                          target="_blank"
-                          aria-hidden="true"
-                          class="
-                            ml-3
-                            modal-with-form
-                            btn btn-success
-                            cus-btn-padd
-                          "
-                          ><i style="color: #fff" class="fas fa-sync-alt"></i
-                        ></a>
+                        <a href="/#/compliance/dvir/inspection-add" target="_blank"
+                          class="modal-with-form btn btn-success cus-btn-padd"><i class="fas fa-plus"></i></a>
+                        <a (click)="getInspectionForms()" target="_blank" aria-hidden="true"
+                          class="ml-3 modal-with-form btn btn-success cus-btn-padd"><i style="color: #fff"
+                            class="fas fa-sync-alt"></i></a>
                       </div>
 
-                      <div
-                        *ngIf="iForm1.invalid && vehicleF.submitted"
-                        class="text-danger"
-                      >
+                      <div *ngIf="iForm1.invalid && vehicleF.submitted" class="text-danger">
                         <div class="pl-2 ml-2" *ngIf="iForm1.errors.required">
                           Inspection Form is required.
                         </div>
@@ -1070,52 +531,20 @@
                 <div class="row adddriverpl pt-2">
                   <div class="col-lg-10">
                     <label
-                      class="
-                        control-label
-                        font-weight-bold font-weight-bold
-                        text-lg-right text-5
-                        pt-2
-                      "
-                      >In-Service</label
-                    >
+                      class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">In-Service</label>
                   </div>
                   <div class="col-lg-5 mb-2 pb-1">
                     <div class="row">
                       <div class="col-lg-10 topClass">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Start Date
-                          <span class="mandfield text-2 ml-1"
-                            ><sup>*</sup></span
-                          >
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Start Date
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
-                        <input
-                          type="text"
-                          readonly
-                          placeholder="yyyy/mm/dd"
-                          class="form-control"
-                          name="lifeCycle.startDate"
-                          (click)="d2.toggle()"
-                          ngbDatepicker
-                          [ngClass]="{
+                        <input type="text" readonly placeholder="yyyy/mm/dd" class="form-control"
+                          name="lifeCycle.startDate" (click)="d2.toggle()" ngbDatepicker [ngClass]="{
                             error: vehicleF.submitted && date.invalid
-                          }"
-                          #d2="ngbDatepicker"
-                          [(ngModel)]="lifeCycle.startDate"
-                          #date="ngModel"
-                          required
-                          [minDate]="dateMinLimit"
-                          [maxDate]="futureDatesLimit"
-                        />
-                        <div
-                          *ngIf="date.invalid && vehicleF.submitted"
-                          class="text-danger"
-                        >
+                          }" #d2="ngbDatepicker" [(ngModel)]="lifeCycle.startDate" #date="ngModel" required
+                          [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                        <div *ngIf="date.invalid && vehicleF.submitted" class="text-danger">
                           <div *ngIf="date.errors.required">
                             Start date is required.
                           </div>
@@ -1126,41 +555,17 @@
                   <div class="col-lg-5 offset-lg-1 mb-2 pb-1">
                     <div class="row">
                       <div class="col-lg-10 topClass">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >In-Service Odometer in Miles
-                          <span class="mandfield text-2 ml-1"
-                            ><sup>*</sup></span
-                          >
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Odometer reading on in-service date."
-                          ></i>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">In-Service Odometer in Miles
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Odometer reading on in-service date."></i>
                         </label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="lifeCycle.inServiceOdometer"
-                          [(ngModel)]="lifeCycle.inServiceOdometer"
-                          placeholder="eg. 10000"
-                          #odometer="ngModel"
-                          required
-                          pattern="^[0-9\.]+$"
-                          [ngClass]="{
+                        <input type="text" class="form-control" name="lifeCycle.inServiceOdometer"
+                          [(ngModel)]="lifeCycle.inServiceOdometer" placeholder="eg. 10000" #odometer="ngModel" required
+                          pattern="^[0-9\.]+$" [ngClass]="{
                             error: vehicleF.submitted && odometer.invalid
-                          }"
-                        />
-                        <div
-                          *ngIf="odometer.invalid && vehicleF.submitted"
-                          class="text-danger"
-                        >
+                          }" />
+                        <div *ngIf="odometer.invalid && vehicleF.submitted" class="text-danger">
                           <div *ngIf="odometer.errors.required">
                             In-Service odometer is required.
                           </div>
@@ -1181,126 +586,51 @@
 
                 <div class="row adddriverpl pt-1">
                   <div class="col-lg-10">
-                    <label
-                      class="
-                        control-label
-                        font-weight-bold font-weight-bold
-                        text-lg-right text-5
-                        pt-2
-                      "
-                      >Vehicle Life Estimates</label
-                    >
+                    <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Vehicle
+                      Life Estimates</label>
                   </div>
                   <div class="col-lg-5 mb-2 pb10">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Service Life in Years
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Service Life in Years
 
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Estimated service life in years - Number of years vehicle is expected to be in fleet service."
-                          ></i>
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Estimated service life in years - Number of years vehicle is expected to be in fleet service."></i>
                         </label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          name="lifeCycle.estimatedServiceYears"
-                          min="0"
-                          [(ngModel)]="lifeCycle.estimatedServiceYears"
-                          placeholder="eg. 5,10 years"
-                        />
+                        <input type="number" class="form-control" name="lifeCycle.estimatedServiceYears" min="0"
+                          [(ngModel)]="lifeCycle.estimatedServiceYears" placeholder="eg. 5,10 years" />
                       </div>
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Service Life in Months
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Service Life in Months
 
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Estimated service life in months - Number of months vehicle is expected to be in fleet service."
-                          ></i>
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Estimated service life in months - Number of months vehicle is expected to be in fleet service."></i>
                         </label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          name="lifeCycle.estimatedServiceMonths"
-                          min="0"
-                          [(ngModel)]="lifeCycle.estimatedServiceMonths"
-                          placeholder="eg. 10,20"
-                        />
+                        <input type="number" class="form-control" name="lifeCycle.estimatedServiceMonths" min="0"
+                          [(ngModel)]="lifeCycle.estimatedServiceMonths" placeholder="eg. 10,20" />
                       </div>
                     </div>
                   </div>
                   <div class="col-lg-5 offset-lg-1 mb-2 pb6">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Service Life in Miles
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Service Life in Miles
 
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Estimated service life in miles - Miles vehicle is expected to run before retiring from fleet service."
-                          ></i>
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Estimated service life in miles - Miles vehicle is expected to run before retiring from fleet service."></i>
                         </label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          min="0"
-                          name="lifeCycle.estimatedServiceMiles"
-                          [(ngModel)]="lifeCycle.estimatedServiceMiles"
-                          placeholder="eg. 100000"
-                        />
+                        <input type="number" class="form-control" min="0" name="lifeCycle.estimatedServiceMiles"
+                          [(ngModel)]="lifeCycle.estimatedServiceMiles" placeholder="eg. 100000" />
                       </div>
 
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Depreciation Value
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Depreciation Value
 
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Amount expected to be recuperated after retirement and sale/disposal"
-                          ></i>
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Amount expected to be recuperated after retirement and sale/disposal"></i>
                         </label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="lifeCycle.estimatedResaleValue"
-                          min="0"
-                          [(ngModel)]="lifeCycle.estimatedResaleValue"
-                          placeholder="eg. 4500 CAD"
-                        />
+                        <input type="text" class="form-control" name="lifeCycle.estimatedResaleValue" min="0"
+                          [(ngModel)]="lifeCycle.estimatedResaleValue" placeholder="eg. 4500 CAD" />
                       </div>
                     </div>
                   </div>
@@ -1315,74 +645,33 @@
                 <div class="row pt-1 adddriverpl">
                   <div class="col-lg-10">
                     <label
-                      class="
-                        control-label
-                        font-weight-bold font-weight-bold
-                        text-lg-right text-5
-                        pt-2
-                      "
-                      >Out-of-Service
+                      class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Out-of-Service
                     </label>
                   </div>
                   <div class="col-lg-5 mb-2 pb12">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Out-of-Service Date
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Out-of-Service Date
 
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Date vehicle was retired from fleet service"
-                          ></i>
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Date vehicle was retired from fleet service"></i>
                         </label>
-                        <input
-                          (click)="d3.toggle()"
-                          readonly
-                          ngbDatepicker
-                          #d3="ngbDatepicker"
-                          class="form-control"
-                          name="lifeCycle.outOfServiceDate"
-                          [(ngModel)]="lifeCycle.outOfServiceDate"
-                          placeholder="yyyy/mm/dd"
-                          [minDate]="dateMinLimit"
-                          [maxDate]="futureDatesLimit"
-                        />
+                        <input (click)="d3.toggle()" readonly ngbDatepicker #d3="ngbDatepicker" class="form-control"
+                          name="lifeCycle.outOfServiceDate" [(ngModel)]="lifeCycle.outOfServiceDate"
+                          placeholder="yyyy/mm/dd" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
                       </div>
                     </div>
                   </div>
                   <div class="col-lg-5 offset-lg-1 mb-2 pb12">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Out-of-Service Odometer in Miles
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Final odometer reading on out-of-service date"
-                          ></i>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Out-of-Service Odometer in
+                          Miles
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Final odometer reading on out-of-service date"></i>
                         </label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="lifeCycle.outOfServiceOdometer"
-                          [(ngModel)]="lifeCycle.outOfServiceOdometer"
-                          placeholder="eg. 100000"
-                        />
+                        <input type="text" class="form-control" name="lifeCycle.outOfServiceOdometer"
+                          [(ngModel)]="lifeCycle.outOfServiceOdometer" placeholder="eg. 100000" />
                       </div>
                     </div>
                   </div>
@@ -1397,38 +686,16 @@
                 <div class="row adddriverpl pt-1 mt-1">
                   <div class="col-lg-10">
                     <label
-                      class="
-                        control-label
-                        font-weight-bold font-weight-bold
-                        text-lg-right text-5
-                        pt-2
-                      "
-                      >Dimensions</label
-                    >
+                      class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Dimensions</label>
                   </div>
                   <div class="col-lg-5 mb-2 pb-1">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Height</label
-                        >
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Height</label>
                         <div class="row">
                           <div class="col-lg-6">
-                            <input
-                              type="number"
-                              min="0"
-                              placeholder="eg. 4.15 meters"
-                              class="form-control"
-                              name="specifications.height"
-                              [(ngModel)]="specifications.height"
-                              #height="ngModel"
-                            />
+                            <input type="number" min="0" placeholder="eg. 4.15 meters" class="form-control"
+                              name="specifications.height" [(ngModel)]="specifications.height" #height="ngModel" />
                             <!-- <div *ngIf="height.invalid && (height.dirty || height.touched)"
                                              class="text-danger">
                                              <div *ngIf="height.errors.required">
@@ -1439,13 +706,8 @@
                                           </div> -->
                           </div>
                           <div class="col-lg-6">
-                            <ng-select
-                              placeholder="Select unit"
-                              class="form-control populate"
-                              name="specifications.heightUnit"
-                              [(ngModel)]="specifications.heightUnit"
-                              #hType="ngModel"
-                            >
+                            <ng-select placeholder="Select unit" class="form-control populate"
+                              name="specifications.heightUnit" [(ngModel)]="specifications.heightUnit" #hType="ngModel">
                               <ng-option value="Feet">Feet</ng-option>
                               <ng-option value="Meter">Meter</ng-option>
                             </ng-select>
@@ -1463,33 +725,16 @@
                   <div class="col-lg-5 offset-lg-1 mb-2 pb-1">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Ground Clearance
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Ground Clearance
                         </label>
                         <div class="row">
                           <div class="col-lg-6">
-                            <input
-                              type="number"
-                              placeholder="eg. 5,10"
-                              class="form-control"
-                              min="0"
-                              name="specifications.groundClearnce"
-                              [(ngModel)]="specifications.groundClearnce"
-                            />
+                            <input type="number" placeholder="eg. 5,10" class="form-control" min="0"
+                              name="specifications.groundClearnce" [(ngModel)]="specifications.groundClearnce" />
                           </div>
                           <div class="col-lg-6">
-                            <ng-select
-                              placeholder="Select unit"
-                              class="form-control populate"
-                              name="specifications.groundClearnceUnit"
-                              [(ngModel)]="specifications.groundClearnceUnit"
-                            >
+                            <ng-select placeholder="Select unit" class="form-control populate"
+                              name="specifications.groundClearnceUnit" [(ngModel)]="specifications.groundClearnceUnit">
                               <ng-option value="Feet">Feet</ng-option>
                               <ng-option value="Meter">Meter</ng-option>
                             </ng-select>
@@ -1509,51 +754,23 @@
                 <div class="row adddriverpl">
                   <div class="col-lg-10">
                     <label
-                      class="
-                        control-label
-                        font-weight-bold font-weight-bold
-                        text-lg-right text-5
-                        pt-2
-                      "
-                      >Weight</label
-                    >
+                      class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Weight</label>
                   </div>
                   <div class="col-lg-5 pb-3 mb-1">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Tare Weight
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Weight of vehicle with std options including single driver and fuel"
-                          ></i>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Tare Weight
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Weight of vehicle with std options including single driver and fuel"></i>
                         </label>
                         <div class="input-group">
-                          <input
-                            type="text"
-                            class="form-control"
-                            name="specifications.tareWeight"
-                            [(ngModel)]="specifications.tareWeight"
-                            placeholder="eg. 100,200"
-                            #tWeight="ngModel"
-                          />
+                          <input type="text" class="form-control" name="specifications.tareWeight"
+                            [(ngModel)]="specifications.tareWeight" placeholder="eg. 100,200" #tWeight="ngModel" />
 
-                          <span class="input-group-append"
-                            ><span
-                              _ngcontent-dvv-c14=""
-                              class="input-group-text pt-0 pb-0"
-                            >
+                          <span class="input-group-append"><span _ngcontent-dvv-c14=""
+                              class="input-group-text pt-0 pb-0">
                               kg
-                            </span></span
-                          >
+                            </span></span>
                         </div>
                         <!-- <div *ngIf="tWeight.invalid && (tWeight.dirty || tWeight.touched)" class="text-danger ">
                                     <div *ngIf="tWeight.errors.pattern" >
@@ -1567,41 +784,20 @@
                   <div class="col-lg-5 offset-lg-1 pb-3 mb-1">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Gross Vehicle Weight Rating
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Combination of weight of vehicle and towing capacity."
-                          ></i>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Gross Vehicle Weight Rating
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Combination of weight of vehicle and towing capacity."></i>
                         </label>
                         <div class="input-group">
-                          <input
-                            type="text"
-                            class="form-control"
-                            name="specifications.grossVehicleWeightRating"
+                          <input type="text" class="form-control" name="specifications.grossVehicleWeightRating"
                             [(ngModel)]="
                               specifications.grossVehicleWeightRating
-                            "
-                            placeholder="eg. 100,200"
-                            #gWeight="ngModel"
-                          />
+                            " placeholder="eg. 100,200" #gWeight="ngModel" />
 
-                          <span class="input-group-append"
-                            ><span
-                              _ngcontent-dvv-c14=""
-                              class="input-group-text pt-0 pb-0"
-                            >
+                          <span class="input-group-append"><span _ngcontent-dvv-c14=""
+                              class="input-group-text pt-0 pb-0">
                               kg
-                            </span></span
-                          >
+                            </span></span>
                         </div>
                         <!-- <div *ngIf="gWeight.invalid && (gWeight.dirty || gWeight.touched)" class="text-danger ">
                                     <div *ngIf="gWeight.errors.pattern" >
@@ -1622,71 +818,29 @@
               <div class="bg-white p-3 text-dark">
                 <div class="row adddriverpl pt-2">
                   <div class="col-lg-10">
-                    <label
-                      class="
-                        control-label
-                        font-weight-bold font-weight-bold
-                        text-lg-right text-5
-                        pt-2
-                      "
-                    >
-                      Insurance Details</label
-                    >
+                    <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">
+                      Insurance Details</label>
                   </div>
 
                   <div class="col-lg-5">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Date of Issue</label
-                        >
-                        <input
-                          (click)="d4.toggle()"
-                          readonly
-                          ngbDatepicker
-                          #d4="ngbDatepicker"
-                          class="form-control"
-                          Placeholder="yyyy/mm/dd"
-                          name="insurance.dateOfIssue"
-                          [(ngModel)]="insurance.dateOfIssue"
-                          [minDate]="dateMinLimit"
-                          [maxDate]="futureDatesLimit"
-                        />
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Date of Issue</label>
+                        <input (click)="d4.toggle()" readonly ngbDatepicker #d4="ngbDatepicker" class="form-control"
+                          Placeholder="yyyy/mm/dd" name="insurance.dateOfIssue" [(ngModel)]="insurance.dateOfIssue"
+                          [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
                       </div>
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Premium Amount
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Premium Amount
                         </label>
                         <div class="row">
                           <div class="col-lg-6">
-                            <input
-                              type="number"
-                              class="form-control"
-                              name="insurance.premiumAmount"
-                              min="0"
-                              [(ngModel)]="insurance.premiumAmount"
-                              placeholder="eg. 100,200"
-                            />
+                            <input type="number" class="form-control" name="insurance.premiumAmount" min="0"
+                              [(ngModel)]="insurance.premiumAmount" placeholder="eg. 100,200" />
                           </div>
-                          <div class="col-lg-6 pl-0">
-                            <ng-select
-                              placeholder="Select Currency"
-                              class="form-control populate"
-                              name="insurance.premiumCurrency"
-                              [(ngModel)]="insurance.premiumCurrency"
-                            >
+                          <div class="col-lg-6">
+                            <ng-select placeholder="Select Currency" class="form-control populate"
+                              name="insurance.premiumCurrency" [(ngModel)]="insurance.premiumCurrency">
                               <optgroup label="">
                                 <ng-option value="USD">USD</ng-option>
                                 <ng-option value="CAD">CAD</ng-option>
@@ -1700,49 +854,20 @@
                   <div class="col-lg-5 offset-lg-1">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Vendor</label
-                        >
-                        <ng-select
-                          placeholder="Select Vendor"
-                          name="insurance.vendorID"
-                          [(ngModel)]="insurance.vendorID"
-                        >
-                          <ng-option
-                            *ngFor="let vendor of vendors"
-                            value="{{ vendor.contactID }}"
-                          >
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Vendor</label>
+                        <ng-select placeholder="Select Vendor" name="insurance.vendorID"
+                          [(ngModel)]="insurance.vendorID">
+                          <ng-option *ngFor="let vendor of vendors" value="{{ vendor.contactID }}">
                             {{ vendor.companyName }}
                           </ng-option>
                         </ng-select>
                       </div>
                       <div class="col-lg-2 mar-top-37 pr-0">
-                        <a
-                          href="javascript:;"
-                          (click)="openModal('form')"
-                          class="
-                            btn
-                            cus-btn-padd
-                            btn-success
-                            modal-with-form
-                            mr-3
-                          "
-                          ><i class="fas fa-plus"></i
-                        ></a>
-                        <a
-                          href="javascript:;"
-                          (click)="refreshVendorData()"
-                          data-toggle="tooltip"
-                          title="Refresh vendor data"
-                          class="btn btn-success cus-btn-padd modal-with-form"
-                          ><i class="fas fa-sync"></i
-                        ></a>
+                        <a href="javascript:;" (click)="openModal('form')"
+                          class="btn cus-btn-padd btn-success modal-with-form mr-3"><i class="fas fa-plus"></i></a>
+                        <a href="javascript:;" (click)="refreshVendorData()" data-toggle="tooltip"
+                          title="Refresh vendor data" class="btn btn-success cus-btn-padd modal-with-form"><i
+                            class="fas fa-sync"></i></a>
                       </div>
                     </div>
                   </div>
@@ -1752,57 +877,23 @@
                   <div class="col-lg-5">
                     <div class="row">
                       <div class="col-lg-5 pb-3 mb-1">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Date of Expiry
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Date of Expiry
                         </label>
-                        <input
-                          (click)="d5.toggle()"
-                          readonly
-                          ngbDatepicker
-                          #d5="ngbDatepicker"
-                          class="form-control"
-                          Placeholder="yyyy/mm/dd"
-                          name="insurance.dateOfExpiry"
-                          [(ngModel)]="insurance.dateOfExpiry"
-                          [minDate]="dateMinLimit"
-                          [maxDate]="futureDatesLimit"
-                        />
+                        <input (click)="d5.toggle()" readonly ngbDatepicker #d5="ngbDatepicker" class="form-control"
+                          Placeholder="yyyy/mm/dd" name="insurance.dateOfExpiry" [(ngModel)]="insurance.dateOfExpiry"
+                          [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
                       </div>
                       <div class="col-lg-5 pb-3 mb-1">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Reminder Every
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Reminder Every
                         </label>
                         <div class="row">
                           <div class="col-lg-6">
-                            <input
-                              type="number"
-                              class="form-control"
-                              placeholder="eg. 1,2,3"
-                              name="insurance.reminder"
-                              min="0"
-                              [(ngModel)]="insurance.reminder"
-                            />
+                            <input type="number" class="form-control" placeholder="eg. 1,2,3" name="insurance.reminder"
+                              min="0" [(ngModel)]="insurance.reminder" />
                           </div>
-                          <div class="col-lg-6 pl-0">
-                            <ng-select
-                              class="form-control populate"
-                              name="insurance.remiderEvery"
-                              min="1"
-                              [(ngModel)]="insurance.remiderEvery"
-                              placeholder="eg. Weekly"
-                            >
+                          <div class="col-lg-6">
+                            <ng-select class="form-control populate" name="insurance.remiderEvery" min="1"
+                              [(ngModel)]="insurance.remiderEvery" placeholder="eg. Weekly">
                               <optgroup label="">
                                 <ng-option value="weekly">Week(s)</ng-option>
                                 <ng-option value="monthly">Month(s)</ng-option>
@@ -1817,51 +908,21 @@
                   <div class="col-lg-5 offset-lg-1">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Insurance Policy#
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Insurance Policy#
                         </label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="insurance.policyNumber"
-                          [(ngModel)]="insurance.policyNumber"
-                          placeholder="eg. RT5648757"
-                        />
+                        <input type="text" class="form-control" name="insurance.policyNumber"
+                          [(ngModel)]="insurance.policyNumber" placeholder="eg. RT5648757" />
                       </div>
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Insurance Amount</label
-                        >
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Insurance Amount</label>
                         <div class="row">
                           <div class="col-lg-6">
-                            <input
-                              type="number"
-                              class="form-control"
-                              name="insurance.amount"
-                              min="0"
-                              [(ngModel)]="insurance.amount"
-                              placeholder="eg. 100,200"
-                            />
+                            <input type="number" class="form-control" name="insurance.amount" min="0"
+                              [(ngModel)]="insurance.amount" placeholder="eg. 100,200" />
                           </div>
                           <div class="col-lg-6">
-                            <ng-select
-                              class="form-control populate"
-                              name="insurance.amountCurrency"
-                              [(ngModel)]="insurance.amountCurrency"
-                              placeholder="Select currency"
-                            >
+                            <ng-select class="form-control populate" name="insurance.amountCurrency"
+                              [(ngModel)]="insurance.amountCurrency" placeholder="Select currency">
                               <ng-option value="USD">USD</ng-option>
                               <ng-option value="CAD">CAD</ng-option>
                             </ng-select>
@@ -1881,34 +942,15 @@
                 <div class="adddriverpl row pt-2">
                   <div class="col-lg-10">
                     <label
-                      class="
-                        control-label
-                        font-weight-bold font-weight-bold
-                        text-lg-right text-5
-                        pt-2
-                      "
-                      >Fuel</label
-                    >
+                      class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Fuel</label>
                   </div>
                   <div class="col-lg-5 mb-2 pb-1">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Fuel Type
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Type
                         </label>
-                        <ng-select
-                          class="form-control populate"
-                          placeholder="Select Fuel Type"
-                          name="fluid.fuelType"
-                          [(ngModel)]="fluid.fuelType"
-                          #fuel="ngModel"
-                        >
+                        <ng-select class="form-control populate" placeholder="Select Fuel Type" name="fluid.fuelType"
+                          [(ngModel)]="fluid.fuelType" #fuel="ngModel">
                           <ng-option value="Diesel">Diesel</ng-option>
                           <ng-option value="Gasoline">Gasoline</ng-option>
                           <ng-option value="Propane">Propane</ng-option>
@@ -1925,26 +967,12 @@
                   <div class="col-lg-5 offset-lg-1 mb-2 pb-1">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Fuel Tank 1 Capacity
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Tank 1 Capacity
                         </label>
                         <div class="row">
                           <div class="col-lg-6">
-                            <input
-                              type="number"
-                              class="form-control"
-                              name="fluid.fuelTankOneCapacity"
-                              min="0"
-                              [(ngModel)]="fluid.fuelTankOneCapacity"
-                              placeholder="eg. 100,200"
-                              #fuelTank="ngModel"
-                            />
+                            <input type="number" class="form-control" name="fluid.fuelTankOneCapacity" min="0"
+                              [(ngModel)]="fluid.fuelTankOneCapacity" placeholder="eg. 100,200" #fuelTank="ngModel" />
 
                             <!-- <div *ngIf="fuelTank.invalid && (fuelTank.dirty || fuelTank.touched)"
                                              class="text-danger">
@@ -1953,15 +981,9 @@
                                              </div>
                                           </div> -->
                           </div>
-                          <div class="col-lg-6 pl-0">
-                            <ng-select
-                              class="form-control populate"
-                              name="fluid.fuelTankOneType"
-                              min="1"
-                              [(ngModel)]="fluid.fuelTankOneType"
-                              placeholder="Select unit"
-                              #tankType="ngModel"
-                            >
+                          <div class="col-lg-6">
+                            <ng-select class="form-control populate" name="fluid.fuelTankOneType" min="1"
+                              [(ngModel)]="fluid.fuelTankOneType" placeholder="Select unit" #tankType="ngModel">
                               <optgroup label="">
                                 <ng-option value="Gallons">Gallons</ng-option>
                                 <ng-option value="Litres">Litres</ng-option>
@@ -1977,33 +999,15 @@
                         </div>
                       </div>
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Fuel Tank 2 Capacity</label
-                        >
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Tank 2 Capacity</label>
                         <div class="row">
                           <div class="col-lg-6">
-                            <input
-                              type="number"
-                              class="form-control"
-                              name="fluid.fuelTankTwoCapacity"
-                              min="0"
-                              [(ngModel)]="fluid.fuelTankTwoCapacity"
-                              placeholder="eg. 100,200"
-                            />
+                            <input type="number" class="form-control" name="fluid.fuelTankTwoCapacity" min="0"
+                              [(ngModel)]="fluid.fuelTankTwoCapacity" placeholder="eg. 100,200" />
                           </div>
-                          <div class="col-lg-6 pl-0">
-                            <ng-select
-                              class="form-control populate"
-                              name="fluid.fuelTankTwoType"
-                              [(ngModel)]="fluid.fuelTankTwoType"
-                              placeholder="Select unit"
-                            >
+                          <div class="col-lg-6">
+                            <ng-select class="form-control populate" name="fluid.fuelTankTwoType"
+                              [(ngModel)]="fluid.fuelTankTwoType" placeholder="Select unit">
                               <optgroup label="">
                                 <ng-option value="Gallons">Gallons</ng-option>
                                 <ng-option value="Litres">Litres</ng-option>
@@ -2024,54 +1028,26 @@
 
                 <div class="row adddriverpl pt-1">
                   <div class="col-lg-10">
-                    <label
-                      class="
-                        control-label
-                        font-weight-bold font-weight-bold
-                        text-lg-right text-5
-                        pt-2
-                      "
-                      >Oil</label
-                    >
+                    <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Oil</label>
                   </div>
                   <div class="col-lg-5 mb-3 pb-1">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Oil Capacity
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Oil Capacity
                         </label>
                         <div class="row">
                           <div class="col-lg-6">
-                            <input
-                              type="number"
-                              class="form-control"
-                              name="fluid.oilCapacity"
-                              min="0"
-                              [(ngModel)]="fluid.oilCapacity"
-                              placeholder="eg. 100,200"
-                              #oil="ngModel"
-                            />
+                            <input type="number" class="form-control" name="fluid.oilCapacity" min="0"
+                              [(ngModel)]="fluid.oilCapacity" placeholder="eg. 100,200" #oil="ngModel" />
                             <!-- <div *ngIf="oil.invalid && (oil.dirty || oil.touched)" class="text-danger">
                                              <div *ngIf="oil.errors.required">
                                                 Oil capacity is required.
                                              </div>
                                           </div> -->
                           </div>
-                          <div class="col-lg-6 pl-0">
-                            <ng-select
-                              class="form-control populate"
-                              name="fluid.oilCapacityType"
-                              min="1"
-                              [(ngModel)]="fluid.oilCapacityType"
-                              placeholder="Select unit"
-                              #oil1="ngModel"
-                            >
+                          <div class="col-lg-6">
+                            <ng-select class="form-control populate" name="fluid.oilCapacityType" min="1"
+                              [(ngModel)]="fluid.oilCapacityType" placeholder="Select unit" #oil1="ngModel">
                               <ng-option value="Gallons">Gallons</ng-option>
                               <ng-option value="Litres">Litres</ng-option>
                             </ng-select>
@@ -2089,40 +1065,22 @@
                   <div class="col-lg-5 offset-lg-1 mb-3 pb-1">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >DEF(Diesel Exhaust Fluid) Capacity
+                        <label class="control-label font-weight-bold text-lg-right pt-2">DEF(Diesel Exhaust Fluid)
+                          Capacity
                         </label>
                         <div class="row">
                           <div class="col-lg-6">
-                            <input
-                              type="number"
-                              class="form-control"
-                              name="fluid.def"
-                              min="0"
-                              [(ngModel)]="fluid.def"
-                              placeholder="eg. 100,200 etc."
-                              #def="ngModel"
-                            />
+                            <input type="number" class="form-control" name="fluid.def" min="0" [(ngModel)]="fluid.def"
+                              placeholder="eg. 100,200 etc." #def="ngModel" />
                             <!-- <div *ngIf="def.invalid && (def.dirty || def.touched)" class="text-danger">
                                              <div *ngIf="def.errors.required">
                                                 DEF is required.
                                              </div>
                                           </div> -->
                           </div>
-                          <div class="col-lg-6 pl-0">
-                            <ng-select
-                              class="form-control populate"
-                              name="fluid.defType"
-                              [(ngModel)]="fluid.defType"
-                              placeholder="Select unit"
-                              #defType="ngModel"
-                            >
+                          <div class="col-lg-6">
+                            <ng-select class="form-control populate" name="fluid.defType" [(ngModel)]="fluid.defType"
+                              placeholder="Select unit" #defType="ngModel">
                               <optgroup label="">
                                 <ng-option value="Gallons">Gallons</ng-option>
                                 <ng-option value="Litres">Litres</ng-option>
@@ -2150,94 +1108,38 @@
                 <div class="row adddriverpl pt-2">
                   <div class="col-lg-10">
                     <label
-                      class="
-                        control-label
-                        font-weight-bold font-weight-bold
-                        text-lg-right text-5
-                        pt-2
-                      "
-                      >Features</label
-                    >
+                      class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Features</label>
                   </div>
                   <div class="col-lg-5 mb-3 pb-1">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Number of Tires
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Number of Tires
 
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Number of tires"
-                          ></i>
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Number of tires"></i>
                         </label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          name="wheelsAndTyres.numberOfTyres"
-                          min="0"
-                          [(ngModel)]="wheelsAndTyres.numberOfTyres"
-                          placeholder="eg. 16,18"
-                        />
+                        <input type="number" class="form-control" name="wheelsAndTyres.numberOfTyres" min="0"
+                          [(ngModel)]="wheelsAndTyres.numberOfTyres" placeholder="eg. 16,18" />
                       </div>
                     </div>
                   </div>
                   <div class="col-lg-5 offset-lg-1 mb-3 pb-1">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Drive Type
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Wheels powered by engine"
-                          ></i>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Drive Type
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Wheels powered by engine"></i>
                         </label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="wheelsAndTyres.driveType"
-                          [(ngModel)]="wheelsAndTyres.driveType"
-                          placeholder="eg. 4x4"
-                        />
+                        <input type="text" class="form-control" name="wheelsAndTyres.driveType"
+                          [(ngModel)]="wheelsAndTyres.driveType" placeholder="eg. 4x4" />
                       </div>
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Brake System
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Brake Type"
-                          ></i>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Brake System
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Brake Type"></i>
                         </label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="wheelsAndTyres.brakeSystem"
-                          [(ngModel)]="wheelsAndTyres.brakeSystem"
-                          placeholder="eg. Hydraulic, Air"
-                        />
+                        <input type="text" class="form-control" name="wheelsAndTyres.brakeSystem"
+                          [(ngModel)]="wheelsAndTyres.brakeSystem" placeholder="eg. Hydraulic, Air" />
                       </div>
                     </div>
                   </div>
@@ -2251,145 +1153,54 @@
               <div class="bg-white p-3 text-dark">
                 <div class="row adddriverpl pt-2">
                   <div class="col-lg-10">
-                    <label
-                      class="
-                        control-label
-                        font-weight-bold
-                        text-lg-right text-5
-                        pt-2
-                      "
-                      >Engine</label
-                    >
+                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Engine</label>
                   </div>
                   <div class="col-lg-5 mb-2 pb6">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Engine Summary
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Engine Summary
 
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Basic engine summary"
-                          ></i>
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Basic engine summary"></i>
                         </label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="engine.engineSummary"
-                          [(ngModel)]="engine.engineSummary"
-                          placeholder="eg. 5.0L"
-                        />
+                        <input type="text" class="form-control" name="engine.engineSummary"
+                          [(ngModel)]="engine.engineSummary" placeholder="eg. 5.0L" />
                       </div>
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Engine Brand
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Brand specific engine name"
-                          ></i>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Engine Brand
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Brand specific engine name"></i>
                         </label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="engine.engineBrand"
-                          [(ngModel)]="engine.engineBrand"
-                          placeholder="eg. Cummins"
-                        />
+                        <input type="text" class="form-control" name="engine.engineBrand"
+                          [(ngModel)]="engine.engineBrand" placeholder="eg. Cummins" />
                       </div>
                     </div>
                   </div>
                   <div class="col-lg-5 offset-lg-1 mb-2 pb6">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Cylinders
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Number of cylinders in the engine."
-                          ></i>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Cylinders
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Number of cylinders in the engine."></i>
                         </label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          name="engine.cylinders"
-                          min="0"
-                          [(ngModel)]="engine.cylinders"
-                          placeholder="eg. 4,8 "
-                        />
+                        <input type="number" class="form-control" name="engine.cylinders" min="0"
+                          [(ngModel)]="engine.cylinders" placeholder="eg. 4,8 " />
                       </div>
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Stroke
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Piston distance during combustion cycle."
-                          ></i>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Stroke
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Piston distance during combustion cycle."></i>
                         </label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          name="engine.stroke"
-                          min="0"
-                          [(ngModel)]="engine.stroke"
-                          placeholder="eg. 3.45"
-                        />
+                        <input type="number" class="form-control" name="engine.stroke" min="0"
+                          [(ngModel)]="engine.stroke" placeholder="eg. 3.45" />
                       </div>
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Valves
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Total number of valves in the engine."
-                          ></i>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Valves
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Total number of valves in the engine."></i>
                         </label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          name="engine.valves"
-                          min="0"
-                          [(ngModel)]="engine.valves"
-                          placeholder="eg. 14,16 "
-                        />
+                        <input type="number" class="form-control" name="engine.valves" min="0"
+                          [(ngModel)]="engine.valves" placeholder="eg. 14,16 " />
                       </div>
                     </div>
                   </div>
@@ -2403,90 +1214,38 @@
 
                 <div class="row adddriverpl">
                   <div class="col-lg-10">
-                    <label
-                      class="
-                        control-label
-                        font-weight-bold
-                        text-lg-right text-5
-                        pt-2
-                      "
-                      >Transmission
+                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Transmission
                     </label>
                   </div>
                   <div class="col-lg-5 mb-3 pb-1">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Transmission Summary
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Transmission Summary
 
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Basic transmission summary."
-                          ></i>
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Basic transmission summary."></i>
                         </label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="engine.transmissionSummary"
-                          [(ngModel)]="engine.transmissionSummary"
-                          placeholder="eg. 6-Speed Shiftable Automatic"
-                        />
+                        <input type="text" class="form-control" name="engine.transmissionSummary"
+                          [(ngModel)]="engine.transmissionSummary" placeholder="eg. 6-Speed Shiftable Automatic" />
                       </div>
                     </div>
                   </div>
                   <div class="col-lg-5 offset-lg-1 mb-3 pb-1">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Transmission Type
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Transmission Type
                         </label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="engine.transmissionType"
-                          [(ngModel)]="engine.transmissionType"
-                          placeholder="eg. Automatic, Continuously Variable"
-                        />
+                        <input type="text" class="form-control" name="engine.transmissionType"
+                          [(ngModel)]="engine.transmissionType" placeholder="eg. Automatic, Continuously Variable" />
                       </div>
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Transmission Gears
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Transmission Gears
 
-                          <i
-                            class="fas fa-exclamation-circle"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title="Number of gears available."
-                          ></i>
+                          <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                            title="Number of gears available."></i>
                         </label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          name="engine.transmissionGears"
-                          min="0"
-                          [(ngModel)]="engine.transmissionGears"
-                          placeholder="eg. 4,6"
-                        />
+                        <input type="number" class="form-control" name="engine.transmissionGears" min="0"
+                          [(ngModel)]="engine.transmissionGears" placeholder="eg. 4,6" />
                       </div>
                     </div>
                   </div>
@@ -2500,182 +1259,76 @@
               <div class="bg-white p-3 text-dark">
                 <div class="row adddriverpl pt-2">
                   <div class="col-lg-10">
-                    <label
-                      class="
-                        control-label
-                        font-weight-bold
-                        text-lg-right text-5
-                        pt-2
-                      "
-                      >Purchase Detail</label
-                    >
+                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Purchase Detail</label>
                   </div>
 
                   <div class="col-lg-5 mb-3 pb-1">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Purchase Vendor
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Vendor
                         </label>
-                        <ng-select
-                          placeholder="Select Vendor"
-                          name="purchase.purchaseVendorID"
-                          [(ngModel)]="purchase.purchaseVendorID"
-                          placeholder="Select purchase vendor"
-                        >
-                          <ng-option
-                            *ngFor="let vendor of vendors"
-                            value="{{ vendor.contactID }}"
-                          >
-                            {{ vendor.companyName }}</ng-option
-                          >
+                        <ng-select placeholder="Select Vendor" name="purchase.purchaseVendorID"
+                          [(ngModel)]="purchase.purchaseVendorID" placeholder="Select purchase vendor">
+                          <ng-option *ngFor="let vendor of vendors" value="{{ vendor.contactID }}">
+                            {{ vendor.companyName }}</ng-option>
                         </ng-select>
                       </div>
                       <div class="col-lg-2 mar-top-37 pr-0">
-                        <a
-                          href="javascript:;"
-                          (click)="openModal('form')"
-                          class="
-                            btn
-                            cus-btn-padd
-                            btn-success
-                            modal-with-form
-                            mr-3
-                          "
-                        >
-                          <em class="fas fa-plus"></em
-                        ></a>
-                        <a
-                          class="btn btn-success cus-btn-padd modal-with-form"
-                          (click)="refreshVendorData()"
-                          data-toggle="tooltip"
-                          href="javascript:;"
-                          title="Refresh vendor data"
-                          ><i class="fas fa-sync"></i
-                        ></a>
+                        <a href="javascript:;" (click)="openModal('form')"
+                          class="btn cus-btn-padd btn-success modal-with-form mr-3">
+                          <em class="fas fa-plus"></em></a>
+                        <a class="btn btn-success cus-btn-padd modal-with-form" (click)="refreshVendorData()"
+                          data-toggle="tooltip" href="javascript:;" title="Refresh vendor data"><i
+                            class="fas fa-sync"></i></a>
                       </div>
                     </div>
 
                     <div class="row pr-3">
-                      <div class="col-lg-5 pr-0">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Purchase Price
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Price
                         </label>
-                        <input
-                          class="form-control"
-                          name="purchase.purchasePrice"
-                          type="number"
-                          min="0"
-                          [(ngModel)]="purchase.purchasePrice"
-                          placeholder="eg. 10000 "
-                        />
+                        <input class="form-control" name="purchase.purchasePrice" type="number" min="0"
+                          [(ngModel)]="purchase.purchasePrice" placeholder="eg. 10000 " />
                       </div>
 
                       <div class="col-lg-5 pr-0">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >&nbsp;</label
-                        >
-                        <ng-select
-                          class="form-control populate"
-                          name="purchase.purchasePriceCurrency"
-                          [(ngModel)]="purchase.purchasePriceCurrency"
-                          placeholder="Select currency"
-                        >
+                        <label class="control-label font-weight-bold text-lg-right pt-2">&nbsp;</label>
+                        <ng-select class="form-control populate" name="purchase.purchasePriceCurrency"
+                          [(ngModel)]="purchase.purchasePriceCurrency" placeholder="Select currency">
                           <ng-option value="USD">USD</ng-option>
                           <ng-option value="CAD">CAD</ng-option>
                         </ng-select>
                       </div>
                       <div class="col-lg-2 mar-top-37 pr-0">
                         <label class="mb-1 mt-2">
-                          <input
-                            type="checkbox"
-                            checked
-                            name="purchase.gst"
-                            [(ngModel)]="purchase.gstInc"
-                          />
+                          <input type="checkbox" checked name="purchase.gst" [(ngModel)]="purchase.gstInc" />
                           GST Included
                         </label>
                       </div>
                     </div>
                     <div class="row pr-3">
                       <div class="col-lg-10 pr-0">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Purchase Date</label
-                        >
-                        <input
-                          (click)="d7.toggle()"
-                          readonly
-                          ngbDatepicker
-                          #d7="ngbDatepicker"
-                          class="form-control"
-                          Placeholder="yyyy/mm/dd"
-                          name="purchase.purchaseDate"
-                          [(ngModel)]="purchase.purchaseDate"
-                          [minDate]="dateMinLimit"
-                          [maxDate]="futureDatesLimit"
-                        />
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Date</label>
+                        <input (click)="d7.toggle()" readonly ngbDatepicker #d7="ngbDatepicker" class="form-control"
+                          Placeholder="yyyy/mm/dd" name="purchase.purchaseDate" [(ngModel)]="purchase.purchaseDate"
+                          [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
                       </div>
                     </div>
                     <div class="row pr-3">
-                      <div class="col-lg-5 pr-0">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Purchase Odometer in Miles
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Odometer in Miles
                         </label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          name="purchase.purchaseOdometer"
-                          [(ngModel)]="purchase.purchaseOdometer"
-                          placeholder="eg. 4500"
-                        />
+                        <input type="text" class="form-control" name="purchase.purchaseOdometer"
+                          [(ngModel)]="purchase.purchaseOdometer" placeholder="eg. 4500" />
                       </div>
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Add Purchase Document(s)</label
-                        >
-                        <input
-                          (change)="selectDocuments($event, 'purchase')"
-                          name="purchaseDocs"
-                          type="file"
-                          multiple
-                          class="form-control border-0 p-0"
-                        />
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Add Purchase
+                          Document(s)</label>
+                        <input (change)="selectDocuments($event, 'purchase')" name="purchaseDocs" type="file" multiple
+                          class="form-control border-0 p-0" accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
+                        <span *ngIf="uploadPurchaseDocsError != ''" class="text-danger">
+                          {{ uploadPurchaseDocsError }}
+                        </span>
                       </div>
                     </div>
                     <div class="row pr-3">
@@ -2683,43 +1336,23 @@
                         <div class="vehicle-common-box p-3">
                           <div class="row">
                             <div class="col-lg-6">
-                              <label
-                                class="control-label font-weight-bold text-3"
-                              >
-                                Document(s)</label
-                              >
+                              <label class="control-label font-weight-bold text-3">
+                                Document(s)</label>
                             </div>
                             <div class="col-lg-6 text-right"></div>
                           </div>
                           <hr class="solid mt-2" />
-                          <div
-                            class="row mb-1"
-                            *ngFor="let item of pDocs; let d = index"
-                          >
+                          <div class="row mb-1" *ngFor="let item of pDocs; let d = index">
                             <div class="col-lg-9">
-                              <a
-                                href="javascript:;"
-                                data-toggle="modal"
-                                data-target="#viewDocModal"
-                                (click)="setPDFSrc(item.path)"
-                                >Document {{ d + 1 }}</a
-                              >
+                              <a href="{{item.path}}" data-toggle="modal" data-target="#viewDocModal"
+                                (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
                             </div>
                             <div class="col-lg-3 text-right">
-                              <i
-                                class="far fa-file text-dak mr-1"
-                                (click)="setPDFSrc(item.path)"
-                                data-toggle="modal"
-                                data-target="#viewDocModal"
-                              ></i>
-                              <a
-                                href="javascript:;"
-                                (click)="
+                              <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal"
+                                data-target="#viewDocModal"></i>
+                              <a href="javascript:;" (click)="
                                   deleteDocument('purchase', item.name, d)
-                                "
-                                class="modal-with-form"
-                                ><i class="fas fa-times text-danger"></i
-                              ></a>
+                                " class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
                             </div>
                           </div>
                         </div>
@@ -2729,99 +1362,42 @@
 
                   <div class="col-lg-5 offset-lg-1 mb-3 pb-1">
                     <div class="d-flex">
-                      <div class="col-lg-7 pl-0">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Warranty Expiration Date</label
-                        >
-                        <input
-                          (click)="d6.toggle()"
-                          readonly
-                          ngbDatepicker
-                          #d6="ngbDatepicker"
-                          class="form-control"
-                          Placeholder="yyyy/mm/dd"
-                          name="purchase.warrantyExpirationDate"
-                          [(ngModel)]="purchase.warrantyExpirationDate"
-                          [minDate]="dateMinLimit"
-                          [maxDate]="futureDatesLimit"
-                        />
+                      <div class="col-lg-5 pl-0">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Warranty Expiration
+                          Date</label>
+                        <input (click)="d6.toggle()" readonly ngbDatepicker #d6="ngbDatepicker" class="form-control"
+                          Placeholder="yyyy/mm/dd" name="purchase.warrantyExpirationDate"
+                          [(ngModel)]="purchase.warrantyExpirationDate" [minDate]="dateMinLimit"
+                          [maxDate]="futureDatesLimit" />
                       </div>
-                      <div class="col-lg-3 text-right">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >&nbsp;</label
-                        >
+                      <div class="col-lg-6 text-right">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">&nbsp;</label>
                         <div class="checkbox mt-1">
                           <label>
-                            <input
-                              type="checkbox"
-                              name="purchase.warrantyExpirationDateReminder"
-                              [(ngModel)]="
+                            <input type="checkbox" name="purchase.warrantyExpirationDateReminder" [(ngModel)]="
                                 purchase.warrantyExpirationDateReminder
-                              "
-                            />
+                              " />
                             Set Reminder (30 Days Before Expiry)
                           </label>
                         </div>
                       </div>
                     </div>
                     <div class="col-lg-10 pl-0 pr-1">
-                      <label
-                        class="
-                          control-label
-                          font-weight-bold
-                          text-lg-right
-                          pt-2
-                        "
-                        >Warranty Expiration Meter
+                      <label class="control-label font-weight-bold text-lg-right pt-2">Warranty Expiration Meter
                       </label>
-                      <input
-                        type="number"
-                        class="form-control"
-                        name="purchase.warrantyExpirationMeter"
-                        min="0"
-                        [(ngModel)]="purchase.warrantyExpirationMeter"
-                        placeholder="eg. 100 , 200"
-                      />
+                      <input type="number" class="form-control" name="purchase.warrantyExpirationMeter" min="0"
+                        [(ngModel)]="purchase.warrantyExpirationMeter" placeholder="eg. 100 , 200" />
                     </div>
                     <div class="col-lg-10 pl-0 pr-1">
-                      <label
-                        class="
-                          control-label
-                          font-weight-bold
-                          text-lg-right
-                          pt-2
-                        "
-                        >Purchase Comments
+                      <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Comments
                       </label>
-                      <textarea
-                        type="text"
-                        rows="3"
-                        class="form-control heighta"
-                        name="purchase.purchaseComments"
-                        [(ngModel)]="purchase.purchaseComments"
-                        placeholder="Add comments about vehicle purchase"
-                        #pComments="ngModel"
-                        pattern="^[\s\S]{1,500}$"
-                      ></textarea>
-                      <div
-                        *ngIf="
+                      <textarea type="text" rows="3" class="form-control heighta" name="purchase.purchaseComments"
+                        [(ngModel)]="purchase.purchaseComments" placeholder="Add comments about vehicle purchase"
+                        #pComments="ngModel" pattern="^[\s\S]{1,500}$"></textarea>
+                      <div *ngIf="
                           pComments.invalid &&
                           (pComments.dirty || pComments.touched)
-                        "
-                        class="text-danger"
-                      >
+                        " class="text-danger">
                         <div *ngIf="pComments.errors.pattern">
                           Only 500 characters are allowed.
                         </div>
@@ -2838,95 +1414,40 @@
               <div class="bg-white p-3 text-dark">
                 <div class="row adddriverpl pt-2">
                   <div class="col-lg-10">
-                    <label
-                      class="
-                        control-label
-                        font-weight-bold
-                        text-lg-right text-5
-                        pt-2
-                      "
-                      >Loan Detail</label
-                    >
+                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Loan Detail</label>
                   </div>
 
                   <div class="col-lg-5 mb-3 pb-1">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Loan Vendor</label
-                        >
-                        <ng-select
-                          placeholder="Select Vendor"
-                          name="loan.loanVendorID"
-                          [(ngModel)]="loan.loanVendorID"
-                        >
-                          <ng-option
-                            *ngFor="let vendor of vendors"
-                            value="{{ vendor.contactID }}"
-                          >
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Loan Vendor</label>
+                        <ng-select placeholder="Select Vendor" name="loan.loanVendorID" [(ngModel)]="loan.loanVendorID">
+                          <ng-option *ngFor="let vendor of vendors" value="{{ vendor.contactID }}">
                             {{ vendor.companyName }}
                           </ng-option>
                         </ng-select>
                       </div>
                       <div class="col-lg-2 mar-top-37 pr-0">
-                        <a
-                          href="javascript:;"
-                          (click)="openModal('form')"
-                          class="
-                            btn
-                            cus-btn-padd
-                            btn-success
-                            modal-with-form
-                            mr-3
-                          "
-                        >
-                          <em class="fas fa-plus"></em
-                        ></a>
-                        <a
-                          class="btn btn-success cus-btn-padd modal-with-form"
-                          (click)="refreshVendorData()"
-                          data-toggle="tooltip"
-                          href="javascript:;"
-                          title="Refresh vendor data"
-                          ><i class="fas fa-sync"></i
-                        ></a>
+                        <a href="javascript:;" (click)="openModal('form')"
+                          class="btn cus-btn-padd btn-success modal-with-form mr-3">
+                          <em class="fas fa-plus"></em></a>
+                        <a class="btn btn-success cus-btn-padd modal-with-form" (click)="refreshVendorData()"
+                          data-toggle="tooltip" href="javascript:;" title="Refresh vendor data"><i
+                            class="fas fa-sync"></i></a>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Amount of Loan
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Amount of Loan
                         </label>
                         <div class="row">
                           <div class="col-lg-6">
-                            <input
-                              type="number"
-                              min="0"
-                              class="form-control"
-                              name="loan.amountOfLoan"
-                              [(ngModel)]="loan.amountOfLoan"
-                              placeholder="eg. 10000, 20000"
-                            />
+                            <input type="number" min="0" class="form-control" name="loan.amountOfLoan"
+                              [(ngModel)]="loan.amountOfLoan" placeholder="eg. 10000, 20000" />
                           </div>
                           <div class="col-lg-6">
-                            <ng-select
-                              class="form-control populate"
-                              name="loan.amountOfLoanCurrency"
-                              [(ngModel)]="loan.amountOfLoanCurrency"
-                              placeholder="Select currency"
-                            >
+                            <ng-select class="form-control populate" name="loan.amountOfLoanCurrency"
+                              [(ngModel)]="loan.amountOfLoanCurrency" placeholder="Select currency">
                               <optgroup label="">
                                 <ng-option value="USD">USD</ng-option>
                                 <ng-option value="CAD">CAD</ng-option>
@@ -2936,63 +1457,26 @@
                         </div>
                       </div>
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Annual % Rate</label
-                        >
-                        <input
-                          type="number"
-                          min="0"
-                          class="form-control"
-                          name="loan.annualPercentageRate"
-                          [(ngModel)]="loan.annualPercentageRate"
-                          placeholder="eg. 2,3"
-                        />
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Annual % Rate</label>
+                        <input type="number" min="0" class="form-control" name="loan.annualPercentageRate"
+                          [(ngModel)]="loan.annualPercentageRate" placeholder="eg. 2,3" />
                       </div>
                       <div class="col-lg-2 mar-top-37 p-0">
                         <label class="mb-1 mt-2">
-                          <input
-                            type="checkbox"
-                            checked
-                            name="loan.gst"
-                            [(ngModel)]="loan.gstInc"
-                          />
+                          <input type="checkbox" checked name="loan.gst" [(ngModel)]="loan.gstInc" />
                           GST Included
                         </label>
                       </div>
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Down Payment</label
-                        >
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Down Payment</label>
                         <div class="row">
                           <div class="col-lg-6">
-                            <input
-                              type="number"
-                              min="0"
-                              class="form-control"
-                              name="loan.downPayment"
-                              [(ngModel)]="loan.downPayment"
-                              placeholder="eg. 5000 "
-                            />
+                            <input type="number" min="0" class="form-control" name="loan.downPayment"
+                              [(ngModel)]="loan.downPayment" placeholder="eg. 5000 " />
                           </div>
                           <div class="col-lg-6">
-                            <ng-select
-                              class="form-control populate"
-                              name="loan.downPaymentCurrency"
-                              [(ngModel)]="loan.downPaymentCurrency"
-                              placeholder="Select currency"
-                            >
+                            <ng-select class="form-control populate" name="loan.downPaymentCurrency"
+                              [(ngModel)]="loan.downPaymentCurrency" placeholder="Select currency">
                               <optgroup label="">
                                 <ng-option value="USD">USD</ng-option>
                                 <ng-option value="CAD">CAD</ng-option>
@@ -3003,143 +1487,59 @@
                       </div>
 
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Date of Loan</label
-                        >
-                        <input
-                          (click)="d8.toggle()"
-                          readonly
-                          ngbDatepicker
-                          #d8="ngbDatepicker"
-                          class="form-control"
-                          Placeholder="yyyy/mm/dd"
-                          name="loan.dateOfLoan"
-                          [(ngModel)]="loan.dateOfLoan"
-                          [minDate]="dateMinLimit"
-                          [maxDate]="futureDatesLimit"
-                        />
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Date of Loan</label>
+                        <input (click)="d8.toggle()" readonly ngbDatepicker #d8="ngbDatepicker" class="form-control"
+                          Placeholder="yyyy/mm/dd" name="loan.dateOfLoan" [(ngModel)]="loan.dateOfLoan"
+                          [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
                       </div>
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Loan End Date</label
-                        >
-                        <input
-                          (click)="d9.toggle()"
-                          readonly
-                          ngbDatepicker
-                          #d9="ngbDatepicker"
-                          class="form-control"
-                          Placeholder="yyyy/mm/dd"
-                          name="loan.loadEndDate"
-                          [(ngModel)]="loan.loadEndDate"
-                          [minDate]="dateMinLimit"
-                          [maxDate]="futureDatesLimit"
-                        />
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Loan End Date</label>
+                        <input (click)="d9.toggle()" readonly ngbDatepicker #d9="ngbDatepicker" class="form-control"
+                          Placeholder="yyyy/mm/dd" name="loan.loadEndDate" [(ngModel)]="loan.loadEndDate"
+                          [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
                       </div>
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Loan Due Date</label
-                        >
-                        <input
-                          (click)="d10.toggle()"
-                          readonly
-                          ngbDatepicker
-                          #d10="ngbDatepicker"
-                          class="form-control"
-                          Placeholder="yyyy/mm/dd"
-                          name="loan.loanDueDate"
-                          [(ngModel)]="loan.loanDueDate"
-                          [minDate]="dateMinLimit"
-                          [maxDate]="futureDatesLimit"
-                        />
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Loan Due Date</label>
+                        <input (click)="d10.toggle()" readonly ngbDatepicker #d10="ngbDatepicker" class="form-control"
+                          Placeholder="yyyy/mm/dd" name="loan.loanDueDate" [(ngModel)]="loan.loanDueDate"
+                          [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
                       </div>
                       <div class="col-lg-2 px-0 pt-4">
                         <div class="checkbox mt-0">
                           <label class="m-0">
-                            <input
-                              type="checkbox"
-                              name="loan.lReminder"
-                              [(ngModel)]="loan.lReminder"
-                            />
+                            <input type="checkbox" name="loan.lReminder" [(ngModel)]="loan.lReminder" />
                             Set Reminder (7 Days Before Due)
                           </label>
                         </div>
                       </div>
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Add Loan Document(s)</label
-                        >
-                        <input
-                          (change)="selectDocuments($event, 'loan')"
-                          name="loanDocs"
-                          type="file"
-                          multiple
-                          class="form-control border-0 p-0"
-                        />
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Add Loan Document(s)</label>
+                        <input (change)="selectDocuments($event, 'loan')" name="loanDocs" type="file" multiple
+                          class="form-control border-0 p-0" accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
+                        <span *ngIf="uploadLonDocsError != ''" class="text-danger">
+                          {{ uploadLonDocsError }}
+                        </span>
                       </div>
                       <div class="col-lg-10 mt-2" *ngIf="lDocs.length > 0">
                         <div class="vehicle-common-box p-3">
                           <div class="row">
                             <div class="col-lg-6">
-                              <label
-                                class="control-label font-weight-bold text-3"
-                              >
-                                Document(s)</label
-                              >
+                              <label class="control-label font-weight-bold text-3">
+                                Document(s)</label>
                             </div>
                             <div class="col-lg-6 text-right"></div>
                           </div>
                           <hr class="solid mt-2" />
-                          <div
-                            class="row mb-1"
-                            *ngFor="let item of lDocs; let d = index"
-                          >
+                          <div class="row mb-1" *ngFor="let item of lDocs; let d = index">
                             <div class="col-lg-9">
-                              <a
-                                href="javascript:;"
-                                data-toggle="modal"
-                                data-target="#viewDocModal"
-                                (click)="setPDFSrc(item.path)"
-                                >Document {{ d + 1 }}</a
-                              >
+                              <a href="{{item.path}}" data-toggle="modal" data-target="#viewDocModal"
+                                (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
                             </div>
                             <div class="col-lg-3 text-right">
-                              <i
-                                class="far fa-file text-dak mr-1"
-                                (click)="setPDFSrc(item.path)"
-                                data-toggle="modal"
-                                data-target="#viewDocModal"
-                              ></i>
-                              <a
-                                href="javascript:;"
-                                (click)="deleteDocument('loan', item.name, d)"
-                                class="modal-with-form"
-                                ><i class="fas fa-times text-danger"></i
-                              ></a>
+                              <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal"
+                                data-target="#viewDocModal"></i>
+                              <a href="javascript:;" (click)="deleteDocument('loan', item.name, d)"
+                                class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
                             </div>
                           </div>
                         </div>
@@ -3149,53 +1549,23 @@
                   <div class="col-lg-5 offset-lg-1 mb-3 pb-1">
                     <div class="row">
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Number of Payments
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Number of Payments
                         </label>
-                        <input
-                          type="number"
-                          min="0"
-                          class="form-control"
-                          name="loan.numberOfPayments"
-                          [(ngModel)]="loan.numberOfPayments"
-                          placeholder="eg. 10,20"
-                        />
+                        <input type="number" min="0" class="form-control" name="loan.numberOfPayments"
+                          [(ngModel)]="loan.numberOfPayments" placeholder="eg. 10,20" />
                       </div>
 
                       <div class="col-lg-5">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Monthly Payment
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Monthly Payment
                         </label>
                         <div class="row">
                           <div class="col-lg-6">
-                            <input
-                              type="number"
-                              min="0"
-                              class="form-control"
-                              name="loan.monthlyPayment"
-                              [(ngModel)]="loan.monthlyPayment"
-                              placeholder="eg. 1000, 2000"
-                            />
+                            <input type="number" min="0" class="form-control" name="loan.monthlyPayment"
+                              [(ngModel)]="loan.monthlyPayment" placeholder="eg. 1000, 2000" />
                           </div>
                           <div class="col-lg-6">
-                            <ng-select
-                              class="form-control populate"
-                              name="loan.monthlyPaymentCurrency"
-                              [(ngModel)]="loan.monthlyPaymentCurrency"
-                              placeholder="Select currency"
-                            >
+                            <ng-select class="form-control populate" name="loan.monthlyPaymentCurrency"
+                              [(ngModel)]="loan.monthlyPaymentCurrency" placeholder="Select currency">
                               <optgroup label="">
                                 <ng-option value="USD">USD</ng-option>
                                 <ng-option value="CAD">CAD</ng-option>
@@ -3205,30 +1575,13 @@
                         </div>
                       </div>
                       <div class="col-lg-10">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Notes</label
-                        >
-                        <textarea
-                          class="form-control heighta"
-                          rows="3"
-                          name="loan.notes"
-                          [(ngModel)]="loan.notes"
-                          placeholder="Enter notes about the loan of vehicle"
-                          #notes3="ngModel"
-                          pattern="^[\s\S]{1,500}$"
-                        ></textarea>
-                        <div
-                          *ngIf="
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Notes</label>
+                        <textarea class="form-control heighta" rows="3" name="loan.notes" [(ngModel)]="loan.notes"
+                          placeholder="Enter notes about the loan of vehicle" #notes3="ngModel"
+                          pattern="^[\s\S]{1,500}$"></textarea>
+                        <div *ngIf="
                             notes3.invalid && (notes3.dirty || notes3.touched)
-                          "
-                          class="text-danger"
-                        >
+                          " class="text-danger">
                           <div *ngIf="notes3.errors.pattern">
                             Only 500 characters are allowed.
                           </div>
@@ -3248,28 +1601,16 @@
                 </div>
 
                 <div class="form-group adddriverpl border-0 row">
-                  <div class="col-lg-11 pr123 text-right pb-3">
-                    <button
-                      type="button"
-                      class="cus-btn-padd btn btn-default mr-2"
-                      (click)="cancel()"
-                    >
+                  <div class="col-lg-11 pr133 text-right pb-3">
+                    <button type="button" class="cus-btn-padd btn btn-default mr-2" (click)="cancel()">
                       Cancel
                     </button>
-                    <button
-                      type="submit"
-                      *ngIf="!vehicleID"
-                      [disabled]="submitDisabled"
-                      class="cus-btn-padd btn btn-success"
-                    >
+                    <button type="submit" *ngIf="!vehicleID" [disabled]="submitDisabled"
+                      class="cus-btn-padd btn btn-success">
                       Save
                     </button>
-                    <button
-                      type="submit"
-                      *ngIf="vehicleID"
-                      [disabled]="submitDisabled"
-                      class="btn cus-btn-padd btn-success"
-                    >
+                    <button type="submit" *ngIf="vehicleID" [disabled]="submitDisabled"
+                      class="btn cus-btn-padd btn-success">
                       Update
                     </button>
                     <!-- if there is some error in validation  -->
@@ -3292,75 +1633,17 @@
   </div>
 </section>
 
-<div id="quantumModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">
-          &times;
-        </button>
-        <!--<h4 class="modal-title">Assign Quantum</h4>-->
-      </div>
-      <div class="modal-body">
-        <h4 class="modal-title">Assign Quantum</h4>
-        <ng-select
-          data-plugin-selectTwo
-          class="form-control populate"
-          [(ngModel)]="quantumSelected"
-          name="quantum info"
-          (ngModelChange)="onChange($event)"
-        >
-          <ng-option label="-- Select option --" disabled></ng-option>
-          <ng-option *ngFor="let q of quantumsList" value="{{ q.deviceID }}">{{
-            q.sNo
-          }}</ng-option>
-        </ng-select>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- GROUP MODAL -->
-<div
-  class="modal fade"
-  id="addGroupModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="addGroupModal"
-  aria-hidden="true"
-  data-backdrop="static"
-  data-keyboard="false"
->
+<div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModal"
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog" style="max-width: 600px" role="document">
     <div class="modal-content">
-      <form
-        id="groupForm"
-        class="form-horizontal form-bordered bg-white"
-        method="get"
-        name="form"
-        #vForm="ngForm"
-        (ngSubmit)="vForm.form.valid && addGroup()"
-        novalidate
-      >
+      <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form" #vForm="ngForm"
+        (ngSubmit)="vForm.form.valid && addGroup()" novalidate>
         <div class="modal-header">
           <h5 class="modal-title">Add Group</h5>
-          <button
-            type="button"
-            (click)="clearGroup()"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <i
-              class="far fa-window-close modal-dismiss"
-              style="font-size: 25px"
-            >
+          <button type="button" (click)="clearGroup()" class="close" data-dismiss="modal" aria-label="Close">
+            <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
             </i>
           </button>
         </div>
@@ -3368,25 +1651,12 @@
           <div class="card-body p-0">
             <div class="form-row">
               <div class="col-lg-12">
-                <label class="control-label font-weight-bold"
-                  >Vehicle Group Name
-                  <span class="mandfield text-2 ml-1"><sup>*</sup></span></label
-                >
-                <input
-                  [(ngModel)]="groupData.groupName"
-                  name="groupName"
-                  type="text"
-                  class="form-control"
-                  placeholder="eg. Heavy Vehicle"
-                  #gVehicle="ngModel"
-                  required
-                  pattern="^[a-zA-Z\s]+$"
-                  [ngClass]="{ error: vForm.submitted && gVehicle.invalid }"
-                />
-                <div
-                  *ngIf="gVehicle.invalid && vForm.submitted"
-                  class="text-danger"
-                >
+                <label class="control-label font-weight-bold">Vehicle Group Name
+                  <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control"
+                  placeholder="eg. Heavy Vehicle" #gVehicle="ngModel" required pattern="^[a-zA-Z\s]+$"
+                  [ngClass]="{ error: vForm.submitted && gVehicle.invalid }" />
+                <div *ngIf="gVehicle.invalid && vForm.submitted" class="text-danger">
                   <div *ngIf="gVehicle.errors.required">
                     Vehicle group name is required.
                   </div>
@@ -3398,20 +1668,10 @@
             </div>
             <div class="form-row mt-2">
               <div class="col-lg-12">
-                <label class="control-label font-weight-bold"
-                  >Vehicle Group Members</label
-                >
-                <ng-select
-                  [multiple]="true"
-                  [(ngModel)]="groupData.groupMembers"
-                  name="groupMembers"
-                  placeholder="Select vehicle group members"
-                  style="width: 100%"
-                >
-                  <ng-option
-                    *ngFor="let vehicle of vehicles"
-                    value="{{ vehicle.vehicleID }}"
-                  >
+                <label class="control-label font-weight-bold">Vehicle Group Members</label>
+                <ng-select [multiple]="true" [(ngModel)]="groupData.groupMembers" name="groupMembers"
+                  placeholder="Select vehicle group members" style="width: 100%">
+                  <ng-option *ngFor="let vehicle of vehicles" value="{{ vehicle.vehicleID }}">
                     {{ vehicle.vehicleIdentification }}
                   </ng-option>
                 </ng-select>
@@ -3420,25 +1680,13 @@
 
             <div class="form-row mt-2">
               <div class="col-lg-12">
-                <label class="control-label font-weight-bold text-lg-right"
-                  >Description</label
-                >
-                <textarea
-                  [(ngModel)]="groupData.description"
-                  name="description"
-                  class="form-control heighta"
-                  rows="4"
-                  id="comment"
-                  placeholder="Enter description of the group"
-                  #aNotes226="ngModel"
-                  pattern="^[\s\S]{1,500}$"
-                ></textarea>
-                <div
-                  *ngIf="
+                <label class="control-label font-weight-bold text-lg-right">Description</label>
+                <textarea [(ngModel)]="groupData.description" name="description" class="form-control heighta" rows="4"
+                  id="comment" placeholder="Enter description of the group" #aNotes226="ngModel"
+                  pattern="^[\s\S]{1,500}$"></textarea>
+                <div *ngIf="
                     aNotes226.invalid && (aNotes226.dirty || aNotes226.touched)
-                  "
-                  class="text-danger"
-                >
+                  " class="text-danger">
                   <div *ngIf="aNotes226.errors.pattern">
                     Only 500 characters are allowed.
                   </div>
@@ -3451,11 +1699,7 @@
           <button type="button" class="btn btn-default" data-dismiss="modal">
             Cancel
           </button>
-          <button
-            type="submit"
-            class="btn btn-success"
-            [disabled]="groupSubmitDisabled"
-          >
+          <button type="submit" class="btn btn-success" [disabled]="groupSubmitDisabled">
             Save
           </button>
         </div>
@@ -3465,25 +1709,13 @@
 </div>
 
 <!-- Image modal -->
-<div
-  class="modal fade"
-  id="imageModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="myModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <!--Content-->
     <div class="modal-content">
       <div class="modal-header">
         <!-- <h5 class="modal-title">Modal title</h5> -->
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -3495,11 +1727,7 @@
       </div>
       <!--Footer-->
       <div class="modal-footer text-right">
-        <button
-          type="button"
-          class="btn btn-outline-primary btn-rounded btn-md ml-4"
-          data-dismiss="modal"
-        >
+        <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">
           Close
         </button>
       </div>
@@ -3509,24 +1737,13 @@
 </div>
 
 <!-- VIEW DOCUMENT MODAL -->
-<div
-  class="modal fade"
-  id="viewDocModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="viewDocModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>

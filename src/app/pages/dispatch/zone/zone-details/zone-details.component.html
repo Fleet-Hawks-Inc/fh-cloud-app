@@ -1,0 +1,313 @@
+<section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-1 pr-0 pt-0">
+      <header class="page-header pr19 pl11">
+        <div class="row" style="padding-top: 10px">
+          <div class="col-md-4 col-lg-4">
+            <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">
+              {{ title }}
+            </h4>
+          </div>
+          <div class="col-md-8 col-lg-8 text-right por-1">
+            <a
+              routerLink="/dispatch/zone/edit/{{ zoneID }}"
+              class="btn btn-default btn-sm mr-2"
+              ><i class="fas fa-pencil-alt"></i> Edit Zone</a
+            >
+            <a routerLink="/dispatch/zone/list" class="btn btn-sm btn-default"
+              ><i class="fas fa-list"></i> Zone List</a
+            >
+          </div>
+        </div>
+      </header>
+      <section class="m-2">
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row pt-3">
+                <div class="col-lg-12">
+                  <label
+                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2"
+                    >Zone Details</label
+                  >
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="row">
+                    <div
+                      id="map"
+                      class="mapclassmain"
+                      style="height: 500px;"
+                    ></div>
+                  </div>
+
+                </div>
+                <div class="col-lg-6">   
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-bordered table-responsive-lg">
+                        <tbody>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Zone Name
+                            </td>
+                            <td>{{ zoneDetail.zName | titlecase }}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Zone Description
+                            </td>
+                            <td>{{ zoneDetail.zDesc | titlecase }}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Zone Coordinates
+                            </td>
+                            <td *ngIf="zoneDetail.coordinates.length==0">No Coordinates found</td>
+                            <td *ngIf="zoneDetail.coordinates.length>0"><span *ngFor="let cords of zoneDetail.coordinates"> Latitude: {{cords.lat}}, Longitude: {{cords.lng}}<br> </span></td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                      <section>
+                        <div class="row m-2">
+                          <div class="col-lg-12">
+                            <label
+                              class="control-label font-weight-bold labelmt text-3 text-dark"
+                              >Pallet Rates
+                              <span class="mandfield text-2 ml-1"
+                                ><sup>*</sup></span
+                              ></label
+                            >
+                            <div
+                              class="col-lg-12 pl-0 d-flex mt-2"
+                              *ngFor="let param of pRates; let t = index"
+                            >
+                              <input
+                                type="text"
+                                class="form-control mr-2"
+                                name="noPallets"
+                                [(ngModel)]="param.noPallets"
+                                [ngModelOptions]="{ standalone: true }"
+                                [disabled]="t != pRates.length - 1"
+                                #noPallets="ngModel"
+                                placeholder="Pallet Number"
+                                required
+                              />
+
+                              <input
+                                type="text"
+                                class="form-control mr-2"
+                                name="weight"
+                                [(ngModel)]="param.weight"
+                                [ngModelOptions]="{ standalone: true }"
+                                [disabled]="t != pRates.length - 1"
+                                #weight="ngModel"
+                                placeholder="Weight"
+                              />
+                              <ng-select [disabled]="t != pRates.length - 1" [(ngModel)]="param.unit" class="form-control ml-2 mr-2">
+                                <ng-option *ngFor="let u of wUnit" [value]="u">{{u}}</ng-option>
+                              </ng-select>
+
+                              <input
+                                type="text"
+                                class="form-control mr-2"
+                                name="rate"
+                                [(ngModel)]="param.rate"
+                                [ngModelOptions]="{ standalone: true }"
+                                [disabled]="t != pRates.length - 1"
+                                #rate="ngModel"
+                                required
+                                placeholder="Rate CAD$"
+                              />
+                              <ng-select [disabled]="t != pRates.length - 1" [(ngModel)]="param.currency" class="form-control ml-2 mr-2">
+                                <ng-option *ngFor="let u of currencies" [value]="u">{{u}}</ng-option>
+                              </ng-select>
+                              <div
+                                *ngIf="
+                                  noPallets.invalid &&
+                                  (noPallets.dirty || noPallets.touched)
+                                "
+                                class="text-danger"
+                              >
+                                <div>
+                                  <div *ngIf="noPallets.errors.required">
+                                    Pallet No is required
+                                  </div>
+                                </div>
+                              </div>
+
+                              <!-- <div
+                                *ngIf="
+                                  weight.invalid &&
+                                  (weight.dirty || weight.touched)
+                                "
+                                class="text-danger"
+                              >
+                                <div>
+                                  <div *ngIf="weight.errors.required">
+                                    Weight is required
+                                  </div>
+                                </div>
+                              </div> -->
+                              <div
+                                *ngIf="
+                                  rate.invalid && (rate.dirty || rate.touched)
+                                "
+                                class="text-danger"
+                              >
+                                <div>
+                                  <div *ngIf="rate.errors.required">
+                                    Rate is required
+                                  </div>
+                                </div>
+                              </div>
+
+                              <!-- <div class="col-lg-2 mar-top-37"> -->
+                              <button
+                                type="button"
+                                class="btn btn-sm btn-success"
+                                *ngIf="t == pRates.length - 1"
+                                (click)="addPallet(t)"
+                              >
+                                <i class="fas fa-plus"></i>
+                              </button>
+                              <button
+                                type="button"
+                                (click)="deletePallet(t)"
+                                *ngIf="t != pRates.length - 1"
+                                class="btn btn-sm btn-danger"
+                              >
+                                <i class="fas fa-minus"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row m-2">
+                          <div class="col-lg-12">
+                            <label
+                              class="control-label font-weight-bold labelmt text-3 text-dark"
+                              >Accessorial Fees
+                              <span class="mandfield text-2 ml-1"
+                                ><sup>*</sup></span
+                              ></label
+                            >
+                            <!-- <label for="noPallets"> Pallet No.</label>
+                              <label for="weight">Weight</label>
+                              <label for="rate">Rate</label> -->
+                            <div
+                              class="col-lg-12 pl-0 d-flex mt-2"
+                              *ngFor="let param of aspRates; let t = index"
+                            >
+                              <input
+                                type="text"
+                                class="form-control mr-2"
+                                name="name"
+                                [ngModelOptions]="{ standalone: true }"
+                                [(ngModel)]="param.name"
+                                [disabled]="t != aspRates.length - 1"
+                                #name="ngModel"
+                                placeholder="Fee Name"
+                                required
+                              />
+
+                              <input
+                                type="text"
+                                class="form-control mr-2"
+                                name="fee"
+                                [ngModelOptions]="{ standalone: true }"
+                                [(ngModel)]="param.fee"
+                                [disabled]="t != aspRates.length - 1"
+                                #fee="ngModel"
+                                placeholder="Fee"
+                                required
+                              />
+                              <ng-select [(ngModel)]="param.currency" [disabled]="t != aspRates.length - 1" class="form-control ml-2 mr-2">
+                                <ng-option *ngFor="let u of currencies" [value]="u">{{u}}</ng-option>
+                              </ng-select>
+
+                              <div
+                                *ngIf="
+                                  name.invalid && (name.dirty || name.touched)
+                                "
+                                class="text-danger"
+                              >
+                                <div>
+                                  <div *ngIf="name.errors.required">
+                                    Name is required
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div
+                                *ngIf="
+                                  fee.invalid && (fee.dirty || fee.touched)
+                                "
+                                class="text-danger"
+                              >
+                                <div>
+                                  <div *ngIf="fee.errors.required">
+                                    Fee is required
+                                  </div>
+                                </div>
+                              </div>
+                              <button
+                                type="button"
+                                class="btn btn-sm btn-success"
+                                *ngIf="t == aspRates.length - 1"
+                                (click)="addAspRate(t)"
+                              >
+                                <i class="fas fa-plus"></i>
+                              </button>
+                              <button
+                                type="button"
+                                (click)="deleteAspRate(t)"
+                                *ngIf="t != aspRates.length - 1"
+                                class="btn btn-sm btn-danger"
+                              >
+                                <i class="fas fa-minus"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <div class="col-lg-12 text-right">
+                            <div class="row">
+                              <div class="col-5 offset-1">&nbsp;</div>
+                              <div class="col-5 offset-1">
+                                <div class="row">
+                                  <div class="col-10">
+                                    <button
+                                      type="button"
+                                      class="btn cus-btn-padd btn-default mr-2"
+                                      (click)="cancel()"
+                                    >
+                                      Cancel
+                                    </button>
+                                    <!-- if there is some error in validation  -->
+                                    <button
+                                      type="button"
+                                      (click)="updateZone()"
+                                      class="btn btn-success cus-btn-padd"
+                                      [disabled]="saveDisabled"
+                                    >
+                                      Save
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+</section>

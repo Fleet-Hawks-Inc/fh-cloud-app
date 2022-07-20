@@ -1,10 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { map, result } from 'lodash';
-import { ApiService } from 'src/app/services';
+import { ApiService, HereMapService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
 import { constants } from 'buffer';
+import { Overlay, ToastrService } from "ngx-toastr";
 import * as moment from 'moment'
-import { ToastrService } from "ngx-toastr";
+import { ActivatedRoute } from "@angular/router";
+import { NgxSpinnerService } from 'ngx-spinner';
+import * as html2pdf from "html2pdf.js";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { environment } from '../../../../../../environments/environment';
+import * as _ from 'lodash';
+import { HttpClient } from '@angular/common/http';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { Table } from 'primeng/table/table';
+import { DomSanitizer } from '@angular/platform-browser';
+import { OverlayPanel } from "primeng/overlaypanel";
+import { Router } from "@angular/router";
+
 
 @Component({
   selector: 'app-sreminders',
@@ -13,6 +26,12 @@ import { ToastrService } from "ngx-toastr";
 })
 
 export class SremindersComponent implements OnInit {
+  
+ environment = environment.isFeatureEnabled;
+  @ViewChild('dt') table: Table;
+  confirmEmailModal: TemplateRef<any>;
+  @ViewChild('op') overlaypanel: OverlayPanel;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   searchServiceTask = null;
   status = null;
   entityID = null;
@@ -35,14 +54,38 @@ export class SremindersComponent implements OnInit {
   record = [];
   export = [];
   data = [];
+  listView = true;
+  visible = true;
+  loadMsg: string = Constants.NO_RECORDS_FOUND;
+  isSearch = false;
+  get = _.get;
+  _selectedColumns: any[];
+  find = _.find;
+  
+  
+  dataColumns = [
+        { width: '7%', field: 'entityID', header: 'Vehicle', type: "text" },
+        { width: '7%', field: 'tasks.taskID', header: 'Service Task', type: "text" },
+        { width: '7%', field: 'createdDate', header: 'Next Due', type: "text" },
+        { width: '7%', field: 'subscribers', header: 'Subscribers', type: "text" },
+        { width: '7%', field: 'status', header: 'Renewal Status', type: "text" },
+    ];
+  
+  constructor(private apiService: ApiService, 
+  private toastr: ToastrService,
+  private httpClient: HttpClient,
+  private route: ActivatedRoute,
+  private spinner: NgxSpinnerService,
+  private hereMap: HereMapService,
+  protected _sanitizer: DomSanitizer,
+  private modalService: NgbModal,) { }
 
-  constructor(private apiService: ApiService, private toastr: ToastrService) { }
-
-  ngOnInit() {
+ async ngOnInit() {
     this.fetchReminderList();
     this.fetchvehiclesList();
     this.fetchTasksList();
     this.fetchReminderCount();
+    this.setToggleOptions();
 
     this.fetchVehicleIDs();
   }
@@ -56,8 +99,8 @@ export class SremindersComponent implements OnInit {
 
         this.dataMessage = Constants.FETCHING_DATA
         if (result.Items.length === 0) {
-
           this.dataMessage = Constants.NO_RECORDS_FOUND
+             this.loaded = true;
         }
         if (result.Items.length > 0) {
 
@@ -75,7 +118,7 @@ export class SremindersComponent implements OnInit {
     }
   }
 
-  onScroll() {
+  onScroll = async (event: any) =>{
     if (this.loaded) {
       this.fetchReminderList();
     }
@@ -91,6 +134,20 @@ export class SremindersComponent implements OnInit {
       return false;
     }
   }
+  
+   setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    
+    @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
+    
+    set selectedColumns(val: any[]) {
+        //restore original order
+        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+    }
+  
   resetData() {
     if (this.entityID !== null || this.searchServiceTask !== null || this.filterStatus !== null) {
       this.entityID = null;
@@ -105,6 +162,19 @@ export class SremindersComponent implements OnInit {
       return false;
     }
   }
+  
+  refreshData(){
+      this.allData = [];
+      this.entityID = null;
+      this.searchServiceTask = null;
+      this.status = null;
+      this.filterStatus = null;
+      this.loaded = false;
+      this.lastItemSK = '';
+      this.fetchReminderList();
+      this.dataMessage = Constants.FETCHING_DATA
+  }
+  
   fetchReminderCount() {
     this.apiService.getData(`reminders/fetch/count?type=service`).subscribe((result: any) => {
       this.count = result;
@@ -118,7 +188,7 @@ export class SremindersComponent implements OnInit {
   fetchTasksList() {
     this.apiService.getData('tasks/get/list?type=service').subscribe((result: any) => {
       this.tasksData = result;
-      console.log('tasksData', this.tasksData)
+
     });
   }
 
@@ -137,6 +207,11 @@ export class SremindersComponent implements OnInit {
       this.generateCSV();
     })
   }
+  
+   clear(table: Table) {
+        table.clear();
+    }
+  
   csvData() {
     if (this.entityID !== null || this.searchServiceTask !== null || this.filterStatus !== null) {
       this.data = this.allData;

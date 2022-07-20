@@ -1,33 +1,41 @@
 <section class="body">
   <div class="inner-wrapper">
-    <section role="main" class="content-body pl-1 pr-0 pt-0">
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header pr27 pl18">
-        <div class="row" style="padding-top:10px;">
-
+        <div class="row" style="padding-top: 10px">
           <div class="col-md-1 col-lg-1">
             <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">Reports</h4>
           </div>
 
-          <div class="col-md-2 col-lg-2">
+          <div class="col-md-2 col-lg-2 pr-0">
             <div class="input-group input-group-sm mb-3">
-              <input type="text" class="form-control" placeholder="Search Reports">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search Reports"
+              />
             </div>
           </div>
 
-          <div class="col-md-2 col-lg-2">
-            <button type="submit" class="btn btn-sm btn-success mr-3">Search</button>
+          <div class="col-md-2 col-lg-2 pl-2">
+            <button type="submit" class="btn btn-sm btn-success mr-2">
+              Search
+            </button>
             <button class="btn btn-sm btn-success" type="submit">Reset</button>
           </div>
 
           <div class="col-md-7 col-lg-7 pr-1 text-right">
-            <a href="run-report.php" class="btn btn-sm btn-success mr-3">Run Report</a>
-            <a href="schedule-report.php" class="btn btn-sm btn-success">Schedule a Report</a>
+            <a href="run-report.php" class="btn btn-sm btn-success mr-2"
+              >Run Report</a
+            >
+            <a href="schedule-report.php" class="btn btn-sm btn-success"
+              >Schedule a Report</a
+            >
           </div>
-
         </div>
-
       </header>
 
+<<<<<<< HEAD
 
       <div class="routing-overview__wrapper m-3">
         <div class="row">
@@ -111,208 +119,158 @@
                 </ul>
               </div>
             </section>
+=======
+      <div class="routing-overview__wrapper m-2">
+        <div *ngIf="isFleetEnabled" class="row">
+          <div class="col-12">
+            <h2 class="text-dark font-weight-bold text-5 mt-1">
+              <i class="fas fa-truck"></i> Fleet
+            </h2>
+>>>>>>> 96717babcce47571d1060031474203ddd3364440
           </div>
-
-
-
-          <div class="col-lg-6 col-xl-6 pull-left mb-4">
-            <section class="card">
-              <div class="card-body">
-                <div class="thumb-info mb-3">
-                  <p class="text-dark font-weight-bold text-5"><i class="fas fa-cog"></i> Routing &amp; Dispatch</p>
-                </div>
-
-                <ul class="simple-post-list">
-
-
-                  <li>
-                    <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/reports/dispatch/orders/overview">
-                      <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Orders</span>
-                      <span class="w-100 pull-left text-1">Summary, Order Detail</span>
-                    </a>
-                  </li>
-
-                  <!-- <li>
-                    <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/reports/dispatch/trips/overview">
-                      <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Trips</span>
-                      <span class="w-100 pull-left text-1">Summary, Trips Detail, Activity Detail</span>
-                    </a>
-                  </li> -->
-
-                  <!-- <li>
-                    <a class="w-100 pb-2 line-height-lg pull-left"
-                      routerLink="/reports/dispatch/routes-report/overviewroutes">
-                      <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Routes</span>
-                      <span class="w-100 pull-left text-1">Detail</span>
-                    </a>
-                  </li> -->
-
-                  <!-- <li>
-                    <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/reports/dispatch/planner-report/detail">
-                      <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Planner</span>
-                      <span class="w-100 pull-left text-1">Detail</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/reports/dispatch/crossborder/overview">
-                      <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Cross Border</span>
-                      <span class="w-100 pull-left text-1">Logs, Scorecard, Vehicles Utilization, Document</span>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/reports/dispatch/documents/summary">
-                      <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Documents</span>
-                      <span class="w-100 pull-left text-1">Detail</span>
-                    </a>
-                  </li> -->
-
-
-                </ul>
-              </div>
-            </section>
+          <div class="col-1">
+            <div class="reportbox">
+              <a routerLink="/reports/fleet/drivers">
+                <i class="fas text-6 fa-user-tie mb-2"></i>
+                <br />
+                Driver
+              </a>
+            </div>
           </div>
-
-          <!-- <div class="col-lg-6 col-xl-6 mb-4">
-            <section class="card">
-              <div class="card-body">
-                <div class="thumb-info mb-3">
-                  <p class="text-dark font-weight-bold text-5"><i class="fas fa-cog"></i> Compliance</p>
-                </div>
-
-                <ul class="simple-post-list">
-
-
-                  <li>
-                    <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/reports/compliance/logs/overview">
-                      <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Logs</span>
-                      <span class="w-100 pull-left text-1">Summary, Detail</span>
-                    </a>
-                  </li>
-
-
-                  <li>
-                    <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/reports/compliance/isreports/overview">
-                      <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Inspection
-                        Summary</span>
-                      <span class="w-100 pull-left text-1">Summary, Detail, Logs without Inspection Form, Inspection
-                        Form</span>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a class="w-100 pb-2 line-height-lg pull-left"
-                      routerLink="/reports/compliance/iftareports/overview">
-                      <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> IFTA Reports</span>
-                      <span class="w-100 pull-left text-1">Summary</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </section>
+          <div class="col-1">
+            <div class="reportbox">
+              <a routerLink="/reports/fleet/vehicles/overview">
+                <i class="fas text-6 fa-truck mb-2"></i>
+                <br />
+                Vehicles
+              </a>
+            </div>
           </div>
-
-
-          <div class="col-lg-6 col-xl-6 mb-4">
-            <section class="card">
-              <div class="card-body">
-                <div class="thumb-info mb-3">
-                  <p class="text-dark font-weight-bold text-5"><i class="fas fa-cog"></i> Safety</p>
-                </div>
-
-                <ul class="simple-post-list">
-
-                  <li>
-                    <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/reports/safety/safetyoverview/overview">
-                      <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Safety
-                        Overview</span>
-                      <span class="w-100 pull-left text-1">Summary</span>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/reports/safety/criticalevents/overview">
-                      <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Critical
-                        Events</span>
-                      <span class="w-100 pull-left text-1">Summary, Detail</span>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/reports/safety/incidents/overview">
-                      <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Incidents</span>
-                      <span class="w-100 pull-left text-1">Summary, Detail</span>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/reports/safety/hosviolations/overview">
-                      <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> HOS
-                        Violations</span>
-                      <span class="w-100 pull-left text-1">Summary, Detail</span>
-                    </a>
-                  </li>
-
-                  <li>
-                    <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/reports/safety/scorecard/overview">
-                      <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Driver
-                        Scorecard</span>
-                      <span class="w-100 pull-left text-1">Summary, Detail</span>
-                    </a>
-                  </li>
-
-                </ul>
-
-
-              </div> -->
-          <!-- </section> -->
-          <!-- </div> -->
-
-          <div class="col-lg-6 col-xl-6 pull-left mb-4">
-            <section class="card">
-              <div class="card-body">
-                <div class="thumb-info mb-3">
-                  <p class="text-dark font-weight-bold text-5"><i class="fas fa-file-invoice-dollar"></i>Accounts</p>
-                </div>
-
-                <ul class="simple-post-list">
-                  <li>
-                    <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/reports/accounts/collections">
-                      <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Customer Collection</span>
-                      <span class="w-100 pull-left text-1">Details</span>
-                    </a>
-                  </li>
-
-
-                </ul>
-              </div>
-            </section>
+          <div class="col-1">
+            <div class="reportbox">
+              <a routerLink="/reports/fleet/asset/overview">
+                <i class="fas text-6 fa-box mb-2"></i>
+                <br />
+                Asset
+              </a>
+            </div>
           </div>
-          
-          <div class="col-lg-6 col-xl-6 pull-right mb-4">
-            <section class="card">
-              <div class="card-body">
-                <div class="thumb-info mb-3">
-                  <p class="text-dark font-weight-bold text-5"><i class="fas fa-file-invoice-dollar"></i> Customer Information</p>
-                </div>
-                <ul class="simple-post-list">
-                  <li class="">
-                    <a class="w-100 pb-2 line-height-lg pull-left" routerLink="/reports/addressbook">
-                      <span class="font-weight-bold text-dark"><i class="fas fa-chevron-right"></i> Customer Information</span>
-                      <span class="w-100 pull-left text-1">Details</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </section>
+          <div class="col-1">
+            <div class="reportbox">
+              <a routerLink="/reports/fleet/fuel/foverview">
+                <i class="fas text-6 fa-gas-pump mb-2"></i>
+                <br />
+                Fuel
+              </a>
+            </div>
           </div>
-
+          <div class="col-1">
+            <div class="reportbox">
+              <a routerLink="/reports/fleet/reminders/overview">
+                <i class="fas text-6 fa-bell mb-2"></i>
+                <br />
+                Reminder
+              </a>
+            </div>
+          </div>
+          <div class="col-1">
+            <div class="reportbox">
+              <a routerLink="/reports/fleet/maintenance/overview">
+                <i class="fas text-6 fa-tools mb-2"></i>
+                <br />
+                Maintenance
+              </a>
+            </div>
+          </div>
+          <div class="col-1">
+            <div class="reportbox">
+              <a routerLink="/reports/fleet/inventory/overview">
+                <i class="fas text-6 fa-dolly-flatbed mb-2"></i>
+                <br />
+                Inventory
+              </a>
+            </div>
+          </div>
         </div>
 
+        <div *ngIf="isDispatchEnabled" class="row">
+          <div class="col-12">
+            <h2 class="text-dark font-weight-bold text-5">
+              <i class="fas fa-route"></i> Routing & Dispatch
+            </h2>
+          </div>
+          <div class="col-1">
+            <div class="reportbox">
+              <a routerLink="/reports/dispatch/orders/overview">
+                <i class="fas text-6 fa-user-tie mb-2"></i>
+                <br />
+                Orders
+              </a>
+            </div>
+          </div>
+          <div class="col-1">
+            <div class="reportbox">
+              <a routerLink="/reports/dispatch/alarm-report/aoverview">
+                <i class="fas text-6 fa-bell mb-2"></i>
+                <br />
+                Alarm
+              </a>
+            </div>
+          </div>
+           <div class="col-1">
+            <div class="reportbox">
+              <a routerLink="/reports/dispatch/brokerage-report/boverview">
+                <i class="text-6 fa-solid fa-handshake"></i>
+                <br />
+                Brokerage
+              </a>
+            </div>
+          </div>
+        </div>
 
+        <div *ngIf="isAccountsEnabled" class="row">
+          <div class="col-12">
+            <h2 class="text-dark font-weight-bold text-5">
+              <i class="fas fa-file-alt"></i> Accounts
+            </h2>
+          </div>
+          <div class="col-1">
+            <div class="reportbox">
+              <a routerLink="/reports/accounts/collections">
+                <i class="fas text-6 fa-hand-holding-usd mb-2"></i>
+                <br />
+                Customer Collect.
+              </a>
+            </div>
+          </div>
+          <div class="col-1">
+            <div class="reportbox">
+              <a routerLink="/reports/accounts/payment">
+                <i class="fas text-6 fa-file-invoice-dollar mb-2"></i>
+                <br />
+                Payment Report
+              </a>
+            </div>
+          </div>
+        </div>
 
+        <div class="row">
+          <div class="col-12">
+            <h2 class="text-dark font-weight-bold text-5">
+              <i class="fas fa-users"></i> Customer Information
+            </h2>
+          </div>
+          <div class="col-1">
+            <div class="reportbox">
+              <a routerLink="/reports/addressbook">
+                <i class="fas text-6 fa-users"></i>
+                <br />
+                Customer Infor...
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
-
     </section>
   </div>
 </section>

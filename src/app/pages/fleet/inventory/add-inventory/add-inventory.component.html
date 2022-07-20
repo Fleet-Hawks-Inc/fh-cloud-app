@@ -9,7 +9,7 @@
             </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right">
-            <a routerLink="/fleet/inventory/list" class="btn btn-default btn-sm"
+            <a routerLink="/fleet/inventory/list/{{sessionID}}" class="btn btn-default btn-sm"
               ><i class="fas fa-list"></i> Inventory List</a
             >
           </div>
@@ -29,11 +29,7 @@
                 <div class="form-group row adddriverpl pt-1 mt-1">
                   <div class="col-lg-10">
                     <label
-                      class="
-                        control-label
-                        font-weight-bold font-weight-bold
-                        text-lg-right text-5
-                      "
+                      class="control-label font-weight-bold font-weight-bold text-lg-right text-5"
                       >Inventory Details</label
                     >
                   </div>
@@ -41,12 +37,7 @@
                     <div class="row">
                       <div class="col-lg-10">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-lg-right pt-2"
                           >Part#<span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
                           ></label
@@ -59,6 +50,9 @@
                           placeholder=" eg. 123AZ"
                           #iPart="ngModel"
                           required
+                    [ngClass]="{
+                  error: inventoryF.submitted && iPart.invalid
+                                }"
                           pattern="^[a-zA-Z0-9\s]+$"
                         />
                         <div
@@ -79,12 +73,7 @@
                     <div class="row mt-2">
                       <div class="col-lg-10">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-lg-right pt-2"
                           >Item Name<span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
                           ></label
@@ -117,12 +106,7 @@
                     <div class="row mt-2">
                       <div class="col-lg-10">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-lg-right pt-2"
                           >Category
                           <span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
@@ -160,20 +144,17 @@
                   </div>
                   <div class="col-lg-5 offset-lg-1 mb-2 pb2">
                     <div class="row">
-                      <div class="col-lg-8">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Unit Cost (base)<span class="mandfield text-2 ml-1"
-                            ><sup>*</sup></span
-                          ></label
-                        >
+                      <div class="col-lg-12">
                         <div class="row">
-                          <div class="col-lg-4">
+                          <div class="col-lg-3">
+                            <label
+                              class="control-label font-weight-bold text-lg-right pt-2"
+                              >Unit Cost (base)<span
+                                class="mandfield text-2 ml-1"
+                                ><sup>*</sup></span
+                              ></label
+                            >
+
                             <input
                               type="number"
                               min="0"
@@ -197,14 +178,13 @@
                               </div>
                             </div>
                           </div>
-                          
-          
-                          
-                          
-                          
-                          
-                          
-                          <div class="col-lg-4">
+
+                          <div class="col-lg-3">
+                            <label
+                              class="control-label font-weight-bold text-lg-right pt-2"
+                              >&nbsp;</label
+                            >
+
                             <ng-select
                               name="costUnitType"
                               [(ngModel)]="costUnitType"
@@ -230,11 +210,13 @@
                               </div>
                             </div>
                           </div>
-                          
-                          
-      
-                          
-                          <div class="col-lg-4">
+
+                          <div class="col-lg-3">
+                            <label
+                              class="control-label font-weight-bold text-lg-right pt-2"
+                              >&nbsp;</label
+                            >
+
                             <ng-select
                               name="costUnit"
                               [(ngModel)]="costUnit"
@@ -260,76 +242,63 @@
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-4">
-                        <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
-                          >Quantity<span class="mandfield text-2 ml-1"
-                            ><sup>*</sup></span
-                          ></label
-                        >
-                        <input
-                          type="number"
-                          min="0"
-                          class="form-control"
-                          placeholder="eg. 10,20,30"
-                          name="quantity"
-                          [(ngModel)]="quantity"
-                          (change)="calculateAmount()"
-                          placeholder="eg. 1,2,3"
-                          #iQuan="ngModel"
-                          required
-                        />
-                        <div
-                          *ngIf="
-                            iQuan.invalid && (iQuan.dirty || iQuan.touched)
-                          "
-                          class="text-danger"
-                        >
-                          <div *ngIf="iQuan.errors.required">
-                            Quantity must contain numbers.
+                          <div class="col-lg-3">
+                            <label
+                              class="control-label font-weight-bold text-lg-right pt-2"
+                              >Quantity<span class="mandfield text-2 ml-1"
+                                ><sup>*</sup></span
+                              ></label
+                            >
+                            <input
+                              type="number"
+                              min="0"
+                              class="form-control"
+                              placeholder="eg. 10,20,30"
+                              name="quantity"
+                              [(ngModel)]="quantity"
+                              (change)="calculateAmount()"
+                              placeholder="eg. 1,2,3"
+                              #iQuan="ngModel"
+                              required
+                            />
+                            <div
+                              *ngIf="
+                                iQuan.invalid && (iQuan.dirty || iQuan.touched)
+                              "
+                              class="text-danger"
+                            >
+                              <div *ngIf="iQuan.errors.required">
+                                Quantity must contain numbers.
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                     
-        <!--tax and total cost-->       
-                 
-                           <div class="row mt-2">
-                      <div class="col-lg-10">
+
+                    <!--tax and total cost-->
+
+                    <div class="row mt-2">
+                      <div class="col-lg-12">
                         <div class="row">
-                          <div class="col-lg-4">
+                          <div class="col-lg-3">
                             <label
-                              class="
-                                control-label
-                                font-weight-bold
-                                text-lg-right
-                                pt-2
-                              "
-                              >Tax <span class="mandfield text-2 ml-1"
-                            ><sup>*</sup></span></label
+                              class="control-label font-weight-bold text-lg-right pt-2"
+                              >Tax
+                              <span class="mandfield text-2 ml-1"
+                                ><sup>*</sup></span
+                              ></label
                             >
                           </div>
-                          <div class="col-lg-4">
+                          <div class="col-lg-3">
                             <label
-                              class="
-                                control-label
-                                font-weight-bold
-                                text-lg-right
-                                pt-2
-                              "
+                              class="control-label font-weight-bold text-lg-right pt-2"
                               >Total Cost
                             </label>
                           </div>
-                      </div>
-                         <div class="row">
-                          <div class="col-lg-4">
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-3">
                             <input
                               type="number"
                               min="0"
@@ -341,9 +310,10 @@
                               #iunitT="ngModel"
                               required
                             />
-                                 <div
+                            <div
                               *ngIf="
-                                iunitT.invalid && (iunitT.dirty || iunitT.touched)
+                                iunitT.invalid &&
+                                (iunitT.dirty || iunitT.touched)
                               "
                               class="text-danger"
                             >
@@ -352,8 +322,8 @@
                               </div>
                             </div>
                           </div>
-                          
-                          <div class="col-lg-4">
+
+                          <div class="col-lg-3">
                             <input
                               type="text"
                               class="form-control"
@@ -367,17 +337,12 @@
                           </div>
                         </div>
                       </div>
-                        </div>
-         <!--><-->                 
+                    </div>
+                    <!--><-->
                     <div class="row mt-2">
                       <div class="col-lg-12">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-lg-right pt-2"
                           >Description</label
                         >
                         <textarea
@@ -416,12 +381,7 @@
                     <div class="row">
                       <div class="col-lg-6">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-dark text-4
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-dark text-4 pt-2"
                           >Warehouse Details</label
                         >
                       </div>
@@ -466,18 +426,11 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-lg-2 mar-top-37 pl-0 pr-0">
+                      <div class="col-lg-2 mar-top-37 pl-0 pr-0 text-right">
                         <a
-                          [routerLink]=""
+                          [routerLink]="[]"
                           (click)="showWarehoseModal()"
-                          class="
-                            modal-with-form
-                            btn
-                            cus-btn-padd
-                            btn-success
-                            mr-3
-                            mt-0
-                          "
+                          class="modal-with-form btn cus-btn-padd btn-success mr-3 mt-0"
                           ><i class="fas fa-plus"></i
                         ></a>
                         <a
@@ -495,34 +448,19 @@
                         <div class="row">
                           <div class="col-lg-4">
                             <label
-                              class="
-                                control-label
-                                font-weight-bold
-                                text-lg-right
-                                pt-2
-                              "
+                              class="control-label font-weight-bold text-lg-right pt-2"
                               >Aisle</label
                             >
                           </div>
                           <div class="col-lg-4">
                             <label
-                              class="
-                                control-label
-                                font-weight-bold
-                                text-lg-right
-                                pt-2
-                              "
+                              class="control-label font-weight-bold text-lg-right pt-2"
                               >Row
                             </label>
                           </div>
                           <div class="col-lg-4">
                             <label
-                              class="
-                                control-label
-                                font-weight-bold
-                                text-lg-right
-                                pt-2
-                              "
+                              class="control-label font-weight-bold text-lg-right pt-2"
                               >Bin</label
                             >
                           </div>
@@ -580,12 +518,7 @@
                     <div class="row mt-2">
                       <div class="col-lg-10">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-lg-right pt-2"
                           >Vendor<span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
                           ></label
@@ -619,18 +552,11 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-lg-2 mar-top-37 pl-0 pr-0">
+                      <div class="col-lg-2 mar-top-37 pl-0 pr-0 text-right">
                         <a
                           href="javascript:;"
                           (click)="openModal('form')"
-                          class="
-                            btn
-                            cus-btn-padd
-                            btn-success
-                            modal-with-form
-                            mr-3
-                            mt-0
-                          "
+                          class="btn cus-btn-padd btn-success modal-with-form mr-3 mt-0"
                           ><i class="fas fa-plus"></i
                         ></a>
                         <a
@@ -655,11 +581,7 @@
                 <div class="form-group row adddriverpl pt-2">
                   <div class="col-lg-12">
                     <label
-                      class="
-                        control-label
-                        font-weight-bold font-weight-bold
-                        text-lg-right text-5
-                      "
+                      class="control-label font-weight-bold font-weight-bold text-lg-right text-5"
                       >Additional Details</label
                     >
                   </div>
@@ -669,12 +591,7 @@
                         <div class="row">
                           <div class="col">
                             <label
-                              class="
-                                control-label
-                                font-weight-bold
-                                text-lg-right text-dark text-4
-                                pt-2
-                              "
+                              class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2"
                               >Warranty Time</label
                             >
                           </div>
@@ -709,12 +626,7 @@
                         <div class="row mt-2">
                           <div class="col-lg-12">
                             <label
-                              class="
-                                control-label
-                                font-weight-bold
-                                text-lg-right text-dark text-4
-                                pt-2
-                              "
+                              class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2"
                               >Notes</label
                             >
                             <textarea
@@ -746,20 +658,22 @@
                     <div class="row">
                       <div class="col-lg-10">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-lg-right pt-2"
                           >Attach Photo</label
                         >
                         <input
                           (change)="selectDocuments($event, 'uploadedPhotos')"
                           type="file"
-                          class="form-control p-0"
+                          class="form-control border-0 p-0"
                           multiple
+                          accept=".jpg, .jpeg, .png"
                         />
+                               <span
+                              *ngIf="photoError != ''"
+                              class="text-danger"
+                            >
+                              {{ photoError }}
+                            </span>
                       </div>
                       <div class="col-lg-2 mar-top-37"></div>
                     </div>
@@ -791,20 +705,22 @@
                     <div class="row mt-2">
                       <div class="col-lg-10">
                         <label
-                          class="
-                            control-label
-                            font-weight-bold
-                            text-lg-right
-                            pt-2
-                          "
+                          class="control-label font-weight-bold text-lg-right pt-2"
                           >Attach Document</label
                         >
                         <input
                           (change)="selectDocuments($event, 'uploadedDocs')"
                           type="file"
-                          class="form-control p-0"
+                          class="form-control border-0 p-0"
                           multiple
+                          accept=".doc, .docx, .pdf, .jpg, .jpeg .png" 
                         />
+                               <span
+                              *ngIf="docsError != ''"
+                              class="text-danger"
+                            >
+                              {{ docsError }}
+                            </span>
                       </div>
                       <div class="col-lg-2 mar-top-37"></div>
                     </div>
@@ -821,23 +737,39 @@
                             <div class="col-lg-6 text-right"></div>
                           </div>
                           <hr class="solid mt-2" />
-                          <div
-                            class="row mb-1"
-                            *ngFor="let doc of inventoryDocs; let d = index"
-                          >
-                            <div class="col-lg-9">
-                              <a href="{{ doc.path }}" target="_blank"
-                                >Document No. {{ d + 1 }}</a
-                              >
-                            </div>
-                            <div class="col-lg-3 text-right">
+                          
+                          <!--<div-->
+                          <!--  class="row mb-1"-->
+                          <!--  *ngFor="let doc of inventoryDocs; let d = index"-->
+                          <!-->-->
+                          <!--  <div class="col-lg-9">-->
+                          <!--    <a href="{{ doc.path }}" target="_blank"-->
+                          <!--      >Document No. {{ d + 1 }}</a-->
+                          <!--    >-->
+                          <!--  </div>-->
+                          <!--  <div class="col-lg-3 text-right">-->
                               <!-- <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"></i>                               -->
-                              <i
-                                class="fas fa-times text-danger"
-                                (click)="delete('doc', doc.name, d)"
-                              ></i>
-                            </div>
+                          <!--    <i-->
+                          <!--      class="fas fa-times text-danger"-->
+                          <!--      (click)="delete('doc', doc.name, d)"-->
+                          <!--    ></i>-->
+                          <!--  </div>-->
+                          <!--</div>-->
+                          
+                                             
+                        <div class="row mb-1" *ngFor="let doc of inventoryDocs; let d = index">
+                                        <div class="col-lg-9">
+                                            <a href="{{ doc.path }}" data-toggle="modal" data-target="#viewDocModal"
+                                                (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
+                                        </div>
+                                        <div class="col-lg-3 text-right">
+                            <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="delete('doc', doc.name, d)"><i class="fas fa-trash-alt"></i></a>
+                                                 <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                              (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"><i
+                                class="fas fa-eye"></i></a>
                           </div>
+                        </div>
                         </div>
                       </div>
                     </div>
@@ -1152,7 +1084,7 @@
           <button
             type="button"
             class="btn btn-success"
-            [routerLink]=""
+            [routerLink]="[]"
             (click)="addWarehouse()"
             [disabled]="!warehouseForm.form.valid"
           >

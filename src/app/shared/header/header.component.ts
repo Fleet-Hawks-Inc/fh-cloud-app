@@ -6,6 +6,7 @@ import { ApiService, ListService } from "src/app/services";
 import { InvokeHeaderFnService } from "src/app/services/invoke-header-fn.service";
 import { environment } from "../../../environments/environment";
 import { DashboardUtilityService } from "src/app/services/dashboard-utility.service";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
@@ -13,7 +14,7 @@ import { DashboardUtilityService } from "src/app/services/dashboard-utility.serv
 })
 export class HeaderComponent implements OnInit {
   environment = environment.isFeatureEnabled;
-
+  showNotificationDetail = false;
   isFleetEnabled = environment.isFleetEnabled;
   isDispatchEnabled = environment.isDispatchEnabled;
   isComplianceEnabled = environment.isComplianceEnabled;
@@ -21,6 +22,7 @@ export class HeaderComponent implements OnInit {
   isSafetyEnabled = environment.isSafetyEnabled;
   isAccountsEnabled = environment.isAccountsEnabled;
   isReportsEnabled = environment.isReportsEnabled;
+  isAddressBook = environment.isAddressBook;
 
   Asseturl = this.apiService.AssetUrl;
   @Output() navClicked = new EventEmitter<any>();
@@ -80,13 +82,23 @@ export class HeaderComponent implements OnInit {
     data: [],
   };
   updateButton = false;
+  showSwitch = false;
+
+  showNotifications = false;
+  notifications = [];
+  announcements = [];
+  unReadCounter = 0;
+  lastKey = '';
+  isLoadText = "Load More...";
+  isLoad = false;
   constructor(
     private sharedService: SharedServiceService,
     private apiService: ApiService,
     private listService: ListService,
     public router: Router,
     private headerFnService: InvokeHeaderFnService,
-    private dashboardService: DashboardUtilityService
+    private dashboardService: DashboardUtilityService,
+    private routerMgmtService: RouteManagementServiceService
   ) {
     this.sharedService.activeParentNav.subscribe((val) => {
       let activeTab = localStorage.getItem("active-header");
@@ -95,20 +107,30 @@ export class HeaderComponent implements OnInit {
       }
       this.navSelected = val;
     });
+
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.init();
     this.getCurrentuser();
+    this.showSwitch = localStorage.getItem("subCompany") == 'yes' ? true : false;
     this.fetchCarrier();
     if (this.headerFnService.subsVar === undefined) {
       this.headerFnService.subsVar =
         this.headerFnService.invokeHeaderComponentFunction.subscribe(
           (name: string) => {
             this.upateCurrentUser();
+
           }
         );
     }
+    await this.getAllNotificationAnnouncement();
+    setInterval(async () => {
+      this.lastKey = '';
+      this.notifications = [];
+      this.announcements = [];
+      await this.getAllNotificationAnnouncement();
+    }, 1000 * 60 * 5);
   }
 
   async init() {
@@ -129,7 +151,13 @@ export class HeaderComponent implements OnInit {
     this.isAccountsEnabled = localStorage.getItem("isAccountsEnabled")
       ? JSON.parse(localStorage.getItem("isAccountsEnabled"))
       : environment.isAccountsEnabled;
+
     environment.isAccountsEnabled;
+
+    this.isAddressBook = localStorage.getItem("isAddressBook")
+      ? JSON.parse(localStorage.getItem("isAddressBook"))
+      : environment.isAddressBook;
+
     this.isReportsEnabled = environment.isReportsEnabled;
   }
   onNavSelected(nav: string) {
@@ -146,7 +174,8 @@ export class HeaderComponent implements OnInit {
     let result: any = await this.dashboardService.getCarriers();
     if (result.Items.length > 0) {
       this.carriers = result.Items[0];
-      this.currentCarrierID = this.carriers.carrierID;
+      // this.currentCarrierID = this.carriers.carrierID;
+      this.currentCarrierID = localStorage.getItem('xfhCarrierId');
       this.logoSrc = "assets/img/logo.png";
       // if (this.carriers.uploadedLogo !== '') {
       //   this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
@@ -160,6 +189,7 @@ export class HeaderComponent implements OnInit {
     try {
       await Auth.signOut();
       this.listService.triggerModal("");
+      this.listService.openDocTypeMOdal("");
       localStorage.removeItem("LoggedIn");
       localStorage.removeItem("user");
       localStorage.removeItem("active-header");
@@ -177,7 +207,11 @@ export class HeaderComponent implements OnInit {
       localStorage.removeItem("isManageEnabled");
       localStorage.setItem("signOut", "true"); //trigger flag
       localStorage.removeItem("accessToken"); //Remove token from local
+      localStorage.removeItem('xfhCarrierId');
+      localStorage.removeItem('currentUserName');
+      localStorage.removeItem('subCompany');
       // localStorage.removeItem('jwt');
+      this.dashboardService.clearToast()
       this.router.navigate(["/Login"]);
     } catch (error) {
       console.log("error signing out: ", error);
@@ -186,9 +220,16 @@ export class HeaderComponent implements OnInit {
 
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    this.userRole = this.currentUser.userType;
-    localStorage.setItem("currentUsername", this.currentUser.username);
-    this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    const selectedCarrier = localStorage.getItem('xfhCarrierId');
+    if (selectedCarrier && this.currentUser.userRoles === "orgAdmin") {
+      const res = await this.apiService.getData(`carriers/get/detail/${selectedCarrier}`).toPromise()
+      this.userRole = 'Super Admin';
+      this.currentUser = `${res.Items[0].firstName} ${res.Items[0].lastName}`;
+    } else {
+      this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+      this.userRole = this.currentUser.userType;
+      this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    }
     const outputName = this.currentUser.match(/\b(\w)/g);
     this.smallName = outputName.join("");
     localStorage.setItem("currentUserName", this.currentUser);
@@ -246,5 +287,77 @@ export class HeaderComponent implements OnInit {
       ],
       data: [],
     };
+  }
+
+  detailMessage: string;
+  messageTime: string;
+  async showDetail(notification, isNotification = true) {
+    this.showNotifications = false;
+    this.detailMessage = notification.message;
+    this.messageTime = notification.created;
+    this.showNotificationDetail = true;
+    if (isNotification && notification.read === 0) {
+
+      await this.apiService.putData(`notification/read/${notification.id}`, {}).toPromise();
+      notification.read = 1;
+      this.unReadCounter -= 1;
+    }
+
+
+
+  }
+
+
+  onScroll = async () => {
+    this.isLoad = true;
+    this.isLoadText = "Loading";
+    await this.getAllNotificationAnnouncement();
+  }
+
+  async getAllNotificationAnnouncement() {
+    this.unReadCounter = 0;
+    const result = await this.apiService.getData(`notification/getAll?lastKey=${this.lastKey}`, true).toPromise();
+    if (result.notifications) {
+      for (let i = 0; i < result.notifications.data.length; i++) {
+        const element = result.notifications.data[i];
+        this.notifications.push(element)
+      }
+      this.notifications.forEach(element => {
+        if (element.read === 0) {
+          this.unReadCounter += 1;
+
+        }
+        const length = 50;
+        element['shortMessage'] = element.message.length > length ?
+          element.message.substring(0, length - 3) + "..." :
+          element.message;
+
+      });
+      if (result.notifications.nextPage) {
+        this.lastKey = result.notifications.nextPage;
+      } else {
+        this.lastKey = 'end';
+      }
+    }
+    if (result.announcements) {
+      this.announcements = result.announcements.data;
+      this.announcements.forEach(element => {
+        const length = 50;
+        element['shortMessage'] = element.message.length > length ?
+          element.message.substring(0, length - 3) + "..." :
+          element.message;
+
+      });
+    }
+
+
+  }
+
+
+  switchCompany() {
+    this.router.navigateByUrl('/organizations');
+    this.listService.triggerModal("");
+    this.listService.openDocTypeMOdal("");
+    this.routerMgmtService.resetAllCache();
   }
 }

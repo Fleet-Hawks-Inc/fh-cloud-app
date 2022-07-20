@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ApiService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
 import { ToastrService } from "ngx-toastr";
@@ -7,13 +7,14 @@ import * as moment from 'moment';
 import { ActivatedRoute } from "@angular/router";
 import { result } from 'lodash';
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
-
+import { Table } from 'primeng/table';
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
   styleUrls: ['./activity.component.css']
 })
 export class ActivityComponent implements OnInit {
+  @ViewChild('dt') table: Table;
   exportData = [];
   allData: any = [];
   assetData = []
@@ -34,6 +35,11 @@ export class ActivityComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   public astId;
+  get = _.get;
+  find = _.find;
+
+  _selectedColumns: any[];
+  dataColumns: any[];
   constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute, private countryStateCity: CountryStateCityService) { }
   ngOnInit() {
     this.end = moment().format("YYYY-MM-DD");
@@ -41,14 +47,47 @@ export class ActivityComponent implements OnInit {
     this.astId = this.route.snapshot.params[`astId`];
     this.fetchAssetActivity()
     this.fetchAsset();
+    this.dataColumns = [
+      { width: '6%', field: 'assetName', header: 'Asset', type: "text", },
+      { width: '6%', field: 'tripNo', header: 'Trip#', type: "text" },
+      { width: '6%', field: 'orderName', header: 'Order#', type: "text" },
+      { width: '6%', field: 'vehicle', header: 'Vehicle', type: 'text' },
+      { width: '13%', field: 'driverName', header: 'Driver', type: 'text' },
+      { width: '25%', field: 'location', header: 'Location', type: "text" },
+      { width: '8%', field: 'date', header: 'Date', type: "text" },
+      { width: '8%', field: 'usState', header: 'Province (US)', type: 'text' },
+      { width: '8%', field: 'usStateMiles', header: 'US Miles', type: 'text' },
+      { width: '7%', field: 'usMiles', header: 'US Total', type: 'text' },
+      { width: '9%', field: 'canState', header: 'Province (Canada)', type: 'text' },
+      { width: '8%', field: 'canStateMiles', header: 'Canada Miles', type: 'text' },
+      { width: '8%', field: 'canMiles', header: 'Canada Total', type: 'text' },
+      { width: '8%', field: 'miles', header: 'Total Miles', type: 'text' },
+    ]
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
   }
+
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+  }
+
+
   fetchAsset() {
     this.apiService.getData(`assets/fetch/detail/${this.astId}`).subscribe((result: any) => {
       this.assetData = result.Items;
     });
   }
-
-  onScroll() {
+  onScroll(event: any) {
     if (this.loaded) {
       this.fetchAssetActivity();
     }
@@ -61,88 +100,8 @@ export class ActivityComponent implements OnInit {
   }
   fetchAssetActivity() {
     if (this.lastItemSK !== 'end') {
-      this.apiService.getData(`trips/get/tripData?asset=${this.astId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
-        if (result.Items.length === 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND
-        }
+      this.apiService.getData(`common/trips/get/tripData?asset=${this.astId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
         this.allData = this.allData.concat(result.Items)
-
-        const usProvArr = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "	KY", "	LA", "ME", "MD", "MA", "MI", "MN",
-          "MS", "MO", "MT", "NE", "NV", "NH", "	NJ", "	NM", "	NY", "NC", "ND", "OH", "OK", "OR", "PA", "PR", "	RI", "SC", "SD", "	TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY"]
-        const canArr = ["AB", "BC", "MB", "NB", "NL", "NF", "NT", "NS", "NU", "ON", "PE", "PQ", "QC", "SK", "YT"]
-
-        for (let asst of this.allData) {
-          let dataa = asst
-          asst.miles = 0
-          for (let element of dataa.tripPlanning) {
-            asst.miles += Number(element.miles);
-          }
-        }
-        this.allData = result.Items;
-        console.log('allData==-', this.allData)
-        for (let data of this.allData) {
-          console.log(' iftaMiles', data.iftaMiles)
-          data.canMiles = 0;
-          data.usMiles = 0;
-          data.finalData = ''
-          data.canProvince = [];
-          data.usProvince = [];
-          data.provinceData = [];
-          data.province =
-            data.counter = 0;
-          data.us = [];
-          data.ca = [];
-          data.vehicleProvinces = [];
-          data.vehicleIDs.map((v) => {
-            data.iftaMiles.map((ifta) => {
-              ifta.map((ifta2) => {
-                if (ifta2[v] && ifta2[v].length > 0) {
-                  let newObj = {
-                    vehicleID: v,
-                    vehicleName: data.vehicle,
-                    provinces: [],
-                    caProvince: [],
-                    usProvince: []
-                  }
-                  ifta2[v].map((location) => {
-
-                    if (!data.vehicleProvinces.includes(location.StCntry)) {
-                      data.vehicleProvinces.push(location.StCntry);
-                    }
-                    newObj.provinces.push(location);
-                    if (usProvArr.includes(location.StCntry)) {
-                      newObj.usProvince.push(location);
-                    }
-                    if (canArr.includes(location.StCntry)) {
-                      newObj.caProvince.push(location);
-                    }
-                  })
-                  data.provinceData.push(newObj);
-                  console.log(data.provinceData)
-                }
-              })
-            })
-          })
-          for (let item of data.provinceData) {
-            data.finalData = item
-            console.log('data.finalData', data.finalData,)
-            let provinceDataa = item.provinces;
-            item.provinces.map((v) => {
-              if (usProvArr.includes(v.StCntry)) {
-                console.log('v.StCntry', v.StCntry);
-                console.log('exx', v);
-                data.usMiles += Number(v.Total)
-                data.usProvince = v.StCntry
-              }
-              else if (canArr.includes(v.StCntry)) {
-                console.log('v.StCntry', v.StCntry);
-                console.log('exx', v);
-                data.canMiles += Number(v.Total)
-                data.canProvince = v.StCntry
-              }
-            })
-          }
-        }
         if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND
         }
@@ -154,6 +113,39 @@ export class ActivityComponent implements OnInit {
           this.lastItemSK = 'end';
         }
         this.loaded = true;
+        for (let res of result.Items) {
+
+          res.miles = 0
+          res.location = []
+          res.locationData
+          res.date = []
+          res.usState = []
+          res.usStateMiles = []
+          res.canState = []
+          res.canStateMiles = []
+          for (let element of res.tripPlanning) {
+            res.miles += Number(element.miles);
+            res.location.push(element.type + ": " + element.location )
+        
+            res.date.push(element.type + ": " + element.date)
+          } 
+          for (let data of res.provinceData) {
+            for (let provD of data.usProvince) {
+              res.usState.push(provD.StCntry)
+              res.usStateMiles.push( provD.Total)
+            }
+
+            for (let canProvD of data.canProvince) {
+              res.canState.push(canProvD.StCntry)
+              res.canStateMiles.push(canProvD.Total)
+            }
+          }
+        }
+
+
+        if (result.Items.length === 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND
+        }
       });
     }
   }
@@ -181,11 +173,31 @@ export class ActivityComponent implements OnInit {
     }
   }
 
-
-  csv() {
-    this.exportData = this.allData
-    this.generateCSV();
-    this.fetchAssetActivity();
+  fetchFullExport() {
+    this.apiService.getData(`trips/fetch/assetActivity/list?asset=${this.astId}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
+      this.exportData = result.Items;
+      for (let ast of this.exportData) {
+        let dataa = ast
+        ast.miles = 0
+        for (let element of dataa.tripPlanning) {
+          ast.miles += Number(element.miles);
+        }
+      }
+      this.generateCSV();
+    });
+  }
+  clear(table: Table) {
+    table.clear();
+  }
+  refreshData() {
+    this.end = moment().format("YYYY-MM-DD");
+    this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
+    this.allData = [];
+    this.lastItemSK = '';
+    this.loaded = false;
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.fetchAssetActivity()
+    this.fetchAsset();
   }
 
   generateCSV() {
@@ -195,43 +207,44 @@ export class ActivityComponent implements OnInit {
       this.exportData.forEach(element => {
         let location = ''
         let date = ''
+        let usMiles = ''
+        let canMiles = ''
+        let usState = ''
+        let canState = ''
         for (let i = 0; i < element.tripPlanning.length; i++) {
           const element2 = element.tripPlanning[i];
           date += `"${element2.type} :-  ${element2.date}\n\"`
           element2.location = element2.location.replace(/,/g, ' ');
           location += `"${element2.type} :-  ${element2.location}\n\"`
         }
-        let usState = ''
-        for (let data of element.provinceData) {
-
-          for (let j = 0; j < data.usProvince.length; j++) {
-            const element3 = data.usProvince[j];
-            usState += element3.StCntry + " : " + element3.Total
-            if (j < data.usProvince.length - 1) {
-              usState += " & ";
+        if (element.provinceData && element.provinceData.length > 0) {
+          for (let i = 0; i < element.provinceData.length; i++) {
+            const element2 = element.provinceData[i];
+            for (let j = 0; j < element2.usProvince.length; j++) {
+              const element3 = element2.usProvince[j];
+              usState += `"${element3.StCntry}\n\"`;
+              usMiles += `"${element3.Total}\n\"`;
             }
-          }
-        }
-        let caState = ''
-        for (let data of element.provinceData) {
-
-          for (let j = 0; j < data.caProvince.length; j++) {
-            const element3 = data.caProvince[j];
-            caState += element3.StCntry + " : " + element3.Total
-            if (j < data.caProvince.length - 1) {
-              caState += " & ";
+            for (let k = 0; k < element2.canProvince.length; k++) {
+              const element4 = element2.canProvince[k];
+              canState += `"${element4.StCntry}\n\"`;
+              canMiles += `"${element4.Total}\n\"`;
             }
           }
         }
         let obj = {}
-        obj["Asset"] = element.assetName.replace(/, /g, ' &');;
+        obj["Asset"] = element.assetName.replace(/, /g, ' &');
         obj["Trip#"] = element.tripNo;
         obj["Order#"] = element.orderName.replace(/, /g, ' &');
+        obj["Vehicle"] = element.vehicle.replace(/, /g, ' &');
+        obj["Drivers"] = element.driverName.replace(/, /g, ' &');
         obj["location"] = location;
         obj["	Date"] = date;
         obj["Province(US)"] = usState;
+        obj["US Miles"] = usMiles;
         obj["US(Total)"] = element.usMiles;
-        obj["Province(Canada)"] = caState;
+        obj["Province(Canada)"] = canState;
+        obj["Canada Miles"] = canMiles;
         obj["Canada(Total)"] = element.canMiles;
         obj["Total Miles"] = element.miles;
         dataObject.push(obj)

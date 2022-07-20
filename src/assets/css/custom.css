@@ -7,6 +7,7 @@
     width: 8px;
   }
  */
+
 ::-webkit-scrollbar {
   width: 2px;
 }
@@ -16,24 +17,29 @@
 }
 
 /* Track */
+
 ::-webkit-scrollbar-track {
   background: #fff;
 }
 
 /* Handle */
+
 ::-webkit-scrollbar-thumb {
   background: #dedede;
 }
 
 /* Handle on hover */
+
 ::-webkit-scrollbar-thumb:hover {
   background: #5c5c5c;
 }
 
 /* chat classes start from here*/
+
 .chat-menu {
   float: left;
 }
+
 .chat-icon {
   display: block;
   transition: all 0.2s;
@@ -43,7 +49,7 @@
 }
 
 .chat-icon img {
-  border-radius: 50px !important ;
+  border-radius: 50px !important;
   width: 44px;
   height: 44px;
 }
@@ -60,6 +66,7 @@
   line-height: 14px;
   color: #000;
 }
+
 .chat-name span {
   margin: 0px 0 2px 0;
   font-size: 0.8em;
@@ -68,6 +75,7 @@
 }
 
 /*Name*/
+
 .chat-hdicon {
   display: block;
   transition: all 0.2s;
@@ -77,7 +85,7 @@
 }
 
 .chat-hdicon img {
-  border-radius: 50px !important ;
+  border-radius: 50px !important;
   width: 44px;
   height: 44px;
 }
@@ -93,6 +101,7 @@
   line-height: 14px;
   color: #000;
 }
+
 .chat-headname span {
   margin: 0px 0 2px 0;
   font-size: 0.8em;
@@ -109,11 +118,13 @@
   text-align: center;
   margin-bottom: 10px;
 }
+
 .chat-daytext {
   text-transform: uppercase;
   display: block;
   margin: auto;
 }
+
 .chatdaybg {
   background: #fafafa;
   padding: 5px;
@@ -123,6 +134,7 @@
 .chat-message {
   margin-bottom: 15px;
 }
+
 .chat-message-own {
   text-align: right;
 }
@@ -137,6 +149,7 @@
 }
 
 /*attachment in chat*/
+
 .media .media-body {
   word-break: break-word;
 }
@@ -149,6 +162,7 @@
   border-bottom: 0px !important;
   color: #fff;
 }
+
 .message-document li:hover {
   background: none !important;
   text-decoration: none !important;
@@ -296,6 +310,7 @@
 }
 
 /*geo fencing classes*/
+
 #map {
   height: 100%;
 }
@@ -307,15 +322,18 @@
   margin-top: 20px;
   padding: 0px;
 }
+
 .topnav ul {
   list-style-type: none;
   float: left;
   margin: 0;
   padding: 0;
 }
+
 .topnav ul li {
   float: left;
 }
+
 .topnav ul li a {
   color: #2e353e;
   text-decoration: none;
@@ -324,11 +342,13 @@
   border-radius: 50px;
   margin: 0 4px;
 }
+
 .topnav ul li a:hover {
   color: #000;
   background: #fff;
   text-decoration: none;
 }
+
 .topnav ul li a.active {
   color: #000;
   background: #fff;
@@ -346,6 +366,7 @@
   width: 12px;
   height: 12px;
 }
+
 .ciryel {
   background: #ffce0c;
   margin-top: 5px;
@@ -355,6 +376,7 @@
   width: 12px;
   height: 12px;
 }
+
 .cirgrn {
   background: #47a447;
   margin-top: 5px;
@@ -364,6 +386,7 @@
   width: 12px;
   height: 12px;
 }
+
 .cirblue {
   background: #2a9aff;
   margin-top: 5px;
@@ -373,6 +396,7 @@
   width: 12px;
   height: 12px;
 }
+
 .cirorg {
   background: #fd9000;
   margin-top: 5px;
@@ -382,6 +406,7 @@
   width: 12px;
   height: 12px;
 }
+
 .cirltgrey {
   background: #dddddd;
   margin-top: 5px;
@@ -391,6 +416,7 @@
   width: 12px;
   height: 12px;
 }
+
 .cirltblk {
   background: #000;
   margin-top: 5px;
@@ -425,6 +451,7 @@
 }
 
 /* map classes */
+
 .mapclass {
   width: 100%;
   height: 100%;
@@ -439,6 +466,7 @@
 }
 
 /*driver list classes*/
+
 .onduty {
   background: #1a621a;
   float: left;
@@ -506,48 +534,51 @@
 }
 
 /* graph page classes */
+
 .gmainbox {
   float: left;
 }
+
 .gleftbox {
   float: left;
   padding-top: 60px;
   padding-right: 10px;
 }
-.gbox {
-  background: url(../graph/graph.png) #fff;
-  float: left;
-  border: solid 2px #777576;
-  width: 1296px;
-  height: 304px;
-}
+
 .gtime {
   float: left;
   width: 1296px;
 }
+
 .gtime ul {
   list-style: none;
   float: left;
   padding-left: 0px;
 }
+
 .gtime ul li {
   float: left;
   font-size: 15px;
   font-weight: 600;
   color: #000;
 }
+
 .gtime ul li.one {
   padding-right: 44px;
 }
+
 .gtime ul li.two {
   padding-right: 45px;
 }
+
 .gtime ul li.three {
   padding-right: 40px;
 }
+
 .gtime ul li.four {
   padding-right: 30px;
 }
+
 .grightbox {
   float: left;
   padding-top: 60px;
@@ -555,20 +586,16 @@
 }
 
 /* graph page 2 classes */
+
 .gmainbox2 {
   float: left;
 }
-.gbox2 {
-  background: url(../graph/graph2.png) #fff;
-  float: left;
-  width: 1334px;
-  height: 343px;
-  padding: 40px 0 0 40px;
-}
+
 .gtime {
   float: left;
   width: 1296px;
 }
+
 .grightbox2 {
   position: fixed;
   right: 0px;
@@ -621,6 +648,7 @@
   .grightbox2 {
     right: 0px;
   }
+
   .gmainbox2 {
     float: left;
     overflow-x: scroll;
@@ -797,26 +825,31 @@
 }
 
 /* DVIR */
+
 .dvirChk {
   min-width: 5%;
   float: left;
 }
+
 .dvirFields {
   min-width: 13%;
   float: left;
 }
 
 /* GeoFence Description Page */
+
 .geofields {
   min-width: 15%;
   float: left;
 }
+
 .geofieldsdesc {
   min-width: 50%;
   float: left;
 }
 
 /* hos report class*/
+
 .hosvalue {
   min-width: 14%;
   float: left;
@@ -833,17 +866,12 @@
   float: left;
   width: 100%;
 }
-.hosgbox2 {
-  background: url(../graph/graph2.png) #fff;
-  float: left;
-  width: 1334px;
-  height: 343px;
-  padding: 40px 0 0 40px;
-}
+
 .gtime {
   float: left;
   width: 1296px;
 }
+
 .hosgrightbox2 {
   float: right;
   padding-top: 60px;
@@ -855,6 +883,7 @@
 .drivermain {
   position: relative;
 }
+
 .drivelist {
   position: absolute;
   width: 454px;
@@ -877,21 +906,25 @@
   border-right: 2px solid white;
   border-bottom: 2px solid #bec8d1;
 }
+
 .driverdetail:hover {
   border: 2px solid black;
 }
 
 /* .driverdetail a{display: block; height: 425px; text-decoration:none; border: solid 3px #fff; padding:10px 10px;}
 .driverdetail a:hover{background: #f0f0f0; text-decoration:none; border: solid 3px #000;} */
+
 .driverstatus {
   width: 100%;
 }
+
 .curtime {
   width: 120px;
   margin-right: 10px;
   float: left;
   border-right: solid 1px #333;
 }
+
 .curcycle {
   width: 130px;
   float: left;
@@ -907,6 +940,7 @@
   background: #fff;
   padding: 10px;
 }
+
 .iconR a {
   background: #ebebeb;
 }
@@ -921,11 +955,13 @@
   background: #fff;
   padding: 10px;
 }
+
 .iconL a {
   background: #ebebeb;
 }
 
 /*dashboard drive detail classes*/
+
 .driverdetail2 {
   float: left;
   background: #f5f5f5;
@@ -942,10 +978,13 @@
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
 .vinfo .vdetail {
   padding: 10px;
 }
+
 /* PICK UP BUTTON CLASS */
+
 .pickup {
   background: crimson;
   border-radius: 50px;
@@ -956,6 +995,7 @@
 }
 
 /* DROP OFF BUTTON CLASS */
+
 .dropoff {
   background: gray;
   border-radius: 50px;
@@ -970,6 +1010,7 @@
 .drivermain {
   position: relative;
 }
+
 .driverminilist {
   position: absolute;
   width: 300px;
@@ -979,6 +1020,7 @@
   right: 48px;
   top: 110px;
 }
+
 .iconRmini {
   position: absolute;
   right: 293px;
@@ -989,6 +1031,7 @@
   background: #fff;
   padding: 10px;
 }
+
 .iconRmini a {
   background: #ebebeb;
 }
@@ -1003,9 +1046,11 @@
   background: #fff;
   padding: 10px;
 }
+
 .iconLmini a {
   background: #ebebeb;
 }
+
 .driverdetailMap {
   float: left;
   background: #f5f5f5;
@@ -1019,27 +1064,32 @@
   text-decoration: none;
   padding: 10px 10px;
 }
+
 .driverdetailMap a:hover {
   background: #fff;
   text-decoration: none;
 }
+
 .driverstatus {
   width: 100%;
   float: left;
   padding: 5px;
 }
+
 .curtime {
   width: 120px;
   margin-right: 10px;
   float: left;
   border-right: solid 1px #333;
 }
+
 .curcycle {
   width: 130px;
   float: left;
 }
 
 /* trip  info*/
+
 .tripscrolbar {
   height: 150px;
   margin-top: 0px;
@@ -1055,6 +1105,7 @@
   top: 60px;
   z-index: 100;
 }
+
 .tripbarfinish {
   width: 200px;
   height: 5px;
@@ -1200,6 +1251,7 @@
   left: 472px;
   top: 55px;
 }
+
 /* trip info date time */
 
 .tripdt1 {
@@ -1210,6 +1262,7 @@
   top: 10px;
   text-align: center;
 }
+
 .tripdt2 {
   z-index: 999;
   width: 50px;
@@ -1218,6 +1271,7 @@
   top: 10px;
   text-align: center;
 }
+
 .tripdt3 {
   z-index: 999;
   width: 50px;
@@ -1226,6 +1280,7 @@
   top: 10px;
   text-align: center;
 }
+
 .tripdt4 {
   z-index: 999;
   width: 50px;
@@ -1234,6 +1289,7 @@
   top: 10px;
   text-align: center;
 }
+
 .tripdt5 {
   z-index: 999;
   width: 50px;
@@ -1242,6 +1298,7 @@
   top: 10px;
   text-align: center;
 }
+
 .tripdt6 {
   z-index: 999;
   width: 50px;
@@ -1252,6 +1309,7 @@
 }
 
 /* trip info location */
+
 .triploc1 {
   z-index: 999;
   width: 50px;
@@ -1260,6 +1318,7 @@
   top: 80px;
   text-align: center;
 }
+
 .triploc2 {
   z-index: 999;
   width: 50px;
@@ -1268,6 +1327,7 @@
   top: 80px;
   text-align: center;
 }
+
 .triploc3 {
   z-index: 999;
   width: 50px;
@@ -1276,6 +1336,7 @@
   top: 80px;
   text-align: center;
 }
+
 .triploc4 {
   z-index: 999;
   width: 50px;
@@ -1284,6 +1345,7 @@
   top: 80px;
   text-align: center;
 }
+
 .triploc5 {
   z-index: 999;
   width: 50px;
@@ -1292,6 +1354,7 @@
   top: 80px;
   text-align: center;
 }
+
 .triploc6 {
   z-index: 999;
   width: 50px;
@@ -1318,6 +1381,7 @@
   margin-left: 10px;
   position: relative;
 }
+
 .triptimemile {
   position: absolute;
   left: 34px;
@@ -1331,6 +1395,7 @@
   float: left;
   margin-bottom: 0px;
 }
+
 .tripcirlce a {
   width: 25px;
   height: 25px;
@@ -1397,6 +1462,7 @@
   left: 0;
   top: 30px;
 }
+
 .trip1 p {
   width: 100%;
   display: block;
@@ -1412,6 +1478,7 @@
   left: 0;
   top: 70px;
 }
+
 .trip2 p {
   width: 100%;
   display: block;
@@ -1439,6 +1506,7 @@
   font-size: 20px;
   color: #167efa;
 }
+
 .dioffduty {
   border: solid 2px #fc3142;
   float: left;
@@ -1451,12 +1519,14 @@
 /* HOS driver insight classes di mean drive insite rejected end */
 
 /* HOS driver insight classes di mean drive insite rejected end */
+
 .maindriverbox {
   border: solid 1px #dedede;
   float: left;
   width: 100%;
   padding: 3%;
 }
+
 .maindriverbox2 {
   border-left: solid 2px #545454;
   background: #fff;
@@ -1464,10 +1534,12 @@
   width: 100%;
   padding: 3%;
 }
+
 .driverbar {
   float: left;
   width: 100%;
 }
+
 .ditotald {
   font-size: 50px;
   float: left;
@@ -1477,16 +1549,19 @@
 }
 
 /* widget classes dispatch dashboard classed start */
+
 .widgetmain {
   background: #fff;
   height: 400px;
 }
+
 .widgettopbar {
   background: #f6f6f6;
   width: 100%;
   float: left;
   padding: 0px 10px;
 }
+
 .widgettopbar2 {
   background: #000;
   width: 100%;
@@ -1500,15 +1575,18 @@
   padding: 0px;
   width: 100%;
 }
+
 .wtopnav ul {
   list-style-type: none;
   float: left;
   margin: 0;
   padding: 0 10px;
 }
+
 .wtopnav ul li {
   float: left;
 }
+
 .wtopnav ul li a {
   color: #2e353e;
   text-decoration: none;
@@ -1517,11 +1595,13 @@
   border-radius: 50px;
   margin: 0 4px;
 }
+
 .wtopnav ul li a:hover {
   color: #000;
   background: #c4c4c4;
   text-decoration: none;
 }
+
 .wtopnav ul li a.active {
   color: #000;
   background: #c4c4c4;
@@ -1533,6 +1613,7 @@
   float: left;
   margin-bottom: 10px;
 }
+
 .wright {
   width: 50%;
   float: right;
@@ -1557,6 +1638,7 @@
 .minwidth60 {
   min-width: 60px;
 }
+
 .minwidth127 {
   min-width: 127px;
 }
@@ -1575,6 +1657,7 @@
 }
 
 /* Button used to open the chat form */
+
 .open-button {
   background-color: #333;
   z-index: 9999;
@@ -1589,6 +1672,7 @@
 }
 
 /* The popup chat - hidden by default */
+
 .chat-popup {
   display: none;
   bottom: 0;
@@ -1603,6 +1687,7 @@
 }
 
 /* chat input of all chat boxes */
+
 .dcinput {
   width: 73% !important;
   margin-left: 17%;
@@ -1610,6 +1695,7 @@
 }
 
 /* chat box 1*/
+
 .dchatb1 {
   width: 280px;
   height: 460px;
@@ -1630,6 +1716,7 @@
 }
 
 /* chat box 2*/
+
 .dchatb2 {
   width: 280px;
   height: 460px;
@@ -1650,6 +1737,7 @@
 }
 
 /* chat box 3*/
+
 .dchatb3 {
   width: 280px;
   height: 460px;
@@ -1670,6 +1758,7 @@
 }
 
 /* chat box 4*/
+
 .dchatb4 {
   width: 280px;
   height: 460px;
@@ -1698,6 +1787,7 @@
 .gfmap {
   position: relative;
 }
+
 .gfmaps {
   width: 400px;
   position: absolute;
@@ -1751,11 +1841,13 @@
 .positionfix {
   position: fixed !important;
 }
+
 .positionsta {
   position: static !important;
 }
 
 /* make borde red for validation */
+
 .redBorder {
   border: solid 1px #c10000;
 }
@@ -1768,6 +1860,7 @@
           bottom: 0; */
   width: 100%;
 }
+
 /* #map1 {
           height:800px;
           top: 10;
@@ -1780,6 +1873,7 @@
           bottom: 0;
           width: 100%;
         } */
+
 .match-parent {
   width: 100%;
   height: 100%;
@@ -1850,12 +1944,6 @@
   left: 0px;
   bottom: 0px;
 }
-.tempgraph {
-  background: url(../img/temp-graph.png);
-  width: 1100px;
-  height: 149px;
-  float: left;
-}
 
 /* full top part */
 
@@ -1864,13 +1952,6 @@
   width: 100%;
   background: #fff;
   background-size: cover;
-}
-
-.speedgraph {
-  background: url(../img/speed-graph.png) 10px 0 no-repeat;
-  width: 990px;
-  height: 149px;
-  float: left;
 }
 
 /* trip info on dashbaord with stops */
@@ -1887,6 +1968,7 @@
   text-decoration: none;
   padding: 10px 10px;
 }
+
 .tripondash a:hover {
   background: #fff;
   text-decoration: none;
@@ -1901,26 +1983,32 @@ td.loadid a {
 .delload {
   background: #ffd3d3 !important;
 }
+
 .compload {
   background: #e6ffe8 !important;
 }
+
 .penload {
   background: #fff1e6 !important;
 }
+
 .orload {
   background: #e6f5ff !important;
 }
 
 /* load board dashboard */
+
 .widgetload {
   background: #fff;
 }
+
 .widgettbload {
   background: #f6f6f6;
   width: 100%;
   float: left;
   padding: 0px 10px;
 }
+
 .widgetlinfo {
   float: left;
   width: 100%;
@@ -1950,6 +2038,7 @@ td.loadid a {
   border-radius: 3px;
   margin-right: 4px;
 }
+
 .FTLload {
   background: #47a447;
   color: #fff;
@@ -1960,27 +2049,33 @@ td.loadid a {
 }
 
 /* dispatch  page */
+
 .disbox {
   float: left;
   width: 25%;
   padding: 1%;
 }
+
 .disbar {
   float: left;
   width: 100%;
 }
+
 .maindisbox {
   position: relative;
 }
+
 .disbtmpart {
   position: absolute;
   bottom: 0px;
 }
 
 /* create load  page */
+
 .labelmt {
   margin-top: 6px !important;
 }
+
 .labelalign {
   text-align: right;
   padding-right: 0px;
@@ -1995,6 +2090,7 @@ td.loadid a {
 .divderrel {
   position: relative;
 }
+
 .midledriver {
   background: #dcdcdc;
   width: 1px;
@@ -2002,6 +2098,7 @@ td.loadid a {
   left: 48%;
   position: absolute;
 }
+
 .midleicon {
   left: 50%;
   top: 46%;
@@ -2012,18 +2109,23 @@ td.loadid a {
 /*****************  har classes start  *********************************/
 
 /* safety page classes */
+
 .border_bottom {
   border-bottom: 1px solid #777;
 }
+
 .border_top {
   border-top: 1px solid #777;
 }
+
 .font_1rem {
   font-size: 1rem;
 }
+
 .pad_0 {
   padding: 0px !important;
 }
+
 .alert_icon_safety {
   height: 25px;
   width: 25px;
@@ -2036,6 +2138,7 @@ td.loadid a {
 .safety_icon_size {
   font-size: 20px;
 }
+
 .height_70p {
   height: 70px;
 }
@@ -2046,6 +2149,7 @@ td.loadid a {
 }
 
 /* cycle table cell width */
+
 .cell_width {
   min-width: 350px;
 }
@@ -2057,13 +2161,16 @@ td.loadid a {
   margin-top: 20px;
   padding: 0px;
 }
+
 .addv_topnav ul {
   list-style-type: none;
   float: left;
   margin: 0;
   padding: 0;
 }
+
 /* .addv_topnav ul li{float: left;} */
+
 .addv_topnav ul li {
   float: left;
   color: #2e353e;
@@ -2073,11 +2180,13 @@ td.loadid a {
   border-radius: 50px;
   margin: 0 4px;
 }
+
 .addv_topnav ul li:hover {
   color: #000;
   background: #fff;
   text-decoration: none;
 }
+
 .addv_topnav ul li.active {
   color: #000;
   background: #fff;
@@ -2085,9 +2194,11 @@ td.loadid a {
 }
 
 /* ADD VEHICLE INFORMATION */
+
 #vehicle_new_details {
   display: block;
 }
+
 #vehicle_new_lifecycle,
 #vehicle_new_specifications,
 #vehicle_new_wheels,
@@ -2103,11 +2214,13 @@ td.loadid a {
 }
 
 /* Stock Quantity */
+
 .table-stock-qty-td {
   vertical-align: middle !important;
 }
 
 /* Stock Assignment Add button setting */
+
 .mar-top-asg-stock-btn {
   margin-top: 37px;
 }
@@ -2115,24 +2228,29 @@ td.loadid a {
 .mar-top-30 {
   margin-top: 30px;
 }
+
 .mar-top-37 {
   margin-top: 37px !important;
 }
+
 .mar-top-38 {
   margin-top: 38px !important;
 }
 
 /* BUSINESS PAGE CSS */
+
 .business_image_style {
   height: 250px;
   width: 250px;
   border-radius: 5%;
 }
+
 .margin_50 {
   margin-top: 50px;
 }
 
 /* TEXT UNDERLINE */
+
 .text-underline {
   text-decoration: underline;
 }
@@ -2160,11 +2278,13 @@ td.loadid a {
 }
 
 /* PRICE PLAN */
+
 .price-plan {
   margin: 0;
   padding: 0;
   text-align: center;
 }
+
 .price-card {
   border: 1px solid #aaa;
   border-radius: 5px;
@@ -2172,12 +2292,15 @@ td.loadid a {
   font-family: auto;
   transition: transform 0.4s;
 }
+
 .price-card:hover {
   transform: scale(1.1);
 }
+
 .price-card:active {
   transform: scale(1.05);
 }
+
 .price-card-header,
 .price-card-footer {
   font-size: 25px;
@@ -2186,11 +2309,13 @@ td.loadid a {
   font-weight: bolder;
   padding-top: 10px;
 }
+
 .price-card-body {
   height: fit-content;
   text-align: center;
   margin: 15px;
 }
+
 .price-tag {
   height: 150px;
   width: 150px;
@@ -2204,6 +2329,7 @@ td.loadid a {
   display: flex;
   align-items: center;
 }
+
 .price-button {
   height: 30px;
   width: 150px;
@@ -2216,6 +2342,7 @@ td.loadid a {
   margin-top: 10px;
   color: white;
 }
+
 .contact-price {
   font-size: 22px;
 }
@@ -2223,33 +2350,41 @@ td.loadid a {
 .owner-color {
   background-color: #f96f52;
 }
+
 .small-color {
   background-color: #41a18a;
 }
+
 .medium-color {
   background-color: #cf73a9;
 }
+
 .large-color {
   background-color: #4e8dd3;
 }
 
 /* IFTA PAGE */
+
 .ifta-tabs {
   font-size: 15px;
 }
+
 .ifta-tabs ul {
   margin: 5px;
 }
+
 .ifta-tabs ul li {
   display: inline;
   padding: 7px;
   font-weight: bold;
   cursor: pointer;
 }
+
 .ifta-tabs ul li:hover {
   color: black;
   text-decoration: underline;
 }
+
 .ifta-tabs ul li:active {
   color: black;
   text-decoration: underline;
@@ -2258,9 +2393,11 @@ td.loadid a {
 #summary-div {
   display: block;
 }
+
 #trip-reports-div {
   display: none;
 }
+
 #fuel-purchases-div {
   display: none;
 }
@@ -2270,6 +2407,7 @@ td.loadid a {
 }
 
 /* DOCUMENTS PAGE */
+
 .document_box {
   height: 300px;
   width: auto;
@@ -2279,6 +2417,7 @@ td.loadid a {
   text-align: center;
   margin: 10px;
 }
+
 .document_box_title {
   font-weight: bold;
   font-size: 20px;
@@ -2294,6 +2433,7 @@ td.loadid a {
   margin: 10px;
   margin-bottom: 20px;
 }
+
 .document-type-image {
   height: 40px;
   width: 40px;
@@ -2324,6 +2464,7 @@ td.loadid a {
 .temp_graph {
   cursor: pointer;
 }
+
 /* temp dashboard */
 
 .dashboard {
@@ -2336,6 +2477,7 @@ td.loadid a {
   bottom: 0px;
   left: 270px;
 }
+
 #hawk-btn {
   position: absolute;
   bottom: -200px;
@@ -2345,6 +2487,7 @@ td.loadid a {
   color: #000;
   padding: 10px;
 }
+
 #cam-btn {
   position: absolute;
   bottom: 0px;
@@ -2355,6 +2498,7 @@ td.loadid a {
   color: #000;
   padding: 10px;
 }
+
 #cam-close-btn,
 #cam-close-btn2 {
   position: relative;
@@ -2365,6 +2509,7 @@ td.loadid a {
   color: #000;
   padding: 10px;
 }
+
 .iconT {
   position: absolute;
   bottom: 118px;
@@ -2375,6 +2520,7 @@ td.loadid a {
   background: #fff;
   padding: 10px;
 }
+
 .iconT a {
   background: #ebebeb;
 }
@@ -2389,6 +2535,7 @@ td.loadid a {
   background: #fff;
   padding: 10px;
 }
+
 .iconB a {
   background: #ebebeb;
 }
@@ -2451,6 +2598,7 @@ td.loadid a {
 }
 
 /* overivew new layout with vertical trip info */
+
 .driverleftmain {
   width: 100%;
   float: left;
@@ -2476,19 +2624,23 @@ td.loadid a {
 }
 
 /* critical events new classes */
+
 .cmaindiv {
   background: #f9f9f9;
 }
+
 .cerbor {
   border-right: solid 1px #c6c6c6;
 }
 
 /* live view new classes */
+
 .tripbor {
   border-bottom: solid 1px #ebebeb;
 }
 
 /* new safety page */
+
 .safetytile {
   background: #fff;
   float: left;
@@ -2497,6 +2649,7 @@ td.loadid a {
 }
 
 /* create order page */
+
 .cotabdiv {
   min-height: 500px !important;
 }
@@ -2529,12 +2682,14 @@ td.loadid a {
           border-color: #f0f1f2;
           font-weight: 700; */
 }
+
 .btn-LTL .active,
 .btn-LTL:active {
   color: rgb(255, 255, 255) !important;
   background-color: rgb(34, 34, 34) !important;
   border-color: rgb(34, 34, 34) !important;
 }
+
 /* .btn-LTL:hover, .btn-LTL:active, .btn-LTL:focus {
 	color: #fff;
 	background-color: #2b2b2b;
@@ -2543,12 +2698,11 @@ td.loadid a {
 
 .btn-fleet {
   color: rgb(0, 0, 0);
-  background-color: #f0f1f2;
-  border-radius: 10px;
-  padding: 5px;
+  border-radius: 0px;
+  padding: 8px;
   background-image: none;
   font-size: 13px;
-  border-color: #f0f1f2;
+  border-color: #dedede;
   font-weight: 600;
 }
 
@@ -2564,39 +2718,49 @@ td.loadid a {
 /*****************  common classes  *********************************/
 
 /* border solid */
+
 .bordall {
   border: solid 1px #dddddd;
 }
+
 .bordleft {
   border-left: solid 1px #dddddd;
 }
+
 .bordright {
   border-right: solid 1px #dddddd;
 }
+
 .bordtop {
   border-top: solid 1px #dddddd;
 }
+
 .bordbtm {
   border-bottom: solid 1px #dddddd;
 }
 
 /* border dashed */
+
 .bordtopdas {
   border-top: dashed 1px #aaa;
 }
+
 .borddas {
   border: dashed 1px #aaa;
 }
 
 /* border radius */
+
 .bor-radius0px {
   border-radius: 0px !important;
 }
 
 /* box */
+
 .boxshadow1 {
   box-shadow: 0 0 0 3px #f6f6f6;
 }
+
 .boxshadow0 {
   box-shadow: none !important;
 }
@@ -2604,24 +2768,31 @@ td.loadid a {
 /* padding classes */
 
 /* padding right */
+
 .pr2 {
   padding-right: 2px !important;
 }
+
 .pr5 {
   padding-right: 5px !important;
 }
+
 .pr8 {
   padding-right: 8px !important;
 }
+
 .pr10 {
   padding-right: 10px !important;
 }
+
 .pr19 {
   padding-right: 19px !important;
 }
+
 .pr27 {
   padding-right: 27px !important;
 }
+
 .pr32 {
   padding-right: 32px !important;
 }
@@ -2630,67 +2801,90 @@ td.loadid a {
   padding-right: 123px !important;
 }
 
+.pr133 {
+  padding-right: 133px !important;
+}
+
 /* padding bottom */
+
 .pb2 {
   padding-bottom: 2px !important;
 }
+
 .pb6 {
   padding-bottom: 6px !important;
 }
+
 .pb10 {
   padding-bottom: 10px !important;
 }
+
 .pb12 {
   padding-bottom: 12px !important;
 }
+
 .pb14 {
   padding-bottom: 14px !important;
 }
+
 .pb21 {
   padding-bottom: 21px !important;
 }
 
 /* padding left */
+
 .pl4 {
   padding-left: 4px !important;
 }
+
 .pl7 {
   padding-left: 7px !important;
 }
+
 .pl11 {
   padding-left: 11px !important;
 }
+
 .pl13 {
   padding-left: 13px !important;
 }
+
 .pl18 {
   padding-left: 18px !important;
 }
 
 /* padding all */
+
 .p7 {
   padding: 7px !important;
 }
+
 .p11 {
   padding: 11px !important;
 }
+
 .pr10 {
   padding-right: 10px;
 }
 
 /* width */
+
 .w100 {
-  width: 100%;
+  width: 100% !important;
 }
+
 .w25 {
   width: 25% !important;
 }
+
 .w33 {
   width: 33% !important;
 }
+
 .w6rem {
   min-width: 4rem !important;
 }
+
 .w150px {
   width: 150px;
 }
@@ -2698,17 +2892,21 @@ td.loadid a {
 .btnw200px {
   width: 200px;
 }
+
 .btnw100px {
   width: 100px;
 }
+
 .btnw90px {
   width: 90px;
 }
 
 /* color */
+
 .blue1 {
   color: #1c79c8;
 }
+
 .colorgrey {
   color: #555555;
 }
@@ -2716,6 +2914,7 @@ td.loadid a {
 .red {
   color: #c10000;
 }
+
 .red1 {
   color: #fe4e37;
 }
@@ -2725,83 +2924,113 @@ td.loadid a {
 }
 
 /* overflow x*/
+
 .overflowxv {
   overflow-x: visible;
 }
 
 /* bg color */
+
 .bgcol1 {
   background: #f0f0f0;
 }
+
 .bgcol2 {
   background: #dcdcdc;
 }
+
 .bgnone {
   background: none;
 }
+
 .bggreyn {
   background: #f6f6f6 !important;
 }
 
 /* line height */
+
 .LH16 {
   line-height: 16px !important;
 }
+.LH20 {
+  line-height: 16px !important;
+}
+.LH28 {
+  line-height: 28px !important;
+}
 
 /* cursor */
+
 .cursorpoint {
   cursor: pointer;
 }
 
 /* cursor */
+
 .text-white {
   color: #fff;
 }
+
 .divcenter {
   display: flex;
   justify-content: center;
 }
 
 /* margin */
+
 .mt-1-c1,
 .my-1-c1 {
   margin-top: 0.15rem !important;
 }
 
 /* margin top */
+
 .mar-top-2 {
   margin-top: 2px !important;
 }
+
 .mt10 {
   margin-top: 10px !important;
 }
+
 .mt74 {
   margin-top: 74px !important;
 }
 
 /* margin right */
+
 .mr15 {
   margin-right: 15px !important;
 }
+
 .mr50 {
   margin-right: 50px !important;
 }
 
 /* margin bottom */
+
 .mb2 {
   margin-bottom: 2px !important;
 }
+
 .mb4 {
   margin-bottom: 4px !important;
 }
 
+.mb10 {
+  margin-bottom: 10px !important;
+}
+
 /* z-index */
+
 .zindex9910 {
   z-index: 9910 !important;
 }
+
 .zindex9920 {
   z-index: 9920 !important;
 }
+
 .zindex9930 {
   z-index: 9930 !important;
 }
@@ -2818,11 +3047,13 @@ td.loadid a {
 }
 
 /* TABLE ROW HOVER */
+
 /* table tbody tr:hover{
   background-color: #ccc;
 } */
 
 /*  Driver profile Page  */
+
 .summary_box {
   padding: 20px;
 }
@@ -2838,6 +3069,7 @@ td.loadid a {
   background-color: #eee;
   border: 0.5px solid #ddd;
 }
+
 .border-box {
   border: 0.5px solid #ddd;
 }
@@ -2849,9 +3081,11 @@ td.loadid a {
 }
 
 /*--Incidents Css--*/
+
 .incident-tabs.nav-tabs li {
   padding: 0;
 }
+
 .incident-tabs.nav-tabs li .nav-link {
   color: #2e353e;
   text-decoration: none;
@@ -2862,6 +3096,7 @@ td.loadid a {
   margin: 0;
   background: transparent;
 }
+
 .incident-tabs.nav-tabs .nav-link.active,
 .incident-tabs.nav-tabs .nav-link:hover,
 .incident-tabs.nav-tabs .nav-link.active:hover,
@@ -2871,46 +3106,57 @@ td.loadid a {
   border: none;
   text-decoration: none;
 }
+
 .tab-pane.active {
   text-decoration: none !important;
 }
+
 #incident-tabs li.active {
   text-decoration: none;
 }
+
 #hos-list,
 #incidents-list,
 #scorecard-list {
   display: none;
 }
+
 .safety-overview__main .maindriverbox {
   cursor: pointer;
 }
+
 .maindriverbox.active {
   background-color: #ecedf0;
 }
+
 .dataTables_length {
   display: none;
 }
 
 /* Safety Details css*/
+
 .safety-deails__map {
   width: 100%;
   height: 400px;
 }
+
 .back-color-gray {
   background-color: #eee;
   border: 0.5px solid #ddd;
 }
 
 /*--Add Alert--*/
+
 .add-alert__listing {
   list-style: none;
   padding: 0;
 }
+
 .add-alert__listing li {
   margin: 10px 10px 0 0;
   text-align: center;
 }
+
 .add-alert__listing li a {
   padding: 5px 20px;
   border-radius: 20px;
@@ -2919,49 +3165,60 @@ td.loadid a {
   position: relative;
   font-size: 14px;
 }
+
 .add-alert__listing li a.active {
   background: #343434;
   color: #fff;
   border-color: #343434;
 }
+
 .add-alert__listing li .check-icon {
   position: absolute;
   top: 10px;
   right: 10px;
 }
+
 .alert-container {
   border: 2px solid #dcdcdc;
   padding: 30px;
 }
+
 .lh-normal {
   line-height: normal;
 }
+
 .driver-vehicle__main .nav-tabs li .nav-link {
   border: none;
   background-color: transparent;
   border-bottom: 1px solid transparent;
   color: #678;
 }
+
 .driver-vehicle__main .nav-tabs .nav-link.active {
   text-decoration: none;
   border-bottom: 1px solid #787;
 }
+
 .alert-container {
   display: none;
 }
+
 .alert-container.active {
   display: block;
   text-decoration: none;
 }
 
 /*--Reports--*/
+
 .reports-sidebar,
 .reports-tabs__content {
   border: 1px solid #e6e6e6;
 }
+
 .reports-sidebar ul {
   list-style: none;
 }
+
 .reports-sidebar ul li a {
   border-bottom: 1px solid #e6e6e6;
   padding: 10px 15px;
@@ -2972,6 +3229,7 @@ td.loadid a {
   border-left: 1px solid transparent;
   border-right: 1px solid transparent;
 }
+
 .reports-sidebar ul li a.active,
 .reports-sidebar ul li a:hover {
   text-decoration: none !important;
@@ -2980,6 +3238,7 @@ td.loadid a {
   border-right: 1px solid #424242;
   background-color: #efefef !important;
 }
+
 /* .reports-sidebar ul li a.active::after {
     position: absolute;
     top: 10px;
@@ -2988,9 +3247,11 @@ td.loadid a {
     font-weight: 900;
     content: "\f054";
 } */
+
 .reports-sidebar ul li:last-child a {
   border-bottom: none;
 }
+
 .active {
   text-decoration: none !important;
 }
@@ -2998,10 +3259,12 @@ td.loadid a {
 html.fixed .reports-wrapper {
   padding-top: 60px;
 }
+
 .reports-search {
   max-width: 65%;
   margin: 0 auto;
 }
+
 .reports-listing a {
   padding: 10px 15px;
   display: block;
@@ -3011,9 +3274,11 @@ html.fixed .reports-wrapper {
   transition: all 0.3s linear 0s;
   position: relative;
 }
+
 .reports-listing a:last-child {
   border: none;
 }
+
 /* .reports-listing a::after {
     position: absolute;
     top: 25px;
@@ -3023,20 +3288,25 @@ html.fixed .reports-wrapper {
     content: "\f054";
     color: #d2d2d2;
 } */
+
 .reports-listing a:hover {
   background-color: #f7f4f4;
   text-decoration: underline !important;
 }
+
 .reports-listing h4 {
   font-size: 13px;
 }
+
 .reports-listing span {
   font-size: 0.8rem;
   color: #607587;
 }
+
 .report-dtl__content .card {
   border: 1px solid #dadada;
 }
+
 .report-dtl__content .card-header {
   background-color: #343434;
   color: #fff;
@@ -3073,13 +3343,16 @@ html.fixed .reports-wrapper {
 .newbgifta {
   background: #767676 !important;
 }
+
 .btnround40 {
   border-radius: 40px;
 }
+
 .btnifta {
   background: #464646 !important;
   border: none !important;
 }
+
 .btnifta:hover {
   background: #161616 !important;
 }
@@ -3102,6 +3375,7 @@ table.dataTable thead td {
 }
 
 /*top padding should be equal of vehicle table between numbering and count*/
+
 .dataTables_wrapper .dataTables_info {
   padding-top: 1.5em !important;
 }
@@ -3115,6 +3389,7 @@ table.dataTable thead td {
 }
 
 /*drop down icon for common pages*/
+
 .togglecolor::after {
   color: #999;
   margin-top: 8px !important;
@@ -3122,6 +3397,7 @@ table.dataTable thead td {
 }
 
 /*drop down icon on asset page*/
+
 .toggleright::after {
   margin-top: 8px !important;
   float: right !important;
@@ -3129,11 +3405,13 @@ table.dataTable thead td {
 }
 
 /* Page body colro ligh grey class */
+
 .pagebody {
   background: #ecedf0 !important;
 }
 
 /* placeholder classes */
+
 ::-webkit-input-placeholder {
   /* Edge */
   color: #999999 !important;
@@ -3151,7 +3429,9 @@ table.dataTable thead td {
   color: #999999 !important;
   font-size: 12px !important;
 }
+
 /* Optional label color */
+
 .optional-label-color {
   color: e1e1e1 !important;
 }
@@ -3163,6 +3443,7 @@ table.dataTable thead td {
   z-index: 99999;
   padding-left: 5px;
 }
+
 .suggestionClass:hover {
   background-color: #e1e1e1;
 }
@@ -3212,6 +3493,7 @@ table.dataTable thead td {
   display: block;
   justify-content: center;
 }
+
 .notrip-dp img {
   width: 100px;
   height: auto;
@@ -3220,6 +3502,7 @@ table.dataTable thead td {
   margin-top: 300px;
   opacity: 0.2;
 }
+
 .notrip-dp p {
   text-align: center;
 }
@@ -3229,6 +3512,7 @@ table.dataTable thead td {
 /* planner modal classes for scroll each column*/
 
 /* miles buttons */
+
 .btn-miles {
   color: rgb(0, 0, 0);
   float: left;
@@ -3250,6 +3534,7 @@ table.dataTable thead td {
 }
 
 /* load type in new order page */
+
 .wltype {
   width: 135px;
 }
@@ -3257,18 +3542,23 @@ table.dataTable thead td {
 .btnw200px {
   width: 200px;
 }
+
 .btnw100px {
   width: 100px;
 }
+
 .btnw90px {
   width: 90px;
 }
 
 /* load type in new order page */
+
 .wltype {
   width: 135px;
 }
+
 /* yes/no buttons */
+
 .btn-yesno {
   color: #000 !important;
   float: left;
@@ -3290,24 +3580,29 @@ table.dataTable thead td {
 }
 
 /* height */
+
 .heighta {
   height: auto !important;
 }
+
 .h31 {
   height: 31px !important;
 }
 
 /* min height */
+
 .mh31 {
   min-height: 31px !important;
 }
 
 /* padding left sign in button page */
+
 .pl-signin {
   padding-left: 46px;
 }
 
 /* more than two orders in trip detail page */
+
 .orderinfoheight {
   max-height: 240px !important;
   overflow: scroll;
@@ -3319,6 +3614,7 @@ table.dataTable thead td {
 }
 
 /* scrollbar in vehicle detail page */
+
 .vdtableinfoheight {
   max-height: 240px !important;
   overflow: scroll;
@@ -3330,6 +3626,7 @@ table.dataTable thead td {
 }
 
 /* no Activity in Timelines in dispatch home page classes */
+
 .noactivity-dh {
   height: 740px;
   border: solid 4px #e5e5e5;
@@ -3337,6 +3634,7 @@ table.dataTable thead td {
   display: block;
   justify-content: center;
 }
+
 .noactivity-dh img {
   width: 100px;
   height: auto;
@@ -3345,16 +3643,20 @@ table.dataTable thead td {
   margin-top: 266px;
   opacity: 0.2;
 }
+
 .noactivity-dh p {
   text-align: center;
 }
+
 /* no Activity in Timelines in dispatch home page classes end */
 
 /* Associated Company classes */
+
 .assoc {
   float: left;
   width: 100%;
 }
+
 .assoc a {
   text-decoration: none;
   background: #eeeeee;
@@ -3368,18 +3670,22 @@ table.dataTable thead td {
   padding-left: 10px;
   font-size: 13px;
 }
+
 .assoc a:hover {
   text-decoration: none;
   background: #4f4f4f;
   display: block;
   color: #fff;
 }
+
 /* Associated Company classes end */
 
 /* Safety Summary height of driver page */
+
 .ssdriver {
   height: 570px;
 }
+
 /* Safety Summary height of driver page end*/
 
 /* no trip on main home overview page classes */
@@ -3392,6 +3698,7 @@ table.dataTable thead td {
   display: block;
   justify-content: center;
 }
+
 .notrip-oview img {
   width: 100px;
   height: auto;
@@ -3400,6 +3707,7 @@ table.dataTable thead td {
   margin-top: 70%;
   opacity: 0.2;
 }
+
 .notrip-oview p {
   text-align: center;
 }
@@ -3407,6 +3715,7 @@ table.dataTable thead td {
 /* no trip on main home overview page classes end */
 
 /* order detail page attachment start */
+
 .min-heightat {
   min-height: 237px;
 }
@@ -3416,17 +3725,21 @@ table.dataTable thead td {
   float: left;
   padding-left: 0px;
 }
+
 .attachul ul li {
   float: left;
   margin-right: 15px;
 }
+
 .attachul ul li img {
   width: 79px;
   height: 100px;
 }
+
 /* order detail page attachment end */
 
 /* choose file line height class start*/
+
 .choosefileLH {
   line-height: 16px !important;
 }
@@ -3440,18 +3753,22 @@ table.dataTable thead td {
 }
 
 /* choose file line height class end*/
+
 .adddriverpl {
   /* padding-left: 73px; */
   padding-left: 120px;
 }
 
 /* add orderpadding class start 11.05.21 */
+
 .adddriverpl2 {
   padding-left: 52px;
 }
+
 /* add driver class end */
 
 /* address book classes start */
+
 .heightab {
   height: 670px;
 }
@@ -3492,12 +3809,14 @@ table.dataTable thead td {
   padding: 20px 20px 0 0;
   height: 60px;
 }
+
 .address-left-icon {
   position: fixed;
   left: 20px;
   bottom: 30px !important;
   z-index: 1010 !important;
 }
+
 .address-left-icon a {
   background: #ffffff;
   border-radius: 50%;
@@ -3508,11 +3827,13 @@ table.dataTable thead td {
 .addcontbtn {
   display: none;
 }
+
 /* address book classes end */
 
 /* pic zoom classes */
 
 /* The Close Button */
+
 .close {
   color: #ff0000;
   position: absolute;
@@ -3530,6 +3851,7 @@ table.dataTable thead td {
 }
 
 /* circles in trips and routes */
+
 .tripbarn {
   height: 2px;
   width: 100%;
@@ -3569,11 +3891,13 @@ table.dataTable thead td {
 }
 
 /* new header input height */
+
 .page-header .row .col-lg-2 .input-group .form-control {
   height: calc(1.3em + 0.75rem + 0.1em) !important;
 }
 
 /* modal cross 31.05.21 */
+
 .modal-header .close {
   margin: -0.1rem 0.5rem -1rem auto !important;
   padding: 0.5rem 0.5rem !important;
@@ -3581,9 +3905,11 @@ table.dataTable thead td {
 }
 
 /* header select input height */
+
 .input-daterange input {
   height: calc(1.3em + 0.75rem + 0.1em) !important;
 }
+
 .input-group input {
   height: calc(1.3em + 0.75rem + 0.1em) !important;
 }
@@ -3595,31 +3921,38 @@ table.dataTable thead td {
 input.placeholder-lowercase {
   text-transform: uppercase;
 }
+
 .placeholder-lowercase::-webkit-input-placeholder {
   /* WebKit browsers */
   text-transform: none;
 }
+
 .placeholder-lowercase:-moz-placeholder {
   /* Mozilla Firefox 4 to 18 */
   text-transform: none;
 }
+
 .placeholder-lowercase::-moz-placeholder {
   /* Mozilla Firefox 19+ */
   text-transform: none;
 }
+
 .placeholder-lowercase:-ms-input-placeholder {
   /* Internet Explorer 10+ */
   text-transform: none;
 }
+
 .placeholder-lowercase::placeholder {
   /* Recent browsers */
   text-transform: none;
 }
 
 /* on board page width according screen sizes */
+
 .onboardwidth {
   width: 95% !important;
 }
+
 @media (min-width: 1640px) {
   .onboardwidth {
     width: 90% !important;
@@ -3637,6 +3970,7 @@ input.placeholder-lowercase {
   overflow-x: hidden;
   padding-bottom: 15px;
 }
+
 /* toggle switch */
 
 .switch {
@@ -3691,6 +4025,7 @@ input:checked + .sliderbtn:before {
 }
 
 /* Rounded sliders */
+
 .sliderbtn.round {
   border-radius: 34px;
 }
@@ -3698,6 +4033,7 @@ input:checked + .sliderbtn:before {
 .sliderbtn.round:before {
   border-radius: 50%;
 }
+
 .modal-dialog-lgdetail .modal-dialog {
   max-width: 1250px !important;
   margin: 9.75rem auto !important;
@@ -3706,10 +4042,12 @@ input:checked + .sliderbtn:before {
 .form-control[readonly] {
   background-color: #fff;
 }
+
 .units-list__main .modal-dialog,
 .units-detail__main .modal-dialog {
   max-width: 1200px !important;
 }
+
 .mat-expansion-panel-header,
 .mat-expansion-panel-header .control-label {
   cursor: pointer;
@@ -3725,16 +4063,19 @@ input:checked + .sliderbtn:before {
   background-color: transparent;
   border: none;
 }
+
 .cus-modal-content {
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
+
 .addressbook-item {
   margin-bottom: 20px;
   padding: 10px;
   background: #f5f5f5;
   border-radius: 5px;
 }
+
 .show-search__result .map-search__results {
   display: block !important;
 }
@@ -3742,16 +4083,30 @@ input:checked + .sliderbtn:before {
 .asset-manual__main.modal .modal-dialog {
   max-width: 500px;
 }
+
 .trips-assign__main.modal .modal-dialog {
   max-width: 1200px;
 }
+
 .assign-confirm__main.modal .modal-dialog {
   max-width: 500px;
 }
+
+.doc-type__main.modal .modal-dialog,
+.docs-selection__main.modal .modal-dialog {
+  max-width: 500px;
+}
+
+.modal-open .docs-selection__main.modal {
+  background: rgb(0 0 0 / 22%);
+}
+
 /* 04.09.21 account classes */
+
 .detailbox {
   min-height: 125px;
 }
+
 .nav-tabs {
   border: none;
 }
@@ -3759,23 +4114,29 @@ input:checked + .sliderbtn:before {
 .preview--invoice.modal .modal-dialog {
   max-width: 950px;
 }
+
 .email--invoice.modal .modal-dialog {
   max-width: 650px;
 }
+
 .send-email--modal.modal .modal-dialog {
   max-width: 950px;
 }
+
 .order-send__email.modal .modal-dialog {
   max-width: 650px;
 }
+
 .invoice-wrapper .slick-prev:before,
 .invoice-wrapper .slick-next:before {
   color: #000;
 }
+
 .invoice-wrapper .slick-next {
   right: -20px;
   top: 30%;
 }
+
 .invoice-wrapper .slick-prev {
   left: -20px;
   top: 30%;
@@ -3795,6 +4156,7 @@ input:checked + .sliderbtn:before {
 }
 
 */
+
 /* New Own Icon */
 
 @font-face {
@@ -3819,7 +4181,6 @@ input:checked + .sliderbtn:before {
   font-variant: normal;
   text-transform: none;
   line-height: 1;
-
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -3828,84 +4189,101 @@ input:checked + .sliderbtn:before {
 .icon-icon-driver:before {
   content: "\e90c";
 }
+
 .icon-icon-efleet:before {
   content: "\e90d";
 }
+
 .icon-icon-cevent:before {
   content: "\e90e";
 }
+
 .icon-icon-dispatch:before {
   content: "\e90f";
 }
+
 .icon-icon-order:before {
   content: "\e910";
 }
+
 .icon-icon-tran:before {
   content: "\e911";
 }
+
 .icon-icon-vehicle .path1:before {
   content: "\e900";
   color: rgb(128, 128, 128);
   opacity: 0.751;
 }
+
 .icon-icon-vehicle .path2:before {
   content: "\e901";
   margin-left: -1em;
   color: rgb(43, 43, 43);
   opacity: 0.659;
 }
+
 .icon-icon-vehicle .path3:before {
   content: "\e902";
   margin-left: -1em;
   color: rgb(19, 19, 19);
 }
+
 .icon-icon-vehicle .path4:before {
   content: "\e903";
   margin-left: -1em;
   color: rgb(58, 58, 58);
   opacity: 0.545;
 }
+
 .icon-icon-vehicle .path5:before {
   content: "\e904";
   margin-left: -1em;
   color: rgb(96, 96, 96);
   opacity: 0.536;
 }
+
 .icon-icon-vehicle .path6:before {
   content: "\e905";
   margin-left: -1em;
   color: rgb(24, 24, 24);
   opacity: 0.742;
 }
+
 .icon-icon-vehicle .path7:before {
   content: "\e906";
   margin-left: -1em;
   color: rgb(98, 98, 98);
   opacity: 0.459;
 }
+
 .icon-icon-asset .path1:before {
   content: "\e907";
   color: rgb(34, 34, 34);
   opacity: 0.686;
 }
+
 .icon-icon-asset .path2:before {
   content: "\e908";
   margin-left: -1em;
   color: rgb(0, 0, 0);
   opacity: 0.927;
 }
+
 .icon-icon-asset .path3:before {
   content: "\e909";
   margin-left: -1em;
   color: rgb(76, 76, 76);
   opacity: 0.212;
 }
+
 .icon-icon-asset .path4:before {
   content: "\e90a";
   margin-left: -1em;
   color: rgb(26, 26, 26);
   opacity: 0.397;
 }
+
 .icon-icon-asset .path5:before {
   content: "\e90b";
   margin-left: -1em;
@@ -3915,4 +4293,141 @@ input:checked + .sliderbtn:before {
 
 .light-backdrop {
   background-color: #dfdfdf4a;
+}
+
+/* Classes for reports main page 26.01.21*/
+
+.reportbox {
+  float: left;
+  width: 100%;
+}
+
+.reportbox a {
+  width: 100%;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  background: #ffffff;
+  border: solid 1px #e6e6e7;
+  font-size: 12px;
+  font-weight: 700;
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  color: #000;
+}
+
+.reportbox a:hover {
+  background: #f6f6f6;
+  display: block;
+  border: solid 1px #c7c7c7;
+  text-decoration: none;
+  color: #000000;
+}
+
+.login-modal-outer .modal-dialog {
+  max-width: 800px !important;
+}
+
+.document--main .modal-dialog {
+  max-width: 600px !important;
+}
+
+.import-model--main .modal-dialog {
+  max-width: 700px !important;
+}
+
+.logs-model .modal-dialog {
+  max-width: 900px !important;
+}
+
+.header-title {
+  margin-left: 10px;
+  margin-top: 5px;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #000;
+}
+
+.header-buttons {
+  margin-left: 10px;
+  margin-top: 5px;
+  align-content: center;
+  align-items: center;
+  text-align: right !important;
+}
+
+.gm-style .gm-style-iw-c b {
+  color: #333333;
+  font-family: Roboto, Arial;
+  font-size: 14px;
+}
+
+.gm-style .gm-style-iw-c a {
+  color: #427fed;
+  font-family: Roboto, Arial;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.gm-style .gm-style-iw-c {
+  color: #333333;
+  font-family: Roboto, Arial;
+  font-size: 13px;
+}
+.p-overlaypanel .p-overlaypanel-close {
+  z-index: 9;
+}
+.p-overlaypanel:after {
+  margin-left: -20px !important;
+}
+
+.p-toast {
+  z-index: 9999;
+}
+.p-overlaypanel:before {
+  margin-left: -25px !important;
+}
+.notifications-sidebar .p-tabview-panels {
+  padding: 0;
+}
+.payment-mini-wrapper {
+  width: 100%;
+  display: flex;
+}
+.payment-mini-wrapper > div:first-child {
+  width: 40%;
+  font-weight: 600;
+}
+.payment-mini-wrapper > div:last-child {
+  width: 60%;
+  border: 1px solid #dee2e6;
+}
+.payment-mini-wrapper > div {
+  padding: 0.75rem;
+}
+ul.simple-post-list.settings-list li,
+ul.simple-post-list.settings-list li:last-child a {
+  border-bottom: none;
+}
+.notifications-sidebar .p-datatable-table {
+  border-collapse: separate;
+  border-spacing: 0 0.3em;
+}
+.noti-time {
+  font-size: 12px;
+  color: #b3b6c1;
+}
+
+/*11.07.22 for sorted out the drop down display issue over page header*/
+
+.ng-dropdown-panel {
+  z-index: 1010 !important;
+}
+
+/*14.07.22 for planner calander today button alignment*/
+
+.fc.fc-unthemed .fc-toolbar .fc-button {
+  display: inline-block !important;
 }

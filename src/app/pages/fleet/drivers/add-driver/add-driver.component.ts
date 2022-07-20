@@ -9,7 +9,7 @@ import {
   NgbCalendar,
   NgbDateAdapter,
   NgbModal,
-  NgbModalOptions,
+  NgbModalOptions
 } from "@ng-bootstrap/ng-bootstrap";
 import { Auth } from "aws-amplify";
 import { passwordStrength } from "check-password-strength";
@@ -23,20 +23,20 @@ import {
   distinctUntilChanged,
   map,
   switchMap,
-  takeUntil,
+  takeUntil
 } from "rxjs/operators";
-import { CanComponentDeactivate } from "src/app/guards/unsaved-changes.guard";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
-
-import { UnsavedChangesComponent } from "src/app/unsaved-changes/unsaved-changes.component";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 import {
   ApiService,
   DashboardUtilityService,
   HereMapService,
-  ListService,
+  ListService
 } from "../../../../services";
 import { ModalService } from "../../../../services/modal.service";
 import Constants from "../../constants";
+import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
+
 
 declare var $: any;
 @Component({
@@ -55,8 +55,11 @@ export class AddDriverComponent
   hideNextBtn = true;
   hasBasic = false;
   hasDocs = false;
+  absDocsError = '';
   hasLic = false;
   hasPay = false;
+  uploadPhotoError = '';
+  check = false;
   hasHos = false;
   hasCrossBrdr = false;
   deletedUploads = [];
@@ -72,6 +75,7 @@ export class AddDriverComponent
   manualAddress = false;
   nextTab: any;
   carrierID: any;
+  uploadDocsError = '';
   statesObject: any;
   countriesObject: any;
   citiesObject: any;
@@ -160,27 +164,8 @@ export class AddDriverComponent
       fastExpiry: null,
       csa: false,
     },
-    paymentDetails: {
-      paymentType: null,
-      loadedMiles: "",
-      loadedMilesTeam: "",
-      loadedMilesUnit: "",
-      loadedMilesTeamUnit: "",
-      emptyMiles: "",
-      emptyMilesTeam: "",
-      emptyMilesUnit: "",
-      emptyMilesTeamUnit: "",
-      loadPayPercentage: "",
-      loadPayPercentageOf: "",
-      rate: "",
-      rateUnit: null,
-      waitingPay: "",
-      waitingPayUnit: null,
-      waitingHourAfter: "",
-      deliveryRate: "",
-      deliveryRateUnit: null,
-      payPeriod: null,
-    },
+    paymentOption: [],
+    payPeriod: null,
     SIN: "",
     CDL_Number: "",
     licenceDetails: {
@@ -211,7 +196,10 @@ export class AddDriverComponent
       relationship: "",
       phone: "",
     },
+    isImport: false
   };
+
+
   public searchTerm = new Subject<string>();
   public searchResults: any;
   localAbsDocs = [];
@@ -228,6 +216,7 @@ export class AddDriverComponent
   lastName = null;
   address = "";
   phone = "";
+  emailCheck = false;
   email = "";
   groupID = "";
   loginEnabled = true;
@@ -236,6 +225,7 @@ export class AddDriverComponent
   driverLicenseType = "";
   driverLicenseExpiry = "";
   driverLicenseStateID = "";
+
   HOSCompliance = {
     status: "",
     type: "",
@@ -276,6 +266,7 @@ export class AddDriverComponent
   birthDateMaxLimit: any;
   futureDatesLimit: any;
   uploadedPhotos = [];
+  cdlResult = '';
   licStates = [];
   uploadedDocs = [];
   abstractDocs = [];
@@ -315,7 +306,47 @@ export class AddDriverComponent
   uploadedPic = "";
   showUploadedPicModal = false;
   pageType = "add";
+  groupsData: any = [];
+  sessionID: string;
+  paymentOptions = [{ name: "Pay Per Mile", value: "ppm" }, { name: "Percentage", value: "pp" }, { name: "Pay Per Hour", value: "pph" }, { name: "Pay Per Delivery", value: "ppd" }, { name: "Flat Rate", value: "pfr" }]
 
+  paymentType = "ppm"
+
+  payPerMile = {
+    pType: "ppm",
+    loadedMiles: null,
+    currency: null,
+    emptyMiles: null,
+    emptyMilesTeam: null,
+    loadedMilesTeam: null,
+    default: false
+  }
+  payPerHour = {
+    pType: "pph",
+    rate: null,
+    currency: null,
+    waitingPay: null,
+    waitingHourAfter: null,
+    default: false
+  }
+  payPercentage = {
+    pType: "pp",
+    loadPayPercentage: null,
+    loadPayPercentageOf: null,
+    default: false
+  }
+  payPerDelivery = {
+    pType: "ppd",
+    deliveryRate: null,
+    currency: null,
+    default: false
+  }
+  payFlatRate = {
+    pType: "pfr",
+    flatRate: null,
+    currency: null,
+    default: false
+  }
   constructor(
     private apiService: ApiService,
     private httpClient: HttpClient,
@@ -332,24 +363,9 @@ export class AddDriverComponent
     private router: Router,
     private listService: ListService,
     private countryStateCity: CountryStateCityService,
-    private dashboardUtilityService: DashboardUtilityService
+    private dashboardUtilityService: DashboardUtilityService,
+    private routeMgmntService: RouteManagementServiceService
   ) {
-    this.modalServiceOwn.triggerRedirect.next(false);
-
-    this.router.events.pipe(takeUntil(this.takeUntil$)).subscribe((v: any) => {
-      if (v.url !== "undefined" || v.url !== "") {
-        this.modalServiceOwn.setUrlToNavigate(v.url);
-      }
-    });
-    this.modalServiceOwn.triggerRedirect$
-      .pipe(takeUntil(this.takeUntil$))
-      .subscribe((v) => {
-        if (v) {
-          this.router.navigateByUrl(
-            this.modalServiceOwn.urlToRedirect.getValue()
-          );
-        }
-      });
     this.selectedFileNames = new Map<any, any>();
     const date = new Date();
     this.getcurrentDate = {
@@ -368,6 +384,7 @@ export class AddDriverComponent
       month: 12,
       day: 31,
     };
+    this.sessionID = this.routeMgmntService.driverUpdateSessionID;
   }
   scrollError() {
     let errorList;
@@ -383,27 +400,7 @@ export class AddDriverComponent
       }
     }, 1500);
   }
-  /**
-   * Unsaved Changes
-  //  */
-  // Disable it temporary.
-  // canLeave(): boolean {
-  //   if (this.driverF.dirty && !this.isSubmitted) {
-  //     if (!this.modalService.hasOpenModals()) {
-  //       let ngbModalOptions: NgbModalOptions = {
-  //         backdrop: "static",
-  //         keyboard: false,
-  //         size: "sm",
-  //       };
-  //       this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
-  //     }
-  //     return false;
-  //   }
-  //   this.modalServiceOwn.triggerRedirect.next(true);
-  //   this.takeUntil$.next();
-  //   this.takeUntil$.complete();
-  //   return true;
-  // }
+
 
   onChangeHideErrors(fieldname: any) {
     $('[name="' + fieldname + '"]')
@@ -427,8 +424,8 @@ export class AddDriverComponent
     } else {
       this.pageTitle = "Add Driver";
     }
-    this.fetchGroups(); // fetch groups
-    this.fetchCountries(); // fetch countries
+    // this.fetchGroups(); // fetch groups
+    this.docCountries = await this.dashboardUtilityService.fetchCountries();// fetch countries
     this.getToday(); // get today date on calender
     this.searchLocation(); // search location on keyup
     this.fetchDocuments();
@@ -439,6 +436,7 @@ export class AddDriverComponent
     let vehicleList = new Array<any>();
     this.getValidVehicles(vehicleList);
     this.vehicles = vehicleList;
+    this.fetchGroupsList();
   }
 
   private getValidVehicles(vehicleList: any[]) {
@@ -586,15 +584,9 @@ export class AddDriverComponent
     });
   }
 
-  fetchGroups() {
-    this.apiService
-      .getData(`groups/getGroup/${this.groupData.groupType}`)
-      .subscribe((result: any) => {
-        this.groups = result.Items;
-      });
-  }
+
   refreshGroupsData() {
-    this.fetchGroups();
+    this.fetchGroupsList();
   }
   refreshVendorData() {
     this.listService.fetchVendors();
@@ -603,9 +595,9 @@ export class AddDriverComponent
     this.listService.fetchOwnerOperators();
   }
 
-  async fetchCountries() {
-    this.docCountries = await this.countryStateCity.GetAllCountries();
-  }
+  // async fetchCountries() {
+  //   this.docCountries = await this.countryStateCity.GetAllCountries();
+  // }
   async getStates(countryCode: any, index: any) {
     this.driverData.address[index].stateCode = "";
     this.driverData.address[index].cityName = "";
@@ -679,8 +671,10 @@ export class AddDriverComponent
   async fetchDocStates(docs) {
     for (let d = 0; d < docs.length; d++) {
       let countryCode = this.driverData.documentDetails[d].issuingCountry;
-      this.driverData.documentDetails[d].docStates =
-        await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+      if (countryCode! = null && countryCode != '') {
+        this.driverData.documentDetails[d].docStates =
+          await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+      }
     }
   }
   fetchDocuments() {
@@ -699,7 +693,22 @@ export class AddDriverComponent
     let files = [...event.target.files];
     if (i != null) {
       this.uploadedDocs[i] = [];
-      this.uploadedDocs[i] = files;
+      for (let i = 0; i < files.length; i++) {
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
+          this.uploadedDocs[i] = files;
+        } else {
+          this.uploadDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+        }
+      }
     } else {
       const reader = new FileReader();
       reader.onload = (e: any) => {
@@ -707,29 +716,68 @@ export class AddDriverComponent
       };
       reader.readAsDataURL(files[0]);
       this.abstractDocs = [];
-      this.abstractDocs = files;
+      for (let i = 0; i < files.length; i++) {
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
+          this.abstractDocs = files;
+        } else {
+          this.absDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+        }
+      }
     }
   }
 
   selectPhoto(event, name: any, type: string) {
-    if (type === "Add") {
+    const files = [...event.target.files];
+    if (type === 'Add') {
       this.uploadedPhotos = [];
-      const files = [...event.target.files];
-      this.uploadedPhotos.push(files[0]);
       for (let i = 0; i < files.length; i++) {
-        const reader = new FileReader();
-        this.showUploadedPicModal = true;
-        reader.onload = (e: any) => {
-          this.uploadedPic = e.target.result;
-        };
-        reader.readAsDataURL(files[i]);
-        this.imageTitle = "Change";
+        let name = files[i].name.split('.');
+        let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == 'jpg' ||
+          ext == 'jpeg' ||
+          ext == 'png'
+        ) {
+          this.check = true;
+          this.uploadedPhotos.push(files[0]);
+        } else {
+          this.check = false;
+          this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
+        }
+        if (this.check = true) {
+          const reader = new FileReader();
+          this.showUploadedPicModal = true;
+          reader.onload = (e: any) => {
+            this.uploadedPic = e.target.result;
+          };
+          reader.readAsDataURL(files[i]);
+          this.imageTitle = "Change";
+        }
       }
     } else {
-      this.uploadedPhotos = [];
       const files = [...event.target.files];
-      this.uploadedPhotos.push(files[0]);
+      this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
+          this.uploadedPhotos.push(files[0]);
+        } else {
+          this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
+        }
         const reader = new FileReader();
         this.showUploadedPicModal = true;
         reader.onload = (e: any) => {
@@ -770,7 +818,7 @@ export class AddDriverComponent
   }
 
   addGroup() {
-    this.groupSubmitDisabled = true;
+   // this.groupSubmitDisabled = true;
     this.hideErrors();
     this.apiService.postData("groups", this.groupData).subscribe({
       complete: () => { },
@@ -797,7 +845,7 @@ export class AddDriverComponent
         this.response = res;
         this.hasSuccess = true;
         this.groupSubmitDisabled = false;
-        this.fetchGroups();
+        this.fetchGroupsList();
         this.toastr.success("Group added successfully");
         $("#addDriverGroupModal").modal("hide");
         this.groupData = {
@@ -884,6 +932,26 @@ export class AddDriverComponent
       this.hasError = false;
       this.hasSuccess = false;
       this.hideErrors();
+      switch (this.paymentType) {
+        case "ppd":
+          this.payPerDelivery.default = true
+          break;
+        case "pph":
+          this.payPerHour.default = true
+          break;
+        case "pp":
+          this.payPercentage.default = true
+          break;
+        case "ppm":
+          this.payPerMile.default = true
+          break;
+        case "pfr":
+          this.payFlatRate.default = true
+          break;
+        default:
+          this.payPerMile.default = true
+      }
+      this.driverData.paymentOption = [this.payPerMile, this.payPerDelivery, this.payPerHour, this.payPercentage, this.payFlatRate]
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
       this.driverData[`deletedUploads`] = this.deletedUploads;
@@ -978,15 +1046,10 @@ export class AddDriverComponent
           next: (res) => {
             // this.response = res;
             // this.hasSuccess = true;
-            this.dashboardUtilityService.refreshDrivers = true;
             this.submitDisabled = false;
             this.toastr.success("Driver added successfully");
-            this.isSubmitted = true;
-            this.modalServiceOwn.triggerRedirect.next(true);
-            this.takeUntil$.next();
-            this.takeUntil$.complete();
             this.spinner.hide();
-            this.router.navigateByUrl("/fleet/drivers/list");
+            this.router.navigateByUrl(`/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`);
           },
         });
       } catch (error) {
@@ -1102,11 +1165,14 @@ export class AddDriverComponent
     let result = await this.apiService
       .getData(`drivers/${this.driverID}`)
       .toPromise();
-    // .subscribe(async (result: any) => {
+
     result = result.Items[0];
-    this.fetchLicStates(result.licenceDetails.issuedCountry);
-    this.driverData.address = result.address;
+    if (result.licenceDetails.issuedCountry && result.licenceDetails.issuedCountry != '') {
+      this.fetchLicStates(result.licenceDetails.issuedCountry);
+    }
+
     if (result.address !== undefined) {
+      this.driverData.address = result.address;
       for (let a = 0; a < this.driverData.address.length; a++) {
         if (this.driverData.address[a].manual) {
           this.driverData.address[a].isSuggest = false;
@@ -1127,8 +1193,6 @@ export class AddDriverComponent
       }
     }
     if (result.corporationType === "owner_operator") {
-      // this.listService.fetchOwnerOperators();
-      // this.ownerOperators = this.listService.ownerOperatorList;
 
       this.listService.fetchOwnerOperators();
       let opList = new Array<any>();
@@ -1137,7 +1201,6 @@ export class AddDriverComponent
     }
     if (result.corporationType === "company") {
       this.listService.fetchVendors();
-      // this.vendors = this.listService.vendorList;
       let vendorList = new Array<any>();
       this.getValidVendors(vendorList);
       this.vendors = vendorList;
@@ -1162,25 +1225,26 @@ export class AddDriverComponent
     this.driverData.startDate = _.isEmpty(result.startDate)
       ? null
       : result.startDate;
+
+
     this.driverData.terminationDate = _.isEmpty(result.terminationDate)
       ? null
       : result.terminationDate;
+
     this.driverData.contractStart = _.isEmpty(result.contractStart)
       ? null
       : result.contractStart;
     this.driverData.contractEnd = _.isEmpty(result.contractEnd)
       ? null
       : result.contractEnd;
-    this.driverData.crossBorderDetails.fastExpiry = _.isEmpty(
-      result.crossBorderDetails.fastExpiry
-    )
-      ? null
-      : result.crossBorderDetails.fastExpiry;
-    this.driverData.licenceDetails.licenceExpiry = _.isEmpty(
-      result.licenceDetails.licenceExpiry
-    )
-      ? null
-      : result.licenceDetails.licenceExpiry;
+
+    if (result.licenceDetails.licenceExpiry && result.licenceDetails.licenceExpiry != '') {
+      this.driverData.licenceDetails.licenceExpiry = _.isEmpty(
+        result.licenceDetails.licenceExpiry
+      )
+        ? null
+        : result.licenceDetails.licenceExpiry;
+    }
     this.driverData.citizenship = result.citizenship;
     this.driverData.assignedVehicle = result.assignedVehicle;
     this.driverData.groupID = result.groupID;
@@ -1197,10 +1261,7 @@ export class AddDriverComponent
     this.driverData[`abstractDocs`] = [];
     if (result.abstractDocs !== undefined && result.abstractDocs.length > 0) {
       this.driverData[`abstractDocs`] = result.abstractDocs;
-      this.absDocs = result.abstractDocs.map((x: any) => ({
-        path: `${this.Asseturl}/${result.carrierID}/${x}`,
-        name: x,
-      }));
+      this.absDocs = result.docsAbs;
     }
     this.driverData.gender = result.gender;
     this.driverData.DOB = result.DOB;
@@ -1228,64 +1289,63 @@ export class AddDriverComponent
         result.documentDetails[i].uploadedDocs !== undefined &&
         result.documentDetails[i].uploadedDocs.length > 0
       ) {
-        this.assetsDocs[i] = result.documentDetails[i].uploadedDocs.map(
-          (x) => ({
-            path: `${this.Asseturl}/${result.carrierID}/${x}`,
-            name: x,
-          })
-        );
+        this.assetsDocs[i] = result.docuementUpload;
+
       }
     }
     this.driverData.documentDetails = this.newDocuments;
     this.fetchDocStates(this.newDocuments);
-    this.driverData.crossBorderDetails.ACI_ID =
-      result.crossBorderDetails.ACI_ID;
-    this.driverData.crossBorderDetails.ACE_ID =
-      result.crossBorderDetails.ACE_ID;
-    this.driverData.crossBorderDetails.fast_ID =
-      result.crossBorderDetails.fast_ID;
-    this.driverData.crossBorderDetails.fastExpiry =
-      result.crossBorderDetails.fastExpiry;
-    this.driverData.crossBorderDetails.csa = result.crossBorderDetails.csa;
-    this.driverData.paymentDetails.paymentType =
-      result.paymentDetails.paymentType;
-    this.driverData.paymentDetails.loadedMiles =
-      result.paymentDetails.loadedMiles;
-    this.driverData.paymentDetails.loadedMilesUnit =
-      result.paymentDetails.loadedMilesUnit;
-    this.driverData.paymentDetails.loadedMilesTeam =
-      result.paymentDetails.loadedMilesTeam;
-    this.driverData.paymentDetails.loadedMilesTeamUnit =
-      result.paymentDetails.loadedMilesTeamUnit;
-
-    this.driverData.paymentDetails.emptyMiles =
-      result.paymentDetails.emptyMiles;
-    this.driverData.paymentDetails.emptyMilesUnit =
-      result.paymentDetails.emptyMilesUnit;
-    this.driverData.paymentDetails.emptyMilesTeam =
-      result.paymentDetails.emptyMilesTeam;
-    this.driverData.paymentDetails.emptyMilesTeamUnit =
-      result.paymentDetails.emptyMilesTeamUnit;
-    this.driverData.paymentDetails.loadPayPercentage =
-      result.paymentDetails.loadPayPercentage;
-    this.driverData.paymentDetails.loadPayPercentageOf =
-      result.paymentDetails.loadPayPercentageOf;
-    this.driverData.paymentDetails.rate = result.paymentDetails.rate;
-    this.driverData.paymentDetails.rateUnit = result.paymentDetails.rateUnit;
-    this.driverData.paymentDetails.waitingPay =
-      result.paymentDetails.waitingPay;
-    this.driverData.paymentDetails.waitingPayUnit =
-      result.paymentDetails.waitingPayUnit;
-    this.driverData.paymentDetails.waitingHourAfter =
-      result.paymentDetails.waitingHourAfter;
-
-    this.driverData.paymentDetails.deliveryRate =
-      result.paymentDetails.deliveryRate;
-    this.driverData.paymentDetails.deliveryRateUnit =
-      result.paymentDetails.deliveryRateUnit;
-
+    if (result.crossBorderDetails) {
+      this.driverData.crossBorderDetails.fastExpiry = _.isEmpty(
+        result.crossBorderDetails.fastExpiry
+      )
+        ? null
+        : result.crossBorderDetails.fastExpiry;
+      this.driverData.crossBorderDetails.ACI_ID =
+        result.crossBorderDetails.ACI_ID ? result.crossBorderDetails.ACI_ID : '';
+      this.driverData.crossBorderDetails.ACE_ID =
+        result.crossBorderDetails.ACE_ID ? result.crossBorderDetails.ACE_ID : '';
+      this.driverData.crossBorderDetails.fast_ID =
+        result.crossBorderDetails.fast_ID ? result.crossBorderDetails.fast_ID : '';
+      this.driverData.crossBorderDetails.fastExpiry =
+        result.crossBorderDetails.fastExpiry ? result.crossBorderDetails.fastExpiry : null;
+      this.driverData.crossBorderDetails.csa = result.crossBorderDetails.csa ? result.crossBorderDetails.csa : false;
+    }
+    if (result.paymentOption && result.paymentOption.length > 0) {
+      result.paymentOption.forEach(element => {
+        if (element.default) {
+          this.paymentType =
+            element.pType;
+        }
+        if (element.pType == "pph") {
+          this.payPerHour.currency = element.currency
+          this.payPerHour.rate = element.rate
+          this.payPerHour.waitingHourAfter = element.waitingHourAfter
+          this.payPerHour.waitingPay = element.waitingPay
+        }
+        if (element.pType == "pfr") {
+          this.payFlatRate.flatRate = element.flatRate
+          this.payFlatRate.currency = element.currency
+        }
+        if (element.pType == "ppm") {
+          this.payPerMile.loadedMiles = element.loadedMiles
+          this.payPerMile.currency = element.currency
+          this.payPerMile.emptyMiles = element.emptyMiles
+          this.payPerMile.emptyMilesTeam = element.emptyMilesTeam
+          this.payPerMile.loadedMilesTeam = element.loadedMilesTeam
+        }
+        if (element.pType == "pp") {
+          this.payPercentage.loadPayPercentage = element.loadPayPercentage
+          this.payPercentage.loadPayPercentageOf = element.loadPayPercentageOf
+        }
+        if (element.pType == "ppd") {
+          this.payPerDelivery.currency = element.currency
+          this.payPerDelivery.deliveryRate = element.deliveryRate
+        }
+      });
+    }
     this.driverData.SIN = result.SIN;
-    this.driverData.paymentDetails.payPeriod = result.paymentDetails.payPeriod;
+    this.driverData.payPeriod = result.payPeriod;
     this.driverData.CDL_Number = result.CDL_Number;
     this.driverData.licenceDetails.issuedCountry =
       result.licenceDetails.issuedCountry;
@@ -1307,31 +1367,57 @@ export class AddDriverComponent
 
     this.driverData.licenceDetails.vehicleType =
       result.licenceDetails.vehicleType;
-
-    this.driverData.hosDetails.hosStatus = result.hosDetails.hosStatus;
-    this.driverData.hosDetails.type = result.hosDetails.type;
-    this.driverData.hosDetails.hosRemarks = result.hosDetails.hosRemarks;
-    this.driverData.hosDetails.hosCycleName = result.hosDetails.hosCycleName;
-    this.driverData.hosDetails.homeTerminal =
-      result.hosDetails.homeTerminal.addressID;
-    this.driverData.hosDetails.pcAllowed = result.hosDetails.pcAllowed;
-    this.driverData.hosDetails.ymAllowed = result.hosDetails.ymAllowed;
-    this.driverData.hosDetails.timezone = result.hosDetails.timezone;
-    this.driverData.hosDetails.optZone = result.hosDetails.optZone;
-
-    this.driverData.emergencyDetails.name = result.emergencyDetails.name;
-    this.driverData.emergencyDetails.relationship =
-      result.emergencyDetails.relationship;
-    this.driverData.emergencyDetails.phone = result.emergencyDetails.phone;
+    if (result.hosDetails) {
+      this.driverData.hosDetails.hosStatus = result.hosDetails.hosStatus;
+      this.driverData.hosDetails.type = result.hosDetails.type;
+      this.driverData.hosDetails.hosRemarks = result.hosDetails.hosRemarks;
+      this.driverData.hosDetails.hosCycleName = result.hosDetails.hosCycleName;
+      this.driverData.hosDetails.homeTerminal =
+        result.hosDetails.homeTerminal.addressID;
+      this.driverData.hosDetails.pcAllowed = result.hosDetails.pcAllowed;
+      this.driverData.hosDetails.ymAllowed = result.hosDetails.ymAllowed;
+      this.driverData.hosDetails.timezone = result.hosDetails.timezone;
+      this.driverData.hosDetails.optZone = result.hosDetails.optZone;
+    }
+    if (result.emergencyDetails) {
+      this.driverData.emergencyDetails.name = result.emergencyDetails.name;
+      this.driverData.emergencyDetails.relationship =
+        result.emergencyDetails.relationship;
+      this.driverData.emergencyDetails.phone = result.emergencyDetails.phone;
+    }
     this.driverData[`timeCreated`] = result.timeCreated;
+    this.driverData.isImport = result.isImport;
 
-    // });
   }
+
   async onUpdateDriver() {
     if (this.abstractDocs.length > 0 || this.absDocs.length > 0) {
       this.hasError = false;
       this.hasSuccess = false;
       this.hideErrors();
+      this.payPerDelivery.default = false
+      this.payPerHour.default = false
+      this.payPerMile.default = false
+      this.payPercentage.default = false
+      this.payFlatRate.default = false
+      switch (this.paymentType) {
+        case "ppd":
+          this.payPerDelivery.default = true
+          break;
+        case "pph":
+          this.payPerHour.default = true
+          break;
+        case "pp":
+          this.payPercentage.default = true
+          break;
+        case "ppm":
+          this.payPerMile.default = true
+          break;
+        case "pfr":
+          this.payFlatRate.default = true
+          break
+      }
+      this.driverData.paymentOption = [this.payPerMile, this.payPerDelivery, this.payPerHour, this.payPercentage, this.payFlatRate]
       this.driverData[`driverID`] = this.driverID;
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
@@ -1428,7 +1514,7 @@ export class AddDriverComponent
           next: (res) => {
             this.response = res;
             this.hasSuccess = true;
-            this.isSubmitted = true;
+
             this.submitDisabled = false;
             this.dashboardUtilityService.refreshDrivers = true;
             this.toastr.success("Driver updated successfully");
@@ -1445,69 +1531,13 @@ export class AddDriverComponent
   }
 
   changePaymentModeForm(value) {
-    if (value === "Pay Per Mile") {
-      delete this.driverData.paymentDetails.loadPayPercentage;
-      delete this.driverData.paymentDetails.loadPayPercentageOf;
-      delete this.driverData.paymentDetails.rate;
-      delete this.driverData.paymentDetails.rateUnit;
-      delete this.driverData.paymentDetails.waitingPay;
-      delete this.driverData.paymentDetails.waitingPayUnit;
-      delete this.driverData.paymentDetails.waitingHourAfter;
-      delete this.driverData.paymentDetails.deliveryRate;
-      delete this.driverData.paymentDetails.deliveryRateUnit;
-    } else if (value === "Percentage") {
-      delete this.driverData.paymentDetails.loadedMiles;
-      delete this.driverData.paymentDetails.loadedMilesUnit;
-      delete this.driverData.paymentDetails.loadedMilesTeam;
-      delete this.driverData.paymentDetails.loadedMilesTeamUnit;
-      delete this.driverData.paymentDetails.emptyMiles;
-      delete this.driverData.paymentDetails.emptyMilesTeam;
-      delete this.driverData.paymentDetails.emptyMilesUnit;
-      delete this.driverData.paymentDetails.emptyMilesTeamUnit;
-      delete this.driverData.paymentDetails.deliveryRate;
-      delete this.driverData.paymentDetails.deliveryRateUnit;
-      delete this.driverData.paymentDetails.rate;
-      delete this.driverData.paymentDetails.rateUnit;
-      delete this.driverData.paymentDetails.waitingPay;
-      delete this.driverData.paymentDetails.waitingPayUnit;
-      delete this.driverData.paymentDetails.waitingHourAfter;
-    } else if (value === "Pay Per Hour") {
-      delete this.driverData.paymentDetails.deliveryRate;
-      delete this.driverData.paymentDetails.deliveryRateUnit;
-      delete this.driverData.paymentDetails.loadPayPercentage;
-      delete this.driverData.paymentDetails.loadPayPercentageOf;
-      delete this.driverData.paymentDetails.loadedMiles;
-      delete this.driverData.paymentDetails.loadedMilesUnit;
-      delete this.driverData.paymentDetails.loadedMilesTeam;
-      delete this.driverData.paymentDetails.loadedMilesTeamUnit;
-      delete this.driverData.paymentDetails.emptyMiles;
-      delete this.driverData.paymentDetails.emptyMilesTeam;
-      delete this.driverData.paymentDetails.emptyMilesUnit;
-      delete this.driverData.paymentDetails.emptyMilesTeamUnit;
-    } else {
-      delete this.driverData.paymentDetails.loadedMiles;
-      delete this.driverData.paymentDetails.loadedMilesUnit;
-      delete this.driverData.paymentDetails.loadedMilesTeam;
-      delete this.driverData.paymentDetails.loadedMilesTeamUnit;
-      delete this.driverData.paymentDetails.emptyMiles;
-      delete this.driverData.paymentDetails.emptyMilesTeam;
-      delete this.driverData.paymentDetails.emptyMilesUnit;
-      delete this.driverData.paymentDetails.emptyMilesTeamUnit;
-      delete this.driverData.paymentDetails.rate;
-      delete this.driverData.paymentDetails.rateUnit;
-      delete this.driverData.paymentDetails.waitingPay;
-      delete this.driverData.paymentDetails.waitingPayUnit;
-      delete this.driverData.paymentDetails.waitingHourAfter;
-    }
+
   }
   changeCurrency(currency: any) {
-    this.driverData.paymentDetails.rateUnit = currency;
-    this.driverData.paymentDetails.deliveryRateUnit = currency;
-    this.driverData.paymentDetails.loadedMilesUnit = currency;
-    this.driverData.paymentDetails.emptyMilesUnit = currency;
-    this.driverData.paymentDetails.loadedMilesTeamUnit = currency;
-    this.driverData.paymentDetails.emptyMilesTeamUnit = currency;
-    this.driverData.paymentDetails.waitingPayUnit = currency;
+    // this.driverData.paymentDetails.loadedMilesUnit = currency;
+    // this.driverData.paymentDetails.emptyMilesUnit = currency;
+    // this.driverData.paymentDetails.loadedMilesTeamUnit = currency;
+    // this.driverData.paymentDetails.emptyMilesTeamUnit = currency;
   }
   concatArray(path) {
     this.concatArrayKeys = "";
@@ -1594,8 +1624,8 @@ export class AddDriverComponent
 
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    this.currentUserCarrier = this.currentUser.carrierID;
-    this.carrierID = this.currentUser.carrierID;
+    this.currentUserCarrier = localStorage.getItem('xfhCarrierId');
+    this.carrierID = localStorage.getItem('xfhCarrierId');
 
     if (this.currentUser.userType === "Cloud Admin") {
       let isCarrierID = localStorage.getItem("carrierID");
@@ -1734,12 +1764,17 @@ export class AddDriverComponent
           `drivers/validate/cdl?value=${this.driverData.CDL_Number}&type=${this.pageType}&drv=${this.driverID}`
         )
         .subscribe((result: any) => {
-          if (!result) {
+          this.cdlResult = result;
+          if (!this.cdlResult) {
             this.errors[`CDL_Number`] = "CDL already exists";
             this.submitDisabled = true;
-          } else {
+          }
+          else {
             this.onChangeHideErrors("CDL_Number");
             delete this.errors[`CDL_Number`];
+          }
+          if(this.emailCheck === true){
+          this.submitDisabled = true;
           }
           this.throwErrors();
         });
@@ -1748,7 +1783,7 @@ export class AddDriverComponent
 
   validateEmail() {
     this.hideVal();
-    if (this.driverData.email !== "") {
+    if (this.driverData.email !== '') {
       this.driverData.email = this.driverData.email.trim();
       this.apiService
         .getData(
@@ -1756,10 +1791,11 @@ export class AddDriverComponent
         )
         .subscribe((result: any) => {
           if (!result) {
-            this.errors[`email`] = "Email already exists";
+            this.errors[`email`] = 'Email already exists';
             this.submitDisabled = true;
+            this.emailCheck = true;
           } else {
-            this.onChangeHideErrors("email");
+            this.onChangeHideErrors('email');
             delete this.errors[`email`];
           }
           this.throwErrors();
@@ -1773,5 +1809,11 @@ export class AddDriverComponent
     this.onChangeHideErrors("CDL_Number");
     this.onChangeHideErrors("email");
     this.submitDisabled = false;
+  }
+
+  fetchGroupsList() {
+    this.apiService.getData('groups/get/list/type?type=drivers').subscribe((result: any) => {
+      this.groupsData = result;
+    });
   }
 }

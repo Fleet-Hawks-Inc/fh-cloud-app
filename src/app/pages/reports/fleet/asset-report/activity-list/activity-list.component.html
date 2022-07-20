@@ -1,163 +1,347 @@
 <section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pt-0 pr-0">
+      <header class="page-header pr19 pl11">
+        <form class="form-horizontal" method="get">
+          <div class="row" style="padding-top: 10px">
+            <div class="col-md-2 col-lg-2 pr-0">
+              <div class="input-group input-group-md mb-3">
+                <input
+                  type="text"
+                  autocomplete="off"
+                  placeholder="Search Asset"
+                  name="assetIdentification"
+                  [(ngModel)]="assetIdentification"
+                  class="form-control"
+                  (input)="getSuggestions($event.target.value)"
+                />
+              </div>
 
-    <div class="inner-wrapper">
-
-        <section role="main" class="content-body pl-1 pt-0 pr-0">
-            <header class="page-header pr19 pl11">
-                <form class="form-horizontal" method="get">
-                    <div class="row" style="padding-top:10px;">
-                        <div class="col-md-2 col-lg-2">
-                            <div class="input-group input-group-md mb-3">
-                                <input type="text" autocomplete="off" placeholder="Search Asset"
-                                    name="assetIdentification" [(ngModel)]="assetIdentification" class="form-control"
-                                    (input)="getSuggestions($event.target.value)">
-                            </div>
-
-                            <div *ngIf="suggestedAssets?.length > 0" class="result-suggestions">
-                                <ul>
-                                    <li *ngFor="let suggestedAsset of suggestedAssets" style="cursor: pointer;"
-                                        (click)="setAsset(suggestedAsset.assetID, suggestedAsset.assetIdentification)">
-                                        {{
-                                        suggestedAsset.assetIdentification }}</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-2 col-lg-2 pl-0 pr-0">
-                            <ng-select class="form-control custom" name="assetType" [(ngModel)]="assetType"
-                                placeholder="Select Type">
-                                <ng-option value="container">Container</ng-option>
-                                <ng-option value="double_drop">Double Drop</ng-option>
-                                <ng-option value="dump_trailer">Dump Trailer</ng-option>
-                                <ng-option value="flat_bed">Flat bed</ng-option>
-                                <ng-option value="lowboy">Lowboy</ng-option>
-                                <ng-option value="stepDeck">StepDeck</ng-option>
-                                <ng-option value="removable_gooseneck">Removable Gooseneck</ng-option>
-                                <ng-option value="dry_van">Dry Van</ng-option>
-                                <ng-option value="reefer">Reefer</ng-option>
-                                <ng-option value="power_only">Power Only</ng-option>
-                                <ng-option value="conestoga_trailer">Conestoga Trailer</ng-option>
-                                <ng-option value="side_kit_trailer">Side Kit Trailer</ng-option>
-                                <ng-option value="specialized_trailer">Specialized Trailer</ng-option>
-                                <ng-option value="enclosed_trailer">Enclosed Trailer</ng-option>
-                                <ng-option value="scrap_trailer">Scrap Trailer</ng-option>
-                                <ng-option value="semi_trailer">Semi Trailer</ng-option>
-                                <ng-option value="chassis">Chassis</ng-option>
-                                <ng-option value="tank_trailer">Tank Trailer</ng-option>
-                            </ng-select>
-                        </div>
-                        <div class="col-md-2 col-lg-2">
-                            <button type="submit" [disabled]="disableSearch" (click)="searchFilter()"
-                                class="btn btn-sm btn-success mr-2">Search</button>
-                            <button type="button" [disabled]="disableSearch" (click)="resetFilter()"
-                                class="btn btn-sm btn-success">Reset</button>
-                        </div>
-                        <div class="col-md-6 col-lg-6 text-right pr-1">
-                            <a routerLink="/reports/fleet/asset/overview" class="btn btn-sm btn-success">Back</a>
-                        </div>
-                    </div>
-                </form>
-            </header>
-
-            <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1" [infiniteScrollThrottle]="5"
-                (scrolled)="onScroll()">
-                <section class="m-2">
-                    <div class="row mb-3">
-                        <div class="col-lg-12">
-                            <div class="bg-white p-3 text-dark">
-                                <div class="form-group row pt-3">
-
-                                    <div class="col-lg-12">
-                                        <!-- LIST VIEW OF ASSETS  -->
-                                        <div class="table-responsive">
-                                            <table class="row-border hover table table-bordered table-striped mb-0">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Asset Name/Number</th>
-                                                        <th>VIN</th>
-                                                        <th>Asset Type</th>
-                                                        <th>Make</th>
-                                                        <!-- <th class="col4">Last Location</th> -->
-                                                        <th> Licence Plate Number</th>
-                                                        <th>Year</th>
-
-                                                        <th>Ownership</th>
-                                                        <th>Company Name</th>
-                                                        <th>Annual Safety Date</th>
-
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr *ngIf="allData.length == 0" class="text-center">
-                                                        <td colspan="15">{{ dataMessage }}</td>
-                                                    </tr>
-                                                    <tr class="cursorpoint text-capitalize"
-                                                        *ngFor="let item of allData;let i = index">
-                                                        <td [routerLink]="item.url">
-                                                            <span
-                                                                class="font-weight-bold line-height-lg text-capitalize">{{item.assetIdentification}}</span>
-                                                        </td>
-
-                                                        <td [routerLink]="item.url">
-                                                            {{item.assetDetails.ownerShip
-                                                            !=='interchange' ? item.VIN : '-'}}</td>
-                                                        <td [routerLink]="item.url">
-                                                            {{item.assetType |
-                                                            titlecase}}
-                                                        </td>
-                                                        <td [routerLink]="item.url">{{(item.assetDetails.manufacturer) ?
-                                                            item.assetDetails.manufacturer : '-'}}
-                                                        </td>
-
-                                                        <td [routerLink]="item.url">
-                                                            {{item.assetDetails.licencePlateNumber}}</td>
-                                                        <td [routerLink]="item.url">{{
-                                                            item.assetDetails.ownerShip
-                                                            !=='interchange' ? item.assetDetails.year : '-'}}</td>
-
-                                                        <td [routerLink]="item.url">
-                                                            {{item.assetDetails.ownerShip ? item.assetDetails.ownerShip
-                                                            :
-                                                            '-'}}</td>
-                                                        <td [routerLink]="item.url">
-                                                            <span
-                                                                *ngIf="item.assetDetails.ownerShip === 'ownerOperator'">{{item.assetDetails.ownerOperator
-                                                                ? contactsObjects[item.assetDetails.ownerOperator] : '-'
-                                                                }}</span>
-                                                            <span
-                                                                *ngIf="item.assetDetails.ownerShip === 'rented'">{{item.assetDetails.rentCompany
-                                                                ? item.assetDetails.rentCompany : '-'}}</span>
-                                                            <span
-                                                                *ngIf="item.assetDetails.ownerShip === 'owned' || item.assetDetails.ownerShip === 'leased' || item.assetDetails.ownerShip === 'interchange'">-</span>
-                                                        </td>
-                                                        <td [routerLink]="item.url">{{
-                                                            item.assetDetails.ownerShip !=='interchange' ?
-                                                            (item.assetDetails.annualSafetyDate | date:"yyyy/MM/dd") :
-                                                            '-'
-                                                            }}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-
-                                        </div>
-                                    </div>
-
-
-                                </div>
-
-
-                            </div>
-                        </div>
-                    </div>
-                </section>
+              <div
+                *ngIf="suggestedAssets?.length > 0"
+                class="result-suggestions"
+              >
+                <ul>
+                  <li
+                    *ngFor="let suggestedAsset of suggestedAssets"
+                    style="cursor: pointer"
+                    (click)="
+                      setAsset(
+                        suggestedAsset.assetID,
+                        suggestedAsset.assetIdentification
+                      )
+                    "
+                  >
+                    {{ suggestedAsset.assetIdentification }}
+                  </li>
+                </ul>
+              </div>
             </div>
-
-
-            <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey !== 'end' && allData.length !== 0">
-                <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll() ">Load
-                    More..</button>
-
+            <div class="col-md-2 col-lg-2 pl-2 pr-0">
+              <ng-select
+                class="form-control custom"
+                name="assetType"
+                [(ngModel)]="assetType"
+                placeholder="Select Type"
+              >
+                <ng-option value="container">Container</ng-option>
+                <ng-option value="double_drop">Double Drop</ng-option>
+                <ng-option value="dump_trailer">Dump Trailer</ng-option>
+                <ng-option value="flat_bed">Flat bed</ng-option>
+                <ng-option value="lowboy">Lowboy</ng-option>
+                <ng-option value="stepDeck">StepDeck</ng-option>
+                <ng-option value="removable_gooseneck"
+                  >Removable Gooseneck</ng-option
+                >
+                <ng-option value="dry_van">Dry Van</ng-option>
+                <ng-option value="reefer">Reefer</ng-option>
+                <ng-option value="power_only">Power Only</ng-option>
+                <ng-option value="conestoga_trailer"
+                  >Conestoga Trailer</ng-option
+                >
+                <ng-option value="side_kit_trailer">Side Kit Trailer</ng-option>
+                <ng-option value="specialized_trailer"
+                  >Specialized Trailer</ng-option
+                >
+                <ng-option value="enclosed_trailer">Enclosed Trailer</ng-option>
+                <ng-option value="scrap_trailer">Scrap Trailer</ng-option>
+                <ng-option value="semi_trailer">Semi Trailer</ng-option>
+                <ng-option value="chassis">Chassis</ng-option>
+                <ng-option value="tank_trailer">Tank Trailer</ng-option>
+              </ng-select>
             </div>
+            <div class="col-md-3 col-lg-3 pl-2">
+              <button
+                type="submit"
+                [disabled]="disableSearch"
+                (click)="searchFilter()"
+                class="btn btn-sm btn-success mr-2"
+              >
+                Search
+              </button>
+              <button
+                type="button"
+                [disabled]="disableSearch"
+                (click)="resetFilter()"
+                class="btn btn-sm btn-success"
+              >
+                Reset
+              </button>
+            </div>
+            <div class="col-md-5 col-lg-5 text-right pr-1">
+              <a
+                routerLink="/reports/fleet/asset/overview"
+                class="btn btn-sm btn-success"
+                >Back</a
+              >
+            </div>
+          </div>
+        </form>
+      </header>
 
-        </section>
-    </div>
+      <section class="m-2">
+        <div class="row mb-3">
+          <div
+            class="col-lg-12"
+            style="height: calc(100vh - 149px); overflow-y: scroll"
+          >
+            <div class="bg-white p-3 text-dark text-capitalize">
+              <p-table
+                #dt
+                [value]="allData"
+                [resizableColumns]="true"
+                columnResizeMode="expand"
+                scrollDirection="both"
+                [columns]="selectedColumns"
+                [loading]="!loaded"
+                styleClass="p-datatable-md p-datatable-gridlines p-datatable-striped"
+                [scrollable]="true"
+                [loading]="!loaded"
+                scrollHeight="100%"
+              >
+                <ng-template pTemplate="caption">
+                  <div
+                    class="p-d-flex d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h3 class="m-0">Asset</h3>
+                    </div>
+                    <div class="text-right">
+                      <span>Showing {{ allData.length }} entries</span> &nbsp;
+                      <button
+                        type="button"
+                        pButton
+                        (click)="refreshData()"
+                        pTooltip="Refresh"
+                        class="p-button-outlined mr-2"
+                        icon="fas fa-sync"
+                      ></button>
+
+                      <button
+                        pButton
+                        pRipple
+                        pTooltip="Clear Filter"
+                        class="p-button-outlined mr-2"
+                        (click)="clear(dt)"
+                        icon="pi pi-filter-slash"
+                      ></button>
+
+                      <button
+                        type="button"
+                        pButton
+                        pRipple
+                        class="p-button-outlined mr-2"
+                        icon="fas fa-regular fa-file-excel"
+                        (click)="dt.exportCSV()"
+                        pTooltip="Excel"
+                      ></button>
+
+                      <p-multiSelect
+                        [options]="dataColumns"
+                        [(ngModel)]="selectedColumns"
+                        optionLabel="header"
+                        selectedItemsLabel="{0} columns selected"
+                        [style]="{ minWidth: '200px' }"
+                        placeholder="Choose Columns"
+                      >
+                      </p-multiSelect>
+                    </div>
+                  </div>
+                </ng-template>
+
+                <!-- Header template of DataTable -->
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <!-- <th style="width: 3%" alignFrozen="left" pFrozenColumn [frozen]="true"></th> -->
+                    <th
+                      *ngFor="let dataColumns of columns"
+                      [pSortableColumn]="dataColumns.field"
+                      pResizableColumn
+                      [ngStyle]="{ width: dataColumns.width }"
+                    >
+                      <div [ngSwitch]="dataColumns.field">
+                        <span>
+                          <div
+                            class="flex justify-content-center align-items-center"
+                            alignFrozen="left"
+                            pFrozenColumn
+                            [frozen]="true"
+                          >
+                            {{ dataColumns.header }}
+                            <p-sortIcon [field]="dataColumns.field">
+                            </p-sortIcon>
+                            <p-columnFilter
+                              [type]="dataColumns.type"
+                              [field]="dataColumns.field"
+                              matchMode="contains"
+                              [showMatchModes]="false"
+                              [showOperator]="false"
+                              [showAddButton]="false"
+                              display="menu"
+                            >
+                            </p-columnFilter>
+                          </div>
+                        </span>
+                      </div>
+                    </th>
+                    <!-- <th style="width: 6%" alignFrozen="right" pFrozenColumn [frozen]="true">Actions</th> -->
+                  </tr>
+                </ng-template>
+                <!-- Body Template of Data Table -->
+                <ng-template
+                  pTemplate="body"
+                  let-asset
+                  let-columns="columns"
+                  let-rowIndex="rowIndex"
+                >
+                  <tr>
+                    <td
+                      *ngFor="let dataColumns of columns"
+                      [ngStyle]="{ width: dataColumns.width }"
+                      style="cursor: pointer"
+                      routerLink="/reports/fleet/asset/activity/{{
+                        asset.assetID
+                      }}"
+                    >
+                      <div [ngSwitch]="dataColumns.field">
+                        <span *ngSwitchCase="'assetIdentification'">
+                          <span>
+                            <b>{{
+                              get(asset, dataColumns.field) | titlecase
+                            }}</b></span
+                          >
+                        </span>
+                        <span *ngSwitchCase="'VIN'">
+                          <span> {{ get(asset, dataColumns.field) }}</span>
+                        </span>
+
+                        <span *ngSwitchCase="'assetType'">
+                          <span> {{ get(asset, dataColumns.field) }}</span>
+                        </span>
+                        <span *ngSwitchCase="'manufacturer'">
+                          <span>
+                            {{
+                              (get(asset, dataColumns.field)
+                                ? get(asset, dataColumns.field)
+                                : "-"
+                              ) | titlecase
+                            }}</span
+                          >
+                        </span>
+                        <span *ngSwitchCase="'-'">
+                          <span> -</span>
+                        </span>
+
+                        <span *ngSwitchCase="'licencePlateNumber'">
+                          <span>
+                            {{
+                              (get(asset, dataColumns.field)
+                                ? get(asset, dataColumns.field)
+                                : "-"
+                              ) | titlecase
+                            }}</span
+                          >
+                        </span>
+
+                        <span *ngSwitchCase="'year'">
+                          <span>
+                            {{
+                              (get(asset, dataColumns.field)
+                                ? get(asset, dataColumns.field)
+                                : "-"
+                              ) | titlecase
+                            }}</span
+                          >
+                        </span>
+                        <span *ngSwitchCase="'ownerShip'">
+                          <span>
+                            {{
+                              (get(asset, dataColumns.field)
+                                ? get(asset, dataColumns.field)
+                                : "-"
+                              ) | titlecase
+                            }}</span
+                          >
+                        </span>
+                        <span *ngSwitchCase="'operatorCompany'">
+                          <span>
+                            {{
+                              (get(asset, dataColumns.field)
+                                ? get(asset, dataColumns.field)
+                                : "-"
+                              ) | titlecase
+                            }}</span
+                          >
+                        </span>
+                        <span *ngSwitchCase="'annualSafetyDate'">
+                          <span>
+                            {{
+                              (get(asset, dataColumns.field)
+                                ? get(asset, dataColumns.field)
+                                : "-"
+                              ) | titlecase
+                            }}</span
+                          >
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+
+                <!-- Empty Template -->
+                <ng-template pTemplate="emptymessage" let-columns>
+                  <div class="col-lg-12 mt-3 text-center">
+                    {{ dataMessage }}
+                    <br /><br />
+                  </div>
+                </ng-template>
+                <!-- Summary Section with Load More button -->
+                <ng-template pTemplate="summary" let-columns>
+                  <div
+                    class="col-lg-12 mt-3 text-center"
+                    *ngIf="lastEvaluatedKey !== 'end' && allData.length !== 0"
+                  >
+                    <button
+                      type="button "
+                      (click)="onScroll()"
+                      class="btn btn-success btn-sm text-light"
+                    >
+                      Load More..
+                    </button>
+                    <br /><br />
+                  </div>
+                  <div
+                    class="col-lg-12 mt-3 text-center"
+                    *ngIf="lastEvaluatedKey === 'end'"
+                  >
+                    Total Records: {{ allData.length }}
+                  </div>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
 </section>

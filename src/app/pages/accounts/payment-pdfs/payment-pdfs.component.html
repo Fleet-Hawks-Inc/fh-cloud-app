@@ -1,254 +1,289 @@
-<div class="modal fade" id="chequeModal2" role="dialog" tabindex="-1">
-  <div class="modal-dialog" role="document" style="max-width: 750px">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Payment</h4>
-        <button type="button" class="close">&times;</button>
-      </div>
-      <form>
-        <div class="modal-body">
-          <!-- driver pdf -->
-          <section class="cheque-wrapper" id="driver_pay_pdf">
-            <table
-              width="90%"
-              border="0"
-              align="center"
-              cellpadding="0"
-              cellspacing="0"
-            >
-              <tbody>
-                <tr>
-                  <td colspan="2">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td colspan="2" align="center">
-                    <h1
-                      style="
-                        font-size: 22px;
-                        font-weight: 700;
-                        margin-bottom: 1px;
-                        margin-top: 1px;
-                      "
+<ng-template #driverPaymentDetail let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Payment</h4>
+      <button type="button" class="close" (click)="modal.dismiss()">
+        &times;
+      </button>
+    </div>
+    <form>
+      <div class="modal-body">
+        <!-- driver pdf -->
+        <section
+          class="cheque-wrapper"
+          id="driver_pay_pdf"
+          *ngIf="
+            paymentData.paymentTo === 'driver' ||
+            paymentData.paymentTo === 'employee'
+          "
+        >
+          <table
+            width="98%"
+            border="0"
+            align="center"
+            cellpadding="0"
+            cellspacing="0"
+          >
+            <tbody>
+              <!--
+              <tr>
+                <td colspan="2">&nbsp;</td>
+              </tr>
+              -->
+              <tr>
+                <td>
+                  <h1 class="text-dark font-weight-bold text-6 mb-1 mt-1">
+                    {{ pdfTitle }}
+                  </h1>
+                </td>
+                <td align="right">
+                  <img
+                    crossorigin="anonymous"
+                    *ngIf="companyLogo"
+                    [src]="companyLogo"
+                    alt="logo"
+                    style="max-width: 100px"
+                  />
+                  <p
+                    *ngIf="tagLine"
+                    class="mb-0 text-dark text-4 font-weight-bold ng-star-inserted"
+                  >
+                    {{ tagLine }}
+                  </p>
+                </td>
+              </tr>
+              <!--
+              <tr>
+                <td>&nbsp;</td>
+                <td width="50%">&nbsp;</td>
+              </tr>
+              -->
+              <tr>
+                <td colspan="2" height="1" bgcolor="#595959"></td>
+              </tr>
+              <tr>
+                <td width="50%" valign="top">
+                  <h2
+                    class="mt-1 mb-0 text-dark text-5 text-capitalize LH28 font-weight-semibold"
+                  >
+                    Company: {{ companyName }}
+                  </h2>
+                  <p
+                    class="text-dark mt-0 mb-0 text-capitalize text-5 font-weight-semibold"
+                  >
+                    {{ pdfDetails.name }}
+                  </p>
+                  <div
+                    class="text-dark"
+                    *ngIf="paymentData.paymentTo === 'driver' && !multiPay"
+                    style="font-size: 12px; margin-bottom: 2px"
+                  >
+                    <strong>Payment Type:</strong>
+                    {{
+                      paymentSelected
+                        ? paymentAbr[paymentSelected[0].pType]
+                        : ""
+                    }}
+                    <br />
+                    <div
                       class="text-dark"
-                    >
-                      {{ pdfTitle }}
-                    </h1>
-                  </td>
-                </tr>
-                <tr>
-                  <td>&nbsp;</td>
-                  <td width="50%">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td colspan="2" height="1" bgcolor="#595959"></td>
-                </tr>
-                <tr>
-                  <td width="50%" valign="top">
-                    <h2
-                      style="
-                        font-size: 18px;
-                        margin-top: 1px;
-                        font-weight: 600;
-                        margin-bottom: 1px;
+                      *ngIf="
+                        paymentSelected && paymentSelected[0].pType === 'ppm'
                       "
-                      class="text-dark mb-0 text-capitalize"
                     >
-                      {{ pdfDetails.name }}
-                    </h2>
-                    <p
-                      class="text-dark"
-                      style="font-size: 12px; margin-bottom: 2px"
-                    >
-                      {{ pdfDetails.address }}<br />
-                      <strong>Phone:</strong> {{ pdfDetails.phone }}<br />
-                      <strong>Email:</strong> {{ pdfDetails.email }}
-                    </p>
-                  </td>
-                  <td valign="top">
-                    <table
-                      width="80%"
-                      border="0"
-                      align="right"
-                      cellpadding="0"
-                      cellspacing="0"
-                    >
-                      <tbody>
-                        <tr>
-                          <td align="right">
-                            <h2
-                              class="text-dark mb-0"
-                              style="
-                                font-size: 18px;
-                                font-weight: 600;
-                                margin-top: 1px;
-                                margin-bottom: 1px;
-                              "
-                            >
-                              User ID
-                            </h2>
-                            <p
-                              class="text-dark"
-                              style="font-size: 12px; margin-bottom: 2px"
-                            >
-                              {{ pdfDetails.userID }}
-                            </p>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td align="right">
-                            <p
-                              class="text-dark"
-                              style="font-size: 12px; margin-bottom: 2px"
-                            >
-                              <strong>Status:</strong> {{ payStatus }}
-                            </p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2" height="1" bgcolor="#595959"></td>
-                </tr>
-                <!-- <tr>
+                      <strong>Loaded Miles: </strong
+                      >{{ paymentSelected[0].loadedMiles }}
+                      {{ paymentSelected[0].currency }},
+                      <span class="ml-2"
+                        ><strong>Team Loaded Miles:</strong>
+                        {{ paymentSelected[0].loadedMilesTeam }}
+                        {{ paymentSelected[0].currency }}</span
+                      ><br />
+                      <strong>Empty Miles:</strong>
+                      {{ paymentSelected[0].emptyMiles }} {{ currency }},
+                      <span class="ml-2"
+                        ><strong>Team Empty Miles:</strong>
+                        {{ paymentSelected[0].emptyMilesTeam }}
+                        {{ paymentSelected[0].currency }}</span
+                      >
+                    </div>
+                  </div>
+                  <p class="text-dark mb-1">
+                    <strong>Address:</strong>
+                    {{ pdfDetails.address ? pdfDetails.address : "NA" }}<br />
+                    <strong>Phone:</strong> {{ pdfDetails.phone }}<br />
+                    <strong>Email:</strong> {{ pdfDetails.email }}
+                  </p>
+                </td>
+                <td valign="top">
+                  <table
+                    width="80%"
+                    border="0"
+                    align="right"
+                    cellpadding="0"
+                    cellspacing="0"
+                  >
+                    <tbody>
+                      <tr>
+                        <td align="right">
+                          <p class="text-dark mb-0 mt-2 text-3">
+                            <span class="font-weight-bold">User ID:</span>
+                            {{ pdfDetails.userID }}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">
+                          <p class="text-dark mb-0 mt-1 text-3">
+                            <span class="font-weight-bold">Status:</span>
+                            {{ payStatus }}
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" height="1" bgcolor="#595959"></td>
+              </tr>
+              <!-- <tr>
                   <td colspan="2">&nbsp;</td>
                 </tr> -->
-                <tr>
-                  <td colspan="2" valign="top">
-                    <table
-                      width="100%"
-                      border="0"
-                      cellspacing="0"
-                      cellpadding="0"
-                    >
-                      <tbody>
-                        <tr>
-                          <td width="30%">
-                            <table border="0" cellpadding="0" cellspacing="0">
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <p
-                                      class="text-dark"
-                                      style="
-                                        font-size: 12px;
-                                        margin-bottom: 4px;
-                                        margin-top: 4px;
-                                      "
+              <tr>
+                <td colspan="2" valign="top">
+                  <table
+                    width="100%"
+                    border="0"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
+                    <tbody>
+                      <tr>
+                        <td width="30%">
+                          <table border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    class="text-dark"
+                                    style="
+                                      font-size: 12px;
+                                      margin-bottom: 4px;
+                                      margin-top: 4px;
+                                    "
+                                  >
+                                    <strong>Payment#:</strong>
+                                    {{ pdfDetails.paymentNo }}
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                        <td width="50%">
+                          <table border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    class="text-dark"
+                                    style="
+                                      font-size: 12px;
+                                      margin-bottom: 4px;
+                                      margin-top: 4px;
+                                    "
+                                  >
+                                    <span
+                                      style="display: inline-block; width: 70px"
+                                      ><strong>Pay Period:</strong></span
                                     >
-                                      <strong>Payment#:</strong>
-                                      {{ pdfDetails.paymentNo }}
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                          <td width="50%">
-                            <table border="0" cellpadding="0" cellspacing="0">
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <p
-                                      class="text-dark"
-                                      style="
-                                        font-size: 12px;
-                                        margin-bottom: 4px;
-                                        margin-top: 4px;
-                                      "
-                                    >
-                                      <strong>Pay Period:</strong>
-                                      {{ pdfDetails.payPeriod }}
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                          <td width="20%">
-                            <table
-                              border="0"
-                              align="right"
-                              cellpadding="0"
-                              cellspacing="0"
-                            >
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <p
-                                      class="text-dark"
-                                      style="
-                                        font-size: 12px;
-                                        margin-bottom: 4px;
-                                        margin-top: 4px;
-                                      "
-                                    >
-                                      <strong>Year to Date:</strong>
-                                      {{ pdfDetails.payYear }}
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <!-- <tr>
+                                    <span style="display: inline-block">{{
+                                      payPeriod ? payPeriod : "NA"
+                                    }}</span>
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                        <td width="20%">
+                          <table
+                            border="0"
+                            align="right"
+                            cellpadding="0"
+                            cellspacing="0"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p
+                                    class="text-dark"
+                                    style="
+                                      font-size: 12px;
+                                      margin-bottom: 4px;
+                                      margin-top: 4px;
+                                    "
+                                  >
+                                    <strong>Year to Date:</strong>
+                                    {{ pdfDetails.payYear }}
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <!-- <tr>
                   <td colspan="2">&nbsp;</td>
                 </tr> -->
-                <tr>
-                  <td colspan="2">
-                    <table
-                      width="100%"
-                      border="1"
-                      bordercolor="#adadad"
-                      cellspacing="0"
-                      cellpadding="0"
-                    >
-                      <tbody>
-                        <tr bgcolor="#f3f3f3">
-                          <td width="60%" class="pl-3 pt-2">
-                            <p class="text-3 font-weight-bold text-dark mb-2">
-                              Description
-                            </p>
-                          </td>
-                          <td width="20%" class="pr-3 pt-2 text-right">
-                            <p class="text-3 font-weight-bold text-dark mb-2">
-                              Rate $
-                            </p>
-                          </td>
-                          <td width="20%" class="pr-3 pt-2 text-right">
-                            <p class="text-3 font-weight-bold text-dark mb-2">
-                              Amount $
-                            </p>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">
-                              Regular Earnings
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">
-                              {{
-                                this.paymentData.settledAmount | number: "1.2-2"
-                              }}
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">
-                              {{
-                                this.annualResult.regEarning | number: "1.2-2"
-                              }}
-                            </p>
-                          </td>
-                        </tr>
-                        <tr>
+              <tr>
+                <td colspan="2">
+                  <table
+                    class="table-bordered w100 text-dark"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
+                    <tbody>
+                      <tr>
+                        <td width="60%" class="pl-3 pt-1">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Description
+                          </p>
+                        </td>
+                        <td width="20%" class="pr-3 pt-1 text-right">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Rate $
+                          </p>
+                        </td>
+                        <td width="20%" class="pr-3 pt-1 text-right">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Amount $
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">Regular Earnings</p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 text-dark mb-1">
+                            {{
+                              this.paymentData.settledAmount | number: "1.2-2"
+                            }}
+                          </p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 text-dark mb-1">
+                            {{ this.annualResult.regEarning | number: "1.2-2" }}
+                          </p>
+                        </td>
+                      </tr>
+                      <!-- <tr>
                           <td class="pl-3 pt-2">
                             <p class="text-3 text-dark mb-2">
                               Critical Workers Benefit
@@ -269,937 +304,1228 @@
                               }}
                             </p>
                           </td>
-                        </tr>
-                        <tr>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">
-                              Vacation Pay Paid
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">
-                              {{
-                                this.paymentData.vacPayAmount | number: "1.2-2"
-                              }}
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">
-                              {{
-                                this.annualResult.vacationPay | number: "1.2-2"
-                              }}
-                            </p>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="pl-3 pt-2">&nbsp;</td>
-                          <td class="pr-3 pt-2 text-right">&nbsp;</td>
-                          <td class="pr-3 pt-2 text-right">&nbsp;</td>
-                        </tr>
-                        <tr *ngFor="let add of addCharges">
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2 text-capitalize">
-                              {{ add.chargeName }}
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">
-                              {{ add.amount | number: "1.2-2" }}
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">-</p>
-                          </td>
-                        </tr>
+                        </tr> -->
+                      <tr>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">Vacation Pay Paid</p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 text-dark mb-1">
+                            {{
+                              this.paymentData.vacPayAmount | number: "1.2-2"
+                            }}
+                          </p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 text-dark mb-1">
+                            {{
+                              this.annualResult.vacationPay | number: "1.2-2"
+                            }}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr *ngIf="paymentData.isVendorPayment">
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">GST/HST</p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 text-dark mb-1">
+                            {{ this.paymentData.gstHstAmt | number: "1.2-2" }}
+                          </p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 text-dark mb-1">0</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="pl-3 pt-1">&nbsp;</td>
+                        <td class="pr-3 pt-1 text-right">&nbsp;</td>
+                        <td class="pr-3 pt-1 text-right">&nbsp;</td>
+                      </tr>
 
-                        <tr *ngFor="let ded of dedCharges">
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2 text-capitalize">
-                              {{ ded.chargeName }}
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">
-                              - {{ ded.amount | number: "1.2-2" }}
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">-</p>
-                          </td>
-                        </tr>
+                      <tr *ngFor="let ded of paymentData.advData">
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1 text-capitalize">
+                            Advance Payment #{{ ded.paymentNo }}
+                          </p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 text-dark mb-1">
+                            - {{ ded.paidAmount | number: "1.2-2" }}
+                          </p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 text-dark mb-1">-</p>
+                        </td>
+                      </tr>
+                      <tr class="text-dark">
+                        <td class="pl-3 pr-3 pt-1 text-right pb-2">
+                          <b>Sub-Total</b>
+                        </td>
+                        <td class="pr-3 pt-1 text-right pb-2">
+                          {{ subTotal | number: "1.2-2" }}
+                        </td>
+                        <td class="pr-3 pt-1 text-right">&nbsp;</td>
+                      </tr>
+                      <tr
+                        *ngIf="
+                          addCharges.length > 0 ||
+                          dedCharges.length > 0 ||
+                          paymentData.advData.length > 0
+                        "
+                      >
+                        <td class="pl-3 pt-1">&nbsp;</td>
+                        <td class="pr-3 pt-1 text-right">&nbsp;</td>
+                        <td class="pr-3 pt-1 text-right">&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">EI Premiums</p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 text-dark mb-1">
+                            {{ this.paymentData.taxdata.ei | number: "1.2-2" }}
+                          </p>
+                        </td>
 
-                        <tr *ngFor="let ded of paymentData.advData">
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2 text-capitalize">
-                              Advance Payment #{{ ded.paymentNo }}
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">
-                              - {{ ded.paidAmount | number: "1.2-2" }}
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">-</p>
-                          </td>
-                        </tr>
-
-                        <tr
-                          *ngIf="
-                            addCharges.length > 0 ||
-                            dedCharges.length > 0 ||
-                            paymentData.advData.length > 0
-                          "
-                        >
-                          <td class="pl-3 pt-2">&nbsp;</td>
-                          <td class="pr-3 pt-2 text-right">&nbsp;</td>
-                          <td class="pr-3 pt-2 text-right">&nbsp;</td>
-                        </tr>
-                        <tr>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">EI Premiums</p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">
-                              {{
-                                this.paymentData.taxdata.ei | number: "1.2-2"
-                              }}
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">
-                              {{ this.annualResult.ei | number: "1.2-2" }}
-                            </p>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">
-                              CPP Contributions
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">
-                              {{
-                                this.paymentData.taxdata.cpp | number: "1.2-2"
-                              }}
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">
-                              {{ this.annualResult.cpp | number: "1.2-2" }}
-                            </p>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">Income Tax</p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">
-                              {{ this.paymentData.incomeTax | number: "1.2-2" }}
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">
-                              {{
-                                this.annualResult.incomeTax | number: "1.2-2"
-                              }}
-                            </p>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="pl-3 pt-2">&nbsp;</td>
-                          <td class="pr-3 pt-2 text-right">&nbsp;</td>
-                          <td class="pr-3 pt-2 text-right">&nbsp;</td>
-                        </tr>
-                        <tr>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark font-weight-bold mb-2">
-                              Net Pay {{ paymentData.payMode }} #{{
-                                paymentData.payModeNo
-                              }}
-                              {{ paymentData.payModeDate | date: "dd-MM-yyyy" }}
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 font-weight-bold text-dark mb-2">
-                              {{
-                                this.paymentData.finalAmount | number: "1.2-2"
-                              }}
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 font-weight-bold text-dark mb-2">
-                              {{ this.annualResult.netPay | number: "1.2-2" }}
-                            </p>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark font-weight-bold mb-2">
-                              EI Insurable Earnings
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 font-weight-bold text-dark mb-2">
-                              {{
-                                this.paymentData.eiInsurable | number: "1.2-2"
-                              }}
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 font-weight-bold text-dark mb-2">
-                              {{
-                                this.annualResult.eiInsurable | number: "1.2-2"
-                              }}
-                            </p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2">&nbsp;</td>
-                </tr>
-                <tr *ngFor="let data of paymentTrips">
-                  <td colspan="2">
-                    <table
-                      width="100%"
-                      border="0"
-                      cellspacing="0"
-                      cellpadding="0"
-                      style="margin-top: 15px"
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 text-dark mb-1">
+                            {{ this.annualResult.ei | number: "1.2-2" }}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">CPP Contributions</p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 text-dark mb-1">
+                            {{ this.paymentData.taxdata.cpp | number: "1.2-2" }}
+                          </p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 text-dark mb-1">
+                            {{ this.annualResult.cpp | number: "1.2-2" }}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">Income Tax</p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 text-dark mb-1">
+                            {{ this.paymentData.incomeTax | number: "1.2-2" }}
+                          </p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 text-dark mb-1">
+                            {{ this.annualResult.incomeTax | number: "1.2-2" }}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="pl-3 pt-1">&nbsp;</td>
+                        <td class="pr-3 pt-1 text-right">&nbsp;</td>
+                        <td class="pr-3 pt-1 text-right">&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark font-weight-bold mb-1">
+                            Net Pay {{ paymentData.payMode }} #{{
+                              paymentData.payModeNo
+                            }}
+                            {{ paymentData.payModeDate | date: "dd-MM-yyyy" }}
+                          </p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            {{ this.paymentData.finalAmount | number: "1.2-2" }}
+                          </p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            {{ this.annualResult.netPay | number: "1.2-2" }}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark font-weight-bold mb-1">
+                            EI Insurable Earnings
+                          </p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            {{ this.paymentData.eiInsurable | number: "1.2-2" }}
+                          </p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            {{
+                              this.annualResult.eiInsurable | number: "1.2-2"
+                            }}
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">&nbsp;</td>
+              </tr>
+              <tr *ngFor="let data of paymentTrips">
+                <td colspan="2">
+                  <table
+                    width="100%"
+                    border="0"
+                    cellspacing="0"
+                    cellpadding="0"
+                    style="margin-top: 15px"
+                  >
+                    <tbody>
+                      <tr>
+                        <td>
+                          <table border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p class="text-dark mb-0 text-3">
+                                    <strong>Trip#:</strong> {{ data.tripNo }}
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                        <td width="50%">
+                          <table
+                            border="0"
+                            align="right"
+                            cellpadding="0"
+                            cellspacing="0"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p class="text-dark mb-0 text-3">
+                                    <strong>Trip Date:</strong>
+                                    {{ data.date | date: "dd-MM-yyyy" }}
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table
+                    width="100%"
+                    border="1"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
+                    <tbody>
+                      <tr>
+                        <td width="10%" class="pl-3 pt-1">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Location Type
+                          </p>
+                        </td>
+                        <td width="25%" class="pl-3 pt-1">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Location
+                          </p>
+                        </td>
+                        <!-- <td width="10%" class="pl-3 pt-1">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Driver
+                          </p>
+                        </td> -->
+                        <td width="20%" class="pl-3 pt-1">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Co-driver
+                          </p>
+                        </td>
+                        <td width="10%" class="pl-3 pt-1">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Vehicle
+                          </p>
+                        </td>
+                        <td width="10%" class="pl-3 pt-1">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Asset(s)
+                          </p>
+                        </td>
+                        <td width="10%" class="pl-3 pt-1">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Miles
+                          </p>
+                        </td>
+                        <td width="5%" class="pl-3 pt-1">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Rate
+                          </p>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let plan of data.plans">
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">{{ plan.type }}</p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ plan.location }}
+                          </p>
+                        </td>
+                        <!-- <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1 text-capitalize">
+                            {{ plan.driverName }}
+                          </p>
+                        </td> -->
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1 text-capitalize">
+                            {{ plan.drivrCodriver }}
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ plan.vehicleName }}
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ plan.assetNames }}
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ plan.showMiles }}
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ plan.rate }}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="5" class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            <strong>Total</strong>
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            <strong>{{
+                              data.totalMiles | number: "1.2-2"
+                            }}</strong>
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            <strong>{{
+                              data.finalRate | number: "1.2-2"
+                            }}</strong>
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr *ngIf="addCharges.length > 0">
+                <td colspan="2">&nbsp;</td>
+              </tr>
+              <tr *ngIf="addCharges.length > 0">
+                <td colspan="2">
+                  <table
+                    width="100%"
+                    border="0"
+                    cellspacing="0"
+                    cellpadding="0"
+                    style="margin-top: 15px"
+                  >
+                    <tbody>
+                      <tr>
+                        <td>
+                          <table border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p class="text-dark mb-1 text-3">
+                                    <strong>Additions</strong>
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table
+                    width="100%"
+                    border="1"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
+                    <tbody>
+                      <tr>
+                        <td width="50%" class="pl-3 pt-1">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Charge Name
+                          </p>
+                        </td>
+                        <td width="50%" class="pl-3 pt-1">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Amount
+                          </p>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let add of addCharges">
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ add.chargeName }}
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ add.amount | number: "1.2-2" }}
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr *ngIf="dedCharges.length > 0">
+                <td colspan="2">&nbsp;</td>
+              </tr>
+              <tr *ngIf="dedCharges.length > 0">
+                <td colspan="2">
+                  <table
+                    width="100%"
+                    border="0"
+                    cellspacing="0"
+                    cellpadding="0"
+                    style="margin-top: 15px"
+                  >
+                    <tbody>
+                      <tr>
+                        <td>
+                          <table border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p class="text-dark mb-1 text-3">
+                                    <strong>Deductions</strong>
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table
+                    width="100%"
+                    border="1"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
+                    <tbody>
+                      <tr>
+                        <td width="50%" class="pl-3 pt-1">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Charge Name
+                          </p>
+                        </td>
+                        <td width="50%" class="pl-3 pt-1">
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Amount
+                          </p>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let add of dedCharges">
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ add.chargeName }}
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ add.amount | number: "1.2-2" }}
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+              </tr>
+              <tr *ngIf="paymentData.paymentTo === 'driver'">
+                <td></td>
+                <td class="pl-3 pt-1">
+                  <p class="text-3 text-dark mb-1 text-right">
+                    <strong
+                      >Grand Total: {{ grandTotal | number: "1.2-2" }}</strong
                     >
-                      <tbody>
-                        <tr>
-                          <td>
-                            <table border="0" cellpadding="0" cellspacing="0">
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <p class="text-dark mb-2 text-3">
-                                      <strong>Trip#:</strong> {{ data.tripNo }}
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                          <td width="50%">
-                            <table
-                              border="0"
-                              align="right"
-                              cellpadding="0"
-                              cellspacing="0"
-                            >
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <p class="text-dark mb-2 text-3">
-                                      <strong>Trip Date:</strong>
-                                      {{ data.date | date: "dd-MM-yyyy" }}
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <table
-                      width="100%"
-                      border="1"
-                      bordercolor="#adadad"
-                      cellspacing="0"
-                      cellpadding="0"
-                    >
-                      <tbody>
-                        <tr bgcolor="#f3f3f3">
-                          <td width="20%" class="pl-3 pt-2">
-                            <p class="text-3 font-weight-bold text-dark mb-2">
-                              Location Type
-                            </p>
-                          </td>
-                          <td width="60%" class="pl-3 pt-2">
-                            <p class="text-3 font-weight-bold text-dark mb-2">
-                              Location
-                            </p>
-                          </td>
-                          <td width="20%" class="pl-3 pt-2">
-                            <p class="text-3 font-weight-bold text-dark mb-2">
-                              Total Miles
-                            </p>
-                          </td>
-                        </tr>
-                        <tr *ngFor="let plan of data.plans">
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">{{ plan.type }}</p>
-                          </td>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">
-                              {{ plan.location }}
-                            </p>
-                          </td>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">
-                              {{ plan.miles }}
-                            </p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2">
-                    <table
-                      border="0"
-                      align="center"
-                      cellpadding="0"
-                      cellspacing="0"
-                    >
-                      <tbody>
-                        <tr>
-                          <td align="center">
-                            <h2 style="font-size: 13px">Powered By</h2>
-                            <img
-                              alt="Fleet Hawks
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <table
+                    border="0"
+                    align="center"
+                    cellpadding="0"
+                    cellspacing="0"
+                  >
+                    <tbody>
+                      <tr>
+                        <td align="center">
+                          <h2 class="mb-0 text-dark text-4 font-weight-normal">
+                            Powered By
+                          </h2>
+                          <img
+                            alt="Fleet Hawks
                                                               Inc."
-                              src="assets/img/logo.png"
-                              width="207"
-                              height="28"
-                            />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </section>
+                            src="assets/img/logo.png"
+                            width="207"
+                            height="28"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
 
-          <!-- owner operator pdf -->
-          <section class="cheque-wrapper" id="ownerOperator_pay_pdf">
-            <table
-              width="90%"
-              border="0"
-              align="center"
-              cellpadding="0"
-              cellspacing="0"
-            >
-              <tbody>
-                <tr>
-                  <td colspan="2" align="center">
-                    <h1 class="font-weight-bold text-dark f-25 text-capitalize">
-                      {{ paymentData.paymentEnity }} Payment
-                    </h1>
-                  </td>
-                </tr>
-                <tr>
-                  <td>&nbsp;</td>
-                  <td width="50%">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td colspan="2" height="3" bgcolor="#dddddd"></td>
-                </tr>
-                <tr>
-                  <td width="50%" valign="top">
-                    <h2
-                      class="
-                        text-dark
-                        mb-0
-                        font-weight-bold
-                        text-6 text-capitalize
-                      "
+        <!-- owner operator pdf -->
+        <section
+          class="cheque-wrapper"
+          id="ownerOperator_pay_pdf"
+          *ngIf="
+            paymentData.paymentTo === 'owner_operator' ||
+           paymentData.paymentTo === 'carrier'
+          "
+        >
+          <table
+            width="90%"
+            border="0"
+            align="center"
+            cellpadding="0"
+            cellspacing="0"
+          >
+            <tbody>
+              <tr>
+                <td colspan="2" align="center">
+                  <h1 class="font-weight-bold text-dark f-25 text-capitalize">
+                    {{ paymentData.paymentEnity }} Payment
+                  </h1>
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td width="50%">&nbsp;</td>
+              </tr>
+              <tr>
+                <td colspan="2" height="3" bgcolor="#dddddd"></td>
+              </tr>
+              <tr>
+                <td width="50%" valign="top">
+                  <h2
+                    class="text-dark mb-0 font-weight-bold text-6 text-capitalize"
+                  >
+                    {{ pdfDetails.name }}
+                  </h2>
+                  <p class="text-dark">
+                    {{ pdfDetails.address }}<br />
+                    <span *ngIf="pdfDetails.phone">
+                      <strong>Phone:</strong> {{ pdfDetails.phone }}<br />
+                    </span>
+                    <strong>Email:</strong> {{ pdfDetails.email }}
+                  </p>
+                </td>
+                <td valign="top">
+                  <table
+                    width="80%"
+                    border="0"
+                    align="right"
+                    cellpadding="0"
+                    cellspacing="0"
+                  >
+                    <tbody>
+                      <tr>
+                        <td align="right">
+                          <h2 class="text-dark mb-0 font-weight-bold text-6">
+                            Pay Period
+                          </h2>
+                          <p class="text-dark">{{ pdfDetails.payPeriod }}</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">
+                          <p class="text-dark">
+                            <strong>Status:</strong> {{ payStatus }}
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr valign="top">
+                <td colspan="2">
+                  <table
+                    width="100%"
+                    border="0"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
+                    <tbody>
+                      <tr>
+                        <td
+                          width="75%"
+                          bgcolor="#f3f3f3"
+                          class="pr-3 pt-1 text-right"
+                        >
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Opening Balance
+                          </p>
+                        </td>
+                        <td
+                          width="8%"
+                          bgcolor="#f3f3f3"
+                          class="pr-3 pt-1 text-dark font-weight-bold text-right"
+                        >
+                          {{ paymentData.totalAmount | number: "1.2-2" }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr valign="top">
+                <td colspan="2">
+                  <h2 class="text-dark font-weight-bold text-4">Trip Detail</h2>
+                </td>
+              </tr>
+              <tr valign="top" *ngFor="let data of paymentTrips">
+                <td colspan="2">
+                  <table
+                    width="100%"
+                    border="0"
+                    cellspacing="0"
+                    cellpadding="0"
+                    style="margin-top: 25px"
+                  >
+                    <tbody>
+                      <tr>
+                        <td>
+                          <table border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p class="text-dark mb-0 text-4">
+                                    <strong>Trip#:</strong> {{ data.tripNo }}
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                        <td width="50%">
+                          <table
+                            border="0"
+                            align="right"
+                            cellpadding="0"
+                            cellspacing="0"
+                          >
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p class="text-dark mb-0 text-4">
+                                    <strong>Trip Date:</strong>
+                                    {{ data.date | date: "dd-MM-yyyy" }}
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr *ngIf="data.paymentSelected">
+                        <td>
+                          <table border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <p class="text-dark mb-1 text-3">
+                                    <strong>Payment Type:</strong>
+                                    {{
+                                      data.paymentSelected
+                                        ? paymentAbr[data.paymentSelected.pType]
+                                        : ""
+                                    }},
+                                    <span
+                                      *ngIf="
+                                        data.paymentSelected.pType === 'ppm'
+                                      "
+                                    >
+                                      <strong> Loaded Miles: </strong
+                                      >{{ data.paymentSelected.loadedMiles }}
+                                      {{ data.paymentSelected.currency }},
+                                      <strong> Team Loaded Miles: </strong
+                                      >{{
+                                        data.paymentSelected.loadedMilesTeam
+                                      }}
+                                      {{ data.paymentSelected.currency }},
+                                      <strong> Empty Miles: </strong
+                                      >{{ data.paymentSelected.emptyMiles }}
+                                      {{ data.paymentSelected.currency }},
+                                      <strong> Team Empty Miles: </strong
+                                      >{{ data.paymentSelected.emptyMilesTeam }}
+                                      {{ data.paymentSelected.currency }}
+                                    </span>
+                                    <span
+                                      *ngIf="
+                                        data.paymentSelected.pType === 'pfr'
+                                      "
+                                    >
+                                      <strong> Rate: </strong>
+                                      {{ data.paymentSelected.flatRate }}
+                                      {{ data.paymentSelected.currency }}
+                                    </span>
+                                    <span
+                                      *ngIf="
+                                        data.paymentSelected.pType === 'ppd'
+                                      "
+                                    >
+                                      <strong> Rate: </strong>
+                                      {{ data.paymentSelected.deliveryRate }}
+                                      {{ data.paymentSelected.currency }}
+                                    </span>
+                                    <span
+                                      *ngIf="
+                                        data.paymentSelected.pType === 'pp'
+                                      "
+                                    >
+                                      <strong> Rate: </strong>
+                                      {{
+                                        data.paymentSelected.loadPayPercentage
+                                      }}% of
+                                      {{
+                                        data.paymentSelected.loadPayPercentageOf
+                                      }}
+                                    </span>
+                                    <span
+                                      *ngIf="
+                                        data.paymentSelected.pType === 'pph'
+                                      "
+                                    >
+                                      <strong> Rate: </strong>
+                                      {{ data.paymentSelected.rate }}
+                                      {{ data.paymentSelected.currency }}
+                                      <strong> Waiting period pay: </strong>
+                                      {{ data.paymentSelected.waitingPay }}
+                                      {{ data.paymentSelected.currency }}
+                                      <strong>
+                                        Waiting period start after:
+                                      </strong>
+                                      {{
+                                        data.paymentSelected.waitingHourAfter
+                                      }}
+                                      {{ data.paymentSelected.currency }}
+                                    </span>
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table
+                    width="100%"
+                    border="1"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
+                    <tbody>
+                      <tr bgcolor="#f3f3f3">
+                        <td width="20%" class="pl-3 pt-1">
+                          <p class="text-4 font-weight-bold text-dark mb-1">
+                            Location Type
+                          </p>
+                        </td>
+                        <td width="60%" class="pl-3 pt-1">
+                          <p class="text-4 font-weight-bold text-dark mb-1">
+                            Location
+                          </p>
+                        </td>
+                        <td width="20%" class="pl-3 pt-1">
+                          <p class="text-4 font-weight-bold text-dark mb-1">
+                            Miles
+                          </p>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let plan of data.plans">
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">{{ plan.type }}</p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ plan.location }}
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ plan.miles }}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            <strong>Total</strong>
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            <strong>{{
+                              data.totalMiles | number: "1.2-2"
+                            }}</strong>
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr valign="top" *ngIf="fueldata.length > 0">
+                <td colspan="2">
+                  <h2 class="text-dark font-weight-bold text-4">Fuel Detail</h2>
+                </td>
+              </tr>
+              <tr *ngIf="fueldata.length > 0">
+                <td colspan="2">
+                  <table
+                    width="100%"
+                    border="1"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
+                    <tbody>
+                      <tr bgcolor="#f3f3f3">
+                        <td width="15%" class="pl-3 pt-1">
+                          <p class="text-4 font-weight-bold text-dark mb-1">
+                            Date
+                          </p>
+                        </td>
+                        <td width="30%" class="pl-3 pt-1">
+                          <p class="text-4 font-weight-bold text-dark mb-1">
+                            Location
+                          </p>
+                        </td>
+                        <td width="20%" class="pl-3 pt-1">
+                          <p class="text-4 font-weight-bold text-dark mb-1">
+                            Fuel Card#
+                          </p>
+                        </td>
+                        <td width="10%" class="pl-3 pt-1">
+                          <p class="text-4 font-weight-bold text-dark mb-1">
+                            Quantity
+                          </p>
+                        </td>
+                        <td width="10%" class="pl-3 pt-1">
+                          <p class="text-4 font-weight-bold text-dark mb-1">
+                            Amount
+                          </p>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let data of fueldata">
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ data.fuelDate | date: "dd-MM-yyyy" }}
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ data.city }}, {{ data.country }}
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">{{ data.card }}</p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ data.quantity }}
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            <span *ngIf="data.action === 'sub'">-</span>
+                            {{ data.amount | number: "1.2-2" }}
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr *ngIf="fueldata.length > 0" class="text-right">
+                <td colspan="2">
+                  <p class="mt-1 mb-0 text-dark">
+                    <b>
+                      Fuel Addition:
+                      {{ settlements[0].fuelAdd | number: "1.2-2" }} <br />
+                      Fuel Deduction:
+                      {{ settlements[0].fuelDed | number: "1.2-2" }}</b
                     >
-                      {{ pdfDetails.name }}
-                    </h2>
-                    <p class="text-dark">
-                      {{ pdfDetails.address }}<br />
-                      <span *ngIf="pdfDetails.phone">
-                        <strong>Phone:</strong> {{ pdfDetails.phone }}<br />
-                      </span>
-                      <strong>Email:</strong> {{ pdfDetails.email }}
-                    </p>
-                  </td>
-                  <td valign="top">
-                    <table
-                      width="80%"
-                      border="0"
-                      align="right"
-                      cellpadding="0"
-                      cellspacing="0"
-                    >
-                      <tbody>
-                        <tr>
-                          <td align="right">
-                            <h2 class="text-dark mb-0 font-weight-bold text-6">
-                              Pay Period
-                            </h2>
-                            <p class="text-dark">{{ pdfDetails.payPeriod }}</p>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td align="right">
-                            <p class="text-dark">
-                              <strong>Status:</strong> {{ payStatus }}
-                            </p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr valign="top">
-                  <td colspan="2">
-                    <table
-                      width="100%"
-                      border="0"
-                      bordercolor="#adadad"
-                      cellspacing="0"
-                      cellpadding="0"
-                    >
-                      <tbody>
-                        <tr>
-                          <td
-                            width="75%"
-                            bgcolor="#f3f3f3"
-                            class="pr-3 pt-2 text-right"
-                          >
-                            <p class="text-3 font-weight-bold text-dark mb-2">
-                              Opening Balance
-                            </p>
-                          </td>
-                          <td
-                            width="8%"
-                            bgcolor="#f3f3f3"
-                            class="
-                              pr-3
-                              pt-2
-                              text-dark
-                              font-weight-bold
-                              text-right
-                            "
-                          >
-                            {{ paymentData.totalAmount | number: "1.2-2" }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr valign="top">
-                  <td colspan="2">
-                    <h2 class="text-dark font-weight-bold text-4">
-                      Trip Detail
-                    </h2>
-                  </td>
-                </tr>
-                <tr valign="top" *ngFor="let data of paymentTrips">
-                  <td colspan="2">
-                    <table
-                      width="100%"
-                      border="0"
-                      cellspacing="0"
-                      cellpadding="0"
-                      style="margin-top: 25px"
-                    >
-                      <tbody>
-                        <tr>
-                          <td>
-                            <table border="0" cellpadding="0" cellspacing="0">
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <p class="text-dark mb-0 text-4">
-                                      <strong>Trip#:</strong> {{ data.tripNo }}
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                          <td width="50%">
-                            <table
-                              border="0"
-                              align="right"
-                              cellpadding="0"
-                              cellspacing="0"
-                            >
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <p class="text-dark mb-0 text-4">
-                                      <strong>Trip Date:</strong>
-                                      {{ data.date | date: "dd-MM-yyyy" }}
-                                    </p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <table
-                      width="100%"
-                      border="1"
-                      bordercolor="#adadad"
-                      cellspacing="0"
-                      cellpadding="0"
-                    >
-                      <tbody>
-                        <tr bgcolor="#f3f3f3">
-                          <td width="20%" class="pl-3 pt-2">
-                            <p class="text-4 font-weight-bold text-dark mb-2">
-                              Location Type
-                            </p>
-                          </td>
-                          <td width="60%" class="pl-3 pt-2">
-                            <p class="text-4 font-weight-bold text-dark mb-2">
-                              Location
-                            </p>
-                          </td>
-                          <td width="20%" class="pl-3 pt-2">
-                            <p class="text-4 font-weight-bold text-dark mb-2">
-                              Total Miles
-                            </p>
-                          </td>
-                        </tr>
-                        <tr *ngFor="let plan of data.plans">
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">{{ plan.type }}</p>
-                          </td>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">
-                              {{ plan.location }}
-                            </p>
-                          </td>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">
-                              {{ plan.miles }}
-                            </p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr valign="top" *ngIf="fueldata.length > 0">
-                  <td colspan="2">
-                    <h2 class="text-dark font-weight-bold text-4">
-                      Fuel Detail
-                    </h2>
-                  </td>
-                </tr>
-                <tr *ngIf="fueldata.length > 0">
-                  <td colspan="2">
-                    <table
-                      width="100%"
-                      border="1"
-                      bordercolor="#adadad"
-                      cellspacing="0"
-                      cellpadding="0"
-                    >
-                      <tbody>
-                        <tr bgcolor="#f3f3f3">
-                          <td width="15%" class="pl-3 pt-2">
-                            <p class="text-4 font-weight-bold text-dark mb-2">
-                              Date
-                            </p>
-                          </td>
-                          <td width="30%" class="pl-3 pt-2">
-                            <p class="text-4 font-weight-bold text-dark mb-2">
-                              Location
-                            </p>
-                          </td>
-                          <td width="20%" class="pl-3 pt-2">
-                            <p class="text-4 font-weight-bold text-dark mb-2">
-                              Fuel Card#
-                            </p>
-                          </td>
-                          <td width="10%" class="pl-3 pt-2">
-                            <p class="text-4 font-weight-bold text-dark mb-2">
-                              Quantity
-                            </p>
-                          </td>
-                          <td width="10%" class="pl-3 pt-2">
-                            <p class="text-4 font-weight-bold text-dark mb-2">
-                              Amount
-                            </p>
-                          </td>
-                        </tr>
-                        <tr *ngFor="let data of fueldata">
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">
-                              {{ data.fuelDate | date: "dd-MM-yyyy" }}
-                            </p>
-                          </td>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">
-                              {{ data.city }}, {{ data.country }}
-                            </p>
-                          </td>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">{{ data.card }}</p>
-                          </td>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">
-                              {{ data.quantity }}
-                            </p>
-                          </td>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">
-                              <span *ngIf="data.action === 'sub'">-</span>
-                              {{ data.amount | number: "1.2-2" }}
-                            </p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr *ngIf="fueldata.length > 0">
-                  <td colspan="2">&nbsp;</td>
-                </tr>
-                <tr *ngIf="fueldata.length > 0">
-                  <td colspan="2">
-                    <table
-                      width="100%"
-                      border="0"
-                      bordercolor="#adadad"
-                      cellspacing="0"
-                      cellpadding="0"
-                    >
-                      <tbody>
-                        <tr>
-                          <td
-                            width="75%"
-                            bgcolor="#f3f3f3"
-                            class="pr-3 pt-2 text-right"
-                          >
-                            <p class="text-3 font-weight-bold text-dark mb-2">
-                              Fuel Addition
-                            </p>
-                          </td>
-                          <td
-                            width="7%"
-                            bgcolor="#f3f3f3"
-                            class="pr-3 pt-2 text-right"
-                          >
-                            <!-- <p class="text-4 text-dark mb-2">0.00</p> -->
-                          </td>
-                          <td
-                            width="8%"
-                            bgcolor="#f3f3f3"
-                            class="
-                              pr-3
-                              pt-2
-                              text-dark
-                              font-weight-bold
-                              text-right
-                            "
-                          >
-                            {{ fuelAddTotal | number: "1.2-2" }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td
-                            width="75%"
-                            bgcolor="#f3f3f3"
-                            class="pr-3 pt-2 text-right"
-                          >
-                            <p class="text-3 font-weight-bold text-dark mb-2">
-                              Fuel Deduction
-                            </p>
-                          </td>
-                          <td
-                            width="7%"
-                            bgcolor="#f3f3f3"
-                            class="pr-3 pt-2 text-right"
-                          >
-                            <!-- <p class="text-4 text-dark mb-2">0.00</p> -->
-                          </td>
-                          <td
-                            width="8%"
-                            bgcolor="#f3f3f3"
-                            class="
-                              pr-3
-                              pt-2
-                              text-dark
-                              font-weight-bold
-                              text-right
-                            "
-                          >
-                            {{ fuelDedTotal | number: "1.2-2" }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr valign="top" *ngIf="paymentData.advData.length > 0">
-                  <td colspan="2">
-                    <h2 class="text-dark font-weight-bold text-4">
-                      Advance Payment
-                    </h2>
-                  </td>
-                </tr>
-                <tr *ngIf="paymentData.advData.length > 0">
-                  <td colspan="2">
-                    <table
-                      width="100%"
-                      border="1"
-                      bordercolor="#adadad"
-                      cellspacing="0"
-                      cellpadding="0"
-                    >
-                      <tbody>
-                        <tr bgcolor="#f3f3f3">
-                          <td class="pl-3 pt-2">
-                            <p class="text-4 font-weight-bold text-dark mb-2">
-                              Payment#
-                            </p>
-                          </td>
-                          <td class="pl-3 pt-2">
-                            <p class="text-4 font-weight-bold text-dark mb-2">
-                              Date
-                            </p>
-                          </td>
-                          <td class="pl-3 pt-2">
-                            <p class="text-4 font-weight-bold text-dark mb-2">
-                              Reference#
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-4 font-weight-bold text-dark mb-2">
-                              Amount
-                            </p>
-                          </td>
-                        </tr>
-                        <tr *ngFor="let data of paymentData.advData">
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">
-                              {{ data.paymentNo }}
-                            </p>
-                          </td>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">
-                              {{ data.txnDate | date: "yyyy/MM/dd" }}
-                            </p>
-                          </td>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">{{ data.ref }}</p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">
-                              {{ data.paidAmount | number: "1.2-2" }}
-                            </p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr *ngIf="paymentData.advData.length > 0">
-                  <td colspan="2">&nbsp;</td>
-                </tr>
-                <tr *ngIf="paymentData.advData.length > 0">
-                  <td colspan="2">
-                    <table
-                      width="100%"
-                      border="0"
-                      bordercolor="#adadad"
-                      cellspacing="0"
-                      cellpadding="0"
-                    >
-                      <tbody>
-                        <tr>
-                          <td
-                            width="75%"
-                            bgcolor="#f3f3f3"
-                            class="pr-3 pt-2 text-right"
-                          >
-                            <p class="text-3 font-weight-bold text-dark mb-2">
-                              Total Advance deducted
-                            </p>
-                          </td>
-                          <td
-                            width="7%"
-                            bgcolor="#f3f3f3"
-                            class="pr-3 pt-2 text-right"
-                          >
-                            <!-- <p class="text-4 text-dark mb-2">0.00</p> -->
-                          </td>
-                          <td
-                            width="8%"
-                            bgcolor="#f3f3f3"
-                            class="
-                              pr-3
-                              pt-2
-                              text-dark
-                              font-weight-bold
-                              text-right
-                            "
-                          >
-                            {{ paymentData.advance | number: "1.2-2" }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr *ngIf="paymentData.advData.length > 0">
-                  <td colspan="2">&nbsp;</td>
-                </tr>
-                <tr valign="top" *ngIf="addCharges.length > 0">
-                  <td colspan="2">
-                    <h2 class="text-dark font-weight-bold text-4">
-                      Other Additions
-                    </h2>
-                  </td>
-                </tr>
-                <tr *ngIf="addCharges.length > 0">
-                  <td colspan="2">
-                    <table
-                      width="100%"
-                      border="1"
-                      bordercolor="#adadad"
-                      cellspacing="0"
-                      cellpadding="0"
-                    >
-                      <tbody>
-                        <tr bgcolor="#f3f3f3">
-                          <td class="pl-3 pt-2">
-                            <p class="text-4 font-weight-bold text-dark mb-2">
-                              Name
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-4 font-weight-bold text-dark mb-2">
-                              Amount
-                            </p>
-                          </td>
-                        </tr>
-                        <tr *ngFor="let data of addCharges">
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">
-                              {{ data.chargeName }}
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">
-                              {{ data.amount | number: "1.2-2" }}
-                            </p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
+                  </p>
+                </td>
+              </tr>
+              <tr *ngIf="fueldata.length > 0">
+                <td colspan="2">&nbsp;</td>
+              </tr>
 
-                <tr valign="top" *ngIf="dedCharges.length > 0">
-                  <td colspan="2">
-                    <h2 class="text-dark font-weight-bold text-4">
-                      Other Deductions
-                    </h2>
-                  </td>
-                </tr>
-                <tr *ngIf="dedCharges.length > 0">
-                  <td colspan="2">
-                    <table
-                      width="100%"
-                      border="1"
-                      bordercolor="#adadad"
-                      cellspacing="0"
-                      cellpadding="0"
-                    >
-                      <tbody>
-                        <tr bgcolor="#f3f3f3">
-                          <td class="pl-3 pt-2">
-                            <p class="text-4 font-weight-bold text-dark mb-2">
-                              Name
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-4 font-weight-bold text-dark mb-2">
-                              Amount
-                            </p>
-                          </td>
-                        </tr>
-                        <tr *ngFor="let data of dedCharges">
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">
-                              {{ data.chargeName }}
-                            </p>
-                          </td>
-                          <td class="pr-3 pt-2 text-right">
-                            <p class="text-3 text-dark mb-2">
-                              {{ data.amount | number: "1.2-2" }}
-                            </p>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr *ngIf="dedCharges.length > 0">
-                  <td colspan="2">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td colspan="2">
-                    <table
-                      width="100%"
-                      border="0"
-                      bordercolor="#adadad"
-                      cellspacing="0"
-                      cellpadding="0"
-                    >
-                      <tbody>
-                        <tr>
-                          <td
-                            width="75%"
-                            bgcolor="#f3f3f3"
-                            class="pr-3 pt-2 text-right"
-                          >
-                            <p class="text-3 font-weight-bold text-dark mb-2">
-                              Gross Total
-                            </p>
-                          </td>
-                          <td
-                            width="7%"
-                            bgcolor="#f3f3f3"
-                            class="pr-3 pt-2 text-right"
-                          >
-                            <!-- <p class="text-4 text-dark mb-2">0.00</p> -->
-                          </td>
-                          <td
-                            width="8%"
-                            bgcolor="#f3f3f3"
-                            class="
-                              pr-3
-                              pt-2
-                              text-dark
-                              font-weight-bold
-                              text-right
-                            "
-                          >
-                            {{ paymentData.finalAmount | number: "1.2-2" }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </section>
-        </div>
-      </form>
-    </div>
+              <tr valign="top" *ngIf="paymentData.advData.length > 0">
+                <td colspan="2">
+                  <h2 class="text-dark font-weight-bold text-4">
+                    Advance Payment
+                  </h2>
+                </td>
+              </tr>
+              <tr *ngIf="paymentData.advData.length > 0">
+                <td colspan="2">
+                  <table
+                    width="100%"
+                    border="1"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
+                    <tbody>
+                      <tr bgcolor="#f3f3f3">
+                        <td class="pl-3 pt-1">
+                          <p class="text-4 font-weight-bold text-dark mb-1">
+                            Payment#
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-4 font-weight-bold text-dark mb-1">
+                            Date
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-4 font-weight-bold text-dark mb-1">
+                            Reference#
+                          </p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-4 font-weight-bold text-dark mb-1">
+                            Amount
+                          </p>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let data of paymentData.advData">
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ data.paymentNo }}
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ data.txnDate | date: "yyyy/MM/dd" }}
+                          </p>
+                        </td>
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">{{ data.ref }}</p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 text-dark mb-1">
+                            {{ data.paidAmount | number: "1.2-2" }}
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr *ngIf="paymentData.advData.length > 0">
+                <td colspan="2">&nbsp;</td>
+              </tr>
+              <tr *ngIf="paymentData.advData.length > 0">
+                <td colspan="2">
+                  <table
+                    width="100%"
+                    border="0"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
+                    <tbody>
+                      <tr>
+                        <td
+                          width="75%"
+                          bgcolor="#f3f3f3"
+                          class="pr-3 pt-1 text-right"
+                        >
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Total Advance deducted
+                          </p>
+                        </td>
+                        <td
+                          width="7%"
+                          bgcolor="#f3f3f3"
+                          class="pr-3 pt-1 text-right"
+                        >
+                          <!-- <p class="text-4 text-dark mb-2">0.00</p> -->
+                        </td>
+                        <td
+                          width="8%"
+                          bgcolor="#f3f3f3"
+                          class="pr-3 pt-1 text-dark font-weight-bold text-right"
+                        >
+                          {{ paymentData.advance | number: "1.2-2" }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr *ngIf="paymentData.advData.length > 0">
+                <td colspan="2">&nbsp;</td>
+              </tr>
+              <tr valign="top" *ngIf="addCharges.length > 0">
+                <td colspan="2">
+                  <h2 class="text-dark font-weight-bold text-4">
+                    Other Additions
+                  </h2>
+                </td>
+              </tr>
+              <tr *ngIf="addCharges.length > 0">
+                <td colspan="2">
+                  <table
+                    width="100%"
+                    border="1"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
+                    <tbody>
+                      <tr bgcolor="#f3f3f3">
+                        <td class="pl-3 pt-1">
+                          <p class="text-4 font-weight-bold text-dark mb-1">
+                            Name
+                          </p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-4 font-weight-bold text-dark mb-1">
+                            Amount
+                          </p>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let data of addCharges">
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ data.chargeName }}
+                          </p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 text-dark mb-1">
+                            {{ data.amount | number: "1.2-2" }}
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+
+              <tr valign="top" *ngIf="dedCharges.length > 0">
+                <td colspan="2">
+                  <h2 class="text-dark font-weight-bold text-4">
+                    Other Deductions
+                  </h2>
+                </td>
+              </tr>
+              <tr *ngIf="dedCharges.length > 0">
+                <td colspan="2">
+                  <table
+                    width="100%"
+                    border="1"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
+                    <tbody>
+                      <tr bgcolor="#f3f3f3">
+                        <td class="pl-3 pt-1">
+                          <p class="text-4 font-weight-bold text-dark mb-1">
+                            Name
+                          </p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-4 font-weight-bold text-dark mb-1">
+                            Amount
+                          </p>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let data of dedCharges">
+                        <td class="pl-3 pt-1">
+                          <p class="text-3 text-dark mb-1">
+                            {{ data.chargeName }}
+                          </p>
+                        </td>
+                        <td class="pr-3 pt-1 text-right">
+                          <p class="text-3 text-dark mb-1">
+                            {{ data.amount | number: "1.2-2" }}
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr *ngIf="dedCharges.length > 0">
+                <td colspan="2">&nbsp;</td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <table
+                    width="100%"
+                    border="0"
+                    bordercolor="#adadad"
+                    cellspacing="0"
+                    cellpadding="0"
+                  >
+                    <tbody>
+                      <tr>
+                        <td
+                          width="75%"
+                          bgcolor="#f3f3f3"
+                          class="pr-3 pt-1 text-right"
+                        >
+                          <p class="text-3 font-weight-bold text-dark mb-1">
+                            Gross Total
+                          </p>
+                        </td>
+                        <td
+                          width="7%"
+                          bgcolor="#f3f3f3"
+                          class="pr-3 pt-1 text-right"
+                        >
+                          <!-- <p class="text-4 text-dark mb-2">0.00</p> -->
+                        </td>
+                        <td
+                          width="8%"
+                          bgcolor="#f3f3f3"
+                          class="pr-3 pt-1 text-dark font-weight-bold text-right"
+                        >
+                          {{ paymentData.finalAmount | number: "1.2-2" }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="modal.dismiss()">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-success"
+          (click)="generatePaymentPDF()"
+        >
+          Download PDF
+        </button>
+      </div>
+    </form>
   </div>
-</div>
+</ng-template>
+
+
+<ng-template #voidPayment let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Void Payment</h4>
+      <button type="button" class="close" (click)="modal.dismiss()">
+        &times;
+      </button>
+    </div>
+    <form>
+      <div class="modal-body">
+        <div class="form-group col-lg-12 col-md-12">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="row">
+                <div class="col-lg-12">
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td width="50%" class="back-color-gray font-weight-bold">
+                          Payment#
+                        </td>
+                        <td width="50%" class="text-capitalize">
+                          {{ voidPayNo }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="back-color-gray font-weight-bold">
+                          Reason
+                        </td>
+                        <td>
+                          <textarea
+                          [(ngModel)]="voidData.reason"
+                          name="reason"
+                          type="text"
+                          placeholder="e.g 7845"
+                          class="form-control h-auto"
+                          autocomplete="off"
+                          #payref="ngModel"
+                          required rows="3"></textarea>
+                        
+                        </td>
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="modal.dismiss()">
+          Close
+        </button>
+        <button type="button" class="btn btn-success" [disabled]="voidDisable" (click)="voidPay()">
+          Void Payment
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>

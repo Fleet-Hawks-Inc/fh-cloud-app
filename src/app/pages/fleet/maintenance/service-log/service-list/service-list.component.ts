@@ -1,9 +1,12 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, Input } from "@angular/core";
 import { ApiService } from "../../../../../services";
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 declare var $: any;
+import { Table } from 'primeng/table';
 import { ToastrService } from "ngx-toastr";
+import * as _ from 'lodash';
 import Constants from "../../../constants";
 import { environment } from "../../../../../../environments/environment";
 import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
@@ -13,12 +16,17 @@ import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
   styleUrls: ["./service-list.component.css"],
 })
 export class ServiceListComponent implements OnInit {
+  @ViewChild('dt') table: Table;
+    get = _.get;
+  _selectedColumns: any[];
+
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   dataMessageVendorDtl: string = Constants.FETCHING_DATA;
   title = "Service Logs";
   // dtOptions: any = {};
   logs = [];
+  sessionID: string;
 
   suggestedVehicles = [];
   vehicleID = null;
@@ -51,17 +59,42 @@ export class ServiceListComponent implements OnInit {
   allAssets = [];
   assetID = null;
   loaded = false;
-
+  searchValue = null;
+  category = null;
+  categoryFilter = [
+    {
+      'name': 'Vehicle',
+      'value': 'vehicle'
+    },
+    {
+      'name': 'Asset',
+      'value': 'asset'
+    },
+  ]
+  
+   // columns of data table
+  dataColumns = [
+    { width: '11%', field: 'unitType', header: 'Unit Type', type: 'text' },
+    { width: '11%', field: 'unitName', header: 'Vehicle/Asset', type: 'text' },
+    { width: '15%', field: 'dateOdometer', header: 'Completion Date/Odometer', type: 'text' },
+    { width: '40%', field: 'detailsLogs', header: 'Details', type: 'text' },
+    { width: '16%', field: 'totalLogs', header: 'Total', type: 'text' },
+  ];
+  
   constructor(
     private apiService: ApiService,
     private router: Router,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService
-  ) {}
+    private toastr: ToastrService,
+    private routerMgmtService: RouteManagementServiceService
+  ) {
+      this.sessionID = this.routerMgmtService.serviceLogSessionID;
+  }
 
   ngOnInit() {
     this.initDataTable();
     this.fetchTasks();
+    this.setToggleOptions();
     this.fetchAllVehiclesIDs();
     this.fetchAllVendorsIDs();
     this.fetchAllIssuesIDs();
@@ -80,13 +113,30 @@ export class ServiceListComponent implements OnInit {
   setVehicle(vehicleID, vehicleIdentification) {
     this.vehicleIdentification = vehicleIdentification;
     this.vehicleID = vehicleID;
-
     this.suggestedVehicles = [];
   }
 
+
+
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+  }
+
+
+
   fetchAllVehiclesIDs() {
-    this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
-      this.vehiclesObject = result;
+    this.apiService.getData('vehicles/list/minor').subscribe((result: any) => {
+      this.vehiclesObject = result.Items;
+
     });
   }
 
@@ -105,8 +155,8 @@ export class ServiceListComponent implements OnInit {
   }
 
   fetchAllAssetsIDs() {
-    this.apiService.getData("assets/get/list").subscribe((result: any) => {
-      this.assetsObject = result;
+    this.apiService.getData('assets/get/minor/details').subscribe((result: any) => {
+      this.assetsObject = result.Items;
     });
   }
 
@@ -142,18 +192,19 @@ export class ServiceListComponent implements OnInit {
     if (this.lastEvaluatedKey !== "end") {
       this.apiService
         .getData(
-          "serviceLogs/fetch/records?vehicleID=" +
-            this.vehicleID +
-            "&taskID=" +
-            this.taskID +
-            "&asset=" +
-            this.assetID +
-            "&lastKey=" +
-            this.lastEvaluatedKey
+          "serviceLogs/fetch/records?searchValue=" +
+          this.searchValue +
+          "&taskID=" +
+          this.taskID +
+          "&category=" +
+          this.category +
+          "&lastKey=" +
+          this.lastEvaluatedKey
         )
         .subscribe((result: any) => {
           if (result.Items.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.loaded = true;
           }
 
           if (result.Items.length > 0) {
@@ -170,36 +221,42 @@ export class ServiceListComponent implements OnInit {
               this.lastEvaluatedKey = "end";
             }
             this.logs = this.logs.concat(result.Items);
-
             this.loaded = true;
           }
         });
     }
   }
-  onScroll() {
-    if (this.loaded) {
-      this.initDataTable();
-    }
-    this.loaded = false;
-  }
+  categoryChange() {
+    this.searchValue = null;
 
+  }
   searchFilter() {
-    if (this.vehicleID != null || this.assetID != null || this.taskID != null) {
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.logs = [];
-      this.lastEvaluatedKey = "";
-      this.initDataTable();
-    } else {
+    if (this.searchValue != null || this.category != null || this.taskID != null) {
+      if (this.searchValue != null && this.category == null) {
+        this.toastr.error('Please select both searchValue and category.');
+        return false;
+      } else if (this.searchValue == null && this.category != null) {
+        this.toastr.error('Please select both searchValue and category.');
+        return false;
+      }
+      else {
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.logs = [];
+        this.lastEvaluatedKey = "";
+        this.initDataTable();
+      }
+    }
+    else {
       return false;
     }
   }
 
   resetFilter() {
-    if (this.vehicleID != null || this.assetID != null || this.taskID != null) {
+    if (this.searchValue != null || this.category != null || this.taskID != null) {
       this.vehicleID = null;
       this.dataMessage = Constants.FETCHING_DATA;
-      this.vehicleIdentification = "";
-      this.assetID = null;
+      this.searchValue = null;
+      this.category = null;
       this.taskID = null;
       this.lastEvaluatedKey = "";
       this.logs = [];
@@ -209,6 +266,19 @@ export class ServiceListComponent implements OnInit {
       return false;
     }
   }
+
+
+
+  clearInput() {
+    this.suggestedVehicles = null;
+  }
+
+
+  clearSuggestions() {
+    this.vehicleIdentification = null;
+  }
+
+
 
   deleteProgram(eventData) {
     if (confirm("Are you sure you want to delete?") === true) {
@@ -233,12 +303,24 @@ export class ServiceListComponent implements OnInit {
 
   refreshData() {
     this.vehicleID = null;
+    this.searchValue = null;
+    this.category = null;
     this.dataMessage = Constants.FETCHING_DATA;
-    this.vehicleIdentification = "";
-    this.assetID = null;
     this.taskID = null;
     this.logs = [];
     this.lastEvaluatedKey = "";
     this.initDataTable();
   }
+  
+  
+  
+  
+    /**
+ * Clears the table filters
+ * @param table Table 
+ */
+  clear(table: Table) {
+    table.clear();
+  }
+  
 }

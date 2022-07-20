@@ -7,10 +7,36 @@ import { v4 as uuidv4 } from 'uuid';
 export class RouteManagementServiceService {
   public orderUpdateSessionID: string;
   public tripUpdateSessionID: string;
+  public driverUpdateSessionID: string;
+  public vehicleUpdateSessionID: string;
+  public assetUpdateSessionID: string;
+  public fuelUpdateSessionID: string;
+  public maintainanceSessionID: string;
+  public serviceLogSessionID: string;
+  public chartAccountSessionID: string;
+  public serviceRemindersSessionID: string;
+  public inventorySessionID: string;
+  public deviceSessionID: string;
+  public userSessionID: string;
 
   constructor() {
     this.orderUpdateSessionID = uuidv4();
     this.tripUpdateSessionID = uuidv4();
+    this.driverUpdateSessionID = uuidv4();
+    this.vehicleUpdateSessionID = uuidv4();
+    this.assetUpdateSessionID = uuidv4();
+    this.fuelUpdateSessionID=uuidv4();
+    this.maintainanceSessionID = uuidv4();
+    this.serviceLogSessionID = uuidv4();
+    this.chartAccountSessionID = uuidv4();
+    this.serviceRemindersSessionID = uuidv4();
+    this.inventorySessionID = uuidv4();
+    this.deviceSessionID = uuidv4();
+    this.userSessionID = uuidv4();
+    }
+
+  driverUpdated() {
+    return this.driverUpdateSessionID = uuidv4();
   }
 
   orderUpdated() {
@@ -20,9 +46,57 @@ export class RouteManagementServiceService {
   tripUpdated() {
     return this.tripUpdateSessionID = uuidv4();
   }
+ vehicleUpdated() {
+    return this.vehicleUpdateSessionID = uuidv4();
+  }
+  assetUpdated() {
+    return this.assetUpdateSessionID = uuidv4();
+  }
+  fuelUpdated(){
+    return this.fuelUpdateSessionID=uuidv4();
+  }
+  
+  maintainanceUpdated(){
+    return this.maintainanceSessionID = uuidv4();
+  }
+   
+  serviceLogUpdated(){
+   return this.serviceLogSessionID = uuidv4();
+  }
 
+  chartAccountUpdate(){
+    return this.chartAccountSessionID = uuidv4();
+  }
+  
+  serviceReminderUpdated(){
+    return this.serviceRemindersSessionID = uuidv4();
+  }
+  
+  inventoryUpdated(){
+    return this.inventorySessionID = uuidv4();
+  }
+ 
+ deviceUpdated(){
+   return this.deviceSessionID = uuidv4();
+ }
+ 
+ userUpdated(){
+   return this.userSessionID = uuidv4();
+ }
+  
   resetAllCache() {
     this.tripUpdateSessionID = uuidv4();
     this.orderUpdateSessionID = uuidv4();
+    this.driverUpdateSessionID = uuidv4();
+    this.vehicleUpdateSessionID = uuidv4();
+    this.assetUpdateSessionID = uuidv4();
+    this.fuelUpdateSessionID=uuidv4();
+    this.maintainanceSessionID = uuidv4();
+    this.serviceLogSessionID = uuidv4();
+    this.chartAccountSessionID = uuidv4();
+    this.serviceRemindersSessionID = uuidv4();
+    this.inventorySessionID = uuidv4();
+    this.deviceSessionID = uuidv4();
+    this.userSessionID =  uuidv4();
   }
 }

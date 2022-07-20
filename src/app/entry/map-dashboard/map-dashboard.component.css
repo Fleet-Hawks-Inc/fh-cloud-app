@@ -1,8 +1,13 @@
-.notrip-oview img {
-  width: 100px;
-  height: auto;
-  display: block;
-  margin: auto;
-  margin-top: 70%;
-  opacity: 0.2;
+.marker-info>span {
+    font-size: 10px;
+    color: black;
+}
+
+.marker-info link {
+    font-size: 11px;
+}
+
+.map-container {
+    width: 800px;
+    height: 600px;
 }

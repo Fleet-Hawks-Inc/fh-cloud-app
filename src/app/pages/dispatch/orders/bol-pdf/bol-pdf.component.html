@@ -1,1545 +1,1289 @@
 <ng-template #ordBolPrev let-modal>
-    <div class="modal-content">
-        <div class="modal-header">
-            <h4 class="modal-title">BOL</h4>
-            <button type="button" class="close" (click)="modal.dismiss()">&times;</button>
-        </div>
-        <div class="modal-body">
-            <section class="cheque-wrapper" id="print_bol">
-                <table width="800" border="0" align="center" cellpadding="0"
-                    cellspacing="0">
-                    <tbody>
-                        <tr>
-                            <td width="50%"> <h1 style="font-size:26px;
-                                    margin-bottom: 0px;">Bill of Lading</h1>
-                                <p style="font-size:13px; margin-top: 0px;">
-                                    <strong>Date:</strong> 2021/10/07</p></td>
-                            <td width="50%" align="right" valign="middle">
-                                <img src="img/logo-dispatch.png"
-                                    height="70">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" valign="top"> <table
-                                    width="100%" border="0" cellpadding="0"
-                                    cellspacing="0">
-                                    <tr>
-                                        <td width="50%" valign="top"><table
-                                                width="100%"
-                                                style="border-left:1px solid
-                                                #adadad; border-top:1px
-                                                solid #adadad;
-                                                border-right:1px solid
-                                                #adadad; border-bottom:1px
-                                                solid #adadad;
-                                                font-size:13px;"
-                                                cellpadding="0"
-                                                cellspacing="0"
-                                                bordercolor="#adadad">
-                                                <tbody>
-                                                    <tr>
-                                                        <td width="25%"
-                                                            style="padding-left:10px;">
-                                                            <p
-                                                                style="font-size:14px;
-                                                                line-height:20px;
-                                                                margin-bottom:2px;"><strong>Bill
-                                                                    of
-                                                                    Lading
-                                                                    Number:</strong>
-                                                            </p>
-                                                            <p
-                                                                style="font-size:20px;
-                                                                text-align:center;
-                                                                color:#c0c0c0;
-                                                                line-height:30px;
-                                                                margin-top:12px;
-                                                                margin-bottom:10px;"><strong>BAR
-                                                                    CODE
-                                                                    SPACE</strong>
-                                                            </p></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <table width="100%"
-                                                style="border-left:1px solid
-                                                #adadad; border-top:1px
-                                                solid #adadad;
-                                                border-right:1px solid
-                                                #adadad; border-bottom:1px
-                                                solid #adadad;
-                                                font-size:13px;"
-                                                cellpadding="0"
-                                                cellspacing="0"
-                                                bordercolor="#adadad">
-                                                <tbody>
-                                                    <tr>
-                                                        <td width="25%"
-                                                            style="padding-left:10px;">
-                                                            <p
-                                                                style="font-size:14px;
-                                                                margin-bottom:0px;
-                                                                line-height:20px;"><strong>SCAC:</strong>
-                                                            </p>
-                                                            <p
-                                                                style="font-size:14px;
-                                                                margin-top:8px;
-                                                                line-height:20px;
-                                                                margin-bottom:0px;"><strong>Pro
-                                                                    Number:</strong>
-                                                            </p>
-                                                            <p
-                                                                style="font-size:20px;
-                                                                text-align:center;
-                                                                color:#c0c0c0;
-                                                                line-height:30px;
-                                                                margin-top:5px;
-                                                                margin-bottom:10px;"><strong>BAR
-                                                                    CODE
-                                                                    SPACE</strong>
-                                                            </p></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <table width="100%"
-                                                style="border:1px solid
-                                                #adadad; font-size:13px;"
-                                                cellpadding="0"
-                                                cellspacing="0"
-                                                bordercolor="#adadad">
-                                                <tbody>
-                                                    <tr>
-                                                        <td
-                                                            bgcolor="#f3f3f3"
-                                                            style="border-bottom:1px
-                                                            solid #adadad;
-                                                            height:25px;
-                                                            padding-left:10px;">
-                                                            <strong>Third
-                                                                Party
-                                                                Charges Bill
-                                                                To</strong>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td width="25%"
-                                                            style="padding-left:10px;">
-                                                            <p
-                                                                style="font-size:13px;
-                                                                line-height:20px;">
-                                                                <strong>Name:</strong>
-                                                                <br>
-                                                                <strong>Address:</strong>
-                                                                <br>
-                                                                <strong>City/State/Zip:</strong>
-                                                                <br>
-                                                                <strong>Special
-                                                                    Instruction:</strong>
-                                                                <br>
-                                                            </p></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table></td>
-                                        <td valign="top"><table width="100%"
-                                                style="border-left:1px solid
-                                                #ffffff; border-top:1px
-                                                solid #adadad;
-                                                border-right:1px solid
-                                                #adadad; border-bottom:1px
-                                                solid #adadad;
-                                                font-size:13px;"
-                                                cellpadding="0"
-                                                cellspacing="0"
-                                                bordercolor="#adadad">
-                                                <tbody>
-                                                    <tr>
-                                                        <td width="25%"
-                                                            style="padding-left:10px;">
-                                                            <p
-                                                                style="font-size:14px;
-                                                                margin-bottom:0px;
-                                                                line-height:20px;"><strong>CARRIER
-                                                                    NAME:
-                                                                </strong>
-                                                            </p>
-                                                            <p
-                                                                style="font-size:14px;
-                                                                margin-bottom:0px;
-                                                                margin-top:10px;
-                                                                line-height:20px;">Trailer
-                                                                No: 786</p>
-                                                            <p
-                                                                style="font-size:14px;
-                                                                margin-bottom:15px;
-                                                                margin-top:10px;
-                                                                line-height:20px;">Seal
-                                                                No:
-                                                                5823140933
-                                                            </p></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <table width="100%"
-                                                style="border-left:1px solid
-                                                #ffffff; border-top:1px
-                                                solid #adadad;
-                                                border-right:1px solid
-                                                #adadad; border-bottom:1px
-                                                solid #adadad;
-                                                font-size:13px;"
-                                                cellpadding="0"
-                                                cellspacing="0"
-                                                bordercolor="#adadad">
-                                                <tbody>
-                                                    <tr>
-                                                        <td width="25%"
-                                                            colspan="3"
-                                                            style="padding-left:10px;">
-                                                            <p
-                                                                style="font-size:11px;
-                                                                margin-bottom:0px;
-                                                                line-height:30px;"><strong>Freight
-                                                                    Charge
-                                                                    Terms:
-                                                                    (freight
-                                                                    charges
-                                                                    are
-                                                                    prepaid
-                                                                    unless
-                                                                    marked
-                                                                    otherwise)</strong>
-                                                            </p></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td
-                                                            style="padding-left:10px;"><p
-                                                                style="font-size:12px;
-                                                                margin-bottom:19px;
-                                                                line-height:25px;"><strong>Prepaid:</strong></p></td>
-                                                        <td
-                                                            style="padding-left:10px;"><p
-                                                                style="font-size:12px;
-                                                                margin-bottom:19px;
-                                                                line-height:25px;"><strong>Collect:</strong></p></td>
-                                                        <td
-                                                            style="padding-left:10px;"><p
-                                                                style="font-size:12px;
-                                                                margin-bottom:19px;
-                                                                line-height:25px;"><strong>3<sup>rd</sup>
-                                                                    Party:</strong></p></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td valign="top"
-                                                            style="padding-left:10px;
-                                                            padding-top:38px;
-                                                            border-top:1px
-                                                            solid #adadad;">
-                                                            <input
-                                                                name="fob5"
-                                                                type="checkbox"
-                                                                value="fob">
-                                                            (check box)</td>
-                                                        <td colspan="2"
-                                                            style="padding-left:10px;
-                                                            padding-top:34px;
-                                                            border-top:1px
-                                                            solid #adadad;"><p
-                                                                style="font-size:12px;
-                                                                line-height:19px;"><strong>Master
-                                                                    Bill of
-                                                                    Lading:
-                                                                    with
-                                                                    attached
-                                                                    underlying
-                                                                    Bills of
-                                                                    Lading</strong>
-                                                                <br>
-                                                                <br>
-                                                            </p></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table></td>
-                                    </tr>
-                                    <tr>
-                                        <td valign="top">&nbsp;</td>
-                                        <td valign="top">&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td valign="top"><table width="100%"
-                                                style="border:1px solid
-                                                #adadad; font-size:13px;"
-                                                cellpadding="0"
-                                                cellspacing="0"
-                                                bordercolor="#adadad">
-                                                <tbody>
-                                                    <tr>
-                                                        <td
-                                                            bgcolor="#f3f3f3"
-                                                            style="border-bottom:1px
-                                                            solid #adadad;
-                                                            height:25px;
-                                                            padding-left:10px;">
-                                                            <strong>Shipper</strong></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td width="25%"
-                                                            style="padding-left:10px;">
-                                                            <p
-                                                                style="font-size:13px;
-                                                                line-height:20px;">
-                                                                <strong>Name:</strong>
-                                                                Mark Daniel<br>
-                                                                <strong>Address:</strong>
-                                                                62
-                                                                Administration
-                                                                Rd. Concord<br>
-                                                                <strong>City/State/Zip:</strong>
-                                                                Toronto/ON/Z4P
-                                                                2H3<br>
-                                                                <strong>SID#:</strong>
-                                                                524683045<br>
-                                                                <strong>FOB:</strong>
-                                                                <input
-                                                                    name="fob4"
-                                                                    type="checkbox"
-                                                                    value="fob">
-                                                            </p></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table></td>
-                                        <td valign="top"><table width="100%"
-                                                style="border:1px solid
-                                                #adadad; font-size:13px;"
-                                                cellpadding="0"
-                                                cellspacing="0"
-                                                bordercolor="#adadad">
-                                                <tbody>
-                                                    <tr>
-                                                        <td colspan="2"
-                                                            bgcolor="#f3f3f3"
-                                                            style="border-bottom:1px
-                                                            solid #adadad;
-                                                            height:25px;
-                                                            padding-left:10px;">
-                                                            <strong>Receiver</strong></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td width="60%"
-                                                            style="padding-left:10px;"><p
-                                                                style="font-size:13px;
-                                                                line-height:20px;
-                                                                margin-bottom:0px;">
-                                                                <strong>Name:</strong>
-                                                                Anmol Singh
-                                                            </p></td>
-                                                        <td
-                                                            style="padding-left:10px;"><p
-                                                                style="font-size:13px;
-                                                                line-height:20px;
-                                                                margin-bottom:0px;">
-                                                                <strong>Location#:</strong>
-                                                            </p></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td width="25%"
-                                                            colspan="2"
-                                                            style="padding-left:10px;">
-                                                            <p
-                                                                style="font-size:13px;
-                                                                line-height:20px;
-                                                                margin-top:0px;">
-                                                                <strong>Address:</strong>
-                                                                181 Carbin
-                                                                Rd. Trudu<br>
-                                                                <strong>City/State/Zip:</strong>
-                                                                Brampton/ON/X4A
-                                                                1T0<br>
-                                                                <strong>CID#:</strong>
-                                                                7485960<br>
-                                                                <strong>FOB:</strong>
-                                                                <input
-                                                                    name="fob3"
-                                                                    type="checkbox"
-                                                                    value="fob">
-                                                            </p></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table></td>
-                                    </tr>
-                                    <tr>
-                                        <td valign="top">&nbsp;</td>
-                                        <td valign="top">&nbsp;</td>
-                                    </tr>
-                                    <tbody>
-                                        <tr valign="top">
-                                            <td colspan="2"><table
-                                                    width="100%"
-                                                    style="border:1px solid
-                                                    #adadad;
-                                                    font-size:13px;"
-                                                    cellpadding="0"
-                                                    cellspacing="0"
-                                                    bordercolor="#adadad">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="6"
-                                                                bgcolor="#f3f3f3"
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                height:25px;
-                                                                padding-left:10px;"><p
-                                                                    style="font-weight:600;
-                                                                    margin-bottom:0px;
-                                                                    margin-top:0px;">Customer
-                                                                    Order
-                                                                    Information</p></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td width="25%"
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">
-                                                                <p
-                                                                    style="font-weight:600;">Customer
-                                                                    Order
-                                                                    Number</p></td>
-                                                            <td width="10%"
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">
-                                                                <p
-                                                                    style="font-weight:600;">#Pkgs</p></td>
-                                                            <td width="10%"
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p
-                                                                    style="font-weight:600;">Weight</p></td>
-                                                            <td colspan="2"
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p><span
-                                                                        style="font-weight:600;">Pallet/Slip</span><br>
-                                                                    (Circle
-                                                                    One)</p></td>
-                                                            <td width="35%"
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">
-                                                                <p
-                                                                    style="font-weight:600;">Additional
-                                                                    Shipper
-                                                                    Info</p></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p
-                                                                    style="font-weight:600;
-                                                                    margin-bottom:4px;
-                                                                    margin-top:4px;">Y</p></td>
-                                                            <td
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p
-                                                                    style="font-weight:600;
-                                                                    margin-bottom:4px;
-                                                                    margin-top:4px;">N</p></td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p
-                                                                    style="font-weight:600;
-                                                                    margin-bottom:4px;
-                                                                    margin-top:4px;">Y</p></td>
-                                                            <td
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p
-                                                                    style="font-weight:600;
-                                                                    margin-bottom:4px;
-                                                                    margin-top:4px;">N</p></td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p
-                                                                    style="font-weight:600;
-                                                                    margin-bottom:4px;
-                                                                    margin-top:4px;">GRAND
-                                                                    TOTAL</p></td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td colspan="3"
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2"><table
-                                                    width="100%"
-                                                    style="border:1px solid
-                                                    #adadad;
-                                                    font-size:13px;"
-                                                    cellpadding="0"
-                                                    cellspacing="0"
-                                                    bordercolor="#adadad">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="9"
-                                                                bgcolor="#f3f3f3"
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                height:25px;
-                                                                padding-left:10px;"><p
-                                                                    style="font-weight:600;
-                                                                    margin-bottom:0px;
-                                                                    margin-top:0px;">Carrier
-                                                                    Information</p></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td width="25%"
-                                                                colspan="4"
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;"><table
-                                                                    width="100%"
-                                                                    border="0"
-                                                                    align="center"
-                                                                    cellpadding="0"
-                                                                    cellspacing="0">
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td
-                                                                                width="50%"
-                                                                                align="center"
-                                                                                style="border-right:1px
-                                                                                solid
-                                                                                #adadad;"><p
-                                                                                    style="font-weight:600;">Handling
-                                                                                    Unit</p></td>
-                                                                            <td
-                                                                                align="center"><p
-                                                                                    style="font-weight:600;">Package</p></td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table></td>
-                                                            <td width="10%"
-                                                                rowspan="2"
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">
-                                                                <p
-                                                                    style="font-weight:600;">Weight</p></td>
-                                                            <td width="5%"
-                                                                rowspan="2"
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">
-                                                                <p
-                                                                    style="font-weight:600;">H.M.<br>
-                                                                    (X)</p></td>
-                                                            <td width="35%"
-                                                                rowspan="2"
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">
-                                                                <p
-                                                                    style="font-weight:600;
-                                                                    margin-bottom:0px;">Commodity
-                                                                    Description</p>
-                                                                <p
-                                                                    style="font-size:10px;
-                                                                    margin-top:0px;
-                                                                    margin-bottom:0px;">Commodities
-                                                                    requiring
-                                                                    special
-                                                                    or
-                                                                    additional
-                                                                    care or
-                                                                    attention
-                                                                    in
-                                                                    handling
-                                                                    or
-                                                                    stowing
-                                                                    must be
-                                                                    so
-                                                                    marked
-                                                                    and
-                                                                    packaged
-                                                                    as
-                                                                    to
-                                                                    ensure
-                                                                    safe
-                                                                    transportation
-                                                                    with
-                                                                    ordinary
-                                                                    care.<br>
-                                                                    <strong>See
-                                                                        Section
-                                                                        2(e)
-                                                                        of
-                                                                        NMFC
-                                                                        Item
-                                                                        360</strong></p></td>
-                                                            <td colspan="2"
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p><span
-                                                                        style="font-weight:600;">LTL
-                                                                        Only</span></p></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p
-                                                                    style="font-weight:600;">QTY</p></td>
-                                                            <td
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p
-                                                                    style="font-weight:600;">TYPE</p></td>
-                                                            <td
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p
-                                                                    style="font-weight:600;">QTY</p></td>
-                                                            <td
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p
-                                                                    style="font-weight:600;">TYPE</p></td>
-                                                            <td
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p><span
-                                                                        style="font-weight:600;">NMFC
-                                                                        #</span></p></td>
-                                                            <td
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p><span
-                                                                        style="font-weight:600;">Class</span></p></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p
-                                                                    style="font-weight:600;
-                                                                    margin-bottom:4px;
-                                                                    margin-top:4px;">&nbsp;</p></td>
-                                                            <td
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p
-                                                                    style="font-weight:600;
-                                                                    margin-bottom:4px;
-                                                                    margin-top:4px;">&nbsp;</p></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p
-                                                                    style="font-weight:600;
-                                                                    margin-bottom:4px;
-                                                                    margin-top:4px;">&nbsp;</p></td>
-                                                            <td
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p
-                                                                    style="font-weight:600;
-                                                                    margin-bottom:4px;
-                                                                    margin-top:4px;">&nbsp;</p></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"></td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"></td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"></td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"></td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                            <td
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;"><p><span
-                                                                        style="font-weight:600;">GRAND
-                                                                        TOTAL</span></p></td>
-                                                            <td colspan="2"
-                                                                align="center"
-                                                                style="border-bottom:1px
-                                                                solid
-                                                                #adadad;
-                                                                border-right:1px
-                                                                solid
-                                                                #adadad;
-                                                                padding-left:10px;">&nbsp;</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table></td>
-                                        </tr>
-                                    </tbody>
-                                </table></td>
-                        </tr>
-                        <tr>
-                            <td valign="top"><table width="100%"
-                                    style="border-left:1px solid #ffffff;
-                                    border-top:1px solid #adadad;
-                                    border-left:1px solid #adadad;
-                                    border-right:1px solid #adadad;
-                                    border-bottom:1px solid #adadad;
-                                    font-size:13px;" cellpadding="0"
-                                    cellspacing="0" bordercolor="#adadad">
-                                    <tbody>
-                                        <tr>
-                                            <td width="25%" colspan="4"
-                                                style="padding-left:10px;">
-                                                <p style="font-size:10px;
-                                                    margin-bottom:0px;">
-                                                    Where the rate is
-                                                    dependent on value,
-                                                    shippers are required
-                                                    to state specifically in
-                                                    writing the agreed or
-                                                    declared value
-                                                    of the property as
-                                                    follows: </p>
-                                                <p style="font-size:10px;
-                                                    margin-bottom:0px;
-                                                    margin-top:8px;">The
-                                                    agreed or declared value
-                                                    of the property is
-                                                    specifically stated
-                                                    by the shipper to be not
-                                                    exceeding</p></td>
-                                        </tr>
-                                        <tr>
-                                            <td width="25%"
-                                                style="padding-left:10px;
-                                                border-bottom:1px solid
-                                                #adadad;">&nbsp;</td>
-                                            <td width="20%" align="center">per</td>
-                                            <td width="20%"
-                                                style="padding-left:10px;
-                                                border-bottom:1px solid
-                                                #adadad;">&nbsp;</td>
-                                            <td style="padding-left:10px;">&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td height="4" colspan="4"></td>
-                                        </tr>
-                                    </tbody>
-                                </table></td>
-                            <td valign="top"><table width="100%"
-                                    style="border-left:1px solid #ffffff;
-                                    border-top:1px solid #adadad;
-                                    border-right:1px solid #adadad;
-                                    border-bottom:1px solid #adadad;
-                                    font-size:13px;" cellpadding="0"
-                                    cellspacing="0" bordercolor="#adadad">
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="3"
-                                                style="padding-left:10px;">
-                                                <table width="80%"
-                                                    align="center"
-                                                    cellpadding="0"
-                                                    cellspacing="0"
-                                                    style="font-size:13px;">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td width="30%"
-                                                                style="padding-left:10px;">
-                                                                <p
-                                                                    style="font-size:12px;
-                                                                    margin-top:1px;
-                                                                    margin-bottom:4px;
-                                                                    line-height:25px;"><strong>COD
-                                                                        Amount:
-                                                                        $</strong>
-                                                                </p></td>
-                                                            <td
-                                                                style="padding-left:10px;
-                                                                border-bottom:1px
-                                                                solid
-                                                                #adadad;">&nbsp;</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3"
-                                                style="padding-left:10px;"><table
-                                                    width="70%"
-                                                    align="center"
-                                                    cellpadding="0"
-                                                    cellspacing="0"
-                                                    style="font-size:13px;">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td width="25%"
-                                                                style="padding-left:10px;"><p
-                                                                    style="font-size:12px;
-                                                                    margin-top:4px;
-                                                                    margin-bottom:0px;
-                                                                    line-height:20px;"><strong>Fee
-                                                                        Terms:</strong></p></td>
-                                                            <td width="25%"
-                                                                style="padding-left:10px;"><p
-                                                                    style="font-size:12px;
-                                                                    margin-top:4px;
-                                                                    margin-bottom:0px;
-                                                                    line-height:20px;"><strong>Collect:</strong>
-                                                                    <input
-                                                                        name="fob2"
-                                                                        type="checkbox"
-                                                                        value="fob">
-                                                                </p></td>
-                                                            <td width="25%"
-                                                                style="padding-left:10px;"><p
-                                                                    style="font-size:12px;
-                                                                    margin-top:4px;
-                                                                    margin-bottom:0px;
-                                                                    line-height:20px;"><strong>Prepaid:</strong>
-                                                                    <input
-                                                                        name="fob2"
-                                                                        type="checkbox"
-                                                                        value="fob">
-                                                                </p></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3"
-                                                style="padding-left:10px;"><table
-                                                    width="60%"
-                                                    align="center"
-                                                    cellpadding="0"
-                                                    cellspacing="0"
-                                                    style="font-size:13px;">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td width="25%"
-                                                                style="padding-left:10px;"><p
-                                                                    style="font-size:12px;
-                                                                    line-height:20px;
-                                                                    margin-top:4px;
-                                                                    margin-bottom:0px;"><strong>Customer
-                                                                        check
-                                                                        acceptable:</strong>
-                                                                    <input
-                                                                        name="fob2"
-                                                                        type="checkbox"
-                                                                        value="fob">
-                                                                </p></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table></td>
-                                        </tr>
-                                    </tbody>
-                                </table></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="border-right:1px solid
-                                #adadad; padding-left:10px; border-left:1px
-                                solid #adadad;"><p style="margin-top:0px;
-                                    margin-bottom:0px;"><span
-                                        style="font-weight:600;
-                                        font-size:13px;">NOTE
-                                        Liability Limitation for loss or
-                                        damage in this shipment may be
-                                        applicable.
-                                        See 49 U.S.C. 14706(c)(1)(A) and
-                                        (B).</span></p></td>
-                        </tr>
-                        <tr>
-                            <td valign="top"><table width="100%"
-                                    style="border-left:1px solid #ffffff;
-                                    border-top:1px solid #adadad;
-                                    border-left:1px solid #adadad;
-                                    border-right:1px solid #ffffff;
-                                    border-bottom:1px solid #ffffff;
-                                    font-size:13px;" cellpadding="0"
-                                    cellspacing="0" bordercolor="#adadad">
-                                    <tbody>
-                                        <tr>
-                                            <td width="25%" colspan="4"
-                                                style="padding-left:10px;">
-                                                <p style="font-size:10px;
-                                                    margin-bottom:0px;
-                                                    margin-top:0px;">
-                                                    RECEIVED, subject to
-                                                    individually determined
-                                                    rates or contracts
-                                                    that have been agreed
-                                                    upon in writing between
-                                                    the carrier and
-                                                    shipper, if applicable,
-                                                    otherwise to the rates,
-                                                    classifications
-                                                    and rules that have been
-                                                    established by the
-                                                    carrier and are
-                                                    available to the
-                                                    shipper, on request, and
-                                                    to all applicable
-                                                    state and federal
-                                                    regulations. </p></td>
-                                        </tr>
-                                    </tbody>
-                                </table></td>
-                            <td valign="top"><table width="100%"
-                                    style="border-left:1px solid #ffffff;
-                                    border-top:1px solid #adadad;
-                                    border-left:1px solid #adadad;
-                                    border-right:1px solid #adadad;
-                                    border-bottom:1px solid #adadad;
-                                    font-size:13px;" cellpadding="0"
-                                    cellspacing="0" bordercolor="#adadad">
-                                    <tbody>
-                                        <tr>
-                                            <td width="25%" colspan="4"
-                                                style="padding-left:10px;">
-                                                <p style="font-size:10px;
-                                                    margin-bottom:0px;
-                                                    margin-top:0px;">
-                                                    The carrier shall not
-                                                    make delivery of this
-                                                    shipment without
-                                                    payment of freight and
-                                                    all other lawful
-                                                    charges.</p></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4"
-                                                style="padding-left:10px;"><table
-                                                    width="90%"
-                                                    align="center"
-                                                    cellpadding="0"
-                                                    cellspacing="0"
-                                                    style="font-size:13px;">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td
-                                                                style="padding-left:10px;
-                                                                border-bottom:1px
-                                                                solid
-                                                                #adadad;">&nbsp;</td>
-                                                            <td width="40%"
-                                                                style="padding-left:10px;">
-                                                                <p
-                                                                    style="font-size:16px;
-                                                                    margin-top:0px;
-                                                                    margin-bottom:0px;"><strong>Shipper
-                                                                        Signature</strong>
-                                                                </p></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table></td>
-                                        </tr>
-                                        <tr>
-                                            <td height="3" colspan="4"></td>
-                                        </tr>
-                                    </tbody>
-                                </table></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><table width="100%"
-                                    style="border-left:1px solid #ffffff;
-                                    border-top:1px solid #adadad;
-                                    border-left:1px solid #adadad;
-                                    border-right:1px solid #adadad;
-                                    border-bottom:1px solid #adadad;
-                                    font-size:13px;" cellpadding="0"
-                                    cellspacing="0" bordercolor="#adadad">
-                                    <tbody>
-                                        <tr>
-                                            <td width="33%" valign="top"><table
-                                                    width="100%"
-                                                    style="border-right:1px
-                                                    solid #adadad;
-                                                    font-size:13px;"
-                                                    cellpadding="0"
-                                                    cellspacing="0">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td width="25%"
-                                                                colspan="4"
-                                                                style="padding-left:10px;">
-                                                                <p
-                                                                    style="margin-bottom:0px;"><span
-                                                                        style="font-weight:600;">SHIPPER
-                                                                        SIGNATURE
-                                                                        /
-                                                                        DATE</span></p>
-                                                                <p
-                                                                    style="font-size:10px;
-                                                                    margin-bottom:0px;
-                                                                    margin-top:2px;">
-                                                                    This is
-                                                                    to
-                                                                    certify
-                                                                    that the
-                                                                    above
-                                                                    named
-                                                                    materials
-                                                                    are
-                                                                    properly
-                                                                    classified,
-                                                                    packaged,
-                                                                    marked
-                                                                    and
-                                                                    labeled,
-                                                                    and
-                                                                    are in
-                                                                    proper
-                                                                    condition
-                                                                    for
-                                                                    transportation
-                                                                    according
-                                                                    to the
-                                                                    applicable
-                                                                    regulations
-                                                                    of the
-                                                                    DOT.<br>
-                                                                    <br>
-                                                                </p></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table></td>
-                                            <td width="33%" valign="top"><table
-                                                    width="96%"
-                                                    align="center"
-                                                    cellpadding="0"
-                                                    cellspacing="0"
-                                                    style="font-size:13px;">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td width="30%">
-                                                                <p
-                                                                    style="font-size:11px;
-                                                                    font-weight:600;
-                                                                    margin-bottom:0px;
-                                                                    margin-top:2px;
-                                                                    line-height:20px;">Trailer
-                                                                    Loaded</p></td>
-                                                            <td width="50%">
-                                                                <p
-                                                                    style="font-size:11px;
-                                                                    font-weight:600;
-                                                                    margin-bottom:0px;
-                                                                    margin-top:2px;
-                                                                    line-height:20px;">Freight
-                                                                    Counted
-                                                                </p></td>
-                                                        </tr>
-                                                        <tr
-                                                            style="font-size:11px;">
-                                                            <td><input
-                                                                    name="fob"
-                                                                    type="checkbox"
-                                                                    value="fob">
-                                                                By Shipper</td>
-                                                            <td><input
-                                                                    name="fob"
-                                                                    type="checkbox"
-                                                                    value="fob">
-                                                                By Shipper</td>
-                                                        </tr>
-                                                        <tr
-                                                            style="font-size:11px;">
-                                                            <td><input
-                                                                    name="fob"
-                                                                    type="checkbox"
-                                                                    value="fob">
-                                                                By Driver</td>
-                                                            <td><input
-                                                                    name="fob"
-                                                                    type="checkbox"
-                                                                    value="fob">
-                                                                By
-                                                                Driver/pallets
-                                                                said to
-                                                                contain</td>
-                                                        </tr>
-                                                        <tr
-                                                            style="font-size:11px;">
-                                                            <td>&nbsp;</td>
-                                                            <td><input
-                                                                    name="fob"
-                                                                    type="checkbox"
-                                                                    value="fob">
-                                                                By
-                                                                Driver/Pieces</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table></td>
-                                            <td valign="top"><table
-                                                    width="100%"
-                                                    style="border-left:1px
-                                                    solid #adadad;
-                                                    font-size:13px;"
-                                                    cellpadding="0"
-                                                    cellspacing="0">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td width="25%"
-                                                                colspan="4"
-                                                                style="padding-left:10px;">
-                                                                <p
-                                                                    style="margin-bottom:0px;"><span
-                                                                        style="font-weight:600;">CARRIER
-                                                                        SIGNATURE
-                                                                        /
-                                                                        PICKUP
-                                                                        DATE</span></p>
-                                                                <p
-                                                                    style="font-size:10px;
-                                                                    margin-bottom:0px;
-                                                                    margin-top:2px;">
-                                                                    Carrier
-                                                                    acknowledges
-                                                                    receipt
-                                                                    of
-                                                                    packages
-                                                                    and
-                                                                    required
-                                                                    placards.
-                                                                    Carrier
-                                                                    certifies
-                                                                    emergency
-                                                                    response
-                                                                    information
-                                                                    was made
-                                                                    available
-                                                                    and/or
-                                                                    carrier
-                                                                    has the
-                                                                    DOT
-                                                                    emergency
-                                                                    response
-                                                                    guidebook
-                                                                    or
-                                                                    equivalent
-                                                                    documentation
-                                                                    in the
-                                                                    vehicle.
-                                                                    Property
-                                                                    described
-                                                                    above is
-                                                                    received
-                                                                    in good
-                                                                    order,
-                                                                    except
-                                                                    as
-                                                                    noted.</p></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table></td>
-                                        </tr>
-                                    </tbody>
-                                </table></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2"><table border="0" align="center"
-                                    cellpadding="0" cellspacing="0">
-                                    <tbody>
-                                        <tr>
-                                            <td align="center"> <h2
-                                                    style="font-size:13px;">Powered
-                                                    By</h2>
-                                                <img src="img/logo-2.png"
-                                                    width="207" height="28">
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">&nbsp;</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default"
-                (click)="modal.dismiss()">
-                Close
-            </button>
-            <button type="button" class="btn btn-success"
-                (click)="generatePDF()">
-                Download
-            </button>
-        </div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">BOL</h4>
+      <button type="button" class="close" (click)="modal.dismiss()">
+        &times;
+      </button>
     </div>
+    <div class="modal-body text-dark text-capitalize">
+      <section class="cheque-wrapper" id="print_bol">
+        <table
+          width="100%"
+          border="0"
+          align="center"
+          cellpadding="0"
+          cellspacing="0"
+        >
+          <tbody>
+            <tr>
+              <td width="50%">
+                <h1 class="text-dark font-weight-bold text-6 mb-1 mt-1">
+                  Bill of Lading
+                </h1>
+                <p class="mt-2 mb-2 text-dark text-3">
+                  <strong>Date:</strong> {{ today | date: "yyyy/MM/dd" }}
+                </p>
+              </td>
+              <td width="50%" align="right" valign="middle">
+                <img
+                  crossorigin="anonymous"
+                  *ngIf="companyLogo"
+                  [src]="companyLogo"
+                  alt="logo"
+                  style="max-width: 100px"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                  <tbody>
+                    <tr>
+                      <td width="50%" valign="top">
+                        <table
+                          class="bolheight"
+                          width="98%"
+                          style="
+                            border-left: 1px solid #adadad;
+                            border-top: 1px solid #adadad;
+                            border-right: 1px solid #adadad;
+                            border-bottom: 1px solid #adadad;
+                            font-size: 13px;
+                          "
+                          cellpadding="0"
+                          cellspacing="0"
+                          bordercolor="#adadad"
+                        >
+                          <tbody>
+                            <tr>
+                              <td width="25%" class="p-3">
+                                <p class="mt-2 mb-0 text-dark text-3">
+                                  <span class="font-weight-bold"
+                                    >Bill of Lading Number:</span
+                                  >
+                                  {{ orderNumber }}
+                                </p>
+                                <p class="mt-0 mb-0 text-dark text-3">
+                                  <span class="font-weight-bold">SCAC: </span
+                                  ><span contenteditable>NA</span>
+                                </p>
+                                <p class="mt-0 mb-0 text-dark text-3">
+                                  <span class="font-weight-bold"
+                                    >Pro Number: </span
+                                  ><span contenteditable>NA</span>
+                                </p>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                      <td valign="top">
+                        <table
+                          class="bolheight"
+                          width="98%"
+                          align="right"
+                          cellpadding="0"
+                          cellspacing="0"
+                          bordercolor="#adadad"
+                          style="
+                            border-left: 1px solid #adadad;
+                            border-top: 1px solid #adadad;
+                            border-right: 1px solid #adadad;
+                            border-bottom: 1px solid #adadad;
+                            font-size: 13px;
+                          "
+                        >
+                          <tbody>
+                            <tr>
+                              <td style="padding-left: 10px">
+                                <p class="mt-0 mb-0 text-dark text-3">
+                                  <strong>Carrier Name: </strong>
+                                  {{
+                                    carrierData.companyName
+                                      ? carrierData.companyName
+                                      : "NA"
+                                  }}
+                                </p>
+
+                                <p class="mt-0 mb-0 text-dark text-3">
+                                  <strong>Trailer#</strong>:
+                                  <span
+                                    *ngFor="
+                                      let ast of assets;
+                                      let isLast = last
+                                    "
+                                  >
+                                    {{ ast }} <span *ngIf="!isLast">,</span>
+                                  </span>
+                                  <span *ngIf="assets.length === 0"> NA </span>
+                                </p>
+                                <p class="mt-0 mb-0 text-dark text-3">
+                                  <strong>Driver Name</strong>:
+                                  <span
+                                    *ngFor="
+                                      let drv of drivers;
+                                      let isLast = last
+                                    "
+                                  >
+                                    {{ drv }} <span *ngIf="!isLast">,</span>
+                                  </span>
+                                  <span *ngIf="drivers.length === 0"> NA </span>
+                                </p>
+                              </td>
+                              <td style="padding-left: 10px">
+                                <p class="mt-0 mb-0 text-dark text-3">
+                                  <strong>Searl#: </strong
+                                  ><span contenteditable>NA</span>
+                                </p>
+                                <p class="mt-0 mb-0 text-dark text-3">
+                                  <strong>Truck#</strong>:
+                                  <span
+                                    *ngFor="
+                                      let veh of vehicles;
+                                      let isLast = last
+                                    "
+                                  >
+                                    {{ veh }} <span *ngIf="!isLast">,</span>
+                                  </span>
+                                  <span *ngIf="vehicles.length === 0">
+                                    NA
+                                  </span>
+                                </p>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" valign="top">
+                <table
+                  *ngFor="
+                    let ord of orderData;
+                    let m = index;
+                    let isLast = last
+                  "
+                  width="100%"
+                  class="my-3"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td valign="top" class="w-50">
+                        <table
+                          *ngFor="let ship of ord.shippers"
+                          class="mb-3"
+                          width="98%"
+                          style="border: 1px solid #adadad; font-size: 13px"
+                          cellpadding="0"
+                          cellspacing="0"
+                          bordercolor="#adadad"
+                        >
+                          <tbody>
+                            <tr>
+                              <td
+                                bgcolor="#f3f3f3"
+                                class="text-dark"
+                                style="
+                                  border-bottom: 1px solid #adadad;
+                                  height: 25px;
+                                  padding-left: 10px;
+                                "
+                              >
+                                <strong>Shipper</strong>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="bolheight p-3">
+                                <p
+                                  class="text-dark m-0"
+                                  style="font-size: 13px; line-height: 20px"
+                                >
+                                  <strong>Name:</strong> {{ ship.companyName
+                                  }}<br />
+                                  <strong>Address:</strong> {{ ship.shipAddress
+                                  }}<br />
+                                  <strong>SID#: </strong>
+                                  <span contenteditable>NA</span>
+                                </p>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                      <td valign="top" class="w-50">
+                        <table
+                          *ngFor="let receive of ord.receivers"
+                          class="mb-3"
+                          width="98%"
+                          align="right"
+                          cellpadding="0"
+                          cellspacing="0"
+                          bordercolor="#adadad"
+                          style="border: 1px solid #adadad; font-size: 13px"
+                        >
+                          <tbody>
+                            <tr>
+                              <td
+                                colspan="2"
+                                bgcolor="#f3f3f3"
+                                class="text-dark"
+                                style="
+                                  border-bottom: 1px solid #adadad;
+                                  height: 25px;
+                                  padding-left: 10px;
+                                "
+                              >
+                                <strong>Receiver</strong>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="bolheight p-3">
+                                <p
+                                  class="text-dark"
+                                  style="
+                                    font-size: 13px;
+                                    line-height: 20px;
+                                    margin-bottom: 0px;
+                                  "
+                                >
+                                  <strong>Name:</strong> {{ receive.companyName
+                                  }}<br />
+                                  <strong>Address:</strong>
+                                  {{ receive.receiverAddress }}<br />
+                                  <strong>CID#: </strong>
+                                  <span contenteditable>NA</span>
+                                </p>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+
+                    <tr valign="top">
+                      <td colspan="2">
+                        <table
+                          width="100%"
+                          style="border: 1px solid #adadad; font-size: 13px"
+                          cellpadding="0"
+                          cellspacing="0"
+                          bordercolor="#adadad"
+                        >
+                          <tbody>
+                            <tr>
+                              <td
+                                colspan="5"
+                                bgcolor="#f3f3f3"
+                                align="center"
+                                style="
+                                  border-bottom: 1px solid #adadad;
+                                  height: 25px;
+                                "
+                              >
+                                <p
+                                  class="text-dark"
+                                  style="
+                                    font-weight: 600;
+                                    margin-bottom: 0px;
+                                    margin-top: 0px;
+                                  "
+                                >
+                                  Customer Order Information
+                                </p>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td
+                                class="pl-3"
+                                width="55%"
+                                style="
+                                  border-bottom: 1px solid #adadad;
+                                  border-right: 1px solid #adadad;
+                                "
+                              >
+                                <p class="text-dark font-weight-bold mb-0">
+                                  Name
+                                </p>
+                              </td>
+                              <td
+                                class="pl-3"
+                                width="15%"
+                                style="
+                                  border-bottom: 1px solid #adadad;
+                                  border-right: 1px solid #adadad;
+                                  padding-left: 10px;
+                                "
+                              >
+                                <p class="text-dark font-weight-bold mb-0">
+                                  PU#
+                                </p>
+                              </td>
+                              <td
+                                class="pl-3"
+                                width="15%"
+                                style="
+                                  border-bottom: 1px solid #adadad;
+                                  border-right: 1px solid #adadad;
+                                  padding-left: 10px;
+                                "
+                              >
+                                <p class="text-dark font-weight-bold mb-0">
+                                  Quantity
+                                </p>
+                              </td>
+                              <td
+                                class="pl-3"
+                                width="15%"
+                                style="
+                                  border-bottom: 1px solid #adadad;
+                                  border-right: 1px solid #adadad;
+                                  padding-left: 10px;
+                                "
+                              >
+                                <p class="text-dark font-weight-bold mb-0">
+                                  Weight
+                                </p>
+                              </td>
+                            </tr>
+                            <tr *ngFor="let com of ord.commodities">
+                              <td
+                                class="text-dark pl-3"
+                                style="
+                                  border-bottom: 1px solid #adadad;
+                                  border-right: 1px solid #adadad;
+                                "
+                              >
+                                {{ com.name ? com.name : "-" }}
+                              </td>
+                              <td
+                                class="text-dark pl-3"
+                                style="
+                                  border-bottom: 1px solid #adadad;
+                                  border-right: 1px solid #adadad;
+                                "
+                              >
+                                {{ com.pu ? com.pu : "-" }}
+                              </td>
+                              <td
+                                class="text-dark pl-3"
+                                style="
+                                  border-bottom: 1px solid #adadad;
+                                  border-right: 1px solid #adadad;
+                                "
+                              >
+                                {{ com.quantity ? com.quantity : "0" }}
+                                {{ com.quantityUnit }}
+                              </td>
+                              <td
+                                class="text-dark pl-3"
+                                style="
+                                  border-bottom: 1px solid #adadad;
+                                  border-right: 1px solid #adadad;
+                                "
+                              >
+                                <p class="text-dark mb-0">
+                                  {{ com.weight ? com.weight : "0" }}
+                                  {{ com.weightUnit }}
+                                </p>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td
+                                class="text-dark pl-3"
+                                style="border-right: 1px solid #adadad"
+                              >
+                                <p
+                                  class="text-dark mb-0"
+                                  style="font-weight: 600"
+                                >
+                                  GRAND TOTAL
+                                </p>
+                              </td>
+                              <td colspan="4" class="text-dark pl-3">
+                                {{ finalAmount }}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+
+                    <tr valign="top">
+                      <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr valign="top">
+                      <td colspan="2">
+                        <table
+                          width="100%"
+                          align="center"
+                          cellpadding="0"
+                          cellspacing="0"
+                          style="font-size: 13px"
+                        >
+                          <tbody>
+                            <tr>
+                              <td width="33%" valign="top">
+                                <table
+                                  width="98%"
+                                  style="
+                                    border: 1px solid #adadad;
+                                    font-size: 13px;
+                                  "
+                                  cellpadding="0"
+                                  cellspacing="0"
+                                  bordercolor="#adadad"
+                                >
+                                  <tbody>
+                                    <tr>
+                                      <td
+                                        class="text-dark pl-3 pt-1"
+                                        bgcolor="#f3f3f3"
+                                        style="border-bottom: 1px solid #adadad"
+                                      >
+                                        <strong>Pick Up Instructions</strong>
+                                      </td>
+                                    </tr>
+                                    <tr
+                                      *ngIf="
+                                        ord.pickupInstructions.length === 0
+                                      "
+                                    >
+                                      <td class="text-dark pl-3 pt-1">
+                                        &nbsp;
+                                      </td>
+                                    </tr>
+                                    <tr
+                                      *ngFor="
+                                        let pickInc of ord.pickupInstructions
+                                      "
+                                    >
+                                      <td
+                                        width="25%"
+                                        class="text-dark pl-3 pt-1"
+                                      >
+                                        {{ pickInc }}
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                              <td width="33%" valign="top">
+                                <table
+                                  width="98%"
+                                  align="center"
+                                  cellpadding="0"
+                                  cellspacing="0"
+                                  bordercolor="#adadad"
+                                  style="
+                                    border: 1px solid #adadad;
+                                    font-size: 13px;
+                                    margin-left: 2%;
+                                  "
+                                >
+                                  <tbody>
+                                    <tr>
+                                      <td
+                                        class="text-dark pl-3 pt-1"
+                                        bgcolor="#f3f3f3"
+                                        style="border-bottom: 1px solid #adadad"
+                                      >
+                                        <strong>Delivery Instructions</strong>
+                                      </td>
+                                    </tr>
+                                    <tr
+                                      *ngIf="ord.dropInstructions.length === 0"
+                                    >
+                                      <td class="text-dark pl-3 pt-1">
+                                        &nbsp;
+                                      </td>
+                                    </tr>
+                                    <tr
+                                      *ngFor="
+                                        let dropInc of ord.dropInstructions
+                                      "
+                                    >
+                                      <td
+                                        class="text-dark pl-3 pt-1"
+                                        width="25%"
+                                      >
+                                        {{ dropInc }}
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr valign="top">
+                      <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td valign="top">
+                        <table
+                          class="bolheight2"
+                          width="98%"
+                          style="
+                            border-left: 1px solid #ffffff;
+                            border-top: 1px solid #adadad;
+                            border-left: 1px solid #adadad;
+                            border-right: 1px solid #adadad;
+                            border-bottom: 1px solid #adadad;
+                            font-size: 13px;
+                          "
+                          cellpadding="0"
+                          cellspacing="0"
+                          bordercolor="#adadad"
+                        >
+                          <tbody>
+                            <tr>
+                              <td colspan="4" style="padding-left: 10px">
+                                <p
+                                  class="text-dark"
+                                  style="font-size: 12px; margin-bottom: 0px"
+                                >
+                                  Where the rate is dependent on value, shippers
+                                  are required to state specifically in writing
+                                  the agreed or declared value of the property
+                                  as follows:
+                                </p>
+                                <p
+                                  class="text-dark"
+                                  style="
+                                    font-size: 12px;
+                                    margin-bottom: 0px;
+                                    margin-top: 8px;
+                                  "
+                                >
+                                  The agreed or declared value of the property
+                                  is specifically stated by the shipper to be
+                                  not exceeding
+                                </p>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td
+                                width="25%"
+                                valign="bottom"
+                                style="padding-left: 10px"
+                              >
+                                <div
+                                  style="border-bottom: 1px solid #adadad"
+                                ></div>
+                              </td>
+                              <td width="20%" align="center">per</td>
+                              <td
+                                width="20%"
+                                style="
+                                  padding-left: 10px;
+                                  border-bottom: 1px solid #adadad;
+                                "
+                              >
+                                &nbsp;
+                              </td>
+                              <td style="padding-left: 10px">&nbsp;</td>
+                            </tr>
+                            <tr>
+                              <td height="4" colspan="4"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                      <td valign="top">
+                        <table
+                          class="bolheight2"
+                          width="98%"
+                          align="right"
+                          cellpadding="0"
+                          cellspacing="0"
+                          bordercolor="#adadad"
+                          style="
+                            border-left: 1px solid #adadad;
+                            border-top: 1px solid #adadad;
+                            border-right: 1px solid #adadad;
+                            border-bottom: 1px solid #adadad;
+                            font-size: 13px;
+                          "
+                        >
+                          <tbody>
+                            <tr>
+                              <td colspan="3" style="padding-left: 10px">
+                                &nbsp;
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="3" style="padding-left: 10px">
+                                <table
+                                  width="80%"
+                                  align="center"
+                                  cellpadding="0"
+                                  cellspacing="0"
+                                  style="font-size: 13px"
+                                >
+                                  <tbody>
+                                    <tr>
+                                      <td
+                                        style="padding-left: 10px;width: 140px;"
+                                      >
+                                        <p
+                                          class="text-dark"
+                                          style="
+                                            font-size: 12px;
+                                            margin-top: 1px;
+                                            margin-bottom: 4px;
+                                            line-height: 25px;
+                                          "
+                                        >
+                                          <strong>COD Amount: $</strong>
+                                        </p>
+                                      </td>
+                                      <td
+                                        style="
+                                          padding-left: 10px;
+                                          border-bottom: 1px solid #adadad;
+                                        "
+                                        contenteditable
+                                      >
+                                        &nbsp;
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+
+                            <tr>
+                              <td colspan="3" style="padding-left: 10px">
+                                &nbsp;
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="3" style="padding-left: 10px">
+                                &nbsp;
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2" style="padding-left: 10px">
+                        <p
+                          class="text-dark"
+                          style="margin-top: 5px; margin-bottom: 5px"
+                        >
+                          <span style="font-weight: 600; font-size: 12px"
+                            >NOTE Liability Limitation for loss or damage in
+                            this shipment may be applicable. See 49 U.S.C.
+                            14706(c)(1)(A) and (B).</span
+                          >
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td valign="top">
+                        <table
+                          class="bolheight2"
+                          width="98%"
+                          style="
+                            border-left: 1px solid #ffffff;
+                            border-top: 1px solid #adadad;
+                            border-left: 1px solid #adadad;
+                            border-right: 1px solid #adadad;
+                            border-bottom: 1px solid #adadad;
+                            font-size: 13px;
+                          "
+                          cellpadding="0"
+                          cellspacing="0"
+                          bordercolor="#adadad"
+                        >
+                          <tbody>
+                            <tr>
+                              <td
+                                width="25%"
+                                colspan="4"
+                                style="padding-left: 10px"
+                              >
+                                <p
+                                  class="text-dark"
+                                  style="
+                                    font-size: 12px;
+                                    margin-bottom: 0px;
+                                    margin-top: 0px;
+                                  "
+                                >
+                                  RECEIVED, subject to individually determined
+                                  rates or contracts that have been agreed upon
+                                  in writing between the carrier and shipper, if
+                                  applicable, otherwise to the rates,
+                                  classifications and rules that have been
+                                  established by the carrier and are available
+                                  to the shipper, on request, and to all
+                                  applicable state and federal regulations.
+                                </p>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                      <td valign="top">
+                        <table
+                          class="bolheight2"
+                          width="98%"
+                          align="right"
+                          cellpadding="0"
+                          cellspacing="0"
+                          bordercolor="#adadad"
+                          style="
+                            border-left: 1px solid #ffffff;
+                            border-top: 1px solid #adadad;
+                            border-left: 1px solid #adadad;
+                            border-right: 1px solid #adadad;
+                            border-bottom: 1px solid #adadad;
+                            font-size: 13px;
+                          "
+                        >
+                          <tbody>
+                            <tr>
+                              <td
+                                width="25%"
+                                colspan="4"
+                                style="padding-left: 10px"
+                              >
+                                <p
+                                  class="text-dark"
+                                  style="
+                                    font-size: 12px;
+                                    margin-bottom: 0px;
+                                    margin-top: 0px;
+                                  "
+                                >
+                                  The carrier shall not make delivery of this
+                                  shipment without payment of freight and all
+                                  other lawful charges.
+                                </p>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="4" style="padding-left: 10px">
+                                &nbsp;
+                              </td>
+                            </tr>
+                            <tr>
+                              <td height="3" colspan="4"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        <table
+                          width="100%"
+                          align="center"
+                          cellpadding="0"
+                          cellspacing="0"
+                          style="font-size: 13px"
+                        >
+                          <tbody>
+                            <tr>
+                              <td width="33%" valign="top">
+                                <table
+                                  class="bolheight3"
+                                  width="98%"
+                                  style="
+                                    border: 1px solid #adadad;
+                                    font-size: 13px;
+                                  "
+                                  cellpadding="0"
+                                  cellspacing="0"
+                                  bordercolor="#adadad"
+                                >
+                                  <tbody>
+                                    <tr>
+                                      <td
+                                        bgcolor="#f3f3f3"
+                                        class="text-dark"
+                                        style="
+                                          border-bottom: 1px solid #adadad;
+                                          height: 25px;
+                                          padding-left: 10px;
+                                        "
+                                      >
+                                        <strong>Shipper Signature </strong>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td style="padding-left: 10px">
+                                        <p
+                                          class="text-dark"
+                                          style="
+                                            font-size: 12px;
+                                            margin-bottom: 0px;
+                                            margin-top: 2px;
+                                          "
+                                        >
+                                          This is to certify that the above
+                                          named materials are properly
+                                          classified, packaged, marked and
+                                          labeled, and are in proper condition
+                                          for transportation according to the
+                                          applicable regulations of the DOT.<br />
+                                          <br />
+                                        </p>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        <table
+                                          width="98%"
+                                          align="center"
+                                          cellpadding="0"
+                                          cellspacing="0"
+                                          style="font-size: 13px"
+                                        >
+                                          <tbody>
+                                            <tr>
+                                              <td
+                                                width="40%"
+                                                style="padding-left: 10px"
+                                              >
+                                                <p
+                                                  class="text-dark"
+                                                  style="
+                                                    font-size: 12px;
+                                                    margin-top: 0px;
+                                                    margin-bottom: 5px;
+                                                  "
+                                                >
+                                                  <strong> Shipper Name</strong>
+                                                </p>
+                                              </td>
+                                              <td
+                                                style="
+                                                  padding-left: 10px;
+                                                  border-bottom: 1px solid
+                                                    #adadad;
+                                                "
+                                              >
+                                                &nbsp;
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td
+                                                width="40%"
+                                                style="padding-left: 10px"
+                                              >
+                                                <p
+                                                  class="text-dark"
+                                                  style="
+                                                    font-size: 12px;
+                                                    margin-top: 0px;
+                                                    margin-bottom: 5px;
+                                                  "
+                                                >
+                                                  <strong> Signature</strong>
+                                                </p>
+                                              </td>
+                                              <td
+                                                style="
+                                                  padding-left: 10px;
+                                                  border-bottom: 1px solid
+                                                    #adadad;
+                                                "
+                                              >
+                                                &nbsp;
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td
+                                                width="40%"
+                                                style="padding-left: 10px"
+                                              >
+                                                <p
+                                                  class="text-dark"
+                                                  style="
+                                                    font-size: 12px;
+                                                    margin-top: 0px;
+                                                    margin-bottom: 5px;
+                                                  "
+                                                >
+                                                  <strong> Date</strong>
+                                                </p>
+                                              </td>
+                                              <td
+                                                style="
+                                                  padding-left: 10px;
+                                                  border-bottom: 1px solid
+                                                    #adadad;
+                                                "
+                                              >
+                                                &nbsp;
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                              <td width="33%" valign="top">
+                                <table
+                                  class="bolheight3"
+                                  width="98%"
+                                  align="center"
+                                  cellpadding="0"
+                                  cellspacing="0"
+                                  bordercolor="#adadad"
+                                  style="
+                                    border: 1px solid #adadad;
+                                    font-size: 13px;
+                                  "
+                                >
+                                  <tbody>
+                                    <tr>
+                                      <td
+                                        bgcolor="#f3f3f3"
+                                        class="text-dark"
+                                        style="
+                                          border-bottom: 1px solid #adadad;
+                                          height: 25px;
+                                          padding-left: 10px;
+                                        "
+                                      >
+                                        <strong>Driver Instructions</strong>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td style="padding-left: 10px">
+                                        <p
+                                          class="text-dark"
+                                          style="
+                                            font-size: 12px;
+                                            margin-bottom: 0px;
+                                            margin-top: 2px;
+                                          "
+                                        >
+                                          This is to certify that the above
+                                          named materials are properly
+                                          classified, packaged, marked and
+                                          labeled, and are in proper condition
+                                          for transportation according to the
+                                          applicable regulations of the DOT.<br />
+                                          <br />
+                                        </p>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        <table
+                                          width="98%"
+                                          align="center"
+                                          cellpadding="0"
+                                          cellspacing="0"
+                                          style="font-size: 13px"
+                                        >
+                                          <tbody>
+                                            <tr>
+                                              <td
+                                                width="40%"
+                                                style="padding-left: 10px"
+                                              >
+                                                <p
+                                                  class="text-dark"
+                                                  style="
+                                                    font-size: 12px;
+                                                    margin-top: 0px;
+                                                    margin-bottom: 5px;
+                                                  "
+                                                >
+                                                  <strong> Driver Name</strong>
+                                                </p>
+                                              </td>
+                                              <td
+                                                style="
+                                                  padding-left: 10px;
+                                                  border-bottom: 1px solid
+                                                    #adadad;
+                                                "
+                                              >
+                                                &nbsp;
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td
+                                                width="40%"
+                                                style="padding-left: 10px"
+                                              >
+                                                <p
+                                                  class="text-dark"
+                                                  style="
+                                                    font-size: 12px;
+                                                    margin-top: 0px;
+                                                    margin-bottom: 5px;
+                                                  "
+                                                >
+                                                  <strong> Signature</strong>
+                                                </p>
+                                              </td>
+                                              <td
+                                                style="
+                                                  padding-left: 10px;
+                                                  border-bottom: 1px solid
+                                                    #adadad;
+                                                "
+                                              >
+                                                &nbsp;
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td
+                                                width="40%"
+                                                style="padding-left: 10px"
+                                              >
+                                                <p
+                                                  class="text-dark"
+                                                  style="
+                                                    font-size: 12px;
+                                                    margin-top: 0px;
+                                                    margin-bottom: 5px;
+                                                  "
+                                                >
+                                                  <strong> Date</strong>
+                                                </p>
+                                              </td>
+                                              <td
+                                                style="
+                                                  padding-left: 10px;
+                                                  border-bottom: 1px solid
+                                                    #adadad;
+                                                "
+                                              >
+                                                &nbsp;
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                              <td valign="top">
+                                <table
+                                  class="bolheight3"
+                                  width="98%"
+                                  align="right"
+                                  cellpadding="0"
+                                  cellspacing="0"
+                                  bordercolor="#adadad"
+                                  style="
+                                    border: 1px solid #adadad;
+                                    font-size: 13px;
+                                  "
+                                >
+                                  <tbody>
+                                    <tr>
+                                      <td
+                                        bgcolor="#f3f3f3"
+                                        class="text-dark"
+                                        style="
+                                          border-bottom: 1px solid #adadad;
+                                          height: 25px;
+                                          padding-left: 10px;
+                                        "
+                                      >
+                                        <strong>Receiver Instructions</strong>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td style="padding-left: 10px">
+                                        <p
+                                          class="text-dark"
+                                          style="
+                                            font-size: 12px;
+                                            margin-bottom: 0px;
+                                            margin-top: 2px;
+                                          "
+                                        >
+                                          Carrier acknowledges receipt of
+                                          packages and required placards.
+                                          Carrier certifies emergency response
+                                          information was made available and/or
+                                          carrier has the DOT emergency response
+                                          guidebook or equivalent documentation
+                                          in the vehicle. Property described
+                                          above is received in good order,
+                                          except as noted.<br />
+                                          <br />
+                                        </p>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td>
+                                        <table
+                                          width="98%"
+                                          align="center"
+                                          cellpadding="0"
+                                          cellspacing="0"
+                                          style="font-size: 13px"
+                                        >
+                                          <tbody>
+                                            <tr>
+                                              <td
+                                                width="40%"
+                                                style="padding-left: 10px"
+                                              >
+                                                <p
+                                                  class="text-dark"
+                                                  style="
+                                                    font-size: 12px;
+                                                    margin-top: 0px;
+                                                    margin-bottom: 5px;
+                                                  "
+                                                >
+                                                  <strong>
+                                                    Receiver Name</strong
+                                                  >
+                                                </p>
+                                              </td>
+                                              <td
+                                                style="
+                                                  padding-left: 10px;
+                                                  border-bottom: 1px solid
+                                                    #adadad;
+                                                "
+                                              >
+                                                &nbsp;
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td
+                                                width="40%"
+                                                style="padding-left: 10px"
+                                              >
+                                                <p
+                                                  class="text-dark"
+                                                  style="
+                                                    font-size: 12px;
+                                                    margin-top: 0px;
+                                                    margin-bottom: 5px;
+                                                  "
+                                                >
+                                                  <strong> Signature</strong>
+                                                </p>
+                                              </td>
+                                              <td
+                                                style="
+                                                  padding-left: 10px;
+                                                  border-bottom: 1px solid
+                                                    #adadad;
+                                                "
+                                              >
+                                                &nbsp;
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td
+                                                width="40%"
+                                                style="padding-left: 10px"
+                                              >
+                                                <p
+                                                  class="text-dark"
+                                                  style="
+                                                    font-size: 12px;
+                                                    margin-top: 0px;
+                                                    margin-bottom: 5px;
+                                                  "
+                                                >
+                                                  <strong> Date</strong>
+                                                </p>
+                                              </td>
+                                              <td
+                                                style="
+                                                  padding-left: 10px;
+                                                  border-bottom: 1px solid
+                                                    #adadad;
+                                                "
+                                              >
+                                                &nbsp;
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        <div class="html2pdf__page-break"></div>
+                        <hr />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <table
+                  border="0"
+                  align="center"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td align="center">
+                        <h2 class="mb-0 text-dark text-4 font-weight-normal">
+                          Powered By
+                        </h2>
+                        <img
+                          src="assets/img/logo.png"
+                          width="207"
+                          height="28"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">&nbsp;</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="modal.dismiss()">
+        Close
+      </button>
+      <button type="button" class="btn btn-success" (click)="generatePDF()">
+        Download
+      </button>
+    </div>
+  </div>
 </ng-template>

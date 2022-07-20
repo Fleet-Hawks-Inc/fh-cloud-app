@@ -71,10 +71,7 @@ export class SalesOrderDetailComponent implements OnInit {
       this.sOrderDetails = result.sOrderDetails;
       this.status = result.status;
       this.sOrNo = result.sOrNo;
-      this.taxes = result.charges.taxes;
-      this.chargeName = result.charges.cName;
-      this.chargeType = result.charges.cType;
-      this.chargeAmount = result.charges.cAmount;
+
       this.isPDF = true;
 
       if (result.docs.length > 0) {
@@ -115,6 +112,7 @@ export class SalesOrderDetailComponent implements OnInit {
       .toPromise();
     this.emailDisabled = false;
     if (result) {
+      this.status = 'sent';
       this.toaster.success("Email sent successfully");
     } else {
       this.toaster.error("Something went wrong.");

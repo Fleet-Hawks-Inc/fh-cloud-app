@@ -1,91 +1,112 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { Injectable } from '@angular/core';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { NgSelectModule } from '@ng-select/ng-select';
-import { IncomeListComponent } from './income-list/income-list.component';
-import { AddIncomeComponent } from './add-income/add-income.component';
-import { IncomeDetailComponent } from './income-detail/income-detail.component';
-import { AddAccountModule } from '../add-account/add-account.module';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { CommonModule } from "@angular/common";
+import { HttpClientModule } from "@angular/common/http";
+import { Injectable, NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { RouterModule, Routes } from "@angular/router";
+import {
+  NgbDateAdapter,
+  NgbDateParserFormatter,
+  NgbDateStruct, NgbModule
+} from "@ng-bootstrap/ng-bootstrap";
+import { NgSelectModule } from "@ng-select/ng-select";
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
+import { AddAccountModule } from "../add-account/add-account.module";
+import { AddIncomeComponent } from "./add-income/add-income.component";
+import { IncomeDetailComponent } from "./income-detail/income-detail.component";
+import { IncomeListComponent } from "./income-list/income-list.component";
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
- @Injectable()
- export class CustomAdapter extends NgbDateAdapter<string> {
- 
-   readonly DELIMITER = '-';
- 
-   fromModel(value: string): NgbDateStruct {
-     if (!value)
-       return null
-     let parts = value.split(this.DELIMITER);
-     return {
-       year: + parseInt(parts[0]),
-       month: + parseInt(parts[1]),
-       day: + parseInt(parts[2])
-     }
-   }
- 
-   toModel(date: NgbDateStruct): string // from internal model -> your mode
-   {
-     let month: any = '';
-     let day: any = '';
-     if (date) {
-       month = (date.month < 10) ? '0' + date.month : date.month;
-       day = (date.day < 10) ? '0' + date.day : date.day;
-     }
-     return date ? date.year + this.DELIMITER + month + this.DELIMITER + day : null;
-   }
- }
- 
- /**
-  * This Service handles how the date is rendered and parsed from keyboard i.e. in the bound input field.
-  */
- @Injectable()
- export class CustomDateParserFormatter extends NgbDateParserFormatter {
- 
-   readonly DELIMITER = '/';
- 
-   parse(value: string): NgbDateStruct | null {
-     if (value) {
-       const date = value.split(this.DELIMITER);
-       return {
-         year: parseInt(date[2], 10),
-         month: parseInt(date[1], 10),
-         day: parseInt(date[0], 10),
- 
-       };
-     }
-     return null;
-   }
- 
-   format(date: NgbDateStruct | null): string {
-     let month: any = '';
-     let day: any = '';
-     if (date) {
-       month = (date.month < 10) ? '0' + date.month : date.month;
-       day = (date.day < 10) ? '0' + date.day : date.day;
-     }
- 
-     return date ? date.year + this.DELIMITER + month + this.DELIMITER + day : '';
-   }
- }
+@Injectable()
+export class CustomAdapter extends NgbDateAdapter<string> {
+  readonly DELIMITER = "-";
 
-const routes: Routes = [ 
-  { path: 'list', component: IncomeListComponent},
-  { path: 'add', component: AddIncomeComponent},
-  { path: 'detail/:incomeID', component: IncomeDetailComponent}, 
-  { path: 'edit/:incomeID', component: AddIncomeComponent},
+  fromModel(value: string): NgbDateStruct {
+    if (!value) return null;
+    let parts = value.split(this.DELIMITER);
+    return {
+      year: +parseInt(parts[0]),
+      month: +parseInt(parts[1]),
+      day: +parseInt(parts[2]),
+    };
+  }
+
+  toModel(date: NgbDateStruct): string { // from internal model -> your mode
+    let month: any = "";
+    let day: any = "";
+    if (date) {
+      month = date.month < 10 ? "0" + date.month : date.month;
+      day = date.day < 10 ? "0" + date.day : date.day;
+    }
+    return date
+      ? date.year + this.DELIMITER + month + this.DELIMITER + day
+      : null;
+  }
+}
+
+/**
+ * This Service handles how the date is rendered and parsed from keyboard i.e. in the bound input field.
+ */
+@Injectable()
+export class CustomDateParserFormatter extends NgbDateParserFormatter {
+  readonly DELIMITER = "/";
+
+  parse(value: string): NgbDateStruct | null {
+    if (value) {
+      const date = value.split(this.DELIMITER);
+      return {
+        year: parseInt(date[2], 10),
+        month: parseInt(date[1], 10),
+        day: parseInt(date[0], 10),
+      };
+    }
+    return null;
+  }
+
+  format(date: NgbDateStruct | null): string {
+    let month: any = "";
+    let day: any = "";
+    if (date) {
+      month = date.month < 10 ? "0" + date.month : date.month;
+      day = date.day < 10 ? "0" + date.day : date.day;
+    }
+
+    return date
+      ? date.year + this.DELIMITER + month + this.DELIMITER + day
+      : "";
+  }
+}
+
+const routes: Routes = [
+  {
+    path: "list",
+    component: IncomeListComponent,
+    data: { title: "Income List" },
+  },
+  { path: "add", component: AddIncomeComponent, data: { title: "Add Income" } },
+  {
+    path: "detail/:incomeID",
+    component: IncomeDetailComponent,
+    data: { title: "Income Detail" },
+  },
+  {
+    path: "edit/:incomeID",
+    component: AddIncomeComponent,
+    data: { title: "Edit Income " },
+  },
 ];
 
 @NgModule({
-  declarations: [IncomeListComponent, AddIncomeComponent, IncomeDetailComponent],
+  declarations: [
+    IncomeListComponent,
+    AddIncomeComponent,
+    IncomeDetailComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -95,10 +116,20 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule,
     AddAccountModule,
-    InfiniteScrollModule,
+    AutoCompleteModule,
+    ButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule,
+    TableModule,
+
+
+
+
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
-    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }]
+    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
+  ],
 })
 export class IncomeModule { }

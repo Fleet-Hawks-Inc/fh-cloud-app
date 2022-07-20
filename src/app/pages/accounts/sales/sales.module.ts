@@ -1,22 +1,28 @@
-import { RouterModule, Routes } from '@angular/router';
-import { Injectable, NgModule } from '@angular/core';
+import { RouterModule, Routes } from "@angular/router";
+import { Injectable, NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { CommonModule } from '@angular/common';
-import { AddSalesOrderComponent } from './sales-orders/add-sales-order/add-sales-order.component';
-import { SalesOrderListComponent } from './sales-orders/sales-order-list/sales-order-list.component';
-import { SalesOrderDetailComponent } from './sales-orders/sales-order-detail/sales-order-detail.component';
-import { SalesInvoicesListComponent } from './sales-invoices/sales-invoices-list/sales-invoices-list.component';
-import { SalesInvoiceDetailComponent } from './sales-invoices/sales-invoice-detail/sales-invoice-detail.component';
-import { AddSalesInvoiceComponent } from './sales-invoices/add-sales-invoice/add-sales-invoice.component';
-import { AddSalesReceiptsComponent } from './receipts/add-sales-receipts/add-sales-receipts.component';
-import { SalesReceiptsListComponent } from './receipts/sales-receipts-list/sales-receipts-list.component';
-import { SalesReceiptsDetailComponent } from './receipts/sales-receipts-detail/sales-receipts-detail.component';
-import { AddCreditNoteComponent } from './credit-notes/add-credit-note/add-credit-note.component';
-import { CreditNotesListComponent } from './credit-notes/credit-notes-list/credit-notes-list.component';
-import { NgbDate, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from "@angular/common";
+import { AddSalesOrderComponent } from "./sales-orders/add-sales-order/add-sales-order.component";
+import { SalesOrderListComponent } from "./sales-orders/sales-order-list/sales-order-list.component";
+import { SalesOrderDetailComponent } from "./sales-orders/sales-order-detail/sales-order-detail.component";
+import { SalesInvoicesListComponent } from "./sales-invoices/sales-invoices-list/sales-invoices-list.component";
+import { SalesInvoiceDetailComponent } from "./sales-invoices/sales-invoice-detail/sales-invoice-detail.component";
+import { AddSalesInvoiceComponent } from "./sales-invoices/add-sales-invoice/add-sales-invoice.component";
+import { AddSalesReceiptsComponent } from "./receipts/add-sales-receipts/add-sales-receipts.component";
+import { SalesReceiptsListComponent } from "./receipts/sales-receipts-list/sales-receipts-list.component";
+import { SalesReceiptsDetailComponent } from "./receipts/sales-receipts-detail/sales-receipts-detail.component";
+import { AddCreditNoteComponent } from "./credit-notes/add-credit-note/add-credit-note.component";
+import { CreditNotesListComponent } from "./credit-notes/credit-notes-list/credit-notes-list.component";
+import {
+  NgbDate,
+  NgbDateAdapter,
+  NgbDateParserFormatter,
+  NgbDateStruct,
+  NgbModule,
+} from "@ng-bootstrap/ng-bootstrap";
 import { NgSelectModule } from "@ng-select/ng-select";
-import { CreditNoteDetailComponent } from './credit-notes/credit-note-detail/credit-note-detail.component';
-import { AddAccountModule } from '../add-account/add-account.module';
+import { CreditNoteDetailComponent } from "./credit-notes/credit-note-detail/credit-note-detail.component";
+import { AddAccountModule } from "../add-account/add-account.module";
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -82,21 +88,81 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 }
 
 const routes: Routes = [
-  { path: 'orders/list', component: SalesOrderListComponent },
-  { path: 'orders/add', component: AddSalesOrderComponent },
-  { path: 'orders/edit/:saleID', component: AddSalesOrderComponent },
-  { path: 'orders/detail/:saleID', component: SalesOrderDetailComponent },
-  { path: 'invoices/list', component: SalesInvoicesListComponent },
-  { path: 'invoices/add', component: AddSalesInvoiceComponent },
-  { path: 'invoices/edit/:saleID', component: AddSalesInvoiceComponent },
-  { path: 'invoices/detail/:saleID', component: SalesInvoiceDetailComponent },
-  { path: 'receipts/list', component: SalesReceiptsListComponent },
-  { path: 'receipts/add', component: AddSalesReceiptsComponent },
-  { path: 'receipts/detail/:saleID', component: SalesReceiptsDetailComponent },
-  { path: 'credit-notes/list', component: CreditNotesListComponent },
-  { path: 'credit-notes/add', component: AddCreditNoteComponent },
-  { path: 'credit-notes/edit/:creditID', component: AddCreditNoteComponent },
-  { path: 'credit-notes/detail/:creditID', component: CreditNoteDetailComponent },
+  {
+    path: "orders/list",
+    component: SalesOrderListComponent,
+    data: { title: "Sales Order List" },
+  },
+  {
+    path: "orders/add",
+    component: AddSalesOrderComponent,
+    data: { title: "Add Sale Order" },
+  },
+  {
+    path: "orders/edit/:saleID",
+    component: AddSalesOrderComponent,
+    data: { title: "Edit Sale Order" },
+  },
+  {
+    path: "orders/detail/:saleID",
+    component: SalesOrderDetailComponent,
+    data: { title: "Sale Order Detail" },
+  },
+  {
+    path: "invoices/list",
+    component: SalesInvoicesListComponent,
+    data: { title: "Sales Invoices List" },
+  },
+  {
+    path: "invoices/add",
+    component: AddSalesInvoiceComponent,
+    data: { title: "Add Sale Invoices" },
+  },
+  {
+    path: "invoices/edit/:saleID",
+    component: AddSalesInvoiceComponent,
+    data: { title: "Edit Sale Invoices" },
+  },
+  {
+    path: "invoices/detail/:saleID",
+    component: SalesInvoiceDetailComponent,
+    data: { title: "Sale Invoices Detail" },
+  },
+  {
+    path: "receipts/list",
+    component: SalesReceiptsListComponent,
+    data: { title: "Sales Receipts List" },
+  },
+  {
+    path: "receipts/add",
+    component: AddSalesReceiptsComponent,
+    data: { title: "Add Sales Receipt" },
+  },
+  {
+    path: "receipts/detail/:saleID",
+    component: SalesReceiptsDetailComponent,
+    data: { title: "Sales Receipt Detail" },
+  },
+  {
+    path: "credit-notes/list",
+    component: CreditNotesListComponent,
+    data: { title: "Credit Notes List" },
+  },
+  {
+    path: "credit-notes/add",
+    component: AddCreditNoteComponent,
+    data: { title: "Add Credit Note" },
+  },
+  {
+    path: "credit-notes/edit/:creditID",
+    component: AddCreditNoteComponent,
+    data: { title: "Edit Customer Credit Note" },
+  },
+  {
+    path: "credit-notes/detail/:creditID",
+    component: CreditNoteDetailComponent,
+    data: { title: "Credit Note Detail" },
+  },
 ];
 
 @NgModule({
@@ -112,7 +178,8 @@ const routes: Routes = [
     AddSalesReceiptsComponent,
     CreditNotesListComponent,
     AddCreditNoteComponent,
-    CreditNoteDetailComponent],
+    CreditNoteDetailComponent,
+  ],
   imports: [
     CommonModule,
     NgbModule,
@@ -122,6 +189,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
 
     AddAccountModule,
-  ]
+  ],
 })
-export class SalesModule { }
+export class SalesModule {}

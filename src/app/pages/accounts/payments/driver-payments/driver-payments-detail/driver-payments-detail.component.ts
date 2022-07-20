@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService, ListService } from "src/app/services";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-driver-payments-detail",
@@ -10,13 +11,12 @@ import { AccountService, ApiService, ListService } from "src/app/services";
 })
 export class DriverPaymentsDetailComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
-  drivers = [];
-  contacts = [];
-  settlements = [];
+
   paymentID;
   paymentData = {
     currency: "CAD",
     paymentTo: null,
+    entityName: "",
     entityId: null,
     paymentNo: "",
     txnDate: "",
@@ -51,12 +51,29 @@ export class DriverPaymentsDetailComponent implements OnInit {
     advData: [],
     transactionLog: [],
     paymentEnity: "",
+    isFeatEnabled: false,
+    gstHstPer: <any>0,
+    gstHstAmt: <any>0,
+    isVendorPayment: false,
+    vendorId: '',
+    cheqdata: {
+      comp: '',
+      addr: ''
+    },
+    status: '',
+    voidData: {
+      date: '',
+      reason: ''
+    }
   };
   accounts = [];
   accountsObjects = {};
   accountsIntObjects = {};
   showModal = false;
   downloadDisabled = true;
+  downloadDisabledpdf = true;
+  subscription: Subscription;
+  voidSubs: Subscription;
 
   constructor(
     private listService: ListService,
@@ -64,28 +81,23 @@ export class DriverPaymentsDetailComponent implements OnInit {
     private router: Router,
     private accountService: AccountService,
     private apiService: ApiService
-  ) {}
+  ) { }
 
   async ngOnInit() {
+    this.subscription = this.listService.paymentDetail.subscribe(async (res: any) => {
+      if(res == 'driver-payments') {
+        this.fetchPay();
+      }
+    })
+
+    this.voidSubs = this.listService.voidStatus.subscribe(
+      async (res: any) => {
+        if(res === true) {
+          await this.fetchPaymentDetail();
+        }
+      })
     this.paymentID = this.route.snapshot.params["paymentID"];
-    this.fetchDrivers();
-    this.fetchContactsList();
-    this.fetchSettlement();
-    await this.fetchAccountsByIDs();
-    await this.fetchAccountsByInternalIDs();
     await this.fetchPaymentDetail();
-  }
-
-  fetchDrivers() {
-    this.apiService.getData(`drivers/get/list`).subscribe((result: any) => {
-      this.drivers = result;
-    });
-  }
-
-  fetchContactsList() {
-    this.apiService.getData(`contacts/get/list`).subscribe((result: any) => {
-      this.contacts = result;
-    });
   }
 
   async fetchPaymentDetail() {
@@ -93,8 +105,17 @@ export class DriverPaymentsDetailComponent implements OnInit {
       .getData(`driver-payments/detail/${this.paymentID}`)
       .toPromise();
 
+    this.downloadDisabledpdf = false;
     this.downloadDisabled = false;
     this.paymentData = result[0];
+    this.paymentData.isVendorPayment = result[0].data.isVendorPymt || false;
+    this.paymentData.gstHstPer = result[0].data.gstHstPer || 0;
+    this.paymentData.vendorId = result[0].data.vendorId || undefined;
+    this.paymentData.gstHstAmt = (this.paymentData.gstHstPer / 100) * this.paymentData.settledAmount || 0;
+    if (!this.paymentData.isFeatEnabled) {
+      this.fetchAccountsByIDs();
+      this.fetchAccountsByInternalIDs();
+    }
     if (this.paymentData.transactionLog.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
     }
@@ -107,14 +128,6 @@ export class DriverPaymentsDetailComponent implements OnInit {
       "_",
       " "
     );
-  }
-
-  fetchSettlement() {
-    this.accountService
-      .getData(`settlement/get/list`)
-      .subscribe((result: any) => {
-        this.settlements = result;
-      });
   }
 
   async fetchAccountsByIDs() {
@@ -136,10 +149,10 @@ export class DriverPaymentsDetailComponent implements OnInit {
       data: this.paymentData,
     };
     this.listService.triggerDownloadPaymentPdf(obj);
-    this.downloadDisabled = true;
+    this.downloadDisabledpdf = true;
 
     setTimeout(() => {
-      this.downloadDisabled = false;
+      this.downloadDisabledpdf = false;
     }, 15000);
   }
 
@@ -165,7 +178,52 @@ export class DriverPaymentsDetailComponent implements OnInit {
       advance: this.paymentData.advance,
       txnDate: this.paymentData.txnDate,
       page: "detail",
+      isVendorPayment: this.paymentData.isVendorPayment,
+      vendorId: this.paymentData.vendorId,
+      gstHstPer: this.paymentData.gstHstPer,
+      gstHstAmt: this.paymentData.gstHstAmt,
+      settlementIds: this.paymentData.settlementIds,
+      recordID: this.paymentID,
+      cheqData: this.paymentData.cheqdata,
+      module: 'driver-payments',
     };
+    this.downloadDisabled = true;
     this.listService.openPaymentChequeModal(obj);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+    this.voidSubs.unsubscribe()
+  }
+
+  async fetchPay() {
+    let result: any = await this.accountService
+      .getData(`driver-payments/detail/${this.paymentID}`)
+      .toPromise();
+    this.paymentData = result[0];
+    this.paymentData.isVendorPayment = result[0].data.isVendorPymt || false;
+    this.paymentData.gstHstPer = result[0].data.gstHstPer || 0;
+    this.paymentData.vendorId = result[0].data.vendorId || undefined;
+    this.paymentData.gstHstAmt = (this.paymentData.gstHstPer / 100) * this.paymentData.settledAmount || 0;
+    
+    if (this.paymentData.payMode) {
+      this.paymentData.payMode = this.paymentData.payMode.replace("_", " ");
+    } else {
+      this.paymentData.payMode = "";
+    }
+    this.paymentData.paymentEnity = this.paymentData.paymentTo.replace(
+      "_",
+      " "
+    );
+  }
+
+  async voidPayment() {
+    let payObj = {
+      showModal: true,
+      page: "list",
+      paymentNo: this.paymentData.paymentNo,
+      paymentID: this.paymentID
+    };
+    this.listService.triggerVoidDriverPayment(payObj);
   }
 }

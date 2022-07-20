@@ -5,6 +5,9 @@ import { Location } from "@angular/common";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import { ActivatedRoute, Router } from "@angular/router";
+import { DashboardUtilityService, ListService } from "src/app/services";
+import Constants from "../../constants";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 
 @Component({
   selector: "app-add-device",
@@ -13,6 +16,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 })
 export class AddDeviceComponent implements OnInit {
   public errorMessage = "";
+    sessionID: string;
+
   public deviceIDText = "Device ID (Serial#)";
   public title = "Add Device"
   constructor(
@@ -20,8 +25,13 @@ export class AddDeviceComponent implements OnInit {
     private toastr: ToastrService,
     private location: Location,
     private route: ActivatedRoute,
-    private router: Router
-  ) { }
+    private router: Router,
+    private dashboardUtilityService: DashboardUtilityService,
+    private routerMgmtService: RouteManagementServiceService,
+    private listService: ListService,
+  ) { 
+        this.sessionID = this.routerMgmtService.deviceSessionID;
+  }
 
   public device: any = {
     deviceName: "",
@@ -57,10 +67,12 @@ export class AddDeviceComponent implements OnInit {
   public assets: any = [];
   attachedWith = "Vehicle";
   editMode = false;
+  isUpgrade = false;
 
   async ngOnInit() {
     let deviceType = this.route.snapshot.params["deviceType"];
     let deviceSerialNo = this.route.snapshot.params["deviceSerialNo"];
+    this.isSubscriptionsValid();
 
     if (deviceType && deviceSerialNo) {
       this.editMode = true;
@@ -70,7 +82,45 @@ export class AddDeviceComponent implements OnInit {
       // this.deviceID=encodeURIComponent(this.deviceID);
       this.fetchDevices();
     }
+
     await this.deviceAttachedVehicle();
+  }
+
+  private async isSubscriptionsValid() {
+    this.dashboardUtilityService.refreshDeviceCount = true;
+    this.dashboardUtilityService.refreshPlans = true;
+    let curDevCount = await this.dashboardUtilityService.fetchDevicesCount('DashCam');
+    if (curDevCount) {
+      this.listService.maxUnit.subscribe((res: any) => {
+        let data = [];
+        for (const item of res) {
+          if (item.planCode.startsWith('SAF-')) {
+            data.push({ vehicles: item.vehicles, planCode: item.planCode })
+          }
+
+        }
+        if (data.length > 0) {
+
+          let vehicleTotal = Math.max(...data.map(o => o.vehicles))
+          if (vehicleTotal == -1) { // -1 returns when subscribed Enterprise plan with no limit
+            this.isUpgrade = false;
+          } else {
+            this.isUpgrade = curDevCount <= vehicleTotal ? true : false;
+            if (this.isUpgrade) {
+              this.deviceVehicle = this.deviceVehicle.filter(elem => {
+                return elem.value != 'DashCam';
+              })
+              let obj = {
+                summary: Constants.SafetyPlanExpired,
+                detail: 'You will not be able to add more vehicles with DashCam device.',
+                severity: 'error'
+              }
+              this.dashboardUtilityService.notify(obj);
+            }
+          }
+        }
+      })
+    }
   }
 
   async deviceAttachedVehicle() {
@@ -207,6 +257,7 @@ export class AddDeviceComponent implements OnInit {
           error: (err: any) => { },
           next: (res) => {
             this.toastr.success("Device Created successfully");
+            this.router.navigate(['manage/devices/list/${this.routerMgmtService.deviceUpdated()}']);
             this.location.back();
           },
         });
@@ -233,7 +284,7 @@ export class AddDeviceComponent implements OnInit {
       this.apiService.putData("devices", this.device).subscribe({
         complete: () => { },
         error: (err: any) => {
-          console.log(err);
+
           from(err.error)
             .pipe(
               map((val: any) => {
@@ -248,7 +299,7 @@ export class AddDeviceComponent implements OnInit {
         },
         next: (res) => {
           this.toastr.success("Device Updated successfully");
-          this.router.navigate(['manage/devices/list']);
+          this.router.navigate(['manage/devices/list/${this.routerMgmtService.deviceUpdated()}']);
         },
       });
     } catch (error) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -10,33 +10,32 @@ import * as moment from 'moment'
 import * as _ from 'lodash'
 import { ViewEncapsulation } from '@angular/core';
 import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
-import {Router} from '@angular/router'
-import { threadId } from 'worker_threads';
+import { Router } from '@angular/router'
+import { Table } from 'primeng/table';
 
 declare var $: any;
 
 @Component({
-  selector: 'app-fuel-entry-list',
-  templateUrl: './fuel-entry-list.component.html',
-  styleUrls: ['./fuel-entry-list.component.css'],
+  selector: "app-fuel-entry-list",
+  templateUrl: "./fuel-entry-list.component.html",
+  styleUrls: ["./fuel-entry-list.component.css"],
   providers: [DatePipe],
   encapsulation: ViewEncapsulation.None,
 })
 export class FuelEntryListComponent implements OnInit {
-
+  @ViewChild("dt") table: Table;
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
-  title = 'Fuel Entries List';
-  fromDate: any = '';
-  toDate: any = '';
-  fuelID = '';
-  uploadedDocs = []
+  title = "Fuel Entries List";
+  fromDate: any = "";
+  toDate: any = "";
+  fuelID = "";
+  uploadedDocs = [];
   disable = false;
   vehicles = [];
-  reviewing=false;
-  csvHeader=[]
+  reviewing = false;
+  csvHeader = [];
   vehicleList: any = {};
-  tripList: any = {};
   assetList: any = {};
   driverList: any = {};
   vendorList: any = {};
@@ -48,34 +47,34 @@ export class FuelEntryListComponent implements OnInit {
   headCheckbox = false;
   selectedfuelID: any;
   fuelCheckCount = null;
-  countryName: any = '';
-  formattedFromDate: any = '';
-  formattedToDate: any = '';
+  countryName: any = "";
+  formattedFromDate: any = "";
+  formattedToDate: any = "";
   fuelList = [];
   suggestedUnits = [];
-  vehicleID = '';
-  amount = '';
+  vehicleID = "";
+  amount = "";
   SelectionType = SelectionType;
   ColumnMode = ColumnMode;
-  vehicleIdentification = '';
+  vehicleIdentification = "";
   unitID = null;
   assetUnitID = null;
   unitName: string;
-  start: any = '';
-  end: any = '';
-  lastTimeCreated = ''
-  totalRecords = 20;
+  start: any = "";
+  end: any = "";
+  lastTimeCreated = "";
+  totalRecords = 0;
   pageLength = 10;
-  lastEvaluatedKey = '';
-  error={
-    hasError:false,
-    message:'',
-    attributes:[]
-  }
+  lastEvaluatedKey = "";
+  error = {
+    hasError: false,
+    message: "",
+    attributes: [],
+  };
   fuelNext = false;
   fuelPrev = true;
   fuelDraw = 0;
-  fuelPrevEvauatedKeys = [''];
+  fuelPrevEvauatedKeys = [""];
   fuelStartPoint = 1;
   fuelEndPoint = this.pageLength;
   allVehicles = [];
@@ -86,50 +85,77 @@ export class FuelEntryListComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   readonly rowHeight = 60;
   readonly headerHeight = 70;
-  pageLimit = 10
+  pageLimit = 10;
   loaded = false;
+  _selectedColumns: any[];
+  fsUpdate: any = false;
+  dataColumns = [
+    { width: "12%", field: "data.date", header: "Date Time", type: "date" },
+    { width: "12%", field: "data.cardNo", header: "Fuel Card #", type: "text" },
+    { width: "12%", field: "data.unitNo", header: "Unit #", type: "text" },
+    { width: "12%", field: "data.useType", header: "Use Type", type: "text" },
+    { width: "12%", field: "data.type", header: " Type", type: "text" },
+    { width: "12%", field: "data.amt", header: "Fuel Amount", type: "text" },
+    { width: "10%", field: "data.site", header: "Site", type: "text" },
+    { width: "12%", field: "data.city", header: "Province", type: "text" },
+  ];
+  fSurcharge = {
+    from: null,
+    to: null,
+    ltl: null,
+    tl: null,
+    id: null,
+  };
+  fsLastEvaluatedKey = "";
+  fuelSurcharge = [];
+  fsLoaded = false;
+  addUpdate = "Add";
+  fsColumns = [
+    { width: "20%", field: "from", header: "From", type: "text" },
+    { width: "20%", field: "to", header: "To", type: "text" },
+    { width: "20%", field: "ltl", header: "LTL", type: "text" },
+    { width: "20%", field: "tl", header: "FTL", type: "text" },
+  ];
 
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService,
     private httpClient: HttpClient,
     private el: ElementRef,
-    private router:Router) {
-  }
+    private router: Router
+  ) {}
   ngOnInit() {
     this.fetchVendorList();
-    // this.fuelEntriesCount();
+    //   this.fuelEntriesCount();
     this.fetchVehicleList();
     this.fetchAssetList();
     this.fetchWEXCode();
-    this.fetchTripList();
     this.fetchDriverList();
     this.fetchAllAssets();
     this.fetchAllVehicles();
 
     this.fetchWexCategories();
     this.initDataTable();
+    this.initFuelSurcharge();
     $(document).ready(() => {
       setTimeout(() => {
-        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
+        $("#DataTables_Table_0_wrapper .dt-buttons")
+          .addClass("custom-dt-buttons")
+          .prependTo(".page-buttons");
       }, 1800);
     });
   }
 
-  onFuelSelect(event){
-    let value=event.selected[0]
-    let fuelID=value.fuelSK.split('#')[1]
-    this.router.navigate([`/fleet/fuel/detail/${fuelID}`])
-
+  onFuelSelect(event) {
+    let value = event.selected[0];
+    let fuelID = value.fuelSK.split("#")[1];
+    this.router.navigate([`/fleet/fuel/detail/${fuelID}`]);
   }
   onScroll(offsetY) {
     const viewHeight =
       this.el.nativeElement.getBoundingClientRect().height - this.headerHeight;
 
-    if (
-      offsetY + viewHeight + this.fuelList.length * this.rowHeight
-    ) {
+    if (offsetY + viewHeight + this.fuelList.length * this.rowHeight) {
       let limit = this.pageLimit;
       if (this.fuelList.length === 0) {
         const pageSize = Math.ceil(viewHeight / this.rowHeight);
@@ -149,14 +175,15 @@ export class FuelEntryListComponent implements OnInit {
   }
 
   fetchWexCategories() {
-    this.httpClient.get('assets/jsonFiles/fuel/wexCategories.json').subscribe((result: any) => {
-
-      this.wexCategories = result;
-    })
+    this.httpClient
+      .get("assets/jsonFiles/fuel/wexCategories.json")
+      .subscribe((result: any) => {
+        this.wexCategories = result;
+      });
   }
   getSuggestions(value) {
     value = value.toLowerCase();
-    if (value != '') {
+    if (value != "") {
       this.apiService
         .getData(`vehicles/suggestion/${value}`)
         .subscribe((result) => {
@@ -165,7 +192,7 @@ export class FuelEntryListComponent implements OnInit {
           for (let i = 0; i < result.length; i++) {
             this.suggestedUnits.push({
               unitID: result[i].vehicleID,
-              unitName: result[i].vehicleIdentification
+              unitName: result[i].vehicleIdentification,
             });
           }
           this.getAssetsSugg(value);
@@ -177,7 +204,7 @@ export class FuelEntryListComponent implements OnInit {
 
   getAssetsSugg(value) {
     value = value.toLowerCase();
-    if (value != '') {
+    if (value != "") {
       this.apiService
         .getData(`assets/suggestion/${value}`)
         .subscribe((result) => {
@@ -185,7 +212,7 @@ export class FuelEntryListComponent implements OnInit {
           for (let i = 0; i < result.length; i++) {
             this.suggestedUnits.push({
               unitID: result[i].assetID,
-              unitName: result[i].assetIdentification
+              unitName: result[i].assetIdentification,
             });
           }
         });
@@ -195,53 +222,46 @@ export class FuelEntryListComponent implements OnInit {
   }
 
   fetchVendorList() {
-    this.apiService.getData('vendors').subscribe((result: any) => {
-
-      result.forEach(element => {
-        this.vendorList[element.contactID] = element.companyName
-
+    this.apiService.getData("vendors").subscribe((result: any) => {
+      result.forEach((element) => {
+        this.vendorList[element.contactID] = element.companyName;
       });
     });
-
   }
   fetchVehicleList() {
-    this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
+    this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
       this.vehicleList = result;
     });
   }
 
   fetchAssetList() {
-    this.apiService.getData('assets/get/list').subscribe((result: any) => {
+    this.apiService.getData("assets/get/list").subscribe((result: any) => {
       this.assetList = result;
     });
   }
   fetchDriverList() {
-    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
+    this.apiService.getData("drivers/get/list").subscribe((result: any) => {
       this.driverList = result;
     });
   }
-  fetchTripList() {
-    this.apiService.getData('trips/get/list').subscribe((result: any) => {
-      this.tripList = result;
-    });
-  }
   fetchCountries() {
-    this.apiService.getData('countries').subscribe((result: any) => {
+    this.apiService.getData("countries").subscribe((result: any) => {
       this.countries = result.Items;
     });
   }
   fetchFuelTypeList() {
-    this.apiService.getData('fuelTypes/get/list').subscribe((result: any) => {
+    this.apiService.getData("fuelTypes/get/list").subscribe((result: any) => {
       this.fuelCodeList = result;
     });
   }
   fetchWEXCode() {
-    this.httpClient.get('assets/jsonFiles/fuel/wexFuelType.json').subscribe((result: any) => {
-
-      result.forEach(element => {
-        this.WEXCodeList[element.code] = element.type
+    this.httpClient
+      .get("assets/jsonFiles/fuel/wexFuelType.json")
+      .subscribe((result: any) => {
+        result.forEach((element) => {
+          this.WEXCodeList[element.code] = element.type;
+        });
       });
-    });
   }
   // fuelEntriesCount() {
   //   this.apiService.getData('fuelEntries/get/count?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID).subscribe({
@@ -260,10 +280,9 @@ export class FuelEntryListComponent implements OnInit {
   // }
 
   showTopValues() {
-
     const data = {
       fromDate: this.fromDate,
-      toDate: this.toDate
+      toDate: this.toDate,
     };
     return;
   }
@@ -284,82 +303,100 @@ export class FuelEntryListComponent implements OnInit {
   //   }
   // }
 
-  deleteFuelEntry(eventData) {
-    if (confirm('Are you sure you want to delete?') === true) {
+  deleteFuelEntry(fuelID) {
+    if (confirm("Are you sure you want to delete?") === true) {
       // let record = {
       //   date: eventData.createdDate,
       //   time: eventData.createdTime,
       //   eventID: eventData.fuelID
       // }
-      this.apiService.deleteData(`fuelEntries/delete/${eventData.fuelID}`).subscribe((result: any) => {
-
-        this.fuelList = [];
-        this.fuelDraw = 0;
-        this.dataMessage = Constants.FETCHING_DATA;
-        this.lastEvaluatedKey = '';
-        //this.fuelEntriesCount();
-        this.toastr.success('Fuel Entry Deleted Successfully!');
-      });
+      this.apiService
+        .deleteData(`fuelEntries/delete/${fuelID}`)
+        .subscribe((result: any) => {
+          this.fuelList = [];
+          this.fuelDraw = 0;
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.lastEvaluatedKey = "";
+          //this.fuelEntriesCount();
+          this.toastr.success("Fuel Entry Deleted Successfully!");
+          this.initDataTable();
+        });
     }
   }
   initDataTable() {
-    this.spinner.show();
-    this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey + '&timeCreated=' + this.lastTimeCreated).subscribe((result: any) => {
-      if (result.Items.length == 0) {
-        this.dataMessage = Constants.NO_RECORDS_FOUND;
-      }
-      this.suggestedUnits = [];
-      // this.getStartandEndVal();
-      result[`Items`].forEach(element => {
-
-
-        let date: any = moment(element.data.date)
-        if (element.data.time) {
-          let time = moment(element.data.time, 'h mm a')
-          date.set({
-            hour: time.get('hour'),
-            minute: time.get('minute')
-          })
-          date = date.format('MMM Do YYYY, h:mm a')
+    this.apiService
+      .getData(
+        "fuelEntries/fetch/records?unitID=" +
+          this.unitID +
+          "&from=" +
+          this.start +
+          "&to=" +
+          this.end +
+          "&asset=" +
+          this.assetUnitID +
+          "&lastKey=" +
+          this.lastEvaluatedKey +
+          "&date=" +
+          this.lastTimeCreated
+      )
+      .subscribe((result: any) => {
+        this.loaded = true;
+        if (result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        else {
-          date = date.format('MMM Do YYYY')
+        this.suggestedUnits = [];
+        // this.getStartandEndVal();
+        result[`Items`].forEach((element) => {
+          let date: any = moment(element.date);
+          if (element.time) {
+            let time = moment(element.time, "h mm a");
+            date.set({
+              hour: time.get("hour"),
+              minute: time.get("minute"),
+            });
+            date = date.format("MMM Do YYYY, h:mm a");
+          } else {
+            date = date.format("MMM Do YYYY");
+          }
+          element.dateTime = date;
+
+          // element.fuelTime=moment(element.fuelTime).format('h:mm a')
+        });
+
+        this.fuelList = this.fuelList.concat(
+          _.orderBy(result.Items, [(obj) => new Date(obj.data.date)], ["desc"])
+        );
+        if (result.LastEvaluatedKey.fuelSK !== undefined) {
+          // for prev button
+          this.lastEvaluatedKey = encodeURIComponent(
+            result.LastEvaluatedKey.fuelSK
+          );
+          if (result.LastEvaluatedKey.date !== undefined) {
+            this.lastTimeCreated = result.LastEvaluatedKey.date;
+          }
+          this.loaded = true;
+        } else {
+          this.lastEvaluatedKey = "end";
         }
-        element.dateTime = date
-
-        // element.fuelTime=moment(element.fuelTime).format('h:mm a')
-
       });
-
-
-
-      this.fuelList = this.fuelList.concat(_.orderBy(result.Items, [(obj) => new Date(obj.data.date)], ['desc']))
-
-
-      if (result.LastEvaluatedKey.fuelSK !== undefined) {
-        // for prev button
-        this.lastEvaluatedKey = encodeURIComponent(result.LastEvaluatedKey.fuelSK)
-        if (result.LastEvaluatedKey.timeCreated !== undefined) {
-          this.lastTimeCreated = result.LastEvaluatedKey.timeCreated
-        }
-        this.loaded = true
-      } else {
-        this.lastEvaluatedKey = '';
-      }
-    })
   }
 
   searchFilter() {
-    if (this.fromDate !== '' || this.toDate !== '' || this.unitID !== null || this.assetUnitID !== null) {
-      if (this.fromDate !== '') {
+    if (
+      this.fromDate !== "" ||
+      this.toDate !== "" ||
+      this.unitID !== null ||
+      this.assetUnitID !== null
+    ) {
+      if (this.fromDate !== "") {
         this.start = this.fromDate;
       }
-      if (this.toDate !== '') {
+      if (this.toDate !== "") {
         this.end = this.toDate;
       }
       this.dataMessage = Constants.FETCHING_DATA;
       this.fuelList = [];
-      this.lastEvaluatedKey = ''
+      this.lastEvaluatedKey = "";
       this.initDataTable();
       //this.fuelEntriesCount();
     } else {
@@ -369,17 +406,18 @@ export class FuelEntryListComponent implements OnInit {
 
   resetFilter() {
     this.unitID = null;
-    this.fromDate = '';
-    this.toDate = '';
+    this.fromDate = "";
+    this.toDate = "";
     this.assetUnitID = null;
-    this.start = '';
-    this.end = '';
+    this.start = "";
+    this.end = "";
     this.dataMessage = Constants.FETCHING_DATA;
     this.fuelList = [];
+    this.lastEvaluatedKey = "";
+    this.lastTimeCreated = "";
     this.initDataTable();
     //this.fuelEntriesCount();
     //this.resetCountResult();
-
   }
 
   // getStartandEndVal() {
@@ -413,18 +451,18 @@ export class FuelEntryListComponent implements OnInit {
   }
 
   fetchAllVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
+    this.apiService.getData("vehicles").subscribe((result: any) => {
       this.allVehicles = result.Items;
     });
   }
 
   fetchAllAssets() {
-    this.apiService.getData('assets').subscribe((result: any) => {
+    this.apiService.getData("assets").subscribe((result: any) => {
       result.Items.forEach((e: any) => {
-        if (e.assetType == 'reefer') {
+        if (e.assetType == "reefer") {
           let obj = {
             assetID: e.assetID,
-            assetIdentification: e.assetIdentification
+            assetIdentification: e.assetIdentification,
           };
           this.allAssets.push(obj);
         }
@@ -434,115 +472,334 @@ export class FuelEntryListComponent implements OnInit {
 
   refreshData() {
     this.unitID = null;
-    this.fromDate = '';
-    this.toDate = '';
+    this.fromDate = "";
+    this.toDate = "";
     this.assetUnitID = null;
-    this.start = '';
-    this.end = '';
-    this.lastEvaluatedKey = '';
+    this.start = "";
+    this.end = "";
+    this.lastEvaluatedKey = "";
     this.dataMessage = Constants.FETCHING_DATA;
     this.fuelList = [];
+    this.totalRecords = 0;
+    this.initDataTable();
     // this.fuelEntriesCount();
     this.resetCountResult();
   }
   selectDoc(event) {
-    this.csvHeader=[]
-    this.error.hasError=false
-    this.error.message=''
-    this.error.attributes=[]
+    this.error.hasError = false;
+    this.error.message = "";
+    this.error.attributes = [];
     let files = event.target.files;
     let condition = true;
-    // console.log(files)
     for (let i = 0; i < files.length; i++) {
       const element = files[i];
-      let name = element.name.split('.');
+      let name = element.name.split(".");
       let ext = name[name.length - 1].toLowerCase();
-      if (ext != 'csv') {
-        $('#uploadedDocs').val('');
+      if (ext != "csv") {
+        $("#uploadedDocs").val("");
+        $("#petroDocs").val("");
         condition = false;
-        this.toastr.error('Only csv is allowed');
+        this.toastr.error("Only csv is allowed");
         return false;
       }
     }
     if (condition) {
-      this.uploadedDocs = []
-      this.uploadedDocs = files
+      this.uploadedDocs = [];
+      this.uploadedDocs = files;
       const reader = new FileReader();
-  reader.addEventListener('load', (event:any) => {
-    let csvdata = event.target.result;
-    this.parseCSV(csvdata);
-  });
-  reader.readAsBinaryString(event.target.files[0]);
+      reader.addEventListener("load", (event: any) => {
+        let csvdata = event.target.result;
+        this.csvHeader = this.parseCSV(csvdata);
+      });
+      reader.readAsBinaryString(event.target.files[0]);
       //this.postDocument();
+    } else {
+      this.error.hasError = true;
+      this.error.message = "Unable to upload";
     }
-
   }
-  parseCSV(data:any){
+  parseCSV(data: any) {
+    this.csvHeader = [];
     let newLinebrk = data.split("\n");
-   
-    let csvHeader=newLinebrk[0].split(',')
-    csvHeader.forEach(element => {
-      if(element.split(' ').length>=2){
-        this.csvHeader.push(JSON.parse(element))
-        }
-        else{
-          this.csvHeader.push(element)
-        }
-    });
+    let csvHeader = newLinebrk[0].split(",");
+    return csvHeader;
   }
 
-  validateCSV(){
-    const data=["Exchange Rate", "Card #", "Site City", "Site Name","Prov/St Abb.",'DEF AMT',"DEF QTY","Odometer","Unit #","UOM","Date","Time","Driver Id","Discount Rate","Reefer Amt","Tractor","Tractor AMT","Billed Price", "Reefer QTY","Retail Price",]
-    let match=true
-    if(this.csvHeader && this.csvHeader.length>0){
-    data.forEach(element=>{
-      if(!this.csvHeader.includes(element)){
-        this.error.attributes.push(element)
-        match=false
-      }
-    })
-  }
-return match
+  validateCSV() {
+    const data = [
+      "Exchange Rate",
+      "Card #",
+      "Site City",
+      "Site Name",
+      "Prov/St Abb.",
+      "DEF AMT",
+      "DEF QTY",
+      "Odometer",
+      "Unit #",
+      "UOM",
+      "Date",
+      "Time",
+      "Driver Id",
+      "Discount Rate",
+      "Reefer AMT",
+      "Tractor",
+      "Tractor AMT",
+      "Billed Price",
+      "Reefer QTY",
+      "Retail Price",
+    ];
+    let match = true;
+    const parsedData: any = this.csvHeader.map((element) =>
+      element.includes("\r") ? element.replace("\r", "") : element
+    );
+    if (parsedData && parsedData.length > 0) {
+      data.forEach((element) => {
+        if (!parsedData.includes(element)) {
+          this.error.attributes.push(element);
+          match = false;
+        }
+      });
+    }
+    return match;
   }
 
   postDocument() {
-    this.error.hasError=false
-    this.error.message=''
-    if(this.validateCSV()){
-    if (this.uploadedDocs.length > 0) {
-      this.reviewing=true;
-      const formData = new FormData();
-      for (let i = 0; i < this.uploadedDocs.length; i++) {
-        formData.append("uploadedDocs", this.uploadedDocs[i])
-      }
-      this.apiService.postData('fuelEntries/import/BVD', formData, true).subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          this.reviewing=false
-          this.error.hasError=true
-          this.error.message=err
-        },
-        next: (res) => {
-          this.error.hasError=false
-          this.error.message=''
-          this.error.attributes=[]
-          this.toastr.success("Uploaded Successfully")
-          $('#uploadedDocs').val('');
-          this.reviewing=false
+    this.error.hasError = false;
+    this.error.message = "";
+    if (this.validateCSV()) {
+      if (this.uploadedDocs.length > 0) {
+        this.reviewing = true;
+        const formData = new FormData();
+        for (let i = 0; i < this.uploadedDocs.length; i++) {
+          formData.append("uploadedDocs", this.uploadedDocs[i]);
         }
-      })
+        this.apiService
+          .postData("fuelEntries/import/BVD", formData, true)
+          .subscribe({
+            complete: () => {},
+            error: (err: any) => {
+              this.reviewing = false;
+              this.error.hasError = true;
+              this.error.message = err;
+            },
+            next: (res) => {
+              this.error.hasError = false;
+              this.error.message = "";
+              this.error.attributes = [];
+              this.toastr.success("Uploaded Successfully");
+              $("#uploadedDocs").val("");
+              this.reviewing = false;
+            },
+          });
+      }
+    } else {
+      this.error.hasError = true;
+      if (this.error.attributes.length > 0) {
+        this.error.message += this.error.attributes.join(",");
+      }
+      this.error.message += " CSV Headers are missing";
+      this.reviewing = false;
+      this.uploadedDocs = [];
     }
-   
-  }
-  else{
-    this.error.hasError=true;
-    if(this.error.attributes.length>0){
-      this.error.message+=this.error.attributes.join(',')
-    }
-    this.error.message+=" CSV Headers are missing"
-    this.reviewing=false
-    this.uploadedDocs=[]
-  }
   }
 
+  validatePetro() {
+    const data = [
+      "Sales Date",
+      "Sales Time",
+      "Card #",
+      "City",
+      "Province",
+      "Product",
+      "Volume",
+      "Net Unit Price",
+      "FET + FCT",
+      "Prov. TAX",
+      "GST/HST",
+      "PST",
+      "Amount",
+      "Odometer",
+      "Doc ID",
+      "Driver Name",
+    ];
+    let match = true;
+    try {
+      const parseData: any = this.csvHeader.map((element) => {
+        if (element) {
+          return JSON.parse(element);
+        } else {
+          return element;
+        }
+      });
+      if (parseData && parseData.length > 0) {
+        data.forEach((element) => {
+          if (!parseData.includes(element)) {
+            this.error.attributes.push(element);
+            match = false;
+          }
+        });
+      } else {
+        match = false;
+      }
+      return match;
+    } catch (err) {
+      this.error.hasError = true;
+      this.error.message = "Unable to Parse";
+      this.reviewing = false;
+    }
+  }
+
+  async postPetroDoc() {
+    this.reviewing = true;
+    this.error.hasError = false;
+    this.error.message = "";
+    const val = await this.validatePetro();
+    if (val) {
+      if (this.uploadedDocs.length > 0) {
+        const formData = new FormData();
+        for (let i = 0; i < this.uploadedDocs.length; i++) {
+          formData.append("uploadedDocs", this.uploadedDocs[i]);
+        }
+        this.apiService
+          .postData("fuelEntries/import/petro", formData, true)
+          .subscribe({
+            complete: () => {},
+            error: (err: any) => {
+              this.reviewing = false;
+              this.error.hasError = true;
+              this.error.message = err;
+            },
+            next: (res) => {
+              this.error.hasError = false;
+              this.error.message = "";
+              this.error.attributes = [];
+              this.toastr.success("Uploaded Successfully");
+              $("#petroDocs").val("");
+              this.reviewing = false;
+            },
+          });
+      }
+    } else {
+      this.error.hasError = true;
+      if (this.error.attributes.length > 0) {
+        this.error.message = `CSV Headers are missing: ${this.error.attributes.join(
+          ","
+        )}`;
+      }
+      this.reviewing = false;
+      this.uploadedDocs = [];
+    }
+  }
+  /**
+   * Clears the table filters
+   * @param table Table
+   */
+  clear(table: Table) {
+    table.clear();
+  }
+  async initFuelSurcharge(refresh?: boolean) {
+    this.fsLoaded = false;
+    if (refresh === true) {
+      this.fsLastEvaluatedKey = "";
+      this.fuelSurcharge = [];
+    }
+    const result = await this.apiService
+      .getData(`fuelEntries/surcharge?lastKey=${this.fsLastEvaluatedKey}`)
+      .toPromise();
+    if (result.data.length == 0) {
+      this.dataMessage = Constants.NO_RECORDS_FOUND;
+    }
+    if (result.nextKey !== undefined) {
+      this.fsLastEvaluatedKey = result.nextKey;
+    } else {
+      this.fsLastEvaluatedKey = undefined;
+    }
+    if (this.fsLastEvaluatedKey == undefined) {
+      this.fsLastEvaluatedKey = "end";
+    }
+    this.fsLoaded = true;
+    this.fuelSurcharge = this.fuelSurcharge.concat(result.data);
+  }
+  onFsScroll(e) {
+    if (this.fsLoaded) {
+      this.initFuelSurcharge();
+    }
+  }
+  editSurcharge(data) {
+    this.fsUpdate = true;
+    this.addUpdate = "Update";
+    this.fSurcharge.from = data.from;
+    this.fSurcharge.to = data.to;
+    this.fSurcharge.ltl = data.ltl;
+    this.fSurcharge.tl = data.tl;
+    this.fSurcharge.id = data.id;
+  }
+  updateSurcharge() {
+    if (!this.fSurcharge.from || !this.fSurcharge.to) {
+      this.toastr.error("Date is missing");
+    } else if (!this.fSurcharge.ltl) {
+      this.toastr.error("LTL Price is missing");
+    } else if (!this.fSurcharge.tl) {
+      this.toastr.error("FTL price is missing");
+    }
+    this.apiService
+      .putData("fuelEntries/surcharge", this.fSurcharge)
+      .subscribe({
+        complete: () => {},
+        error: (err) => {},
+        next: (res) => {
+          this.toastr.success("Surcharge Updated Successfully");
+          this.initFuelSurcharge(true);
+          this.fSurcharge.from = null;
+          (this.fSurcharge.ltl = null), (this.fSurcharge.tl = null);
+          this.fsUpdate = false;
+        },
+      });
+  }
+  async deleteSurcharge(data) {
+    await this.apiService
+      .deleteData(`fuelEntries/surcharge/${data.id}`)
+      .toPromise();
+    this.initFuelSurcharge(true);
+    this.fSurcharge.from = null;
+    this.fSurcharge.to = null;
+    this.fSurcharge.ltl = null;
+    this.fSurcharge.tl = null;
+  }
+  postSurcharge() {
+    if (!this.fSurcharge.from || !this.fSurcharge.to) {
+      this.toastr.error("Date is missing");
+    } else if (!this.fSurcharge.ltl) {
+      this.toastr.error("LTL Price is missing");
+    } else if (!this.fSurcharge.tl) {
+      this.toastr.error("FTL price is missing");
+    }
+    const surcharge = {
+      from: this.fSurcharge.from,
+      to: this.fSurcharge.to,
+      ltl: this.fSurcharge.ltl,
+      tl: this.fSurcharge.tl,
+    };
+    this.apiService.postData("fuelEntries/surcharge", surcharge).subscribe({
+      complete: () => {},
+      error: (err) => {},
+      next: (res) => {
+        this.toastr.success("Surcharge added successfully");
+        this.initFuelSurcharge(true);
+        this.fSurcharge.from = null;
+        this.fSurcharge.to = null;
+        (this.fSurcharge.ltl = null), (this.fSurcharge.tl = null);
+      },
+    });
+  }
+
+  cancel() {
+    this.fsUpdate = false;
+    this.addUpdate = "Add";
+    this.fSurcharge.from = null;
+    this.fSurcharge.to = null;
+    this.fSurcharge.ltl = null;
+    this.fSurcharge.tl = null;
+  }
 }
+

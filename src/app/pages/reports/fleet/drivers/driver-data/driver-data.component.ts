@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, Input } from "@angular/core";
 import { ApiService } from 'src/app/services';
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -8,9 +8,11 @@ import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import Constants from 'src/app/pages/fleet/constants';
 import { environment } from 'src/environments/environment';
-
+import * as moment from 'moment'
 import * as _ from "lodash";
+import { Table } from 'primeng/table';
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
+import { NgSelectComponent } from "@ng-select/ng-select";
 declare var $: any;
 
 @Component({
@@ -19,6 +21,9 @@ declare var $: any;
   styleUrls: ['./driver-data.component.css']
 })
 export class DriverDataComponent implements OnInit {
+ @ViewChild('dt') table: Table;
+ 
+ @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   environment = environment.isFeatureEnabled;
   allDocumentsTypes: any;
   documentsTypesObects: any = {};
@@ -86,6 +91,25 @@ export class DriverDataComponent implements OnInit {
   driverStartPoint = 1;
   driverEndPoint = this.pageLength;
 
+  loadMsg: string = Constants.NO_LOAD_DATA;
+  isSearch = false;
+    _selectedColumns: any[];
+    driverTypeOption: any[];
+    get = _.get;
+    
+    dataColumns = [
+        { field: 'firstName', header: 'Name', type: "text" },
+        { field: 'email', header: 'Email', type: "text" },
+        { field: 'phone', header: 'Phone', type: "text" },   
+        { field: 'employeeContractorId', header: 'Employee ID', type: "text" }, 
+        { field: 'userName', header: 'User Name', type: "text" },
+        { field: 'driverType', header: 'Driver Type', type: "text" },
+        { field: 'startDate', header: 'Start Date', type: "text" },
+        { field: 'CDL_Number', header: 'CDL#', type: "text" },
+        { field: 'licenceExpiry', header: 'Licence Expiry', type: "text" }, 
+        { field: 'licStateName', header: 'Licence Province', type: "text" },
+    ];
+
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -96,11 +120,14 @@ export class DriverDataComponent implements OnInit {
     private countryStateCity: CountryStateCityService
   ) { }
 
-  ngOnInit(): void {
+ async ngOnInit(): Promise<void> {
     this.fetchAllDocumentsTypes();
-    this.initDataTable();
+     await this.initDataTable();
     this.fetchAllVehiclesIDs();
     this.fetchAllGrorups();
+    this.setdriverTypeOption();
+    this.setToggleOptions();
+    
     $(document).ready(() => {
       setTimeout(() => {
         $("#DataTables_Table_0_wrapper .dt-buttons")
@@ -145,38 +172,57 @@ export class DriverDataComponent implements OnInit {
   }
 
   getSuggestions = _.debounce(function (value) {
-    this.driverID = "";
     value = value.toLowerCase();
     if (value != "") {
+      this.loadMsg = Constants.LOAD_DATA;
       this.apiService
         .getData(`drivers/get/suggestions/${value}`)
         .subscribe((result) => {
-          result.map((v) => {
-            if (v.lastName == undefined) {
-              v.lastName = "";
-            }
-            return v;
-          });
-          this.suggestedDrivers = result;
+          if (result.length === 0) {
+            this.loadMsg = Constants.NO_LOAD_FOUND;
+          }
+          if (result.length > 0) {
+            result.map((v) => {
+              if (v.middleName != undefined && v.middleName != '') {
+                v.fullName = `${v.firstName} ${v.middleName} ${v.lastName}`;
+              } else {
+                v.fullName = `${v.firstName} ${v.lastName}`;
+              }
+              return v;
+            });
+            this.suggestedDrivers = result;
+          }
         });
     } else {
       this.suggestedDrivers = [];
     }
   }, 800);
 
-  setDriver(driverID, firstName = "", lastName = "", middleName = "") {
-    if (middleName !== "") {
-      this.driverName = `${firstName} ${middleName} ${lastName}`;
-      // this.driverID = driverID;
-      this.driverID = `${firstName}-${middleName}-${lastName}`;
-    } else {
-      this.driverName = `${firstName} ${lastName}`;
-      this.driverID = `${firstName}-${lastName}`;
+  setDriver(driverID: any) {
+    if (driverID != undefined && driverID != '') {
+      this.driverID = driverID;
     }
+    this.loadMsg = Constants.NO_LOAD_DATA;
 
-    this.suggestedDrivers = [];
   }
 
+   setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    
+    setdriverTypeOption() {
+        this.driverTypeOption = [{ "value": "contractor", "name": "Contractor" }, { "name": "Employee", "value": "employee" }, { "name": "All", "value": "null" }];
+    }
+    
+      @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+  
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+  }
 
   fetchAllGrorups() {
     this.apiService.getData("groups/get/list").subscribe((result: any) => {
@@ -220,7 +266,7 @@ export class DriverDataComponent implements OnInit {
   }
 
 
-  initDataTable() {
+  async initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
       this.apiService
         .getData(
@@ -228,17 +274,22 @@ export class DriverDataComponent implements OnInit {
         )
         .subscribe(
           (result: any) => {
-            result.Items.map((v) => {
+            result.data.map((v) => {
               v.url = `/reports/fleet/drivers/driver-report/${v.driverID}`;
             });
+<<<<<<< HEAD
             if (result.Items.length === 0) {
               this.disableSearch = false;
-              this.dataMessage = Constants.NO_RECORDS_FOUND
-            }
-            if (result.Items.length === 0) {
+=======
+            if (result.data.length === 0) {
 
+>>>>>>> 96717babcce47571d1060031474203ddd3364440
               this.dataMessage = Constants.NO_RECORDS_FOUND
             }
+            if (result.nextPage !== undefined) {
+              this.lastEvaluatedKey = encodeURIComponent(result.nextPage);
+            }
+<<<<<<< HEAD
             if (result.Items.length > 0) {
               this.disableSearch = false;
               if (result.LastEvaluatedKey !== undefined) {
@@ -250,16 +301,24 @@ export class DriverDataComponent implements OnInit {
               this.drivers = this.drivers.concat(result.Items)
 
               this.loaded = true;
+=======
+            else {
+              this.lastEvaluatedKey = 'end'
+>>>>>>> 96717babcce47571d1060031474203ddd3364440
             }
+            this.drivers = this.drivers.concat(result.data);
+            this.loaded = true;
+            this.isSearch = false;
           });
     }
   }
-  onScroll() {
+  onScroll = async(event:any) => {
     if (this.loaded) {
       this.initDataTable();
     }
     this.loaded = false;
   }
+  
   fetchAddress(drivers: any) {
     for (let d = 0; d < drivers.length; d++) {
       drivers.map(async (e: any) => {
@@ -289,25 +348,63 @@ export class DriverDataComponent implements OnInit {
   }
   searchFilter() {
     if (
-      this.driverName !== "" ||
+      this.driverID !== "" ||
       this.dutyStatus !== "" ||
       this.driverType !== null
     ) {
-      this.driverName = this.driverName.toLowerCase();
-      if (this.driverID == "") {
-        this.driverID = this.driverName;
-      }
+      this.isSearch = true;
       this.drivers = [];
       this.disableSearch = true;
       this.dataMessage = Constants.FETCHING_DATA;
       this.lastEvaluatedKey = ''
-      this.suggestedDrivers = [];
+      this.suggestedDrivers = []
       this.initDataTable();
     } else {
       return false;
     }
   }
+  
+   resetFilter() {
 
+        if (
+            this.driverID !== '' ||
+            this.dutyStatus !== '' ||
+            this.driverType !== null
+        ) {
+
+
+            this.isSearch = true;
+            this.driverID = '';
+            this.dutyStatus = '';
+            this.driverName = null;
+            this.driverType = null;
+            this.drivers = [];
+            this.loaded = false;
+            this.lastEvaluatedKey = '';
+            this.suggestedDrivers = null;
+            this.initDataTable();
+
+        } else {
+            return false;
+        }
+    }
+  
+  clearInput() {
+    this.suggestedDrivers = null;
+  }
+  
+   refreshData() {
+        this.drivers = [];
+        this.driverID = '';
+        this.dutyStatus = '';
+        this.driverName = '';
+        this.driverType = null;
+        this.lastEvaluatedKey = '';
+        this.loaded = false;
+        this.initDataTable();
+        this.dataMessage = Constants.FETCHING_DATA;
+
+<<<<<<< HEAD
   resetFilter() {
     if (
       this.driverName !== "" ||
@@ -327,7 +424,17 @@ export class DriverDataComponent implements OnInit {
       this.driverDraw = 0;
     } else {
       return false;
+=======
+>>>>>>> 96717babcce47571d1060031474203ddd3364440
     }
+
+  
+  clearSuggestions() {
+    this.driverName = null;
   }
+  
+   clear(table: Table) {
+        table.clear();
+    }
 
 }

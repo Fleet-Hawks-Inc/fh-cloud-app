@@ -1,12 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../../services';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { ApiService, HereMapService } from '../../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import { ActivatedRoute } from "@angular/router";
 import Constants from 'src/app/pages/fleet/constants';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from '../../../../../../environments/environment';
-import { OnboardDefaultService } from '../../../../../services/onboard-default.service';
 import * as _ from 'lodash';
+import { HttpClient } from '@angular/common/http';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { Table } from 'primeng/table/table';
+import { DomSanitizer } from '@angular/platform-browser';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-activity',
@@ -14,9 +19,13 @@ import * as _ from 'lodash';
     styleUrls: ['./activity.component.css']
 })
 export class ActivityComponent implements OnInit {
+    @ViewChild('dt') table: Table;
+    @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
+    environment = environment.isFeatureEnabled;
+    dataMessage: string = Constants.FETCHING_DATA;
     allData: any = [];
     states: any = [];
-    vehicleData = []
+    vehicleData = [];
     startDate = '';
     endDate = '';
     start = null;
@@ -25,45 +34,90 @@ export class ActivityComponent implements OnInit {
     datee = '';
     loaded = false;
     dateMinLimit = { year: 1950, month: 1, day: 1 };
-    dataMessage = Constants.FETCHING_DATA;
     date = new Date();
     exportData = [];
-    dummyData = [];
+    listView = true;
+    visible = true;
+    loadMsg: string = Constants.NO_LOAD_DATA;
+    isSearch = false;
+    get = _.get;
+   _selectedColumns: any[];
     futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
     public vehicleId;
-    constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute) { }
+    
+     dataColumns = [
+        { field: 'vehicle', header: 'Vehicle', type: "text" },
+        { field: 'tripNo', header: 'Trip', type: "text" },
+        { field: 'orderName', header: 'Order', type: "text" },
+         { field: 'assetName', header: 'Assets', type: "text" },
+        { field: 'driverName', header: 'Drivers', type: "text" },
+        { field: 'locType', header: 'Location', type: "text" },
+        { field: 'dateType', header: 'Date', type: "text" },
+        { field: 'usState', header: 'Province(US)', type: "text" },
+        { field: 'uMiles', header: 'US Miles', type: "text" },
+        { field: 'usiles', header: 'US(Total)', type: "text" },
+        { field: 'canState', header: 'Province(Canada)', type: "text" },
+        { field: 'caMiles', header: 'Canada Miles', type: "text" },
+        { field: 'cMiles', header: 'Canada(Total)', type: "text" },
+        { field: 'miles', header: 'Total Miles', type: "text" },
+    ];
+    
+    constructor(private apiService: ApiService,
+    private httpClient: HttpClient,
+    private toastr: ToastrService,
+    private route: ActivatedRoute,
+    private spinner: NgxSpinnerService,
+    private hereMap: HereMapService,
+    protected _sanitizer: DomSanitizer,
+    private modalService: NgbModal, ) { }
 
 
-    ngOnInit(): void {
+    async ngOnInit(): Promise<void> {
         this.end = moment().format("YYYY-MM-DD");
         this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
         this.vehicleId = this.route.snapshot.params[`vehicleId`];
         this.fetchVehicleListing();
         this.fetchVehicleName();
+        this.setToggleOptions();
     }
-    
+
     fetchVehicleName() {
         this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
             this.vehicleData = result.Items;
+            console.log('datatotal',this.vehicleData)
         });
     }
-    
-    onScroll() {
+
+    onScroll = async (event: any) => {
         if (this.loaded) {
             this.fetchVehicleListing();
             this.fetchVehicleName();
         }
         this.loaded = false;
     }
+    
+    setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    
+    @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
+    
+    set selectedColumns(val: any[]) {
+        //restore original order
+        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+    }
 
-    fetchVehicleListing() {
+  fetchVehicleListing() {
         if (this.lastItemSK !== 'end') {
             this.apiService.getData(`vehicles/fetch/TripData?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
-               this.allData = this.allData.concat(result.Items)
+                this.allData = this.allData.concat(result.Items)
                 if (result.Items.length === 0) {
                     this.dataMessage = Constants.NO_RECORDS_FOUND
                 }
-                  if (result.LastEvaluatedKey !== undefined) {
+                
+                if (result.LastEvaluatedKey !== undefined) {
                     this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
                     this.datee = encodeURIComponent(result.Items[result.Items.length - 1].dateCreated)
                 }
@@ -72,74 +126,35 @@ export class ActivityComponent implements OnInit {
                 }
                 this.loaded = true;
 
-                const usProvArr = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "	KY", "	LA", "ME", "MD", "MA", "MI", "MN",
-                    "MS", "MO", "MT", "NE", "NV", "NH", "	NJ", "	NM", "	NY", "NC", "ND", "OH", "OK", "OR", "PA", "PR", "	RI", "SC", "SD", "	TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY"]
-                const canArr = ["AB", "BC", "MB", "NB", "NL", "NF", "NT", "NS", "NU", "ON", "PE", "PQ", "QC", "SK", "YT"]
-                for (let veh of this.allData) {
+                for (let veh of result.Items) {
                     let dataa = veh
                     veh.miles = 0
                     for (let element of dataa.tripPlanning) {
                         veh.miles += Number(element.miles);
                     }
                 }
-                for (let data of this.allData) {
-                    data.canMiles = 0;
-                    data.usMiles = 0;
-                    data.finalData = ''
-                    data.canProvince = [];
-                    data.usProvince = [];
-                    data.provinceData = [];
-                    data.province =
-                    data.vehicleProvinces = [];
-                    data.vehicleIDs.map((v) => {
-                        data.iftaMiles.map((ifta) => {
-                            ifta.map((ifta2) => {
-                                if (ifta2[v] && ifta2[v].length > 0) {
-                                    let newObj = {
-                                        vehicleID: v,
-                                        vehicleName: data.vehicle,
-                                        provinces: [],
-                                        caProvince: [],
-                                        usProvince: []
-                                    }
-                                    ifta2[v].map((location) => {
-
-                                        if (!data.vehicleProvinces.includes(location.StCntry)) {
-                                            data.vehicleProvinces.push(location.StCntry);
-                                        }
-                                        newObj.provinces.push(location);
-                                        if (usProvArr.includes(location.StCntry)) {
-                                            newObj.usProvince.push(location);
-                                        }
-                                        if (canArr.includes(location.StCntry)) {
-                                            newObj.caProvince.push(location);
-                                        }
-                                    })
-                                    data.provinceData.push(newObj);
-                                }
-                            })
-                        })
-                    })
-                    for (let item of data.provinceData) {
-                        data.finalData = item
-                        let provinceDataa = item.provinces;
-                        item.provinces.map((v) => {
-                            if (usProvArr.includes(v.StCntry)) {
-                                data.usMiles += Number(v.Total)
-                                data.usProvince = v.StCntry
-                            }
-                            else if (canArr.includes(v.StCntry)) {
-                                data.canMiles += Number(v.Total)
-                                data.canProvince = v.StCntry
-                            }
-                        })
-                    }
-                }
                 if (result.Items.length === 0) {
                     this.dataMessage = Constants.NO_RECORDS_FOUND
                 }
+
             });
         }
+    }
+    
+    
+    fetchFullExport() {
+        this.apiService.getData(`vehicles/fetch/vehicelActivity/list?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
+            this.exportData = result.Items;
+            for (let veh of this.exportData) {
+                let dataa = veh
+                veh.miles = 0
+
+                for (let element of dataa.tripPlanning) {
+                    veh.miles += Number(element.miles);
+                }
+            }
+            this.generateCSV();
+        });
     }
 
     searchFilter() {
@@ -165,11 +180,16 @@ export class ActivityComponent implements OnInit {
             return false;
         }
     }
-
-    csv() {
-        this.exportData = this.allData
-        this.generateCSV();
+    
+     refreshData() {
+        this.end = moment().format("YYYY-MM-DD");
+        this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
+        this.allData = []
+        this.lastItemSK = '';
+        this.loaded = false;
         this.fetchVehicleListing();
+        this.fetchVehicleName();
+        this.dataMessage = Constants.FETCHING_DATA;
     }
 
     generateCSV() {
@@ -178,13 +198,11 @@ export class ActivityComponent implements OnInit {
             let csvArray = []
             this.exportData.forEach(element => {
                 let location = ''
-                let date = ''
-                let Miles = 0
-                let State = ''
-                let usMiles = ''
-                let caMiles = ''
-                let usState = ''
-                let caState = ''
+                let date = '';
+                let usMiles = '';
+                let canMiles = ''
+                let usState = '';
+                let canState = '';
                 for (let i = 0; i < element.tripPlanning.length; i++) {
                     const element2 = element.tripPlanning[i];
                     date += element2.type + " : " + element2.date
@@ -192,42 +210,56 @@ export class ActivityComponent implements OnInit {
                         date += " & ";
                     }
                     element2.location = element2.location.replace(/,/g, ' ');
+<<<<<<< HEAD
                     location += element2.type + ' : ' + element2.location
                     if (i < element.tripPlanning.length - 1) {
                         location += " & ";
                     }
+=======
+                    location += `"${element2.type} :-  ${element2.location}\n\"`
+>>>>>>> 96717babcce47571d1060031474203ddd3364440
                 }
-
-                for (let data of element.provinceData) {
-                    for (let j = 0; j < data.usProvince.length; j++) {
-                        const element3 = data.usProvince[j];
-                        usState += `"${element3.StCntry}\n\"`;
-                        usMiles += `"${element3.Total}\n\"`;
-                    }
-                    for (let j = 0; j < data.caProvince.length; j++) {
-                        const element3 = data.caProvince[j];
-                        caState += `"${element3.StCntry}\n\"`;
-                        caMiles += `"${element3.Total}\n\"`;
-                    }
-                }
-                let obj = {}
-                obj["Vehicle"] = element.vehicle.replace(/, /g, ' &');
-                obj["Trip#"] = element.tripNo;
-                obj["Order#"] = element.orderName.replace(/, /g, ' &');
-                obj["location"] = location;
-                obj["Date"] = date;
-                obj["Province(US)"] = usState;
-                obj["US Province Miles"] = usMiles;
-                obj["US(Total)"] = element.usMiles;
-                obj["Province(Canada)"] = caState;
-                obj["Canada Province Miles"] = caMiles;
-                obj["Canada(Total)"] = element.caMiles;
-                obj["Total Miles"] = element.miles;
-                dataObject.push(obj)
-            });
+               
+                    if (element.provinceData && element.provinceData.length > 0) {
+                        for (let i = 0; i < element.provinceData.length; i++) {
+                            const element2 = element.provinceData[i];
+                            for(let j = 0; j< element2.usProvince.length; j++)
+                            {
+                              const element3 = element2.usProvince[j];
+                              usState += `"${element3.StCntry}\n\"`;
+                              usMiles += `"${element3.Total}\n\"`;
+                            }
+                            for (let k = 0; k < element2.canProvince.length; k++) {
+                                const element4 = element2.canProvince[k];
+                                 canState += `"${element4.StCntry}\n\"`;
+                                 canMiles += `"${element4.Total}\n\"`;
+        
+                                    }
+                                }
+                              }
+                            let obj = {}
+                            obj["Vehicle"] = element.vehicle.replace(/, /g, ' &');
+                            obj["Trip#"] = element.tripNo;
+                            obj["Order#"] = element.orderName.replace(/, /g, ' &');
+                            obj["Assets"] = element.assetName.replace(/, /g, ' &');
+                            obj["Drivers"] = element.driverName.replace(/, /g, ' &');
+                            obj["location"] = location;
+                            obj["Date"] = date;
+                            obj["Province(US)"] = usState;
+                            obj["US Miles"] = usMiles;
+                            obj["US(Total)"] = element.usMiles;
+                            obj["Province(Canada)"] = canState; 
+                            obj["Canada Miles"] = canMiles;
+                            obj["Canada(Total)"] = element.canMiles;
+                            obj["Total Miles"] = element.miles;
+                            dataObject.push(obj)
+                            console.log('export',dataObject);
+                });
+                console.log('export2',dataObject);
             let headers = Object.keys(dataObject[0]).join(',')
             headers += ' \n'
             csvArray.push(headers)
+
             dataObject.forEach(element => {
                 let obj = Object.values(element).join(',')
                 obj += ' \n'
@@ -248,5 +280,9 @@ export class ActivityComponent implements OnInit {
         else {
             this.toastr.error("No Records found")
         }
+    }
+    
+    clear(table: Table) {
+        table.clear();
     }
 }

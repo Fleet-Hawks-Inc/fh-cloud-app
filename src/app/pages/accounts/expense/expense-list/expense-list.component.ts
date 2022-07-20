@@ -1,9 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
+import * as _ from "lodash";
 import { ToastrService } from "ngx-toastr";
+import { Table } from 'primeng/table';
 import { AccountService } from "src/app/services/account.service";
 import { ApiService } from "src/app/services/api.service";
 import Constants from "../../../fleet/constants";
-
 @Component({
   selector: "app-expense-list",
   templateUrl: "./expense-list.component.html",
@@ -33,12 +34,15 @@ export class ExpenseListComponent implements OnInit {
   vehicles = [];
   trips = [];
   assets = [];
-
+  _selectedColumns: any[];
+  dataColumns: any[];
+  get = _.get;
+  find = _.find;
   constructor(
     private accountService: AccountService,
     private apiService: ApiService,
     private toaster: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.fetchVehicles();
@@ -47,6 +51,32 @@ export class ExpenseListComponent implements OnInit {
     this.fetchExpenses();
     this.fetchVendors();
     this.fetchExpenseCategories();
+    this.dataColumns = [
+      { width: '10%', field: 'txnDate', header: 'Date', type: "text" },
+      { width: '15%', field: 'categoryID', header: 'Expense Type', type: "text" },
+      { width: '10%', field: 'vendorID', header: 'Vendor', type: "text" },
+      { width: '20%', field: 'tripID', header: 'Trip & Unit#', type: "text" },
+      { width: '10%', field: 'recurring.interval', header: 'Recurring', type: "text" },
+      { width: '10%', field: 'finalTotal', header: 'Amount', type: "text" },
+      { width: '19%', field: 'newStatus', header: 'Status', type: "text" },
+    ];
+
+
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
   }
 
   fetchVehicles() {
@@ -56,7 +86,7 @@ export class ExpenseListComponent implements OnInit {
   }
 
   fetchTrips() {
-    this.apiService.getData("trips/get/list").subscribe((result: any) => {
+    this.apiService.getData("common/trips/get/list").subscribe((result: any) => {
       this.trips = result;
     });
   }
@@ -122,7 +152,7 @@ export class ExpenseListComponent implements OnInit {
   deleteExpense(expenseID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.accountService
-        .getData(`expense/delete/${expenseID}`)
+        .deleteData(`expense/delete/${expenseID}`)
         .subscribe((result: any) => {
           if (result !== undefined) {
             this.dataMessage = Constants.FETCHING_DATA;
@@ -208,6 +238,9 @@ export class ExpenseListComponent implements OnInit {
     this.lastItemSK = "";
     this.expenses = [];
     this.fetchExpenses();
+  }
+  clear(table: Table) {
+    table.clear();
   }
 
   onScroll() {

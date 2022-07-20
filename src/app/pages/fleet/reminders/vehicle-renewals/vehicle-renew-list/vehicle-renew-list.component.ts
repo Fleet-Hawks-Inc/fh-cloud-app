@@ -1,11 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input  } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment';
+import { Table } from 'primeng/table';
 import Constants from '../../../constants';
 import { environment } from '../../../../../../environments/environment';
+import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
+
 import * as _ from 'lodash';
 declare var $: any;
 
@@ -15,10 +19,15 @@ declare var $: any;
   styleUrls: ['./vehicle-renew-list.component.css']
 })
 export class VehicleRenewListComponent implements OnInit {
+  @ViewChild('dt') table: Table;
+  get = _.get;
+  _selectedColumns: any[];
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   public remindersData = [];
   // dtOptions: any = {};
+    sessionID: string;
+
   vehicles = [];
   vehicleName: string;
   vehicleList: any = {};
@@ -51,17 +60,47 @@ export class VehicleRenewListComponent implements OnInit {
   allVehicles = [];
   users = [];
   loaded = false
+  
+  // columns of data table
+   dataColumns = [
+    { width: '15%', field: 'entityID', header: 'Vehicle', type: 'text' },
+    { width: '19%', field: 'status', header: 'Vehicle Renewal Type', type: 'text' },
+    { width: '17%', field: 'tasks.dueDate', header: 'Due Date', type: 'text' },
+    { width: '17%', field: 'tasks.time', header: 'Send Reminder', type: 'text' },
+    { width: '19%', field: 'subscribers', header: 'Subscribers', type: 'text' },
+  ];
 
-  constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
+  constructor(private apiService: ApiService, 
+  private router: Router, 
+  private spinner: NgxSpinnerService, 
+  private routerMgmtService: RouteManagementServiceService,
+  private toastr: ToastrService) { 
+  this.sessionID = this.routerMgmtService.serviceRemindersSessionID;
+  }
 
   ngOnInit() {
     this.initDataTable();
     // this.fetchGroupsList();
     this.fetchVehicleList();
     this.fetchTasksList();
+    this.setToggleOptions();
     // this.fetchUsers();
   }
 
+   setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+  
+  
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+  }
 
   fetchTasksList() {
     this.apiService.getData('tasks/get/list?type=vehicle').subscribe((result: any) => {
@@ -107,6 +146,7 @@ export class VehicleRenewListComponent implements OnInit {
           if (result.Items.length === 0) {
 
             this.dataMessage = Constants.NO_RECORDS_FOUND
+            this.loaded = true;
           }
           if (result.Items.length > 0) {
 
@@ -123,12 +163,14 @@ export class VehicleRenewListComponent implements OnInit {
         });
     }
   }
-  onScroll() {
+  
+   onScroll = async(event: any) => {
     if (this.loaded) {
       this.initDataTable();
     }
     this.loaded = false;
   }
+  
   searchFilter() {
     if (this.vehicleID != null || this.searchServiceTask != null || this.filterStatus != null) {
       this.remindersData = [];
@@ -176,6 +218,10 @@ export class VehicleRenewListComponent implements OnInit {
     this.dataMessage = Constants.FETCHING_DATA;
     this.initDataTable();
 
+  }
+  
+  clear(table: Table) {
+    table.clear();
   }
 
 }

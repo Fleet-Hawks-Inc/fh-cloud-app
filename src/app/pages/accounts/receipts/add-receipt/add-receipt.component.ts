@@ -119,7 +119,7 @@ export class AddReceiptComponent implements OnInit {
     private apiService: ApiService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.listService.fetchCustomers();
@@ -138,11 +138,9 @@ export class AddReceiptComponent implements OnInit {
   }
 
   fetchAccounts() {
-    this.accountService
-      .getData(`chartAc/get/all/list`)
-      .subscribe((result: any) => {
-        this.accounts = result;
-      });
+    this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
+      this.accounts = res;
+    });
   }
 
   private getValidCustomers(customerList: any[]) {
@@ -177,7 +175,7 @@ export class AddReceiptComponent implements OnInit {
       );
       this.accountService
         .getData(
-          `order-invoice/customer/${customerIDs}?currency=${this.receiptData.currency}`
+          `order-invoice/customer/${customerIDs}?currency=${this.receiptData.recAmountCur}`
         )
         .subscribe((res: any) => {
           if (res.length === 0) {
@@ -198,7 +196,7 @@ export class AddReceiptComponent implements OnInit {
         });
       this.accountService
         .getData(
-          `invoices/customer/${customerIDs}?currency=${this.receiptData.currency}`
+          `invoices/customer/${customerIDs}?currency=${this.receiptData.recAmountCur}`
         )
         .subscribe((result) => {
           this.searchDisabled = false;
@@ -241,7 +239,8 @@ export class AddReceiptComponent implements OnInit {
   }
 
   refreshAccount() {
-    this.listService.fetchChartAccounts();
+    // this.listService.fetchChartAccounts(); 
+    this.fetchAccounts()
   }
   fetchAdvancePayments() {
     this.dataMessageAdv = Constants.FETCHING_DATA;
@@ -414,7 +413,7 @@ export class AddReceiptComponent implements OnInit {
       this.getInvoiceArr();
       this.receiptData.invAmount = this.totalReceivedAmt;
       this.accountService.postData("receipts", this.receiptData).subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -431,7 +430,7 @@ export class AddReceiptComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {

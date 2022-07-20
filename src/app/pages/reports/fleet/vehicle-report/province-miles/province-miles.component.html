@@ -1,25 +1,47 @@
+<style>
+  .extra {
+    display: none;
+  }
+</style>
 <section class="body">
-    <div class="inner-wrapper">
-        <section role="main" class="content-body pt-0 pr-0 pl-1">
-            <header class="page-header pr19 pl11">
-
-                <form class="form-horizontal" method="get">
-                    <div class="row" style="padding-top:10px;">
-                        <!-- <div class="col-md-2 col-lg-2 pl-0 pr-0">
-                            <div class="input-group input-group-md mb-3">
-                                <input type="text" autocomplete="off" name="vehicleIdentification"
-                                    placeholder="Search vehicle by name" [(ngModel)]="vehicleIdentification"
-                                    class="form-control" (input)="getSuggestions($event.target.value)" />
-                            </div>
-                            <div *ngIf="suggestedVehicles?.length > 0" class="result-suggestions">
-                                <ul class="text-capitalize">
-                                    <li *ngFor="let suggestedVehicle of suggestedVehicles" style="cursor: pointer;"
-                                        (click)="setVehicle(suggestedVehicle.vehicleID, suggestedVehicle.vehicleIdentification)">
-                                        {{ suggestedVehicle.vehicleIdentification }}</li>
-                                </ul>
-                            </div>
-                        </div> -->
-                        <!-- 
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pt-0 pr-0">
+      <header class="page-header pr19 pl11">
+        <form class="form-horizontal" method="get">
+          <div class="row" style="padding-top: 10px">
+            <div class="col-md-2 col-lg-2 pr-0">
+              <div class="input-group input-group-md mb-3">
+                <input
+                  type="text"
+                  autocomplete="off"
+                  name="vehicleIdentification"
+                  placeholder="Search vehicle by name"
+                  [(ngModel)]="vehicleIdentification"
+                  class="form-control"
+                  (input)="getSuggestions($event.target.value)"
+                />
+              </div>
+              <div
+                *ngIf="suggestedVehicles?.length > 0"
+                class="result-suggestions"
+              >
+                <ul class="text-capitalize">
+                  <li
+                    *ngFor="let suggestedVehicle of suggestedVehicles"
+                    style="cursor: pointer"
+                    (click)="
+                      setVehicle(
+                        suggestedVehicle.vehicleID,
+                        suggestedVehicle.vehicleIdentification
+                      )
+                    "
+                  >
+                    {{ suggestedVehicle.vehicleIdentification }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- 
                         <div class="col-md-2 col-lg-2 pr-1">
                             <ng-select (change)="fetchStates($event)" name="category" placeholder="Search by Country">
                                 <ng-option value="CA">Canada</ng-option>
@@ -35,165 +57,483 @@
                             </ng-select>
                         </div> -->
 
-                        <div class="col-md-3 col-lg-3 pr-0">
-                            <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
-                                <span class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </span>
-                                </span>
-                                <input [(ngModel)]="start" name="fromDate" type="text" placeholder="yyyy/mm/dd"
-                                    (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control"
-                                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-                                <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                                    to
-                                </span>
-                                <input [(ngModel)]="end" name="toDate" type="text" placeholder="yyyy/mm/dd"
-                                    (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control"
-                                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-                            </div>
-                        </div>
-
-                        <div class="col-md-2 col-lg-2">
-                            <button type="button" class="btn btn-sm btn-success mr-3"
-                                (click)="searchFilter()">Search</button>
-                        </div>
-
-                        <div class="col-md-7 col-lg-7 text-right pr-1">
-
-                            <div class="btn-group flex-wrap ml-2">
-                                <button type="button" class="btn btn-success btn-sm dropdown-toggle"
-                                    data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i>
-                                    Export<span class="caret"></span></button>
-                                <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" (click)="fetchFullExport('US') "  >US</a>
-                                    <a class="dropdown-item text-1"   (click)="fetchFullExport('CAN') " >Canada</a>
-
-
-                                </div>
-                              
-                            </div>
-                         
-
-                        </div>
-
-
-                    </div>
-                </form>
-            </header>
-            <div class="row text-dark">
-                <div class="col pr-0">
-                    <div class="card">
-                        <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                            [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
-                            <div class="card-body">
-
-                                <section class="reports_div">
-                                    <table class="row-border hover table table-bordered table-striped mb-0">
-                                        <col style="width:1%">
-                                        <col style="width:1%">
-                                        <col style="width:1%">
-                                        <col style="width:2%">
-                                        <col style="width:3%">
-                                        <col style="width:2%">
-                                        <col style="width:3%">
-                                        <col style="width:3%">
-                                        <col style="width:3%">
-                                        <col style="width:1%">
-                                        <col style="width:1%">
-                                        <thead>
-                                            <tr>
-                                                <th>Vehicle</th>
-                                                <th>Trip#</th>
-                                                <th>Order#</th>
-                                                <th>Province(US)</th>
-                                                <th>US Province Miles</th>
-                                                <th>Province(Canada)</th>
-                                                <th>Canada Province Miles</th>
-                                                <th>Canada Total Miles</th>
-                                                <th>US Total Miles</th>
-                                                <th>Trip Miles</th>
-                                                <th>Trip Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngIf="allData.length == 0" class="text-center">
-                                                <td colspan="15">{{dataMessage}}</td>
-                                            </tr>
-                                            <tr *ngFor="let item of allData">
-                                                <td>{{item.vehicle ? item.vehicle : '-'}}
-                                                </td>
-                                                <td>{{item.tripNo}}</td>
-                                                <td> {{item.orderName}}</td>
-
-
-                                                <td>
-                                                    <span *ngIf="item.provinceData.length === 0 ">-</span>
-                                                    <span *ngFor="let item1 of item.provinceData">
-                                                        <span *ngFor="let item2 of item1.usProvince">
-                                                            {{item2.StCntry}}<br>
-                                                        </span>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span *ngIf="item.provinceData.length === 0 ">-</span>
-                                                    <span *ngFor='let item1 of item.provinceData'>
-                                                        <span *ngFor='let item2 of item1.usProvince'>
-                                                            {{item2.Total }}<br>
-                                                        </span>
-                                                    </span>
-                                                </td>
-
-                                                <td>
-                                                    <span *ngIf="item.provinceData.length === 0 ">-</span>
-                                                    <span *ngFor="let item1 of item.provinceData">
-                                                        <span *ngFor="let item2 of item1.canProvince">
-                                                            {{item2.StCntry}}<br>
-                                                        </span>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span *ngIf="item.provinceData.length === 0 ">-</span>
-                                                    <span *ngFor='let item1 of item.provinceData'>
-                                                        <span *ngFor='let item2 of item1.canProvince'>
-                                                            {{item2.Total }}<br>
-                                                        </span>
-                                                    </span>
-                                                </td>
-
-                                                <td>{{item.canMiles | number : '1.2-2' }}
-                                                </td>
-                                                <td>{{item.usMiles | number : '1.2-2' }}
-                                                </td>
-                                                <td>
-                                                    {{ item.miles | number : '1.2-2'}}
-                                                </td>
-                                                <td>
-                                                    <span class="badge
-                                                                badge-dark p-1
-                                                                text-capitalize">{{
-                                                        item.newStatus
-                                                        }}</span>
-
-                                                </td>
-
-                                            </tr>
-                                        </tbody>
-
-                                    </table>
-                                </section>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
-                            <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll() ">Load
-                                More..</button>
-
-                        </div>
-                    </div>
-                </div>
+            <div class="col-md-3 col-lg-3 pl-2 pr-0">
+              <div
+                class="input-daterange input-group input-group-sm"
+                data-plugin-datepicker=""
+              >
+                <span class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-calendar-alt"></i>
+                  </span>
+                </span>
+                <input
+                  [(ngModel)]="start"
+                  name="fromDate"
+                  type="text"
+                  placeholder="yyyy/mm/dd"
+                  (click)="from.toggle()"
+                  ngbDatepicker
+                  #from="ngbDatepicker"
+                  class="form-control"
+                  autocomplete="off"
+                  [minDate]="dateMinLimit"
+                  [maxDate]="futureDatesLimit"
+                />
+                <span
+                  class="input-group-text border-left-0 border-right-0 rounded-0"
+                >
+                  to
+                </span>
+                <input
+                  [(ngModel)]="end"
+                  name="toDate"
+                  type="text"
+                  placeholder="yyyy/mm/dd"
+                  (click)="to.toggle()"
+                  ngbDatepicker
+                  #to="ngbDatepicker"
+                  class="form-control"
+                  autocomplete="off"
+                  [minDate]="dateMinLimit"
+                  [maxDate]="futureDatesLimit"
+                />
+              </div>
             </div>
-        </section>
-    </div>
+
+            <div class="col-md-3 col-lg-3 pl-2">
+              <button
+                type="button"
+                class="btn btn-sm btn-success mr-2"
+                (click)="searchFilter()"
+              >
+                Search
+              </button>
+              <button
+                class="btn btn-sm btn-success"
+                type="submit"
+                (click)="reset()"
+              >
+                Reset
+              </button>
+            </div>
+
+            <div class="col-md-4 col-lg-4 text-right pr-1">
+              <div class="btn-group flex-wrap ml-2">
+                <button
+                  type="button"
+                  class="btn btn-success btn-sm dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-upload"></i> Export<span
+                    class="caret"
+                  ></span>
+                </button>
+                <div
+                  class="dropdown-menu"
+                  role="menu"
+                  x-placement="bottom-start"
+                  style="
+                    position: absolute;
+                    will-change: transform;
+                    top: 0px;
+                    left: 0px;
+                    transform: translate3d(0px, 38px, 0px);
+                  "
+                >
+                  <a
+                    class="dropdown-item text-1"
+                    (click)="fetchFullExport('US')"
+                    >US</a
+                  >
+                  <a
+                    class="dropdown-item text-1"
+                    (click)="fetchFullExport('CAN')"
+                    >CAN</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </header>
+
+      <section class="m-2">
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row pt-2">
+                <div
+                  class="col-lg-12"
+                  style="height: calc(100vh - 149px); overflow-y: scroll"
+                >
+                  <p-table
+                    #dt
+                    [value]="allData"
+                    [resizableColumns]="true"
+                    columnResizeMode="expand"
+                    scrollDirection="both"
+                    [columns]="selectedColumns"
+                    [loading]="!loaded"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                    [scrollable]="true"
+                    [loading]="!loaded"
+                    scrollHeight="100%"
+                  >
+                    <ng-template pTemplate="caption">
+                      <div
+                        class="p-d-flex d-flex justify-content-between align-items-center"
+                      >
+                        <div>
+                          <h3 class="m-0">Trip Miles Report</h3>
+                        </div>
+                        <div class="text-right">
+                          <button
+                            type="button"
+                            pButton
+                            (click)="refreshData()"
+                            pTooltip="Refresh"
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-sync"
+                          ></button>
+                          <button
+                            pButton
+                            pRipple
+                            pTooltip="Clear Filter"
+                            class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash"
+                            (click)="clear(dt)"
+                          ></button>
+                          <p-multiSelect
+                            [options]="dataColumns"
+                            [(ngModel)]="selectedColumns"
+                            optionLabel="header"
+                            selectedItemsLabel="{0} columns selected"
+                            [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns"
+                          >
+                          </p-multiSelect>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th
+                          *ngFor="let dataColumns of columns"
+                          [pSortableColumn]="dataColumns.field"
+                          pResizableColumn
+                          style="width: 12%"
+                        >
+                          <div
+                            [ngSwitch]="dataColumns.field"
+                            style="width: 10%"
+                          >
+                            <span *ngSwitchDefault>
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="right"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                          </div>
+                        </th>
+                      </tr>
+                    </ng-template>
+
+                    <ng-template
+                      pTemplate="body"
+                      let-vehicle
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
+                      <tr>
+                        <td
+                          *ngFor="let dataColumns of columns"
+                          style="width: 12%; height: 100px; cursor: pointer"
+                        >
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchCase="'vehicle'">
+                              <b>
+                                {{
+                                  get(vehicle, dataColumns.field) | titlecase
+                                }}</b
+                              >
+                            </span>
+
+                            <span *ngSwitchCase="'locType'">
+                              <span
+                                title="Location"
+                                *ngFor="let item of vehicle.tripPlanning"
+                              >
+                                <b> {{ item.type }}: </b>
+                                {{ item.location }}<br />
+                              </span>
+                            </span>
+
+                            <span *ngSwitchCase="'dateType'">
+                              <span
+                                title="Date"
+                                *ngFor="let item of vehicle.tripPlanning"
+                              >
+                                <b> {{ item.type }}: </b>
+                                {{ item.date }}<br />
+                              </span>
+                            </span>
+
+                            <span *ngSwitchCase="'usiles'">
+                              <span *ngIf="vehicle.provinceData.length === 0"
+                                >-</span
+                              >
+                              <span *ngFor="let item1 of vehicle.provinceData">
+                                <span *ngFor="let item2 of item1.usProvince">
+                                  {{ item2.Total }} <br />
+                                </span>
+                              </span>
+                            </span>
+
+                            <span *ngSwitchCase="'usState'">
+                              <span *ngIf="vehicle.provinceData.length === 0"
+                                >-</span
+                              >
+                              <span *ngFor="let item1 of vehicle.provinceData">
+                                <span *ngFor="let item2 of item1.usProvince">
+                                  {{ item2.StCntry }}<br />
+                                </span>
+                              </span>
+                            </span>
+
+                            <span *ngSwitchCase="'canState'">
+                              <span *ngIf="vehicle.provinceData.length === 0"
+                                >-</span
+                              >
+                              <span *ngFor="let item1 of vehicle.provinceData">
+                                <span *ngFor="let item2 of item1.canProvince">
+                                  {{ item2.StCntry }}<br />
+                                </span>
+                              </span>
+                            </span>
+
+                            <span *ngSwitchCase="'cMiles'">
+                              <span *ngIf="vehicle.provinceData.length === 0"
+                                >-</span
+                              >
+                              <span *ngFor="let item1 of vehicle.provinceData">
+                                <span *ngFor="let item2 of item1.canProvince">
+                                  {{ item2.Total }}<br />
+                                </span>
+                              </span>
+                            </span>
+                            <span *ngSwitchCase="'caMiles'">
+                              {{ vehicle.canMiles | number: "1.2-2" }}
+                            </span>
+
+                            <span *ngSwitchCase="'miles'">
+                              {{ vehicle.miles | number: "1.2-2" }}
+                            </span>
+
+                            <span
+                              *ngSwitchCase="'newStatus'"
+                              class="badge badge-dark p-1 text-capitalize"
+                            >
+                              {{ vehicle.newStatus }}</span
+                            >
+
+                            <span *ngSwitchCase="'uMiles'">
+                              {{ vehicle.usMiles | number: "1.2-2" }} <br />
+                            </span>
+
+                            <span *ngSwitchDefault>
+                              {{ get(vehicle, dataColumns.field) }}</span
+                            >
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <div class="col-lg-12 mt-3 text-center">
+                        <span>{{ dataMessage }}</span>
+                        <br /><br />
+                      </div>
+                    </ng-template>
+                    <!-- Summary Section with Load More button -->
+
+                    <ng-template pTemplate="summary" let-columns>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK !== 'end' && allData.length !== 0"
+                      >
+                        <button
+                          type="button "
+                          (click)="onScroll($event)"
+                          class="btn btn-success btn-sm text-light"
+                        >
+                          Load More..
+                        </button>
+
+                        <br /><br />
+                      </div>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK === 'end'"
+                      >
+                        Total Records: {{ allData.length }}
+                      </div>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!--<div class="m-2">-->
+      <!--  <div class="row mb-3 text-dark">-->
+      <!--    <div class="col-lg-12">-->
+      <!--      <div class="bg-white p-3 text-dark">-->
+      <!--        <div-->
+      <!--          infiniteScroll-->
+      <!--          [infiniteScrollDistance]="1"-->
+      <!--          [infiniteScrollUpDistance]="1"-->
+      <!--          [infiniteScrollThrottle]="5"-->
+      <!--          (scrolled)="onScroll()"-->
+      <!--        >-->
+      <!--          <div class="form-group row">-->
+      <!--            <div class="col-lg-12">-->
+      <!--              <table-->
+      <!--                class="table-responsive row-border hover table table-bordered table-striped mb-0"-->
+      <!--              >-->
+      <!--                <col style="width: 1%" />-->
+      <!--                <col style="width: 1%" />-->
+      <!--                <col style="width: 1%" />-->
+      <!--                <col style="width: 1%" />-->
+      <!--                <col style="width: 2%" />-->
+      <!--                <col style="width: 3%" />-->
+      <!--                <col style="width: 2%" />-->
+      <!--                <col style="width: 3%" />-->
+      <!--                <col style="width: 3%" />-->
+      <!--                <col style="width: 3%" />-->
+      <!--                <col style="width: 1%" />-->
+      <!--                <col style="width: 1%" />-->
+      <!--                <thead>-->
+      <!--                  <tr>-->
+      <!--                    <th>Vehicle</th>-->
+      <!--                    <th>Trip#</th>-->
+      <!--                    <th>Order#</th>-->
+      <!--                    <th>Date</th>-->
+      <!--                    <th>Province(US)</th>-->
+      <!--                    <th>US Province Miles</th>-->
+      <!--                    <th>Province(Canada)</th>-->
+      <!--                    <th>Canada Province Miles</th>-->
+      <!--                    <th>Canada Total Miles</th>-->
+      <!--                    <th>US Total Miles</th>-->
+      <!--                    <th>Trip Miles</th>-->
+      <!--                    <th>Trip Status</th>-->
+      <!--                  </tr>-->
+      <!--                </thead>-->
+      <!--                <tbody>-->
+      <!--                  <tr *ngIf="allData.length == 0" class="text-center">-->
+      <!--                    <td colspan="15">{{ dataMessage }}</td>-->
+      <!--                  </tr>-->
+      <!--                  <tr *ngFor="let item of allData">-->
+      <!--                    <td>{{ item.vehicle ? item.vehicle : "-" }}</td>-->
+      <!--                    <td>{{ item.tripNo }}</td>-->
+      <!--                    <td>{{ item.orderName }}</td>-->
+      <!--                    <td>{{ item.createdDate }}</td>-->
+
+      <!--                    <td>-->
+      <!--                      <span *ngIf="item.provinceData.length === 0"-->
+      <!--                        >-</span-->
+      <!--                      >-->
+      <!--                      <span *ngFor="let item1 of item.provinceData">-->
+      <!--                        <span *ngFor="let item2 of item1.usProvince">-->
+      <!--                          {{ item2.StCntry }}<br />-->
+      <!--                        </span>-->
+      <!--                      </span>-->
+      <!--                    </td>-->
+      <!--                    <td>-->
+      <!--                      <span *ngIf="item.provinceData.length === 0"-->
+      <!--                        >-</span-->
+      <!--                      >-->
+      <!--                      <span *ngFor="let item1 of item.provinceData">-->
+      <!--                        <span *ngFor="let item2 of item1.usProvince">-->
+      <!--                          {{ item2.Total | number: "1.2-2" }}<br />-->
+      <!--                        </span>-->
+      <!--                      </span>-->
+      <!--                    </td>-->
+
+      <!--                    <td>-->
+      <!--                      <span *ngIf="item.provinceData.length === 0"-->
+      <!--                        >-</span-->
+      <!--                      >-->
+      <!--                      <span *ngFor="let item1 of item.provinceData">-->
+      <!--                        <span *ngFor="let item2 of item1.canProvince">-->
+      <!--                          {{ item2.StCntry }}<br />-->
+      <!--                        </span>-->
+      <!--                      </span>-->
+      <!--                    </td>-->
+      <!--                    <td>-->
+      <!--                      <span *ngIf="item.provinceData.length === 0"-->
+      <!--                        >-</span-->
+      <!--                      >-->
+      <!--                      <span *ngFor="let item1 of item.provinceData">-->
+      <!--                        <span *ngFor="let item2 of item1.canProvince">-->
+      <!--                          {{ item2.Total | number: "1.2-2" }}<br />-->
+      <!--                        </span>-->
+      <!--                      </span>-->
+      <!--                    </td>-->
+
+      <!--                    <td>{{ item.canMiles | number: "1.2-2" }}</td>-->
+      <!--                    <td>{{ item.usMiles | number: "1.2-2" }}</td>-->
+      <!--                    <td>-->
+      <!--                      {{ item.miles | number: "1.2-2" }}-->
+      <!--                    </td>-->
+      <!--                    <td>-->
+      <!--<span-->
+      <!--  class="badge badge-dark p-1 text-capitalize"-->
+      <!--  >{{ item.newStatus }}</span-->
+      <!-->-->
+      <!--                    </td>-->
+      <!--                  </tr>-->
+      <!--                </tbody>-->
+      <!--              </table>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--        <div-->
+      <!--          class="col-lg-12 mt-3 text-center"-->
+      <!--          *ngIf="lastItemSK !== 'end' && allData.length !== 0"-->
+      <!--        >-->
+      <!--          <button-->
+      <!--            type="button"-->
+      <!--            class="btn btn-success btn-sm text-light"-->
+      <!--            (click)="onScroll()"-->
+      <!--          >-->
+      <!--            Load More..-->
+      <!--          </button>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--    </div>-->
+      <!--  </div>-->
+      <!--</div>-->
+    </section>
+  </div>
 </section>

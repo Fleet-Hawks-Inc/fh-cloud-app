@@ -3,54 +3,64 @@
     <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header">
         <div class="row" style="padding-top: 10px">
-          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-            {{ pageTitle }} Vendor Credit
+          <div class="col-md-4 col-lg-4">
+            <h4 class="font-weight-bold text-4 text-dark">
+              {{ pageTitle }} Vendor Credit
+            </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-4">
             <a
               routerLink="/accounts/purchases/vendor-credit-notes/list"
-              class="btn btn-default btn-sm"><i class="fas fa-list"></i> All
-              Vendor Credits</a>
+              class="btn btn-default btn-sm"
+              ><i class="fas fa-list"></i> All Vendor Credits</a
+            >
           </div>
         </div>
       </header>
-      <section class="card mt-0 mb-4">
-        <div class="card-body">
-          <div class="row">
-            <div class="col pr-0">
-              <div class="card-body text-dark">
+
+      <section class="m-2">
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="">
+              <div class="bg-white p-3 text-dark">
                 <form
                   class="form-horizontal form-bordered"
                   method="post"
                   #creditForm="ngForm"
-                  id="creditForm">
-                  <div class="row">
-                    <div class="col-lg-5 offset-lg-1">
+                  id="creditForm"
+                >
+                  <div class="row adddriverpl pt-3">
+                    <div class="col-lg-6">
                       <div class="row pt-2">
                         <div class="col-lg-10">
                           <label
-                            class="control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2">Vendor
-                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            class="control-label font-weight-bold font-bold text-lg-right pt-2"
+                            >Vendor
+                            <span class="mandfield text-2 ml-1"
+                              ><sup>*</sup></span
+                            ></label
+                          >
                           <ng-select
                             [(ngModel)]="creditData.vendorID"
                             name="vendorID"
                             placeholder="Select Vendor"
                             #vendorID="ngModel"
                             required
-                            (change)="fetchPurchaseOrders()">
+                            (change)="fetchPurchaseOrders()"
+                          >
                             <ng-option
                               value="{{ data.contactID }}"
-                              *ngFor="let data of vendors">{{
-                              data.companyName }}
+                              *ngFor="let data of vendors"
+                              >{{ data.companyName }}
                             </ng-option>
                           </ng-select>
                           <div
-                            *ngIf="vendorID.invalid &&
-                            (vendorID.dirty || vendorID.touched)"
-                            class="text-danger">
+                            *ngIf="
+                              vendorID.invalid &&
+                              (vendorID.dirty || vendorID.touched)
+                            "
+                            class="text-danger"
+                          >
                             <div *ngIf="vendorID.errors.required">
                               Vendor is required.
                             </div>
@@ -61,26 +71,31 @@
                       <div class="row">
                         <div class="col-lg-5">
                           <label
-                            class="control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2">Purchase Order#
-                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            class="control-label font-weight-bold font-bold text-lg-right pt-2"
+                            >Purchase Order#
+                            <span class="mandfield text-2 ml-1"
+                              ><sup>*</sup></span
+                            ></label
+                          >
                           <ng-select
                             [(ngModel)]="creditData.purOrder"
                             name="purOrder"
                             placeholder="Select Purchase Order#"
                             #pOrder="ngModel"
-                            required>
+                            required
+                          >
                             <ng-option
                               value="{{ data.purchaseID }}"
-                              *ngFor="let data of purchaseOrders">{{
-                              data.orderNo }}
+                              *ngFor="let data of purchaseOrders"
+                              >{{ data.orderNo }}
                             </ng-option>
                           </ng-select>
                           <div
-                            *ngIf="pOrder.invalid && (pOrder.dirty ||
-                            pOrder.touched)" class="text-danger">
+                            *ngIf="
+                              pOrder.invalid && (pOrder.dirty || pOrder.touched)
+                            "
+                            class="text-danger"
+                          >
                             <div *ngIf="pOrder.errors.required">
                               Purchase order# is required.
                             </div>
@@ -88,11 +103,12 @@
                         </div>
                         <div class="col-lg-5">
                           <label
-                            class="control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2">Vendor Credit Date
-                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            class="control-label font-weight-bold font-bold text-lg-right pt-2"
+                            >Vendor Credit Date
+                            <span class="mandfield text-2 ml-1"
+                              ><sup>*</sup></span
+                            ></label
+                          >
                           <input
                             type="text"
                             [(ngModel)]="creditData.txnDate"
@@ -105,10 +121,13 @@
                             readonly
                             #cDate="ngModel"
                             required
-                            />
+                          />
                           <div
-                            *ngIf="cDate.invalid && (cDate.dirty ||
-                            cDate.touched)" class="text-danger">
+                            *ngIf="
+                              cDate.invalid && (cDate.dirty || cDate.touched)
+                            "
+                            class="text-danger"
+                          >
                             <div *ngIf="cDate.errors.required">
                               Vendor Credit Date is required.
                             </div>
@@ -116,55 +135,54 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-lg-5 offset-lg-1">
+                    <div class="col-lg-6">
                       <div class="row">
                         <div class="col-lg-10">
                           <label
-                            class="control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2">
-                            Reference#
-                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            class="control-label font-weight-bold font-bold text-lg-right pt-2"
+                          >
+                            Reference#</label
+                          >
                           <input
                             type="text"
                             [(ngModel)]="creditData.crRef"
                             name="crRef"
                             class="form-control"
-                            #ref="ngModel"
-                            required
                             placeholder="Enter Unique Reference Number"
-                            />
-                          <div
+                          />
+                          <!-- <div
                             *ngIf="ref.invalid && (ref.dirty || ref.touched)"
                             class="text-danger">
                             <div *ngIf="ref.errors.required">
                               Reference# is required.
                             </div>
-                          </div>
+                          </div> -->
                         </div>
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-10">
                           <label
-                            class="control-label
-                            font-weight-bold font-bold
-                            text-lg-right
-                            pt-2">Currency
-                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            class="control-label font-weight-bold font-bold text-lg-right pt-2"
+                            >Currency
+                            <span class="mandfield text-2 ml-1"
+                              ><sup>*</sup></span
+                            ></label
+                          >
                           <ng-select
                             [clearable]="false"
                             [(ngModel)]="creditData.currency"
                             name="currency"
                             placeholder="Select Vendor"
                             #cur="ngModel"
-                            required>
+                            required
+                          >
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
                           <div
                             *ngIf="cur.invalid && (cur.dirty || cur.touched)"
-                            class="text-danger">
+                            class="text-danger"
+                          >
                             <div *ngIf="cur.errors.required">
                               Vendor Credit Date is required.
                             </div>
@@ -173,38 +191,63 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-lg-12">
+                  <div class="row adddriverpl pt-3">
+                    <div class="col-lg-11">
                       <div class="row">
-                        <div class="col-lg-6">
-                          <h4>Vendor Credit Details</h4>
+                        <div class="col-lg-10">
+                          <h4 class="font-weight-bold text-5">
+                            Vendor Credit Details
+                          </h4>
                         </div>
                       </div>
                     </div>
-                    <div class="col-lg-10 offset-lg-1">
+                    <div class="col-lg-11">
                       <div class="row pt-2">
                         <div class="col-12">
                           <table class="table table-bordered">
                             <thead>
                               <tr>
-                                <th style="width: 250px">Commodity <span
-                                    class="mandfield text-2 ml-1"><sup>*</sup></span></th>
+                                <th style="width: 250px">
+                                  Commodity
+                                  <span class="mandfield text-2 ml-1"
+                                    ><sup>*</sup></span
+                                  >
+                                </th>
                                 <th style="width: 250px">Description</th>
-                                <th style="width: 250px">Quantity <span
-                                    class="mandfield text-2 ml-1"><sup>*</sup></span></th>
-                                <th style="width: 250px">Rate <span
-                                    class="mandfield text-2 ml-1"><sup>*</sup></span></th>
-                                <th style="width: 180px">Amount <span
-                                    class="mandfield text-2 ml-1"><sup>*</sup></span></th>
-                                <th style="width: 300px">Account <span
-                                    class="mandfield text-2 ml-1"><sup>*</sup></span></th>
+                                <th style="width: 250px">
+                                  Quantity
+                                  <span class="mandfield text-2 ml-1"
+                                    ><sup>*</sup></span
+                                  >
+                                </th>
+                                <th style="width: 250px">
+                                  Rate
+                                  <span class="mandfield text-2 ml-1"
+                                    ><sup>*</sup></span
+                                  >
+                                </th>
+                                <th style="width: 180px">
+                                  Amount
+                                  <span class="mandfield text-2 ml-1"
+                                    ><sup>*</sup></span
+                                  >
+                                </th>
+                                <th style="width: 300px">
+                                  Account
+                                  <span class="mandfield text-2 ml-1"
+                                    ><sup>*</sup></span
+                                  >
+                                </th>
                                 <th width="5%">Action</th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr
-                                *ngFor="let dt of creditData.crDetails;
-                                let d= index">
+                                *ngFor="
+                                  let dt of creditData.crDetails;
+                                  let d = index
+                                "
+                              >
                                 <td>
                                   <input
                                     type="text"
@@ -212,7 +255,7 @@
                                     placeholder="Enter commodity"
                                     [(ngModel)]="dt.commodity"
                                     name="commodity{{ d }}"
-                                    />
+                                  />
                                 </td>
                                 <td>
                                   <input
@@ -221,7 +264,7 @@
                                     placeholder="Description"
                                     [(ngModel)]="dt.desc"
                                     name="desc{{ d }}"
-                                    />
+                                  />
                                 </td>
                                 <td>
                                   <div class="row">
@@ -233,21 +276,19 @@
                                         [(ngModel)]="dt.qty"
                                         (change)="calculateAmount(d)"
                                         name="qty{{ d }}"
-                                        />
+                                      />
                                     </div>
                                     <div class="col-lg-6 pl-1">
-                                      <ng-select
-                                        [clearable]="false"
+                                      <input
+                                        type="text"
                                         class="form-control populate"
                                         placeholder="unit type"
                                         [(ngModel)]="dt.qtyUnit"
-                                        (change)="changeUnit($event, d)"
-                                        name="qtyUnit{{ d }}">
-                                        <ng-option
-                                          *ngFor="let unit of units"
-                                          value="{{ unit.value }}">{{ unit.name
-                                          }}</ng-option>
-                                      </ng-select>
+                                        (change)="
+                                          changeUnit($event.target.value, d)
+                                        "
+                                        name="qtyUnit{{ d }}"
+                                      />
                                     </div>
                                   </div>
                                 </td>
@@ -261,21 +302,19 @@
                                         [(ngModel)]="dt.rate"
                                         name="rate{{ d }}"
                                         (change)="calculateAmount(d)"
-                                        />
+                                      />
                                     </div>
                                     <div class="col-lg-6 pl-1">
-                                      <ng-select
-                                        [clearable]="false"
+                                      <input
+                                        type="text"
                                         class="form-control populate"
                                         placeholder="unit type"
                                         [(ngModel)]="dt.rateUnit"
-                                        (change)="changeUnit($event, d)"
-                                        name="rateUnit{{ d }}">
-                                        <ng-option
-                                          *ngFor="let unit of units"
-                                          value="{{ unit.value }}">{{ unit.name
-                                          }}</ng-option>
-                                      </ng-select>
+                                        (change)="
+                                          changeUnit($event.target.value, d)
+                                        "
+                                        name="rateUnit{{ d }}"
+                                      />
                                     </div>
                                   </div>
                                 </td>
@@ -289,7 +328,7 @@
                                         [(ngModel)]="dt.amount"
                                         name="amount{{ d }}"
                                         class="form-control"
-                                        />
+                                      />
                                     </div>
                                   </div>
                                 </td>
@@ -298,19 +337,25 @@
                                     class="form-control populate"
                                     placeholder="Select account"
                                     [(ngModel)]="dt.accountID"
-                                    name="accountID{{ d }}">
+                                    name="accountID{{ d }}"
+                                  >
                                     <ng-option
                                       *ngFor="let act of accounts"
-                                      value="{{ act.actID }}">{{ act.actNo }} -
-                                      {{ act.actName | titlecase }}</ng-option>
+                                      value="{{ act.actID }}"
+                                      >{{ act.actNo }} -
+                                      {{ act.actName | titlecase }}</ng-option
+                                    >
                                   </ng-select>
                                 </td>
                                 <td class="text-center">
                                   <button
-                                    [disabled]="creditData.crDetails.length ===
-                                    1" type="button"
+                                    [disabled]="
+                                      creditData.crDetails.length === 1
+                                    "
+                                    type="button"
                                     (click)="deleteDetail(d)"
-                                    class="btn btn-success btn-sm">
+                                    class="btn btn-success btn-sm"
+                                  >
                                     <i class="fas fa-minus"></i>
                                   </button>
                                 </td>
@@ -323,43 +368,114 @@
                         <button
                           type="button"
                           class="btn btn-success btn-sm"
-                          (click)="addDetails()">
+                          (click)="addDetails()"
+                        >
                           <i class="fas fa-plus"></i> Add Another Line
                         </button>
                         <div>
                           <span>Total Amount</span>
                           <span class="h6 font-semi-bold ml-3">{{
                             total | number: "1.2-2"
-                            }}</span>
+                          }}</span>
                           {{ creditData.currency }}
-                        </div>
-                      </div>
-                      <div class="row mt-3">
-                        <div class="col-lg-8">
-
-                        </div>
-                        <div class="col-lg-4">
-                          <div class="col-lg-12">
-                            <label
-                              class="control-label
-                              font-weight-bold
-                              text-4 text-dark">Remarks</label>
-                            <textarea
-                              class="form-control heighta"
-                              rows="6"
-                              [(ngModel)]="creditData.remarks"
-                              name="remarks"></textarea>
-                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
+
+                  <div class="row adddriverpl mt-3">
+                    <div class="col-lg-6">
+                      <div class="row">
+                        <div class="col-lg-10">
+                          <label
+                            class="control-label font-weight-bold font-bold text-lg-right pt-2"
+                          >
+                            Attachments</label
+                          >
+                          <span
+                            class="btn btn-default btn-file btn-xs w100 text-left"
+                          >
+                            <input
+                              type="file"
+                              multiple
+                              (change)="uploadDocs($event.target.files)"
+                              [(ngModel)]="files"
+                              name="files"
+                              class=""
+                            />
+                          </span>
+                          <span *ngIf="filesError != ''" class="text-danger">
+                            {{ filesError }}
+                          </span>
+                        </div>
+                        <div
+                          class="col-10 mt-3"
+                          style="max-height: 256px; overflow: scroll"
+                          *ngIf="oldDocs.length > 0"
+                        >
+                          <table class="table table-bordered">
+                            <thead>
+                              <th>Sr.</th>
+                              <th>Name</th>
+                              <th>Icon/Thumbnail</th>
+                              <th>Action</th>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let doc of oldDocs; let d = index">
+                                <td>{{ d + 1 }}</td>
+                                <td>{{ doc.displayName }}</td>
+                                <td>
+                                  <a
+                                    class="image-popup-no-margins"
+                                    href="{{ doc.docPath }}"
+                                    target="_blank"
+                                  >
+                                    <img
+                                      class="img-fluid img_thumbnail"
+                                      src="{{ doc.imgPath }}"
+                                    />
+                                  </a>
+                                </td>
+                                <td class="cursorpoint text-center">
+                                  <a
+                                    href="javascript:;"
+                                    (click)="deleteDocument(doc.displayName, d)"
+                                    class="modal-with-form"
+                                  >
+                                    <em class="fas fa-times text-danger"></em
+                                  ></a>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="row">
+                        <div class="col-lg-10">
+                          <label
+                            class="control-label font-weight-bold text-4 text-dark"
+                            >Remarks</label
+                          >
+                          <textarea
+                            class="form-control heighta"
+                            rows="6"
+                            [(ngModel)]="creditData.remarks"
+                            name="remarks"
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="form-group row mt-4">
-                    <div class="col-lg-11 text-right">
+                    <div class="col-lg-11 pr-1 text-right">
                       <button
                         type="button"
                         class="btn btn-default mr-3"
-                        routerLink="/accounts/purchases/vendor-credit-notes/list">
+                        routerLink="/accounts/purchases/vendor-credit-notes/list"
+                      >
                         Cancel
                       </button>
                       <button
@@ -367,7 +483,8 @@
                         type="button"
                         [disabled]="!creditForm.form.valid || submitDisabled"
                         *ngIf="!creditID"
-                        (click)="addNotes()">
+                        (click)="addNotes()"
+                      >
                         Save
                       </button>
                       <button
@@ -375,7 +492,8 @@
                         type="button"
                         [disabled]="submitDisabled"
                         *ngIf="creditID"
-                        (click)="updateNotes()">
+                        (click)="updateNotes()"
+                      >
                         Update
                       </button>
                     </div>

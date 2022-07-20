@@ -84,6 +84,21 @@ export class ListService {
   addressDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   addressList = this.addressDataSource.asObservable();
 
+  carrierDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  carrierList = this.carrierDataSource.asObservable();
+
+
+
+  docModalSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  docModalList = this.docModalSource.asObservable();
+
+  getDocsModalSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  getDocsModalList = this.getDocsModalSource.asObservable();
+
+
+  closeModalSource: BehaviorSubject<any> = new BehaviorSubject(String);
+  closeModalList = this.closeModalSource.asObservable();
+
   paymentModelDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   paymentModelList = this.paymentModelDataSource.asObservable();
 
@@ -109,6 +124,15 @@ export class ListService {
   bolPdfDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   bolPdfList = this.bolPdfDataSource.asObservable();
 
+  paymentDetailSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  paymentDetail = this.paymentDetailSource.asObservable();
+
+  voidPaymentSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  voidPayment = this.voidPaymentSource.asObservable();
+
+  voidStatusSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  voidStatus = this.voidStatusSource.asObservable();
+
   settlementDetailsDataSource: BehaviorSubject<Array<any>> =
     new BehaviorSubject([]);
   settlementDetails = this.settlementDetailsDataSource.asObservable();
@@ -118,11 +142,13 @@ export class ListService {
 
   public popup: Subject<any> = new Subject<any>();
 
+  public maxUnit: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>(null);
+
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
     private modalService: NgbModal
-  ) {}
+  ) { }
 
   fetchVendors() {
     this.apiService
@@ -146,25 +172,13 @@ export class ListService {
         this.receiverDataSource.next(result);
       });
   }
-  // fetchManufacturers() {
-  //   this.apiService.getData('manufacturers').subscribe((result: any) => {
-  //     this.manufacturerDataSource.next(result.Items);
-  //   });
-  // }
+
 
   fetchCountries() {
     this.apiService.getData("countries").subscribe((result: any) => {
       this.countryDataSource.next(result.Items);
     });
   }
-
-  // fetchModels() {
-  //   this.apiService
-  //     .getData(`vehicleModels`)
-  //     .subscribe((result: any) => {
-  //       this.modelDataSource.next(result.Items);
-  //     });
-  // }
 
   fetchStates() {
     this.apiService.getData(`states`).subscribe((result: any) => {
@@ -186,26 +200,12 @@ export class ListService {
       });
   }
 
-  // fetchAssetManufacturers() {
-  //   this.apiService
-  //     .getData(`assetManufacturers`)
-  //     .subscribe((result: any) => {
-  //       this.assetManuDataSource.next(result.Items);
-  //   });
-  // }
-
   fetchServicePrograms() {
-    this.apiService.getData(`servicePrograms`).subscribe((result: any) => {
-      this.serviceProgramDataSource.next(result.Items);
+    this.apiService.getData('servicePrograms').subscribe((result: any) => {
+      this.serviceProgramDataSource.next(result);
     });
   }
-  // fetchAssetModels() {
-  //   this.apiService
-  //     .getData(`assetModels`)
-  //     .subscribe((result: any) => {
-  //       this.assetModelsDataSource.next(result.Items);
-  //     });
-  // }
+
   fetchVehicles() {
     this.apiService.getData(`vehicles`).subscribe((result: any) => {
       this.vehicleDataSource.next(result.Items);
@@ -239,7 +239,7 @@ export class ListService {
       .getData(`issues/vehicle/${id}`)
       .toPromise();
     let newIssues = [];
-    promise.Items.filter((elem) => {
+    promise.filter((elem) => {
       if (elem.currentStatus == "OPEN") {
         newIssues.push(elem);
       }
@@ -252,7 +252,7 @@ export class ListService {
       .getData(`issues/asset/${id}`)
       .toPromise();
     let newIssues = [];
-    promise.Items.filter((elem) => {
+    promise.filter((elem) => {
       if (elem.currentStatus == "OPEN") {
         newIssues.push(elem);
       }
@@ -298,18 +298,43 @@ export class ListService {
       });
   }
 
+
+
   fetchContactsByIDs() {
     this.apiService.getData("contacts/get/list").subscribe((result: any) => {
       this.contactsObjectDataSource.next(result);
     });
   }
-
+  fetchCarriers() {
+    this.apiService
+      .getData(`contacts/get/type/carrier`)
+      .subscribe((result: any) => {
+        // this.carriers = result;
+        result.forEach((element) => {
+          if (element.isDeleted === 0) {
+            this.carrierDataSource.next(element);
+          }
+        });
+      });
+  }
   public changeButton(value: boolean) {
     this.isTrueDataSource.next(value);
   }
 
   triggerModal(value: any) {
     this.addressDataSource.next(value);
+  }
+
+  // triggerCarrierModal(value: any) {
+  //   this.addressDataSource.next(value);
+  // }
+
+  openDocTypeMOdal(value: any) {
+    this.docModalSource.next(value);
+  }
+
+  getAllDocs(value: any) {
+    this.getDocsModalSource.next(value);
   }
   openPaymentChequeModal(value) {
     this.paymentModelDataSource.next(value);
@@ -337,5 +362,27 @@ export class ListService {
 
   showSettlementsDetailPreview(value) {
     this.settlementDetailsDataSource.next(value);
+  }
+
+  passMaxUnit(value) {
+    this.maxUnit.next(value);
+  }
+
+  triggerFetchPaymentDetail(value) {
+    this.paymentDetailSource.next(value);
+  }
+
+  closeModel(value) {
+    this.closeModalSource.next(value)
+      ;
+  }
+
+  triggerVoidDriverPayment(value) {
+    console.log('listvalue', value)
+    this.voidPaymentSource.next(value);
+  }
+
+  triggerVoidStatus(value) {
+    this.voidStatusSource.next(value);
   }
 }

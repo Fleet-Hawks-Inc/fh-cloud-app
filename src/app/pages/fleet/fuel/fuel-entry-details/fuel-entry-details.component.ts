@@ -8,7 +8,7 @@ import { HereMapService } from '../../../../services';
 import { environment } from '../../../../../environments/environment';
 import * as moment from 'moment';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
-
+import {RouteManagementServiceService} from 'src/app/services/route-management-service.service'
 
 declare var H: any;
 declare var $: any;
@@ -117,7 +117,7 @@ export class FuelEntryDetailsComponent implements OnInit {
   driverList: any = {};
   wexCategories: any = {};
   Error = '';
-
+  sessionID:string;
   Success = '';
   constructor(
     private apiService: ApiService,
@@ -125,15 +125,17 @@ export class FuelEntryDetailsComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService, private HereMap: HereMapService,
     private httpClient: HttpClient,
-    private countryStateCity: CountryStateCityService
+    private countryStateCity: CountryStateCityService,
+    private routeManagementService:RouteManagementServiceService
   ) {
+    this.sessionID=this.routeManagementService.fuelUpdateSessionID
   }
 
   ngOnInit() {
     this.fuelID = this.route.snapshot.params[`fuelID`];
     this.fetchVehicleList();
     this.fetchAssetList();
-    this.fetchTripList();
+    // this.fetchTripList();
     this.fetchVendorList();
     //this.fetchFuelTypeList();
     this.fetchWEXCode();
@@ -229,11 +231,6 @@ export class FuelEntryDetailsComponent implements OnInit {
     });
   }
 
-  async fetchTripList() {
-    await this.apiService.getData('trips/get/list').subscribe((result: any) => {
-      this.tripList = result;
-    });
-  }
   async fetchVendorData(vendorID) {
     await this.apiService.getData('vendors/' + vendorID).subscribe((result: any) => {
       // this.vendorAddress = result.Items[0].address;
@@ -293,9 +290,9 @@ export class FuelEntryDetailsComponent implements OnInit {
           ]
         }
 
-        let date: any = moment(result.data.date)
-        if (result.data.time) {
-          let time = moment(result.data.time, 'h mm a')
+        let date: any = moment(result.date)
+        if (result.time) {
+          let time = moment(result.time, 'h mm a')
           date.set({
             hour: time.get('hour'),
             minute: time.get('minute')
@@ -321,7 +318,7 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData.retailAmount = result.data.rAmt;
         this.fuelData.rBeforeTax=result.data.rBeforeTax;
         this.fuelData.fuelType = result.data.type
-        this.fuelData.transactionID = result.data.transID;
+        this.fuelData.transactionID = result.transID;
         this.fuelData.fuelProvider = result.data.fuelProvider;
         this.fuelData.amountPaid = result.data.amt;
         this.fuelData.fuelDateTime = date;
@@ -332,14 +329,14 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData.site = result.data.site
 
         this.fuelData.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(result.data.country);
-        this.fuelData.stateName = result.data.city + "," + await this.countryStateCity.GetStateNameFromCode(result.data.state, result.data.country);
+        this.fuelData.stateName = result.data.city + ", " + await this.countryStateCity.GetStateNameFromCode(result.data.state, result.data.country);
         this.fuelData.cityName = result.data.city;
         this.fuelData.odometer = result.data.odometer;
         this.fuelData.quantity = result.data.qty;
         this.fuelData.fuelProvider = result.data.fuelProvider;
 
 
-        this.fuelData.reference = result.data.transID;
+        this.fuelData.reference = result.transID;
 
 
         this.fuelData.taxes = tax;

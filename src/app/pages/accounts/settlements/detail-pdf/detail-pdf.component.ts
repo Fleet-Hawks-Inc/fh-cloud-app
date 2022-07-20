@@ -7,6 +7,7 @@ import { ListService } from "src/app/services/list.service";
 import * as html2pdf from "html2pdf.js";
 import * as moment from "moment";
 import Constants from "src/app/pages/fleet/constants";
+import { Auth } from "aws-amplify";
 
 @Component({
   selector: "app-detail-pdf",
@@ -18,7 +19,7 @@ export class DetailPdfComponent implements OnInit {
   @ViewChild("settlmentDetail", { static: true })
   modalContent: TemplateRef<any>;
   subscription: Subscription;
-
+  totalMiles: any;
   settlementData = {
     type: null,
     entityId: null,
@@ -26,6 +27,8 @@ export class DetailPdfComponent implements OnInit {
     txnDate: "",
     fromDate: null,
     toDate: null,
+    prStart: null,
+    prEnd: null,
     tripIds: [],
     trpData: [],
     miles: {
@@ -69,16 +72,7 @@ export class DetailPdfComponent implements OnInit {
     paymentLinked: false,
     pendingPayment: 0,
     currency: "CAD",
-    paymentInfo: {
-      lMiles: 0,
-      lMileTeam: 0,
-      eMileTeam: 0,
-      rate: 0,
-      eMiles: 0,
-      pRate: 0,
-      dRate: 0,
-      pType: "",
-    },
+    paymentSelected:[],
     fuelIds: [],
     fuelData: [],
   };
@@ -89,19 +83,27 @@ export class DetailPdfComponent implements OnInit {
   settledTrips = [];
   selectedTrips = [];
   fuelEnteries = [];
-
+  currentUser: any = "";
+  companyName: any = "";
+  companyLogo = "";
+  paymentAbr={"ppm": "Pay Per Mile",
+  "pp":"Percentage",
+  "ppd":"Pay Per Delivery",
+  "pph":"Pay Per Hour",
+  "pfr":"Pay Flat Rate"}
   constructor(
     private listService: ListService,
     private apiService: ApiService,
     private modalService: NgbModal,
     private accountService: AccountService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // settlmentDetailSection
     this.subscription = this.listService.settlementDetails.subscribe(
-      (res: any) => {
+      async (res: any) => {
         if (res.showModal && res.length != 0) {
+          await this.getCurrentuser();
           this.settlementData = res.settlementData;
           this.entityName = res.entityName;
           this.fuelEnteries = res.fuelEnteries;
@@ -127,8 +129,8 @@ export class DetailPdfComponent implements OnInit {
           this.modalService
             .open(this.modalContent, ngbModalOptions)
             .result.then(
-              (result) => {},
-              (reason) => {}
+              (result) => { },
+              (reason) => { }
             );
         }
       }
@@ -142,7 +144,14 @@ export class DetailPdfComponent implements OnInit {
       pagebreak: { mode: "avoid-all", before: "settlmentDetailSection" },
       filename: `STL-${this.settlementData.setNo}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
+      html2canvas: {
+        scale: 2,
+        logging: true,
+        dpi: 192,
+        letterRendering: true,
+        allowTaint: true,
+        useCORS: true,
+      },
       jsPDF: { unit: "in", format: "a4", orientation: "landscape" },
     });
   }
@@ -152,7 +161,7 @@ export class DetailPdfComponent implements OnInit {
       .getData(`trips/entity/settled/data/${tripIds}`)
       .toPromise();
     this.settledTrips = result;
-
+    let miles = 0;
     for (let i = 0; i < this.settledTrips.length; i++) {
       const element = this.settledTrips[i];
 
@@ -198,14 +207,11 @@ export class DetailPdfComponent implements OnInit {
             this.settlementData.entityId === plan.coDriverID ||
             this.settlementData.entityId === plan.carrierID
           ) {
-            element.pickupLocation += `${pickCount}) <strong>${
-              plan.type
-            }</strong>: ${plan.location} <br>
-            <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${
-              plan.type === "Pickup" ? "Pickup" : "Drop"
-            } Time</u>: ${
-              plan.type === "Pickup" ? plan.pickupTime : plan.dropTime
-            } <br>`;
+            element.pickupLocation += `${pickCount}) <strong>${plan.type
+              }</strong>: ${plan.location} <br>
+            <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${plan.type === "Pickup" ? "Pickup" : "Drop"
+              } Time</u>: ${plan.type === "Pickup" ? plan.pickupTime : plan.dropTime
+              } <br>`;
             pickCount++;
             element.entityMiles += Number(plan.miles);
 
@@ -242,14 +248,11 @@ export class DetailPdfComponent implements OnInit {
             this.operatorDriversList.includes(plan.driverID) ||
             this.operatorDriversList.includes(plan.coDriverID)
           ) {
-            element.pickupLocation += `${pickCount}) <strong>${
-              plan.type
-            }</strong>: ${plan.location} <br>
-              <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${
-              plan.type === "Pickup" ? "Pickup" : "Drop"
-            } Time</u>: ${
-              plan.type === "Pickup" ? plan.pickupTime : plan.dropTime
-            } <br>`;
+            element.pickupLocation += `${pickCount}) <strong>${plan.type
+              }</strong>: ${plan.location} <br>
+              <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${plan.type === "Pickup" ? "Pickup" : "Drop"
+              } Time</u>: ${plan.type === "Pickup" ? plan.pickupTime : plan.dropTime
+              } <br>`;
             pickCount++;
             element.entityMiles += Number(plan.miles);
 
@@ -358,7 +361,10 @@ export class DetailPdfComponent implements OnInit {
           }
         });
       }
+
+      miles += element.entityMiles;
     }
+    this.totalMiles = miles;
   }
 
   setTripLoc(trp) {
@@ -375,4 +381,14 @@ export class DetailPdfComponent implements OnInit {
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
+
+  getCurrentuser = async () => {
+    const carrierID = localStorage.getItem('xfhCarrierId');
+
+    let result: any = await this.apiService
+      .getData(`carriers/detail/${carrierID}`)
+      .toPromise();
+    this.companyName = result.companyName;
+    this.companyLogo = result.logo;
+  };
 }

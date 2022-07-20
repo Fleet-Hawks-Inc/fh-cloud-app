@@ -1,10 +1,10 @@
-import { Component, OnInit, TemplateRef, ViewChild,} from "@angular/core";
-import { AccountService, ApiService } from "../../../../services";
+import { Component, OnInit, TemplateRef, ViewChild, } from "@angular/core";
+import { AccountService, ApiService, ListService } from "../../../../services";
 import { ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { NgxSpinnerService } from "ngx-spinner";
 import { HereMapService } from "../../../../services/here-map.service";
-import { from } from "rxjs";
+import { from, Subscription } from "rxjs";
 import { map } from "rxjs/operators";
 import * as html2pdf from "html2pdf.js";
 
@@ -13,15 +13,20 @@ declare var $: any;
 import { environment } from "src/environments/environment";
 import Constants from "src/app/pages/fleet/constants";
 import { Location } from "@angular/common";
+import * as _ from "lodash";
+import jsPDF from "jspdf";
+
+
 @Component({
   selector: "app-trip-detail",
   templateUrl: "./trip-detail.component.html",
   styleUrls: ["./trip-detail.component.css"],
 })
 export class TripDetailComponent implements OnInit {
-  @ViewChild("tripInfoModal", { static: true })
-  tripInfoModal: TemplateRef<any>;
-  tripInfoRef: any;
+  // @ViewChild("tripInfoModal", { static: true })
+  // tripInfoModal: TemplateRef<any>;
+  // tripInfoRef: any;
+  tripInfoModal = false;
 
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
@@ -33,11 +38,15 @@ export class TripDetailComponent implements OnInit {
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     private hereMap: HereMapService,
-    private location: Location
+    private location: Location,
+    private listService: ListService,
+
   ) {
     this.selectedFileNames = new Map<any, any>();
   }
   noOrdersMsg = Constants.NO_RECORDS_FOUND;
+  showSplitModel = false;
+  isSplit = false;
   tripData = {
     tripNo: "",
     tripStatus: "",
@@ -62,6 +71,7 @@ export class TripDetailComponent implements OnInit {
 
   orderType: string;
   tripID = "";
+  docType: string;
   allAssetName = "";
   errors: {};
   trips = [];
@@ -114,7 +124,29 @@ export class TripDetailComponent implements OnInit {
   companyLogoSrc: string;
   customerData = [];
   isEmail: boolean = false;
+  metricSelected: string = 'F';
+  metrics = [
+    { name: 'F', value: 'F' },
+    { name: 'C', value: 'C' },
+
+  ];
+  selectPlanID = false;
+  isCelsius = false;
+  get = _.get;
+  subscription: Subscription;
+  totalSplits = [];
+  newSplits = [];
+  selectedSplits = [];
   ngOnInit() {
+
+    this.subscription = this.listService.getDocsModalList.subscribe((res: any) => {
+      if (res && res.docType != null && res.docType != '') {
+        if (res.module === 'trip') {
+          this.docType = res.docType;
+          this.uploadBolPods(res);
+        }
+      }
+    })
 
     this.tripID = this.route.snapshot.params["tripID"];
     this.fetchTripDetail();
@@ -127,6 +159,9 @@ export class TripDetailComponent implements OnInit {
     // this.initTemperatureChart();
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
+  }
 
   fetchTripLog() {
     this.apiService
@@ -172,11 +207,13 @@ export class TripDetailComponent implements OnInit {
       this.expenses = result;
 
       for (const element of this.expenses) {
-        this.totalExp = this.totalExp + element.amount;
+        this.totalExp = this.totalExp + element.finalTotal;
       }
     });
   }
 
+  assetNamesList = [];
+  tempNamesList = [];
   async fetchTripDetail() {
     this.tripID = this.route.snapshot.params["tripID"];
     let locations = [];
@@ -224,45 +261,12 @@ export class TripDetailComponent implements OnInit {
 
         if (result.routeID != "" && result.routeID != undefined) {
           this.apiService
-            .getData("routes/" + result.routeID)
+            .getData("routes/" + encodeURIComponent(JSON.stringify(result.routeID)))
             .subscribe((result: any) => {
               this.routeName = result.Items[0].routeName;
             });
         }
-//Presigned URL using AWS s3
-           if (result.documents !== undefined && result.documents.length > 0) 
-           {
-          result.documents.forEach((x: any) => 
-          {
-            if (
-              x.storedName.split(".")[1] === "jpg" ||
-              x.storedName.split(".")[1] === "png" ||
-              x.storedName.split(".")[1] === "jpeg"
-            ) 
-            {
-              const obj = 
-              {
-                imgPath: `${x.urlPath}`,
-                docPath: `${x.urlPath}`,
-                displayName: x.displayName,
-                name: x.storedName,
-                ext: x.storedName.split(".")[1],
-              };
-              this.uploadedDocSrc.push(obj);
-            } else
-            {
-              const obj = 
-              {
-                imgPath: 'assets/img/icon-pdf.png',
-                docPath: `${x.urlPath}`,
-                displayName: x.displayName,
-                name: x.storedName,
-                ext: x.storedName.split(".")[1],
-              };
-              this.uploadedDocSrc.push(obj);
-            }
-          });
-        }
+
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
           let obj = {
@@ -313,46 +317,61 @@ export class TripDetailComponent implements OnInit {
           this.plannedMiles += parseFloat(element.miles);
           this.newCoords.push(`${element.lat},${element.lng}`);
           this.trips.push(obj);
+
+          // create Asset Object
+          for (let i = 0; i < element.assetID.length; i++) {
+            const assetObj = {
+              assetID: element.assetID[i],
+              assetName: element.assetNames[i],
+
+            };
+            this.assetNamesList.push(assetObj);
+
+          }
+
         }
 
+        // filter out duplicates
+        this.assetNamesList = _.uniqBy(this.assetNamesList, function (e) {
+          return e.assetID;
+        });
+        this.tempNamesList = _.uniqBy(this.assetNamesList, function (e) {
+          return e.assetID;
+        });
+
         let documents = result.tripDocs;
-        
         if (documents.length > 0) {
           documents.forEach((el) => {
-            if (
-              el.docType == "Bill of Lading" ||
-              el.docType == "Proof of Delivery"
-            ) {
-              if (el.uploadedDocs.length > 0) {
-                el.uploadedDocs.forEach((element) => {
-                  let name = element.storedName;
-                  let ext = element.storedName.split(".")[1];
-                  let obj = {};
-                  if (ext == "jpg" || ext == "jpeg" || ext == "png") {
-                    obj = {
-                      imgPath: `${ext.urlPath}`,
-                      docPath: `${ext.urlPath}`,
-                      displayName: element.displayName,
-                      name: name,
-                      ext: ext,
-                    };
-                  } else {
-                    obj = {
-                      imgPath: "assets/img/icon-pdf.png",
-                      docPath: `${ext.urlPath}`,
-                      displayName: element.displayName,
-                      name: name,
-                      ext: ext,
-                    };
-                  }
-                  this.uploadedDocSrc.push(obj);
-                });
-              }
+            if (el.uploadedDocs.length > 0) {
+              el.uploadedDocs.forEach((element) => {
+                let name = element.storedName;
+                let ext = element.storedName.split(".")[1];
+                let obj = {};
+                if (ext == "jpg" || ext == "jpeg" || ext == "png") {
+                  obj = {
+                    imgPath: `${element.urlPath}`,
+                    docPath: `${element.urlPath}`,
+                    displayName: element.displayName,
+                    name: name,
+                    ext: ext,
+                    type: element.type ? element.type : 'other'
+                  };
+                } else {
+                  obj = {
+                    imgPath: "assets/img/icon-pdf.png",
+                    docPath: `${element.urlPath}`,
+                    displayName: element.displayName,
+                    name: name,
+                    ext: ext,
+                    type: element.type ? element.type : 'other'
+                  };
+                }
+                this.uploadedDocSrc.push(obj);
+              });
             }
           });
-          
+
         }
-        
 
         if (result.split) {
           result.split.map((x, cind) => {
@@ -366,7 +385,18 @@ export class TripDetailComponent implements OnInit {
             });
           });
         }
+        if (result.split && result.split.length > 0) {
+          for (let i = 0; i < result.split.length; i++) {
+            const element = result.split[i];
+            this.totalSplits.push({ splitID: element.splitID, splitName: `Sub Trip - ${this.tripData.tripNo} (${i + 1})` })
+          }
+          this.newSplits = result.split;
 
+          this.isSplit = true;
+        } else {
+          this.isSplit = false;
+          this.selectedSplits = this.trips;
+        }
         if (this.newCoords.length > 0) {
           this.getCoords();
         }
@@ -380,6 +410,8 @@ export class TripDetailComponent implements OnInit {
           this.tagLine = result.termsInfo.tagLine ? result.termsInfo.tagLine : '';
         }
       });
+
+
   }
 
   /**
@@ -567,134 +599,108 @@ export class TripDetailComponent implements OnInit {
     ];
   }
 
+  async uploadBolPods(res: any) {
+    for (let i = 0; i < res.documents.length; i++) {
+      const element = res.documents[i];
+      let name = element.name.split(".");
+      let ext = name[name.length - 1];
 
-  /*
-   * Selecting files before uploading
-   */
-  async selectDocuments(event) {
-    let files = [];
-    this.uploadedDocs = [];
-    files = [...event.target.files];
-    let totalCount = this.tripData.documents.length + files.length;
-
-    if (totalCount > 4) {
-    this.uploadedDocs = [];
-      $("#bolUpload").val("");
-      this.toastr.error("Only 4 documents can be uploaded");
-      return false;
-    } else {
-      for (let i = 0; i < files.length; i++) {
-        const element = files[i];
-        let name = element.name.split(".");
-        let ext = name[name.length - 1];
-
-        if (ext != "jpg" && ext != "jpeg" && ext != "png" && ext != "pdf") {
-          $("#bolUpload").val("");
-          this.toastr.error("Only image and pdf files are allowed");
-          return false;
-        }
+      if (ext != "jpg" && ext != "jpeg" && ext != "png" && ext != "pdf") {
+        $("#bolUpload").val("");
+        this.toastr.error("Only image and pdf files are allowed");
+        return false;
       }
-
-     for (let i = 0; i < files.length; i++) {
-        this.uploadedDocs.push(files[i]);
-      }
-      // create form data instance
-      const formData = new FormData();
-
-   //   for (let i = 0; i < files.length; i++) {
-    //   const element = files[i];
-    //   this.uploadedDocs.push(element);
-    // }
-
-      //append docs if any
-      for (let j = 0; j < this.uploadedDocs.length; j++) {
-       // let file = this.uploadedDocs[j];
-      //  formData.append(`uploadedDocs-${j}`, file);
-        formData.append("uploadedDocs", this.uploadedDocs[j]);
-      }
-      formData.append("data", JSON.stringify(this.tripData.documents));
-      this.apiService
-        .postData('trips/update/bol/' + this.tripID, formData, true)
-        .subscribe({
-          complete: () => { },
-          error: (err: any) => {
-            from(err.error)
-              .pipe(
-                map((val: any) => {
-                  val.message = val.message.replace(/".*"/, "This Field");
-                  this.errors[val.context.label] = val.message;
-                  this.spinner.hide();
-                })
-              )
-              .subscribe({
-                complete: () => {
-                  this.spinner.hide();
-                },
-                error: () => { },
-                next: () => { },
-              });
-          },
-          next: (res: any) => {
-            this.tripData.documents = res;
-            this.uploadedDocSrc = [];
-            this.uploadedDocs = [];
-            if (res.length > 0) {
-              for (let k = 0; k < res.length; k++) {
-                const element = res[k];
-                // this.uploadedDocSrc.push(`${this.Asseturl}/${this.tripData.carrierID}/${element}`);
-                let name = element.storedName;
-                let ext = element.storedName.split('.')[1];
-                let obj = {
-                  imgPath: '',
-                  docPath: '',
-                  displayName: '',
-                  name: '',
-                  ext: '',
-                };
-                if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
-                  obj = {
-                    imgPath: `${ext.urlPath}`,
-                    docPath: `${ext.urlPath}`,
-                    displayName: element.displayName,
-                    name: name,
-                    ext: ext,
-                  };
-                } else {
-                  obj = {
-                    imgPath: 'assets/img/icon-pdf.png',
-                    docPath: `${ext.urlPath}`,
-                    displayName: element.displayName,
-                    name: name,
-                    ext: ext,
-                  };
-                }
-                this.uploadedDocSrc.push(obj);
-              }
-            }
-              this.toastr.success('BOL/POD uploaded successfully');
-              this.fetchTripDetail();
-          },
-        });
     }
+
+    for (let i = 0; i < res.documents.length; i++) {
+      this.uploadedDocs.push(res.documents[i]);
+    }
+    // create form data instance
+    const formData = new FormData();
+    // append photos if any
+    for (let i = 0; i < this.uploadedDocs.length; i++) {
+      formData.append("uploadedDocs", this.uploadedDocs[i]);
+    }
+
+    await this.apiService
+      .postData(`trips/upload/docs/${this.tripID}/${this.docType}`, formData, true).toPromise().then((result: any) => {
+
+        if (result && result.length > 0) {
+          this.tripData.documents = result;
+          this.uploadedDocSrc = [];
+          this.uploadedDocs = [];
+          for (let k = 0; k < result.length; k++) {
+            const element = result[k];
+            let name = element.storedName;
+            let ext = element.storedName.split('.')[1];
+            let obj = {
+              imgPath: '',
+              docPath: '',
+              displayName: '',
+              name: '',
+              ext: '',
+              type: ''
+            };
+            if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+              obj = {
+                imgPath: `${element.urlPath}`,
+                docPath: `${element.urlPath}`,
+                displayName: element.displayName,
+                name: name,
+                ext: ext,
+                type: element.type ? element.type : 'other'
+              };
+            } else {
+              obj = {
+                imgPath: 'assets/img/icon-pdf.png',
+                docPath: `${element.urlPath}`,
+                displayName: element.displayName,
+                name: name,
+                ext: ext,
+                type: element.type ? element.type : 'other'
+              };
+            }
+            this.uploadedDocSrc.push(obj);
+          }
+          let obj = {
+            mode: 'close',
+          }
+          this.listService.closeModel(obj);
+          this.toastr.success('Document uploaded successfully');
+        }
+      }).catch((err => {
+        let obj = {
+          mode: 'open',
+          message: 'Document type is not valid'
+        }
+        this.listService.closeModel(obj);
+      }))
   }
 
 
+
   openTripInfo() {
-    let ngbModalOptions: NgbModalOptions = {
-      backdrop: "static",
-      keyboard: false,
-      windowClass: "trip--info__main",
-    };
-    this.tripInfoRef = this.modalService.open(
-      this.tripInfoModal,
-      ngbModalOptions
-    );
+
+    if (this.isSplit) {
+      this.showSplitModel = true;
+    } else {
+      this.tripInfoModal = true;
+      // let ngbModalOptions: NgbModalOptions = {
+      //   backdrop: "static",
+      //   keyboard: false,
+      //   windowClass: "trip--info__main",
+      // };
+      // this.tripInfoRef = this.modalService.open(
+      //   this.tripInfoModal,
+      //   ngbModalOptions
+      // );
+    }
   }
 
   async generate() {
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
-      margin: 0.5,
+      margin: 0.3,
       pagebreak: { mode: 'avoid-all', before: "print_wrap" },
       filename: "trip-information.pdf",
       image: { type: "jpeg", quality: 1 },
@@ -706,17 +712,14 @@ export class TripDetailComponent implements OnInit {
       },
       jsPDF: { unit: "in", format: "a4", orientation: "landscape" },
     });
-
-    this.tripInfoRef.close();
+    this.tripInfoModal = false;
   }
 
   async driverEmail() {
     this.isEmail = true;
-    let result = await this.apiService
-      .getData(`trips/send/emailDriver/${this.tripID}`)
-      .toPromise();
+    let result = await this.apiService.getData(`trips/send/emailDriver?tripID=${this.tripID}&planID=${this.selectPlanID}`).toPromise();
     if (result === null) {
-      this.tripInfoRef.close();
+      this.tripInfoModal = false;
       this.toastr.success("Email send successfully");
       this.isEmail = false;
     } else {
@@ -727,4 +730,189 @@ export class TripDetailComponent implements OnInit {
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
+
+  openDocModal() {
+    let obj = {
+      type: 'trip',
+      docLength: this.uploadedDocSrc.length
+    }
+    this.listService.openDocTypeMOdal(obj)
+  }
+
+  alarmCols = [
+    { field: 'alAssetName', header: 'Asset Name' },
+    { field: 'highTemp', header: 'High' },
+    { field: 'lowTemp', header: 'Low' },
+    { field: 'alIsActivate', header: 'Is Activated?' },
+
+
+
+  ]
+  tripAlarms = []
+  selectedAssetAlarm;
+  async getTripAlarms() {
+    this.assetNamesList = [];
+    this.assetNamesList.push(...this.tempNamesList)
+    this.tripAlarms = await this.apiService.getData(`alarms/${this.tripData.tripNo}`).toPromise();
+    this.tripAlarms.forEach(element => {
+      // removing asset which has alarm set previously.
+      const assetObj = _.find(this.assetNamesList, { assetID: element.assetId });
+
+      if (assetObj) {
+        _.remove(this.assetNamesList, { assetID: assetObj.assetID });
+
+        this.selectedAlarmAlert = undefined
+
+      }
+      if (element.alTempCelsius == 0) {
+        element.highTemp = element.highTemp + ' F';
+        element.lowTemp = element.lowTemp + ' F';
+      } else {
+        element.highTemp = element.highTemp + ' C';
+        element.lowTemp = element.lowTemp + ' C'
+      }
+    });
+  }
+
+  alarmInput: IAddAlarmInput;
+  showAlerts = false;
+  highTemp: number = 10;
+  lowTemp: number = -10;
+  selectedAlarmAlert = {};
+  emails: string
+  async addAlerts() {
+    this.showAlerts = true;
+    await this.getTripAlarms();
+  }
+  assetAlert = undefined;
+  async addAlarmToAsset() {
+    this.assetAlert = undefined;
+    const assetObj = _.find(this.assetNamesList, { assetName: this.selectedAssetAlarm })
+    this.validateMultipleEmails();
+    if (!this.isEmailsValid) {
+      return;
+    }
+
+    this.alarmInput = {
+      tripID: this.tripID,
+      tripNo: this.tripData.tripNo,
+      assetID: assetObj.assetID,
+      assetName: assetObj.assetName,
+      highTemp: this.highTemp.toString(),
+      lowTemp: this.lowTemp.toString(),
+      emails: this.emails.split(','),
+      isCelsius: this.isCelsius === true ? 1 : 0, // Is in Celsius or Fahrenheit 
+      active: this.tripStatus == 'dispatched' || this.tripStatus == 'started' || this.tripStatus == 'enroute' ? 1 : 0
+
+
+    }
+    await this.apiService.postData('alarms', this.alarmInput).subscribe(async (data: any) => {
+      await this.getTripAlarms();
+
+    }, error => {
+      if (error && error.error && error.error.errorMessage.includes('Temperature sensor')) {
+        this.assetAlert = error.error.errorMessage;
+      }
+    });
+
+  }
+
+  async deleteAlarm(rowData) {
+
+    const decision = confirm('Do you want to Delete the Alarm?');
+    if (decision) {
+      await this.apiService.deleteData(`alarms/${rowData.alAlarmId}`).toPromise(); this.showAlerts = false;
+
+    }
+  }
+
+  isEmailsValid = true;
+  validateMultipleEmails() {
+    // Get value on emails input as a string
+
+
+    // Split string by comma into an array
+    let emailsValidate = this.emails.split(",");
+
+
+    const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    const invalidEmails = [];
+
+    for (let i = 0; i < emailsValidate.length; i++) {
+      // Trim whitespaces from email address
+      emailsValidate[i] = emailsValidate[i].trim();
+
+      // Check email against our regex to determine if email is valid
+      if (emailsValidate[i] == "" || !regex.test(emailsValidate[i])) {
+        invalidEmails.push(emailsValidate[i]);
+      }
+    }
+    if (invalidEmails.length > 0) {
+      this.isEmailsValid = false;
+    } else {
+      this.isEmailsValid = true;
+    }
+  }
+
+  changeMetric(e) {
+
+    if (e.value === 'F') {
+      this.isCelsius = false;
+    } else {
+      this.isCelsius = true;
+    }
+  }
+
+  changeSplitTrips() {
+    if (this.selectPlanID) {
+      let planResult = this.newSplits.filter(elem => { return elem.splitID === this.selectPlanID })
+      if (planResult && planResult.length > 0 && planResult[0].plan) {
+        let newData = []
+        let planIds = planResult[0].plan;
+        planIds.map((c, cind) => {
+          this.trips.map((t) => {
+            if (t.planID === c) {
+              newData.push(t);
+            }
+          });
+        });
+        this.selectedSplits = newData;
+      }
+    }
+
+  }
+
+  showTripInfoModel() {
+    if (this.selectPlanID) {
+      this.isEmail = false;
+      this.tripInfoModal = true;
+    }
+  }
+
+  // delete uploaded images and documents
+  async delete(name: string, index) {
+
+    if (confirm("Are you sure you want to delete?") === true) {
+      await this.apiService
+        .deleteData(`trips/uploadDelete/${this.tripID}/${name}`)
+        .toPromise();
+      this.uploadedDocSrc.splice(index, 1);
+      this.toastr.success("Document deleted successfully");
+    }
+  }
+
+
+}
+
+interface IAddAlarmInput {
+  tripNo: string,
+  tripID: string,
+  assetID: string,
+  assetName: string,
+  highTemp: string,
+  lowTemp: string,
+  emails: string[],
+  isCelsius: number,
+  active: number
 }

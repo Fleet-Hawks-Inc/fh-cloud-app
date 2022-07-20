@@ -1,37 +1,55 @@
-import { SharedModule } from './../../../shared/shared.module';
-import { Injectable, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Routes, RouterModule } from '@angular/router';
-import { ChartOfAccountsComponent } from './chart-of-accounts/chart-of-accounts.component';
-import { ChartOfAccountsDetailsComponent } from './chart-of-accounts-details/chart-of-accounts-details.component';
-import { FormsModule } from '@angular/forms';
-import { NgSelectModule } from '@ng-select/ng-select';
-import { AddAccountModule } from '../add-account/add-account.module';
-import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+
+import { SharedModule } from "./../../../shared/shared.module";
+import { Injectable, NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { Routes, RouterModule } from "@angular/router";
+import { ChartOfAccountsComponent } from "./chart-of-accounts/chart-of-accounts.component";
+import { ChartOfAccountsDetailsComponent } from "./chart-of-accounts-details/chart-of-accounts-details.component";
+import { FormsModule } from "@angular/forms";
+import { NgSelectModule } from "@ng-select/ng-select";
+import { AddAccountModule } from "../add-account/add-account.module";
+import {
+  NgbDateAdapter,
+  NgbDateParserFormatter,
+  NgbDateStruct,
+  NgbModule,
+} from "@ng-bootstrap/ng-bootstrap";
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { MenuModule } from 'primeng/menu';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { TableModule } from 'primeng/table';
+import { TooltipModule } from 'primeng/tooltip';
+import { DialogModule } from 'primeng/dialog';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
 @Injectable()
 export class CustomAdapter extends NgbDateAdapter<string> {
-
-  readonly DELIMITER = '-';
+  readonly DELIMITER = "-";
 
   fromModel(value: string): NgbDateStruct {
-    if (!value)
-      return null
+    if (!value) return null;
     const parts = value.split(this.DELIMITER);
     return {
-      year: + parseInt(parts[0]),
-      month: + parseInt(parts[1]),
-      day: + parseInt(parts[2])
-    }
+      year: +parseInt(parts[0]),
+      month: +parseInt(parts[1]),
+      day: +parseInt(parts[2]),
+    };
   }
 
-  toModel(date: NgbDateStruct): string // from internal model -> your mode
-  {
-    return date ? date.year + this.DELIMITER + ('0' + date.month).slice(-2)
-      + this.DELIMITER + ('0' + date.day).slice(-2) : null
+  toModel(date: NgbDateStruct): string {
+    // from internal model -> your mode
+    return date
+      ? date.year +
+          this.DELIMITER +
+          ("0" + date.month).slice(-2) +
+          this.DELIMITER +
+          ("0" + date.day).slice(-2)
+      : null;
   }
 }
 
@@ -40,8 +58,7 @@ export class CustomAdapter extends NgbDateAdapter<string> {
  */
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
-
-  readonly DELIMITER = '/';
+  readonly DELIMITER = "/";
 
   parse(value: string): NgbDateStruct | null {
     if (value) {
@@ -50,20 +67,29 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
         year: parseInt(date[2], 10),
         month: parseInt(date[1], 10),
         day: parseInt(date[0], 10),
-
       };
     }
     return null;
   }
 
   format(date: NgbDateStruct | null): string {
-    return date ? date.year + this.DELIMITER + date.month + this.DELIMITER + date.day : '';
+    return date
+      ? date.year + this.DELIMITER + date.month + this.DELIMITER + date.day
+      : "";
   }
 }
 const routes: Routes = [
-  { path: 'list', component: ChartOfAccountsComponent },
-  { path: 'detail/:actID', component: ChartOfAccountsDetailsComponent },
-
+  {
+    path: "list",
+    component: ChartOfAccountsComponent,
+    data: { title: "Chart Accounts List" , reuseRoute: true },
+  },
+  {
+    path: "detail/:actID",
+    component: ChartOfAccountsDetailsComponent,
+    data: { title: "Chart Accounts Detail" },
+  },
+ 
 ];
 
 @NgModule({
@@ -76,11 +102,20 @@ const routes: Routes = [
     AddAccountModule,
     SharedModule,
     NgbModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    ButtonModule,
+    CalendarModule,
+    DropdownModule,
+    MenuModule,
+    MultiSelectModule,
+    SplitButtonModule,
+    TableModule,
+    TooltipModule,
+    DialogModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
-export class ChartAccountsModule { }
+export class ChartAccountsModule {}

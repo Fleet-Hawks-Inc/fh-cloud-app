@@ -24,7 +24,6 @@ export class CreditNoteDetailComponent implements OnInit {
   totalAmt: any;
   status: string;
   transactionLogs = [];
-  accountsObjects = [];
 
   customers = [];
   docs = [];
@@ -43,7 +42,6 @@ export class CreditNoteDetailComponent implements OnInit {
       this.fetchCredit();
     }
     this.fetchCustomers();
-    this.fetchAccountsByIDs();
   }
 
   fetchCredit() {
@@ -100,13 +98,7 @@ export class CreditNoteDetailComponent implements OnInit {
     });
   }
 
-  fetchAccountsByIDs() {
-    this.accountService
-      .getData("chartAc/get/all/list")
-      .subscribe((result: any) => {
-        this.accountsObjects = result;
-      });
-  }
+
 
   deleteDocument(name: string, index: number) {
     this.accountService

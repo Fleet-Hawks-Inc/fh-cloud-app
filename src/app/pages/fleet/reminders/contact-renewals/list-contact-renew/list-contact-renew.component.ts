@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input  } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 declare var $: any;
+import { Table } from 'primeng/table';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 import Constants from '../../../constants';
+import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
 import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from '../../../../../../environments/environment';
 import { ListService } from '../../../../../services';
@@ -14,7 +18,10 @@ import { ListService } from '../../../../../services';
   styleUrls: ['./list-contact-renew.component.css']
 })
 export class ListContactRenewComponent implements OnInit {
-
+  @ViewChild('dt') table: Table;
+  get = _.get;
+  _selectedColumns: any[];
+  
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   public remindersData: any = [];
@@ -25,6 +32,7 @@ export class ListContactRenewComponent implements OnInit {
   subcribersArray = [];
   groups: any = {};
   currentDate = moment().format('YYYY-MM-DD');
+  sessionID: string;
   newData = [];
   filterStatus = null;
   usersList: any = {};
@@ -52,10 +60,23 @@ export class ListContactRenewComponent implements OnInit {
   driversList: any = {};
   mergedList: any = {};
   loaded = false
+  
+   dataColumns = [
+    { width: '15%', field: 'entityID', header: 'Contact', type: 'text' },
+    { width: '19%', field: 'status', header: 'Contact Renewal Type', type: 'text' },
+    { width: '17%', field: 'tasks.timeUnit', header: 'Send Reminder', type: 'text' },
+    { width: '17%', field: 'tasks.dueDate', header: 'Expiration Date', type: 'text' },
+    { width: '19%', field: 'subscribers', header: 'Subscribers', type: 'text' },
+  ];
+  
   constructor(private apiService: ApiService,
     private listService: ListService,
+    private router: Router, 
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService) { }
+    private routerMgmtService: RouteManagementServiceService,
+    private spinner: NgxSpinnerService) {
+      this.sessionID = this.routerMgmtService.serviceRemindersSessionID;
+    }
 
   ngOnInit() {
     this.listService.fetchDrivers();
@@ -64,6 +85,8 @@ export class ListContactRenewComponent implements OnInit {
     this.fetchEmployeeList();
     this.initDataTable();
     this.fetchEmployees();
+    this.setToggleOptions();
+    
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -79,6 +102,21 @@ export class ListContactRenewComponent implements OnInit {
       this.employees = res.Items;
     });
   }
+  
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+  
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+  }
+  
   fetchEmployeeList() {
     this.apiService.getData('contacts/get/emp/list').subscribe((res) => {
       this.employeesList = res;
@@ -118,6 +156,7 @@ export class ListContactRenewComponent implements OnInit {
           if (result.Items.length === 0) {
 
             this.dataMessage = Constants.NO_RECORDS_FOUND
+            this.loaded = true;
           }
 
           if (result.Items.length > 0) {
@@ -138,7 +177,7 @@ export class ListContactRenewComponent implements OnInit {
         });
     }
   }
-  onScroll() {
+  onScroll = async(event: any) => {
     if (this.loaded) {
       this.initDataTable();
     }
@@ -211,5 +250,9 @@ export class ListContactRenewComponent implements OnInit {
     this.dataMessage = Constants.FETCHING_DATA;
     this.remindersData = [];
     this.initDataTable();
+  }
+  
+  clear(table: Table) {
+    table.clear();
   }
 }

@@ -25,6 +25,9 @@ import { AddVendorCreditNoteComponent } from "./vendor-credit-notes/add-vendor-c
 import { AddBillComponent } from "./bills/add-bill/add-bill.component";
 import { BillDetailsComponent } from "./bills/bill-details/bill-details.component";
 import { BillListComponent } from "./bills/bill-list/bill-list.component";
+import { PaymentChequeComponent } from "../../..//shared/payment-cheque/payment-cheque.component";
+import { SharedModule } from "src/app/shared/shared.module";
+
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -91,36 +94,81 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 }
 
 const routes: Routes = [
-  { path: "orders/list", component: PurchaseOrdersListComponent },
-  { path: "orders/add", component: AddPurchaseOrderComponent },
-  { path: "orders/edit/:purchaseID", component: AddPurchaseOrderComponent },
+  {
+    path: "orders/list",
+    component: PurchaseOrdersListComponent,
+    data: { title: "Purchase Orders List" },
+  },
+  {
+    path: "orders/add",
+    component: AddPurchaseOrderComponent,
+    data: { title: "Add Purchase Orders" },
+  },
+  {
+    path: "orders/edit/:purchaseID",
+    component: AddPurchaseOrderComponent,
+    data: { title: "Edit Purchase Orders" },
+  },
   {
     path: "orders/detail/:purchaseID",
     component: PurchaseOrderDetailComponent,
+    data: { title: "Purchase Orders Detail" },
   },
-  { path: "vendor-payments/list", component: VendorPaymentsListComponent },
-  { path: "vendor-payments/add", component: AddVendorPaymentComponent },
+  {
+    path: "vendor-payments/list",
+    component: VendorPaymentsListComponent,
+    data: { title: "Vendor Payments List" },
+  },
+  {
+    path: "vendor-payments/add",
+    component: AddVendorPaymentComponent,
+    data: { title: "Add Vendor Payment" },
+  },
   {
     path: "vendor-payments/detail/:paymentID",
     component: VendorPaymentDetailComponent,
+    data: { title: "Vendor Payments Detail" },
   },
   {
     path: "vendor-credit-notes/list",
     component: VendorCreditNotesListComponent,
+    data: { title: "Vendor Credit Notes List" },
   },
-  { path: "vendor-credit-notes/add", component: AddVendorCreditNoteComponent },
+  {
+    path: "vendor-credit-notes/add",
+    component: AddVendorCreditNoteComponent,
+    data: { title: "Add Vendor Credit Notes" },
+  },
   {
     path: "vendor-credit-notes/edit/:creditID",
     component: AddVendorCreditNoteComponent,
+    data: { title: "Edit Vendor Credit Notes" },
   },
   {
     path: "vendor-credit-notes/detail/:creditID",
     component: VendorCreditNoteDetailComponent,
+    data: { title: "Vendor Credit Notes Detail" },
   },
-  { path: "bills/list", component: BillListComponent },
-  { path: "bills/add", component: AddBillComponent },
-  { path: "bills/edit/:billID", component: AddBillComponent },
-  { path: "bills/details/:billID", component: BillDetailsComponent },
+  {
+    path: "bills/list",
+    component: BillListComponent,
+    data: { title: "Bills List" },
+  },
+  {
+    path: "bills/add",
+    component: AddBillComponent,
+    data: { title: "Add Bill" },
+  },
+  {
+    path: "bills/edit/:billID",
+    component: AddBillComponent,
+    data: { title: "Edit Bill" },
+  },
+  {
+    path: "bills/details/:billID",
+    component: BillDetailsComponent,
+    data: { title: "Bill Detail" },
+  },
 ];
 
 @NgModule({
@@ -147,6 +195,7 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule,
     InfiniteScrollModule,
+    SharedModule
   ],
 })
-export class PurchasesModule {}
+export class PurchasesModule { }

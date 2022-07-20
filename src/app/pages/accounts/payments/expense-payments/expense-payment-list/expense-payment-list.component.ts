@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService } from "src/app/services/account.service";
+import { DashboardUtilityService } from "src/app/services/dashboard-utility.service";
 
 @Component({
   selector: "app-expense-payment-list",
@@ -12,7 +14,8 @@ export class ExpensePaymentListComponent implements OnInit {
   filter = {
     startDate: null,
     endDate: null,
-    amount: null,
+    type: null,
+    searchValue: null,
   };
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -21,22 +24,30 @@ export class ExpensePaymentListComponent implements OnInit {
   lastItemSK = "";
   loaded = false;
   disableSearch = false;
+  driversObject: any = {};
+  carriersObject: any = {};
+  ownerOpObjects: any = {};
+  constructor(private accountService: AccountService, private toaster: ToastrService, private dashboardUtilityService: DashboardUtilityService) { }
 
-  constructor(private accountService: AccountService) {}
-
-  ngOnInit() {
+  async ngOnInit() {
     this.getList();
+    this.driversObject = await this.dashboardUtilityService.getDrivers();
+    this.carriersObject = await this.dashboardUtilityService.getContactsCarriers();
+    this.ownerOpObjects = await this.dashboardUtilityService.getOwnerOperators();
   }
 
   async getList() {
-    let filterAmount = "";
-    if (this.filter.amount) {
-      filterAmount = encodeURIComponent(`"${this.filter.amount}"`);
+    let searchParam = "";
+    if (this.filter.searchValue !== null && this.filter.searchValue !== "") {
+      searchParam = (this.filter.type === 'amount' || this.filter.type === 'paymentNo') ? encodeURIComponent(`"${this.filter.searchValue}"`) : `${this.filter.searchValue}`;
+    } else {
+      searchParam = null;
     }
+
     if (this.lastItemSK !== "end") {
       const result: any = await this.accountService
         .getData(
-          `expense-payments/paging?amount=${filterAmount}&start=${this.filter.startDate}&end=${this.filter.endDate}&lastKey=${this.lastItemSK}`
+          `expense-payments/paging?type=${this.filter.type}&searchValue=${searchParam}&start=${this.filter.startDate}&end=${this.filter.endDate}&lastKey=${this.lastItemSK}`
         )
         .toPromise();
       this.lastItemSK = "end";
@@ -53,6 +64,7 @@ export class ExpensePaymentListComponent implements OnInit {
       // this.payments = result;
       result.map((v) => {
         v.payMode = v.payMode.replace("_", " ");
+        v.paymentTo = v.paymentTo.replace("_", " ");
         v.url = `/accounts/payments/expense-payments/detail/${v.paymentID}`;
 
         this.payments.push(v);
@@ -60,12 +72,22 @@ export class ExpensePaymentListComponent implements OnInit {
     }
   }
 
+  unitTypeChange() {
+    this.filter.searchValue = null;
+  }
+
+
   searchFilter() {
+    if (this.filter.type != null && this.filter.searchValue == null) {
+      this.toaster.error('Please type value')
+      this.disableSearch = false;
+      return;
+    }
     if (
-      this.filter.amount != null ||
       this.filter.startDate !== null ||
-      this.filter.endDate !== null
+      this.filter.endDate !== null || this.filter.searchValue !== null || this.filter.type !== null
     ) {
+
       this.disableSearch = true;
       this.dataMessage = Constants.FETCHING_DATA;
       this.payments = [];
@@ -76,9 +98,10 @@ export class ExpensePaymentListComponent implements OnInit {
 
   resetFilter() {
     this.disableSearch = true;
-    this.filter.amount = null;
     this.filter.startDate = null;
     this.filter.endDate = null;
+    this.filter.searchValue = null;
+    this.filter.type = null;
     this.lastItemSK = "";
     this.dataMessage = Constants.FETCHING_DATA;
     this.payments = [];

@@ -67,7 +67,7 @@ export class AddVendorPaymentComponent implements OnInit {
     private location: Location,
     private domSanitizer: DomSanitizer,
     private accountService: AccountService
-  ) {}
+  ) { }
 
 
   ngOnInit(): void {
@@ -247,14 +247,24 @@ export class AddVendorPaymentComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success('Vendor payment added successfully.');
+        let obj = {
+          type: '',
+          openFrom: ''
+        }
+        this.listService.triggerPaymentSave(obj);
+        let payObj = {
+          showModal: false,
+          page: "",
+        };
 
+        this.listService.openPaymentChequeModal(payObj);
         this.cancel();
       },
     });

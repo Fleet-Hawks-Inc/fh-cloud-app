@@ -1,42 +1,42 @@
+<style>
+  .extra {
+    display: none;
+  }
+</style>
 <section class="body">
   <div class="inner-wrapper">
     <section role="main" class="content-body pt-0 pr-0 pl-0">
-
       <header class="page-header pr19 pl7">
         <div class="row" style="padding-top: 10px">
-
-          <div class="col-lg-5 col-md-5 pr-0 d-flex">
-            <span class="">
+          <!-- <div class="col-lg-1 col-md-1 pr-0 d-flex">
+            <span class="pr-2 pull-left">
               <span class="input-group-text">
                 <i class="fas fa-calendar-alt"></i>
               </span>
             </span>
-            <div class="col-md-5 col-lg-5 pr-0">
-              <div class="input-group input-group-md mb-3">
+          </div> -->
 
-                <ng-select [(ngModel)]="selectedMonth" class="col">
-                  <ng-option *ngFor="let month of months" [value]="month">{{
-                    month
-                  }}</ng-option>
-
-                </ng-select>
-              </div>
-            </div>
-
-            <div class="col-md-6 col-lg-6 pr-0">
-              <div class="input-group input-group-md mb-3">
-
-                <ng-select class="col" [(ngModel)]="selectedYear">
-                  <ng-option *ngFor="let year of years" [value]="year">{{
-                    year
-                  }}</ng-option>
-
-                </ng-select>
-              </div>
+          <div class="col-md-2 col-lg-2 pr-0">
+            <div class="input-group input-group-md mb-3">
+              <ng-select [(ngModel)]="selectedMonth" class="col">
+                <ng-option *ngFor="let month of months" [value]="month">{{
+                  month
+                }}</ng-option>
+              </ng-select>
             </div>
           </div>
-          <div class="col-md-2 col-lg-2">
 
+          <div class="col-md-2 col-lg-2 pl-2 pr-0">
+            <div class="input-group input-group-md mb-3">
+              <ng-select class="col" [(ngModel)]="selectedYear">
+                <ng-option *ngFor="let year of years" [value]="year">{{
+                  year
+                }}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+
+          <div class="col-md-2 col-lg-2 pl-2">
             <button class="btn btn-sm mr-2 btn-success" (click)="search()">
               Search
             </button>
@@ -45,55 +45,38 @@
             </button>
           </div>
 
-          <div class="col-md-5 col-lg-5 text-right pr-1">
-            <div class="btn-group flex-wrap ml-2">
-              <button
-                type="button"
-                class="btn btn-success btn-sm dropdown-toggle"
-                data-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i class="fas fa-upload"></i> Export<span class="caret"></span>
-              </button>
-              <div
-                class="dropdown-menu"
-                role="menu"
-                x-placement="bottom-start"
-                style="
-                  position: absolute;
-                  will-change: transform;
-                  top: 0px;
-                  left: 0px;
-                  transform: translate3d(0px, 38px, 0px);
-                "
-              >
-
-                <a class="dropdown-item text-1" (click)="generateCSV()">CSV</a>
-              </div>
-            </div>
-          </div>
+          <!--<div class="col-md-6 col-lg-6 text-right pr-1">-->
+          <!--  <div class="btn-group flex-wrap ml-2">-->
+          <!--    <button-->
+          <!--      type="button"-->
+          <!--      class="btn btn-success btn-sm dropdown-toggle"-->
+          <!--      data-toggle="dropdown"-->
+          <!--      aria-expanded="false"-->
+          <!--    >-->
+          <!--      <i class="fas fa-upload"></i> Export<span class="caret"></span>-->
+          <!--    </button>-->
+          <!--    <div-->
+          <!--      class="dropdown-menu"-->
+          <!--      role="menu"-->
+          <!--      x-placement="bottom-start"-->
+          <!--      style="-->
+          <!--        position: absolute;-->
+          <!--        will-change: transform;-->
+          <!--        top: 0px;-->
+          <!--        left: 0px;-->
+          <!--        transform: translate3d(0px, 38px, 0px);-->
+          <!--      "-->
+          <!--    >-->
+          <!--      <a class="dropdown-item text-1" (click)="generateCSV()">CSV</a>-->
+          <!--    </div>-->
+          <!--  </div>-->
+          <!--</div>-->
         </div>
-
       </header>
 
       <div class="m-2">
-
         <div class="row text-dark">
-          <div class="col-12 mb-3">
-            <div class="bg-white p-3">
-              <div class="row text-dark">
-                <div class="col-12">
-                  <div>
-
-                    <h4 class="mt-1 mb-0 font-weight-bold">
-                      Order Detail Report
-                    </h4>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+  
           <div class="col mb-3">
             <div class="bg-white p-3">
               <div>
@@ -102,7 +85,6 @@
                 <h3 class="mt-1 mb-0 font-weight-bold">
                   {{ totalOrdersCount }}
                 </h3>
-
               </div>
             </div>
           </div>
@@ -115,7 +97,6 @@
                 <h3 class="mt-1 mb-0 font-weight-bold">
                   {{ dispatchedCount }}
                 </h3>
-
               </div>
             </div>
           </div>
@@ -125,7 +106,6 @@
                 <h4 class="m-0 text-4">Delivered Orders</h4>
 
                 <h3 class="mt-1 mb-0 font-weight-bold">{{ delieverdCount }}</h3>
-
               </div>
             </div>
           </div>
@@ -135,7 +115,6 @@
                 <h4 class="m-0 text-4">Canceled Orders</h4>
 
                 <h3 class="mt-1 mb-0 font-weight-bold">{{ canceledCount }}</h3>
-
               </div>
             </div>
           </div>
@@ -145,7 +124,6 @@
                 <h4 class="m-0 text-4">tonu Orders</h4>
 
                 <h3 class="mt-1 mb-0 font-weight-bold">{{ tonuCount }}</h3>
-
               </div>
             </div>
           </div>
@@ -154,74 +132,229 @@
               <div>
                 <h4 class="m-0 text-4">Deleted Orders</h4>
                 <h3 class="mt-1 mb-0 font-weight-bold">{{ deletedCount }}</h3>
-
               </div>
             </div>
           </div>
         </div>
-
-        <div class="col-12 pr-0 pl-0">
-          <div class="card">
-            <div class="card-body bor-radius0px">
-
-              <!-- Driver Div  -->
-
-              <section class="reports_div">
-                <div class="row">
-
-                  <table
-                    class="
-                      table table-bordered table-responsive-lg table-striped
-                      mb-0
-                    "
-                    id="datatable-default"
-                  >
-                    <thead>
-                      <tr class="back-color-gray">
-                        <th>Order#</th>
-                        <th>Trip#</th>
-
-                        <th>Type</th>
-                        <th>Date</th>
-                        <th>Customer</th>
-                        <th>Confirmation#</th>
-
-                        <th>Vehicles</th>
-                        <th>Assets</th>
-                        <th>Drivers</th>
-
-                        <th>Customer PO#</th>
-                        <th>Pickup Location</th>
-                        <th>Drop Off Location</th>
-                        <th>Miles</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-
+        </div>
+         <section class="m-2">
+             <div class="row mb-3">
+                 <div class="col-lg-12">
+                    <div class="bg-white p-3 text-dark text-capitalize orders-listing">
+                         <div class="form-group row">
+                            <div class="col-lg-12" style="height: calc(90vh - 149px); overflow-y: scroll;"> 
+                           <p-table #dt [value]="records" [resizableColumns]="true" columnResizeMode="expand"
+                    scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
+                    styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
+                    [loading]="!loaded" scrollHeight="100%" dataKey="orderNumber" responsiveLayout="scroll">
+                           
+                           <ng-template pTemplate="caption">
+                      <div class="p-d-flex d-flex justify-content-between align-items-center">
+                        <div>
+                          <h3 class="m-0">Order Detail Report</h3>
+                        </div>
+                        <div class="text-right">
+                          <span>Showing {{ records.length }} entries</span>
+                          &nbsp;
+                          <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
+                            class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                            
+                             <button
+                            type="button"
+                            pButton
+                            pRipple
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel"
+                            (click)="generateCSV()"
+                            pTooltip="Excel"
+                          ></button>
+                            
+                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                            (click)="clear(dt)" icon="pi pi-filter-slash"></button>
+                        </div>
+                      </div>
+                    </ng-template>
+                    
+                      <ng-template pTemplate="header" let-columns>
+                      <tr>
+                         <th style="width: 3%" alignFrozen="left" pFrozenColumn [frozen]="true"></th>
+                        <th
+                          *ngFor="let dataColumns of columns"
+                          [pSortableColumn]="dataColumns.field"
+                          pResizableColumn
+                          style="width: 10%"
+                        >
+                          <div [ngSwitch]="dataColumns.field">
+                            <!-- Driver Status Filter Customization -->
+                            <span *ngSwitchCase="'orderStatus'">
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="left"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  [showOperator]="false"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                  <ng-template
+                                    pTemplate="filter"
+                                    let-value
+                                    let-filter="filterCallback"
+                                  >
+                                    <p-multiSelect
+                                      [options]="[
+                                        { name: 'Delivered', value: 'delivered' },
+                                        { name: 'Dispatched', value: 'dispatched' },
+                                        { name: 'Created', value: 'created' },
+                                        { name: 'Tonu', value: 'tonu' },
+                                        { name: 'Attached', value: 'attached' },
+                                        { name: 'Cancelled', value: 'cancelled' }
+                                      ]"
+                                      placeholder="Any"
+                                      (onChange)="filter($event.value)"
+                                      optionLabel="name"
+                                      optionValue="value"
+                                    >
+                                      <ng-template let-option pTemplate="item">
+                                        <div>
+                                          <span class="ml-1">{{
+                                            option.name
+                                          }}</span>
+                                        </div>
+                                      </ng-template>
+                                    </p-multiSelect>
+                                  </ng-template>
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                             <span *ngSwitchCase="'orderMode'">
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="left"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  [showOperator]="false"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                  <ng-template
+                                    pTemplate="filter"
+                                    let-value
+                                    let-filter="filterCallback"
+                                  >
+                                    <p-multiSelect
+                                      [options]="[
+                                        { name: 'LTL', value: 'LTL' },
+                                        { name: 'FTL', value: 'FTL' },
+                                      ]"
+                                      placeholder="Any"
+                                      (onChange)="filter($event.value)"
+                                      optionLabel="name"
+                                      optionValue="value"
+                                    >
+                                      <ng-template let-option pTemplate="item">
+                                        <div>
+                                          <span class="ml-1">{{
+                                            option.name
+                                          }}</span>
+                                        </div>
+                                      </ng-template>
+                                    </p-multiSelect>
+                                  </ng-template>
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                            <span *ngSwitchDefault>
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="right"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                          </div>
+                        </th>
                       </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="text-center" *ngIf="records.length === 0">
-                        <td colspan="15">
-                          {{ dataMessage }}
+                    </ng-template>
+                          <ng-template pTemplate="body" let-order let-columns="columns" let-rowIndex="rowIndex"
+                      let-expanded="expanded">
+                         <tr style="cursor: pointer">    
+                             <td alignFrozen="left" pFrozenColumn [frozen]="true" style="width: 3%">
+                          <button type="button" pButton [pRowToggler]="order"
+                            class="p-button-text p-button-rounded p-button-plain" [icon]="
+                              expanded
+                                ? 'pi pi-chevron-down'
+                                : 'pi pi-chevron-right'
+                            "></button>
                         </td>
-                      </tr>
-                      <tr
-                        height="20px"
-                        *ngFor="let order of records"
-                        class="cursorpoint limit"
-                      >
-                        <td>{{ order.orderNumber }}</td>
-                        <td>
+                            
+                              <td  class="font-weight-bold" [ngStyle]="{
+                            width: find(columns, { field: 'orderNumber' }).width
+                          }">{{ order.orderNumber }}</td>
+                            
+                            <td [ngStyle]="{
+                            width: find(columns, { field: 'tripData.tripNo' }).width
+                          }">
                           <span
                             *ngIf="order.tripData && order.tripData.tripNo"
                             >{{ order.tripData.tripNo }}</span
                           >
-                        </td>
-                        <td>{{ order.orderMode }}</td>
-                        <td>{{ order.createdDate }} {{ order.createdTime }}</td>
-                        <td>{{ customers[order.customerID] }}</td>
-                        <td>{{ order.cusConfirmation }}</td>
-                        <td>
+                        </td> 
+                        
+                        <td [ngStyle]="{
+                            width: find(columns, { field: 'orderMode' }).width
+                          }">{{ order.orderMode }}</td>
+                            
+                          <td [ngStyle]="{
+                            width: find(columns, { field: 'createdDate' }).width
+                          }">{{ order.createdDate }} <br />{{ order.createdTime }}</td>
+                              
+                            <td [ngStyle]="{
+                            width: find(columns, { field: 'customers' }).width
+                          }">{{ customers[order.customerID] ? customers[order.customerID] : '-' }}</td>    
+                            
+                               <td [ngStyle]="{
+                            width: find(columns, { field: 'cusConfirmation' }).width
+                          }">{{ order.cusConfirmation }}</td>
+                            
+                           <td [ngStyle]="{
+                            width: find(columns, { field: 'vehicles' }).width
+                          }">
                           <span
                             *ngIf="order.tripData && order.tripData.vehicleIDs"
                           >
@@ -231,12 +364,15 @@
                                   let vehicleID of order.tripData.vehicleIDs
                                 "
                               >
-                                {{ vehicles[vehicleID] }}<br />
+                                {{vehicles[vehicleID]}}<br />
                               </span>
                             </span>
                           </span>
-                        </td>
-                        <td>
+                        </td>  
+                        
+                           <td [ngStyle]="{
+                            width: find(columns, { field: 'tripData.assetIDs' }).width
+                          }">
                           <span
                             *ngIf="order.tripData && order.tripData.assetIDs"
                           >
@@ -249,8 +385,11 @@
                             </span>
                           </span>
                         </td>
-                        <td>
-                          <span
+                        
+                        <td [ngStyle]="{
+                            width: find(columns, { field: 'drivers' }).width
+                          }">
+                         <span
                             *ngIf="order.tripData && order.tripData.driverIDs"
                           >
                             <span *ngIf="order.tripData.driverIDs.length > 0">
@@ -263,8 +402,11 @@
                               </span>
                             </span>
                           </span>
-                        </td>
-                        <td>
+                          </td>
+                          
+                           <td [ngStyle]="{
+                            width: find(columns, { field: 'cusPOs' }).width
+                          }">
                           <span *ngIf="order.cusPOs">
                             <span *ngIf="order.cusPOs.length > 0">
                               <span *ngFor="let po of order.cusPOs"
@@ -273,109 +415,240 @@
                             </span>
                           </span>
                         </td>
-                        <td>
-                          <div *ngIf="order.shippersReceiversInfo.length > 0">
-                            <div
-                              *ngFor="let item of order.shippersReceiversInfo"
-                            >
-                              <div *ngIf="item.shippers.length > 0">
-                                <div *ngFor="let shipper of item.shippers">
-                                  {{ customers[shipper.shipperID] }}
-                                  <span *ngIf="shipper.pickupPoint">
-                                    <span
-                                      *ngFor="let pickup of shipper.pickupPoint"
-                                    >
-                                      {{ pickup.address.address }}&nbsp;{{
-                                        pickup.address.cityName
-                                      }}&nbsp;
-                                      {{ pickup.address.stateName }}&nbsp;{{
-                                        pickup.address.countryCode
-                                      }}&nbsp; {{ pickup.address.zipCode
-                                      }}<br />
-
-                                      <span>{{ pickup.dateAndTime }}</span
-                                      ><br />
-
-                                      <span *ngIf="pickup.commodity.length > 0">
-                                        <span
-                                          *ngFor="
-                                            let commodity of pickup.commodity
-                                          "
-                                        >
-                                          PU#: {{ commodity.pu }} <br />
-                                        </span>
-                                      </span>
-                                    </span>
-                                  </span>
-                                </div>
-                              </div>
-
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <div *ngFor="let item of order.shippersReceiversInfo">
-                            <div *ngFor="let receiver of item.receivers">
-
-                              {{ customers[receiver.receiverID] }}
-                              <span *ngFor="let drop of receiver.dropPoint">
-                                {{ drop.address.address }}&nbsp;{{
-                                  drop.address.cityName
-                                }}
-                                &nbsp; {{ drop.address.stateName }}&nbsp;{{
-                                  drop.address.countryCode
-                                }}&nbsp; {{ drop.address.zipCode }}<br />
-                                <span>{{ drop.dateAndTime }}</span> <br />
-                                <span *ngIf="drop.commodity.length > 0">
-                                  <span
-                                    *ngFor="let commodity of drop.commodity"
-                                  >
-                                    DEL#: {{ commodity.del }} <br />
-                                  </span>
-                                </span>
-                              </span>
-
-                            </div>
-                          </div>
-                        </td>
-
-                        <td>
-
+                          <td  [ngStyle]="{
+                            width: find(columns, { field: 'milesInfo.totalMiles' }).width
+                          }">
                           {{ order.milesInfo.totalMiles }}
                         </td>
-                        <td>
+                        
+                        <td  [ngStyle]="{
+                            width: find(columns, { field: 'totalAmount' }).width
+                          }">
                           {{
                             order.totalAmount
                               | currency: order.charges.freightFee.currency
                           }}
                         </td>
-                        <td>
+                        
+                        <td  [ngStyle]="{
+                            width: find(columns, { field: 'orderStatus' }).width
+                          }"> 
                           <span class="badge badge-dark p-1">{{
                             order.orderStatus
                           }}</span>
                         </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div
-                  class="col-lg-12 mt-3 text-center"
-                  *ngIf="lastItemSK !== 'end' && records.length !== 0"
-                >
-                  <button
-                    type="button"
-                    class="btn btn-success btn-sm text-light"
-                    (click)="onScroll()"
-                  >
-                    Load More..
-                  </button>
-                </div>
-              </section>
-            </div>
+                          </tr>
+                            </ng-template>
+                      <ng-template pTemplate="emptymessage" let-columns>
+                      <div class="col-lg-12 mt-3 text-center">
+                        {{ dataMessage }}
+                        <br /><br />
+                      </div>
+                    </ng-template>
+                    
+                        <ng-template pTemplate="summary" let-columns>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="
+                          lastItemSK !== 'end' && records.length !== 0
+                        ">
+                        <button type="button " (click)="onScroll($event)" class="btn btn-success btn-sm text-light">
+                          Load More..
+                        </button>
 
-          </div>
-        </div>
-      </div>
+                        <br /><br />
+                      </div>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK === 'end'">
+                        Total Records: {{ records.length }}
+                      </div>
+                    </ng-template>
+                            
+                        <ng-template pTemplate="rowexpansion" let-order>
+                      <tr>
+                        <td width="40%" class="p-0 custom-bg-light border-0">
+                          <div class="p-3">
+                            <p-table [value]="order.shippersReceiversInfo"
+                              styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
+                              <ng-template pTemplate="header">
+                      <tr>
+                        <th class="border-0 p-0">Pickup Location</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-ord>
+                      <tbody>
+                      <tr>
+                          <td>
+                            <b>Date: </b>
+                            {{
+                            ord.shippers[0].pickupPoint[0]
+                            .dateAndTime
+                            | date
+                            : "yyyy/MM/dd
+                            hh:mm a"
+                            }}<br />
+                            <b>Location: </b>
+                            <span *ngIf="
+                                          ord.shippers[0].pickupPoint[0].address
+                                            .manual
+                                        ">
+                              {{
+                              ord.shippers[0].pickupPoint[0].address
+                              .address
+                              }},
+                              {{
+                              ord.shippers[0].pickupPoint[0].address
+                              .cityName
+                              }},
+                              {{
+                              ord.shippers[0].pickupPoint[0].address
+                              .stateName
+                              }},
+                              {{
+                              ord.shippers[0].pickupPoint[0].address
+                              .countryName
+                              }}
+                              {{
+                              ord.shippers[0].pickupPoint[0].address
+                              .zipCode
+                              }}
+                            </span>
+                            <span *ngIf="
+                                          !ord.shippers[0].pickupPoint[0]
+                                            .address.manual
+                                        ">
+                              {{
+                              ord.shippers[0].pickupPoint[0].address
+                              .pickupLocation
+                              }}
+                            </span>
+                            <span class="badge badge-dark" *ngIf="
+                                          ord.shippers[0].pickupPoint.length > 1
+                                        ">
+                              +{{
+                              ord.shippers[0].pickupPoint.length - 1
+                              }}
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </ng-template>
+                  </p-table>
+                </div>
+                </td>
+                <td width="40%" class="p-0 custom-bg-light border-0">
+                  <div class="p-3">
+                    <p-table [value]="order.shippersReceiversInfo"
+                      styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th class="border-0 p-0">
+                            Drop Off Location
+                          </th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-ord>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <b>Date: </b>
+                              {{
+                              ord.receivers[0].dropPoint[0]
+                              .dateAndTime
+                              | date
+                              : "yyyy/MM/dd
+                              hh:mm a"
+                              }}<br />
+                              <b>Location: </b>
+                              <span *ngIf="
+                                          ord.receivers[0].dropPoint[0].address
+                                            .manual
+                                        ">
+                                {{
+                                ord.receivers[0].dropPoint[0].address
+                                .address
+                                }},
+                                {{
+                                ord.receivers[0].dropPoint[0].address
+                                .cityName
+                                }},
+                                {{
+                                ord.receivers[0].dropPoint[0].address
+                                .stateName
+                                }},
+                                {{
+                                ord.receivers[0].dropPoint[0].address
+                                .countryName
+                                }}
+                                {{
+                                ord.receivers[0].dropPoint[0].address
+                                .zipCode
+                                }}
+                              </span>
+                              <span *ngIf="
+                                          !ord.receivers[0].dropPoint[0].address
+                                            .manual
+                                        ">
+                                {{
+                                ord.receivers[0].dropPoint[0].address
+                                .dropOffLocation
+                                }}
+                              </span>
+                              <span class="badge badge-dark" *ngIf="ord.receivers[0].dropPoint > 1">
+                                +{{ ord.receivers[0].dropPoint - 1 }}
+                              </span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </td>
+                <td width="20%" class="p-0 custom-bg-light border-0">
+                  <div class="p-3">
+                    <p-table [value]="order.shippersReceiversInfo"
+                      styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th class="border-0 p-0">Commodity</th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-ord>
+                        <tbody>
+                          <tr>
+                            <td>
+                              {{
+                              ord.shippers[0].pickupPoint[0]
+                              .commodity[0].name
+                              ? "Name: " +
+                              ord.shippers[0].pickupPoint[0]
+                              .commodity[0].name
+                              : "-"
+                              }}<br />
+                              {{
+                              ord.shippers[0].pickupPoint[0]
+                              .commodity[0].quantity
+                              ? "Qty:" +
+                              ord.shippers[0].pickupPoint[0]
+                              .commodity[0].quantity +
+                              " " +
+                              ord.shippers[0].pickupPoint[0]
+                              .commodity[0].quantityUnit
+                              : "Qty:" + "null"
+                              }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </td>
+                </tr>
+                </ng-template>      
+                          </p-table>
+                         </div>
+                       </div>
+                       </div>
+                   </div>
+               </div>
+           </section>
     </section>
   </div>
 </section>

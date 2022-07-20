@@ -7,6 +7,11 @@
             Order Details
           </div>
           <div class="col-md-8 col-lg-8 text-right" *ngIf="showBtns">
+            <span class="mr-2 text-dark"><b>Invoiced: </b>
+              {{ invDate ? (invDate | date: "yyyy/MM/dd") : "No" }}
+            </span>
+            <span class="mx-2 text-dark text-capitalize"><b>Payment:</b>
+              {{ invStatus ? invStatus.replace("_", " ") : "NA" }}</span>
             <a *ngIf="orderStatus === 'delivered'" routerLink="/dispatch/orders/edit/{{ orderID }}"
               [queryParams]="{ state: 'recall' }" title="Recall" class="btn btn-sm mr-2 btn-success">
               <i class="fas fa-redo"></i>
@@ -14,20 +19,20 @@
             <button *ngIf="showInvBtn" (click)="openEmailInv()" class="btn btn-sm mr-2 btn-success">
               Email
             </button>
-            <button *ngIf="showInvBtn" (click)="showInv(); isModalShow = true" class="btn btn-success btn-sm mr-2">
+            <button *ngIf="showInvBtn" [disabled]="invBtnDisableStat" (click)="showInv(); isModalShow = true"
+              class="btn btn-success btn-sm mr-2">
               Invoice
             </button>
 
-            <button *ngIf="orderStatus === 'brokerage'" (click)="downloadBrokeragePdf()" [disabled]="brokerageDisabled"
-              class="btn btn-success btn-sm mr-2">
+            <button *ngIf="brokerage.carrierID && brokerage.brokerageAmount" (click)="downloadBrokeragePdf()"
+              [disabled]="brokerageDisabled" class="btn btn-success btn-sm mr-2">
               <i class="fas fa-download"> </i>
               Brokerage
             </button>
-            <!-- <button (click)="downloadBolPdf();" class="btn btn-success btn-sm
-              mr-2">
+            <button (click)="downloadBolPdf()" class="btn btn-success btn-sm mr-2">
               <i class="fas fa-download"> </i>
               BOL
-            </button> -->
+            </button>
             <a *ngIf="hideEdit" routerLink="/dispatch/orders/edit/{{ orderID }}" class="btn btn-default btn-sm mr-2"><i
                 class="fas fa-pencil-alt"></i> Edit Order</a>
             <a (click)="cancel()" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Orders</a>
@@ -58,18 +63,11 @@
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-12">
-            <div class="
-                bg-white
-                p-3
-                d-flex
-                justify-content-between
-                align-items-center
-                text-dark
-              ">
+            <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
               <div>
                 <h4 class="m-0 font-weight-bold">
-                  {{ orderMode }} - ORD{{ orderNumber }}
-                  <span class="badge p-1 badge-dark mt-2 mb-0 text-uppercase" *ngIf="orderStatus">
+                  {{ orderMode }} - {{ orderNumber }}
+                  <span class="badge badge-dark text-capitalize mb-0" *ngIf="orderStatus">
                     {{ orderStatus }} <span *ngIf="recallStatus">(R) </span>
                   </span>
                 </h4>
@@ -159,13 +157,7 @@
                                             </div>
                                         </div> -->
                     <div class="row m-0">
-                      <div class="
-                          col-lg-4
-                          p-2
-                          font-weight-bold
-                          text-3 text-left
-                          back-color-gray
-                        ">
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Customer Confirmation:
                       </div>
                       <div class="col-lg-8 p-2 border-box">
@@ -173,13 +165,7 @@
                       </div>
                     </div>
                     <div class="row m-0">
-                      <div class="
-                          col-lg-4
-                          p-2
-                          font-weight-bold
-                          text-3 text-left
-                          back-color-gray
-                        ">
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Reference:
                       </div>
                       <div class="col-lg-8 p-2 border-box">
@@ -187,13 +173,7 @@
                       </div>
                     </div>
                     <div class="row m-0">
-                      <div class="
-                          col-lg-4
-                          p-2
-                          font-weight-bold
-                          text-3 text-left
-                          back-color-gray
-                        ">
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Order Creation Date/Time:
                       </div>
                       <div class="col-lg-8 p-2 border-box">
@@ -206,13 +186,7 @@
                       </div>
                     </div>
                     <div class="row m-0">
-                      <div class="
-                          col-lg-4
-                          p-2
-                          font-weight-bold
-                          text-3 text-left
-                          back-color-gray
-                        ">
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Additional Contact Name:
                       </div>
                       <div class="col-lg-8 p-2 border-box">
@@ -222,13 +196,7 @@
                       </div>
                     </div>
                     <div class="row m-0">
-                      <div class="
-                          col-lg-4
-                          p-2
-                          font-weight-bold
-                          text-3 text-left
-                          back-color-gray
-                        ">
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Phone:
                       </div>
                       <div class="col-lg-8 p-2 border-box">
@@ -236,13 +204,7 @@
                       </div>
                     </div>
                     <div class="row m-0">
-                      <div class="
-                          col-lg-4
-                          p-2
-                          font-weight-bold
-                          text-3 text-left
-                          back-color-gray
-                        ">
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Email:
                       </div>
                       <div class="col-lg-8 p-2 border-box">
@@ -273,12 +235,8 @@
                     <div class="card card-default mb-0 mt-0">
                       <div class="card-header bgnone" id="collapse1Heading{{ i }}">
                         <h4 class="card-title m-0">
-                          <a class="
-                              accordion-toggle
-                              cursorpoint
-                              font-weight-bold
-                              text-4 text-dark
-                            " data-toggle="collapse" [attr.data-target]="'#collapse' + i" aria-expanded="true"
+                          <a class="accordion-toggle cursorpoint font-weight-bold text-4 text-dark"
+                            data-toggle="collapse" [attr.data-target]="'#collapse' + i" aria-expanded="true"
                             [attr.aria-controls]="'collapse' + i">
                             Shipment-{{ i + 1 }}</a>
                         </h4>
@@ -307,20 +265,11 @@
                                 <a data-toggle="collapse" [attr.data-target]="
                                     '#collapseShipperArea-' + i + '-' + j
                                   " href="#collapseShipperArea-{{ i }}-{{ j }}" aria-expanded="false">
-                                  <label style="background: #f4f4f4; width: 100%" class="
-                                      text-dark text-5
-                                      mb-0
-                                      font-weight-bold
-                                      btn
-                                    " (click)="caretClickShipper(i, j)" id="shipperArea-{{ i }}-{{ j }}">
+                                  <label style="background: #f4f4f4; width: 100%"
+                                    class="text-dark text-5 mb-0 font-weight-bold btn" (click)="caretClickShipper(i, j)"
+                                    id="shipperArea-{{ i }}-{{ j }}">
                                     <span class="pull-left">Shipper {{ j + 1 }}</span>
-                                    <i class="
-                                        fas
-                                        fa-caret-right
-                                        caret_icon
-                                        pull-right
-                                        mt-2
-                                      "></i>
+                                    <i class="fas fa-caret-right caret_icon pull-right mt-2"></i>
                                   </label>
                                 </a>
 
@@ -332,10 +281,7 @@
                                       ">
                                       <div class="row">
                                         <div class="col-lg-12">
-                                          <p class="
-                                              mb-0
-                                              text-dark text-capitalize
-                                            ">
+                                          <p class="mb-0 text-dark text-capitalize">
                                             <strong>{{
                                               shipper.shipperName
                                               }}</strong>
@@ -384,10 +330,7 @@
                                                 </span>
                                               </span>
                                             </p>
-                                            <p class="
-                                                mb-0
-                                                text-dark text-capitalize
-                                              ">
+                                            <p class="mb-0 text-dark text-capitalize">
                                               <strong>Pickup Instruction:</strong>
                                               {{
                                               pick.pickupInstruction
@@ -395,10 +338,7 @@
                                               : "-"
                                               }}
                                             </p>
-                                            <p class="
-                                                mb-0
-                                                text-dark text-capitalize
-                                              ">
+                                            <p class="mb-0 text-dark text-capitalize">
                                               <strong>Contact Person at
                                                 Pickup:</strong>
                                               {{
@@ -413,15 +353,8 @@
                                               pick.phone ? pick.phone : "-"
                                               }}
                                             </p>
-                                            <table class="
-                                                table
-                                                table-responsive-lg
-                                                table-bordered
-                                                table-striped
-                                                table-sm
-                                                mt-3
-                                                mb-0
-                                              ">
+                                            <table
+                                              class="table table-responsive-lg table-bordered table-striped table-sm mt-3 mb-0">
                                               <thead>
                                                 <tr>
                                                   <th>Sr. No.</th>
@@ -500,19 +433,11 @@
                                 <a data-toggle="collapse" [attr.data-target]="
                                     '#collapseReceiverArea-' + i + '-' + k
                                   " href="#collapseReceiverArea-{{ i }}-{{ k }}" aria-expanded="false">
-                                  <label style="background: #f4f4f4; width: 100%" class="
-                                      text-dark text-5
-                                      font-weight-bold
-                                      btn
-                                    " (click)="caretClickReceiver(i, k)" id="receiverArea-{{ i }}-{{ k }}">
+                                  <label style="background: #f4f4f4; width: 100%"
+                                    class="text-dark text-5 font-weight-bold btn" (click)="caretClickReceiver(i, k)"
+                                    id="receiverArea-{{ i }}-{{ k }}">
                                     <span class="pull-left">Receiver {{ k + 1 }}</span>
-                                    <i class="
-                                        fas
-                                        fa-caret-right
-                                        caret_icon
-                                        pull-right
-                                        mt-2
-                                      "></i>
+                                    <i class="fas fa-caret-right caret_icon pull-right mt-2"></i>
                                   </label>
                                   <div class="expand_caret caret"></div>
                                 </a>
@@ -525,10 +450,7 @@
                                       ">
                                       <div class="row">
                                         <div class="col-lg-12">
-                                          <p class="
-                                              mb-0
-                                              text-dark text-capitalize
-                                            ">
+                                          <p class="mb-0 text-dark text-capitalize">
                                             <strong>{{
                                               receiver.receiverName
                                               }}</strong>
@@ -567,10 +489,7 @@
                                               | date: "yyyy/MM/dd hh:mm a"
                                               }}
                                             </p>
-                                            <p class="
-                                                mb-0
-                                                text-dark text-capitalize
-                                              ">
+                                            <p class="mb-0 text-dark text-capitalize">
                                               <strong>Delivery Instruction:</strong>
                                               {{
                                               drop.dropOffInstruction
@@ -578,10 +497,7 @@
                                               : "-"
                                               }}
                                             </p>
-                                            <p class="
-                                                mb-0
-                                                text-dark text-capitalize
-                                              ">
+                                            <p class="mb-0 text-dark text-capitalize">
                                               <strong>Contact Person at
                                                 Delivery</strong>
                                               {{
@@ -596,15 +512,8 @@
                                               drop.phone ? drop.phone : "-"
                                               }}
                                             </p>
-                                            <table class="
-                                                table
-                                                table-responsive-lg
-                                                table-bordered
-                                                table-striped
-                                                table-sm
-                                                mt-3
-                                                mb-0
-                                              ">
+                                            <table
+                                              class="table table-responsive-lg table-bordered table-striped table-sm mt-3 mb-0">
                                               <thead>
                                                 <tr>
                                                   <th>Sr. No.</th>
@@ -691,28 +600,15 @@
               <div class="row">
                 <div class="col-lg-6 text-dark">
                   <div id="vehicle-details" class="">
-                    <div class="row m-0 back-color-gray">
+                    <div class="row m-0 back-color-gray border-0">
                       <div class="col-lg-12 p-2">
-                        <h2 class="
-                            pull-left
-                            mt-0
-                            mb-0
-                            text-4
-                            font-weight-semibold
-                            text-dark
-                          ">
+                        <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
                           Additional Details
                         </h2>
                       </div>
                     </div>
                     <div class="row m-0">
-                      <div class="
-                          col-lg-4
-                          p-2
-                          font-weight-bold
-                          text-3 text-left
-                          back-color-gray
-                        ">
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Seal Type:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -720,13 +616,7 @@
                       </div>
                     </div>
                     <div class="row m-0" *ngIf="additionalDetails.sealType != ''">
-                      <div class="
-                          col-lg-4
-                          p-2
-                          font-weight-bold
-                          text-3 text-left
-                          back-color-gray
-                        ">
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Seal#:
                       </div>
                       <div class="col-lg-8 p-2 border-box">
@@ -734,13 +624,7 @@
                       </div>
                     </div>
                     <div class="row m-0" *ngIf="!additionalDetails.trailerType">
-                      <div class="
-                          col-lg-4
-                          p-2
-                          font-weight-bold
-                          text-3 text-left
-                          back-color-gray
-                        ">
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Asset Type:
                       </div>
                       <div class="col-lg-8 p-2 border-box text-capitalize">
@@ -749,13 +633,7 @@
                     </div>
 
                     <div class="row m-0" *ngIf="additionalDetails.trailerType == 'reefer'">
-                      <div class="
-                          col-lg-4
-                          p-2
-                          font-weight-bold
-                          text-3 text-left
-                          back-color-gray
-                        ">
+                      <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                         Temperature Required:
                       </div>
                       <div class="col-lg-8 p-2 border-box">
@@ -770,21 +648,14 @@
                   </div>
                 </div>
 
-                <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
+                <div class="col-xl-6 col-12 mb-3 pl-0 pr-0" style="padding-top: 3px">
                   <div class="col-xl-12 col-12 mb-3">
                     <div class="boxshadow1 maindisbox w100 mb-3 pull-left">
                       <div class="widgetload">
                         <div class="widgettbload">
                           <span class="pull-right text-3 mt-2 text-dark">
                           </span>
-                          <h2 class="
-                              pull-left
-                              mt-0
-                              mb-0
-                              text-4
-                              font-weight-semibold
-                              text-dark
-                            ">
+                          <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
                             Miles for the Load is entered using:
                             <span *ngIf="milesInfo.calculateBy == 'pcmiles'">PC miles</span>
                             <span *ngIf="milesInfo.calculateBy != 'pcmiles'">Manual</span>
@@ -792,14 +663,7 @@
                         </div>
 
                         <div class="widgetlinfo">
-                          <table class="
-                              table
-                              table-responsive-lg
-                              table-bordered
-                              table-striped
-                              table-sm
-                              mb-0
-                            ">
+                          <table class="table table-responsive-lg table-bordered table-striped table-sm mb-0">
                             <thead>
                               <tr class="bgcol2">
                                 <th>From</th>
@@ -886,26 +750,19 @@
           <div class="col-lg-12">
             <div class="bg-white p-3">
               <div class="row">
-                <div class="col-xl-6 col-12 mb-3 pl-0 pr-0">
+                <div class="col-xl-5 col-12 mb-3 pl-0 pr-0">
                   <div class="col-xl-12 col-12 mb-3">
                     <div class="boxshadow1 maindisbox w100 pull-left">
                       <div class="widgetload">
-                        <div class="widgettbload">
+                        <div *ngIf="isOrderPriceEnabled" class="widgettbload">
                           <span class="pull-right text-3 mt-2 text-dark">
                           </span>
-                          <h2 class="
-                              pull-left
-                              mt-0
-                              mb-0
-                              text-4
-                              font-weight-semibold
-                              text-dark
-                            ">
+                          <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
                             Charges
                           </h2>
                         </div>
 
-                        <div class="widgetlinfo">
+                        <div *ngIf="isOrderPriceEnabled" class="widgetlinfo">
                           <div class="col-lg-2 pull-left">
                             <img src="assets/img/icon-cur.png" class="img-fluid" alt="shipper" />
                           </div>
@@ -960,159 +817,16 @@
                               <span class="pull-right">{{ totalCharges | number: "1.2-2" }}
                                 {{ charges.freightFee.currency }}</span>
                             </p>
-                            <!-- <p class="mb-0 text-dark bordtopdas">
-                              <strong>Advance Received</strong>
-                              <span class="pull-right">${{advances}}</span>
-                            </p> -->
-                            <!-- <p class="mb-0 text-dark bordtopdas">
-                              <strong>Balance</strong>
-                              <span class="pull-right"
-                                >{{ balance }}
-                                {{ charges.freightFee.currency }}</span
-                              >
-                            </p> -->
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-
-                <div class="col-xl-3 col-12 pl-0 pr-0">
-                  <div class="col-xl-12 col-12 mb-3">
-                    <div class="boxshadow1 maindisbox w100 pull-left">
-                      <div class="widgetload">
-                        <div class="widgettbload">
-                          <h2 class="
-                              pull-left
-                              mt-0
-                              mb-0
-                              text-4
-                              font-weight-semibold
-                              text-dark
-                            ">
-                            <i class="fas fa-box"></i> Attachments
-                          </h2>
-                        </div>
-                        <div class="row">
-                          <div class="col-12">
-                            <div class="row my-2 px-2" *ngFor="let item of attachments; let d = index">
-                              <div class="col-5">
-                                <a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
-                                  (click)="setPDFSrc(item.docPath)">Document {{ d + 1 }}</a>
-                              </div>
-                              <div class="col- 3 text-right">
-                                <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.docPath)"
-                                  data-toggle="modal" data-target="#viewDocModal"></em>
-                                <a href="javascript:;" (click)="delete('attachment', item.name, d)"
-                                  class="modal-with-form">
-                                  <em class="fas fa-times text-danger"></em></a>
-                              </div>
-                            </div>
-                            <div *ngIf="attachments.length == 0" class="my-2 px-2">
-                              <span>No attachment found</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-xl-3 col-12 pl-0 pr-0">
-                  <div class="col-xl-12 col-12 mb-3">
-                    <div class="boxshadow1 maindisbox w100 pull-left">
-                      <div class="widgetload">
-                        <div class="widgettbload">
-                          <div class="row align-items-center">
-                            <div class="col-6">
-                              <h2 class="
-                                  pull-left
-                                  mt-0
-                                  mb-0
-                                  text-4
-                                  font-weight-semibold
-                                  text-dark
-                                ">
-                                <i class="fas fa-box"></i> Upload BOL/POD
-                              </h2>
-                            </div>
-                            <div class="col-6">
-                              <input type="file" #uploadBol (change)="selectDocuments($event)" multiple
-                                class="p-0 form-control pull-right mb-0" id="bolUpload" />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row" style="max-height: 170px; overflow: scroll">
-                          <div class="col-12">
-                            <table class="table table-bordered">
-                              <thead>
-                                <th>Sr.</th>
-                                <th>Name</th>
-                                <th>Icon/Thumbnail</th>
-                                <th>Action</th>
-                              </thead>
-                              <tbody>
-                                <tr *ngIf="docs.length == 0">
-                                  <td colspan="4">
-                                    <span>No document found</span>
-                                  </td>
-                                </tr>
-                                <tr *ngFor="let doc of docs; let d = index">
-                                  <td>{{ d + 1 }}</td>
-                                  <td>{{ doc.displayName }}</td>
-                                  <td>
-                                    <a class="image-popup-no-margins" href="{{ doc.docPath }}" target="_blank">
-                                      <img class="img_thumbnail" src="{{ doc.imgPath }}" />
-                                    </a>
-                                  </td>
-                                  <td class="cursorpoint text-center">
-                                    <a href="javascript:;" (click)="delete('docs', doc.name, d)"
-                                      class="modal-with-form">
-                                      <em class="fas fa-times text-danger"></em></a>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <!-- <div class="row my-2 px-2" *ngFor="let doc of docs;let d= index">
-                              <div class="col-4">
-                                <a class="image-popup-no-margins" href="{{doc.docPath}}" target="_blank">
-                                  <img class="img_thumbnail" src="{{doc.imgPath}}">
-                                  <p>{{doc.displayName}}</p>
-                                </a>
-                                <a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
-                                  (click)="setPDFSrc(doc.path)">{{doc.displayName}}</a>
-                              </div>
-                              <div class="col-1 text-right">
-                                <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
-                                  data-target="#viewDocModal"></em>
-                                <a href="javascript:;" (click)="delete('docs',doc.name, d)" class="modal-with-form">
-                                  <em class="fas fa-times text-danger"></em></a>
-                              </div>
-                            </div> -->
-                            <!-- <div *ngIf="docs.length == 0;" class="my-2 px-2">
-                              <span>No document found</span>
-                            </div> -->
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-xl-6 col-12 pl-0 pr-0">
                   <div class="col-xl-12 col-12 mb-3">
                     <div class="boxshadow1">
                       <div class="widgetload">
                         <div class="widgettbload">
-                          <h2 class="
-                              pull-left
-                              mt-0
-                              mb-0
-                              text-4
-                              font-weight-semibold
-                              text-dark
-                            ">
+                          <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
                             <i class="fas fa-user"></i> Order Log
                           </h2>
                         </div>
@@ -1147,6 +861,110 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="col-xl-3 col-12 pl-0 pr-0">
+                  <div class="col-xl-12 col-12 mb-3">
+                    <div class="boxshadow1 maindisbox w100 pull-left">
+                      <div class="widgetload">
+                        <div class="widgettbload">
+                          <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                            <i class="fas fa-box"></i> Attachments
+                          </h2>
+                        </div>
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="row mb-1" *ngFor="let item of attachments; let d = index">
+                              <div class="col-lg-9">
+                                <a href="{{ item.path }}" data-toggle="modal" data-target="#viewDocModal"
+                                  (click)="setPDFSrc(item.path)">Document {{ d + 1 }}</a>
+                              </div>
+                              <div class="col-lg-3 text-right">
+                                <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                                  (click)="delete('attachment', item.name, d)"><i class="fas fa-trash-alt"></i></a>
+                                <a href="javascript:;" class="btn btn-deafault pull-right btn-xs"
+                                  (click)="setPDFSrc(item.path)" data-toggle="modal" data-target="#viewDocModal"><i
+                                    class="fas fa-eye"></i></a>
+                              </div>
+                            </div>
+
+                            <div *ngIf="attachments.length == 0" class="my-2 px-2">
+                              <span>No attachment found</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-xl-4 col-12 pl-0 pr-0">
+                  <div class="col-xl-12 col-12 mb-3">
+                    <div class="boxshadow1 maindisbox w100 pull-left">
+                      <div class="widgetload">
+                        <div class="widgettbload">
+                          <div class="row align-items-center">
+                            <div class="col-6">
+                              <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
+                                <i class="fas fa-box"></i> Documents
+                              </h2>
+                            </div>
+                            <div class="col-6 text-right">
+                              <button [disabled]="docs.length >= 10" class="btn btn-success btn-sm"
+                                (click)="openDocModal()">
+                                Add Document
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row" style="max-height: 260px; overflow: scroll">
+                          <div class="col-12">
+                            <table class="table table-bordered">
+                              <thead>
+                                <th>Sr.</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Icon/Thumbnail</th>
+                                <th>Action</th>
+                              </thead>
+                              <tbody>
+                                <tr *ngIf="docs.length == 0">
+                                  <td colspan="4">
+                                    <span>No document found</span>
+                                  </td>
+                                </tr>
+                                <tr *ngFor="let doc of docs; let d = index">
+                                  <td>{{ d + 1 }}</td>
+                                  <td>{{ doc.displayName }}</td>
+                                  <td>
+                                    <span *ngIf="doc.type === 'bol'">Bill of lading</span>
+                                    <span *ngIf="doc.type === 'pod'">Proof of delivery</span>
+                                    <span *ngIf="doc.type === 'fuelRpt'">Fuel Receipts</span>
+                                    <span *ngIf="doc.type === 'loadCnf'">Load Confirmation</span>
+                                    <span *ngIf="doc.type === 'accident'">Accident</span>
+                                    <span *ngIf="doc.type === 'citation'">Citation</span>
+                                    <span *ngIf="doc.type === 'tickets'">Tickets</span>
+                                    <span *ngIf="doc.type === 'inspect'">Inspect</span>
+                                    <span *ngIf="doc.type === 'other'">Other</span>
+                                  </td>
+                                  <td>
+                                    <a class="image-popup-no-margins" href="{{ doc.docPath }}" target="_blank">
+                                      <img class="img_thumbnail" src="{{ doc.imgPath }}" />
+                                    </a>
+                                  </td>
+                                  <td class="cursorpoint text-center">
+                                    <a href="javascript:;" (click)="delete('docs', doc.name, d)"
+                                      class="modal-with-form">
+                                      <em class="fas fa-times text-danger"></em></a>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1155,47 +973,6 @@
     </section>
   </div>
 </section>
-
-<!-- Modal -->
-<div class="modal fade" id="templateSelectionModal" tabindex="-1" role="dialog"
-  aria-labelledby="templateSelectionModalLabel" aria-hidden="true">
-  <div class="modal-dialog" style="max-width: 1200px" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="templateSelectionModalLabel">
-          Select Invoice Template
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <i class="far fa-window-close modal-dismiss" style="font-size: 25px"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="invoice-templates__listing">
-          <ul class="m-0 p-0 d-flex flex-wrap">
-            <li class="position-relative" *ngFor="let item of templateList; let i = index"
-              [ngClass]="{ active: selectedItem === i }" (click)="selectedItem = i">
-              <img src="{{ item }}" class="img-fluid" />
-              <div class="invoice-actions">
-                <div>
-                  <a href="javascript:;" class="btn btn-success">Use template</a>
-                </div>
-              </div>
-              <div class="selected-template">
-                <i class="fa fa-check-circle fa-fw" style="color: #000"></i>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <a (click)="previewModal()" href="javascript:;" class="btn btn-success">Preview</a>
-        <button type="button" class="btn btn-default" data-dismiss="modal">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- *ngIf="isModalShow" -->
 <ng-template #previewInvoiceModal let-modal>
@@ -1206,32 +983,38 @@
           <tbody>
             <tr>
               <td>
-                <table width="100%" style="margin-top: 0px; border-bottom: 1px solid #cdcdcd">
+                <table width="100%" style="margin-top: 0px; border-bottom: 1px solid #595959">
                   <tbody>
                     <tr>
                       <td width="60%" class="title" valign="center" style="padding: 10px; text-align: left">
-                        <h4 style="
+                        <h4 class="text-dark" style="
                             margin: 0 0 15px;
-                            font-size: 37px;
+                            font-size: 1.8em;
                             color: #040404;
                             font-weight: 700;
                             text-transform: capitalize;
                           ">
-                          INVOICE
+                          Invoice
                         </h4>
                       </td>
                       <td align="right">
                         <img crossorigin="anonymous" *ngIf="companyLogoSrc" [src]="companyLogoSrc" alt="logo"
-                          style="max-width: 100px;">
-                        <p *ngIf="invoiceData.carrierData.termsInfo.tagLine && invoiceData.carrierData.termsInfo.tagLine != ''"
-                          class="m-0 font-weight-bold text-dark">{{ invoiceData.carrierData.termsInfo.tagLine }}</p>
+                          style="max-width: 100px" />
+                        <p *ngIf="
+                            invoiceData.carrierData &&
+                            invoiceData.carrierData.termsInfo.tagLine &&
+                            invoiceData.carrierData.termsInfo.tagLine != ''
+                          " class="m-0 font-weight-bold text-dark">
+                          {{ invoiceData.carrierData.termsInfo.tagLine }}
+                        </p>
                       </td>
                     </tr>
-                    <tr>
+
+                    <tr style="border-top: 1px solid #595959">
                       <td width="60%" class="title" valign="top" style="padding: 10px; text-align: left">
                         <p style="margin: 0; color: #000">
                           <span style="font-size: 12px">
-                            <b>Invoice#</b>
+                            <b>Invoice# </b>
                           </span>
                           {{ orderNumber }}
                         </p>
@@ -1239,7 +1022,12 @@
                           <span style="font-size: 12px">
                             <b>Invoice Date</b>
                           </span>
-                          {{ today | date: "yyyy/MM/dd" }}
+                          <span *ngIf="invDate">{{
+                            invDate | date: "yyyy/MM/dd"
+                            }}</span>
+                          <span *ngIf="!invDate">{{
+                            today | date: "yyyy/MM/dd"
+                            }}</span>
                         </p>
                         <p style="margin: 0; color: #000">
                           <span style="font-size: 12px">
@@ -1251,7 +1039,11 @@
                           <span style="font-size: 12px">
                             <b>Customer Confirmation#: </b>
                           </span>
-                          {{ invoiceData.cusConfirmation ? invoiceData.cusConfirmation : 'NA' }}
+                          {{
+                          invoiceData.cusConfirmation
+                          ? invoiceData.cusConfirmation
+                          : "NA"
+                          }}
                         </p>
                       </td>
                       <td width="60%" class="title" valign="top" style="padding: 10px; text-align: right">
@@ -1268,18 +1060,17 @@
                             color: #040404;
                             font-weight: 500;
                             font-size: 13px;
+                            line-height: 24px;
                             width: 300px;
-                            float: right;
-                          " class="m-0">
+                          " class="ml-auto m-0">
                           {{ invoiceData.carrierData.address }}
                         </h6>
                         <h6 style="
                             color: #040404;
                             font-weight: 500;
                             font-size: 13px;
-                            float: right;
                             line-height: 24px;
-                          " class="m-0">
+                          " class="ml-auto m-0">
                           <strong>Phone: </strong>
                           {{ invoiceData.carrierData.phone }}
                         </h6>
@@ -1287,9 +1078,8 @@
                             color: #040404;
                             font-weight: 500;
                             font-size: 13px;
-                            float: right;
                             line-height: 24px;
-                          " class="m-0">
+                          " class="ml-auto m-0">
                           <strong>Email: </strong>
                           {{ invoiceData.carrierData.email }}
                         </h6>
@@ -1297,7 +1087,7 @@
                     </tr>
                   </tbody>
                 </table>
-                <table width="100%" style="margin-top: 0px; border-bottom: 1px solid #cdcdcd">
+                <table width="100%" style="margin-top: 0px; border-bottom: 1px solid #595959">
                   <tbody>
                     <tr>
                       <td style="padding: 10px; font-size: 13px" valign="top">
@@ -1305,9 +1095,14 @@
                         <span style="text-transform: capitalize">
                           {{ invoiceData.data[0].customerData.companyName }}
                           <br /></span>
-                        <b> Address:</b> {{ invoiceData.data[0].customerData.address }} <br />
-                        <b> C/O:</b> {{invoiceData.data[0].customerData.careOption ?
-                        invoiceData.data[0].customerData.careOption : 'NA'}}
+                        <b> Address:</b>
+                        {{ invoiceData.data[0].customerData.address }} <br />
+                        <b> C/O:</b>
+                        {{
+                        invoiceData.data[0].customerData.careOption
+                        ? invoiceData.data[0].customerData.careOption
+                        : "NA"
+                        }}
                       </td>
                       <td style="
                           padding: 10px;
@@ -1338,7 +1133,7 @@
                 <table width="100%" style="
                     color: #040404;
                     margin-top: 0px;
-                    border-bottom: 1px solid #cdcdcd;
+                    border-bottom: 1px solid #595959;
                   ">
                   <tbody>
                     <tr>
@@ -1402,7 +1197,7 @@
                                 ">
                                 Shipment - {{ m + 1 }}
                               </p>
-                              <div class="shipment__wrap" style="
+                              <div class="shipment__wrap shipmentbox" style="
                                   padding: 5px;
                                   float: left;
                                   margin-bottom: 5px;
@@ -1479,14 +1274,16 @@
                                             <thead>
                                               <tr style="font-size: 12px">
                                                 <td class="text-capitalize" colspan="2">
-                                                  COMMODITY
+                                                  <strong>COMMODITY</strong>
                                                 </td>
                                                 <td style="width: 80px">
-                                                  PICK#
+                                                  <strong>PICK#</strong>
                                                 </td>
-                                                <td style="width: 70px">QTY</td>
                                                 <td style="width: 70px">
-                                                  WEIGHT
+                                                  <strong>QTY</strong>
+                                                </td>
+                                                <td style="width: 70px">
+                                                  <strong>WEIGHT</strong>
                                                 </td>
                                               </tr>
                                             </thead>
@@ -1538,7 +1335,7 @@
                                 </div>
                               </div>
                               <div class="receivement__wrap" style="width: 49.5%; float: left">
-                                <div *ngFor="let receive of ship.receivers" style="
+                                <div class="shipmentbox" *ngFor="let receive of ship.receivers" style="
                                     padding: 5px;
                                     margin-bottom: 5px;
                                     border: 1px dashed #8d8d8d;
@@ -1590,9 +1387,7 @@
                                       <tbody>
                                         <tr>
                                           <td colspan="6" style="padding: 5px 0">
-                                            <table class="
-                                                table-striped table-bordered
-                                              " width="100%">
+                                            <table class="table-striped table-bordered" width="100%">
                                               <thead>
                                                 <tr style="font-size: 12px">
                                                   <td colspan="2">COMMODITY</td>
@@ -1743,6 +1538,8 @@
 
                               <tr *ngIf="
                                   invoiceData.charges.accessorialFeeInfo
+                                    .accessorialFee.length > 0 &&
+                                  invoiceData.charges.accessorialFeeInfo
                                     .accessorialFee[0].type != '' &&
                                   invoiceData.charges.accessorialFeeInfo
                                     .accessorialFee[0].type != null
@@ -1768,6 +1565,8 @@
                                 </td>
                               </tr>
                               <tr *ngIf="
+                                  invoiceData.charges.accessorialDeductionInfo
+                                    .accessorialDeduction.length > 0 &&
                                   invoiceData.charges.accessorialDeductionInfo
                                     .accessorialDeduction[0].type != '' &&
                                   invoiceData.charges.accessorialDeductionInfo
@@ -1833,39 +1632,13 @@
                       </tr>
                     </tbody>
                   </table>
-                  <table class="invoice-iner__wrapper" width="100%" style="border-top: none">
-                    <tbody>
-                      <tr *ngFor="let newDoc of invDocs;">
-                        <td>
-                          <table>
-                            <tbody>
-                              <tr *ngIf="newDoc.ext === 'pdf'">
-                                <td>
-                                  <pdf-viewer [src]="newDoc.docPath" [fit-to-page]="false" [show-all]="true"
-                                    [render-text]="true" [original-size]="false" [autoresize]="true"
-                                    style="max-width: 700px; display: block">
-                                  </pdf-viewer>
-                                </td>
-                              </tr>
-                              <tr *ngIf="
-                                  newDoc.ext === 'jpg' ||
-                                  newDoc.ext === 'jpeg' ||
-                                  newDoc.ext === 'png'
-                                ">
-                                <td>
-                                  <img crossorigin="anonymous" [src]="newDoc.docPath" width="100%" />
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
                 </div>
               </td>
             </tr>
-            <tr *ngIf="invoiceData.carrierData.termsInfo.terms && invoiceData.carrierData.termsInfo.terms != ''">
+            <tr *ngIf="
+                invoiceData.carrierData.termsInfo.terms &&
+                invoiceData.carrierData.termsInfo.terms != ''
+              ">
               <td colspan="2" class="p-3">
                 <p style="margin: 0; color: #000">
                   <strong>Terms & Conditions: </strong>{{ invoiceData.carrierData.termsInfo.terms }}
@@ -1896,6 +1669,7 @@
       <button class="btn btn-default" (click)="modal.dismiss('Cross click')">
         Cancel
       </button>
+
       <button class="btn btn-success" (click)="generate()">Print</button>
       <button *ngIf="isGenerate" [disabled]="generateBtnDisabled" (click)="generatePDF()" class="btn btn-success">
         Generate & Print
@@ -1940,7 +1714,7 @@
                                   font-weight: 700;
                                   text-transform: capitalize;
                                 ">
-                                INVOICE
+                                Invoice
                               </h4>
                               <p style="margin: 0; color: #000">
                                 <span style="font-size: 12px">
@@ -1952,7 +1726,12 @@
                                 <span style="font-size: 12px">
                                   <b>Invoice Date</b>
                                 </span>
-                                {{ today | date: "yyyy/MM/dd" }}
+                                <span *ngIf="invDate">{{
+                                  invDate | date: "yyyy/MM/dd"
+                                  }}</span>
+                                <span *ngIf="!invDate">{{
+                                  today | date: "yyyy/MM/dd"
+                                  }}</span>
                               </p>
                               <p style="margin: 0; color: #000">
                                 <span style="font-size: 12px">
@@ -2191,9 +1970,7 @@
                                           <tbody>
                                             <tr>
                                               <td colspan="6" style="padding: 5px 0">
-                                                <table class="
-                                                    table-striped table-bordered
-                                                  " width="100%">
+                                                <table class="table-striped table-bordered" width="100%">
                                                   <thead>
                                                     <tr style="font-size: 12px">
                                                       <td class="text-capitalize" colspan="2">
@@ -2313,10 +2090,7 @@
                                             <tbody>
                                               <tr>
                                                 <td colspan="6" style="padding: 5px 0">
-                                                  <table class="
-                                                      table-striped
-                                                      table-bordered
-                                                    " width="100%">
+                                                  <table class="table-striped table-bordered" width="100%">
                                                     <thead>
                                                       <tr style="font-size: 12px">
                                                         <td colspan="2">
@@ -2337,9 +2111,7 @@
                                                       <tr class="item" *ngFor="
                                                           let commodity of drop.commodity
                                                         ">
-                                                        <td class="
-                                                            text-capitalize
-                                                          " colspan="2">
+                                                        <td class="text-capitalize" colspan="2">
                                                           {{ commodity.name }}
                                                         </td>
                                                         <td>
@@ -2477,6 +2249,8 @@
 
                                     <tr *ngIf="
                                         invoiceData.charges.accessorialFeeInfo
+                                          .accessorialFee.length > 0 &&
+                                        invoiceData.charges.accessorialFeeInfo
                                           .accessorialFee[0].type != '' &&
                                         invoiceData.charges.accessorialFeeInfo
                                           .accessorialFee[0].type != null
@@ -2507,6 +2281,9 @@
                                       </td>
                                     </tr>
                                     <tr *ngIf="
+                                        invoiceData.charges
+                                          .accessorialDeductionInfo
+                                          .accessorialDeduction.length > 0 &&
                                         invoiceData.charges
                                           .accessorialDeductionInfo
                                           .accessorialDeduction[0].type != '' &&
@@ -2695,6 +2472,25 @@
               Send me a copy at <strong> {{ carrierEmail }}</strong>
             </label>
           </div>
+          <div class="col-12 mt-2">
+            <div class="form-check form-check-inline" *ngFor="let item of documentsArr; let i = index">
+              <input class="form-check-input" name="checkbox{{ item.id }}" [(ngModel)]="item.checked"
+                (change)="documentSelection()" type="checkbox" id="inlineCheckbox_{{ i }}" [disabled]="item.disabled" />
+              <label class="form-check-label" for="inlineCheckbox_{{ i }}">{{
+                item.docName
+                }}</label>
+            </div>
+          </div>
+          <div class="col-12 mt-2">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" name="checkbox" [(ngModel)]="emailData.isSingle" type="checkbox"
+                id="inlineCheckbox1" [disabled]="singleDisabled" />
+              <label class="form-check-label" for="inlineCheckbox1">Single file (All documents will be merged in single
+                file.)
+              </label>
+            </div>
+          </div>
+
           <div class="col-12 mt-3">
             <p>
               <strong>Note:</strong> All documents will be sent with this email
@@ -2714,6 +2510,45 @@
       </button>
       <button type="submit" [disabled]="isEmail" (click)="addEmails()" class="btn btn-success">
         Submit
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #documentSelectionModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Select documents which you want to download?
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form>
+    <div class="modal-body">
+      <div class="document-selects__main">
+        <div class="row align-items-center mb-2">
+          <div class="col-12 mt-2">
+            <div class="form-check form-check-inline" *ngFor="let item of documentsArr">
+              <input class="form-check-input" name="checkbox{{ item.id }}" [(ngModel)]="item.checked"
+                (change)="documentSelection()" type="checkbox" id="inlineCheckbox1" [disabled]="item.disabled" />
+              <label class="form-check-label" for="inlineCheckbox1">{{
+                item.docName
+                }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-default">
+        Cancel
+      </button>
+      <button type="submit" *ngIf="printBtnType == 'print'" (click)="generate()" class="btn btn-success">
+        OK
+      </button>
+      <button type="submit" *ngIf="printBtnType == 'generate'" (click)="generatePDF()" class="btn btn-success">
+        OK
       </button>
     </div>
   </form>

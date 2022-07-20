@@ -4,10 +4,11 @@ import * as moment from "moment";
 import { Location } from "@angular/common";
 import { ListService } from "src/app/services/list.service";
 import { AccountService } from "src/app/services/account.service";
-import { from } from "rxjs";
+import { from, Subscription } from "rxjs";
 import { map } from "rxjs/operators";
 import { ToastrService } from "ngx-toastr";
-
+import { HttpClient } from "@angular/common/http";
+import { v4 as uuidv4 } from "uuid";
 @Component({
   selector: "app-add-vendor-payment",
   templateUrl: "./add-vendor-payment.component.html",
@@ -38,8 +39,25 @@ export class AddVendorPaymentComponent implements OnInit {
       subTotal: 0,
       advTotal: 0,
       finalTotal: 0,
+      detailTotal: 0
     },
+    detail: [{
+      comm: "",
+      qty: "",
+      qtyTyp: null,
+      rate: "",
+      rateTyp: null,
+      amount: 0,
+      accountID: null,
+      description: "",
+      rowID: "",
+    },],
+    cheqdata: {
+      comp: '',
+      addr: ''
+    }
   };
+  quantityTypes = [];
   vendors = [];
   paymentMode = [
     {
@@ -79,14 +97,24 @@ export class AddVendorPaymentComponent implements OnInit {
   Error: string = "";
   Success: string = "";
 
+  showModal = false;
+  subscription: Subscription;
+
   constructor(
     private listService: ListService,
     private accountService: AccountService,
     private location: Location,
-    private toaster: ToastrService
-  ) {}
+    private toaster: ToastrService,
+    private httpClient: HttpClient,
+  ) { }
 
   ngOnInit() {
+    this.subscription = this.listService.paymentSaveList.subscribe((res: any) => {
+      if (res.openFrom === "addForm") {
+        this.paymentData.cheqdata = res.cheqdata;
+        this.addRecord();
+      }
+    });
     this.listService.fetchVendors();
     let vendorList = new Array<any>();
     this.getValidVendors(vendorList);
@@ -94,7 +122,9 @@ export class AddVendorPaymentComponent implements OnInit {
 
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
+    this.fetchQuantityTypes();
   }
+
 
   private getValidVendors(vendorList: any[]) {
     let ids = [];
@@ -144,16 +174,20 @@ export class AddVendorPaymentComponent implements OnInit {
         .toPromise();
       if (result.length === 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND;
+
       }
-      result.map((v) => {
-        v.selected = false;
-        v.prevPaidAmount = Number(v.total.finalTotal) - Number(v.balance);
-        v.paidStatus = false;
-        v.fullPayment = false;
-        v.paidAmount = 0;
-        v.newStatus = v.status.replace("_", " ");
-      });
-      this.bills = result;
+      if (result.length > 0) {
+
+        result.map((v) => {
+          v.selected = false;
+          v.prevPaidAmount = Number(v.total.finalTotal) - Number(v.balance);
+          v.paidStatus = false;
+          v.fullPayment = false;
+          v.paidAmount = 0;
+          v.newStatus = v.status.replace("_", " ");
+        });
+        this.bills = result;
+      }
     } else {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
     }
@@ -163,7 +197,7 @@ export class AddVendorPaymentComponent implements OnInit {
     if (this.paymentData.vendorID) {
       let result: any = await this.accountService
         .getData(
-          `advance/entity/${this.paymentData.vendorID}?from=null&to=null&curr=${this.paymentData.currency}`
+          `advance/allPayments/entity/${this.paymentData.vendorID}/${this.paymentData.currency}`
         )
         .toPromise();
       if (result.length === 0) {
@@ -207,14 +241,14 @@ export class AddVendorPaymentComponent implements OnInit {
   }
 
   billsTotal() {
-    this.paymentData.total.subTotal = 0;
+    let subtotal = 0;
     this.paymentData.billIds = [];
     this.paymentData.billData = [];
 
     for (let i = 0; i < this.bills.length; i++) {
       const element = this.bills[i];
       if (element.selected) {
-        this.paymentData.total.subTotal += Number(element.paidAmount);
+        subtotal += Number(element.paidAmount);
 
         let status = "";
         if (Number(element.paidAmount) === Number(element.balance)) {
@@ -242,10 +276,12 @@ export class AddVendorPaymentComponent implements OnInit {
         }
       }
     }
+    this.paymentData.total.subTotal = subtotal + this.paymentData.total.detailTotal;
     this.calculateFinalTotal();
   }
 
   calculateFinalTotal() {
+
     this.paymentData.total.finalTotal =
       this.paymentData.total.subTotal - this.paymentData.total.advTotal;
   }
@@ -294,7 +330,7 @@ export class AddVendorPaymentComponent implements OnInit {
     this.accountService
       .postData("purchase-payments", this.paymentData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -311,7 +347,7 @@ export class AddVendorPaymentComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {
@@ -326,4 +362,101 @@ export class AddVendorPaymentComponent implements OnInit {
   cancel() {
     this.location.back();
   }
+
+  setQuanType(val: string, index: number) {
+    this.paymentData.detail[index].qtyTyp = val;
+    this.paymentData.detail[index].rateTyp = val;
+  }
+
+  addDetail() {
+    let obj = {
+      comm: "",
+      qty: "",
+      qtyTyp: null,
+      rate: "",
+      rateTyp: null,
+      amount: 0,
+      accountID: null,
+      description: "",
+      rowID: uuidv4(),
+    };
+    const lastAdded = this.paymentData.detail[this.paymentData.detail.length - 1];
+    if (
+      lastAdded.comm !== "" &&
+      lastAdded.qty !== "" &&
+      lastAdded.qtyTyp !== null &&
+      lastAdded.rate !== "" &&
+      lastAdded.rateTyp !== null &&
+      lastAdded.amount !== 0 &&
+      lastAdded.accountID !== null
+    ) {
+      this.paymentData.detail.push(obj);
+    }
+  }
+
+  delDetail(index) {
+    if (this.paymentData.detail.length > 1) {
+      this.paymentData.detail.splice(index, 1);
+    }
+    this.detailsTotal();
+  }
+
+
+  detailsTotal() {
+    this.paymentData.total.detailTotal = 0;
+    this.paymentData.detail.forEach((element) => {
+      this.paymentData.total.detailTotal += Number(element.amount);
+    });
+    this.billsTotal();
+  }
+
+  calcDetailAmount(index: number) {
+    if (!this.paymentData.detail[index].rate) {
+      this.paymentData.detail[index].rate = "0";
+    }
+    if (!this.paymentData.detail[index].qty) {
+      this.paymentData.detail[index].qty = "0";
+    }
+    if (this.paymentData.detail[index].qty && this.paymentData.detail[index].rate) {
+      this.paymentData.detail[index].amount =
+        Number(this.paymentData.detail[index].qty) *
+        Number(this.paymentData.detail[index].rate);
+    }
+    this.detailsTotal();
+
+  }
+
+  fetchQuantityTypes() {
+    this.httpClient
+      .get("assets/jsonFiles/quantityTypes.json")
+      .subscribe((data: any) => {
+        this.quantityTypes = data;
+      });
+  }
+
+  showCheque() {
+    this.showModal = true;
+    let obj = {
+      entityId: this.paymentData.vendorID,
+      chequeDate: this.paymentData.payModeDate,
+      chequeAmount: this.paymentData.total.finalTotal,
+      type: "purchasePayment",
+      paymentTo: 'vendor',
+      chequeNo: this.paymentData.payModeNo,
+      currency: this.paymentData.currency,
+      showModal: this.showModal,
+      fromDate: this.paymentData.txnDate,
+      finalAmount: this.paymentData.total.finalTotal,
+      txnDate: this.paymentData.txnDate,
+      page: "addForm",
+      advance: this.paymentData.total.advTotal
+    };
+
+    this.listService.openPaymentChequeModal(obj);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe()
+  }
+
 }

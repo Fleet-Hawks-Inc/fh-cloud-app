@@ -10,7 +10,7 @@
           </div>
 
           <div class="col-md-8 col-lg-8 text-right">
-            <a routerLink="/fleet/reminders/service-reminder/list" class="btn btn-default btn-sm mx-2"
+            <a routerLink="/fleet/reminders/service-reminder/list/{{sessionID}}" class="btn btn-default btn-sm mx-2"
               style="color: black"><i class="fas fa-list"></i> Service Reminders List</a>
           </div>
         </div>
@@ -247,7 +247,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input [(ngModel)]="reminderData.lastServiceOdometer"
                           placeholder="Approximate odometers of last service" name="lastServiceOdometer" type="number"
-                          class="form-control" min="0" #meter1="ngModel" [required]="
+                          class="form-control" min="1" #meter1="ngModel" [required]="
                             reminderData.tasks.remindByUnit == 'odometer'
                           " />
                         <div *ngIf="

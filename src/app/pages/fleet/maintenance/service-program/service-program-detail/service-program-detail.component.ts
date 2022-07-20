@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+
 declare var $: any;
 
 @Component({
@@ -14,12 +16,13 @@ declare var $: any;
 })
 export class ServiceProgramDetailComponent implements OnInit {
   Title = 'Add';
-  allVehicles = []; 
+  allVehicles = [];
   programs = [];
   vehicles = [];
   programID;
+    sessionID: string;
+
   tasks = [];
-  allTasks = [];
   programData = {
     serviceTask: '',
     repeatByTime: '',
@@ -36,14 +39,16 @@ export class ServiceProgramDetailComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private apiService: ApiService,
     private route: ActivatedRoute,
-    private toastr: ToastrService
-  ) { }
+    private toastr: ToastrService,
+    private routerMgmtService: RouteManagementServiceService
+  ) { 
+      this.sessionID = this.routerMgmtService.serviceLogSessionID;
+  }
 
   ngOnInit() {
     this.programID = this.route.snapshot.params['programID'];
     this.fetchProgramByID();
     this.fetchAllVehiclesIDs();
-    this.fetchTasks();
     this.fetchTasksByIDs();
     $(document).ready(() => {
       this.form = $('#vehicleForm, #taskForm').validate();
@@ -56,8 +61,7 @@ export class ServiceProgramDetailComponent implements OnInit {
       complete: () => { },
       error: () => { },
       next: (result: any) => {
-        console.log('result', result);
-        this.programs = result.Items;
+        this.programs = result;
         this.vehicles = this.programs[0]['vehicles'];
         this.tasks = this.programs[0]['serviceScheduleDetails'];
         this.fetchAllVehicles();
@@ -85,50 +89,49 @@ export class ServiceProgramDetailComponent implements OnInit {
    * Update Service Program
   */
   updateServiceProgram() {
-      
-      let newProgram = Object.assign({}, ...this.programs);
-      delete newProgram.carrierID;
-      delete newProgram.timeModified;
-      
-      this.apiService.putData('servicePrograms', newProgram).subscribe({
-        complete: () => { },
-        error: (err) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                // We Can Use This Method
-                const key = val.message.match(/'([^']+)'/)[1];
-                
-                val.message = val.message.replace(/'.*'/, 'This Field');
-                this.errors[key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
-        next: (res) => {
-          this.toastr.success('Service Updated Successfully');
-          this.programData = {
-            serviceTask: '',
-            repeatByTime: '',
-            repeatByTimeUnit: '',
-            repeatByOdometer: ''
-          };
-          $('#editServiceScheduleModal').modal('hide');
-          this.taskEdit = true;
-        },
-      });
-  
+
+    let newProgram = Object.assign({}, ...this.programs);
+    delete newProgram.pk;
+    delete newProgram.timeCreated;
+    this.apiService.putData(`servicePrograms/${this.programID}`, newProgram, this.programs[0]).subscribe({
+      complete: () => { },
+      error: (err) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              // We Can Use This Method
+              const key = val.message.match(/'([^']+)'/)[1];
+
+              val.message = val.message.replace(/'.*'/, 'This Field');
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.toastr.success('Service Updated Successfully');
+        this.programData = {
+          serviceTask: '',
+          repeatByTime: '',
+          repeatByTimeUnit: '',
+          repeatByOdometer: ''
+        };
+        $('#editServiceScheduleModal').modal('hide');
+        this.taskEdit = true;
+      },
+    });
+
 
   }
 
   throwErrors() {
-    
+
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
@@ -148,11 +151,11 @@ export class ServiceProgramDetailComponent implements OnInit {
       });
     this.errors = {};
   }
-  
+
   editTask(task, i) {
     this.Title = 'Edit';
     $('#editServiceScheduleModal').modal('show');
-    
+
     this.programData.serviceTask = task.serviceTask;
     this.programData.repeatByTime = task.repeatByTime;
     this.programData.repeatByTimeUnit = task.repeatByTimeUnit;
@@ -172,24 +175,29 @@ export class ServiceProgramDetailComponent implements OnInit {
   fetchAllVehicles() {
     this.apiService.getData('vehicles')
       .subscribe((result: any) => {
-        this.allVehicles = result.Items;
-        if(this.vehicles) {
-          console.log('this.programs', this.programs);
+        result["Items"].map((r: any) => {
+          if (r.isDeleted === 0) {
+            this.allVehicles.push(r);
+          }
+        })
+        if (this.vehicles) {
           this.updateVehicles(result.Items, this.programs[0].vehicles);
         }
       });
   }
-
   updateVehicles(vehiclesArr, serviceArr) {
     vehiclesArr.filter(element => {
       if (!serviceArr.includes(element.vehicleID)) {
-        
-        this.allVehicles.push(element);
+        element.map((r: any) => {
+          if (r.isDeleted === 0) {
+            this.allVehicles.push(r);
+          }
+        })
       }
     });
   }
   addServiceProgram() {
-    
+
     this.programs[0].serviceScheduleDetails.push(this.programData);
     this.updateServiceProgram();
     $('#editServiceScheduleModal').modal('hide');
@@ -199,7 +207,6 @@ export class ServiceProgramDetailComponent implements OnInit {
   addVehicle() {
     this.vehicleData.filter(element => {
       if (!this.programs[0].vehicles.includes(element)) {
-        
         this.programs[0].vehicles.push(element);
         $('#addVehicleModal').modal('hide');
         this.fetchAllVehicles();
@@ -209,20 +216,12 @@ export class ServiceProgramDetailComponent implements OnInit {
     this.updateServiceProgram();
   }
 
-  fetchTasks() {
-    this.apiService.getData('tasks').subscribe({
-      error: () => {},
-      next: (result: any) => {
-       this.allTasks = result.Items;
-      },
-    });
-  }
 
   fetchTasksByIDs() {
-    this.apiService.getData('tasks/get/list').subscribe({
-      error: () => {},
+    this.apiService.getData('tasks/get/list?type=service').subscribe({
+      error: () => { },
       next: (result: any) => {
-       this.tasksObjects = result;
+        this.tasksObjects = result;
       },
     });
   }

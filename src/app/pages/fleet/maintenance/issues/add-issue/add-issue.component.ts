@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ApiService } from "../../../../../services";
 import { Router, ActivatedRoute } from "@angular/router";
 import {
@@ -7,13 +7,26 @@ import {
   NgbDateStruct,
 } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
-import { from } from "rxjs";
-import { map } from "rxjs/operators";
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+  takeUntil
+  } from "rxjs/operators";
+import { from, Subject, throwError } from 'rxjs';
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { ModalService } from "../../../../../services/modal.service";
+import { NgForm } from "@angular/forms";
 import { NgxSpinnerService } from "ngx-spinner";
 import { Location } from "@angular/common";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 declare var $: any;
 import * as moment from "moment";
+import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
+
 
 @Component({
   selector: "app-add-issue",
@@ -21,6 +34,8 @@ import * as moment from "moment";
   styleUrls: ["./add-issue.component.css"],
 })
 export class AddIssueComponent implements OnInit {
+  @ViewChild("issueF") issueF: NgForm;
+  takeUntil$ = new Subject();
   Asseturl = this.apiService.AssetUrl;
   title: string;
   fileName = "";
@@ -29,7 +44,9 @@ export class AddIssueComponent implements OnInit {
   /**
    * Issue Prop
    */
+clone = false;
   issueName = "";
+  isSubmitted = false;
   unitID = null;
   unitType = "vehicle";
   currentStatus = "OPEN";
@@ -42,6 +59,9 @@ export class AddIssueComponent implements OnInit {
   fetchedUnitID;
   fetchedUnitType;
   vehicles = [];
+  uploadDocsError = '';
+  uploadPhotoError = '';
+  
   assets = [];
   contacts = [];
   drivers = [];
@@ -59,6 +79,8 @@ export class AddIssueComponent implements OnInit {
   hasSuccess = false;
   submitDisabled = false;
   Error = "";
+      sessionID: string;
+
   errors = {};
   Success = "";
   docs: SafeResourceUrl;
@@ -69,7 +91,7 @@ export class AddIssueComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-
+  cloneID: any;
   // date: {year: number, month: number};
   constructor(
     private apiService: ApiService,
@@ -80,10 +102,19 @@ export class AddIssueComponent implements OnInit {
     private location: Location,
     private domSanitizer: DomSanitizer,
     private ngbCalendar: NgbCalendar,
-    private dateAdapter: NgbDateAdapter<string>
+    private modalService: NgbModal,
+     private modalServiceOwn: ModalService,
+    private dateAdapter: NgbDateAdapter<string>,
+    private routerMgmtService: RouteManagementServiceService
   ) {
+
+   
     this.selectedFileNames = new Map<any, any>();
+    this.sessionID = this.routerMgmtService.vehicleUpdateSessionID;
   }
+  
+
+  
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -91,6 +122,7 @@ export class AddIssueComponent implements OnInit {
   async ngOnInit() {
     this.fetchUsers();
     this.issueID = this.route.snapshot.params[`issueID`];
+    // if (this.issueID || this.cloneID) {
     if (this.issueID) {
       this.title = "Edit Issue";
       await this.fetchIssueByID();
@@ -99,6 +131,13 @@ export class AddIssueComponent implements OnInit {
     }
     await this.fetchVehicles();
     await this.fetchAssets();
+    this.route.queryParams.subscribe((params) => {
+      this.cloneID = params.cloneID;
+      if (this.cloneID != undefined
+        && this.cloneID != "") {
+        this.cloneIssue(this.cloneID);
+      }
+    });
   }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
@@ -129,7 +168,7 @@ export class AddIssueComponent implements OnInit {
   }
 
   fetchUsers() {
-    this.apiService.getData("users/fetch/records").subscribe((result: any) => {
+    this.apiService.getData("common/users/fetch/records").subscribe((result: any) => {
       this.users = result.Items;
     });
   }
@@ -167,6 +206,10 @@ export class AddIssueComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs,
     };
+    if(this.clone == true){
+      data.uploadedPhotos = this.existingPhotos
+      data.uploadedDocs = this.existingDocs
+    }
     // create form data instance
     const formData = new FormData();
 
@@ -182,10 +225,9 @@ export class AddIssueComponent implements OnInit {
 
     // append other fields
     formData.append("data", JSON.stringify(data));
-
     // this.apiService.postData('issues/', data).subscribe({
     this.apiService.postData("issues", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -202,13 +244,19 @@ export class AddIssueComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
         this.response = res;
         this.submitDisabled = false;
+        this.modalServiceOwn.triggerRedirect.next(true);
+        this.takeUntil$.next();
+        this.takeUntil$.complete();
+        this.isSubmitted = true;
         this.toaster.success("Issue Added successfully");
+        this.router.navigateByUrl("/fleet/maintenance/issues/list");
+        this.router.navigateByUrl('/fleet/maintenance/issues/list/${this.routerMgmtService.maintainanceUpdated()}');
         this.cancel();
       },
     });
@@ -219,12 +267,12 @@ export class AddIssueComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -249,12 +297,35 @@ export class AddIssueComponent implements OnInit {
     if (obj === "uploadedDocs") {
       this.uploadedDocs = [];
       for (let i = 0; i < files.length; i++) {
+             let name = files[i].name.split(".");
+       let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
         this.uploadedDocs.push(files[i]);
+        } else {
+            this.uploadDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+        }
       }
     } else {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
+             let name = files[i].name.split(".");
+       let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
         this.uploadedPhotos.push(files[i]);
+         } else {
+            this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
+        }
       }
     }
   }
@@ -264,10 +335,10 @@ export class AddIssueComponent implements OnInit {
    */
   async fetchIssueByID() {
     let result: any = await this.apiService
-      .getData("issues/" + this.issueID)
+      .getData(`issues/${this.issueID}`)
       .toPromise();
     // .subscribe((result: any) => {
-    result = result.Items[0];
+    result = result[0];
     this.issueID = this.issueID;
     this.issueName = result.issueName;
     this.unitID = result.unitID;
@@ -286,19 +357,20 @@ export class AddIssueComponent implements OnInit {
       result.uploadedPhotos !== undefined &&
       result.uploadedPhotos.length > 0
     ) {
-      this.issueImages = result.uploadedPhotos.map((x) => ({
-        path: `${this.Asseturl}/${result.carrierID}/${x}`,
-        name: x,
-      }));
+      // this.issueImages = result.uploadedPhotos.map((x) => ({
+      //   path: `${this.Asseturl}/${result.pk}/${x}`,
+      //   name: x,
+      // }));
+      this.issueImages = result.uploadedPics;
     }
 
     if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
-      this.issueDocs = result.uploadedDocs.map((x) => ({
-        path: `${this.Asseturl}/${result.carrierID}/${x}`,
-        name: x,
-      }));
+      // this.issueDocs = result.uploadedDocs.map((x) => ({
+      //   path: `${this.Asseturl}/${result.pk}/${x}`,
+      //   name: x,
+      // }));
+      this.issueDocs = result.uploadDocument;
     }
-    // });
   }
   setPDFSrc(val) {
     const pieces = val.split(/[\s.]+/);
@@ -338,7 +410,6 @@ export class AddIssueComponent implements OnInit {
       uploadedPhotos: this.existingPhotos,
       uploadedDocs: this.existingDocs,
     };
-
     // create form data instance
     const formData = new FormData();
 
@@ -355,8 +426,8 @@ export class AddIssueComponent implements OnInit {
     // append other fields
     formData.append("data", JSON.stringify(data));
 
-    this.apiService.putData("issues/", formData, true).subscribe({
-      complete: () => {},
+    this.apiService.putData(`issues/${this.issueID}`, formData, true).subscribe({
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -373,14 +444,19 @@ export class AddIssueComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
         this.response = res;
         this.submitDisabled = false;
+         this.modalServiceOwn.triggerRedirect.next(true);
+          this.takeUntil$.next();
+          this.takeUntil$.complete();
+          this.isSubmitted = true;
         this.toaster.success("Issue Updated Successfully");
-        this.router.navigateByUrl("/fleet/maintenance/issues/list");
+        //this.router.navigateByUrl("/fleet/maintenance/issues/list");
+        this.router.navigateByUrl('/fleet/maintenance/issues/list/${this.routerMgmtService.maintainanceUpdated()}');
       },
     });
   }
@@ -399,5 +475,40 @@ export class AddIssueComponent implements OnInit {
         }
         this.toaster.success(alertmsg + " Deleted Successfully");
       });
+  }
+
+  /*
+   * If We CliCk Clone Button Then It Fetch Issue details 
+   */
+// let clone = false;
+  async cloneIssue(id: any) {
+    this.apiService.getData("issues/" + id).subscribe(async (result: any) => {
+      result = result[0];
+      this.clone = true;
+      this.issueID = this.issueID;
+      this.issueName = result.issueName;
+      this.unitID = result.unitID;
+      this.fetchedUnitID = result.unitID;
+      this.fetchedUnitType = result.unitType;
+      this.unitType = result.unitType; 
+      this.currentStatus = 'OPEN';
+      this.reportedDate = result.reportedDate;
+      this.description = result.description;
+      this.odometer = result.odometer;
+      this.reportedBy = result.reportedBy;
+      this.assignedTo = result.assignedTo;
+      this.existingPhotos = result.uploadedPhotos;
+      this.existingDocs = result.uploadedDocs;
+      if (
+        result.uploadedPhotos !== undefined &&
+        result.uploadedPhotos.length > 0
+      ) {
+        this.issueImages = result.uploadedPics;
+      }
+
+      if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
+        this.issueDocs = result.uploadDocument;
+      }
+    })
   }
 }

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService, ListService } from "src/app/services";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-employee-payment-detail",
@@ -56,6 +57,11 @@ export class EmployeePaymentDetailComponent implements OnInit {
     advancePayIds: [],
     advData: [],
     transactionLog: [],
+    isFeatEnabled: false,
+    gstper: 0,
+    gstHstAmt: 0,
+    vendorId: '',
+    cheqdata: {}
   };
   employees = [];
   empdetail = {
@@ -74,6 +80,7 @@ export class EmployeePaymentDetailComponent implements OnInit {
   accountsIntObjects = {};
   showModal = false;
   downloadDisabled = false;
+  subscription: Subscription;
 
   constructor(
     private listService: ListService,
@@ -82,18 +89,25 @@ export class EmployeePaymentDetailComponent implements OnInit {
     private toaster: ToastrService,
     private accountService: AccountService,
     private apiService: ApiService
-  ) {}
+  ) { }
 
   ngOnInit() {
+    this.subscription = this.listService.paymentDetail.subscribe(async (res: any) => {
+      if(res == 'employee-payments') {
+        this.fetchPay();
+      }
+    })
+
     this.paymentID = this.route.snapshot.params["paymentID"];
     this.fetchPaymentDetail();
-    this.fetchEmployees();
-    this.fetchCustomersByIDs();
+    // this.fetchEmployees();
+    // this.fetchCustomersByIDs();
     this.fetchAccountsByIDs();
     this.fetchAccountsByInternalIDs();
   }
 
   fetchPaymentDetail() {
+    this.downloadDisabled = true;
     this.accountService
       .getData(`employee-payments/detail/${this.paymentID}`)
       .subscribe((result: any) => {
@@ -108,16 +122,19 @@ export class EmployeePaymentDetailComponent implements OnInit {
           v.type = v.type.replace("_", " ");
         });
         this.fetchEmpDetail(result[0].entityId);
+        this.downloadDisabled = false;
+      }, err => {
+        this.downloadDisabled = false;
       });
   }
 
-  fetchEmployees() {
-    this.apiService
-      .getData(`contacts/get/emp/list`)
-      .subscribe((result: any) => {
-        this.employees = result;
-      });
-  }
+  // fetchEmployees() {
+  //   this.apiService
+  //     .getData(`contacts/get/emp/list`)
+  //     .subscribe((result: any) => {
+  //       this.employees = result;
+  //     });
+  // }
 
   fetchEmpDetail(empID) {
     this.apiService
@@ -127,11 +144,11 @@ export class EmployeePaymentDetailComponent implements OnInit {
       });
   }
 
-  fetchCustomersByIDs() {
-    this.apiService.getData("contacts/get/list").subscribe((result: any) => {
-      this.customersObjects = result;
-    });
-  }
+  // fetchCustomersByIDs() {
+  //   this.apiService.getData("contacts/get/list").subscribe((result: any) => {
+  //     this.customersObjects = result;
+  //   });
+  // }
 
   fetchAccountsByIDs() {
     this.accountService
@@ -152,6 +169,8 @@ export class EmployeePaymentDetailComponent implements OnInit {
     this.showModal = true;
     this.paymentData[`advData`] = [];
     this.paymentData[`paymentTo`] = "employee";
+    this.paymentData[`totalAmount`]= this.paymentData.finalTotal;
+    this.paymentData['isVendorPayment'] = this.paymentData.vendorId ? true : false
     let obj = {
       showModal: this.showModal,
       data: this.paymentData,
@@ -186,7 +205,34 @@ export class EmployeePaymentDetailComponent implements OnInit {
       advance: this.paymentData.advance,
       txnDate: this.paymentData.txnDate,
       page: "detail",
+      isVendorPayment: this.paymentData.vendorId ? true : false,
+      vendorId: this.paymentData.vendorId,
+      gstHstPer: this.paymentData.gstper,
+      gstHstAmt: this.paymentData.gstHstAmt,
+      recordID: this.paymentID,
+      cheqData: this.paymentData.cheqdata,
+      module: 'employee-payments',
     };
     this.listService.openPaymentChequeModal(obj);
+  }
+
+  fetchPay() {
+    this.accountService
+      .getData(`employee-payments/detail/${this.paymentID}`)
+      .subscribe((result: any) => {
+        this.paymentData = result[0];
+        this.paymentData.currency = this.paymentData.currency
+          ? this.paymentData.currency
+          : "CAD";
+        if (this.paymentData.payMode) {
+          this.paymentData.payMode = this.paymentData.payMode.replace("_", " ");
+        }
+      }, err => {
+        this.downloadDisabled = false;
+      });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

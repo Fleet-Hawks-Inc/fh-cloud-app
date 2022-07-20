@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { AccountService, ApiService } from 'src/app/services';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import * as _ from "lodash";
 import { ToastrService } from 'ngx-toastr';
-import  Constants  from '../../../fleet/constants';
-
+import { AccountService, ApiService } from 'src/app/services';
+import Constants from '../../../fleet/constants';
+import { Table } from 'primeng/table';
 @Component({
   selector: 'app-income-list',
   templateUrl: './income-list.component.html',
@@ -29,13 +30,38 @@ export class IncomeListComponent implements OnInit {
   lastItemSK = '';
   loaded = false;
   disableSearch = false;
+  _selectedColumns: any[];
+  dataColumns: any[];
+  get = _.get;
+  find = _.find;
   constructor(private accountService: AccountService, private apiService: ApiService, private router: Router, private toaster: ToastrService) { }
 
   ngOnInit() {
     this.fetchAccounts();
-   // this.fetchCustomers();
+    // this.fetchCustomers();
     this.fetchIncomeCategories();
-   // this.fetchInvoices();
+    // this.fetchInvoices();
+    this.dataColumns = [
+      { width: '22%', field: 'paymentModeDate', header: 'Income Date', type: "text" },
+      { width: '25%', field: 'categoryID', header: 'Income Category', type: "text" },
+      { width: '25%', field: 'paymentMode', header: 'Payment Mode', type: "text" },
+      { width: '22%', field: 'recAmount', header: 'Amount', type: "text" },
+    ];
+
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
 
   fetchAccounts(refresh?: boolean) {
@@ -45,38 +71,38 @@ export class IncomeListComponent implements OnInit {
     }
     if (this.lastItemSK !== 'end') {
       this.accountService.getData(`income/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&category=${this.filter.categoryID}&lastKey=${this.lastItemSK}`)
-      .subscribe((result: any) => {
-        if(result.length === 0) {
-          this.disableSearch = false;
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-        if (result.length > 0) {
-          this.disableSearch = false;
-          if (result[result.length - 1].sk !== undefined) {
-            this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
-          } else {
-            this.lastItemSK = 'end';
+        .subscribe((result: any) => {
+          if (result.length === 0) {
+            this.disableSearch = false;
+            this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
-          result.map((v) => {
-            if(v.paymentMode === 'creditCard') {
-              v.paymentMode = 'Credit Card';
-            } else if(v.paymentMode === 'debitCard') {
-              v.paymentMode = 'Debit Card';
-            } else if(v.paymentMode === 'demandDraft') {
-              v.paymentMode = 'Demand Card';
-            } else if(v.paymentMode === 'eft') {
-              v.paymentMode = 'EFT';
-            } else if(v.paymentMode === 'cash') {
-              v.paymentMode = 'Cash';
-            } else if(v.paymentMode === 'cheque') {
-              v.paymentMode = 'Cheque';
+          if (result.length > 0) {
+            this.disableSearch = false;
+            if (result[result.length - 1].sk !== undefined) {
+              this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
+            } else {
+              this.lastItemSK = 'end';
             }
-            this.incomeAccounts.push(v);
-          });
-          this.loaded = true;
-        }
+            result.map((v) => {
+              if (v.paymentMode === 'creditCard') {
+                v.paymentMode = 'Credit Card';
+              } else if (v.paymentMode === 'debitCard') {
+                v.paymentMode = 'Debit Card';
+              } else if (v.paymentMode === 'demandDraft') {
+                v.paymentMode = 'Demand Card';
+              } else if (v.paymentMode === 'eft') {
+                v.paymentMode = 'EFT';
+              } else if (v.paymentMode === 'cash') {
+                v.paymentMode = 'Cash';
+              } else if (v.paymentMode === 'cheque') {
+                v.paymentMode = 'Cheque';
+              }
+              this.incomeAccounts.push(v);
+            });
+            this.loaded = true;
+          }
 
-      });
+        });
     }
   }
 
@@ -89,16 +115,16 @@ export class IncomeListComponent implements OnInit {
 
   deleteIncome(incomeID) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.accountService.getData(`income/delete/${incomeID}`)
-      .subscribe((result: any) => {
-        if (result !== undefined) {
-          this.dataMessage = Constants.FETCHING_DATA;
-          this.lastItemSK = '';
-          this.incomeAccounts = [];
-          this.fetchAccounts();
-          this.toaster.success('Income transaction deleted successfully.');
-        }
-      });
+      this.accountService.deleteData(`income/delete/${incomeID}`)
+        .subscribe((result: any) => {
+          if (result !== undefined) {
+            this.dataMessage = Constants.FETCHING_DATA;
+            this.lastItemSK = '';
+            this.incomeAccounts = [];
+            this.fetchAccounts();
+            this.toaster.success('Income transaction deleted successfully.');
+          }
+        });
     }
   }
 
@@ -158,11 +184,13 @@ export class IncomeListComponent implements OnInit {
 
   onScroll() {
     if (this.loaded) {
-    this.fetchAccounts();
+      this.fetchAccounts();
     }
     this.loaded = false;
   }
-
+  clear(table: Table) {
+    table.clear();
+  }
   refreshData() {
     this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;

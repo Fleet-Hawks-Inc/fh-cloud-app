@@ -24,7 +24,8 @@
                         "aot": false,
                         "assets": [
                             "src/favicon.ico",
-                            "src/assets"
+                            "src/assets",
+                            "src/OneSignalSDKWorker.js"
                         ],
                         "vendorChunk": false,
                         "extractLicenses": false,
@@ -35,7 +36,6 @@
                         "styles": [
                             "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
                             "src/assets/css/jquerytable.css",
-                            "src/styles.css",
                             "src/assets/vendor/select2-bootstrap-theme/select2-bootstrap.min.css",
                             "node_modules/ngx-toastr/toastr.css",
                             "node_modules/jstree/dist/themes/default/style.min.css",
@@ -44,7 +44,21 @@
                             "node_modules/select2/dist/css/select2.min.css",
                             "node_modules/@swimlane/ngx-datatable/index.css",
                             "node_modules/@swimlane/ngx-datatable/themes/material.css",
-                            "node_modules/@swimlane/ngx-datatable/assets/icons.css"
+                            "node_modules/@swimlane/ngx-datatable/assets/icons.css",
+                            "node_modules/primeicons/primeicons.css",
+                            "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+                            "src/styles.css",
+                            "src/assets/vendor/animate/animate.css",
+                            "src/assets/vendor/jquery-ui/jquery-ui.css",
+                            "src/assets/vendor/jquery-ui/jquery-ui.theme.css",
+                            "src/assets/vendor/bootstrap-multiselect/css/bootstrap-multiselect.css",
+                            "src/assets/vendor/bootstrap/css/bootstrap.min.css",
+                            "src/assets/css/theme.css",
+                            "src/assets/css/skins/default.css",
+                            "src/assets/css/custom.css",
+                            "src/assets/css/custom1.css",
+                            "src/assets/css/custom2.css",
+                            "src/assets/css/login.css"
                         ],
                         "scripts": [
                             "src/assets/vendor/jquery/jquery.js",
@@ -198,19 +212,6 @@
                             "src/styles.css"
                         ],
                         "scripts": []
-                    }
-                },
-                "lint": {
-                    "builder": "@angular-devkit/build-angular:tslint",
-                    "options": {
-                        "tsConfig": [
-                            "tsconfig.app.json",
-                            "tsconfig.spec.json",
-                            "e2e/tsconfig.json"
-                        ],
-                        "exclude": [
-                            "**/node_modules/**"
-                        ]
                     }
                 },
                 "e2e": {

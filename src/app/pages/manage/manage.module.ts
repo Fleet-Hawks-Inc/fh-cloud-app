@@ -7,6 +7,15 @@ import { SharedModule } from '../../shared/shared.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceModule } from './devices/devices.module';
+import { DialogModule } from 'primeng/dialog';
+import { NgOtpInputModule } from "ng-otp-input";
+import { ButtonModule } from 'primeng/button';
+import { TagModule } from 'primeng/tag';
+import { CheckboxModule } from 'primeng/checkbox';
+import { TooltipModule } from 'primeng/tooltip';
+import { RippleModule } from 'primeng/ripple';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ToastModule } from "primeng/toast";
 import {
   AddUserComponent,
   UserDetailsComponent,
@@ -14,11 +23,18 @@ import {
   CompanyProfileComponent,
   EditProfileComponent
 } from './index';
-
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { ManagemainComponent } from './managemain/managemain.component';
-
 import { AlertsListComponent } from './alerts/alerts-list/alerts-list.component';
 import { AddAlertsComponent } from './alerts/add-alerts/add-alerts.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { TableModule } from 'primeng/table';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { MenuModule } from 'primeng/menu';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DropdownModule } from 'primeng/dropdown';
 
 
 const COMPONENTS = [
@@ -85,12 +101,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   declarations: [
     ...COMPONENTS,
     ManagemainComponent,
-
-
     AlertsListComponent,
-
     AddAlertsComponent,
-
   ],
   providers: [{ provide: NgbDateAdapter, useClass: CustomAdapter },
   { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }],
@@ -103,6 +115,24 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgbModule,
     DeviceModule,
     InfiniteScrollModule,
+    DialogModule,
+    NgOtpInputModule,
+    RadioButtonModule,
+    TagModule,
+    CheckboxModule,
+    InputTextModule,
+    RippleModule,
+    ConfirmPopupModule,
+    ToastModule,
+    TableModule,
+    ButtonModule,
+    MultiSelectModule,
+    TooltipModule,
+    MenuModule,
+    SplitButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule
   ], exports: [...COMPONENTS],
 })
 export class ManageModule { }

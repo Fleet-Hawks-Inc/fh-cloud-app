@@ -1,31 +1,49 @@
 <section class="body">
   <div class="inner-wrapper">
-    <section role="main" class="content-body pt-0 pr-0 pl-1">
+    <section role="main" class="content-body pt-0 pr-0">
       <header class="page-header pr19 pl11">
         <div class="row" style="padding-top: 10px">
           <div class="col-md-2 col-lg-2 pr-0">
-            <ng-select [(ngModel)]="entityID" name="entityID" style="width: 100% !important"
-              placeholder="Search By vehicle">
+            <ng-select
+              [(ngModel)]="entityID"
+              name="entityID"
+              style="width: 100% !important"
+              placeholder="Search By vehicle"
+            >
               <!-- <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }}
                      </ng-option> -->
-              <ng-option *ngFor="let data of record" value="{{ data.vehicleID }}">
+              <ng-option
+                *ngFor="let data of record"
+                value="{{ data.vehicleID }}"
+              >
                 {{ data.vehicleIdentification }}
               </ng-option>
             </ng-select>
           </div>
-          <div class="col-md-2 col-lg-2 pr-0">
-            <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask" style="width: 100% !important"
-              placeholder="Search task">
-              <ng-option *ngFor="let data of tasksData | keyvalue" value="{{ data.key }}">
+          <div class="col-md-2 col-lg-2 pl-2 pr-0">
+            <ng-select
+              [(ngModel)]="searchServiceTask"
+              name="searchServiceTask"
+              style="width: 100% !important"
+              placeholder="Search task"
+            >
+              <ng-option
+                *ngFor="let data of tasksData | keyvalue"
+                value="{{ data.key }}"
+              >
                 {{ data.value }}
               </ng-option>
             </ng-select>
           </div>
 
-          <div class="col-md-2 col-lg-2 pr-0">
-            <div class="input-group input-group-sm mb-3">
-              <ng-select [(ngModel)]="filterStatus" name="filterStatus" style="width: 100%"
-                placeholder="Select Reminder Status">
+          <div class="col-md-2 col-lg-2 pl-2 pr-0">
+            <div class="mb-3">
+              <ng-select
+                [(ngModel)]="filterStatus"
+                name="filterStatus"
+                style="width: 100%"
+                placeholder="Select Reminder Status"
+              >
                 <optgroup label="Select Reminder Status">
                   <ng-option value="all">ALL</ng-option>
                   <ng-option value="overdue">OVERDUE</ng-option>
@@ -35,150 +53,277 @@
             </div>
           </div>
 
-          <div class="col-md-2 col-lg-2">
-            <button type="button" (click)="searchData()" class="btn btn-sm btn-success mr-3">
+          <div class="col-md-2 col-lg-2 pl-2">
+            <button
+              type="button"
+              (click)="searchData()"
+              class="btn btn-sm btn-success mr-2"
+            >
               Search
             </button>
-            <button class="btn btn-sm btn-success" type="button" (click)="resetData()">
+            <button
+              class="btn btn-sm btn-success"
+              type="button"
+              (click)="resetData()"
+            >
               Reset
             </button>
-          </div>
-
-          <div class="col-md-4 col-lg-4 text-right pr-1">
-            <div class="btn-group flex-wrap ml-2">
-              <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                aria-expanded="false">
-                <i class="fas fa-upload"></i> Export<span class="caret"></span>
-              </button>
-              <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
-                  position: absolute;
-                  will-change: transform;
-                  top: 0px;
-                  left: 0px;
-                  transform: translate3d(0px, 38px, 0px);
-                ">
-                <a class="dropdown-item text-1" (click)="csvData()">CSV</a>
-              </div>
-            </div>
           </div>
         </div>
       </header>
 
-      <div class="m-2">
-        <div class="row text-dark">
-          <div class="col-12 mb-3">
-            <div class="bg-white p-3">
-              <div class="row text-dark">
-                <div class="col-12">
-                  <div>
-                    <h4 class="mt-1 mb-0 font-weight-bold">
-                      Service Reminders Report
-                    </h4>
-                  </div>
+      <div class="">
+        <div class="m-2 text-dark">
+          <div class="form-group row">
+            <div class="col-3 pr-0">
+              <div class="bg-white p-3">
+                <div>
+                  <h4 class="m-0 text-4 font-weight-bold">
+                    Total Service Reminders
+                  </h4>
+                  <h3 class="mt-1 mb-0 font-weight-bold">{{ count.total }}</h3>
                 </div>
               </div>
             </div>
-          </div>
-
-          <div class="col-4 mb-3">
-            <div class="bg-white p-3">
-              <div>
-                <h4 class="m-0 text-4">Total Service Reminders</h4>
-                <h3 class="mt-1 mb-0 font-weight-bold">{{ count.total }}</h3>
+            <div class="col-3 pl-2 pr-2">
+              <div class="p-3 bg-white">
+                <div>
+                  <h4 class="m-0 text-4 font-weight-bold">
+                    Total Overdue Service
+                  </h4>
+                  <h3 class="mt-1 mb-0 font-weight-bold">
+                    {{ count.overdue }}
+                  </h3>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-4 mb-3">
-            <div class="bg-white p-3">
-              <div>
-                <h4 class="m-0 text-4">Total Overdue Service</h4>
-                <h3 class="mt-1 mb-0 font-weight-bold">{{ count.overdue }}</h3>
-              </div>
-            </div>
-          </div>
-          <div class="col-4 mb-3">
-            <div class="bg-white p-3">
-              <div>
-                <h4 class="m-0 text-4">Total Due Soon</h4>
-                <h3 class="mt-1 mb-0 font-weight-bold">{{ count.dueSoon }}</h3>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <div class="col-lg-12 pl-0 pr-0">
-                <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                  [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
-                  <div class="card-body bor-radius0px p-3">
-                    <section class="reports_div">
-                      <table class="
-                          row-border
-                          hover
-                          table table-bordered table-striped
-                          mb-0
-                        ">
-                        <thead>
-                          <tr class="back-color-gray">
-                            <th>Vehicle</th>
-                            <th>Service Task</th>
-                            <th>Next Due</th>
-                            <th>Subscribers</th>
-                            <th>Renewal Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngIf="allData.length == 0" class="text-center">
-                            <td colspan="6">{{ dataMessage }}</td>
-                          </tr>
-                          <tr *ngFor="let item of allData">
-                            <td>
-                              <span class="text-capitalize">
-                                {{ vehiclesList[item.entityID] }}
-                              </span>
-                            </td>
-                            <td>
-                              <span class="text-capitalize">
-                                {{ tasksData[item.tasks.taskID] }}
-                              </span>
-                            </td>
-                            <td>{{ item.createdDate | date: "yyyy/MM/dd" }}</td>
-                            <td>{{ item.subscribers }}</td>
-                            <td>
-                              <span class="
-                                  text-warning
-                                  font-weight-bold font-size-12
-                                  text-uppercase
-                                " *ngIf="item.status === 'dueSoon'">{{ item.status }}<br /></span>
-                              <span class="
-                                  text-danger
-                                  font-weight-bold font-size-12
-                                  text-uppercase
-                                " *ngIf="item.status === 'overdue'">{{ item.status }}<br /></span>
-                              <span class="font-size-12">
-                                <span *ngIf="item.tasks.remindByUnit == 'time'">Every
-                                  {{ item.tasks.time }}
-                                  {{ item.tasks.timeUnit }}(s)
-                                </span>
-                                <span *ngIf="item.tasks.remindByUnit == 'odometer'">Every
-                                  {{ item.tasks.odometer }} miles[0]</span>
-                              </span>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </section>
-                  </div>
-                  <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
-                    <button type="button" class="btn btn-success btn-sm text-light" (click)="fetchReminderList()">
-                      Load More..
-                    </button>
-                  </div>
+            <div class="col-3 pl-0">
+              <div class="p-3 bg-white">
+                <div>
+                  <h4 class="m-0 text-4 font-weight-bold">Total Due Soon</h4>
+                  <h3 class="mt-1 mb-0 font-weight-bold">
+                    {{ count.dueSoon }}
+                  </h3>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <section class="m-2">
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row">
+                <div
+                  class="col-lg-12"
+                  style="height: calc(90vh - 149px); overflow-y: scroll"
+                >
+                  <p-table
+                    #dt
+                    [value]="allData"
+                    [resizableColumns]="true"
+                    columnResizeMode="expand"
+                    scrollDirection="both"
+                    [columns]="selectedColumns"
+                    [loading]="!loaded"
+                    styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                    [scrollable]="true"
+                    scrollHeight="100%"
+                  >
+                    <ng-template pTemplate="caption">
+                      <div
+                        class="p-d-flex d-flex justify-content-between align-items-center"
+                      >
+                        <div>
+                          <h3 class="m-0">Service Reminders Report</h3>
+                        </div>
+                        <div class="text-right">
+                          <span>Showing {{ allData.length }} entries</span>
+                          &nbsp;
+                          <button
+                            type="button"
+                            pButton
+                            (click)="refreshData()"
+                            pTooltip="Refresh"
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-sync"
+                          ></button>
+                            <button
+                            type="button"
+                            pButton
+                            pRipple
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel"
+                            (click)="csvData()"
+                            pTooltip="Excel"
+                          ></button>
+                          <button
+                            pButton
+                            pRipple
+                            pTooltip="Clear Filter"
+                            class="p-button-outlined mr-2"
+                            (click)="clear(dt)"
+                            icon="pi pi-filter-slash"
+                          ></button>
+                          <p-multiSelect
+                            [options]="dataColumns"
+                            [(ngModel)]="selectedColumns"
+                            optionLabel="header"
+                            selectedItemsLabel="{0} columns selected"
+                            [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns"
+                          >
+                          </p-multiSelect>
+                        </div>
+                      </div>
+                    </ng-template> 
+                    
+                     <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th
+                          *ngFor="let dataColumns of columns"
+                          [pSortableColumn]="dataColumns.field"
+                          pResizableColumn
+                         style="width: 20%; cursor: pointer"
+                        >
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchDefault>
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="right"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                          </div>
+                        </th>
+                      
+                      </tr>
+                    </ng-template>
+
+                    <ng-template
+                      pTemplate="body"
+                      let-reminder
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
+                      <tr>
+                       <td
+                          *ngFor="let dataColumns of columns"
+                        style="width: 20%; height: 40px; cursor: pointer"
+                        >
+                          <div [ngSwitch]="dataColumns.field">
+                        <span
+                         *ngSwitchCase="'entityID'"
+                        >
+                          <span class="text-capitalize">
+                            {{ vehiclesList[reminder.entityID] }}
+                          </span>
+                        </span>
+                        <span
+                          *ngSwitchCase="'tasks.taskID'"
+                        >
+                          <span class="text-capitalize">
+                            {{ tasksData[reminder.tasks.taskID] }}
+                          </span>
+                        </span>
+                        <span
+                         *ngSwitchCase="'createdDate'"
+                        >
+                          {{ reminder.createdDate | date: "yyyy/MM/dd" }}
+                        </span>
+                        <span
+                          *ngSwitchCase="'subscribers'"
+                        >
+                          {{ reminder.subscribers }}
+                        </span>
+
+                        <span
+                            *ngSwitchCase="'status'"
+                        >
+                          <span
+                            class="text-warning font-weight-bold font-size-12 text-uppercase"
+                            *ngIf="reminder.status === 'dueSoon'"
+                            >{{ reminder.status }}<br
+                          /></span>
+                          <span
+                            class="text-danger font-weight-bold font-size-12 text-uppercase"
+                            *ngIf="reminder.status === 'overdue'"
+                            >{{ reminder.status }}<br
+                          /></span>
+                          <span class="font-size-12">
+                            <span *ngIf="reminder.tasks.remindByUnit == 'time'"
+                              >Every
+                              {{ reminder.tasks.time }}
+                              {{ reminder.tasks.timeUnit }}(s)
+                            </span>
+                            <span
+                              *ngIf="reminder.tasks.remindByUnit == 'odometer'"
+                              >Every
+                              {{ reminder.tasks.odometer }} miles[0]</span
+                            >
+                          </span>
+                        </span>
+                        </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+
+                    <!-- Empty Template -->
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <div class="col-lg-12 mt-3 text-center">
+                        <span> {{ dataMessage }} </span>
+                        <br /><br />
+                      </div>
+                    </ng-template>
+                    <!-- Summary Section with Load More button -->
+
+                    <ng-template pTemplate="summary" let-columns>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK !== 'end' && allData.length !== 0"
+                      >
+                        <button
+                          type="button "
+                          (click)="onScroll($event)"
+                          class="btn btn-success btn-sm text-light"
+                        >
+                          Load More..
+                        </button>
+
+                        <br /><br />
+                      </div>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK === 'end'"
+                      >
+                        Total Records: {{ allData.length }}
+                      </div>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </section>
   </div>
 </section>

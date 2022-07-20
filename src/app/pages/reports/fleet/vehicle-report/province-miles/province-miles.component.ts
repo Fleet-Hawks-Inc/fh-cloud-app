@@ -1,8 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../../services';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { ApiService, HereMapService} from '../../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
+import { ActivatedRoute } from "@angular/router";
 import Constants from 'src/app/pages/fleet/constants';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { environment } from '../../../../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { Table } from 'primeng/table/table';
+import { Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import * as _ from 'lodash';
 @Component({
@@ -11,10 +20,12 @@ import * as _ from 'lodash';
   styleUrls: ['./province-miles.component.css']
 })
 export class ProvinceMilesComponent implements OnInit {
+  @ViewChild('dt') table: Table;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
+  environment = environment.isFeatureEnabled;
   allData: any = [];
   docCountries = [];
   states = [];
-  vehicleId = ''
   start = null;
   end = null;
   dataMessage = Constants.FETCHING_DATA;
@@ -31,12 +42,45 @@ export class ProvinceMilesComponent implements OnInit {
   element3: any;
   suggestedVehicles = [];
   vehicleIdentification = '';
-  constructor(private apiService: ApiService, private toastr: ToastrService, private countryStateCity: CountryStateCityService,) { }
-  ngOnInit(): void {
-
+  vehicleId = '';
+  loadMsg: string = Constants.NO_LOAD_DATA;
+  isSearch = false;
+  get = _.get;
+  _selectedColumns: any[];
+  listView = true;
+  visible = true;
+  
+  dataColumns = [
+        { field: 'vehicle', header: 'Vehicle', type: "text" },
+        { field: 'tripNo', header: 'Trip', type: "text" },
+        { field: 'orderName', header: 'Order', type: "text" },
+        { field: 'dateType', header: 'Date', type: "text" },
+        { field: 'usState', header: 'Province(US)', type: "text" },
+        { field: 'uMiles', header: 'US Province Miles', type: "text" },
+        { field: 'canState', header: 'Province(Canada)', type: "text" },
+        { field: 'caMiles', header: 'Canada Province Miles', type: "text" },
+        { field: 'cMiles', header: 'Canada Total Miles', type: "text" },
+        { field: 'usiles', header: 'US Total Miles', type: "text" },
+        { field: 'miles', header: 'Trip Miles', type: "text" },
+        { field: 'newStatus', header: 'Trip Status', type: "text" },
+    ];
+  
+  constructor(private apiService: ApiService, 
+  private toastr: ToastrService, 
+  private countryStateCity: CountryStateCityService,
+  private hereMap: HereMapService,
+  protected _sanitizer: DomSanitizer,
+  private modalService: NgbModal,
+  private route: ActivatedRoute,
+  private spinner: NgxSpinnerService,
+  private httpClient: HttpClient,) { }
+  
+  
+  async ngOnInit(): Promise<void> {
     this.end = moment().format("YYYY-MM-DD");
     this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
     this.fetchProvinceMilesData();
+    this.setToggleOptions();
   }
   // async fetchStates(countryCode: any) {
   //   this.states = await this.countryStateCity.GetStatesByCountryCode([
@@ -83,14 +127,23 @@ export class ProvinceMilesComponent implements OnInit {
 
           let dataa = element
           element.miles = 0
-          if (element.recall === true) {
-            element.newStatus = `${element.tripStatus} (R)`;
+          if(element.stlLink === true) {
+            element.newStatus = "settled";
+         
           }
           else {
-            if (element.stlLink === true) {
-              element.newStatus = "settled";
+            if (element.recall === true) {
+              element.newStatus = `${element.tripStatus} (R)`;
             }
           }
+          // if (element.recall === true) {
+          //   element.newStatus = `${element.tripStatus} (R)`;
+          // }
+          // else {
+          //   if (element.stlLink === true) {
+          //     element.newStatus = "settled";
+          //   }
+          // }
           for (let element1 of dataa.tripPlanning) {
             element.miles += Number(element1.miles);
           }
@@ -122,7 +175,7 @@ export class ProvinceMilesComponent implements OnInit {
     }
   }
 
-  onScroll() {
+  onScroll= async (event: any) => {
     if (this.loaded) {
       this.fetchProvinceMilesData();
     }
@@ -130,6 +183,7 @@ export class ProvinceMilesComponent implements OnInit {
   }
   searchFilter() {
     if (this.vehicleIdentification !== '' || this.start != null && this.end != null) {
+      this.vehicleIdentification = this.vehicleIdentification.toLowerCase();
       if (this.vehicleId == '') {
         this.vehicleId = this.vehicleIdentification;
       }
@@ -156,8 +210,46 @@ export class ProvinceMilesComponent implements OnInit {
       return false;
     }
   }
+  
+   refreshData() {
+        this.end = moment().format("YYYY-MM-DD");
+        this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
+        this.allData = []
+        this.lastItemSK = '';
+        this.loaded = false;
+        this.fetchProvinceMilesData();
+        this.dataMessage = Constants.FETCHING_DATA;
+    }
+  
+   setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    
+    @Input() get selectedColumns(): any[] {
+        return this._selectedColumns;
+    }
+    
+    set selectedColumns(val: any[]) {
+        //restore original order
+        this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+    }
+    
+    
+  reset() {
+    if (this.vehicleIdentification !== '') {
+      this.vehicleId = '';
+      this.suggestedVehicles = [];
+      this.vehicleIdentification = '';
+      this.lastItemSK = '';
+      this.allData = [];
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.fetchProvinceMilesData();
+    } else {
+      return false;
+    }
+  }
   fetchFullExport(type = '') {
-    this.apiService.getData(`vehicles/fetch/provinceMiles/report?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
+    this.apiService.getData(`vehicles/fetch/provinceMiles/report?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.exportData = result.Items;
       for (let veh of this.exportData) {
         let dataa = veh
@@ -211,20 +303,23 @@ export class ProvinceMilesComponent implements OnInit {
                 const element4 = element2.canProvince[k];
                 canState += `"${element4.StCntry}\n\"`;
                 canMiles += `"${element4.Total}\n\"`;
+
+           
               }
               let obj = {}
               obj["Vehicle"] = element.vehicle;
               obj["Trip#"] = element.tripNo;
               obj["Order#"] = element.orderName.replace(/, /g, ' &');
+              obj["Date"] = element.createdDate;
               if (type === 'US') {
                 obj["Province(US)"] = element2.usProvince[stateIndex].StCntry;
                 obj["US Province Miles"] = element2.usProvince[stateIndex].Total;
-                obj["US Total Miles"] = element.usMiles;
+                obj["US Total Miles"] = element.usMiles.toFixed(2);
               }
               else {
                 obj["Province(Canada)"] = element2.canProvince[stateIndex].StCntry;
                 obj["Canada Province Miles"] = element2.canProvince[stateIndex].Total;
-                obj["Canada Total Miles"] = element.canMiles;
+                obj["Canada Total Miles"] = element.canMiles.toFixed(2);   
               }
 
               obj["Trip Miles"] = element.miles;
@@ -249,7 +344,13 @@ export class ProvinceMilesComponent implements OnInit {
       if (link.download !== undefined) {
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}provinceMiles-Report.csv`);
+        if(type === 'US'){
+          link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}US-ProvinceMiles-Report.csv`);
+        }
+        else{
+          link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}CAN-ProvinceMiles-Report.csv`);
+        }
+      
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
@@ -260,4 +361,9 @@ export class ProvinceMilesComponent implements OnInit {
       this.toastr.error("No Records found")
     }
   }
+  
+  
+  clear(table: Table) {
+        table.clear();
+    }
 }

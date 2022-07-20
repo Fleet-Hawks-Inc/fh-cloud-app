@@ -1,19 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ApiService } from '../../../../../services';
+import { ApiService, ListService } from '../../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import Constants from '../../../constants';
-
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import * as html2pdf from "html2pdf.js";
+import { CountryStateCityService } from "src/app/services/country-state-city.service";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+import { PdfViewerComponent } from "ng2-pdf-viewer";
 @Component({
   selector: 'app-service-detail',
   templateUrl: './service-detail.component.html',
   styleUrls: ['./service-detail.component.css']
 })
 export class ServiceDetailComponent implements OnInit {
+  @ViewChild("previewExpTransaction", { static: true })
+  previewExpTransaction: TemplateRef<any>;
+  @ViewChild("logModal", { static: true })
+  logModal: TemplateRef<any>;
   logurl = this.apiService.AssetUrl;
   noRecordMessage: string = Constants.NO_RECORDS_FOUND;
-  private logID;
+  public logID;
   programs;
   logsData: any = {
     unitType: '-'
@@ -22,6 +30,8 @@ export class ServiceDetailComponent implements OnInit {
   allServiceParts: any = [];
   vehicle: any;
   assetID: any;
+  sessionID: string;
+
   completionDate: any;
   startDate: any;
   odometer: any;
@@ -39,7 +49,7 @@ export class ServiceDetailComponent implements OnInit {
   taskTaxAmount: number;
   taskTaxPercent: number;
   taskTotal: number;
-  
+
   partsSubTotal: number;
   partsQuantity: number;
   partsDiscountAmount: number;
@@ -52,40 +62,71 @@ export class ServiceDetailComponent implements OnInit {
   photos: any = [];
   docs: any = [];
   users: any = [];
-
+  carrier = {
+    carrierName: "",
+    phone: "",
+    email: "",
+  };
   logImages = []
   logDocs = [];
-
-  pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
-
+  logModalRef: any;
+  showModal = false;
+  companyLogo = "";
+  tagLine: "";
+  companyName: any = "";
+  carrierAddress = {
+    address: "",
+    userLocation: "",
+    manual: "",
+    stateName: "",
+    countryName: "",
+    cityName: "",
+    zipCode: "",
+  };
+  showDetails = false;
+  vehiclePlateNo: any
+  vehicleVIN = ''
+  assetPlateNo: any;
+  assetVin: any;
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  subTotal: 0;
+  taxes: any;
+  finalTotal: any;
   constructor(
-      private spinner: NgxSpinnerService,
-      private apiService: ApiService,
-      private route: ActivatedRoute,
-      private domSanitizer: DomSanitizer,
-  ) { }
+    private spinner: NgxSpinnerService,
+    private apiService: ApiService,
+    private route: ActivatedRoute,
+    private domSanitizer: DomSanitizer,
+    private modalService: NgbModal,
+    private listService: ListService,
+    private countryStateCity: CountryStateCityService,
+    private routerMgmtService: RouteManagementServiceService
+
+  ) {
+    this.sessionID = this.routerMgmtService.serviceLogSessionID;
+   }
 
   ngOnInit() {
     this.logID = this.route.snapshot.params['logID'];
     this.fetchProgramByID();
+    this.getCurrentuser();
     this.fetchAllVehiclesIDs();
     this.fetchAllVendorsIDs();
     // this.fetchAllIssuesIDs();
     this.fetchAllAssetsIDs();
     this.fetchUsers();
+    this.fetchCarrier()
   }
-
+  
   fetchProgramByID() {
     this.spinner.show(); // loader init
     this.apiService.getData(`serviceLogs/${this.logID}`).subscribe({
-      complete: () => {},
-      error: () => {},
-      next: (result: any) => {
+      complete: () => { },
+      error: () => { },
+      next: async (result: any) => {
         this.logsData = result.Items[0];
-        
-
         this.fetchSelectedIssues(this.logsData.selectedIssues);
-       
+
         result = result.Items[0];
         this.vehicle = result.unitID;
         this.assetID = result.unitID;
@@ -114,9 +155,24 @@ export class ServiceDetailComponent implements OnInit {
         this.partsTotal = result.allServiceParts.total;
 
         this.currency = result.allServiceParts.currency;
-          this.logImages = result.uploadedPics;
-          this.logDocs = result.uploadDocument;
-        
+       //  this.logImages = result.uploadedPics;
+        this.logDocs = result.uploadDocument;
+        this.vehiclePlateNo = result.vehPlateNo;
+        this.vehicleVIN = result.vehicleVin;
+        this.assetPlateNo = result.assetPlateNo;
+        this.assetVin = result.assetVin;
+        this.subTotal = result.total.subTotal;
+        this.taxes = result.total.taxes;
+        this.finalTotal = result.total.finalTotal
+        for (const image of result.uploadedPics) {
+          const base64 = await this.getBase64ImageFromUrl(image.path)
+          this.logImages.push(
+            {
+              path: base64,
+              name: image.name
+            }
+          )
+      }
         /*
        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
           this.logImages = result.uploadedPhotos.map(x => ({
@@ -129,14 +185,29 @@ export class ServiceDetailComponent implements OnInit {
           this.logDocs = result.uploadedDocs.map(x => ({path: `${this.logurl}/${result.carrierID}/${x}`, name: x}));
         }
         */
-        
+
         this.spinner.hide(); // loader init
       },
     });
-    
+
   }
 
- fetchAllVehiclesIDs() {
+  async getBase64ImageFromUrl(imageUrl) {
+    var res = await fetch(imageUrl);
+    var blob = await res.blob();
+    return new Promise((resolve, reject) => {
+      var reader  = new FileReader();
+      reader.addEventListener("load", function () {
+          resolve(reader.result);
+      }, false);
+      reader.onerror = () => {
+        return reject(this);
+      };
+      reader.readAsDataURL(blob);
+    })
+  }
+
+  fetchAllVehiclesIDs() {
     this.apiService.getData('vehicles/get/list')
       .subscribe((result: any) => {
         this.vehiclesObject = result;
@@ -146,25 +217,24 @@ export class ServiceDetailComponent implements OnInit {
   fetchAllVendorsIDs() {
     this.apiService.getData('contacts/get/list/vendor')
       .subscribe((result: any) => {
-        console.log('result vendor', result)
-        this.vendorsObject = result; 
+        this.vendorsObject = result;
       });
   }
 
   fetchSelectedIssues(issueIDs) {
-    if(issueIDs.length > 0) {
+    if (issueIDs.length > 0) {
       issueIDs = JSON.stringify(issueIDs);
-      this.apiService.getData('issues/fetch/selected?issueIds='+issueIDs)
-      .subscribe((result: any) => {
-        this.issuesObject = result;
-      });
+      this.apiService.getData('issues/fetch/selected?issueIds=' + issueIDs)
+        .subscribe((result: any) => {
+          this.issuesObject = result;
+        });
     }
   }
 
-  fetchUsers(){
-    this.apiService.getData('users/get/list').subscribe((result: any) => {
+  fetchUsers() {
+    this.apiService.getData('common/users/get/list').subscribe((result: any) => {
       this.users = result;
-      
+
     });
   }
 
@@ -176,24 +246,89 @@ export class ServiceDetailComponent implements OnInit {
   }
 
   // delete uploaded images and documents
-  delete(type: string, name: string, index:any) {
+  delete(type: string, name: string, index: any) {
     this.apiService.deleteData(`serviceLogs/uploadDelete/${this.logID}/${type}/${name}`).subscribe((result: any) => {
-      if(type === 'image') {
+      if (type === 'image') {
         this.logImages.splice(index, 1);
       } else {
-        this.logDocs.splice(index,1);
+        this.logDocs.splice(index, 1);
       }
     });
   }
 
   setPDFSrc(val) {
     let pieces = val.split(/[\s.]+/);
-    let ext = pieces[pieces.length-1];
+    let ext = pieces[pieces.length - 1];
     this.pdfSrc = '';
-    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
-      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+    if (ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
+
+  openModal() {
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "log-order logs-model",
+    };
+    this.logModalRef = this.modalService.open(this.logModal, ngbModalOptions)
+  }
+  async downloadPdf() {
+    var data = document.getElementById("log_wrap");
+    html2pdf(data, {
+      margin: [0.5, 0.3, 0.5, 0.3],
+      pagebreak: { mode: 'avoid-all', before: "log_wrap" },
+      filename: "serviceLog.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        dpi: 300,
+        letterRendering: true,
+        allowTaint: true,
+        useCORS: true,
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    });
+    this.logModalRef.close();
+  }
+  getCurrentuser = async () => {
+    const carrierID = localStorage.getItem('xfhCarrierId');
+    let result: any = await this.apiService
+      .getData(`carriers/detail/${carrierID}`)
+      .toPromise();
+    this.companyName = result.companyName;
+    this.companyLogo = result.logo;
+    this.tagLine = result.tagLine;
+  };
+
+  fetchCarrier() {
+
+    const carrierID = localStorage.getItem('xfhCarrierId');
+    this.apiService
+      .getData(`carriers/${carrierID}`)
+      .subscribe((result: any) => {
+        this.carrier = result.Items[0];
+        this.fetchAddress(this.carrier[`addressDetails`]);
+      });
+  }
+  async fetchAddress(address: any) {
+    for (const adr of address) {
+      if (adr.addressType === "yard" && adr.defaultYard === true) {
+        if (adr.manual) {
+          adr.countryName =
+            await this.countryStateCity.GetSpecificCountryNameByCode(
+              adr.countryCode
+            );
+          adr.stateName = await this.countryStateCity.GetStateNameFromCode(
+            adr.stateCode,
+            adr.countryCode
+          );
+        }
+        this.carrierAddress = adr;
+        this.showDetails = true;
+        break;
+      }
     }
   }
 }

@@ -3,7 +3,9 @@ import { ApiService } from "../../../../services";
 import { ActivatedRoute, Router } from "@angular/router";
 declare var $: any;
 import { ToastrService } from "ngx-toastr";
+import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from '../../../../../environments/environment';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 
 @Component({
   selector: "app-inventory-detail",
@@ -22,6 +24,7 @@ export class InventoryDetailComponent implements OnInit {
   cost = "";
   costUnit = "";
   tax = "";
+  sessionID: string;
   totalCost = "";
   quantity = "";
   itemName = "";
@@ -31,6 +34,8 @@ export class InventoryDetailComponent implements OnInit {
   aisle = "";
   row = "";
   bin = "";
+      pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+
   warehouseVendorID = "";
   trackingQuantity = "";
   reorderPoint = "";
@@ -56,9 +61,12 @@ export class InventoryDetailComponent implements OnInit {
     private apiService: ApiService,
     private route: ActivatedRoute,
     private router: Router,
-
+  private domSanitizer: DomSanitizer,
+      private routerMgmtService: RouteManagementServiceService,
     private toastr: ToastrService
-  ) {}
+  ) {
+      this.sessionID = this.routerMgmtService.maintainanceSessionID;
+  }
 
   ngOnInit() {
     this.itemID = this.route.snapshot.params[`itemID`];
@@ -153,6 +161,18 @@ export class InventoryDetailComponent implements OnInit {
       }
     });
   }
+
+    setPDFSrc(val) {
+        let pieces = val.split(/[\s.]+/);
+        let ext = pieces[pieces.length - 1];
+        this.pdfSrc = '';
+        if (ext === 'doc' || ext === 'docx') {
+            this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
+        } else {
+            this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+        }
+    }
+
 
   deleteItem() {
     this.apiService

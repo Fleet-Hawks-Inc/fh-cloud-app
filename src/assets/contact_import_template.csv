@@ -1,0 +1,2 @@
+company_name,address,city,state,zip,phone1,phone2,primary_email,secondary_emails
+abc logistics,725 9 Ave SW,Calgary,AB,T2P 3V4,9876543210,9876543210,abc@gmail.com, abc@gmail.com;xyz@gmail.com

@@ -25,6 +25,7 @@ export class SalesInvoicesListComponent implements OnInit {
   loaded = false;
 
   customersObjects: any = {};
+  emailDisabled = false;
 
   constructor(public accountService: AccountService, private toaster: ToastrService, public apiService: ApiService) { }
 
@@ -42,6 +43,20 @@ export class SalesInvoicesListComponent implements OnInit {
       this.customersObjects = result;
     });
   }
+
+  voidOrderInvoice(i: any, saleID: string) {
+    if (confirm("Are you sure you want to void?") === true) {
+      this.accountService
+        .deleteData(`sales-invoice/delete/${saleID}`)
+        .subscribe((res) => {
+          if (res) {
+            this.allInvoices[i].status = 'voided';
+            this.allInvoices[i].payStatus = '';
+          }
+        })
+    }
+  }
+
 
   async fetchSales(refresh?: boolean) {
     if (refresh === true) {
@@ -67,7 +82,7 @@ export class SalesInvoicesListComponent implements OnInit {
             } else {
               this.lastItemSK = 'end';
             }
-            // this.loaded = true;
+            this.loaded = true;
 
           }
         });
@@ -136,6 +151,21 @@ export class SalesInvoicesListComponent implements OnInit {
       this.fetchSales();
     }
     this.loaded = false;
+  }
+
+  async sendConfirmationEmail(i: any, saleID: any) {
+
+    this.emailDisabled = true;
+    let result: any = await this.accountService
+      .getData(`sales-invoice/send/confirmation-email/${saleID}`)
+      .toPromise();
+    this.emailDisabled = false;
+    if (result) {
+      this.toaster.success("Email sent successfully");
+      this.allInvoices[i].status = 'sent';
+    } else {
+      this.toaster.error("Something went wrong.");
+    }
   }
 
 }

@@ -1,9 +1,24 @@
 import { HttpClient } from '@angular/common/http';
+<<<<<<< HEAD
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as _ from 'lodash';
 import { environment } from '../../../../../../environments/environment';
 import { ApiService } from '../../../../../services';
+=======
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { HereMapService } from 'src/app/services/here-map.service';
+import * as _ from 'lodash';
+import * as moment from 'moment'
+import { environment } from '../../../../../../environments/environment';
+import { ApiService } from '../../../../../services';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { Table } from 'primeng/table';
+>>>>>>> 96717babcce47571d1060031474203ddd3364440
 import { OnboardDefaultService } from '../../../../../services/onboard-default.service';
 import Constants from 'src/app/pages/fleet/constants';
 declare var $: any;
@@ -13,6 +28,11 @@ declare var $: any;
   styleUrls: ['./expense-list.component.css']
 })
 export class ExpenseListComponent implements OnInit {
+<<<<<<< HEAD
+=======
+  @ViewChild('dt') table: Table;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
+>>>>>>> 96717babcce47571d1060031474203ddd3364440
   liveModalTimeout: any;
   liveStreamVehicle: string;
   environment = environment.isFeatureEnabled;
@@ -38,6 +58,7 @@ export class ExpenseListComponent implements OnInit {
   vehicleTypeObects: any = {};
   lastItemSK = ''
   loaded = false
+<<<<<<< HEAD
 
   constructor(private apiService: ApiService, private httpClient: HttpClient, 
      protected _sanitizer: DomSanitizer) {
@@ -48,6 +69,46 @@ export class ExpenseListComponent implements OnInit {
     this.fetchServiceProgramsList();
     this.fetchVendorList();
     this.initDataTable()
+=======
+  isSearch = false;
+  _selectedColumns: any[];
+  driverOptions: any[];
+  listView = true;
+  visible = true;
+  get = _.get;
+  
+   dataColumns = [
+    { field: 'vehicleIdentification', header: 'Vehicle Name/Number', type: "text" },
+    { width: '6%', field: 'VIN', header: 'VIN', type: "text" },
+    { width: '5%', field: 'startDate', header: 'Start Date', type: "text" },
+    { width: '5%', field: 'manufacturerID', header: 'Make', type: "text" },
+    { width: '5%', field: 'modelID', header: 'Model', type: "text" },
+    { width: '5%', field: 'year', header: 'Year', type: "text" },
+    { width: '9%', field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
+    { width: '7%', field: 'ownership', header: 'Ownership', type: "text" },
+    { width: '8%', field: 'driverList.driverID', header: 'Driver Assigned', type: 'text' },
+    { width: '10%', field: 'driverList.teamDriverID', header: 'Team Driver Assigned', type: 'text' },
+    { width: '7%', field: 'plateNumber', header: 'Plate Number', type: "text" },
+    { width: '3%', field: 'currentStatus', header: 'Status', type: 'text' },
+  ];
+    
+
+  constructor(private apiService: ApiService, 
+  private httpClient: HttpClient,
+  private router: Router,
+  protected _sanitizer: DomSanitizer,
+  private toastr: ToastrService,
+  private spinner: NgxSpinnerService,
+  private hereMap: HereMapService,) {
+  }
+  
+   async ngOnInit(): Promise<void> {
+    this.fetchGroups();
+    this.fetchDriversList();
+    this.fetchVendorList();
+    this.initDataTable();
+    this.setToggleOptions();
+>>>>>>> 96717babcce47571d1060031474203ddd3364440
   }
   getSuggestions = _.debounce(function (value) {
 
@@ -69,6 +130,23 @@ export class ExpenseListComponent implements OnInit {
     });
   }
 
+<<<<<<< HEAD
+=======
+   setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+    
+     @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+  
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
+  }
+
+>>>>>>> 96717babcce47571d1060031474203ddd3364440
   fetchVehicleModelList() {
     this.apiService.getData('vehicleModels/get/list').subscribe((result: any) => {
       this.vehicleModelList = result;
@@ -82,12 +160,15 @@ export class ExpenseListComponent implements OnInit {
   }
 
 
+<<<<<<< HEAD
   fetchServiceProgramsList() {
     this.apiService.getData('servicePrograms/get/list').subscribe((result: any) => {
       this.serviceProgramsList = result;
     });
   }
 
+=======
+>>>>>>> 96717babcce47571d1060031474203ddd3364440
   fetchVendorList() {
     this.apiService.getData('contacts/get/list/vendor').subscribe((result: any) => {
       this.vendorsList = result;
@@ -99,12 +180,18 @@ export class ExpenseListComponent implements OnInit {
     this.vehicleID = vehicleIdentification;
     this.suggestedVehicles = [];
   }
+<<<<<<< HEAD
 
+=======
+  
+ 
+>>>>>>> 96717babcce47571d1060031474203ddd3364440
   initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
       this.apiService.getData('vehicles/fetch/records?vehicle=' + this.vehicleID + '&status=' + this.currentStatus + '&lastKey=' + this.lastEvaluatedKey)
         .subscribe(async (result: any) => {
           this.dataMessage = Constants.FETCHING_DATA
+<<<<<<< HEAD
           if (result.Items.length === 0) {
             this.disableSearch = false;
             this.dataMessage = Constants.NO_RECORDS_FOUND
@@ -116,18 +203,41 @@ export class ExpenseListComponent implements OnInit {
             this.disableSearch = false;
             if (result.LastEvaluatedKey !== undefined) {
               this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].vehicleSK);
+=======
+          if (result.data.length === 0) {
+            this.disableSearch = false;
+            this.loaded = true;
+            this.dataMessage = Constants.NO_RECORDS_FOUND
+          }
+          result[`data`].map((v: any) => {
+            v.url = `/reports/fleet/vehicles/expense/${v.vehicleID}`;
+          })
+          if (result.data.length > 0) {
+            this.disableSearch = false;
+            if (result.nextPage !== undefined) {
+              this.lastEvaluatedKey = encodeURIComponent(result.nextPage);
+>>>>>>> 96717babcce47571d1060031474203ddd3364440
             }
             else {
               this.lastEvaluatedKey = 'end'
             }
+<<<<<<< HEAD
             this.vehicles = this.vehicles.concat(result.Items)
+=======
+            this.vehicles = this.vehicles.concat(result.data)
+>>>>>>> 96717babcce47571d1060031474203ddd3364440
 
             this.loaded = true;
           }
         });
     }
   }
+<<<<<<< HEAD
   onScroll() {
+=======
+  
+  onScroll= async (event: any) =>{
+>>>>>>> 96717babcce47571d1060031474203ddd3364440
     if (this.loaded) {
       this.initDataTable();
     }
@@ -150,6 +260,21 @@ export class ExpenseListComponent implements OnInit {
       return false;
     }
   }
+<<<<<<< HEAD
+=======
+  
+  refreshData() {
+    this.vehicleID = '';
+    this.suggestedVehicles = [];
+    this.vehicleIdentification = '';
+    this.currentStatus = null;
+    this.vehicles = [];
+    this.lastEvaluatedKey = '';
+    this.loaded = false;
+    this.initDataTable();
+    this.dataMessage = Constants.FETCHING_DATA;
+  }
+>>>>>>> 96717babcce47571d1060031474203ddd3364440
 
   resetFilter() {
     if (this.vehicleIdentification !== '' || this.currentStatus !== null) {
@@ -166,7 +291,15 @@ export class ExpenseListComponent implements OnInit {
       return false;
     }
   }
+<<<<<<< HEAD
 
 }
 
 
+=======
+   clear(table: Table) {
+        table.clear();
+    }
+
+}
+>>>>>>> 96717babcce47571d1060031474203ddd3364440

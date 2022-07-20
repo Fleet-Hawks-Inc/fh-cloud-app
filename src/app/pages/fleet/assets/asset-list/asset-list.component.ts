@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../services';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { ApiService, DashboardUtilityService, ListService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services';
@@ -8,6 +8,9 @@ import Constants from '../../constants';
 import { environment } from '../../../../../environments/environment';
 import { OnboardDefaultService } from '../../../../services/onboard-default.service';
 import * as _ from 'lodash';
+import { Table } from 'primeng/table';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import * as moment from 'moment';
 declare var $: any;
 
 @Component({
@@ -16,6 +19,9 @@ declare var $: any;
   styleUrls: ['./asset-list.component.css'],
 })
 export class AssetListComponent implements OnInit {
+  @ViewChild('dt') table: Table;
+
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   allAssetTypes: any;
@@ -48,6 +54,7 @@ export class AssetListComponent implements OnInit {
   dryboxOptions: any = {};
   flatbedOptions: any = {};
   curtainOptions: any = {};
+  fullExportDriver: any = [];
   closeResult = '';
 
   response: any = '';
@@ -98,41 +105,145 @@ export class AssetListComponent implements OnInit {
   assetEndPoint = this.pageLength;
   contactsObjects = [];
   loaded = false
+  fullExportAsset: any = [];
   lastItemSK = ''
+
+  loadMsg: string = Constants.NO_LOAD_DATA;
+  assetOptions: any[];
+  _selectedColumns: any[];
+  get = _.get;
+  isSearch = false;
+
+  dataColumns = [
+    { width: '11%', field: 'assetIdentification', header: 'Asset Name/Number', type: "text" },
+    { width: '8%', field: 'VIN', header: 'VIN', type: "text" },
+    { width: '8%', field: 'assetType', header: 'Asset Type', type: "text" },
+    { width: '6%', field: 'manufacturer', header: 'Make', type: "text" },
+    { width: '12%', field: 'licencePlateNumber', header: 'Licence Plate Number', type: "text" },
+    { width: '6%', field: 'year', header: 'Year', type: "text" },
+    { width: '8%', field: 'ownerShip', header: 'Ownership', type: "text" },
+    { width: '10%', field: 'operatorCompany', header: 'Company Name', type: "text" },
+    { width: '10%', field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
+    { width: '6%', field: "currentStatus", header: 'Status', type: 'text' },
+    { width: '8%', field: 'isImport', header: 'Added By', type: "text" },
+
+  ];
+
+  isUpgrade = false;
+
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private httpClient: HttpClient,
     private hereMap: HereMapService,
+    private dashboardUtilityService: DashboardUtilityService,
+    private listService: ListService,
     private onboard: OnboardDefaultService) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.setToggleOptions();
+    this.setAssetOptions();
     this.onboard.checkInspectionForms();
     this.fetchGroups();
-    this.initDataTable();
+    await this.initDataTable();
     this.fetchContacts();
+    this.isSubscriptionsValid();
+  }
 
+  private async isSubscriptionsValid() {
+    this.dashboardUtilityService.refreshAstCount = true;
+    this.dashboardUtilityService.refreshPlans = true;
+    let curAstCount = await this.dashboardUtilityService.fetchAssetsCount();
+    this.listService.maxUnit.subscribe((res: any) => {
+      if (res) {
+        let data = [];
+        for (const item of res) {
+          if (item.planCode.startsWith('TRA-') || item.planCode.startsWith('REF-')) {
+            data.push({ assets: item.assets, planCode: item.planCode })
+          }
+        }
+
+        if (data.length > 0) {
+
+          let assetTotal = Math.max(...data.map(o => o.assets))
+          if (assetTotal == -1) { // -1 returns when subscribed Enterprise plan with no limit
+            this.isUpgrade = false;
+          } else {
+            this.isUpgrade = curAstCount >= assetTotal ? true : false;
+            if (this.isUpgrade) {
+
+              let obj = {
+                summary: Constants.RoutingPlanExpired,
+                detail: 'You will not be able to add more assets.',
+                severity: 'error'
+              }
+              this.dashboardUtilityService.notify(obj);
+            }
+          }
+        }
+      }
+    })
+  }
+
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+  setAssetOptions() {
+    this.assetOptions = [{ "value": "container", "name": "Container" },
+    { "value": "double_drop", "name": "Double Drop" },
+    { "value": "dump_trailer", "name": "Dump Trailer" },
+    { "value": "flat_bed", "name": "Flat bed" },
+    { "value": "lowboy", "name": "Lowboy" },
+    { "value": "stepDeck", "name": "StepDeck" },
+    { "value": "removable_gooseneck", "name": "Removable Gooseneck" },
+    { "value": "dry_van", "name": "Dry Van" },
+    { "value": "reefer", "name": "Reefer" },
+    { "value": "power_only", "name": "Power Only" },
+    { "value": "conestoga_trailer", "name": "Conestoga Trailer" },
+    { "value": "side_kit_trailer", "name": "Side Kit Trailer" },
+    { "value": "enclosed_trailer", "name": "Enclosed Trailer" },
+    { "value": "scrap_trailer", "name": "Scrap Trailer" },
+    { "value": "semi_trailer", "name": "Semi Trailer" },
+    { "value": "chassis", "name": "Chassis" },
+    { "value": "tank_trailer", "name": "Tank Trailer" },
+    ];
+  }
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
 
   getSuggestions = _.debounce(function (value) {
     value = value.toLowerCase();
     if (value != '') {
+      this.loadMsg = Constants.LOAD_DATA;
       this.apiService
         .getData(`assets/suggestion/${value}`)
         .subscribe((result) => {
-          this.suggestedAssets = result;
+          if (result.length === 0) {
+            this.suggestedAssets = [];
+            this.loadMsg = Constants.NO_LOAD_FOUND;
+          }
+
+          if (result.length > 0) {
+            this.suggestedAssets = result;
+          } else {
+            this.suggestedAssets = [];
+          }
         });
     } else {
       this.suggestedAssets = [];
     }
-
-  }, 800)
+  }, 800);
 
   setAsset(assetID, assetIdentification) {
     this.assetIdentification = assetIdentification;
     this.assetID = assetIdentification;
-
     this.suggestedAssets = [];
   }
 
@@ -198,41 +309,34 @@ export class AssetListComponent implements OnInit {
     this.visible = !this.visible;
   }
 
-  initDataTable() {
-    if (this.lastEvaluatedKey !== 'end')
-      this.apiService.getData('assets/fetch/records?asset=' + this.assetIdentification + '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey)
-        .subscribe((result: any) => {
-          this.dataMessage = Constants.FETCHING_DATA
-          if (result.Items.length === 0) {
-
-            this.dataMessage = Constants.NO_RECORDS_FOUND
-            this.suggestedAssets = [];
-
-
-
-          }
-          if (result.Items.length > 0) {
-            result[`Items`].map((v: any) => {
-              v.url = `/fleet/assets/detail/${v.assetID}`;
-              v.assetType = v.assetType.replace("_", " ")
-            })
-            if (result.LastEvaluatedKey !== undefined) {
-              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].assetSK);
-            }
-            else {
-              this.lastEvaluatedKey = 'end'
-            }
-            this.allData = this.allData.concat(result.Items)
-
-            this.loaded = true;
-          }
-        });
+  async initDataTable() {
+    if (this.lastEvaluatedKey !== 'end') {
+      let result = await this.apiService.getData('assets/fetch/records?asset=' + this.assetIdentification + '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey).toPromise();
+      if (result.data.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND;
+        this.loaded = true;
+      }
+      result.data.map((v) => {
+        v.url = `/fleet/assets/detail/${v.assetID}`;
+      });
+      if (result.nextPage !== undefined) {
+        this.lastEvaluatedKey = encodeURIComponent(result.nextPage);
+      }
+      else {
+        this.lastEvaluatedKey = 'end'
+      }
+      this.allData = this.allData.concat(result.data)
+      this.loaded = true;
+      this.isSearch = false;
+    }
   }
-  onScroll() {
+
+
+  onScroll = async (event: any) => {
     if (this.loaded) {
       this.initDataTable();
     }
-    this.loaded = true;
+    this.loaded = false;
   }
 
   searchFilter() {
@@ -241,15 +345,94 @@ export class AssetListComponent implements OnInit {
       if (this.assetID == '') {
         this.assetID = this.assetIdentification;
       }
-      this.dataMessage = Constants.FETCHING_DATA;
+      this.isSearch = true;
       this.allData = [];
+      this.dataMessage = Constants.FETCHING_DATA;
       this.lastEvaluatedKey = ''
-      this.suggestedAssets = [];
       this.initDataTable();
 
     } else {
       return false;
     }
+  }
+
+
+  generateDriverCSV() {
+    if (this.fullExportAsset.length > 0) {
+      let dataObject = []
+      let csvArray = []
+      this.fullExportAsset.forEach(element => {
+        let obj = {}
+        obj["Asset Name/Number"] = element.assetIdentification
+        obj["VIN"] = element.VIN
+        obj["Asset Type"] = element.assetType
+        obj["Make"] = element.assetDetails.manufacturer
+        obj["License Plate Number"] = element.assetDetails.licencePlateNumber
+        obj["Year"] = element.assetDetails.year
+        obj["ownerShip"] = element.assetDetails.ownerShip ? element.assetDetails.ownerShip : '-'
+        obj["Company Name"] = element.assetDetails.ownCname
+        obj["Annual Safety Date"] = element.assetDetails.annualSafetyDate
+        obj["Status"] = element.currentStatus
+        obj["Added By"] = element.isImport ? 'Imported' : 'Manual'
+        if (element.assetDetails.ownerShip === 'ownerOperator') {
+          obj["Company Name"] = element.assetDetails.ownerOperator ? this.contactsObjects[element.assetDetails.ownerOperator] : ''
+        }
+        if (element.assetDetails.ownerShip === 'rented') {
+          obj["Company Name"] = element.assetDetails.ownCname ? element.assetDetails.ownCname : '-'
+        }
+        if (element.assetDetails.ownerShip === 'leased') {
+          obj["Company Name"] = element.assetDetails.ownCname ? element.assetDetails.ownCname : '-'
+        }
+        dataObject.push(obj)
+      });
+      let headers = Object.keys(dataObject[0]).join(',')
+      headers += '\n'
+      csvArray.push(headers)
+      dataObject.forEach(element => {
+        let obj = Object.values(element).join(',')
+        obj += '\n'
+        csvArray.push(obj)
+      });
+      const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Driver-Report.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+    else {
+      this.toastr.error("No Records found")
+    }
+  }
+
+
+  requiredExport() {
+    this.apiService.getData(`assets/fetch/assetList`).subscribe((result: any) => {
+      this.fullExportAsset = result.Items;
+      this.generateDriverCSV();
+    })
+  }
+
+  requiredCSV() {
+    if (this.assetIdentification !== '' || this.assetType !== null) {
+      this.assetID = '';
+      this.fullExportDriver = this.allData
+      this.generateDriverCSV();
+    } else {
+      this.requiredExport();
+    }
+  }
+
+  clearInput() {
+    this.suggestedAssets = null;
+  }
+
+  clearSuggestions() {
+    this.assetIdentification = '';
   }
 
   resetFilter() {
@@ -259,6 +442,7 @@ export class AssetListComponent implements OnInit {
       this.assetType = null;
       this.suggestedAssets = [];
       this.allData = [];
+      this.isSearch = true;
       this.dataMessage = Constants.FETCHING_DATA;
       this.lastEvaluatedKey = ''
       this.initDataTable();
@@ -268,124 +452,20 @@ export class AssetListComponent implements OnInit {
     }
   }
 
-  hideShowColumn() {
-    // for headers
-    if (this.hideShow.vin == false) {
-      $('.col0').css('display', 'none');
-    } else {
-      $('.col0').css('display', '');
-    }
-    if (this.hideShow.assetName == false) {
-      $('.col1').css('display', 'none');
-    } else {
-      $('.col1').css('display', '');
-    }
-
-    if (this.hideShow.type == false) {
-      $('.col2').css('display', 'none');
-    } else {
-      $('.col2').css('display', '');
-    }
-
-    if (this.hideShow.plateNo == false) {
-      $('.col3').css('display', 'none');
-    } else {
-      $('.col3').css('display', '');
-    }
-
-    if (this.hideShow.lastLocation == false) {
-      $('.col4').css('display', 'none');
-    } else {
-      $('.col4').css('display', '');
-    }
-
-    if (this.hideShow.year == false) {
-      $('.col5').css('display', 'none');
-    } else {
-      $('.col5').removeClass('extra');
-      $('.col5').css('display', '');
-      $('.col5').css('min-width', '200px');
-    }
-
-    if (this.hideShow.make == false) {
-      $('.col6').css('display', 'none');
-    } else {
-      $('.col6').css('display', '');
-    }
-
-    if (this.hideShow.model == false) {
-      $('.col7').css('display', 'none');
-    } else {
-      $('.col7').removeClass('extra');
-      $('.col7').css('display', '');
-      $('.col7').css('min-width', '200px');
-    }
-
-    if (this.hideShow.ownership == false) {
-      $('.col8').css('display', 'none');
-    } else {
-      $('.col8').removeClass('extra');
-      $('.col8').css('display', '');
-      $('.col8').css('min-width', '200px');
-    }
-
-    if (this.hideShow.currentStatus == false) {
-      $('.col9').css('display', 'none');
-    } else {
-      $('.col9').css('display', '');
-    }
-
-    // extra columns
-    if (this.hideShow.group == false) {
-      $('.col10').css('display', 'none');
-    } else {
-      $('.col10').removeClass('extra');
-      $('.col10').css('display', '');
-      $('.col10').css('min-width', '200px');
-    }
-
-    if (this.hideShow.aceID == false) {
-      $('.col11').css('display', 'none');
-    } else {
-      $('.col11').removeClass('extra');
-      $('.col11').css('display', '');
-      $('.col11').css('min-width', '200px');
-    }
-
-    if (this.hideShow.aciID == false) {
-      $('.col12').css('display', 'none');
-    } else {
-      $('.col12').removeClass('extra');
-      $('.col12').css('display', '');
-      $('.col12').css('min-width', '200px');
-    }
-
-    if (this.hideShow.gvwr == false) {
-      $('.col13').css('display', 'none');
-    } else {
-      $('.col13').removeClass('extra');
-      $('.col13').css('display', '');
-      $('.col13').css('min-width', '200px');
-    }
-
-    if (this.hideShow.gawr == false) {
-      $('.col14').css('display', 'none');
-    } else {
-      $('.col14').removeClass('extra');
-      $('.col14').css('display', '');
-      $('.col14').css('min-width', '200px');
-    }
-  }
-
   refreshData() {
+    this.allData = [];
     this.assetID = '';
     this.assetIdentification = '';
-    this.assetType = null;
+    this.assetType = [];
     this.suggestedAssets = [];
-    this.allData = [];
     this.lastEvaluatedKey = '';
-    this.dataMessage = Constants.FETCHING_DATA;
+    this.loaded = false;
     this.initDataTable();
+    this.dataMessage = Constants.FETCHING_DATA;
 
+  }
+
+  clear(table: Table) {
+    table.clear();
   }
 }

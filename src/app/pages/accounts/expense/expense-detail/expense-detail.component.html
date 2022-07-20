@@ -1,113 +1,174 @@
 <section class="body">
-    <div class="inner-wrapper">
-        <section role="main" class="content-body pl-0 pr-0 pt-0">
-            <header class="page-header pr19 pl7">
-                <div class="row" style="padding-top:10px;">
-                    <div class="col-md-4 col-lg-4">
-                        <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Expense Details</h4>
-                    </div>
-                    <div class="col-md-8 col-lg-8 text-right pr-1">
-                      <a routerLink="/accounts/expense/edit/{{ expenseID }}"  class="btn btn-default btn-sm mr-3"><i
-                        class="fas fa-pencil-alt"></i> Edit Expense</a>
-                        <a routerLink="/accounts/expense/list" class="btn btn-sm btn-default"><i
-                                class="fas fa-list"></i> Other Expenses List</a>
-                    </div>
-                </div>
-            </header>
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header pr19 pl7">
+        <div class="row" style="padding-top: 10px">
+          <div class="col-md-4 col-lg-4">
+            <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">
+              Expense Details
+            </h4>
+          </div>
+          <div class="col-md-8 col-lg-8 text-right pr-1">
+            <button
+              type="button"
+              [disabled]="downloadDisabled"
+              class="btn btn-success btn-sm mr-2"
+              (click)="openModal()"
+            >
+              Payment PDF
+            </button>
+            <a
+              routerLink="/accounts/expense/edit/{{ expenseID }}"
+              class="btn btn-default btn-sm mr-3"
+              ><i class="fas fa-pencil-alt"></i> Edit Expense</a
+            >
+            <a
+              routerLink="/accounts/expense/list"
+              class="btn btn-sm btn-default"
+              ><i class="fas fa-list"></i> Other Expenses List</a
+            >
+          </div>
+        </div>
+      </header>
 
-            <section class="m-2">
-                <div class="row mb-3">
-                   <div class="col-lg-12">
-                      <div class="bg-white p-3 text-dark">
-                         <div class="form-group row">
-                            <div class="col-lg-12">
-                                <!-- <label
+      <section class="m-2">
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row">
+                <div class="col-lg-12">
+                  <!-- <label
                                     class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">
                                     Expenses Details</label> -->
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="text-center cmaindiv detailbox p-4"> <i
-                                                class="far fa-calendar-alt text-7"></i>
-                                            <br>
-                                            <p class="mb-0 text-5 font-weight-bold text-dark">
-                                                {{ expenseData.txnDate | date:'yyyy/MM/dd' }}
-                                            </p>
-                                            <p class="mb-0">DATE</p>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="text-center p-4 cmaindiv detailbox"> <i class="fa fa-user text-7"></i>
-                                            <br>
-                                            <p class="mb-0 text-5 font-weight-bold text-dark">{{ categories[expenseData.categoryID] }}</p>
-                                            <p class="mb-0">EXPENSE TYPE</p>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="text-center p-4 cmaindiv detailbox"> <i
-                                                class="far fa-calendar-check text-7"></i>
-                                            <br>
-                                            <p class="mb-0 text-5 font-weight-bold text-dark">{{ expenseData.amount | number : '1.2-2' }} {{ expenseData.currency }}</p>
-                                            <p class="mb-0">AMOUNT</p>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="text-center p-4 cmaindiv detailbox"> <i
-                                                class="far fa-calendar-check text-7"></i>
-                                            <br>
-                                            <p class="mb-0 text-5 font-weight-bold text-dark">{{ expenseData.finalTotal | number : '1.2-2' }} {{ expenseData.currency }}</p>
-                                            <p class="mb-0">FINAL AMOUNT</p>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="text-center cmaindiv detailbox p-4"> <i class="fas fa-map-marker-alt text-7"></i>
-                                            <br>
-                                            <p class="mb-0 text-5 font-weight-bold text-dark">{{ (expenseData.vendorID) ? vendors[expenseData.vendorID] : '-' }}</p>
-                                            <p class="mb-0">VENDOR</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            
-                         </div>
-                      </div>
-                   </div>
                 </div>
-                
-                <div class="row mb-3">
-                   <div class="col-lg-12">
-                      <div class="bg-white p-3 text-dark">
-                         <div class="form-group row">
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <table class="table table-bordered table-responsive-lg">
-                                            <tbody>
-                                                <tr>
-                                                    <td width="40%" class="back-color-gray font-weight-bold">
-                                                        Recurring</td>
-                                                    <td width="60%">
-                                                        <span *ngIf="expenseData.recurring.status" class="text-lowercase">{{ expenseData.recurring.interval }}</span>
-                                                        <span *ngIf="!expenseData.recurring.status">-</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="back-color-gray font-weight-bold">Start Date</td>
-                                                    <td>
-                                                        <span *ngIf="expenseData.recurring.status" class="text-lowercase">{{ expenseData.txnDate | date:'yyyy/MM/dd' }}</span>
-                                                        <span *ngIf="!expenseData.recurring.status">-</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="back-color-gray font-weight-bold">End Date</td>
-                                                    <td>
-                                                        <span *ngIf="expenseData.recurring.status" class="text-lowercase">{{ expenseData.recurring.endDate | date:'yyyy/MM/dd' }}</span>
-                                                        <span *ngIf="!expenseData.recurring.status">-</span>
-                                                    </td>
-                                                </tr>
-                                                <!-- <tr>
+                <div class="col-lg-12">
+                  <div class="row">
+                    <div class="col">
+                      <div class="text-center cmaindiv detailbox p-4">
+                        <i class="far fa-calendar-alt text-7"></i>
+                        <br />
+                        <p class="mb-0 text-5 font-weight-bold text-dark">
+                          {{ expenseData.txnDate | date: "yyyy/MM/dd" }}
+                        </p>
+                        <p class="mb-0">DATE</p>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="text-center p-4 cmaindiv detailbox">
+                        <i class="fa fa-user text-7"></i>
+                        <br />
+                        <p class="mb-0 text-5 font-weight-bold text-dark">
+                          {{ categories[expenseData.categoryID] }}
+                        </p>
+                        <p class="mb-0">EXPENSE TYPE</p>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="text-center p-4 cmaindiv detailbox">
+                        <i class="far fa-calendar-check text-7"></i>
+                        <br />
+                        <p class="mb-0 text-5 font-weight-bold text-dark">
+                          {{ expenseData.amount | number: "1.2-2" }}
+                          {{ expenseData.currency }}
+                        </p>
+                        <p class="mb-0">AMOUNT</p>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="text-center p-4 cmaindiv detailbox">
+                        <i class="far fa-calendar-check text-7"></i>
+                        <br />
+                        <p class="mb-0 text-5 font-weight-bold text-dark">
+                          {{ expenseData.finalTotal | number: "1.2-2" }}
+                          {{ expenseData.currency }}
+                        </p>
+                        <p class="mb-0">FINAL AMOUNT</p>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="text-center cmaindiv detailbox p-4">
+                        <i class="fas fa-map-marker-alt text-7"></i>
+                        <br />
+                        <p class="mb-0 text-5 font-weight-bold text-dark">
+                          {{
+                            expenseData.vendorID
+                              ? vendors[expenseData.vendorID]
+                              : "-"
+                          }}
+                        </p>
+                        <p class="mb-0">VENDOR</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row">
+                <div class="col-lg-6">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-bordered table-responsive-lg">
+                        <tbody>
+                          <tr>
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
+                              Recurring
+                            </td>
+                            <td width="60%">
+                              <span
+                                *ngIf="expenseData.recurring.status"
+                                class="text-lowercase"
+                                >{{ expenseData.recurring.interval }}</span
+                              >
+                              <span *ngIf="!expenseData.recurring.status"
+                                >-</span
+                              >
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Start Date
+                            </td>
+                            <td>
+                              <span
+                                *ngIf="expenseData.recurring.status"
+                                class="text-lowercase"
+                                >{{
+                                  expenseData.txnDate | date: "yyyy/MM/dd"
+                                }}</span
+                              >
+                              <span *ngIf="!expenseData.recurring.status"
+                                >-</span
+                              >
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              End Date
+                            </td>
+                            <td>
+                              <span
+                                *ngIf="expenseData.recurring.status"
+                                class="text-lowercase"
+                                >{{
+                                  expenseData.recurring.endDate
+                                    | date: "yyyy/MM/dd"
+                                }}</span
+                              >
+                              <span *ngIf="!expenseData.recurring.status"
+                                >-</span
+                              >
+                            </td>
+                          </tr>
+                          <!-- <tr>
                                                     <td class="back-color-gray font-weight-bold">Customer</td>
                                                     <td>{{ vendors[expenseData.customerID] }}</td>
                                                 </tr>
@@ -115,149 +176,506 @@
                                                     <td class="back-color-gray font-weight-bold">Invoice#</td>
                                                     <td>{{ invoices[expenseData.invoiceID] }}</td>
                                                 </tr> -->
-                                                <tr>
-                                                    <td class="back-color-gray font-weight-bold">Unit Type, Unit Name</td>
-                                                    <td>{{ expenseData.unitType }}, {{ units[expenseData.unitID] }}</td>
-                                                </tr>
-                                                <tr>
-                                                  <td class="back-color-gray font-weight-bold">Trip#</td>
-                                                  <td><span *ngIf="expenseData.tripID">{{ trips[expenseData.tripID] }}</span>
-                                                  <span *ngIf="!expenseData.tripID">-</span></td>
-                                              </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <table class="table table-bordered table-responsive-lg">
-                                            <tbody>
-                                                <tr>
-                                                    <td class="back-color-gray font-weight-bold">Taxes</td>
-                                                    <td>GST - {{ expenseData.taxes.gstAmount | number : '1.2-2' }} {{ expenseData.currency }}, PST - {{ expenseData.taxes.pstAmount | number : '1.2-2' }} {{ expenseData.currency }}, HST - {{ expenseData.taxes.hstAmount | number : '1.2-2' }} {{ expenseData.currency }} </td>
-                                                </tr>
-                                                <tr>
-                                                    <td width="40%" class="back-color-gray font-weight-bold">Country
-                                                    </td>
-                                                    <td width="60%">{{ expenseData.countryName }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="back-color-gray font-weight-bold">Province/State</td>
-                                                    <td>{{ expenseData.stateName }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="back-color-gray font-weight-bold">City</td>
-                                                    <td>{{ expenseData.cityName }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="back-color-gray font-weight-bold">Notes</td>
-                                                    <td>{{ expenseData.notes ? expenseData.notes : '-'}}</td>
-                                                </tr>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="row mt-2" *ngIf="documentSlides.length > 0">
-                                    <div class="col-lg-12">
-                                        <div class="vehicle-common-box p-3">
-                                            <div class="row mt-2">
-                                                <div class="col-lg-6">
-                                                    <label class="control-label font-weight-bold text-3">Uploaded
-                                                        Document(s)</label>
-                                                </div>
-                                            </div>
-                                            <hr class="solid mt-3">
-                                            <div class="row" *ngFor="let item of documentSlides;let d= index">
-                                                <div class="col-lg-9"><a href="javascript:;" data-toggle="modal"
-                                                        data-target="#viewDocModal"
-                                                        (click)="setPDFSrc(item.path)">Document
-                                                        {{d+1}}</a> </div>
-                                                <div class="col-lg-3 text-right">
-                                                    <i class="far fa-file text-dak mr-1"
-                                                        (click)="setPDFSrc(item.path)" data-toggle="modal"
-                                                        data-target="#viewDocModal"></i>
-                                                    <a href="javascript:;" (click)="deleteDocument(item.name, d)"
-                                                        class="modal-with-form"><i
-                                                            class="fas fa-times text-danger"></i></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                      <table class="table table-bordered table-hover">
-                                        <thead>
-                                          <tr>
-                                            <th>Account Name</th>
-                                            <th>Type</th>
-                                            <th>Debit</th>
-                                            <th>Credit</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                          <tr *ngFor="let dt of expenseData.transactionLog">
-                                            <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
-                                              <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
-                                           <td>{{dt.type | titlecase}}</td>
-                                           <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
-                                           <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
-                                          </tr>
-                                          <tr>
-                                            <td colspan="2" class="font-weight-bold text-right">Total</td>
-                                            <td>{{expenseData.finalTotal | number : '1.2-2'}} {{expenseData.currency}}</td>
-                                            <td>{{expenseData.finalTotal | number : '1.2-2'}} {{expenseData.currency}}</td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                         </div>
-                      </div>
-                   </div>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Unit Type, Unit Name
+                            </td>
+                            <td>
+                              {{ expenseData.unitType }},
+                              {{ units[expenseData.unitID] }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Trip#
+                            </td>
+                            <td>
+                              <span *ngIf="expenseData.tripID">{{
+                                trips[expenseData.tripID]
+                              }}</span>
+                              <span *ngIf="!expenseData.tripID">-</span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
-                
-             </section>
-
-
-        </section>
-    </div>
+                <div class="col-lg-6">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-bordered table-responsive-lg">
+                        <tbody>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Taxes
+                            </td>
+                            <td>
+                              GST -
+                              {{
+                                expenseData.taxes.gstAmount | number: "1.2-2"
+                              }}
+                              {{ expenseData.currency }}, PST -
+                              {{
+                                expenseData.taxes.pstAmount | number: "1.2-2"
+                              }}
+                              {{ expenseData.currency }}, HST -
+                              {{
+                                expenseData.taxes.hstAmount | number: "1.2-2"
+                              }}
+                              {{ expenseData.currency }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
+                              Country
+                            </td>
+                            <td width="60%">{{ expenseData.countryName }}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Province/State
+                            </td>
+                            <td>{{ expenseData.stateName }}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              City
+                            </td>
+                            <td>{{ expenseData.cityName }}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Notes
+                            </td>
+                            <td>
+                              {{ expenseData.notes ? expenseData.notes : "-" }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="row mt-2" *ngIf="documentSlides.length > 0">
+                    <div class="col-lg-12">
+                      <div class="vehicle-common-box p-3">
+                        <div class="row mt-2">
+                          <div class="col-lg-6">
+                            <label class="control-label font-weight-bold text-3"
+                              >Uploaded Document(s)</label
+                            >
+                          </div>
+                        </div>
+                        <hr class="solid mt-3" />
+                        <div
+                          class="row"
+                          *ngFor="let item of documentSlides; let d = index"
+                        >
+                          <div class="col-lg-9">
+                            <a
+                              href="javascript:;"
+                              data-toggle="modal"
+                              data-target="#viewDocModal"
+                              (click)="setPDFSrc(item.path)"
+                              >Document {{ d + 1 }}</a
+                            >
+                          </div>
+                          <div class="col-lg-3 text-right">
+                            <i
+                              class="far fa-file text-dak mr-1"
+                              (click)="setPDFSrc(item.path)"
+                              data-toggle="modal"
+                              data-target="#viewDocModal"
+                            ></i>
+                            <a
+                              href="javascript:;"
+                              (click)="deleteDocument(item.name, d)"
+                              class="modal-with-form"
+                              ><i class="fas fa-times text-danger"></i
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <th>Account Name</th>
+                            <th>Type</th>
+                            <th>Debit</th>
+                            <th>Credit</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let dt of expenseData.transactionLog">
+                            <td *ngIf="expenseData.isFeatEnabled">
+                              {{ dt.actName | titlecase }}
+                            </td>
+                            <td *ngIf="!expenseData.isFeatEnabled">
+                              <span *ngIf="dt.actIDType === 'actID'">{{
+                                accountsObjects[dt.accountID] | titlecase
+                              }}</span>
+                              <span *ngIf="dt.actIDType === 'actIntID'">{{
+                                accountsIntObjects[dt.accountID] | titlecase
+                              }}</span>
+                            </td>
+                            <td>{{ dt.type | titlecase }}</td>
+                            <td>
+                              <span *ngIf="dt.trxType === 'debit'"
+                                >{{ dt.amount | number: "1.2-2" }}&nbsp;
+                                {{ dt.currency }}</span
+                              >
+                            </td>
+                            <td>
+                              <span *ngIf="dt.trxType === 'credit'"
+                                >{{ dt.amount | number: "1.2-2" }}&nbsp;
+                                {{ dt.currency }}</span
+                              >
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2" class="font-weight-bold text-right">
+                              Total
+                            </td>
+                            <td>
+                              {{ expenseData.finalTotal | number: "1.2-2" }}
+                              {{ expenseData.currency }}
+                            </td>
+                            <td>
+                              {{ expenseData.finalTotal | number: "1.2-2" }}
+                              {{ expenseData.currency }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
 </section>
 
 <!-- VIEW DOCUMENT MODAL -->
-<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+<div
+  class="modal fade"
+  id="viewDocModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="viewDocModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <div>
+              <iframe [src]="pdfSrc" title="" width="100%" height="800px">
+              </iframe>
             </div>
-            <div class="modal-body">
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <div>
-                            <iframe [src]='pdfSrc' title="" width="100%" height="800px"> </iframe>
-
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            </div>
+          </div>
         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
     </div>
+  </div>
 </div>
+
+<ng-template #previewExpTransaction let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Expense Details</h4>
+      <button type="button" class="close" (click)="modal.dismiss()">
+        &times;
+      </button>
+    </div>
+
+    <div class="modal-body text-dark">
+      <table
+        width="98%"
+        border="0"
+        id="print-exp-trans"
+        align="center"
+        cellpadding="0"
+        cellspacing="0"
+      >
+        <tbody>
+          <tr>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+          <tr>
+            <td>
+              <h1 class="text-dark font-weight-bold text-6 mb-1 mt-1">
+                Expense Transactions
+              </h1>
+            </td>
+            <td align="right">
+              <img
+                crossorigin="anonymous"
+                *ngIf="companyLogo"
+                [src]="companyLogo"
+                alt="logo"
+                style="max-width: 100px"
+              />
+              <p
+                *ngIf="tagLine"
+                class="mb-0 text-dark text-4 font-weight-bold mb-0"
+              >
+                {{ tagLine }}
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="2" height="1" bgcolor="#595959"></td>
+          </tr>
+          <tr>
+            <td width="50%" valign="top">
+              <h2 class="mt-0 mb-0 text-dark text-5 font-weight-semibold">
+                Company
+              </h2>
+              <p
+                class="text-capitalize text-dark text-5 font-weight-semibold mb-0 mt-0"
+              >
+                {{ carrierName ? carrierName : "NA" }}
+              </p>
+            </td>
+            <td valign="top">
+              <table
+                width="80%"
+                border="0"
+                align="right"
+                cellpadding="0"
+                cellspacing="0"
+              >
+                <tbody>
+                  <tr>
+                    <td align="right">
+                      <p class="mt-2 mb-0 text-dark text-3">
+                        Expense Type:
+                        <span class="font-weight-bold">{{
+                          categories[expenseData.categoryID]
+                        }}</span>
+                      </p>
+                      <p class="mt-2 mb-2 text-dark text-3">
+                        Payment Amount:
+                        <span class="font-weight-bold"
+                          >{{ expenseData.finalTotal | number: "1.2-2" }}
+                          {{ expenseData.currency }}</span
+                        >
+                      </p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" height="1" bgcolor="#595959"></td>
+          </tr>
+          <tr>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <table class="w100 table-bordered text-dark">
+                <thead>
+                  <tr class="">
+                    <th class="pl-3 pt-1" width="10%">Trip#</th>
+                    <th class="pl-3 pt-1">Expense Date</th>
+                    <th class="pl-3 pt-1" width="20%">Vendor</th>
+                    <th class="pl-3 pt-1" width="10%">Unit#</th>
+                    <th class="pl-3 pt-1" width="10%">Unit Name</th>
+                    <th class="pl-3 pt-1" width="10%">Recurring</th>
+                    <th class="pl-3 pt-1" width="10%">Amount</th>
+                    <th class="pl-3 pt-1" width="10%">Final Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="pl-3 pt-1 pb-1">
+                      <span *ngIf="expenseData.tripID">{{
+                        trips[expenseData.tripID]
+                      }}</span>
+                      <span *ngIf="!expenseData.tripID">-</span>
+                    </td>
+                    <td class="pl-3 pt-1">
+                      {{ expenseData.txnDate | date: "yyyy/MM/dd" }}
+                    </td>
+                    <td class="pl-3 pt-1">
+                      {{
+                        expenseData.vendorID
+                          ? vendors[expenseData.vendorID]
+                          : "-"
+                      }}
+                    </td>
+                    <td class="pl-3 pt-1">
+                      {{ expenseData.unitID ? units[expenseData.unitID] : "-" }}
+                    </td>
+                    <td class="pl-3 pt-1">
+                      {{ expenseData.unitType ? expenseData.unitType : "-" }}
+                    </td>
+                    <td class="pl-3 pt-1">
+                      {{ expenseData.recurring.interval }}
+                    </td>
+                    <td class="pl-3 pt-1">
+                      {{ expenseData.amount | number: "1.2-2" }}
+                      {{ expenseData.currency }}
+                    </td>
+                    <td class="pl-3 pt-1">
+                      {{ expenseData.finalTotal | number: "1.2-2" }}
+                      {{ expenseData.currency }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <table class="w100">
+                <tbody>
+                  <tr>
+                    <td width="50%" colspan="2">
+                      <table border="0" cellpadding="0" cellspacing="0">
+                        <tbody>
+                          <tr>
+                            <td>
+                              <p class="text-dark text-4 mt-3 mb-2">
+                                <strong>Taxes</strong>
+                              </p>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <table class="table-bordered w100 text-dark">
+                        <thead>
+                          <tr class="">
+                            <th class="pl-3 pt-1" width="15%">Country</th>
+                            <th class="pl-3 pt-1" width="15%">
+                              Province/State
+                            </th>
+                            <th class="pl-3 pt-1 pb-1" width="15%">City</th>
+                            <th class="pl-3 pt-1" width="13%">GST</th>
+                            <th class="pl-3 pt-1" width="13%">PST</th>
+                            <th class="pl-3 pt-1" width="14%">HST</th>
+                            <th class="pl-3 pt-1" width="15%">Final Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="pl-3 pt-1 pb-1">
+                              {{ expenseData.countryName }}
+                            </td>
+                            <td class="pl-3 pt-1">
+                              {{ expenseData.stateName }}
+                            </td>
+                            <td class="pl-3 pt-1">
+                              {{ expenseData.cityName }}
+                            </td>
+                            <td class="pl-3 pt-1">
+                              {{
+                                expenseData.taxes.gstAmount | number: "1.2-2"
+                              }}
+                              {{ expenseData.currency }}
+                            </td>
+                            <td class="pl-3 pt-1">
+                              {{
+                                expenseData.taxes.pstAmount | number: "1.2-2"
+                              }}
+                              {{ expenseData.currency }}
+                            </td>
+                            <td class="pl-3 pt-1">
+                              {{
+                                expenseData.taxes.hstAmount | number: "1.2-2"
+                              }}
+                              {{ expenseData.currency }}
+                            </td>
+                            <td class="pl-3 pt-1">
+                              {{ expenseData.finalTotal | number: "1.2-2" }}
+                              {{ expenseData.currency }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <table border="0" align="center" cellpadding="0" cellspacing="0">
+                <tbody>
+                  <tr>
+                    <td align="center">
+                      <h2 class="mb-0 text-dark text-4 font-weight-normal">
+                        Powered By
+                      </h2>
+                      <img
+                        alt="Fleet Hawks Inc."
+                        src="assets/img/logo.png"
+                        width="207"
+                        height="28"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="modal.dismiss()">
+        Close
+      </button>
+      <button
+        type="button"
+        class="btn btn-success"
+        (click)="generatePaymentPDF()"
+      >
+        Download PDF
+      </button>
+    </div>
+  </div>
+</ng-template>

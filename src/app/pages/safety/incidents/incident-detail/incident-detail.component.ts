@@ -110,19 +110,20 @@ export class IncidentDetailComponent implements OnInit {
         
         
         if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
-          this.incidentImages = result.uploadedPhotos.map(x => ({
-            path: `${this.asseturl}/${result.pk}/${x}`,
-            name: x,
-          }));
+                this.incidentImages = result.uploadPics;
+         // this.incidentImages = result.uploadedPhotos.map(x => ({
+        //    path: `${this.asseturl}/${result.pk}/${x}`,
+        //    name: x,
+        //  }));
         }
 
         if(result.uploadedVideos != undefined && result.uploadedVideos.length > 0){
-          this.incidentVideos = result.uploadedVideos.map(x => ({path: `${this.asseturl}/${result.pk}/${x}`, name: x}));
+                this.incidentVideos = result.uploadVideo;
+       //   this.incidentVideos = result.uploadedVideos.map(x => ({path: `${this.asseturl}/${result.pk}/${x}`, name: x}));
         }
         if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
-          this.incidentDocs = result.uploadedDocs.map(x => ({path: `${this.asseturl}/${result.pk}/${x}`, name: x}));
-          
-
+                this.incidentDocs = result.uploadDocument;
+         // this.incidentDocs = result.uploadedDocs.map(x => ({path: `${this.asseturl}/${result.pk}/${x}`, name: x}));
         }
         
         
@@ -200,7 +201,7 @@ export class IncidentDetailComponent implements OnInit {
   }
 
   fetchTripsByIDs() {
-    this.apiService.getData('trips/get/list')
+    this.apiService.getData('common/trips/get/list')
       .subscribe((result: any) => {
         this.tripsObject = result;
       })

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from 'src/app/services';
+import { Component, OnInit, ElementRef, ViewChild, Input  } from '@angular/core';
+import { ApiService} from 'src/app/services';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { timeStamp } from 'console';
@@ -9,13 +9,26 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import Constants from 'src/app/pages/fleet/constants';
 import { result } from 'lodash';
 import * as _ from 'lodash';
+import { HttpClient } from '@angular/common/http';
+import { HereMapService } from 'src/app/services/here-map.service';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { Table } from 'primeng/table/table';
+import { DomSanitizer } from '@angular/platform-browser';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ViewEncapsulation } from '@angular/core';
+import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-summary',
     templateUrl: './summary.component.html',
-    styleUrls: ['./summary.component.css']
+    styleUrls: ['./summary.component.css'],
+    providers: [DatePipe],
+  encapsulation: ViewEncapsulation.None,
 })
 export class SummaryComponent implements OnInit {
+   @ViewChild('dt') table: Table;
+    environment = environment.isFeatureEnabled;
     dataMessage: string = Constants.FETCHING_DATA;
     vehiclesList = [];
     vehicleList: any = {};
@@ -30,13 +43,21 @@ export class SummaryComponent implements OnInit {
     assetList: any = {};
     lastItemSK = '';
     loaded = false;
-    currency = 0;
+    currency = '';
     fuelCount = {
         cad_amount: 0,
         usd_amount: 0,
         l_quantity: 0,
         g_quantity: 0,
-        }
+        des_quantityLTR: 0,
+        des_quantityGL: 0,
+        def_quantityLTR: 0,
+        def_quantityGL: 0,
+        gas_quantityLTR: 0,
+        gas_quantityGL: 0,
+        prop_quantityLTR: 0,
+        prop_quantityGL: 0,
+    }
     vehicleSet = []
     assetsSet = []
     exportList: any = [];
@@ -50,17 +71,110 @@ export class SummaryComponent implements OnInit {
     date = new Date();
     futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
-    constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
+    fuelResult: any = [];
+    fuelConsumeLTR = 0;
+    fuelConsumeGL = 0;
+    fuelCostCAD = 0;
+    fuelCostUSD = 0;
+    fuelCAD = [];
+    fuelUSD = [];
+    fuelData = [];
+    searchActive = false;
+    finalFuelRunningCAD = 0;
+    finalFuelRunningUSD = 0;
+    
+    
+    
+    emptyVariable = [];
+    fuelQtyLitres:any = [];
+    fuelQtyGallons:any = [];
+    fuelQty = [];
+    emptyObject = [];
+    
+    
+//Seprate For Disel,Propane,Gasoline,DEF    
+fuelConsumeDis_LTR = 0;
+fuelConsumeDis_GL = 0;
 
-    ngOnInit() {
+fuelConsumeProp_LTR = 0;
+fuelConsumeProp_GL = 0;
+
+fuelConsumeGas_LTR = 0;
+fuelConsumeGas_GL = 0;
+
+fuelConsumeDEF_LTR = 0;
+fuelConsumeDEF_GL = 0;
+
+//Final Fuel Running Total
+disel_ConsumedLTR = 0;
+disel_ConsumedGL = 0;
+
+propane_ConsumedLTR = 0;
+propane_ConsumedGL = 0;
+
+gas_ConsumedLTR = 0;
+gas_ConsumedGL = 0;
+
+def_ConsumedLTR = 0;
+def_ConsumedGL = 0;
+visible = true;
+loadMsg: string = Constants.NO_LOAD_DATA;
+isSearch = false;
+get = _.get;
+_selectedColumns: any[];
+  
+    
+     dataColumns = [
+        { width: '12%', field: 'dateTime', header: 'Date/Time', type: "text" },
+        { width: '12%', field: 'data.useType', header: 'Use Type', type: "text" },
+        { width: '12%', field: 'unitSearch', header: 'Unit Name', type: "text" },
+        { width: '12%', field: 'data.cardNo', header: 'Fuel Card', type: "text" },
+        { width: '12%', field: 'data.city', header: 'City', type: "text" },
+        { width: '12%', field: 'data.type', header: 'Fuel Type', type: "text" },
+        { width: '12%', field: 'data.qty', header: 'Fuel Quantity', type: "text" },
+        { width: '12%', field: 'uom', header: 'Litres or Gallons', type: "text" },
+        { width: '12%', field: 'data.odometer', header: 'Odometer', type: "text" },
+        { width: '12%', field: 'data.rPpu', header: 'Retail Price Per L', type: "text" },
+        { width: '12%', field: 'data.rBeforeTax', header: 'Retail Amount Before Tax', type: "text" },
+        { width: '12%', field: 'data.discAmt', header: 'Total Discount', type: "text" },
+        { width: '12%', field: 'data.amt', header: 'Amount', type: "text" },
+        { width: '12%', field: 'data.currency', header: 'Currency', type: "text" },
+       
+    ];
+
+
+    constructor(private apiService: ApiService, 
+    private router: Router, 
+    private toastr: ToastrService, 
+    private spinner: NgxSpinnerService,
+    private hereMap: HereMapService,
+    protected _sanitizer: DomSanitizer,
+    private httpClient: HttpClient,
+     private el: ElementRef,
+    private modalService: NgbModal,) { }
+
+    async ngOnInit(): Promise<void> {
         this.fetchFuelReport();
         this.fetchVehicleList();
         this.fetchAllVehicles();
         this.fetchAssetList();
         this.fetchAllAssets();
         this.fetchFuelCount();
+        this.setToggleOptions();
     }
 
+    setToggleOptions() {
+        this.selectedColumns = this.dataColumns;
+    }
+
+    @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+    }
+    
+   set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+   }
     fetchAssetList() {
         this.apiService.getData('assets/get/list').subscribe((result: any) => {
             this.assetList = result;
@@ -93,6 +207,20 @@ export class SummaryComponent implements OnInit {
     fetchFuelCount() {
         this.apiService.getData('fuelEntries/fetch/fuel/count').subscribe((result: any) => {
             this.fuelCount = result;
+            this.finalFuelRunningCAD = this.fuelCount.cad_amount;
+            this.finalFuelRunningUSD = this.fuelCount.usd_amount;
+            
+            this.disel_ConsumedLTR = this.fuelCount.des_quantityLTR;
+            this.disel_ConsumedGL = this.fuelCount.des_quantityGL;
+            
+            this.propane_ConsumedLTR = this.fuelCount.prop_quantityLTR;
+            this.propane_ConsumedGL = this.fuelCount.prop_quantityGL;
+            
+            this.gas_ConsumedLTR = this.fuelCount.gas_quantityLTR;
+            this.gas_ConsumedGL = this.fuelCount.gas_quantityGL;
+            
+            this.def_ConsumedLTR = this.fuelCount.def_quantityLTR;
+            this.def_ConsumedGL = this.fuelCount.def_quantityGL;
         })
     }
 
@@ -104,7 +232,8 @@ export class SummaryComponent implements OnInit {
         if (this.lastItemSK !== 'end') {
             const result = await this.apiService.getData(`fuelEntries/fetch/fuel/report?unitID=${this.unitID}&asset=${this.assetUnitID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`).toPromise();
             if (result.Items.length == 0) {
-                this.dataMessage = Constants.NO_RECORDS_FOUND
+                this.dataMessage = Constants.NO_RECORDS_FOUND;
+                this.loaded = true;
             }
             if (result.Items.length > 0) {
                 if (result.LastEvaluatedKey !== undefined) {
@@ -113,36 +242,189 @@ export class SummaryComponent implements OnInit {
                 else {
                     this.lastItemSK = 'end';
                 }
-                   result[`Items`].forEach(element => {
-        let date: any = moment(element.data.date)
-        if (element.data.time) {
-          let time = moment(element.data.time, 'h mm a')
-          date.set({
-            hour: time.get('hour'),
-            minute: time.get('minute')
-          })
-          date = date.format('MMM Do YYYY, h:mm a')
-        }
-        else {
-          date = date.format('MMM Do YYYY')
-        }
-        element.dateTime = date
-      });
-             this.fuelList = this.fuelList.concat(result.Items);
-             this.loaded = true;
+                result[`Items`].forEach(element => {
+                let date: any = moment(element.date)
+                    if (element.time) {
+                        let time = moment(element.time, 'h mm a')
+                        date.set({
+                            hour: time.get('hour'),
+                            minute: time.get('minute')
+                        })
+                        date = date.format('MMM Do YYYY, h:mm a')
+                    }
+                    else {
+                        date = date.format('MMM Do YYYY')
+                    }
+                    element.dateTime = date
+                });
+                this.fuelList = this.fuelList.concat(result.Items);
+                this.loaded = true;
+                if (this.searchActive === true) {
+                    this.calCulateAmt();
+                    this.finalFuelRunningCAD = this.fuelCostCAD;
+                    this.finalFuelRunningUSD = this.fuelCostUSD;
+                }
+                if (this.searchActive === true) {
+                    this.calculateQTY();
+                    
+                    this.disel_ConsumedLTR = this.fuelConsumeDis_LTR;
+                    this.disel_ConsumedGL = this.fuelConsumeDis_GL;
+                    
+                    this.propane_ConsumedLTR = this.fuelConsumeProp_LTR;
+                    this.propane_ConsumedGL = this.fuelConsumeProp_GL;
+                    
+                    this.gas_ConsumedLTR = this.fuelConsumeGas_LTR;
+                    this.gas_ConsumedGL = this.fuelConsumeGas_GL;
+                    
+                    this.def_ConsumedLTR = this.fuelConsumeDEF_LTR;
+                    this.def_ConsumedGL = this.fuelConsumeDEF_GL;
+                }
             }
         }
     }
 
-    onScroll() {
-        if (this.loaded) {
+    calCulateAmt() {
+        this.fuelCAD = [];
+        this.fuelUSD = [];
+        this.fuelData = [];
+        for (let i = 0; i < this.fuelList.length; i++) {
+            this.fuelData.push(this.fuelList[i].data)
+        }
+        this.fuelData.map((e: any) => {
+            if (e.currency === 'CAD') {
+                this.fuelCAD.push(e);
+            } else {
+                this.fuelUSD.push(e);
+            }
+        })
+        if (this.fuelCAD.length > 0 || this.fuelUSD.length > 0) {
+            for (const element of this.fuelCAD) {
+                this.fuelCostCAD = this.fuelCostCAD + Number(element.amt);
+            }
+            for (const element of this.fuelUSD) {
+                this.fuelCostUSD = this.fuelCostUSD + Number(element.amt);
+            }
+        }
+    }
+
+
+
+    calculateQTY() {
+        this.fuelQtyLitres = [];
+        this.fuelQtyGallons = [];
+        this.fuelQty = []
+        for (let i = 0; i < this.fuelList.length; i++) {
+            this.fuelQty.push(this.fuelList[i].data)
+        }
+        this.fuelQty.map((x: any) => {
+            if (x.uom === 'LTR' || x.uom === 'litre') {
+                this.fuelQtyLitres.push(x);
+            } else {
+                this.fuelQtyGallons.push(x);
+            }
+        })
+        if(this.fuelQtyLitres.length > 0 || this.fuelQtyGallons.length > 0){
+        
+        for(const element of this.fuelQtyLitres){
+        if(element.type === 'Diesel'){
+        this.fuelConsumeDis_LTR = this.fuelConsumeDis_LTR + Number(element.qty);
+        }
+        if(element.type === 'DEF'){
+        this.fuelConsumeDEF_LTR = this.fuelConsumeDEF_LTR + Number(element.qty);
+        }
+        if(element.type === 'Gasoline'){
+        this.fuelConsumeGas_LTR = this.fuelConsumeGas_LTR + Number(element.qty);
+        }
+        if(element.type === 'Propane'){
+        this.fuelConsumeProp_LTR = this.fuelConsumeProp_LTR + Number(element.qty);
+        }
+        }
+        
+        
+        for(const element of this.fuelQtyGallons){
+        if(element.type === 'Diesel'){
+        this.fuelConsumeDis_GL = this.fuelConsumeDis_GL + Number(element.qty);
+        }
+        
+        if(element.type === 'DEF'){
+        this.fuelConsumeDEF_GL = this.fuelConsumeDEF_GL + Number(element.qty);
+        }
+        
+        if(element.type === 'Gasoline'){
+        this.fuelConsumeGas_GL = this.fuelConsumeGas_GL + Number(element.qty);
+        }
+        
+        if(element.type === 'Propane'){
+        this.fuelConsumeProp_GL = this.fuelConsumeProp_GL + Number(element.qty);
+        }
+        }
+        }
+    }
+
+   refreshData(){
+            this.unitID = null;
+            this.assetUnitID = null;
+            this.start = null;
+            this.end = null;
+            this.searchActive = false;
+            this.fuelCAD = [];
+            this.fuelCostCAD = 0;
+            this.fuelCostUSD = 0
+            this.fuelUSD = [];
+            this.fuelList = [];
+            this.fetchFuelCount();
+            this.fuelQtyLitres = [];
+            this.fuelQtyGallons = [];
+            this.finalFuelRunningCAD = 0;
+            this.finalFuelRunningUSD = 0;
+            this.disel_ConsumedLTR = 0;
+            this.disel_ConsumedGL = 0;
+            this.gas_ConsumedLTR = 0;
+            this.gas_ConsumedGL = 0;
+            this.propane_ConsumedLTR = 0;
+            this.propane_ConsumedGL = 0;
+            this.def_ConsumedLTR = 0;
+            this.def_ConsumedGL = 0;
+            this.finalFuelRunningCAD = this.fuelCount.cad_amount;
+            this.finalFuelRunningUSD = this.fuelCount.usd_amount;
+            this.disel_ConsumedLTR = this.fuelCount.des_quantityLTR;
+            this.disel_ConsumedGL = this.fuelCount.des_quantityGL;
+            this.propane_ConsumedLTR = this.fuelCount.prop_quantityLTR;
+            this.propane_ConsumedGL = this.fuelCount.prop_quantityGL;
+            this.gas_ConsumedLTR = this.fuelCount.gas_quantityLTR;
+            this.gas_ConsumedGL = this.fuelCount.gas_quantityGL;
+            this.def_ConsumedLTR = this.fuelCount.def_quantityLTR;
+            this.def_ConsumedGL = this.fuelCount.def_quantityGL;
+            this.lastItemSK = '';
+            this.dataMessage = Constants.FETCHING_DATA;
             this.fetchFuelReport();
+   }
+
+
+
+    onScroll() {
+        if (this.loaded === true) {
+            this.fetchFuelReport();
+            this.fuelCAD = [];
+            this.fuelUSD = [];
+            this.fuelQtyLitres = [];
+            this.fuelQtyGallons = [];
+            this.searchActive = false;
         }
         this.loaded = false;
     }
     searchFilter() {
+        this.finalFuelRunningCAD = 0;
+        this.finalFuelRunningUSD = 0;
+        this.disel_ConsumedLTR = 0
+        this.disel_ConsumedGL = 0;
+        this.propane_ConsumedLTR = 0;
+        this.propane_ConsumedGL = 0;
+        this.def_ConsumedLTR = 0;
+        this.def_ConsumedGL = 0;
+        this.gas_ConsumedLTR = 0;
+        this.gas_ConsumedGL = 0;
         if (this.unitID !== null || this.assetUnitID !== null || this.start !== null || this.end !== null) {
-
             if (this.start != null && this.end == null) {
                 this.toastr.error('Please select both start and end dates.');
                 return false;
@@ -157,11 +439,40 @@ export class SummaryComponent implements OnInit {
             }
             else {
                 this.dataMessage = Constants.FETCHING_DATA;
-                this.fuelList = [];
                 this.lastItemSK = '';
+                this.searchActive = true;
+                this.finalFuelRunningCAD = 0;
+                this.finalFuelRunningUSD = 0;
+                this.disel_ConsumedLTR = 0;
+                this.disel_ConsumedGL = 0;
+                this.gas_ConsumedLTR = 0;
+                this.gas_ConsumedGL = 0;
+                this.propane_ConsumedLTR = 0;
+                this.propane_ConsumedGL = 0;
+                this.def_ConsumedLTR = 0;
+                this.def_ConsumedGL = 0;
+               
+               this.fuelConsumeDis_LTR = 0;
+               this.fuelConsumeDEF_LTR = 0;
+               this.fuelConsumeGas_LTR = 0;
+               this.fuelConsumeProp_LTR = 0;
+               this.fuelConsumeDis_GL = 0;
+               this.fuelConsumeDEF_GL = 0;
+               this.fuelConsumeGas_GL = 0;
+               this.fuelConsumeProp_GL = 0;
+               this.fuelCostCAD = 0;
+               this.fuelCostUSD = 0;
+                //this.finalFuelRunningCAD = this.fuelCount.cad_amount;
+                //this.finalFuelRunningUSD = this.fuelCount.usd_amount;
+                this.fuelCAD = [];
+                this.fuelUSD = [];
+                this.fuelQtyLitres = [];
+                this.fuelQtyGallons = [];
+                this.fuelList = [];
                 this.fetchFuelReport();
             }
-        } else {
+        }
+        else {
             return false;
         }
     }
@@ -172,7 +483,35 @@ export class SummaryComponent implements OnInit {
             this.assetUnitID = null;
             this.start = null;
             this.end = null;
+            this.searchActive = false;
+            this.fuelCAD = [];
+            this.fuelCostCAD = 0;
+            this.fuelCostUSD = 0
+            this.fuelUSD = [];
             this.fuelList = [];
+            this.fetchFuelCount();
+            this.fuelQtyLitres = [];
+            this.fuelQtyGallons = [];
+            this.finalFuelRunningCAD = 0;
+            this.finalFuelRunningUSD = 0;
+            this.disel_ConsumedLTR = 0;
+            this.disel_ConsumedGL = 0;
+            this.gas_ConsumedLTR = 0;
+            this.gas_ConsumedGL = 0;
+            this.propane_ConsumedLTR = 0;
+            this.propane_ConsumedGL = 0;
+            this.def_ConsumedLTR = 0;
+            this.def_ConsumedGL = 0;
+            this.finalFuelRunningCAD = this.fuelCount.cad_amount;
+            this.finalFuelRunningUSD = this.fuelCount.usd_amount;
+            this.disel_ConsumedLTR = this.fuelCount.des_quantityLTR;
+            this.disel_ConsumedGL = this.fuelCount.des_quantityGL;
+            this.propane_ConsumedLTR = this.fuelCount.prop_quantityLTR;
+            this.propane_ConsumedGL = this.fuelCount.prop_quantityGL;
+            this.gas_ConsumedLTR = this.fuelCount.gas_quantityLTR;
+            this.gas_ConsumedGL = this.fuelCount.gas_quantityGL;
+            this.def_ConsumedLTR = this.fuelCount.def_quantityLTR;
+            this.def_ConsumedGL = this.fuelCount.def_quantityGL;
             this.lastItemSK = '';
             this.dataMessage = Constants.FETCHING_DATA;
             this.fetchFuelReport();
@@ -180,24 +519,44 @@ export class SummaryComponent implements OnInit {
             return false;
         }
     }
- 
+
     generateFuelCSV() {
         if (this.exportList.length > 0) {
-            let dataObject = []
+            let dataObject: any = []
             let csvArray = []
+            
             this.exportList.forEach(element => {
-                let obj = {}    
-                obj["Date/Time"] = element.dateTime                                                                          
-                obj["Use Type"] = element.data.useType
-                obj["Unit Name"] = this.assetList[element.unitID] || this.vehicleList[element.unitID]
-                obj["Fuel Card#"] = element.data.cardNo
-                obj["City"] = element.data.city
-                obj["Fuel Type"] = element.data.type
-                obj["Fuel Quantity"] = element.data.qty + " " + ".00" 
-                obj["Liters or Gallons"] = element.data.uom ==="L" ? 'LTR' : 'GL'
-                obj["Odometer"] = element.data.odometer
-                obj["Total Discount"] = element.data.discAmt 
-                obj["Total Amount"] = element.data.amt + "." + "00" + " " + element.data.currency
+                let obj = {}
+                let retailCADTotal = [];
+                let retailUSDTotal = [];
+                if (element.data.currency === 'CAD') {
+                    retailCADTotal = element.data.amt
+                }
+                if (element.data.currency === 'USD') {
+                    retailUSDTotal = element.data.amt
+                }
+                obj['Date/Time'] = element.dateTime;
+                obj['Use Type'] = element.data.useType
+                obj['Unit Name'] = this.assetList[element.unitID] || this.vehicleList[element.unitID]
+                obj['Fuel Card#'] = element.data.cardNo
+                obj['City'] = element.data.city
+                obj['Fuel Type'] = element.data.type.replace(/, /g, ' &');
+                obj['Fuel Quantity'] = element.data.qty + ' '
+                if (element.data.uom === 'L') {
+                    obj['Liters or Gallons'] = element.data.uom === 'L' ? 'LTR' : null
+                }
+                if (element.data.uom === 'litre') {
+                    obj['Liters or Gallons'] = element.data.uom === 'litre' ? 'LTR' : null
+                }
+                if (element.data.uom === 'G') {
+                    obj['Liters or Gallons'] = element.data.uom === 'G' ? 'GL' : null
+                }
+                obj['Odometer'] = element.data.odometer
+                obj['Retail Price Per L'] = element.data.rPpu
+                obj['Retail Amount Before Tax'] = element.data.rBeforeTax
+                obj['Total Discount'] = element.data.discAmt
+                obj['Retail Amount'] = element.data.amt
+                obj['Currency'] = element.data.currency
                 dataObject.push(obj)
             });
             let headers = Object.keys(dataObject[0]).join(',')
@@ -226,32 +585,39 @@ export class SummaryComponent implements OnInit {
 
     getSetExport() {
         this.apiService.getData("fuelEntries/get/export").subscribe((result: any) => {
-        result[`Items`].forEach(element => {
-        let date: any = moment(element.data.date)
-        if (element.data.time) {
-          let time = moment(element.data.time, 'h mm a')
-          date.set({
-            hour: time.get('hour'),
-            minute: time.get('minute')
-          })
-          date = date.format('MMM Do YYYY h:mm a')
-        }
-        else {
-          date = date.format('MMM Do YYYY')
-        }
-        element.dateTime = date
-      });    
+            result[`Items`].forEach(element => {
+                let date: any = moment(element.date)
+                if (element.time) {
+                    let time = moment(element.time, 'h mm a')
+                    date.set({
+                        hour: time.get('hour'),
+                        minute: time.get('minute')
+                    })
+                    date = date.format('MMM Do YYYY h:mm a')
+                }
+                else {
+                    date = date.format('MMM Do YYYY')
+                }
+                element.dateTime = date
+            });
             this.exportList = result.Items;
             this.generateFuelCSV();
         })
     }
 
+
+  
     csvExport() {
-        if (this.unitID !== null || this.assetUnitID !== null) {
+        if (this.unitID !== null || this.assetUnitID !== null || this.start !== null || this.end !== null) {
+            this.searchActive = false
             this.exportList = this.fuelList
             this.generateFuelCSV();
         } else {
             this.getSetExport();
         }
+    }
+    
+       clear(table: Table) {
+        table.clear();
     }
 }
