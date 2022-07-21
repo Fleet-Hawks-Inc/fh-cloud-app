@@ -840,7 +840,7 @@
                                     <div class="col-lg-10">
                                       <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Assign
                                         Consignor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                      <ng-select [ngModelOptions]="{standalone: true}"
+                                      <ng-select (change)="selectedCustomer('shipper', $event, s)" [ngModelOptions]="{standalone: true}"
                                         [attr.name]="'shipments['+s+'].shipperID'" [(ngModel)]="shipment.shipperID"
                                         #Aconsi="ngModel" [required]="shipments.length !== 0">
                                         <ng-option *ngFor="let shipper of shippers | async"
@@ -857,6 +857,111 @@
                                         </div>
 
                                       </div>
+                                      <div
+                                          class="col-lg-12 mt-2 p-0"
+                                          *ngIf="
+                                          shipperDetails.length > 0
+                                          "
+                                        >
+                                          <div
+                                            class=""
+                                            style="border: 0.4px solid #e1e2e3"
+                                          >
+                                            <div class="row">
+                                              <div class="col-12">
+                                                <div
+                                                  class="pt-1 pb-1 pl-3 pr-3"
+                                                  style="background-color: #e1e2e3"
+                                                >
+                                                  <h5 class="font-weight-bold">Details</h5>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="row pl-3 pr-3">
+                                              <div class="col-lg-12 pr-0">
+                                                <div
+                                                  style="
+                                                    max-height: 200px;
+                                                    overflow-y: auto;
+                                                    overflow-x: hidden
+                                                  "
+                                                  *ngFor="let address of shipperDetails"
+                                                >
+                                                  <div class="row border-top mb-1 pt-2 pb-2 position-relative" [ngClass]="{ 'pl-4': shipperDetails.length > 1 }">
+                                                    <div class="col-12">
+                                                      <label
+                                                        class="control-label"
+                                                        *ngIf="address.manual"
+                                                        ><span class="font-weight-bold"
+                                                          >Address:</span
+                                                        >
+                                                        {{ address.add1 | titlecase }}
+                                                        {{ address.add2 | titlecase }}</label
+                                                      >
+                                                      <label
+                                                        class="control-label"
+                                                        *ngIf="!address.manual"
+                                                        ><span class="font-weight-bold"
+                                                          >Address:</span
+                                                        >
+                                                        {{ address.userLoc | titlecase }}</label
+                                                      >
+                                                    </div>
+                                                    <div class="col-6">
+                                                      <label class="control-label"
+                                                        ><span class="font-weight-bold"
+                                                          >Type:</span
+                                                        >
+                                                        {{ address.aType | titlecase }}</label
+                                                      >
+                                                    </div>
+                                                    <div class="col-6">
+                                                      <label class="control-label"
+                                                        ><span class="font-weight-bold"
+                                                          >City:</span
+                                                        >
+                                                        {{ address.ctyName | titlecase }}</label
+                                                      >
+                                                    </div>
+                                                    <div class="col-6">
+                                                      <label class="control-label"
+                                                        ><span class="font-weight-bold"
+                                                          >Province/State:</span
+                                                        >
+                                                        {{ address.sName | titlecase }}</label
+                                                      >
+                                                    </div>
+                                                    <div class="col-6">
+                                                      <label class="control-label"
+                                                        ><span class="font-weight-bold"
+                                                          >Country:</span
+                                                        >
+                                                        {{ address.cName | titlecase }}</label
+                                                      >
+                                                    </div>
+                                                    
+                                                  
+                                                    <input
+                                                      *ngIf="shipperDetails.length > 1"
+                                                      class="address-icon"
+                                                      type="radio"
+                                                      name="select"
+                                                      (change)="
+                                                        getAddressID('shipper',
+                                                          $event.target.checked,
+                                                          s,
+                                                          address.addressID
+                                                        )
+                                                      "
+                                                      [value]="address.addressID"
+                                                      [checked]="address.isChecked"
+                                                    />
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
                                     </div>
                                     <div class="col-lg-2  mar-top-37">
                                       <!-- <a data-toggle="modal" data-target="#addShipperModal"
@@ -867,11 +972,13 @@
                                       <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">Assign
                                         Consignee<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                       <ng-select [ngModelOptions]="{standalone: true}"
-                                        [attr.name]="'shipments['+s+'].receiverID'" [(ngModel)]="shipment.consigneeID"
+                                        [attr.name]="'shipments['+s+'].receiverID'" (change)="selectedCustomer('receiver', $event, s)" [(ngModel)]="shipment.consigneeID"
                                         #Aconsignee="ngModel" [required]="shipments.length !== 0">
-                                        <ng-option *ngFor="let consignee of consignees  | async"
-                                          value="{{consignee.contactID}}">
-                                          {{consignee.companyName}}</ng-option>
+                                        <ng-container *ngFor="let consignee of consignees  | async">
+                                          <ng-option *ngIf="consignee.contactID != shipment.shipperID" value="{{consignee.contactID}}" >
+                                            {{consignee.companyName}}</ng-option>
+                                        </ng-container>
+                                        
                                       </ng-select>
                                       <div *ngIf="Aconsignee.invalid && (Aconsignee.dirty || Aconsignee.touched)"
                                         class="text-danger">
@@ -883,6 +990,111 @@
                                         </div>
 
                                       </div>
+                                      <div
+                                      class="col-lg-12 mt-2 p-0"
+                                      *ngIf="
+                                      receiverDetails.length > 0
+                                      "
+                                    >
+                                      <div
+                                        class=""
+                                        style="border: 0.4px solid #e1e2e3"
+                                      >
+                                        <div class="row">
+                                          <div class="col-12">
+                                            <div
+                                              class="pt-1 pb-1 pl-3 pr-3"
+                                              style="background-color: #e1e2e3"
+                                            >
+                                              <h5 class="font-weight-bold">Details</h5>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="row pl-3 pr-3">
+                                          <div class="col-lg-12 pr-0">
+                                            <div
+                                              style="
+                                                max-height: 200px;
+                                                overflow-y: auto;
+                                                overflow-x: hidden;
+                                              "
+                                              *ngFor="let address of receiverDetails"
+                                            >
+                                              <div class="row border-top mb-1 pt-2 pb-2 position-relative"  [ngClass]="{ 'pl-4': receiverDetails.length > 1 }">
+                                                <div class="col-12">
+                                                  <label
+                                                    class="control-label"
+                                                    *ngIf="address.manual"
+                                                    ><span class="font-weight-bold"
+                                                      >Address:</span
+                                                    >
+                                                    {{ address.add1 | titlecase }}
+                                                    {{ address.add2 | titlecase }}</label
+                                                  >
+                                                  <label
+                                                    class="control-label"
+                                                    *ngIf="!address.manual"
+                                                    ><span class="font-weight-bold"
+                                                      >Address:</span
+                                                    >
+                                                    {{ address.userLoc | titlecase }}</label
+                                                  >
+                                                </div>
+                                                <div class="col-6">
+                                                  <label class="control-label"
+                                                    ><span class="font-weight-bold"
+                                                      >Type:</span
+                                                    >
+                                                    {{ address.aType | titlecase }}</label
+                                                  >
+                                                </div>
+                                                <div class="col-6">
+                                                  <label class="control-label"
+                                                    ><span class="font-weight-bold"
+                                                      >City:</span
+                                                    >
+                                                    {{ address.ctyName | titlecase }}</label
+                                                  >
+                                                </div>
+                                                <div class="col-6">
+                                                  <label class="control-label"
+                                                    ><span class="font-weight-bold"
+                                                      >Province/State:</span
+                                                    >
+                                                    {{ address.sName | titlecase }}</label
+                                                  >
+                                                </div>
+                                                <div class="col-6">
+                                                  <label class="control-label"
+                                                    ><span class="font-weight-bold"
+                                                      >Country:</span
+                                                    >
+                                                    {{ address.cName | titlecase }}</label
+                                                  >
+                                                </div>
+                                                
+                                              
+                                                <input
+                                                  *ngIf="receiverDetails.length > 1"
+                                                  class="address-icon"
+                                                  type="radio"
+                                                  name="select"
+                                                  (change)="
+                                                    getAddressID('receiver',
+                                                      $event.target.checked,
+                                                      s,
+                                                      address.addressID
+                                                    )
+                                                  "
+                                                  [value]="address.addressID"
+                                                  [checked]="address.isChecked"
+                                                />
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
                                     </div>
                                     <div class="col-lg-2 mar-top-37">
                                       <!-- <a data-toggle="modal" data-target="#addConsigneeModal"

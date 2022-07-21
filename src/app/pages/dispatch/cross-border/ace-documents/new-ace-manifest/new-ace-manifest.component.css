@@ -9,3 +9,9 @@
 .show-search__result .map-search__results {
   display: block !important;
 }
+.address-icon {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  margin-top: -10px;
+}

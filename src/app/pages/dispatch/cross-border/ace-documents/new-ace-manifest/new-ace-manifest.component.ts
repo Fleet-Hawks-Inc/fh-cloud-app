@@ -225,6 +225,8 @@ export class NewAceManifestComponent implements OnInit {
   errorFastCard = false;
   address = false;
   amendManifest = false;
+  shipperDetails: any = [];
+  receiverDetails: any = [];
   constructor(
     private httpClient: HttpClient,
     private route: ActivatedRoute,
@@ -820,7 +822,7 @@ export class NewAceManifestComponent implements OnInit {
       if (this.address === true) {
         const data = {
           type: this.manifestType,
-          tripNumber: this.SCAC + this.tripNumber,
+          tripNumber: `${this.SCAC}#${this.tripNumber}`,
           currentStatus: 'draft',
           estimatedArrivalDate: this.estimatedArrivalDate,
           estimatedArrivalTime: this.estimatedArrivalTime,
@@ -871,7 +873,7 @@ export class NewAceManifestComponent implements OnInit {
       };
       const data = {
         type: this.manifestType,
-        tripNumber: this.SCAC + this.tripNumber,
+        tripNumber: `${this.SCAC}#${this.tripNumber}`,
         currentStatus: 'draft',
         estimatedArrivalDate: this.estimatedArrivalDate,
         estimatedArrivalTime: this.estimatedArrivalTime,
@@ -1012,7 +1014,7 @@ export class NewAceManifestComponent implements OnInit {
         const data = {
           mID: this.manifestID,
           type: this.manifestType,
-          tripNumber: this.SCAC + this.tripNumber,
+          tripNumber: `${this.SCAC}#${this.tripNumber}`,
           currentStatus: 'draft',
           sendId: this.sendId,
           estimatedArrivalDate: this.estimatedArrivalDate,
@@ -1070,7 +1072,7 @@ export class NewAceManifestComponent implements OnInit {
       const data = {
         mID: this.manifestID,
         type: this.manifestType,
-        tripNumber: this.SCAC + this.tripNumber,
+        tripNumber: `${this.SCAC}#${this.tripNumber}`,
         currentStatus: 'draft',
         sendId: this.sendId,
         estimatedArrivalDate: this.estimatedArrivalDate,
@@ -1200,6 +1202,73 @@ export class NewAceManifestComponent implements OnInit {
         this.shipments[s].broker.portLocation = result.portIdentifier;
       }
 
+    }
+  }
+
+  getAddressID(type: string, value: boolean, i: number, id: string) {
+    if (value === true && type == 'shipper') {
+      this.shipments[i].shipperID = id;
+    } else {
+      this.shipments[i].consigneeID = id;
+    }
+  }
+
+  selectedCustomer(type: string, customerID: any, index: any) {
+    if(type === 'shipper') {
+      this.shipperDetails = [];
+    }
+    if(type === 'receiver') {
+      this.receiverDetails = [];
+    }
+    if(customerID != '' && customerID != undefined && customerID != null) {
+      console.log('type', type)
+      this.apiService
+        .getData(`contacts/detail/${customerID}`)
+        .subscribe((result: any) => {
+          if (result && result.Items.length > 0) {
+            if(result.Items[0].adrs && result.Items[0].adrs.length > 0) {
+              for (let i = 0; i < result.Items[0].adrs.length; i++) {
+                const element = result.Items[0].adrs[i];
+                if(element.cCode == 'US' || element.cCode == 'CA') {
+                  element["isChecked"] = false;
+                  if(type === 'shipper') {
+                    this.shipperDetails.push(element);
+                  }
+                  if(type === 'receiver') {
+                    this.receiverDetails.push(element);
+                  }
+                }
+              }
+              if(type === 'shipper') {
+                this.shipperDetails[0].isChecked = true;
+              }
+              if(type === 'receiver') {
+                this.receiverDetails[0].isChecked = true;
+              }
+            }
+            if(type === 'shipper' && this.shipperDetails.length > 0) {
+              this.shipments[index]['shipAdrsID'] = this.shipperDetails[0].addressID;
+            }
+            if(type === 'receiver' && this.receiverDetails.length > 0) {
+              this.shipments[index]['conAdrsID'] = this.receiverDetails[0].addressID;
+            }
+            console.log('this.shipmentss', this.shipments)
+            //if (this.manifestID) {
+              // this.shipperDetails[0].adrs.filter((elem) => {
+              //   if (elem.addressID === this.orderData.cusAddressID) {
+              //     elem.isChecked = true;
+              //   }
+              //   // address id doesnot match when address deleted from address book of particular entry
+              //   if (
+              //     this.customerSelected[0].adrs.length === 1 &&
+              //     elem.addressID != this.orderData.cusAddressID
+              //   ) {
+              //     this.orderData.cusAddressID = elem.addressID;
+              //   }
+              // });
+            //}
+          }
+        });
     }
   }
 }
