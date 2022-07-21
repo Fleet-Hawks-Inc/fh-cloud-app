@@ -299,7 +299,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     return `<b> Driver: ${data.userId}</b><br/>
     Speed: ${data.speed} | Altitude: ${data.altitude} <br/>
     Time : ${data.time}<br/>
-    Last Location: ${data.location || "NA"}        
+    Last Location: ${data.location || "NA"}<br/>   
     <a class='link' target='_blank' href='#/fleet/drivers/detail/${
       data.driverId
     }' style='color:blue;font-size:9px'>Driver Details</a>`;
