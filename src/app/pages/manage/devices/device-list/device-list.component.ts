@@ -22,11 +22,11 @@ export class DeviceListComponent implements OnInit {
   _selectedColumns: any[];
       loaded = false;
       dataColumns = [
-        { width: '20%', field: 'deviceType', header: 'Type', type: "text" },
-        { width: '20%', field: 'deviceSerialNo', header: 'Serial/IMEI', type: "text" },
-        { width: '20%', field: 'deviceName', header: 'Device Name', type: "text" },
-        { width: '20%', field: 'vehicle.vehicleIdentification', header: 'Vehicle/Asset', type: "text" },
-        { width: '20%', field: 'deviceStatus', header: 'Status', type: "text" },
+        { field: 'deviceType', header: 'Type', type: "text" },
+        {  field: 'deviceSerialNo', header: 'Serial/IMEI', type: "text" },
+        {  field: 'deviceName', header: 'Device Name', type: "text" },
+        {  field: 'vehicle.vehicleIdentification', header: 'Vehicle/Asset', type: "text" },
+        {  field: 'deviceStatus', header: 'Status', type: "text" },
     ];
     
     constructor(private apiService: ApiService,
@@ -57,14 +57,6 @@ export class DeviceListComponent implements OnInit {
         this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
 
     }
-
-
-
-  refreshData() {
-    this.next = 'null';
-    this.devices = [];
-    this.fetchDevices();
-  }
 
 
   private async fetchDevices() {
@@ -139,7 +131,6 @@ export class DeviceListComponent implements OnInit {
   this.vehicleIdentification = '';
   this.assetIdentification = '';
   this.devices = [];
-  this.dataMessage = Constants.FETCHING_DATA;
   this.next = "null"
   this.loaded = false;
   this.fetchDevices();
@@ -149,6 +140,15 @@ export class DeviceListComponent implements OnInit {
   }
   }
 
+   refreshData() {
+    this.devices = [];
+    this.vehicleIdentification = '';
+    this.assetIdentification = '';
+    this.next = 'null';
+    this.loaded = false;
+    this.fetchDevices();
+    this.dataMessage = Constants.FETCHING_DATA;
+  }
 
   public deactivateDevice(devicesType: any, deviceID: string, activate: boolean) {
     const confirmationText = activate == true ? 'activate' : 'deactivate';

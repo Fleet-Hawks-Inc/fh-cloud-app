@@ -66,23 +66,11 @@ export class ServicelogsComponent implements OnInit {
    isSearch = false;
   get = _.get;
   _selectedColumns: any[];
-  dataColumns: any[];
   find = _.find;
   filterStatus = null;
-    
      
-  constructor(private apiService: ApiService, 
-  private toastr: ToastrService,
-  private httpClient: HttpClient,
-  private router: Router,
-  private spinner: NgxSpinnerService,
-  private hereMap: HereMapService,
-  protected _sanitizer: DomSanitizer,
-  private modalService: NgbModal) { }
-
-   ngOnInit(){
-    this.fetchSlogsList();
-     this.dataColumns = [
+     
+  dataColumns = [
         { width: '7%', field: 'unitType', header: 'Unit Type', type: "text" },
         { width: '7%', field: 'unitName', header: 'Vehicle/Asset', type: "text" },
         { width: '7%', field: 'odometer', header: 'Odometer', type: "text" },
@@ -93,7 +81,19 @@ export class ServicelogsComponent implements OnInit {
         { width: '7%', field: 'allServiceTasks.subTotal', header: 'Service Cost', type: "text" },
         
     ];
-    this._selectedColumns = this.dataColumns;
+     
+  constructor(private apiService: ApiService, 
+  private toastr: ToastrService,
+  private httpClient: HttpClient,
+  private router: Router,
+  private spinner: NgxSpinnerService,
+  private hereMap: HereMapService,
+  protected _sanitizer: DomSanitizer,
+  private modalService: NgbModal) { }
+
+    async ngOnInit(): Promise<void> {
+    await this.fetchSlogsList();
+     this.setToggleOptions();
     this.fetchAllVendorsIDs();
     this.fetchAllVehiclesIDs();
     this.fetchAllAssetsIDs();
@@ -247,16 +247,17 @@ export class ServicelogsComponent implements OnInit {
   }
   
   refreshData(){
+    this.allData = []
     this.searchValue = null;
     this.category = null;
     this.taskID = null;
     this.start = null;
-    this.end = null;
-    this.dataMessage = Constants.FETCHING_DATA
-    this.lastItemSK = '';
     this.datee = null;
-    this.allData = []
+    this.end = null;
+    this.loaded = false;
+    this.lastItemSK = '';
     this.fetchSlogsList()
+    this.dataMessage = Constants.FETCHING_DATA
   }
   
   fetchExportList() {

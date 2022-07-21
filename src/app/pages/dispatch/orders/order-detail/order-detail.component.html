@@ -715,6 +715,7 @@
                                         let s = index
                                       ">
                                       Drop-{{ s + 1 }}:
+                                      
                                       <span *ngIf="drop.address.manual">
                                         {{ drop.address.address }}
                                         {{ drop.address.city }}
@@ -725,6 +726,7 @@
                                       <span *ngIf="!drop.address.manual">
                                         {{ drop.address.dropOffLocation }}
                                       </span>
+                                       <span *ngIf="drop.zone">Zone: {{drop.zone.zName|titlecase}}</span>
                                     </div>
                                   </div>
                                 </td>

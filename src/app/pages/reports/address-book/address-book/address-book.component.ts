@@ -42,7 +42,7 @@ export class AddressBookComponent implements OnInit {
      dataColumns = [
         {  field: 'cName', header: 'Company Name', type: "text" },
         {  field: 'workEmail', header: 'Email', type: "text" },
-        { field: 'workPhone', header: 'Phone', type: "text" },
+        {  field: 'workPhone', header: 'Phone', type: "text" },
         {  field: 'eTypes', header: 'Type', type: "text" },
         {  field: 'ctyName', header: 'Address', type: "text" },
     ];
@@ -117,12 +117,13 @@ export class AddressBookComponent implements OnInit {
   }
   
    refreshData(){
+      this.addressBookList = [];
       this.company = null;
       this.type = null;
       this.lastItemSK = '';
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.addressBookList = [];
+      this.loaded = false;
       this.fetchAddressBook();
+      this.dataMessage = Constants.FETCHING_DATA;
    }
     
   resetFilter() {

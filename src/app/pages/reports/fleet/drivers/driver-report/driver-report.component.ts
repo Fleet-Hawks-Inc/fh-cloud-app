@@ -82,6 +82,7 @@ export class DriverReportComponent implements OnInit {
   fetchDriverName() {
     this.apiService.getData(`drivers/fetch/driver/detail/${this.drivIDs}`).subscribe((result: any) => {
       this.DrivN = result.Items
+      console.log("driver name",result.Items)
     })
   }
 

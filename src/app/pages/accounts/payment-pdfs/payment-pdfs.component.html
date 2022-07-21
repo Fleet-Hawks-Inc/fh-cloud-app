@@ -1475,7 +1475,7 @@
         &times;
       </button>
     </div>
-    <form>
+    <form method="get" #voidForm="ngForm">
       <div class="modal-body">
         <div class="form-group col-lg-12 col-md-12">
           <div class="row">
@@ -1494,18 +1494,27 @@
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">
-                          Reason
+                          Reason 
                         </td>
                         <td>
                           <textarea
                           [(ngModel)]="voidData.reason"
                           name="reason"
                           type="text"
-                          placeholder="e.g 7845"
+                          placeholder="e.g Invalid payment"
                           class="form-control h-auto"
                           autocomplete="off"
                           #payref="ngModel"
                           required rows="3"></textarea>
+
+                          <div *ngIf="
+                            payref.invalid &&
+                            (payref.dirty || payref.touched)
+                          " class="text-danger">
+                          <div *ngIf="payref.errors.required">
+                            Reason is required.
+                          </div>
+                        </div>
                         
                         </td>
                       </tr>
@@ -1522,7 +1531,7 @@
         <button type="button" class="btn btn-default" (click)="modal.dismiss()">
           Close
         </button>
-        <button type="button" class="btn btn-success" [disabled]="voidDisable" (click)="voidPay()">
+        <button type="button" class="btn btn-success" [disabled]="voidDisable || !voidForm.form.valid" (click)="voidPay()">
           Void Payment
         </button>
       </div>
