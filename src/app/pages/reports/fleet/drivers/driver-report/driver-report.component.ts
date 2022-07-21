@@ -188,7 +188,7 @@ export class DriverReportComponent implements OnInit {
           }
         }
         let obj = {}
-        obj["Name"] = element.driverName.replace(/,/g, '&')
+        obj["Name"] = element.driverName.replace(/,/g, ' & ')
         obj["Trip"] = element.tripNo
         obj["Order"] = element.orderNumber.replace(/,/g, '&')
         obj["Location"] = location
