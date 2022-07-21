@@ -59,14 +59,6 @@ export class DeviceListComponent implements OnInit {
     }
 
 
-
-  refreshData() {
-    this.next = 'null';
-    this.devices = [];
-    this.fetchDevices();
-  }
-
-
   private async fetchDevices() {
     try {
       if (this.next === 'end') {
@@ -139,7 +131,6 @@ export class DeviceListComponent implements OnInit {
   this.vehicleIdentification = '';
   this.assetIdentification = '';
   this.devices = [];
-  this.dataMessage = Constants.FETCHING_DATA;
   this.next = "null"
   this.loaded = false;
   this.fetchDevices();
@@ -149,6 +140,15 @@ export class DeviceListComponent implements OnInit {
   }
   }
 
+   refreshData() {
+    this.devices = [];
+    this.vehicleIdentification = '';
+    this.assetIdentification = '';
+    this.next = 'null';
+    this.loaded = false;
+    this.fetchDevices();
+    this.dataMessage = Constants.FETCHING_DATA;
+  }
 
   public deactivateDevice(devicesType: any, deviceID: string, activate: boolean) {
     const confirmationText = activate == true ? 'activate' : 'deactivate';
