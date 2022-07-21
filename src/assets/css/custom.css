@@ -4431,3 +4431,8 @@ ul.simple-post-list.settings-list li:last-child a {
 .fc.fc-unthemed .fc-toolbar .fc-button {
   display: inline-block !important;
 }
+
+/* bottom border width */
+.bbw-1px {
+  border-bottom-width: 1px !important;
+}
