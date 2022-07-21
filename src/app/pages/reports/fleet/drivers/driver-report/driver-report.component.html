@@ -140,7 +140,7 @@
                                                     >
                                                     <div [ngSwitch]="dataColumns.field">
                                                         <span *ngSwitchCase="'driverName'">
-                                                            <b> {{get(driver,dataColumns.field) | titlecase}}</b>
+                                                            <b> {{(driver.driverName ? driver.driverName.replace(" ,", ", ") : "-")| titlecase}}</b>
                                                         </span>
                                                         
                                                         <span *ngSwitchCase="'locType'">

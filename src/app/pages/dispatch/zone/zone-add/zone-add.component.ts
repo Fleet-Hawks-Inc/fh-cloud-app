@@ -3,8 +3,6 @@ import { ApiService } from "src/app/services";
 import { ToastrService } from "ngx-toastr";
 import { Location } from "@angular/common";
 import { ActivatedRoute } from "@angular/router";
-import { GoogleMap } from "@angular/google-maps";
-import { map } from "lodash";
 declare var $;
 @Component({
   selector: "app-zone-add",
