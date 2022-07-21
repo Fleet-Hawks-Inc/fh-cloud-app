@@ -51,8 +51,13 @@ export class ServiceprogramComponent implements OnInit {
   get = _.get;
   _selectedColumns: any[];
   find = _.find;
-  dataColumns: any[];
   filterStatus = null;
+  
+  dataColumns = [
+        {  field: 'vehicles', header: 'Vehicle', type: "text" },
+        {  field: 'programName', header: 'Service Program Name', type: "text" },
+        {  field: 'description', header: 'Description', type: "text" },
+    ];
   
   constructor(private apiService: ApiService, 
   private toastr: ToastrService,
@@ -67,12 +72,6 @@ export class ServiceprogramComponent implements OnInit {
   async ngOnInit() {
   await this.fetchServiceVehicleList()
      this.fetchvehiclesList()
-     this.dataColumns = [
-        {  field: 'vehicles', header: 'Vehicle', type: "text" },
-        {  field: 'programName', header: 'Service Program Name', type: "text" },
-        {  field: 'description', header: 'Description', type: "text" },
-    ];
-    this._selectedColumns = this.dataColumns;
     this.setToggleOptions();
   }
   
@@ -162,13 +161,14 @@ export class ServiceprogramComponent implements OnInit {
   }
   
   refreshData(){
+    this.serviceProgramList = []
     this.disableSearch = true;
     this.vehicle = null;
     this.programName = null;
+    this.loaded = false;
     this.lastItemSK = '';
-    this.dataMessage = Constants.FETCHING_DATA
-    this.serviceProgramList = []
     this.fetchServiceVehicleList()
+    this.dataMessage = Constants.FETCHING_DATA
   }
   
   fetchExportfullList() {

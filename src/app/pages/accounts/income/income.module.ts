@@ -1,21 +1,23 @@
-import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { RouterModule, Routes } from "@angular/router";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
+import { Injectable, NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { RouterModule, Routes } from "@angular/router";
 import {
   NgbDateAdapter,
   NgbDateParserFormatter,
-  NgbDateStruct,
+  NgbDateStruct, NgbModule
 } from "@ng-bootstrap/ng-bootstrap";
-import { Injectable } from "@angular/core";
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgSelectModule } from "@ng-select/ng-select";
-import { IncomeListComponent } from "./income-list/income-list.component";
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
+import { AddAccountModule } from "../add-account/add-account.module";
 import { AddIncomeComponent } from "./add-income/add-income.component";
 import { IncomeDetailComponent } from "./income-detail/income-detail.component";
-import { AddAccountModule } from "../add-account/add-account.module";
-import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { IncomeListComponent } from "./income-list/income-list.component";
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -114,11 +116,20 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule,
     AddAccountModule,
-    InfiniteScrollModule,
+    AutoCompleteModule,
+    ButtonModule,
+    CalendarModule,
+    AutoCompleteModule,
+    DropdownModule,
+    TableModule,
+
+
+
+
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
-export class IncomeModule {}
+export class IncomeModule { }
