@@ -22,11 +22,11 @@ export class DeviceListComponent implements OnInit {
   _selectedColumns: any[];
       loaded = false;
       dataColumns = [
-        { width: '20%', field: 'deviceType', header: 'Type', type: "text" },
-        { width: '20%', field: 'deviceSerialNo', header: 'Serial/IMEI', type: "text" },
-        { width: '20%', field: 'deviceName', header: 'Device Name', type: "text" },
-        { width: '20%', field: 'vehicle.vehicleIdentification', header: 'Vehicle/Asset', type: "text" },
-        { width: '20%', field: 'deviceStatus', header: 'Status', type: "text" },
+        { field: 'deviceType', header: 'Type', type: "text" },
+        {  field: 'deviceSerialNo', header: 'Serial/IMEI', type: "text" },
+        {  field: 'deviceName', header: 'Device Name', type: "text" },
+        {  field: 'vehicle.vehicleIdentification', header: 'Vehicle/Asset', type: "text" },
+        {  field: 'deviceStatus', header: 'Status', type: "text" },
     ];
     
     constructor(private apiService: ApiService,
