@@ -31,6 +31,10 @@ import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
 import { TooltipModule } from 'primeng/tooltip';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { DialogModule } from 'primeng/dialog';
+
+
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -185,7 +189,9 @@ const routes: Routes = [
     CalendarModule,
     AutoCompleteModule,
     DropdownModule,
-    ButtonModule
+    ButtonModule,
+    OverlayPanelModule,
+    DialogModule
   ],
   providers: [
     unsavedChangesGuard,

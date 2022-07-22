@@ -607,10 +607,10 @@ export class InvoiceListComponent implements OnInit {
       this.filter.invType !== null
     ) {
       // this.dataMessage = Constants.FETCHING_DATA;
-      if (this.filter.startDate !== "" && this.filter.endDate === "") {
+      if (this.filter.startDate !== null && this.filter.endDate === null) {
         this.toaster.error("Please select both start and end dates.");
         return false;
-      } else if (this.filter.startDate === "" && this.filter.endDate !== "") {
+      } else if (this.filter.startDate === null && this.filter.endDate !== null) {
         this.toaster.error("Please select both start and end dates.");
         return false;
       } else if (this.filter.startDate > this.filter.endDate) {

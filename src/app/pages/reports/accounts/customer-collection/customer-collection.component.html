@@ -144,20 +144,20 @@
                           width: find(columns, { field: 'Age30' }).width
                         }" style="height: 40px;"> <div class="badges">  <span
                            style="color: #018fee"
-                        >{{customer.Age30}}</span></div></td>
+                        >{{customer.Age30 ? customer.Age30 : "0"}}</span></div></td>
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'Age45' }).width
                         }" style="height: 40px;"> 
                         <span
                            style="color: #f58504"
-                        >{{customer.Age45}}</span></td>
+                        >{{customer.Age45 ? customer.Age45 : "0"}}</span></td>
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'Age60' }).width
                         }" style="height: 40px;"> <span 
                         style="color: #d11313ef"
-                     >{{customer.Age60}}</span></td>
+                     >{{customer.Age60 ? customer.Age60 : "0"}}</span></td>
 
                       </tr>
                     </ng-template>

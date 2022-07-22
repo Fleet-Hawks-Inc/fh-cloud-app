@@ -16,9 +16,17 @@
                         Entire Fleet
                     </div>
                     <div class="col header-buttons">
-                        <button pButton pRipple type="button" *ngIf="driverPositions.length>0" class="p-button-text">{{driverPositions.length}} Drivers</button>
-                        <button pButton pRipple type="button" (click)="showAssets()" *ngIf="assetPositions.length>0" class="p-button-text">{{assetPositions.length}} Assets</button>
+
+                        <p-checkbox class="p-field-checkbox" style="margin-bottom: 10px;" *ngIf="driverPositions.length>0" [(ngModel)]="showDrivers" binary="true"></p-checkbox>
+
+                        <button pButton pRipple type="button" *ngIf="driverPositions.length>0" class="p-button-text"> {{driverPositions.length}} Drivers</button>
+                        <p-checkbox class="p-field-checkbox" style="margin-bottom: 10px;" *ngIf="assetPositions.length>0" [(ngModel)]="showAssets" binary="true"></p-checkbox>
+
+                        <button pButton pRipple type="button" (click)="showAssetsDetails()" *ngIf="assetPositions.length>0" class="p-button-text">{{assetPositions.length}} Assets</button>
+                        <p-checkbox class="p-field-checkbox" style="margin-bottom: 10px;" *ngIf="vehicleDashPositions.length>0" [(ngModel)]="showVehicles" binary="true"></p-checkbox>
+
                         <button pButton pRipple type="button" *ngIf="vehicleDashPositions.length>0" class="p-button-text">{{vehicleDashPositions.length}} Vehicles</button>
+
                         <button id="btnResetFilter" type="button" pButton class="pull-right" tooltipPosition="left" icon="pi pi-refresh" pTooltip="Refresh" (click)="refresh()"></button>
                     </div>
                     <p-sidebar [(visible)]="displayAssets" position="right" baseZIndex="10000" appendTo="body">
@@ -63,10 +71,13 @@
             <div style="height: calc(100vh - 110px);width: 100%;">
 
                 <google-map [options]='mapOptions' [width]="width" [height]="height">
-                    <map-marker #marker="mapMarker" *ngFor="let driverPosition of driverPositions" [position]="driverPosition.position" [options]="driverMarkerOptions" (mapMouseover)="openInfoWindow(marker, driverPosition.data,'driver')"></map-marker>
+                    <map-marker [visible]="showDrivers" #driverMarker="mapMarker" *ngFor="let driverPosition of driverPositions" [label]="{ text:driverPosition.data.userId, fontSize:'9px',  color:'white' }" [position]="driverPosition.position" [options]="driverMarkerOptions"
+                        (mapMouseover)="openInfoWindow(driverMarker, driverPosition.data,'driver')"></map-marker>
                     <map-info-window class="marker-info" [innerHTML]="infoDetail"></map-info-window>
-                    <map-marker #marker="mapMarker" *ngFor="let assetPosition of assetPositions" [label]="{ text:assetPosition.data.assetIdentification, fontSize:'9px',  color:'white' }" [position]="assetPosition.position" [options]="assetMarkerOptions" (mapMouseover)="openInfoWindow(marker, assetPosition.data,'asset')"></map-marker>
-                    <map-marker #marker="mapMarker" *ngFor="let vehiclePosition of vehicleDashPositions" [label]="{ text:vehiclePosition.data.vehicleIdentification, fontSize:'9px',  color:'white' }" [position]="vehiclePosition.position" [options]="vehicleMarkerOptions" (mapMouseover)="openInfoWindow(marker, vehiclePosition.data,'vehicle')"></map-marker>
+                    <map-marker [visible]="showAssets" #assetMarker="mapMarker" *ngFor="let assetPosition of assetPositions" [label]="{ text:assetPosition.data.assetIdentification, fontSize:'9px',  color:'white' }" [position]="assetPosition.position" [options]="assetMarkerOptions"
+                        (mapMouseover)="openInfoWindow(assetMarker, assetPosition.data,'asset')"></map-marker>
+                    <map-marker [visible]="showVehicles" #vehicleMarker="mapMarker" *ngFor="let vehiclePosition of vehicleDashPositions" [label]="{ text:vehiclePosition.data.vehicleIdentification, fontSize:'9px',  color:'white' }" [position]="vehiclePosition.position" [options]="vehicleMarkerOptions"
+                        (mapMouseover)="openInfoWindow(vehicleMarker, vehiclePosition.data,'vehicle')"></map-marker>
 
                 </google-map>
 

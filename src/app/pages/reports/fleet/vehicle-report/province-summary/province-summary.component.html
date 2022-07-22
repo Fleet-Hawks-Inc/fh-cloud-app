@@ -125,9 +125,8 @@
                     [columns]="selectedColumns"
                     [loading]="!loaded"
                     styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                    [loading]="!loaded"
+                    [scrollable]="true"
                     scrollHeight="100%"
-                    responsiveLayout="scroll"
                   >
                 <ng-template pTemplate="caption">
                 <div
@@ -155,43 +154,88 @@
                             (click)="clear(dt)"
                             icon="pi pi-filter-slash"
                           ></button>
+                          <p-multiSelect
+                            [options]="dataColumns"
+                            [(ngModel)]="selectedColumns"
+                            optionLabel="header"
+                            selectedItemsLabel="{0} columns selected"
+                            [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns"
+                          >
+                          </p-multiSelect>
                            </div>
                           </div>
                       </ng-template>
              
-                     <ng-template pTemplate="header" let-columns>
-                               <tr>
-                               <th
-                          *ngFor="let column of dataColumns"
-                          [pSortableColumn]="column.field"
+              <!--       <ng-template pTemplate="header" let-columns>-->
+              <!--                 <tr>-->
+              <!--                 <th-->
+              <!--            *ngFor="let column of dataColumns"-->
+              <!--            [pSortableColumn]="column.field"-->
+              <!--            pResizableColumn-->
+              <!--            [ngStyle]="{ width: column.width }"-->
+              <!--          >  -->
+              <!--       <span>-->
+              <!--       <div-->
+              <!--                class="flex justify-content-center align-items-center"-->
+              <!--                alignFrozen="right"-->
+              <!--                pFrozenColumn-->
+              <!--                [frozen]="true"-->
+              <!--              >-->
+              <!--            {{ column.header }}-->
+              <!--     <p-sortIcon [field]="column.field"> </p-sortIcon>-->
+              <!--    <p-columnFilter-->
+              <!--                  [type]="column.type"-->
+              <!--                  [field]="column.field"-->
+              <!--                  matchMode="contains"-->
+              <!--                  [showMatchModes]="false"-->
+              <!--                  [showOperator]="false"-->
+              <!--                  [showAddButton]="false"-->
+              <!--                  display="menu"-->
+              <!--                >-->
+              <!--                </p-columnFilter>-->
+              <!--    </div>-->
+              <!--    </span>-->
+              <!--    </th>-->
+              <!--   </tr>  -->
+              <!--</ng-template>-->
+                 <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th
+                          *ngFor="let dataColumns of columns"
+                          [pSortableColumn]="dataColumns.field"
                           pResizableColumn
-                          [ngStyle]="{ width: column.width }"
-                        >  
-                     <span>
-                     <div
-                              class="flex justify-content-center align-items-center"
-                              alignFrozen="right"
-                              pFrozenColumn
-                              [frozen]="true"
-                            >
-                          {{ column.header }}
-                   <p-sortIcon [field]="column.field"> </p-sortIcon>
-                  <p-columnFilter
-                                [type]="column.type"
-                                [field]="column.field"
-                                matchMode="contains"
-                                [showMatchModes]="false"
-                                [showOperator]="false"
-                                [showAddButton]="false"
-                                display="menu"
+                         style="width: 25%; cursor: pointer"
+                        >
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchDefault>
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="right"
+                                pFrozenColumn
+                                [frozen]="true"
                               >
-                              </p-columnFilter>
-                  </div>
-                  </span>
-                  </th>
-                 </tr>  
-              </ng-template>
-              
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                          </div>
+                        </th>
+                      
+                      </tr>
+                    </ng-template>
                <ng-template
                       pTemplate="body"
                       let-province
@@ -203,7 +247,7 @@
               
                    <td
                       *ngFor="let dataColumns of columns"
-                      style="width: 10%; height: 50px; cursor: pointer"
+                      style="width: 25%; height: 70px; cursor: pointer"
                         >
                     <div [ngSwitch]="dataColumns.field">
                       

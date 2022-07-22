@@ -135,6 +135,7 @@ export class ActivityListComponent implements OnInit {
           this.dataMessage = Constants.FETCHING_DATA
           if (result.data.length === 0) {
             this.disableSearch = false;
+            this.loaded = true;
             this.dataMessage = Constants.NO_RECORDS_FOUND
           }
           result[`data`].map((v: any) => {

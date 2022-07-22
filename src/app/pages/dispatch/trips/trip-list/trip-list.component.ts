@@ -199,7 +199,8 @@ export class TripListComponent implements OnInit {
     { width: '7%', field: 'driverNames', header: 'Driver', type: "text" },
     { width: '7%', field: 'carrierNames', header: 'Carrier', type: "text" },
     { width: '7%', field: 'tripStatus', header: 'Status', type: "text" },
-  ];
+  ]; 
+
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
@@ -529,7 +530,9 @@ export class TripListComponent implements OnInit {
           }
           $("#tripStatusModal").modal("show");
         } else {
+          this.display = false,
           this.toastr.error(
+        
             "Please assign driver(s)/carrier(s) to the trip first."
           );
         }
@@ -605,9 +608,13 @@ export class TripListComponent implements OnInit {
     this.updateTrip();
   }
 
-  clear(table: Table) {
+  /**
+     * Clears the table filters
+     * @param table Table 
+     */
+   clear(table: Table) {
     table.clear();
-  }
+}
 
   updateTrip() {
     let tripObj = {
