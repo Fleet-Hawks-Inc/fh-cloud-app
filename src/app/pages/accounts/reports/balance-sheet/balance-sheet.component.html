@@ -25,7 +25,7 @@
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
-                        <button type="button" class="btn btn-success btn-sm">Search</button>
+                        <button type="button" class="btn btn-sm btn-success mr-3" (click)="searchFilter()">Search</button>
                     </div>
                 </div>
             </header>
@@ -61,8 +61,11 @@
     [resizableColumns]="true"
     columnResizeMode="expand"
     sortField="accountClass"
+    scrollDirection="both"
     sortMode="single"
     [scrollable]="true"
+    [loading]="!loaded"
+    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
     scrollHeight="600px"
     [columns]="selectedColumns"
     rowGroupMode="subheader"
@@ -85,19 +88,7 @@
                             class="p-button-outlined mr-2"
                             icon="fas fa-sync"
                           ></button>
-                          <button
-                            type="button"
-                            pButton
-                            pTooltip="Add"
-                            [routerLink]="[
-                              '/fleet',
-                              'maintenance',
-                              'issues',
-                              'add'
-                            ]"
-                            class="p-button-outlined mr-2"
-                            icon="pi pi-plus"
-                          ></button>
+                         
                           <button
                             pButton
                             pRipple
@@ -141,9 +132,9 @@
 
         <ng-template pTemplate="groupheader" let-customer>
             <tr pRowGroupHeader>
-                <td colspan="5">
+                <td colspan="6"  style="height: 40px;">
                    <strong>
-                       <span class="p-text-bold p-ml-5"style="font-size:20px">{{customer.accountClass | titlecase}}</span>
+                       <span class="col-lg-12 mt-3 text-center" style="font-size:20px">{{customer.accountClass | titlecase}}</span>
                    </strong> 
                 </td>
             </tr>
@@ -155,8 +146,8 @@
                         <th
                           *ngFor="let dataColumns of columns"
                           [pSortableColumn]="dataColumns.field"
-                          pResizableColumn
-                          [ngStyle]="{ width: dataColumns.width }"
+                           pResizableColumn
+                          style="width: 16.65%"
                         >
                           <div [ngSwitch]="dataColumns.field">
                             <!-- Driver Status Filter Customization -->
@@ -211,7 +202,7 @@
                             <span *ngSwitchDefault>
                               <div
                                 class="flex justify-content-center align-items-center"
-                                alignFrozen="right"
+                                alignFrozen="left"
                                 pFrozenColumn
                                 [frozen]="true"
                               >
@@ -288,8 +279,7 @@
                       <tr>
                         <td
                           *ngFor="let dataColumns of columns"
-                          [ngStyle]="{ width: dataColumns.width }"
-                          style="cursor: pointer"
+                          style="width: 16.65%; height: 40px; cursor: pointer"
                         >
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchDefault>

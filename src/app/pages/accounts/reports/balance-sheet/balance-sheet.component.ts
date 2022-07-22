@@ -3,7 +3,7 @@ import Constants from 'src/app/pages/fleet/constants';
 import { AccountService } from 'src/app/services/account.service';
 import * as _ from 'lodash';
 import { Table } from 'primeng/table';
-import { ToastrService } from "ngx-toastr";
+import { ToastrService } from 'ngx-toastr'
 import { $ } from 'protractor';
 import * as moment from 'moment'
 @Component({
@@ -22,18 +22,20 @@ export class BalanceSheetComponent implements OnInit {
         endDate: null,
     };
     datee = '';
+    loaded = false;
     currency = 'CAD';
     dataMessage = Constants.FETCHING_DATA;
     _selectedColumns: any[];
     dataColumns = [
-    { width: '14%', field: 'accountNo', header: 'Account Number', type: "text" },
-    { width: '14%', field: 'accountName', header: 'Account Name', type: "text" },
-    { width: '14%', field: 'accountType', header: 'Account Type', type: "text" },
-    { width: '14%', field: 'subAcClass', header: 'Account Class', type: "text" },
-    { width: '14%', field: 'closingBalAmtCAD', header: 'Closing Balance CAD', type: "text" },
-    { width: '14%', field: 'closingBalAmtUSD', header: 'Closing Balance USD', type: "text" },
+    {  field: 'accountNo', header: 'Account Number', type: "text" },
+    {  field: 'accountName', header: 'Account Name', type: "text" },
+    {  field: 'accountType', header: 'Account Type', type: "text" },
+    {  field: 'subAcClass', header: 'Account Class', type: "text" },
+    {  field: 'closingBalAmtCAD', header: 'Closing Balance CAD', type: "text" },
+    {  field: 'closingBalAmtUSD', header: 'Closing Balance USD', type: "text" },
   ];
-    constructor(private accountService: AccountService, private toaster: ToastrService) { }
+    constructor(private accountService: AccountService, 
+     private toastr: ToastrService,) { }
     ngOnInit() {
         this.filter.endDate = moment().format("YYYY-MM-DD");
         this.filter.startDate = moment().subtract(15, 'day').format('YYYY-MM-DD');
@@ -54,16 +56,48 @@ export class BalanceSheetComponent implements OnInit {
     this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
 
+  searchFilter() {
+    if (this.filter.startDate != null && this.filter.endDate != null) {
+     if (this.filter.startDate != null && this.filter.endDate == null) {
+     this.toastr.error('Please select both start and end dates.');
+      return false;
+     } else if (this.filter.startDate == null && this.filter.endDate != null) {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+    } else if (this.filter.startDate > this.filter.endDate) {
+                this.toastr.error('Start Date should be less then end date.');
+         return false;
+      } else {
+         this.accounts = [];
+         this.fetchBalance();
+         this.dataMessage = Constants.FETCHING_DATA;
+      }
+    }
+    else {
+    return false;
+    }
+  }
+ 
+  refreshData() {
+  this.accounts = [];
+   this.filter.endDate = moment().format("YYYY-MM-DD");
+   this.filter.startDate = moment().subtract(15, 'day').format('YYYY-MM-DD');
+   this.loaded = false;
+   this.fetchBalance();
+   this.dataMessage = Constants.FETCHING_DATA;
+  }
 
     async fetchBalance(refresh?: boolean) {
         this.accountService.getData(`chartAc/get/balance/report/${this.currency}/?start=${this.filter.startDate}&end=${this.filter.endDate}&date=${this.datee}`)
             .subscribe(async (result: any) => {
             if(result.data.length === 0){
+           
             this.dataMessage = Constants.NO_RECORDS_FOUND;
             }
                 if (result.data.length > 0) {
                     result.data.map((v) => {
                         this.accounts.push(v);
+                        this.loaded = true;
                         this.accounts = _.sortBy(this.accounts, ['accountNo'])
                         console.log(this.accounts)
                     })
