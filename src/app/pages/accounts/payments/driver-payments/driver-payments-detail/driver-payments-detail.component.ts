@@ -59,6 +59,11 @@ export class DriverPaymentsDetailComponent implements OnInit {
     cheqdata: {
       comp: '',
       addr: ''
+    },
+    status: '',
+    voidData: {
+      date: '',
+      reason: ''
     }
   };
   accounts = [];
@@ -68,6 +73,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
   downloadDisabled = true;
   downloadDisabledpdf = true;
   subscription: Subscription;
+  voidSubs: Subscription;
 
   constructor(
     private listService: ListService,
@@ -83,12 +89,14 @@ export class DriverPaymentsDetailComponent implements OnInit {
         this.fetchPay();
       }
     })
+
+    this.voidSubs = this.listService.voidStatus.subscribe(
+      async (res: any) => {
+        if(res === true) {
+          await this.fetchPaymentDetail();
+        }
+      })
     this.paymentID = this.route.snapshot.params["paymentID"];
-    // this.fetchDrivers();
-    // this.fetchContactsList();
-    // this.fetchSettlement();
-    // await this.fetchAccountsByIDs();
-    // await this.fetchAccountsByInternalIDs();
     await this.fetchPaymentDetail();
   }
 
@@ -185,6 +193,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.voidSubs.unsubscribe()
   }
 
   async fetchPay() {
@@ -206,5 +215,15 @@ export class DriverPaymentsDetailComponent implements OnInit {
       "_",
       " "
     );
+  }
+
+  async voidPayment() {
+    let payObj = {
+      showModal: true,
+      page: "list",
+      paymentNo: this.paymentData.paymentNo,
+      paymentID: this.paymentID
+    };
+    this.listService.triggerVoidDriverPayment(payObj);
   }
 }

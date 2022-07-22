@@ -69,33 +69,6 @@
               Reset
             </button>
           </div>
-
-          <div class="col-md-4 col-lg-4 text-right pr-1">
-            <div class="btn-group flex-wrap ml-2">
-              <button
-                type="button"
-                class="btn btn-success btn-sm dropdown-toggle"
-                data-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i class="fas fa-upload"></i> Export<span class="caret"></span>
-              </button>
-              <div
-                class="dropdown-menu"
-                role="menu"
-                x-placement="bottom-start"
-                style="
-                  position: absolute;
-                  will-change: transform;
-                  top: 0px;
-                  left: 0px;
-                  transform: translate3d(0px, 38px, 0px);
-                "
-              >
-                <a class="dropdown-item text-1" (click)="csvData()">CSV</a>
-              </div>
-            </div>
-          </div>
         </div>
       </header>
 
@@ -142,7 +115,7 @@
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
-              <div class="form-group row pt-2">
+              <div class="form-group row">
                 <div
                   class="col-lg-12"
                   style="height: calc(90vh - 149px); overflow-y: scroll"
@@ -156,9 +129,8 @@
                     [columns]="selectedColumns"
                     [loading]="!loaded"
                     styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                    [loading]="!loaded"
+                    [scrollable]="true"
                     scrollHeight="100%"
-                    responsiveLayout="scroll"
                   >
                     <ng-template pTemplate="caption">
                       <div
@@ -178,7 +150,15 @@
                             class="p-button-outlined mr-2"
                             icon="fas fa-sync"
                           ></button>
-
+                            <button
+                            type="button"
+                            pButton
+                            pRipple
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel"
+                            (click)="csvData()"
+                            pTooltip="Excel"
+                          ></button>
                           <button
                             pButton
                             pRipple
@@ -187,41 +167,56 @@
                             (click)="clear(dt)"
                             icon="pi pi-filter-slash"
                           ></button>
+                          <p-multiSelect
+                            [options]="dataColumns"
+                            [(ngModel)]="selectedColumns"
+                            optionLabel="header"
+                            selectedItemsLabel="{0} columns selected"
+                            [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns"
+                          >
+                          </p-multiSelect>
                         </div>
                       </div>
-                    </ng-template>
-
-                    <ng-template pTemplate="header" let-columns>
+                    </ng-template> 
+                    
+                     <ng-template pTemplate="header" let-columns>
                       <tr>
                         <th
-                          *ngFor="let column of dataColumns"
-                          [pSortableColumn]="column.field"
+                          *ngFor="let dataColumns of columns"
+                          [pSortableColumn]="dataColumns.field"
                           pResizableColumn
-                          [ngStyle]="{ width: column.width }"
+                         style="width: 20%; cursor: pointer"
                         >
-                          <span>
-                            <div
-                              class="flex justify-content-center align-items-center"
-                              alignFrozen="right"
-                              pFrozenColumn
-                              [frozen]="true"
-                            >
-                              {{ column.header }}
-                              <p-sortIcon [field]="column.field"> </p-sortIcon>
-                              <p-columnFilter
-                                [type]="column.type"
-                                [field]="column.field"
-                                matchMode="contains"
-                                [showMatchModes]="false"
-                                [showOperator]="false"
-                                [showAddButton]="false"
-                                display="menu"
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchDefault>
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="right"
+                                pFrozenColumn
+                                [frozen]="true"
                               >
-                              </p-columnFilter>
-                            </div>
-                          </span>
-                        </th></tr
-                    ></ng-template>
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                          </div>
+                        </th>
+                      
+                      </tr>
+                    </ng-template>
 
                     <ng-template
                       pTemplate="body"
@@ -229,45 +224,39 @@
                       let-columns="columns"
                       let-rowIndex="rowIndex"
                     >
-                      <tr style="width: 10%; height: 40px; cursor: pointer">
-                        <td
-                          [ngStyle]="{
-                            width: find(columns, { field: 'entityID' }).width
-                          }"
+                      <tr>
+                       <td
+                          *ngFor="let dataColumns of columns"
+                        style="width: 20%; height: 40px; cursor: pointer"
+                        >
+                          <div [ngSwitch]="dataColumns.field">
+                        <span
+                         *ngSwitchCase="'entityID'"
                         >
                           <span class="text-capitalize">
                             {{ vehiclesList[reminder.entityID] }}
                           </span>
-                        </td>
-                        <td
-                          [ngStyle]="{
-                            width: find(columns, { field: 'tasks.taskID' })
-                              .width
-                          }"
+                        </span>
+                        <span
+                          *ngSwitchCase="'tasks.taskID'"
                         >
                           <span class="text-capitalize">
                             {{ tasksData[reminder.tasks.taskID] }}
                           </span>
-                        </td>
-                        <td
-                          [ngStyle]="{
-                            width: find(columns, { field: 'createdDate' }).width
-                          }"
+                        </span>
+                        <span
+                         *ngSwitchCase="'createdDate'"
                         >
                           {{ reminder.createdDate | date: "yyyy/MM/dd" }}
-                        </td>
-                        <td
-                          [ngStyle]="{
-                            width: find(columns, { field: 'subscribers' }).width
-                          }"
+                        </span>
+                        <span
+                          *ngSwitchCase="'subscribers'"
                         >
                           {{ reminder.subscribers }}
-                        </td>
+                        </span>
 
-                        <td
-                          [ngStyle]="{
-                            width: find(columns, { field: 'status' }).width
-                          }"
+                        <span
+                            *ngSwitchCase="'status'"
                         >
                           <span
                             class="text-warning font-weight-bold font-size-12 text-uppercase"
@@ -291,6 +280,8 @@
                               {{ reminder.tasks.odometer }} miles[0]</span
                             >
                           </span>
+                        </span>
+                        </div>
                         </td>
                       </tr>
                     </ng-template>

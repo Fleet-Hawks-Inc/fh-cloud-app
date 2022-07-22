@@ -5,7 +5,7 @@ import { ApiService } from "src/app/services/api.service";
 import { ListService } from "src/app/services/list.service";
 import { formatDate } from "@angular/common";
 import { AccountService } from "src/app/services/account.service";
-import { Auth } from "aws-amplify";
+import { ToastrService } from "ngx-toastr";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
@@ -19,10 +19,12 @@ export class PaymentPdfsComponent implements OnInit {
     private apiService: ApiService,
     private accountService: AccountService,
     private modalService: NgbModal,
+    private toaster: ToastrService,
   ) { }
-  @ViewChild("driverPaymentDetail", { static: true })
-  modalContent: TemplateRef<any>;
+  @ViewChild("driverPaymentDetail", { static: true }) modalContent: TemplateRef<any>;
+  @ViewChild("voidPayment", { static: true }) voidModalContent: TemplateRef<any>;
   subscription: Subscription;
+  voidSubscription: Subscription;
 
   pdfDetails = {
     name: "",
@@ -126,6 +128,14 @@ export class PaymentPdfsComponent implements OnInit {
   }
   multiPay = false;
 
+  voidData = {
+    payID: '',
+    reason: ''
+  }
+  voidDisable = false;
+  voidPayNo: '';
+  voidModalRef: any;
+
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
       async (res: any) => {
@@ -140,7 +150,7 @@ export class PaymentPdfsComponent implements OnInit {
             Number(this.paymentData.taxdata.provincialTax);
           this.paymentData.payMode = this.paymentData.payMode.replace("_", " ");
           this.paymentData.eiInsurable = this.paymentData.totalAmount;
-
+          this.grandTotal = this.paymentData.finalAmount;
           if (this.paymentData.paymentTo === "driver") {
             this.pdfTitle = "Driver Payment";
           } else if (this.paymentData.paymentTo === "employee") {
@@ -222,6 +232,25 @@ export class PaymentPdfsComponent implements OnInit {
         }
       }
     );
+
+    this.voidSubscription = this.listService.voidPayment.subscribe(async (res: any) => {
+      if (res.showModal && res.length != 0) {
+        this.voidData.payID = res.paymentID;
+        this.voidPayNo = res.paymentNo;
+        let ngbModalOptions: NgbModalOptions = {
+          backdrop: "static",
+          keyboard: false,
+          windowClass: "voidPaymentModal-prog__main",
+        };
+        res.showModal = false;
+        this.voidModalRef = this.modalService
+          .open(this.voidModalContent, ngbModalOptions)
+          .result.then(
+            (result) => { },
+            (reason) => { }
+          );
+      }
+    })
   }
 
   async generatePaymentPDF() {
@@ -258,6 +287,7 @@ export class PaymentPdfsComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.voidSubscription.unsubscribe();
   }
 
   async getSettlementData() {
@@ -496,21 +526,20 @@ export class PaymentPdfsComponent implements OnInit {
       });
 
     });
-    this.grandTotal = 0;
+    // this.grandTotal = 0;
     for (const item of this.paymentTrips) {
       item.totalMiles = 0;
       item.totalRate = 0;
       for (const plan of item.plans) {
         item.totalMiles += parseFloat(plan.miles);
       }
-      if (item.paymentSelected) {
-        if (item.paymentSelected && item.paymentSelected.pType == 'ppm') {
-          this.grandTotal += item.totalMiles;
-        }
-      } else {
-        this.grandTotal += item.totalMiles;
-      }
-
+      // if(item.paymentSelected) {
+      //   if(item.paymentSelected && item.paymentSelected.pType == 'ppm') {
+      //     this.grandTotal += item.totalMiles;
+      //   }
+      // } else {
+      //   this.grandTotal += item.totalMiles;
+      // }
     }
   }
 
@@ -629,4 +658,17 @@ export class PaymentPdfsComponent implements OnInit {
     this.companyLogo = result.logo;
     this.tagLine = result.tagLine;
   };
+
+  async voidPay() {
+    if(this.voidData.reason) {
+      this.voidDisable = true;
+      let result = await this.accountService.postData(`driver-payments/void`, this.voidData).toPromise();
+      if(result) {
+        this.voidDisable = false;
+        this.toaster.success("Payment voided successfully.");
+        this.modalService.dismissAll();
+        this.listService.triggerVoidStatus(true);
+      }  
+    }
+  }
 }

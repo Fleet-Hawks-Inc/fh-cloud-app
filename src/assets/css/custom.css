@@ -4382,6 +4382,10 @@ input:checked + .sliderbtn:before {
 .p-overlaypanel:after {
   margin-left: -20px !important;
 }
+
+.p-toast {
+  z-index: 9999;
+}
 .p-overlaypanel:before {
   margin-left: -25px !important;
 }
@@ -4417,4 +4421,21 @@ ul.simple-post-list.settings-list li:last-child a {
 .noti-time {
   font-size: 12px;
   color: #b3b6c1;
+}
+
+/*11.07.22 for sorted out the drop down display issue over page header*/
+
+.ng-dropdown-panel {
+  z-index: 1010 !important;
+}
+
+/*14.07.22 for planner calander today button alignment*/
+
+.fc.fc-unthemed .fc-toolbar .fc-button {
+  display: inline-block !important;
+}
+
+/* bottom border width */
+.bbw-1px {
+  border-bottom-width: 1px !important;
 }

@@ -9,7 +9,7 @@
       <header class="page-header flex align-items-center justify-content-start">
         <form class="formgrid grid">
           <div class="row" style="padding-top: 10px">
-            <div class="col-md-2 col-lg-2 pr-1">
+            <div class="col-md-2 col-lg-2">
               <ng-select
                 [(ngModel)]="category"
                 name="category"
@@ -24,7 +24,7 @@
                 </ng-option>
               </ng-select>
             </div>
-            <div class="col-md-2 col-lg-2 pr-1">
+            <div class="col-md-2 col-lg-2 pl-0">
               <div
                 class="input-group input-group-md mb-3"
                 *ngIf="
@@ -97,7 +97,7 @@
                 </ul>
               </div>
             </div>
-            <div class="col-md-2 col-lg-2 pl-0 pr-0">
+            <div class="col-md-2 col-lg-2 pl-0">
               <ng-select
                 placeholder="Search issue by status"
                 name="issueStatus"
@@ -108,7 +108,7 @@
                 <ng-option value="CLOSED">CLOSED</ng-option>
               </ng-select>
             </div>
-            <div class="col-md-2 col-lg-2">
+            <div class="col-md-2 col-lg-2 pl-0">
               <button
                 type="button"
                 class="btn btn-sm btn-success mr-3"
@@ -208,7 +208,6 @@
                             placeholder="Choose Columns"
                           >
                           </p-multiSelect>
-                          
                         </div>
                       </div>
                     </ng-template>
@@ -251,7 +250,7 @@
                                       [options]="[
                                         { name: 'OPEN', value: 'OPEN' },
                                         { name: 'RESOLVED', value: 'RESOLVED' },
-                                        { name: 'CLOSED',value: 'CLOSED'}
+                                        { name: 'CLOSED', value: 'CLOSED' }
                                       ]"
                                       placeholder="Any"
                                       (onChange)="filter($event.value)"

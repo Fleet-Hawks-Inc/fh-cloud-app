@@ -1,3 +1,4 @@
+
 import { SharedModule } from "./../../../shared/shared.module";
 import { Injectable, NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
@@ -14,6 +15,15 @@ import {
   NgbModule,
 } from "@ng-bootstrap/ng-bootstrap";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { MenuModule } from 'primeng/menu';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { TableModule } from 'primeng/table';
+import { TooltipModule } from 'primeng/tooltip';
+import { DialogModule } from 'primeng/dialog';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -72,13 +82,14 @@ const routes: Routes = [
   {
     path: "list",
     component: ChartOfAccountsComponent,
-    data: { title: "Chart Accounts List" },
+    data: { title: "Chart Accounts List" , reuseRoute: true },
   },
   {
     path: "detail/:actID",
     component: ChartOfAccountsDetailsComponent,
     data: { title: "Chart Accounts Detail" },
   },
+ 
 ];
 
 @NgModule({
@@ -92,6 +103,15 @@ const routes: Routes = [
     SharedModule,
     NgbModule,
     InfiniteScrollModule,
+    ButtonModule,
+    CalendarModule,
+    DropdownModule,
+    MenuModule,
+    MultiSelectModule,
+    SplitButtonModule,
+    TableModule,
+    TooltipModule,
+    DialogModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },

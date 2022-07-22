@@ -16,7 +16,7 @@ import {
 } from "@angular/router";
 import { DOCUMENT } from "@angular/common";
 import { delay, filter } from "rxjs/operators";
-import { HttpLoadingService, SharedServiceService } from "./services";
+import { DashboardUtilityService, HttpLoadingService, ListService, SharedServiceService } from "./services";
 import { Title } from "@angular/platform-browser";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 declare var $: any;
@@ -31,6 +31,7 @@ export class AppComponent implements OnInit, AfterContentChecked {
   token: boolean = false;
   currentURL = "";
   constructor(
+    private dashboardUtilityService: DashboardUtilityService,
     private router: Router,
     private sharedService: SharedServiceService,
     @Inject(DOCUMENT) private document: Document,
@@ -39,7 +40,9 @@ export class AppComponent implements OnInit, AfterContentChecked {
     private titleService: Title,
     private route: ActivatedRoute,
     private modalService: NgbModal,
+    private listService: ListService,
   ) {
+
     // left sidebar collapsed on overview - fleet page
     const rootHtml = document.getElementsByTagName("html")[0];
 
@@ -95,10 +98,10 @@ export class AppComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.setTitle();
-    this.listenToLoading();
-
+    // this.listenToLoading();
+    this.getSubscriptionDetails();
     window.addEventListener(
       "storage",
       (event) => {
@@ -121,6 +124,28 @@ export class AppComponent implements OnInit, AfterContentChecked {
         $("div").removeClass("show-search__result");
       }
     });
+  }
+
+  async getSubscriptionDetails() {
+    const selectedCarrier = localStorage.getItem('xfhCarrierId');
+    let carrierData = await this.dashboardUtilityService.getCarrierByID(selectedCarrier);
+    this.dashboardUtilityService.refreshPlans = true;
+    let subscriptions = await this.dashboardUtilityService.getSubscriptionPlans();
+    if (carrierData && carrierData.subscriptions && carrierData.subscriptions.length > 0 && subscriptions.length > 0) {
+      let plans = await this.checkSubscriptionPlans(carrierData.subscriptions, subscriptions);
+      if (plans && plans.length > 0) {
+        let data = [];
+        for (const iterator of plans) {
+          if (iterator.maxVehicles) {
+            data.push({ planCode: iterator.planCode, vehicles: iterator.maxVehicles })
+          } if (iterator.maxAsset) {
+            data.push({ planCode: iterator.planCode, assets: iterator.maxAsset })
+          }
+        }
+        this.listService.passMaxUnit(data)
+
+      }
+    }
   }
 
   getToken() {
@@ -169,10 +194,34 @@ export class AppComponent implements OnInit, AfterContentChecked {
 
   }
 
+  public checkSubscriptionPlans = async (allSubscribed, plans) => {
+    let subscribed = [];
+    if (allSubscribed && allSubscribed.length > 0) {
+      for (const curPlan of allSubscribed) {
+        for (const plan of plans) {
+          if (curPlan.plan_code == plan.planCode) {
+            if (plan.maxVehicles) {
+              subscribed.push({ planCode: plan.planCode, maxVehicles: plan.maxVehicles })
+            } if (plan.maxAsset) {
+              subscribed.push({ planCode: plan.planCode, maxAsset: plan.maxAsset })
+            }
+          }
+        }
+      }
+      return subscribed;
+    } else {
+      return false
+    }
+  }
+
   onRouteChange() {
     // to fix disable issue of action buttons when route change from overlay. currently in order list when cloning
     if ($('.p-overlaypanel').length > 0) {
       $('.p-overlaypanel').remove();
     }
+    if ($('.p-column-filter-overlay').length > 0) {
+      $('.p-column-filter-overlay').remove();
+    }
   }
+
 }

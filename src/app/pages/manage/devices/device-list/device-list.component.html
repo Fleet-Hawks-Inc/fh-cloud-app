@@ -1,35 +1,45 @@
+<style>
+  .extra {
+    display: none;
+  }
+</style>
 <section class="body">
   <div class="inner-wrapper">
     <section role="main" class="content-body pt-0 pr-0">
-      <header class="page-header">
-        <div class="row">
-          <div class="col header-title">
-            <label class="mt-0 mb-0"> Devices</label>
+      
+       <header class="page-header pr19 pl11">
+        <form class="form-horizontal" method="get">
+          <div class="row" style="padding-top: 10px">
+            <div class="col-md-2 col-lg-2">
+              <div class="input-group input-group-md mb-3">
+                <input
+                  type="text"
+                  autocomplete="off"
+                  name="vehicleIdentification"
+                  placeholder="Search Vehicle/Asset by name"
+                  [(ngModel)]="vehicleIdentification"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="col-md-2 col-lg-2 pl-2">
+              <button
+                type="submit"
+                (click)="searchFilter()"
+                class="btn btn-sm btn-success mr-3"
+              >
+                Search
+              </button>
+              <button
+                type="button"
+                (click)="resetFilter()"
+                class="btn btn-sm btn-success"
+              >
+                Reset
+              </button>
+            </div>
           </div>
-          <div class="col header-buttons">
-            <button
-              id="btnLiveVideo"
-              type="button"
-              pButton
-              class="mr-1"
-              tooltipPosition="left"
-              icon="pi pi-refresh"
-              pTooltip="Refresh"
-              (click)="refreshData()"
-            ></button>
-            <button
-              id="btnLiveVideo"
-              type="button"
-              pButton
-              class="mr-1"
-              tooltipPosition="left"
-              icon="pi pi-plus"
-              routerLink="/manage/devices/add"
-              pTooltip="Add Device"
-              (click)="refreshData()"
-            ></button>
-          </div>
-        </div>
+        </form>
       </header>
 
       <section class="m-2">
@@ -51,8 +61,8 @@
                     [loading]="!loaded"
                     styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
                     [loading]="!loaded"
+                    [scrollable]="true"
                     scrollHeight="100%"
-                    dataKey="deviceNumber"
                   >
                     <!-- Caption template of data table -->
                     <ng-template pTemplate="caption">
@@ -117,10 +127,10 @@
                           *ngFor="let dataColumns of columns"
                           [pSortableColumn]="dataColumns.field"
                           pResizableColumn
-                          [ngStyle]="{ width: dataColumns.width }"
+                          style= "width:18.80%;"
                         >
                           <div [ngSwitch]="dataColumns.field">
-                            <span *ngSwitchDefault>
+                             <span *ngSwitchCase="'deviceStatus'">
                               <div
                                 class="flex justify-content-center align-items-center"
                                 alignFrozen="right"
@@ -167,6 +177,31 @@
                                 </p-columnFilter>
                               </div>
                             </span>
+                            
+                             <span *ngSwitchDefault>
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="right"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumns.header }}
+                                <p-sortIcon
+                                  [field]="dataColumns.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumns.type"
+                                  [field]="dataColumns.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                            
                           </div>
                         </th>
                         <th
@@ -188,13 +223,13 @@
                       <tr>
                         <td
                           *ngFor="let dataColumns of columns"
-                          style="width: 12%; height: 35px; cursor: pointer"
+                          style="width: 18.80%; height: 40px; cursor: pointer"
                           routerLink="/manage/devices/detail/{{
                             device.deviceSerialNo.replace('#', '/')
                           }}"
                         >
                           <div [ngSwitch]="dataColumns.field">
-                            <span *ngSwitchCase="'Vehicle/Asset'">
+                            <span *ngSwitchCase="'vehicle.vehicleIdentification'">
                               <span
                                 *ngIf="
                                   device.vehicle.vehicleIdentification;
@@ -249,13 +284,11 @@
                           </div>
                         </td>
 
-                        <td
-                          style="width: 6%; overflow: inherit !important"
-                          pFrozenColumn
-                          alignFrozen="right"
-                          [frozen]="true"
-                        >
+                          <td style="width: 6%; overflow: inherit !important" alignFrozen="right"
+                        pFrozenColumn [frozen]="true">
+                        <div class="dropdown dropright">
                           <button
+                            
                             class="bg-transparent border-0"
                             type="button"
                             id="dropdownMenuButton-{{ rowIndex }}"
@@ -265,7 +298,7 @@
                           >
                             <i class="fas fa-ellipsis-v"></i>
                           </button>
-                          <div
+                           <div
                             class="dropdown-menu"
                             attr.aria-labelledby="dropdownMenuButton-{{
                               rowIndex
@@ -296,25 +329,9 @@
                               }}</a
                             >
                           </div>
-                        </td>
-                        <!--    <div class="dropdown-menu">-->
-                        <!--        <a class="dropdown-item" routerLink="/manage/devices/edit/{{-->
-                        <!--      device.deviceSerialNo.replace('#', '/')-->
-                        <!--    }}">Edit</a-->
-                        <!--  >-->
-                        <!--<a-->
-                        <!--  href="javascript:;"-->
-                        <!--  class="dropdown-item"-->
-                        <!--  (click)="-->
-                        <!--    deactivateDevice(-->
-                        <!--      device.deviceType,-->
-                        <!--      device.deviceID,-->
-                        <!--      !device.deviceStatus-->
-                        <!--    )-->
-                        <!--  "-->
-                        <!--  >{{ device.deviceStatus === true ? 'Deactivate' : 'Activate'}}</a-->
-                        <!-->-->
-                        <!--</div>-->
+                          </div>
+                         </td>
+                       
                       </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>

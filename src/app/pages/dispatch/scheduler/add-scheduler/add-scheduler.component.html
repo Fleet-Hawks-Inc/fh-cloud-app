@@ -15,7 +15,7 @@
               <div class="form-row">
                 <div class="form-group col-lg-12 col-md-12" id="manualDiv">
                   <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                       <label> Reference Order <span class="mandfield text-2 ml-1"
                         ><sup>*</sup></span
                       ></label>
@@ -25,17 +25,26 @@
                       </ng-select>
                       </div>
                   
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                     <label> Schedule Name <span class="mandfield text-2 ml-1"
                       ><sup>*</sup></span
                     ></label>
                     <input placeholder="Schedule Name" [(ngModel)]="scheduler.name" type="text" name="scheduleName" class="form-control" #scheduleName="ngModel" > 
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                     <label> Time <span><sup>*</sup></span
                     ></label>
                     <input placeholder="--:--:--" type="time" [(ngModel)]="scheduler.time" name="scheduleTime" class="form-control">
                     </div>
+                    <div class="col-lg-3">
+                      <label> Timezone <span class="mandfield text-2 ml-1"
+                        ><sup>*</sup></span
+                      ></label>
+                      <ng-select [(ngModel)]="scheduler.timezone" name="timezone" #timezone="ngModel" required placeholder="Select Timezone" class="form-control" >
+                        <ng-option *ngFor="let tz of allTimezones| keyvalue" value="{{tz.value}}">{{tz.value}}</ng-option>
+
+                      </ng-select>
+                      </div>
                   
                 </div>
                   <div class="col-lg-12 pl-0">
@@ -95,8 +104,8 @@
                       <div class="col-lg-2" *ngFor="let day of days">
                         <div class="checkbox">
                           <label>
-                            <input type="checkbox" [value]="day" (change)="onCheckboxChange($event.target.value, $event.target.checked)">
-                            {{day | titlecase}}
+                            <input type="checkbox" [value]="day.dName" [checked]="day.isSelected" (change)="onCheckboxChange($event.target.value, $event.target.checked)">
+                            {{day.dName | titlecase}}
                           </label>
                         </div>
                       </div>
@@ -161,8 +170,8 @@
                       <div class="col-lg-2" *ngFor="let month of months">
                         <div class="checkbox">
                           <label>
-                            <input type="checkbox" [disabled]="rangeDisabled" [value]="month" (change)="onRangeCheckboxChange($event.target.value, $event.target.checked)">
-                            {{month | titlecase}}
+                            <input type="checkbox" [disabled]="rangeDisabled" [value]="month.mName" [checked]="month.isSelected" (change)="onRangeCheckboxChange($event.target.value, $event.target.checked)">
+                            {{month.mName | titlecase}}
                           </label>
                         </div>
                       </div>

@@ -231,7 +231,7 @@ export class ActivityComponent implements OnInit {
                             obj["Vehicle"] = element.vehicle.replace(/, /g, ' &');
                             obj["Trip#"] = element.tripNo;
                             obj["Order#"] = element.orderName.replace(/, /g, ' &');
-                            obj["Assets"] = element.assetName.replace(/, /g, ' &');
+                            obj["Assets"] = element.assetName;
                             obj["Drivers"] = element.driverName.replace(/, /g, ' &');
                             obj["location"] = location;
                             obj["Date"] = date;
@@ -243,7 +243,7 @@ export class ActivityComponent implements OnInit {
                             obj["Canada(Total)"] = element.canMiles;
                             obj["Total Miles"] = element.miles;
                             dataObject.push(obj)
-                            console.log('export',dataObject);
+                            console.log('export',obj);
                 });
                 console.log('export2',dataObject);
             let headers = Object.keys(dataObject[0]).join(',')

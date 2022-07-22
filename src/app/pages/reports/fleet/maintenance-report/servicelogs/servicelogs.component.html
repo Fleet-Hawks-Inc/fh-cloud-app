@@ -143,35 +143,6 @@
                 Reset
               </button>
             </div>
-
-            <div class="col-md-1 col-lg-1 text-right pr-1">
-              <div class="btn-group flex-wrap ml-2">
-                <button
-                  type="button"
-                  class="btn btn-success btn-sm dropdown-toggle"
-                  data-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <i class="fas fa-upload"></i> Export<span
-                    class="caret"
-                  ></span>
-                </button>
-                <div
-                  class="dropdown-menu"
-                  role="menu"
-                  x-placement="bottom-start"
-                  style="
-                    position: absolute;
-                    will-change: transform;
-                    top: 0px;
-                    left: 0px;
-                    transform: translate3d(0px, 38px, 0px);
-                  "
-                >
-                  <a class="dropdown-item text-1" (click)="csv()">CSV</a>
-                </div>
-              </div>
-            </div>
           </div>
         </form>
       </header>
@@ -194,9 +165,8 @@
                     [columns]="selectedColumns"
                     [loading]="!loaded"
                     styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                    [loading]="!loaded"
+                    [scrollable]="true"
                     scrollHeight="100%"
-                    responsiveLayout="scroll"
                   >
                     <ng-template pTemplate="caption">
                       <div
@@ -216,7 +186,15 @@
                             class="p-button-outlined mr-2"
                             icon="fas fa-sync"
                           ></button>
-
+                           <button
+                            type="button"
+                            pButton
+                            pRipple
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel"
+                            (click)="csv()"
+                            pTooltip="Excel"
+                          ></button>
                           <button
                             pButton
                             pRipple
@@ -235,7 +213,7 @@
                           *ngFor="let column of dataColumns"
                           [pSortableColumn]="column.field"
                           pResizableColumn
-                          [ngStyle]="{ width: column.width }"
+                         style="width: 12.50%; cursor: pointer"
                         >
                           <span>
                             <div
@@ -267,44 +245,38 @@
                       let-columns="columns"
                       let-rowIndex="rowIndex"
                     >
-                      <tr style="width: 10%; height: 40px; cursor: pointer">
-                        <td
-                          [ngStyle]="{
-                            width: find(columns, { field: 'unitType' }).width
-                          }"
+                      <tr>
+                       <td
+                          *ngFor="let dataColumns of columns"
+                        style="width: 12.50%; height: 40px; cursor: pointer"
+                        >
+                          <div [ngSwitch]="dataColumns.field">
+                        <span
+                          *ngSwitchCase="'unitType'"
                         >
                           <span class="text-capitalize">
                             {{ log.unitType }}
                           </span>
-                        </td>
-                        <td
-                          [ngStyle]="{
-                            width: find(columns, { field: 'unitName' }).width
-                          }"
+                        </span>
+                        <span
+                         *ngSwitchCase="'unitName'"
                         >
                           <span class="text-capitalize">
                             {{ log.unitName }}
                           </span>
-                        </td>
-                        <td
-                          [ngStyle]="{
-                            width: find(columns, { field: 'odometer' }).width
-                          }"
+                        </span>
+                        <span
+                           *ngSwitchCase="'odometer'"
                         >
                           {{ log.odometer ? log.odometer : "-" }}
-                        </td>
-                        <td
-                          [ngStyle]="{
-                            width: find(columns, { field: 'vendorID' }).width
-                          }"
+                        </span>
+                        <span
+                          *ngSwitchCase="'vendorID'"
                         >
                           {{ vendorsObject[log.vendorID] }}
-                        </td>
-                        <td
-                          [ngStyle]="{
-                            width: find(columns, { field: 'serviceTaskList' })
-                              .width
-                          }"
+                        </span>
+                        <span
+                          *ngSwitchCase="'serviceTaskList'"
                         >
                           <span
                             title="Service Task"
@@ -320,13 +292,10 @@
                           <span *ngIf="log.allServiceTasks.serviceTaskList == 0"
                             >-
                           </span>
-                        </td>
+                        </span>
 
-                        <td
-                          [ngStyle]="{
-                            width: find(columns, { field: 'completionDate' })
-                              .width
-                          }"
+                        <span
+                          *ngSwitchCase="'completionDate'"
                         >
                           <span>
                             {{ log.completionDate }}<br /><span
@@ -335,13 +304,10 @@
                               >{{ log.odometer }} miles</span
                             >
                           </span>
-                        </td>
+                        </span>
 
-                        <td
-                          [ngStyle]="{
-                            width: find(columns, { field: 'currentStatus' })
-                              .width
-                          }"
+                        <span
+                         *ngSwitchCase="'currentStatus'"
                         >
                           <span
                             class="text-success"
@@ -352,17 +318,15 @@
                           >
                             {{ log.entityStatus }}</span
                           >
-                        </td>
+                        </span>
 
-                        <td
-                          [ngStyle]="{
-                            width: find(columns, {
-                              field: 'allServiceTasks.subTotal'
-                            }).width
-                          }"
+                        <span
+                         *ngSwitchCase="'allServiceTasks.subTotal'"
                         >
                           {{ log.allServiceTasks.subTotal.toFixed(2) }}
                           {{ log.allServiceTasks.currency }}
+                        </span>
+                        </div>
                         </td>
                       </tr>
                     </ng-template>

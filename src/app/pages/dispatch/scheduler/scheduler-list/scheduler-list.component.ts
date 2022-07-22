@@ -20,11 +20,31 @@ export class SchedulerListComponent implements OnInit {
   dataColumns:any[];
   ngOnInit(): void {
     this.initData();
-    this.dataColumns=[
-      {width:'20%', field:'orderNumber',header:'Order#',type:'text'},
-      {width:'20%',field:'sName',header:'Schedule Name',type:'text'},
-      {width:'20%',field:'sTime',header:'Scheduled Time',type:'text'},
-    ]
+    this.dataColumns = [
+      { width: "20%", field: "orderNumber", header: "Order#", type: "text" },
+      {
+        width: "20%",
+        field: "customerName",
+        header: "Customer Name",
+        type: "text",
+      },
+      {
+        width: "20%",
+        field: "pickup",
+        header: "Pickup",
+        type: "text",
+      },
+
+      {
+        width: "20%",
+        field: "dropOff",
+        header: "Drop Point",
+        type: "text",
+      },
+
+      { width: "20%", field: "sName", header: "Schedule Name", type: "text" },
+      { width: "20%", field: "sTime", header: "Scheduled Time", type: "text" },
+    ];
     this._selectedColumns=this.dataColumns;
   }
   setToggleOptions() {
@@ -61,6 +81,15 @@ export class SchedulerListComponent implements OnInit {
     this.lastEvaluatedKey='end'
   }
   this.loaded=true;
+  if (result.data.length > 0) {
+    for (const data of result.data) {
+      data.pickup =
+        data.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.pickupLocation;
+      data.dropOff =
+        data.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.dropOffLocation;
+    }
+  }
+  console.log(result.data);
 this.schedules=this.schedules.concat(result.data)
   }
 

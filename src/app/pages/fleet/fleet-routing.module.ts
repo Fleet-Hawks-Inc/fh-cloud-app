@@ -12,49 +12,56 @@ const COMPONENTS = [
 
 const routes: Routes = [
   {
-    path: 'drivers',
-    loadChildren: () => import('./drivers/drivers.module').then((m) => m.DriversModule),
-    data: { title: 'Login | Fleet Hawks Inc.' }
+    path: "drivers",
+    loadChildren: () =>
+      import("./drivers/drivers.module").then((m) => m.DriversModule),
+    data: { title: "Login | Fleet Hawks Inc." },
   },
   {
-    path: 'vehicles',
-    loadChildren: () => import('./vehicles/vehicles.module').then((m) => m.VehiclesModule),
+    path: "vehicles",
+    loadChildren: () =>
+      import("./vehicles/vehicles.module").then((m) => m.VehiclesModule),
   },
   {
-    path: 'assets',
-    loadChildren: () => import('./assets/assets.module').then((m) => m.AssetsModule),
+    path: "assets",
+    loadChildren: () =>
+      import("./assets/assets.module").then((m) => m.AssetsModule),
   },
   {
-    path: 'fuel',
-    loadChildren: () => import('./fuel/fuel.module').then((m) => m.FuelModule),
+    path: "fuel",
+    loadChildren: () => import("./fuel/fuel.module").then((m) => m.FuelModule),
   },
   {
-    path: 'reminders',
-    loadChildren: () => import('./reminders/reminders.module').then((m) => m.RemindersModule),
+    path: "reminders",
+    loadChildren: () =>
+      import("./reminders/reminders.module").then((m) => m.RemindersModule),
   },
   {
-    path: 'maintenance',
-    loadChildren: () => import('./maintenance/maintenance.module').then((m) => m.MaintenanceModule),
+    path: "maintenance",
+    loadChildren: () =>
+      import("./maintenance/maintenance.module").then(
+        (m) => m.MaintenanceModule
+      ),
   },
   {
-    path: 'geofence',
-    loadChildren: () => import('./geofence/geofence.module').then((m) => m.GeofenceModule),
+    path: "geofence",
+    loadChildren: () =>
+      import("./geofence/geofence.module").then((m) => m.GeofenceModule),
   },
+
   {
-    path:'zone',
-    loadChildren: () => import('./zone/zone.module').then((m)=>m.ZoneModule),
-  },
-  {
-    path: 'live-driver',
+    path: "live-driver",
     component: DashboardDriverComponent,
   },
   {
-    path: 'inventory',
-    loadChildren: () => import('./inventory/inventory.module').then((m) => m.InventoryModule),
+    path: "inventory",
+    loadChildren: () =>
+      import("./inventory/inventory.module").then((m) => m.InventoryModule),
   },
   {
-    path: 'tracking',
-    loadChildren: () => import('../tracking/tracking.module').then((m) => m.TrackingModule),
+    path: "tracking",
+    loadChildren: () =>
+      import("../tracking/tracking.module").then((m) => m.TrackingModule),
   },
 ];
 

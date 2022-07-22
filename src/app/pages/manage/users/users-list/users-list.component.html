@@ -55,85 +55,103 @@
             </div>
           </div>
         </header>
-
         <section class="m-2">
           <div class="row mb-3">
             <div class="col-lg-12">
               <div class="bg-white p-2 text-dark">
                 <div class="form-group row">
-                  <div class="col-12">
-                    <div
-                      infiniteScroll
-                      [infiniteScrollDistance]="1"
-                      [infiniteScrollUpDistance]="1"
-                      [infiniteScrollThrottle]="5"
-                      (scrolled)="onScroll()"
-                    >
-                      <table
-                        class="row-border hover table table-bordered table-striped mb-0"
-                      >
-                        <thead>
-                          <tr>
-                            <th>Employee ID</th>
-                            <th>Name</th>
-                            <th>Username</th>
-                            <th>Department</th>
-                            <th>User Roles</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngIf="users.length == 0" class="text-center">
-                            <td colspan="9">{{ dataMessage }}</td>
-                          </tr>
-                          <tr *ngFor="let user of users" class="cursorpoint">
-                            <td
-                              routerLink="/manage/users/detail/{{
+                  <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
+                  <p-table #ut [value]="users" [resizableColumns]="true" columnResizeMode="expand"
+                    scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
+                    scrollHeight="100%">
+                    <!-- Caption template of data table -->
+                    <ng-template pTemplate="caption">
+                      <div class="p-d-flex d-flex justify-content-between align-items-center">
+                        <div>
+                          <h3 class="m-0">Users</h3>
+                        </div>
+                        <div class="text-right">
+                          <span>Showing {{ users.length }} entries </span>
+                          &nbsp;
+                          <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
+                            class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                          <button type="button" pButton pTooltip="Add"
+                             [routerLink]="['/manage', 'users', 'add']" class="p-button-outlined mr-2" icon="pi pi-plus"></button>
+                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash" (click)="clear(ut)"></button>
+                          <!--<button type="button" pButton pRipple class="p-button-outlined mr-2"-->
+                          <!--  icon="fas fa-regular fa-file-excel" (click)="generateCSVforUsers()" pTooltip="Excel"></button>-->
+                          <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header"
+                            selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns">
+                          </p-multiSelect>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <!-- Header template of DataTable -->
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn
+                          [ngStyle]="{ width: dataColumns.width }">
+                          <div [ngSwitch]="dataColumns.field">
+              
+                            <span *ngSwitchDefault>
+                              <div class="flex justify-content-center align-items-center" alignFrozen="right"
+                                pFrozenColumn [frozen]="true">
+                                {{ dataColumns.header }}
+                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
+                                  matchMode="contains" [showMatchModes]="false" [showOperator]="false"
+                                  [showAddButton]="false" display="menu">
+                                </p-columnFilter>
+                              </div>
+                            </span>
+                          </div>
+                        </th>
+                        <th style="width: 100px" alignFrozen="right" pFrozenColumn [frozen]="true">
+                          Actions
+                        </th>
+                      </tr>
+                    </ng-template>
+
+                    <!-- Body Template of Data Table -->
+                    <ng-template pTemplate="body" let-user let-columns="columns" let-rowIndex="rowIndex">
+                      <tr>
+                        <td *ngFor="let dataColumns of columns" [ngStyle]="{ width: dataColumns.width }"
+                          style="cursor: pointer"
+                          routerLink="/manage/users/detail/{{
                                 user.contactID
                               }}"
-                            >
-                              {{ user.employeeID }}
-                            </td>
-                            <td
-                              class="text-capitalize"
-                              routerLink="/manage/users/detail/{{
-                                user.contactID
-                              }}"
-                            >
-                              {{ user.firstName }}&nbsp;{{ user.lastName }}
-                            </td>
-                            <td
-                              routerLink="/manage/users/detail/{{
-                                user.contactID
-                              }}"
-                            >
-                              {{
-                                user.userLoginData.userName
-                                  ? user.userLoginData.userName
-                                  : "-"
-                              }}
-                            </td>
-                            <td
-                              routerLink="/manage/users/detail/{{
-                                user.contactID
-                              }}"
-                            >
-                              {{
-                                user.userAccount.department
-                                  ? user.userAccount.department
-                                  : "-"
-                              }}
-                            </td>
-                            <td
-                              class="text-capitalize"
-                              routerLink="/manage/users/detail/{{
-                                user.contactID
-                              }}"
-                            >
-                              <span *ngIf="user.userLoginData.userRoles">
+                          >
+                          <div [ngSwitch]="dataColumns.field">
+                          <span *ngSwitchCase="'employeeID'">
+                            <b>
+                            {{ get(user, dataColumns.field)}}
+                            </b>
+                          </span>  
+                           <span *ngSwitchCase="'name'">
+                             {{ user.firstName | titlecase }}&nbsp;{{ user.lastName | titlecase}}
+                           </span>
+                           <span *ngSwitchCase="'userType'">
+                            {{ get(user, dataColumns.field) | titlecase}}
+                           </span>
+                           <span *ngSwitchCase="'userAccount.department'">
+                             {{
+                                get(user, dataColumns.field)
+                                ? get(user, dataColumns.field)
+                                : "-"
+                                }}
+                           </span>
+                           <span *ngSwitchCase="'userLoginData.userName'">
+                                 {{
+                                get(user, dataColumns.field)
+                                ? get(user, dataColumns.field)
+                                : "-"
+                                }}
+                           </span>
+                           <span *ngSwitchCase="'userSub'">
+                               <span *ngIf="user.userLoginData.userRoles">
                                 <span
                                   *ngFor="
                                     let role of user.userLoginData.userRoles;
@@ -158,82 +176,229 @@
                               >
                                 -
                               </span>
-                            </td>
-                            <td
-                              routerLink="/manage/users/detail/{{
-                                user.contactID
-                              }}"
-                            >
-                              {{ user.workPhone ? user.workPhone : "-" }}
-                            </td>
-                            <td
-                              routerLink="/manage/users/detail/{{
-                                user.contactID
-                              }}"
-                            >
-                              {{ user.workEmail ? user.workEmail : "-" }}
-                            </td>
-                            <td
-                              routerLink="/manage/users/detail/{{
-                                user.userName
-                              }}"
-                            >
-                              {{ user.currentStatus }}
-                            </td>
-                            <td>
-                              <div class="btn-group flex-wrap">
-                                <button
-                                  type="button"
-                                  class="pb-0 pt-0 btn"
-                                  data-toggle="dropdown"
-                                >
-                                  <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <div class="dropdown-menu" role="menu">
-                                  <a
-                                    href="javascript:;"
-                                    data-toggle="modal"
-                                    data-target="#assignrole"
-                                    (click)="fetchRole(user)"
-                                    class="dropdown-item"
-                                  >
-                                    Assign Roles</a
-                                  >
-                                  <a
-                                    class="dropdown-item text-1"
-                                    routerLink="/manage/users/edit/{{
+                           </span>
+                            <span *ngSwitchCase="'currentStatus'">
+                              <span class="badge badge-dark p-1">{{
+                                get(user, dataColumns.field) | titlecase
+                                }}</span>
+                            </span>
+                            <span *ngSwitchDefault>
+                              {{ get(user, dataColumns.field)}}
+                            </span>
+                          </div>
+                        </td>
+                        <td style="text-align: center; width: 100px" pFrozenColumn alignFrozen="right" [frozen]="true">
+                          <button id="btnEdit" data-toggle="dropdown" pTooltip="Assign Roles" pButton  (click)="fetchRole(user)"
+                            type="button" icon="fas fa-user-plus" style="color:orange" 
+                             data-toggle="modal"
+                             data-target="#assignrole"
+                            class="p-button-rounded p-button-text"></button>
+                          <button id="btnEdit" pTooltip="Edit" pButton routerLink="/manage/users/edit/{{
                                       user.contactID
                                     }}"
-                                    >Edit</a
-                                  >
-                                  <button
-                                    class="dropdown-item text-1 modal-with-form"
-                                    (click)="deleteUser(user.contactID)"
-                                  >
-                                    Delete
-                                  </button>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <div class="row mt-3 dtPaginate">
-                        <div
-                          class="col-lg-12 mt-3 text-center"
-                          *ngIf="lastItemSK !== 'end' && users.length !== 0"
-                        >
-                          <button
-                            type="button"
-                            (click)="onScroll()"
-                            class="btn btn-success btn-sm text-light"
-                          >
-                            Load More..
-                          </button>
-                        </div>
+                          type="button" icon="fas fa-user-pen" class="p-button-rounded p-button-text"></button>
+                          <button id="btnDelete" pTooltip="Delete" (click)="deleteUser(user.contactID)" pButton type="button"
+                            icon="fas fa-user-slash" class="p-button-rounded p-button-danger p-button-text"></button>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <!-- Empty Template -->
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <div class="col-lg-12 mt-3 text-center">
+                        {{ dataMessage }}
+                        <br /><br />
                       </div>
-                    </div>
-                  </div>
+                    </ng-template>
+                    <!-- Summary Section with Load More button -->
+                    <ng-template pTemplate="summary" let-columns>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="
+                          lastItemSK !== 'end' && users.length !== 0
+                        ">
+                        <button type="button " (click)="onScroll($event)" class="btn btn-success btn-sm text-light">
+                          Load More..
+                        </button>
+                        <br /><br />
+                      </div>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK === 'end'">
+                        Total Records: {{ users.length }}
+                      </div>
+                    </ng-template>
+                  </p-table>
+                </div>
+
+                  <!--<div class="col-12">-->
+                  <!--  <div-->
+                  <!--    infiniteScroll-->
+                  <!--    [infiniteScrollDistance]="1"-->
+                  <!--    [infiniteScrollUpDistance]="1"-->
+                  <!--    [infiniteScrollThrottle]="5"-->
+                  <!--    (scrolled)="onScroll()"-->
+                  <!--  >-->
+                  <!--    <table-->
+                  <!--      class="row-border hover table table-bordered table-striped mb-0"-->
+                  <!--    >-->
+                  <!--      <thead>-->
+                  <!--        <tr>-->
+                  <!--          <th>Employee ID</th>-->
+                  <!--          <th>Name</th>-->
+                  <!--          <th>Username</th>-->
+                  <!--          <th>Department</th>-->
+                  <!--          <th>User Roles</th>-->
+                  <!--          <th>Phone</th>-->
+                  <!--          <th>Email</th>-->
+                  <!--          <th>Status</th>-->
+                  <!--          <th>Actions</th>-->
+                  <!--        </tr>-->
+                  <!--      </thead>-->
+                  <!--      <tbody>-->
+                  <!--        <tr *ngIf="users.length == 0" class="text-center">-->
+                  <!--          <td colspan="9">{{ dataMessage }}</td>-->
+                  <!--        </tr>-->
+                  <!--        <tr *ngFor="let user of users" class="cursorpoint">-->
+                  <!--          <td-->
+                  <!--            routerLink="/manage/users/detail/{{-->
+                  <!--              user.contactID-->
+                  <!--            }}"-->
+                  <!--          >-->
+                  <!--            {{ user.employeeID }}-->
+                  <!--          </td>-->
+                  <!--          <td-->
+                  <!--            class="text-capitalize"-->
+                  <!--            routerLink="/manage/users/detail/{{-->
+                  <!--              user.contactID-->
+                  <!--            }}"-->
+                  <!--          >-->
+                  <!--            {{ user.firstName }}&nbsp;{{ user.lastName }}-->
+                  <!--          </td>-->
+                  <!--          <td-->
+                  <!--            routerLink="/manage/users/detail/{{-->
+                  <!--              user.contactID-->
+                  <!--            }}"-->
+                  <!--          >-->
+                  <!--            {{-->
+                  <!--              user.userLoginData.userName-->
+                  <!--                ? user.userLoginData.userName-->
+                  <!--                : "-"-->
+                  <!--            }}-->
+                  <!--          </td>-->
+                  <!--          <td-->
+                  <!--            routerLink="/manage/users/detail/{{-->
+                  <!--              user.contactID-->
+                  <!--            }}"-->
+                  <!--          >-->
+                  <!--            {{-->
+                  <!--              user.userAccount.department-->
+                  <!--                ? user.userAccount.department-->
+                  <!--                : "-"-->
+                  <!--            }}-->
+                  <!--          </td>-->
+                  <!--          <td-->
+                  <!--            class="text-capitalize"-->
+                  <!--            routerLink="/manage/users/detail/{{-->
+                  <!--              user.contactID-->
+                  <!--            }}"-->
+                  <!--          >-->
+                  <!--            <span *ngIf="user.userLoginData.userRoles">-->
+                  <!--              <span-->
+                  <!--                *ngFor="-->
+                  <!--                  let role of user.userLoginData.userRoles;-->
+                  <!--                  let i = index-->
+                  <!--                "-->
+                  <!--              >-->
+                  <!--                {{ userRoles[role]-->
+                  <!--                }}<span-->
+                  <!--                  *ngIf="-->
+                  <!--                    user.userLoginData.userRoles.length > 1 &&-->
+                  <!--                    i !=-->
+                  <!--                      user.userLoginData.userRoles.length - 1-->
+                  <!--                  "-->
+                  <!--                  >,</span-->
+                  <!--                >-->
+                  <!--              </span>-->
+                  <!--            </span>-->
+                  <!--            <span-->
+                  <!--              *ngIf="-->
+                  <!--                user.userLoginData.userRoles.length === 0-->
+                  <!--              "-->
+                  <!--            >-->
+                  <!--              --->
+                  <!--            </span>-->
+                  <!--          </td>-->
+                  <!--          <td-->
+                  <!--            routerLink="/manage/users/detail/{{-->
+                  <!--              user.contactID-->
+                  <!--            }}"-->
+                  <!--          >-->
+                  <!--            {{ user.workPhone ? user.workPhone : "-" }}-->
+                  <!--          </td>-->
+                  <!--          <td-->
+                  <!--            routerLink="/manage/users/detail/{{-->
+                  <!--              user.contactID-->
+                  <!--            }}"-->
+                  <!--          >-->
+                  <!--            {{ user.workEmail ? user.workEmail : "-" }}-->
+                  <!--          </td>-->
+                  <!--          <td-->
+                  <!--            routerLink="/manage/users/detail/{{-->
+                  <!--              user.userName-->
+                  <!--            }}"-->
+                  <!--          >-->
+                  <!--            {{ user.currentStatus }}-->
+                  <!--          </td>-->
+                  <!--          <td>-->
+                  <!--            <div class="btn-group flex-wrap">-->
+                  <!--              <button-->
+                  <!--                type="button"-->
+                  <!--                class="pb-0 pt-0 btn"-->
+                  <!--                data-toggle="dropdown"-->
+                  <!--              >-->
+                  <!--                <i class="fas fa-ellipsis-v"></i>-->
+                  <!--              </button>-->
+                  <!--              <div class="dropdown-menu" role="menu">-->
+                  <!--                <a-->
+                  <!--                  href="javascript:;"-->
+                  <!--                  data-toggle="modal"-->
+                  <!--                  data-target="#assignrole"-->
+                  <!--                  (click)="fetchRole(user)"-->
+                  <!--                  class="dropdown-item"-->
+                  <!--                >-->
+                  <!--                  Assign Roles</a-->
+                  <!--                >-->
+                  <!--                <a-->
+                  <!--                  class="dropdown-item text-1"-->
+                  <!--                  routerLink="/manage/users/edit/{{-->
+                  <!--                    user.contactID-->
+                  <!--                  }}"-->
+                  <!--                  >Edit</a-->
+                  <!--                >-->
+                  <!--                <button-->
+                  <!--                  class="dropdown-item text-1 modal-with-form"-->
+                  <!--                  (click)="deleteUser(user.contactID)"-->
+                  <!--                >-->
+                  <!--                  Delete-->
+                  <!--                </button>-->
+                  <!--              </div>-->
+                  <!--            </div>-->
+                  <!--          </td>-->
+                  <!--        </tr>-->
+                  <!--      </tbody>-->
+                  <!--    </table>-->
+                  <!--    <div class="row mt-3 dtPaginate">-->
+                  <!--      <div-->
+                  <!--        class="col-lg-12 mt-3 text-center"-->
+                  <!--        *ngIf="lastItemSK !== 'end' && users.length !== 0"-->
+                  <!--      >-->
+                  <!--        <button-->
+                  <!--          type="button"-->
+                  <!--          (click)="onScroll()"-->
+                  <!--          class="btn btn-success btn-sm text-light"-->
+                  <!--        >-->
+                  <!--          Load More..-->
+                  <!--        </button>-->
+                  <!--      </div>-->
+                  <!--    </div>-->
+                  <!--  </div>-->
+                  <!--</div>-->
                 </div>
               </div>
             </div>

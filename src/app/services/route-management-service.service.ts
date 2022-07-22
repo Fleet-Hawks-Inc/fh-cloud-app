@@ -13,7 +13,11 @@ export class RouteManagementServiceService {
   public fuelUpdateSessionID: string;
   public maintainanceSessionID: string;
   public serviceLogSessionID: string;
-  
+  public chartAccountSessionID: string;
+  public serviceRemindersSessionID: string;
+  public inventorySessionID: string;
+  public deviceSessionID: string;
+  public userSessionID: string;
 
   constructor() {
     this.orderUpdateSessionID = uuidv4();
@@ -24,7 +28,12 @@ export class RouteManagementServiceService {
     this.fuelUpdateSessionID=uuidv4();
     this.maintainanceSessionID = uuidv4();
     this.serviceLogSessionID = uuidv4();
-  }
+    this.chartAccountSessionID = uuidv4();
+    this.serviceRemindersSessionID = uuidv4();
+    this.inventorySessionID = uuidv4();
+    this.deviceSessionID = uuidv4();
+    this.userSessionID = uuidv4();
+    }
 
   driverUpdated() {
     return this.driverUpdateSessionID = uuidv4();
@@ -54,6 +63,26 @@ export class RouteManagementServiceService {
   serviceLogUpdated(){
    return this.serviceLogSessionID = uuidv4();
   }
+
+  chartAccountUpdate(){
+    return this.chartAccountSessionID = uuidv4();
+  }
+  
+  serviceReminderUpdated(){
+    return this.serviceRemindersSessionID = uuidv4();
+  }
+  
+  inventoryUpdated(){
+    return this.inventorySessionID = uuidv4();
+  }
+ 
+ deviceUpdated(){
+   return this.deviceSessionID = uuidv4();
+ }
+ 
+ userUpdated(){
+   return this.userSessionID = uuidv4();
+ }
   
   resetAllCache() {
     this.tripUpdateSessionID = uuidv4();
@@ -64,5 +93,10 @@ export class RouteManagementServiceService {
     this.fuelUpdateSessionID=uuidv4();
     this.maintainanceSessionID = uuidv4();
     this.serviceLogSessionID = uuidv4();
+    this.chartAccountSessionID = uuidv4();
+    this.serviceRemindersSessionID = uuidv4();
+    this.inventorySessionID = uuidv4();
+    this.deviceSessionID = uuidv4();
+    this.userSessionID =  uuidv4();
   }
 }

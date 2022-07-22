@@ -1,10 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-} from "@angular/core";
+import { Component, Input, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { ApiService } from "../../../../services/api.service";
 import { NgxSpinnerService } from "ngx-spinner";
 import { Overlay, ToastrService } from "ngx-toastr";
@@ -12,7 +6,7 @@ import Constants from "../../../fleet/constants";
 import { environment } from "src/environments/environment";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import * as html2pdf from "html2pdf.js";
-import * as moment from "moment";
+import * as moment from "moment-timezone";
 import { ListService } from "src/app/services/list.service";
 import * as _ from "lodash";
 import { DashboardUtilityService } from "src/app/services/dashboard-utility.service";
@@ -142,6 +136,21 @@ export class OrdersListComponent implements OnInit {
     {
       name: "Delivered",
       value: "delivered",
+    },
+    {
+      name: "Brokerage",
+      value: "brokerage",
+    },
+  ];
+
+  orderType = [
+    {
+      name: "FTL",
+      value: "FTL",
+    },
+    {
+      name: "LTL",
+      value: "LTL",
     },
   ];
   records = false;
@@ -793,7 +802,6 @@ export class OrdersListComponent implements OnInit {
       showModal: this.showModal,
       companyLogo: this.companyLogoSrc,
     };
-    console.log("data==", data);
     this.listService.triggerBrokeragePdf(data);
     await this.updateBrokerageStatus();
     this.display = false;
@@ -946,6 +954,7 @@ export class OrdersListComponent implements OnInit {
 
   async saveScheduler() {
     this.saveDisabled = true;
+
     if (this.scheduler.orderID == null || this.scheduler.orderNumber == null) {
       this.toastr.error("Reference Order is required");
       this.saveDisabled = false;
@@ -997,11 +1006,9 @@ export class OrdersListComponent implements OnInit {
       delete this.scheduler.type;
     }
 
-    if (this.range == "everyMonth") {
+    if (this.range == "everymonth") {
       delete this.scheduler.selectedMonths;
     }
-    console.log(this.scheduler);
-
     const scheduleData = {
       orderID: this.scheduler.orderID,
       orderNumber: this.scheduler.orderNumber,

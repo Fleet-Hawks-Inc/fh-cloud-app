@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { ApiService } from '../../../../services';
+import { ApiService, DashboardUtilityService, ListService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services';
@@ -129,12 +129,16 @@ export class AssetListComponent implements OnInit {
 
   ];
 
+  isUpgrade = false;
+
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private httpClient: HttpClient,
     private hereMap: HereMapService,
+    private dashboardUtilityService: DashboardUtilityService,
+    private listService: ListService,
     private onboard: OnboardDefaultService) { }
 
   async ngOnInit(): Promise<void> {
@@ -144,7 +148,42 @@ export class AssetListComponent implements OnInit {
     this.fetchGroups();
     await this.initDataTable();
     this.fetchContacts();
+    this.isSubscriptionsValid();
+  }
 
+  private async isSubscriptionsValid() {
+    this.dashboardUtilityService.refreshAstCount = true;
+    this.dashboardUtilityService.refreshPlans = true;
+    let curAstCount = await this.dashboardUtilityService.fetchAssetsCount();
+    this.listService.maxUnit.subscribe((res: any) => {
+      if (res) {
+        let data = [];
+        for (const item of res) {
+          if (item.planCode.startsWith('TRA-') || item.planCode.startsWith('REF-')) {
+            data.push({ assets: item.assets, planCode: item.planCode })
+          }
+        }
+
+        if (data.length > 0) {
+
+          let assetTotal = Math.max(...data.map(o => o.assets))
+          if (assetTotal == -1) { // -1 returns when subscribed Enterprise plan with no limit
+            this.isUpgrade = false;
+          } else {
+            this.isUpgrade = curAstCount >= assetTotal ? true : false;
+            if (this.isUpgrade) {
+
+              let obj = {
+                summary: Constants.RoutingPlanExpired,
+                detail: 'You will not be able to add more assets.',
+                severity: 'error'
+              }
+              this.dashboardUtilityService.notify(obj);
+            }
+          }
+        }
+      }
+    })
   }
 
   setToggleOptions() {
@@ -316,77 +355,77 @@ export class AssetListComponent implements OnInit {
       return false;
     }
   }
-  
-  
+
+
   generateDriverCSV() {
-        if (this.fullExportAsset.length > 0) {
-            let dataObject = []
-            let csvArray = []
-            this.fullExportAsset.forEach(element => {
-                let obj = {}
+    if (this.fullExportAsset.length > 0) {
+      let dataObject = []
+      let csvArray = []
+      this.fullExportAsset.forEach(element => {
+        let obj = {}
         obj["Asset Name/Number"] = element.assetIdentification
         obj["VIN"] = element.VIN
         obj["Asset Type"] = element.assetType
         obj["Make"] = element.assetDetails.manufacturer
         obj["License Plate Number"] = element.assetDetails.licencePlateNumber
         obj["Year"] = element.assetDetails.year
+        obj["ownerShip"] = element.assetDetails.ownerShip ? element.assetDetails.ownerShip : '-'
+        obj["Company Name"] = element.assetDetails.ownCname
         obj["Annual Safety Date"] = element.assetDetails.annualSafetyDate
         obj["Status"] = element.currentStatus
-        obj["ownerShip"] = element.assetDetails.ownerShip ? element.assetDetails.ownerShip: '-'
-         obj["Company Name"] =  element.assetDetails.ownCname
-        // if(element.assetDetails.ownerShip === 'ownerOperator') {
-        //   obj["Company Name"] =  element.assetDetails.ownerOperator ? this.contactsObjects[element.assetDetails.ownerOperator]:''
-        //   }
-        // if(element.assetDetails.ownerShip === 'rented') {
-        //     obj["Company Name"] =  element.assetDetails.ownCname ? element.assetDetails.ownCname: '-'
-        //   }
-        //   if(element.assetDetails.ownerShip === 'leased') {
-        //     obj["Company Name"] =  element.assetDetails.ownCname ? element.assetDetails.ownCname : '-'
-        //   }
-                dataObject.push(obj)
-            });
-            let headers = Object.keys(dataObject[0]).join(',')
-            headers += '\n'
-            csvArray.push(headers)
-            dataObject.forEach(element => {
-                let obj = Object.values(element).join(',')
-                obj += '\n'
-                csvArray.push(obj)
-            });
-            const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            if (link.download !== undefined) {
-                const url = URL.createObjectURL(blob);
-                link.setAttribute('href', url);
-                link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Driver-Report.csv`);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
+        obj["Added By"] = element.isImport ? 'Imported' : 'Manual'
+        if (element.assetDetails.ownerShip === 'ownerOperator') {
+          obj["Company Name"] = element.assetDetails.ownerOperator ? this.contactsObjects[element.assetDetails.ownerOperator] : ''
         }
-        else {
-            this.toastr.error("No Records found")
+        if (element.assetDetails.ownerShip === 'rented') {
+          obj["Company Name"] = element.assetDetails.ownCname ? element.assetDetails.ownCname : '-'
         }
+        if (element.assetDetails.ownerShip === 'leased') {
+          obj["Company Name"] = element.assetDetails.ownCname ? element.assetDetails.ownCname : '-'
+        }
+        dataObject.push(obj)
+      });
+      let headers = Object.keys(dataObject[0]).join(',')
+      headers += '\n'
+      csvArray.push(headers)
+      dataObject.forEach(element => {
+        let obj = Object.values(element).join(',')
+        obj += '\n'
+        csvArray.push(obj)
+      });
+      const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Driver-Report.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
     }
-   
-  
-   requiredExport() {
-        this.apiService.getData(`assets/fetch/assetList`).subscribe((result: any) => {
-            this.fullExportAsset = result.Items;
-            this.generateDriverCSV();
-           console.log('export',this.fullExportAsset);
-        })
-     }
-     
-      requiredCSV() {
-        if (this.assetIdentification !== '' || this.assetType !== null) {
-          this.assetID = '';
-            this.fullExportDriver = this.allData
-            this.generateDriverCSV();
-        } else {
-            this.requiredExport();
-        }
-        }
+    else {
+      this.toastr.error("No Records found")
+    }
+  }
+
+
+  requiredExport() {
+    this.apiService.getData(`assets/fetch/assetList`).subscribe((result: any) => {
+      this.fullExportAsset = result.Items;
+      this.generateDriverCSV();
+    })
+  }
+
+  requiredCSV() {
+    if (this.assetIdentification !== '' || this.assetType !== null) {
+      this.assetID = '';
+      this.fullExportDriver = this.allData
+      this.generateDriverCSV();
+    } else {
+      this.requiredExport();
+    }
+  }
 
   clearInput() {
     this.suggestedAssets = null;

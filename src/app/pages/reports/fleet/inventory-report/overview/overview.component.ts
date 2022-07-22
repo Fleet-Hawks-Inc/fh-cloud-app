@@ -159,6 +159,7 @@ export class OverviewComponent implements OnInit {
             const result = await this.apiService.getData(`items/invent/list?name=${this.itemName}&category=${this.category}&vendorID=${this.vendorID}&lastKey=${this.lastItemSK}`).toPromise();
             if (result.Items.length === 0) {
                 this.dataMessage = Constants.NO_RECORDS_FOUND
+                this.loaded = true;
             }
             if (result.Items.length > 0) {
                 if (result.LastEvaluatedKey !== undefined) {
@@ -207,15 +208,7 @@ export class OverviewComponent implements OnInit {
         }
     }
   
-   refreshInventoryData(){
-            this.itemName = '';
-            this.category = null;
-            this.vendorID = null;
-            this.items = [];
-            this.lastItemSK = '';
-            this.suggestedItems = [];
-            this.existingInventoryList();   
-   }
+   
 
     generateInventCSV() {
         if (this.existingExportList.length > 0) {
@@ -285,6 +278,7 @@ export class OverviewComponent implements OnInit {
             const result = await this.apiService.getData(`items/requiredInventory/invent/list?name=${this.requiredItemName}&vendorID=${this.requiredVendorID}&lastKey=${this.lastSK}`).toPromise();
             if (result.Items.length === 0) {
                 this.dataMessageReq = Constants.NO_RECORDS_FOUND
+                this.loaded = true;
             }
             if (result.Items.length > 0) {
                 if (result.LastEvaluatedKey !== undefined) {
@@ -336,14 +330,27 @@ export class OverviewComponent implements OnInit {
     }
     
     refreshRequiredData(){
+            this.requiredItems = [];
             this.requiredItemName = '';
             this.requiredVendorID = null;
-            this.requiredItems = [];
             this.lastSK = '';
-            this.dataMessageReq = Constants.FETCHING_DATA;
+            this.loaded = false;
             this.suggestedItems = [];
             this.requiredInventoryListReport(); 
+            this.dataMessageReq = Constants.FETCHING_DATA;
    }
+    
+       refreshInventoryData(){
+            this.items = [];
+            this.itemName = '';
+            this.vendorID = null;
+            this.category = null;
+            this.lastItemSK = '';
+            this.loaded = false;
+            this.suggestedItems = [];
+            this.existingInventoryList();   
+            this.dataMessage = Constants.FETCHING_DATA;
+   }    
 
     generateRequiredCSV() {
         if (this.requiredExportList.length > 0) {

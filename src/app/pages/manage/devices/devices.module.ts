@@ -43,9 +43,9 @@ const routes: Routes = [
     data: { title: "Edit Device" },
   },
   {
-    path: "list",
+    path: "list/:sessionID",
     component: DeviceListComponent,
-    data: { title: "Devices List" },
+    data: { title: "Devices List",reuseRoute: true},
   },
   {
     path: "detail/:deviceType/:deviceSerialNo",

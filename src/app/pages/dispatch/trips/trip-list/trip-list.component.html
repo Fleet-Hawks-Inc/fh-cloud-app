@@ -96,1443 +96,311 @@
                             <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
                         </div>
 
-                        <div class="col-md-3 col-lg-3 pr-1 text-right">
-                            <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
-                                <button type="button" class="btn btn-success
-                                    btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span
-                                        class="caret"></span></button>
-                                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position:
-                                    absolute; will-change:
-                                    transform; top: 0px; left: 0px; transform:
-                                    translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" href="">Import</a>
-                                    <a class="dropdown-item text-1" href="">Export</a>
-                                </div>
-                            </div>
-
-                            <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data"
-                                class="btn btn-success btn-sm modal-with-form
-                                mr-2">
-                                <i class="fas fa-sync"></i>
-                            </a>
-
-                            <a href="javascript:;" routerLink="/dispatch/trips/add-trip" class="btn
-                                btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i>
-                                Add Trip</a>
-                        </div>
-
                     </div>
                 </form>
             </header>
-
+            <section>
+                <div class="m-2">
+                    <ul class="nav nav-tabs mb-3 top-tabs" id="top-tabs" role="tablist" alignFrozen="right"
+                        pFrozenColumn [frozen]="true">
+                        <li class="nav-item">
+                            <a class="nav-link navtabs" id="confirmed-tab" href="javascript:;"
+                                [ngClass]="{ active: activeTab == 'confirmed' }">
+                                Confirmed : {{ confirmedTrips.length }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link navtabs" id="dispatchedTrip-tab" href="javascript:;"
+                                [ngClass]="{ active: activeTab == 'dispatched' }">
+                                Dispatched : {{ dispatchedTrips.length }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link navtabs" id="started-tab" href="javascript:;"
+                                [ngClass]="{ active: activeTab == 'started' }">
+                                Started : {{ startedTrips.length }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link navtabs" id="enroute-tab" href="javascript:;"
+                                [ngClass]="{ active: activeTab == 'enroute' }">
+                                En-Route : {{ enrouteTrips.length }}</a>
+                        </li>
+                        <li class="nav-item navtabs">
+                            <a class="nav-link" id="delivered-tab" href="javascript:;"
+                                [ngClass]="{ active: activeTab == 'delivered' }">
+                                Delivered : {{ deliveredTrips.length }}</a>
+                        </li>
+                        <li class="nav-item navtabs">
+                            <a class="nav-link" id="tonu-tab" href="javascript:;"
+                                [ngClass]="{ active: activeTab == 'tonu' }">
+                                TONU : {{ tonuTrips.length }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link navtabs" id="cancelled-tab" href="javascript:;"
+                                [ngClass]="{ active: activeTab == 'cancelled' }">
+                                Cancelled : {{ cancelledTrips.length }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
             <section class="m-2">
                 <div class="row mb-3">
                     <div class="col-lg-12">
                         <div class="bg-white p-3 text-dark">
-                            <div class="form-group row text-capitalize">
-                                <div class="col-lg-12 pl-0 pr-0">
-                                    <div class="m-2">
-                                        <ul class="nav nav-tabs mb-3 top-tabs" id="top-tabs" role="tablist">
-                                            <li class="nav-item">
-                                                <a class="nav-link active
-                                                    navtabs" id="allTrips-tab" href="javascript:;" role="tab"
-                                                    (click)="setActiveDiv('all')" aria-controls="allTrips"
-                                                    aria-selected="true" [ngClass]="{'active':
-                                                    activeTab == 'all'}">All</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link navtabs" id="confirmed-tab" href="javascript:;"
-                                                    (click)="setActiveDiv('confirmed')" [ngClass]="{'active':
-                                                    activeTab == 'confirmed'}">
-                                                    Confirmed : {{
-                                                    confirmedTrips.length }}</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link navtabs" id="dispatchedTrip-tab" href="javascript:;"
-                                                    (click)="setActiveDiv('dispatched')" [ngClass]="{'active':
-                                                    activeTab == 'dispatched'}">
-                                                    Dispatched : {{
-                                                    dispatchedTrips.length }}</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link navtabs" id="started-tab" href="javascript:;"
-                                                    (click)="setActiveDiv('started')" [ngClass]="{'active':
-                                                    activeTab == 'started'}">
-                                                    Started : {{
-                                                    startedTrips.length }}</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link navtabs" id="enroute-tab" href="javascript:;"
-                                                    (click)="setActiveDiv('enroute')" [ngClass]="{'active':
-                                                    activeTab == 'enroute'}">
-                                                    En-Route : {{
-                                                    enrouteTrips.length }}</a>
-                                            </li>
-                                            <li class="nav-item navtabs">
-                                                <a class="nav-link" id="delivered-tab" href="javascript:;"
-                                                    (click)="setActiveDiv('delivered')" [ngClass]="{'active':
-                                                    activeTab == 'delivered'}">
-                                                    Delivered : {{
-                                                    deliveredTrips.length }}</a>
-                                            </li>
-                                            <li class="nav-item navtabs">
-                                                <a class="nav-link" id="tonu-tab" href="javascript:;"
-                                                    (click)="setActiveDiv('tonu')" [ngClass]="{'active':
-                                                    activeTab == 'tonu'}">
-                                                    TONU : {{ tonuTrips.length
-                                                    }}</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link navtabs" id="cancelled-tab" href="javascript:;"
-                                                    (click)="setActiveDiv('cancelled')" [ngClass]="{'active':
-                                                    activeTab == 'cancelled'}">
-                                                    Cancelled : {{
-                                                    cancelledTrips.length }}</a>
-                                            </li>
+                            <div class="form-group row">
+                                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
+                                    <p-table #dt [value]="trips" [resizableColumns]="true" columnResizeMode="expand"
+                                        scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
+                                        styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                                        [scrollable]="true" scrollHeight="100%">
+                                        <!-- Caption template of data table -->
+                                        <ng-template pTemplate="caption">
+                                            <div class="p-d-flex d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h3 class="m-0">Trips</h3>
+                                                </div>
 
-                                        </ul>
-                                    </div>
-                                    <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
-                                        <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab
-                                            == 'all'}" id="allTrips" role="tabpanel" aria-labelledby="allTrips-tab"
-                                            *ngIf="activeTab == 'all'">
-                                            <div class="col-lg-12" infiniteScroll [infiniteScrollDistance]="1"
-                                                [infiniteScrollUpDistance]="1" [infiniteScrollThrottle]="5"
-                                                (scrolled)="onScroll()">
-                                                <table class="row-border hover
-                                                    table
-                                                    table-bordered table-striped
-                                                    mb-0 text-capitalize" id="allTripsDT">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Trip#</th>
-                                                            <th>Type</th>
-                                                            <th>Order#</th>
-                                                            <th>Date</th>
-                                                            <th>Pickup Location</th>
-                                                            <th>Drop Off
-                                                                Location</th>
-                                                            <th>Vehicle</th>
-                                                            <th>Asset</th>
-                                                            <th>Driver</th>
-                                                            <th>Carrier</th>
-                                                            <th>Status</th>
-                                                            <th>Actions</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngIf="!records" class="text-center">
-                                                            <td colspan="12">{{
-                                                                dataMessage }}</td>
-                                                        </tr>
-                                                        <tr class="cursorpoint" *ngFor="let trip of
-                                                            trips; let i=
-                                                            index">
-                                                            <td [routerLink]="trip.url">
-                                                                {{ trip.tripNo
-                                                                }}
-                                                                <span *ngIf="trip.split
-                                                                    &&
-                                                                    trip.split.length>
-                                                                    1" class="badge
-                                                                    badge-dark
-                                                                    ng-star-inserted">
-                                                                    +{{
-                                                                    trip.split.length-1
-                                                                    }} </span>
-                                                            </td>
-                                                            <td [routerLink]="trip.url">{{
-                                                                trip.orderType
-                                                                }}</td>
-                                                            <td [routerLink]="trip.url">
-                                                                <span *ngFor="let
-                                                                    ordr
-                                                                    of
-                                                                    trip.orderNames;
-                                                                    let
-                                                                    $last=
-                                                                    last">
+                                                <div class="text-right">
+                                                    <span>Showing {{ trips.length }} entries </span>
+                                                    &nbsp;
+                                                    <button type="button" pButton (click)="refreshData()"
+                                                        pTooltip="Refresh" class="p-button-outlined mr-2"
+                                                        icon="fas fa-sync"></button>
+                                                    <button type="button" pButton pTooltip="Add"
+                                                        routerLink="/dispatch/trips/add-trip"
+                                                        class="p-button-outlined mr-2" icon="pi pi-plus"></button>
+                                                    <button pButton pRipple pTooltip="Clear Filter"
+                                                        class="p-button-outlined mr-2" icon="pi pi-filter-slash"
+                                                        (click)="clear(dt)"></button>
 
-                                                                    {{
-                                                                    ordr
-                                                                    }} <span *ngIf="!$last" class="list-format">,
-                                                                    </span>
-
-                                                                </span>
-                                                            </td>
-                                                            <td [routerLink]="trip.url">{{
-                                                                trip.dateCreated
-                                                                |
-                                                                date:
-                                                                'yyyy/MM/dd' }}</td>
-                                                            <td [routerLink]="trip.url">
-                                                                {{
-                                                                trip.pickupLocation
-                                                                }}
-                                                                <span *ngIf="trip.pickupLocationCount>
-                                                                    1" class="badge
-                                                                    badge-dark
-                                                                    ng-star-inserted">
-                                                                    +{{
-                                                                    trip.pickupLocationCount-1
-                                                                    }} </span>
-                                                            </td>
-                                                            <td [routerLink]="trip.url">
-                                                                {{
-                                                                trip.dropLocation
-                                                                }}
-                                                                <span *ngIf="trip.dropLocationCount>
-                                                                    1" class="badge
-                                                                    badge-dark
-                                                                    ng-star-inserted">
-                                                                    +{{
-                                                                    trip.dropLocationCount-1
-                                                                    }} </span>
-                                                            </td>
-                                                            <td [routerLink]="trip.url">
-                                                                {{
-                                                                trip.vehicleNames[0]
-                                                                }}
-                                                                <span *ngIf="trip.vehicleCount>
-                                                                    1" class="badge
-                                                                    badge-dark
-                                                                    ng-star-inserted">
-                                                                    +{{
-                                                                    trip.vehicleCount-1
-                                                                    }} </span>
-                                                            </td>
-                                                            <td [routerLink]="trip.url">
-                                                                {{
-                                                                trip.assetNames[0]
-                                                                }}
-                                                                <span *ngIf="trip.assetCount>
-                                                                    1" class="badge
-                                                                    badge-dark
-                                                                    ng-star-inserted">
-                                                                    +{{
-                                                                    trip.assetCount-1
-                                                                    }} </span>
-                                                            </td>
-                                                            <td [routerLink]="trip.url">
-                                                                {{
-                                                                trip.driverNames[0]
-                                                                }}
-                                                                <span *ngIf="trip.driverCount>
-                                                                    1" class="badge
-                                                                    badge-dark
-                                                                    ng-star-inserted">
-                                                                    +{{
-                                                                    trip.driverCount-1
-                                                                    }} </span>
-                                                            </td>
-                                                            <td [routerLink]="trip.url">
-                                                                {{
-                                                                trip.carrierNames[0]
-                                                                }}
-                                                                <!-- carriersObject[trip.planCarrierId] -->
-                                                                <span *ngIf="trip.carrierIdCount>
-                                                                    1" class="badge
-                                                                    badge-dark
-                                                                    ng-star-inserted">
-                                                                    +{{
-                                                                    trip.carrierIdCount-1
-                                                                    }} </span>
-                                                            </td>
-                                                            <td [routerLink]="trip.url">
-                                                                <span class="badge
-                                                                    badge-dark
-                                                                    p-1
-                                                                    text-capitalize" *ngIf="!trip.stlLink">{{
-                                                                    trip.newStatus
-                                                                    }}</span>
-                                                                <span class="badge
-                                                                    badge-dark
-                                                                    p-1
-                                                                    text-capitalize"
-                                                                    *ngIf="trip.stlLink">Settled</span>
-                                                            </td>
-                                                            <td>
-                                                                <div class="dropdown
-                                                                    dropright">
-                                                                    <button class="bg-transparent
-                                                                        border-0" type="button"
-                                                                        id="dropdownMenuButton-{{i}}"
-                                                                        data-toggle="dropdown" aria-haspopup="true"
-                                                                        aria-expanded="false"
-                                                                        [disabled]="trip.disabledEdit">
-                                                                        <i class="fas
-                                                                            fa-ellipsis-v"></i>
-                                                                    </button>
-                                                                    <div *ngIf="!trip.disabledEdit"
-                                                                        class="dropdown-menu"
-                                                                        attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                        <a class="dropdown-item" *ngIf="!trip.canEdit"
-                                                                            routerLink="/dispatch/trips/edit-trip/{{
-                                                                            trip.tripID
-                                                                            }}">Edit</a>
-                                                                        <a class="dropdown-item" *ngIf="trip.tripStatus
-                                                                            ===
-                                                                            'confirmed'" href="javascript:;"
-                                                                            (click)="deleteTrip(trip)">Delete</a>
-                                                                        <a class="dropdown-item" href="javascript:;"
-                                                                            *ngIf="trip.showStatus" (click)="openStatusModal(trip.tripID,
-                                                                            i)">Update
-                                                                            Status</a>
-                                                                        <a class="dropdown-item" *ngIf="trip.canRecall"
-                                                                            routerLink="/dispatch/trips/edit-trip/{{
-                                                                            trip.tripID
-                                                                            }}" [queryParams]="{
-                                                                            state:
-                                                                            'recall'
-                                                                            }">Recall</a>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                    <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                                                        icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()"
+                                                        pTooltip="Excel"></button>
+                                                </div>
                                             </div>
-                                            <div class="col-lg-12 mt-3
-                                                text-center" *ngIf="lastEvaluatedKey !==
-                                                'end' && trips.length
-                                                !==
-                                                0">
-                                                <button type="button" class="btn
-                                                    btn-success
-                                                    btn-sm text-light" (click)="onScroll()"><i class="fa
-                                                        fa-spinner fa-spin" *ngIf="isLoad">
-                                                    </i> {{isLoadText}}</button>
+                                        </ng-template>
+                                        <!-- Header template of DataTable -->
+                                        <ng-template pTemplate="header" let-columns>
+                                            <tr>
+                                                <th *ngFor="let dataColumns of columns"
+                                                    [pSortableColumn]="dataColumns.field" pResizableColumn
+                                                    [ngStyle]="{ width: dataColumns.width }">
+                                                    <span [ngSwitch]="dataColumns.field">
+
+                                                        <span *ngSwitchCase="'orderType'">
+                                                            <div class="flex justify-content-center align-items-center"
+                                                                alignFrozen="left" pFrozenColumn [frozen]="true">
+                                                                {{ dataColumns.header }}
+                                                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                                                <p-columnFilter [type]="dataColumns.type"
+                                                                    [field]="dataColumns.field" [showOperator]="false"
+                                                                    [showMatchModes]="false" matchMode="in"
+                                                                    [showAddButton]="false" display="menu">
+                                                                    <ng-template pTemplate="filter" let-value
+                                                                        let-filter="filterCallback">
+                                                                        <p-multiSelect [options]="ordtyp"
+                                                                            placeholder="Any"
+                                                                            (onChange)="filter($event.value)"
+                                                                            optionLabel="name" optionValue="value">
+                                                                            <ng-template let-option pTemplate="item">
+                                                                                <div>
+                                                                                    <span class="ml-1">{{
+                                                                                        option.name
+                                                                                        }}</span>
+                                                                                </div>
+                                                                            </ng-template>
+                                                                        </p-multiSelect>
+                                                                    </ng-template>
+                                                                </p-columnFilter>
+                                                            </div>
+                                                        </span>
+                                                        <span *ngSwitchCase="'tripStatus'">
+                                                            <div class="flex justify-content-center align-items-center"
+                                                                alignFrozen="left" pFrozenColumn [frozen]="true">
+                                                                {{ dataColumns.header }}
+                                                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                                                <p-columnFilter [type]="dataColumns.type"
+                                                                    [field]="dataColumns.field" [showOperator]="false"
+                                                                    [showMatchModes]="false" matchMode="in"
+                                                                    [showAddButton]="false" display="menu">
+                                                                    <ng-template pTemplate="filter" let-value
+                                                                        let-filter="filterCallback">
+                                                                        <p-multiSelect [options]="statusData"
+                                                                            placeholder="Any"
+                                                                            (onChange)="filter($event.value)"
+                                                                            optionLabel="name" optionValue="value">
+                                                                            <ng-template let-option pTemplate="item">
+                                                                                <div>
+                                                                                    <span class="ml-1">{{
+                                                                                        option.name
+                                                                                        }}</span>
+                                                                                </div>
+                                                                            </ng-template>
+                                                                        </p-multiSelect>
+                                                                    </ng-template>
+                                                                </p-columnFilter>
+                                                            </div>
+                                                        </span>
+                                                        <span *ngSwitchDefault>
+                                                            <div class="flex justify-content-center align-items-center"
+                                                                alignFrozen="right" pFrozenColumn [frozen]="true">
+                                                                {{ dataColumns.header }}
+                                                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                                                <p-columnFilter [type]="dataColumns.type"
+                                                                    [field]="dataColumns.field" matchMode="contains"
+                                                                    [showMatchModes]="false" [showOperator]="false"
+                                                                    [showAddButton]="false" display="menu">
+                                                                </p-columnFilter>
+                                                            </div>
+                                                        </span>
+                                                    </span>
+                                                </th>
+                                                <th style="width: 6%" alignFrozen="right" pFrozenColumn [frozen]="true">
+                                                    Actions
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-trip let-columns="columns"
+                                            let-rowIndex="rowIndex">
+                                            <tr>
+                                                <td *ngFor="let dataColumns of columns"
+                                                    [ngStyle]="{ width: dataColumns.width }" style="cursor: pointer"
+                                                    routerLink="/dispatch/trips/trip-details//{{trip.tripID}}">
+                                                    <div [ngSwitch]="dataColumns.field"
+                                                        style="text-transform: capitalize;">
+                                                        <span *ngSwitchCase="'tripNo'">
+                                                            {{ trip.tripNo }}
+                                                            <span *ngIf="trip.split && trip.split.length > 1"
+                                                                class="badge badge-dark ng-star-inserted">
+                                                                +{{ trip.split.length - 1 }}
+                                                            </span>
+                                                        </span>
+
+                                                        <span *ngSwitchCase="'orderType'">
+                                                            {{ trip.orderType }}
+                                                        </span>
+
+                                                        <span *ngSwitchCase="'orderNames'">
+                                                            <span
+                                                                *ngFor=" let ordr of trip.orderNames;let $last = last">
+                                                                {{ ordr }}
+                                                                <span *ngIf="!$last" class="list-format">,
+                                                                </span>
+                                                            </span>
+                                                        </span>
+
+
+                                                        <span *ngSwitchCase="'dateCreated'">
+                                                            {{ trip.dateCreated | date: "yyyy/MM/dd" }}
+                                                        </span>
+
+                                                        <span *ngSwitchCase="'pickupLocation'">
+                                                            {{ trip.pickupLocation }}
+                                                            <span *ngIf="trip.pickupLocationCount > 1"
+                                                                class="badge badge-dark ng-star-inserted">
+                                                                +{{ trip.pickupLocationCount - 1 }}
+                                                            </span>
+                                                        </span>
+
+
+                                                        <span *ngSwitchCase="'dropLocation'">
+                                                            {{ trip.dropLocation }}
+                                                            <span *ngIf="trip.dropLocationCount > 1"
+                                                                class="badge badge-dark ng-star-inserted">
+                                                                +{{ trip.dropLocationCount - 1 }}
+                                                            </span>
+                                                        </span>
+
+                                                        <span *ngSwitchCase="'vehicleNames'">
+                                                            {{ trip.vehicleNames[0] }}
+                                                            <span *ngIf="trip.vehicleNames.length > 1"
+                                                                class="badge badge-dark ng-star-inserted">
+                                                                +{{ trip.vehicleNames.length - 1 }}
+                                                            </span>
+                                                        </span>
+
+                                                        <span *ngSwitchCase="'assetNames'">
+                                                            {{ trip.assetNames[0] }}
+                                                            <span *ngIf="trip.assetNames.length > 1"
+                                                                class="badge badge-dark ng-star-inserted">
+                                                                +{{ trip.assetNames.length - 1 }}
+                                                            </span>
+                                                        </span>
+
+                                                        <span *ngSwitchCase="'driverNames'">
+                                                            {{ trip.driverNames[0] }}
+                                                            <span *ngIf="trip.driverNames.length > 1"
+                                                                class="badge badge-dark ng-star-inserted">
+                                                                +{{ trip.driverNames.length - 1 }}
+                                                            </span>
+                                                        </span>
+
+                                                        <span *ngSwitchCase="'carrierNames'">
+                                                            {{ trip.carrierNames[0] }}
+                                                            <span *ngIf="trip.carrierIdCount > 1"
+                                                                class="badge badge-dark ng-star-inserted">
+                                                                +{{ trip.carrierIdCount - 1 }}
+                                                            </span>
+                                                        </span>
+
+                                                        <span *ngSwitchCase="'tripStatus'">
+                                                            <span class="badge badge-dark p-1 text-capitalize"
+                                                                *ngIf="!trip.stlLink">{{ trip.newStatus }}
+                                                            </span>
+                                                            <span class="badge badge-dark p-1 text-capitalize"
+                                                                *ngIf="trip.stlLink">Settled</span>
+                                                        </span>
+
+                                                    </div>
+                                                </td>
+                                                <td style="width: 6%; overflow: inherit !important" alignFrozen="right"
+                                                    pFrozenColumn [frozen]="true">
+                                                    <div class="dropdown dropright">
+                                                        <button (click)="op.toggle($event)" pButton type="button"
+                                                            class="bg-transparent border-0" data-toggle="dropdown"
+                                                            aria-expanded="false" aria-haspopup="true"
+                                                            id="dropdownMenuButton-{{ rowIndex }}"
+                                                            [disabled]="trip.disabledEdit" icon="fas fa-ellipsis-v"
+                                                            style="color: #000;"></button>
+                                                        <p-overlayPanel #op [showCloseIcon]="true"
+                                                            [style]="{ width: '160px' }">
+                                                            <ng-template pTemplate>
+                                                                <a class="dropdown-item" *ngIf="!trip.canEdit"
+                                                                    routerLink="/dispatch/trips/edit-trip/{{trip.tripID }}">Edit</a>
+                                                                <a class="dropdown-item"
+                                                                    *ngIf="trip.tripStatus === 'confirmed'"
+                                                                    href="javascript:;"
+                                                                    (click)="op.hide();deleteTrip(trip)">Delete</a>
+                                                                <a class="dropdown-item" href="javascript:;"
+                                                                    *ngIf="trip.showStatus"
+                                                                    (click)="op.hide();openStatusModal(trip.tripID, rowIndex)">Update
+                                                                    Status</a>
+                                                                <a class="dropdown-item" *ngIf="trip.canRecall"
+                                                                    routerLink="/dispatch/trips/edit-trip/{{
+                                                                trip.tripID
+                                                                }}" [queryParams]="{state:'recall'}">Recall</a>
+                                                            </ng-template>
+                                                        </p-overlayPanel>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="emptymessage" let-columns>
+                                            <div class="col-lg-12 mt-3 text-center">
+                                                {{ dataMessage }} <br /><br />
                                             </div>
-                                        </div>
-
-                                        <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab
-                                            == 'confirmed'}" id="confirmed" role="tabpanel"
-                                            aria-labelledby="confirmed-tab" *ngIf="activeTab == 'confirmed'">
-                                            <table class="row-border hover table
-                                                table-bordered table-striped
-                                                text-capitalize mb-0" id="confirmedTripsDT">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Trip#</th>
-                                                        <th>Type</th>
-                                                        <th>Order#</th>
-                                                        <th>Date</th>
-                                                        <th>Pickup Location</th>
-                                                        <th>Drop Off Location</th>
-                                                        <th>Vehicle</th>
-                                                        <th>Asset</th>
-                                                        <th>Driver</th>
-                                                        <th>Carrier</th>
-                                                        <th>Status</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr *ngIf="confirmedTrips.length
-                                                        == 0" class="text-center">
-                                                        <td colspan="12">{{dataMessageConfirm}}</td>
-                                                    </tr>
-                                                    <tr class="cursorpoint" *ngFor="let trip of
-                                                        confirmedTrips; let i=
-                                                        index">
-                                                        <td [routerLink]="trip.url">
-                                                            {{ trip.tripNo }}
-                                                        </td>
-                                                        <td [routerLink]="trip.url">{{
-                                                            trip.orderType }}</td>
-                                                        <td [routerLink]="trip.url">
-                                                            <span *ngFor="let ordr of trip.orderNames;
-                                                                    let $last= last">
-                                                                {{
-                                                                ordr
-                                                                }} <span *ngIf="!$last" class="list-format">,
-                                                                </span>
-
-                                                            </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">{{
-                                                            trip.dateCreated |
-                                                            date:
-                                                            'dd-MM-yyyy' }}</td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            trip.pickupLocation
-                                                            }}
-                                                            <span *ngIf="trip.pickupLocationCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.pickupLocationCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{ trip.dropLocation
-                                                            }}
-                                                            <span *ngIf="trip.dropLocationCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.dropLocationCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            vehiclesObject[trip.vehicleId]
-                                                            }}
-                                                            <span *ngIf="trip.vehicleCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.vehicleCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            assetsObject[trip.assetId]
-                                                            }}
-                                                            <span *ngIf="trip.assetCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.assetCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            driversIDSObject[trip.driverId]
-                                                            }}
-                                                            <span *ngIf="trip.driverCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.driverCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            carriersObject[trip.planCarrierId]
-                                                            }}
-                                                            <span *ngIf="trip.carrierIdCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.carrierIdCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            <span class="badge
-                                                                badge-dark p-1
-                                                                text-capitalize" *ngIf="!trip.stlLink">{{
-                                                                trip.newStatus
-                                                                }}</span>
-                                                            <span class="badge
-                                                                badge-dark p-1
-                                                                text-capitalize" *ngIf="trip.stlLink">Settled</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="dropdown
-                                                                dropright">
-                                                                <button class="bg-transparent
-                                                                    border-0" type="button"
-                                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                    aria-haspopup="true" aria-expanded="false"
-                                                                    [disabled]="trip.canEdit">
-                                                                    <i class="fas
-                                                                        fa-ellipsis-v"></i>
-                                                                </button>
-                                                                <div class="dropdown-menu"
-                                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                    <a class="dropdown-item" routerLink="/dispatch/trips/edit-trip/{{
-                                                                        trip.tripID
-                                                                        }}">Edit</a>
-                                                                    <a class="dropdown-item" href="javascript:;"
-                                                                        (click)="deleteTrip(trip)">Delete</a>
-                                                                    <a class="dropdown-item" href="javascript:;"
-                                                                        *ngIf="trip.showStatus" (click)="openStatusModal(trip.tripID,
-                                                                        i)">Update
-                                                                        Status</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                        <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab
-                                            == 'dispatched'}" id="dispatched" role="tabpanel"
-                                            aria-labelledby="dispatched-tab" *ngIf="activeTab == 'dispatched'">
-                                            <table class="row-border hover table
-                                                table-bordered table-striped
-                                                mb-0 text-capitalize" id="dispatchedTripsDT">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Trip#</th>
-                                                        <th>Type</th>
-                                                        <th>Order#</th>
-                                                        <th>Date</th>
-                                                        <th>Pickup Location</th>
-                                                        <th>Drop Off Location</th>
-                                                        <th>Vehicle</th>
-                                                        <th>Asset</th>
-                                                        <th>Driver</th>
-                                                        <th>Carrier</th>
-                                                        <th>Status</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr *ngIf="dispatchedTrips.length
-                                                        == 0" class="text-center">
-                                                        <td colspan="12">{{dataMessageDispatch}}</td>
-                                                    </tr>
-                                                    <tr class="cursorpoint" *ngFor="let trip of
-                                                        dispatchedTrips; let i=
-                                                        index">
-                                                        <td [routerLink]="trip.url">
-                                                            {{ trip.tripNo }}
-                                                        </td>
-                                                        <td [routerLink]="trip.url">{{
-                                                            trip.orderType }}</td>
-                                                        <td [routerLink]="trip.url">
-                                                            <span *ngFor="let ordr of trip.orderNames;
-                                                                    let $last= last">
-                                                                {{
-                                                                ordr
-                                                                }} <span *ngIf="!$last" class="list-format">,
-                                                                </span>
-
-                                                            </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">{{
-                                                            trip.dateCreated |
-                                                            date:
-                                                            'dd-MM-yyyy' }}</td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            trip.pickupLocation
-                                                            }}
-                                                            <span *ngIf="trip.pickupLocationCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.pickupLocationCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{ trip.dropLocation
-                                                            }}
-                                                            <span *ngIf="trip.dropLocationCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.dropLocationCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            vehiclesObject[trip.vehicleId]
-                                                            }}
-                                                            <span *ngIf="trip.vehicleCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.vehicleCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            assetsObject[trip.assetId]
-                                                            }}
-                                                            <span *ngIf="trip.assetCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.assetCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            driversIDSObject[trip.driverId]
-                                                            }}
-                                                            <span *ngIf="trip.driverCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.driverCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            carriersObject[trip.planCarrierId]
-                                                            }}
-                                                            <span *ngIf="trip.carrierIdCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.carrierIdCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            <span class="badge
-                                                                badge-dark p-1
-                                                                text-capitalize" *ngIf="!trip.stlLink">{{
-                                                                trip.newStatus
-                                                                }}</span>
-                                                            <span class="badge
-                                                                badge-dark p-1
-                                                                text-capitalize" *ngIf="trip.stlLink">Settled</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="dropdown
-                                                                dropright">
-                                                                <button class="bg-transparent
-                                                                    border-0" type="button"
-                                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                    aria-haspopup="true" aria-expanded="false"
-                                                                    [disabled]="trip.canEdit">
-                                                                    <i class="fas
-                                                                        fa-ellipsis-v"></i>
-                                                                </button>
-                                                                <div class="dropdown-menu"
-                                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                    <a class="dropdown-item" routerLink="/dispatch/trips/edit-trip/{{
-                                                                        trip.tripID
-                                                                        }}">Edit</a>
-                                                                    <a class="dropdown-item" href="javascript:;"
-                                                                        (click)="deleteTrip(trip)">Delete</a>
-                                                                    <a class="dropdown-item" href="javascript:;"
-                                                                        *ngIf="trip.showStatus" (click)="openStatusModal(trip.tripID,
-                                                                        i)">Update
-                                                                        Status</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                        <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab
-                                            == 'started'}" id="started" role="tabpanel" aria-labelledby="started-tab"
-                                            *ngIf="activeTab == 'started'">
-                                            <table class="row-border hover table
-                                                table-bordered table-striped
-                                                mb-0" id="startedTripsDT">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Trip#</th>
-                                                        <th>Type</th>
-                                                        <th>Order#</th>
-                                                        <th>Date</th>
-                                                        <th>Pickup Location</th>
-                                                        <th>Drop Off Location</th>
-                                                        <th>Vehicle</th>
-                                                        <th>Asset</th>
-                                                        <th>Driver</th>
-                                                        <th>Carrier</th>
-                                                        <th>Status</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr *ngIf="startedTrips.length
-                                                        == 0" class="text-center">
-                                                        <td colspan="12">{{dataMessageStart}}</td>
-                                                    </tr>
-                                                    <tr class="cursorpoint" *ngFor="let trip of
-                                                        startedTrips; let i=
-                                                        index">
-                                                        <td [routerLink]="trip.url">
-                                                            {{ trip.tripNo }}
-                                                        </td>
-                                                        <td [routerLink]="trip.url">{{
-                                                            trip.orderType }}</td>
-                                                        <td [routerLink]="trip.url">
-                                                            <span *ngFor="let ordr of trip.orderNames;
-                                                            let $last= last">
-                                                                {{
-                                                                ordr
-                                                                }} <span *ngIf="!$last" class="list-format">,
-                                                                </span>
-
-                                                            </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">{{
-                                                            trip.dateCreated |
-                                                            date:
-                                                            'dd-MM-yyyy' }}</td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            trip.pickupLocation
-                                                            }}
-                                                            <span *ngIf="trip.pickupLocationCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.pickupLocationCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{ trip.dropLocation
-                                                            }}
-                                                            <span *ngIf="trip.dropLocationCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.dropLocationCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            vehiclesObject[trip.vehicleId]
-                                                            }}
-                                                            <span *ngIf="trip.vehicleCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.vehicleCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            assetsObject[trip.assetId]
-                                                            }}
-                                                            <span *ngIf="trip.assetCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.assetCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            driversIDSObject[trip.driverId]
-                                                            }}
-                                                            <span *ngIf="trip.driverCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.driverCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            carriersObject[trip.planCarrierId]
-                                                            }}
-                                                            <span *ngIf="trip.carrierIdCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.carrierIdCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            <span class="badge
-                                                                badge-dark p-1
-                                                                text-capitalize" *ngIf="!trip.stlLink">{{
-                                                                trip.newStatus
-                                                                }}</span>
-                                                            <span class="badge
-                                                                badge-dark p-1
-                                                                text-capitalize" *ngIf="trip.stlLink">Settled</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="dropdown
-                                                                dropright">
-                                                                <button class="bg-transparent
-                                                                    border-0" type="button"
-                                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                    aria-haspopup="true" aria-expanded="false"
-                                                                    [disabled]="trip.canEdit">
-                                                                    <i class="fas
-                                                                        fa-ellipsis-v"></i>
-                                                                </button>
-                                                                <div class="dropdown-menu"
-                                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                    <a class="dropdown-item" routerLink="/dispatch/trips/edit-trip/{{
-                                                                        trip.tripID
-                                                                        }}">Edit</a>
-                                                                    <a class="dropdown-item" href="javascript:;"
-                                                                        (click)="deleteTrip(trip)">Delete</a>
-                                                                    <a class="dropdown-item" href="javascript:;"
-                                                                        *ngIf="trip.showStatus" (click)="openStatusModal(trip.tripID,
-                                                                        i)">Update
-                                                                        Status</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                        <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab
-                                            == 'enroute'}" id="enroute" role="tabpanel" aria-labelledby="enroute-tab"
-                                            *ngIf="activeTab == 'enroute'">
-                                            <table class="row-border hover table
-                                                table-bordered table-striped
-                                                mb-0" id="enrouteTripsDT">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Trip#</th>
-                                                        <th>Type</th>
-                                                        <th>Order#</th>
-                                                        <th>Date</th>
-                                                        <th>Pickup Location</th>
-                                                        <th>Drop Off Location</th>
-                                                        <th>Vehicle</th>
-                                                        <th>Asset</th>
-                                                        <th>Driver</th>
-                                                        <th>Carrier</th>
-                                                        <th>Status</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr *ngIf="enrouteTrips.length
-                                                        == 0" class="text-center">
-                                                        <td colspan="12">{{dataMessageEnroute}}</td>
-                                                    </tr>
-                                                    <tr class="cursorpoint" *ngFor="let trip of
-                                                        enrouteTrips; let i=
-                                                        index">
-                                                        <td [routerLink]="trip.url">
-                                                            {{ trip.tripNo }}
-                                                        </td>
-                                                        <td [routerLink]="trip.url">{{
-                                                            trip.orderType }}</td>
-                                                        <td [routerLink]="trip.url">
-                                                            <span *ngFor="let ordr of trip.orderNames;
-                                                                    let $last= last">
-                                                                {{
-                                                                ordr
-                                                                }} <span *ngIf="!$last" class="list-format">,
-                                                                </span>
-
-                                                            </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">{{
-                                                            trip.dateCreated |
-                                                            date:
-                                                            'dd-MM-yyyy' }}</td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            trip.pickupLocation
-                                                            }}
-                                                            <span *ngIf="trip.pickupLocationCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.pickupLocationCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{ trip.dropLocation
-                                                            }}
-                                                            <span *ngIf="trip.dropLocationCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.dropLocationCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            vehiclesObject[trip.vehicleId]
-                                                            }}
-                                                            <span *ngIf="trip.vehicleCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.vehicleCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            assetsObject[trip.assetId]
-                                                            }}
-                                                            <span *ngIf="trip.assetCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.assetCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            driversIDSObject[trip.driverId]
-                                                            }}
-                                                            <span *ngIf="trip.driverCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.driverCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            carriersObject[trip.planCarrierId]
-                                                            }}
-                                                            <span *ngIf="trip.carrierIdCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.carrierIdCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            <span class="badge
-                                                                badge-dark p-1
-                                                                text-capitalize" *ngIf="!trip.stlLink">{{
-                                                                trip.newStatus
-                                                                }}</span>
-                                                            <span class="badge
-                                                                badge-dark p-1
-                                                                text-capitalize" *ngIf="trip.stlLink">Settled</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="dropdown
-                                                                dropright">
-                                                                <button class="bg-transparent
-                                                                    border-0" type="button"
-                                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                    aria-haspopup="true" aria-expanded="false"
-                                                                    [disabled]="trip.canEdit">
-                                                                    <i class="fas
-                                                                        fa-ellipsis-v"></i>
-                                                                </button>
-                                                                <div class="dropdown-menu"
-                                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                    <a class="dropdown-item" routerLink="/dispatch/trips/edit-trip/{{
-                                                                        trip.tripID
-                                                                        }}">Edit</a>
-                                                                    <a class="dropdown-item" href="javascript:;"
-                                                                        (click)="deleteTrip(trip)">Delete</a>
-                                                                    <a class="dropdown-item" href="javascript:;"
-                                                                        *ngIf="trip.showStatus" (click)="openStatusModal(trip.tripID,
-                                                                        i)">Update
-                                                                        Status</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                        <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab
-                                            == 'delivered'}" id="delivered" role="tabpanel"
-                                            aria-labelledby="delivered-tab" *ngIf="activeTab == 'delivered'">
-                                            <table class="row-border hover table
-                                                table-bordered table-striped
-                                                mb-0" id="deliveredTripsDT">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Trip#</th>
-                                                        <th>Type</th>
-                                                        <th>Order#</th>
-                                                        <th>Date</th>
-                                                        <th>Pickup Location</th>
-                                                        <th>Drop Off Location</th>
-                                                        <th>Vehicle</th>
-                                                        <th>Asset</th>
-                                                        <th>Driver</th>
-                                                        <th>Carrier</th>
-                                                        <th>Status</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr *ngIf="deliveredTrips.length
-                                                        == 0" class="text-center">
-                                                        <td colspan="12">{{dataMessageDeliver}}</td>
-                                                    </tr>
-                                                    <tr class="cursorpoint" *ngFor="let trip of
-                                                        deliveredTrips; let i=
-                                                        index">
-                                                        <td [routerLink]="trip.url">
-                                                            {{ trip.tripNo }}
-                                                        </td>
-                                                        <td [routerLink]="trip.url">{{
-                                                            trip.orderType }}</td>
-                                                        <td [routerLink]="trip.url">
-                                                            <span *ngFor="let ordr of trip.orderNames;
-                                                                    let $last= last">
-                                                                {{
-                                                                ordr
-                                                                }} <span *ngIf="!$last" class="list-format">,
-                                                                </span>
-
-                                                            </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">{{
-                                                            trip.dateCreated |
-                                                            date:
-                                                            'dd-MM-yyyy' }}</td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            trip.pickupLocation
-                                                            }}
-                                                            <span *ngIf="trip.pickupLocationCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.pickupLocationCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{ trip.dropLocation
-                                                            }}
-                                                            <span *ngIf="trip.dropLocationCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.dropLocationCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            vehiclesObject[trip.vehicleId]
-                                                            }}
-                                                            <span *ngIf="trip.vehicleCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.vehicleCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            assetsObject[trip.assetId]
-                                                            }}
-                                                            <span *ngIf="trip.assetCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.assetCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            driversIDSObject[trip.driverId]
-                                                            }}
-                                                            <span *ngIf="trip.driverCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.driverCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            carriersObject[trip.planCarrierId]
-                                                            }}
-                                                            <span *ngIf="trip.carrierIdCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.carrierIdCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            <span class="badge
-                                                                badge-dark p-1
-                                                                text-capitalize" *ngIf="!trip.stlLink">{{
-                                                                trip.newStatus
-                                                                }}</span>
-                                                            <span class="badge
-                                                                badge-dark p-1
-                                                                text-capitalize" *ngIf="trip.stlLink">Settled</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="dropdown
-                                                                dropright">
-                                                                <button class="bg-transparent
-                                                                    border-0" type="button"
-                                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                    aria-haspopup="true" aria-expanded="false"
-                                                                    [disabled]="trip.disabledEdit">
-                                                                    <i class="fas
-                                                                        fa-ellipsis-v"></i>
-                                                                </button>
-                                                                <div *ngIf="!trip.disabledEdit" class="dropdown-menu"
-                                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                    <a class="dropdown-item" *ngIf="!trip.canEdit"
-                                                                        routerLink="/dispatch/trips/edit-trip/{{
-                                                                        trip.tripID
-                                                                        }}">Edit</a>
-                                                                    <a class="dropdown-item" *ngIf="trip.tripStatus
-                                                                        ===
-                                                                        'confirmed'" href="javascript:;"
-                                                                        (click)="deleteTrip(trip)">Delete</a>
-                                                                    <a class="dropdown-item" href="javascript:;"
-                                                                        *ngIf="trip.showStatus" (click)="openStatusModal(trip.tripID,
-                                                                        i)">Update
-                                                                        Status</a>
-                                                                    <a class="dropdown-item" *ngIf="trip.canRecall"
-                                                                        routerLink="/dispatch/trips/edit-trip/{{
-                                                                        trip.tripID
-                                                                        }}" [queryParams]="{
-                                                                        state:
-                                                                        'recall'
-                                                                        }">Recall</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                        <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab
-                                            == 'tonu'}" id="tonu" role="tabpanel" aria-labelledby="tonu-tab"
-                                            *ngIf="activeTab == 'tonu'">
-                                            <table class="row-border hover table
-                                                table-bordered table-striped
-                                                mb-0" id="tonuTripsDT">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Trip#</th>
-                                                        <th>Type</th>
-                                                        <th>Order#</th>
-                                                        <th>Date</th>
-                                                        <th>Pickup Location</th>
-                                                        <th>Drop Off Location</th>
-                                                        <th>Vehicle</th>
-                                                        <th>Asset</th>
-                                                        <th>Carrier</th>
-                                                        <th>Status</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr *ngIf="tonuTrips.length
-                                                        == 0" class="text-center">
-                                                        <td colspan="12">{{dataMessageCancel}}</td>
-                                                    </tr>
-                                                    <tr class="cursorpoint" *ngFor="let trip of
-                                                        tonuTrips; let i=
-                                                        index">
-                                                        <td [routerLink]="trip.url">
-                                                            {{ trip.tripNo }}
-                                                        </td>
-                                                        <td [routerLink]="trip.url">{{
-                                                            trip.orderType }}</td>
-                                                        <td [routerLink]="trip.url">
-                                                            <span *ngFor="let ordr of trip.orderNames;
-                                                                    let $last= last">
-                                                                {{
-                                                                ordr
-                                                                }} <span *ngIf="!$last" class="list-format">,
-                                                                </span>
-
-                                                            </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">{{
-                                                            trip.dateCreated |
-                                                            date:
-                                                            'dd-MM-yyyy' }}</td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            trip.pickupLocation
-                                                            }}
-                                                            <span *ngIf="trip.pickupLocationCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.pickupLocationCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{ trip.dropLocation
-                                                            }}
-                                                            <span *ngIf="trip.dropLocationCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.dropLocationCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            vehiclesObject[trip.vehicleId]
-                                                            }}
-                                                            <span *ngIf="trip.vehicleCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.vehicleCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            assetsObject[trip.assetId]
-                                                            }}
-                                                            <span *ngIf="trip.assetCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.assetCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            driversIDSObject[trip.driverId]
-                                                            }}
-                                                            <span *ngIf="trip.driverCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.driverCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            carriersObject[trip.planCarrierId]
-                                                            }}
-                                                            <span *ngIf="trip.carrierIdCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.carrierIdCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            <span class="badge
-                                                                badge-dark p-1
-                                                                text-capitalize" *ngIf="!trip.stlLink">{{
-                                                                trip.newStatus
-                                                                }}</span>
-                                                            <span class="badge
-                                                                badge-dark p-1
-                                                                text-capitalize" *ngIf="trip.stlLink">Settled</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="dropdown
-                                                                dropright">
-                                                                <button class="bg-transparent
-                                                                    border-0" type="button"
-                                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                    aria-haspopup="true" aria-expanded="false"
-                                                                    [disabled]="trip.canEdit">
-                                                                    <i class="fas
-                                                                        fa-ellipsis-v"></i>
-                                                                </button>
-                                                                <div class="dropdown-menu"
-                                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                    <a class="dropdown-item" routerLink="/dispatch/trips/edit-trip/{{
-                                                                        trip.tripID
-                                                                        }}">Edit</a>
-                                                                    <a class="dropdown-item" href="javascript:;"
-                                                                        (click)="deleteTrip(trip)">Delete</a>
-                                                                    <a class="dropdown-item" href="javascript:;"
-                                                                        *ngIf="trip.showStatus" (click)="openStatusModal(trip.tripID,
-                                                                        i)">Update
-                                                                        Status</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                        <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab
-                                            == 'cancelled'}" id="cancelled" role="tabpanel"
-                                            aria-labelledby="cancelled-tab" *ngIf="activeTab == 'cancelled'">
-                                            <table class="row-border hover table
-                                                table-bordered table-striped
-                                                mb-0" id="cancelledTripsDT">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Trip#</th>
-                                                        <th>Type</th>
-                                                        <th>Order#</th>
-                                                        <th>Date</th>
-                                                        <th>Pickup Location</th>
-                                                        <th>Drop Off Location</th>
-                                                        <th>Vehicle</th>
-                                                        <th>Asset</th>
-                                                        <th>Carrier</th>
-                                                        <th>Status</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr *ngIf="cancelledTrips.length
-                                                        == 0" class="text-center">
-                                                        <td colspan="12">{{dataMessageCancel}}</td>
-                                                    </tr>
-                                                    <tr class="cursorpoint" *ngFor="let trip of
-                                                        cancelledTrips; let i=
-                                                        index">
-                                                        <td [routerLink]="trip.url">
-                                                            {{ trip.tripNo }}
-                                                        </td>
-                                                        <td [routerLink]="trip.url">{{
-                                                            trip.orderType }}</td>
-                                                        <td [routerLink]="trip.url">
-                                                            <span *ngFor="let ordr of trip.orderNames;
-                                                                    let $last= last">
-                                                                {{
-                                                                ordr
-                                                                }} <span *ngIf="!$last" class="list-format">,
-                                                                </span>
-
-                                                            </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">{{
-                                                            trip.dateCreated |
-                                                            date:
-                                                            'dd-MM-yyyy' }}</td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            trip.pickupLocation
-                                                            }}
-                                                            <span *ngIf="trip.pickupLocationCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.pickupLocationCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{ trip.dropLocation
-                                                            }}
-                                                            <span *ngIf="trip.dropLocationCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.dropLocationCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            vehiclesObject[trip.vehicleId]
-                                                            }}
-                                                            <span *ngIf="trip.vehicleCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.vehicleCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            assetsObject[trip.assetId]
-                                                            }}
-                                                            <span *ngIf="trip.assetCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.assetCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            driversIDSObject[trip.driverId]
-                                                            }}
-                                                            <span *ngIf="trip.driverCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.driverCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            {{
-                                                            carriersObject[trip.planCarrierId]
-                                                            }}
-                                                            <span *ngIf="trip.carrierIdCount>
-                                                                1" class="badge
-                                                                badge-dark
-                                                                ng-star-inserted">
-                                                                +{{
-                                                                trip.carrierIdCount-1
-                                                                }} </span>
-                                                        </td>
-                                                        <td [routerLink]="trip.url">
-                                                            <span class="badge
-                                                                badge-dark p-1
-                                                                text-capitalize" *ngIf="!trip.stlLink">{{
-                                                                trip.newStatus
-                                                                }}</span>
-                                                            <span class="badge
-                                                                badge-dark p-1
-                                                                text-capitalize" *ngIf="trip.stlLink">Settled</span>
-                                                        </td>
-                                                        <td>
-                                                            <div class="dropdown
-                                                                dropright">
-                                                                <button class="bg-transparent
-                                                                    border-0" type="button"
-                                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                    aria-haspopup="true" aria-expanded="false"
-                                                                    [disabled]="trip.canEdit">
-                                                                    <i class="fas
-                                                                        fa-ellipsis-v"></i>
-                                                                </button>
-                                                                <div class="dropdown-menu"
-                                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                    <a class="dropdown-item" routerLink="/dispatch/trips/edit-trip/{{
-                                                                        trip.tripID
-                                                                        }}">Edit</a>
-                                                                    <a class="dropdown-item" href="javascript:;"
-                                                                        (click)="deleteTrip(trip)">Delete</a>
-                                                                    <a class="dropdown-item" href="javascript:;"
-                                                                        *ngIf="trip.showStatus" (click)="openStatusModal(trip.tripID,
-                                                                        i)">Update
-                                                                        Status</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                        </ng-template>
+                                        <ng-template pTemplate="summary" let-columns>
+                                            <div class="col-lg-12 mt-3 text-center"
+                                                *ngIf="lastEvaluatedKey !== 'end' && trips.length !== 0">
+                                                <button type="button" class="btn btn-success btn-sm text-light"
+                                                    (click)="onScroll()">
+                                                    Load More..
+                                                </button>
+                                            </div>
+                                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey === 'end'">
+                                                Total Records: {{ trips.length }}
+                                            </div>
+                                        </ng-template>
+                                    </p-table>
                                 </div>
 
                             </div>
@@ -1540,67 +408,54 @@
                     </div>
                 </div>
             </section>
-
-
-
         </section>
     </div>
 </section>
 
-<!-- status modal start -->
-<div class="modal fade" id="tripStatusModal" role="dialog" tabindex="-1">
-    <div class="modal-dialog" role="document" style="max-width: 500px;">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Update Trip Status</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <form>
-                <div class="modal-body">
-                    <div class="form-group row text-dark">
-                        <div class="col-lg-12">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <label class="control-label font-weight-bold
-                                        text-lg-right pt-2">Trip
-                                        Information</label>
-                                    <p>Trip# : {{ tripNumber }} <br>
-                                        BOL/POD# : {{ bolNumber }}
-                                    </p>
-                                </div>
-                                <div class="col-lg-8">
-                                    <label class="control-label font-weight-bold
-                                        text-lg-right pt-2">Select
-                                        Status</label>
-                                    <ng-select [(ngModel)]="tripStatus" name="tripStatus"
-                                        placeholder="Select trip status">
-                                        <ng-option value="{{ status.value }}" *ngFor="let status of statusData">{{
-                                            status.name }}</ng-option>
-                                    </ng-select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<p-dialog header="Update Trip Status" [(visible)]="display" [style]="{width: '35vw', height:'60%'}">
+    <div class="form-group row text-dark">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12">
+                    <label class="control-label font-weight-bold text-lg-right pt-2">Trip
+                        Information</label>
+                    <p>
+                        Trip# : {{ tripNumber }} <br />
+                        BOL/POD# : {{ bolNumber }}
+                    </p>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <div class="col-lg-8">
+                    <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                        Status</label>
+                    <ng-select [(ngModel)]="tripStatus" name="tripStatus" placeholder="Select trip status">
+                        <ng-option value="{{ status.value }}" *ngFor="let status of statusData">{{
+                            status.name }}</ng-option>
+                    </ng-select><br><br><br><br><br><br>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 115%;
+                    margin-bottom: -230px;">
+                        Close
+                    </button>
                     <button type="button" class="btn btn-success" [disabled]="statDisabled"
-                        (click)='updateTripStatus()'>Save</button>
+                        style="margin-left: 140%;   margin-bottom: -190px;"
+                        (click)="updateTripStatus(); display= false">
+                        Save
+                    </button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
-<!-- status modal end -->
+
+</p-dialog>
 
 <!-- confirmation modal -->
 <div class="modal fade" id="assignConfirmationModal" role="dialog" tabindex="-1">
-    <div class="modal-dialog" role="document" style="max-width: 500px;">
+    <div class="modal-dialog" role="document" style="max-width: 500px">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Confirmation</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
             </div>
             <form>
                 <div class="modal-body">
@@ -1608,8 +463,7 @@
                         <div class="col-lg-12">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <label class="control-label pt-2">Do you
-                                        want to cancel the associated
+                                    <label class="control-label pt-2">Do you want to cancel the associated
                                         order(s)?</label>
                                 </div>
                             </div>
@@ -1617,8 +471,12 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" (click)="cancelOrder('no')">No</button>
-                    <button type="button" class="btn btn-success" (click)="cancelOrder('yes')">Yes</button>
+                    <button type="button" class="btn btn-default" (click)="cancelOrder('no')">
+                        No
+                    </button>
+                    <button type="button" class="btn btn-success" (click)="cancelOrder('yes')">
+                        Yes
+                    </button>
                 </div>
             </form>
         </div>

@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
+import { Subscription } from "rxjs";
 import Constants from "src/app/pages/fleet/constants";
-import { AccountService, ApiService, DashboardUtilityService } from "src/app/services";
+import { AccountService, ApiService, DashboardUtilityService, ListService } from "src/app/services";
 
 @Component({
   selector: "app-driver-payments-list",
@@ -28,12 +29,15 @@ export class DriverPaymentsListComponent implements OnInit {
   driversObject: any = {};
   carriersObject: any = {};
   ownerOpObjects: any = {};
+  voidedRecID = '';
+  voidSubs: Subscription;
 
   constructor(
     private toaster: ToastrService,
     private accountService: AccountService,
     private apiService: ApiService,
-    private dashboardUtilityService: DashboardUtilityService
+    private dashboardUtilityService: DashboardUtilityService,
+    private listService: ListService,
   ) { }
 
   async ngOnInit() {
@@ -42,6 +46,17 @@ export class DriverPaymentsListComponent implements OnInit {
     this.driversObject = await this.dashboardUtilityService.getDrivers();
     this.carriersObject = await this.dashboardUtilityService.getContactsCarriers();
     this.ownerOpObjects = await this.dashboardUtilityService.getOwnerOperators();
+
+    this.voidSubs = this.listService.voidStatus.subscribe(
+      async (res: any) => {
+        if(res === true) {
+          for (const iterator of this.payments) {
+            if(iterator.paymentID === this.voidedRecID) {
+              iterator.status = 'voided';
+            }
+          }
+        }
+      })
   }
 
   unitTypeChange() {
@@ -158,5 +173,16 @@ export class DriverPaymentsListComponent implements OnInit {
     };
     this.lastItemSK = "";
     this.fetchDriverPayments();
+  }
+
+  async voidPayment(payData) {
+    let payObj = {
+      showModal: true,
+      page: "list",
+      paymentNo: payData.paymentNo,
+      paymentID: payData.paymentID
+    };
+    this.voidedRecID = payData.paymentID;
+    this.listService.triggerVoidDriverPayment(payObj);
   }
 }

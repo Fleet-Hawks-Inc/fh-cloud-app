@@ -44,7 +44,7 @@
               </div>
             </div>
 
-            <div class="col-md-2 col-lg-2 pl-0 pr-2">
+            <div class="col-md-2 col-lg-2 pl-0">
               <ng-select
                 class="form-control bgnone populate"
                 name="currentStatus"
@@ -58,7 +58,7 @@
               </ng-select>
             </div>
 
-            <div class="col-md-2 col-lg-2 pl-2">
+            <div class="col-md-2 col-lg-2 pl-0">
               <button
                 type="submit"
                 (click)="searchFilter()"
@@ -119,6 +119,7 @@
                           ></button>
                           <button
                             type="button"
+                            [disabled]="isUpgrade"
                             pButton
                             pTooltip="Add"
                             routerLink="/fleet/vehicles/add"
@@ -194,8 +195,11 @@
                                       [options]="[
                                         { name: 'Active', value: 'active' },
                                         { name: 'InActive', value: 'inActive' },
-                                        { name: 'Out of Service', value: 'outOfService' },
-                                        { name: 'Sold', value: 'sold'},
+                                        {
+                                          name: 'Out of Service',
+                                          value: 'outOfService'
+                                        },
+                                        { name: 'Sold', value: 'sold' }
                                       ]"
                                       placeholder="Any"
                                       (onChange)="filter($event.value)"

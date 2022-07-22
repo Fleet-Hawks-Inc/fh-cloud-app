@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service'
 import { Router, ActivatedRoute } from '@angular/router'
 import { ToastrService } from 'ngx-toastr'
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 
 @Component({
   selector: 'app-device-detail',
@@ -9,6 +10,7 @@ import { ToastrService } from 'ngx-toastr'
   styleUrls: ['./device-detail.component.css']
 })
 export class DeviceDetailComponent implements OnInit {
+  sessionID: string;
 
   public device: any = {
     deviceName: '',
@@ -27,7 +29,10 @@ export class DeviceDetailComponent implements OnInit {
   constructor(private apiService: ApiService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private router: Router) { }
+    private routerMgmtService: RouteManagementServiceService,
+    private router: Router) {
+    this.sessionID = this.routerMgmtService.deviceSessionID;
+    }
 
   ngOnInit() {
     let deviceType = this.route.snapshot.params['deviceType'];

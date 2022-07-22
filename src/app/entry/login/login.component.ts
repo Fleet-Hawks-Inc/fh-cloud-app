@@ -122,7 +122,7 @@ export class LoginComponent implements OnInit {
         ) {
           this.ifMFA = true;
         } else {
-          this.processPostLogin(loginResponse);
+          await this.processPostLogin(loginResponse);
         }
       } catch (error) {
         this.submitDisabled = false;

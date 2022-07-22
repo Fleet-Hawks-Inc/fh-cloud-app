@@ -622,6 +622,7 @@ export class AddAssetsComponent implements OnInit {
         this.response = res;
         this.toastr.success("Asset added successfully.");
         this.dashboardUtilityService.refreshAssets = true;
+        this.dashboardUtilityService.refreshAstCount = true;
         this.router.navigateByUrl(`/fleet/assets/list/${this.routerMgmtService.assetUpdated()}`);
         this.cancel();
       },

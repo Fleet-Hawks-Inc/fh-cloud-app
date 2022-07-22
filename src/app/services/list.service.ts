@@ -127,6 +127,12 @@ export class ListService {
   paymentDetailSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   paymentDetail = this.paymentDetailSource.asObservable();
 
+  voidPaymentSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  voidPayment = this.voidPaymentSource.asObservable();
+
+  voidStatusSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  voidStatus = this.voidStatusSource.asObservable();
+
   settlementDetailsDataSource: BehaviorSubject<Array<any>> =
     new BehaviorSubject([]);
   settlementDetails = this.settlementDetailsDataSource.asObservable();
@@ -135,6 +141,8 @@ export class ListService {
   statusChanged$: any;
 
   public popup: Subject<any> = new Subject<any>();
+
+  public maxUnit: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>(null);
 
   constructor(
     private apiService: ApiService,
@@ -356,6 +364,10 @@ export class ListService {
     this.settlementDetailsDataSource.next(value);
   }
 
+  passMaxUnit(value) {
+    this.maxUnit.next(value);
+  }
+
   triggerFetchPaymentDetail(value) {
     this.paymentDetailSource.next(value);
   }
@@ -363,5 +375,14 @@ export class ListService {
   closeModel(value) {
     this.closeModalSource.next(value)
       ;
+  }
+
+  triggerVoidDriverPayment(value) {
+    console.log('listvalue', value)
+    this.voidPaymentSource.next(value);
+  }
+
+  triggerVoidStatus(value) {
+    this.voidStatusSource.next(value);
   }
 }
