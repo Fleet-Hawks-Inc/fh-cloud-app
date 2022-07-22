@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
 import * as _ from "lodash";
 import { environment } from '../../../../../environments/environment';
-
+import { OverlayPanel } from "primeng/overlaypanel";
 
 @Component({
   selector: 'app-device-list',
@@ -17,6 +17,7 @@ import { environment } from '../../../../../environments/environment';
 
 export class DeviceListComponent implements OnInit {
   @ViewChild('dt') table: Table;
+  @ViewChild('dv') overlaypanel: OverlayPanel;
   environment = environment.isFeatureEnabled;
   get = _.get;
   _selectedColumns: any[];
