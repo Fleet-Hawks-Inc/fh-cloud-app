@@ -283,55 +283,45 @@
                             >
                           </div>
                         </td>
-
-                          <td style="width: 6%; overflow: inherit !important" alignFrozen="right"
-                        pFrozenColumn [frozen]="true">
-                        <div class="dropdown dropright">
-                          <button
-                            
-                            class="bg-transparent border-0"
-                            type="button"
-                            id="dropdownMenuButton-{{ rowIndex }}"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            <i class="fas fa-ellipsis-v"></i>
-                          </button>
-                           <div
-                            class="dropdown-menu"
-                            attr.aria-labelledby="dropdownMenuButton-{{
-                              rowIndex
-                            }}"
-                          >
-                            <a
-                              class="dropdown-item"
-                              routerLink="/manage/devices/edit/{{
+                           <td
+                          style="width: 6%; overflow: inherit !important"
+                          pFrozenColumn
+                          alignFrozen="right"
+                          [frozen]="true"
+                        >
+                          <div class="dropdown dropright">
+                            <button
+                              (click)="dv.toggle($event)"
+                              class="bg-transparent border-0"
+                              type="button"
+                              id="dropdownMenuButton-{{ rowIndex }}"
+                            >
+                              <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <p-overlayPanel
+                              #dv
+                              [showCloseIcon]="true"
+                            >
+                              <ng-template pTemplate>
+                                <a  routerLink="/manage/devices/edit/{{
                                 device.deviceSerialNo.replace('#', '/')
                               }}"
-                              >Edit</a
-                            >
+                                  style="text-align:left"
+                                  (click)="dv.hide()"
+                                  class="dropdown-item text-4"
+                                  >Edit</a
+                                >
+                                <a
+                                  class="dropdown-item text-4"
+                                  style="text-align:left"
+                                 (click)="dv.hide(); deactivateDevice(device.deviceType,device.deviceID,!device.deviceStatus)"
+                                  >{{device.deviceStatus === true ? "Deactivate" : "Activate"}}</a
+                                >
+                              </ng-template>
+                            </p-overlayPanel>
+                          </div>
+                        </td>
 
-                            <a
-                              href="javascript:;"
-                              class="dropdown-item"
-                              (click)="
-                                deactivateDevice(
-                                  device.deviceType,
-                                  device.deviceID,
-                                  !device.deviceStatus
-                                )
-                              "
-                              >{{
-                                device.deviceStatus === true
-                                  ? "Deactivate"
-                                  : "Activate"
-                              }}</a
-                            >
-                          </div>
-                          </div>
-                         </td>
-                       
                       </tr>
                     </ng-template>
                     <ng-template pTemplate="emptymessage" let-columns>
