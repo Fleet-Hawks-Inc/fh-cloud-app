@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { AccountService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import  Constants  from '../../../fleet/constants';
-
+import * as _ from "lodash";
+import { Table } from 'primeng/table';
 @Component({
   selector: 'app-journal-list',
   templateUrl: './journal-list.component.html',
@@ -23,10 +24,35 @@ export class JournalListComponent implements OnInit {
   lastItemSK = '';
   loaded = false;
   disableSearch = false;
+  _selectedColumns: any[];
+  dataColumns: any[];
+  get = _.get;
+  find = _.find;
   constructor(private toaster: ToastrService, private accountService: AccountService) { }
 
   ngOnInit() {
     this.fetchJournals();
+    this.dataColumns = [
+      { width: '20%', field: 'jrNo', header: 'Journal#', type: "text" },
+      { width: '20%', field: 'txnDate', header: 'Journal Date', type: "text" },
+      { width: '11%', field: 'referenceNo', header: 'Reference', type: "text" },
+      { width: '20%', field: 'creditTotalAmount', header: 'Amount', type: "text" },
+      { width: '22%', field: 'createdBy', header: 'Created By', type: "text" },
+    ];
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
 
   async fetchJournals(refresh?: boolean) {
@@ -124,6 +150,9 @@ export class JournalListComponent implements OnInit {
     this.fetchJournals();
     }
     this.loaded = false;
+  }
+  clear(table: Table) {
+    table.clear();
   }
 
   refreshData() {

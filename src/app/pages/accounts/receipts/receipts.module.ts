@@ -14,7 +14,11 @@ import {
 } from "@ng-bootstrap/ng-bootstrap";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { AddAccountModule } from "../add-account/add-account.module";
-import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -115,7 +119,11 @@ const routes: Routes = [
     AddAccountModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
-    InfiniteScrollModule,
+    AutoCompleteModule,
+    ButtonModule,
+    CalendarModule,
+    DropdownModule,
+    TableModule
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
