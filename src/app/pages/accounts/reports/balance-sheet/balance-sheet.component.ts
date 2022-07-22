@@ -42,20 +42,15 @@ export class BalanceSheetComponent implements OnInit {
         this.fetchBalance();
         this.setToggleOptions();
     }
-
-
   setToggleOptions() {
     this.selectedColumns = this.dataColumns;
   }
-
   @Input() get selectedColumns(): any[] {
     return this._selectedColumns;
   }
-
   set selectedColumns(val: any[]) {
     this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
-
   searchFilter() {
     if (this.filter.startDate != null && this.filter.endDate != null) {
      if (this.filter.startDate != null && this.filter.endDate == null) {
