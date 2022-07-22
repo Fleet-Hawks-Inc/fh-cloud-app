@@ -52,7 +52,7 @@ export class ActivityComponent implements OnInit {
       { width: '6%', field: 'tripNo', header: 'Trip#', type: "text" },
       { width: '6%', field: 'orderName', header: 'Order#', type: "text" },
       { width: '6%', field: 'vehicle', header: 'Vehicle', type: 'text' },
-      { width: '13%', field: 'driverName', header: 'Driver', type: 'text' },
+      { width: '11%', field: 'driverName', header: 'Driver', type: 'text' },
       { width: '25%', field: 'location', header: 'Location', type: "text" },
       { width: '8%', field: 'date', header: 'Date', type: "text" },
       { width: '8%', field: 'usState', header: 'Province (US)', type: 'text' },
@@ -125,14 +125,18 @@ export class ActivityComponent implements OnInit {
           res.canStateMiles = []
           for (let element of res.tripPlanning) {
             res.miles += Number(element.miles);
-            res.location.push(element.type + ": " + element.location )
-        
-            res.date.push(element.type + ": " + element.date)
-          } 
+            if (element.location !== '') {
+              res.location.push(element.type + ": " + element.location)
+            }
+            if (element.date !== undefined) {
+              res.date.push(element.type + ": " + element.date)
+            }
+
+          }
           for (let data of res.provinceData) {
             for (let provD of data.usProvince) {
               res.usState.push(provD.StCntry)
-              res.usStateMiles.push( provD.Total)
+              res.usStateMiles.push(provD.Total)
             }
 
             for (let canProvD of data.canProvince) {
