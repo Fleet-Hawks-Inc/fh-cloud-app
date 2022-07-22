@@ -82,18 +82,18 @@ export class CustomerCollectionComponent implements OnInit {
     this.fetchCustomersByIDs();
     this.dataColumns = [
       { width: '9%', field: 'customerName', header: 'Customer', type: "text" },
-      { width: '11%', field: 'customerEmail', header: 'Email', type: "text" },
+      { width: '10%', field: 'customerEmail', header: 'Email', type: "text" },
       { width: '7%', field: 'customerPhone', header: 'Phone', type: "text" },
       { width: '7%', field: 'cusConfirmation', header: ' Conf#', type: "text" },
-      { width: '7%', field: 'txnDate', header: 'Inv. Date#', type: "text" },
+      { width: '8%', field: 'txnDate', header: 'Inv. Date#', type: "text" },
       { width: '6%', field: 'invNo', header: 'Inv.#', type: "text" },
       { width: '9%', field: 'finalAmount', header: 'Inv Amount#', type: "text" },
       { width: '8%', field: 'balance', header: 'Balance', type: "text" },
-      { width: '7%', field: 'invStatus', header: 'Inv Status', type: "text" },
+      { width: '8%', field: 'invStatus', header: 'Inv Status', type: "text" },
       { width: '6%', field: 'elapsedDays', header: 'Days', type: "text" },
-      { width: '8%', field: 'Age30', header: '30-45', type: "text" },
-      { width: '8%', field: 'Age45', header: '45-60', type: "text" },
-      { width: '8%', field: 'Age60', header: '60-90', type: "text" },
+      { width: '7%', field: 'Age30', header: '30-45', type: "text" },
+      { width: '7%', field: 'Age45', header: '45-60', type: "text" },
+      { width: '8%', field: 'Age60', header: '60-90+', type: "text" },
 
 
     ];

@@ -211,14 +211,15 @@ export class ContactRenewalsComponent implements OnInit {
   }
 
   refreshData() {
+    this.empData = [];
     this.entityID = null;
     this.searchServiceTask = null;
     this.status = null;
-    this.empData = [];
-    this.lastItemSK = '';
     this.filterStatus = null;
-    this.dataMessage = Constants.FETCHING_DATA
+    this.loaded = false;
+    this.lastItemSK = '';
     this.fetchallitems();
+    this.dataMessage = Constants.FETCHING_DATA
   }
 
   fetchAllExport() {

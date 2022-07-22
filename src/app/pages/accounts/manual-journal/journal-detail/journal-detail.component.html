@@ -24,14 +24,14 @@
       </header>
 
       <section class="m-2">
-        <div class="row mb-3">
+        <div class="row mb-2">
           <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark">
+            <div class="text-dark">
               <div class="form-group row">
                 <div class="col-lg-12">
                   <div class="row">
-                    <div class="col">
-                      <div class="text-center p-4 cmaindiv detailbox">
+                    <div class="col pr-0">
+                      <div class="text-center p-4 bg-white detailbox">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark">
@@ -40,8 +40,8 @@
                         <p class="mb-0">JOURNAL#</p>
                       </div>
                     </div>
-                    <div class="col">
-                      <div class="text-center p-4 cmaindiv detailbox">
+                    <div class="col pr-0 pl-2">
+                      <div class="text-center p-4 bg-white detailbox">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark">
@@ -50,8 +50,8 @@
                         <p class="mb-0">DATE</p>
                       </div>
                     </div>
-                    <div class="col">
-                      <div class="text-center p-4 cmaindiv detailbox">
+                    <div class="col pr-0 pl-2">
+                      <div class="text-center p-4 bg-white detailbox">
                         <i class="far fa-calendar-check text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark">
@@ -60,8 +60,8 @@
                         <p class="mb-0">REFERENCE#</p>
                       </div>
                     </div>
-                    <div class="col">
-                      <div class="text-center p-4 cmaindiv detailbox">
+                    <div class="col pl-2">
+                      <div class="text-center p-4 bg-white detailbox">
                         <i class="fas fa-money-bill-wave text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark">
@@ -83,7 +83,9 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row">
                 <div class="col-lg-12">
-                  <table class="table table-bordered table-responsive-lg">
+                  <table
+                    class="table table-bordered table-responsive-lg table-striped"
+                  >
                     <thead>
                       <tr class="">
                         <th width="20%">Account</th>
@@ -101,22 +103,27 @@
                         <td>{{ data.debit | number: "1.2-2" }}</td>
                         <td>{{ data.credit | number: "1.2-2" }}</td>
                       </tr>
+                      <tr>
+                        <td colspan="3">
+                          <label class="control-label font-weight-bold"
+                            >Total</label
+                          >
+                        </td>
+                        <td>
+                          <label class="control-label font-weight-bold">{{
+                            journal.debitTotalAmount | number: "1.2-2"
+                          }}</label>
+                        </td>
+                        <td>
+                          <label class="control-label font-weight-bold">{{
+                            journal.creditTotalAmount | number: "1.2-2"
+                          }}</label>
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
-                <div class="col-lg-4 offset-lg-4 text-right">
-                  <label class="control-label font-weight-bold">Total</label>
-                </div>
-                <div class="col-lg-2">
-                  <label class="control-label font-weight-bold pl-5">{{
-                    journal.debitTotalAmount | number: "1.2-2"
-                  }}</label>
-                </div>
-                <div class="col-lg-2">
-                  <label class="control-label font-weight-bold pl-3">{{
-                    journal.creditTotalAmount | number: "1.2-2"
-                  }}</label>
-                </div>
+
                 <div class="col-lg-12">
                   <div class="row">
                     <div class="col-lg-6">

@@ -321,17 +321,17 @@
                       aria-labelledby="all-tab"
                     >
                       <p-table
-                        #dt
-                        [value]="items"
-                        [resizableColumns]="true"
-                        columnResizeMode="expand"
-                        scrollDirection="both"
-                        [columns]="selectedColumns"
-                        [loading]="!loaded"
-                        styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                        [scrollable]="true"
-                        [loading]="!loaded"
-                        scrollHeight="100%"
+                       #dt
+                    [value]="items"
+                    [resizableColumns]="true"
+                    columnResizeMode="expand"
+                    scrollDirection="both"
+                    [columns]="selectedColumns"
+                    [loading]="!loaded"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                    [scrollable]="true"
+                    [loading]="!loaded"
+                    scrollHeight="100%"
                       >
                         <!-- Caption template of data table -->
                         <ng-template pTemplate="caption">
@@ -518,16 +518,16 @@
                     >
                       <p-table
                         #dt
-                        [value]="requiredItems"
-                        [resizableColumns]="true"
-                        columnResizeMode="expand"
-                        scrollDirection="both"
-                        [columns]="reqSelectedColumns"
-                        [loading]="!loaded"
-                        styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                        [scrollable]="true"
-                        [loading]="!loaded"
-                        scrollHeight="100%"
+                    [value]="requiredItems"
+                    [resizableColumns]="true"
+                    columnResizeMode="expand"
+                    scrollDirection="both"
+                    [columns]="selectedColumns"
+                    [loading]="!loaded"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                    [scrollable]="true"
+                    [loading]="!loaded"
+                    scrollHeight="100%"
                       >
                         <!-- Caption template of data table -->
                         <ng-template pTemplate="caption">
@@ -672,7 +672,7 @@
 
                         <ng-template pTemplate="emptymessage" let-columns>
                           <div class="col-lg-12 mt-3 text-center">
-                            {{ dataMessage }}
+                            {{ dataMessageReq }}
                             <br /><br />
                           </div>
                         </ng-template>

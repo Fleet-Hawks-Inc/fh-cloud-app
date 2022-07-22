@@ -7,6 +7,7 @@ import { map } from "rxjs/operators";
 import { ActivatedRoute, Router } from "@angular/router";
 import { DashboardUtilityService, ListService } from "src/app/services";
 import Constants from "../../constants";
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 
 @Component({
   selector: "app-add-device",
@@ -15,6 +16,8 @@ import Constants from "../../constants";
 })
 export class AddDeviceComponent implements OnInit {
   public errorMessage = "";
+    sessionID: string;
+
   public deviceIDText = "Device ID (Serial#)";
   public title = "Add Device"
   constructor(
@@ -24,8 +27,11 @@ export class AddDeviceComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dashboardUtilityService: DashboardUtilityService,
+    private routerMgmtService: RouteManagementServiceService,
     private listService: ListService,
-  ) { }
+  ) { 
+        this.sessionID = this.routerMgmtService.deviceSessionID;
+  }
 
   public device: any = {
     deviceName: "",
@@ -82,6 +88,7 @@ export class AddDeviceComponent implements OnInit {
 
   private async isSubscriptionsValid() {
     this.dashboardUtilityService.refreshDeviceCount = true;
+    this.dashboardUtilityService.refreshPlans = true;
     let curDevCount = await this.dashboardUtilityService.fetchDevicesCount('DashCam');
     if (curDevCount) {
       this.listService.maxUnit.subscribe((res: any) => {
@@ -95,18 +102,21 @@ export class AddDeviceComponent implements OnInit {
         if (data.length > 0) {
 
           let vehicleTotal = Math.max(...data.map(o => o.vehicles))
-          this.isUpgrade = curDevCount <= vehicleTotal ? true : false;
-          console.log('curDevCount', curDevCount, vehicleTotal)
-          if (this.isUpgrade) {
-            this.deviceVehicle = this.deviceVehicle.filter(elem => {
-              return elem.value != 'DashCam';
-            })
-            let obj = {
-              summary: Constants.SafetyPlanExpired,
-              detail: 'You will not be able to add more vehicles with DashCam device.',
-              severity: 'error'
+          if (vehicleTotal == -1) { // -1 returns when subscribed Enterprise plan with no limit
+            this.isUpgrade = false;
+          } else {
+            this.isUpgrade = curDevCount <= vehicleTotal ? true : false;
+            if (this.isUpgrade) {
+              this.deviceVehicle = this.deviceVehicle.filter(elem => {
+                return elem.value != 'DashCam';
+              })
+              let obj = {
+                summary: Constants.SafetyPlanExpired,
+                detail: 'You will not be able to add more vehicles with DashCam device.',
+                severity: 'error'
+              }
+              this.dashboardUtilityService.notify(obj);
             }
-            this.dashboardUtilityService.notify(obj);
           }
         }
       })
@@ -247,6 +257,7 @@ export class AddDeviceComponent implements OnInit {
           error: (err: any) => { },
           next: (res) => {
             this.toastr.success("Device Created successfully");
+            this.router.navigate(['manage/devices/list/${this.routerMgmtService.deviceUpdated()}']);
             this.location.back();
           },
         });
@@ -288,7 +299,7 @@ export class AddDeviceComponent implements OnInit {
         },
         next: (res) => {
           this.toastr.success("Device Updated successfully");
-          this.router.navigate(['manage/devices/list']);
+          this.router.navigate(['manage/devices/list/${this.routerMgmtService.deviceUpdated()}']);
         },
       });
     } catch (error) {

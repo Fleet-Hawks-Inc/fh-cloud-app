@@ -163,7 +163,6 @@ export class DashboardUtilityService {
   };
 
   public getCarrierByID = async (ID: string) => {
-    console.log('carrier count')
     if (this.refreshCarrier) {
       let result = await this.apiService.getData(`carriers/${ID}`).toPromise()
       this.carrierData = result;

@@ -6,26 +6,30 @@
           <div class="col-md-4 col-lg-4">
             <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">
               Vendor Credit# - {{ vCrNo }}
-              <span class="badge badge-dark p-1 text-uppercase">{{ status }}</span>
+              <span class="badge badge-dark p-1 text-uppercase">{{
+                status
+              }}</span>
             </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
-            <a routerLink="/accounts/purchases/vendor-credit-notes/list" class="btn btn-sm btn-default"><i
-                class="fas fa-list"></i> All
-              Vendor Credits</a>
+            <a
+              routerLink="/accounts/purchases/vendor-credit-notes/list"
+              class="btn btn-sm btn-default"
+              ><i class="fas fa-list"></i> All Vendor Credits</a
+            >
           </div>
         </div>
       </header>
 
       <section class="m-2">
-        <div class="row mb-3">
+        <div class="row mb-2">
           <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark">
+            <div class="text-dark">
               <div class="form-group row">
                 <div class="col-lg-12">
                   <div class="row">
-                    <div class="col-md-4 col-lg-4">
-                      <div class="text-center p-4 cmaindiv">
+                    <div class="col-md-4 col-lg-4 pr-0">
+                      <div class="text-center p-4 bg-white">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark">
@@ -34,22 +38,21 @@
                         <p class="mb-0">DATE</p>
                       </div>
                     </div>
-                    <div class="col-md-4 col-lg-4">
-                      <div class="text-center p-4 cmaindiv">
+                    <div class="col-md-4 col-lg-4 pr-0 pl-2">
+                      <div class="text-center p-4 bg-white">
                         <i class="fa fa-user text-7"></i>
                         <br />
-                        <p class="mb-0
-                          text-5
-                          font-weight-bold
-                          text-dark text-capitalize">
+                        <p
+                          class="mb-0 text-5 font-weight-bold text-dark text-capitalize"
+                        >
                           {{ vendorID ? vendors[vendorID] : "-" }}
                         </p>
                         <p class="mb-0">VENDOR</p>
                       </div>
                     </div>
 
-                    <div class="col-md-4 col-lg-4">
-                      <div class="text-center p-4 cmaindiv">
+                    <div class="col-md-4 col-lg-4 pl-2">
+                      <div class="text-center p-4 bg-white">
                         <i class="fas fa-money-bill-wave text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark">
@@ -75,11 +78,15 @@
                       <table class="table table-bordered table-responsive-lg">
                         <tbody>
                           <tr>
-                            <td width="40%" class="back-color-gray font-weight-bold">
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
                               Purchase Order#
                             </td>
-                            <td width="60%">{{ purOrder ?
-                              purchaseOrders[purOrder] : "-" }}</td>
+                            <td width="60%">
+                              {{ purOrder ? purchaseOrders[purOrder] : "-" }}
+                            </td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
@@ -95,7 +102,9 @@
                 <div class="col-lg-6">
                   <div class="row">
                     <div class="col-lg-12">
-                      <table class="table table-bordered table-hover">
+                      <table
+                        class="table table-bordered table-hover table-striped"
+                      >
                         <thead>
                           <tr>
                             <th>Commodity</th>
@@ -118,7 +127,10 @@
                             <td>{{ item.amount ? item.amount : "-" }}</td>
                             <td>{{ item.desc ? item.desc : "-" }}</td>
                           </tr>
-                          <tr *ngIf="crDetails?.length === 0" class="text-center">
+                          <tr
+                            *ngIf="crDetails?.length === 0"
+                            class="text-center"
+                          >
                             <td colspan="5">No Data Found</td>
                           </tr>
                         </tbody>
@@ -130,7 +142,9 @@
                 <div class="col-lg-6">
                   <div class="row">
                     <div class="col-lg-12">
-                      <table class="table table-bordered table-hover">
+                      <table
+                        class="table table-bordered table-hover table-striped"
+                      >
                         <thead>
                           <tr>
                             <th>Account Name</th>
@@ -139,35 +153,29 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngIf="transactionLog.length
-                            === 0" class="text-center">
+                          <tr
+                            *ngIf="transactionLog.length === 0"
+                            class="text-center"
+                          >
                             <td colspan="3">
                               {{ dataMessage }}
                             </td>
                           </tr>
                           <tr *ngFor="let data of transactionLog">
-                            <td class="text-capitalize">{{
-                              data.actName
-                              }}</td>
+                            <td class="text-capitalize">{{ data.actName }}</td>
                             <td>
-                              <span *ngIf="data.trxType ===
-                                'debit'">
-                                {{ data.amount | number :
-                                '1.2-2' }}
+                              <span *ngIf="data.trxType === 'debit'">
+                                {{ data.amount | number: "1.2-2" }}
                               </span>
-                              <span *ngIf="data.trxType !=
-                                'debit'">
+                              <span *ngIf="data.trxType != 'debit'">
                                 0.00
                               </span>
                             </td>
                             <td>
-                              <span *ngIf="data.trxType ===
-                                'credit'">
-                                {{ data.amount | number :
-                                '1.2-2' }}
+                              <span *ngIf="data.trxType === 'credit'">
+                                {{ data.amount | number: "1.2-2" }}
                               </span>
-                              <span *ngIf="data.trxType !=
-                                'credit'">
+                              <span *ngIf="data.trxType != 'credit'">
                                 0.00
                               </span>
                             </td>
@@ -179,7 +187,7 @@
                 </div>
 
                 <div class="col-6">
-                  <table class="table table-bordered">
+                  <table class="table table-bordered table-striped">
                     <thead>
                       <th>Sr.</th>
                       <th>Name</th>
@@ -192,19 +200,29 @@
                           <span>No document found</span>
                         </td>
                       </tr>
-                      <tr *ngFor="let doc of docs; let d= index">
+                      <tr *ngFor="let doc of docs; let d = index">
                         <td>{{ d + 1 }}</td>
                         <td>{{ doc.displayName }}</td>
                         <td>
-                          <a class="image-popup-no-margins" href="{{
-                            doc.docPath }}" target="_blank">
-                            <img class="img-fluid img_thumbnail" src="{{
-                              doc.imgPath }}" />
+                          <a
+                            class="image-popup-no-margins"
+                            href="{{ doc.docPath }}"
+                            target="_blank"
+                          >
+                            <img
+                              class="img-fluid img_thumbnail"
+                              src="{{ doc.imgPath }}"
+                            />
                           </a>
                         </td>
                         <td class="cursorpoint text-center">
-                          <a href="javascript:;" (click)="deleteDocument(doc.displayName, d)" class="modal-with-form">
-                            <em class="fas fa-times text-danger"></em></a>
+                          <a
+                            href="javascript:;"
+                            (click)="deleteDocument(doc.displayName, d)"
+                            class="modal-with-form"
+                          >
+                            <em class="fas fa-times text-danger"></em
+                          ></a>
                         </td>
                       </tr>
                     </tbody>

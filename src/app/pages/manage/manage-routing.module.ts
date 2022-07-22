@@ -18,9 +18,9 @@ const routes: Routes = [
     children: [
       { path: "add", component: AddUserComponent, data: { title: "Add User" } },
       {
-        path: "list",
+        path: "list/:sessionID",
         component: UsersListComponent,
-        data: { title: "Users List" },
+        data: { title: "Users List", reuseRoute: true },
       },
       {
         path: "detail/:contactID",

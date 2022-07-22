@@ -1,196 +1,217 @@
 <section class="body">
-   <div class="inner-wrapper">
-      <section role="main" class="content-body pl-0 pr-0 pt-0">
-         <header class="page-header pr19 pl7">
-            <div class="row" style="padding-top:10px;">
-               <div class="col-md-4 col-lg-4">
-                  <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Purchase
-                     Order# - {{ orderNo }} <span class="badge
-                        badge-dark p-1 text-uppercase">{{ status }}</span></h4>
-               </div>
-               <div class="col-md-8 col-lg-8 text-right pr-1">
-                  <button type="button" class="btn btn-success btn-sm mr-3" (click)="sendConfirmationEmail()"
-                     [disabled]="emailDisabled">
-                     Send Email To Vendor
-                  </button>
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header pr19 pl7">
+        <div class="row" style="padding-top: 10px">
+          <div class="col-md-4 col-lg-4">
+            <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">
+              Purchase Order# - {{ orderNo }}
+              <span class="badge badge-dark p-1 text-uppercase">{{
+                status
+              }}</span>
+            </h4>
+          </div>
+          <div class="col-md-8 col-lg-8 text-right pr-1">
+            <button
+              type="button"
+              class="btn btn-success btn-sm mr-3"
+              (click)="sendConfirmationEmail()"
+              [disabled]="emailDisabled"
+            >
+              Send Email To Vendor
+            </button>
 
-                  <a routerLink="/accounts/purchases/orders/list" class="btn
-                     btn-sm btn-default"><i class="fas fa-list"></i> All
-                     Purchase Orders</a>
-               </div>
-            </div>
-         </header>
+            <a
+              routerLink="/accounts/purchases/orders/list"
+              class="btn btn-sm btn-default"
+              ><i class="fas fa-list"></i> All Purchase Orders</a
+            >
+          </div>
+        </div>
+      </header>
 
-         <section class="m-2">
-            <div class="row mb-3">
-               <div class="col-lg-12">
-                  <div class="bg-white p-3 text-dark">
-                     <div class="form-group row">
-                        <div class="col-lg-12">
-                           <div class="row">
-                              <div class="col-md-4 col-lg-4">
-                                 <div class="text-center p-4 cmaindiv">
-                                    <i class="far fa-calendar-alt text-7"></i>
-                                    <br>
-                                    <p class="mb-0 text-5 font-weight-bold
-                                       text-dark">{{ txnDate |
-                                       date:"yyyy/MM/dd" }}</p>
-                                    <p class="mb-0">DATE</p>
-                                 </div>
-                              </div>
-                              <div class="col-md-4 col-lg-4">
-                                 <div class="text-center p-4 cmaindiv">
-                                    <i class="fa fa-user text-7"></i>
-                                    <br>
-                                    <p class="mb-0 text-5 font-weight-bold
-                                       text-dark text-capitalize">{{ vendorName
-                                       }}</p>
-                                    <p class="mb-0">VENDOR</p>
-                                 </div>
-                              </div>
+      <section class="m-2">
+        <div class="row mb-2">
+          <div class="col-lg-12">
+            <div class="text-dark">
+              <div class="form-group row">
+                <div class="col-lg-12">
+                  <div class="row">
+                    <div class="col-md-4 col-lg-4 pr-0">
+                      <div class="text-center p-4 bg-white">
+                        <i class="far fa-calendar-alt text-7"></i>
+                        <br />
+                        <p class="mb-0 text-5 font-weight-bold text-dark">
+                          {{ txnDate | date: "yyyy/MM/dd" }}
+                        </p>
+                        <p class="mb-0">DATE</p>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4 pr-0 pl-2">
+                      <div class="text-center p-4 bg-white">
+                        <i class="fa fa-user text-7"></i>
+                        <br />
+                        <p
+                          class="mb-0 text-5 font-weight-bold text-dark text-capitalize"
+                        >
+                          {{ vendorName }}
+                        </p>
+                        <p class="mb-0">VENDOR</p>
+                      </div>
+                    </div>
 
-                              <div class="col-md-4 col-lg-4">
-                                 <div class="text-center p-4 cmaindiv">
-                                    <i class="fas fa-money-bill-wave text-7"></i>
-                                    <br>
-                                    <p class="mb-0 text-5 font-weight-bold
-                                       text-dark">{{ finalTotal
-                                       | number : '1.2-2'
-                                       }} {{ currency }}</p>
-                                    <p class="mb-0">AMOUNT</p>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-
-                     </div>
+                    <div class="col-md-4 col-lg-4 pl-2">
+                      <div class="text-center p-4 bg-white">
+                        <i class="fas fa-money-bill-wave text-7"></i>
+                        <br />
+                        <p class="mb-0 text-5 font-weight-bold text-dark">
+                          {{ finalTotal | number: "1.2-2" }} {{ currency }}
+                        </p>
+                        <p class="mb-0">AMOUNT</p>
+                      </div>
+                    </div>
                   </div>
-               </div>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
 
-            <div class="row mb-3">
-               <div class="col-lg-12">
-                  <div class="bg-white p-3 text-dark">
-                     <div class="form-group row">
-                        <div class="col-lg-6">
-                           <div class="row">
-                              <div class="col-lg-12">
-                                 <table class="table table-bordered
-                                    table-responsive-lg">
-                                    <tbody>
-                                       <tr>
-                                          <td class="back-color-gray
-                                             font-weight-bold">Reference#</td>
-                                          <td>{{ refNo ?
-                                             refNo : '-' }}</td>
-                                       </tr>
-                                       <tr>
-                                          <td class="back-color-gray
-                                             font-weight-bold">Remarks</td>
-                                          <td>{{ remarks ?
-                                             remarks : '-' }}</td>
-                                       </tr>
-                                       <tr>
-                                          <td class="back-color-gray
-                                             font-weight-bold">Total Amount</td>
-                                          <td>{{ finalTotal |
-                                             number : '1.2-2' }}
-                                             {{ currency }}</td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="col-lg-6">
-                           <div class="row">
-                              <div class="col-lg-12">
-                                 <table class="table table-bordered
-                                    table-responsive-lg text-capitalize">
-                                    <tbody>
-
-                                       <tr>
-                                          <td width="40%" class="back-color-gray
-                                             font-weight-bold">Type</td>
-                                          <td width="60%">
-                                             {{ poType }}
-                                          </td>
-                                       </tr>
-
-                                    </tbody>
-                                 </table>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="col-lg-12">
-                           <div class="row">
-                              <div class="col-lg-6">
-                                 <table class="table table-bordered
-                                    table-hover">
-                                    <thead>
-                                       <tr>
-                                          <th>Commodity</th>
-                                          <th>Quantity</th>
-                                          <th>Rate</th>
-                                          <th>Amount</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody>
-                                       <tr *ngFor="let data of
-                                       commDetails; let
-                                          j=index">
-                                          <td>{{ data.comm }}</td>
-                                          <td>{{ data.qty }} {{ data.qtyTyp }}</td>
-                                          <td>{{ data.rate | number : '1.2-2' }}
-                                             {{
-                                             currency }} / {{
-                                             data.rateTyp
-                                             }}</td>
-                                          <td>{{ data.amount | number : '1.2-2'
-                                             }} {{
-                                             currency }}</td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </div>
-                              <div class="col-6">
-                                 <table class="table table-bordered">
-                                    <thead>
-                                       <th>Sr.</th>
-                                       <th>Name</th>
-                                       <th>Icon/Thumbnail</th>
-                                       <th>Action</th>
-                                    </thead>
-                                    <tbody>
-                                       <tr *ngIf="documents.length == 0">
-                                          <td colspan="4">
-                                             <span>No document found</span>
-                                          </td>
-                                       </tr>
-                                       <tr *ngFor="let doc of documents; let d = index">
-                                          <td>{{ d + 1 }}</td>
-                                          <td>{{ doc.displayName }}</td>
-                                          <td>
-                                             <a class="image-popup-no-margins" href="{{ doc.docPath }}" target="_blank">
-                                                <img class="img-fluid img_thumbnail" src="{{ doc.imgPath }}" />
-                                             </a>
-                                          </td>
-                                          <td class="cursorpoint">
-                                             <a href="javascript:;" (click)="deleteDocument(doc.displayName, d)"
-                                                class="modal-with-form">
-                                                <em class="fas fa-times text-danger"></em></a>
-                                          </td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row">
+                <div class="col-lg-6">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-bordered table-responsive-lg">
+                        <tbody>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Reference#
+                            </td>
+                            <td>{{ refNo ? refNo : "-" }}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Remarks
+                            </td>
+                            <td>{{ remarks ? remarks : "-" }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
-               </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table
+                        class="table table-bordered table-responsive-lg text-capitalize"
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
+                              Type
+                            </td>
+                            <td width="60%">
+                              {{ poType }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Total Amount
+                            </td>
+                            <td>
+                              {{ finalTotal | number: "1.2-2" }} {{ currency }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <table
+                        class="table table-bordered table-hover table-striped"
+                      >
+                        <thead>
+                          <tr>
+                            <th>Commodity</th>
+                            <th>Quantity</th>
+                            <th>Rate</th>
+                            <th>Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let data of commDetails; let j = index">
+                            <td>{{ data.comm }}</td>
+                            <td>{{ data.qty }} {{ data.qtyTyp }}</td>
+                            <td>
+                              {{ data.rate | number: "1.2-2" }} {{ currency }} /
+                              {{ data.rateTyp }}
+                            </td>
+                            <td>
+                              {{ data.amount | number: "1.2-2" }} {{ currency }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="col-6">
+                      <table class="table table-bordered table-striped">
+                        <thead>
+                          <th>Sr.</th>
+                          <th>Name</th>
+                          <th>Icon/Thumbnail</th>
+                          <th>Action</th>
+                        </thead>
+                        <tbody>
+                          <tr *ngIf="documents.length == 0">
+                            <td colspan="4">
+                              <span>No document found</span>
+                            </td>
+                          </tr>
+                          <tr *ngFor="let doc of documents; let d = index">
+                            <td>{{ d + 1 }}</td>
+                            <td>{{ doc.displayName }}</td>
+                            <td>
+                              <a
+                                class="image-popup-no-margins"
+                                href="{{ doc.docPath }}"
+                                target="_blank"
+                              >
+                                <img
+                                  class="img-fluid img_thumbnail"
+                                  src="{{ doc.imgPath }}"
+                                />
+                              </a>
+                            </td>
+                            <td class="cursorpoint">
+                              <a
+                                href="javascript:;"
+                                (click)="deleteDocument(doc.displayName, d)"
+                                class="modal-with-form"
+                              >
+                                <em class="fas fa-times text-danger"></em
+                              ></a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-         </section>
+          </div>
+        </div>
       </section>
-   </div>
+    </section>
+  </div>
 </section>

@@ -28,7 +28,7 @@
                 </ul>
               </div>
             </div>
-            <div class="col-md-2 col-lg-2 pl-0 pr-0">
+            <div class="col-md-2 col-lg-2 pl-0">
               <ng-select class="form-control custom" name="assetType" [(ngModel)]="assetType" placeholder="Select Type">
                 <ng-option value="container">Container</ng-option>
                 <ng-option value="double_drop">Double Drop</ng-option>
@@ -50,7 +50,7 @@
                 <ng-option value="tank_trailer">Tank Trailer</ng-option>
               </ng-select>
             </div>
-            <div class="col-md-2 col-lg-2">
+            <div class="col-md-2 col-lg-2 pl-0">
               <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">
                 Search
               </button>
@@ -80,47 +80,17 @@
                         <div class="text-right">
                           <span>Showing {{ allData.length }} entries </span>
                           &nbsp;
-                          <button
-                            type="button"
-                            pButton
-                            (click)="refreshData()"
-                            pTooltip="Refresh"
-                            class="p-button-outlined mr-2"
-                            icon="fas fa-sync"
-                          ></button>
-                          <button
-                            type="button"
-                            pButton
-                            pTooltip="Add"
-                            routerLink="/fleet/assets/add"
-                            class="p-button-outlined mr-2"
-                            icon="pi pi-plus"
-                          ></button>
-                          <button
-                            pButton
-                            pRipple
-                            pTooltip="Clear Filter"
-                            class="p-button-outlined mr-2"
-                            icon="pi pi-filter-slash"
-                            (click)="clear(dt)"
-                          ></button>
-                          <button
-                            type="button"
-                            pButton
-                            pRipple
-                            class="p-button-outlined mr-2"
-                            icon="fas fa-regular fa-file-excel"
-                            (click)="requiredCSV()"
-                            pTooltip="Excel"
-                          ></button>
-                          <p-multiSelect
-                            [options]="dataColumns"
-                            [(ngModel)]="selectedColumns"
-                            optionLabel="header"
-                            selectedItemsLabel="{0} columns selected"
-                            [style]="{ minWidth: '200px' }"
-                            placeholder="Choose Columns"
-                          >
+                          <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
+                            class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                          <button type="button" pButton pTooltip="Add" [disabled]="isUpgrade"
+                            routerLink="/fleet/assets/add" class="p-button-outlined mr-2" icon="pi pi-plus"></button>
+                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel" (click)="requiredCSV()" pTooltip="Excel"></button>
+                          <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header"
+                            selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns">
                           </p-multiSelect>
                         </div>
                       </div>

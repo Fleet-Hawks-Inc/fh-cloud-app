@@ -79,6 +79,7 @@ export class FuelTransactionsComponent implements OnInit {
     { width: '12%', field: 'data.useType', header: 'Use Type', type: 'text' },
     { width: '12%', field: 'data.type', header: ' Type', type: 'text' },
     { width: '12%', field: 'data.amt', header: 'Fuel Amount', type: 'text' },
+    { width: '12%', field: 'gst', header: 'GST', type: 'text' },
     { width: '12%', field: 'data.site', header: 'Site', type: 'text' },
     { width: '12%', field: 'data.city', header: 'Province', type: 'text' }
   ];
@@ -121,7 +122,20 @@ export class FuelTransactionsComponent implements OnInit {
       this.suggestedUnits = [];
       // this.getStartandEndVal();
       result[`Items`].forEach(element => {
-
+        element.gst = '';
+        element.pst = '';
+        if(element.data && element.data.tax) {
+          for (const iterator of element.data.tax) {
+            if(iterator.taxCode) {
+              if(iterator.taxCode === 'GST') {
+                element.gst = iterator.amount;
+              } else if (iterator.taxCode === 'PST') {
+                element.pst = iterator.amount;
+              }
+            }
+          }
+        }
+        
         element.selected = false;
         let date: any = moment(element.date)
         if (element.time) {
@@ -205,7 +219,8 @@ export class FuelTransactionsComponent implements OnInit {
         let obj = {
           fuelID: iterator.data.fuelID,
           amount: iterator.data.amt,
-          currency: iterator.data.currency
+          currency: iterator.data.currency,
+          gst: iterator.gst
         }
         this.txnData.fuelData.push(obj);
       }
@@ -244,6 +259,8 @@ export class FuelTransactionsComponent implements OnInit {
           this.toaster.success("Fuel Transaction added successfully.");
           this.fuelList = [];
           $("#fuelTxnModel").modal("hide");
+          this.lastEvaluatedKey = ''
+          this.lastTimeCreated = ''
           this.initDataTable();
         },
       });

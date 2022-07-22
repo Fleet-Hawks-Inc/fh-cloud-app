@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ApiService } from "src/app/services";
 import { ToastrService } from "ngx-toastr";
 import { Location } from "@angular/common";
+import { ActivatedRoute } from "@angular/router";
 declare var $;
 @Component({
   selector: "app-zone-add",
@@ -12,29 +13,64 @@ export class ZoneAddComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
-    private location: Location
+    private location: Location,
+    private route: ActivatedRoute
   ) {}
 
   public zone = {
     zName: null,
     zDesc: null,
-    coordinates: [],
+    coordinates: null,
+    pRates: null,
+    aspRates: null,
   };
-  public saveDisabled = false;
+  zoneID: any = null;
 
-  ngOnInit(): void {
-    this.initMap();
+  public saveDisabled = false;
+  map = null;
+  newPolygon = null;
+  poly = null;
+
+  async ngOnInit() {
+    this.zoneID = this.route.snapshot.params["zoneID"];
+    if (this.zoneID) {
+      await this.fetchZoneDetails();
+    }
+    await this.initMap();
+  }
+
+  async fetchZoneDetails() {
+    const result = await this.apiService
+      .getData("zone/" + this.zoneID)
+      .toPromise();
+    this.zone.zName = result[0].zName;
+    this.zone.zDesc = result[0].zDesc;
+    this.zone.coordinates = result[0].coordinates;
+    this.zone.pRates = result[0].pRates;
+    this.zone.aspRates = result[0].aspRates;
   }
 
   initMap() {
-    const map = new google.maps.Map(
-      document.getElementById("map") as HTMLElement,
-      {
-        center: { lat: 52.9183784, lng: -108.4769625 },
-        mapId: "620eb1a41a9e36d4",
-        zoom: 8,
-      }
-    );
+    this.map = null;
+    if (this.zoneID && this.zone.coordinates.length > 0) {
+      this.map = new google.maps.Map(
+        document.getElementById("map") as HTMLElement,
+        {
+          center: this.zone.coordinates[0],
+          mapId: "620eb1a41a9e36d4",
+          zoom: 9,
+        }
+      );
+    } else {
+      this.map = new google.maps.Map(
+        document.getElementById("map") as HTMLElement,
+        {
+          center: { lat: 52.9183784, lng: -108.4769625 },
+          mapId: "620eb1a41a9e36d4",
+          zoom: 8,
+        }
+      );
+    }
     const drawingManager = new google.maps.drawing.DrawingManager({
       drawingMode: google.maps.drawing.OverlayType.MARKER,
       drawingControl: true,
@@ -51,7 +87,7 @@ export class ZoneAddComponent implements OnInit {
         zIndex: 1,
       },
     });
-    drawingManager.setMap(map);
+    drawingManager.setMap(this.map);
     const coordinates = [];
     google.maps.event.addListener(
       drawingManager,
@@ -69,12 +105,15 @@ export class ZoneAddComponent implements OnInit {
 
     const input = document.getElementById("searchInput") as HTMLInputElement;
     const searchBox = new google.maps.places.SearchBox(input);
-
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    if (this.zoneID) {
+      const button = document.getElementById("clearMap") as HTMLButtonElement;
+      this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(button);
+    }
 
     // Bias the SearchBox results towards current map's viewport.
-    map.addListener("bounds_changed", () => {
-      searchBox.setBounds(map.getBounds() as google.maps.LatLngBounds);
+    this.map.addListener("bounds_changed", () => {
+      searchBox.setBounds(this.map.getBounds() as google.maps.LatLngBounds);
     });
 
     let markers: google.maps.Marker[] = [];
@@ -99,7 +138,6 @@ export class ZoneAddComponent implements OnInit {
 
       places.forEach((place) => {
         if (!place.geometry || !place.geometry.location) {
-          console.log("Returned place contains no geometry");
           return;
         }
 
@@ -114,7 +152,7 @@ export class ZoneAddComponent implements OnInit {
         // Create a marker for each place.
         markers.push(
           new google.maps.Marker({
-            map,
+            map: this.map,
             icon,
             title: place.name,
             position: place.geometry.location,
@@ -128,10 +166,30 @@ export class ZoneAddComponent implements OnInit {
           bounds.extend(place.geometry.location);
         }
       });
-      map.fitBounds(bounds);
+      this.map.fitBounds(bounds);
     });
+    if (this.zone.coordinates.length > 0) {
+      this.newPolygon = new google.maps.Polygon({
+        paths: this.zone.coordinates,
+        fillColor: "#afb0b0",
+        fillOpacity: 0.6,
+        strokeWeight: 3,
+        zIndex: 1,
+      });
+      this.newPolygon.setMap(this.map);
+    }
   }
 
+  cancel() {
+    this.location.back();
+  }
+  clear() {
+    if (this.newPolygon) {
+      this.newPolygon.setMap(null);
+    } else {
+      this.poly.setMap(null);
+    }
+  }
   async saveZone() {
     this.saveDisabled = true;
     const coordinates = localStorage.getItem("zCords");
@@ -166,7 +224,6 @@ export class ZoneAddComponent implements OnInit {
       pRates: pRates,
       aspRates: aspRates,
     };
-    console.log(zoneData);
     this.apiService.postData("zone", zoneData).subscribe({
       complete: () => {},
       error: (err) => {
@@ -174,6 +231,36 @@ export class ZoneAddComponent implements OnInit {
       },
       next: (res) => {
         this.toastr.success("Zone added successfully");
+        this.location.back();
+      },
+    });
+  }
+  async updateZone() {
+    this.saveDisabled = true;
+    const coordinates = localStorage.getItem("zCords");
+    if (coordinates) {
+      this.zone.coordinates = JSON.parse(coordinates);
+    }
+    localStorage.removeItem("zCords");
+    if (!this.zone.zName) {
+      this.toastr.error("Zone Name is Required");
+      return;
+    }
+    const zoneData = {
+      zName: this.zone.zName,
+      zDesc: this.zone.zDesc,
+      coordinates: this.zone.coordinates,
+      pRates: this.zone.pRates,
+      aspRates: this.zone.aspRates,
+      id: this.zoneID,
+    };
+    this.apiService.putData("zone", zoneData).subscribe({
+      complete: () => {},
+      error: (err) => {
+        this.saveDisabled = false;
+      },
+      next: (res) => {
+        this.toastr.success("Zone Updated successfully");
         this.location.back();
       },
     });

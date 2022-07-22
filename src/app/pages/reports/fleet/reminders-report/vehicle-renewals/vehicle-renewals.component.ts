@@ -184,13 +184,14 @@ export class VehicleRenewalsComponent implements OnInit {
   }
   
   refreshData(){
+      this.allData = [];
       this.searchServiceTask = null;
       this.filterStatus = null;
       this.status = null;
-      this.allData = [];
       this.lastItemSK = '';
-      this.dataMessage = Constants.FETCHING_DATA
+      this.loaded = false;
       this.fetchVehiclesdata(); 
+      this.dataMessage = Constants.FETCHING_DATA
   }
   
   fetchAllExport() {
