@@ -1148,6 +1148,9 @@ export class AddSettlementComponent implements OnInit {
     this.settlementData.miles.driverLoaded = Number(
       this.settlementData.miles.driverLoaded.toFixed(2)
     );
+    this.settlementData.miles.driverLoadedTeam = Number(
+      this.settlementData.miles.driverLoadedTeam.toFixed(2)
+    );
     this.settlementData.miles.driverEmpty = Number(
       this.settlementData.miles.driverEmpty.toFixed(2)
     );
