@@ -518,8 +518,9 @@ export class PaymentPdfsComponent implements OnInit {
                   }
                   obj.plans.push(planObj);
                 };
-                this.paymentTrips.push(obj);
+                
               });
+              this.paymentTrips.push(obj);
             }
           }
         });

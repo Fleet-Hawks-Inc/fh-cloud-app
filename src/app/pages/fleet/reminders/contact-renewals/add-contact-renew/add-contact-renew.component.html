@@ -190,7 +190,7 @@
                         <div class="row">
                           <div class="col-10">
                             <a href="javascript:;" class="btn btn-default mr-2"
-                              routerLink="/fleet/reminders/contact-renewals/list">Cancel</a>
+                              routerLink="/fleet/reminders/contact-renewals/list/{{sessionID}}">Cancel</a>
                               
                             <button *ngIf="!reminderID && !contactF.form.valid" [disabled]="!contactF.form.valid"
                               (click)="addRenewal()" class="btn btn-success">

@@ -2918,7 +2918,7 @@ export class AddTripComponent implements OnInit {
         // this.trips = [];
         this.actualMiles = 0;
         this.apiService
-          .getData("routes/" + encodeURIComponent(JSON.stringify([event])))
+          .getData("routes/detail/" + encodeURIComponent(JSON.stringify([event])))
           .subscribe(async (result: any) => {
             if (result && result.length > 0) {
               let routeData: any = [];
