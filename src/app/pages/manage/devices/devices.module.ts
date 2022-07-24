@@ -31,6 +31,9 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DropdownModule } from 'primeng/dropdown';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { DialogModule } from 'primeng/dialog';
+
 const routes: Routes = [
   {
     path: "add",
@@ -43,9 +46,9 @@ const routes: Routes = [
     data: { title: "Edit Device" },
   },
   {
-    path: "list",
+    path: "list/:sessionID",
     component: DeviceListComponent,
-    data: { title: "Devices List" },
+    data: { title: "Devices List",reuseRoute: true},
   },
   {
     path: "detail/:deviceType/:deviceSerialNo",
@@ -82,7 +85,9 @@ const routes: Routes = [
     SplitButtonModule,
     CalendarModule,
     AutoCompleteModule,
-    DropdownModule
+    DropdownModule,
+    OverlayPanelModule,
+    DialogModule
   ],
 })
 export class DeviceModule { }

@@ -1,13 +1,12 @@
 import { animate, style, transition, trigger } from "@angular/animations";
 import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { GoogleMap, MapInfoWindow, MapMarker } from "@angular/google-maps";
+import { OneSignal } from "onesignal-ngx";
 import { Table } from "primeng/table";
 import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { ApiService } from "../../services";
-import { OneSignal } from 'onesignal-ngx';
-import { Auth } from "aws-amplify";
-
+import { AppComponent } from "./../../app.component";
 
 declare var $: any;
 declare var H: any;
@@ -31,6 +30,8 @@ declare var H: any;
 export class MapDashboardComponent implements OnInit, AfterViewInit {
   @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
   @ViewChild(GoogleMap) googleMap: GoogleMap;
+  @ViewChild(MapMarker) driverMarker: MapMarker;
+  @ViewChild(MapMarker) mapMarker: MapMarker;
   environment = environment.isFeatureEnabled;
   title = "Map Dashboard";
   visible = false;
@@ -48,32 +49,46 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     streetViewControl: false,
     fullscreenControl: true,
     zoom: 5,
-    mapId: '620eb1a41a9e36d4'
-
-  }
+    mapId: "620eb1a41a9e36d4",
+  };
   lat = -104.618896;
   lng = 50.44521;
 
-
-  driverMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: '', animation: google.maps.Animation.DROP };
-  assetMarkerOptions: google.maps.MarkerOptions = {
-
+  driverMarkerOptions: google.maps.MarkerOptions = {
     draggable: false,
     icon: {
-
-      url: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="110" r="100" stroke="#FE904D" fill="#000000" fill-opacity="1.0" stroke-width="15" /></svg>'),
+      url:
+        "data:image/svg+xml;charset=utf-8," +
+        encodeURIComponent(
+          '<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="110" r="100" stroke="#4CAF50" fill="#000000" fill-opacity="1.0" stroke-width="15" /></svg>'
+        ),
       scaledSize: new google.maps.Size(40, 40),
     },
-    animation: google.maps.Animation.DROP
+    animation: google.maps.Animation.DROP,
+  };
+  assetMarkerOptions: google.maps.MarkerOptions = {
+    draggable: false,
+    icon: {
+      url:
+        "data:image/svg+xml;charset=utf-8," +
+        encodeURIComponent(
+          '<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="110" r="100" stroke="#FE904D" fill="#000000" fill-opacity="1.0" stroke-width="15" /></svg>'
+        ),
+      scaledSize: new google.maps.Size(40, 40),
+    },
+    animation: google.maps.Animation.DROP,
   };
   vehicleMarkerOptions: google.maps.MarkerOptions = {
     draggable: false,
     icon: {
-
-      url: 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="110" r="100" stroke="#FFDE59" fill="#000000" fill-opacity="1.0" stroke-width="15" /></svg>'),
+      url:
+        "data:image/svg+xml;charset=utf-8," +
+        encodeURIComponent(
+          '<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="110" r="100" stroke="#FFDE59" fill="#000000" fill-opacity="1.0" stroke-width="15" /></svg>'
+        ),
       scaledSize: new google.maps.Size(40, 40),
     },
-    animation: google.maps.Animation.DROP
+    animation: google.maps.Animation.DROP,
   };
   driverPositions = [];
   assetPositions = [];
@@ -83,27 +98,27 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   frontEndData = {
     drivers: {},
   };
-
+  showDrivers = true;
+  showAssets = true;
+  showVehicles = true;
 
   activeTrips = [];
   constructor(
     private apiService: ApiService,
-    private oneSignal: OneSignal
-  ) {
-
-
-  }
+    private oneSignal: OneSignal,
+    private app: AppComponent
+  ) {}
 
   async ngOnInit() {
     await this.initPushNotification();
     await this.getCurrentDriverLocation();
     await this.getCurrentAssetLocation();
     await this.getVehicleLocationByDashCam();
-
+    await this.app.getSubscriptionDetails();
   }
 
   private async initPushNotification() {
-    const currentCarrierId = localStorage.getItem('xfhCarrierId')
+    const currentCarrierId = localStorage.getItem("xfhCarrierId");
     if (environment.testCarrier.includes(currentCarrierId)) {
       return;
     }
@@ -113,167 +128,181 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     this.oneSignal.isPushNotificationsEnabled(async (isEnabled) => {
       if (isEnabled) {
         // this console is for info do not remove it.
-        this.oneSignal.setExternalUserId(localStorage.getItem('xfhCarrierId'));
+        this.oneSignal.setExternalUserId(localStorage.getItem("xfhCarrierId"));
         console.log("Push notifications are already enabled!");
-      }
-      else {
-
+      } else {
         await this.oneSignal.showHttpPrompt({
           force: true,
         });
         // await this.oneSignal.registerForPushNotifications();
-        this.oneSignal.setExternalUserId(localStorage.getItem('xfhCarrierId'));
+        this.oneSignal.setExternalUserId(localStorage.getItem("xfhCarrierId"));
         // this console is for info do not remove it.
         console.log("Push notifications are not enabled yet.");
       }
     });
   }
   ngAfterViewInit() {
-
     //Add custom control on map or legends
-    var controlTrashUI = document.createElement('DIV');
-    controlTrashUI.style.cursor = 'pointer';
+    var controlTrashUI = document.createElement("DIV");
+    controlTrashUI.style.cursor = "pointer";
 
-    controlTrashUI.style.marginLeft = '10px';
-    controlTrashUI.style.padding = '5px';
-    controlTrashUI.style.color = "black"
-    controlTrashUI.innerHTML = "<img style='width:80%' src='assets/legends.png' />";
-    this.googleMap.controls[google.maps.ControlPosition.LEFT_TOP].push(controlTrashUI);
+    controlTrashUI.style.marginLeft = "10px";
+    controlTrashUI.style.padding = "5px";
+    controlTrashUI.style.color = "black";
+    controlTrashUI.innerHTML =
+      "<img style='width:100%' class='rounded' src='assets/legends.png' />";
+    this.googleMap.controls[google.maps.ControlPosition.LEFT_TOP].push(
+      controlTrashUI
+    );
 
+    console.log("Values on ngAfterViewInit():");
+    console.log("primaryColorSample:", this.driverMarker);
+    console.log("primaryColorSample:", this.mapMarker);
   }
   /**
    * Get driver location for last 24 hours
    */
   async getCurrentDriverLocation() {
-
-    this.apiService.getData('dashboard/drivers/getCurrentDriverLocation').subscribe((data) => {
-      if (data) {
-        this.driverPositions = [];
-        for (const key in data) {
-          const value = data[key]
-          const speedVal = parseInt(value.speed) / 3.6;
-          this.driverPositions.push({
-            position: { lng: parseFloat(value.lng), lat: parseFloat(value.lat) },
-            data: {
-              userId: value.userId,
-              time: `${new Date(value.timeCreated).toLocaleDateString()} | ${new Date(value.timeCreated).toLocaleTimeString()}`,
-              speed: speedVal.toFixed(2),
-              driverId: key,
-              altitude: parseInt(value.altitude).toFixed(2),
-              location: value.location
-            }
-          });
+    this.apiService
+      .getData("dashboard/drivers/getCurrentDriverLocation")
+      .subscribe((data) => {
+        if (data) {
+          this.driverPositions = [];
+          for (const key in data) {
+            const value = data[key];
+            const speedVal = parseInt(value.speed) / 3.6;
+            this.driverPositions.push({
+              position: {
+                lng: parseFloat(value.lng),
+                lat: parseFloat(value.lat),
+              },
+              data: {
+                userId: value.userId,
+                time: `${new Date(
+                  value.timeCreated
+                ).toLocaleDateString()} | ${new Date(
+                  value.timeCreated
+                ).toLocaleTimeString()}`,
+                speed: speedVal.toFixed(2),
+                driverId: key,
+                altitude: parseInt(value.altitude).toFixed(2),
+                location: value.location,
+              },
+            });
+          }
+        } else {
+          // console.log('No data');
         }
-      } else {
-        // console.log('No data');
-      }
-
-
-    })
-
+        console.log("primaryColorSample:", this.driverMarker.getVisible());
+      });
   }
 
   /**
-  * Get driver location for last 24 hours
-  */
+   * Get driver location for last 24 hours
+   */
   async getCurrentAssetLocation() {
-
-    this.apiService.getData('dashboard/assets/getCurrentAssetLocation').subscribe((data) => {
-      if (data) {
-        this.assetPositions = [];
-        for (const asset of data) {
-
-          this.assetPositions.push({
-            position: { lng: parseFloat(asset.lng), lat: parseFloat(asset.lat) },
-            data: {
-              assetIdentification: asset.assetIdentification,
-              time: `${new Date(asset.timeModified).toLocaleDateString()} | ${new Date(asset.timeModified).toLocaleTimeString()}`,
-              speed: asset.speed,
-              assetID: asset.assetID,
-              altitude: parseInt(asset.altitude).toFixed(2),
-              battery: asset.battery,
-              temp: asset.temp,
-              location: asset.location
-            }
-          });
+    this.apiService
+      .getData("dashboard/assets/getCurrentAssetLocation")
+      .subscribe((data) => {
+        if (data) {
+          this.assetPositions = [];
+          for (const asset of data) {
+            this.assetPositions.push({
+              position: {
+                lng: parseFloat(asset.lng),
+                lat: parseFloat(asset.lat),
+              },
+              data: {
+                assetIdentification: asset.assetIdentification,
+                time: `${new Date(
+                  asset.timeModified
+                ).toLocaleDateString()} | ${new Date(
+                  asset.timeModified
+                ).toLocaleTimeString()}`,
+                speed: asset.speed,
+                assetID: asset.assetID,
+                altitude: parseInt(asset.altitude).toFixed(2),
+                battery: asset.battery,
+                temp: asset.temp,
+                location: asset.location,
+              },
+            });
+          }
+        } else {
+          // console.log('No data');
         }
-
-      } else {
-        // console.log('No data');
-      }
-
-
-    })
-
+      });
   }
 
   displayAssets = false;
-  showAssets() {
+  showAssetsDetails() {
     this.displayAssets = !this.displayAssets;
-
   }
 
   /**
- * Get vehicle location by dashCam
- */
+   * Get vehicle location by dashCam
+   */
   async getVehicleLocationByDashCam() {
-    this.apiService.getData('dashboard/vehicle/getLocationViaDashCam').subscribe((data) => {
-      if (data) {
-        this.vehicleDashPositions = [];
-        for (const devices of data) {
-          this.vehicleDashPositions.push({
-            position: { lng: parseFloat(devices.location.lng), lat: parseFloat(devices.location.lat) },
-            data: {
-              vehicleIdentification: devices.vehicleIdentification,
-              time: `${new Date(devices.timeModified).toLocaleDateString()} | ${new Date(devices.timeModified).toLocaleTimeString()}`,
-              speed: devices.location.speed || 0.00,
-              vehicleID: devices.vehicleID,
-              location: devices.location.label,
-              deviceId: devices.deviceSerialNo.split('#')[1]
-            }
-          });
+    this.apiService
+      .getData("dashboard/vehicle/getLocationViaDashCam")
+      .subscribe((data) => {
+        if (data) {
+          this.vehicleDashPositions = [];
+          for (const devices of data) {
+            this.vehicleDashPositions.push({
+              position: {
+                lng: parseFloat(devices.location.lng),
+                lat: parseFloat(devices.location.lat),
+              },
+              data: {
+                vehicleIdentification: devices.vehicleIdentification,
+                time: `${new Date(
+                  devices.timeModified
+                ).toLocaleDateString()} | ${new Date(
+                  devices.timeModified
+                ).toLocaleTimeString()}`,
+                speed: devices.location.speed || 0.0,
+                vehicleID: devices.vehicleID,
+                location: devices.location.label,
+                deviceId: devices.deviceSerialNo.split("#")[1],
+              },
+            });
+          }
+        } else {
+          // Do nothing
         }
-
-
-      } else {
-        // Do nothing
-      }
-
-
-    })
-
+      });
   }
 
   openInfoWindow(marker: MapMarker, data, infoType: string) {
     let content;
     switch (infoType) {
-      case 'driver':
+      case "driver":
         this.infoDetail = this.prepareDriverInfoTemplate(data);
         break;
-      case 'asset':
+      case "asset":
         this.infoDetail = this.prepareAssetInfoTemplate(data);
 
         break;
-      case 'vehicle':
-
+      case "vehicle":
         this.infoDetail = this.prepareVehicleInfoTemplate(data);
 
         break;
       default:
-        throw new Error('Unable to get Marker type info');
-
+        throw new Error("Unable to get Marker type info");
     }
 
-
     this.infoWindow.open(marker);
-
   }
 
   prepareDriverInfoTemplate(data: any) {
-    return `<a href='#/fleet/drivers/detail/${data.driverId}' target=_blank'><h4> Driver: ${data.userId}</h4></a> 
-    Speed: ${data.speed} KM/H | Altitude: ${data.altitude} <br/> <br/>
-    Time : ${data.time} <br/><br/>
-    `;
+    return `<b> Driver: ${data.userId}</b><br/>
+    Speed: ${data.speed} | Altitude: ${data.altitude} <br/>
+    Time : ${data.time}<br/>
+    Last Location: ${data.location || "NA"}<br/>   
+    <a class='link' target='_blank' href='#/fleet/drivers/detail/${
+      data.driverId
+    }' style='color:blue;font-size:9px'>Driver Details</a>`;
   }
   prepareAssetInfoTemplate(data: any) {
     // console.log('data', data);
@@ -290,8 +319,14 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   prepareVehicleInfoTemplate(data: any) {
     return `<b>Vehicle: ${data.vehicleIdentification}</b></b><br/>
    <span> Speed: ${parseFloat(data.speed).toFixed(2)} KM/H</span><br/>   
-      <a class='link' target='_blank' href = '#/fleet/tracking/vehicle-dash-cam-tracker/${data.deviceId}?vehicleId=${data.vehicleID}' style='color:blue;font-size:9px'>Realtime view</a> | 
-      <a class='link' target='_blank' href ='#/fleet/vehicles/detail/${data.vehicleID}' style='color:blue;font-size:9px'>Vehicle details</a>
+      <a class='link' target='_blank' href = '#/fleet/tracking/vehicle-dash-cam-tracker/${
+        data.deviceId
+      }?vehicleId=${
+      data.vehicleID
+    }' style='color:blue;font-size:9px'>Realtime view</a> | 
+      <a class='link' target='_blank' href ='#/fleet/vehicles/detail/${
+        data.vehicleID
+      }' style='color:blue;font-size:9px'>Vehicle details</a>
         `;
   }
 
@@ -300,16 +335,12 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   }
 
   async refresh() {
-
     await this.getCurrentAssetLocation();
     await this.getVehicleLocationByDashCam();
-
+    await this.getCurrentDriverLocation();
   }
 
   clear(table: Table) {
     table.clear();
   }
-
-
 }
-

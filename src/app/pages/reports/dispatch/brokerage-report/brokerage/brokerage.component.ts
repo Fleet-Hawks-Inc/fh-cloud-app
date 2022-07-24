@@ -188,7 +188,7 @@ export class BrokerageComponent implements OnInit {
             if (link.download !== undefined) {
                 const url = URL.createObjectURL(blob);
                 link.setAttribute('href', url);
-                link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Driver-Report.csv`);
+                link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Brokerage-Report.csv`);
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);

@@ -60,8 +60,16 @@ export class SremindersComponent implements OnInit {
   isSearch = false;
   get = _.get;
   _selectedColumns: any[];
-  dataColumns: any[];
   find = _.find;
+  
+  
+  dataColumns = [
+        { width: '7%', field: 'entityID', header: 'Vehicle', type: "text" },
+        { width: '7%', field: 'tasks.taskID', header: 'Service Task', type: "text" },
+        { width: '7%', field: 'createdDate', header: 'Next Due', type: "text" },
+        { width: '7%', field: 'subscribers', header: 'Subscribers', type: "text" },
+        { width: '7%', field: 'status', header: 'Renewal Status', type: "text" },
+    ];
   
   constructor(private apiService: ApiService, 
   private toastr: ToastrService,
@@ -74,15 +82,6 @@ export class SremindersComponent implements OnInit {
 
  async ngOnInit() {
     this.fetchReminderList();
-     this.dataColumns = [
-        { width: '7%', field: 'entityID', header: 'Vehicle', type: "text" },
-        { width: '7%', field: 'tasks.taskID', header: 'Service Task', type: "text" },
-        { width: '7%', field: 'createdDate', header: 'Next Due', type: "text" },
-        { width: '7%', field: 'subscribers', header: 'Subscribers', type: "text" },
-        { width: '7%', field: 'status', header: 'Renewal Status', type: "text" },
-    ];
-    this._selectedColumns = this.dataColumns;
-    
     this.fetchvehiclesList();
     this.fetchTasksList();
     this.fetchReminderCount();
@@ -165,14 +164,15 @@ export class SremindersComponent implements OnInit {
   }
   
   refreshData(){
-     this.entityID = null;
+      this.allData = [];
+      this.entityID = null;
       this.searchServiceTask = null;
       this.status = null;
-      this.allData = [];
-      this.lastItemSK = '';
       this.filterStatus = null;
-      this.dataMessage = Constants.FETCHING_DATA
+      this.loaded = false;
+      this.lastItemSK = '';
       this.fetchReminderList();
+      this.dataMessage = Constants.FETCHING_DATA
   }
   
   fetchReminderCount() {

@@ -7,6 +7,8 @@ import * as moment from 'moment';
 import { Table } from 'primeng/table';
 import * as _ from 'lodash';
 import Constants from '../../../constants';
+import { OverlayPanel } from "primeng/overlaypanel";
+
 declare var $: any;
 import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -18,6 +20,7 @@ import { environment } from '../../../../../../environments/environment';
 })
 export class ListingComponent implements OnInit {
   @ViewChild('dt') table: Table;
+  @ViewChild('rm') overlaypanel: OverlayPanel;
   get = _.get;
   _selectedColumns: any[];
   
@@ -43,6 +46,7 @@ export class ListingComponent implements OnInit {
   newData = [];
   suggestedVehicles = [];
   vehicleID = null;
+  sessionID: string;
 
   tasksList: any = {}
 
@@ -68,17 +72,19 @@ export class ListingComponent implements OnInit {
   // columns of data table
    dataColumns = [
     { width: '15%', field: 'vehicleList', header: 'Vehicle', type: 'text' },
-    { width: '19%', field: 'status', header: '	Service Task', type: 'text' },
-    { width: '17%', field: 'nextDueDays', header: '	Next Due', type: 'text' },
-    { width: '17%', field: 'lastServiceDate', header: 'Last Completed', type: 'text' },
-    { width: '19%', field: 'subscribers', header: 'Subscribers', type: 'text' },
+    { width: '20%', field: 'status', header: '	Service Task', type: 'text' },
+    { width: '19%', field: 'nextDueDays', header: '	Next Due', type: 'text' },
+    { width: '19%', field: 'lastServiceDate', header: 'Last Completed', type: 'text' },
+    { width: '21%', field: 'subscribers', header: 'Subscribers', type: 'text' },
   ];
   
   constructor(private apiService: ApiService, 
   private router: Router, 
   private toastr: ToastrService, 
   private routerMgmtService: RouteManagementServiceService,
-  private spinner: NgxSpinnerService) { }
+  private spinner: NgxSpinnerService) { 
+  this.sessionID = this.routerMgmtService.serviceRemindersSessionID;
+  }
 
   ngOnInit() {
     this.initDataTable();

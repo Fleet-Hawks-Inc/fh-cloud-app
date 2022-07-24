@@ -18,6 +18,7 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 
 declare var $: any;
 
@@ -38,7 +39,7 @@ export class AddInventoryComponent implements OnInit, OnDestroy
   itemID = '';
   requiredItem: '';
   partNumber = '';
-
+  sessionID: string;
   cost = 0;
   tax = 0;
   totalCost = 0;
@@ -124,8 +125,10 @@ export class AddInventoryComponent implements OnInit, OnDestroy
     private modalService: NgbModal,
     private modalServiceOwn: ModalService,
     private listService: ListService,
-    private countryStateCity: CountryStateCityService
+    private countryStateCity: CountryStateCityService,
+    private routerMgmtService: RouteManagementServiceService
   ) {
+      this.sessionID = this.routerMgmtService.maintainanceSessionID;
       this.modalServiceOwn.triggerRedirect.next(false);
     this.router.events.pipe(takeUntil(this.takeUntil$)).subscribe((v: any) => {
       if (v.url !== "undefined" || v.url !== "") {
@@ -440,7 +443,7 @@ export class AddInventoryComponent implements OnInit, OnDestroy
           this.takeUntil$.complete();
           this.toastr.success('Inventory Added Successfully');
           this.isSubmitted = true;
-          this.router.navigateByUrl('/fleet/inventory/list');
+          this.router.navigateByUrl('/fleet/inventory/list/${this.routerMgmtService.inventoryUpdated()}');
           if (this.requiredItem) {
             this.deleteRequiredItem(this.requiredItem);
           }
@@ -545,7 +548,7 @@ export class AddInventoryComponent implements OnInit, OnDestroy
           this.takeUntil$.next();
           this.takeUntil$.complete();
           this.toastr.success('Inventory Updated Successfully');
-          this.router.navigateByUrl('/fleet/inventory/list');
+          this.router.navigateByUrl('/fleet/inventory/list/${this.routerMgmtService.inventoryUpdated()}');
         }
       },
     });

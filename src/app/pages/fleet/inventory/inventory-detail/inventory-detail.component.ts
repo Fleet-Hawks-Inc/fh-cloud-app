@@ -5,6 +5,7 @@ declare var $: any;
 import { ToastrService } from "ngx-toastr";
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from '../../../../../environments/environment';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 
 @Component({
   selector: "app-inventory-detail",
@@ -23,6 +24,7 @@ export class InventoryDetailComponent implements OnInit {
   cost = "";
   costUnit = "";
   tax = "";
+  sessionID: string;
   totalCost = "";
   quantity = "";
   itemName = "";
@@ -60,8 +62,11 @@ export class InventoryDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
   private domSanitizer: DomSanitizer,
+      private routerMgmtService: RouteManagementServiceService,
     private toastr: ToastrService
-  ) {}
+  ) {
+      this.sessionID = this.routerMgmtService.maintainanceSessionID;
+  }
 
   ngOnInit() {
     this.itemID = this.route.snapshot.params[`itemID`];

@@ -7,7 +7,7 @@
             {{ title }}
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
-            <a routerLink="/manage/devices/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Devices
+            <a routerLink="/manage/devices/list/{{sessionID}}" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Devices
               List</a>
           </div>
         </div>
@@ -141,7 +141,7 @@
 
                 <div class="form-group row pt-3">
                   <div class="col-lg-11 pr-1 text-right">
-                    <a routerLink="/manage/devices/list" class="btn btn-default mr-3" id="">Cancel</a>
+                    <a routerLink="/manage/devices/list/{{sessionID}}" class="btn btn-default mr-3" id="">Cancel</a>
 
                     <ng-template [ngIf]="deviceID" [ngIfElse]="elseBlock">
                       <button (click)="updateAndSubmit()" class="btn btn-success" id="nextBtn">

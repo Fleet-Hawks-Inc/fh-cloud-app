@@ -3,7 +3,7 @@ import { NgForm } from "@angular/forms";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { ModalService } from "../../../../../services/modal.service";
 import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
-
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 import { ApiService } from "../../../../../services/api.service";
 import { from, Subject, throwError } from 'rxjs';
 import {
@@ -30,7 +30,7 @@ declare var $: any;
 export class AddContactRenewComponent implements OnInit {
   @ViewChild('contactF') contactF: NgForm;
   takeUntil$ = new Subject();
-
+ sessionID: string;
   reminderID;
   pageTitle;
     isSubmitted = false;
@@ -96,10 +96,11 @@ export class AddContactRenewComponent implements OnInit {
     private ngbCalendar: NgbCalendar,
         private modalService: NgbModal,
     private modalServiceOwn: ModalService,
+        private routerMgmtService: RouteManagementServiceService,
     private location: Location,
     private dateAdapter: NgbDateAdapter<string>
   ) {
-
+      this.sessionID = this.routerMgmtService.serviceRemindersSessionID;
   }
   
 
@@ -209,7 +210,7 @@ export class AddContactRenewComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-    
+        this.router.navigateByUrl('/fleet/reminders/contact-renewals/list/${this.routerMgmtService.serviceReminderUpdated()}');
         this.toastr.success("Contact Renewal Reminder Added Successfully!");
         this.cancel();
         this.reminderData = {
@@ -328,9 +329,9 @@ export class AddContactRenewComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-      
+              this.router.navigateByUrl('/fleet/reminders/contact-renewals/list/${this.routerMgmtService.serviceReminderUpdated()}');
         this.toastr.success("Contact Renewal Reminder Updated Successfully");
-        this.router.navigateByUrl("/fleet/reminders/contact-renewals/list");
+        //this.router.navigateByUrl("/fleet/reminders/contact-renewals/list");
         this.Success = "";
         this.reminderData = {
           entityID: "",

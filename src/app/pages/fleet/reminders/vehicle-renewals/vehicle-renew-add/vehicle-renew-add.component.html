@@ -10,7 +10,7 @@
           </div>
 
           <div class="col-md-8 col-lg-8 text-right">
-            <a routerLink="/fleet/reminders/vehicle-renewals/list" class="btn btn-default btn-sm"
+            <a routerLink="/fleet/reminders/vehicle-renewals/list/{{sessionID}}" class="btn btn-default btn-sm"
               style="color: black"><i class="fas fa-list"></i> Vehicle Renewals Reminders List</a>
           </div>
         </div>
@@ -186,7 +186,7 @@
                         <div class="row">
                           <div class="col-11 pr-1">
                             <a href="javascript:;" class="btn btn-default mr-2"
-                              routerLink="/fleet/reminders/vehicle-renewals/list">Cancel</a>
+                              routerLink="/fleet/reminders/vehicle-renewals/list/{{sessionID}}">Cancel</a>
 
                             <!--- if there is some error in validation  -->
 

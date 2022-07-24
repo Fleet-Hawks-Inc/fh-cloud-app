@@ -4,7 +4,7 @@
       <header class="page-header pr19 pl11">
         <form class="form-horizontal" method="get">
           <div class="row" style="padding-top: 10px">
-            <div class="col-md-2 col-lg-2 pr-1">
+            <div class="col-md-2 col-lg-2">
               <ng-select
                 [(ngModel)]="category"
                 name="category"
@@ -19,7 +19,7 @@
                 </ng-option>
               </ng-select>
             </div>
-            <div class="col-md-2 col-lg-2 pr-1">
+            <div class="col-md-2 col-lg-2 pl-0">
               <div
                 class="input-group input-group-md mb-3"
                 *ngIf="
@@ -65,7 +65,7 @@
                 >
               </ng-select>
             </div>
-            <div class="col-md-2 col-lg-2 pl-0 pr-0">
+            <div class="col-md-2 col-lg-2 pl-0">
               <ng-select
                 placeholder="Select Task"
                 class="form-control bgnone populate"
@@ -78,7 +78,7 @@
               </ng-select>
             </div>
 
-            <div class="col-md-2 col-lg-2">
+            <div class="col-md-2 col-lg-2 pl-0">
               <button
                 type="submit"
                 (click)="searchFilter()"
@@ -141,14 +141,18 @@
                         <li class="nav-item">
                           <a
                             class="nav-link active"
-                            routerLink="/fleet/maintenance/service-log/list/{{sessionID}}"
+                            routerLink="/fleet/maintenance/service-log/list/{{
+                              sessionID
+                            }}"
                             >Service Log</a
                           >
                         </li>
                         <li class="nav-item">
                           <a
                             class="nav-link"
-                            routerLink="/fleet/maintenance/service-program/list/{{sessionID}}"
+                            routerLink="/fleet/maintenance/service-program/list/{{
+                              sessionID
+                            }}"
                             >Service Program</a
                           >
                         </li>

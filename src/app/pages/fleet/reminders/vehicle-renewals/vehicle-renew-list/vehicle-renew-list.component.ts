@@ -9,8 +9,9 @@ import { Table } from 'primeng/table';
 import Constants from '../../../constants';
 import { environment } from '../../../../../../environments/environment';
 import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
-
 import * as _ from 'lodash';
+import { OverlayPanel } from "primeng/overlaypanel";
+
 declare var $: any;
 
 @Component({
@@ -20,12 +21,15 @@ declare var $: any;
 })
 export class VehicleRenewListComponent implements OnInit {
   @ViewChild('dt') table: Table;
+  @ViewChild('rm') overlaypanel: OverlayPanel;
   get = _.get;
   _selectedColumns: any[];
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   public remindersData = [];
   // dtOptions: any = {};
+    sessionID: string;
+
   vehicles = [];
   vehicleName: string;
   vehicleList: any = {};
@@ -63,16 +67,18 @@ export class VehicleRenewListComponent implements OnInit {
    dataColumns = [
     { width: '15%', field: 'entityID', header: 'Vehicle', type: 'text' },
     { width: '19%', field: 'status', header: 'Vehicle Renewal Type', type: 'text' },
-    { width: '17%', field: 'tasks.dueDate', header: 'Due Date', type: 'text' },
+    { width: '19%', field: 'tasks.dueDate', header: 'Due Date', type: 'text' },
     { width: '17%', field: 'tasks.time', header: 'Send Reminder', type: 'text' },
-    { width: '19%', field: 'subscribers', header: 'Subscribers', type: 'text' },
+    { width: '24%', field: 'subscribers', header: 'Subscribers', type: 'text' },
   ];
 
   constructor(private apiService: ApiService, 
   private router: Router, 
   private spinner: NgxSpinnerService, 
   private routerMgmtService: RouteManagementServiceService,
-  private toastr: ToastrService) { }
+  private toastr: ToastrService) { 
+  this.sessionID = this.routerMgmtService.serviceRemindersSessionID;
+  }
 
   ngOnInit() {
     this.initDataTable();

@@ -12,6 +12,8 @@ import { nullSafeIsEquivalent } from "@angular/compiler/src/output/output_ast";
 import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from '../../../../../../environments/environment';
 import { ListService } from '../../../../../services';
+import { OverlayPanel } from "primeng/overlaypanel";
+
 @Component({
   selector: 'app-list-contact-renew',
   templateUrl: './list-contact-renew.component.html',
@@ -19,6 +21,7 @@ import { ListService } from '../../../../../services';
 })
 export class ListContactRenewComponent implements OnInit {
   @ViewChild('dt') table: Table;
+  @ViewChild('rm') overlaypanel: OverlayPanel;
   get = _.get;
   _selectedColumns: any[];
   
@@ -32,6 +35,7 @@ export class ListContactRenewComponent implements OnInit {
   subcribersArray = [];
   groups: any = {};
   currentDate = moment().format('YYYY-MM-DD');
+  sessionID: string;
   newData = [];
   filterStatus = null;
   usersList: any = {};
@@ -61,10 +65,10 @@ export class ListContactRenewComponent implements OnInit {
   loaded = false
   
    dataColumns = [
-    { width: '15%', field: 'entityID', header: 'Contact', type: 'text' },
+    { width: '18%', field: 'entityID', header: 'Contact', type: 'text' },
     { width: '19%', field: 'status', header: 'Contact Renewal Type', type: 'text' },
-    { width: '17%', field: 'tasks.timeUnit', header: 'Send Reminder', type: 'text' },
-    { width: '17%', field: 'tasks.dueDate', header: 'Expiration Date', type: 'text' },
+    { width: '19%', field: 'tasks.timeUnit', header: 'Send Reminder', type: 'text' },
+    { width: '19%', field: 'tasks.dueDate', header: 'Expiration Date', type: 'text' },
     { width: '19%', field: 'subscribers', header: 'Subscribers', type: 'text' },
   ];
   
@@ -73,7 +77,9 @@ export class ListContactRenewComponent implements OnInit {
     private router: Router, 
     private toastr: ToastrService,
     private routerMgmtService: RouteManagementServiceService,
-    private spinner: NgxSpinnerService) { }
+    private spinner: NgxSpinnerService) {
+      this.sessionID = this.routerMgmtService.serviceRemindersSessionID;
+    }
 
   ngOnInit() {
     this.listService.fetchDrivers();

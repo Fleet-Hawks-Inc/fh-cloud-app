@@ -47,7 +47,7 @@
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark text-capitalize">
+            <div class="bg-white p-3 text-dark">
               <div class="form-group row pt-2">
                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
                   <p-table #myTable [value]="allCustomerData" [resizableColumns]="true" columnResizeMode="expand"
@@ -88,88 +88,76 @@
                             </div>
                           </span>
                         </th>
-
-                        <!-- <th style="width: 8%">
-                          30-45
-                        </th>
-
-                        <th style="width: 7%">
-                          45-60
-                        </th>
-
-                        <th style="width: 8%" alignFrozen="right" pFrozenColumn [frozen]="true">
-                          60+
-                        </th> -->
                       </tr>
                     </ng-template>
 
                     <ng-template pTemplate="body" let-customer let-columns="columns" let-rowIndex="rowIndex">
                       <tr>
-                        <!-- <td> -->
-                        <!-- <div [ngSwitch]="dataColumns.field"> -->
+                 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'customerName' }).width
-                        }"> {{customer.customerName ? customer.customerName : "-"}}</td>
+
+                        }"> {{(customer.customerName ? customer.customerName : "-") | titlecase}}</td>
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'customerEmail' }).width
-                        }"> {{customer.customerEmail ? customer.customerEmail : "-"}}</td>
+                        }" style="height: 40px;"> {{customer.customerEmail ? customer.customerEmail : "-"}}</td>
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'customerPhone' }).width
-                        }"> {{customer.customerPhone ? customer.customerPhone : "-"}}</td>
+                        }" style="height: 40px;"> {{customer.customerPhone ? customer.customerPhone : "-"}}</td>
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'cusConfirmation' }).width
-                        }"> {{customer.cusConfirmation ? customer.cusConfirmation : "-"}}</td>
+                        }" style="height: 40px;"> {{customer.cusConfirmation ? customer.cusConfirmation : "-"}}</td>
 
                         <td [ngStyle]="{
-                          width: find(columns, { field: 'txnDate' }).width
-                        }"> {{customer.txnDate | date: "yyyy/MM/dd"}}</td>
+                          width: find(columns, { field: 'txnDate' }).width 
+                        }"   style="height: 40px;"> {{customer.txnDate | date: "yyyy/MM/dd"}}</td>
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'invNo' }).width
-                        }"> {{customer.invNo}}</td>
+                        }" style="height: 40px;"> {{customer.invNo}}</td>
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'finalAmount' }).width
-                        }"> {{ customer.finalAmount | number: "1.2-2" }}
+                        }" style="height: 40px;"> {{ customer.finalAmount | number: "1.2-2" }}
                           {{customer.ammountCurrency}}
 
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'balance' }).width
-                        }"> {{ customer.balance | number: "1.2-2" }}
+                        }" style="height: 40px;"> {{ customer.balance | number: "1.2-2" }}
                           {{ customer.ammountCurrency }}</td>
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'invStatus' }).width
-                        }"> <span class="badge badge-dark p-1" style="background-color: #ff4d4d"
+                        }" style="height: 40px;"> <span class="badge badge-dark p-1" style="background-color: #ff4d4d"
                             *ngIf="customer.invStatus === 'open'">Open</span>
                         </td>
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'elapsedDays' }).width
-                        }"> {{customer.elapsedDays}}</td>
+                        }" style="height: 40px;"> {{customer.elapsedDays}}</td>
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'Age30' }).width
-                        }"> <div class="badges">  <span
+                        }" style="height: 40px;"> <div class="badges">  <span
                            style="color: #018fee"
-                        >{{customer.Age30}}</span></div></td>
+                        >{{customer.Age30 ? customer.Age30 : "0"}}</span></div></td>
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'Age45' }).width
-                        }"> 
+                        }" style="height: 40px;"> 
                         <span
                            style="color: #f58504"
-                        >{{customer.Age45}}</span></td>
+                        >{{customer.Age45 ? customer.Age45 : "0"}}</span></td>
 
                         <td [ngStyle]="{
                           width: find(columns, { field: 'Age60' }).width
-                        }"> <span 
+                        }" style="height: 40px;"> <span 
                         style="color: #d11313ef"
-                     >{{customer.Age60}}</span></td>
+                     >{{customer.Age60 ? customer.Age60 : "0"}}</span></td>
 
                       </tr>
                     </ng-template>
