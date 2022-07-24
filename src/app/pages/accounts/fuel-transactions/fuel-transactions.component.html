@@ -329,26 +329,31 @@
                             <div class="row">
                                 <div class="col-lg-8">
                                     <label class="control-label font-weight-bold
-                                        text-lg-right pt-2">Select
-                                        Transaction Type</label>
-                                        <ng-select
-                                            [(ngModel)]="txnData.txnType"
-                                            name="txnType"
-                                            placeholder="Select Transaction Type"
-                                            #txnType="ngModel"
-                                            required
-                                        >
-                                            <ng-option value="debit">Debit</ng-option>
-                                            <ng-option value="credit">Credit</ng-option>
-                                        </ng-select>
-
-                                    <label class="control-label font-weight-bold
-                                        text-lg-right pt-2">Select
+                                        text-lg-right pt-2">Select Debit
                                         Account</label>
                                         <ng-select
-                                            [(ngModel)]="txnData.accountID"
+                                            [(ngModel)]="txnData.drAccountID"
                                             name="accountID"
-                                            placeholder="Select account"
+                                            placeholder="Select Debit Account"
+                                            #accID="ngModel"
+                                            required
+                                        >
+                                            <ng-option
+                                            value="{{ item.actID }}"
+                                            *ngFor="let item of accounts | async"
+                                            >{{ item.actNo }} -
+                                            {{ item.actName | titlecase }}</ng-option
+                                            >
+                                        </ng-select>
+
+
+                                        <label class="control-label font-weight-bold
+                                        text-lg-right pt-2">Select Credit
+                                        Account</label>
+                                        <ng-select
+                                            [(ngModel)]="txnData.crAccountID"
+                                            name="craccountID"
+                                            placeholder="Select Credit Account"
                                             #accID="ngModel"
                                             required
                                         >

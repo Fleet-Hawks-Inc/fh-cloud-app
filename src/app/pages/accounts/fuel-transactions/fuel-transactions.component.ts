@@ -85,7 +85,8 @@ export class FuelTransactionsComponent implements OnInit {
   ];
   accounts:any = {};
   txnData = {
-    accountID: null,
+    drAccountID: null,
+    crAccountID: null,
     fuelData: [],
     txnType: null
   }
@@ -208,7 +209,8 @@ export class FuelTransactionsComponent implements OnInit {
   openTransactFuelModel() {
     let fuelIds = [];
     this.txnData = {
-      accountID: null,
+      drAccountID: null,
+      crAccountID: null,
       txnType: null,
       fuelData: []
     }
@@ -231,7 +233,7 @@ export class FuelTransactionsComponent implements OnInit {
   }
 
   saveFuelTxn() {
-    if(this.txnData.txnType && this.txnData.accountID) {
+    if(this.txnData.drAccountID && this.txnData.crAccountID) {
       this.submitDisabled = true;
       this.accountService.postData("chartAc/add/fuel/txn", this.txnData, true).subscribe({
         complete: () => {},
@@ -257,11 +259,11 @@ export class FuelTransactionsComponent implements OnInit {
         next: (res) => {
           this.submitDisabled = false;
           this.toaster.success("Fuel Transaction added successfully.");
-          this.fuelList = [];
-          $("#fuelTxnModel").modal("hide");
-          this.lastEvaluatedKey = ''
-          this.lastTimeCreated = ''
-          this.initDataTable();
+          // this.fuelList = [];
+          // $("#fuelTxnModel").modal("hide");
+          // this.lastEvaluatedKey = ''
+          // this.lastTimeCreated = ''
+          // this.initDataTable();
         },
       });
     }
