@@ -7,7 +7,8 @@
 
                     <a routerLink="/dispatch/cross-border/ace-manifest/{{manifestID}}"
                         class="btn btn-default btn-sm mr-2"><i class="fas fa-pencil-alt"></i> Edit Manifest</a>
-                        <p-splitButton label="Send To CBP" [model]="items" styleClass="p-button-sm mr-2 text-left"></p-splitButton>
+                    <p-splitButton label="Send To CBP" [model]="items" styleClass="p-button-sm mr-2 text-left">
+                    </p-splitButton>
                     <!-- <button type="text" pButton class="btn btn-success btn-sm align-items-center d-inline-flex mr-2"
                         label=" Send To CBP" (click)="op.toggle($event)"> <i class="pi pi-chevron-down"></i></button>
 
@@ -189,32 +190,42 @@
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form "
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
-                                                {{shipment.shipper.name}}<br>{{shipment.shipper.address.addressLine ?
-                                                shipment.shipper.address.addressLine + ', ' : ''}}
-                                                {{shipment.shipper.address.city ? shipment.shipper.address.city + ', ' :
-                                                ''}}
-                                                {{shipment.shipper.address.stateProvince ?
-                                                shipment.shipper.address.stateProvince + ', ' : ''}}
-                                                {{shipment.shipper.address.country ? shipment.shipper.address.country +
-                                                ', ' :
-                                                ''}}
-                                                {{shipment.shipper.address.postalCode ?
-                                                shipment.shipper.address.postalCode : ''}}
+                                                {{shipment.shipper.name}}<br>
+                                                <div *ngIf="shipment.shipper.address">
+                                                    {{shipment.shipper.address.addressLine ?
+                                                    shipment.shipper.address.addressLine + ', ' : ''}}
+                                                    {{shipment.shipper.address.city ? shipment.shipper.address.city + ',
+                                                    ' :
+                                                    ''}}
+                                                    {{shipment.shipper.address.stateProvince ?
+                                                    shipment.shipper.address.stateProvince + ', ' : ''}}
+                                                    {{shipment.shipper.address.country ?
+                                                    shipment.shipper.address.country +
+                                                    ', ' :
+                                                    ''}}
+                                                    {{shipment.shipper.address.postalCode ?
+                                                    shipment.shipper.address.postalCode : ''}}
+                                                </div>
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form "
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
-                                                {{shipment.consignee.name}}<br>{{shipment.consignee.address.addressLine
-                                                ? shipment.consignee.address.addressLine + ', ' : ''}}
-                                                {{shipment.consignee.address.city ? shipment.consignee.address.city + ',
-                                                ' :
-                                                ''}}
-                                                {{shipment.consignee.address.stateProvince ?
-                                                shipment.consignee.address.stateProvince + ', ' : ''}}
-                                                {{shipment.consignee.address.country ?
-                                                shipment.consignee.address.country + ', ' : ''}}
-                                                {{shipment.consignee.address.postalCode ?
-                                                shipment.consignee.address.postalCode : ''}}
+                                                {{shipment.consignee.name}}<br>
+                                                <div *ngIf="shipment.consignee.address">
+
+                                                    {{shipment.consignee.address.addressLine
+                                                    ? shipment.consignee.address.addressLine + ', ' : ''}}
+                                                    {{shipment.consignee.address.city ? shipment.consignee.address.city
+                                                    + ',
+                                                    ' :
+                                                    ''}}
+                                                    {{shipment.consignee.address.stateProvince ?
+                                                    shipment.consignee.address.stateProvince + ', ' : ''}}
+                                                    {{shipment.consignee.address.country ?
+                                                    shipment.consignee.address.country + ', ' : ''}}
+                                                    {{shipment.consignee.address.postalCode ?
+                                                    shipment.consignee.address.postalCode : ''}}
+                                                </div>
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form "
@@ -1069,7 +1080,6 @@
         </div>
     </div>
     <ng-template pTemplate="footer">
-        <p-button class=""
-            (click)="errorsDisplay = false;" label="Ok"></p-button>
+        <p-button class="" (click)="errorsDisplay = false;" label="Ok"></p-button>
     </ng-template>
 </p-dialog>

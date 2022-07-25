@@ -148,21 +148,23 @@ export class AceDetailsComponent implements OnInit {
   sendBorderConnectOption = false;
 
   items = [
-    
+
     {
       label: 'Send', icon: 'pi pi-send', command: () => {
         this.sendCBPFn();
-    }},
+      }
+    },
     {
       label: 'Amend', icon: 'pi pi-user-edit', command: () => {
-      this.amendManifest();
-    }},
+        this.amendManifest();
+      }
+    },
     {
       label: 'Cancel', icon: 'pi pi-exclamation-circle', command: () => {
-      this.cancelManifest(this.manifestID);
+        this.cancelManifest(this.manifestID);
       },
     }
-];
+  ];
   errorsDisplay = false;
   errors = [];
   constructor(private apiService: ApiService, private route: ActivatedRoute, private spinner: NgxSpinnerService,
@@ -299,12 +301,12 @@ export class AceDetailsComponent implements OnInit {
         this.drivers = result.drivers;
         this.passengers = result.passengers;
         this.shipments = result.shipments;
-        this.timeModified = moment(result.timeModified).format(`MMMM D YYYY, h:mm:ss a`);
+        // this.timeModified = moment(result.timeModified).format(`MMMM D YYYY, h:mm:ss a`);
         this.modifiedBy = result.modifiedBy;
         this.borderResponses = result.borderResponses;
         this.createdBy = result.createdBy;
-        this.createdDate = result.createdDate;
-        this.createdTime = result.createdTime;
+        // this.createdDate = result.createdDate;
+        // this.createdTime = result.createdTime;
       });
   }
   async setStatus(val) {
@@ -343,15 +345,15 @@ export class AceDetailsComponent implements OnInit {
         this.errors = err.error;
         console.log('erro', this.errors)
       })
-      // this.sendBorderConnectOption = result;
-        // if (this.sendBorderConnectOption === true) {
-        //   const val = 'Queued';
-        //   const setStatus: any = this.apiService.getData('ACEeManifest/setStatus/' + this.manifestID + '/' + val).subscribe((result: any) => {
-        //     this.toastr.success('Status Updated Successfully!');
-        //      this.currentStatus = val;
-        //   });
-        // }
-      
+    // this.sendBorderConnectOption = result;
+    // if (this.sendBorderConnectOption === true) {
+    //   const val = 'Queued';
+    //   const setStatus: any = this.apiService.getData('ACEeManifest/setStatus/' + this.manifestID + '/' + val).subscribe((result: any) => {
+    //     this.toastr.success('Status Updated Successfully!');
+    //      this.currentStatus = val;
+    //   });
+    // }
+
   }
   async showShipmentDetails(shipmentID) {
     const shipmentDataFetched = this.shipments.filter((item: any) => item.shipmentID === shipmentID);
