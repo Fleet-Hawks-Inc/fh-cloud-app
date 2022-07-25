@@ -104,6 +104,7 @@ export class AddTripComponent implements OnInit {
     iftaMiles: [],
     split: [],
     stlLink: false,
+    recallMessage: ""
   };
   ltlOrders = [];
   ftlOrders = [];
@@ -284,7 +285,9 @@ export class AddTripComponent implements OnInit {
   vehicleValidate: string;
   isExpDisplay: boolean = false;
   isAllType = '';
-
+  display: any;
+  recallReasonDis = false;
+  reasonErr = '';
   constructor(
     private apiService: ApiService,
     private modalService: NgbModal,
@@ -2455,11 +2458,17 @@ export class AddTripComponent implements OnInit {
     this.tripData.tripPlanning = [];
     this.tripData["tripID"] = this.route.snapshot.params["tripID"];
     this.tripData.dateCreated = moment(this.dateCreated).format("YYYY-MM-DD");
+    this.tripData["recallMessage"] = this.tripData.recallMessage;
     this.tripData.mapFrom =
       this.mapOrderActive === "active" ? "order" : "route";
 
     let planData = this.trips;
-
+    if(this.tripData.recallMessage === '') {
+      this.reasonErr = "Please fill the reason message"
+      return false;
+    } else {
+      this.reasonErr = "";
+    }
     if (this.tripData.orderId.length == 0) {
       this.toastr.error("Please select order.");
       this.submitDisabled = false;
@@ -2667,6 +2676,7 @@ export class AddTripComponent implements OnInit {
         this.toastr.success("Trip updated successfully.");
         // this.goBack();
         this.router.navigate([`/dispatch/trips/trip-details/${this.tripID}`]);
+        this.recallReasonDis = true;
       },
     });
   }
@@ -3414,5 +3424,9 @@ export class AddTripComponent implements OnInit {
   removeRoutePlan(event: any) {
     this.trips = _.reject(this.trips, { routeID: event.value })
     this.getMiles();
+  }
+
+  async showReasonModal() {
+    this.display = true;
   }
 }

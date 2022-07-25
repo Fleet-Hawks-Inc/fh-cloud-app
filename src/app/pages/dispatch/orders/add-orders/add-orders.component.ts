@@ -170,6 +170,7 @@ export class AddOrdersComponent implements OnInit {
       tripID: "",
       tripNo: "",
     },
+    recallMessage: ""
   };
   response: any = "";
   hasError: boolean = false;
@@ -379,7 +380,9 @@ export class AddOrdersComponent implements OnInit {
   orderPrefix: string = "";
   zoneList = [];
   selectedZone = null;
-
+  display: any;
+  recallReasonDis = false;
+  reasonErr = '';
   constructor(
     private apiService: ApiService,
     private ngbCalendar: NgbCalendar,
@@ -2625,6 +2628,12 @@ export class AddOrdersComponent implements OnInit {
     // this.isSubmit = true;
     // if (!this.checkFormErrors()) return false;
     this.submitDisabled = true;
+    if(this.orderData.recallMessage === '') {
+      this.reasonErr = "Please fill the reason message"
+      return false;
+    } else {
+      this.reasonErr = "";
+    }
     if (this.orderData.zeroRated) {
       this.orderData.taxesInfo.forEach((element) => {
         element.taxAmount = 0;
@@ -2635,6 +2644,7 @@ export class AddOrdersComponent implements OnInit {
     this.orderData["orderID"] = this.getOrderID;
     this.orderData.orderNumber = this.orderData.orderNumber.toString();
     this.orderData["deletedFiles"] = this.deletedFiles;
+    this.orderData["recallMessage"] = this.orderData.recallMessage;
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
     for (let k = 0; k < this.finalShippersReceivers.length; k++) {
@@ -2683,6 +2693,7 @@ export class AddOrdersComponent implements OnInit {
       this.toastr.error(
         "Please add atleast one Shipper and Receiver in shipments."
       );
+      this.recallReasonDis = true;
       return false;
     }
 
@@ -3412,6 +3423,11 @@ export class AddOrdersComponent implements OnInit {
       this.orderData.orderNumber = `${result[0].prefix}${result[0].sequence}`;
     }
   }
+
+  async showReasonModal() {
+    this.display = true;
+  }
+
   async searchZone(dropPoint: any, index: any, i: any) {
     if (
       this.shippersReceivers[i].receivers.dropPoint[index].zone.zoneID === null
