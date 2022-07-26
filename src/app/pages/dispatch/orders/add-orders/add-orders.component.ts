@@ -2644,7 +2644,7 @@ export class AddOrdersComponent implements OnInit {
     this.orderData["orderID"] = this.getOrderID;
     this.orderData.orderNumber = this.orderData.orderNumber.toString();
     this.orderData["deletedFiles"] = this.deletedFiles;
-    this.orderData["recallMessage"] = this.orderData.recallMessage;
+    this.orderData["recallReason"] = this.orderData.recallMessage;
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
     for (let k = 0; k < this.finalShippersReceivers.length; k++) {

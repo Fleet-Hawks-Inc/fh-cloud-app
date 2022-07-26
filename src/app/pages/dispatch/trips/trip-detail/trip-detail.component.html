@@ -560,11 +560,28 @@
                                     <p>
                                       Last Location:
                                       {{ data.eventParams.location }}
+                                     
                                     </p>
                                   </span>
+                                 
                                 </li>
                               </ul>
                             </div>
+
+                            <div class="tm-box">
+                              <span class="release-date">{{ data.createdDate }}
+                                -
+                                {{ data.createdTime }}</span>
+                              <ul class="list-unstyled">
+                                <li>
+                                  {{ data.userFirstName | titlecase }}
+                                  {{ data.userLastName | titlecase }}
+                                  {{ data.eventParams.message }}
+                                  message  <b class="text-success">{{data.eventParams.recallMsg}}</b>
+                                </li>
+                              </ul>
+                              </div>
+
                           </li>
                         </ol>
                       </div>
