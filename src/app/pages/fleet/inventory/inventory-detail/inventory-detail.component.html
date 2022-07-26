@@ -41,25 +41,25 @@
                             >
                               Part#
                             </td>
-                            <td width="60%">{{partNumber}}</td>
+                            <td width="60%">{{partNumber | titlecase}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Item  Name
                             </td>
-                            <td>{{itemName}}</td>
+                            <td>{{itemName | titlecase}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Category
                             </td>
-                            <td>{{category}}</td>
+                            <td>{{category | titlecase}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Vendor
                             </td>
-                            <td><a href="#">{{vendors[warehouseVendorID]}}</a></td>
+                            <td><a href="#">{{vendors[warehouseVendorID] | titlecase}}</a></td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
@@ -123,9 +123,9 @@
                         </thead>
                         <tbody>
                           <tr *ngFor = "let warehouse of warehouses">
-                            <td>{{warehouse.warehouseID ? warehousesList[warehouse.warehouseID] : '-'}}</td>
+                            <td>{{(warehouse.warehouseID ? warehousesList[warehouse.warehouseID] : '-') | titlecase}}</td>
                             <td>{{warehouse.quantity ? warehouse.quantity : '-'}}</td>
-                            <td>{{warehouse.address}}</td>
+                            <td>{{warehouse.address | titlecase}}</td>
                           </tr>
                         </tbody>
                       </table>
