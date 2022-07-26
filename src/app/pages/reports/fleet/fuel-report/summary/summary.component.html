@@ -325,6 +325,9 @@
                               style="width: 11.2%; height: 40px; cursor: pointer"
                             >
                               <div [ngSwitch]="dataColumns.field">
+                                <span *ngSwitchCase="'data.useType'">
+                                   {{ get(fuelEntry, dataColumns.field) | titlecase }}
+                                </span>
                                 <span *ngSwitchCase="'unitSearch'">
                                   {{
                                     (vehicleList[fuelEntry.unitID]
