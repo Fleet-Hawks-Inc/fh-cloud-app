@@ -169,15 +169,6 @@
                             icon="pi pi-filter-slash"
                             (click)="clear(dt)"
                           ></button>
-                           <button
-                            type="button"
-                            pButton
-                            pRipple
-                            class="p-button-outlined mr-2"
-                            icon="fas fa-regular fa-file-excel"
-                            (click)="dt.exportCSV()"
-                            pTooltip="Excel"
-                          ></button>
                             <p-multiSelect
                             [options]="dataColumns"
                             [(ngModel)]="selectedColumns"
@@ -326,83 +317,10 @@
              </div>
             </div>
             </div>
-            <!--<div class="card">-->
-              <!-- <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-            <!--                    [infiniteScrollThrottle]="5" (scrolled)="fetchTrpByVehicle()"> -->
-            <!--  <div class="card-body">-->
-            <!--    <label-->
-            <!--      class="control-label font-weight-bold font-weight-bold text-lg-right text-dark text-4 pt-1"-->
-            <!--      >Trip Details</label-->
-            <!--    >-->
-            <!--    <section class="reports_div">-->
-            <!--      <table-->
-            <!--        width="18%"-->
-            <!--        class="row-border hover table table-bordered table-striped mb-0"-->
-            <!--      >-->
-            <!--        <col style="width: 2%" />-->
-            <!--        <col style="width: 2%" />-->
-            <!--        <col style="width: 2%" />-->
-            <!--        <col style="width: 2%" />-->
-            <!--        <col style="width: 5%" />-->
-            <!--        <col style="width: 2%" />-->
-            <!--        <col style="width: 2%" />-->
-            <!--        <thead>-->
-            <!--          <tr>-->
-            <!--            <th>Trip#</th>-->
-            <!--            <th>Order#</th>-->
-            <!--            <th>Type</th>-->
-            <!--            <th>Driver</th>-->
-            <!--            <th>Location</th>-->
-            <!--            <th>Date</th>-->
-            <!--            <th>Total Miles</th>-->
-            <!--          </tr>-->
-            <!--        </thead>-->
-            <!--        <tbody>-->
-            <!--          <tr *ngIf="allData.length == 0" class="text-center">-->
-            <!--            <td colspan="15">{{ dataMessage }}</td>-->
-            <!--          </tr>-->
-            <!--          <tr *ngFor="let item of allData">-->
-            <!--            <td>{{ item.tripNo }}</td>-->
-            <!--            <td>{{ item.orderName }}</td>-->
-            <!--            <td>{{ item.orderType }}</td>-->
-            <!--            <td>{{ item.driverName | titlecase }}</td>-->
-                        <!--<td>-->
-                        <!--  <span *ngFor="let data of item.tripPlanning">-->
-                        <!--    <b> {{ data.type }}: </b>-->
-                        <!--    {{ data.location }} <br />-->
-                        <!--  </span>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                        <!--  <span *ngFor="let data of item.tripPlanning">-->
-                        <!--    <b> {{ data.type }}: </b>-->
-                        <!--    {{ data.date }} <br />-->
-                        <!--  </span>-->
-                        <!--</td>-->
-            <!--            <td>-->
-                          <!--{{ item.miles | number: "1.2-2" }}-->
-            <!--            </td>-->
-            <!--          </tr>-->
-            <!--        </tbody>-->
-            <!--      </table>-->
-            <!--    </section>-->
-            <!--  </div>-->
-              <!-- </div> -->
-            <!--  <div-->
-            <!--    class="col-lg-12 mt-3 text-center"-->
-                <!--*ngIf="lastItemSK !== 'end' && allData.length !== 0"-->
-            <!--  >-->
-            <!--    <button-->
-            <!--      type="button"-->
-            <!--      class="btn btn-success btn-sm text-light"-->
-            <!--      (click)="fetchTrpByVehicle()"-->
-            <!--    >-->
-            <!--      Load More..-->
-            <!--    </button>-->
-            <!--  </div>-->
-            <!--</div>-->
+            
           </div>
         </div>
-        
+        <!-- Fuel detail-->
           <div class="row text-dark mb-3">
           <div class="col-lg-12">
           <div class="bg-white p-3 text-dark">
@@ -449,15 +367,7 @@
                             icon="pi pi-filter-slash"
                             (click)="clear(dt)"
                           ></button>
-                           <button
-                            type="button"
-                            pButton
-                            pRipple
-                            class="p-button-outlined mr-2"
-                            icon="fas fa-regular fa-file-excel"
-                            (click)="dt.exportCSV()"
-                            pTooltip="Excel"
-                          ></button>
+                          
                             <p-multiSelect
                             [options]="dataColumnsFuel"
                             [(ngModel)]="fuelSelectedColumns"
@@ -477,7 +387,7 @@
                           *ngFor="let dataColumnsFuel of columns"
                           [pSortableColumn]="dataColumnsFuel.field"
                           pResizableColumn
-                          style= "width: 15.80%;"
+                          style= "width: 16.65%;"
                         >
                <div [ngSwitch]="dataColumnsFuel.field">
                   <span *ngSwitchDefault>
@@ -517,7 +427,7 @@
                   <tr>
                   <td 
                    *ngFor="let dataColumnsFuel of columns"
-                    style="width: 15.80%; height: 40px; cursor: pointer"
+                    style="width: 16.65%; height: 40px; cursor: pointer"
                   >
                   <div [ngSwitch]="dataColumnsFuel.field">
                     <span *ngSwitchCase="'vehicle'">
@@ -606,127 +516,136 @@
           </div>
         </div>
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <!--<div class="row text-dark mb-3">-->
-        <!--  <div class="col pr-0">-->
-        <!--    <div class="card">-->
-        <!--      <div class="card-body">-->
-        <!--        <label-->
-        <!--          class="control-label font-weight-bold font-weight-bold text-lg-right text-dark text-4 pt-1"-->
-        <!--          >Fuel Details</label-->
-        <!--        >-->
-        <!--        <section class="reports_div">-->
-        <!--          <table-->
-        <!--            width="18%"-->
-        <!--            class="row-border hover table table-bordered table-striped mb-0"-->
-        <!--          >-->
-        <!--            <col style="width: 2%" />-->
-        <!--            <col style="width: 2%" />-->
-        <!--            <col style="width: 2%" />-->
-        <!--            <col style="width: 2%" />-->
-        <!--            <col style="width: 2%" />-->
-        <!--            <col style="width: 2%" />-->
-        <!--            <thead>-->
-        <!--              <tr>-->
-        <!--                <th>Vehicle</th>-->
-        <!--                <th>Fuel Card</th>-->
-        <!--                <th>Fuel Type</th>-->
-        <!--                <th>Date/Time</th>-->
-        <!--                <th>Province</th>-->
-        <!--                <th>Amount</th>-->
-        <!--              </tr>-->
-        <!--            </thead>-->
-        <!--            <tbody>-->
-        <!--              <tr *ngIf="fuel.length == 0" class="text-center">-->
-        <!--                <td colspan="15">{{ fuelMessage }}</td>-->
-        <!--              </tr>-->
-        <!--              <tr *ngFor="let item of fuel">-->
-        <!--                <td>{{ item.vehicle }}</td>-->
-        <!--                <td>{{ item.data.cardNo ? item.data.cardNo : "-" }}</td>-->
-        <!--                <td>{{ item.data.type }}</td>-->
-                        <!-- <td>{{item.data.date |-->
-                        <!--                            date:"yyyy/MM/dd"}} {{item.data.time}}</td> -->
-                        <!--<td>-->
-                        <!--  {{ item.data.date | date: "yyyy/MM/dd" }},-->
-                        <!--  {{ item.dateTime }}-->
-                        <!--</td>-->
-                        <!--<td>-->
-                        <!--  {{ item.data.city }},{{ item.data.state }},{{-->
-                        <!--    item.data.country-->
-                        <!--  }}-->
-                        <!--</td>-->
-                        <!--<td>-->
-                        <!--  {{ item.data.amt | number: "1.2-2" }}-->
-                        <!--  {{ item.data.currency }}-->
-                        <!--</td>-->
-        <!--              </tr>-->
-        <!--            </tbody>-->
-        <!--          </table>-->
-        <!--        </section>-->
-        <!--      </div>-->
-        <!--    </div>-->
-        <!--  </div>-->
-        <!--</div>-->
-
+        <!-- Maintenance Details -->
         <div class="row text-dark mb-3">
-          <div class="col pr-0">
-            <div class="card">
-              <div class="card-body">
-                <label
-                  class="control-label font-weight-bold font-weight-bold text-lg-right text-dark text-4 pt-1"
-                  >Maintenance Details</label
+          <div class="col-lg-12">
+          <div class="bg-white p-3 text-dark">
+            <div class="form-group row pt-3">
+            <div
+                  class="col-lg-12"
+                  style="height: calc(60vh - 149px); overflow-y: scroll"
                 >
-                <section class="reports_div">
-                  <table
-                    width="18%"
-                    class="row-border hover table table-bordered table-striped mb-0"
+                  <p-table
+                    #dt
+                    [value]="serviceLogData"
+                    [resizableColumns]="true"
+                    columnResizeMode="expand"
+                    scrollDirection="both"
+                    [columns]="mainSelectedColumns"
+                    [loading]="!loaded"
+                    styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                    [loading]="!loaded"
+                    [scrollable]="true"
+                    scrollHeight="100%"
                   >
-                    <col style="width: 2%" />
-                    <col style="width: 2%" />
-                    <col style="width: 2%" />
-
-                    <col style="width: 2%" />
-                    <thead>
-                      <tr>
-                        <th>Vehicles</th>
-                        <th>Completion Date/Odometer</th>
-                        <th>Service Task(s)</th>
-                        <th>Total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr
-                        *ngIf="serviceLogData.length == 0"
-                        class="text-center"
-                      >
-                        <td colspan="15">{{ logMessage }}</td>
-                      </tr>
-                      <tr *ngFor="let item of serviceLogData">
-                        <td>{{ item.vehicle }}</td>
-                        <td>{{ item.completionDate | date: "yyyy/MM/dd" }}</td>
-                        <td>
+             <!-- Caption template of data table -->
+                    <ng-template pTemplate="caption">
+                    <div   class="p-d-flex d-flex justify-content-between align-items-center">
+                       <div>
+                          <h3 class="m-0"> Maintenance Details </h3>
+                        </div>
+                      <div class="text-right">
+                       <span>Showing {{ serviceLogData.length }} entries </span>
+                        &nbsp;
+                         <button
+                            type="button"
+                            pButton
+                            (click)="refreshData()"
+                            pTooltip="Refresh"
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-sync"
+                          ></button>
+                          <button
+                            pButton
+                            pRipple
+                            pTooltip="Clear Filter"
+                            class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash"
+                            (click)="clear(dt)"
+                          ></button>
+                          
+                            <p-multiSelect
+                            [options]="dataColumnsMain"
+                            [(ngModel)]="mainSelectedColumns"
+                            optionLabel="header"
+                            selectedItemsLabel="{0} columns selected"
+                            [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns"
+                          >
+                          </p-multiSelect>
+                        
+                   </div>   
+                </div>
+              </ng-template>
+               <ng-template pTemplate="header" let-columns>
+               <tr>
+               <th
+                          *ngFor="let dataColumnsMain of columns"
+                          [pSortableColumn]="dataColumnsMain.field"
+                          pResizableColumn
+                          style= "width: 25%;"
+                        >
+                                <div [ngSwitch]="dataColumnsMain.field">
+                                <span *ngSwitchDefault>
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="right"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumnsMain.header }}
+                                <p-sortIcon
+                                  [field]="dataColumnsMain.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumnsMain.type"
+                                  [field]="dataColumnsMain.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </span>
+              </div>
+              </th>
+              </tr>
+              </ng-template>
+              
+                <ng-template
+                      pTemplate="body"
+                      let-maintenance
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"  
+                    >
+                  <tr>
+                  <td 
+                   *ngFor="let dataColumnsMain of columns"
+                    style="width: 25%; height: 43px; cursor: pointer"
+                  >
+                  <div [ngSwitch]="dataColumnsMain.field">
+                    <span *ngSwitchCase="'vehicle'">
+                  <span>
+                    {{ maintenance.vehicle }}
+                  </span>
+                  </span>
+                  
+                  <span *ngSwitchCase="'completionDate'">
+                     <span>{{ maintenance.completionDate | date: "yyyy/MM/dd" }}</span>
+                  </span>
+                  
+                  <span *ngSwitchCase="'allServiceTasks'">
                           <div>
                             <span class="font-weight-bold"
                               >Service Task(s):
                             </span>
                             <span
                               title="Service
-                                                        Task"
+                                      Task"
                               *ngFor="
-                                let task of item.allServiceTasks
+                                let task of maintenance.allServiceTasks
                                   .serviceTaskList;
                                 let j = index;
                                 let $last = last
@@ -737,113 +656,271 @@
                               </span>
                             </span>
                             <span
-                              *ngIf="item.allServiceTasks.serviceTaskList == 0"
+                              *ngIf="maintenance.allServiceTasks.serviceTaskList == 0"
                               >-
                             </span>
                           </div>
                           <div>
                             <span class="font-weight-bold">Issue(s): </span>
                             <a class="text-info font-size-12">{{
-                              item.issue
+                              maintenance.issue
                             }}</a>
-                            <span *ngIf="item.selectedIssues.length == 0"
+                            <span *ngIf="maintenance.selectedIssues.length == 0"
                               >-
                             </span>
                           </div>
-                        </td>
-
-                        <td>
+                  </span>
+                  
+                  
+                  <span  *ngSwitchCase="'allServiceParts'">
+                      <span>
                           {{
                             (
-                              item.allServiceParts.total +
-                              item.allServiceTasks.total
+                              maintenance.allServiceParts.total +
+                              maintenance.allServiceTasks.total
                             ).toFixed(2)
                           }}
-                          {{ item.allServiceParts.currency }}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </section>
-              </div>
+                          {{ maintenance.allServiceParts.currency }}
+                        </span>
+                  </span>
+                  
+               
+                  </div>
+                 </td>
+                 </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage" let-columns>
+                      <div class="col-lg-12 mt-3 text-center">
+                        {{ dataMessage }}
+                        <br /><br />
+                      </div>
+                    </ng-template>
+                    
+                    <ng-template pTemplate="summary" let-columns>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK !== 'end' && allData.length !== 0"
+                      >
+                        <button
+                          type="button"
+                          class="btn btn-success btn-sm text-light"
+                          (click)="onScroll()"
+                        >
+                          Load More..
+                        </button>
+                        <br /><br />
+                      </div>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK === 'end'"
+                      >
+                        Total Records: {{ allData.length }}
+                      </div>
+                    </ng-template>
+              
+              
+              </p-table>
+             </div>
+            </div>
             </div>
           </div>
         </div>
-        <div class="row text-dark mb-3">
-          <div class="col pr-0">
-            <div class="card">
-              <div class="card-body">
-                <label
-                  class="control-label font-weight-bold font-weight-bold text-lg-right text-dark text-4 pt-1"
-                  >Driver-Payment Details</label
+        
+        <!-- Driver Payment-->
+        
+           <div class="row text-dark mb-3">
+          <div class="col-lg-12">
+          <div class="bg-white p-3 text-dark">
+            <div class="form-group row pt-3">
+            <div
+                  class="col-lg-12"
+                  style="height: calc(60vh - 149px); overflow-y: scroll"
                 >
-                <section class="reports_div">
-                  <table
-                    width="18%"
-                    class="row-border hover table table-bordered table-striped mb-0"
+                  <p-table
+                    #dt
+                    [value]="payments"
+                    [resizableColumns]="true"
+                    columnResizeMode="expand"
+                    scrollDirection="both"
+                    [columns]="drSelectedColumns"
+                    [loading]="!loaded"
+                    styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                    [loading]="!loaded"
+                    [scrollable]="true"
+                    scrollHeight="100%"
                   >
-                    <col style="width: 2%" />
-                    <col style="width: 2%" />
-                    <col style="width: 2%" />
-                    <col style="width: 2%" />
-                    <col style="width: 2%" />
-                    <col style="width: 2%" />
-                    <thead>
-                      <tr>
-                        <th>Payment#</th>
-                        <th>Date</th>
-                        <th>Payment Mode Information</th>
-                        <th>Settlement#</th>
-                        <th>Paid To</th>
-                        <th>Amount</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngIf="payments.length == 0" class="text-center">
-                        <td colspan="15">{{ drvPayMessage }}</td>
-                      </tr>
-                      <tr *ngFor="let item of payments">
-                        <td>{{ item.paymentNo }}</td>
-                        <td>{{ item.txnDate | date: "yyyy/MM/dd" }}</td>
-                        <td>{{ item.payMode | titlecase }}</td>
-                        <td>
+             <!-- Caption template of data table -->
+                    <ng-template pTemplate="caption">
+                    <div   class="p-d-flex d-flex justify-content-between align-items-center">
+                       <div>
+                          <h3 class="m-0"> Driver-Payment Details </h3>
+                        </div>
+                      <div class="text-right">
+                       <span>Showing {{ payments.length }} entries </span>
+                        &nbsp;
+                         <button
+                            type="button"
+                            pButton
+                            (click)="refreshData()"
+                            pTooltip="Refresh"
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-sync"
+                          ></button>
+                          <button
+                            pButton
+                            pRipple
+                            pTooltip="Clear Filter"
+                            class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash"
+                            (click)="clear(dt)"
+                          ></button>
+                          
+                            <p-multiSelect
+                            [options]="dataColumnsDriver"
+                            [(ngModel)]="drSelectedColumns"
+                            optionLabel="header"
+                            selectedItemsLabel="{0} columns selected"
+                            [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns"
+                          >
+                          </p-multiSelect>
+                        
+                   </div>   
+                </div>
+                   </ng-template>
+                   <ng-template pTemplate="header" let-columns>
+                     <tr>
+                      <th
+                          *ngFor="let dataColumnsDriver of columns"
+                          [pSortableColumn]="dataColumnsDriver.field"
+                          pResizableColumn
+                          style= "width: 16.65%;"
+                                >
+                                <div [ngSwitch]="dataColumnsDriver.field">
+                                <span *ngSwitchDefault>
+                              <div
+                                class="flex justify-content-center align-items-center"
+                                alignFrozen="right"
+                                pFrozenColumn
+                                [frozen]="true"
+                              >
+                                {{ dataColumnsDriver.header }}
+                                <p-sortIcon
+                                  [field]="dataColumnsDriver.field"
+                                ></p-sortIcon>
+                                <p-columnFilter
+                                  [type]="dataColumnsDriver.type"
+                                  [field]="dataColumnsDriver.field"
+                                  matchMode="contains"
+                                  [showMatchModes]="false"
+                                  [showOperator]="false"
+                                  [showAddButton]="false"
+                                  display="menu"
+                                >
+                                </p-columnFilter>
+                              </div>
+                            </span>
+              </div>
+              </th>
+              </tr>
+              </ng-template>
+              
+                <ng-template
+                      pTemplate="body"
+                      let-payment
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"  
+                    >
+                  <tr>
+                  <td 
+                   *ngFor="let dataColumnsDriver of columns"
+                    style="width: 16.65%; height: 40px; cursor: pointer"
+                  >
+                  <div [ngSwitch]="dataColumnsDriver.field">
+                    <span *ngSwitchCase="'paymentNo'">
+                  <span>
+                   {{ payment.paymentNo }}
+                  </span>
+                  </span>
+                  
+                  <span *ngSwitchCase="'txnDate'">
+                     <span>{{ payment.txnDate | date: "yyyy/MM/dd" }}</span>
+                  </span>
+                  
+                 <span *ngSwitchCase="'payMode'">
+                   <span>{{ payment.payMode | titlecase }}</span>
+                 </span>
+                  
+                  <span *ngSwitchCase="'settlementName'">
                           <span
-                            *ngFor="let stl of item.settlData; let s = index"
+                            *ngFor="let stl of payment.settlData; let s = index"
                           >
                             <b>{{ stl.settlementName }}</b>
                             ({{ stl.status }})
-                            <span *ngIf="s < item.settlementIds.length - 1"
+                            <span *ngIf="s < payment.settlementIds.length - 1"
                               >,</span
                             >
                           </span>
-                        </td>
-                        <td>
+                  </span>
+                  
+                  <span  *ngSwitchCase="'entityName'">
                           <strong class="text-capitalize"
-                            >{{ item.paymentTo }}:</strong
+                            >{{ payment.paymentTo }}:</strong
                           >
 
-                          {{ item.entityName | titlecase }}
-                        </td>
-                        <td>
-                          {{ item.finalAmount | number: "1.2-2" }}
-                          {{ item.currency }}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="font-weight-bold text-4">Total</td>
-                        <td>{{ totalDriverPay | number: "1.2-2" }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </section>
-              </div>
+                          {{ payment.entityName | titlecase }}
+                  </span>
+                  
+                      <span *ngSwitchCase="'finalAmount'">
+                        <span>
+                          {{ payment.finalAmount | number: "1.2-2" }}
+                          {{ payment.currency }}
+                        </span>
+                        </span>
+               
+                  </div>
+                 </td>
+                 </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage" let-columns>
+                      <div class="col-lg-12 mt-3 text-center">
+                        {{ dataMessage }}
+                        <br /><br />
+                      </div>
+                    </ng-template>
+                    
+                    <ng-template pTemplate="summary" let-columns>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK !== 'end' && payments.length !== 0"
+                      >
+                        <button
+                          type="button"
+                          class="btn btn-success btn-sm text-light"
+                          (click)="onScroll()"
+                        >
+                          Load More..
+                        </button>
+                        <br /><br />
+                      </div>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK === 'end'"
+                      >
+                        Total Records: {{ payments.length }}
+                      </div>
+                    </ng-template>
+              
+              
+              </p-table>
+             </div>
+            </div>
             </div>
           </div>
         </div>
+        
+     
+    
         <div class="row text-dark mb-3">
           <div class="col pr-0">
             <div class="card">

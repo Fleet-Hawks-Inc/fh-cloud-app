@@ -58,7 +58,9 @@ export class ExpenseComponent implements OnInit {
   totalDriverPay = 0
   get = _.get;
   _selectedColumns: any[];
-   _fuelSelectedColumns: any[];
+  _fuelSelectedColumns: any[];
+  _mainSelectedColumns: any[];
+  _driSelectedColumns: any[];
   
       dataColumns = [
         {  field: 'tripNo', header: 'Trip', type: "text" },
@@ -78,6 +80,22 @@ export class ExpenseComponent implements OnInit {
         {  field: 'data.country', header: 'Status', type: "text" },
         {  field: 'data.amt', header: 'Status', type: "text" },
     ];
+    
+     dataColumnsMain= [
+        {   field: 'vehicle', header: 'Vehicles', type: "text" },
+        {   field: 'completionDate', header: 'Completion Date/Odometer', type: "text" },
+        {   field: 'allServiceTasks', header: 'Service Task(s)', type: "text" },
+        {   field: 'allServiceParts', header: 'Total', type: "text" },
+    ];
+    
+     dataColumnsDriver= [
+        {   field: 'paymentNo', header: 'Payment', type: "text" },
+        {   field: 'txnDate', header: 'Date', type: "text" },
+        {   field: 'payMode', header: 'Payment Mode Information', type: "text" },
+        {   field: 'settlementName', header: 'Settlement', type: "text" },
+        {   field: 'entityName', header: 'Paid To', type: "text" },
+        {   field: 'finalAmount', header: 'Amount', type: "text" },
+    ];
    
   constructor(private apiService: ApiService, 
   private toastr: ToastrService,
@@ -89,6 +107,8 @@ export class ExpenseComponent implements OnInit {
   ngOnInit(): void {
     this.setToggleOptions();
     this.setToggleOptionsFuel();
+    this.setToggleOptionsMain();
+    this.setToggleOptionsdr();
     this.end = moment().format("YYYY-MM-DD");
     this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
     this.vehicleId = this.route.snapshot.params[`vehicleId`];
@@ -98,7 +118,7 @@ export class ExpenseComponent implements OnInit {
     this.fetchSlogByVehicle();
     this.fetchExpensePayment()
   }
-  
+   //trip table
   setToggleOptions() {
         this.selectedColumns = this.dataColumns;
     }
@@ -112,7 +132,7 @@ export class ExpenseComponent implements OnInit {
         this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
     }
     
-    
+    // fuel table
     setToggleOptionsFuel() {
         this.fuelSelectedColumns = this.dataColumnsFuel;
     }
@@ -125,7 +145,38 @@ export class ExpenseComponent implements OnInit {
         //restore original order
         this._fuelSelectedColumns = this.dataColumnsFuel.filter(col => val.includes(col));
     }
+    
+    // maintenance table
+    
+     setToggleOptionsMain() {
+        this.mainSelectedColumns = this.dataColumnsMain;
+    }
+    
+      @Input() get mainSelectedColumns(): any[] {
+        return this._mainSelectedColumns;
+    }
+    
+    set mainSelectedColumns(val: any[]) {
+        //restore original order
+        this._mainSelectedColumns = this.dataColumnsMain.filter(col => val.includes(col));
+    }
 
+   // Driver payment table 
+    
+     setToggleOptionsdr() {
+        this.drSelectedColumns = this.dataColumnsDriver;
+    }
+    
+     @Input() get drSelectedColumns(): any[] {
+        return this._driSelectedColumns;
+    }
+    
+    set drSelectedColumns(val: any[]) {
+        //restore original order
+        this._driSelectedColumns = this.dataColumnsDriver.filter(col => val.includes(col));
+    }
+
+   
   async fetchDriverPayment() {
     const result: any = await this.accountService.getData(`driver-payments/get/driver/payment?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&startDate=${this.start}&endDate=${this.end}`)
       .toPromise();
