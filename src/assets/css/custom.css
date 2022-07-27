@@ -4436,3 +4436,11 @@ ul.simple-post-list.settings-list li:last-child a {
 .bbw-1px {
   border-bottom-width: 1px !important;
 }
+
+/* new input, buttons padding,height in header */
+.p-inputtext {
+  padding: 0.26rem 0.5rem !important;
+}
+.p-button.p-button-icon-only{
+  padding: 0.26rem 0 !important;
+}
