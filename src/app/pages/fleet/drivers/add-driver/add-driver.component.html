@@ -1019,6 +1019,29 @@
                           <ng-option value="Light Vehicle">Light Vehicle</ng-option>
                         </ng-select>
                       </div>
+
+                      <div class="col-lg-5">
+                      <label class="
+                          control-label
+                          font-weight-bold font-bold
+                          text-lg-right
+                          pt-2
+                        ">Attach Document</label>
+
+                      <span class="
+                          btn btn-default btn-file btn-xs
+                          w100
+                          text-left
+                        ">
+                        <input class="w100" type="file" multiple name="uploadedDocuments" (change)="
+                            selectDocument($event, 'uploadedDocs')
+                          " accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
+                        <span *ngIf="uploadDocsError != ''" class="text-danger">
+                          {{ uploadDocsError }}
+                        </span>
+                      </span>
+
+                    </div>
                     </div>
                   </div>
                 </div>
