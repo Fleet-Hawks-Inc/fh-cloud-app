@@ -2458,17 +2458,20 @@ export class AddTripComponent implements OnInit {
     this.tripData.tripPlanning = [];
     this.tripData["tripID"] = this.route.snapshot.params["tripID"];
     this.tripData.dateCreated = moment(this.dateCreated).format("YYYY-MM-DD");
+    if (type === 'recall') {
+      if (this.tripData.recallMessage === '') {
+        this.reasonErr = "Please fill recall reason"
+        return false;
+      } else {
+        this.reasonErr = "";
+      }
+    }
     this.tripData["recallMessage"] = this.tripData.recallMessage;
     this.tripData.mapFrom =
       this.mapOrderActive === "active" ? "order" : "route";
 
     let planData = this.trips;
-    if(this.tripData.recallMessage === '') {
-      this.reasonErr = "Please fill the reason message"
-      return false;
-    } else {
-      this.reasonErr = "";
-    }
+
     if (this.tripData.orderId.length == 0) {
       this.toastr.error("Please select order.");
       this.submitDisabled = false;
@@ -2646,7 +2649,6 @@ export class AddTripComponent implements OnInit {
     } else {
       url = "trips";
     }
-
     this.apiService.putData(url, this.tripData).subscribe({
       complete: () => { },
       error: (err: any) => {

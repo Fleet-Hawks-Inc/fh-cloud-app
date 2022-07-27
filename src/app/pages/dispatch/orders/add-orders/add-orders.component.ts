@@ -1310,7 +1310,7 @@ export class AddOrdersComponent implements OnInit {
         this.apiService
           .getData(
             "trips/calculate/pc/miles?type=mileReport&vehType=Truck&stops=" +
-              this.getAllCords.join(";")
+            this.getAllCords.join(";")
           )
           .subscribe(
             (result) => {
@@ -1656,7 +1656,7 @@ export class AddOrdersComponent implements OnInit {
     formData.append("data", JSON.stringify(this.orderData));
 
     this.apiService.postData("orders", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         this.submitDisabled = false;
         from(err.error)
@@ -1685,7 +1685,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -1701,12 +1701,12 @@ export class AddOrdersComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -2628,11 +2628,13 @@ export class AddOrdersComponent implements OnInit {
     // this.isSubmit = true;
     // if (!this.checkFormErrors()) return false;
     this.submitDisabled = true;
-    if(this.orderData.recallMessage === '') {
-      this.reasonErr = "Please fill the reason message"
-      return false;
-    } else {
-      this.reasonErr = "";
+    if (type === 'recall') {
+      if (this.orderData.recallMessage === '') {
+        this.reasonErr = "Please fill recall reason "
+        return false;
+      } else {
+        this.reasonErr = "";
+      }
     }
     if (this.orderData.zeroRated) {
       this.orderData.taxesInfo.forEach((element) => {
@@ -2644,7 +2646,7 @@ export class AddOrdersComponent implements OnInit {
     this.orderData["orderID"] = this.getOrderID;
     this.orderData.orderNumber = this.orderData.orderNumber.toString();
     this.orderData["deletedFiles"] = this.deletedFiles;
-    this.orderData["recallReason"] = this.orderData.recallMessage;
+    this.orderData["recallMessage"] = this.orderData.recallMessage;
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
     for (let k = 0; k < this.finalShippersReceivers.length; k++) {
@@ -2753,7 +2755,7 @@ export class AddOrdersComponent implements OnInit {
       url = "admin/order/recall";
     }
     this.apiService.putData(url, formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         from(err.error)
           .pipe(
@@ -2774,7 +2776,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {

@@ -1427,7 +1427,7 @@
 </p-dialog>
 
 <p-dialog
-  header="Recall Reason Message"
+  header="Recall Reason"
   [(visible)]="display"
   [style]="{ width: '500px' }"
   [modal]="true"
@@ -1440,7 +1440,7 @@
             >Reason</label
           >
           <textarea
-            placeholder="eg. Please be on time"
+            placeholder="Please enter recall reason"
             [(ngModel)]="tripData.recallMessage"
             name="recallMessage"
             class="form-control h-auto"
