@@ -4439,3 +4439,14 @@ ul.simple-post-list.settings-list li:last-child a {
 .bbw-1px {
   border-bottom-width: 1px !important;
 }
+
+.p-splitbutton {
+  line-height: normal;
+}
+.p-splitbutton .p-component {
+  font-size: 12px;
+  padding-right: 0;
+}
+.p-button-icon {
+  font-size: 0.9rem;
+}

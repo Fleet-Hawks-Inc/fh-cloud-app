@@ -470,7 +470,7 @@ export class AceDetailsComponent implements OnInit {
 
   // }
   cancelManifest(manifestID) {
-    this.apiService.getData(`eManifests/ACEmanifest/cancelManifest/` + manifestID).subscribe();
+    this.apiService.getData(`eManifests/ace/cancel-request/` + manifestID).subscribe();
   }
 
   amendManifest() {

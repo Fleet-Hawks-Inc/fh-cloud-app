@@ -27,7 +27,7 @@ export class NewAceManifestComponent implements OnInit {
   @ViewChild("aAce1") aAce1: NgForm;
   activeState: boolean[] = [true, false, false];
   public manifestID;
-  public carrierID;
+  public pk;
   sendId;
   title = 'Add ACE e-Manifest';
   modalTitle = 'Add';
@@ -823,10 +823,10 @@ export class NewAceManifestComponent implements OnInit {
         const data = {
           type: this.manifestType,
           tripNumber: `${this.SCAC}${this.tripNumber}`,
-          currentStatus: 'draft',
+          currentStatus: 'DRAFT',
           estimatedArrivalDate: this.estimatedArrivalDate,
           estimatedArrivalTime: this.estimatedArrivalTime,
-          manifest: {
+          manifestInfo: {
             SCAC: this.SCAC,
             usPortOfArrival: this.usPortOfArrival,
             truck: this.truck,
@@ -838,15 +838,15 @@ export class NewAceManifestComponent implements OnInit {
             shipments: this.shipments,
           }
         };
-        for (let p = 0; p < data.manifest.passengers.length; p++) {
-          for (let d = 0; d < data.manifest.passengers[p].travelDocuments.length; d++) {
-            const element = data.manifest.passengers[p].travelDocuments[d];
+        for (let p = 0; p < data.manifestInfo.passengers.length; p++) {
+          for (let d = 0; d < data.manifestInfo.passengers[p].travelDocuments.length; d++) {
+            const element = data.manifestInfo.passengers[p].travelDocuments[d];
             delete element.docStates;
           }
         }
-        for (let s = 0; s < data.manifest.shipments.length; s++) {
-          for (let p = 0; p < data.manifest.shipments[s].thirdParties.length; p++) {
-            const element = data.manifest.shipments[s].thirdParties[p].address;
+        for (let s = 0; s < data.manifestInfo.shipments.length; s++) {
+          for (let p = 0; p < data.manifestInfo.shipments[s].thirdParties.length; p++) {
+            const element = data.manifestInfo.shipments[s].thirdParties[p].address;
             delete element.thirdPartyStates;
             delete element.thirdPartyCities;
           }
@@ -874,10 +874,10 @@ export class NewAceManifestComponent implements OnInit {
       const data = {
         type: this.manifestType,
         tripNumber: `${this.SCAC}${this.tripNumber}`,
-        currentStatus: 'draft',
+        currentStatus: 'DRAFT',
         estimatedArrivalDate: this.estimatedArrivalDate,
         estimatedArrivalTime: this.estimatedArrivalTime,
-        manifest: {
+        manifestInfo: {
           SCAC: this.SCAC,
           usPortOfArrival: this.usPortOfArrival,
           truck: this.truck,
@@ -890,15 +890,15 @@ export class NewAceManifestComponent implements OnInit {
         }
 
       };
-      for (let p = 0; p < data.manifest.passengers.length; p++) {
-        for (let d = 0; d < data.manifest.passengers[p].travelDocuments.length; d++) {
-          const element = data.manifest.passengers[p].travelDocuments[d];
+      for (let p = 0; p < data.manifestInfo.passengers.length; p++) {
+        for (let d = 0; d < data.manifestInfo.passengers[p].travelDocuments.length; d++) {
+          const element = data.manifestInfo.passengers[p].travelDocuments[d];
           delete element.docStates;
         }
       }
-      for (let s = 0; s < data.manifest.shipments.length; s++) {
-        for (let p = 0; p < data.manifest.shipments[s].thirdParties.length; p++) {
-          const element = data.manifest.shipments[s].thirdParties[p].address;
+      for (let s = 0; s < data.manifestInfo.shipments.length; s++) {
+        for (let p = 0; p < data.manifestInfo.shipments[s].thirdParties.length; p++) {
+          const element = data.manifestInfo.shipments[s].thirdParties[p].address;
           delete element.thirdPartyStates;
           delete element.thirdPartyCities;
         }
@@ -935,6 +935,7 @@ export class NewAceManifestComponent implements OnInit {
     this.apiService
       .getData('eManifests/ACE/' + this.manifestID).subscribe(async (result: any) => {
         result = result[0];
+        this.pk = result.pk;
         this.manifestID = result.mID;
         this.manifestType = result.type;
         this.sendId = result.sendId;
@@ -1015,7 +1016,7 @@ export class NewAceManifestComponent implements OnInit {
           mID: this.manifestID,
           type: this.manifestType,
           tripNumber: `${this.SCAC}${this.tripNumber}`,
-          currentStatus: 'draft',
+          currentStatus: 'DRAFT',
           sendId: this.sendId,
           estimatedArrivalDate: this.estimatedArrivalDate,
           estimatedArrivalTime: this.estimatedArrivalTime,
@@ -1073,11 +1074,11 @@ export class NewAceManifestComponent implements OnInit {
         mID: this.manifestID,
         type: this.manifestType,
         tripNumber: `${this.SCAC}${this.tripNumber}`,
-        currentStatus: 'draft',
+        currentStatus: 'DRAFT',
         sendId: this.sendId,
         estimatedArrivalDate: this.estimatedArrivalDate,
         estimatedArrivalTime: this.estimatedArrivalTime,
-        manifest: {
+        manifestInfo: {
           SCAC: this.SCAC,
           usPortOfArrival: this.usPortOfArrival,
           truck: this.truck,
@@ -1093,15 +1094,15 @@ export class NewAceManifestComponent implements OnInit {
         createdTime: this.createdTime,
       };
 
-      for (let p = 0; p < data.manifest.passengers.length; p++) {
-        for (let d = 0; d < data.manifest.passengers[p].travelDocuments.length; d++) {
-          const element = data.manifest.passengers[p].travelDocuments[d];
+      for (let p = 0; p < data.manifestInfo.passengers.length; p++) {
+        for (let d = 0; d < data.manifestInfo.passengers[p].travelDocuments.length; d++) {
+          const element = data.manifestInfo.passengers[p].travelDocuments[d];
           delete element.docStates;
         }
       }
-      for (let s = 0; s < data.manifest.shipments.length; s++) {
-        for (let p = 0; p < data.manifest.shipments[s].thirdParties.length; p++) {
-          const element = data.manifest.shipments[s].thirdParties[p].address;
+      for (let s = 0; s < data.manifestInfo.shipments.length; s++) {
+        for (let p = 0; p < data.manifestInfo.shipments[s].thirdParties.length; p++) {
+          const element = data.manifestInfo.shipments[s].thirdParties[p].address;
           delete element.thirdPartyStates;
           delete element.thirdPartyCities;
         }
@@ -1111,6 +1112,7 @@ export class NewAceManifestComponent implements OnInit {
   }
   // update function
   updateFunction(data) {
+    data.pk = this.pk;
     this.apiService
       .putData(`eManifests/update-ace/${this.amendManifest}`, data)
       .subscribe({
