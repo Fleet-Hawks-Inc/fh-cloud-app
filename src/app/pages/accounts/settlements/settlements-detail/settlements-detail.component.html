@@ -221,7 +221,7 @@
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-12">
-                        <h5 class="font-weight-bold">Additions</h5>
+                        <p class="font-weight-bold text-dark mb-2">Additions</p>
                         <table class="table table-bordered table-striped">
                           <thead>
                             <tr class="">
@@ -251,7 +251,9 @@
                         </table>
                       </div>
                       <div class="col-lg-12">
-                        <h5 class="font-weight-bold">Deductions</h5>
+                        <p class="font-weight-bold text-dark mb-2">
+                          Deductions
+                        </p>
                         <table class="table table-bordered table-striped">
                           <thead>
                             <tr class="">
@@ -282,7 +284,9 @@
                       </div>
 
                       <div class="col-lg-12">
-                        <h5 class="font-weight-bold text-capitalize">
+                        <p
+                          class="font-weight-bold text-capitalize text-dark mb-2"
+                        >
                           {{
                             settlementData.type === "owner_operator"
                               ? "Owner
@@ -290,7 +294,7 @@
                               : settlementData.type
                           }}
                           Payments
-                        </h5>
+                        </p>
                         <table class="table table-bordered table-striped">
                           <thead>
                             <tr class="">
@@ -365,7 +369,7 @@
                         class="col-lg-12"
                         *ngIf="settlementData.transactionLog"
                       >
-                        <h5 class="font-weight-bold">Journal</h5>
+                        <p class="font-weight-bold text-dark mb-2">Journal</p>
                         <table
                           class="table table-bordered table-hover table-striped"
                         >
