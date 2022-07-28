@@ -729,7 +729,7 @@ export class SharedModalsComponent implements OnInit {
       this.toastr.error("Please select at least one document!");
       return false;
     }
-    this.isDocSubmit = true;
+    //this.isDocSubmit = true;
     let obj = {
       docType: this.docs.docType,
       documents: this.uploadedDocs,
