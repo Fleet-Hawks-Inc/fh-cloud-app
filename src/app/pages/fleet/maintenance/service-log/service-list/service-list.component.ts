@@ -54,6 +54,7 @@ export class ServiceListComponent implements OnInit {
   vendorsData: any;
   vendorTextStatus = false;
   basicActive = "active";
+  dataColumns: any[];
   addressActive = "";
   allVehicles = [];
   allAssets = [];
@@ -73,14 +74,7 @@ export class ServiceListComponent implements OnInit {
   ]
   
    // columns of data table
-  dataColumns = [
-    { width: '11%', field: 'unitType', header: 'Unit Type', type: 'text' },
-    { width: '11%', field: 'unitName', header: 'Vehicle/Asset', type: 'text' },
-    { width: '15%', field: 'dateOdometer', header: 'Completion Date/Odometer', type: 'text' },
-    { width: '40%', field: 'detailsLogs', header: 'Details', type: 'text' },
-    { width: '16%', field: 'totalLogs', header: 'Total', type: 'text' },
-  ];
-  
+
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -93,6 +87,15 @@ export class ServiceListComponent implements OnInit {
 
   ngOnInit() {
     this.initDataTable();
+    this.dataColumns = [
+    { width: '14%', field: 'unitType', header: 'Unit Type', type: 'text' },
+    { width: '14%', field: 'unitName', header: 'Vehicle/Asset', type: 'text' },
+    { width: '14%', field: 'odometer', header: 'Odometer', type: 'text' },
+    { width: '16%', field: 'completionDate', header: 'Completion Date', type: 'text' },
+    { width: '16%', field: 'totalLogs', header: 'Total', type: 'text' },
+    { width: '16%', field: 'currentStatus', header: 'Status', type: 'text' },
+  ];
+  this._selectedColumns = this.dataColumns;
     this.fetchTasks();
     this.setToggleOptions();
     this.fetchAllVehiclesIDs();
@@ -206,21 +209,14 @@ export class ServiceListComponent implements OnInit {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
             this.loaded = true;
           }
-
-          if (result.Items.length > 0) {
+           if (result.Items.length > 0) {
             if (result.LastEvaluatedKey !== undefined) {
-              this.lastEvaluatedKey = encodeURIComponent(
-                result.Items[result.Items.length - 1].logSK
-              );
-              let lastEvalKey = result[`LastEvaluatedKey`].logSK.replace(
-                /#/g,
-                "--"
-              );
-              this.lastEvaluatedKey = lastEvalKey;
-            } else {
-              this.lastEvaluatedKey = "end";
+              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].logSK);
             }
-            this.logs = this.logs.concat(result.Items);
+            else {
+              this.lastEvaluatedKey = 'end'
+            }
+            this.logs = this.logs.concat(result.Items)
             this.loaded = true;
           }
         });
