@@ -141,7 +141,7 @@
 
                 <div class="form-group row pt-3">
                   <div class="col-lg-11 pr-1 text-right">
-                    <a routerLink="/manage/devices/list" class="btn btn-default mr-3" id="">Cancel</a>
+                    <a routerLink="/manage/devices/list/{{sessionID}}" class="btn btn-default mr-3" id="">Cancel</a>
 
                     <ng-template [ngIf]="deviceID" [ngIfElse]="elseBlock">
                       <button (click)="updateAndSubmit()" class="btn btn-success" id="nextBtn">

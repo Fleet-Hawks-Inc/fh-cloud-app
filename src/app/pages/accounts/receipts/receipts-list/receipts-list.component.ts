@@ -1,8 +1,9 @@
-import { Component, OnInit } from "@angular/core";
-
+import { Component, OnInit,Input } from "@angular/core";
+import * as _ from "lodash";
 import { AccountService, ApiService } from "./../../../../services";
 import { ToastrService } from "ngx-toastr";
 import Constants from "../../../fleet/constants";
+import { Table } from "primeng/table";
 @Component({
   selector: "app-receipts-list",
   templateUrl: "./receipts-list.component.html",
@@ -31,7 +32,10 @@ export class ReceiptsListComponent implements OnInit {
     cadTotal: 0,
     usdTotal: 0,
   };
-
+  _selectedColumns: any[];
+  dataColumns: any[];
+  get = _.get;
+  find = _.find;
   constructor(
     private accountService: AccountService,
     private toaster: ToastrService,
@@ -46,6 +50,30 @@ export class ReceiptsListComponent implements OnInit {
     this.fetchReceipts();
     this.fetchCustomersByIDs();
     this.fetchAccounts();
+    this.dataColumns = [
+      { width: '10%', field: 'recNo', header: 'Receipt#', type: "text" },
+      { width: '10%', field: 'paymentModeDate', header: 'Date', type: "text" },
+      { width: '25%', field: 'paidInvoices', header: 'Invoice#', type: "text" },
+      { width: '25%', field: 'customerID', header: 'Customer', type: "text" },
+      { width: '10%', field: 'paymentMode', header: 'Payment', type: "text" },
+      { width: '10%', field: 'accountID', header: 'Account', type: "text" },
+      { width: '10%', field: 'recAmount', header: 'Account', type: "text" },
+    ];
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+  
   }
 
   fetchReceipts(refresh?: boolean) {
@@ -131,6 +159,9 @@ export class ReceiptsListComponent implements OnInit {
     this.apiService.getData("contacts/get/list").subscribe((result: any) => {
       this.customersObjects = result;
     });
+  }
+  clear(table: Table) {
+    table.clear();
   }
   fetchAccounts() {
     this.accountService

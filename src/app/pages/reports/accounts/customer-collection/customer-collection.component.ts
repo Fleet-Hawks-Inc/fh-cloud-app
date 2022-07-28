@@ -150,9 +150,9 @@ export class CustomerCollectionComponent implements OnInit {
       this.dataMessage = Constants.NO_RECORDS_FOUND
     }
     for (let data of result.Items) {
-      data.Age30 = 0;
-      data.Age45 = 0;
-      data.Age60 = 0;
+      data.Age30 = '';
+      data.Age45 = '';
+      data.Age60 = '';
       if (data.cadBalanceAge30 != 0) {
         data.Age30 = "$" + data.cadBalanceAge30 + " " + "CAD"
       }
