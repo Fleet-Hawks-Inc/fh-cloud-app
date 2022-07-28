@@ -39,7 +39,7 @@ export class EditProfileComponent implements OnInit {
   PIP = false;
   cargoInsurance = '';
   email = '';
-  notificationEmail='';
+  notificationEmail = '';
   userName = '';
   carrierName = '';
   bizCountry = null;
@@ -120,7 +120,7 @@ export class EditProfileComponent implements OnInit {
   termsCustom: ""
   notesDriver: ""
   tagLine: ""
-  navigationEmail:""
+  navigationEmail: ""
 
   yardDefault = false;
   public searchTerm = new Subject<string>();
@@ -673,7 +673,7 @@ export class EditProfileComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        if (v === 'carrierName') {
+        if (v === 'carrierName' || v === 'SCAC') {
           $('[name="' + v + '"]')
             .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
             .addClass('error');

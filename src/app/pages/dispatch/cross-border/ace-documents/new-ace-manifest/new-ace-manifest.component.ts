@@ -26,7 +26,7 @@ declare var $: any;
 export class NewAceManifestComponent implements OnInit {
   @ViewChild("aAce1") aAce1: NgForm;
   activeState: boolean[] = [true, false, false];
-  public manifestID;
+  public mID;
   public pk;
   sendId;
   title = 'Add ACE e-Manifest';
@@ -227,6 +227,7 @@ export class NewAceManifestComponent implements OnInit {
   amendManifest = false;
   shipperDetails: any = [];
   receiverDetails: any = [];
+  trips = [];
   constructor(
     private httpClient: HttpClient,
     private route: ActivatedRoute,
@@ -251,9 +252,16 @@ export class NewAceManifestComponent implements OnInit {
       day: date.getDate(),
     };
   }
+
+  fetchTrips() {
+    this.apiService.getData("common/trips/get/list").subscribe((result: any) => {
+      this.trips = result;
+    });
+  }
+
   async ngOnInit() {
-    this.manifestID = this.route.snapshot.params[`mID`];
-    if (this.manifestID) {
+    this.mID = this.route.snapshot.params[`mID`];
+    if (this.mID) {
       this.title = 'Edit ACE e-Manifest';
       this.modalTitle = 'Edit';
       this.fetchACEEntry();
@@ -271,6 +279,7 @@ export class NewAceManifestComponent implements OnInit {
     this.fetchAssets();
     this.fetchDrivers();
     this.fetchCountries();
+    this.fetchTrips();
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
     // this.fetchBrokers();
@@ -933,15 +942,15 @@ export class NewAceManifestComponent implements OnInit {
   };
   fetchACEEntry() {
     this.apiService
-      .getData('eManifests/ACE/' + this.manifestID).subscribe(async (result: any) => {
+      .getData('eManifests/ACE/' + this.mID).subscribe(async (result: any) => {
         result = result[0];
         this.pk = result.pk;
-        this.manifestID = result.mID;
+        this.mID = result.mID;
         this.manifestType = result.type;
         this.sendId = result.sendId;
         this.timeCreated = result.timeCreated;
         this.SCAC = result.manifestInfo.SCAC;
-        this.tripNumber = result.tripNo.substring(4, (result.tripNo.length));
+        this.tripNumber = result.tripNumber.substring(4, (result.tripNumber.length));
         this.usPortOfArrival = result.manifestInfo.usPortOfArrival;
         this.estimatedArrivalDate = result.arvDate;
         this.estimatedArrivalTime = result.arvTime;
@@ -1013,7 +1022,7 @@ export class NewAceManifestComponent implements OnInit {
       }
       if (this.address === true) {
         const data = {
-          mID: this.manifestID,
+          mID: this.mID,
           type: this.manifestType,
           tripNumber: `${this.SCAC}${this.tripNumber}`,
           currentStatus: 'DRAFT',
@@ -1071,7 +1080,7 @@ export class NewAceManifestComponent implements OnInit {
       };
       // this.coDrivers.unshift(this.mainDriver);
       const data = {
-        mID: this.manifestID,
+        mID: this.mID,
         type: this.manifestType,
         tripNumber: `${this.SCAC}${this.tripNumber}`,
         currentStatus: 'DRAFT',

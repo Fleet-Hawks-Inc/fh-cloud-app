@@ -213,22 +213,22 @@
                                     <td *ngFor="let col of columns" style="cursor: pointer;"
                                        [ngStyle]="{ width: col.width }" (click)="detailPage(rowData.mID)">
                                        <div [ngSwitch]="col.field">
-                                          <span *ngSwitchCase="'tripNo'">
+                                          <span *ngSwitchCase="'tripNumber'">
                                              <b>
                                                 {{
-                                                get(rowData, col.field) | titlecase
+                                                get(rowData, col.field)
                                                 }}</b>
                                           </span>
-                                          <span *ngSwitchCase="'shipNo'">
+                                          <span *ngSwitchCase="'shipments'">
                                              <b>
                                                 {{
-                                                get(rowData, col.field) | titlecase
+                                                get(rowData, col.field)
                                                 }}</b>
                                           </span>
-                                          <span *ngSwitchCase="'shipType'">
+                                          <span *ngSwitchCase="'shipTypes'">
                                              <b>
                                                 {{
-                                                get(rowData, col.field) | titlecase
+                                                get(rowData, col.field)
                                                 }}</b>
                                           </span>
                                           <span *ngSwitchCase="'arrDateTime'">

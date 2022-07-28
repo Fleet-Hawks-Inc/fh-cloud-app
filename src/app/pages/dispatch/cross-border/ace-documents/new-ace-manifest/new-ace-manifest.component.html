@@ -43,10 +43,16 @@
                       </div>
                       <div class="col-lg-7 pl-0">
                         <label class=" text-dark control-label font-weight-bold text-lg-right pt-2">&nbsp;</label>
-                        <input type="text" class="form-control" name="tripNumber" maxlength="21"
+                        <ng-select name="tripNumber" [clearable]="false" placeholder="Search by trip"
+                          [(ngModel)]="tripNumber" #TripNum="ngModel">
+                          <ng-option *ngFor="let trip of trips | keyvalue" value="{{ trip.value }}">
+                            {{ trip.value }}
+                          </ng-option>
+                        </ng-select>
+                        <!-- <input type="text" class="form-control" name="tripNumber" maxlength="21"
                           [(ngModel)]="tripNumber"
                           placeholder="Enter unique number,min 4 characters and max 21 characters" #TripNum="ngModel"
-                          required pattern="^[A-Z0-9]{4,21}$">
+                          required pattern="^[A-Z0-9]{4,21}$"> -->
                         <div *ngIf="TripNum.invalid && (TripNum.dirty || TripNum.touched)" class="text-danger">
                           <div *ngIf="TripNum.errors.required">
                             Trip number is required.
@@ -1775,10 +1781,10 @@
                     <div class="row">
                       <div class="col-lg-10 text-right mt-5">
                         <button type="button" (click)="cancel()" class="btn btn-default m-1">Cancel</button>
-                        <button type="button" *ngIf="!manifestID" (click)="addACEManifest()"
-                          [disabled]="!aAce1.form.valid" class="btn btn-success">Save</button>
-                        <button type="button" *ngIf="manifestID" (click)="updateACEManifest()"
-                          [disabled]="!aAce1.form.valid" class="btn btn-success">Update</button>
+                        <button type="button" *ngIf="!mID" (click)="addACEManifest()" [disabled]="!aAce1.form.valid"
+                          class="btn btn-success">Save</button>
+                        <button type="button" *ngIf="mID" (click)="updateACEManifest()" [disabled]="!aAce1.form.valid"
+                          class="btn btn-success">Update</button>
                       </div>
                     </div>
                   </div>

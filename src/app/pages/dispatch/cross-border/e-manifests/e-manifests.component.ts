@@ -23,11 +23,11 @@ export class EManifestsComponent implements OnInit {
   loaded = false;
 
   ACE_Options = [
-    { width: '6%', field: 'tripNo', header: 'Trip#' },
-    { width: '8%', field: 'shipNo', header: 'Shipment#' },
-    { width: '8%', field: 'shipType', header: 'Shipment Type' },
+    { width: '6%', field: 'tripNumber', header: 'Trip#' },
+    { width: '8%', field: 'shipments', header: 'Shipment#' },
+    { width: '8%', field: 'shipTypes', header: 'Shipment Type' },
     { width: '13%', field: 'arrDateTime', header: 'Est. Arrival Date & Time' },
-    { width: '10%', field: 'usPortOfArrival', header: 'US Port of Entry' },
+    { width: '15%', field: 'usPortOfArrival', header: 'US Port of Entry' },
     { width: '15%', field: 'drivers', header: 'Drivers' },
     { width: '8%', field: 'truck', header: 'Truck' },
     { width: '10%', field: 'assets', header: 'Assets' },
@@ -105,7 +105,7 @@ export class EManifestsComponent implements OnInit {
     },
     {
       'name': 'Trip Number',
-      'value': 'tripNo'
+      'value': 'tripNumber'
     },
   ];
   filterCategory = null;
@@ -243,11 +243,13 @@ export class EManifestsComponent implements OnInit {
           for (let i = 0; i < result.length; i++) {
             const element = result[i];
             element.arrDateTime = `${element.estimatedArrivalDate} ${element.estimatedArrivalTime}`;
-            element.drivers = element.drivers.toString();
-            element.assets = element.assets.toString();
-            element.shippers = element.shippers.toString();
-            element.receivers = element.receivers.toString();
-            element.usPortOfArrival = this.USPortsObjects[element.usPortOfArrival];
+            element.drivers = element.drivers.toString().toUpperCase();
+            element.assets = element.assets.toString().toUpperCase();
+            element.shipments = element.shipments.toString().toUpperCase();
+            element.shipTypes = element.shipTypes.toString().toUpperCase();
+            element.shippers = element.shippers.toString().toUpperCase();
+            element.receivers = element.receivers.toString().toUpperCase();
+            element.usPortOfArrival = `Code: ${element.usPortOfArrival}, Location: ${this.USPortsObjects[element.usPortOfArrival]}`;
           }
           this.ACEList = result;
           this.loaded = true;
