@@ -259,11 +259,11 @@ export class FuelTransactionsComponent implements OnInit {
         next: (res) => {
           this.submitDisabled = false;
           this.toaster.success("Fuel Transaction added successfully.");
-          // this.fuelList = [];
-          // $("#fuelTxnModel").modal("hide");
-          // this.lastEvaluatedKey = ''
-          // this.lastTimeCreated = ''
-          // this.initDataTable();
+          this.fuelList = [];
+          $("#fuelTxnModel").modal("hide");
+          this.lastEvaluatedKey = ''
+          this.lastTimeCreated = ''
+          this.initDataTable();
         },
       });
     }
