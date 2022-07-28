@@ -4,48 +4,65 @@
       <header class="page-header pr19 pl11">
         <form class="form-horizontal" method="get">
           <div class="row" style="padding-top: 10px">
-            <div class="col-md-1 col-lg-1">
-              <h4 class="text-4 mt-0 font-weight-bold mb-0 text-dark">
-                Asset Summary
-              </h4>
-            </div>
-
             <div class="col-md-2 col-lg-2 pr-0">
               <div class="input-group input-group-sm mb-3">
-                <input type="text" autocomplete="off" placeholder="Search Asset" name="assetIdentification"
-                  [(ngModel)]="assetIdentification" class="form-control"
-                  (input)="getSuggestions($event.target.value)" />
+                <input
+                  type="text"
+                  autocomplete="off"
+                  placeholder="Search Asset"
+                  name="assetIdentification"
+                  [(ngModel)]="assetIdentification"
+                  class="form-control"
+                  (input)="getSuggestions($event.target.value)"
+                />
               </div>
-              <div *ngIf="suggestedAssets?.length > 0" class="result-suggestions">
+              <div
+                *ngIf="suggestedAssets?.length > 0"
+                class="result-suggestions"
+              >
                 <ul>
-                  <li *ngFor="let suggestedAsset of suggestedAssets" style="cursor: pointer" (click)="
+                  <li
+                    *ngFor="let suggestedAsset of suggestedAssets"
+                    style="cursor: pointer"
+                    (click)="
                       setAsset(
                         suggestedAsset.assetID,
                         suggestedAsset.assetIdentification
                       )
-                    ">
+                    "
+                  >
                     {{ suggestedAsset.assetIdentification }}
                   </li>
                 </ul>
               </div>
             </div>
 
-            <div class="col-md-2 col-lg-2 pr-0 pl-2">
-              <ng-select [(ngModel)]="assetType" name="assetType" class="form-control populate"
-                placeholder="Select type">
+            <div class="col-md-2 col-lg-2 pr-0">
+              <ng-select
+                [(ngModel)]="assetType"
+                name="assetType"
+                class="form-control populate"
+                placeholder="Select type"
+              >
                 <ng-option value="container">Container</ng-option>
                 <ng-option value="double_drop">Double Drop</ng-option>
                 <ng-option value="dump_trailer">Dump Trailer</ng-option>
                 <ng-option value="flat_bed">Flat bed</ng-option>
                 <ng-option value="lowboy">Lowboy</ng-option>
                 <ng-option value="stepDeck">StepDeck</ng-option>
-                <ng-option value="removable_gooseneck">Removable Gooseneck</ng-option>
+                <ng-option value="removable_gooseneck"
+                  >Removable Gooseneck</ng-option
+                >
                 <ng-option value="dry_van">Dry Van</ng-option>
                 <ng-option value="reefer">Reefer</ng-option>
                 <ng-option value="power_only">Power Only</ng-option>
-                <ng-option value="conestoga_trailer">Conestoga Trailer</ng-option>
+                <ng-option value="conestoga_trailer"
+                  >Conestoga Trailer</ng-option
+                >
                 <ng-option value="side_kit_trailer">Side Kit Trailer</ng-option>
-                <ng-option value="specialized_trailer">Specialized Trailer</ng-option>
+                <ng-option value="specialized_trailer"
+                  >Specialized Trailer</ng-option
+                >
                 <ng-option value="enclosed_trailer">Enclosed Trailer</ng-option>
                 <ng-option value="scrap_trailer">Scrap Trailer</ng-option>
                 <ng-option value="semi_trailer">Semi Trailer</ng-option>
@@ -54,11 +71,19 @@
               </ng-select>
             </div>
 
-            <div class="col-md-3 col-lg-3 pl-2">
-              <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-2">
+            <div class="col-md-4 col-lg-4">
+              <button
+                type="submit"
+                (click)="searchFilter()"
+                class="btn btn-sm btn-success mr-3"
+              >
                 Search
               </button>
-              <button class="btn btn-sm btn-success" type="submit" (click)="resetFilter()">
+              <button
+                class="btn btn-sm btn-success"
+                type="submit"
+                (click)="resetFilter()"
+              >
                 Reset
               </button>
             </div>
@@ -104,31 +129,69 @@
 
       <section class="m-2">
         <div class="row mb-3">
-          <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
+          <div
+            class="col-lg-12"
+            style="height: calc(100vh - 149px); overflow-y: scroll"
+          >
             <div class="bg-white p-3 text-dark text-capitalize">
-              <p-table #dt [value]="allData" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both"
-                [columns]="selectedColumns" [loading]="!loaded"
-                styleClass="p-datatable-md p-datatable-gridlines p-datatable-striped" [scrollable]="true"
-                [loading]="!loaded" scrollHeight="100%">
+              <p-table
+                #dt
+                [value]="allData"
+                [resizableColumns]="true"
+                columnResizeMode="expand"
+                scrollDirection="both"
+                [columns]="selectedColumns"
+                [loading]="!loaded"
+                styleClass="p-datatable-md p-datatable-gridlines p-datatable-striped"
+                [scrollable]="true"
+                [loading]="!loaded"
+                scrollHeight="100%"
+              >
                 <ng-template pTemplate="caption">
-                  <div class="p-d-flex d-flex justify-content-between align-items-center">
+                  <div
+                    class="p-d-flex d-flex justify-content-between align-items-center"
+                  >
                     <div>
                       <h3 class="m-0">Asset Summary Report</h3>
                     </div>
                     <div class="text-right">
                       <span>Showing {{ allData.length }} entries</span> &nbsp;
-                      <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
-                        class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                      <button
+                        type="button"
+                        pButton
+                        (click)="refreshData()"
+                        pTooltip="Refresh"
+                        class="p-button-outlined mr-2"
+                        icon="fas fa-sync"
+                      ></button>
 
-                      <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" (click)="clear(dt)"
-                        icon="pi pi-filter-slash"></button>
+                      <button
+                        pButton
+                        pRipple
+                        pTooltip="Clear Filter"
+                        class="p-button-outlined mr-2"
+                        (click)="clear(dt)"
+                        icon="pi pi-filter-slash"
+                      ></button>
 
-                      <button type="button" pButton pRipple class="p-button-outlined mr-2"
-                        icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+                      <button
+                        type="button"
+                        pButton
+                        pRipple
+                        class="p-button-outlined mr-2"
+                        icon="fas fa-regular fa-file-excel"
+                        (click)="dt.exportCSV()"
+                        pTooltip="Excel"
+                      ></button>
 
-                      <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header"
-                        selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }"
-                        placeholder="Choose Columns">
+                      <p-multiSelect
+                        [options]="dataColumns"
+                        [(ngModel)]="selectedColumns"
+                        optionLabel="header"
+                        selectedItemsLabel="{0} columns selected"
+                        [style]="{ minWidth: '200px' }"
+                        placeholder="Choose Columns"
+                      >
                       </p-multiSelect>
                     </div>
                   </div>
@@ -137,28 +200,54 @@
                 <!-- Header template of DataTable -->
                 <ng-template pTemplate="header" let-columns>
                   <tr>
-                    <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn
-                      style="width: 14.27%">
+                    <th
+                      *ngFor="let dataColumns of columns"
+                      [pSortableColumn]="dataColumns.field"
+                      pResizableColumn
+                      style="width: 14.27%"
+                    >
                       <div [ngSwitch]="dataColumns.field">
                         <!-- Asset Status Filter Customization -->
                         <span *ngSwitchCase="'currentStatus'">
-                          <div class="flex justify-content-center align-items-center" alignFrozen="left" pFrozenColumn
-                            [frozen]="true">
+                          <div
+                            class="flex justify-content-center align-items-center"
+                            alignFrozen="left"
+                            pFrozenColumn
+                            [frozen]="true"
+                          >
                             {{ dataColumns.header }}
-                            <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
-                            <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field" [showOperator]="false"
-                              matchMode="in" [showMatchModes]="false" [showAddButton]="false" display="menu">
-                              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                <p-multiSelect [options]="[
-                                        { name: 'Active', value: 'active' },
-                                        { name: 'InActive', value: 'inactive' }
-                                      ]" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name"
-                                  optionValue="value">
+                            <p-sortIcon
+                              [field]="dataColumns.field"
+                            ></p-sortIcon>
+                            <p-columnFilter
+                              [type]="dataColumns.type"
+                              [field]="dataColumns.field"
+                              [showOperator]="false"
+                              matchMode="in"
+                              [showMatchModes]="false"
+                              [showAddButton]="false"
+                              display="menu"
+                            >
+                              <ng-template
+                                pTemplate="filter"
+                                let-value
+                                let-filter="filterCallback"
+                              >
+                                <p-multiSelect
+                                  [options]="[
+                                    { name: 'Active', value: 'active' },
+                                    { name: 'InActive', value: 'inactive' }
+                                  ]"
+                                  placeholder="Any"
+                                  (onChange)="filter($event.value)"
+                                  optionLabel="name"
+                                  optionValue="value"
+                                >
                                   <ng-template let-option pTemplate="item">
                                     <div>
                                       <span class="ml-1">{{
                                         option.name
-                                        }}</span>
+                                      }}</span>
                                     </div>
                                   </ng-template>
                                 </p-multiSelect>
@@ -167,31 +256,52 @@
                           </div>
                         </span>
                         <span *ngSwitchDefault>
-                          <div class="flex justify-content-center align-items-center" alignFrozen="right" pFrozenColumn
-                            [frozen]="true">
+                          <div
+                            class="flex justify-content-center align-items-center"
+                            alignFrozen="right"
+                            pFrozenColumn
+                            [frozen]="true"
+                          >
                             {{ dataColumns.header }}
-                            <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
-                            <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field" matchMode="contains"
-                              [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
+                            <p-sortIcon
+                              [field]="dataColumns.field"
+                            ></p-sortIcon>
+                            <p-columnFilter
+                              [type]="dataColumns.type"
+                              [field]="dataColumns.field"
+                              matchMode="contains"
+                              [showMatchModes]="false"
+                              [showOperator]="false"
+                              [showAddButton]="false"
+                              display="menu"
+                            >
                             </p-columnFilter>
                           </div>
                         </span>
                       </div>
                     </th>
-
                   </tr>
                 </ng-template>
 
                 <!-- Body Template of Data Table -->
-                <ng-template pTemplate="body" let-asset let-columns="columns" let-rowIndex="rowIndex">
+                <ng-template
+                  pTemplate="body"
+                  let-asset
+                  let-columns="columns"
+                  let-rowIndex="rowIndex"
+                >
                   <tr>
-                    <td *ngFor="let dataColumns of columns" style="width: 14.27%; height: 37px; cursor: pointer">
+                    <td
+                      *ngFor="let dataColumns of columns"
+                      style="width: 14.27%; height: 37px; cursor: pointer"
+                    >
                       <div [ngSwitch]="dataColumns.field">
                         <span *ngSwitchCase="'assetIdentification'">
                           <span>
                             <b>{{
                               get(asset, dataColumns.field) | titlecase
-                              }}</b></span>
+                            }}</b></span
+                          >
                         </span>
                         <span *ngSwitchCase="'VIN'">
                           <span> {{ get(asset, dataColumns.field) }}</span>
@@ -200,21 +310,22 @@
                         <span *ngSwitchCase="'assetType'">
                           <span>
                             {{
-                            (asset.assetType
-                            ? asset.assetType.replace("_", " ")
-                            : "-"
-                            ) | titlecase
+                              (asset.assetType
+                                ? asset.assetType.replace("_", " ")
+                                : "-"
+                              ) | titlecase
                             }}
                           </span>
                         </span>
                         <span *ngSwitchCase="'assetDetails.manufacturer'">
                           <span>
                             {{
-                            (get(asset, dataColumns.field)
-                            ? get(asset, dataColumns.field)
-                            : "-"
-                            ) | titlecase
-                            }}</span>
+                              (get(asset, dataColumns.field)
+                                ? get(asset, dataColumns.field)
+                                : "-"
+                              ) | titlecase
+                            }}</span
+                          >
                         </span>
                         <span *ngSwitchCase="'-'">
                           <span> -</span>
@@ -223,20 +334,22 @@
                         <span *ngSwitchCase="'assetDetails.licencePlateNumber'">
                           <span>
                             {{
-                            (get(asset, dataColumns.field)
-                            ? get(asset, dataColumns.field)
-                            : "-"
-                            ) | titlecase
-                            }}</span>
+                              (get(asset, dataColumns.field)
+                                ? get(asset, dataColumns.field)
+                                : "-"
+                              ) | titlecase
+                            }}</span
+                          >
                         </span>
                         <span *ngSwitchCase="'currentStatus'">
                           <span class="badge badge-dark p-1">
                             {{
-                            (get(asset, dataColumns.field)
-                            ? get(asset, dataColumns.field)
-                            : "-"
-                            ) | titlecase
-                            }}</span>
+                              (get(asset, dataColumns.field)
+                                ? get(asset, dataColumns.field)
+                                : "-"
+                              ) | titlecase
+                            }}</span
+                          >
                         </span>
                       </div>
                     </td>
@@ -252,13 +365,23 @@
                 </ng-template>
                 <!-- Summary Section with Load More button -->
                 <ng-template pTemplate="summary" let-columns>
-                  <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
-                    <button type="button " (click)="onScroll($event)" class="btn btn-success btn-sm text-light">
+                  <div
+                    class="col-lg-12 mt-3 text-center"
+                    *ngIf="lastItemSK !== 'end' && allData.length !== 0"
+                  >
+                    <button
+                      type="button "
+                      (click)="onScroll($event)"
+                      class="btn btn-success btn-sm text-light"
+                    >
                       Load More..
                     </button>
                     <br /><br />
                   </div>
-                  <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK === 'end'">
+                  <div
+                    class="col-lg-12 mt-3 text-center"
+                    *ngIf="lastItemSK === 'end'"
+                  >
                     Total Records: {{ allData.length }}
                   </div>
                 </ng-template>
