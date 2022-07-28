@@ -227,6 +227,19 @@
                             </div>
                           </div>
                           <div class="col-md-2 col-lg-2 pl-2 pr-0">
+                            <ng-select
+                              class="form-control bgnone populate"
+                              name="currentStatus"
+                              [(ngModel)]="currentStatus"
+                              placeholder="Select status"
+                            >
+                              <ng-option value="active">Active</ng-option>
+                              <ng-option value="inActive">Inactive</ng-option>
+                              <ng-option value="outOfService">Out of Service</ng-option>
+                              <ng-option value="sold">Sold</ng-option>
+                            </ng-select>
+                          </div>
+                          <div class="col-md-2 col-lg-2 pl-2 pr-0">
                             <button
                               type="submit"
                               (click)="searchFilter()"

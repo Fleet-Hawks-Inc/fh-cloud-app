@@ -15,8 +15,8 @@
                         <button type="button" pButton *ngIf="showSubCompany && subCompanies.length < 5" class="mr-1"
                             (click)="display=true;" icon="pi pi-building" tooltipPosition="left"
                             pTooltip="Add Subcompany"></button>
-                        <button type="button" pButton class="mr-1" (click)="display1=true;" icon="pi pi-lock" tooltipPosition="left"
-                         pTooltip="Change your password"></button>
+                        <button type="button" pButton class="mr-1" (click)="display1=true;" icon="pi pi-lock"
+                            tooltipPosition="left" pTooltip="Change your password"></button>
                         <button id="btn" type="button" pButton class="mr-1"
                             routerLink="/manage/company/edit/{{carriers.carrierID}}" tooltipPosition="left"
                             icon="pi pi-user-edit" pTooltip="Edit Company details"></button>
@@ -150,7 +150,8 @@
                                                         ? carriers.fleets.dryVans : '-'}}</span>
                                                 </td>
                                                 <td class="back-color-gray">SCAC</td>
-                                                <td>{{carriers.SCAC ? carriers.SCAC : '-'}}</td>
+                                                <td>{{carriers.SCAC && carriers.SCAC != 'NA' ? carriers.SCAC : '-'}}
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td class="back-color-gray">Flatbed(s)</td>

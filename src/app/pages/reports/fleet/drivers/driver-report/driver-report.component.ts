@@ -50,12 +50,10 @@ export class DriverReportComponent implements OnInit {
   employeeOptions: any[];
   
   dataColumns = [
-        { field: 'driverName', header: 'Name', type: "text" },
-        { field: 'tripNo', header: 'Trip', type: "text" },
-        { field: 'orderNumber', header: 'Order', type: "text" },
-        { field: 'locType', header: 'Location', type: "text" },
-        { field: 'dateType', header: 'Date', type: "text" },
-        { field: 'miles', header: 'Total Miles', type: "text" },
+        { width: "25%", field: 'DrivN', header: 'Name', type: "text" },
+        {width: "25%", field: 'tripNo', header: 'Trip', type: "text" },
+        { width: "25%",field: 'orderNumber', header: 'Order', type: "text" },
+        { width: "22.2%",field: 'miles', header: 'Total Miles', type: "text" },
     
     ];
 
@@ -63,12 +61,9 @@ export class DriverReportComponent implements OnInit {
   private toastr: ToastrService, 
   private route: ActivatedRoute,
    private spinner: NgxSpinnerService,
-    private hereMap: HereMapService,) { }
+    private hereMap: HereMapService,
+    private router: Router) { }
   
-  
-  
- 
-
   async ngOnInit(): Promise<void> {
     this.drivIDs = this.route.snapshot.params['drivIDs']
     this.end = moment().format("YYYY-MM-DD");
@@ -82,10 +77,9 @@ export class DriverReportComponent implements OnInit {
   fetchDriverName() {
     this.apiService.getData(`drivers/fetch/driver/detail/${this.drivIDs}`).subscribe((result: any) => {
       this.DrivN = result.Items
-      console.log("driver name",result.Items)
     })
   }
-
+ 
   async fetchTrip() {
     if (this.lastEvaluatedKey !== 'end') {
       this.apiService.getData(`common/trips/get/trip/data?driver=${this.drivIDs}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastEvaluatedKey}&date=${this.datee}`).subscribe((result: any) => {
@@ -228,4 +222,3 @@ export class DriverReportComponent implements OnInit {
         table.clear();
     }
 }
-

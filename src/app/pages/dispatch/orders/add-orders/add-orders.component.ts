@@ -170,6 +170,7 @@ export class AddOrdersComponent implements OnInit {
       tripID: "",
       tripNo: "",
     },
+    recallMessage: ""
   };
   response: any = "";
   hasError: boolean = false;
@@ -379,7 +380,9 @@ export class AddOrdersComponent implements OnInit {
   orderPrefix: string = "";
   zoneList = [];
   selectedZone = null;
-
+  display: any;
+  recallReasonDis = false;
+  reasonErr = '';
   constructor(
     private apiService: ApiService,
     private ngbCalendar: NgbCalendar,
@@ -1307,7 +1310,7 @@ export class AddOrdersComponent implements OnInit {
         this.apiService
           .getData(
             "trips/calculate/pc/miles?type=mileReport&vehType=Truck&stops=" +
-              this.getAllCords.join(";")
+            this.getAllCords.join(";")
           )
           .subscribe(
             (result) => {
@@ -1653,7 +1656,7 @@ export class AddOrdersComponent implements OnInit {
     formData.append("data", JSON.stringify(this.orderData));
 
     this.apiService.postData("orders", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         this.submitDisabled = false;
         from(err.error)
@@ -1682,7 +1685,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -1698,12 +1701,12 @@ export class AddOrdersComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -2625,6 +2628,14 @@ export class AddOrdersComponent implements OnInit {
     // this.isSubmit = true;
     // if (!this.checkFormErrors()) return false;
     this.submitDisabled = true;
+    if (type === 'recall') {
+      if (this.orderData.recallMessage === '') {
+        this.reasonErr = "Please fill recall reason "
+        return false;
+      } else {
+        this.reasonErr = "";
+      }
+    }
     if (this.orderData.zeroRated) {
       this.orderData.taxesInfo.forEach((element) => {
         element.taxAmount = 0;
@@ -2635,6 +2646,7 @@ export class AddOrdersComponent implements OnInit {
     this.orderData["orderID"] = this.getOrderID;
     this.orderData.orderNumber = this.orderData.orderNumber.toString();
     this.orderData["deletedFiles"] = this.deletedFiles;
+    this.orderData["recallMessage"] = this.orderData.recallMessage;
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
     for (let k = 0; k < this.finalShippersReceivers.length; k++) {
@@ -2683,6 +2695,7 @@ export class AddOrdersComponent implements OnInit {
       this.toastr.error(
         "Please add atleast one Shipper and Receiver in shipments."
       );
+      this.recallReasonDis = true;
       return false;
     }
 
@@ -2742,7 +2755,7 @@ export class AddOrdersComponent implements OnInit {
       url = "admin/order/recall";
     }
     this.apiService.putData(url, formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         from(err.error)
           .pipe(
@@ -2763,7 +2776,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -3412,6 +3425,11 @@ export class AddOrdersComponent implements OnInit {
       this.orderData.orderNumber = `${result[0].prefix}${result[0].sequence}`;
     }
   }
+
+  async showReasonModal() {
+    this.display = true;
+  }
+
   async searchZone(dropPoint: any, index: any, i: any) {
     if (
       this.shippersReceivers[i].receivers.dropPoint[index].zone.zoneID === null

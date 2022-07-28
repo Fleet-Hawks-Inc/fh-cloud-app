@@ -581,7 +581,7 @@
           <label class="control-label font-weight-bold labelmt text-3 text-dark">Choose File
             <span class="mandfield text-2 ml-1"><sup>*</sup></span>
           </label>
-          <input multiple (change)="selectDocTypes($event)" name="" id="uploadedDocs" type="file"
+          <input multiple (change)="selectDocTypes($event)" name="" id="uploadedDocs" type="file" accept=".doc, .docx, .pdf, .jpg, .jpeg .png"
             class="form-control choosefileLH">
 
           <span>
@@ -595,7 +595,7 @@
     <div class="modal-footer">
       <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-default modal-dismiss">Cancel</button>
 
-      <button type="submit" [disabled]="!docTypeForm.form.valid || isDocSubmit"
+      <button type="submit" [disabled]="!docTypeForm.form.valid || isDocSubmit" 
         class="btn btn-success modal-confirm">Save</button>
     </div>
   </form>

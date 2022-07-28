@@ -8,13 +8,13 @@
     <section role="main" class="content-body pt-0 pr-0 pl-0">
       <header class="page-header flex align-items-center justify-content-start">
         <form class="formgrid grid">
-          <div class="row pt-1">
+          <div class="row" style="padding-top: 9px">
             <div class="col">
               <p-autoComplete
                 #autoComp
                 id="autoCmpSugDriver"
                 [placeholder]="'Search driver by name'"
-                class="mr-2"
+                class="mr-3"
                 [forceSelection]="true"
                 emptyMessage="No data found."
                 [(ngModel)]="driverName"
@@ -29,7 +29,7 @@
                 id="drpDvrType"
                 [style]="{ minWidth: '200px' }"
                 [options]="driverOptions"
-                class="mr-2"
+                class="mr-3"
                 placeholder="Driver Status"
                 [(ngModel)]="driverStatus"
                 optionLabel="name"
@@ -41,7 +41,7 @@
                 type="button"
                 [disabled]="isSearch"
                 pButton
-                class="mr-2"
+                class="mr-3"
                 icon="pi pi-search"
                 pTooltip="Search"
                 (click)="searchDriver()"
