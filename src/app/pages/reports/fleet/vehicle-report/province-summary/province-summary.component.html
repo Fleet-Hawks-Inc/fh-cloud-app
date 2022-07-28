@@ -52,7 +52,7 @@
                 />
               </div>
             </div>
-            <div class="col-md-3 col-lg-3 pl-2">
+            <div class="col-md-3 col-lg-3">
               <button
                 type="button"
                 class="btn btn-sm btn-success mr-3"
@@ -104,19 +104,17 @@
           </div>
         </form>
       </header>
-      
 
-
-        <section class="m-2">
-         <div class="row mb-3">
-          <div class="col-lg-12"> 
+      <section class="m-2">
+        <div class="row mb-3">
+          <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
               <div class="form-group row pt-2">
-               <div
+                <div
                   class="col-lg-12"
                   style="height: calc(90vh - 149px); overflow-y: scroll"
                 >
-                <p-table
+                  <p-table
                     #dt
                     [value]="allData"
                     [resizableColumns]="true"
@@ -128,15 +126,15 @@
                     [scrollable]="true"
                     scrollHeight="100%"
                   >
-                <ng-template pTemplate="caption">
-                <div
-                   class="p-d-flex d-flex justify-content-between align-items-center"
-                    >  
-                   <div>
-                    <h3 class="m-0">Province Summary Report</h3>
-                     </div>
-                    <div class="text-right">
-                    <span>Showing {{ allData.length }} entries</span>
+                    <ng-template pTemplate="caption">
+                      <div
+                        class="p-d-flex d-flex justify-content-between align-items-center"
+                      >
+                        <div>
+                          <h3 class="m-0">Province Summary Report</h3>
+                        </div>
+                        <div class="text-right">
+                          <span>Showing {{ allData.length }} entries</span>
                           &nbsp;
                           <button
                             type="button"
@@ -146,7 +144,7 @@
                             class="p-button-outlined mr-2"
                             icon="fas fa-sync"
                           ></button>
-                         <button
+                          <button
                             pButton
                             pRipple
                             pTooltip="Clear Filter"
@@ -163,49 +161,49 @@
                             placeholder="Choose Columns"
                           >
                           </p-multiSelect>
-                           </div>
-                          </div>
-                      </ng-template>
-             
-              <!--       <ng-template pTemplate="header" let-columns>-->
-              <!--                 <tr>-->
-              <!--                 <th-->
-              <!--            *ngFor="let column of dataColumns"-->
-              <!--            [pSortableColumn]="column.field"-->
-              <!--            pResizableColumn-->
-              <!--            [ngStyle]="{ width: column.width }"-->
-              <!--          >  -->
-              <!--       <span>-->
-              <!--       <div-->
-              <!--                class="flex justify-content-center align-items-center"-->
-              <!--                alignFrozen="right"-->
-              <!--                pFrozenColumn-->
-              <!--                [frozen]="true"-->
-              <!--              >-->
-              <!--            {{ column.header }}-->
-              <!--     <p-sortIcon [field]="column.field"> </p-sortIcon>-->
-              <!--    <p-columnFilter-->
-              <!--                  [type]="column.type"-->
-              <!--                  [field]="column.field"-->
-              <!--                  matchMode="contains"-->
-              <!--                  [showMatchModes]="false"-->
-              <!--                  [showOperator]="false"-->
-              <!--                  [showAddButton]="false"-->
-              <!--                  display="menu"-->
-              <!--                >-->
-              <!--                </p-columnFilter>-->
-              <!--    </div>-->
-              <!--    </span>-->
-              <!--    </th>-->
-              <!--   </tr>  -->
-              <!--</ng-template>-->
-                 <ng-template pTemplate="header" let-columns>
+                        </div>
+                      </div>
+                    </ng-template>
+
+                    <!--       <ng-template pTemplate="header" let-columns>-->
+                    <!--                 <tr>-->
+                    <!--                 <th-->
+                    <!--            *ngFor="let column of dataColumns"-->
+                    <!--            [pSortableColumn]="column.field"-->
+                    <!--            pResizableColumn-->
+                    <!--            [ngStyle]="{ width: column.width }"-->
+                    <!--          >  -->
+                    <!--       <span>-->
+                    <!--       <div-->
+                    <!--                class="flex justify-content-center align-items-center"-->
+                    <!--                alignFrozen="right"-->
+                    <!--                pFrozenColumn-->
+                    <!--                [frozen]="true"-->
+                    <!--              >-->
+                    <!--            {{ column.header }}-->
+                    <!--     <p-sortIcon [field]="column.field"> </p-sortIcon>-->
+                    <!--    <p-columnFilter-->
+                    <!--                  [type]="column.type"-->
+                    <!--                  [field]="column.field"-->
+                    <!--                  matchMode="contains"-->
+                    <!--                  [showMatchModes]="false"-->
+                    <!--                  [showOperator]="false"-->
+                    <!--                  [showAddButton]="false"-->
+                    <!--                  display="menu"-->
+                    <!--                >-->
+                    <!--                </p-columnFilter>-->
+                    <!--    </div>-->
+                    <!--    </span>-->
+                    <!--    </th>-->
+                    <!--   </tr>  -->
+                    <!--</ng-template>-->
+                    <ng-template pTemplate="header" let-columns>
                       <tr>
                         <th
                           *ngFor="let dataColumns of columns"
                           [pSortableColumn]="dataColumns.field"
                           pResizableColumn
-                         style="width: 25%; cursor: pointer"
+                          style="width: 25%; cursor: pointer"
                         >
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchDefault>
@@ -233,74 +231,73 @@
                             </span>
                           </div>
                         </th>
-                      
                       </tr>
                     </ng-template>
-               <ng-template
+                    <ng-template
                       pTemplate="body"
                       let-province
                       let-columns="columns"
                       let-rowIndex="rowIndex"
                     >
-                        
-                <tr>
-              
-                   <td
-                      *ngFor="let dataColumns of columns"
-                      style="width: 25%; height: 70px; cursor: pointer"
+                      <tr>
+                        <td
+                          *ngFor="let dataColumns of columns"
+                          style="width: 25%; height: 70px; cursor: pointer"
                         >
-                    <div [ngSwitch]="dataColumns.field">
-                      
-                      <span
+                          <div [ngSwitch]="dataColumns.field">
+                            <span
                               class="font-weight-bold line-height-lg text-capitalize"
                               *ngSwitchCase="'vehicle'"
                             >
                               <span class="text-capitalize">
-                               {{ province.vehicle ? province.vehicle : "-" }}
-                              </span>
-                            </span> 
-                   
-                     <span *ngSwitchCase="'caProvinces'">
-                            <span *ngIf="province.caProvinces.length === 0">-</span>
-                            <span *ngFor="let item2 of province.caProvinces">
-                              <span *ngFor="let item3 of item2 | keyvalue">
-                                {{ item3.key }} : {{ item3.value }}<br />
+                                {{ province.vehicle ? province.vehicle : "-" }}
                               </span>
                             </span>
-                     </span>
-                     
-                     <span  *ngSwitchCase="'usProvinces'">
-                            <span *ngIf="province.usProvinces.length === 0">-</span>
-                            <span *ngFor="let item2 of province.usProvinces">
-                              <span *ngFor="let item3 of item2 | keyvalue">
-                                {{ item3.key }} : {{ item3.value }}<br />
+
+                            <span *ngSwitchCase="'caProvinces'">
+                              <span *ngIf="province.caProvinces.length === 0"
+                                >-</span
+                              >
+                              <span *ngFor="let item2 of province.caProvinces">
+                                <span *ngFor="let item3 of item2 | keyvalue">
+                                  {{ item3.key }} : {{ item3.value }}<br />
+                                </span>
                               </span>
                             </span>
-                     </span>
-                     
-                     <span  *ngSwitchCase="'newStatus'">
-                            <span
-                              class="badge badge-dark p-1 text-capitalize"
-                              >{{ province.newStatus }}</span
-                            >
-                     </span>
-                    
-                     <span *ngSwitchDefault>
+
+                            <span *ngSwitchCase="'usProvinces'">
+                              <span *ngIf="province.usProvinces.length === 0"
+                                >-</span
+                              >
+                              <span *ngFor="let item2 of province.usProvinces">
+                                <span *ngFor="let item3 of item2 | keyvalue">
+                                  {{ item3.key }} : {{ item3.value }}<br />
+                                </span>
+                              </span>
+                            </span>
+
+                            <span *ngSwitchCase="'newStatus'">
+                              <span
+                                class="badge badge-dark p-1 text-capitalize"
+                                >{{ province.newStatus }}</span
+                              >
+                            </span>
+
+                            <span *ngSwitchDefault>
                               {{ get(province, dataColumns.field) }}</span
                             >
-                   
-                   </div>
-                  </td>
-                </tr>  
-              </ng-template>
-                                  <!-- Empty Template -->
-                     <ng-template pTemplate="emptymessage" let-columns>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <!-- Empty Template -->
+                    <ng-template pTemplate="emptymessage" let-columns>
                       <div class="col-lg-12 mt-3 text-center">
-                         {{ dataMessage }} 
+                        {{ dataMessage }}
                         <br /><br />
                       </div>
                     </ng-template>
-                    
+
                     <ng-template pTemplate="summary" let-columns>
                       <div
                         class="col-lg-12 mt-3 text-center"
@@ -323,14 +320,13 @@
                         Total Records: {{ allData.length }}
                       </div>
                     </ng-template>
-             </p-table>
-             </div>
+                  </p-table>
+                </div>
+              </div>
             </div>
-           </div>
-           </div>
-          </div> 
-        </section>  
-
+          </div>
+        </div>
+      </section>
     </section>
   </div>
 </section>
