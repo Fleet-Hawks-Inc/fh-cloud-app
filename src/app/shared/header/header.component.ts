@@ -360,4 +360,11 @@ export class HeaderComponent implements OnInit {
     this.listService.openDocTypeMOdal("");
     this.routerMgmtService.resetAllCache();
   }
+  genrateChartAccountSessionID(){
+    return this.routerMgmtService.chartAccountSessionID;
+  }
+  
+  generateOrderSessionID() {
+    return this.routerMgmtService.orderUpdateSessionID;
+  }
 }

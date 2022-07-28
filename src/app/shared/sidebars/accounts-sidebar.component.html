@@ -1,6 +1,6 @@
 <ul class="nav nav-main mr-0 bg-white">
   <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/accounts', 'chart-accounts', 'list']">
+    <a class="nav-link" [routerLink]="['/accounts', 'chart-accounts', 'list', genrateChartAccountSessionID()]">
       <i class="fas fa-chart-pie"></i>
       <span>Chart of Accounts</span>
     </a>
@@ -214,7 +214,7 @@
           Employee Pay
         </a>
       </li>
-    <!--  <li>
+      <!--  <li>
         <a class="nav-link" [routerLink]="['/accounts', 'reports', 'cash-flow-statement']">
           Cash Flow Statement
         </a>
@@ -224,7 +224,7 @@
         Income Statement
         </a>
      </li> -->
-    <!--  <li>
+      <!--  <li>
         <a class="nav-link" [routerLink]="['/accounts', 'reports', 'tax-report']">
 
           Tax Report
