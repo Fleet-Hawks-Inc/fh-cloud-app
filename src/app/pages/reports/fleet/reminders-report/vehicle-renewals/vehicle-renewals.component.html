@@ -18,7 +18,7 @@
               </ng-option>
             </ng-select>
           </div>
-          <div class="col-md-2 col-lg-2 pl-2 pr-0">
+          <div class="col-md-2 col-lg-2 pr-0">
             <ng-select
               [(ngModel)]="searchServiceTask"
               name="searchServiceTask"
@@ -33,27 +33,25 @@
               </ng-option>
             </ng-select>
           </div>
-          <div class="col-md-2 col-lg-2 pl-2 pr-0">
-          
-              <ng-select
-                [(ngModel)]="filterStatus"
-                name="filterStatus"
-                style="width: 100%"
-                placeholder="Select Reminder Status"
-              >
-                <optgroup label="Select Reminder Status">
-                  <ng-option value="all">ALL</ng-option>
-                  <ng-option value="overdue">OVERDUE</ng-option>
-                  <ng-option value="dueSoon">DUE SOON</ng-option>
-                </optgroup>
-              </ng-select>
-            
+          <div class="col-md-2 col-lg-2 pr-0">
+            <ng-select
+              [(ngModel)]="filterStatus"
+              name="filterStatus"
+              style="width: 100%"
+              placeholder="Select Reminder Status"
+            >
+              <optgroup label="Select Reminder Status">
+                <ng-option value="all">ALL</ng-option>
+                <ng-option value="overdue">OVERDUE</ng-option>
+                <ng-option value="dueSoon">DUE SOON</ng-option>
+              </optgroup>
+            </ng-select>
           </div>
-          <div class="col-md-2 col-lg-2 pl-2">
+          <div class="col-md-2 col-lg-2">
             <button
               type="button"
               (click)="searchData()"
-              class="btn btn-sm btn-success mr-2"
+              class="btn btn-sm btn-success mr-3"
             >
               Search
             </button>
@@ -118,7 +116,7 @@
                 >
                   <p-table
                     #dt
-                     [value]="allData"
+                    [value]="allData"
                     [resizableColumns]="true"
                     columnResizeMode="expand"
                     scrollDirection="both"
@@ -163,7 +161,7 @@
                             (click)="clear(dt)"
                             icon="pi pi-filter-slash"
                           ></button>
-                           <p-multiSelect
+                          <p-multiSelect
                             [options]="dataColumns"
                             [(ngModel)]="selectedColumns"
                             optionLabel="header"
@@ -182,7 +180,7 @@
                           *ngFor="let dataColumns of columns"
                           [pSortableColumn]="dataColumns.field"
                           pResizableColumn
-                         style="width: 20%; cursor: pointer"
+                          style="width: 20%; cursor: pointer"
                         >
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchDefault>
@@ -210,7 +208,6 @@
                             </span>
                           </div>
                         </th>
-                      
                       </tr>
                     </ng-template>
 

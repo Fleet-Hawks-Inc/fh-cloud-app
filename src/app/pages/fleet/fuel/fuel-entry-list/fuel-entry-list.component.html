@@ -833,6 +833,7 @@
 
                 <button
                   type="button"
+                  data-dismiss="modal"
                   class="btn btn-sm btn-success ml-1"
                   (click)="cancel()"
                 >
@@ -840,7 +841,7 @@
                 </button>
               </div>
               <div
-                *ngIf="date.invalid && (date.dirty || date.touched)"
+                *ngIf="surchargeDisabled && date.invalid && (date.dirty || date.touched)"
                 class="text-danger"
               >
                 <div>
