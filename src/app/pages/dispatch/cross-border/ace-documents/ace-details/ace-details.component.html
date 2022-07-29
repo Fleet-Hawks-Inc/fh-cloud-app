@@ -57,7 +57,7 @@
                                         <table class="table table-bordered m-0">
                                             <tbody>
                                                 <tr>
-                                                    <th width="40%" class="back-color-gray">Current Status:
+                                                    <th width="40%" class="back-color-gray">Status:
                                                         <div class="btn-group btn-group1 flex-wrap mr-1">
                                                             <span class="fas fa-pencil-alt dropdown-toggle"
                                                                 data-toggle="dropdown" aria-expanded="false"></span>
@@ -129,9 +129,13 @@
                                         <tr *ngFor="let response of borderResponses; let i = index">
                                             <td>{{i+1}}</td>
                                             <td>{{response.dateTime}}</td>
-                                            <td>{{response.status}}</td>
+                                            <td>
+                                                <div *ngIf="response.sendRequest">{{response.sendRequest.type}}</div>
+                                                <div *ngIf="response.status">{{response.status}}</div>
+                                            </td>
                                             <td><b>{{response.message}}</b>&nbsp;&nbsp;
-                                                <ul class="p-0 ml-3 mt-3">
+                                                <span *ngIf="!response.errors">-</span>
+                                                <ul class="p-0 ml-3 mt-3" *ngIf="response.errors">
                                                     <li *ngFor="let error of response.errors; let s = index;">
                                                         {{error.note}}
                                                         <span *ngIf="s != response.errors.length-1">,</span><br>
@@ -148,7 +152,7 @@
                 </div>
                 <!-- SHIPMENT DIV -->
                 <div class="row mt-3" *ngIf="shipments?.length">
-                    <div class="col-12">
+                    <div class="col-12 text-capitalize">
                         <div class="card">
                             <div
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
@@ -178,18 +182,13 @@
                                         <tr *ngFor="let shipment of shipments" data-toggle="tooltip"
                                             data-placement="top" style="cursor: pointer;"
                                             title="Click to see shipment details">
-                                            <td data-toggle="modal" data-target="#showShipmentDetails"
-                                                class="modal-with-form"
-                                                (click)="showShipmentDetails(shipment.shipmentID)">
-                                                {{shipment.shipmentControlNumber}}</td>
+                                            <td (click)="showShipmentDetails(shipment.shipmentID)" class="text-success">
+                                                <strong>{{shipment.shipmentControlNumber}}</strong>
+                                            </td>
                                             <!-- <td></td> -->
-                                            <td data-toggle="modal" data-target="#showShipmentDetails"
-                                                class="modal-with-form "
-                                                (click)="showShipmentDetails(shipment.shipmentID)">
+                                            <td (click)="showShipmentDetails(shipment.shipmentID)">
                                                 {{shipmentTypeObjects[shipment.type]}}</td>
-                                            <td data-toggle="modal" data-target="#showShipmentDetails"
-                                                class="modal-with-form "
-                                                (click)="showShipmentDetails(shipment.shipmentID)">
+                                            <td (click)="showShipmentDetails(shipment.shipmentID)">
                                                 {{shipment.shipper.name}}<br>
                                                 <div *ngIf="shipment.shipper.address">
                                                     {{shipment.shipper.address.addressLine ?
@@ -207,9 +206,7 @@
                                                     shipment.shipper.address.postalCode : ''}}
                                                 </div>
                                             </td>
-                                            <td data-toggle="modal" data-target="#showShipmentDetails"
-                                                class="modal-with-form "
-                                                (click)="showShipmentDetails(shipment.shipmentID)">
+                                            <td (click)="showShipmentDetails(shipment.shipmentID)">
                                                 {{shipment.consignee.name}}<br>
                                                 <div *ngIf="shipment.consignee.address">
 
@@ -227,14 +224,11 @@
                                                     shipment.consignee.address.postalCode : ''}}
                                                 </div>
                                             </td>
-                                            <td data-toggle="modal" data-target="#showShipmentDetails"
-                                                class="modal-with-form "
-                                                (click)="showShipmentDetails(shipment.shipmentID)">
-                                                {{shipment.commodities.length}}</td>
-                                            <td data-toggle="modal" data-target="#showShipmentDetails"
-                                                class="modal-with-form "
-                                                (click)="showShipmentDetails(shipment.shipmentID)"><span
-                                                    *ngFor="let commodity of shipment.commodities; let s=index;">{{commodity.quantity}}{{packagingUnitsObects[commodity.packagingUnit]}}<span
+                                            <td (click)="showShipmentDetails(shipment.shipmentID)">
+                                                {{shipment.commodities.length}} </td>
+                                            <td (click)="showShipmentDetails(shipment.shipmentID)"><span
+                                                    *ngFor="let commodity of shipment.commodities; let s=index;">{{commodity.quantity}}
+                                                    {{packagingUnitsObects[commodity.packagingUnit]}}<span
                                                         *ngIf="s != shipment.commodities.length-1">,</span></span>
                                             </td>
                                             <!-- <td class="actions">
@@ -266,7 +260,7 @@
                                         class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Passenger</a>
                                 </div> -->
                             </div>
-                            <div class="card-body border">
+                            <div class="card-body border text-capitalize">
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
@@ -282,21 +276,17 @@
                                     <tbody>
                                         <tr data-toggle="tooltip" data-placement="top"
                                             title="Click to see details of main driver." style="cursor: pointer;">
-                                            <td data-toggle="modal" data-target="#showDriverDetails"
-                                                class="modal-with-form " (click)="showMainDriverDetails()">
-                                                {{mainDriver.firstName}} {{mainDriver.middleName}}
-                                                {{mainDriver.lastName}}</td>
-                                            <td data-toggle="modal" data-target="#showDriverDetails"
-                                                class="modal-with-form " (click)="showMainDriverDetails()">Main Driver
+                                            <td (click)="showMainDriverDetails()" class="text-success">
+                                                <strong>{{mainDriver.firstName}} {{mainDriver.middleName}}
+                                                    {{mainDriver.lastName}}</strong>
                                             </td>
-                                            <td data-toggle="modal" data-target="#showDriverDetails"
-                                                class="modal-with-form " (click)="showMainDriverDetails()">
+                                            <td (click)="showMainDriverDetails()">Main Driver
+                                            </td>
+                                            <td (click)="showMainDriverDetails()">
                                                 {{mainDriver.driverNumber}}</td>
-                                            <td data-toggle="modal" data-target="#showDriverDetails"
-                                                class="modal-with-form " (click)="showMainDriverDetails()">
+                                            <td (click)="showMainDriverDetails()">
                                                 {{mainDriver.fastCardNumber}}</td>
-                                            <td data-toggle="modal" data-target="#showDriverDetails"
-                                                class="modal-with-form " (click)="showMainDriverDetails()"><span
+                                            <td (click)="showMainDriverDetails()"><span
                                                     *ngFor="let document of mainDriver.travelDocuments; let s= index;">{{document.number}}<span
                                                         *ngIf="s != mainDriver.travelDocuments.length-1">,</span></span>
                                             </td>
@@ -310,17 +300,13 @@
                                             style="cursor: pointer;" data-placement="top"
                                             title="Click to see details of co-driver.">
 
-                                            <td data-toggle="modal" data-target="#showDriverDetails"
-                                                class="modal-with-form " (click)="showDriverDetails(driver.driverID)">
+                                            <td (click)="showDriverDetails(driver.driverID)">
                                                 {{driver.firstName}}{{driver.lastName}}</td>
-                                            <td data-toggle="modal" data-target="#showDriverDetails"
-                                                class="modal-with-form " (click)="showDriverDetails(driver.driverID)">
+                                            <td (click)="showDriverDetails(driver.driverID)">
                                                 Co-Driver</td>
-                                            <td data-toggle="modal" data-target="#showDriverDetails"
-                                                class="modal-with-form " (click)="showDriverDetails(driver.driverID)">
+                                            <td (click)="showDriverDetails(driver.driverID)">
                                                 {{driver.driverNumber}}</td>
-                                            <td data-toggle="modal" data-target="#showDriverDetails"
-                                                class="modal-with-form " (click)="showDriverDetails(driver.driverID)">
+                                            <td (click)="showDriverDetails(driver.driverID)">
                                                 {{driver.fastCardNumber}}</td>
                                             <td><span
                                                     *ngFor="let document of driver.travelDocuments; let s= index;">{{document.number}}<span
@@ -337,20 +323,12 @@
                                         <tr *ngFor="let passenger of passengers" data-toggle="tooltip"
                                             style="cursor: pointer;" data-placement="top"
                                             title="Click to see details of passenger.">
-                                            <td data-toggle="modal" data-target="#showPassengerDetails"
-                                                class="modal-with-form "
-                                                (click)="showPassengerDetails(passenger.passengerID)">
+                                            <td (click)="showPassengerDetails(passenger.passengerID)">
                                                 {{passenger.firstName}}{{passenger.lastName}}</td>
-                                            <td data-toggle="modal" data-target="#showPassengerDetails"
-                                                class="modal-with-form "
-                                                (click)="showPassengerDetails(passenger.passengerID)">Passenger</td>
-                                            <td data-toggle="modal" data-target="#showPassengerDetails"
-                                                class="modal-with-form "
-                                                (click)="showPassengerDetails(passenger.passengerID)">--</td>
+                                            <td (click)="showPassengerDetails(passenger.passengerID)">Passenger</td>
+                                            <td (click)="showPassengerDetails(passenger.passengerID)">--</td>
                                             <td>{{passenger.fastCardNumber}}</td>
-                                            <td data-toggle="modal" data-target="#showPassengerDetails"
-                                                class="modal-with-form "
-                                                (click)="showPassengerDetails(passenger.passengerID)"><span
+                                            <td (click)="showPassengerDetails(passenger.passengerID)"><span
                                                     *ngFor="let document of passenger.travelDocuments; let s= index;">{{document.number}}<span
                                                         *ngIf="s != passenger.travelDocuments.length-1">,</span></span>
                                             </td>
@@ -395,27 +373,21 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr data-toggle="modal" data-target="#showTruckDetails" style="cursor: pointer;"
-                                            class="modal-with-form ">
-                                            <td data-toggle="tooltip" data-placement="top"
-                                                title="Click to see details of vehicle">{{truck.number}}</td>
-                                            <td data-toggle="tooltip" data-placement="top"
-                                                title="Click to see details of vehicle">
+                                        <tr (click)="trucksModel = true;" style="cursor: pointer">
+                                            <td title="Click to see details of vehicle" class="text-success">
+                                                <strong>{{truck.number}}</strong>
+                                            </td>
+                                            <td title="Click to see details of vehicle">
                                                 {{vehicleTypeObjects[truck.type]}}</td>
-                                            <td data-toggle="tooltip" data-placement="top"
-                                                title="Click to see details of vehicle">{{truck.vinNumber}}</td>
-                                            <td data-toggle="tooltip" data-placement="top"
-                                                title="Click to see details of vehicle">{{truck.dotNumber}}</td>
-                                            <td data-toggle="tooltip" data-placement="top"
-                                                title="Click to see details of vehicle"><span
+                                            <td title="Click to see details of vehicle">{{truck.vinNumber}}</td>
+                                            <td title="Click to see details of vehicle">{{truck.dotNumber}}</td>
+                                            <td title="Click to see details of vehicle"><span
                                                     *ngFor="let license of truck.licensePlates;">{{license.stateProvince}}</span>
                                             </td>
-                                            <td data-toggle="tooltip" data-placement="top"
-                                                title="Click to see details of vehicle"><span
+                                            <td title="Click to see details of vehicle"><span
                                                     *ngFor="let license of truck.licensePlates;">{{license.number}}</span>
                                             </td>
-                                            <td data-toggle="tooltip" data-placement="top"
-                                                title="Click to see details of vehicle"><span
+                                            <td title="Click to see details of vehicle"><span
                                                     *ngIf="truck.IIT === 'CARRIER'">Trip contains IIT's covered under
                                                     10.41(a) with
                                                     carriers bond.</span>
@@ -423,8 +395,7 @@
                                                     10.41(a) with
                                                     importers bond.</span>
                                             </td>
-                                            <td data-toggle="tooltip" data-placement="top"
-                                                title="Click to see details of vehicle"><span
+                                            <td title="Click to see details of vehicle"><span
                                                     *ngFor="let seal of truck.sealNumbers; let s= index;">{{seal}}<span
                                                         *ngIf="s != truck.sealNumbers.length-1">,</span></span></td>
                                             <!-- <td class="actions"><a
@@ -440,7 +411,7 @@
 
                 </div>
                 <!-- TRAILER -->
-                <div class="row mt-3">
+                <div class="row mt-3 text-capitalize">
                     <div class="col-12">
                         <div class="card">
                             <div
@@ -551,91 +522,286 @@
     </div>
 </section>
 <!-- TRUCK  DETAILS -->
-<div class="modal fade" id="showTruckDetails" tabindex="-1" role="dialog" aria-labelledby="showTruckDetails"
-    aria-hidden="true">
-    <div class="modal-dialog" style="max-width: 1200px;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Vehicle Insurance Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-                </button>
-            </div>
-            <div class="modal-body text-dark">
-                <div class="card-body border">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Vehicle#:</th>
-                                        <td>{{truck.number}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray"> Vehicle Type:</th>
-                                        <td>{{vehicleTypeObjects[truck.type]}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">VIN/SN:</th>
-                                        <td>{{truck.vinNumber}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">DOT#:</th>
-                                        <td>{{truck.dotNumber}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">IIT:</th>
-                                        <td><span *ngIf="truck.IIT === 'CARRIER'">Trip contains IIT's covered under
-                                                10.41(a) with
-                                                carriers bond.</span>
-                                            <span *ngIf="truck.IIT === 'IMPORTER'">Trip contains IIT's covered under
-                                                10.41(a) with
-                                                importers bond.</span>
-                                        </td>
-                                    </tr>
+<p-dialog header="Vehicle Insurance Details" [modal]="true" [style]="{ width: '60vw' }" [(visible)]="trucksModel">
+    <div class="row">
+        <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+                <tbody>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Vehicle#:</th>
+                        <td>{{truck.number}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray"> Vehicle Type:</th>
+                        <td>{{vehicleTypeObjects[truck.type]}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">VIN/SN:</th>
+                        <td>{{truck.vinNumber}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">DOT#:</th>
+                        <td>{{truck.dotNumber}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">IIT:</th>
+                        <td><span *ngIf="truck.IIT === 'CARRIER'">Trip contains IIT's covered under
+                                10.41(a) with
+                                carriers bond.</span>
+                            <span *ngIf="truck.IIT === 'IMPORTER'">Trip contains IIT's covered under
+                                10.41(a) with
+                                importers bond.</span>
+                        </td>
+                    </tr>
 
 
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Seal Numbers :</th>
-                                        <td><span *ngFor="let seal of truck.sealNumbers; let s= index;">{{seal}}<span
-                                                    *ngIf="s != truck.sealNumbers.length-1">,</span> </span></td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Insurance Vendor:</th>
-                                        <td>{{truck.insurancePolicy.insuranceCompanyName}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Issued Date:</th>
-                                        <td>{{truck.insurancePolicy.issuedDate}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Insurance Policy#:</th>
-                                        <td>{{truck.insurancePolicy.policyNumber}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Insurance Amount:</th>
-                                        <td>{{truck.insurancePolicy.policyAmount}}
-                                            {{truck.insurancePolicy.amountCurrency}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+                <tbody>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Seal Numbers :</th>
+                        <td><span *ngFor="let seal of truck.sealNumbers; let s= index;">{{seal}}<span
+                                    *ngIf="s != truck.sealNumbers.length-1">,</span> </span></td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Insurance Vendor:</th>
+                        <td>{{truck.insurancePolicy.insuranceCompanyName}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Issued Date:</th>
+                        <td>{{truck.insurancePolicy.issuedDate}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Insurance Policy#:</th>
+                        <td>{{truck.insurancePolicy.policyNumber}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Insurance Amount:</th>
+                        <td>{{truck.insurancePolicy.policyAmount}}
+                            {{truck.insurancePolicy.amountCurrency}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button (click)="trucksModel = false;" label="Close"></p-button>
+    </ng-template>
+</p-dialog>
+
+<!-- SHIPMENT DETAILS MODEL -->
+<p-dialog header="Shipment Details" [modal]="true" [style]="{ width: '60vw' }" [(visible)]="shipmentsModel">
+    <div class="row text-capitalize">
+        <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+                <tbody>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Shipment Type:</th>
+                        <td>{{shipmentTypeObjects[shipmentData.type]}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Shipment Control Number:</th>
+                        <td>{{shipmentData.shipmentControlNumber}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Province of Loading:</th>
+                        <td>{{shipmentData.provinceOfLoading}}</td>
+                    </tr>
+                    <tr *ngIf="shipmentData.type === 'GOODS_ASTRAY'">
+                        <th width="40%" class="back-color-gray">Goods Astray Date of Exit:</th>
+                        <td>{{shipmentData.goodsAstrayDateOfExit}}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+                <tbody>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Consignor:</th>
+                        <td>{{shipmentData.shipperName}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Consignee:</th>
+                        <td>{{shipmentData.consigneeName}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Broker :</th>
+                        <td>{{shipmentData.broker.filerCode}} -
+                            {{brokerCodeObject[shipmentData.broker.filerCode]}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Broker Port Location:</th>
+                        <td>{{shipmentData.broker.portLocation}} -
+                            {{USportsListObjects[shipmentData.broker.portLocation]}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- inbond details -->
+    <div class="row" *ngIf="shipmentData.type === 'IN_BOND'">
+        <div class="col-lg-12">
+            <h4>Inbond Details</h4>
+        </div>
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-6">
+                    <table class="table table-bordered m-0">
+                        <tbody>
+                            <tr>
+                                <th width="40%" class="back-color-gray">Entry Type:</th>
+                                <td>{{shipmentData.inBondDetails.type}} -
+                                    {{inBondTypeObects[shipmentData.inBondDetails.type]}}</td>
+                            </tr>
+                            <tr>
+                                <th width="40%" class="back-color-gray">Paper In Bond Number:</th>
+                                <td>{{shipmentData.inBondDetails.paperInBondNumber}}</td>
+                            </tr>
+                            <tr>
+                                <th width="40%" class="back-color-gray">Onward Carrier SCAC:</th>
+                                <td>{{shipmentData.inBondDetails.onwardCarrierScac}}</td>
+                            </tr>
+                            <tr>
+                                <th width="40%" class="back-color-gray">Subject To FDA?:</th>
+                                <td><span *ngIf="shipmentData.inBondDetails.fda">YES</span>
+                                    <span *ngIf="!shipmentData.inBondDetails.fda">NO</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <div class="modal-footer text-right">
-                <a class="btn btn-default modal-dismiss" data-dismiss="modal">Close</a>
+                <div class="col-lg-6">
+                    <table class="table table-bordered m-0">
+                        <tbody>
+                            <tr>
+                                <th width="40%" class="back-color-gray">US In-bond Destination:</th>
+                                <td>{{shipmentData.inBondDetails.usDestination}} -
+                                    {{USportsListObjects[shipmentData.inBondDetails.usDestination]}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="40%" class="back-color-gray">Foreign In-Bond Destination:
+                                </th>
+                                <td>{{shipmentData.inBondDetails.foreignDestination}} -
+                                    {{foreignDestinationListObjects[shipmentData.inBondDetails.foreignDestination]}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="40%" class="back-color-gray">Bonded Carrier ID:</th>
+                                <td>{{shipmentData.inBondDetails.irsNumber}}</td>
+                            </tr>
+                            <tr>
+                                <th width="40%" class="back-color-gray">Est US Departure Date:</th>
+                                <td>{{shipmentData.inBondDetails.estimatedDepartureDate}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- SHIPMENT DETAILS MODEL -->
+    <!-- third parties -->
+    <div class="row mt-2" *ngIf="shipmentData.thirdParties?.length">
+        <div class="col-lg-12">
+            <h4>Third Party Details</h4>
+        </div>
+        <div class="col-lg-12">
+            <table class="table table-bordered table-striped m-0">
+                <thead>
+                    <tr>
+                        <th> Name </th>
+                        <th> Type</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let thirdParty of shipmentData.thirdParties">
+                        <td>{{thirdParty.name ? thirdParty.name : ''}}</td>
+                        <td>{{thirdParty.type ? thirdPartyTypesObects[thirdParty.type] : '-'}}</td>
+                        <td>{{thirdParty.address.addressLine ? thirdParty.address.addressLine + ', ' : '-'}}
+                            {{thirdParty.address.city ? thirdParty.address.city + ', ' : ''}}
+                            {{thirdParty.address.stateProvince ? thirdParty.address.stateProvince + ', ' : ''}}
+                            {{thirdParty.address.postalCode}}
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- commodities -->
+    <div class="row mt-2">
+        <div class="col-lg-12">
+            <h4>Commodity Details</h4>
+        </div>
+        <div class="col-lg-12">
+            <table class="table table-bordered table-striped m-0">
+                <thead>
+                    <tr>
+                        <th> Description </th>
+                        <th> Loaded On</th>
+                        <th>Hazardous Details</th>
+                        <th>Other Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let commodity of shipmentData.commodities">
+                        <td><span class="font-weight-semibold">Commodity:&nbsp;</span>{{commodity.description}}<br>
+                            <span class="font-weight-semibold"
+                                *ngIf="shipmentData.type === 'IN_BOND' || shipmentData.type === 'SECTION_321' || shipmentData.type === 'SECTION_321_FDA'">Value:&nbsp;{{commodity.value}}USD<br></span>
+                            <span class="font-weight-semibold">Quantity:&nbsp;</span>{{commodity.quantity}}
+                            {{packagingUnitsObects[commodity.packagingUnit]}} <br>
+                            <span class="font-weight-semibold">Weight:&nbsp;</span> {{commodity.weight}}
+                            <span *ngIf="commodity.weightUnit == 'LB'">Pounds</span>
+                            <span *ngIf="commodity.weightUnit == 'KG'">Kilograms</span>
+                            <br>
+                            <span class="font-weight-semibold">Country of Origin:&nbsp;</span>
+                            {{countryCodeName[commodity.countryOfOrigin]}}
+                        </td>
+                        <td><span class="font-weight-semibold">Type:&nbsp;</span><span
+                                *ngIf="commodity.loadedOn.type == 'TRUCK'">Vehicle</span>
+                            <span *ngIf="commodity.loadedOn.type == 'TRAILER'">Asset</span><br>
+                            <span class="font-weight-semibold">
+                                <span *ngIf="commodity.loadedOn.type == 'TRUCK'">Vehicle</span>
+                                <span
+                                    *ngIf="commodity.loadedOn.type == 'TRAILER'">Asset</span>#:</span>{{commodity.loadedOn.number}}
+                        </td>
+                        <td><span class="font-weight-semibold">Hazmat
+                                Code:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">
+                                {{commodity.hazmatDetails.unCode}}<br></span>
+                            <span class="font-weight-semibold">Emergency Contact
+                                Name:&nbsp;</span><span
+                                *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.emergencyContactName}}</span>
+                            <br><span class="font-weight-semibold">Contact
+                                Number:&nbsp;</span><span
+                                *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactPhone}}</span><br>
+                            <span class="font-weight-semibold">Contact
+                                Email:&nbsp;</span><span
+                                *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactEmail}}</span>
+                        </td>
+                        <td><span *ngIf="shipmentData.type === 'BRASS' || shipmentData.type === 'BRASS_MULTIPLE'"
+                                class="font-weight-semibold">C4LineReleaseNumber:{{commodity.c4LineReleaseNumber}}<br></span>
+                            <span *ngIf="shipmentData.type === 'IN_BOND' && shipmentData.inBondDetails.type === '62'"
+                                class="font-weight-semibold">Harmonized
+                                Code:&nbsp;{{commodity.harmonizedCode}}<br></span>
+                            <span class="font-weight-semibold">Marks and Numbers:&nbsp;</span><span
+                                *ngFor="let marks of commodity.marksAndNumbers; let s=index;">{{marks}}<span
+                                    *ngIf="s != commodity.marksAndNumbers.length-1">,</span></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button (click)="shipmentsModel = false;" label="Close"></p-button>
+    </ng-template>
+</p-dialog>
 <div class="modal fade" id="showShipmentDetails" tabindex="-1" role="dialog" aria-labelledby="showShipmentDetails"
     aria-hidden="true">
     <div class="modal-dialog" style="max-width: 1200px;" role="document">
@@ -648,212 +814,7 @@
             </div>
             <div class="modal-body text-dark">
                 <div class="card-body border">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Shipment Type:</th>
-                                        <td>{{shipmentTypeObjects[shipmentData.type]}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Shipment Control Number:</th>
-                                        <td>{{shipmentData.shipmentControlNumber}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Province of Loading:</th>
-                                        <td>{{shipmentData.provinceOfLoading}}</td>
-                                    </tr>
-                                    <tr *ngIf="shipmentData.type === 'GOODS_ASTRAY'">
-                                        <th width="40%" class="back-color-gray">Goods Astray Date of Exit:</th>
-                                        <td>{{shipmentData.goodsAstrayDateOfExit}}</td>
-                                    </tr>
 
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Consignor:</th>
-                                        <td>{{shipmentData.shipperName}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Consignee:</th>
-                                        <td>{{shipmentData.consigneeName}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Broker :</th>
-                                        <td>{{shipmentData.broker.filerCode}} -
-                                            {{brokerCodeObject[shipmentData.broker.filerCode]}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Broker Port Location:</th>
-                                        <td>{{shipmentData.broker.portLocation}} -
-                                            {{USportsListObjects[shipmentData.broker.portLocation]}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- inbond details -->
-                    <div class="row" *ngIf="shipmentData.type === 'IN_BOND'">
-                        <div class="col-lg-12">
-                            <h4>Inbond Details</h4>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <table class="table table-bordered m-0">
-                                        <tbody>
-                                            <tr>
-                                                <th width="40%" class="back-color-gray">Entry Type:</th>
-                                                <td>{{shipmentData.inBondDetails.type}} -
-                                                    {{inBondTypeObects[shipmentData.inBondDetails.type]}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th width="40%" class="back-color-gray">Paper In Bond Number:</th>
-                                                <td>{{shipmentData.inBondDetails.paperInBondNumber}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th width="40%" class="back-color-gray">Onward Carrier SCAC:</th>
-                                                <td>{{shipmentData.inBondDetails.onwardCarrierScac}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th width="40%" class="back-color-gray">Subject To FDA?:</th>
-                                                <td><span *ngIf="shipmentData.inBondDetails.fda">YES</span>
-                                                    <span *ngIf="!shipmentData.inBondDetails.fda">NO</span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="col-lg-6">
-                                    <table class="table table-bordered m-0">
-                                        <tbody>
-                                            <tr>
-                                                <th width="40%" class="back-color-gray">US In-bond Destination:</th>
-                                                <td>{{shipmentData.inBondDetails.usDestination}} -
-                                                    {{USportsListObjects[shipmentData.inBondDetails.usDestination]}}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th width="40%" class="back-color-gray">Foreign In-Bond Destination:
-                                                </th>
-                                                <td>{{shipmentData.inBondDetails.foreignDestination}} -
-                                                    {{foreignDestinationListObjects[shipmentData.inBondDetails.foreignDestination]}}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th width="40%" class="back-color-gray">Bonded Carrier ID:</th>
-                                                <td>{{shipmentData.inBondDetails.irsNumber}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th width="40%" class="back-color-gray">Est US Departure Date:</th>
-                                                <td>{{shipmentData.inBondDetails.estimatedDepartureDate}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- third parties -->
-                    <div class="row mt-2" *ngIf="shipmentData.thirdParties?.length">
-                        <div class="col-lg-12">
-                            <h4>Third Party Details</h4>
-                        </div>
-                        <div class="col-lg-12">
-                            <table class="table table-bordered table-striped m-0">
-                                <thead>
-                                    <tr>
-                                        <th> Name </th>
-                                        <th> Type</th>
-                                        <th>Address</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let thirdParty of shipmentData.thirdParties">
-                                        <td>{{thirdParty.name}}</td>
-                                        <td>{{thirdPartyTypesObects[thirdParty.type]}}</td>
-                                        <td>{{thirdParty.address.addressLine}},
-                                            {{thirdParty.address.city}},{{thirdParty.address.stateProvince}},{{thirdParty.address.postalCode}}
-                                        </td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- commodities -->
-                    <div class="row mt-2">
-                        <div class="col-lg-12">
-                            <h4>Commodity Details</h4>
-                        </div>
-                        <div class="col-lg-12">
-                            <table class="table table-bordered table-striped m-0">
-                                <thead>
-                                    <tr>
-                                        <th> Description </th>
-                                        <th> Loaded On</th>
-                                        <th>Hazardous Details</th>
-                                        <th>Other Details</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let commodity of shipmentData.commodities">
-                                        <td><span
-                                                class="font-weight-semibold">Commodity:&nbsp;</span>{{commodity.description}}<br>
-                                            <span class="font-weight-semibold"
-                                                *ngIf="shipmentData.type === 'IN_BOND' || shipmentData.type === 'SECTION_321' || shipmentData.type === 'SECTION_321_FDA'">Value:&nbsp;{{commodity.value}}USD<br></span>
-                                            <span
-                                                class="font-weight-semibold">Quantity:&nbsp;</span>{{commodity.quantity}}
-                                            {{packagingUnitsObects[commodity.packagingUnit]}} <br>
-                                            <span class="font-weight-semibold">Weight:&nbsp;</span> {{commodity.weight}}
-                                            <span *ngIf="commodity.weightUnit == 'LB'">Pounds</span>
-                                            <span *ngIf="commodity.weightUnit == 'KG'">Kilograms</span>
-                                            <br>
-                                            <span class="font-weight-semibold">Country of Origin:&nbsp;</span>
-                                            {{countryCodeName[commodity.countryOfOrigin]}}
-                                        </td>
-                                        <td><span class="font-weight-semibold">Type:&nbsp;</span><span
-                                                *ngIf="commodity.loadedOn.type == 'TRUCK'">Vehicle</span>
-                                            <span *ngIf="commodity.loadedOn.type == 'TRAILER'">Asset</span><br>
-                                            <span class="font-weight-semibold">
-                                                <span *ngIf="commodity.loadedOn.type == 'TRUCK'">Vehicle</span>
-                                                <span
-                                                    *ngIf="commodity.loadedOn.type == 'TRAILER'">Asset</span>#:</span>{{commodity.loadedOn.number}}
-                                        </td>
-                                        <td><span class="font-weight-semibold">Hazmat
-                                                Code:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">
-                                                {{commodity.hazmatDetails.unCode}}<br></span>
-                                            <span class="font-weight-semibold">Emergency Contact
-                                                Name:&nbsp;</span><span
-                                                *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.emergencyContactName}}</span>
-                                            <br><span class="font-weight-semibold">Contact
-                                                Number:&nbsp;</span><span
-                                                *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactPhone}}</span><br>
-                                            <span class="font-weight-semibold">Contact
-                                                Email:&nbsp;</span><span
-                                                *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactEmail}}</span>
-                                        </td>
-                                        <td><span
-                                                *ngIf="shipmentData.type === 'BRASS' || shipmentData.type === 'BRASS_MULTIPLE'"
-                                                class="font-weight-semibold">C4LineReleaseNumber:{{commodity.c4LineReleaseNumber}}<br></span>
-                                            <span
-                                                *ngIf="shipmentData.type === 'IN_BOND' && shipmentData.inBondDetails.type === '62'"
-                                                class="font-weight-semibold">Harmonized
-                                                Code:&nbsp;{{commodity.harmonizedCode}}<br></span>
-                                            <span class="font-weight-semibold">Marks and Numbers:&nbsp;</span><span
-                                                *ngFor="let marks of commodity.marksAndNumbers; let s=index;">{{marks}}<span
-                                                    *ngIf="s != commodity.marksAndNumbers.length-1">,</span></span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="modal-footer text-right">
@@ -863,214 +824,188 @@
     </div>
 </div>
 <!-- DRIVER DETAILS -->
-<div class="modal fade" id="showDriverDetails" tabindex="-1" role="dialog" aria-labelledby="showDriverDetails"
-    aria-hidden="true">
-    <div class="modal-dialog" style="max-width: 1200px;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Driver Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-                </button>
-            </div>
-            <div class="modal-body text-dark">
-                <div class="card-body border">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">
-                                            Driver Number:</th>
-                                        <td>{{driverData.driverNumber}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Name:</th>
-                                        <td>{{driverData.firstName}} {{driverData.lastName}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Gender:</th>
-                                        <td><span *ngIf="driverData.gender == 'M'">Male</span>
-                                            <span *ngIf="driverData.gender == 'F'">Female</span>
-                                        </td>
-                                    </tr>
+<p-dialog header="Driver Details" [modal]="true" [style]="{ width: '60vw' }" [(visible)]="driversModel">
+    <div class="row text-capitalize">
+        <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+                <tbody>
+                    <tr>
+                        <th width="40%" class="back-color-gray">
+                            Driver Number:</th>
+                        <td>{{driverData.driverNumber}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Name:</th>
+                        <td>{{driverData.firstName}} {{driverData.lastName}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Gender:</th>
+                        <td><span *ngIf="driverData.gender == 'M'">Male</span>
+                            <span *ngIf="driverData.gender == 'F'">Female</span>
+                        </td>
+                    </tr>
 
 
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Fast Card#:</th>
-                                        <td>{{driverData.fastCardNumber}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Citizenship:</th>
-                                        <td>{{driverData.citizenshipCountry}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Date Of Birth:</th>
-                                        <td>{{driverData.dateOfBirth}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- US Address -->
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <h4>US Address Details</h4>
-                        </div>
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Address:</th>
-                                        <td>{{driverData.usAddress.addressLine}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">
-                                            State:</th>
-                                        <td>{{driverData.usAddress.state}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">City:</th>
-                                        <td>{{driverData.usAddress.city}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">ZipCode:</th>
-                                        <td>{{driverData.usAddress.zipCode}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- travel documents -->
-                    <div class="row mt-2" *ngIf="driverData.travelDocuments?.length">
-                        <div class="col-lg-12">
-                            <h4>Driver Document(s) Details</h4>
-                        </div>
-                        <div class="col-lg-12">
-                            <table class="table table-bordered table-striped m-0">
-                                <thead>
-                                    <tr>
-                                        <th>Document# </th>
-                                        <th>Issuing State/Province</th>
-                                        <th>Document Type</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let travelDocument of driverData.travelDocuments">
-                                        <td>{{travelDocument.number}}</td>
-                                        <td>{{travelDocument.stateProvince}},{{travelDocument.country}}</td>
-                                        <td>{{documentsTypesObects[travelDocument.type]}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer text-right">
-                <a class="btn btn-default modal-dismiss" data-dismiss="modal">Close</a>
-            </div>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+                <tbody>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Fast Card#:</th>
+                        <td>{{driverData.fastCardNumber}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Citizenship:</th>
+                        <td>{{driverData.citizenshipCountry}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Date Of Birth:</th>
+                        <td>{{driverData.dateOfBirth}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-</div>
+    <!-- US Address -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h4>US Address Details</h4>
+        </div>
+        <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+                <tbody>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Address:</th>
+                        <td>{{driverData.usAddress.addressLine}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">
+                            State:</th>
+                        <td>{{driverData.usAddress.state}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+                <tbody>
+
+                    <tr>
+                        <th width="40%" class="back-color-gray">City:</th>
+                        <td>{{driverData.usAddress.city}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">ZipCode:</th>
+                        <td>{{driverData.usAddress.zipCode}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- travel documents -->
+    <div class="row mt-2" *ngIf="driverData.travelDocuments?.length">
+        <div class="col-lg-12">
+            <h4>Driver Document(s) Details</h4>
+        </div>
+        <div class="col-lg-12">
+            <table class="table table-bordered table-striped m-0">
+                <thead>
+                    <tr>
+                        <th>Document# </th>
+                        <th>Issuing State/Province</th>
+                        <th>Document Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let travelDocument of driverData.travelDocuments">
+                        <td>{{travelDocument.number}}</td>
+                        <td>{{travelDocument.stateProvince}},{{travelDocument.country}}</td>
+                        <td>{{documentsTypesObects[travelDocument.type]}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button (click)="driversModel = false;" label="Close"></p-button>
+    </ng-template>
+</p-dialog>
+
 <!-- PASSENGER DETAILS -->
-<div class="modal fade" id="showPassengerDetails" tabindex="-1" role="dialog" aria-labelledby="showPassengerDetails"
-    aria-hidden="true">
-    <div class="modal-dialog" style="max-width: 1200px;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Passenger Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-                </button>
+<p-dialog header="Passenger Details" [modal]="true" [style]="{ width: '60vw' }" [(visible)]="passengersModel">
+    <div class="card-body border">
+        <div class="row">
+            <div class="col-lg-6">
+                <table class="table table-bordered m-0">
+                    <tbody>
+                        <tr>
+                            <th width="40%" class="back-color-gray">Name:</th>
+                            <td>{{passengerData.firstName}} {{passengerData.lastName}}</td>
+                        </tr>
+                        <tr>
+                            <th width="40%" class="back-color-gray">Gender:</th>
+                            <td><span *ngIf="passengerData.gender == 'M'">Male</span>
+                                <span *ngIf="passengerData.gender == 'F'">Female</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="40%" class="back-color-gray">Date Of Birth:</th>
+                            <td>{{passengerData.dateOfBirth}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="modal-body text-dark">
-                <div class="card-body border">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Name:</th>
-                                        <td>{{passengerData.firstName}} {{passengerData.lastName}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Gender:</th>
-                                        <td><span *ngIf="passengerData.gender == 'M'">Male</span>
-                                            <span *ngIf="passengerData.gender == 'F'">Female</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Date Of Birth:</th>
-                                        <td>{{passengerData.dateOfBirth}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Fast Card#:</th>
-                                        <td>{{passengerData.fastCardNumber}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Citizenship:</th>
-                                        <td>{{passengerData.citizenshipCountry}}</td>
-                                    </tr>
+            <div class="col-lg-6">
+                <table class="table table-bordered m-0">
+                    <tbody>
+                        <tr>
+                            <th width="40%" class="back-color-gray">Fast Card#:</th>
+                            <td>{{passengerData.fastCardNumber}}</td>
+                        </tr>
+                        <tr>
+                            <th width="40%" class="back-color-gray">Citizenship:</th>
+                            <td>{{passengerData.citizenshipCountry}}</td>
+                        </tr>
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- travel documents -->
-                    <div class="row mt-2" *ngIf="passengerData.travelDocuments?.length">
-                        <div class="col-lg-12">
-                            <h4>Documents Details</h4>
-                        </div>
-                        <div class="col-lg-12">
-                            <table class="table table-bordered table-striped m-0">
-                                <thead>
-                                    <tr>
-                                        <th>Document# </th>
-                                        <th>Document Type</th>
-                                        <th>Issuing Country</th>
-                                        <th>Issuing State</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let travelDocument of passengerData.travelDocuments">
-                                        <td>{{travelDocument.number}}</td>
-                                        <td>{{documentsTypesObects[travelDocument.type]}}</td>
-                                        <td>{{travelDocument.country}}</td>
-                                        <td>{{travelDocument.stateProvince}}</td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                    </tbody>
+                </table>
             </div>
-            <div class="modal-footer text-right">
-                <a class="btn btn-default modal-dismiss" data-dismiss="modal">Close</a>
+        </div>
+        <!-- travel documents -->
+        <div class="row mt-2" *ngIf="passengerData.travelDocuments?.length">
+            <div class="col-lg-12">
+                <h4>Documents Details</h4>
+            </div>
+            <div class="col-lg-12">
+                <table class="table table-bordered table-striped m-0">
+                    <thead>
+                        <tr>
+                            <th>Document# </th>
+                            <th>Document Type</th>
+                            <th>Issuing Country</th>
+                            <th>Issuing State</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let travelDocument of passengerData.travelDocuments">
+                            <td>{{travelDocument.number}}</td>
+                            <td>{{documentsTypesObects[travelDocument.type]}}</td>
+                            <td>{{travelDocument.country}}</td>
+                            <td>{{travelDocument.stateProvince}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-</div>
+    <ng-template pTemplate="footer">
+        <p-button class="" (click)="passengersModel = false;" label="Close"></p-button>
+    </ng-template>
+</p-dialog>
+
 
 <p-dialog header="Please check these errors" [modal]="true" [style]="{ width: '40vw' }" [(visible)]="errorsDisplay">
     <div class="row">
@@ -1081,6 +1016,6 @@
         </div>
     </div>
     <ng-template pTemplate="footer">
-        <p-button class="" (click)="errorsDisplay = false;" label="Ok"></p-button>
+        <p-button class="" (click)="errorsDisplay = false;" label="Close"></p-button>
     </ng-template>
 </p-dialog>

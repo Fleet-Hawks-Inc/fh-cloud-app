@@ -33,7 +33,7 @@ export class EManifestsComponent implements OnInit {
     { width: '10%', field: 'assets', header: 'Assets' },
     { width: '10%', field: 'shippers', header: 'Consignor' },
     { width: '10%', field: 'receivers', header: 'Consignee' },
-    { width: '6%', field: 'status', header: 'Status' },
+    { width: '10%', field: 'status', header: 'Status' },
   ]
 
   activeDiv = 'ace';

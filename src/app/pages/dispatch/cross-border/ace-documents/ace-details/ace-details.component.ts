@@ -13,6 +13,10 @@ import { CountryStateCityService } from 'src/app/services/country-state-city.ser
   styleUrls: ['./ace-details.component.css']
 })
 export class AceDetailsComponent implements OnInit {
+  passengersModel = false;
+  driversModel = false;
+  trucksModel = false;
+  shipmentsModel = false;
   public manifestID;
   usPortOfArrival: string;
   estimatedArrivalDateTime: string;
@@ -391,6 +395,7 @@ export class AceDetailsComponent implements OnInit {
         fda: false,
       };
     }
+    this.shipmentsModel = true;
   }
   async showMainDriverDetails() {
     const countryCode = 'US';
@@ -419,6 +424,8 @@ export class AceDetailsComponent implements OnInit {
       });
     }
 
+    this.driversModel = true;
+
   }
   async showDriverDetails(driverID) {
     const driverDataFetched: any = this.drivers.filter((item: any) => item.driverID === driverID);
@@ -445,7 +452,7 @@ export class AceDetailsComponent implements OnInit {
         e.country = await this.countryStateCity.GetSpecificCountryNameByCode(e.country);
       });
     }
-
+    this.driversModel = true;
   }
   async showPassengerDetails(passengerID) {
     const passengerDataFetched: any = this.passengers.filter((item: any) => item.passengerID === passengerID);
@@ -465,6 +472,7 @@ export class AceDetailsComponent implements OnInit {
         e.country = await this.countryStateCity.GetSpecificCountryNameByCode(e.country);
       });
     }
+    this.passengersModel = true;
   }
   // getPassengerDocData(travelDocuments: any){
 

@@ -4443,9 +4443,8 @@ ul.simple-post-list.settings-list li:last-child a {
 .p-splitbutton {
   line-height: normal;
 }
-.p-splitbutton .p-component {
+.p-splitbutton > .p-component {
   font-size: 12px;
-  padding-right: 0;
 }
 .p-button-icon {
   font-size: 0.9rem;

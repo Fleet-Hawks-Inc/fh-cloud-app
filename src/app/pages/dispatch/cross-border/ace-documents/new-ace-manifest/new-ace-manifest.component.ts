@@ -1175,7 +1175,7 @@ export class NewAceManifestComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.toastr.success('Manifest added successfully.');
-        //  this.location.back(); // <-- go back to previous location
+        this.location.back(); // <-- go back to previous location
       },
     });
   }

@@ -1,58 +1,86 @@
 .statusBtn {
   padding: 4px;
-  color: #FFF;
+  color: #fff;
   border-radius: 5px;
   font-size: 11px;
   font-weight: bold;
 }
 
 /* ACE button classes */
+
+.draft-color {
+  color: #f0e68c;
+}
+.cancel-color {
+  color: #ff0000;
+}
+.transmitted-color {
+  color: #ffd700;
+}
+.preliminary-color {
+  color: #add8e6;
+}
+.returned-color {
+  color: #8b0000;
+}
+.complete-file-color {
+  color: #0000ff;
+}
+.complete-cbp-color {
+  color: #90ee90;
+}
+.truck-arr-color {
+  color: #008000;
+}
+.truck-release-color {
+  color: #7cfc00;
+}
 .cancelBtn {
-  background-color: #D91714;
+  background-color: #d91714;
 }
 .draftBtn {
   background-color: #000;
 }
 .transmittedBtn {
-  background-color: #DFD936;
+  background-color: #dfd936;
 }
 .preliminaryBtn {
-  background-color: #B1E984;
+  background-color: #b1e984;
 }
 .completeBtn {
   background-color: #5cb85c;
 }
 .truckArrivedBtn {
-  background-color: #52AA0C;
+  background-color: #52aa0c;
 }
 .truckReleasedBtn {
-  background-color: #66C31D;
+  background-color: #66c31d;
 }
 .CBPReturnedErrorBtn {
-  background-color: #F93121;
+  background-color: #f93121;
 }
 .completeManifestEntryBtn {
-  background-color: #43EA20;
+  background-color: #43ea20;
 }
 
 /* ACI Button classes */
 .ACIcancelBtn {
-  background-color: #D91714;
+  background-color: #d91714;
 }
 .ACIdraftBtn {
   background-color: #000;
 }
 .ACItransmittedBtn {
-  background-color: #DFD936;
+  background-color: #dfd936;
 }
 .ACIonFileCBSABtn {
   background-color: #ffff00;
 }
 .ACIReleasedBtn {
-  background-color: #66C31D;
+  background-color: #66c31d;
 }
 .CBSAReturnedErrorBtn {
-  background-color: #F93121;
+  background-color: #f93121;
 }
 .ACIRejectedAtBorderBtn {
   background-color: #e20000;
@@ -64,5 +92,5 @@
   background-color: #ffe400;
 }
 .ACIArrivalBorderBtn {
-  background-color: #52AA0C;
+  background-color: #52aa0c;
 }

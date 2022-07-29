@@ -274,7 +274,16 @@
                                                 }}</b>
                                           </span>
                                           <span *ngSwitchCase="'status'">
-                                             <b>
+                                             <b
+                                                [ngClass]="[(rowData.status =='Cancelled_Manifest') ? 'cancel-color' :
+                                             (rowData.status =='Transmitted_to_CBP') ? 'transmitted-color' :
+                                             (rowData.status =='Truck_Released_at_Border') ? 'truck-release-color' :
+                                             (rowData.status =='Complete_Manifest_and_Entry_Numbers_On_File_with_CBP') ? 'complete-file-color' :
+                                             (rowData.status =='CBP_Returned_Error') ? 'returned-color' :
+                                             (rowData.status =='Truck_Arrived_at_Border') ? 'truck-arr-color ' :
+                                             (rowData.status =='Preliminary_Manifest_On_File_with_CBP') ? 'preliminary-color ' :
+                                             (rowData.status =='Complete_Manifest_On_File_with_CBP') ? 'complete-cbp-color' :  'draft-color']">
+
                                                 {{
                                                 get(rowData, col.field) | titlecase
                                                 }}</b>
