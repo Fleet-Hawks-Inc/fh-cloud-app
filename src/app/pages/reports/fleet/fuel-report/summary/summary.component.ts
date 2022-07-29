@@ -125,20 +125,20 @@ _selectedColumns: any[];
   
     
      dataColumns = [
-        { width: '12%', field: 'dateTime', header: 'Date/Time', type: "text" },
-        { width: '12%', field: 'data.useType', header: 'Use Type', type: "text" },
-        { width: '12%', field: 'unitSearch', header: 'Unit Name', type: "text" },
-        { width: '12%', field: 'data.cardNo', header: 'Fuel Card', type: "text" },
+        { width: '8%', field: 'dateTime', header: 'Date/Time', type: "text" },
+        { width: '6%', field: 'data.useType', header: 'Use Type', type: "text" },
+        { width: '6.20%', field: 'unitSearch', header: 'Unit Name', type: "text" },
+        { width: '7%', field: 'data.cardNo', header: 'Fuel Card', type: "text" },
         { width: '12%', field: 'data.city', header: 'City', type: "text" },
-        { width: '12%', field: 'data.type', header: 'Fuel Type', type: "text" },
-        { width: '12%', field: 'data.qty', header: 'Fuel Quantity', type: "text" },
-        { width: '12%', field: 'uom', header: 'Litres or Gallons', type: "text" },
-        { width: '12%', field: 'data.odometer', header: 'Odometer', type: "text" },
-        { width: '12%', field: 'data.rPpu', header: 'Retail Price Per L', type: "text" },
-        { width: '12%', field: 'data.rBeforeTax', header: 'Retail Amount Before Tax', type: "text" },
-        { width: '12%', field: 'data.discAmt', header: 'Total Discount', type: "text" },
-        { width: '12%', field: 'data.amt', header: 'Amount', type: "text" },
-        { width: '12%', field: 'data.currency', header: 'Currency', type: "text" },
+        { width: '6.20%', field: 'data.type', header: 'Fuel Type', type: "text" },
+        { width: '7%', field: 'data.qty', header: 'Fuel Quantity', type: "text" },
+        { width: '8%', field: 'uom', header: 'Litres or Gallons', type: "text" },
+        { width: '6%', field: 'data.odometer', header: 'Odometer', type: "text" },
+        { width: '8%', field: 'data.rPpu', header: 'Retail Price Per L', type: "text" },
+        { width: '11%', field: 'data.rBeforeTax', header: 'Retail Amount Before Tax', type: "text" },
+        { width: '8%', field: 'data.discAmt', header: 'Total Discount', type: "text" },
+        { width: '6%', field: 'data.amt', header: 'Amount', type: "text" },
+        { width: '6%', field: 'data.currency', header: 'Currency', type: "text" },
        
     ];
 
@@ -555,7 +555,7 @@ _selectedColumns: any[];
                 obj['Retail Price Per L'] = element.data.rPpu
                 obj['Retail Amount Before Tax'] = element.data.rBeforeTax
                 obj['Total Discount'] = element.data.discAmt
-                obj['Retail Amount'] = element.data.amt
+                obj['Amount'] = element.data.amt
                 obj['Currency'] = element.data.currency
                 dataObject.push(obj)
             });
