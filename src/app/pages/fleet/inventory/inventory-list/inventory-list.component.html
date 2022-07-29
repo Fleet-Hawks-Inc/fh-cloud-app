@@ -620,6 +620,12 @@
                           >
                             Total Records: {{ items.length }}
                           </div>
+                               <div
+                            class="col-lg-12 mt-3 text-center"
+                            *ngIf="lastItemSK === 'end'"
+                          >
+                            Total Records: {{ items.length }}
+                          </div>
                         </ng-template>
                       </p-table>
                     </div>
@@ -848,6 +854,12 @@
                           <div
                             class="col-lg-12 mt-3 text-center"
                             *ngIf="lastSK !== 'end'"
+                          >
+                            Total Records: {{ requiredItems.length }}
+                          </div>
+                               <div
+                            class="col-lg-12 mt-3 text-center"
+                            *ngIf="lastSK === 'end'"
                           >
                             Total Records: {{ requiredItems.length }}
                           </div>

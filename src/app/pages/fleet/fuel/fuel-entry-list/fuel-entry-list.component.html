@@ -400,6 +400,12 @@
                   >
                     Total Records: {{ fuelList.length }}
                   </div>
+                     <div
+                    class="col-lg-12 mt-3 text-center"
+                    *ngIf="lastEvaluatedKey === 'end'"
+                  >
+                    Total Records: {{ fuelList.length }}
+                  </div>
                 </ng-template>
               </p-table>
               <!-- <ngx-datatable

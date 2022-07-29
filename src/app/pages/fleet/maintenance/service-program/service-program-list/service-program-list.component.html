@@ -311,6 +311,12 @@
                       >
                         Total Records: {{ programs.length }}
                       </div>
+                        <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK === 'end'"
+                      >
+                        Total Records: {{ programs.length }}
+                      </div>
                     </ng-template>
                   </p-table>
                 </div>

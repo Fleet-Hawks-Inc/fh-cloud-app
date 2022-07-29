@@ -491,6 +491,12 @@
                       >
                         Total Records: {{ vehicles.length }}
                       </div>
+                            <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastEvaluatedKey === 'end'"
+                      >
+                        Total Records: {{ vehicles.length }}
+                      </div>
                     </ng-template>
                   </p-table>
                 </div>
