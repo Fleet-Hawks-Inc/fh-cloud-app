@@ -367,4 +367,8 @@ export class HeaderComponent implements OnInit {
   generateOrderSessionID() {
     return this.routerMgmtService.orderUpdateSessionID;
   }
+
+  generateIncomeTransactionsSessionID(){
+    return this.routerMgmtService.IncomeTransactionsSessionID;
+    }
 }

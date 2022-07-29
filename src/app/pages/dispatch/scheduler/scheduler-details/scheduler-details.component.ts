@@ -30,8 +30,7 @@ if(result[0].selectedMonths!==undefined && result[0].selectedMonths.length>0){
  if( result[0].sType && result[0].sType.days!==undefined && result[0].sType.days.length>0){
   result[0].sType.newDays=result[0].sType.days.join(', ')
  }
-this.schedule=result[0]
-console.log(this.schedule)
+this.schedule = result[0];
   }
 }
 

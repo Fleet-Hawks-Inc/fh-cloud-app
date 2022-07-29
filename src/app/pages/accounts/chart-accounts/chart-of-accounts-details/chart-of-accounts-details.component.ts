@@ -5,6 +5,7 @@ import Constants from "../../../fleet/constants";
 import { ToastrService } from "ngx-toastr";
 import { Table } from "primeng/table";
 import * as moment from 'moment';
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 @Component({
   selector: "app-chart-of-accounts-details",
   templateUrl: "./chart-of-accounts-details.component.html",
@@ -63,13 +64,15 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   isLoadText = "Load More";
   closingAmountCad = 0;
   closingAmountUsd = 0;
+  sessionID: string;
   constructor(
     private accountService: AccountService,
     private toaster: ToastrService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
-    private apiService: ApiService
-  ) { }
+    private apiService: ApiService,
+    private routerMgmtService: RouteManagementServiceService
+  ) { this.sessionID = this.routerMgmtService.chartAccountSessionID; }
 
   async ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -541,7 +544,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
         obj["Credit#"] = element.trxType === "credit" ? element.amount : ""
         obj["Running Total"] = element.trxRunTotal
         dataObject.push(obj)
-        console.log("ddddd",dataObject)
+        console.log("ddddd", dataObject)
       });
       let headers = Object.keys(dataObject[0]).join(',')
       headers += '\n'

@@ -37,8 +37,14 @@ export class ServiceListComponent implements OnInit {
   vendorsObject: any = {};
   issuesObject: any = {};
   assetsObject: any = {};
-
+  datee = '';
   tasks = [];
+  startDate: '';
+  endDate: '';
+  start = null;
+  end = null;
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = "";
@@ -88,11 +94,12 @@ export class ServiceListComponent implements OnInit {
   ngOnInit() {
     this.initDataTable();
     this.dataColumns = [
-    { width: '14%', field: 'unitType', header: 'Unit Type', type: 'text' },
+    { width: '9%', field: 'unitType', header: 'Unit Type', type: 'text' },
     { width: '17%', field: 'unitName', header: 'Vehicle/Asset', type: 'text' },
-    { width: '16%', field: 'odometer', header: 'Odometer', type: 'text' },
-    { width: '17%', field: 'completionDate', header: 'Completion Date', type: 'text' },
-    { width: '16%', field: 'totalLogs', header: 'Total', type: 'text' },
+    { width: '10%', field: 'odometer', header: 'Odometer', type: 'text' },
+    { width: '21.8%', field: 'taskName', header: 'Service Task', type: 'text' },
+    { width: '12%', field: 'completionDate', header: 'Completion Date', type: 'text' },
+    { width: '9%', field: 'totalLogs', header: 'Total', type: 'text' },
     { width: '10%', field: 'currentStatus', header: 'Status', type: 'text' },
   ];
   this._selectedColumns = this.dataColumns;
@@ -192,18 +199,8 @@ export class ServiceListComponent implements OnInit {
   }
 
   initDataTable() {
-    if (this.lastEvaluatedKey !== "end") {
-      this.apiService
-        .getData(
-          "serviceLogs/fetch/records?searchValue=" +
-          this.searchValue +
-          "&taskID=" +
-          this.taskID +
-          "&category=" +
-          this.category +
-          "&lastKey=" +
-          this.lastEvaluatedKey
-        )
+    if (this.lastEvaluatedKey !== 'end') {
+        this.apiService.getData(`serviceLogs/fetch/serviceLogReport?searchValue=${this.searchValue}&category=${this.category}&taskID=${this.taskID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastEvaluatedKey}&date=${this.datee}`)
         .subscribe((result: any) => {
           if (result.Items.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -222,12 +219,15 @@ export class ServiceListComponent implements OnInit {
         });
     }
   }
+  
+
+  
   categoryChange() {
     this.searchValue = null;
 
   }
   searchFilter() {
-    if (this.searchValue != null || this.category != null || this.taskID != null) {
+    if (this.searchValue != null || this.category != null || this.taskID != null || this.start !== null || this.end !== null) {
       if (this.searchValue != null && this.category == null) {
         this.toastr.error('Please select both searchValue and category.');
         return false;
@@ -248,12 +248,15 @@ export class ServiceListComponent implements OnInit {
   }
 
   resetFilter() {
-    if (this.searchValue != null || this.category != null || this.taskID != null) {
+    if (this.searchValue != null || this.category != null || this.taskID != null || this.start !== null || this.end !== null) {
       this.vehicleID = null;
       this.dataMessage = Constants.FETCHING_DATA;
       this.searchValue = null;
       this.category = null;
       this.taskID = null;
+      this.start = null;
+      this.end = null;
+      this.datee = null;
       this.lastEvaluatedKey = "";
       this.logs = [];
       this.initDataTable();
@@ -263,7 +266,22 @@ export class ServiceListComponent implements OnInit {
     }
   }
 
-
+  refreshData() {
+    this.vehicleID = null;
+    this.searchValue = null;
+    this.category = null;
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.taskID = null;
+    this.logs = [];
+    this.lastEvaluatedKey = "";
+    this.initDataTable();
+  }
+        onScroll = async (event: any) => {
+        if (this.loaded) {
+            this.initDataTable();
+        }
+        this.loaded = false;
+    }
 
   clearInput() {
     this.suggestedVehicles = null;
@@ -297,17 +315,7 @@ export class ServiceListComponent implements OnInit {
     }
   }
 
-  refreshData() {
-    this.vehicleID = null;
-    this.searchValue = null;
-    this.category = null;
-    this.dataMessage = Constants.FETCHING_DATA;
-    this.taskID = null;
-    this.logs = [];
-    this.lastEvaluatedKey = "";
-    this.initDataTable();
-  }
-  
+
   
   
   
