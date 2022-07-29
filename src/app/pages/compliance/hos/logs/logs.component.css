@@ -1,0 +1,5 @@
+p-table {
+    cdk-virtual-scroll-viewport {
+        overflow-y: scroll !important;
+    }
+}

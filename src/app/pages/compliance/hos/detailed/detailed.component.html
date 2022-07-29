@@ -1,275 +1,404 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pl-0 pt-0 pr-0">
-      <header class="page-header pr-5">
-        <div class="row pr-1 mr-1" style="padding-top:10px;">
-
-          <div class="col-md-4 col-lg-4">
-            <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">Driver Logs</h4>
-          </div>
-
-          <div class="col-md-8 col-lg-8 text-right pr-1">
-            <button class="btn btn-success btn-sm"><i class="fas fa-download"></i> Download</button>
-          </div>
-        </div>
-      </header>
-      <div class="row text-dark">
-        <div class="col pr-0">
-          <section class="card">
-            <div class="card-body">
-              <form class="form-horizontal form-bordered" method="get">
-                <div class="row">
-                  <div class="col-lg-3 text-5">
-                    <i class="fas fa-user"></i
-                    ><a class="text-info" href="driver-profile2.php">
-                      {{ driverName }}</a
-                    >
-                    ID:{{driverID}}
-                  </div>
-                  <div class="col-lg-3 text-4" title="Hours Worked">
-                    <i class="fas fa-clock"></i> 7 hrs 7 mins 2 secs
-                  </div>
-                  <div class="col-lg-3 text-4" title="Cycle">
-                    <i class="fas fa-ring"></i> {{driverCycle}}
-                  </div>
-                  <div class="col-lg-3 text-right">
-                    <!-- <a href="" class="btn btn-default btn-sm"><i class="fas fa-pencil-alt"></i> Edit</a>
-                                                         <button class="btn btn-success btn-sm"><i class="fas fa-download"></i> Download</button> -->
-                  </div>
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pt-0 pr-0 pl-0">
+            <!-- Header Section   -->
+            <header class="page-header">
+                <div class="row" style="padding-top: 10px">
+                    <div class="col-lg-6 font-weight-bold text-4 text-dark">
+                        HOS Details
+                    </div>
+                    <div class="col-lg-6  font-weight-bold text-4 text-dark">
+                        <div class="pull-right">
+                            <!-- <span>US</span> TODO to be added -->
+                            <p-inputSwitch (onChange)="switchCompliance($event)" [(ngModel)]="isCanada"></p-inputSwitch>
+                        </div>
+                    </div>
                 </div>
-                <hr class="solid" />
-                <div class="row">
-                  <div class="col-lg-6">
-                    <div class="row">
-                      <div class="col-lg-3 font-weight-bold text-right">
-                        Driver License:
-                      </div>
-                      <div class="col-lg-9">
-                        <a href="">{{driverLicense}}</a>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-3 font-weight-bold text-right">
-                        Co-Drivers:
-                      </div>
-                      <div class="col-lg-9">
-                        <a class="text-info" href="driver-profile2.php"
-                          >Jatinder Singh</a
-                        >,
-                        <a class="text-info" href="driver-profile2.php"
-                          >Piyara Singh</a
-                        >
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-3 font-weight-bold text-right">
-                        Vehicles:
-                      </div>
-                      <div class="col-lg-9">
-                        <a class="text-info" href="vehicle-details2.php"
-                          >Vehicle</a
-                        >
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-3 font-weight-bold text-right">
-                        Assets:
-                      </div>
-                      <div class="col-lg-9">
-                        <a class="text-info" href="asset-details.php"
-                          >Trailer</a
-                        >
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-3 font-weight-bold text-right">
-                        Main Office:
-                      </div>
-                      <div class="col-lg-9">
-                        {{carrierMainOffice}}
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-3 font-weight-bold text-right">
-                        Home Terminal Name:
-                      </div>
-                      <div class="col-lg-9"> {{carrierHomeTerminalName}}</div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-3 font-weight-bold text-right">
-                        Home Terminal Address:
-                      </div>
-                      <div class="col-lg-9">
-                        {{carrierHomeTerminalAddress}}
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-3 font-weight-bold text-right">
-                        Notes:
-                      </div>
-                      <div class="col-lg-9"></div>
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="row">
-                      <div class="col-lg-6 font-weight-bold text-right">
-                        Date:
-                      </div>
-                      <div class="col-lg-6">{{ eventDate }}</div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-6 font-weight-bold text-right">
-                        ELD Provider & ID:
-                      </div>
-                      <div class="col-lg-6">{{ELDProvider}}</div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-6 font-weight-bold text-right">
-                        Carrier Name:
-                      </div>
-                      <div class="col-lg-6">{{ carrierName }}</div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-6 font-weight-bold text-right">
-                        Carrier Address:
-                      </div>
-                      <div class="col-lg-6">
-                        {{ carrierAddress }}
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-6 font-weight-bold text-right">
-                        Carrier US DOT Number:
-                      </div>
-                      <div class="col-lg-6">{{carrierDot}}</div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-6 font-weight-bold text-right">
-                        Shipping Docs:
-                      </div>
-                      <div class="col-lg-6">7567</div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-6 font-weight-bold text-right">
-                        Distance:
-                      </div>
-                      <div class="col-lg-6"></div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-6 font-weight-bold text-right">
-                        From:
-                      </div>
-                      <div class="col-lg-6"></div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-6 font-weight-bold text-right">
-                        To:
-                      </div>
-                      <div class="col-lg-6"></div>
-                    </div>
-                  </div>
-                </div>
-                <!-- GRAPH  -->
-               
-                <app-hos-chart [date]="eventDate" [userName]="userName"></app-hos-chart>
+            </header>
 
-                <!-- TABLE ROW -->
-                <div class="row pt-5">
-                  <div class="col-lg-12">
-                    <table
-                      class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
-                    >
-                      <thead>
-                        <tr class="font-weight-bold">
-                          <td width="10%">Status</td>
-                          <td width="10%">Time</td>
-                          <td width="10%">Duration</td>
-                          <td width="20%">Location</td>
-                          <td width="10%">Odometer</td>
-                          <td width="30%">Notes</td>
-                          <td width="10%">Action</td>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let event of eventList; let i = index">
-                          <td>
-                            <span *ngIf="event.type == 'ON'" class="onduty">ON</span> 
-                            <span *ngIf="event.type == 'OFF'" class="offduty">OFF</span>
-                            <span *ngIf="event.type == 'YM'" class="ymduty">YM</span>
-                            <span *ngIf="event.type == 'SB'" class="sbduty">SB</span>
-                            <span *ngIf="event.type == 'PC'" class="pcduty">PC</span>
-                            <span *ngIf="event.type == 'D'" class="dutyonly">D</span>
-                            {{ event.type }} Duty</td>
-                          <td>{{ event.dateTime }}</td>
-                          <td>{{ event.time }} - {{ event.toTime }}</td>
-                          <td>{{ event.location }}</td>
-                          <td>5658 miles</td>
-                          <td>
-                            {{ event.eventComment }}
-                          </td>
-                          <td>
-                            <a [routerLink]="[]" class="modal-with-form"
-                              ><i class="fas fa-pencil-alt"></i> Edit</a
+            <!-- Hos Main Section -->
+
+            <section class="m-2">
+                <!-- USA Compliance Starts -->
+                <div *ngIf="!isCanada">
+                    <!-- USA Compliance Header Section Starts -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
+                                <div class="col-lg-12 mt-3">
+                                    <span class="font-weight-bold text-5 text-dark">{{ logBook.DriverName}} (Compliance: {{complianceText}}) </span>
+                                    <span class="p-buttonset pull-right">
+                                   
+                                    <button (click)="previousDate()" pButton pRipple icon=" pi pi-angle-left "></button>
+                                    <p-calendar [(ngModel)]="selectedDate"
+                                      [inputStyle]="{ width: '120px', 'text-align': 'center' }"
+                                      [readonlyInput]="true "
+                                    ></p-calendar>
+                                    <button (click)="nextDate()" pButton pRipple icon="pi pi-angle-right"></button>
+                                  </span><br/>
+                                    <br/>
+                                    <table class="table table-bordered table-striped table-responsive-sm ">
+
+                                        <tbody>
+                                            <tr class="td-alternate">
+                                                <td>Record Date
+                                                </td>
+                                                <td>DOT/NSC Number</td>
+                                                <td>Driver License</td>
+                                                <td>Driver License State</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>{{logBook.RecordDate}}</td>
+                                                <td>{{logBook.DotNumber}}</td>
+                                                <td>{{logBook.DriverLicense}}</td>
+                                                <td>{{logBook.DriverLicenseState}}</td>
+
+                                            </tr>
+                                            <tr class="td-alternate">
+                                                <td>Time Zone
+                                                </td>
+                                                <td>Driver Name</td>
+                                                <td>Co-Driver Name</td>
+                                                <td>Shipping ID</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>{{logBook.RecordDate}}</td>
+                                                <td>{{logBook.DotNumber}}</td>
+                                                <td>{{logBook.DriverLicense}}</td>
+                                                <td>{{logBook.DriverLicenseState}}</td>
+
+                                            </tr>
+                                            <tr class="td-alternate">
+                                                <td>Trailer ID </td>
+                                                <td>Driver ID</td>
+                                                <td>Co-Driver ID</td>
+                                                <td>Truck Tractor ID</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>{{logBook.TrailerNumber || logBook.TrailerPlate}}</td>
+                                                <td>{{logBook.DriverUserName}}</td>
+                                                <td>{{logBook.CoDriverUserName}}</td>
+                                                <td>{{logBook.TractorNumber || logBook.TractorPlate }} </td>
+
+                                            </tr>
+
+                                            <tr class="td-alternate">
+                                                <td>Carrier </td>
+                                                <td>Start-End Odometer</td>
+                                                <td>Distance Traveled</td>
+                                                <td>Truck Tractor VIN</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>{{logBook.CarrierName}}</td>
+                                                <td>{{logBook.StartOdometer}}</td>
+                                                <td>{{logBook.DistanceTraveled}}</td>
+                                                <td>{{logBook.TractorVIN}}</td>
+
+                                            </tr>
+                                            <tr class="td-alternate">
+                                                <td>Carrier Address </td>
+                                                <td>Home Base Address</td>
+                                                <td colspan="1">Ruleset</td>
+
+
+                                            </tr>
+                                            <tr>
+                                                <td>{{logBook.CarrierAddress}}</td>
+                                                <td>{{logBook.HomeBaseAddress}}</td>
+                                                <td colspan="1">{{logBook.RuleSetId}}</td>
+
+
+                                            </tr>
+
+
+
+                                        </tbody>
+                                    </table>
+                                    <!-- Codes by Quackit.com -->
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- USA Compliance Header Section Ends -->
+
+                    <!-- USA Compliance HOS Events-->
+
+                    <div class="row mb-3 ">
+                        <div class="col-12 ">
+                            <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark ">
+                                <div class="col-lg-12 mt-3 ">
+
+                                    <p-table #dt [value]="logs" [columns]="dataColumns" [resizableColumns]="true" columnResizeMode="fit" scrollDirection="both" [loading]="!loaded" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" responsiveLayout="scroll" scrollHeight="100%"
+                                        autoLayout="true">
+                                        <!-- Caption template of data table -->
+                                        <ng-template pTemplate="caption" style="background-color: white">
+
+                                            <div class="p-d-flex d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h3 class="m-0">HOS Logs</h3>
+                                                </div>
+
+                                                <!-- <div class="text-right">
+                                                <span>Showing {{ logs.length }} entries </span> &nbsp;
+                                                <button type="button" pButton (click)="refreshData()" pTooltip="Refresh" class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                                                <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+
+                                                <button type="button" pButton pRipple class="p-button-outlined mr-2" icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+
+                                                <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
+                                                </p-multiSelect>
+                                            </div> -->
+                                            </div>
+
+                                        </ng-template>
+
+
+                                        <!-- Header template of DataTable -->
+                                        <ng-template pTemplate="header" let-columns>
+
+                                            <tr>
+                                                <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn>
+                                                    <div class="flex justify-content-center align-items-center" alignFrozen="right" pFrozenColumn [frozen]="true">
+                                                        {{ dataColumns.header }}
+                                                        <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                                        <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field" matchMode="contains" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
+                                                        </p-columnFilter>
+                                                    </div>
+                                                </th>
+                                                <th alignFrozen="right" pFrozenColumn [frozen]="true">
+                                                    Actions
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+
+                                        <!-- Body Template of Data Table -->
+                                        <ng-template pTemplate="body" let-hosLogs let-columns="columns" let-rowIndex="rowIndex">
+                                            <tr>
+
+                                                <td *ngFor="let dataColumns of columns">
+                                                    <span>
+                                                        {{ get(hosLogs, dataColumns.field) }}</span>
+                                                    <!-- <div [ngSwitch]="dataColumns.field">
+                                                        <span *ngSwitchCase="'DrivingString'" [ngStyle]="{ color: hosLogs.DrivingColor }">
+                                      
+                                        {{
+                                          get(hosLogs, dataColumns.field) | titlecase
+                                        }}
+                                        </span>
+                                                        <span *ngSwitchCase="'OnDutyString'" [ngStyle]="{ color: hosLogs.OnDutyColor }">
+                                      
+                                            {{
+                                              get(hosLogs, dataColumns.field) | titlecase
+                                            }}
+                                            </span>
+
+                                                        <span *ngSwitchCase="'OnDutyWeekString'" [ngStyle]="{ color: hosLogs.OnDutyWeekColor }">
+                                      
+                                                {{
+                                                  get(hosLogs, dataColumns.field) | titlecase
+                                                }}
+                                                </span>
+
+                                                        <span *ngSwitchDefault>
+                                        {{ get(hosLogs, dataColumns.field) }}</span>
+
+                                                    </div> -->
+                                                </td>
+                                                <td style="width: 6%; overflow: inherit !important" pFrozenColumn alignFrozen="right" [frozen]="true">
+                                                    <!-- <div class="dropdown dropbottom">
+                                                        <button (click)="op.toggle($event)" class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{ rowIndex }}">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                  </button>
+                                                        <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '160px' }">
+                                                            <ng-template pTemplate>
+                                                                <a (click)="op.hide();getHosDetails(hosLogs)" class="dropdown-item">HOS Logs</a
                             >
-                          </td>
-                        </tr>
-                     
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <!-- DRIVER SIGNATURE -->
-                <div class="row pt-5">
-                  <div class="col-lg-12 text-4 font-weight-bold">
-                    Driver Signature
-                  </div>
-                  <div class="col-lg-12 pt-2">
-                    <div class="driver-sign-box">
-                      I certify that these entries are true and correct.
+                                                        </ng-template>
+                                                    </p-overlayPanel>
+                                                </div> -->
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
+                    <!-- USA Compliance HOS Events-->
                 </div>
-                <!-- INSPECTION -->
-                <div class="row pt-5">
-                  <div class="col-lg-3">
-                    <span class="text-4 font-weight-bold">
-                      Inspection Reports</span
-                    >
-                    &nbsp;&nbsp;
-                    <a class="text-info" href="#">View Inspection Reports</a>
-                  </div>
-                  <div class="col-lg-12 pt-2">
-                    <div class="">
-                      <table
-                        class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
-                      >
-                        <thead>
-                          <tr>
-                            <th>Date/Time</th>
-                            <th>Vehicle</th>
-                            <th>Odometer</th>
-                            <th>Defects</th>
-                            <th>Signatures</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Dec 12,2019 3:30 AM</td>
-                            <td>Vehicle 1</td>
-                            <td>45656</td>
-                            <td>None</td>
-                            <td class="text-success">Done</td>
-                          </tr>
-                        </tbody>
-                      </table>
+
+                <!-- USA Compliance ENDS -->
+
+                <div *ngIf="isCanada">
+                    <!-- Candadian Compliance -->
+                    <!-- Hos Sub Section  1-->
+
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
+                                <div class="col-lg-12 mt-3">
+                                    <span class="p-buttonset pull-right">
+                                   
+                                    <button (click)="previousDate()" pButton pRipple icon=" pi pi-angle-left "></button>
+                                    <p-calendar [(ngModel)]="selectedDate"
+                                      [inputStyle]="{ width: '120px', 'text-align': 'center' } "
+                                      [readonlyInput]="true "
+                                    ></p-calendar>
+                                    <button (click)="nextDate()" pButton pRipple icon="pi pi-angle-right "></button>
+                                  </span><br/>
+                                    <br/>
+                                    <table class="table table-bordered table-striped table-responsive-sm ">
+
+                                        <tbody>
+                                            <tr class="td-alternate ">
+                                                <td><b>Date of RODS (MM-DD-YY)></b>
+                                                </td>
+                                                <td><b>Day Starting Time
+                                              (HH:MM:SS)</b></td>
+                                                <td><b>UTC Time Zone Offset
+                                              (HH:MM)</b></td>
+                                                <td colspan="2 "><b>Current Location
+                                              (latitude, longitude)</b></td>
+                                                <td><b>Output File Comment</b></td>
+                                                <td><b>Current Date and Time
+                                              (MM-DD-YY HH:MM:SS)</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{this.logBook.RecordDate}}</td>
+                                                <td>{{this.logBook.DayStartingTime}}</td>
+                                                <td>{{this.logBook.UTCTimeZoneOffset}}</td>
+                                                <td colspan="2 ">{{this.logBook.CurrentLocation}}</td>
+                                                <td>{{this.logBook.FileComment}}</td>
+                                                <td>{{this.logBook.CurrentDatetime}}</td>
+                                            </tr>
+                                            <tr class="td-alternate ">
+                                                <td><b>Driver Name
+                                              (Last, First)</b></td>
+                                                <td><b>Driver ID
+                                              (Username)</b></td>
+                                                <td><b>Exempt Driver Status
+                                              (E: Exempt, 0: No)</b></td>
+                                                <td colspan="2 "><b>Driver license
+                                              (No and Jurisdiction)</b></td>
+                                                <td><b>Co-Driver Name
+                                              (Last, First)</b></td>
+                                                <td><b>Co-Driver ID
+                                              (Username)</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{logBook.DriverLastName}} {{ logBook.DriverName}}</td>
+                                                <td>{{logBook.DriverUserName}}</td>
+                                                <td>{{logBook.ExemptDriverStatus}}</td>
+                                                <td colspan="2 ">{{logBook.DriverLicense}}</td>
+                                                <td>{{logBook.DriverLicenseState}}</td>
+                                                <td>{{logBook.CoDriverLastName}} {{logBook.CoDriverUserName}}</td>
+                                            </tr>
+                                            <tr class="td-alternate ">
+                                                <td><b>Power Unit Number
+                                              (ID or License No & Jurisdiction)</b></td>
+                                                <td>VIN (Power Unit)</td>
+                                                <td>Total Vehicle Distance (Start - End of the Day)</td>
+                                                <td>Distance Today (Km)
+                                                </td>
+                                                <td>Cur. Total Distance (Km)
+                                                </td>
+                                                <td>Cur. Total Engine Hours (hours)
+                                                </td>
+                                                <td>Trailer Number (ID or License No & Jurisdiction)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{logBook.TractorList }}</td>
+                                                <td>{{logBook.TractorVIN | uppercase}}</td>
+                                                <td>Cell</td>
+                                                <td>Cell</td>
+                                                <td>Cell</td>
+                                                <td>Cell</td>
+                                                <td>Cell</td>
+                                            </tr>
+                                            <tr class="td-alternate ">
+                                                <td>Carrier Name</td>
+                                                <td colspan="2 ">Home Terminal (Address)
+                                                </td>
+                                                <td colspan="2 ">Principal Place of Business (Address)
+                                                </td>
+
+                                                <td colspan="2 "></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>{{logBook.CarrierName | uppercase}}</td>
+                                                <td colspan="2 ">{{logBook.HomeBaseAddress | uppercase}}</td>
+                                                <td colspan="2 ">{{logBook.CarrierAddress | uppercase}}</td>
+
+                                                <td colspan="2 "></td>
+
+                                            </tr>
+                                            <tr class="td-alternate ">
+                                                <td>Operating Zone (1,2 or 3)</td>
+                                                <td>Cycle (7 or 14)</td>
+                                                <td>Total Hours (in work shift)</td>
+                                                <td>Total Hours (in cycle)</td>
+                                                <td>Remaining Hours (in cycle)</td>
+                                                <td colspan="2 ">Off-Duty Time Deferral (Status and time deferred) (0:none, 1: Day 1, 2: Day 2 - Time deferred: HH:MM)</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{logBook.OperatingZone}}</td>
+                                                <td>{{logBook.Cycle}}</td>
+                                                <td>{{logBook.TotalHoursShift}}</td>
+                                                <td>{{logBook.TotalHoursCycle}}</td>
+                                                <td>{{logBook.RemainingHoursCycle}}</td>
+                                                <td colspan="2 ">{{logBook.OffDutyTimeDeferral}}</td>
+                                            </tr>
+                                            <tr class="td-alternate ">
+                                                <td>Data Diagnostic Status (Status & Diagnostic Code)</td>
+                                                <td>Unidentified Driving Records (0: none, 1: active)</td>
+                                                <td>Malfunction Status (Status & Malfunction Code)</td>
+                                                <td>ELD Identified</td>
+                                                <td>ELD Provider</td>
+                                                <td>ELD Certification ID
+                                                </td>
+                                                <td>ELD Authentication Value</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{logBook.DataDiagnosticList}}</td>
+                                                <td>{{logBook.UnidentifiedDrivingRecords}}</td>
+                                                <td>{{logBook.MalfunctionList}}</td>
+                                                <td>{{logBook.ELDIdentifier}}</td>
+                                                <td>{{logBook.ELDProvider}}</td>
+                                                <td>{{logBook.ELDCertificationId}}</td>
+                                                <td>{{logBook.ELDAuthenticationValue}}</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                    <!-- Codes by Quackit.com -->
+
+
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
-                  </div>
+                    <!-- Hos Sub Section  1 Ends-->
+
+                    <div class="row mb-3 ">
+                        <div class="col-12 ">
+                            <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark ">
+                                <div class="col-lg-12 mt-3 ">
+                                    <!-- <app-hos-chart ></app-hos-chart> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </form>
-            </div>
-          </section>
-        </div>
-      </div>
-    </section>
-  </div>
+            </section>
+
+        </section>
+    </div>
 </section>
