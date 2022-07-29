@@ -90,7 +90,7 @@
                                 <td>{{schedule.newMonths}} </td>
                               </tr>
 
-                              <tr>
+                              <tr *ngIf="!schedule.selectedMonths || schedule.selectedMonths.length==0">
                                 <td class="back-color-gray font-weight-bold">Range</td>
                                 <td>{{schedule.sRange |titlecase}} </td>
                               </tr>
