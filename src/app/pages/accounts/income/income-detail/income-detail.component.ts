@@ -3,6 +3,7 @@ import { AccountService, ApiService } from "src/app/services";
 import { ActivatedRoute, Router } from "@angular/router";
 import { DomSanitizer } from "@angular/platform-browser";
 import { ToastrService } from "ngx-toastr";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 
 @Component({
   selector: "app-income-detail",
@@ -36,15 +37,19 @@ export class IncomeDetailComponent implements OnInit {
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl("");
   documentSlides = [];
   invoices = [];
-
+  sessionID: string;
   constructor(
     private accountService: AccountService,
     private apiService: ApiService,
     private router: Router,
     private route: ActivatedRoute,
     private domSanitizer: DomSanitizer,
-    private toaster: ToastrService
-  ) {}
+    private toaster: ToastrService,
+    private routerMgmtService: RouteManagementServiceService
+  ) {
+    this.sessionID = this.routerMgmtService.IncomeTransactionsSessionID;
+
+  }
 
   ngOnInit() {
     this.incomeID = this.route.snapshot.params["incomeID"];
