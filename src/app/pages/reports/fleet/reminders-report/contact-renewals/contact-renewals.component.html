@@ -26,7 +26,7 @@
             </ng-select>
           </div>
 
-          <div class="col-md-2 col-lg-2 pl-2 pr-0">
+          <div class="col-md-2 col-lg-2 pr-0">
             <ng-select
               [(ngModel)]="searchServiceTask"
               name="searchServiceTask"
@@ -41,7 +41,7 @@
               </ng-option>
             </ng-select>
           </div>
-          <div class="col-md-2 col-lg-2 pl-2 pr-0">
+          <div class="col-md-2 col-lg-2 pr-0">
             <ng-select
               [(ngModel)]="filterStatus"
               name="filterStatus"
@@ -56,11 +56,11 @@
             </ng-select>
           </div>
 
-          <div class="col-md-2 col-lg-2 pl-2">
+          <div class="col-md-2 col-lg-2">
             <button
               type="button"
               (click)="searchData()"
-              class="btn btn-sm btn-success mr-2"
+              class="btn btn-sm btn-success mr-3"
             >
               Search
             </button>
@@ -168,7 +168,7 @@
                             (click)="clear(dt)"
                             icon="pi pi-filter-slash"
                           ></button>
-                           <p-multiSelect
+                          <p-multiSelect
                             [options]="dataColumns"
                             [(ngModel)]="selectedColumns"
                             optionLabel="header"
@@ -181,13 +181,13 @@
                       </div>
                     </ng-template>
 
-                 <ng-template pTemplate="header" let-columns>
+                    <ng-template pTemplate="header" let-columns>
                       <tr>
                         <th
                           *ngFor="let dataColumns of columns"
                           [pSortableColumn]="dataColumns.field"
                           pResizableColumn
-                         style="width: 20%; cursor: pointer"
+                          style="width: 20%; cursor: pointer"
                         >
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchDefault>
@@ -215,7 +215,6 @@
                             </span>
                           </div>
                         </th>
-                      
                       </tr>
                     </ng-template>
 
