@@ -85,7 +85,8 @@ export class FuelTransactionsComponent implements OnInit {
   ];
   accounts:any = {};
   txnData = {
-    accountID: null,
+    drAccountID: null,
+    crAccountID: null,
     fuelData: [],
     txnType: null
   }
@@ -208,7 +209,8 @@ export class FuelTransactionsComponent implements OnInit {
   openTransactFuelModel() {
     let fuelIds = [];
     this.txnData = {
-      accountID: null,
+      drAccountID: null,
+      crAccountID: null,
       txnType: null,
       fuelData: []
     }
@@ -231,7 +233,11 @@ export class FuelTransactionsComponent implements OnInit {
   }
 
   saveFuelTxn() {
-    if(this.txnData.txnType && this.txnData.accountID) {
+    if(this.txnData.drAccountID && this.txnData.crAccountID) {
+      if(this.txnData.drAccountID === this.txnData.crAccountID) {
+        this.toaster.error("Please select different account for debit and credit. ");
+        return false;
+      }
       this.submitDisabled = true;
       this.accountService.postData("chartAc/add/fuel/txn", this.txnData, true).subscribe({
         complete: () => {},
@@ -309,6 +315,24 @@ export class FuelTransactionsComponent implements OnInit {
     //this.fuelEntriesCount();
     //this.resetCountResult();
 
+  }
+  checkAcc() {
+    if(this.txnData.crAccountID === this.txnData.drAccountID) {
+      this.txnData.drAccountID = null;
+    }
+  }
+
+  countSelection(index) {
+    let count = 0;
+    for (const iterator of this.fuelList) {
+      if(iterator.selected) {
+        count += 1;
+      }
+    }
+    if(count >= 2) {
+      this.fuelList[index].selected = false;
+    }
+    
   }
 
 }
