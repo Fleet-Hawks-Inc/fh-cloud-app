@@ -6,19 +6,19 @@
     </a>
   </li>
   <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/accounts', 'income', 'list']">
+    <a class="nav-link" [routerLink]="['/accounts', 'income', 'list', generateIncomeTransactionsSessionID()]">
       <i class="fas fa-file-invoice-dollar"></i>
       <span>Income Transactions</span>
     </a>
   </li>
   <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/accounts', 'expense', 'list']">
+    <a class="nav-link" [routerLink]="['/accounts', 'expense', 'list' , generateExpenseTransactionsSessionID()]">
       <i class="fas fa-dollar-sign"></i>
       <span>Expense Transactions</span>
     </a>
   </li>
   <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/accounts', 'manual-journal', 'list']">
+    <a class="nav-link" [routerLink]="['/accounts', 'manual-journal', 'list', generateManualJournalSessionID()]">
       <i class="fas fa-pencil-alt"></i>
       <span>Manual Journal</span>
     </a>
