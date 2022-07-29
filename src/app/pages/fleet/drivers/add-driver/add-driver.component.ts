@@ -197,7 +197,6 @@ export class AddDriverComponent
       phone: "",
     },
     isImport: false,
-    uploadedDocs: [],
   };
 
 
@@ -271,6 +270,7 @@ export class AddDriverComponent
   licStates = [];
   uploadedDocs = [];
   abstractDocs = [];
+  licenseDocs = [];
   existingPhotos = [];
   existingDocs = [];
   assetsImages = [];
@@ -819,7 +819,7 @@ export class AddDriverComponent
   }
 
   addGroup() {
-   // this.groupSubmitDisabled = true;
+    // this.groupSubmitDisabled = true;
     this.hideErrors();
     this.apiService.postData("groups", this.groupData).subscribe({
       complete: () => { },
@@ -1016,6 +1016,28 @@ export class AddDriverComponent
         formData.append("abstractDocs", this.abstractDocs[k]);
       }
 
+
+
+      for (let a = 0; a < this.licenseDocs.length; a++) {
+        if (this.licenseDocs[a] !== undefined) {
+          for (let b = 0; b < this.licenseDocs[a].length; b++) {
+            let file = this.licenseDocs[a][b];
+            formData.append(`licenseDocs-${a}`, file);
+            console.log('licenseDocs------', this.licenseDocs)
+            console.log('formData------', formData)
+          }
+
+        }
+      }
+      console.log('licenseDocs------', this.licenseDocs)
+
+      // for (let m = 0; m < this.licenseDocs.length; m++) {
+      //   console.log('this.licenseDocs[m]------', this.licenseDocs[m])
+      //   formData.append("licenseDocs", this.licenseDocs[m]);
+      //   console.log('formData----111111--', formData)
+      // }
+
+
       // append other fields
       formData.append("data", JSON.stringify(this.driverData));
 
@@ -1050,7 +1072,7 @@ export class AddDriverComponent
             this.submitDisabled = false;
             this.toastr.success("Driver added successfully");
             this.spinner.hide();
-            this.router.navigateByUrl(`/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`);
+            // this.router.navigateByUrl(`/fleet/drivers/list/${this.routeMgmntService.driverUpdated()}`);
           },
         });
       } catch (error) {
@@ -1774,8 +1796,8 @@ export class AddDriverComponent
             this.onChangeHideErrors("CDL_Number");
             delete this.errors[`CDL_Number`];
           }
-          if(this.emailCheck === true){
-          this.submitDisabled = true;
+          if (this.emailCheck === true) {
+            this.submitDisabled = true;
           }
           this.throwErrors();
         });
@@ -1816,11 +1838,11 @@ export class AddDriverComponent
   selectDocument(event, obj) {
     let files = [...event.target.files];
 
-    if (obj === "uploadedDocs") {
-      this.uploadedDocs = [];
+    if (obj === "licenseDocs") {
+      this.licenseDocs = [];
       for (let i = 0; i < files.length; i++) {
-             let name = files[i].name.split(".");
-       let ext = name[name.length - 1].toLowerCase();
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
         if (
           ext == "doc" ||
           ext == "docx" ||
@@ -1829,24 +1851,24 @@ export class AddDriverComponent
           ext == "jpeg" ||
           ext == "png"
         ) {
-        this.uploadedDocs.push(files[i]);
-              } else {
-            this.uploadDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+          this.licenseDocs.push(files[i]);
+        } else {
+          this.uploadDocsError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
         }
       }
     } else {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
-             let name = files[i].name.split(".");
-       let ext = name[name.length - 1].toLowerCase();
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
         if (
           ext == "jpg" ||
           ext == "jpeg" ||
           ext == "png"
         ) {
-        this.uploadedPhotos.push(files[i]);
-         } else {
-            this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
+          this.uploadedPhotos.push(files[i]);
+        } else {
+          this.uploadPhotoError = 'Only .jpg, .jpeg and png files allowed.';
         }
       }
     }
@@ -1858,5 +1880,5 @@ export class AddDriverComponent
       this.groupsData = result;
     });
   }
-  
+
 }

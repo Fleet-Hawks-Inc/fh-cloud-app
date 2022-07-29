@@ -1034,7 +1034,7 @@
                           text-left
                         ">
                         <input class="w100" type="file" multiple name="uploadedDocuments" (change)="
-                            selectDocument($event, 'uploadedDocs')
+                            selectDocument($event, 'licenseDocs')
                           " accept=".doc, .docx, .pdf, .jpg, .jpeg .png" />
                         <span *ngIf="uploadDocsError != ''" class="text-danger">
                           {{ uploadDocsError }}
