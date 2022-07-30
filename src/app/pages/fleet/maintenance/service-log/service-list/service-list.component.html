@@ -322,69 +322,22 @@
                                <span class="badge badge-dark p-1" *ngSwitchCase="'currentStatus'">
                                 {{ get(vehicle, dataColumns.field) | titlecase }}
                               </span>
-                              <!--<span *ngSwitchCase="'detailsLogs'">-->
-                              <!--  <div>-->
-                              <!--    <span class="font-weight-bold"-->
-                              <!--      >Service Task(s):-->
-                              <!--    </span>-->
-                              <!--    <span-->
-                              <!--      title="Service Task"-->
-                              <!--      *ngFor="-->
-                              <!--        let task of vehicle.allServiceTasks-->
-                              <!--          .serviceTaskList;-->
-                              <!--        let j = index;-->
-                              <!--        let $last = last-->
-                              <!--      "-->
-                              <!--    >-->
-                              <!--      {{ task.taskName ? task.taskName : "-"-->
-                              <!--      }}<span *ngIf="!$last" class="list-format"-->
-                              <!--        >,</span-->
-                              <!--      ></span-->
-                              <!--    >-->
-                              <!--    <span-->
-                              <!--      *ngIf="-->
-                              <!--        vehicle.allServiceTasks.serviceTaskList ==-->
-                              <!--        0-->
-                              <!--      "-->
-                              <!--      >-</span-->
-                              <!--    >-->
-                              <!--  </div>-->
-                              <!--  <div>-->
-                              <!--    <span class="font-weight-bold"-->
-                              <!--      >Issue(s):</span-->
-                              <!--    >-->
-                              <!--    <a-->
-                              <!--      title="Issue"-->
-                              <!--      class="text-info font-size-12"-->
-                              <!--      *ngFor="-->
-                              <!--        let issue of vehicle.selectedIssues;-->
-                              <!--        let $last = last-->
-                              <!--      "-->
-                              <!--    >-->
-                              <!--      <span (click)="gotoIssue(issue)">{{-->
-                              <!--        issuesObject[issue]-->
-                              <!--      }}</span>-->
-                              <!--      <span *ngIf="!$last" class="list-format"-->
-                              <!--        >,</span-->
-                              <!--      ></a-->
-                              <!--    >-->
-                              <!--    <span-->
-                              <!--      *ngIf="vehicle.selectedIssues.length == 0"-->
-                              <!--      >--->
-                              <!--    </span>-->
-                              <!--  </div>-->
-                              <!--  <div>-->
-                              <!--    <span class="font-weight-bold">Bill To:</span>-->
-                              <!--    <a-->
-                              <!--      (click)="openComponent(vehicle.vendorID)"-->
-                              <!--      class="text-info font-size-12"-->
-                              <!--      href="javascript:;"-->
-                              <!--      title="Vendor"-->
-                              <!--    >-->
-                              <!--      {{ vendorsObject[vehicle.vendorID] }}-->
-                              <!--    </a>-->
-                              <!--  </div>-->
-                              <!--</span>-->
+                              <span *ngSwitchCase="'taskName'">
+                                                          <span
+                            title="Service Task"
+                            *ngFor="
+                              let task of vehicle.allServiceTasks.serviceTaskList;
+                              let j = index;
+                              let $last = last
+                            "
+                          >
+                            {{ task.taskName ? task.taskName : "-"
+                            }}<span *ngIf="!$last" class="list-format">, </span>
+                          </span>
+                          <span *ngIf="vehicle.allServiceTasks.serviceTaskList == 0"
+                            >-
+                          </span>
+                              </span>
                               <span *ngSwitchCase="'totalLogs'">
                                 <span>
                                   {{
@@ -435,9 +388,25 @@
                         </div>
                       </ng-template>
                       <ng-template pTemplate="summary" let-columns>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="
+                          lastEvaluatedKey !== 'end' && logs.length !== 0
+                        "
+                      >
+                        <button
+                          type="button "
+                          (click)="onScroll($event)"
+                          class="btn btn-success btn-sm text-light"
+                        >
+                          Load More..
+                        </button>
+
+                        <br /><br />
+                      </div>
                         <div
                           class="col-lg-12 mt-3 text-center"
-                          *ngIf="lastEvaluatedKey === 'end'"
+                          *ngIf="lastEvaluatedKey !== 'end'"
                         >
                           Total Records: {{ logs.length }}
                         </div>
