@@ -77,6 +77,12 @@ export class SettlementsDetailComponent implements OnInit {
     fuelData: [],
     transactionLog: [],
     isFeatEnabled: false,
+    other: {
+      addition: [],
+      deduction: [],
+      addTotal: 0,
+      dedTotal: 0
+    }
   };
   expenses = [];
   tripsObj = [];
@@ -138,7 +144,6 @@ export class SettlementsDetailComponent implements OnInit {
         }
         this.entityName = this.settlementData.entityName;
         this.fetchSelectedFuelExpenses();
-        this.carrierID = result[0].pk;
       });
   }
 
