@@ -397,6 +397,7 @@ export class AceDetailsComponent implements OnInit {
     }
     this.shipmentsModel = true;
   }
+
   async showMainDriverDetails() {
     const countryCode = 'US';
     const stateCode = this.mainDriver.usAddress.state;
