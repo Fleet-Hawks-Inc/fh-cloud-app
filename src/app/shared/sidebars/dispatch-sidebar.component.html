@@ -40,7 +40,7 @@
       <span>Scheduler</span>
     </a>
   </li>
-  <li routerLinkActive="nav-active">
+  <li routerLinkActive="nav-active" *ngIf="isBAccess">
     <a class="nav-link" [routerLink]="['/dispatch', 'cross-border','manifests']">
       <i class="fas fa-flag-usa" aria-hidden="true"></i>
       <span>Cross Border</span>

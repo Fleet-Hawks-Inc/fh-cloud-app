@@ -9,31 +9,41 @@
 /* ACE button classes */
 
 .draft-color {
-  color: #f0e68c;
+  background-color: #f0e68c;
+  font-size: 0.75rem;
 }
 .cancel-color {
-  color: #ff0000;
+  background-color: #ff0000;
+  font-size: 0.75rem;
 }
 .transmitted-color {
-  color: #ffd700;
+  background-color: #ffd700;
+  font-size: 0.75rem;
 }
 .preliminary-color {
-  color: #add8e6;
+  background-color: #add8e6;
+  font-size: 0.75rem;
 }
 .returned-color {
-  color: #8b0000;
+  background-color: #8b0000;
+  color: #ffffff;
+  font-size: 0.75rem;
 }
 .complete-file-color {
-  color: #0000ff;
+  background-color: #0000ff;
+  font-size: 0.75rem;
 }
 .complete-cbp-color {
-  color: #90ee90;
+  background-color: #90ee90;
+  font-size: 0.75rem;
 }
 .truck-arr-color {
-  color: #008000;
+  background-color: #008000;
+  font-size: 0.75rem;
 }
 .truck-release-color {
-  color: #7cfc00;
+  background-color: #7cfc00;
+  font-size: 0.75rem;
 }
 .cancelBtn {
   background-color: #d91714;

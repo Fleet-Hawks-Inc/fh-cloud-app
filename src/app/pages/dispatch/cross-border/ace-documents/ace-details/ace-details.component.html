@@ -300,8 +300,10 @@
                                             style="cursor: pointer;" data-placement="top"
                                             title="Click to see details of co-driver.">
 
-                                            <td (click)="showDriverDetails(driver.driverID)">
-                                                {{driver.firstName}}{{driver.lastName}}</td>
+                                            <td class="text-success" (click)="showDriverDetails(driver.driverID)">
+                                                <strong>{{driver.firstName}} {{driver.middleName}}
+                                                    {{driver.lastName}}</strong>
+                                            </td>
                                             <td (click)="showDriverDetails(driver.driverID)">
                                                 Co-Driver</td>
                                             <td (click)="showDriverDetails(driver.driverID)">
@@ -321,7 +323,7 @@
                                             </td> -->
                                         </tr>
                                         <tr *ngFor="let passenger of passengers" data-toggle="tooltip"
-                                            style="cursor: pointer;" data-placement="top"
+                                            style="cursor: pointer;" class="text-success" data-placement="top"
                                             title="Click to see details of passenger.">
                                             <td (click)="showPassengerDetails(passenger.passengerID)">
                                                 {{passenger.firstName}}{{passenger.lastName}}</td>

@@ -434,7 +434,7 @@ export class NewAceManifestComponent implements OnInit {
   fetchCarrier() {
     this.apiService.getData('carriers/getCarrier').subscribe((result: any) => {
       if (result && result.Items.length > 0) {
-        if (result.Items[0].SCAC != '' && result.Items[0].SCAC != undefined && result.Items[0].SCAC != null) {
+        if (result.Items[0].SCAC != 'NA' && result.Items[0].SCAC != '' && result.Items[0].SCAC != undefined && result.Items[0].SCAC != null) {
           this.SCAC = result.Items[0].SCAC;
         } else {
           this.messageService.add({ sticky: true, closable: false, severity: 'error', summary: 'Carrier\'s SCAC Error!', detail: 'Please update your profile to add manifest.' });
@@ -1122,6 +1122,7 @@ export class NewAceManifestComponent implements OnInit {
   // update function
   updateFunction(data) {
     data.pk = this.pk;
+    data.orgTripNumber = this.tripNumber;
     this.apiService
       .putData(`eManifests/update-ace/${this.amendManifest}`, data)
       .subscribe({
@@ -1152,7 +1153,7 @@ export class NewAceManifestComponent implements OnInit {
   }
   // add Function
   addFunction(data) {
-
+    data.orgTripNumber = this.tripNumber;
     this.apiService.postData('eManifests/add-ace', data).subscribe({
       complete: () => { },
       error: (err: any) => {

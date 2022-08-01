@@ -249,6 +249,7 @@ export class EManifestsComponent implements OnInit {
             element.shipTypes = element.shipTypes.toString().toUpperCase();
             element.shippers = element.shippers.toString().toUpperCase();
             element.receivers = element.receivers.toString().toUpperCase();
+            element.status = element.status.replaceAll('_', ' ');
             element.usPortOfArrival = `Code: ${element.usPortOfArrival}, Location: ${this.USPortsObjects[element.usPortOfArrival]}`;
           }
           this.ACEList = result;
