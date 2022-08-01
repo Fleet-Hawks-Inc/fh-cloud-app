@@ -53,8 +53,8 @@ export class ActivityComponent implements OnInit {
       { width: '6%', field: 'orderName', header: 'Order#', type: "text" },
       { width: '6%', field: 'vehicle', header: 'Vehicle', type: 'text' },
       { width: '11%', field: 'driverName', header: 'Driver', type: 'text' },
-      { width: '25%', field: 'location', header: 'Location', type: "text" },
-      { width: '8%', field: 'date', header: 'Date', type: "text" },
+      {  field: 'location1', header: 'Location', type: "text", display:"none" },
+      { field: 'date1', header: 'Date', type: "text", display:"none" },
       { width: '8%', field: 'usState', header: 'Province (US)', type: 'text' },
       { width: '8%', field: 'usStateMiles', header: 'US Miles', type: 'text' },
       { width: '7%', field: 'usMiles', header: 'US Total', type: 'text' },
@@ -117,8 +117,10 @@ export class ActivityComponent implements OnInit {
 
           res.miles = 0
           res.location = []
+          res.location1 = []
           res.locationData
-          res.date = []
+          res.date = [];
+          res.date1 = [];
           res.usState = []
           res.usStateMiles = []
           res.canState = []
@@ -133,6 +135,8 @@ export class ActivityComponent implements OnInit {
             }
 
           }
+          res.location1 = res.location.join('\r\n')
+          res.date1 = res.date.join('\r\n')
           for (let data of res.provinceData) {
             for (let provD of data.usProvince) {
               res.usState.push(provD.StCntry)

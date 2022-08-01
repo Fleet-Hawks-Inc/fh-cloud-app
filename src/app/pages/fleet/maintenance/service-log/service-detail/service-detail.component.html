@@ -181,7 +181,7 @@
                         </thead>
                         <tbody>
                           <tr *ngIf="issuesObject.length == 0">
-                            <td colspan="2" style="text-align:center;">{{ noRecordMessage }}</td>
+                            <td colspan="2" style="text-align:center;">-</td>
                           </tr>
                           <tr *ngFor="let data of issuesObject">
                             <td>{{ data.issueName | titlecase }}</td>
@@ -220,7 +220,7 @@
                         </thead>
                         <tbody>
                           <tr *ngIf="allServiceTasks?.length == 0">
-                            <td colspan="2" style="text-align:center;">{{ noRecordMessage }}</td>
+                            <td colspan="2" style="text-align:center;">-</td>
                           </tr>
                           <tr *ngFor="let item of allServiceTasks">
                             <td>{{ item.taskName }}</td>
@@ -263,7 +263,7 @@
                         </thead>
                         <tbody>
                           <tr *ngIf="allServiceParts?.length == 0">
-                            <td colspan="5" style="text-align:center;">{{ noRecordMessage }}</td>
+                            <td colspan="5" style="text-align:center;">-</td>
                           </tr>
                           <tr *ngFor="let item of allServiceParts">
                             <td>{{ item.partNumber }}</td>
@@ -661,7 +661,7 @@
                 text-align:center;
               "
             >
-              {{ noRecordMessage }}
+            -
             </td>
           </tr>
 
@@ -733,7 +733,7 @@
               colspan=""
               style="padding-top: 10px; padding-bottom: 10px; text-align:center;"
             >
-              {{ noRecordMessage }}
+             -
             </td>
           </tr>
           <tr *ngFor="let data of allServiceTasks">
@@ -803,7 +803,7 @@
               colspan=""
               style="padding-top: 10px; padding-bottom: 10px; text-align:center;"
             >
-              {{ noRecordMessage }}
+            -
             </td>
           </tr>
           <tr *ngFor="let data of allServiceParts">
