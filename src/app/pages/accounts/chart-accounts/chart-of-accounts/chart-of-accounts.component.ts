@@ -6,6 +6,7 @@ import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import * as _ from "lodash";
 import { Table } from 'primeng/table';
+
 import { NgForm } from "@angular/forms";
 declare var $: any;
 @Component({
@@ -14,6 +15,8 @@ declare var $: any;
   styleUrls: ["./chart-of-accounts.component.css"],
 })
 export class ChartOfAccountsComponent implements OnInit {
+  selectedCities: string[] = [];
+
   @ViewChild("actForm") actForm: NgForm;
   modalTitle = "Add Account";
   dataMessage = Constants.FETCHING_DATA;
@@ -73,6 +76,9 @@ export class ChartOfAccountsComponent implements OnInit {
   dataColumns: any[];
   get = _.get;
   find = _.find;
+  isChecked = false;
+  headCheckbox = false;
+  checked: boolean = false;
   constructor(
     private accountService: AccountService,
     private toaster: ToastrService,
