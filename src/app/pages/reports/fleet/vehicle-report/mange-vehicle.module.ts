@@ -15,7 +15,6 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { ChartsModule } from "ng2-charts";
 import { unsavedChangesGuard } from "src/app/guards/unsaved-changes.guard";
 import { Injectable } from "@angular/core";
-
 import { OverviewComponent } from "./overview/overview.component";
 import { SummaryComponent } from "./summary/summary.component";
 import { DetailComponent } from "./detail/detail.component";
@@ -30,8 +29,9 @@ import { RevenueListComponent } from './revenue-list/revenue-list.component';
 import { RevenueDetailComponent } from './revenue-detail/revenue-detail.component';
 import { ExpenseListComponent } from './expense-list/expense-list.component';
 import { ExpenseComponent } from './expense/expense.component';
-
-
+import { BadgeModule } from "primeng/badge";
+import { SlickCarouselModule } from "ngx-slick-carousel";
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { GoogleMapsModule } from "@angular/google-maps";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
@@ -214,6 +214,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     CalendarModule,
     AutoCompleteModule,
     DropdownModule,
+    BadgeModule,
+    OverlayPanelModule,
+    SlickCarouselModule
   ],
   providers: [
     unsavedChangesGuard,

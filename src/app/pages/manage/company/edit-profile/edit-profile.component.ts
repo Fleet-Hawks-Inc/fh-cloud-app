@@ -189,7 +189,7 @@ export class EditProfileComponent implements OnInit {
         this.DOT = this.carriers.DOT;
         this.EIN = this.carriers.EIN;
         this.MC = this.carriers.MC;
-        this.SCAC = this.carriers.SCAC;
+        this.SCAC = this.carriers.SCAC && this.carriers.SCAC != 'NA' ? this.carriers.SCAC : '';
 
 
         this.CSA = this.carriers.CSA;

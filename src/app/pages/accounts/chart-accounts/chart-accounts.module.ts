@@ -80,7 +80,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 }
 const routes: Routes = [
   {
-    path: "list",
+    path: "list/:sessionID",
     component: ChartOfAccountsComponent,
     data: { title: "Chart Accounts List" , reuseRoute: true },
   },

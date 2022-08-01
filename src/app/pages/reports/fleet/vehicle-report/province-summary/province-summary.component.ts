@@ -99,6 +99,9 @@ export class ProvinceSummaryComponent implements OnInit {
         if (result.Items.length !== 0) {
           this.allData = this.allData.concat(result.summaryResult);
         }
+         if (result.summaryResult.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND
+        }
         this.dataM = result.Items;
         if (result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND

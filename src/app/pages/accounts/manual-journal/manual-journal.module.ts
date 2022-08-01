@@ -87,9 +87,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
 const routes: Routes = [
   {
-    path: "list",
+    path: "list/:sessionID",
     component: JournalListComponent,
-    data: { title: "Manual Journal List" },
+    data: { title: "Manual Journal List", reuseRoute: true },
   },
   {
     path: "add",
@@ -128,11 +128,11 @@ const routes: Routes = [
     CalendarModule,
     DropdownModule,
     TableModule
-    
+
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
-export class ManualJournalModule {}
+export class ManualJournalModule { }
