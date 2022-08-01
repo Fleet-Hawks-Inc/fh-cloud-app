@@ -252,6 +252,7 @@
                                       >,</span
                                     >
                                   </span>
+                                  <span *ngIf="data.tripNames.length == 0">-</span>
                                 </td>
                                 <td class="cursorpoint" [routerLink]="data.url">
                                   {{ data.finalTotal | number: "1.2-2" }}
