@@ -4,7 +4,7 @@
       <header class="page-header pr19 pl11">
         <form class="form-horizontal" method="get">
           <div class="row" style="padding-top: 10px">
-            <div class="col-md-1 col-lg-1 pr-0">
+            <div class="col-md-1 col-lg-1">
               <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">
                 User Details
               </h4>
@@ -17,10 +17,14 @@
                 href="javascript:;"
                 >Change Password</a
               >
-              <a  routerLink="/manage/users/edit/{{contactID}}"
-                 class="btn btn-default btn-sm mr-2">
-                <i class="fas fa-pencil-alt"></i>Edit User</a>
-              <a routerLink="/manage/users/list/{{sessionID}}"
+              <a
+                routerLink="/manage/users/edit/{{ contactID }}"
+                class="btn btn-default btn-sm mr-2"
+              >
+                <i class="fas fa-pencil-alt"></i> Edit User</a
+              >
+              <a
+                routerLink="/manage/users/list/{{ sessionID }}"
                 class="btn btn-default btn-sm"
                 ><i class="fas fa-list"></i> Users List</a
               >
