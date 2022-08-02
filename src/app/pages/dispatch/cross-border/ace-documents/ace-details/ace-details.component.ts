@@ -154,17 +154,17 @@ export class AceDetailsComponent implements OnInit {
   items = [
 
     {
-      label: 'Send', icon: 'pi pi-send', command: () => {
+      label: 'Send complete eManifest', icon: 'pi pi-send', command: () => {
         this.sendCBPFn();
       }
     },
     {
-      label: 'Amend', icon: 'pi pi-user-edit', command: () => {
+      label: 'Amend completed eManifest', icon: 'pi pi-user-edit', command: () => {
         this.amendManifest();
       }
     },
     {
-      label: 'Cancel', icon: 'pi pi-exclamation-circle', command: () => {
+      label: 'Cancel completed eManifest', icon: 'pi pi-exclamation-circle', command: () => {
         this.cancelManifest(this.manifestID);
       },
     }
@@ -289,13 +289,11 @@ export class AceDetailsComponent implements OnInit {
             policyAmount: result.truck.insurancePolicy.policyAmount,
             amountCurrency: result.truck.insurancePolicy.amountCurrency
           },
-          licensePlates: [
-            {
-              number: result.truck.licensePlates[0].number,
-              stateProvince: await this.countryStateCity.GetStateNameFromCode(result.truck.licensePlates[0].stateProvince, result.truck.licensePlates[0].country),
-              country: await this.countryStateCity.GetSpecificCountryNameByCode(result.truck.licensePlates[0].country)
-            }
-          ],
+          licensePlates: {
+            number: result.truck.licensePlates[0].number ? result.truck.licensePlates[0].number : '',
+            stateProvince: result.truck.licensePlates[0].stateProvince ? await this.countryStateCity.GetStateNameFromCode(result.truck.licensePlates[0].stateProvince, result.truck.licensePlates[0].country) : '',
+            country: result.truck.licensePlates[0].country ? await this.countryStateCity.GetSpecificCountryNameByCode(result.truck.licensePlates[0].country) : ''
+          },
           sealNumbers: result.truck.sealNumbers,
           IIT: result.truck.IIT
         };
@@ -347,7 +345,6 @@ export class AceDetailsComponent implements OnInit {
       }).catch(err => {
         this.errorsDisplay = true;
         this.errors = err.error;
-        console.log('erro', this.errors)
       })
     // this.sendBorderConnectOption = result;
     // if (this.sendBorderConnectOption === true) {

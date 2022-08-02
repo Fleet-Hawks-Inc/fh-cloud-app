@@ -100,6 +100,7 @@ export class NewAceManifestComponent implements OnInit {
   brokersList: any = [];
   timeList: any = [];
   tripNumber = '';
+  orgTripNumber = '';
   SCAC: string;
   shipmentControlNumber: string;
   currentStatus: string;
@@ -967,6 +968,7 @@ export class NewAceManifestComponent implements OnInit {
         this.borderResponses = result.manifestInfo.borderResponses;
         this.createdDate = result.createdDate;
         this.createdTime = result.createdTime;
+        this.orgTripNumber = result.orgTripNumber;
       });
   }
 
@@ -1122,7 +1124,7 @@ export class NewAceManifestComponent implements OnInit {
   // update function
   updateFunction(data) {
     data.pk = this.pk;
-    data.orgTripNumber = this.tripNumber;
+    data.orgTripNumber = this.orgTripNumber;
     this.apiService
       .putData(`eManifests/update-ace/${this.amendManifest}`, data)
       .subscribe({

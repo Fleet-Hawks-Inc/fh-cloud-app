@@ -134,7 +134,6 @@
                                                 <div *ngIf="response.status">{{response.status}}</div>
                                             </td>
                                             <td><b>{{response.message}}</b>&nbsp;&nbsp;
-                                                <span *ngIf="!response.errors">-</span>
                                                 <ul class="p-0 ml-3 mt-3" *ngIf="response.errors">
                                                     <li *ngFor="let error of response.errors; let s = index;">
                                                         {{error.note}}
@@ -383,11 +382,10 @@
                                                 {{vehicleTypeObjects[truck.type]}}</td>
                                             <td title="Click to see details of vehicle">{{truck.vinNumber}}</td>
                                             <td title="Click to see details of vehicle">{{truck.dotNumber}}</td>
-                                            <td title="Click to see details of vehicle"><span
-                                                    *ngFor="let license of truck.licensePlates;">{{license.stateProvince}}</span>
+                                            <td title="Click to see details of vehicle">
+                                                {{truck.licensePlates.stateProvince}}
                                             </td>
-                                            <td title="Click to see details of vehicle"><span
-                                                    *ngFor="let license of truck.licensePlates;">{{license.number}}</span>
+                                            <td title="Click to see details of vehicle">{{truck.licensePlates.number}}
                                             </td>
                                             <td title="Click to see details of vehicle"><span
                                                     *ngIf="truck.IIT === 'CARRIER'">Trip contains IIT's covered under
@@ -1009,11 +1007,26 @@
 </p-dialog>
 
 
-<p-dialog header="Please check these errors" [modal]="true" [style]="{ width: '40vw' }" [(visible)]="errorsDisplay">
+<p-dialog header="Please check these error(s) before sending manifest" [modal]="true" [style]="{ width: '40vw'}"
+    [(visible)]="errorsDisplay">
     <div class="row">
         <div class="col">
             <div *ngFor="let err of errors" class="text-danger">
-                {{err.stack}}
+                <i class="pi pi-exclamation-circle"></i> {{err.schema.title}}
+
+
+                <strong>
+                    <span *ngIf="err.schema.type == 'object'">
+                        <span *ngFor="let item of err.instance | keyvalue">
+                            <b>{{item.key}}: {{item.value}}</b>
+                        </span>
+                    </span>
+                    <span *ngIf="err.schema.type == 'string'">
+                        <span *ngIf="err.instance">{{err.instance}}</span>
+                        <span *ngIf="err.instance == ''">""</span>
+
+                    </span>
+                </strong> {{err.message}}
             </div>
         </div>
     </div>
