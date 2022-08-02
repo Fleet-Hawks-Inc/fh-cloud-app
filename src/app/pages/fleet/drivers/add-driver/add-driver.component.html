@@ -1081,14 +1081,14 @@
                           <input [(ngModel)]="driverData.crossBorderDetails.fast_ID" name="crossBorderDetails.fast_ID"
                             type="text" class="form-control"
                             placeholder="14 digits, beginning with 4270/4110 and ending with 00/01/02 (42700012345601)"
-                            #fastCard="ngModel" />
-                          <!-- <div *ngIf="fastCard.invalid && (fastCard.dirty || fastCard.touched)" class="text-danger">
+                            #fastCard="ngModel" pattern="^[4270|4110]{4}[0-9]{8}[00|01]{2}$" />
+                          <div *ngIf="fastCard.invalid && (fastCard.dirty || fastCard.touched)" class="text-danger">
                             <div *ngIf="fastCard.errors.pattern">
                               Fast Card must contain only 14 numbers beginning with 4270/4110 and ending with 00/01.
 
                             </div>
 
-                          </div> -->
+                          </div>
                         </div>
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold text-lg-right pt-2">FAST Expiry
