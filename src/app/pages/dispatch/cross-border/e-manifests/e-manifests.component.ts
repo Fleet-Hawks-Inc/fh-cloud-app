@@ -346,7 +346,7 @@ export class EManifestsComponent implements OnInit {
   detailPage(id) {
     this.router.navigateByUrl(`/dispatch/cross-border/ace-details/${id}`)
   }
-  deleteACEEntry(event: Event, eventData) {
+  deleteACEEntry(event: Event) {
     try {
       this.confirmationService.confirm({
         target: event.target,
