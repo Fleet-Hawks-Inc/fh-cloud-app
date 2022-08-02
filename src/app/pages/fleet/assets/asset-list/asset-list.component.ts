@@ -357,31 +357,32 @@ export class AssetListComponent implements OnInit {
   }
 
 
-  generateDriverCSV() {
-    if (this.fullExportAsset.length > 0) {
+  generateAssetsCSV() {
+    if (this.allData.length > 0) {
+    console.log(this.allData)
       let dataObject = []
       let csvArray = []
-      this.fullExportAsset.forEach(element => {
+      this.allData.forEach(element => {
         let obj = {}
         obj["Asset Name/Number"] = element.assetIdentification
         obj["VIN"] = element.VIN
         obj["Asset Type"] = element.assetType
-        obj["Make"] = element.assetDetails.manufacturer
-        obj["License Plate Number"] = element.assetDetails.licencePlateNumber
-        obj["Year"] = element.assetDetails.year
-        obj["ownerShip"] = element.assetDetails.ownerShip ? element.assetDetails.ownerShip : '-'
-        obj["Company Name"] = element.assetDetails.ownCname
-        obj["Annual Safety Date"] = element.assetDetails.annualSafetyDate
+        obj["Make"] = element.manufacturer
+        obj["License Plate Number"] = element.licencePlateNumber
+        obj["Year"] = element.year
+        obj["ownerShip"] = element.ownerShip ? element.ownerShip : '-'
+        obj["Company Name"] = element.ownCname
+        obj["Annual Safety Date"] = element.annualSafetyDate
         obj["Status"] = element.currentStatus
         obj["Added By"] = element.isImport ? 'Imported' : 'Manual'
-        if (element.assetDetails.ownerShip === 'ownerOperator') {
-          obj["Company Name"] = element.assetDetails.ownerOperator ? this.contactsObjects[element.assetDetails.ownerOperator] : ''
+        if (element.ownerShip === 'ownerOperator') {
+          obj["Company Name"] = element.ownerOperator ? this.contactsObjects[element.ownerOperator] : ''
         }
-        if (element.assetDetails.ownerShip === 'rented') {
-          obj["Company Name"] = element.assetDetails.ownCname ? element.assetDetails.ownCname : '-'
+        if (element.ownerShip === 'rented') {
+          obj["Company Name"] = element.ownCname ? element.ownCname : '-'
         }
-        if (element.assetDetails.ownerShip === 'leased') {
-          obj["Company Name"] = element.assetDetails.ownCname ? element.assetDetails.ownCname : '-'
+        if (element.ownerShip === 'leased') {
+          obj["Company Name"] = element.ownCname ? element.ownCname : '-'
         }
         dataObject.push(obj)
       });
@@ -410,6 +411,8 @@ export class AssetListComponent implements OnInit {
   }
 
 
+
+/*
   requiredExport() {
     this.apiService.getData(`assets/fetch/assetList`).subscribe((result: any) => {
       this.fullExportAsset = result.Items;
@@ -426,7 +429,7 @@ export class AssetListComponent implements OnInit {
       this.requiredExport();
     }
   }
-
+*/
   clearInput() {
     this.suggestedAssets = null;
   }
@@ -461,6 +464,7 @@ export class AssetListComponent implements OnInit {
     this.lastEvaluatedKey = '';
     this.loaded = false;
     this.initDataTable();
+    this.fullExportAsset = []
     this.dataMessage = Constants.FETCHING_DATA;
 
   }
