@@ -208,7 +208,7 @@
                                  </tr>
 
                               </ng-template>
-                              <ng-template pTemplate="body" let-rowData let-columns="columns">
+                              <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
                                  <tr>
                                     <td *ngFor="let col of columns" style="cursor: pointer;"
                                        [ngStyle]="{ width: col.width }" (click)="detailPage(rowData.mID)">
@@ -301,7 +301,7 @@
                                                 <a routerLink="/dispatch/cross-border/ace-manifest/{{rowData.mID }}"
                                                    class="dropdown-item ">Edit </a>
                                                 <button type="button" class="dropdown-item "
-                                                   (click)="deleteACEEntry($event, aceManifest)">Delete</button>
+                                                   (click)="deleteACEEntry($event)">Delete</button>
 
                                              </ng-template>
                                           </p-overlayPanel>

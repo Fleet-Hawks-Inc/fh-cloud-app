@@ -231,6 +231,9 @@ export class EManifestsComponent implements OnInit {
       }, {});
     });
   }
+  clear(table: Table) {
+    table.clear();
+  }
   initDataTable() {
     this.spinner.show();
     this.apiService.getData('eManifests/fetch/ace-list?aceSearch=' + this.aceSearch + '&fromDate=' + this.fromDate + '&toDate=' + this.toDate + '&category=' + this.filterCategory + '&lastKey=' + this.lastEvaluatedKey)
