@@ -48,20 +48,20 @@ export class ActivityComponent implements OnInit {
     this.fetchAssetActivity()
     this.fetchAsset();
     this.dataColumns = [
-      { width: '6%', field: 'assetName', header: 'Asset', type: "text", },
-      { width: '6%', field: 'tripNo', header: 'Trip#', type: "text" },
-      { width: '6%', field: 'orderName', header: 'Order#', type: "text" },
-      { width: '6%', field: 'vehicle', header: 'Vehicle', type: 'text' },
-      { width: '11%', field: 'driverName', header: 'Driver', type: 'text' },
+      { width: '11%', field: 'assetName', header: 'Asset', type: "text", },
+      { width: '11%', field: 'tripNo', header: 'Trip#', type: "text" },
+      { width: '11%', field: 'orderName', header: 'Order#', type: "text" },
+      { width: '11%', field: 'vehicle', header: 'Vehicle', type: 'text' },
+      { width: '13%', field: 'driverName', header: 'Driver', type: 'text' },
       {  field: 'location1', header: 'Location', type: "text", display:"none" },
       { field: 'date1', header: 'Date', type: "text", display:"none" },
-      { width: '8%', field: 'usState', header: 'Province (US)', type: 'text' },
-      { width: '8%', field: 'usStateMiles', header: 'US Miles', type: 'text' },
-      { width: '7%', field: 'usMiles', header: 'US Total', type: 'text' },
-      { width: '9%', field: 'canState', header: 'Province (Canada)', type: 'text' },
-      { width: '8%', field: 'canStateMiles', header: 'Canada Miles', type: 'text' },
-      { width: '8%', field: 'canMiles', header: 'Canada Total', type: 'text' },
-      { width: '8%', field: 'miles', header: 'Total Miles', type: 'text' },
+      { width: '8%', field: 'usState', header: 'Province (US)', type: 'text',display:"none"  },
+      { width: '8%', field: 'usStateMiles', header: 'US Miles', type: 'text',display:"none" },
+      { width: '7%', field: 'usMiles', header: 'US Total', type: 'text', display:"none"},
+      { width: '9%', field: 'canState', header: 'Province (Canada)', type: 'text',display:"none" },
+      { width: '14%', field: 'canStateMiles', header: 'Canada Miles', type: 'text' },
+      { width: '13%', field: 'canMiles', header: 'Canada Total', type: 'text' },
+      { width: '13%', field: 'miles', header: 'Total Miles', type: 'text' },
     ]
     this._selectedColumns = this.dataColumns;
     this.setToggleOptions()
@@ -113,7 +113,8 @@ export class ActivityComponent implements OnInit {
           this.lastItemSK = 'end';
         }
         this.loaded = true;
-        for (let res of result.Items) {
+        for (let index = 0; index < result.Items.length; index++) {
+          const res:any = result.Items[index];
 
           res.miles = 0
           res.location = []
@@ -125,16 +126,18 @@ export class ActivityComponent implements OnInit {
           res.usStateMiles = []
           res.canState = []
           res.canStateMiles = []
-          for (let element of res.tripPlanning) {
+          console.log('res---',res)
+          for (let element of res.singleAstTripD) {
+            
+            console.log('element---',element)
             res.miles += Number(element.miles);
-            if (element.location !== '') {
               res.location.push(element.type + ": " + element.location)
-            }
-            if (element.date !== undefined) {
+              console.log('res.location-innerloop--',res.location)
               res.date.push(element.type + ": " + element.date)
-            }
+           
 
           }
+          // console.log('location---',res.location)
           res.location1 = res.location.join('\r\n')
           res.date1 = res.date.join('\r\n')
           for (let data of res.provinceData) {

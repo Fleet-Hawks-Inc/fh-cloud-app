@@ -68,11 +68,11 @@
             <div class="row mb-3">
                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
                     <div class="bg-white p-3 text-dark text-capitalize">
-                        <p-table #dt [value]="allData" [resizableColumns]="true" columnResizeMode="fit"
+                        <p-table #dt [value]="allData" dataKey="tripID" [resizableColumns]="true" columnResizeMode="fit"
                             autoLayout='true' resposiveLayout='scroll' scrollDirection="both"
                             [columns]="selectedColumns" [loading]="!loaded"
                             styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
-                            [loading]="!loaded" scrollHeight="100%" dataKey="tripSK">
+                            [loading]="!loaded" scrollHeight="100%">
                             <ng-template pTemplate="caption">
                                 <div class="p-d-flex d-flex justify-content-between align-items-center">
                                     <div>
@@ -102,7 +102,8 @@
                                 <tr>
                                     <th style="width: 3rem"></th>
                                     <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field"
-                                        pResizableColumn [ngStyle]="{'width': dataColumns.width ,'display': dataColumns.display}">
+                                        pResizableColumn
+                                        [ngStyle]="{'width': dataColumns.width ,'display': dataColumns.display}">
                                         <div [ngSwitch]="dataColumns.field">
                                             <span>
                                                 <div class="flex justify-content-center align-items-center"
@@ -128,9 +129,12 @@
                                 let-expanded="expanded">
                                 <tr>
                                     <td>
-                                        <button type="button" pButton pRipple [pRowToggler]="asset" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                                        <button type="button" pButton pRipple [pRowToggler]="asset"
+                                            class="p-button-text p-button-rounded p-button-plain"
+                                            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
                                     </td>
-                                    <td *ngFor="let dataColumns of columns" [ngStyle]="{'width': dataColumns.width ,'display': dataColumns.display}" >
+                                    <td *ngFor="let dataColumns of columns"
+                                        [ngStyle]="{'width': dataColumns.width ,'display': dataColumns.display}">
 
                                         <div [ngSwitch]="dataColumns.field">
                                             <span *ngSwitchCase="'assetName'">
@@ -159,12 +163,12 @@
                                                     }}</span>
                                             </span>
 
-                                            <!-- <span *ngSwitchCase="'location'">
+                                            <!-- <span *ngSwitchCase="'location'" >
                                                 <span *ngFor = 'let location of asset.location'>
                                                     {{location
                                                     }}<br/></span>
                                             </span> -->
-                                            <span *ngSwitchCase="'location1'" >
+                                            <span *ngSwitchCase="'location1'">
                                                 <!-- <span *ngFor='let location of asset.location'> -->
                                                 {{asset.location1
                                                 }}
@@ -220,40 +224,74 @@
                                 </tr>
                             </ng-template>
 
-                            <ng-template pTemplate="rowexpansion" let-asset>
+                            <ng-template pTemplate="rowexpansion" let-allData>
+                              
+                            
+
                                 <tr>
-                                    <td colspan="7">
-                                        <div class="p-p-3">
-                                            <p-table [value]="allData"
-                                            styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped"
-                                            >
-                                            
+                                    <td width="30%" class="p-0 custom-bg-light border-0">
+                                        <div class="p-3">
+                                            <p-table [value]="allData" styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
                                                 <ng-template pTemplate="header">
+                                
                                                     <tr>
-                                                        <th class="border-0 p-0">Location</th>
-                                                      </tr>
-                                                </ng-template>
-                                                <ng-template pTemplate="body" let-asset>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                <span *ngFor = 'let location of asset.location'>
-                                                                    {{location
-                                                                    }}<br/>
-                                                                
-                                                            </span></td>
-                                                        </tr>
-                                                    </tbody>
-                                                    
-                                                </ng-template>
-                                                <!-- <ng-template pTemplate="emptymessage">
-                                                    <tr>
-                                                        <td colspan="6">There are no order for this product yet.</td>
+                                                        <th class="border-0 p-0">Pickup Location</th>
                                                     </tr>
-                                                </ng-template> -->
+                                                    <tr>
+                                                        <td >
+                                                            <span *ngFor='let loc of allData.location'>
+                                                                {{loc}}<br></span>
+                                                
+                                                        </td>
+                                                    </tr>
+                                                </ng-template>
                                             </p-table>
                                         </div>
                                     </td>
+                                <!-- </tr> -->
+                                <!-- <tr> -->
+                                
+                                    <td width="30%" class="p-0 custom-bg-light border-0">
+                                        <div class="p-3">
+                                            <p-table [value]="allData" styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
+                                                <ng-template pTemplate="header">
+                                
+                                                    <tr>
+                                                        <th class="border-0 p-0">Date</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td >
+                                                            <span *ngFor='let date of allData.date'>
+                                                            {{date
+                                                            }}<br></span>
+                                                    
+                                                        </td>
+                                                    </tr>
+                                                </ng-template>
+                                            </p-table>
+                                        </div>
+                                    </td>
+
+                                    <td width="30%" class="p-0 custom-bg-light border-0">
+                                        <div class="p-3">
+                                            <p-table [value]="allData" styleClass=" p-datatable-md p-datatable-gridlines p-datatable-striped">
+                                                <ng-template pTemplate="header">
+                                
+                                                    <tr>
+                                                        <th class="border-0 p-0">Province (US)</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <span *ngFor='let usState of allData.usState'>
+                                                                {{usState}}<br></span>
+                                                        </td>
+                                                    </tr>
+                                                </ng-template>
+                                            </p-table>
+                                        </div>
+                                    </td>
+                                
+                                
                                 </tr>
                             </ng-template>
                             <!-- Empty Template -->
