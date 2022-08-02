@@ -492,7 +492,11 @@
                                             >
                                               <td
                                                 class=""
-                                                style="min-width: 100px"
+                                                style="
+                                                  min-width: 100px;
+                                                  border-bottom: 0px;
+                                                  border-left: 0px;
+                                                "
                                               >
                                                 {{
                                                   shippersObjects[
@@ -586,6 +590,8 @@
                                                   min-width: 70px;
                                                   padding-left: 5px;
                                                   padding-right: 5px;
+                                                  border-bottom: 0px;
+                                                  border-right: 0px;
                                                 "
                                               >
                                                 <!-- <i
@@ -674,7 +680,11 @@
                                             >
                                               <td
                                                 class=""
-                                                style="min-width: 100px"
+                                                style="
+                                                  min-width: 100px;
+                                                  border-bottom: 0px;
+                                                  border-left: 0px;
+                                                "
                                               >
                                                 {{
                                                   receiversObjects[
@@ -751,7 +761,7 @@
                                                       >
                                                     </td>
                                                     <td
-                                                      class="border-top-0 border-bottom border-left-0 border-right-0"
+                                                      class="border-top-0 border-bottom-0 border-left-0 border-right-0"
                                                     >
                                                       {{
                                                         point.dateAndTime
@@ -770,6 +780,8 @@
                                                   min-width: 70px;
                                                   padding-left: 5px;
                                                   padding-right: 5px;
+                                                  border-bottom: 0px;
+                                                  border-right: 0px;
                                                 "
                                               >
                                                 <!-- <i
@@ -1898,7 +1910,6 @@
                                       <div
                                         class="addsr-scrollbar addsr-scroll-y pickup-location__main"
                                       >
-                                    
                                         <div
                                           *ngFor="
                                             let dropItem of item.receivers
@@ -1932,7 +1943,7 @@
                                                     'receiver',
                                                     $event
                                                   );
-                                                  searchZone(dropItem,y,i);
+                                                  searchZone(dropItem, y, i)
                                                 "
                                                 placeholder="eg. Calgary,Alberta"
                                                 [disabled]="
@@ -2087,13 +2098,23 @@
                                               </div>
                                             </div>
                                           </div>
-                                          <div *ngIf="dropItem.zone && dropItem.zone.zoneID" class="row">
+                                          <div
+                                            *ngIf="
+                                              dropItem.zone &&
+                                              dropItem.zone.zoneID
+                                            "
+                                            class="row"
+                                          >
                                             <div class="col-12">
                                               <div
                                                 class="pt-1 pb-1 pl-3 pr-3"
-                                                style="background-color: #e1e2e3"
+                                                style="
+                                                  background-color: #e1e2e3;
+                                                "
                                               >
-                                                <h5 class="font-weight-bold">Zone Details</h5>
+                                                <h5 class="font-weight-bold">
+                                                  Zone Details
+                                                </h5>
                                               </div>
                                             </div>
                                           </div>
@@ -2106,14 +2127,22 @@
                                                   overflow-x: hidden;
                                                 "
                                               >
-                                                <div *ngIf=" dropItem.zone && dropItem.zone.zoneID" class="row mt-2">
+                                                <div
+                                                  *ngIf="
+                                                    dropItem.zone &&
+                                                    dropItem.zone.zoneID
+                                                  "
+                                                  class="row mt-2"
+                                                >
                                                   <div class="col-lg-6">
                                                     <label class="control-label"
-                                                      ><span class="font-weight-bold"
+                                                      ><span
+                                                        class="font-weight-bold"
                                                         >Zone Name:</span
                                                       >
                                                       {{
-                                                       dropItem.zone.zName |titlecase
+                                                        dropItem.zone.zName
+                                                          | titlecase
                                                       }}</label
                                                     >
                                                   </div>
@@ -2128,70 +2157,113 @@
                                                     >
                                                   </div> -->
                                                 </div>
-                                                <div *ngIf="dropItem.zone.zoneID" class="row">
-                                                    <div class="col-lg-12">
-                                                      <label for="" class="control-lable">
-                                                        Zone Pallet Rates
-                                                      </label>
-                                                      <p-table 
+                                                <div
+                                                  *ngIf="dropItem.zone.zoneID"
+                                                  class="row"
+                                                >
+                                                  <div class="col-lg-12">
+                                                    <label
+                                                      for=""
+                                                      class="control-lable"
+                                                    >
+                                                      Zone Pallet Rates
+                                                    </label>
+                                                    <p-table
                                                       #dt
-                                                      [value]="dropItem.zone.pRates"
+                                                      [value]="
+                                                        dropItem.zone.pRates
+                                                      "
                                                       [resizableColumns]="true"
                                                       [columnResizeMode]="true"
                                                       scrollDirection="both"
                                                       responsiveLayout="scroll"
                                                       styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
-                                                      >
-                                                      <ng-template pTemplate="header">
-                                                        <tr>
-                                                            <th>Pallet No</th>
-                                                            <th>Weight</th>
-                                                            <th>Rate</th>
-                                                        </tr>
-                                                    </ng-template>
-                                                    <ng-template pTemplate="body" let-pRate>
-                                                      <tr>
-                                                          <td>{{pRate.noPallets}}</td>
-                                                          <td>{{pRate.weight}} {{pRate.unit}}</td>
-                                                          <td>{{pRate.rate}} {{pRate.currency}}</td>
-                                                      </tr>
-                                                  </ng-template>
-                                                      </p-table>
-                                                    </div>
-                                                </div>
-                                                <div *ngIf="dropItem.zone.zoneID" class="row">
-                                                  <div class="col-lg-12">
-                                                    <label for="" class="control-lable">
-                                                      Accessorial rate
-                                                    </label>
-                                                    <p-table 
-                                                    #d
-                                                    [value]="dropItem.zone.aspRates"
-                                                    [resizableColumns]="true"
-                                                    [columnResizeMode]="true"
-                                                    scrollDirection="both"
-                                                    responsiveLayout="scroll"
-                                                    styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
                                                     >
-                                                    <ng-template pTemplate="header">
-                                                      <tr>
-                                                          <th>Name</th>
-                                                          <th>Fee</th>
-                                                      </tr>
-                                                  </ng-template>
-                                                  <ng-template pTemplate="body" let-asp>
-                                                    <tr>
-                                                        <td>{{asp.name}}</td>
-                                                        <td>{{asp.fee}} {{asp.currency}}</td>
-                                                    </tr>
-                                                </ng-template>
+                                                      <ng-template
+                                                        pTemplate="header"
+                                                      >
+                                                        <tr>
+                                                          <th>Pallet No</th>
+                                                          <th>Weight</th>
+                                                          <th>Rate</th>
+                                                        </tr>
+                                                      </ng-template>
+                                                      <ng-template
+                                                        pTemplate="body"
+                                                        let-pRate
+                                                      >
+                                                        <tr>
+                                                          <td>
+                                                            {{
+                                                              pRate.noPallets
+                                                            }}
+                                                          </td>
+                                                          <td>
+                                                            {{ pRate.weight }}
+                                                            {{ pRate.unit }}
+                                                          </td>
+                                                          <td>
+                                                            {{ pRate.rate }}
+                                                            {{ pRate.currency }}
+                                                          </td>
+                                                        </tr>
+                                                      </ng-template>
                                                     </p-table>
                                                   </div>
-                                              </div>
-                
+                                                </div>
+                                                <div
+                                                  *ngIf="dropItem.zone.zoneID"
+                                                  class="row"
+                                                >
+                                                  <div class="col-lg-12">
+                                                    <label
+                                                      for=""
+                                                      class="control-lable"
+                                                    >
+                                                      Accessorial rate
+                                                    </label>
+                                                    <p-table
+                                                      #d
+                                                      [value]="
+                                                        dropItem.zone.aspRates
+                                                      "
+                                                      [resizableColumns]="true"
+                                                      [columnResizeMode]="true"
+                                                      scrollDirection="both"
+                                                      responsiveLayout="scroll"
+                                                      styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                                                    >
+                                                      <ng-template
+                                                        pTemplate="header"
+                                                      >
+                                                        <tr>
+                                                          <th>Name</th>
+                                                          <th>Fee</th>
+                                                        </tr>
+                                                      </ng-template>
+                                                      <ng-template
+                                                        pTemplate="body"
+                                                        let-asp
+                                                      >
+                                                        <tr>
+                                                          <td>
+                                                            {{ asp.name }}
+                                                          </td>
+                                                          <td>
+                                                            {{ asp.fee }}
+                                                            {{ asp.currency }}
+                                                          </td>
+                                                        </tr>
+                                                      </ng-template>
+                                                    </p-table>
+                                                  </div>
+                                                </div>
+
                                                 <div
                                                   class="row border-top mb-1 pt-2 pb-2 position-relative"
-                                                  [ngClass]="{ 'pl-4': item.adrs.length > 1 }"
+                                                  [ngClass]="{
+                                                    'pl-4': item.adrs.length > 1
+                                                  }"
                                                   *ngFor="
                                                     let address of item.adrs;
                                                     let i = index
@@ -2201,57 +2273,83 @@
                                                     <label
                                                       class="control-label"
                                                       *ngIf="address.manual"
-                                                      ><span class="font-weight-bold"
+                                                      ><span
+                                                        class="font-weight-bold"
                                                         >Address:</span
                                                       >
-                                                      {{ address.add1 | titlecase }}
-                                                      {{ address.add2 | titlecase }}</label
+                                                      {{
+                                                        address.add1 | titlecase
+                                                      }}
+                                                      {{
+                                                        address.add2 | titlecase
+                                                      }}</label
                                                     >
                                                     <label
                                                       class="control-label"
                                                       *ngIf="!address.manual"
-                                                      ><span class="font-weight-bold"
+                                                      ><span
+                                                        class="font-weight-bold"
                                                         >Address:</span
                                                       >
-                                                      {{ address.userLoc | titlecase }}</label
+                                                      {{
+                                                        address.userLoc
+                                                          | titlecase
+                                                      }}</label
                                                     >
                                                   </div>
-                
+
                                                   <div class="col-6">
                                                     <label class="control-label"
-                                                      ><span class="font-weight-bold"
+                                                      ><span
+                                                        class="font-weight-bold"
                                                         >City:</span
                                                       >
-                                                      {{ address.ctyName | titlecase }}</label
+                                                      {{
+                                                        address.ctyName
+                                                          | titlecase
+                                                      }}</label
                                                     >
                                                   </div>
                                                   <div class="col-6">
                                                     <label class="control-label"
-                                                      ><span class="font-weight-bold"
+                                                      ><span
+                                                        class="font-weight-bold"
                                                         >Province/State:</span
                                                       >
-                                                      {{ address.sName | titlecase }}</label
+                                                      {{
+                                                        address.sName
+                                                          | titlecase
+                                                      }}</label
                                                     >
                                                   </div>
                                                   <div class="col-6">
                                                     <label class="control-label"
-                                                      ><span class="font-weight-bold"
+                                                      ><span
+                                                        class="font-weight-bold"
                                                         >Country:</span
                                                       >
-                                                      {{ address.cName | titlecase }}</label
+                                                      {{
+                                                        address.cName
+                                                          | titlecase
+                                                      }}</label
                                                     >
                                                   </div>
                                                   <div class="col-6">
                                                     <label class="control-label"
-                                                      ><span class="font-weight-bold"
+                                                      ><span
+                                                        class="font-weight-bold"
                                                         >Type:</span
                                                       >
-                                                      {{ address.aType | titlecase }}</label
+                                                      {{
+                                                        address.aType
+                                                          | titlecase
+                                                      }}</label
                                                     >
                                                   </div>
                                                   <div class="col-6">
                                                     <label class="control-label"
-                                                      ><span class="font-weight-bold"
+                                                      ><span
+                                                        class="font-weight-bold"
                                                         >C/O:</span
                                                       >
                                                       {{
@@ -2262,7 +2360,9 @@
                                                     >
                                                   </div>
                                                   <input
-                                                    *ngIf="item.adrs?.length > 1"
+                                                    *ngIf="
+                                                      item.adrs?.length > 1
+                                                    "
                                                     class="address-icon"
                                                     type="radio"
                                                     name="select"
@@ -2274,13 +2374,15 @@
                                                       )
                                                     "
                                                     [value]="address.addressID"
-                                                    [checked]="address.isChecked"
+                                                    [checked]="
+                                                      address.isChecked
+                                                    "
                                                   />
                                                 </div>
                                               </div>
                                             </div>
                                           </div>
-                                          
+
                                           <div
                                             class="row mt-3"
                                             *ngIf="dropItem.unit"
@@ -2739,7 +2841,13 @@
                                                       data-select2-id="19"
                                                       tabindex="-1"
                                                       aria-hidden="false"
-                                                      (change)="searchZone(dropItem,y,i)"
+                                                      (change)="
+                                                        searchZone(
+                                                          dropItem,
+                                                          y,
+                                                          i
+                                                        )
+                                                      "
                                                     >
                                                       <ng-option
                                                         value="Bag"
@@ -4187,7 +4295,6 @@
                           *ngIf="getOrderID && recalledState"
                           type="button"
                           (click)="showReasonModal()"
-                          
                           [disabled]="submitDisabled"
                           class="btn btn-success text-white"
                         >
@@ -4251,7 +4358,6 @@
     </div>
   </div>
 </div>
-
 
 <p-dialog
   header="Recall Reason"

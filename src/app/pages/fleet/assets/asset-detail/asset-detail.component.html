@@ -133,7 +133,7 @@
                               <span *ngIf="ownerShip !== 'interchange'">{{
                                 year ? year : "-"
                               }}</span>
-                              <span *ngIf="manufacturer">{{
+                              <span class="ml-1" *ngIf="manufacturer">{{
                                 manufacturer
                               }}</span>
                               <span *ngIf="model"> &amp;</span> {{ model }}
@@ -642,7 +642,7 @@
                                 ></a>
                                 <a
                                   class="btn btn-deafault pull-right btn-xs"
-                                  href="{{data.path}}"
+                                  href="{{ data.path }}"
                                   target="_blank"
                                   download="data.path"
                                   ><i class="fas fa-download"></i
@@ -972,11 +972,16 @@
                     <div class="col-lg-12 solid mt-3">
                       <div class="bg-white text-dark">
                         <div class="boxshadow1">
-                          <h2
-                            class="text-4 back-color-gray font-weight-bold col-lg-12 p-2"
-                          >
-                            <i class="fas fa-user"></i> Asset Log
-                          </h2>
+                          <div class="row m-0">
+                            <div class="col-lg-12 p-0">
+                              <h2
+                                class="text-4 back-color-gray mt-0 font-weight-bold border-0 text-4 col-lg-12"
+                              >
+                                <i class="fas fa-user"></i> Asset Log
+                              </h2>
+                            </div>
+                          </div>
+
                           <div
                             class="timeline timeline-simple changelog pr-3"
                             style="
