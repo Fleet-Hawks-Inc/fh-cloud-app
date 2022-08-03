@@ -301,7 +301,7 @@
                                                 <a routerLink="/dispatch/cross-border/ace-manifest/{{rowData.mID }}"
                                                    class="dropdown-item ">Edit </a>
                                                 <button type="button" class="dropdown-item "
-                                                   (click)="deleteACEEntry($event)">Delete</button>
+                                                   (click)="deleteACEEntry($event, rowData.mID)">Delete</button>
 
                                              </ng-template>
                                           </p-overlayPanel>

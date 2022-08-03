@@ -276,7 +276,7 @@ export class AceDetailsComponent implements OnInit {
         this.estimatedArrivalDateTime = result.estimatedArrivalDateTime;
         this.usPortOfArrival = result.usPortOfArrival;
         this.tripNumber = result.tripNumber;
-        this.currentStatus = result.status;
+        this.currentStatus = result.status.replaceAll('_', ' ');
         this.truck = {
           number: result.truck.number,
           type: result.truck.type,
@@ -322,7 +322,7 @@ export class AceDetailsComponent implements OnInit {
     let result = await this.apiService.postData('eManifests/setStatus', record).toPromise();
     if (result) {
       this.toastr.success('Status Updated Successfully!');
-      this.currentStatus = val;
+      this.currentStatus = val.replaceAll('_', ' ');;
     }
 
   }
