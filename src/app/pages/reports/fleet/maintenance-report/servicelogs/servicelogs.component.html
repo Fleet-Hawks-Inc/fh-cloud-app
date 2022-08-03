@@ -26,7 +26,7 @@
             </div>
 
             <!-- Set spacing issue -->
-            <div class="col-md-2 col-lg-2 pl-2 pr-0">
+            <div class="col-md-2 col-lg-2 pr-0">
               <div
                 class="input-group input-group-md mb-3"
                 *ngIf="
@@ -72,7 +72,7 @@
                 >
               </ng-select>
             </div>
-            <div class="col-md-2 col-lg-2 pl-2 pr-0">
+            <div class="col-md-2 col-lg-2 pr-0">
               <ng-select
                 [(ngModel)]="taskID"
                 name="taskID"
@@ -83,7 +83,7 @@
                 </ng-option>
               </ng-select>
             </div>
-            <div class="col-md-3 col-lg-3 pl-2 pr-0">
+            <div class="col-md-3 col-lg-3 pr-0">
               <div
                 class="input-daterange input-group input-group-sm"
                 data-plugin-datepicker=""
@@ -127,11 +127,11 @@
               </div>
             </div>
 
-            <div class="col-md-2 col-lg-2 pl-2">
+            <div class="col-md-2 col-lg-2">
               <button
                 type="submit"
                 (click)="searchFilter()"
-                class="btn btn-sm btn-success mr-2"
+                class="btn btn-sm btn-success mr-3"
               >
                 Search
               </button>
@@ -186,7 +186,7 @@
                             class="p-button-outlined mr-2"
                             icon="fas fa-sync"
                           ></button>
-                           <button
+                          <button
                             type="button"
                             pButton
                             pRipple
@@ -213,7 +213,7 @@
                           *ngFor="let column of dataColumns"
                           [pSortableColumn]="column.field"
                           pResizableColumn
-                         style="width: 12.50%; cursor: pointer"
+                          style="width: 12.5%; cursor: pointer"
                         >
                           <span>
                             <div
@@ -246,87 +246,76 @@
                       let-rowIndex="rowIndex"
                     >
                       <tr>
-                       <td
+                        <td
                           *ngFor="let dataColumns of columns"
-                        style="width: 12.50%; height: 40px; cursor: pointer"
+                          style="width: 12.5%; height: 40px; cursor: pointer"
                         >
                           <div [ngSwitch]="dataColumns.field">
-                        <span
-                          *ngSwitchCase="'unitType'"
-                        >
-                          <span class="text-capitalize">
-                            {{ log.unitType }}
-                          </span>
-                        </span>
-                        <span
-                         *ngSwitchCase="'unitName'"
-                        >
-                          <span class="text-capitalize">
-                            {{ log.unitName }}
-                          </span>
-                        </span>
-                        <span
-                           *ngSwitchCase="'odometer'"
-                        >
-                          {{ log.odometer ? log.odometer : "-" }}
-                        </span>
-                        <span
-                          *ngSwitchCase="'vendorID'"
-                        >
-                          {{ vendorsObject[log.vendorID] }}
-                        </span>
-                        <span
-                          *ngSwitchCase="'serviceTaskList'"
-                        >
-                          <span
-                            title="Service Task"
-                            *ngFor="
-                              let task of log.allServiceTasks.serviceTaskList;
-                              let j = index;
-                              let $last = last
-                            "
-                          >
-                            {{ task.taskName ? task.taskName : "-"
-                            }}<span *ngIf="!$last" class="list-format">, </span>
-                          </span>
-                          <span *ngIf="log.allServiceTasks.serviceTaskList == 0"
-                            >-
-                          </span>
-                        </span>
+                            <span *ngSwitchCase="'unitType'">
+                              <span class="text-capitalize">
+                                {{ log.unitType }}
+                              </span>
+                            </span>
+                            <span *ngSwitchCase="'unitName'">
+                              <span class="text-capitalize">
+                                {{ log.unitName }}
+                              </span>
+                            </span>
+                            <span *ngSwitchCase="'odometer'">
+                              {{ log.odometer ? log.odometer : "-" }}
+                            </span>
+                            <span *ngSwitchCase="'vendorID'">
+                              {{ vendorsObject[log.vendorID] }}
+                            </span>
+                            <span *ngSwitchCase="'serviceTaskList'">
+                              <span
+                                title="Service Task"
+                                *ngFor="
+                                  let task of log.allServiceTasks
+                                    .serviceTaskList;
+                                  let j = index;
+                                  let $last = last
+                                "
+                              >
+                                {{ task.taskName ? task.taskName : "-"
+                                }}<span *ngIf="!$last" class="list-format"
+                                  >,
+                                </span>
+                              </span>
+                              <span
+                                *ngIf="log.allServiceTasks.serviceTaskList == 0"
+                                >-
+                              </span>
+                            </span>
 
-                        <span
-                          *ngSwitchCase="'completionDate'"
-                        >
-                          <span>
-                            {{ log.completionDate }}<br /><span
-                              *ngIf="log?.vehicleID"
-                              class="font-size-12"
-                              >{{ log.odometer }} miles</span
-                            >
-                          </span>
-                        </span>
+                            <span *ngSwitchCase="'completionDate'">
+                              <span>
+                                {{ log.completionDate }}<br /><span
+                                  *ngIf="log?.vehicleID"
+                                  class="font-size-12"
+                                  >{{ log.odometer }} miles</span
+                                >
+                              </span>
+                            </span>
 
-                        <span
-                         *ngSwitchCase="'currentStatus'"
-                        >
-                          <span
-                            class="text-success"
-                            [ngClass]="{
-                              'text-danger': log.currentStatus == 'sold',
-                              'text-muted': log.currentStatus === 'outOfService'
-                            }"
-                          >
-                            {{ log.entityStatus }}</span
-                          >
-                        </span>
+                            <span *ngSwitchCase="'currentStatus'">
+                              <span
+                                class="text-success"
+                                [ngClass]="{
+                                  'text-danger': log.currentStatus == 'sold',
+                                  'text-muted':
+                                    log.currentStatus === 'outOfService'
+                                }"
+                              >
+                                {{ log.entityStatus }}</span
+                              >
+                            </span>
 
-                        <span
-                         *ngSwitchCase="'allServiceTasks.subTotal'"
-                        >
-                          {{ log.allServiceTasks.subTotal.toFixed(2) }}
-                          {{ log.allServiceTasks.currency }}
-                        </span>
-                        </div>
+                            <span *ngSwitchCase="'allServiceTasks.subTotal'">
+                              {{ log.allServiceTasks.subTotal.toFixed(2) }}
+                              {{ log.allServiceTasks.currency }}
+                            </span>
+                          </div>
                         </td>
                       </tr>
                     </ng-template>

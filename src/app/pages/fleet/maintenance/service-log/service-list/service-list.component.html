@@ -410,6 +410,12 @@
                         >
                           Total Records: {{ logs.length }}
                         </div>
+                        <div
+                          class="col-lg-12 mt-3 text-center"
+                          *ngIf="lastEvaluatedKey === 'end'"
+                        >
+                          Total Records: {{ logs.length }}
+                        </div>
                       </ng-template>
                       <ng-template pTemplate="rowexpansion" let-sklog>
                         <tr>

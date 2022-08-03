@@ -24,9 +24,27 @@ export class CommonSideBarComponent implements OnInit {
   isAccountsEnabled = environment.isAccountsEnabled;
   isReportsEnabled = environment.isReportsEnabled;
 
+  BConnectAccess = environment.BConnectAccess;
+  isBAccess = false;
+
+  /**
+   * for checking access of border connect
+   */
+  async checkBConnectAccess() {
+    let currentUser = (await Auth.currentSession()).getIdToken().payload;
+    if (currentUser.carrierID != '' && currentUser.carrierID != undefined) {
+      if (this.BConnectAccess.includes(currentUser.carrierID)) {
+        this.isBAccess = true;
+      } else {
+        this.isBAccess = false;
+      }
+    }
+  }
+
   ngOnInit() {
     this.initRoles();
-    
+    this.checkBConnectAccess();
+
     $(document).ready(() => {
       // window.theme = {};
       // Bootstrap Toggle
@@ -275,7 +293,7 @@ export class CommonSideBarComponent implements OnInit {
     });
   }
 
-   initRoles(){
+  initRoles() {
     this.isFleetEnabled = environment.isFleetEnabled;
     this.isDispatchEnabled = localStorage.getItem("isDispatchEnabled")
       ? JSON.parse(localStorage.getItem("isDispatchEnabled"))
@@ -313,35 +331,35 @@ export class CommonSideBarComponent implements OnInit {
   generateDriverSessionID() {
     return this.routeManagement.driverUpdateSessionID;
   }
-    generateVehicleSessionID() {
-   return this.routeManagement.vehicleUpdateSessionID;
+  generateVehicleSessionID() {
+    return this.routeManagement.vehicleUpdateSessionID;
   }
   generateAssetSessionID() {
-   return this.routeManagement.assetUpdateSessionID;
+    return this.routeManagement.assetUpdateSessionID;
   }
   generateFuelSessionID() {
     return this.routeManagement.fuelUpdateSessionID;
   }
-  generateMaintainanceSessionID(){
-  return this.routeManagement.maintainanceSessionID;
+  generateMaintainanceSessionID() {
+    return this.routeManagement.maintainanceSessionID;
   }
-  generateServiceLogSessionID(){
-  return this.routeManagement.serviceLogSessionID;
+  generateServiceLogSessionID() {
+    return this.routeManagement.serviceLogSessionID;
   }
-  genrateChartAccountSessionID(){
+  genrateChartAccountSessionID() {
     return this.routeManagement.chartAccountSessionID;
   }
-  generateServiceReminderSessionID(){
-  return this.routeManagement.serviceRemindersSessionID;
+  generateServiceReminderSessionID() {
+    return this.routeManagement.serviceRemindersSessionID;
   }
-  generateInventorySessionID(){
-  return this.routeManagement.inventorySessionID;
+  generateInventorySessionID() {
+    return this.routeManagement.inventorySessionID;
   }
-  generateDeviceSessionID(){
-  return this.routeManagement.deviceSessionID;
+  generateDeviceSessionID() {
+    return this.routeManagement.deviceSessionID;
   }
-  generateUserSessionID(){
-  return this.routeManagement.userSessionID;
+  generateUserSessionID() {
+    return this.routeManagement.userSessionID;
   }
   generateIncomeTransactionsSessionID(){
     return this.routeManagement.IncomeTransactionsSessionID;

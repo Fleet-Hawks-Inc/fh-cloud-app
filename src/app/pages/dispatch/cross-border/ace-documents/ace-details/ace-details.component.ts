@@ -13,6 +13,10 @@ import { CountryStateCityService } from 'src/app/services/country-state-city.ser
   styleUrls: ['./ace-details.component.css']
 })
 export class AceDetailsComponent implements OnInit {
+  passengersModel = false;
+  driversModel = false;
+  trucksModel = false;
+  shipmentsModel = false;
   public manifestID;
   usPortOfArrival: string;
   estimatedArrivalDateTime: string;
@@ -146,12 +150,33 @@ export class AceDetailsComponent implements OnInit {
   USportsListObjects: any = {};
   brokerCodeObject: any = {};
   sendBorderConnectOption = false;
+
+  items = [
+
+    {
+      label: 'Send complete eManifest', icon: 'pi pi-send', command: () => {
+        this.sendCBPFn();
+      }
+    },
+    {
+      label: 'Amend completed eManifest', icon: 'pi pi-user-edit', command: () => {
+        this.amendManifest();
+      }
+    },
+    {
+      label: 'Cancel completed eManifest', icon: 'pi pi-exclamation-circle', command: () => {
+        this.cancelManifest(this.manifestID);
+      },
+    }
+  ];
+  errorsDisplay = false;
+  errors = [];
   constructor(private apiService: ApiService, private route: ActivatedRoute, private spinner: NgxSpinnerService,
     private httpClient: HttpClient, private toastr: ToastrService, private router: Router,
     private countryStateCity: CountryStateCityService) { }
 
   ngOnInit() {
-    this.manifestID = this.route.snapshot.params[`manifestID`];
+    this.manifestID = this.route.snapshot.params[`mID`];
     this.fetchACEEntry();
     this.fetchAssetsCodeName();
     this.fetchDocuments();
@@ -244,15 +269,14 @@ export class AceDetailsComponent implements OnInit {
     });
   }
   fetchACEEntry() {
-    this.spinner.show(); // loader init
     this.apiService
-      .getData('eManifests/ACEdetails/' + this.manifestID)
+      .getData('eManifests/ace-detail/' + this.manifestID)
       .subscribe(async (result: any) => {
 
         this.estimatedArrivalDateTime = result.estimatedArrivalDateTime;
         this.usPortOfArrival = result.usPortOfArrival;
         this.tripNumber = result.tripNumber;
-        this.currentStatus = result.currentStatus;
+        this.currentStatus = result.status.replaceAll('_', ' ');
         this.truck = {
           number: result.truck.number,
           type: result.truck.type,
@@ -265,13 +289,11 @@ export class AceDetailsComponent implements OnInit {
             policyAmount: result.truck.insurancePolicy.policyAmount,
             amountCurrency: result.truck.insurancePolicy.amountCurrency
           },
-          licensePlates: [
-            {
-              number: result.truck.licensePlates[0].number,
-              stateProvince: await this.countryStateCity.GetStateNameFromCode(result.truck.licensePlates[0].stateProvince, result.truck.licensePlates[0].country),
-              country: await this.countryStateCity.GetSpecificCountryNameByCode(result.truck.licensePlates[0].country)
-            }
-          ],
+          licensePlates: {
+            number: result.truck.licensePlates[0].number ? result.truck.licensePlates[0].number : '',
+            stateProvince: result.truck.licensePlates[0].stateProvince ? await this.countryStateCity.GetStateNameFromCode(result.truck.licensePlates[0].stateProvince, result.truck.licensePlates[0].country) : '',
+            country: result.truck.licensePlates[0].country ? await this.countryStateCity.GetSpecificCountryNameByCode(result.truck.licensePlates[0].country) : ''
+          },
           sealNumbers: result.truck.sealNumbers,
           IIT: result.truck.IIT
         };
@@ -281,16 +303,15 @@ export class AceDetailsComponent implements OnInit {
         this.drivers = result.drivers;
         this.passengers = result.passengers;
         this.shipments = result.shipments;
-        this.timeModified = moment(result.timeModified).format(`MMMM D YYYY, h:mm:ss a`);
+        // this.timeModified = moment(result.timeModified).format(`MMMM D YYYY, h:mm:ss a`);
         this.modifiedBy = result.modifiedBy;
         this.borderResponses = result.borderResponses;
         this.createdBy = result.createdBy;
-        this.createdDate = result.createdDate;
-        this.createdTime = result.createdTime;
-        this.spinner.hide(); // loader hide
+        // this.createdDate = result.createdDate;
+        // this.createdTime = result.createdTime;
       });
   }
-  setStatus(val) {
+  async setStatus(val) {
     let record = {
       date: this.createdDate,
       time: this.createdTime,
@@ -298,10 +319,12 @@ export class AceDetailsComponent implements OnInit {
       manifestType: 'ACE',
       status: val
     };
-    this.apiService.postData('eManifests/setStatus', record).subscribe((result: any) => {
+    let result = await this.apiService.postData('eManifests/setStatus', record).toPromise();
+    if (result) {
       this.toastr.success('Status Updated Successfully!');
-      this.currentStatus = val;
-    });
+      this.currentStatus = val.replaceAll('_', ' ');;
+    }
+
   }
   getTrailerLicState(trailers: any) {
     if (trailers !== undefined || trailers !== '') {
@@ -317,17 +340,21 @@ export class AceDetailsComponent implements OnInit {
   }
   sendCBPFn() {
     this.apiService
-      .getData('eManifests/ACE/CBPdetails/' + this.manifestID)
-      .subscribe((result: any) => {
-        // this.sendBorderConnectOption = result;
-        // if (this.sendBorderConnectOption === true) {
-        //   const val = 'Queued';
-        //   const setStatus: any = this.apiService.getData('ACEeManifest/setStatus/' + this.manifestID + '/' + val).subscribe((result: any) => {
-        //     this.toastr.success('Status Updated Successfully!');
-        //      this.currentStatus = val;
-        //   });
-        // }
-      });
+      .getData('eManifests/ACE/CBPdetails/' + this.manifestID).toPromise().then(result => {
+
+      }).catch(err => {
+        this.errorsDisplay = true;
+        this.errors = err.error;
+      })
+    // this.sendBorderConnectOption = result;
+    // if (this.sendBorderConnectOption === true) {
+    //   const val = 'Queued';
+    //   const setStatus: any = this.apiService.getData('ACEeManifest/setStatus/' + this.manifestID + '/' + val).subscribe((result: any) => {
+    //     this.toastr.success('Status Updated Successfully!');
+    //      this.currentStatus = val;
+    //   });
+    // }
+
   }
   async showShipmentDetails(shipmentID) {
     const shipmentDataFetched = this.shipments.filter((item: any) => item.shipmentID === shipmentID);
@@ -365,7 +392,9 @@ export class AceDetailsComponent implements OnInit {
         fda: false,
       };
     }
+    this.shipmentsModel = true;
   }
+
   async showMainDriverDetails() {
     const countryCode = 'US';
     const stateCode = this.mainDriver.usAddress.state;
@@ -393,6 +422,8 @@ export class AceDetailsComponent implements OnInit {
       });
     }
 
+    this.driversModel = true;
+
   }
   async showDriverDetails(driverID) {
     const driverDataFetched: any = this.drivers.filter((item: any) => item.driverID === driverID);
@@ -419,7 +450,7 @@ export class AceDetailsComponent implements OnInit {
         e.country = await this.countryStateCity.GetSpecificCountryNameByCode(e.country);
       });
     }
-
+    this.driversModel = true;
   }
   async showPassengerDetails(passengerID) {
     const passengerDataFetched: any = this.passengers.filter((item: any) => item.passengerID === passengerID);
@@ -439,16 +470,17 @@ export class AceDetailsComponent implements OnInit {
         e.country = await this.countryStateCity.GetSpecificCountryNameByCode(e.country);
       });
     }
+    this.passengersModel = true;
   }
   // getPassengerDocData(travelDocuments: any){
 
   // }
   cancelManifest(manifestID) {
-    this.apiService.getData(`eManifests/ACEmanifest/cancelManifest/` + manifestID).subscribe();
+    this.apiService.getData(`eManifests/ace/cancel-request/` + manifestID).subscribe();
   }
 
   amendManifest() {
     const amend = true;
-    this.router.navigateByUrl('/dispatch/cross-border/ACE-edit-eManifest/' + this.manifestID + `?amendManifest=` + amend);
+    this.router.navigateByUrl('/dispatch/cross-border/ace-manifest/' + this.manifestID + `?amendManifest=` + amend);
   }
 }

@@ -118,23 +118,14 @@ export class AddSettlementComponent implements OnInit {
     pendingPayment: 0,
     currency: "CAD",
     paymentSelected: [],
-    // paymentInfo: {
-    //   lMiles: 0,
-    //   lMileTeam: 0,
-    //   eMileTeam: 0,
-    //   rate: 0,
-    //   eMiles: 0,
-    //   pRate: 0,
-    //   dRate: 0,
-    //   pType: "",
-    //   // drivers: [],
-    // },
     fuelIds: [],
     fuelData: [],
-    // expIds: [],
-    // expData: [],
-    // expAdd: 0,
-    // expDed: 0,
+    other: {
+      addition: [],
+      deduction: [],
+      addTotal: 0,
+      dedTotal: 0
+    }
   };
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -285,6 +276,20 @@ export class AddSettlementComponent implements OnInit {
   ]
   selectedFuels = [];
   filteredFuels = [];
+  otherAddData = {
+    chargeName: "",
+    desc: "",
+    amount: "",
+    currency: "",
+  };
+
+  otherDedData = {
+    chargeName: "",
+    desc: "",
+    amount: "",
+    currency: "",
+  };
+
   constructor(
     private listService: ListService,
     private route: ActivatedRoute,
@@ -303,7 +308,6 @@ export class AddSettlementComponent implements OnInit {
         });
       });
     }
-    console.log('myArrayFiltered', this.fuelEnteries)
   }
   ngOnInit() {
     this.settlementID = this.route.snapshot.params["settlementID"];
@@ -1040,8 +1044,8 @@ export class AddSettlementComponent implements OnInit {
     this.settlementData.taxes = 0;
     this.settlementData.subTotal =
       this.settlementData.paymentTotal +
-      this.settlementData.additionTotal -
-      this.settlementData.deductionTotal;
+      this.settlementData.additionTotal + this.settlementData.other.addTotal -
+      this.settlementData.deductionTotal - this.settlementData.other.dedTotal;
     if (
       this.settlementData.type == "driver" ||
       this.settlementData.type == "owner_operator"
@@ -1227,6 +1231,8 @@ export class AddSettlementComponent implements OnInit {
     this.settlementData.fuelDed = Number(
       this.settlementData.fuelDed.toFixed(2)
     );
+    this.settlementData.other.addTotal = Number(this.settlementData.other.addTotal.toFixed(2));
+    this.settlementData.other.dedTotal = Number(this.settlementData.other.dedTotal.toFixed(2))
     this.finalPayment = this.settlementData.finalTotal;
 
     if (this.settlementData.type === "owner_operator") {
@@ -1660,16 +1666,16 @@ export class AddSettlementComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    if (this.settlementData.paymentTotal <= 0) {
-      this.toaster.error("Total Payment should not be zero.");
-      return false;
-    }
+    // if (this.settlementData.paymentTotal <= 0) {
+    //   this.toaster.error("Total Payment should not be zero.");
+    //   return false;
+    // }
     if (this.settlementData.finalTotal <= 0) {
       this.toaster.error("Total should not be zero.");
       return false;
     }
-    if (this.settlementData.tripIds.length === 0) {
-      this.toaster.error("Please select settlement");
+    if (this.settlementData.tripIds.length === 0 && this.settlementData.other.addTotal === 0 && this.settlementData.other.dedTotal === 0) {
+      this.toaster.error("Please select settlement or add other charges ");
       return false;
     }
     if (this.settlementData.prStart == "" || this.settlementData.prEnd == "") {
@@ -3181,4 +3187,75 @@ export class AddSettlementComponent implements OnInit {
     $("#infoModal").modal("show");
   }
 
+  calculateOtherDedTotal() {
+    this.settlementData.other.dedTotal = 0;
+    for (let i = 0; i < this.settlementData.other.deduction.length; i++) {
+      const element = this.settlementData.other.deduction[i];
+      this.settlementData.other.dedTotal += Number(element.amount);
+    }
+    this.calculateFinalTotal();
+  }
+
+  calculateOtherAdddTotal() {
+    this.settlementData.other.addTotal = 0;
+    for (let i = 0; i < this.settlementData.other.addition.length; i++) {
+      const element = this.settlementData.other.addition[i];
+      this.settlementData.other.addTotal += Number(element.amount);
+    }
+    this.calculateFinalTotal();
+  }
+
+  otherAdd() {
+    if (
+      this.otherAddData.chargeName != "" &&
+      this.otherAddData.amount != "" &&
+      this.settlementData.currency !== ""
+    ) {
+      this.otherAddData.currency = this.settlementData.currency;
+      this.settlementData.other.addition.push(this.otherAddData);
+      this.otherAddData = {
+        chargeName: "",
+        desc: "",
+        amount: "",
+        currency: this.settlementData.currency,
+      };
+      this.calcOtherAddTotal();
+    }
+  }
+
+  otherDed() {
+    if (
+      this.otherDedData.chargeName != "" &&
+      this.otherDedData.amount != "" &&
+      this.settlementData.currency !== ""
+    ) {
+      this.otherDedData.currency = this.settlementData.currency;
+      this.settlementData.other.deduction.push(this.otherDedData);
+      this.otherDedData = {
+        chargeName: "",
+        desc: "",
+        amount: "",
+        currency: this.settlementData.currency,
+      };
+      this.calculateOtherDedTotal();
+    }
+  }
+
+  calcOtherAddTotal() {
+    this.settlementData.other.addTotal = 0;
+    for (let i = 0; i < this.settlementData.other.addition.length; i++) {
+      const element = this.settlementData.other.addition[i];
+      this.settlementData.other.addTotal  += Number(element.amount);
+    }
+    this.calculateFinalTotal();
+  }
+
+  calcOtheraddTotal() {
+    this.settlementData.other.dedTotal = 0;
+    for (let i = 0; i < this.settlementData.other.deduction.length; i++) {
+      const element = this.settlementData.other.deduction[i];
+      this.settlementData.other.dedTotal  += Number(element.amount);
+    }
+    this.calculateFinalTotal();
+  }
 }

@@ -72,7 +72,8 @@ export const environment = {
   whiteListCarriers: ['1y4CwKYhlU7I5FluMq2NOCCMZvj', '21zpEs5A3MWtK9LeFEkOcsc5Szc', '1y6913gTrXSlzcTlSEGpwBMe5Ay', '23HFz4o1X79Xh3lcBEJumnolmnt'],
 
   oneSignalAppId: "1cdb2b50-0786-415f-b454-a3ffe1eab5b4",
-  testCarrier: ['21zpEs5A3MWtK9LeFEkOcsc5Szc']
+  testCarrier: ['21zpEs5A3MWtK9LeFEkOcsc5Szc'],
+  BConnectAccess: ['1y4CwKYhlU7I5FluMq2NOCCMZvj', '23HFz4o1X79Xh3lcBEJumnolmnt', '1y62eyclUWKj6HSREEfZbHXjvRc', '29b6OwULJ0ukir4uFF7TTLm4Tof']
 
 };
 
