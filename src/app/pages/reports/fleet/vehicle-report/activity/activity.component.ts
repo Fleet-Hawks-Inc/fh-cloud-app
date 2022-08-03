@@ -51,8 +51,8 @@ export class ActivityComponent implements OnInit {
         { width: '10%', field: 'orderName', header: 'Order', type: "text" },
          { width: '10%', field: 'assetName', header: 'Assets', type: "text" },
         { width: '19%', field: 'driverName', header: 'Drivers', type: "text" },
-        { width: '12%', field: 'uMiles', header: 'US(Total)', type: "text" },
-        { width: '14%', field: 'canMiles', header: 'Canada(Total)', type: "text" },
+        { width: '12%', field: 'uMiles', header: 'US Miles', type: "text" },
+        { width: '14%', field: 'canMiles', header: 'Canada Miles', type: "text" },
         { width: '12%', field: 'miles', header: 'Total Miles', type: "text" },
     ];
     
