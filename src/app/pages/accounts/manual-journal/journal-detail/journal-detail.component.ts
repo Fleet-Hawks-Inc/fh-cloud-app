@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountService, ApiService } from '../../../../services';
-import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
+import { AccountService, ApiService } from '../../../../services';
 
 @Component({
   selector: 'app-journal-detail',
@@ -34,8 +35,8 @@ export class JournalDetailComponent implements OnInit {
   carrierID = '';
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
   documentSlides = [];
-
-  constructor(private accountService: AccountService, private router: Router, private route: ActivatedRoute, private apiService: ApiService, private domSanitizer: DomSanitizer, private toaster: ToastrService) { }
+  sessionID: string;
+  constructor(private accountService: AccountService, private route: ActivatedRoute, private apiService: ApiService, private domSanitizer: DomSanitizer, private toaster: ToastrService, private routerMgmtService: RouteManagementServiceService) { this.sessionID = this.routerMgmtService.ManualJournalSessionID; }
 
   ngOnInit() {
     this.journalID = this.route.snapshot.params[`journalID`];
@@ -47,7 +48,7 @@ export class JournalDetailComponent implements OnInit {
   fetchJournalByID() {
     this.accountService.getData(`journal/${this.journalID}`)
       .subscribe((result: any) => {
-        if(result[0] != undefined) {
+        if (result[0] != undefined) {
           this.journal = result[0];
           if (result[0].attachments != undefined && result[0].attachments.length > 0) {
             result[0].attachments.map((x) => {
@@ -88,7 +89,7 @@ export class JournalDetailComponent implements OnInit {
   }
 
   deleteDocument(name: string, index: number) {
-    this.accountService.deleteData(`journal/uploadDelete/${this.journalID}/${name}`).subscribe((result: any) => {
+    this.accountService.deleteData(`journal/uploadDelete/${this.journalID}/${name}`).subscribe(() => {
       this.documentSlides.splice(index, 1);
       this.toaster.success('Attachment deleted successfully.');
     });

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import * as _ from "lodash";
 import { ToastrService } from 'ngx-toastr';
+import { Table } from 'primeng/table';
 import Constants from 'src/app/pages/fleet/constants';
 import { AccountService, ApiService } from 'src/app/services';
-
 @Component({
   selector: 'app-sales-invoices-list',
   templateUrl: './sales-invoices-list.component.html',
@@ -26,12 +27,41 @@ export class SalesInvoicesListComponent implements OnInit {
 
   customersObjects: any = {};
   emailDisabled = false;
-
+  _selectedColumns: any[];
+  dataColumns: any[];
+  get = _.get;
+  find = _.find;
   constructor(public accountService: AccountService, private toaster: ToastrService, public apiService: ApiService) { }
 
   ngOnInit() {
     this.fetchSales();
     this.fetchCustomersByIDs();
+    this.dataColumns = [
+      { width: '8%', field: 'txnDate', header: 'Date', type: "text" },
+      { width: '10%', field: 'sInvNo', header: 'Sales Invoice#', type: "text" },
+      { width: '10%', field: 'sRef', header: 'Reference#', type: "text" },
+      { width: '13%', field: 'customerID', header: 'Customer', type: "text" },
+      { width: '8%', field: 'dueDate', header: 'Due Date', type: "text" },
+      { width: '15%', field: 'total.finalTotal', header: 'Amount', type: "text" },
+      { width: '15%', field: 'payStatus', header: 'Payment Status', type: "text" },
+      { width: '15%', field: 'status', header: 'Status', type: "text" },
+    ];
+
+
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
   }
 
 
@@ -167,5 +197,7 @@ export class SalesInvoicesListComponent implements OnInit {
       this.toaster.error("Something went wrong.");
     }
   }
-
+  clear(table: Table) {
+    table.clear();
+  }
 }
