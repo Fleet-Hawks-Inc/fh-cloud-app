@@ -818,7 +818,7 @@ export class AddDriverComponent
   }
 
   addGroup() {
-   // this.groupSubmitDisabled = true;
+    // this.groupSubmitDisabled = true;
     this.hideErrors();
     this.apiService.postData("groups", this.groupData).subscribe({
       complete: () => { },
@@ -1071,9 +1071,11 @@ export class AddDriverComponent
       this.driverData.address[i].geoCords.lat = result.position.lat;
       this.driverData.address[i].geoCords.lng = result.position.lng;
       this.driverData.address[i].countryName = result.address.CountryFullName;
+      this.driverData.address[i].countryCode = result.address.Country;
       $("div").removeClass("show-search__result");
 
       this.driverData.address[i].stateName = result.address.StateName;
+      this.driverData.address[i].stateCode = result.address.State;
       this.driverData.address[i].cityName = result.address.City;
 
       this.driverData.address[i].address1 = result.address.StreetAddress
@@ -1773,8 +1775,8 @@ export class AddDriverComponent
             this.onChangeHideErrors("CDL_Number");
             delete this.errors[`CDL_Number`];
           }
-          if(this.emailCheck === true){
-          this.submitDisabled = true;
+          if (this.emailCheck === true) {
+            this.submitDisabled = true;
           }
           this.throwErrors();
         });

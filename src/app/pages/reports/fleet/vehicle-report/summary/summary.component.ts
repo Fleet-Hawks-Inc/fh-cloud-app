@@ -62,15 +62,15 @@ export class SummaryComponent implements OnInit {
   currentView = 'list';
  
   dataColumns = [
-    { width: '8%', field: 'vehicleIdentification', header: 'Vehicle Name/Number', type: "text" },
-    { width: '6%', field: 'VIN', header: 'VIN', type: "text" },
-    { width: '5%', field: 'year', header: 'Year', type: "text" },
-    { width: '5%', field: 'manufacturerID', header: 'Make', type: "text" },
-    { width: '5%', field: 'modelID', header: 'Model', type: "text" },
-    { width: '9%', field: 'vehicleType', header: 'Type', type: "text" },
-    { width: '7%', field: 'ownership', header: 'Ownership', type: "text" },
-    { width: '7%', field: 'plateNumber', header: 'Plate Number', type: "text" },
-    { width: '5%', field: 'currentStatus', header: 'Status', type: 'text' },
+    { width: '15%', field: 'vehicleIdentification', header: 'Vehicle Name/Number', type: "text" },
+    { width: '13%', field: 'VIN', header: 'VIN', type: "text" },
+    { width: '8%', field: 'year', header: 'Year', type: "text" },
+    { width: '10%', field: 'manufacturerID', header: 'Make', type: "text" },
+    { width: '12%', field: 'modelID', header: 'Model', type: "text" },
+    { width: '10%', field: 'vehicleType', header: 'Type', type: "text" },
+    { width: '12%', field: 'ownership', header: 'Ownership', type: "text" },
+    { width: '12%', field: 'plateNumber', header: 'Plate Number', type: "text" },
+    { width: '8%', field: 'currentStatus', header: 'Status', type: 'text' },
     
   ];
   
