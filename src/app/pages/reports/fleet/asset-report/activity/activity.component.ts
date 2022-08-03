@@ -37,6 +37,7 @@ export class ActivityComponent implements OnInit {
   public astId;
   get = _.get;
   find = _.find;
+  assetN = ''
 
   _selectedColumns: any[];
   dataColumns: any[];
@@ -48,18 +49,18 @@ export class ActivityComponent implements OnInit {
     this.fetchAssetActivity()
     this.fetchAsset();
     this.dataColumns = [
-      { width: '11%', field: 'assetName', header: 'Asset', type: "text", },
+      { width: '10%', field: 'assetNm', header: 'Asset', type: "text", },
       { width: '11%', field: 'tripNo', header: 'Trip#', type: "text" },
       { width: '11%', field: 'orderName', header: 'Order#', type: "text" },
       { width: '11%', field: 'vehicle', header: 'Vehicle', type: 'text' },
-      { width: '13%', field: 'driverName', header: 'Driver', type: 'text' },
-      {  field: 'location1', header: 'Location', type: "text", display:"none" },
-      { field: 'date1', header: 'Date', type: "text", display:"none" },
-      { width: '8%', field: 'usState', header: 'Province (US)', type: 'text',display:"none"  },
-      { width: '8%', field: 'usStateMiles', header: 'US Miles', type: 'text',display:"none" },
-      { width: '7%', field: 'usMiles', header: 'US Total', type: 'text', display:"none"},
-      { width: '9%', field: 'canState', header: 'Province (Canada)', type: 'text',display:"none" },
-      { width: '14%', field: 'canStateMiles', header: 'Canada Miles', type: 'text' },
+      { width: '16%', field: 'driverName', header: 'Driver', type: 'text' },
+      {  field: 'locationCsv', header: 'Location', type: "text", display:"none" },
+      { field: 'dateCsv', header: 'Date', type: "text", display:"none" },
+      { width: '8%', field: 'usStateCsv', header: 'Province (US)', type: 'text',display:"none"  },
+      { width: '8%', field: 'usStateMilesCsv', header: 'US Miles', type: 'text',display:"none" },
+      { width: '12%', field: 'usMiles', header: 'US Total', type: 'text', },
+      { width: '9%', field: 'canStateCsv', header: 'Province (Canada)', type: 'text',display:"none" },
+      { width: '14%', field: 'canStateMilesCsv', header: 'Canada Miles', type: 'text', display:"none"},
       { width: '13%', field: 'canMiles', header: 'Canada Total', type: 'text' },
       { width: '13%', field: 'miles', header: 'Total Miles', type: 'text' },
     ]
@@ -85,6 +86,9 @@ export class ActivityComponent implements OnInit {
   fetchAsset() {
     this.apiService.getData(`assets/fetch/detail/${this.astId}`).subscribe((result: any) => {
       this.assetData = result.Items;
+      for(let astD of  this.assetData  ) {
+        this.assetN = astD.assetIdentification;
+      }
     });
   }
   onScroll(event: any) {
@@ -117,39 +121,46 @@ export class ActivityComponent implements OnInit {
           const res:any = result.Items[index];
 
           res.miles = 0
+          res.assetNm = ''
           res.location = []
-          res.location1 = []
-          res.locationData
+          res.locationCsv = ''
           res.date = [];
-          res.date1 = [];
+          res.dateCsv = '';
           res.usState = []
+          res.usStateCsv = ''
           res.usStateMiles = []
+          res.usStateMilesCsv = ''
           res.canState = []
+          res.canStateCsv = ''
           res.canStateMiles = []
-          console.log('res---',res)
+          res.canStateMilesCsv = ''
+          
+          res.assetNm = this.assetN;
+        
           for (let element of res.singleAstTripD) {
             
-            console.log('element---',element)
             res.miles += Number(element.miles);
+            
               res.location.push(element.type + ": " + element.location)
-              console.log('res.location-innerloop--',res.location)
               res.date.push(element.type + ": " + element.date)
            
 
           }
-          // console.log('location---',res.location)
-          res.location1 = res.location.join('\r\n')
-          res.date1 = res.date.join('\r\n')
+          res.locationCsv = res.location.join('\r\n')
+          res.dateCsv = res.date.join('\r\n')
           for (let data of res.provinceData) {
             for (let provD of data.usProvince) {
               res.usState.push(provD.StCntry)
               res.usStateMiles.push(provD.Total)
             }
-
+            res.usStateCsv = res.usState.join('\r\n')
+            res.usStateMilesCsv = res.usStateMiles.join('\r\n')
             for (let canProvD of data.canProvince) {
               res.canState.push(canProvD.StCntry)
               res.canStateMiles.push(canProvD.Total)
             }
+            res.canStateCsv = res.canState.join('\r\n')
+            res.canStateMilesCsv = res.canStateMiles.join('\r\n')
           }
         }
 
