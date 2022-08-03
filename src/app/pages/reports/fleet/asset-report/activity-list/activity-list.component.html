@@ -114,7 +114,7 @@
                 scrollDirection="both"
                 [columns]="selectedColumns"
                 [loading]="!loaded"
-                styleClass="p-datatable-md p-datatable-gridlines p-datatable-striped"
+                styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped"
                 [scrollable]="true"
                 [loading]="!loaded"
                 scrollHeight="100%"
@@ -218,13 +218,13 @@
                     <td
                       *ngFor="let dataColumns of columns"
                       [ngStyle]="{ width: dataColumns.width }"
-                      style="cursor: pointer"
+                      style="height: 42px; cursor: pointer"
                       routerLink="/reports/fleet/asset/activity/{{
                         asset.assetID
                       }}"
                     >
                       <div [ngSwitch]="dataColumns.field">
-                        <span *ngSwitchCase="'assetIdentification'">
+                        <span  class="font-weight-bold line-height-lg text-capitalize" *ngSwitchCase="'assetIdentification'">
                           <span>
                             <b>{{
                               get(asset, dataColumns.field) | titlecase
