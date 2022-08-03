@@ -1,19 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from 'src/environments/environment';
-import  Constants  from '../../../fleet/constants';
-import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
+import Constants from '../../../fleet/constants';
 import { HttpClient } from '@angular/common/http';
-
+import * as _ from "lodash";
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { Table } from 'primeng/table';
+import { Router } from '@angular/router';
 declare var $: any;
 @Component({
   selector: 'app-e-manifests',
   templateUrl: './e-manifests.component.html',
   styleUrls: ['./e-manifests.component.css'],
+
+  providers: [ConfirmationService, MessageService]
+
 })
 export class EManifestsComponent implements OnInit {
+  @ViewChild('dt') table: Table;
+  loaded = false;
+
+  ACE_Options = [
+    { width: '6%', field: 'tripNumber', header: 'Trip#' },
+    { width: '8%', field: 'shipments', header: 'Shipment#' },
+    { width: '8%', field: 'shipTypes', header: 'Shipment Type' },
+    { width: '13%', field: 'arrDateTime', header: 'Est. Arrival Date & Time' },
+    { width: '15%', field: 'usPortOfArrival', header: 'US Port of Entry' },
+    { width: '15%', field: 'drivers', header: 'Drivers' },
+    { width: '8%', field: 'truck', header: 'Truck' },
+    { width: '10%', field: 'assets', header: 'Assets' },
+    { width: '10%', field: 'shippers', header: 'Consignor' },
+    { width: '10%', field: 'receivers', header: 'Consignee' },
+    { width: '10%', field: 'status', header: 'Status' },
+  ]
 
   activeDiv = 'ace';
   dataMessage: string = Constants.FETCHING_DATA;
@@ -79,7 +100,7 @@ export class EManifestsComponent implements OnInit {
       'value': 'vehicle'
     },
     {
-      'name': 'Port of entry',
+      'name': 'US Port of entry',
       'value': 'entryPort'
     },
     {
@@ -89,39 +110,60 @@ export class EManifestsComponent implements OnInit {
   ];
   filterCategory = null;
   aciFilterCategory = null;
+  get = _.get;
+  find = _.find;
+  _selectedColumns: any[];
 
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
-    private httpClient: HttpClient
-  ) {}
+    private httpClient: HttpClient,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private router: Router
+  ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.fetchUSPorts();
+
     this.fetchVehiclesList();
     this.fetchAssetsList();
     this.fetchDriversList();
     this.fetchContactsList();
-    this.getACECount();
-    this.getACICount();
-    this.initDataTableACI();
+
+    this.initDataTable();
     this.fetchCanadianPorts();
-    this.fetchUSPorts();
     this.fetchaceShipmentType();
     this.fetchaciShipmentType();
+
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.ACE_Options;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.ACE_Options.filter(col => val.includes(col));
+
   }
   fetchaceShipmentType() {
     this.httpClient.get('assets/ACEShipmentType.json').subscribe((data: any) => {
-      this.aceShipmentTypeObjects =  data.reduce( (a: any, b: any) => {
+      this.aceShipmentTypeObjects = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`description`], a;
-    }, {});
+      }, {});
     });
   }
   fetchaciShipmentType() {
     this.httpClient.get('assets/jsonFiles/ACIShipmentType.json').subscribe((data: any) => {
-      this.aciShipmentTypeObjects =  data.reduce( (a: any, b: any) => {
+      this.aciShipmentTypeObjects = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`description`], a;
-    }, {});
+      }, {});
     });
   }
   getSuggestions(value) {
@@ -134,9 +176,9 @@ export class EManifestsComponent implements OnInit {
         }
       });
   }
-  fetchUSPorts() {
+  async fetchUSPorts() {
     this.httpClient.get('assets/USports.json').subscribe((data: any) => {
-            this.USPortsObjects = data.reduce((a: any, b: any) => {
+      this.USPortsObjects = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`portOfEntry`], a;
       }, {});
     });
@@ -189,41 +231,60 @@ export class EManifestsComponent implements OnInit {
       }, {});
     });
   }
+  clear(table: Table) {
+    table.clear();
+  }
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('eManifests/fetch/ACErecords?aceSearch=' + this.aceSearch + '&fromDate='+this.fromDate +'&toDate='+this.toDate +'&category='+this.filterCategory + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('eManifests/fetch/ace-list?aceSearch=' + this.aceSearch + '&fromDate=' + this.fromDate + '&toDate=' + this.toDate + '&category=' + this.filterCategory + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        if(result.Items.length == 0) {
+        if (result.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
+          this.loaded = true;
         }
-        this.ACEList = result[`Items`];
-
-        if (this.vehicleID !== '' || this.aceSearch !== '' || this.fromDate != '' || this.toDate != '') {
-          this.aceStartPoint = 1;
-          this.aceEndPoint = this.totalRecords;
-        }
-        if (result[`LastEvaluatedKey`] !== undefined) {
-          const lastEvalKey = result[`LastEvaluatedKey`].emanifestSK.replace(/#/g, '--');
-          this.aceNext = false;
-          // for prev button
-          if (!this.acePrevEvauatedKeys.includes(lastEvalKey)) {
-            this.acePrevEvauatedKeys.push(lastEvalKey);
+        if (result.length > 0) {
+          for (let i = 0; i < result.length; i++) {
+            const element = result[i];
+            element.arrDateTime = `${element.estimatedArrivalDate} ${element.estimatedArrivalTime}`;
+            element.drivers = element.drivers.toString().toUpperCase();
+            element.assets = element.assets.toString().toUpperCase();
+            element.shipments = element.shipments.toString().toUpperCase();
+            element.shipTypes = element.shipTypes.toString().toUpperCase();
+            element.shippers = element.shippers.toString().toUpperCase();
+            element.receivers = element.receivers.toString().toUpperCase();
+            element.status = element.status.replaceAll('_', ' ');
+            element.usPortOfArrival = `Code: ${element.usPortOfArrival}, Location: ${this.USPortsObjects[element.usPortOfArrival]}`;
           }
-          this.lastEvaluatedKey = lastEvalKey;
-        } else {
-          this.aceNext = true;
-          this.lastEvaluatedKey = '';
-          this.aceEndPoint = this.totalRecords;
+          this.ACEList = result;
+          this.loaded = true;
         }
-        if (this.totalRecords < this.aceEndPoint) {
-          this.aceEndPoint = this.totalRecords;
-        }
-        // disable prev btn
-        if (this.aceDraw > 0) {
-          this.acePrev = false;
-        } else {
-          this.acePrev = true;
-        }
+
+        // if (this.vehicleID !== '' || this.aceSearch !== '' || this.fromDate != '' || this.toDate != '') {
+        //   this.aceStartPoint = 1;
+        //   this.aceEndPoint = this.totalRecords;
+        // }
+        // if (result[`LastEvaluatedKey`] !== undefined) {
+        //   const lastEvalKey = result[`LastEvaluatedKey`].emanifestSK.replace(/#/g, '--');
+        //   this.aceNext = false;
+        //   // for prev button
+        //   if (!this.acePrevEvauatedKeys.includes(lastEvalKey)) {
+        //     this.acePrevEvauatedKeys.push(lastEvalKey);
+        //   }
+        //   this.lastEvaluatedKey = lastEvalKey;
+        // } else {
+        //   this.aceNext = true;
+        //   this.lastEvaluatedKey = '';
+        //   this.aceEndPoint = this.totalRecords;
+        // }
+        // if (this.totalRecords < this.aceEndPoint) {
+        //   this.aceEndPoint = this.totalRecords;
+        // }
+        // // disable prev btn
+        // if (this.aceDraw > 0) {
+        //   this.acePrev = false;
+        // } else {
+        //   this.acePrev = true;
+        // }
         this.spinner.hide();
       }, err => {
         this.spinner.hide();
@@ -237,25 +298,25 @@ export class EManifestsComponent implements OnInit {
       this.toDate !== '' || this.filterCategory != null
     ) {
 
-      if(this.fromDate != '' && this.toDate == '') {
+      if (this.fromDate != '' && this.toDate == '') {
         this.toastr.error('Please select both start and end dates.');
         return false;
-      } else if(this.fromDate == '' && this.toDate != '') {
+      } else if (this.fromDate == '' && this.toDate != '') {
         this.toastr.error('Please select both start and end dates.');
         return false;
-      } else if(this.filterCategory != null && this.aceSearch == ''){
+      } else if (this.filterCategory != null && this.aceSearch == '') {
         this.toastr.error('Please enter search value.');
         return false;
-      } else if(this.filterCategory != null && this.aceSearch == null){
+      } else if (this.filterCategory != null && this.aceSearch == null) {
         this.toastr.error('Please select search value.');
         return false;
       } else {
-        if (this.filterCategory == 'tripNumber'){
+        if (this.filterCategory == 'tripNumber') {
           this.aceSearch = this.aceSearch.toUpperCase();
         }
         this.ACEList = [];
         this.dataMessage = Constants.FETCHING_DATA;
-        this.getACECount();
+        this.initDataTable();
       }
     } else {
       return false;
@@ -274,36 +335,64 @@ export class EManifestsComponent implements OnInit {
       this.toDate = '';
       this.ACEList = [];
       this.filterCategory = null;
-      this.getACECount();
+
       this.resetCountResult('ace');
+      this.initDataTable();
     } else {
       return false;
     }
   }
-  deleteACEEntry(eventData) {
-      if (confirm('Are you sure you want to delete?') === true) {
-        let record = {
-          date: eventData.createdDate,
-          time: eventData.createdTime,
-          eventID: eventData.manifestID,
-          status: eventData.currentStatus
-        }
-        this.apiService.postData('eManifests/delete/ACEmanifest', record).subscribe((result: any) => {
-            this.aceDraw = 0;
-            this.dataMessage = Constants.FETCHING_DATA;
-            this.lastEvaluatedKey = '';
-            this.getACECount();
-            this.toastr.success('Manifest Deleted Successfully!');
-          });
-      }
+
+  detailPage(id) {
+    this.router.navigateByUrl(`/dispatch/cross-border/ace-details/${id}`)
   }
+  deleteACEEntry(event: Event) {
+    try {
+      this.confirmationService.confirm({
+        target: event.target,
+        message: 'Are you sure that you want to proceed?',
+        icon: 'pi pi-exclamation-triangle',
+        accept: async () => {
+          //confirm action
+          console.log('ff', event)
+          // await this.deleteACE(eventData);
+          this.messageService.add({
+            severity: "info",
+            summary: "Confirmed",
+            detail: "ACE record deleted."
+          });
+
+        }
+      });
+    } catch (error) {
+
+    }
+
+  }
+
+
+
+  async deleteACE(eventData) {
+    let record = {
+      date: eventData.createdDate,
+      time: eventData.createdTime,
+      eventID: eventData.manifestID,
+      status: eventData.currentStatus
+    }
+    console.log('record', record)
+    return await this.apiService.postData('eManifests/delete/ACEmanifest', record).toPromise();
+
+  }
+
+
+
   // ACI operations
 
   initDataTableACI() {
     this.spinner.show();
-    this.apiService.getData('eManifests/fetch/ACIrecords?aciSearch=' + this.aciSearch + '&fromDate='+this.aciFromDate +'&toDate='+this.aciToDate +'&category='+this.aciFilterCategory + '&lastKey=' + this.lastEvaluatedKeyACI)
+    this.apiService.getData('eManifests/fetch/ACIrecords?aciSearch=' + this.aciSearch + '&fromDate=' + this.aciFromDate + '&toDate=' + this.aciToDate + '&category=' + this.aciFilterCategory + '&lastKey=' + this.lastEvaluatedKeyACI)
       .subscribe((result: any) => {
-        if(result.Items.length == 0) {
+        if (result.Items.length == 0) {
           this.dataMessageACI = Constants.NO_RECORDS_FOUND;
         }
         this.ACIList = result[`Items`];
@@ -326,7 +415,7 @@ export class EManifestsComponent implements OnInit {
           this.aciEndPoint = this.totalACIRecords;
         }
 
-        if(this.totalACIRecords < this.aciEndPoint) {
+        if (this.totalACIRecords < this.aciEndPoint) {
           this.aciEndPoint = this.totalACIRecords;
         }
 
@@ -350,25 +439,24 @@ export class EManifestsComponent implements OnInit {
       this.aciToDate !== ''
     ) {
 
-      if(this.aciFromDate != '' && this.aciToDate == '') {
+      if (this.aciFromDate != '' && this.aciToDate == '') {
         this.toastr.error('Please select both start and end dates.');
         return false;
-      } else if(this.aciFromDate == '' && this.aciToDate != '') {
+      } else if (this.aciFromDate == '' && this.aciToDate != '') {
         this.toastr.error('Please select both start and end dates.');
         return false;
-      } else if(this.aciFilterCategory != null && this.aciSearch == ''){
+      } else if (this.aciFilterCategory != null && this.aciSearch == '') {
         this.toastr.error('Please enter search value.');
         return false;
-      } else if(this.aciFilterCategory != null && this.aciSearch == null){
+      } else if (this.aciFilterCategory != null && this.aciSearch == null) {
         this.toastr.error('Please select search value.');
         return false;
       } else {
 
-        if(this.aciFilterCategory == 'tripNumber'){
+        if (this.aciFilterCategory == 'tripNumber') {
           this.aciSearch = this.aciSearch.toUpperCase();
         }
         this.ACIList = [];
-        this.getACICount();
         this.initDataTableACI();
         this.dataMessageACI = Constants.FETCHING_DATA;
       }
@@ -389,7 +477,6 @@ export class EManifestsComponent implements OnInit {
       this.aciSearch = '';
       this.aciFromDate = '';
       this.aciToDate = '';
-      this.getACICount();
       this.initDataTableACI();
       this.resetCountResult('aci');
     } else {
@@ -406,12 +493,11 @@ export class EManifestsComponent implements OnInit {
         status: eventData.currentStatus
       };
       this.apiService.postData('eManifests/delete/ACImanifest', record).subscribe((result: any) => {
-          this.aciDraw = 0;
-          this.dataMessage = Constants.FETCHING_DATA;
-          this.lastEvaluatedKey = '';
-          this.getACICount();
-          this.toastr.success('Manifest Deleted Successfully!');
-        });
+        this.aciDraw = 0;
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.lastEvaluatedKey = '';
+        this.toastr.success('Manifest Deleted Successfully!');
+      });
     }
   }
 
@@ -431,30 +517,8 @@ export class EManifestsComponent implements OnInit {
   }
 
 
-  getACECount() {
-    this.apiService.getData('eManifests/get/ACEcount?aceSearch=' + this.aceSearch + '&fromDate='+this.fromDate +'&toDate='+this.toDate +'&category='+this.filterCategory).subscribe({
-      complete: () => {},
-      error: () => {},
-      next: (result: any) => {
-        this.totalRecords = result.Count;
-        this.initDataTable();
-      },
-    });
-  }
-
-  getACICount() {
-    this.apiService.getData('eManifests/get/ACIcount?aciSearch=' + this.aciSearch + '&fromDate='+this.aciFromDate +'&toDate='+this.aciToDate +'&category='+this.aciFilterCategory).subscribe({
-      complete: () => {},
-      error: () => {},
-      next: (result: any) => {
-        this.totalACIRecords = result.Count;
-        this.initDataTableACI();
-      },
-    });
-  }
-
   getStartandEndVal(type) {
-    if(type == 'ace') {
+    if (type == 'ace') {
       this.aceStartPoint = this.aceDraw * this.pageLength + 1;
       this.aceEndPoint = this.aceStartPoint + this.pageLength - 1;
     } else {
@@ -465,7 +529,7 @@ export class EManifestsComponent implements OnInit {
 
   // next button func
   nextResults(type) {
-    if(type == 'ace') {
+    if (type == 'ace') {
       this.aceDraw += 1;
       this.initDataTable();
       this.getStartandEndVal('ace');
@@ -478,7 +542,7 @@ export class EManifestsComponent implements OnInit {
 
   // prev button func
   prevResults(type) {
-    if(type == 'ace') {
+    if (type == 'ace') {
       this.aceDraw -= 1;
       this.lastEvaluatedKey = this.acePrevEvauatedKeys[this.aceDraw];
       this.initDataTable();
@@ -492,7 +556,7 @@ export class EManifestsComponent implements OnInit {
   }
 
   resetCountResult(type) {
-    if(type == 'ace') {
+    if (type == 'ace') {
       this.aceStartPoint = 1;
       this.aceEndPoint = this.pageLength;
       this.aceDraw = 0;
@@ -503,19 +567,27 @@ export class EManifestsComponent implements OnInit {
     }
   }
 
-  categoryChange(event,type) {
-    if(event == 'driver' || event == 'vehicle' || event == 'entryPort') {
-      if(type == 'ace') {
+  categoryChange(event, type) {
+    if (event == 'driver' || event == 'vehicle' || event == 'entryPort') {
+      if (type == 'ace') {
         this.aceSearch = null;
       } else {
         this.aciSearch = null;
       }
     } else {
-      if(type == 'ace') {
+      if (type == 'ace') {
         this.aceSearch = '';
       } else {
         this.aciSearch = '';
       }
     }
+  }
+
+  refreshData() {
+    this.ACEList = [];
+    this.lastEvaluatedKey = '';
+    this.loaded = false;
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.initDataTable();
   }
 }
