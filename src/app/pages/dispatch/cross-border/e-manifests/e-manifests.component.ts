@@ -346,7 +346,7 @@ export class EManifestsComponent implements OnInit {
   detailPage(id) {
     this.router.navigateByUrl(`/dispatch/cross-border/ace-details/${id}`)
   }
-  deleteACEEntry(event: Event) {
+  deleteACEEntry(event: Event, mID: string) {
     try {
       this.confirmationService.confirm({
         target: event.target,
@@ -354,14 +354,12 @@ export class EManifestsComponent implements OnInit {
         icon: 'pi pi-exclamation-triangle',
         accept: async () => {
           //confirm action
-          console.log('ff', event)
-          // await this.deleteACE(eventData);
           this.messageService.add({
             severity: "info",
             summary: "Confirmed",
             detail: "ACE record deleted."
           });
-
+          await this.deleteACE(mID);
         }
       });
     } catch (error) {
@@ -372,15 +370,11 @@ export class EManifestsComponent implements OnInit {
 
 
 
-  async deleteACE(eventData) {
-    let record = {
-      date: eventData.createdDate,
-      time: eventData.createdTime,
-      eventID: eventData.manifestID,
-      status: eventData.currentStatus
+  async deleteACE(mID) {
+    let result = await this.apiService.postData('eManifests/ace/delete', mID).toPromise();
+    if (result) {
+      this.initDataTable();
     }
-    console.log('record', record)
-    return await this.apiService.postData('eManifests/delete/ACEmanifest', record).toPromise();
 
   }
 
