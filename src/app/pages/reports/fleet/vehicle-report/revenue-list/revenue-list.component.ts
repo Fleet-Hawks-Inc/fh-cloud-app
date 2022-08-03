@@ -50,18 +50,18 @@ export class RevenueListComponent implements OnInit {
   get = _.get;
 
   dataColumns = [
-    { field: 'vehicleIdentification', header: 'Vehicle Name/Number', type: "text" },
-    { width: '6%', field: 'VIN', header: 'VIN', type: "text" },
-    { width: '5%', field: 'startDate', header: 'Start Date', type: "text" },
-    { width: '5%', field: 'manufacturerID', header: 'Make', type: "text" },
-    { width: '5%', field: 'modelID', header: 'Model', type: "text" },
-    { width: '5%', field: 'year', header: 'Year', type: "text" },
-    { width: '9%', field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
-    { width: '7%', field: 'ownership', header: 'Ownership', type: "text" },
-    { width: '8%', field: 'driverID', header: 'Driver Assigned', type: 'text' },
-    { width: '10%', field: 'teamDriverID', header: 'Team Driver Assigned', type: 'text' },
-    { width: '7%', field: 'plateNumber', header: 'Plate Number', type: "text" },
-    { width: '3%', field: 'currentStatus', header: 'Status', type: 'text' },
+    { width: '11.70%', field: 'vehicleIdentification', header: 'Vehicle Name/Number', type: "text" },
+    { width: '9%', field: 'VIN', header: 'VIN', type: "text" },
+    { width: '7.50%', field: 'startDate', header: 'Start Date', type: "text" },
+    { width: '6%', field: 'manufacturerID', header: 'Make', type: "text" },
+    { width: '6%', field: 'modelID', header: 'Model', type: "text" },
+    { width: '5.60%', field: 'year', header: 'Year', type: "text" },
+    { width: '10.60%', field: 'annualSafetyDate', header: 'Annual Safety Date', type: "text" },
+    { width: '8%', field: 'ownership', header: 'Ownership', type: "text" },
+    { width: '9.60%', field: 'driverID', header: 'Driver Assigned', type: 'text' },
+    { width: '11.60%', field: 'teamDriverID', header: 'Team Driver Assigned', type: 'text' },
+    { width: '9%', field: 'plateNumber', header: 'Plate Number', type: "text" },
+    { width: '7%', field: 'currentStatus', header: 'Status', type: 'text' },
   ];
 
   constructor(private apiService: ApiService, private httpClient: HttpClient,
