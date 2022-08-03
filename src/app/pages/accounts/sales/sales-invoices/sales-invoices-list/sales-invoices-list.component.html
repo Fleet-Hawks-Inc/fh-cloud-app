@@ -171,7 +171,7 @@
                               style="color: #000;"></button>
                             <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '210px' }">
                               <ng-template pTemplate>
-                                <a *ngIf="salesInvo.status === 'open'" [disabled]="emailDisabled"
+                                <a *ngIf="salesInvo.status === 'open'"
                                   (click)="sendConfirmationEmail(rowIndex, salesInvo.saleID)" class="dropdown-item"
                                   href="javascript:;">Send email to customer</a>
 
