@@ -148,12 +148,13 @@
                                                     style="height:40px;cursor: pointer;"
                                                     >
                                                     <div [ngSwitch]="dataColumns.field">
-                                                        <span *ngSwitchCase="'vehicle'">
-                                                            <b> {{get(vehicle,dataColumns.field) | titlecase}}</b>
+                                                        <span *ngSwitchCase="'vehicleData'">
+                                                            <span
+                                                              *ngFor="let data of vehicleData">
+                                                           {{data.vehicleIdentification}}
                                                         </span>
-                                                    
-                                                       
-                                                     
+                                                        </span>
+                                                
                                                         <span *ngSwitchCase="'canMiles'">
                                                         {{vehicle.canMiles | number : '1.2-2' }}
                                                         </span>
