@@ -61,6 +61,7 @@ export class AddDriverComponent
   uploadPhotoError = '';
   check = false;
   hasHos = false;
+  uploadLicError = '';
   hasCrossBrdr = false;
   deletedUploads = [];
   addressField = -1;
@@ -100,6 +101,7 @@ export class AddDriverComponent
     gender: "M",
     DOB: null,
     abstractDocs: [],
+    uploadLicence: [],
     corporationType: null,
     vendor: null,
     corporation: "",
@@ -269,6 +271,7 @@ export class AddDriverComponent
   cdlResult = '';
   licStates = [];
   uploadedDocs = [];
+  uploadLicence = [];
   abstractDocs = [];
   existingPhotos = [];
   existingDocs = [];
@@ -689,6 +692,28 @@ export class AddDriverComponent
   /*
    * Selecting files before uploading
    */
+  selectLicDoc(event, obj){
+  let files = [...event.target.files];
+  if(obj === 'uploadLicence'){
+  this.uploadLicence = [];
+  for(let i=0;i<files.length;i++){
+  let name = files[i].name.split('.');
+  let ext = name[name.length - 1].toLowerCase();
+  if(
+  ext == 'doc' ||
+  ext == 'docx' ||
+  ext == 'pdf' ||
+  ext == 'jpg' ||
+  ext == 'jpeg' ||
+  ext == 'png'
+  ){
+  this.uploadLicence.push(files[i]);
+  }else{
+  this.uploadLicError = 'Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.';
+  }
+  }
+  }
+  } 
   selectDocuments(event: any, i: number) {
     let files = [...event.target.files];
     if (i != null) {
@@ -818,7 +843,7 @@ export class AddDriverComponent
   }
 
   addGroup() {
-   // this.groupSubmitDisabled = true;
+    // this.groupSubmitDisabled = true;
     this.hideErrors();
     this.apiService.postData("groups", this.groupData).subscribe({
       complete: () => { },
@@ -993,13 +1018,16 @@ export class AddDriverComponent
         delete element.states;
         delete element.cities;
       }
+      
       // create form data instance
       const formData = new FormData();
       // append photos if any
       for (let i = 0; i < this.uploadedPhotos.length; i++) {
         formData.append("uploadedPhotos", this.uploadedPhotos[i]);
       }
-
+      for(let i=0;i<this.uploadLicence.length;i++){
+      formData.append('uploadLicence', this.uploadLicence[i]);
+      }
       // append docs if any
       for (let j = 0; j < this.uploadedDocs.length; j++) {
         if (this.uploadedDocs[j] !== undefined) {
@@ -1071,9 +1099,11 @@ export class AddDriverComponent
       this.driverData.address[i].geoCords.lat = result.position.lat;
       this.driverData.address[i].geoCords.lng = result.position.lng;
       this.driverData.address[i].countryName = result.address.CountryFullName;
+      this.driverData.address[i].countryCode = result.address.Country;
       $("div").removeClass("show-search__result");
 
       this.driverData.address[i].stateName = result.address.StateName;
+      this.driverData.address[i].stateCode = result.address.State;
       this.driverData.address[i].cityName = result.address.City;
 
       this.driverData.address[i].address1 = result.address.StreetAddress
@@ -1251,6 +1281,7 @@ export class AddDriverComponent
     this.driverData.createdDate = result.createdDate;
     this.driverData.createdTime = result.createdTime;
     this.driverData.driverImage = result.driverImage;
+    this.driverData.uploadLicence = result.uploadLicence;
     if (result.driverImage !== "" && result.driverImage !== undefined) {
       this.driverProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.driverImage}`;
       this.imageTitle = "Change";
@@ -1258,11 +1289,19 @@ export class AddDriverComponent
       this.driverProfileSrc = "";
       this.imageTitle = "Add";
     }
+    
     this.driverData[`abstractDocs`] = [];
     if (result.abstractDocs !== undefined && result.abstractDocs.length > 0) {
       this.driverData[`abstractDocs`] = result.abstractDocs;
       this.absDocs = result.docsAbs;
     }
+  
+    this.driverData[`uploadLicence`] = [];
+    if(result.uploadLicence !== undefined && result.uploadLicence.length > 0){
+    this.uploadLicence = result.licDocs
+    }
+
+    
     this.driverData.gender = result.gender;
     this.driverData.DOB = result.DOB;
     this.driverData.email = result.email;
@@ -1290,7 +1329,6 @@ export class AddDriverComponent
         result.documentDetails[i].uploadedDocs.length > 0
       ) {
         this.assetsDocs[i] = result.docuementUpload;
-
       }
     }
     this.driverData.documentDetails = this.newDocuments;
@@ -1462,6 +1500,11 @@ export class AddDriverComponent
 
       // create form data instance
       const formData = new FormData();
+      
+       for(let i=0;i<this.uploadLicence.length;i++){
+      formData.append('uploadLicence', this.uploadLicence[i]);
+      }
+      
       // append photos if any
       for (let i = 0; i < this.uploadedPhotos.length; i++) {
         formData.append("uploadedPhotos", this.uploadedPhotos[i]);
@@ -1773,8 +1816,8 @@ export class AddDriverComponent
             this.onChangeHideErrors("CDL_Number");
             delete this.errors[`CDL_Number`];
           }
-          if(this.emailCheck === true){
-          this.submitDisabled = true;
+          if (this.emailCheck === true) {
+            this.submitDisabled = true;
           }
           this.throwErrors();
         });

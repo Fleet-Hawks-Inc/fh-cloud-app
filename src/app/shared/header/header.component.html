@@ -24,7 +24,8 @@
                             </a>
                         </li>
                         <li class="" [class.active]="navSelected === 'dispatch'" *ngIf="isDispatchEnabled">
-                            <a class="nav-link" [routerLink]="['/dispatch', 'overview']"
+                            <a class="nav-link"
+                                [routerLink]="['/dispatch', 'orders', 'order-list', generateOrderSessionID()]"
                                 (click)="onNavSelected('dispatch')">
                                 Routing & Dispatch
                             </a>
@@ -37,7 +38,8 @@
                         </li>
 
                         <li class="" [class.active]="navSelected === 'accounts'" *ngIf="isAccountsEnabled">
-                            <a class="nav-link" [routerLink]="['/accounts', 'chart-accounts', 'list']"
+                            <a class="nav-link"
+                                [routerLink]="['/accounts', 'chart-accounts', 'list' ,genrateChartAccountSessionID()]"
                                 (click)="onNavSelected('accounts')">
                                 Accounts
                             </a>

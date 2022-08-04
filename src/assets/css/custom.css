@@ -4392,6 +4392,9 @@ input:checked + .sliderbtn:before {
 .notifications-sidebar .p-tabview-panels {
   padding: 0;
 }
+.mat-accordion-wrapper .mat-expansion-panel-content {
+  font: inherit;
+}
 .payment-mini-wrapper {
   width: 100%;
   display: flex;
@@ -4430,4 +4433,26 @@ ul.simple-post-list.settings-list li:last-child a {
 
 .fc.fc-unthemed .fc-toolbar .fc-button {
   display: inline-block !important;
+}
+
+/* bottom border width */
+.bbw-1px {
+  border-bottom-width: 1px !important;
+}
+
+.p-splitbutton {
+  line-height: normal;
+}
+.p-splitbutton > .p-component {
+  font-size: 12px;
+}
+.p-button-icon {
+  font-size: 0.9rem;
+}
+/* new input, buttons padding,height in header */
+.p-inputtext {
+  padding: 0.26rem 0.5rem !important;
+}
+.p-button.p-button-icon-only{
+  padding: 0.26rem 0 !important;
 }

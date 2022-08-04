@@ -30,7 +30,7 @@
                         <div class="bg-white p-3 text-dark">
                             <div class="form-group row">
                                 <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
-                                    <p-table #dt [value]="drivers" [resizableColumns]="true" responsiveLayout="scroll" columnResizeMode="fit" scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" scrollHeight="100%">
+                                    <p-table #dt [value]="drivers" [resizableColumns]="true" columnResizeMode="expand" scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded" styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true" scrollHeight="100%">
                                         <!-- Caption template of data table -->
                                         <ng-template pTemplate="caption">
                                             <div class="p-d-flex d-flex justify-content-between align-items-center">
@@ -58,45 +58,24 @@
                                                     <div [ngSwitch]="dataColumns.field">
                                                         <!-- Driver Status Filter Customization -->
                                                         <span *ngSwitchCase="'driverStatus'">
-                              <div
-                                class="flex justify-content-center align-items-center"
-                                alignFrozen="left"
-                                pFrozenColumn
-                                [frozen]="true"
-                              >
+                              <div class="flex justify-content-center align-items-center" alignFrozen="left"
+                                pFrozenColumn [frozen]="true">
                                 {{ dataColumns.header }}
-                                <p-sortIcon
-                                  [field]="dataColumns.field"
-                                ></p-sortIcon>
-                                <p-columnFilter
-                                  [type]="dataColumns.type"
-                                  [field]="dataColumns.field"
-                                  [showOperator]="false"
-                                  matchMode="contains"
-                                  [showMatchModes]="false"
-                                  [showAddButton]="false"
-                                  display="menu"
-                                >
-                                  <ng-template
-                                    pTemplate="filter"
-                                    let-value
-                                    let-filter="filterCallback"
-                                  >
-                                    <p-multiSelect
-                                      [options]="[
+                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
+                                  [showOperator]="false" matchMode="contains" [showMatchModes]="false"
+                                  [showAddButton]="false" display="menu">
+                                  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <p-multiSelect [options]="[
                                         { name: 'Active', value: 'active' },
                                         { name: 'InActive', value: 'inActive' }
-                                      ]"
-                                      placeholder="Any"
-                                      (onChange)="filter($event.value)"
-                                      optionLabel="name"
-                                      optionValue="value"
-                                    >
+                                      ]" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name"
+                                      optionValue="value">
                                       <ng-template let-option pTemplate="item">
                                         <div>
                                           <span class="ml-1">{{
                                             option.name
-                                          }}</span>
+                                            }}</span>
                                                     </div>
                                         </ng-template>
                                         </p-multiSelect>
@@ -106,25 +85,13 @@
                                 </span>
 
                                 <span *ngSwitchDefault>
-                              <div
-                                class="flex justify-content-center align-items-center"
-                                alignFrozen="right"
-                                pFrozenColumn
-                                [frozen]="true"
-                              >
+                              <div class="flex justify-content-center align-items-center" alignFrozen="right"
+                                pFrozenColumn [frozen]="true">
                                 {{ dataColumns.header }}
-                                <p-sortIcon
-                                  [field]="dataColumns.field"
-                                ></p-sortIcon>
-                                <p-columnFilter
-                                  [type]="dataColumns.type"
-                                  [field]="dataColumns.field"
-                                  matchMode="contains"
-                                  [showMatchModes]="false"
-                                  [showOperator]="false"
-                                  [showAddButton]="false"
-                                  display="menu"
-                                >
+                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
+                                  matchMode="contains" [showMatchModes]="false" [showOperator]="false"
+                                  [showAddButton]="false" display="menu">
                                 </p-columnFilter>
                               </div>
                             </span>
@@ -146,9 +113,8 @@
                                             <span *ngSwitchCase="'firstName'">
                               <b>
                                 {{
-                                  get(driver, dataColumns.field) | titlecase
-                                }}</b
-                              >
+                                get(driver, dataColumns.field) | titlecase
+                                }}</b>
                             </span>
                                             <span *ngSwitchCase="'lastName'">
                               {{ get(driver, dataColumns.field) | titlecase }}
@@ -159,85 +125,56 @@
                                             <span *ngSwitchCase="'driverStatus'">
                               <span class="badge badge-dark p-1">{{
                                 driver[dataColumns.field] | titlecase
-                              }}</span>
+                                }}</span>
                                             </span>
                                             <span *ngSwitchCase="'companyName'">
                               {{ driver[dataColumns.field] | uppercase }}
                             </span>
 
                                             <span *ngSwitchDefault>
-                              {{ get(driver, dataColumns.field) }}</span
-                            >
-                          </div>
-                        </td>
-                        <td
-                          style="text-align: center; width: 100px"
-                          pFrozenColumn
-                          alignFrozen="right"
-                          [frozen]="true"
-                        >
-                          <button
-                            id="btnEdit"
-                            pButton
-                            routerLink="/fleet/drivers/edit/{{
+                              {{ get(driver, dataColumns.field) }}</span>
+                                        </div>
+                                    </td>
+                                    <td style="text-align: center; width: 100px" pFrozenColumn alignFrozen="right" [frozen]="true">
+                                        <button id="btnEdit" pButton routerLink="/fleet/drivers/edit/{{
                               driver.driverID
-                            }}"
-                            type="button"
-                            icon="fas fa-user-pen"
-                            class="p-button-rounded p-button-text"
-                          ></button>
-                          <button
-                            id="btnDelete"
-                            (click)="deactivateDriver(driver)"
-                            pButton
-                            type="button"
-                            icon="fas fa-user-slash"
-                            class="p-button-rounded p-button-danger p-button-text"
-                          ></button>
-                        </td>
-                      </tr>
-                    </ng-template>
-                    <!-- Empty Template -->
+                            }}" type="button" icon="fas fa-user-pen" class="p-button-rounded p-button-text"></button>
+                                        <button id="btnDelete" (click)="deactivateDriver(driver)" pButton type="button" icon="fas fa-user-slash" class="p-button-rounded p-button-danger p-button-text"></button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            <!-- Empty Template -->
 
-                    <ng-template pTemplate="emptymessage" let-columns>
-                      <div class="col-lg-12 mt-3 text-center">
-                        {{ dataMessage }}
-                        <br /><br />
-                      </div>
-                    </ng-template>
-                    <!-- Summary Section with Load More button -->
+                            <ng-template pTemplate="emptymessage" let-columns>
+                                <div class="col-lg-12 mt-3 text-center">
+                                    {{ dataMessage }}
+                                    <br /><br />
+                                </div>
+                            </ng-template>
+                            <!-- Summary Section with Load More button -->
 
-                    <ng-template pTemplate="summary" let-columns>
-                      <div
-                        class="col-lg-12 mt-3 text-center"
-                        *ngIf="
+                            <ng-template pTemplate="summary" let-columns>
+                                <div class="col-lg-12 mt-3 text-center" *ngIf="
                           lastEvaluatedKey !== 'end' && drivers.length !== 0
-                        "
-                      >
-                        <button
-                          type="button "
-                          (click)="onScroll($event)"
-                          class="btn btn-success btn-sm text-light"
-                        >
+                        ">
+                                    <button type="button " (click)="onScroll($event)" class="btn btn-success btn-sm text-light">
                           Load More..
                         </button>
 
-                        <br /><br />
-                      </div>
-                      <div
-                        class="col-lg-12 mt-3 text-center"
-                        *ngIf="lastEvaluatedKey === 'end'"
-                      >
-                        Total Records: {{ drivers.length }}
-                      </div>
-                    </ng-template>
-                  </p-table>
+                                    <br /><br />
+                                </div>
+                                <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey !== 'end'">
+                                    Total Records: {{ drivers.length }}
+                                </div>
+
+                            </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    </div>
+    </div>
     </section>
-  </div>
+    </section>
+    </div>
 </section>

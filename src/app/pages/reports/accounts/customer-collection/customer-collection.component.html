@@ -4,14 +4,21 @@
       <header class="page-header pr19 pl11">
         <div class="row" style="padding-top: 10px">
           <div class="col-md-2 col-lg-2 pr-0">
-            <ng-select class="form-control bgnone populate" name="customer" [(ngModel)]="customer"
-              placeholder="Select customer">
-              <ng-option *ngFor="let data of customersObjects | keyvalue" value="{{ data.key }}">{{ data.value }}
+            <ng-select
+              class="form-control bgnone populate"
+              name="customer"
+              [(ngModel)]="customer"
+              placeholder="Select customer"
+            >
+              <ng-option
+                *ngFor="let data of customersObjects | keyvalue"
+                value="{{ data.key }}"
+                >{{ data.value }}
               </ng-option>
             </ng-select>
           </div>
 
-          <div class="col-md-2 col-lg-2 pl-2 pr-0">
+          <div class="col-md-2 col-lg-2 pr-0">
             <div class="input-group input-group-md mb-3">
               <div class="input-daterange input-group">
                 <span class="input-group-prepend">
@@ -20,21 +27,46 @@
                   </span>
                 </span>
 
-                <input [(ngModel)]="customerFiltr.startDate" name="fromDate" type="text" placeholder="yyyy/mm/dd"
-                  (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off"
-                  [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
-                <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                <input
+                  [(ngModel)]="customerFiltr.startDate"
+                  name="fromDate"
+                  type="text"
+                  placeholder="yyyy/mm/dd"
+                  (click)="from.toggle()"
+                  ngbDatepicker
+                  #from="ngbDatepicker"
+                  class="form-control"
+                  autocomplete="off"
+                  [minDate]="dateMinLimit"
+                  [maxDate]="futureDatesLimit"
+                />
+                <span
+                  class="input-group-text border-left-0 border-right-0 rounded-0"
+                >
                   to
                 </span>
-                <input [(ngModel)]="customerFiltr.endDate" name="toDate" type="text" placeholder="yyyy/mm/dd"
-                  (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off"
-                  [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                <input
+                  [(ngModel)]="customerFiltr.endDate"
+                  name="toDate"
+                  type="text"
+                  placeholder="yyyy/mm/dd"
+                  (click)="to.toggle()"
+                  ngbDatepicker
+                  #to="ngbDatepicker"
+                  class="form-control"
+                  autocomplete="off"
+                  [minDate]="dateMinLimit"
+                  [maxDate]="futureDatesLimit"
+                />
               </div>
             </div>
           </div>
 
-          <div class="col-md-2 col-lg-2 pl-2">
-            <button class="btn btn-sm mr-2 btn-success" (click)="searchFilter()">
+          <div class="col-md-2 col-lg-2">
+            <button
+              class="btn btn-sm mr-3 btn-success"
+              (click)="searchFilter()"
+            >
               Search
             </button>
             <button class="btn btn-sm btn-success" (click)="reset()">
@@ -49,41 +81,91 @@
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
               <div class="form-group row pt-2">
-                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
-                  <p-table #myTable [value]="allCustomerData" [resizableColumns]="true" columnResizeMode="expand"
-                    scrollDirection="both" [columns]="selectedColumns"
-                    styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
-                    scrollHeight="100%" dataKey="orderNumber" responsiveLayout="scroll">
+                <div
+                  class="col-lg-12"
+                  style="height: calc(100vh - 149px); overflow-y: scroll"
+                >
+                  <p-table
+                    #myTable
+                    [value]="allCustomerData"
+                    [resizableColumns]="true"
+                    columnResizeMode="expand"
+                    scrollDirection="both"
+                    [columns]="selectedColumns"
+                    styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
+                    [scrollable]="true"
+                    scrollHeight="100%"
+                    dataKey="orderNumber"
+                    responsiveLayout="scroll"
+                  >
                     <ng-template pTemplate="caption">
-                      <div class="p-d-flex d-flex justify-content-between align-items-center">
+                      <div
+                        class="p-d-flex d-flex justify-content-between align-items-center"
+                      >
                         <div>
-                          <h3 class="m-0"> Customer Collection Report </h3>
+                          <h3 class="m-0">Customer Collection Report</h3>
                         </div>
                         <div class="text-right">
-                          <span>Showing {{allCustomerData.length}} entries</span> &nbsp;
-                          <button type="button" pButton (click)="refreshData()" pTooltip="Refresh"
-                            class="p-button-outlined mr-2" icon="fas fa-sync"></button>
-                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
-                            (click)="clear(myTable)" icon="pi pi-filter-slash"></button>
+                          <span
+                            >Showing {{ allCustomerData.length }} entries</span
+                          >
+                          &nbsp;
+                          <button
+                            type="button"
+                            pButton
+                            (click)="refreshData()"
+                            pTooltip="Refresh"
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-sync"
+                          ></button>
+                          <button
+                            pButton
+                            pRipple
+                            pTooltip="Clear Filter"
+                            class="p-button-outlined mr-2"
+                            (click)="clear(myTable)"
+                            icon="pi pi-filter-slash"
+                          ></button>
 
-                          <button type="button" pButton pRipple class="p-button-outlined mr-2"
-                            icon="fas fa-regular fa-file-excel" (click)="myTable.exportCSV()" pTooltip="Excel"></button>
-
+                          <button
+                            type="button"
+                            pButton
+                            pRipple
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel"
+                            (click)="myTable.exportCSV()"
+                            pTooltip="Excel"
+                          ></button>
                         </div>
                       </div>
                     </ng-template>
                     <ng-template pTemplate="header" let-columns>
                       <tr>
-                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn
-                          [ngStyle]="{'width': dataColumns.width}">
+                        <th
+                          *ngFor="let dataColumns of columns"
+                          [pSortableColumn]="dataColumns.field"
+                          pResizableColumn
+                          [ngStyle]="{ width: dataColumns.width }"
+                        >
                           <span>
-                            <div class="flex justify-content-center align-items-center" alignFrozen="right"
-                              pFrozenColumn [frozen]="true">
-                              {{dataColumns.header}}
+                            <div
+                              class="flex justify-content-center align-items-center"
+                              alignFrozen="right"
+                              pFrozenColumn
+                              [frozen]="true"
+                            >
+                              {{ dataColumns.header }}
                               <p-sortIcon [field]="dataColumns.field">
                               </p-sortIcon>
-                              <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field" matchMode="contains"
-                                [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" display="menu">
+                              <p-columnFilter
+                                [type]="dataColumns.type"
+                                [field]="dataColumns.field"
+                                matchMode="contains"
+                                [showMatchModes]="false"
+                                [showOperator]="false"
+                                [showAddButton]="false"
+                                display="menu"
+                              >
                               </p-columnFilter>
                             </div>
                           </span>
@@ -91,81 +173,171 @@
                       </tr>
                     </ng-template>
 
-                    <ng-template pTemplate="body" let-customer let-columns="columns" let-rowIndex="rowIndex">
+                    <ng-template
+                      pTemplate="body"
+                      let-customer
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
                       <tr>
-                 
-                        <td [ngStyle]="{
-                          width: find(columns, { field: 'customerName' }).width
-
-                        }"> {{(customer.customerName ? customer.customerName : "-") | titlecase}}</td>
-
-                        <td [ngStyle]="{
-                          width: find(columns, { field: 'customerEmail' }).width
-                        }" style="height: 40px;"> {{customer.customerEmail ? customer.customerEmail : "-"}}</td>
-
-                        <td [ngStyle]="{
-                          width: find(columns, { field: 'customerPhone' }).width
-                        }" style="height: 40px;"> {{customer.customerPhone ? customer.customerPhone : "-"}}</td>
-
-                        <td [ngStyle]="{
-                          width: find(columns, { field: 'cusConfirmation' }).width
-                        }" style="height: 40px;"> {{customer.cusConfirmation ? customer.cusConfirmation : "-"}}</td>
-
-                        <td [ngStyle]="{
-                          width: find(columns, { field: 'txnDate' }).width 
-                        }"   style="height: 40px;"> {{customer.txnDate | date: "yyyy/MM/dd"}}</td>
-
-                        <td [ngStyle]="{
-                          width: find(columns, { field: 'invNo' }).width
-                        }" style="height: 40px;"> {{customer.invNo}}</td>
-
-                        <td [ngStyle]="{
-                          width: find(columns, { field: 'finalAmount' }).width
-                        }" style="height: 40px;"> {{ customer.finalAmount | number: "1.2-2" }}
-                          {{customer.ammountCurrency}}
-
-
-                        <td [ngStyle]="{
-                          width: find(columns, { field: 'balance' }).width
-                        }" style="height: 40px;"> {{ customer.balance | number: "1.2-2" }}
-                          {{ customer.ammountCurrency }}</td>
-
-                        <td [ngStyle]="{
-                          width: find(columns, { field: 'invStatus' }).width
-                        }" style="height: 40px;"> <span class="badge badge-dark p-1" style="background-color: #ff4d4d"
-                            *ngIf="customer.invStatus === 'open'">Open</span>
+                        <td
+                          [ngStyle]="{
+                            width: find(columns, { field: 'customerName' })
+                              .width
+                          }"
+                        >
+                          {{
+                            (customer.customerName
+                              ? customer.customerName
+                              : "-"
+                            ) | titlecase
+                          }}
                         </td>
 
-                        <td [ngStyle]="{
-                          width: find(columns, { field: 'elapsedDays' }).width
-                        }" style="height: 40px;"> {{customer.elapsedDays}}</td>
+                        <td
+                          [ngStyle]="{
+                            width: find(columns, { field: 'customerEmail' })
+                              .width
+                          }"
+                          style="height: 40px"
+                        >
+                          {{
+                            customer.customerEmail
+                              ? customer.customerEmail
+                              : "-"
+                          }}
+                        </td>
 
-                        <td [ngStyle]="{
-                          width: find(columns, { field: 'Age30' }).width
-                        }" style="height: 40px;"> <div class="badges">  <span
-                           style="color: #018fee"
-                        >{{customer.Age30}}</span></div></td>
+                        <td
+                          [ngStyle]="{
+                            width: find(columns, { field: 'customerPhone' })
+                              .width
+                          }"
+                          style="height: 40px"
+                        >
+                          {{
+                            customer.customerPhone
+                              ? customer.customerPhone
+                              : "-"
+                          }}
+                        </td>
 
-                        <td [ngStyle]="{
-                          width: find(columns, { field: 'Age45' }).width
-                        }" style="height: 40px;"> 
-                        <span
-                           style="color: #f58504"
-                        >{{customer.Age45}}</span></td>
+                        <td
+                          [ngStyle]="{
+                            width: find(columns, { field: 'cusConfirmation' })
+                              .width
+                          }"
+                          style="height: 40px"
+                        >
+                          {{
+                            customer.cusConfirmation
+                              ? customer.cusConfirmation
+                              : "-"
+                          }}
+                        </td>
 
-                        <td [ngStyle]="{
-                          width: find(columns, { field: 'Age60' }).width
-                        }" style="height: 40px;"> <span 
-                        style="color: #d11313ef"
-                     >{{customer.Age60}}</span></td>
+                        <td
+                          [ngStyle]="{
+                            width: find(columns, { field: 'txnDate' }).width
+                          }"
+                          style="height: 40px"
+                        >
+                          {{ customer.txnDate | date: "yyyy/MM/dd" }}
+                        </td>
 
+                        <td
+                          [ngStyle]="{
+                            width: find(columns, { field: 'invNo' }).width
+                          }"
+                          style="height: 40px"
+                        >
+                          {{ customer.invNo }}
+                        </td>
+
+                        <td
+                          [ngStyle]="{
+                            width: find(columns, { field: 'finalAmount' }).width
+                          }"
+                          style="height: 40px"
+                        >
+                          {{ customer.finalAmount | number: "1.2-2" }}
+                          {{ customer.ammountCurrency }}
+                        </td>
+
+                        <td
+                          [ngStyle]="{
+                            width: find(columns, { field: 'balance' }).width
+                          }"
+                          style="height: 40px"
+                        >
+                          {{ customer.balance | number: "1.2-2" }}
+                          {{ customer.ammountCurrency }}
+                        </td>
+
+                        <td
+                          [ngStyle]="{
+                            width: find(columns, { field: 'invStatus' }).width
+                          }"
+                          style="height: 40px"
+                        >
+                          <span
+                            class="badge badge-dark p-1"
+                            style="background-color: #ff4d4d"
+                            *ngIf="customer.invStatus === 'open'"
+                            >Open</span
+                          >
+                        </td>
+
+                        <td
+                          [ngStyle]="{
+                            width: find(columns, { field: 'elapsedDays' }).width
+                          }"
+                          style="height: 40px"
+                        >
+                          {{ customer.elapsedDays }}
+                        </td>
+
+                        <td
+                          [ngStyle]="{
+                            width: find(columns, { field: 'Age30' }).width
+                          }"
+                          style="height: 40px"
+                        >
+                          <div class="badges">
+                            <span style="color: #018fee">{{
+                              customer.Age30 ? customer.Age30 : "0"
+                            }}</span>
+                          </div>
+                        </td>
+
+                        <td
+                          [ngStyle]="{
+                            width: find(columns, { field: 'Age45' }).width
+                          }"
+                          style="height: 40px"
+                        >
+                          <span style="color: #f58504">{{
+                            customer.Age45 ? customer.Age45 : "0"
+                          }}</span>
+                        </td>
+
+                        <td
+                          [ngStyle]="{
+                            width: find(columns, { field: 'Age60' }).width
+                          }"
+                          style="height: 40px"
+                        >
+                          <span style="color: #d11313ef">{{
+                            customer.Age60 ? customer.Age60 : "0"
+                          }}</span>
+                        </td>
                       </tr>
                     </ng-template>
 
                     <ng-template pTemplate="emptymessage" let-columns>
                       <div class="col-lg-12 mt-3 text-center">
-                        {{dataMessage}}
-                        <br /><br>
+                        {{ dataMessage }}
+                        <br /><br />
                       </div>
                     </ng-template>
                     <ng-template pTemplate="summary" let-columns>

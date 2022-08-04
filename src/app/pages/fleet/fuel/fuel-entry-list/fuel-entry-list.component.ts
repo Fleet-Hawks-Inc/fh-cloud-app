@@ -59,6 +59,7 @@ export class FuelEntryListComponent implements OnInit {
   vehicleIdentification = "";
   unitID = null;
   assetUnitID = null;
+  surchargeDisabled = true;
   unitName: string;
   start: any = "";
   end: any = "";
@@ -742,6 +743,7 @@ export class FuelEntryListComponent implements OnInit {
     } else if (!this.fSurcharge.tl) {
       this.toastr.error("FTL price is missing");
     }
+    console.log(this.fuelSurcharge);
     this.apiService
       .putData("fuelEntries/surcharge", this.fSurcharge)
       .subscribe({
@@ -767,6 +769,7 @@ export class FuelEntryListComponent implements OnInit {
     this.fSurcharge.tl = null;
   }
   postSurcharge() {
+    this.surchargeDisabled = true;
     if (!this.fSurcharge.from || !this.fSurcharge.to) {
       this.toastr.error("Date is missing");
     } else if (!this.fSurcharge.ltl) {
@@ -784,6 +787,7 @@ export class FuelEntryListComponent implements OnInit {
       complete: () => {},
       error: (err) => {},
       next: (res) => {
+        this.surchargeDisabled = false;
         this.toastr.success("Surcharge added successfully");
         this.initFuelSurcharge(true);
         this.fSurcharge.from = null;

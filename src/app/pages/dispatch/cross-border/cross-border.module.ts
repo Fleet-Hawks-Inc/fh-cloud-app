@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -14,15 +14,25 @@ import { AceDetailsComponent } from './ace-documents/ace-details/ace-details.com
 import { NewAciManifestComponent } from './aci-documents/new-aci-manifest/new-aci-manifest.component';
 import { AciDetailsComponent } from './aci-documents/aci-details/aci-details.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { TabViewModule } from 'primeng/tabview';
+import { TableModule } from 'primeng/table';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ButtonModule } from 'primeng/button';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { AccordionModule } from 'primeng/accordion';
+import {DialogModule} from 'primeng/dialog';
+import {SplitButtonModule} from 'primeng/splitbutton';
+import {ToastModule} from 'primeng/toast';
 const routes: Routes = [
-  { path: 'eManifests', component: EManifestsComponent },
-  { path: 'ACE-new-eManifest', component: NewAceManifestComponent },
-  { path: 'ACE-edit-eManifest/:manifestID', component: NewAceManifestComponent },
-  { path: 'ACE-details/:manifestID', component: AceDetailsComponent },
+  { path: 'manifests', component: EManifestsComponent },
+  { path: 'ace-manifest', component: NewAceManifestComponent },
+  { path: 'ace-manifest/:mID', component: NewAceManifestComponent },
+  { path: 'ace-details/:mID', component: AceDetailsComponent },
 
-  { path: 'ACI-new-eManifest', component: NewAciManifestComponent },
-  { path: 'ACI-edit-eManifest/:manifestID', component: NewAciManifestComponent },
-  { path: 'ACI-details/:manifestID', component: AciDetailsComponent },
+  { path: 'aci-manifest', component: NewAciManifestComponent },
+  { path: 'aci-manifest/:mID', component: NewAciManifestComponent },
+  { path: 'aci-details/:mID', component: AciDetailsComponent },
 ];
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -91,9 +101,19 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    TabViewModule,
+    TableModule,
     NgSelectModule,
     NgxSpinnerModule,
-    MatExpansionModule
+    MatExpansionModule,
+    ButtonModule,
+    OverlayPanelModule,
+    MultiSelectModule,
+    AccordionModule,
+    ConfirmPopupModule,
+    DialogModule,
+    ToastModule,
+    SplitButtonModule
   ],
   providers: [{ provide: NgbDateAdapter, useClass: CustomAdapter },
   { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }]

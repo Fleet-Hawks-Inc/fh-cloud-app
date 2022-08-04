@@ -57,4 +57,10 @@ export const environment = {
   ],
   oneSignalAppId: "ca6dd5d4-b40a-433f-ba97-c196eeaa62b1",
   testCarrier: ["21zpEs5A3MWtK9LeFEkOcsc5Szc"],
+  BConnectAccess: [
+    "1y4CwKYhlU7I5FluMq2NOCCMZvj",
+    "23HFz4o1X79Xh3lcBEJumnolmnt",
+    "1y62eyclUWKj6HSREEfZbHXjvRc",
+    "29b6OwULJ0ukir4uFF7TTLm4Tof",
+  ],
 };

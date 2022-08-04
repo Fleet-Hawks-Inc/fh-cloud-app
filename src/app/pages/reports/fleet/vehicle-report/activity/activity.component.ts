@@ -46,20 +46,14 @@ export class ActivityComponent implements OnInit {
     public vehicleId;
     
      dataColumns = [
-        { field: 'vehicle', header: 'Vehicle', type: "text" },
-        { field: 'tripNo', header: 'Trip', type: "text" },
-        { field: 'orderName', header: 'Order', type: "text" },
-         { field: 'assetName', header: 'Assets', type: "text" },
-        { field: 'driverName', header: 'Drivers', type: "text" },
-        { field: 'locType', header: 'Location', type: "text" },
-        { field: 'dateType', header: 'Date', type: "text" },
-        { field: 'usState', header: 'Province(US)', type: "text" },
-        { field: 'uMiles', header: 'US Miles', type: "text" },
-        { field: 'usiles', header: 'US(Total)', type: "text" },
-        { field: 'canState', header: 'Province(Canada)', type: "text" },
-        { field: 'caMiles', header: 'Canada Miles', type: "text" },
-        { field: 'cMiles', header: 'Canada(Total)', type: "text" },
-        { field: 'miles', header: 'Total Miles', type: "text" },
+        { width: '10%', field: 'vehicleData', header: 'Vehicle', type: "text" },
+        {  width: '10%', field: 'tripNo', header: 'Trip', type: "text" },
+        { width: '10%', field: 'orderName', header: 'Order', type: "text" },
+         { width: '10%', field: 'assetName', header: 'Assets', type: "text" },
+        { width: '19%', field: 'driverName', header: 'Drivers', type: "text" },
+        { width: '12%', field: 'uMiles', header: 'US Miles', type: "text" },
+        { width: '14%', field: 'canMiles', header: 'Canada Miles', type: "text" },
+        { width: '12%', field: 'miles', header: 'Total Miles', type: "text" },
     ];
     
     constructor(private apiService: ApiService,
@@ -84,7 +78,7 @@ export class ActivityComponent implements OnInit {
     fetchVehicleName() {
         this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
             this.vehicleData = result.Items;
-            console.log('datatotal',this.vehicleData)
+            console.log('datatotal',result.Items);
         });
     }
 
@@ -231,7 +225,7 @@ export class ActivityComponent implements OnInit {
                             obj["Vehicle"] = element.vehicle.replace(/, /g, ' &');
                             obj["Trip#"] = element.tripNo;
                             obj["Order#"] = element.orderName.replace(/, /g, ' &');
-                            obj["Assets"] = element.assetName.replace(/, /g, ' &');
+                            obj["Assets"] = element.assetName;
                             obj["Drivers"] = element.driverName.replace(/, /g, ' &');
                             obj["location"] = location;
                             obj["Date"] = date;
@@ -243,7 +237,7 @@ export class ActivityComponent implements OnInit {
                             obj["Canada(Total)"] = element.canMiles;
                             obj["Total Miles"] = element.miles;
                             dataObject.push(obj)
-                            console.log('export',dataObject);
+                            console.log('export',obj);
                 });
                 console.log('export2',dataObject);
             let headers = Object.keys(dataObject[0]).join(',')

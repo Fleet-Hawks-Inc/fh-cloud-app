@@ -97,16 +97,16 @@ export class DriverDataComponent implements OnInit {
     get = _.get;
     
     dataColumns = [
-        { field: 'firstName', header: 'Name', type: "text" },
-        { field: 'email', header: 'Email', type: "text" },
-        { field: 'phone', header: 'Phone', type: "text" },   
-        { field: 'employeeContractorId', header: 'Employee ID', type: "text" }, 
-        { field: 'userName', header: 'User Name', type: "text" },
-        { field: 'driverType', header: 'Driver Type', type: "text" },
-        { field: 'startDate', header: 'Start Date', type: "text" },
-        { field: 'CDL_Number', header: 'CDL#', type: "text" },
-        { field: 'licenceExpiry', header: 'Licence Expiry', type: "text" }, 
-        { field: 'licStateName', header: 'Licence Province', type: "text" },
+        { width: '9%', field: 'firstName', header: 'Name', type: "text" },
+        { width: '11%', field: 'email', header: 'Email', type: "text" },
+        { width: '9%', field: 'phone', header: 'Phone', type: "text" },   
+        { width: '13%', field: 'employeeContractorId', header: 'Employee ID', type: "text" }, 
+        { width: '9%', field: 'userName', header: 'User Name', type: "text" },
+        { width: '9%', field: 'driverType', header: 'Driver Type', type: "text" },
+        { width: '9%', field: 'startDate', header: 'Start Date', type: "text" },
+        { width: '13%', field: 'CDL_Number', header: 'CDL#', type: "text" },
+        { width: '9%', field: 'licenceExpiry', header: 'Licence Expiry', type: "text" }, 
+        { width: '9%', field: 'licStateName', header: 'Licence Province', type: "text" },
     ];
 
   constructor(

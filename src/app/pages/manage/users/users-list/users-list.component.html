@@ -46,12 +46,6 @@
               </button>
             </div>
             <div class="col-md-8 col-lg-8 text-right pr-1">
-              <a
-                [routerLink]="['/manage', 'users', 'add']"
-                class="btn btn-success btn-sm ml-2"
-                style="color: white"
-                ><i class="fas fa-plus"></i> Add User</a
-              >
             </div>
           </div>
         </header>
@@ -219,7 +213,10 @@
                         </button>
                         <br /><br />
                       </div>
-                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK === 'end'">
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end'">
+                        Total Records: {{ users.length }}
+                      </div>
+                       <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK === 'end'">
                         Total Records: {{ users.length }}
                       </div>
                     </ng-template>

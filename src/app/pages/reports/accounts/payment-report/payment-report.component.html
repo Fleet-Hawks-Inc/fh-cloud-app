@@ -24,7 +24,7 @@
                     >
                   </ng-select>
                 </div>
-                <div class="col-md-1 col-lg-1 pl-2 pr-0">
+                <div class="col-md-2 col-lg-2 pr-0">
                   <ng-select
                     [(ngModel)]="filter.mode"
                     name="type"
@@ -37,7 +37,7 @@
                     >
                   </ng-select>
                 </div>
-                <div class="col-md-1 col-lg-1 pl-2 pr-0">
+                <div class="col-md-2 col-lg-2 pr-0">
                   <ng-select
                     [(ngModel)]="filter.searchType"
                     name="searchBy"
@@ -160,7 +160,7 @@
                   </div>
                 </div>
 
-                <div class="col-lg-2 col-md-2 pl-2 pr-0">
+                <div class="col-lg-3 col-md-3 pr-0">
                   <div
                     class="input-daterange input-group"
                     data-plugin-datepicker
@@ -203,7 +203,7 @@
                     />
                   </div>
                 </div>
-                <div class="col-md-2 col-lg-2 pl-2">
+                <div class="col-md-2 col-lg-2">
                   <button
                     *ngIf="searching"
                     class="btn btn-success btn-sm"
@@ -221,7 +221,7 @@
                     type="submit"
                     *ngIf="!searching"
                     (click)="searchFilter()"
-                    class="btn btn-sm btn-success mr-2"
+                    class="btn btn-sm btn-success mr-3"
                   >
                     Search
                   </button>
@@ -283,7 +283,7 @@
         </form>
       </header>
 
-       <section class="m-2">
+      <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
@@ -311,7 +311,7 @@
                         class="p-d-flex d-flex justify-content-between align-items-center"
                       >
                         <div>
-                          <h3 class="m-0"> Payment Report </h3>
+                          <h3 class="m-0">Payment Report</h3>
                         </div>
                         <div class="text-right">
                           <span>Showing {{ allPayments.length }} entries </span>
@@ -358,7 +358,6 @@
                             [ngSwitch]="dataColumns.field"
                             style="width: 10%"
                           >
-                           
                             <span *ngSwitchDefault>
                               <div
                                 class="flex justify-content-center align-items-center"
@@ -397,55 +396,54 @@
                       <tr>
                         <td
                           *ngFor="let dataColumns of columns"
-                         [ngStyle]="{ width: dataColumns.width }"
-                          style=" height: 40px; cursor: pointer"
+                          [ngStyle]="{ width: dataColumns.width }"
+                          style="height: 40px; cursor: pointer"
                         >
                           <div [ngSwitch]="dataColumns.field">
-                           <span *ngSwitchCase="'txnDate'">
+                            <span *ngSwitchCase="'txnDate'">
                               {{ payment.txnDate }}
-                            </span> 
-                            
+                            </span>
+
                             <span *ngSwitchCase="'paymentNo'">
                               <a
                                 [routerLink]="payment.url"
                                 target="_blank"
-                                style="color: #0000ff; text-decoration: none" 
+                                style="color: #0000ff; text-decoration: none"
                                 >{{ payment.paymentNo }}</a
                               >
                             </span>
-                            
-                             <span *ngSwitchCase="'payMode'">
+
+                            <span *ngSwitchCase="'payMode'">
                               {{ payment.payMode | titlecase }}
                             </span>
-                            
-                             <span *ngSwitchCase="'payModeNo'">
+
+                            <span *ngSwitchCase="'payModeNo'">
                               {{ payment.payModeNo }}
                             </span>
-                             
-                             <span *ngSwitchCase="'payModeDate'">
+
+                            <span *ngSwitchCase="'payModeDate'">
                               {{ payment.payModeDate | date: "YYYY-MM-dd" }}
                             </span>
-                            
-                             <span *ngSwitchCase="'advType'">
+
+                            <span *ngSwitchCase="'advType'">
                               {{ payment.type | titlecase }}
                               <span *ngIf="payment.advType"
                                 >: {{ payment.advType | titlecase }}</span
                               >
                             </span>
-                            
-                             <span *ngSwitchCase="'paymentTo'">
+
+                            <span *ngSwitchCase="'paymentTo'">
                               {{ payment.paymentTo | titlecase }} :
                               {{ payment.entityName | titlecase }}
                             </span>
-                            
+
                             <span *ngSwitchCase="'currency'">
                               {{ payment.currency }}
                             </span>
-                            
+
                             <span *ngSwitchCase="'amount'">
                               {{ payment.amount }}
                             </span>
-                            
                           </div>
                         </td>
                       </tr>
@@ -465,11 +463,11 @@
                         class="col-lg-12 mt-3 text-center"
                         *ngIf="
                           lastAdvanceSK != 'end' &&
-                         lastDriverSK != 'end' &&
-                        lastEmployeeSK != 'end' &&
-                        lastExpenceSK != 'end' &&
-                        allPayments.length !== 0
-                                  "
+                          lastDriverSK != 'end' &&
+                          lastEmployeeSK != 'end' &&
+                          lastExpenceSK != 'end' &&
+                          allPayments.length !== 0
+                        "
                       >
                         <button
                           type="button "
@@ -484,11 +482,11 @@
                         class="col-lg-12 mt-3 text-center"
                         *ngIf="
                           lastAdvanceSK != 'end' &&
-                         lastDriverSK != 'end' &&
-                        lastEmployeeSK != 'end' &&
-                        lastExpenceSK != 'end' &&
-                        allPayments.length !== 0
-                                  "
+                          lastDriverSK != 'end' &&
+                          lastEmployeeSK != 'end' &&
+                          lastExpenceSK != 'end' &&
+                          allPayments.length !== 0
+                        "
                       >
                         Total Records: {{ allPayments.length }}
                       </div>
@@ -501,7 +499,6 @@
         </div>
       </section>
     </section>
-    
   </div>
 </section>
 

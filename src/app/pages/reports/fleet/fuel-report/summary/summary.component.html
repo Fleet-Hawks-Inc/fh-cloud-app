@@ -25,7 +25,7 @@
               </ng-select>
             </div>
 
-            <div class="col-md-2 col-lg-2 pr-0 pl-2">
+            <div class="col-md-2 col-lg-2 pr-0">
               <ng-select
                 [(ngModel)]="assetUnitID"
                 name="assetUnitID"
@@ -41,7 +41,7 @@
               </ng-select>
             </div>
             <!-- Set spacing issue -->
-            <div class="col-md-3 col-lg-3 pl-2 pr-0">
+            <div class="col-md-3 col-lg-3 pr-0">
               <div
                 class="input-daterange input-group input-group-sm"
                 data-plugin-datepicker=""
@@ -85,11 +85,11 @@
               </div>
             </div>
 
-            <div class="col-md-2 col-lg-2 pl-2">
+            <div class="col-md-2 col-lg-2">
               <button
                 type="submit"
                 (click)="searchFilter()"
-                class="btn btn-sm btn-success mr-2"
+                class="btn btn-sm btn-success mr-3"
               >
                 Search
               </button>
@@ -213,7 +213,6 @@
                     class="col-lg-12"
                     style="height: calc(111vh - 149px); overflow-y: scroll"
                   >
-
                     <div class="bg-white p-3 text-dark">
                       <p-table
                         #dt
@@ -229,7 +228,9 @@
                       >
                         <!-- Caption template of data table -->
                         <ng-template pTemplate="caption">
-                          <div class="p-d-flex d-flex justify-content-between align-items-center">
+                          <div
+                            class="p-d-flex d-flex justify-content-between align-items-center"
+                          >
                             <div>
                               <h3 class="m-0">Fuel Summary</h3>
                             </div>
@@ -246,23 +247,23 @@
                                 icon="fas fa-sync"
                               ></button>
                               <button
-                        pButton
-                        pRipple
-                        pTooltip="Clear Filter"
-                        class="p-button-outlined mr-2"
-                        (click)="clear(dt)"
-                        icon="pi pi-filter-slash"
-                      ></button>
-                      
-                       <button
-                            type="button"
-                            pButton
-                            pRipple
-                            class="p-button-outlined mr-2"
-                            icon="fas fa-regular fa-file-excel"
-                            (click)="csvExport()"
-                            pTooltip="Excel"
-                          ></button>
+                                pButton
+                                pRipple
+                                pTooltip="Clear Filter"
+                                class="p-button-outlined mr-2"
+                                (click)="clear(dt)"
+                                icon="pi pi-filter-slash"
+                              ></button>
+
+                              <button
+                                type="button"
+                                pButton
+                                pRipple
+                                class="p-button-outlined mr-2"
+                                icon="fas fa-regular fa-file-excel"
+                                (click)="csvExport()"
+                                pTooltip="Excel"
+                              ></button>
 
                               <p-multiSelect
                                 [options]="dataColumns"
@@ -283,7 +284,7 @@
                               *ngFor="let dataColumns of columns"
                               [pSortableColumn]="dataColumns.field"
                               pResizableColumn
-                             style="width: 11.2%"
+                            [ngStyle]="{ width: dataColumns.width }"
                             >
                               <span>
                                 <div
@@ -322,9 +323,18 @@
                           <tr>
                             <td
                               *ngFor="let dataColumns of columns"
-                              style="width: 11.2%; height: 40px; cursor: pointer"
+                              [ngStyle]="{ width: dataColumns.width }"
+                              style="height: 40px;
+                                cursor: pointer;"
+                              
                             >
                               <div [ngSwitch]="dataColumns.field">
+                                <span *ngSwitchCase="'data.useType'">
+                                  {{
+                                    get(fuelEntry, dataColumns.field)
+                                      | titlecase
+                                  }}
+                                </span>
                                 <span *ngSwitchCase="'unitSearch'">
                                   {{
                                     (vehicleList[fuelEntry.unitID]
@@ -341,13 +351,21 @@
                                 </span>
                                 <span *ngSwitchCase="'uom'">
                                   <span *ngIf="fuelEntry.data.uom === 'L'">
-                                    {{fuelEntry.data.uom === 'L' ? 'LTR' : null}}
+                                    {{
+                                      fuelEntry.data.uom === "L" ? "LTR" : null
+                                    }}
                                   </span>
                                   <span *ngIf="fuelEntry.data.uom === 'litre'">
-                                    {{fuelEntry.data.uom === 'litre' ? 'LTR' : null}}
+                                    {{
+                                      fuelEntry.data.uom === "litre"
+                                        ? "LTR"
+                                        : null
+                                    }}
                                   </span>
                                   <span *ngIf="fuelEntry.data.uom === 'G'">
-                                    {{fuelEntry.data.uom === 'G' ? 'GL' : null}}
+                                    {{
+                                      fuelEntry.data.uom === "G" ? "GL" : null
+                                    }}
                                   </span>
                                 </span>
                                 <span *ngSwitchDefault>
@@ -381,6 +399,12 @@
                             </button>
 
                             <br /><br />
+                          </div>
+                          <div
+                            class="col-lg-12 mt-3 text-center"
+                            *ngIf="lastItemSK !== 'end'"
+                          >
+                            Total Records: {{ fuelList.length }}
                           </div>
                           <div
                             class="col-lg-12 mt-3 text-center"

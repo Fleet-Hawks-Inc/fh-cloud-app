@@ -104,6 +104,7 @@ export class AddTripComponent implements OnInit {
     iftaMiles: [],
     split: [],
     stlLink: false,
+    recallMessage: ""
   };
   ltlOrders = [];
   ftlOrders = [];
@@ -284,7 +285,9 @@ export class AddTripComponent implements OnInit {
   vehicleValidate: string;
   isExpDisplay: boolean = false;
   isAllType = '';
-
+  display: any;
+  recallReasonDis = false;
+  reasonErr = '';
   constructor(
     private apiService: ApiService,
     private modalService: NgbModal,
@@ -2455,6 +2458,15 @@ export class AddTripComponent implements OnInit {
     this.tripData.tripPlanning = [];
     this.tripData["tripID"] = this.route.snapshot.params["tripID"];
     this.tripData.dateCreated = moment(this.dateCreated).format("YYYY-MM-DD");
+    if (type === 'recall') {
+      if (this.tripData.recallMessage === '') {
+        this.reasonErr = "Please fill recall reason"
+        return false;
+      } else {
+        this.reasonErr = "";
+      }
+    }
+    this.tripData["recallMessage"] = this.tripData.recallMessage;
     this.tripData.mapFrom =
       this.mapOrderActive === "active" ? "order" : "route";
 
@@ -2637,7 +2649,6 @@ export class AddTripComponent implements OnInit {
     } else {
       url = "trips";
     }
-
     this.apiService.putData(url, this.tripData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -2667,6 +2678,7 @@ export class AddTripComponent implements OnInit {
         this.toastr.success("Trip updated successfully.");
         // this.goBack();
         this.router.navigate([`/dispatch/trips/trip-details/${this.tripID}`]);
+        this.recallReasonDis = true;
       },
     });
   }
@@ -2918,7 +2930,7 @@ export class AddTripComponent implements OnInit {
         // this.trips = [];
         this.actualMiles = 0;
         this.apiService
-          .getData("routes/" + encodeURIComponent(JSON.stringify([event])))
+          .getData("routes/detail/" + encodeURIComponent(JSON.stringify([event])))
           .subscribe(async (result: any) => {
             if (result && result.length > 0) {
               let routeData: any = [];
@@ -3414,5 +3426,9 @@ export class AddTripComponent implements OnInit {
   removeRoutePlan(event: any) {
     this.trips = _.reject(this.trips, { routeID: event.value })
     this.getMiles();
+  }
+
+  async showReasonModal() {
+    this.display = true;
   }
 }

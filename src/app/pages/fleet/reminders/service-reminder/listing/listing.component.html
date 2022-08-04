@@ -70,16 +70,6 @@
 
           <div class="col-md-4 col-lg-4 text-right pr-1 page-buttons">
             <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
-              <!--<button-->
-              <!--  type="button"-->
-              <!--  class="btn btn-success btn-sm dropdown-toggle"-->
-              <!--  data-toggle="dropdown"-->
-              <!--  aria-expanded="false"-->
-              <!-->-->
-              <!--  Actions<span class="caret">-->
-
-              <!--  </span>-->
-              <!--</button>-->
               <div
                 class="dropdown-menu"
                 role="menu"
@@ -96,21 +86,6 @@
                 <a class="dropdown-item text-1" href="">Export</a>
               </div>
             </div>
-            <a
-              href="javascript:;"
-              (click)="refreshData()"
-              data-toggle="tooltip"
-              title="Refresh data"
-              class="btn btn-success btn-sm modal-with-form mr-2"
-            >
-              <i class="fas fa-sync"></i>
-            </a>
-
-            <a
-              routerLink="/fleet/reminders/service-reminder/add"
-              class="btn btn-sm btn-success"
-              ><i class="fas fa-plus"></i> Add Service Reminder</a
-            >
           </div>
         </div>
       </header>
@@ -187,6 +162,16 @@
                               class="p-button-outlined mr-2"
                               icon="fas fa-sync"
                             ></button>
+                            
+                            <button
+                            type="button"
+                            pButton
+                            pTooltip="Add"
+                            routerLink="/fleet/reminders/service-reminder/add"
+                            class="p-button-outlined mr-2"
+                            icon="pi pi-plus"
+                          ></button>
+                            
                             <button
                               pButton
                               pRipple
@@ -242,7 +227,7 @@
                             </div>
                           </th>
                           <th
-                            width="13%"
+                            width="6%"
                             alignFrozen="right"
                             pFrozenColumn
                             [frozen]="true"
@@ -347,64 +332,57 @@
                               </span>
                             </div>
                           </td>
-
-                          <td
-                            style="width: 13%; overflow: inherit !important"
-                            alignFrozen="right"
-                          >
-                            <div class="dropdown dropright">
-                              <button
-                                class="bg-transparent"
-                                type="button"
-                                class="bg-transparent border-0"
-                                data-toggle="dropdown"
-                                aria-expanded="false"
-                                aria-haspopup="true"
-                                id="dropdownMenuButton-{{ rowIndex }}"
-                              >
-                                <i class="fas fa-ellipsis-v"></i>
-                              </button>
-                              <div
-                                class="dropdown-menu"
-                                attr.aria-labelledby="dropdownMenuButton-{{
-                                  rowIndex
-                                }}"
-                              >
+                       <td
+                          style="width: 6%; overflow: inherit !important"
+                          pFrozenColumn
+                          alignFrozen="right"
+                          [frozen]="true"
+                        >
+                          <div class="dropdown dropright">
+                            <button
+                              (click)="rm.toggle($event)"
+                              class="bg-transparent border-0"
+                              type="button"
+                              id="dropdownMenuButton-{{ rowIndex }}"
+                            >
+                              <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <p-overlayPanel
+                              #rm
+                              [showCloseIcon]="true"
+                            >
+                              <ng-template pTemplate>
                                 <a
-                                  class="dropdown-item text-1"
-                                  href="javascript:;"
-                                  (click)="
-                                    resolveReminder(
-                                      vehicle.reminderIdentification
-                                    )
-                                  "
+                                  (click)="rm.hide(); resolveReminder(vehicle.reminderIdentification)"
+                                  class="dropdown-item text-4"
+                                  style="text-align:left"
                                   >Enter Service</a
                                 >
                                 <a
-                                  class="dropdown-item text-1"
-                                  href="javascript:;"
-                                  (click)="sendEmailNotification(vehicle)"
+                                (click)="rm.hide(); sendEmailNotification(vehicle)"
+                                  style="text-align:left"
+                                  class="dropdown-item text-4"
+                                  >Send Notifications</a
                                 >
-                                  Send Notifications</a
-                                >
-                                <a
-                                  routerLink="/fleet/reminders/service-reminder/edit/{{
+                                   <a
+                                 routerLink="/fleet/reminders/service-reminder/edit/{{
                                     vehicle.reminderID
                                   }}"
-                                  href="javascript:;"
-                                  class="dropdown-item text-1"
+                                  style="text-align:left"
+                                   (click)="rm.hide()"
+                                  class="dropdown-item text-4"
                                   >Edit</a
                                 >
                                 <a
-                                  href="javascript:;"
-                                  class="dropdown-item text-1"
-                                  (click)="deleteReminder(vehicle)"
+                                  class="dropdown-item text-4"
+                                  style="text-align:left"
+                                  (click)="rm.hide(); deleteReminder(vehicle)"
+                                  >Delete</a
                                 >
-                                  Delete</a
-                                >
-                              </div>
-                            </div>
-                          </td>
+                              </ng-template>
+                            </p-overlayPanel>
+                          </div>
+                        </td>   
                         </tr>
                       </ng-template>
                       <ng-template pTemplate="emptymessage" let-columns>
@@ -433,6 +411,12 @@
                         <div
                           class="col-lg-12 mt-3 text-center"
                           *ngIf="lastEvaluatedKey !== 'end'"
+                        >
+                          Total Records: {{ remindersData.length }}
+                        </div>
+                           <div
+                          class="col-lg-12 mt-3 text-center"
+                          *ngIf="lastEvaluatedKey === 'end'"
                         >
                           Total Records: {{ remindersData.length }}
                         </div>

@@ -15,6 +15,11 @@ import { AddJournalComponent } from "./add-journal/add-journal.component";
 import { JournalListComponent } from "./journal-list/journal-list.component";
 import { JournalDetailComponent } from "./journal-detail/journal-detail.component";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -82,9 +87,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
 const routes: Routes = [
   {
-    path: "list",
+    path: "list/:sessionID",
     component: JournalListComponent,
-    data: { title: "Manual Journal List" },
+    data: { title: "Manual Journal List", reuseRoute: true },
   },
   {
     path: "add",
@@ -118,10 +123,16 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule,
     InfiniteScrollModule,
+    AutoCompleteModule,
+    ButtonModule,
+    CalendarModule,
+    DropdownModule,
+    TableModule
+
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
-export class ManualJournalModule {}
+export class ManualJournalModule { }

@@ -20,7 +20,7 @@
               </ng-option>
             </ng-select>
           </div>
-          <div class="col-md-2 col-lg-2 pl-2 pr-0">
+          <div class="col-md-2 col-lg-2 pr-0">
             <ng-select
               [(ngModel)]="searchServiceTask"
               name="searchServiceTask"
@@ -36,7 +36,7 @@
             </ng-select>
           </div>
 
-          <div class="col-md-2 col-lg-2 pl-2 pr-0">
+          <div class="col-md-2 col-lg-2 pr-0">
             <div class="mb-3">
               <ng-select
                 [(ngModel)]="filterStatus"
@@ -53,11 +53,11 @@
             </div>
           </div>
 
-          <div class="col-md-2 col-lg-2 pl-2">
+          <div class="col-md-2 col-lg-2">
             <button
               type="button"
               (click)="searchData()"
-              class="btn btn-sm btn-success mr-2"
+              class="btn btn-sm btn-success mr-3"
             >
               Search
             </button>
@@ -150,7 +150,7 @@
                             class="p-button-outlined mr-2"
                             icon="fas fa-sync"
                           ></button>
-                            <button
+                          <button
                             type="button"
                             pButton
                             pRipple
@@ -178,15 +178,15 @@
                           </p-multiSelect>
                         </div>
                       </div>
-                    </ng-template> 
-                    
-                     <ng-template pTemplate="header" let-columns>
+                    </ng-template>
+
+                    <ng-template pTemplate="header" let-columns>
                       <tr>
                         <th
                           *ngFor="let dataColumns of columns"
                           [pSortableColumn]="dataColumns.field"
                           pResizableColumn
-                         style="width: 20%; cursor: pointer"
+                          style="width: 20%; cursor: pointer"
                         >
                           <div [ngSwitch]="dataColumns.field">
                             <span *ngSwitchDefault>
@@ -214,7 +214,6 @@
                             </span>
                           </div>
                         </th>
-                      
                       </tr>
                     </ng-template>
 
@@ -225,63 +224,56 @@
                       let-rowIndex="rowIndex"
                     >
                       <tr>
-                       <td
+                        <td
                           *ngFor="let dataColumns of columns"
-                        style="width: 20%; height: 40px; cursor: pointer"
+                          style="width: 20%; height: 40px; cursor: pointer"
                         >
                           <div [ngSwitch]="dataColumns.field">
-                        <span
-                         *ngSwitchCase="'entityID'"
-                        >
-                          <span class="text-capitalize">
-                            {{ vehiclesList[reminder.entityID] }}
-                          </span>
-                        </span>
-                        <span
-                          *ngSwitchCase="'tasks.taskID'"
-                        >
-                          <span class="text-capitalize">
-                            {{ tasksData[reminder.tasks.taskID] }}
-                          </span>
-                        </span>
-                        <span
-                         *ngSwitchCase="'createdDate'"
-                        >
-                          {{ reminder.createdDate | date: "yyyy/MM/dd" }}
-                        </span>
-                        <span
-                          *ngSwitchCase="'subscribers'"
-                        >
-                          {{ reminder.subscribers }}
-                        </span>
-
-                        <span
-                            *ngSwitchCase="'status'"
-                        >
-                          <span
-                            class="text-warning font-weight-bold font-size-12 text-uppercase"
-                            *ngIf="reminder.status === 'dueSoon'"
-                            >{{ reminder.status }}<br
-                          /></span>
-                          <span
-                            class="text-danger font-weight-bold font-size-12 text-uppercase"
-                            *ngIf="reminder.status === 'overdue'"
-                            >{{ reminder.status }}<br
-                          /></span>
-                          <span class="font-size-12">
-                            <span *ngIf="reminder.tasks.remindByUnit == 'time'"
-                              >Every
-                              {{ reminder.tasks.time }}
-                              {{ reminder.tasks.timeUnit }}(s)
+                            <span *ngSwitchCase="'entityID'">
+                              <span class="text-capitalize">
+                                {{ vehiclesList[reminder.entityID] }}
+                              </span>
                             </span>
-                            <span
-                              *ngIf="reminder.tasks.remindByUnit == 'odometer'"
-                              >Every
-                              {{ reminder.tasks.odometer }} miles[0]</span
-                            >
-                          </span>
-                        </span>
-                        </div>
+                            <span *ngSwitchCase="'tasks.taskID'">
+                              <span class="text-capitalize">
+                                {{ tasksData[reminder.tasks.taskID] }}
+                              </span>
+                            </span>
+                            <span *ngSwitchCase="'createdDate'">
+                              {{ reminder.createdDate | date: "yyyy/MM/dd" }}
+                            </span>
+                            <span *ngSwitchCase="'subscribers'">
+                              {{ reminder.subscribers }}
+                            </span>
+
+                            <span *ngSwitchCase="'status'">
+                              <span
+                                class="text-warning font-weight-bold font-size-12 text-uppercase"
+                                *ngIf="reminder.status === 'dueSoon'"
+                                >{{ reminder.status }}<br
+                              /></span>
+                              <span
+                                class="text-danger font-weight-bold font-size-12 text-uppercase"
+                                *ngIf="reminder.status === 'overdue'"
+                                >{{ reminder.status }}<br
+                              /></span>
+                              <span class="font-size-12">
+                                <span
+                                  *ngIf="reminder.tasks.remindByUnit == 'time'"
+                                  >Every
+                                  {{ reminder.tasks.time }}
+                                  {{ reminder.tasks.timeUnit }}(s)
+                                </span>
+                                <span
+                                  *ngIf="
+                                    reminder.tasks.remindByUnit == 'odometer'
+                                  "
+                                  >Every
+                                  {{ reminder.tasks.odometer }} miles[0]</span
+                                >
+                              </span>
+                            </span>
+                          </div>
                         </td>
                       </tr>
                     </ng-template>

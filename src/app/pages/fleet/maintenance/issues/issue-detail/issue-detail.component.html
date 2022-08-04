@@ -103,13 +103,13 @@
                       <div class="col-lg-12">
                         <label class="control-label font-weight-bold text-4"
                           >Issue Name:</label
-                        ><span class="font-weight-bold"> {{ issueName }}</span>
+                        ><span class="font-weight-bold"> {{ issueName | titlecase }}</span>
                       </div>
 
                       <div class="col-lg-12 pb-4">
                         <span class="font-weight-bold text-4"
                           >Description: </span
-                        >{{ description }}
+                        >{{ description | titlecase }}
                       </div>
 
                       <div class="col-lg-6">
@@ -134,7 +134,7 @@
                                       class="text-info"
                                     >
                                       <span *ngIf="unitType === 'asset'">{{
-                                        assetList[unitID]
+                                        assetList[unitID] | titlecase
                                       }}</span></a
                                     >
                                     <a
@@ -144,7 +144,7 @@
                                       class="text-info"
                                     >
                                       <span *ngIf="unitType === 'vehicle'">{{
-                                        vehicleList[unitID]
+                                        vehicleList[unitID] | titlecase
                                       }}</span></a
                                     >
                                   </td>
@@ -167,7 +167,7 @@
                                   <td class="back-color-gray font-weight-bold">
                                     Assigned To
                                   </td>
-                                  <td>{{ usersList[assignedTo] }}</td>
+                                  <td>{{ usersList[assignedTo] | titlecase }}</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -220,7 +220,7 @@
                                   <br />&nbsp;&nbsp;&nbsp;&nbsp;<span
                                     class="font-size-12"
                                     >By:
-                                    {{ usersList[reportedBy] }}
+                                    {{ usersList[reportedBy] | titlecase}}
                                   </span>
                                 </div>
                                 <div class="col-lg-3 text-right"></div>

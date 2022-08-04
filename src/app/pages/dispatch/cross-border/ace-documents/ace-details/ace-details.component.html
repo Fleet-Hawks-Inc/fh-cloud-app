@@ -5,35 +5,31 @@
                 <h2>ACE eManifest Details</h2>
                 <div class="right-wrapper text-right pt-2 pr-2">
 
-                    <!-- <div class="btn-group btn-group1 flex-wrap mr-1">
-                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                            aria-expanded="false">Actions<span class="caret"></span></button>
-                        <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
-                                class="dropdown-item text-1">Edit</a>
-                        </div>
-                    </div> -->
-                    <div class="btn-group btn-group1 flex-wrap mr-1">
-                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                            aria-expanded="false">Send To CBP<span class="caret"></span></button>
-                        <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                    <a routerLink="/dispatch/cross-border/ace-manifest/{{manifestID}}"
+                        class="btn btn-default btn-sm mr-2"><i class="fas fa-pencil-alt"></i> Edit Manifest</a>
+                    <p-splitButton label="Send To CBP" [model]="items" styleClass="p-button-sm mr-2 text-left">
+                    </p-splitButton>
+                    <!-- <button type="text" pButton class="btn btn-success btn-sm align-items-center d-inline-flex mr-2"
+                        label=" Send To CBP" (click)="op.toggle($event)"> <i class="pi pi-chevron-down"></i></button>
 
-                            <a class="dropdown-item text-1" href="javascript:;" (click)="sendCBPFn()">Send Complete
+                    <p-overlayPanel #op>
+                        <ng-template pTemplate>
+                            <a class="dropdown-item" href="javascript:;" (click)="sendCBPFn()">Send Complete
                                 eManifest</a>
-                            <a class="dropdown-item text-1" (click)="amendManifest()">Amend Completed
+                            <a class="dropdown-item" (click)="amendManifest()">Amend Completed
                                 eManifest</a>
-                            <a class="dropdown-item text-1" (click) ="cancelManifest(manifestID)">Cancel Completed eManifest</a>
-                        </div>
-                    </div>
-                    <a [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-default btn-sm"><i
-                        class="fas fa-list"></i> ACE Manifests</a>
-                    </div>
+                            <a class="dropdown-item" (click)="cancelManifest(manifestID)">Cancel Completed
+                                eManifest</a>
+                        </ng-template>
+                    </p-overlayPanel> -->
+                    <a [routerLink]="['/dispatch', 'cross-border','manifests']" class="btn btn-default btn-sm"><i
+                            class="fas fa-list"></i> ACE Manifests</a>
+
+                </div>
             </header>
-            <div class="ace-main__wrapper p-4 bg-white">
+            <div class="ace-main__wrapper p-4 text-dark bg-white">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 ">
                         <div class="card">
                             <div class="card-header border back-color-gray p-2">
                                 <h4 class="m-0">Trip#<b> {{tripNumber}}</b></h4>
@@ -45,10 +41,12 @@
                                             <tbody>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray">Port of Arrival:</th>
-                                                    <td>{{usPortOfArrival}} - {{USportsListObjects[usPortOfArrival]}}</td>
+                                                    <td>{{usPortOfArrival}} - {{USportsListObjects[usPortOfArrival]}}
+                                                    </td>
                                                 </tr>
                                                 <tr>
-                                                    <th width="40%" class="back-color-gray">Estimated Arrival Date/Time:</th>
+                                                    <th width="40%" class="back-color-gray">Estimated Arrival Date/Time:
+                                                    </th>
                                                     <td>{{estimatedArrivalDateTime}}</td>
                                                 </tr>
 
@@ -59,32 +57,54 @@
                                         <table class="table table-bordered m-0">
                                             <tbody>
                                                 <tr>
-                                                    <th width="40%" class="back-color-gray">Current Status:
-                                                         <div class="btn-group btn-group1 flex-wrap mr-1">
-                                                            <span class="fas fa-pencil-alt dropdown-toggle" data-toggle="dropdown" aria-expanded="false"></span>
-                                                        <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                                            <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus('Draft')">Draft</a>
-                                                            <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus('Cancelled_Manifest')">Cancelled Manifest</a>
-                                                            <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus('Transmitted_to_CBP')">Transmitted to CBP</a>
-                                                            <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus('Preliminary_Manifest_on_File_with_CBP')">Preliminary Manifest On File with CBP</a>
-                                                            <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus('CBP_Returned_Error')">CBP Returned Error</a>
-                                                            <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus('Complete_Manifest_On_File_with_CBP')">Complete Manifest On File with CBP</a>
-                                                            <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus('Complete_Manifest_and_Entry_Numbers_On_File_with_CBP')">Complete Manifest and Entry Numbers On File with CBP</a>
-                                                            <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus('Truck_Arrived_at_Border')">Truck Arrived at Border</a>
-                                                            <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus('Truck_Released_at_Border')">Truck Released at Border</a>
+                                                    <th width="40%" class="back-color-gray">Status:
+                                                        <div class="btn-group btn-group1 flex-wrap mr-1">
+                                                            <span class="fas fa-pencil-alt dropdown-toggle"
+                                                                data-toggle="dropdown" aria-expanded="false"></span>
+                                                            <div class="dropdown-menu" role="menu"
+                                                                x-placement="bottom-start"
+                                                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                                <a class="dropdown-item text-1" href="javascript:;"
+                                                                    (click)="setStatus('Draft')">Draft</a>
+                                                                <a class="dropdown-item text-1" href="javascript:;"
+                                                                    (click)="setStatus('Cancelled_Manifest')">Cancelled
+                                                                    Manifest</a>
+                                                                <a class="dropdown-item text-1" href="javascript:;"
+                                                                    (click)="setStatus('Transmitted_to_CBP')">Transmitted
+                                                                    to CBP</a>
+                                                                <a class="dropdown-item text-1" href="javascript:;"
+                                                                    (click)="setStatus('Preliminary_Manifest_on_File_with_CBP')">Preliminary
+                                                                    Manifest On File with CBP</a>
+                                                                <a class="dropdown-item text-1" href="javascript:;"
+                                                                    (click)="setStatus('CBP_Returned_Error')">CBP
+                                                                    Returned Error</a>
+                                                                <a class="dropdown-item text-1" href="javascript:;"
+                                                                    (click)="setStatus('Complete_Manifest_On_File_with_CBP')">Complete
+                                                                    Manifest On File with CBP</a>
+                                                                <a class="dropdown-item text-1" href="javascript:;"
+                                                                    (click)="setStatus('Complete_Manifest_and_Entry_Numbers_On_File_with_CBP')">Complete
+                                                                    Manifest and Entry Numbers On File with CBP</a>
+                                                                <a class="dropdown-item text-1" href="javascript:;"
+                                                                    (click)="setStatus('Truck_Arrived_at_Border')">Truck
+                                                                    Arrived at Border</a>
+                                                                <a class="dropdown-item text-1" href="javascript:;"
+                                                                    (click)="setStatus('Truck_Released_at_Border')">Truck
+                                                                    Released at Border</a>
+                                                            </div>
                                                         </div>
-                                                    </div></th>
-                                                    <td>{{currentStatus}}</td>
+                                                    </th>
+                                                    <td>
+                                                        <b class="badge text-uppercase"
+                                                            [ngClass]="[(currentStatus == 'Cancelled Manifest') ? 'cancel-color' :
+                                             (currentStatus == 'Transmitted to CBP') ? 'transmitted-color' :
+                                             (currentStatus == 'Truck Released at Border') ? 'truck-release-color' :
+                                             (currentStatus == 'Complete Manifest and Entry Numbers On File with CBP') ? 'complete-file-color' :
+                                             (currentStatus == 'CBP Returned Error') ? 'returned-color' :
+                                             (currentStatus == 'Truck Arrived at Border') ? 'truck-arr-color ' :
+                                             (currentStatus == 'Preliminary Manifest On File with CBP') ? 'preliminary-color ' :
+                                             (currentStatus == 'Complete Manifest On File with CBP') ? 'complete-cbp-color' :  'draft-color']">
+                                                            {{currentStatus}}</b>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray">Last Edited:</th>
@@ -99,14 +119,14 @@
                     </div>
                 </div>
 
-                <div class="row mt-3" *ngIf ="borderResponses ?.length">
+                <div class="row mt-3" *ngIf="borderResponses ?.length">
                     <div class="col-12">
                         <div class="card">
                             <div
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                                 <h4 class="m-0 ">ACE eManifest History</h4>
                             </div>
-                            <div class="card-body border scroll-table-class">
+                            <div class="card-body border">
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
@@ -120,10 +140,18 @@
                                         <tr *ngFor="let response of borderResponses; let i = index">
                                             <td>{{i+1}}</td>
                                             <td>{{response.dateTime}}</td>
-                                            <td>{{response.status}}</td>
+                                            <td>
+                                                <div *ngIf="response.sendRequest">{{response.sendRequest.type}}</div>
+                                                <div *ngIf="response.status">{{response.status}}</div>
+                                            </td>
                                             <td><b>{{response.message}}</b>&nbsp;&nbsp;
-                                                     <span *ngFor="let error of response.errors; let s = index;">{{error.note}}<span *ngIf= "s != response.errors.length-1">,</span><br></span>
-                                                </td>
+                                                <ul class="p-0 ml-3 mt-3" *ngIf="response.errors">
+                                                    <li *ngFor="let error of response.errors; let s = index;">
+                                                        {{error.note}}
+                                                        <span *ngIf="s != response.errors.length-1">,</span><br>
+                                                    </li>
+                                                </ul>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -134,7 +162,7 @@
                 </div>
                 <!-- SHIPMENT DIV -->
                 <div class="row mt-3" *ngIf="shipments?.length">
-                    <div class="col-12">
+                    <div class="col-12 text-capitalize">
                         <div class="card">
                             <div
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
@@ -142,8 +170,8 @@
                                 <div class=" pull-right">
                                     <!-- <button class="btn btn-success btn-sm mr-1"> Set Shipment Status</button> -->
                                     <!-- <button class="btn btn-success btn-sm"> Send to CBP</button> -->
-                                    <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
-                                        class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Shipment</a>
+                                    <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
+                                        class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Shipment</a> -->
                                 </div>
                             </div>
                             <div class="card-body border">
@@ -157,55 +185,68 @@
                                             <th>Consignee</th>
                                             <th>Total Commodities</th>
                                             <th>Total Quantities</th>
-                                            <th width="10%">Actions </th>
+                                            <!-- <th width="10%">Actions </th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let shipment of shipments"  data-toggle="tooltip"
-                                        data-placement="top" style="cursor: pointer;"
-                                        title="Click to see shipment details">
-                                            <td data-toggle="modal" data-target="#showShipmentDetails"
-                                                class="modal-with-form"
-                                                (click)="showShipmentDetails(shipment.shipmentID)">
-                                                {{shipment.shipmentControlNumber}}</td>
+                                        <tr *ngFor="let shipment of shipments" data-toggle="tooltip"
+                                            data-placement="top" style="cursor: pointer;"
+                                            title="Click to see shipment details">
+                                            <td (click)="showShipmentDetails(shipment.shipmentID)" class="text-success">
+                                                <strong>{{shipment.shipmentControlNumber}}</strong>
+                                            </td>
                                             <!-- <td></td> -->
-                                            <td data-toggle="modal" data-target="#showShipmentDetails"
-                                                class="modal-with-form "
-                                                (click)="showShipmentDetails(shipment.shipmentID)">
+                                            <td (click)="showShipmentDetails(shipment.shipmentID)">
                                                 {{shipmentTypeObjects[shipment.type]}}</td>
-                                            <td data-toggle="modal" data-target="#showShipmentDetails"
-                                                class="modal-with-form "
-                                                (click)="showShipmentDetails(shipment.shipmentID)">
-                                                {{shipment.shipper.name}}<br>{{shipment.shipper.address.addressLine}},
-                                                {{shipment.shipper.address.city}},
-                                                {{shipment.shipper.address.stateProvince}},
-                                                {{shipment.shipper.address.country}},
-                                                {{shipment.shipper.address.postalCode}}
+                                            <td (click)="showShipmentDetails(shipment.shipmentID)">
+                                                {{shipment.shipper.name}}<br>
+                                                <div *ngIf="shipment.shipper.address">
+                                                    {{shipment.shipper.address.addressLine ?
+                                                    shipment.shipper.address.addressLine + ', ' : ''}}
+                                                    {{shipment.shipper.address.city ? shipment.shipper.address.city + ',
+                                                    ' :
+                                                    ''}}
+                                                    {{shipment.shipper.address.stateProvince ?
+                                                    shipment.shipper.address.stateProvince + ', ' : ''}}
+                                                    {{shipment.shipper.address.country ?
+                                                    shipment.shipper.address.country +
+                                                    ', ' :
+                                                    ''}}
+                                                    {{shipment.shipper.address.postalCode ?
+                                                    shipment.shipper.address.postalCode : ''}}
+                                                </div>
                                             </td>
-                                            <td data-toggle="modal" data-target="#showShipmentDetails"
-                                                class="modal-with-form "
-                                                (click)="showShipmentDetails(shipment.shipmentID)">
-                                                {{shipment.consignee.name}}<br>{{shipment.consignee.address.addressLine}},
-                                                {{shipment.consignee.address.city}},
-                                                {{shipment.consignee.address.stateProvince}},
-                                                {{shipment.consignee.address.country}},
-                                                {{shipment.consignee.address.postalCode}}
+                                            <td (click)="showShipmentDetails(shipment.shipmentID)">
+                                                {{shipment.consignee.name}}<br>
+                                                <div *ngIf="shipment.consignee.address">
+
+                                                    {{shipment.consignee.address.addressLine
+                                                    ? shipment.consignee.address.addressLine + ', ' : ''}}
+                                                    {{shipment.consignee.address.city ? shipment.consignee.address.city
+                                                    + ',
+                                                    ' :
+                                                    ''}}
+                                                    {{shipment.consignee.address.stateProvince ?
+                                                    shipment.consignee.address.stateProvince + ', ' : ''}}
+                                                    {{shipment.consignee.address.country ?
+                                                    shipment.consignee.address.country + ', ' : ''}}
+                                                    {{shipment.consignee.address.postalCode ?
+                                                    shipment.consignee.address.postalCode : ''}}
+                                                </div>
                                             </td>
-                                            <td data-toggle="modal" data-target="#showShipmentDetails"
-                                                class="modal-with-form "
-                                                (click)="showShipmentDetails(shipment.shipmentID)">
-                                                {{shipment.commodities.length}}</td>
-                                            <td data-toggle="modal" data-target="#showShipmentDetails"
-                                                class="modal-with-form "
-                                                (click)="showShipmentDetails(shipment.shipmentID)"><span
-                                                    *ngFor="let commodity of shipment.commodities; let s=index;">{{commodity.quantity}}{{packagingUnitsObects[commodity.packagingUnit]}}<span *ngIf= "s != shipment.commodities.length-1">,</span></span>
+                                            <td (click)="showShipmentDetails(shipment.shipmentID)">
+                                                {{shipment.commodities.length}} </td>
+                                            <td (click)="showShipmentDetails(shipment.shipmentID)"><span
+                                                    *ngFor="let commodity of shipment.commodities; let s=index;">{{commodity.quantity}}
+                                                    {{packagingUnitsObects[commodity.packagingUnit]}}<span
+                                                        *ngIf="s != shipment.commodities.length-1">,</span></span>
                                             </td>
-                                            <td class="actions">
-                                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
+                                            <!-- <td class="actions">
+                                                <a
+                                                    routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                                <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a> -->
-                                                <!-- <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Edit</a> -->
-                                            </td>
+
+                                            </td> -->
                                         </tr>
                                     </tbody>
                                 </table>
@@ -221,15 +262,15 @@
                             <div
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                                 <h4 class="m-0 ">Drivers,Co-Drivers and Passengers</h4>
-                                <div class=" pull-right">
+                                <!-- <div class=" pull-right">
                                     <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
                                         class="btn btn-success btn-sm mr-1"><i class="fas fa-plus"></i> Add
                                         Co-Driver</a>
                                     <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
                                         class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Passenger</a>
-                                </div>
+                                </div> -->
                             </div>
-                            <div class="card-body border">
+                            <div class="card-body border text-capitalize">
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
@@ -239,83 +280,76 @@
                                             <th>Fast Card#</th>
                                             <th>Documents#</th>
                                             <!-- <th>Address</th> -->
-                                            <th width="10%">Actions</th>
+                                            <!-- <th width="10%">Actions</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
-                                      <tr  data-toggle="tooltip" data-placement="top"
-                                      title="Click to see details of main driver." style="cursor: pointer;">
-                                        <td data-toggle="modal" data-target="#showDriverDetails"
-                                        class="modal-with-form "
-                                        (click)="showMainDriverDetails()">{{mainDriver.firstName}} {{mainDriver.lastName}}</td>
-                                        <td data-toggle="modal" data-target="#showDriverDetails"
-                                        class="modal-with-form "
-                                        (click)="showMainDriverDetails()">Main Driver</td>
-                                        <td data-toggle="modal" data-target="#showDriverDetails"
-                                        class="modal-with-form "
-                                        (click)="showMainDriverDetails()">{{mainDriver.driverNumber}}</td>
-                                        <td data-toggle="modal" data-target="#showDriverDetails"
-                                        class="modal-with-form "
-                                        (click)="showMainDriverDetails()">{{mainDriver.fastCardNumber}}</td>
-                                        <td data-toggle="modal" data-target="#showDriverDetails"
-                                        class="modal-with-form "
-                                        (click)="showMainDriverDetails()"><span
-                                                *ngFor="let document of mainDriver.travelDocuments; let s= index;">{{document.number}}<span *ngIf= "s != mainDriver.travelDocuments.length-1">,</span></span>
-                                        </td>
-                                        <td class="actions">
-                                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
-                                                    class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                        </td>
-                                    </tr>
-                                        <tr *ngFor="let driver of drivers" data-toggle="tooltip" style="cursor: pointer;"
-                                        data-placement="top"
-                                        title="Click to see details of co-driver.">
-
-                                            <td data-toggle="modal" data-target="#showDriverDetails"
-                                            class="modal-with-form "
-                                            (click)="showDriverDetails(driver.driverID)">{{driver.firstName}}{{driver.lastName}}</td>
-                                            <td  data-toggle="modal" data-target="#showDriverDetails"
-                                            class="modal-with-form "
-                                            (click)="showDriverDetails(driver.driverID)">Co-Driver</td>
-                                            <td  data-toggle="modal" data-target="#showDriverDetails"
-                                            class="modal-with-form "
-                                            (click)="showDriverDetails(driver.driverID)">{{driver.driverNumber}}</td>
-                                            <td  data-toggle="modal" data-target="#showDriverDetails"
-                                            class="modal-with-form "
-                                            (click)="showDriverDetails(driver.driverID)">{{driver.fastCardNumber}}</td>
-                                            <td><span
-                                                    *ngFor="let document of driver.travelDocuments; let s= index;">{{document.number}}<span *ngIf= "s != driver.travelDocuments.length-1">,</span></span>
+                                        <tr data-toggle="tooltip" data-placement="top"
+                                            title="Click to see details of main driver." style="cursor: pointer;">
+                                            <td (click)="showMainDriverDetails()" class="text-success">
+                                                <strong>{{mainDriver.firstName}} {{mainDriver.middleName}}
+                                                    {{mainDriver.lastName}}</strong>
                                             </td>
-
-                                            <!-- <td>Address</td> -->
-                                            <td class="actions">
-                                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
+                                            <td (click)="showMainDriverDetails()">Main Driver
+                                            </td>
+                                            <td (click)="showMainDriverDetails()">
+                                                {{mainDriver.driverNumber}}</td>
+                                            <td (click)="showMainDriverDetails()">
+                                                {{mainDriver.fastCardNumber}}</td>
+                                            <td (click)="showMainDriverDetails()"><span
+                                                    *ngFor="let document of mainDriver.travelDocuments; let s= index;">{{document.number}}<span
+                                                        *ngIf="s != mainDriver.travelDocuments.length-1">,</span></span>
+                                            </td>
+                                            <!-- <td class="actions">
+                                                <a
+                                                    routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            </td>
+                                            </td> -->
                                         </tr>
-                                        <tr *ngFor="let passenger of passengers" data-toggle="tooltip" style="cursor: pointer;"
-                                        data-placement="top"
-                                        title="Click to see details of passenger.">
-                                            <td data-toggle="modal" data-target="#showPassengerDetails"
-                                            class="modal-with-form "
-                                            (click)="showPassengerDetails(passenger.passengerID)">{{passenger.firstName}}{{passenger.lastName}}</td>
-                                            <td data-toggle="modal" data-target="#showPassengerDetails"
-                                            class="modal-with-form "
-                                            (click)="showPassengerDetails(passenger.passengerID)">Passenger</td>
-                                            <td data-toggle="modal" data-target="#showPassengerDetails"
-                                            class="modal-with-form "
-                                            (click)="showPassengerDetails(passenger.passengerID)">--</td>
+                                        <tr *ngFor="let driver of drivers" data-toggle="tooltip"
+                                            style="cursor: pointer;" data-placement="top"
+                                            title="Click to see details of co-driver.">
+
+                                            <td class="text-success" (click)="showDriverDetails(driver.driverID)">
+                                                <strong>{{driver.firstName}} {{driver.middleName}}
+                                                    {{driver.lastName}}</strong>
+                                            </td>
+                                            <td (click)="showDriverDetails(driver.driverID)">
+                                                Co-Driver</td>
+                                            <td (click)="showDriverDetails(driver.driverID)">
+                                                {{driver.driverNumber}}</td>
+                                            <td (click)="showDriverDetails(driver.driverID)">
+                                                {{driver.fastCardNumber}}</td>
+                                            <td><span
+                                                    *ngFor="let document of driver.travelDocuments; let s= index;">{{document.number}}<span
+                                                        *ngIf="s != driver.travelDocuments.length-1">,</span></span>
+                                            </td>
+
+                                            <!-- <td>Address</td> -->
+                                            <!-- <td class="actions">
+                                                <a
+                                                    routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
+                                                        class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                            </td> -->
+                                        </tr>
+                                        <tr *ngFor="let passenger of passengers" data-toggle="tooltip"
+                                            style="cursor: pointer;" class="text-success" data-placement="top"
+                                            title="Click to see details of passenger.">
+                                            <td (click)="showPassengerDetails(passenger.passengerID)">
+                                                {{passenger.firstName}}{{passenger.lastName}}</td>
+                                            <td (click)="showPassengerDetails(passenger.passengerID)">Passenger</td>
+                                            <td (click)="showPassengerDetails(passenger.passengerID)">--</td>
                                             <td>{{passenger.fastCardNumber}}</td>
-                                            <td data-toggle="modal" data-target="#showPassengerDetails"
-                                            class="modal-with-form "
-                                            (click)="showPassengerDetails(passenger.passengerID)"><span
-                                                    *ngFor="let document of passenger.travelDocuments; let s= index;">{{document.number}}<span *ngIf= "s != passenger.travelDocuments.length-1">,</span></span>
+                                            <td (click)="showPassengerDetails(passenger.passengerID)"><span
+                                                    *ngFor="let document of passenger.travelDocuments; let s= index;">{{document.number}}<span
+                                                        *ngIf="s != passenger.travelDocuments.length-1">,</span></span>
                                             </td>
                                             <!-- <td>Address</td> -->
-                                            <td class="actions">
-                                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
+                                            <!-- <td class="actions">
+                                                <a
+                                                    routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                            </td>
+                                            </td> -->
                                         </tr>
                                     </tbody>
                                 </table>
@@ -347,46 +381,38 @@
                                             <th width="10%">Licence Plate #</th>
                                             <th width="15%">IIT</th>
                                             <th width="15%">Seal Numbers</th>
-                                            <th width="10%">Actions</th>
+                                            <!-- <th width="10%">Actions</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr data-toggle="modal" data-target="#showTruckDetails" style="cursor: pointer;"
-                                        class="modal-with-form " >
-                                            <td data-toggle="tooltip"
-                                            data-placement="top"
-                                            title="Click to see details of vehicle">{{truck.number}}</td>
-                                            <td data-toggle="tooltip"
-                                            data-placement="top"
-                                            title="Click to see details of vehicle">{{vehicleTypeObjects[truck.type]}}</td>
-                                            <td data-toggle="tooltip"
-                                            data-placement="top"
-                                            title="Click to see details of vehicle">{{truck.vinNumber}}</td>
-                                            <td data-toggle="tooltip"
-                                            data-placement="top"
-                                            title="Click to see details of vehicle">{{truck.dotNumber}}</td>
-                                            <td data-toggle="tooltip"
-                                            data-placement="top"
-                                            title="Click to see details of vehicle"><span
-                                                *ngFor="let license of truck.licensePlates;">{{license.stateProvince}}</span>
-                                        </td>
-                                            <td data-toggle="tooltip"
-                                            data-placement="top"
-                                            title="Click to see details of vehicle"><span
-                                                *ngFor="let license of truck.licensePlates;">{{license.number}}</span>
-                                        </td>
-                                            <td data-toggle="tooltip"
-                                            data-placement="top"
-                                            title="Click to see details of vehicle"><span *ngIf="truck.IIT === 'CARRIER'">Trip contains IIT's covered under 10.41(a) with
-                                              carriers bond.</span>
-                                              <span *ngIf="truck.IIT === 'IMPORTER'">Trip contains IIT's covered under 10.41(a) with
-                                                importers bond.</span></td>
-                                            <td data-toggle="tooltip"
-                                            data-placement="top"
-                                            title="Click to see details of vehicle"><span *ngFor="let seal of truck.sealNumbers; let s= index;">{{seal}}<span *ngIf= "s != truck.sealNumbers.length-1">,</span></span></td>
-                                            <td class="actions"><a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
-                                                        class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                        <tr (click)="trucksModel = true;" style="cursor: pointer">
+                                            <td title="Click to see details of vehicle" class="text-success">
+                                                <strong>{{truck.number}}</strong>
                                             </td>
+                                            <td title="Click to see details of vehicle">
+                                                {{vehicleTypeObjects[truck.type]}}</td>
+                                            <td title="Click to see details of vehicle">{{truck.vinNumber}}</td>
+                                            <td title="Click to see details of vehicle">{{truck.dotNumber}}</td>
+                                            <td title="Click to see details of vehicle">
+                                                {{truck.licensePlates.stateProvince}}
+                                            </td>
+                                            <td title="Click to see details of vehicle">{{truck.licensePlates.number}}
+                                            </td>
+                                            <td title="Click to see details of vehicle"><span
+                                                    *ngIf="truck.IIT === 'CARRIER'">Trip contains IIT's covered under
+                                                    10.41(a) with
+                                                    carriers bond.</span>
+                                                <span *ngIf="truck.IIT === 'IMPORTER'">Trip contains IIT's covered under
+                                                    10.41(a) with
+                                                    importers bond.</span>
+                                            </td>
+                                            <td title="Click to see details of vehicle"><span
+                                                    *ngFor="let seal of truck.sealNumbers; let s= index;">{{seal}}<span
+                                                        *ngIf="s != truck.sealNumbers.length-1">,</span></span></td>
+                                            <!-- <td class="actions"><a
+                                                    routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
+                                                        class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                            </td> -->
                                         </tr>
                                     </tbody>
                                 </table>
@@ -395,8 +421,8 @@
                     </div>
 
                 </div>
-            <!-- TRAILER -->
-                <div class="row mt-3">
+                <!-- TRAILER -->
+                <div class="row mt-3 text-capitalize">
                     <div class="col-12">
                         <div class="card">
                             <div
@@ -405,8 +431,8 @@
                                 <div class=" pull-right">
                                     <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
                                         class="btn btn-success btn-sm mr-1"> Set IIT Status</a> -->
-                                    <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
-                                        class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Asset</a>
+                                    <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
+                                        class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Asset</a> -->
                                 </div>
                             </div>
                             <div class="card-body border">
@@ -420,31 +446,39 @@
                                             <th width="15%">Licence Plate #</th>
                                             <th width="15%">IIT</th>
                                             <th width="15%">Seal Numbers</th>
-                                            <th width="10%">Actions</th>
+                                            <!-- <th width="10%">Actions</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let trailer of trailers">
                                             <td>{{trailer.number}}</td>
                                             <td><span *ngIf="trailer.type === 'OE'">Others</span>
-                                              <span *ngIf="trailer.type !== 'OE'">{{assetTypeCode[trailer.type]}}</span></td>
+                                                <span
+                                                    *ngIf="trailer.type !== 'OE'">{{assetTypeCode[trailer.type]}}</span>
+                                            </td>
                                             <td>{{trailer.aceId}}</td>
                                             <td><span
                                                     *ngFor="let license of trailer.licensePlates;">{{license.stateProvince}}</span>
                                             </td>
                                             <td><span
-                                                *ngFor="let license of trailer.licensePlates;">{{license.number}}</span>
-                                        </td>
-                                            <td><span *ngIf="trailer.IIT === 'CARRIER'">Trip contains IIT's covered under 10.41(a) with
-                                              carriers bond.</span>
-                                              <span *ngIf="trailer.IIT === 'IMPORTER'">Trip contains IIT's covered under 10.41(a) with
-                                                importers bond.</span></td>
-                                            <td><span *ngFor="let seal of trailer.sealNumbers;let s= index;">{{seal}}<span *ngIf= "s != trailer.sealNumbers.length-1">,</span></span></td>
-                                            <td class="actions">
-                                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
-                                                        class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                                <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a> -->
+                                                    *ngFor="let license of trailer.licensePlates;">{{license.number}}</span>
                                             </td>
+                                            <td><span *ngIf="trailer.IIT === 'CARRIER'">Trip contains IIT's covered
+                                                    under 10.41(a) with
+                                                    carriers bond.</span>
+                                                <span *ngIf="trailer.IIT === 'IMPORTER'">Trip contains IIT's covered
+                                                    under 10.41(a) with
+                                                    importers bond.</span>
+                                            </td>
+                                            <td><span
+                                                    *ngFor="let seal of trailer.sealNumbers;let s= index;">{{seal}}<span
+                                                        *ngIf="s != trailer.sealNumbers.length-1">,</span></span></td>
+                                            <!-- <td class="actions">
+                                                <a
+                                                    routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
+                                                        class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a>
+                                            </td> -->
                                         </tr>
                                     </tbody>
                                 </table>
@@ -499,86 +533,286 @@
     </div>
 </section>
 <!-- TRUCK  DETAILS -->
-<div class="modal fade" id="showTruckDetails" tabindex="-1" role="dialog" aria-labelledby="showTruckDetails"
-    aria-hidden="true">
-    <div class="modal-dialog" style="max-width: 1200px;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Vehicle Insurance Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-                </button>
-            </div>
-            <div class="modal-body text-dark">
-                <div class="card-body border">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Vehicle#:</th>
-                                        <td>{{truck.number}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray"> Vehicle Type:</th>
-                                        <td>{{vehicleTypeObjects[truck.type]}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">VIN/SN:</th>
-                                        <td>{{truck.vinNumber}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">DOT#:</th>
-                                        <td>{{truck.dotNumber}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">IIT:</th>
-                                        <td><span *ngIf="truck.IIT === 'CARRIER'">Trip contains IIT's covered under 10.41(a) with
-                                          carriers bond.</span>
-                                          <span *ngIf="truck.IIT === 'IMPORTER'">Trip contains IIT's covered under 10.41(a) with
-                                            importers bond.</span></td>
-                                    </tr>
+<p-dialog header="Vehicle Insurance Details" [modal]="true" [style]="{ width: '60vw' }" [(visible)]="trucksModel">
+    <div class="row">
+        <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+                <tbody>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Vehicle#:</th>
+                        <td>{{truck.number}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray"> Vehicle Type:</th>
+                        <td>{{vehicleTypeObjects[truck.type]}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">VIN/SN:</th>
+                        <td>{{truck.vinNumber}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">DOT#:</th>
+                        <td>{{truck.dotNumber}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">IIT:</th>
+                        <td><span *ngIf="truck.IIT === 'CARRIER'">Trip contains IIT's covered under
+                                10.41(a) with
+                                carriers bond.</span>
+                            <span *ngIf="truck.IIT === 'IMPORTER'">Trip contains IIT's covered under
+                                10.41(a) with
+                                importers bond.</span>
+                        </td>
+                    </tr>
 
 
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Seal Numbers :</th>
-                                        <td><span *ngFor="let seal of truck.sealNumbers; let s= index;">{{seal}}<span *ngIf= "s != truck.sealNumbers.length-1">,</span> </span></td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Insurance Vendor:</th>
-                                        <td>{{truck.insurancePolicy.insuranceCompanyName}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Issued Date:</th>
-                                        <td>{{truck.insurancePolicy.issuedDate}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Insurance Policy#:</th>
-                                        <td>{{truck.insurancePolicy.policyNumber}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Insurance Amount:</th>
-                                        <td>{{truck.insurancePolicy.policyAmount}} {{truck.insurancePolicy.amountCurrency}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+                <tbody>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Seal Numbers :</th>
+                        <td><span *ngFor="let seal of truck.sealNumbers; let s= index;">{{seal}}<span
+                                    *ngIf="s != truck.sealNumbers.length-1">,</span> </span></td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Insurance Vendor:</th>
+                        <td>{{truck.insurancePolicy.insuranceCompanyName}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Issued Date:</th>
+                        <td>{{truck.insurancePolicy.issuedDate}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Insurance Policy#:</th>
+                        <td>{{truck.insurancePolicy.policyNumber}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Insurance Amount:</th>
+                        <td>{{truck.insurancePolicy.policyAmount}}
+                            {{truck.insurancePolicy.amountCurrency}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button (click)="trucksModel = false;" label="Close"></p-button>
+    </ng-template>
+</p-dialog>
+
+<!-- SHIPMENT DETAILS MODEL -->
+<p-dialog header="Shipment Details" [modal]="true" [style]="{ width: '60vw' }" [(visible)]="shipmentsModel">
+    <div class="row text-capitalize">
+        <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+                <tbody>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Shipment Type:</th>
+                        <td>{{shipmentTypeObjects[shipmentData.type]}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Shipment Control Number:</th>
+                        <td>{{shipmentData.shipmentControlNumber}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Province of Loading:</th>
+                        <td>{{shipmentData.provinceOfLoading}}</td>
+                    </tr>
+                    <tr *ngIf="shipmentData.type === 'GOODS_ASTRAY'">
+                        <th width="40%" class="back-color-gray">Goods Astray Date of Exit:</th>
+                        <td>{{shipmentData.goodsAstrayDateOfExit}}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+                <tbody>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Consignor:</th>
+                        <td>{{shipmentData.shipperName}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Consignee:</th>
+                        <td>{{shipmentData.consigneeName}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Broker :</th>
+                        <td>{{shipmentData.broker.filerCode}} -
+                            {{brokerCodeObject[shipmentData.broker.filerCode]}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Broker Port Location:</th>
+                        <td>{{shipmentData.broker.portLocation}} -
+                            {{USportsListObjects[shipmentData.broker.portLocation]}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- inbond details -->
+    <div class="row" *ngIf="shipmentData.type === 'IN_BOND'">
+        <div class="col-lg-12">
+            <h4>Inbond Details</h4>
+        </div>
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-6">
+                    <table class="table table-bordered m-0">
+                        <tbody>
+                            <tr>
+                                <th width="40%" class="back-color-gray">Entry Type:</th>
+                                <td>{{shipmentData.inBondDetails.type}} -
+                                    {{inBondTypeObects[shipmentData.inBondDetails.type]}}</td>
+                            </tr>
+                            <tr>
+                                <th width="40%" class="back-color-gray">Paper In Bond Number:</th>
+                                <td>{{shipmentData.inBondDetails.paperInBondNumber}}</td>
+                            </tr>
+                            <tr>
+                                <th width="40%" class="back-color-gray">Onward Carrier SCAC:</th>
+                                <td>{{shipmentData.inBondDetails.onwardCarrierScac}}</td>
+                            </tr>
+                            <tr>
+                                <th width="40%" class="back-color-gray">Subject To FDA?:</th>
+                                <td><span *ngIf="shipmentData.inBondDetails.fda">YES</span>
+                                    <span *ngIf="!shipmentData.inBondDetails.fda">NO</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <div class="modal-footer text-right">
-                <a class="btn btn-default modal-dismiss" data-dismiss="modal">Close</a>
+                <div class="col-lg-6">
+                    <table class="table table-bordered m-0">
+                        <tbody>
+                            <tr>
+                                <th width="40%" class="back-color-gray">US In-bond Destination:</th>
+                                <td>{{shipmentData.inBondDetails.usDestination}} -
+                                    {{USportsListObjects[shipmentData.inBondDetails.usDestination]}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="40%" class="back-color-gray">Foreign In-Bond Destination:
+                                </th>
+                                <td>{{shipmentData.inBondDetails.foreignDestination}} -
+                                    {{foreignDestinationListObjects[shipmentData.inBondDetails.foreignDestination]}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="40%" class="back-color-gray">Bonded Carrier ID:</th>
+                                <td>{{shipmentData.inBondDetails.irsNumber}}</td>
+                            </tr>
+                            <tr>
+                                <th width="40%" class="back-color-gray">Est US Departure Date:</th>
+                                <td>{{shipmentData.inBondDetails.estimatedDepartureDate}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- SHIPMENT DETAILS MODEL -->
+    <!-- third parties -->
+    <div class="row mt-2" *ngIf="shipmentData.thirdParties?.length">
+        <div class="col-lg-12">
+            <h4>Third Party Details</h4>
+        </div>
+        <div class="col-lg-12">
+            <table class="table table-bordered table-striped m-0">
+                <thead>
+                    <tr>
+                        <th> Name </th>
+                        <th> Type</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let thirdParty of shipmentData.thirdParties">
+                        <td>{{thirdParty.name ? thirdParty.name : ''}}</td>
+                        <td>{{thirdParty.type ? thirdPartyTypesObects[thirdParty.type] : '-'}}</td>
+                        <td>{{thirdParty.address.addressLine ? thirdParty.address.addressLine + ', ' : '-'}}
+                            {{thirdParty.address.city ? thirdParty.address.city + ', ' : ''}}
+                            {{thirdParty.address.stateProvince ? thirdParty.address.stateProvince + ', ' : ''}}
+                            {{thirdParty.address.postalCode}}
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- commodities -->
+    <div class="row mt-2">
+        <div class="col-lg-12">
+            <h4>Commodity Details</h4>
+        </div>
+        <div class="col-lg-12">
+            <table class="table table-bordered table-striped m-0">
+                <thead>
+                    <tr>
+                        <th> Description </th>
+                        <th> Loaded On</th>
+                        <th>Hazardous Details</th>
+                        <th>Other Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let commodity of shipmentData.commodities">
+                        <td><span class="font-weight-semibold">Commodity:&nbsp;</span>{{commodity.description}}<br>
+                            <span class="font-weight-semibold"
+                                *ngIf="shipmentData.type === 'IN_BOND' || shipmentData.type === 'SECTION_321' || shipmentData.type === 'SECTION_321_FDA'">Value:&nbsp;{{commodity.value}}USD<br></span>
+                            <span class="font-weight-semibold">Quantity:&nbsp;</span>{{commodity.quantity}}
+                            {{packagingUnitsObects[commodity.packagingUnit]}} <br>
+                            <span class="font-weight-semibold">Weight:&nbsp;</span> {{commodity.weight}}
+                            <span *ngIf="commodity.weightUnit == 'LB'">Pounds</span>
+                            <span *ngIf="commodity.weightUnit == 'KG'">Kilograms</span>
+                            <br>
+                            <span class="font-weight-semibold">Country of Origin:&nbsp;</span>
+                            {{countryCodeName[commodity.countryOfOrigin]}}
+                        </td>
+                        <td><span class="font-weight-semibold">Type:&nbsp;</span><span
+                                *ngIf="commodity.loadedOn.type == 'TRUCK'">Vehicle</span>
+                            <span *ngIf="commodity.loadedOn.type == 'TRAILER'">Asset</span><br>
+                            <span class="font-weight-semibold">
+                                <span *ngIf="commodity.loadedOn.type == 'TRUCK'">Vehicle</span>
+                                <span
+                                    *ngIf="commodity.loadedOn.type == 'TRAILER'">Asset</span>#:</span>{{commodity.loadedOn.number}}
+                        </td>
+                        <td><span class="font-weight-semibold">Hazmat
+                                Code:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">
+                                {{commodity.hazmatDetails.unCode}}<br></span>
+                            <span class="font-weight-semibold">Emergency Contact
+                                Name:&nbsp;</span><span
+                                *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.emergencyContactName}}</span>
+                            <br><span class="font-weight-semibold">Contact
+                                Number:&nbsp;</span><span
+                                *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactPhone}}</span><br>
+                            <span class="font-weight-semibold">Contact
+                                Email:&nbsp;</span><span
+                                *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactEmail}}</span>
+                        </td>
+                        <td><span *ngIf="shipmentData.type === 'BRASS' || shipmentData.type === 'BRASS_MULTIPLE'"
+                                class="font-weight-semibold">C4LineReleaseNumber:{{commodity.c4LineReleaseNumber}}<br></span>
+                            <span *ngIf="shipmentData.type === 'IN_BOND' && shipmentData.inBondDetails.type === '62'"
+                                class="font-weight-semibold">Harmonized
+                                Code:&nbsp;{{commodity.harmonizedCode}}<br></span>
+                            <span class="font-weight-semibold">Marks and Numbers:&nbsp;</span><span
+                                *ngFor="let marks of commodity.marksAndNumbers; let s=index;">{{marks}}<span
+                                    *ngIf="s != commodity.marksAndNumbers.length-1">,</span></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button (click)="shipmentsModel = false;" label="Close"></p-button>
+    </ng-template>
+</p-dialog>
 <div class="modal fade" id="showShipmentDetails" tabindex="-1" role="dialog" aria-labelledby="showShipmentDetails"
     aria-hidden="true">
     <div class="modal-dialog" style="max-width: 1200px;" role="document">
@@ -591,189 +825,7 @@
             </div>
             <div class="modal-body text-dark">
                 <div class="card-body border">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Shipment Type:</th>
-                                        <td>{{shipmentTypeObjects[shipmentData.type]}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Shipment Control Number:</th>
-                                        <td>{{shipmentData.shipmentControlNumber}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Province of Loading:</th>
-                                        <td>{{shipmentData.provinceOfLoading}}</td>
-                                    </tr>
-                                    <tr *ngIf="shipmentData.type === 'GOODS_ASTRAY'">
-                                      <th width="40%" class="back-color-gray">Goods Astray Date of Exit:</th>
-                                      <td>{{shipmentData.goodsAstrayDateOfExit}}</td>
-                                  </tr>
 
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Consignor:</th>
-                                        <td>{{shipmentData.shipperName}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Consignee:</th>
-                                        <td>{{shipmentData.consigneeName}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Broker :</th>
-                                        <td>{{shipmentData.broker.filerCode}} - {{brokerCodeObject[shipmentData.broker.filerCode]}}</td>
-                                    </tr>
-                                    <tr>
-                                      <th width="40%" class="back-color-gray">Broker Port Location:</th>
-                                      <td>{{shipmentData.broker.portLocation}} - {{USportsListObjects[shipmentData.broker.portLocation]}}</td>
-                                  </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- inbond details -->
-                    <div class="row" *ngIf="shipmentData.type === 'IN_BOND'">
-                      <div class="col-lg-12"><h4>Inbond Details</h4></div>
-                      <div class="col-lg-12">
-                        <div class="row">
-                          <div class="col-lg-6">
-                              <table class="table table-bordered m-0">
-                                  <tbody>
-                                      <tr>
-                                          <th width="40%" class="back-color-gray">Entry Type:</th>
-                                          <td>{{shipmentData.inBondDetails.type}} - {{inBondTypeObects[shipmentData.inBondDetails.type]}}</td>
-                                      </tr>
-                                      <tr>
-                                          <th width="40%" class="back-color-gray">Paper In Bond Number:</th>
-                                          <td>{{shipmentData.inBondDetails.paperInBondNumber}}</td>
-                                      </tr>
-                                      <tr>
-                                          <th width="40%" class="back-color-gray">Onward Carrier SCAC:</th>
-                                          <td>{{shipmentData.inBondDetails.onwardCarrierScac}}</td>
-                                      </tr>
-                                      <tr>
-                                        <th width="40%" class="back-color-gray">Subject To FDA?:</th>
-                                        <td><span *ngIf="shipmentData.inBondDetails.fda">YES</span>
-                                            <span *ngIf="!shipmentData.inBondDetails.fda">NO</span>
-                                        </td>
-                                    </tr>
-                                  </tbody>
-                              </table>
-                          </div>
-                          <div class="col-lg-6">
-                              <table class="table table-bordered m-0">
-                                  <tbody>
-                                      <tr>
-                                          <th width="40%" class="back-color-gray">US In-bond Destination:</th>
-                                          <td>{{shipmentData.inBondDetails.usDestination}} - {{USportsListObjects[shipmentData.inBondDetails.usDestination]}}</td>
-                                      </tr>
-                                      <tr>
-                                        <th width="40%" class="back-color-gray">Foreign In-Bond Destination:</th>
-                                        <td>{{shipmentData.inBondDetails.foreignDestination}} - {{foreignDestinationListObjects[shipmentData.inBondDetails.foreignDestination]}}</td>
-                                    </tr>
-                                      <tr>
-                                          <th width="40%" class="back-color-gray">Bonded Carrier ID:</th>
-                                          <td>{{shipmentData.inBondDetails.irsNumber}}</td>
-                                      </tr>
-                                      <tr>
-                                          <th width="40%" class="back-color-gray">Est US Departure Date:</th>
-                                          <td>{{shipmentData.inBondDetails.estimatedDepartureDate}}</td>
-                                      </tr>
-                                  </tbody>
-                              </table>
-                          </div>
-                      </div>
-                      </div>
-                    </div>
-                    <!-- third parties -->
-                    <div class="row mt-2" *ngIf="shipmentData.thirdParties?.length">
-                        <div class="col-lg-12"><h4>Third Party Details</h4></div>
-                        <div class="col-lg-12">
-                            <table class="table table-bordered table-striped m-0">
-                                <thead>
-                                    <tr>
-                                        <th> Name </th>
-                                        <th> Type</th>
-                                        <th>Address</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let thirdParty of shipmentData.thirdParties">
-                                        <td>{{thirdParty.name}}</td>
-                                        <td>{{thirdPartyTypesObects[thirdParty.type]}}</td>
-                                        <td>{{thirdParty.address.addressLine}},
-                                            {{thirdParty.address.city}},{{thirdParty.address.stateProvince}},{{thirdParty.address.postalCode}}
-                                        </td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- commodities -->
-                    <div class="row mt-2">
-                        <div class="col-lg-12"><h4>Commodity Details</h4></div>
-                        <div class="col-lg-12">
-                            <table class="table table-bordered table-striped m-0">
-                                <thead>
-                                    <tr>
-                                        <th> Description </th>
-                                        <th> Loaded On</th>
-                                        <th >Hazardous Details</th>
-                                        <th>Other Details</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let commodity of shipmentData.commodities">
-                                        <td><span
-                                                class="font-weight-semibold">Commodity:&nbsp;</span>{{commodity.description}}<br>
-                                            <span class="font-weight-semibold"
-                                                *ngIf="shipmentData.type === 'IN_BOND' || shipmentData.type === 'SECTION_321' || shipmentData.type === 'SECTION_321_FDA'">Value:&nbsp;{{commodity.value}}USD<br></span>
-                                            <span class="font-weight-semibold">Quantity:&nbsp;</span>{{commodity.quantity}}
-                                            {{packagingUnitsObects[commodity.packagingUnit]}} <br>
-                                            <span class="font-weight-semibold">Weight:&nbsp;</span> {{commodity.weight}}
-                                            <span *ngIf="commodity.weightUnit == 'LB'">Pounds</span>
-                                            <span *ngIf="commodity.weightUnit == 'KG'">Kilograms</span>
-                                            <br>
-                                            <span class="font-weight-semibold">Country of Origin:&nbsp;</span>
-                                            {{countryCodeName[commodity.countryOfOrigin]}}
-                                        </td>
-                                        <td><span
-                                                class="font-weight-semibold">Type:&nbsp;</span><span *ngIf="commodity.loadedOn.type == 'TRUCK'">Vehicle</span>
-                                                <span *ngIf="commodity.loadedOn.type == 'TRAILER'">Asset</span><br>
-                                            <span
-                                                class="font-weight-semibold">
-                                                <span *ngIf="commodity.loadedOn.type == 'TRUCK'">Vehicle</span>
-                                                <span *ngIf="commodity.loadedOn.type == 'TRAILER'">Asset</span>#:</span>{{commodity.loadedOn.number}}
-                                        </td>
-                                        <td><span class="font-weight-semibold">Hazmat
-                                                Code:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined"> {{commodity.hazmatDetails.unCode}}<br></span>
-                                            <span class="font-weight-semibold">Emergency Contact
-                                                Name:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.emergencyContactName}}</span>
-                                            <br><span class="font-weight-semibold">Contact
-                                                Number:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactPhone}}</span><br>
-                                            <span class="font-weight-semibold">Contact
-                                                Email:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactEmail}}</span>
-                                        </td>
-                                        <td><span *ngIf="shipmentData.type === 'BRASS' || shipmentData.type === 'BRASS_MULTIPLE'"
-                                                class="font-weight-semibold">C4LineReleaseNumber:{{commodity.c4LineReleaseNumber}}<br></span>
-                                            <span *ngIf="shipmentData.type === 'IN_BOND' && shipmentData.inBondDetails.type === '62'" class="font-weight-semibold">Harmonized
-                                                Code:&nbsp;{{commodity.harmonizedCode}}<br></span>
-                                            <span class="font-weight-semibold">Marks and Numbers:&nbsp;</span><span
-                                                *ngFor="let marks of commodity.marksAndNumbers; let s=index;">{{marks}}<span *ngIf= "s != commodity.marksAndNumbers.length-1">,</span></span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="modal-footer text-right">
@@ -783,203 +835,213 @@
     </div>
 </div>
 <!-- DRIVER DETAILS -->
-<div class="modal fade" id="showDriverDetails" tabindex="-1" role="dialog" aria-labelledby="showDriverDetails"
-    aria-hidden="true">
-    <div class="modal-dialog" style="max-width: 1200px;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Driver Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-                </button>
-            </div>
-            <div class="modal-body text-dark">
-                <div class="card-body border">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">
-                                            Driver Number:</th>
-                                        <td>{{driverData.driverNumber}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Name:</th>
-                                        <td>{{driverData.firstName}} {{driverData.lastName}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Gender:</th>
-                                        <td><span *ngIf="driverData.gender == 'M'">Male</span>
-                                            <span *ngIf="driverData.gender == 'F'">Female</span></td>
-                                    </tr>
+<p-dialog header="Driver Details" [modal]="true" [style]="{ width: '60vw' }" [(visible)]="driversModel">
+    <div class="row text-capitalize">
+        <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+                <tbody>
+                    <tr>
+                        <th width="40%" class="back-color-gray">
+                            Driver Number:</th>
+                        <td>{{driverData.driverNumber}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Name:</th>
+                        <td>{{driverData.firstName}} {{driverData.lastName}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Gender:</th>
+                        <td><span *ngIf="driverData.gender == 'M'">Male</span>
+                            <span *ngIf="driverData.gender == 'F'">Female</span>
+                        </td>
+                    </tr>
 
 
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Fast Card#:</th>
-                                        <td>{{driverData.fastCardNumber}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Citizenship:</th>
-                                        <td>{{driverData.citizenshipCountry}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Date Of Birth:</th>
-                                        <td>{{driverData.dateOfBirth}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- US Address -->
-                    <div class="row">
-                      <div class="col-lg-12"><h4>US Address Details</h4></div>
-                      <div class="col-lg-6">
-                          <table class="table table-bordered m-0">
-                              <tbody>
-                                <tr>
-                                  <th width="40%" class="back-color-gray">Address:</th>
-                                  <td>{{driverData.usAddress.addressLine}}</td>
-                              </tr>
-                                  <tr>
-                                      <th width="40%" class="back-color-gray">
-                                          State:</th>
-                                      <td>{{driverData.usAddress.state}}</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
-                      <div class="col-lg-6">
-                          <table class="table table-bordered m-0">
-                              <tbody>
-
-                                  <tr>
-                                    <th width="40%" class="back-color-gray">City:</th>
-                                    <td>{{driverData.usAddress.city}}</td>
-                                </tr>
-                                  <tr>
-                                      <th width="40%" class="back-color-gray">ZipCode:</th>
-                                      <td>{{driverData.usAddress.zipCode}}</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
-                  </div>
-                    <!-- travel documents -->
-                    <div class="row mt-2" *ngIf="driverData.travelDocuments?.length">
-                      <div class="col-lg-12"><h4>Driver Document(s) Details</h4></div>
-                        <div class="col-lg-12">
-                            <table class="table table-bordered table-striped m-0">
-                                <thead>
-                                    <tr>
-                                        <th>Document# </th>
-                                        <th>Issuing State/Province</th>
-                                        <th>Document Type</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let travelDocument of driverData.travelDocuments">
-                                        <td>{{travelDocument.number}}</td>
-                                        <td>{{travelDocument.stateProvince}},{{travelDocument.country}}</td>
-                                        <td>{{documentsTypesObects[travelDocument.type]}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer text-right">
-                <a class="btn btn-default modal-dismiss" data-dismiss="modal">Close</a>
-            </div>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+                <tbody>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Fast Card#:</th>
+                        <td>{{driverData.fastCardNumber}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Citizenship:</th>
+                        <td>{{driverData.citizenshipCountry}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Date Of Birth:</th>
+                        <td>{{driverData.dateOfBirth}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-</div>
+    <!-- US Address -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h4>US Address Details</h4>
+        </div>
+        <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+                <tbody>
+                    <tr>
+                        <th width="40%" class="back-color-gray">Address:</th>
+                        <td>{{driverData.usAddress.addressLine}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">
+                            State:</th>
+                        <td>{{driverData.usAddress.state}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-6">
+            <table class="table table-bordered m-0">
+                <tbody>
+
+                    <tr>
+                        <th width="40%" class="back-color-gray">City:</th>
+                        <td>{{driverData.usAddress.city}}</td>
+                    </tr>
+                    <tr>
+                        <th width="40%" class="back-color-gray">ZipCode:</th>
+                        <td>{{driverData.usAddress.zipCode}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- travel documents -->
+    <div class="row mt-2" *ngIf="driverData.travelDocuments?.length">
+        <div class="col-lg-12">
+            <h4>Driver Document(s) Details</h4>
+        </div>
+        <div class="col-lg-12">
+            <table class="table table-bordered table-striped m-0">
+                <thead>
+                    <tr>
+                        <th>Document# </th>
+                        <th>Issuing State/Province</th>
+                        <th>Document Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let travelDocument of driverData.travelDocuments">
+                        <td>{{travelDocument.number}}</td>
+                        <td>{{travelDocument.stateProvince}},{{travelDocument.country}}</td>
+                        <td>{{documentsTypesObects[travelDocument.type]}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button (click)="driversModel = false;" label="Close"></p-button>
+    </ng-template>
+</p-dialog>
+
 <!-- PASSENGER DETAILS -->
-<div class="modal fade" id="showPassengerDetails" tabindex="-1" role="dialog" aria-labelledby="showPassengerDetails"
-    aria-hidden="true">
-    <div class="modal-dialog" style="max-width: 1200px;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Passenger Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-                </button>
+<p-dialog header="Passenger Details" [modal]="true" [style]="{ width: '60vw' }" [(visible)]="passengersModel">
+    <div class="card-body border">
+        <div class="row">
+            <div class="col-lg-6">
+                <table class="table table-bordered m-0">
+                    <tbody>
+                        <tr>
+                            <th width="40%" class="back-color-gray">Name:</th>
+                            <td>{{passengerData.firstName}} {{passengerData.lastName}}</td>
+                        </tr>
+                        <tr>
+                            <th width="40%" class="back-color-gray">Gender:</th>
+                            <td><span *ngIf="passengerData.gender == 'M'">Male</span>
+                                <span *ngIf="passengerData.gender == 'F'">Female</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="40%" class="back-color-gray">Date Of Birth:</th>
+                            <td>{{passengerData.dateOfBirth}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="modal-body text-dark">
-                <div class="card-body border">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Name:</th>
-                                        <td>{{passengerData.firstName}} {{passengerData.lastName}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Gender:</th>
-                                        <td><span *ngIf="passengerData.gender == 'M'">Male</span>
-                                            <span *ngIf="passengerData.gender == 'F'">Female</span></td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Date Of Birth:</th>
-                                        <td>{{passengerData.dateOfBirth}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-lg-6">
-                            <table class="table table-bordered m-0">
-                                <tbody>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Fast Card#:</th>
-                                        <td>{{passengerData.fastCardNumber}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th width="40%" class="back-color-gray">Citizenship:</th>
-                                        <td>{{passengerData.citizenshipCountry}}</td>
-                                    </tr>
+            <div class="col-lg-6">
+                <table class="table table-bordered m-0">
+                    <tbody>
+                        <tr>
+                            <th width="40%" class="back-color-gray">Fast Card#:</th>
+                            <td>{{passengerData.fastCardNumber}}</td>
+                        </tr>
+                        <tr>
+                            <th width="40%" class="back-color-gray">Citizenship:</th>
+                            <td>{{passengerData.citizenshipCountry}}</td>
+                        </tr>
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <!-- travel documents -->
-                    <div class="row mt-2" *ngIf="passengerData.travelDocuments?.length">
-                        <div class="col-lg-12"><h4>Documents Details</h4></div>
-                        <div class="col-lg-12">
-                            <table class="table table-bordered table-striped m-0">
-                                <thead>
-                                    <tr>
-                                        <th>Document# </th>
-                                        <th>Document Type</th>
-                                        <th>Issuing Country</th>
-                                        <th>Issuing State</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let travelDocument of passengerData.travelDocuments">
-                                        <td>{{travelDocument.number}}</td>
-                                        <td>{{documentsTypesObects[travelDocument.type]}}</td>
-                                        <td>{{travelDocument.country}}</td>
-                                        <td>{{travelDocument.stateProvince}}</td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                    </tbody>
+                </table>
             </div>
-            <div class="modal-footer text-right">
-                <a class="btn btn-default modal-dismiss" data-dismiss="modal">Close</a>
+        </div>
+        <!-- travel documents -->
+        <div class="row mt-2" *ngIf="passengerData.travelDocuments?.length">
+            <div class="col-lg-12">
+                <h4>Documents Details</h4>
+            </div>
+            <div class="col-lg-12">
+                <table class="table table-bordered table-striped m-0">
+                    <thead>
+                        <tr>
+                            <th>Document# </th>
+                            <th>Document Type</th>
+                            <th>Issuing Country</th>
+                            <th>Issuing State</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let travelDocument of passengerData.travelDocuments">
+                            <td>{{travelDocument.number}}</td>
+                            <td>{{documentsTypesObects[travelDocument.type]}}</td>
+                            <td>{{travelDocument.country}}</td>
+                            <td>{{travelDocument.stateProvince}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-</div>
+    <ng-template pTemplate="footer">
+        <p-button class="" (click)="passengersModel = false;" label="Close"></p-button>
+    </ng-template>
+</p-dialog>
+
+
+<p-dialog header="Please check these error(s) before sending manifest" [modal]="true" [style]="{ width: '40vw'}"
+    [(visible)]="errorsDisplay">
+    <div class="row">
+        <div class="col">
+            <div *ngFor="let err of errors" class="text-danger">
+                <i class="pi pi-exclamation-circle"></i> {{err.schema.title}}
+
+
+                <strong>
+                    <span *ngIf="err.schema.type == 'object'">
+                        <span *ngFor="let item of err.instance | keyvalue">
+                            <b>{{item.key}}: {{item.value}}</b>
+                        </span>
+                    </span>
+                    <span *ngIf="err.schema.type == 'string'">
+                        <span *ngIf="err.instance">{{err.instance}}</span>
+                        <span *ngIf="err.instance == ''">""</span>
+
+                    </span>
+                </strong> {{err.message}}
+            </div>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button class="" (click)="errorsDisplay = false;" label="Close"></p-button>
+    </ng-template>
+</p-dialog>

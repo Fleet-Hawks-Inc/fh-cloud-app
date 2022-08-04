@@ -26,7 +26,7 @@
             </div>
           </div>
 
-          <div class="col-md-2 col-lg-2 pl-2 pr-0">
+          <div class="col-md-2 col-lg-2 pr-0">
             <div class="mb-3">
               <ng-select
                 data-plugin-selectTwo
@@ -47,10 +47,10 @@
             </div>
           </div>
 
-          <div class="col-md-2 col-lg-2 pl-2">
+          <div class="col-md-2 col-lg-2">
             <button
               type="submit"
-              class="btn btn-sm btn-success mr-2"
+              class="btn btn-sm btn-success mr-3"
               (click)="searchFilter()"
             >
               Search
@@ -66,14 +66,18 @@
         </div>
       </header>
 
-     
       <section class="m-2">
-          <div class="row mb-3"> 
+        <div class="row mb-3">
           <div class="col-lg-12">
-           <div class="bg-white p-3 text-dark">
-           <div class="form-group row pt-2">
-            <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll;">
-              <p-table #myTable [value]="addressBookList"
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row pt-2">
+                <div
+                  class="col-lg-12"
+                  style="height: calc(100vh - 149px); overflow-y: scroll"
+                >
+                  <p-table
+                    #myTable
+                    [value]="addressBookList"
                     [resizableColumns]="true"
                     columnResizeMode="expand"
                     scrollDirection="both"
@@ -81,20 +85,29 @@
                     [loading]="!loaded"
                     styleClass=" p-datatable-sm p-datatable-gridlines p-datatable-striped"
                     [scrollable]="true"
-                    scrollHeight="100%">
-                
-                <ng-template pTemplate="caption">
-                   <div class="p-d-flex d-flex justify-content-between align-items-center">
-                     <div>
-                       <h3 class="m-0"> Customer Information Report </h3>
-                     </div>
-                     <div class="text-right">
-                       <span>Showing {{addressBookList.length}} entries</span> &nbsp;
-                       <button type="button" pButton (click)="refreshData()" 
-                       pTooltip="Refresh" class="p-button-outlined mr-2" 
-                       icon="fas fa-sync">
-                       </button>
-                        <button
+                    scrollHeight="100%"
+                  >
+                    <ng-template pTemplate="caption">
+                      <div
+                        class="p-d-flex d-flex justify-content-between align-items-center"
+                      >
+                        <div>
+                          <h3 class="m-0">Customer Information Report</h3>
+                        </div>
+                        <div class="text-right">
+                          <span
+                            >Showing {{ addressBookList.length }} entries</span
+                          >
+                          &nbsp;
+                          <button
+                            type="button"
+                            pButton
+                            (click)="refreshData()"
+                            pTooltip="Refresh"
+                            class="p-button-outlined mr-2"
+                            icon="fas fa-sync"
+                          ></button>
+                          <button
                             type="button"
                             pButton
                             pRipple
@@ -103,25 +116,33 @@
                             (click)="requiredCSV()"
                             pTooltip="Excel"
                           ></button>
-                       <button pButton pRipple pTooltip="Clear Filter" 
-                       class="p-button-outlined mr-2" (click)="clear(myTable)"
-                       icon="pi pi-filter-slash">
-                       </button>
-                       <p-multiSelect [options]="dataColumns" 
-                       [(ngModel)]="selectedColumns" optionLabel="header"
-                       selectedItemsLabel="{0} columns selected"
-                       [style]="{ minWidth: '200px' }" placeholder="Choose Columns">
-                       </p-multiSelect>
-                     </div>
-                   </div>
-                 </ng-template>  
-                  <ng-template pTemplate="header" let-columns>
+                          <button
+                            pButton
+                            pRipple
+                            pTooltip="Clear Filter"
+                            class="p-button-outlined mr-2"
+                            (click)="clear(myTable)"
+                            icon="pi pi-filter-slash"
+                          ></button>
+                          <p-multiSelect
+                            [options]="dataColumns"
+                            [(ngModel)]="selectedColumns"
+                            optionLabel="header"
+                            selectedItemsLabel="{0} columns selected"
+                            [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns"
+                          >
+                          </p-multiSelect>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
                       <tr>
                         <th
                           *ngFor="let dataColumns of columns"
                           [pSortableColumn]="dataColumns.field"
                           pResizableColumn
-                           style="width: 20%; cursor: pointer"
+                          style="width: 20%; cursor: pointer"
                         >
                           <div [ngSwitch]="dataColumns.field">
                             <!-- Driver Status Filter Customization -->
@@ -181,99 +202,112 @@
                         </th>
                       </tr>
                     </ng-template>
-                  <ng-template pTemplate="body" let-customer let-columns="columns" let-rowIndex="rowIndex">
-                  <tr>
-                  <td *ngFor="let dataColumns of columns"  
-                  style="width: 20%; height: 40px; cursor: pointer">
-                 <div [ngSwitch]="dataColumns.field">
-                   
-                   <span *ngSwitchCase="'cName'">
-                        <span class="line-height-lg text-capitalize">
-                          {{customer.cName}}
-                        </span>
-                      </span>
-                   
-                   <span *ngSwitchCase="'workEmail'">
-                      <span>{{ customer.workEmail }}</span>
-                   </span>
-                 
-                  <span *ngSwitchCase="'workPhone'">
-                    <span>{{ customer.workPhone }}</span>
-                  </span>
-                  
-                  <span *ngSwitchCase="'eTypes'">
-                     <span>{{ customer.eTypes }}</span>
-                  </span>
-                  
-                  <span *ngSwitchCase="'ctyName'">
-                     <span *ngIf="customer.adrs[0]">
-                              <span *ngIf="customer.adrs[0].manual">
-                                {{
-                                  customer.adrs[0].add1
-                                    ? customer.adrs[0].add1 + ","
-                                    : ""
-                                }}
-                                {{
-                                  customer.adrs[0].add2
-                                    ? customer.adrs[0].add2 + ","
-                                    : ""
-                                }}
-                                {{
-                                  customer.adrs[0].ctyName
-                                    ? customer.adrs[0].ctyName + ","
-                                    : ""
-                                }}
-                                {{
-                                  customer.adrs[0].sName
-                                    ? customer.adrs[0].sName + ","
-                                    : ""
-                                }}
-                                {{
-                                  customer.adrs[0].cName
-                                    ? customer.adrs[0].cName + ","
-                                    : ""
-                                }}
-                                {{ customer.adrs[0].zip }}
-                              </span>
-                              <span *ngIf="!customer.adrs[0].manual">
-                                {{ customer.adrs[0].userLoc }}
+                    <ng-template
+                      pTemplate="body"
+                      let-customer
+                      let-columns="columns"
+                      let-rowIndex="rowIndex"
+                    >
+                      <tr>
+                        <td
+                          *ngFor="let dataColumns of columns"
+                          style="width: 20%; height: 40px; cursor: pointer"
+                        >
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchCase="'cName'">
+                              <span class="line-height-lg text-capitalize">
+                                {{ customer.cName }}
                               </span>
                             </span>
-                                 </span>
-                 
-                                </div>
-                                 </td>
-                                  </tr>
-                                    </ng-template>
-              
-                                      <ng-template pTemplate="emptymessage" let-columns>
-                                            <div class="col-lg-12 mt-3 text-center">
-                                                {{dataMessage}}
-                                                <br /><br>
-                                            </div>
-                                        </ng-template>
-                <ng-template pTemplate="summary" let-columns>
-                   <div class="col-lg-12 mt-3 text-center"
-                             *ngIf="
-                            lastItemSK !== 'end' && addressBookList.length !== 0
-                          ">
-                          
-                     <button type="button " (click)="onScroll($event)" class="btn btn-success btn-sm text-light">
-                       Load More..
-                     </button>
-                     <br /><br />
-                   </div>
-                   <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK === 'end'">
-                     Total Records: {{ addressBookList.length }}
-                   </div>
-                 </ng-template>
-             </p-table>
+
+                            <span *ngSwitchCase="'workEmail'">
+                              <span>{{ customer.workEmail }}</span>
+                            </span>
+
+                            <span *ngSwitchCase="'workPhone'">
+                              <span>{{ customer.workPhone }}</span>
+                            </span>
+
+                            <span *ngSwitchCase="'eTypes'">
+                              <span>{{ customer.eTypes }}</span>
+                            </span>
+
+                            <span *ngSwitchCase="'ctyName'">
+                              <span *ngIf="customer.adrs[0]">
+                                <span *ngIf="customer.adrs[0].manual">
+                                  {{
+                                    customer.adrs[0].add1
+                                      ? customer.adrs[0].add1 + ","
+                                      : ""
+                                  }}
+                                  {{
+                                    customer.adrs[0].add2
+                                      ? customer.adrs[0].add2 + ","
+                                      : ""
+                                  }}
+                                  {{
+                                    customer.adrs[0].ctyName
+                                      ? customer.adrs[0].ctyName + ","
+                                      : ""
+                                  }}
+                                  {{
+                                    customer.adrs[0].sName
+                                      ? customer.adrs[0].sName + ","
+                                      : ""
+                                  }}
+                                  {{
+                                    customer.adrs[0].cName
+                                      ? customer.adrs[0].cName + ","
+                                      : ""
+                                  }}
+                                  {{ customer.adrs[0].zip }}
+                                </span>
+                                <span *ngIf="!customer.adrs[0].manual">
+                                  {{ customer.adrs[0].userLoc }}
+                                </span>
+                              </span>
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <div class="col-lg-12 mt-3 text-center">
+                        {{ dataMessage }}
+                        <br /><br />
+                      </div>
+                    </ng-template>
+                    <ng-template pTemplate="summary" let-columns>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="
+                          lastItemSK !== 'end' && addressBookList.length !== 0
+                        "
+                      >
+                        <button
+                          type="button "
+                          (click)="onScroll($event)"
+                          class="btn btn-success btn-sm text-light"
+                        >
+                          Load More..
+                        </button>
+                        <br /><br />
+                      </div>
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="lastItemSK === 'end'"
+                      >
+                        Total Records: {{ addressBookList.length }}
+                      </div>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
             </div>
           </div>
-          </div>
-          </div>   
-         </div>    
-      </section>  
+        </div>
+      </section>
     </section>
   </div>
 </section>

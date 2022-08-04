@@ -24,6 +24,7 @@ import {
   ListService,
 } from "../../../../services";
 import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
+import { isPointInPolygon } from "geolib";
 
 declare var $: any;
 declare var H: any;
@@ -169,6 +170,7 @@ export class AddOrdersComponent implements OnInit {
       tripID: "",
       tripNo: "",
     },
+    recallMessage: ""
   };
   response: any = "";
   hasError: boolean = false;
@@ -210,6 +212,8 @@ export class AddOrdersComponent implements OnInit {
 
   showShipperUpdate: boolean = false;
   showReceiverUpdate: boolean = false;
+  ltlSurcharge = null;
+  ftlSurcharge = null;
   shippersReceivers = [
     {
       shippers: {
@@ -283,6 +287,12 @@ export class AddOrdersComponent implements OnInit {
             dropOffInstruction: "",
             contactPerson: "",
             phone: "",
+            zone: {
+              zoneID: null,
+              zName: null,
+              pRates: null,
+              aspRates: null,
+            },
             commodity: [
               {
                 name: "",
@@ -368,7 +378,11 @@ export class AddOrdersComponent implements OnInit {
   recalledState = false;
 
   orderPrefix: string = "";
-
+  zoneList = [];
+  selectedZone = null;
+  display: any;
+  recallReasonDis = false;
+  reasonErr = '';
   constructor(
     private apiService: ApiService,
     private ngbCalendar: NgbCalendar,
@@ -485,6 +499,8 @@ export class AddOrdersComponent implements OnInit {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
   async ngOnInit() {
+    await this.fetchZones();
+    await this.getFuelSurcharge();
     this.listService.fetchCustomers();
     this.disableButton();
 
@@ -538,6 +554,21 @@ export class AddOrdersComponent implements OnInit {
     let customerList = new Array<any>();
     this.getValidCustomers(customerList);
     this.customers = customerList;
+  }
+
+  async getFuelSurcharge() {
+    const fuelSurcharge = await this.apiService
+      .getData(`fuelEntries/surcharge/latest`)
+      .toPromise();
+    if (fuelSurcharge.length > 0) {
+      this.ltlSurcharge = fuelSurcharge[0].ltl;
+      this.ftlSurcharge = fuelSurcharge[0].tl;
+    }
+  }
+
+  async fetchZones() {
+    const zones = await this.apiService.getData("zone/all/list").toPromise();
+    this.zoneList = zones;
   }
 
   async getShippers() {
@@ -989,8 +1020,74 @@ export class AddOrdersComponent implements OnInit {
     this.toastr.success("Receiver added successfully.");
     await this.getMiles(this.orderData.milesInfo.calculateBy);
     await this.emptyReceiver(i);
+    await this.calculateZonePrice();
   }
 
+  async calculateZonePrice() {
+    let rate = 0;
+    let currency = "CAD";
+
+    for (const shipRec of this.orderData.shippersReceiversInfo) {
+      for (const receiver of shipRec.receivers) {
+        for (const drop of receiver.dropPoint) {
+          if (drop.zone.aspRates || drop.zone.pRates) {
+            if (drop.zone.aspRates && drop.zone.aspRates.length > 0) {
+              if (drop.zone.aspRates && drop.zone.aspRates.length > 0) {
+                for (const asp of drop.zone.aspRates) {
+                  if (
+                    !this.accessFeesInfo.accessFees.find(
+                      (item) => item.type === asp.name
+                    )
+                  ) {
+                    let accessFees = {
+                      type: asp.name,
+                      currency: asp.currency,
+                      amount: Number(asp.fee),
+                    };
+                    this.accessFeesInfo.accessFees.push(accessFees);
+                  } else {
+                    for (const a of this.accessFeesInfo.accessFees) {
+                      if (a.type === asp.name) {
+                        a.amount = a.amount + Number(asp.fee);
+                      }
+                    }
+                  }
+                }
+
+                console.log(this.accessFeesInfo.accessFees);
+              }
+            }
+            for (const commodity of drop.commodity) {
+              if (commodity.quantityUnit == "Pallets") {
+                const quantity: any = commodity.quantity;
+                const priceObj = drop.zone.pRates.find(
+                  (o) => o.noPallets == quantity
+                );
+                if (priceObj.rate) {
+                  currency = priceObj.currency;
+                  const calculatedPrice = Number(priceObj.rate);
+                  rate += calculatedPrice;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    this.orderData.charges.freightFee.type = "Flat Fee";
+    this.orderData.charges.freightFee.amount = rate;
+    this.orderData.charges.freightFee.currency = currency;
+    let surcharge = 0;
+    if (this.orderData.orderMode === "FTL") {
+      surcharge = (rate * this.ftlSurcharge) / 100;
+    } else {
+      surcharge = (rate * this.ltlSurcharge) / 100;
+    }
+    this.orderData.charges.fuelSurcharge.type = "Flat Fee";
+    this.orderData.charges.fuelSurcharge.currency = "CAD";
+    this.orderData.charges.fuelSurcharge.amount = surcharge;
+    await this.calculateAmount();
+  }
   async shipperReceiverMerge() {
     this.mergedArray = [];
     this.finalShippersReceivers.forEach((item) => {
@@ -1035,6 +1132,12 @@ export class AddOrdersComponent implements OnInit {
         },
         dropOffDate: "",
         dropOffTime: "",
+        zone: {
+          zoneID: null,
+          zName: null,
+          pRates: null,
+          aspRates: null,
+        },
         dropOffInstruction: "",
         contactPerson: "",
         phone: "",
@@ -1207,7 +1310,7 @@ export class AddOrdersComponent implements OnInit {
         this.apiService
           .getData(
             "trips/calculate/pc/miles?type=mileReport&vehType=Truck&stops=" +
-              this.getAllCords.join(";")
+            this.getAllCords.join(";")
           )
           .subscribe(
             (result) => {
@@ -1323,10 +1426,9 @@ export class AddOrdersComponent implements OnInit {
       if (element.flName == event) {
         this.orderData.phone = element.phone;
         this.orderData.email = element.email;
-      }
-      else{
-      this.orderData.phone = null;
-      this.orderData.email = null;
+      } else {
+        this.orderData.phone = null;
+        this.orderData.email = null;
       }
     }
   }
@@ -1554,7 +1656,7 @@ export class AddOrdersComponent implements OnInit {
     formData.append("data", JSON.stringify(this.orderData));
 
     this.apiService.postData("orders", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         this.submitDisabled = false;
         from(err.error)
@@ -1583,7 +1685,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -1599,12 +1701,12 @@ export class AddOrdersComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -1904,6 +2006,12 @@ export class AddOrdersComponent implements OnInit {
         dropOffDate: "",
         dropOffTime: "",
         dropOffInstruction: "",
+        zone: {
+          zoneID: null,
+          zName: null,
+          pRates: null,
+          aspRates: null,
+        },
         contactPerson: "",
         phone: "",
         commodity: [
@@ -1977,6 +2085,14 @@ export class AddOrdersComponent implements OnInit {
         index++
       ) {
         const element = this.shippersReceivers[j].receivers.dropPoint[index];
+        if (element.zone == undefined) {
+          element.zone = {
+            zoneID: null,
+            zName: null,
+            pRates: null,
+            aspRates: null,
+          };
+        }
         if (
           element["dateAndTime"] != undefined ||
           element["dateAndTime"] != ""
@@ -2478,6 +2594,12 @@ export class AddOrdersComponent implements OnInit {
               dropOffTime: "",
               dropOffInstruction: "",
               contactPerson: "",
+              zone: {
+                zoneID: null,
+                zName: null,
+                pRates: null,
+                aspRates: null,
+              },
               phone: "",
               commodity: [
                 {
@@ -2506,6 +2628,14 @@ export class AddOrdersComponent implements OnInit {
     // this.isSubmit = true;
     // if (!this.checkFormErrors()) return false;
     this.submitDisabled = true;
+    if (type === 'recall') {
+      if (this.orderData.recallMessage === '') {
+        this.reasonErr = "Please fill recall reason "
+        return false;
+      } else {
+        this.reasonErr = "";
+      }
+    }
     if (this.orderData.zeroRated) {
       this.orderData.taxesInfo.forEach((element) => {
         element.taxAmount = 0;
@@ -2516,6 +2646,7 @@ export class AddOrdersComponent implements OnInit {
     this.orderData["orderID"] = this.getOrderID;
     this.orderData.orderNumber = this.orderData.orderNumber.toString();
     this.orderData["deletedFiles"] = this.deletedFiles;
+    this.orderData["recallMessage"] = this.orderData.recallMessage;
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
     for (let k = 0; k < this.finalShippersReceivers.length; k++) {
@@ -2564,6 +2695,7 @@ export class AddOrdersComponent implements OnInit {
       this.toastr.error(
         "Please add atleast one Shipper and Receiver in shipments."
       );
+      this.recallReasonDis = true;
       return false;
     }
 
@@ -2623,7 +2755,7 @@ export class AddOrdersComponent implements OnInit {
       url = "admin/order/recall";
     }
     this.apiService.putData(url, formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         from(err.error)
           .pipe(
@@ -2644,7 +2776,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -2742,6 +2874,12 @@ export class AddOrdersComponent implements OnInit {
               geoCords: {},
             },
             dropOffDate: "",
+            zone: {
+              zoneID: null,
+              zName: null,
+              pRates: null,
+              aspRates: null,
+            },
             dropOffTime: "",
             dropOffInstruction: "",
             contactPerson: "",
@@ -3285,6 +3423,56 @@ export class AddOrdersComponent implements OnInit {
       .toPromise();
     if (result && result.length > 0) {
       this.orderData.orderNumber = `${result[0].prefix}${result[0].sequence}`;
+    }
+  }
+
+  async showReasonModal() {
+    this.display = true;
+  }
+
+  async searchZone(dropPoint: any, index: any, i: any) {
+    if (
+      this.shippersReceivers[i].receivers.dropPoint[index].zone.zoneID === null
+    ) {
+      const address = dropPoint.address;
+      if (!address.geoCords.lat && !address.geoCords.lng) {
+        const data = {
+          address: address.address,
+          cityName: address.cityName,
+          stateName: address.address.stateName,
+          countryName: address.countryName,
+          zipCode: address.zipCode,
+        };
+        address.geoCords = await this.newGeoCode(data);
+      }
+      if (
+        address.geoCords.lat &&
+        address.geoCords.lng &&
+        this.zoneList.length > 0
+      ) {
+        const geoCords = {
+          latitude: address.geoCords.lat,
+          longitude: address.geoCords.lng,
+        };
+        for (const zone of this.zoneList) {
+          if (zone.coordinates && zone.coordinates.length > 0) {
+            const cordArray = [];
+            for (const a of zone.coordinates) {
+              const cordObject = { latitude: a.lat, longitude: a.lng };
+              cordArray.push(cordObject);
+            }
+            if (isPointInPolygon(geoCords, cordArray)) {
+              this.shippersReceivers[i].receivers.dropPoint[index].zone = {
+                zoneID: zone.id,
+                zName: zone.zName,
+                pRates: zone.pRates,
+                aspRates: zone.aspRates,
+              };
+              return;
+            }
+          }
+        }
+      }
     }
   }
 }
