@@ -1,14 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from '../../../../services';
 import Constants from '../../constants';
 import * as _ from 'lodash';
+import { Table } from 'primeng/table';
+import { environment } from 'src/environments/environment';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { OverlayPanel } from "primeng/overlaypanel";
 @Component({
   selector: 'app-driver-setting',
   templateUrl: './driver-setting.component.html',
   styleUrls: ['./driver-setting.component.css']
 })
 export class DriverSettingComponent implements OnInit {
+  @ViewChild('dt') table: Table;
+  @ViewChild('rm') overlaypanel: OverlayPanel;
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
+  environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   driverID = '';
   driverName = '';
@@ -18,13 +27,42 @@ export class DriverSettingComponent implements OnInit {
   suggestedDrivers = [];
   driverType = null;
   drivers = [];
-
-  constructor( private apiService: ApiService, private toastr: ToastrService,) { }
+  _selectedColumns: any[];
+   get = _.get;
+   
+   dataColumns = [
+        { width: '10%', field: 'firstName', header: 'Name', type: "text" },
+        { width: '12%', field: 'email', header: 'Email', type: "text" },
+        { width: '10%', field: 'phone', header: 'Phone', type: "text" },
+        { width: '10%', field: 'driverType', header: 'Driver Type', type: "text" },
+        { width: '10%', field: 'startDate', header: 'Start Date', type: "text" },
+        { width: '11%', field: 'CDL_Number', header: 'CDL#', type: "text" },
+        { width: '11%', field: 'licenceExpiry', header: 'Licence Expiry', type: "text" },     
+        { width: '12%', field: 'licStateName', header: 'Licence Province', type: "text" }, 
+        { width: '8%', field: "driverStatus", header: 'Status', type: 'text' },
+    ];
+   
+  constructor( private apiService: ApiService,
+  private spinner: NgxSpinnerService,
+  private toastr: ToastrService,) { }
 
   ngOnInit() {
     this.initDataTable();
+    this.setToggleOptions();
   }
   
+  setToggleOptions() {
+  this.selectedColumns = this.dataColumns;
+    }
+    
+    @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+  
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+  }
   
     getSuggestions = _.debounce(function (value) {
     this.driverID = '';
@@ -80,7 +118,7 @@ export class DriverSettingComponent implements OnInit {
             }
         }
     }
-    onScroll() {
+    onScroll = async (event: any) => {
         if (this.loaded) {
             this.initDataTable();
         }
@@ -93,6 +131,8 @@ export class DriverSettingComponent implements OnInit {
       this.driverName = '';
       this.driverType = null;
       this.lastEvaluatedKey = '';
+      this.loaded = false;
+      this.initDataTable();
       this.dataMessage = Constants.FETCHING_DATA;
     }
     
@@ -130,6 +170,10 @@ export class DriverSettingComponent implements OnInit {
       } else {
         return false;
       }
+    }
+    
+     clear(table: Table) {
+        table.clear();
     }
     
     restoreDriver(eventData) {
