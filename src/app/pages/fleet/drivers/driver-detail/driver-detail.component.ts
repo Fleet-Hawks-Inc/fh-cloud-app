@@ -112,6 +112,7 @@ export class DriverDetailComponent implements OnInit {
     hosType: any;
     hosCycle: any;
     timezone: any;
+    uploadLicence:any = [];
     optzone: any;
     yardsObjects: any = {};
     statesObject: any = {};
@@ -452,6 +453,9 @@ export class DriverDetailComponent implements OnInit {
                     }
                     if (this.driverData.abstractDocs !== undefined && this.driverData.abstractDocs.length > 0) {
                         this.absDocs = this.driverData.docsAbs;
+                    }
+                    if (this.driverData.uploadLicence !== undefined && this.driverData.uploadLicence.length > 0) {
+                        this.uploadLicence = this.driverData.licDocs;
                     }
                     this.driverType = this.driverData.driverType;
                     this.employeeId = this.driverData.employeeContractorId;

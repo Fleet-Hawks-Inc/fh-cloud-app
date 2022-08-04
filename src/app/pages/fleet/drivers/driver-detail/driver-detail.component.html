@@ -973,6 +973,7 @@
               </div>
             </div>
           </div>
+          
           <div class="col-lg-6">
             <div class="row">
               <div class="col-lg-12">
@@ -1173,6 +1174,52 @@
             </div>
           </div>
         </div>
+        <div class="row" *ngIf="uploadLicence.length > 0">
+              <div class="col-lg-12 mt-2">
+                <div class="vehicle-common-box p-3">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <label class="control-label font-weight-bold text-3"
+                        >Licence Document(s)</label
+                      >
+                    </div>
+                    <div class="col-lg-6 text-right"></div>
+                  </div>
+                  <hr class="solid mt-2" />
+
+                  <div
+                    class="row mb-1"
+                    *ngFor="let item of uploadLicence; let d = index"
+                  >
+                    <div class="col-lg-9">
+                      <a
+                        href="{{ item.path }}"
+                        data-toggle="modal"
+                        data-target="#viewDocModal"
+                        (click)="setPDFSrc(item.path)"
+                        >Document {{ d + 1 }}</a
+                      >
+                    </div>
+                    <div class="col-lg-3 text-right">
+                      <!--<a-->
+                      <!--  href="javascript:;"-->
+                      <!--  class="btn btn-deafault pull-right btn-xs"-->
+                      <!--  (click)="delete('abs', item.name, d, nullVar)"-->
+                      <!--  ><i class="fas fa-trash-alt"></i-->
+                      <!--></a>-->
+                      <a
+                        href="javascript:;"
+                        class="btn btn-deafault pull-right btn-xs"
+                        (click)="setPDFSrc(item.path)"
+                        data-toggle="modal"
+                        data-target="#viewDocModal"
+                        ><i class="fas fa-eye"></i
+                      ></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
         <div id="compliance_div" class="mt-3">
           <div class="row">
             <div class="col-lg-12 font-weight-bold text-4 text-dark">
