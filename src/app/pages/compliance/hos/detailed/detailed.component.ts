@@ -65,6 +65,11 @@ export class DetailedComponent implements OnInit {
       type: "text",
     },
     {
+      field: "Location",
+      header: "Location",
+      type: "text",
+    },
+    {
       field: "Odometer",
       header: "Odometer (Miles)",
       type: "text",
@@ -117,13 +122,19 @@ export class DetailedComponent implements OnInit {
       .toPromise();
     this.logBook = response.data;
     this.logs = response.data.Points;
+
+    this.logs = _.filter(this.logs, function (currentObject) {
+      return currentObject.EventOrigin !== -1;
+    });
+    console.log(this.logs);
+    this.logs = _.sortBy(this.logs, ["EpochTimestamp"]);
     this.logs.forEach((element) => {
       element.Date = new Date(
         parseInt(element.EpochTimestamp) * 1000
       ).toLocaleDateString();
     });
 
-    console.log(this.logBook, this.logs);
+    console.log(this.logBook);
   }
   async nextDate() {
     this.selectedDate = moment(this.selectedDate).add(1, "day").toDate();

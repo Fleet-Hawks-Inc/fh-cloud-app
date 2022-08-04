@@ -102,14 +102,14 @@
                                             <tr class="td-alternate">
                                                 <td>Carrier Address </td>
                                                 <td>Home Base Address</td>
-                                                <td colspan="1">Ruleset</td>
+                                                <td colspan="2">Ruleset</td>
 
 
                                             </tr>
                                             <tr>
                                                 <td>{{logBook.CarrierAddress}}</td>
                                                 <td>{{logBook.HomeBaseAddress}}</td>
-                                                <td colspan="1">{{logBook.RuleSetId}}</td>
+                                                <td colspan="2">{{logBook.RuleSetId}}</td>
 
 
                                             </tr>
@@ -243,15 +243,13 @@
                         <div class="col-12">
                             <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                                 <div class="col-lg-12 mt-3">
+                                    <span class="font-weight-bold text-5 text-dark">{{ logBook.Header.DriverName}} (Compliance: {{complianceText}}) </span>
                                     <span class="p-buttonset pull-right">
-                                   
+                                       
                                     <button (click)="previousDate()" pButton pRipple icon=" pi pi-angle-left "></button>
-                                    <p-calendar [(ngModel)]="selectedDate"
-                                      [inputStyle]="{ width: '120px', 'text-align': 'center' } "
-                                      [readonlyInput]="true "
-                                    ></p-calendar>
+                                    <p-calendar [(ngModel)]="selectedDate" [inputStyle]="{ width: '120px', 'text-align': 'center' } " [readonlyInput]="true "></p-calendar>
                                     <button (click)="nextDate()" pButton pRipple icon="pi pi-angle-right "></button>
-                                  </span><br/>
+                                    </span><br/>
                                     <br/>
                                     <table class="table table-bordered table-striped table-responsive-sm ">
 
@@ -270,12 +268,12 @@
                                               (MM-DD-YY HH:MM:SS)</b></td>
                                             </tr>
                                             <tr>
-                                                <td>{{this.logBook.RecordDate}}</td>
-                                                <td>{{this.logBook.DayStartingTime}}</td>
-                                                <td>{{this.logBook.UTCTimeZoneOffset}}</td>
-                                                <td colspan="2 ">{{this.logBook.CurrentLocation}}</td>
-                                                <td>{{this.logBook.FileComment}}</td>
-                                                <td>{{this.logBook.CurrentDatetime}}</td>
+                                                <td>{{this.logBook.Header.RecordDate}}</td>
+                                                <td>{{this.logBook.Header.DayStartingTime}}</td>
+                                                <td>{{this.logBook.Header.UTCTimeZoneOffset}}</td>
+                                                <td colspan="2 ">{{this.logBook.Header.CurrentLocation}}</td>
+                                                <td>{{this.logBook.Header.FileComment}}</td>
+                                                <td>{{this.logBook.Header.CurrentDatetime}}</td>
                                             </tr>
                                             <tr class="td-alternate ">
                                                 <td><b>Driver Name
@@ -292,12 +290,13 @@
                                               (Username)</b></td>
                                             </tr>
                                             <tr>
-                                                <td>{{logBook.DriverLastName}} {{ logBook.DriverName}}</td>
-                                                <td>{{logBook.DriverUserName}}</td>
-                                                <td>{{logBook.ExemptDriverStatus}}</td>
-                                                <td colspan="2 ">{{logBook.DriverLicense}}</td>
-                                                <td>{{logBook.DriverLicenseState}}</td>
-                                                <td>{{logBook.CoDriverLastName}} {{logBook.CoDriverUserName}}</td>
+                                                <td>{{logBook.Header.DriverLastName}} {{ logBook.Header.DriverName}}</td>
+                                                <td>{{logBook.Header.DriverUserName}}</td>
+                                                <td>{{logBook.Header.ExemptDriverStatus}}</td>
+                                                <td colspan="2 ">{{logBook.Header.DriverLicense}} ({{logBook.Header.DriverLicenseState}})</td>
+                                                <td>{{logBook.Header.CoDriverLastName}} {{logBook.Header.CoDriverName}}</td>
+                                                <td>{{logBook.Header.CoDriverUserName}}</td>
+
                                             </tr>
                                             <tr class="td-alternate ">
                                                 <td><b>Power Unit Number
@@ -313,13 +312,16 @@
                                                 <td>Trailer Number (ID or License No & Jurisdiction)</td>
                                             </tr>
                                             <tr>
-                                                <td>{{logBook.TractorList }}</td>
-                                                <td>{{logBook.TractorVIN | uppercase}}</td>
-                                                <td>Cell</td>
-                                                <td>Cell</td>
-                                                <td>Cell</td>
-                                                <td>Cell</td>
-                                                <td>Cell</td>
+                                                <td>
+
+                                                    <span *ngFor="let tractor of logBook.Header.TractorList; let i=index">{{i+1}}) {{tractor.Number}}</span>
+                                                </td>
+                                                <td><span *ngFor="let tractor of logBook.Header.TractorList; let i=index">{{i+1}}) {{tractor.VIN}}</span></td>
+                                                <td><span *ngFor="let tractor of logBook.Header.TractorList; let i=index">{{i+1}}) {{tractor.StartOdometer }} - {{tractor.EndOdometer}}</span></td>
+                                                <td><span *ngFor="let tractor of logBook.Header.TractorList; let i=index">{{i+1}}) {{tractor.DistanceToday}}</span></td>
+                                                <td>{{logBook.Header.CurrentTotalDistance }}</td>
+                                                <td>{{logBook.Header.CurrentTotalEngineHours }}</td>
+                                                <td>{{logBook.Header.TrailerNumber}}</td>
                                             </tr>
                                             <tr class="td-alternate ">
                                                 <td>Carrier Name</td>
@@ -332,9 +334,9 @@
 
                                             </tr>
                                             <tr>
-                                                <td>{{logBook.CarrierName | uppercase}}</td>
-                                                <td colspan="2 ">{{logBook.HomeBaseAddress | uppercase}}</td>
-                                                <td colspan="2 ">{{logBook.CarrierAddress | uppercase}}</td>
+                                                <td>{{logBook.Header.CarrierName | uppercase}}</td>
+                                                <td colspan="2 ">{{logBook.Header.HomeBaseAddress | uppercase}}</td>
+                                                <td colspan="2 ">{{logBook.Header.CarrierAddress | uppercase}}</td>
 
                                                 <td colspan="2 "></td>
 
@@ -348,12 +350,12 @@
                                                 <td colspan="2 ">Off-Duty Time Deferral (Status and time deferred) (0:none, 1: Day 1, 2: Day 2 - Time deferred: HH:MM)</td>
                                             </tr>
                                             <tr>
-                                                <td>{{logBook.OperatingZone}}</td>
-                                                <td>{{logBook.Cycle}}</td>
-                                                <td>{{logBook.TotalHoursShift}}</td>
-                                                <td>{{logBook.TotalHoursCycle}}</td>
-                                                <td>{{logBook.RemainingHoursCycle}}</td>
-                                                <td colspan="2 ">{{logBook.OffDutyTimeDeferral}}</td>
+                                                <td>{{logBook.Header.OperatingZone}}</td>
+                                                <td>{{logBook.Header.Cycle}}</td>
+                                                <td>{{logBook.Header.TotalHoursShift}}</td>
+                                                <td>{{logBook.Header.TotalHoursCycle}}</td>
+                                                <td>{{logBook.Header.RemainingHoursCycle}}</td>
+                                                <td colspan="2 ">{{logBook.Header.OffDutyTimeDeferral}}</td>
                                             </tr>
                                             <tr class="td-alternate ">
                                                 <td>Data Diagnostic Status (Status & Diagnostic Code)</td>
@@ -366,13 +368,13 @@
                                                 <td>ELD Authentication Value</td>
                                             </tr>
                                             <tr>
-                                                <td>{{logBook.DataDiagnosticList}}</td>
-                                                <td>{{logBook.UnidentifiedDrivingRecords}}</td>
-                                                <td>{{logBook.MalfunctionList}}</td>
-                                                <td>{{logBook.ELDIdentifier}}</td>
-                                                <td>{{logBook.ELDProvider}}</td>
-                                                <td>{{logBook.ELDCertificationId}}</td>
-                                                <td>{{logBook.ELDAuthenticationValue}}</td>
+                                                <td><span *ngFor="let diagnostic of logBook.Header.DataDiagnosticList">{{diagnostic.status}}) (Code {{diagnostic.code}})</span></td>
+                                                <td>{{logBook.Header.UnidentifiedDrivingRecords}}</td>
+                                                <td>{{logBook.Header.MalfunctionList}}</td>
+                                                <td>{{logBook.Header.ELDIdentifier}}</td>
+                                                <td>{{logBook.Header.ELDProvider}}</td>
+                                                <td>{{logBook.Header.ELDCertificationId}}</td>
+                                                <td>{{logBook.Header.ELDAuthenticationValue}}</td>
                                             </tr>
 
                                         </tbody>

@@ -176,6 +176,7 @@ export class LogsComponent implements OnInit {
   async ngOnInit() {
     this.selectedColumns = this.dataColumns;
     await this.getInitialLogs();
+    this.fetchDrivers();
   }
 
   fetchDrivers() {
