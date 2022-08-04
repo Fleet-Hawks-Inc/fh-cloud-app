@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { AccountService, ApiService } from 'src/app/services';
 import { ToastrService } from 'ngx-toastr';
 import Constants from 'src/app/pages/fleet/constants';
-
+import * as _ from "lodash";
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-sales-order-list',
@@ -10,6 +11,7 @@ import Constants from 'src/app/pages/fleet/constants';
   styleUrls: ['./sales-order-list.component.css']
 })
 export class SalesOrderListComponent implements OnInit {
+  @ViewChild('dt') table: Table;
   isSearch: boolean = false;
   dataMessage = Constants.FETCHING_DATA;
 
@@ -46,12 +48,41 @@ export class SalesOrderListComponent implements OnInit {
     }
   ];
   emailDisabled = false;
-
+  _selectedColumns: any[];
+  dataColumns: any[];
+  get = _.get;
+  find = _.find;
   constructor(public accountService: AccountService, private toaster: ToastrService, public apiService: ApiService) { }
 
   ngOnInit() {
     this.fetchCustomersByIDs();
     this.fetchSales();
+    this.dataColumns = [
+      { width: '10%', field: 'txnDate', header: 'Date', type: "text" },
+      { width: '12%', field: 'sOrNo', header: 'Sales Order#', type: "text" },
+      { width: '12%', field: 'sRef', header: 'Reference#', type: "text" },
+      { width: '15%', field: 'cusInfo.customerID', header: 'Customer', type: "text" },
+      { width: '15%', field: 'shipDate', header: 'Shipment Date', type: "text" },
+      { width: '15%', field: 'total.finalTotal', header: 'Amount', type: "text" },
+      { width: '15%', field: 'status', header: 'Status', type: "text" },
+    ];
+
+
+    this._selectedColumns = this.dataColumns;
+    this.setToggleOptions()
+  }
+  setToggleOptions() {
+    this.selectedColumns = this.dataColumns;
+  }
+
+  @Input() get selectedColumns(): any[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: any[]) {
+    //restore original order
+    this._selectedColumns = this.dataColumns.filter(col => val.includes(col));
+
   }
 
   getSales() {
@@ -190,5 +221,8 @@ export class SalesOrderListComponent implements OnInit {
     } else {
       this.toaster.error("Something went wrong.");
     }
+  }
+  clear(table: Table) {
+    table.clear();
   }
 }

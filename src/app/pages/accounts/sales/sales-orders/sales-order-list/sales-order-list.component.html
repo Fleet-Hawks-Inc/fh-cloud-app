@@ -72,146 +72,161 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-2 col-lg-2 text-right pr-2">
-              <a routerLink="/accounts/sales/orders/add" class="btn btn-success btn-sm ml-2" style="color: white"><i
-                  class="fas fa-plus"></i> Add Sales Order
-              </a>
-            </div>
           </div>
         </form>
       </header>
-
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
               <div class="form-group row">
-                <div class="col-lg-12">
-                  <table class="table table-bordered table-striped mb-0 simple-table">
-                    <thead>
-                      <tr class="">
-                        <th class="text-2">Date</th>
-                        <th class="text-2">Sales Order#</th>
-                        <th class="text-2">Reference#</th>
-                        <th class="text-2">Customer</th>
-                        <th class="text-2">Shipment Date</th>
-                        <th class="text-2">Amount</th>
-                        <!-- <th class="text-2">Invoice Status</th> -->
-                        <!-- <th class="text-2">Payment Status</th> -->
-                        <th class="text-2">Status</th>
-                        <th class="text-2">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngIf="allSales.length === 0" class="text-center">
-                        <td colspan="8">{{ dataMessage }}</td>
-                      </tr>
-                      <tr *ngFor="let item of allSales; let i = index;" class="cursorpoint">
-                        <td routerLink="/accounts/sales/orders/detail/{{
-                            item.saleID
-                          }}">
-                          {{ item.txnDate | date: "yyyy/MM/dd" }}
-                        </td>
-                        <td routerLink="/accounts/sales/orders/detail/{{
-                            item.saleID
-                          }}">
-                          {{ item.sOrNo ? item.sOrNo : "-" }}
-                        </td>
-                        <td routerLink="/accounts/sales/orders/detail/{{
-                            item.saleID
-                          }}">
-                          {{ item.sRef ? item.sRef : "-" }}
-                        </td>
-                        <td routerLink="/accounts/sales/orders/detail/{{
-                            item.saleID
-                          }}">
-                          {{
-                          item.cusInfo.customerID
-                          ? customersObjects[item.cusInfo.customerID]
-                          : "-"
-                          }}
-                        </td>
-                        <td routerLink="/accounts/sales/orders/detail/{{
-                            item.saleID
-                          }}">
-                          {{
-                          item.shipDate
-                          ? (item.shipDate | date: "yyyy/MM/dd")
-                          : "-"
-                          }}
-                        </td>
-                        <td routerLink="/accounts/sales/orders/detail/{{
-                            item.saleID
-                          }}">
-                          {{
-                          item.total.finalTotal
-                          ? (item.total.finalTotal | number: "1.2-2")
-                          : "-"
-                          }}
-                          {{ item.currency }}
-                        </td>
-                        <!-- <td routerLink="/accounts/sales/orders/detail/{{
-                          item.saleID
-                          }}">
-                          <span *ngIf="item.invStatus">
-                            <span class="badge badge-dark p-1 text-uppercase">
-                              Invoiced
+                <div class="col-lg-12" style="height: calc(100vh - 149px); overflow-y: scroll">
+                  <p-table #dt [value]="allSales" [resizableColumns]="true" columnResizeMode="expand"
+                    scrollDirection="both" [columns]="selectedColumns" [loading]="!loaded"
+                    styleClass="p-datatable-sm p-datatable-gridlines p-datatable-striped" [scrollable]="true"
+                    scrollHeight="100%">
+                    <!-- Caption template of data table -->
+                    <ng-template pTemplate="caption">
+                      <div class="p-d-flex d-flex justify-content-between align-items-center">
+                        <div>
+                          <h3 class="m-0">Sales Order</h3>
+                        </div>
+
+                        <div class="text-right">
+                          <span>Showing {{ allSales.length }} entries </span>
+                          &nbsp;
+                          <button type="button" pButton (click)="resetFilter()" pTooltip="Refresh"
+                            class="p-button-outlined mr-2" icon="fas fa-sync"></button>
+                          <button type="button" pButton pTooltip="Add" routerLink="/accounts/sales/orders/add"
+                            class="p-button-outlined mr-2" icon="pi pi-plus"></button>
+                          <button pButton pRipple pTooltip="Clear Filter" class="p-button-outlined mr-2"
+                            icon="pi pi-filter-slash" (click)="clear(dt)"></button>
+
+                          <button type="button" pButton pRipple class="p-button-outlined mr-2"
+                            icon="fas fa-regular fa-file-excel" (click)="dt.exportCSV()" pTooltip="Excel"></button>
+
+                          <p-multiSelect [options]="dataColumns" [(ngModel)]="selectedColumns" optionLabel="header"
+                            selectedItemsLabel="{0} columns selected" [style]="{ minWidth: '200px' }"
+                            placeholder="Choose Columns">
+                          </p-multiSelect>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <!-- Header template of DataTable -->
+                    <ng-template pTemplate="header" let-columns let-rowIndex="rowIndex">
+                      <tr>
+                        <th *ngFor="let dataColumns of columns" [pSortableColumn]="dataColumns.field" pResizableColumn
+                          [ngStyle]="{ width: dataColumns.width }">
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchDefault>
+                              <div class="flex justify-content-center align-items-center" alignFrozen="right"
+                                pFrozenColumn [frozen]="true">
+                                {{ dataColumns.header }}
+                                <p-sortIcon [field]="dataColumns.field"></p-sortIcon>
+                                <p-columnFilter [type]="dataColumns.type" [field]="dataColumns.field"
+                                  matchMode="contains" [showMatchModes]="false" [showOperator]="false"
+                                  [showAddButton]="false" display="menu">
+                                </p-columnFilter>
+                              </div>
                             </span>
-                          </span>
-                          <span *ngIf="!item.invStatus">
-                            -
-                          </span>
-                        </td> -->
-                        <!-- <td
-                          routerLink="/accounts/sales/orders/detail/{{
-                            item.saleID
-                          }}"
-                        >
-                          <span class="badge badge-dark p-1">UNPAID</span>
-                        </td> -->
-                        <td routerLink="/accounts/sales/orders/detail/{{
-                            item.saleID
+                          </div>
+                        </th>
+                        <th style="width: 108px" alignFrozen="right" pFrozenColumn [frozen]="true">
+                          Actions
+                        </th>
+                      </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-salesOrd let-columns="columns" let-rowIndex="rowIndex">
+                      <tr>
+                        <td *ngFor="let dataColumns of columns" [ngStyle]="{ width: dataColumns.width }"
+                          style="cursor: pointer" routerLink="/accounts/sales/orders/detail/{{
+                            salesOrd.saleID
                           }}">
-                          <span class="badge badge-dark p-1 text-uppercase">{{
-                            item.status
-                            }}</span>
-                          <span class="badge badge-success p-1 text-uppercase ml-1"
-                            *ngIf="item.status === 'sent'">Emailed</span>
+                          <div [ngSwitch]="dataColumns.field">
+                            <span *ngSwitchCase="'txnDate'">
+                              {{ salesOrd.txnDate | date: "yyyy/MM/dd" }}
+                            </span>
+
+                            <span *ngSwitchCase="'Sales Order#'">
+                              {{ salesOrd[dataColumns.field] | titlecase }}
+                            </span>
+
+                            <span *ngSwitchCase="'sRef'">
+                              {{ salesOrd.sRef ? salesOrd.sRef : "-" }}
+                            </span>
+
+                            <span *ngSwitchCase="'cusInfo.customerID'">
+                              {{ customersObjects[salesOrd.cusInfo.customerID] ?
+                              customersObjects[salesOrd.cusInfo.customerID] : "-" }}
+                            </span>
+
+                            <span *ngSwitchCase="'shipDate'">
+                              {{ salesOrd.shipDate | date: "yyyy/MM/dd" }}
+                            </span>
+
+
+                            <span *ngSwitchCase="'status'">
+                              <span class="badge badge-dark p-1 text-uppercase">{{
+                                salesOrd.status
+                                }}</span>
+                              <span class="badge badge-success p-1 text-uppercase ml-1"
+                                *ngIf="salesOrd.status === 'sent'">Emailed</span>
+                            </span>
+
+
+                            <span *ngSwitchCase="'total.finalTotal'">
+                              {{ salesOrd.total.finalTotal ? (salesOrd.total.finalTotal | number: "1.2-2") : "-"}}
+                              {{ salesOrd.currency }}
+                            </span>
+
+                            <span *ngSwitchDefault>
+                              {{ get(salesOrd, dataColumns.field) }}</span>
+                          </div>
                         </td>
-                        <td>
-                          <div class="btn-group flex-wrap">
-                            <button type="button" [disabled]="item.status != 'open'" class="m-0 p-0 btn"
-                              data-toggle="dropdown">
-                              <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                            <div class="dropdown-menu" role="menu">
-                              <button [disabled]="emailDisabled" class="dropdown-item" *ngIf="item.status === 'open'"
-                                href="javascript:;" (click)="sendConfirmationEmail(i, item.saleID)">Send email to
-                                customer</button>
-                              <a *ngIf="!item.invStatus" routerLink="/accounts/sales/orders/edit/{{
-                                  item.saleID
-                                }}" class="dropdown-item text-1" href="javascript:;">Edit</a>
-                              <a *ngIf="!item.invStatus" (click)="deleteSale(item.saleID)" class="dropdown-item text-1"
-                                href="javascript:;">Delete</a>
-                              <a [routerLink]="[
-                                  '/accounts',
-                                  'sales',
-                                  'orders',
-                                  'add'
-                                ]" [queryParams]="{
-                                  cloneID: item.saleID
-                                }" class="dropdown-item text-1" href="javascript:;">Clone</a>
-                            </div>
+                        <td style="width: 6%; overflow: inherit !important" alignFrozen="right" pFrozenColumn
+                          [frozen]="true">
+                          <div class="dropdown dropright">
+                            <button [disabled]="salesOrd.status != 'open'" (click)="op.toggle($event)" pButton
+                              type="button" class="bg-transparent border-0" data-toggle="dropdown" aria-expanded="false"
+                              aria-haspopup="true" icon="fas fa-ellipsis-v"  style="color: #000;"></button>
+                            <p-overlayPanel #op [showCloseIcon]="true" [style]="{ width: '210px' }">
+                              <ng-template pTemplate>
+                                <a *ngIf="salesOrd.status === 'open'"
+                                  (click)="sendConfirmationEmail(rowIndex, salesOrd.saleID)" class="dropdown-item"
+                                  href="javascript:;">Send email to
+                                  customer</a>
+
+                                <a *ngIf="!salesOrd.invStatus" routerLink="/accounts/sales/orders/edit/{{
+                                  salesOrd.saleID
+                                }}" class="dropdown-item" href="javascript:;">Edit</a>
+
+                                <a *ngIf="!salesOrd.invStatus" (click)="deleteSale(salesOrd.saleID)"
+                                  class="dropdown-item" href="javascript:;">Delete</a>
+
+                                <a [routerLink]="[ '/accounts','sales','orders','add' ]" [queryParams]="{
+                                  cloneID: salesOrd.saleID
+                                }" class="dropdown-item" href="javascript:;">Clone</a>
+                              </ng-template>
+                            </p-overlayPanel>
                           </div>
                         </td>
                       </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allSales.length !== 0">
-                  <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
-                    Load More..
-                  </button>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage" let-columns>
+                      <div class="col-lg-12 mt-3 text-center">
+                        {{ dataMessage }} <br /><br />
+                      </div>
+                    </ng-template>
+                    <ng-template pTemplate="summary" let-columns>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allSales.length !== 0">
+                        <button type="button" (click)="onScroll()" class="btn btn-success btn-sm text-light">
+                          Load More..</button><br /><br />
+                      </div>
+                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK === 'end'">
+                        Total Records: {{ allSales.length }}
+                      </div>
+                    </ng-template>
+                  </p-table>
                 </div>
               </div>
             </div>
@@ -220,4 +235,3 @@
       </section>
     </section>
   </div>
-</section>
